@@ -56,3 +56,4 @@ This project uses a local dual-graph MCP server for efficient context retrieval.
 - Do context handshake per task: summarize known context, then ask for only missing pieces.
 - Do NOT call `graph_retrieve` more than once per turn.
 - After edits, call `graph_register_edit` with the changed files. Use `file::symbol` notation (e.g. `src/auth.ts::handleLogin`) when the edit targets a specific function, class, or hook.
+- Before making non-trivial changes, read and follow `RULES.md`. For any Habitica API work, read `HABITICA_API.md` before editing code. Keep `TECHNICAL.md` updated when foundational technical decisions change, and keep `FEATURES.md` updated when features are added, changed, deprecated, or removed.
