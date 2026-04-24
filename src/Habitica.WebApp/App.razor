@@ -1,0 +1,54 @@
+<MudThemeProvider Theme="@Theme" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <MudAlert Dense="true" Severity="Severity.Error" Variant="Variant.Filled">
+                This route does not exist in the current MVP.
+            </MudAlert>
+        </LayoutView>
+    </NotFound>
+</Router>
+
+@code {
+    private static readonly MudTheme Theme = new()
+    {
+        PaletteLight = new PaletteLight
+        {
+            AppbarBackground = "#173f3b",
+            Background = "#f5efe2",
+            DrawerBackground = "#163431",
+            DrawerText = "#f5efe2",
+            Primary = "#2d746e",
+            Secondary = "#c5772b",
+            Surface = "#fffaf1",
+            TextPrimary = "#162423",
+            Warning = "#b86d2c"
+        },
+        Typography = new Typography
+        {
+            Default = new DefaultTypography
+            {
+                FontFamily = new[] { "Avenir Next", "Segoe UI", "Helvetica Neue", "sans-serif" }
+            },
+            H1 = new H1Typography
+            {
+                FontFamily = new[] { "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Georgia", "serif" },
+                FontWeight = "700"
+            },
+            H2 = new H2Typography
+            {
+                FontFamily = new[] { "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Georgia", "serif" },
+                FontWeight = "700"
+            }
+        }
+    };
+}

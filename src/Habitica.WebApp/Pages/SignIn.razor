@@ -1,0 +1,101 @@
+@page "/"
+@page "/sign-in"
+@implements IDisposable
+@inject IAppSessionController SessionController
+@inject NavigationManager NavigationManager
+
+<PageTitle>Sign In</PageTitle>
+
+<div class="landing-shell">
+    <section class="hero-panel card-surface">
+        <p class="section-label">Initial MVP</p>
+        <h1>Habitica data, stored locally and shaped for faster reading.</h1>
+        <p class="hero-copy">
+            This first build focuses on the web fundamentals that the advanced feature set needs:
+            credential login, local-first storage, manual sync, app navigation, and a read-only task workspace.
+        </p>
+
+        <div class="feature-grid">
+            <div class="feature-chip">Local task snapshots</div>
+            <div class="feature-chip">Manual refresh</div>
+            <div class="feature-chip">Read-only task browser</div>
+            <div class="feature-chip">Device-only credential opt-in</div>
+        </div>
+    </section>
+
+    <MudPaper Class="card-surface sign-in-card" Elevation="0">
+        <p class="section-label">Connect this browser</p>
+        <h2>Sign in with Habitica API credentials</h2>
+        <p class="panel-copy">
+            Use the User ID and API Token from Habitica Settings. The app stores them only on this device, and persistence is optional.
+        </p>
+
+        <EditForm Model="_request" OnSubmit="HandleSubmitAsync">
+            <div class="field-grid">
+                <label class="field-row">
+                    <span>Habitica User ID</span>
+                    <input class="app-input" name="user-id" @bind="_request.UserId" />
+                </label>
+
+                <label class="field-row">
+                    <span>Habitica API Token</span>
+                    <input class="app-input" name="api-token" type="password" @bind="_request.ApiToken" />
+                </label>
+            </div>
+
+            <label class="checkbox-row">
+                <input name="persist-locally" type="checkbox" @bind="_request.PersistLocally" />
+                <span>Remember credentials on this device for future sessions. Sign out only ends the current tab session; Clear local data removes cached credentials and task snapshots.</span>
+            </label>
+
+            <div class="action-row">
+                <MudButton ButtonType="ButtonType.Submit" Class="action-button" Color="Color.Primary" Disabled="@SessionController.State.IsBusy" Variant="Variant.Filled">
+                    @(SessionController.State.IsBusy ? "Signing In..." : "Sign In")
+                </MudButton>
+
+                @if (SessionController.State.HasCachedTasks)
+                {
+                    <MudButton Class="action-button" Href="/tasks" Variant="Variant.Outlined">
+                        Open Cached Tasks
+                    </MudButton>
+                }
+            </div>
+        </EditForm>
+
+        @if (SessionController.State.HasCachedTasks && !SessionController.State.IsAuthenticated)
+        {
+            <MudAlert Class="inline-banner" Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
+                A cached task snapshot is already available locally. You can browse it now or sign in to refresh it.
+            </MudAlert>
+        }
+    </MudPaper>
+</div>
+
+@code {
+    private readonly SignInRequest _request = new();
+
+    protected override void OnInitialized()
+    {
+        SessionController.Changed += HandleStateChanged;
+    }
+
+    private async Task HandleSubmitAsync()
+    {
+        await SessionController.SignInAsync(_request);
+
+        if (SessionController.State.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/tasks");
+        }
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        SessionController.Changed -= HandleStateChanged;
+    }
+}

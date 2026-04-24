@@ -1,0 +1,7 @@
+namespace Habitica.Storage;
+
+internal static class StorageKeys
+{
+    public const string PersistentCredentials = "auth/persistentCredentials";
+    public const string LatestTaskSnapshot = "tasks/latestSnapshot";
+}

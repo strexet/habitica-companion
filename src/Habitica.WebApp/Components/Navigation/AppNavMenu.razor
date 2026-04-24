@@ -1,0 +1,21 @@
+@inject IAppSessionController SessionController
+
+<MudNavMenu Class="app-nav-menu">
+    @if (!SessionController.State.IsAuthenticated)
+    {
+        <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Login">
+            Sign In
+        </MudNavLink>
+    }
+
+    @if (SessionController.State.HasCachedTasks || SessionController.State.IsAuthenticated)
+    {
+        <MudNavLink Href="/tasks" Icon="@Icons.Material.Outlined.TaskAlt">
+            Tasks
+        </MudNavLink>
+
+        <MudNavLink Href="/settings" Icon="@Icons.Material.Outlined.Settings">
+            Settings
+        </MudNavLink>
+    }
+</MudNavMenu>

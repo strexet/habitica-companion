@@ -1,0 +1,112 @@
+using Habitica.Application.Auth;
+using Habitica.Application.Sync;
+using Habitica.Api;
+using Habitica.Domain.Auth;
+using Habitica.Domain.Tasks;
+using Habitica.Storage;
+
+namespace Habitica.Application.Tests.Auth;
+
+public sealed class LoginWorkflowTests
+{
+    [Fact]
+    public async Task AuthenticateAndSyncAsync_clears_persistent_credentials_when_persistence_is_not_requested()
+    {
+        var apiClient = new FakeHabiticaSyncClient();
+        var credentialStore = new FakeCredentialStore();
+        var taskStore = new FakeTaskSnapshotStore();
+        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore);
+
+        var result = await workflow.AuthenticateAndSyncAsync(
+            new LoginCommand("user-id", "api-token", false),
+            CancellationToken.None);
+
+        Assert.Equal("Mage Tester", result.DisplayName);
+        Assert.Equal(2, result.TaskCount);
+        Assert.True(credentialStore.ClearedPersistentCredentials);
+        Assert.Null(credentialStore.SavedCredentials);
+        Assert.NotNull(taskStore.LastSavedSnapshot);
+    }
+
+    [Fact]
+    public async Task AuthenticateAndSyncAsync_persists_credentials_when_opted_in()
+    {
+        var apiClient = new FakeHabiticaSyncClient();
+        var credentialStore = new FakeCredentialStore();
+        var taskStore = new FakeTaskSnapshotStore();
+        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore);
+
+        await workflow.AuthenticateAndSyncAsync(
+            new LoginCommand("user-id", "api-token", true),
+            CancellationToken.None);
+
+        Assert.Equal(new HabiticaCredentials("user-id", "api-token"), credentialStore.SavedCredentials);
+    }
+
+    private sealed class FakeHabiticaSyncClient : IHabiticaSyncClient
+    {
+        public Task<UserSummary> GetUserAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(new UserSummary("Mage Tester", "wizard", 15));
+        }
+
+        public Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            var snapshot = new TaskCollectionSnapshot(
+                DateTimeOffset.Parse("2026-04-24T12:00:00Z"),
+                new[]
+                {
+                    new TaskSnapshot("todo-open", "Buy milk", TaskType.Todo, false, 2, null, null),
+                    new TaskSnapshot("daily-open", "Exercise", TaskType.Daily, false, 1, null, null)
+                });
+
+            return Task.FromResult(snapshot);
+        }
+    }
+
+    private sealed class FakeCredentialStore : ICredentialStore
+    {
+        public bool ClearedPersistentCredentials { get; private set; }
+
+        public HabiticaCredentials? SavedCredentials { get; private set; }
+
+        public Task<HabiticaCredentials?> GetPersistentCredentialsAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(SavedCredentials);
+        }
+
+        public Task ClearPersistentCredentialsAsync(CancellationToken cancellationToken)
+        {
+            ClearedPersistentCredentials = true;
+            return Task.CompletedTask;
+        }
+
+        public Task SavePersistentCredentialsAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            SavedCredentials = credentials;
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class FakeTaskSnapshotStore : ITaskSnapshotStore
+    {
+        public TaskCollectionSnapshot? LastSavedSnapshot { get; private set; }
+
+        public Task ClearAsync(CancellationToken cancellationToken)
+        {
+            LastSavedSnapshot = null;
+            return Task.CompletedTask;
+        }
+
+        public Task<TaskCollectionSnapshot?> GetLatestAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(LastSavedSnapshot);
+        }
+
+        public Task SaveAsync(TaskCollectionSnapshot snapshot, CancellationToken cancellationToken)
+        {
+            LastSavedSnapshot = snapshot;
+            return Task.CompletedTask;
+        }
+    }
+}

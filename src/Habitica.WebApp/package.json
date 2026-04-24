@@ -1,0 +1,15 @@
+{
+  "name": "habitica-webapp",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "sync:vendor": "node ./scripts/copy-dexie.mjs"
+  },
+  "dependencies": {
+    "dexie": "4.2.0"
+  }
+}

@@ -1,0 +1,43 @@
+@page "/settings"
+@inject IAppSessionController SessionController
+@inject NavigationManager NavigationManager
+
+<PageTitle>Settings</PageTitle>
+
+<div class="settings-shell">
+    <section class="card-surface settings-card">
+        <p class="section-label">Session controls</p>
+        <h1>Local data and sign-in behavior</h1>
+        <p class="panel-copy">
+            This MVP keeps credentials and task snapshots on the current device only. Use the actions below to end the current tab session or remove all local data.
+        </p>
+
+        <div class="settings-grid">
+            <MudPaper Class="card-surface action-card" Elevation="0">
+                <h2>Sign out for this tab</h2>
+                <p>Ends the current authenticated session without deleting the cached task snapshot.</p>
+                <MudButton Color="Color.Primary" OnClick="HandleLogoutAsync" Variant="Variant.Filled">Sign Out</MudButton>
+            </MudPaper>
+
+            <MudPaper Class="card-surface action-card danger-card" Elevation="0">
+                <h2>Clear local data</h2>
+                <p>Removes stored credentials and the cached task snapshot from this browser.</p>
+                <MudButton Color="Color.Error" OnClick="HandleClearLocalDataAsync" Variant="Variant.Filled">Clear Local Data</MudButton>
+            </MudPaper>
+        </div>
+    </section>
+</div>
+
+@code {
+    private async Task HandleLogoutAsync()
+    {
+        await SessionController.LogoutAsync();
+        NavigationManager.NavigateTo("/");
+    }
+
+    private async Task HandleClearLocalDataAsync()
+    {
+        await SessionController.ClearLocalDataAsync();
+        NavigationManager.NavigateTo("/");
+    }
+}

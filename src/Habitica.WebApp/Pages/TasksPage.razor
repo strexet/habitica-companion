@@ -1,0 +1,150 @@
+@page "/tasks"
+@implements IDisposable
+@inject IAppSessionController SessionController
+@inject TaskListViewModelFactory TaskListViewModelFactory
+
+<PageTitle>Tasks</PageTitle>
+
+<div class="tasks-shell">
+    <section class="card-surface tasks-header">
+        <div>
+            <p class="section-label">Read-only workspace</p>
+            <h1>Task snapshot</h1>
+            <p class="panel-copy">
+                Browse the latest tasks stored on this device. Task scoring and editing stay out of scope for the MVP,
+                so the page is optimized for visibility, filtering, and sync status.
+            </p>
+        </div>
+
+        <div class="tasks-toolbar">
+            <label class="field-row compact">
+                <span>Search</span>
+                <input class="app-input" name="task-search" @bind="_searchText" />
+            </label>
+
+            <label class="checkbox-row compact">
+                <input name="include-completed" type="checkbox" @bind="_includeCompleted" />
+                <span>Show completed tasks</span>
+            </label>
+        </div>
+    </section>
+
+    @if (SessionController.State.TaskSnapshot is null)
+    {
+        <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
+            No local task snapshot is available yet. Sign in and run the initial sync to populate this workspace.
+        </MudAlert>
+    }
+    else
+    {
+        <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.TaskFreshness)" Variant="Variant.Filled">
+            @GetFreshnessLabel(SessionController.State.TaskFreshness)
+        </MudAlert>
+
+        @if (CurrentViewModel.TotalVisibleTasks == 0)
+        {
+            <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
+                No tasks match the current filter.
+            </MudAlert>
+        }
+        else
+        {
+            @foreach (var group in CurrentViewModel.Groups)
+            {
+                <section class="task-group">
+                    <div class="task-group-header">
+                        <h2>@group.Title</h2>
+                        <span class="ui-pill count-pill">@group.Items.Count</span>
+                    </div>
+
+                    <div class="task-card-grid">
+                        @foreach (var item in group.Items)
+                        {
+                            <article class="task-card">
+                                <div class="task-card-head">
+                                    <span class="task-title">@item.Text</span>
+
+                                    @if (item.IsCompleted)
+                                    {
+                                        <span class="ui-pill state-pill success-pill">Done</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="ui-pill state-pill warning-pill">Open</span>
+                                    }
+                                </div>
+
+                                @if (!string.IsNullOrWhiteSpace(item.Notes))
+                                {
+                                    <p class="task-notes">@item.Notes</p>
+                                }
+
+                                <dl class="task-meta">
+                                    <div>
+                                        <dt>Priority</dt>
+                                        <dd>@item.Difficulty</dd>
+                                    </div>
+
+                                    <div>
+                                        <dt>Due</dt>
+                                        <dd>@(item.DueDate?.ToString("u") ?? "No due date")</dd>
+                                    </div>
+                                </dl>
+                            </article>
+                        }
+                    </div>
+                </section>
+            }
+        }
+    }
+</div>
+
+@code {
+    private bool _includeCompleted;
+    private string? _searchText;
+
+    private TaskListViewModel CurrentViewModel => SessionController.State.TaskSnapshot is null
+        ? new TaskListViewModel(Array.Empty<TaskGroupViewModel>(), 0)
+        : TaskListViewModelFactory.Create(
+            SessionController.State.TaskSnapshot,
+            new TaskListFilter(
+                SearchText: _searchText,
+                IncludeCompleted: _includeCompleted));
+
+    protected override void OnInitialized()
+    {
+        SessionController.Changed += HandleStateChanged;
+    }
+
+    private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => "Fresh local snapshot",
+            SnapshotFreshnessState.Stale => "Stale local snapshot",
+            SnapshotFreshnessState.Expired => "Expired local snapshot",
+            _ => "Missing local snapshot"
+        };
+    }
+
+    private static Severity GetFreshnessSeverity(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => Severity.Success,
+            SnapshotFreshnessState.Stale => Severity.Warning,
+            SnapshotFreshnessState.Expired => Severity.Error,
+            _ => Severity.Info
+        };
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        SessionController.Changed -= HandleStateChanged;
+    }
+}

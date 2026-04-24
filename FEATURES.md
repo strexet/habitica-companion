@@ -875,7 +875,7 @@ Extract or verify formulas from official docs, Habitica source, or validated com
 
 ## 11. Dashboard and data explorer
 
-Status: planned
+Status: partial
 Owner module: `Habitica.WebApp.Dashboard`
 Application entry point: `Habitica.Application.Dashboard`
 Primary Habitica data: user, tasks, party, inventory, equipment, quest, sync metadata
@@ -946,11 +946,28 @@ Test:
 
 ### Open questions
 
-None currently.
+Current implementation:
+
+- responsive app shell;
+- sign-in entry route;
+- read-only tasks workspace;
+- sync timestamp surface;
+- freshness banners for cached tasks;
+- global error banner for sign-in and refresh failures.
+
+Next:
+
+- add user-summary dashboard cards;
+- add party, inventory, equipment, and quest explorer surfaces;
+- add sync diagnostics and execution history views.
+
+Waiting:
+
+- advanced feature modules must exist before the dashboard can expose their recommendation output.
 
 ## 12. Credential setup and validation
 
-Status: planned
+Status: partial
 Owner module: `Habitica.WebApp.Auth` and `Habitica.Api`
 Application entry point: `Habitica.Application.Auth`
 Primary Habitica data: authenticated user profile
@@ -991,6 +1008,12 @@ local_auth_settings
 Actual token storage must use the credential storage abstraction defined in `TECHNICAL.md`.
 
 Raw token data must live only in the dedicated credential store. Ordinary app stores may keep redacted credential metadata only.
+
+Current MVP records:
+
+```text
+auth/persistentCredentials
+```
 
 ### API interaction
 
@@ -1037,9 +1060,416 @@ Test:
 
 ### Open questions
 
-None currently.
+Current implementation:
 
-## 13. Feature status labels
+- login form with User ID and API Token fields;
+- session-only mode by default;
+- persistent local credential opt-in;
+- credential validation through authenticated `/user` request;
+- sign-out for the current tab session;
+- clear-local-data action that removes persisted credentials and cached task data;
+- no token logging or token echo in normalized API errors.
+
+Next:
+
+- add explicit client-side validation feedback for malformed IDs and empty values;
+- surface `Retry-After` and rate-limit guidance in the UI instead of generic error text;
+- store redacted credential metadata for richer offline auth status.
+
+Waiting:
+
+- production deployment should replace the fallback `x-client` behavior with a project-owned Habitica author header value.
+
+## 13. App shell and navigation
+
+Status: implemented
+Owner module: `Habitica.WebApp.Layout` and `Habitica.WebApp.Components.Navigation`
+Application entry point: `Habitica.WebApp.State.AppSessionController`
+Primary Habitica data: local session state, task snapshot freshness, sync timestamp
+Mutates Habitica state: no
+Requires confirmation: no
+Offline behavior: fully available from local session and task stores
+Rate-limit sensitivity: none by itself
+
+### Goal
+
+Provide a stable responsive PWA shell with top-level routes for sign-in, tasks, and settings.
+
+### Inputs
+
+```text
+session state
+cached task snapshot presence
+task freshness state
+latest sync timestamp
+global workflow error state
+```
+
+### Outputs
+
+```text
+top app bar
+responsive navigation drawer
+route links
+refresh action
+global warning banner
+```
+
+### Local storage
+
+No direct storage writes. Reads are mediated through `Habitica.WebApp.State.AppSessionController`.
+
+### API interaction
+
+None directly. Refresh delegates to the sync workflow.
+
+### Algorithm / rules
+
+Navigation rules:
+
+```text
+1. Show `Sign In` when no authenticated session is active.
+2. Show `Tasks` when cached task data exists or an authenticated session is active.
+3. Show `Settings` when cached task data exists or an authenticated session is active.
+4. Keep refresh disabled unless authenticated credentials are available for the current session.
+5. Surface the latest workflow error above route content.
+```
+
+### Validation
+
+Handle these states explicitly:
+
+- no local data;
+- cached data but no active authenticated session;
+- authenticated session with latest sync timestamp;
+- failed refresh with cached data still available.
+
+### Error handling
+
+Do not hide controller-level errors inside route components. Surface them once in the shell.
+
+### Security / privacy
+
+Never display raw API headers or token material in the shell.
+
+### Tests
+
+Test:
+
+- authenticated navigation links;
+- unauthenticated navigation links;
+- shell error banner rendering;
+- sync timestamp rendering when available.
+
+### Open questions
+
+Current implementation:
+
+- `Sign In`, `Tasks`, and `Settings` routes;
+- top app bar with refresh action;
+- responsive drawer navigation;
+- shared error banner.
+
+Next:
+
+- route-aware breadcrumbs and active-workspace context;
+- connection-state badge and richer sync-status details.
+
+Waiting:
+
+- future advanced modules to justify deeper navigation hierarchy.
+
+## 14. Task snapshot sync
+
+Status: implemented
+Owner module: `Habitica.Application.Auth`, `Habitica.Api`, and `Habitica.Storage`
+Application entry point: `Habitica.WebApp.State.AppSessionController`
+Primary Habitica data: authenticated user profile and user task list
+Mutates Habitica state: no
+Requires confirmation: no
+Offline behavior: cached snapshot remains readable offline; refresh requires API access
+Rate-limit sensitivity: low because sync is user-initiated only in MVP
+
+### Goal
+
+Validate credentials, fetch the current Habitica user and tasks, and persist the latest read-only task snapshot locally.
+
+### Inputs
+
+```text
+Habitica User ID
+Habitica API Token
+persistent-storage opt-in
+existing cached task snapshot
+configured x-client value or fallback header strategy
+```
+
+### Outputs
+
+```text
+authenticated user summary
+latest task snapshot
+task snapshot timestamp
+task freshness state
+sign-in or refresh error state
+```
+
+### Local storage
+
+Current MVP records:
+
+```text
+auth/persistentCredentials
+tasks/latestSnapshot
+```
+
+### API interaction
+
+Current sync flow uses:
+
+```text
+GET /user
+GET /tasks/user
+```
+
+All calls go through `Habitica.Api.HabiticaApiClient`.
+
+### Algorithm / rules
+
+Current flow:
+
+```text
+1. Build authenticated request headers.
+2. Validate credentials by reading `/user`.
+3. Fetch `/tasks/user`.
+4. Persist credentials only if the user selected persistent mode.
+5. Persist the latest task snapshot.
+6. Keep cached task data when refresh fails.
+```
+
+### Validation
+
+Reject empty credentials before sending API requests.
+
+If refresh is requested without available credentials, return a visible sign-in-required error.
+
+### Error handling
+
+Normalize API failures into redacted user-visible messages.
+
+Preserve the cached task snapshot when sign-in or refresh fails after a previous successful sync.
+
+### Security / privacy
+
+Keep raw token data only in the dedicated credential store.
+
+Do not copy credentials into task snapshots, execution logs, or UI diagnostics.
+
+### Tests
+
+Test:
+
+- credential persistence toggle behavior;
+- authenticated request headers;
+- `/user` response mapping;
+- `/tasks/user` response mapping;
+- normalized unauthorized response handling;
+- task snapshot persistence round-trip.
+
+### Open questions
+
+Current implementation:
+
+- initial sync on sign-in;
+- manual refresh action;
+- persisted-credential restore on app startup;
+- freshness classification for cached tasks.
+
+Next:
+
+- add explicit `429` / `Retry-After` UI handling;
+- split sync into per-category result reporting instead of a single task snapshot state.
+
+Waiting:
+
+- project-owned `x-client` header configuration for production deployments.
+
+## 15. Read-only task workspace
+
+Status: implemented
+Owner module: `Habitica.WebApp.Pages.TasksPage` and `Habitica.Application.Tasks`
+Application entry point: `Habitica.WebApp.Pages.TasksPage`
+Primary Habitica data: local task snapshot
+Mutates Habitica state: no
+Requires confirmation: no
+Offline behavior: fully available from cached task snapshot
+Rate-limit sensitivity: none without explicit refresh
+
+### Goal
+
+Provide a read-only task browser that loads from the local snapshot and keeps task scoring out of the MVP.
+
+### Inputs
+
+```text
+cached task snapshot
+task freshness state
+search text
+include-completed toggle
+```
+
+### Outputs
+
+```text
+task groups by type
+task cards
+task notes
+priority and due-date metadata
+freshness banner
+empty-state messaging
+```
+
+### Local storage
+
+Reads `tasks/latestSnapshot`.
+
+### API interaction
+
+None directly. The page consumes local state prepared by the sync workflow.
+
+### Algorithm / rules
+
+Current view-model rules:
+
+```text
+1. Read the latest local task snapshot.
+2. Filter by search text over task text and notes.
+3. Hide completed tasks by default.
+4. Group visible tasks in this order: To-Dos, Dailies, Habits, Rewards.
+5. Sort items within each group by completion state then text.
+```
+
+### Validation
+
+Show explicit states for:
+
+- no cached snapshot;
+- empty filter result;
+- fresh snapshot;
+- stale snapshot;
+- expired snapshot.
+
+### Error handling
+
+Show cached data even when a previous refresh attempt failed.
+
+### Security / privacy
+
+The MVP intentionally omits all task mutation controls from this workspace.
+
+### Tests
+
+Test:
+
+- grouping by task type;
+- search filtering;
+- completed-task filtering;
+- freshness banner rendering;
+- cached empty-state rendering.
+
+### Open questions
+
+Current implementation:
+
+- grouped task cards;
+- search field;
+- completed-task toggle;
+- freshness banner driven by the shared freshness policy.
+
+Next:
+
+- type filters;
+- explicit sort controls;
+- larger-data optimizations such as virtualization.
+
+Waiting:
+
+- task scoring, checkoff, and edit flows remain intentionally out of scope until mutation safeguards are designed.
+
+## 16. Task mutation controls
+
+Status: skipped
+Owner module: `Habitica.WebApp.Tasks` and `Habitica.Application.Tasks`
+Application entry point: `Habitica.Application.Tasks`
+Primary Habitica data: live task mutation endpoints and task snapshot state
+Mutates Habitica state: yes
+Requires confirmation: depends on action
+Offline behavior: not available in MVP
+Rate-limit sensitivity: medium
+
+### Goal
+
+Allow scoring habits, checking off dailies and to-dos, and other task mutations from the companion client.
+
+### Inputs
+
+```text
+selected task
+mutation type
+fresh task snapshot
+live authenticated credentials
+```
+
+### Outputs
+
+```text
+updated task state
+mutation result
+partial-success or failure state
+execution log
+```
+
+### Local storage
+
+Would require mutation logs and task snapshot invalidation metadata.
+
+### API interaction
+
+Would require Habitica mutating task endpoints through `Habitica.Api`.
+
+### Algorithm / rules
+
+Skipped for the initial MVP. The current task workspace is intentionally read-only.
+
+### Validation
+
+Do not implement until:
+
+- mutation confirmation rules are defined;
+- stale-snapshot gating is wired end to end;
+- partial-success reporting is designed.
+
+### Error handling
+
+Deferred until the mutation workflow exists.
+
+### Security / privacy
+
+Mutating task actions must not ship without the conservative execution rules from `RULES.md` and `TECHNICAL.md`.
+
+### Tests
+
+Deferred until the feature moves out of `skipped`.
+
+### Open questions
+
+Waiting:
+
+- exact MVP mutation scope;
+- confirmation UX;
+- execution log design.
+
+## 17. Feature status labels
 
 Use these labels consistently:
 
@@ -1047,6 +1477,8 @@ Use these labels consistently:
 planned
 in-progress
 implemented
+partial
+skipped
 blocked
 deprecated
 removed

@@ -1,0 +1,27 @@
+using Habitica.Domain.Sync;
+using Habitica.Domain.Tasks;
+
+namespace Habitica.WebApp.State;
+
+public sealed record SessionViewModel(
+    bool IsBusy,
+    bool IsAuthenticated,
+    string? DisplayName,
+    string? ErrorMessage,
+    DateTimeOffset? LastSyncedAtUtc,
+    SnapshotFreshnessState TaskFreshness,
+    TaskCollectionSnapshot? TaskSnapshot,
+    string? ClassName = null,
+    int? Level = null)
+{
+    public static SessionViewModel Empty { get; } = new(
+        IsBusy: false,
+        IsAuthenticated: false,
+        DisplayName: null,
+        ErrorMessage: null,
+        LastSyncedAtUtc: null,
+        TaskFreshness: SnapshotFreshnessState.Missing,
+        TaskSnapshot: null);
+
+    public bool HasCachedTasks => TaskSnapshot?.Items.Count > 0;
+}

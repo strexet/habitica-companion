@@ -1,0 +1,93 @@
+@inherits LayoutComponentBase
+@implements IDisposable
+@inject IAppSessionController SessionController
+
+<MudLayout>
+    <MudAppBar Class="topbar" Dense="true" Elevation="0">
+        <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Outlined.Menu" OnClick="ToggleDrawer" />
+        <div class="topbar-copy">
+            <strong>Habitica Tool</strong>
+            <span>@GetIdentityText()</span>
+        </div>
+        <MudSpacer />
+
+        @if (SessionController.State.LastSyncedAtUtc is not null)
+        {
+            <span class="sync-chip ui-pill">
+                Synced @SessionController.State.LastSyncedAtUtc.Value.ToLocalTime():g
+            </span>
+        }
+
+        <MudButton Class="refresh-button" Color="Color.Secondary" Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy)" OnClick="RefreshAsync" Variant="Variant.Filled">
+            Refresh
+        </MudButton>
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen" Class="app-drawer" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="DrawerVariant.Responsive">
+        <div class="drawer-hero">
+            <p class="section-label">Habitica companion</p>
+            <h2>Local-first planning surface</h2>
+            <p>Browse cached data, refresh on demand, and keep mutations out of the MVP until the workflow guardrails are ready.</p>
+        </div>
+
+        <AppNavMenu />
+    </MudDrawer>
+
+    <MudMainContent>
+        <div class="shell-content">
+            @if (!string.IsNullOrWhiteSpace(SessionController.State.ErrorMessage))
+            {
+                <MudAlert Class="inline-banner" Dense="true" Severity="Severity.Warning" Variant="Variant.Filled">
+                    @SessionController.State.ErrorMessage
+                </MudAlert>
+            }
+
+            @Body
+        </div>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool _drawerOpen = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        SessionController.Changed += HandleStateChanged;
+        await SessionController.InitializeAsync();
+    }
+
+    private string GetIdentityText()
+    {
+        if (!SessionController.State.IsAuthenticated)
+        {
+            return "Local-first Habitica companion";
+        }
+
+        if (!string.IsNullOrWhiteSpace(SessionController.State.ClassName) && SessionController.State.Level is not null)
+        {
+            return $"{SessionController.State.DisplayName} • {SessionController.State.ClassName} lvl {SessionController.State.Level}";
+        }
+
+        return SessionController.State.DisplayName ?? "Authenticated session";
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private async Task RefreshAsync()
+    {
+        await SessionController.RefreshAsync();
+    }
+
+    private void ToggleDrawer()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    public void Dispose()
+    {
+        SessionController.Changed -= HandleStateChanged;
+    }
+}
