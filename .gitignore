@@ -1,0 +1,56 @@
+# .NET build output
+[Bb]in/
+[Oo]bj/
+artifacts/
+publish/
+TestResults/
+BenchmarkDotNet.Artifacts/
+
+# Test and coverage output
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+coverage-*/
+lcov.info
+
+# NuGet packages
+*.nupkg
+packages/
+!.config/dotnet-tools.json
+
+# Blazor / static web build artifacts
+**/wwwroot/service-worker-assets.js
+**/wwwroot/_framework/
+
+# npm / JavaScript tooling
+node_modules/
+**/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tsbuildinfo
+
+# IDE and user-specific files
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userprefs
+*.rsuser
+*.sln.docstates
+*.DotSettings.user
+_ReSharper*/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dual Graph (GrapeRoot)
+.dual-graph/
+.dual-graph-context/
