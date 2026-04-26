@@ -1,4 +1,4 @@
-import Dexie from "../vendor/dexie.mjs";
+import Dexie from "../../vendor/dexie.mjs";
 
 const database = new Dexie("habitica-tool");
 
