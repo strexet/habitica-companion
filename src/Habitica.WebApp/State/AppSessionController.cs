@@ -106,7 +106,13 @@ public sealed class AppSessionController : IAppSessionController
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         if (credentials is null)
         {
-            throw new InvalidOperationException("Sign in is required before running live tests.");
+            var message = "Sign in is required before running live tests.";
+            SetState(State with
+            {
+                ErrorMessage = message
+            });
+
+            return BuildFailureResult("safe-live-tests", "Safe live tests", message, LiveTestRisk.Safe);
         }
 
         SetState(State with
@@ -138,7 +144,7 @@ public sealed class AppSessionController : IAppSessionController
                 IsBusy = false
             });
 
-            throw;
+            return BuildFailureResult("safe-live-tests", "Safe live tests", exception.Message, LiveTestRisk.Safe);
         }
     }
 
@@ -147,7 +153,13 @@ public sealed class AppSessionController : IAppSessionController
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         if (credentials is null)
         {
-            throw new InvalidOperationException("Sign in is required before running the reversible gear test.");
+            var message = "Sign in is required before running the reversible gear test.";
+            SetState(State with
+            {
+                ErrorMessage = message
+            });
+
+            return BuildFailureResult("reversible-gear-roundtrip", "Reversible gear roundtrip", message, LiveTestRisk.ReversibleMutation);
         }
 
         SetState(State with
@@ -179,7 +191,7 @@ public sealed class AppSessionController : IAppSessionController
                 IsBusy = false
             });
 
-            throw;
+            return BuildFailureResult("reversible-gear-roundtrip", "Reversible gear roundtrip", exception.Message, LiveTestRisk.ReversibleMutation);
         }
     }
 
@@ -356,5 +368,17 @@ public sealed class AppSessionController : IAppSessionController
         }
 
         return persistedCredentials;
+    }
+
+    private LiveTestSuiteResult BuildFailureResult(string id, string title, string message, LiveTestRisk risk)
+    {
+        var now = _timeProvider.GetUtcNow();
+        return new LiveTestSuiteResult(
+            now,
+            now,
+            new[]
+            {
+                new LiveTestResult(id, title, LiveTestStatus.Failed, risk, 0, message)
+            });
     }
 }

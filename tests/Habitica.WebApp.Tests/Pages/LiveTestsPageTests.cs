@@ -41,4 +41,38 @@ public sealed class LiveTestsPageTests : BunitContext
         Assert.Contains("Run reversible gear test", cut.Markup);
         Assert.Contains("temporarily changes equipped battle gear", cut.Markup);
     }
+
+    [Fact]
+    public void Safe_live_test_run_renders_returned_results()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T10:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null))
+        {
+            SafeLiveTestResult = new LiveTestSuiteResult(
+                DateTimeOffset.Parse("2026-04-26T10:00:00Z"),
+                DateTimeOffset.Parse("2026-04-26T10:00:10Z"),
+                new[]
+                {
+                    new LiveTestResult("safe-live-tests", "Safe live tests", LiveTestStatus.Failed, LiveTestRisk.Safe, 0, "Sign in is required before running live tests.")
+                })
+        };
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<LiveTestsPage>();
+
+        cut.Find("button").Click();
+
+        Assert.Equal(1, controller.SafeLiveTestCalls);
+        Assert.Contains("Sign in is required before running live tests.", cut.Markup);
+        Assert.Contains("Failed", cut.Markup);
+    }
 }
