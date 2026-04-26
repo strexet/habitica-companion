@@ -1,6 +1,6 @@
 # Habitica API Integration Guide
 
-Last researched: 2026-04-24
+Last researched: 2026-04-26
 Target API: Habitica API v3
 Audience: developers building a new Habitica client or integration
 
@@ -222,7 +222,8 @@ Recommended client usage:
 - Use narrow `userFields` for frequent refreshes.
 - Fetch the full user document only on initial sync, debug export, or explicit full refresh.
 - Use `tasksOrder` together with `/tasks/user` for client-side ordering.
-- Treat derived stat helper fields such as `stats.maxHealth`, `stats.maxMP`, and `stats.toNextLevel` as optional in third-party clients. If they are absent, avoid presenting `0` as a meaningful target/cap in the UI.
+- If a filtered `/user` response needs computed stats, request `stats.maxHealth`, `stats.maxMP`, and `stats.toNextLevel` explicitly instead of assuming a coarse `stats` selector will always surface them.
+- Treat those computed stat helper fields as optional at runtime anyway. If they are absent, avoid presenting `0` as a meaningful target/cap in the UI.
 
 ### 8.2 Update authenticated user
 

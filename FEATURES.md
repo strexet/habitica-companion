@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-04-24
+Last updated: 2026-04-26
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -1246,7 +1246,7 @@ tasks/latestSnapshot
 Current sync flow uses:
 
 ```text
-GET /user?userFields=profile,stats,party,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts
+GET /user?userFields=profile.name,stats.class,stats.lvl,stats.hp,stats.maxHealth,stats.mp,stats.maxMP,stats.exp,stats.toNextLevel,stats.gp,party._id,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts
 GET /groups/party
 GET /tasks/user
 ```
@@ -1566,7 +1566,7 @@ Refreshes `user/latestSnapshot`, `party/latestSnapshot`, and `tasks/latestSnapsh
 Current live test flow uses:
 
 ```text
-GET /user?userFields=profile,stats,party,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts
+GET /user?userFields=profile.name,stats.class,stats.lvl,stats.hp,stats.maxHealth,stats.mp,stats.maxMP,stats.exp,stats.toNextLevel,stats.gp,party._id,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts
 GET /groups/party
 GET /tasks/user
 POST /user/equip/equipped/:key

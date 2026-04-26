@@ -40,7 +40,7 @@ public sealed class HabiticaApiClientTests
         Assert.NotNull(capturedRequest);
         Assert.Equal(HttpMethod.Get, capturedRequest!.Method);
         Assert.Equal(
-            "https://habitica.com/api/v3/user?userFields=profile,stats,party,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts",
+            "https://habitica.com/api/v3/user?userFields=profile.name,stats.class,stats.lvl,stats.hp,stats.maxHealth,stats.mp,stats.maxMP,stats.exp,stats.toNextLevel,stats.gp,party._id,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts",
             capturedRequest.RequestUri!.ToString());
         Assert.Equal("user-id", capturedRequest.Headers.GetValues("x-api-user").Single());
         Assert.Equal("api-token", capturedRequest.Headers.GetValues("x-api-key").Single());

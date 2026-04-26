@@ -9,7 +9,11 @@ namespace Habitica.Api;
 
 public sealed class HabiticaApiClient : IHabiticaSyncClient
 {
-    private const string UserSnapshotFields = "profile,stats,party,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts";
+    private const string UserSnapshotFields =
+        "profile.name," +
+        "stats.class,stats.lvl,stats.hp,stats.maxHealth,stats.mp,stats.maxMP,stats.exp,stats.toNextLevel,stats.gp," +
+        "party._id," +
+        "items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts";
     private readonly HttpClient _httpClient;
     private readonly HabiticaApiClientOptions _options;
 
