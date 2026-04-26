@@ -902,11 +902,9 @@ execution logs
 
 ```text
 user summary
-tasks table
-inventory table
-gear table
-party summary
-quest summary
+current pet and mount state
+inventory readiness summary
+task-count summary
 warnings
 sync status
 ```
@@ -950,14 +948,14 @@ Current implementation:
 
 - responsive app shell;
 - sign-in entry route;
+- dashboard route with cached account cards;
 - read-only tasks workspace;
 - sync timestamp surface;
-- freshness banners for cached tasks;
+- freshness banners for cached tasks and cached account data;
 - global error banner for sign-in and refresh failures.
 
 Next:
 
-- add user-summary dashboard cards;
 - add party, inventory, equipment, and quest explorer surfaces;
 - add sync diagnostics and execution history views.
 
@@ -1065,9 +1063,9 @@ Current implementation:
 - login form with User ID and API Token fields;
 - session-only mode by default;
 - persistent local credential opt-in;
-- credential validation through authenticated `/user` request;
+- credential validation through authenticated `/user?userFields=...` request;
 - sign-out for the current tab session;
-- clear-local-data action that removes persisted credentials and cached task data;
+- clear-local-data action that removes persisted credentials and cached task and account snapshots;
 - no token logging or token echo in normalized API errors.
 
 Next:
@@ -1093,14 +1091,16 @@ Rate-limit sensitivity: none by itself
 
 ### Goal
 
-Provide a stable responsive PWA shell with top-level routes for sign-in, tasks, and settings.
+Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, tasks, and settings.
 
 ### Inputs
 
 ```text
 session state
 cached task snapshot presence
+cached user snapshot presence
 task freshness state
+user freshness state
 latest sync timestamp
 global workflow error state
 ```
@@ -1113,6 +1113,7 @@ responsive navigation drawer
 route links
 refresh action
 global warning banner
+identity summary
 ```
 
 ### Local storage
@@ -1129,10 +1130,11 @@ Navigation rules:
 
 ```text
 1. Show `Sign In` when no authenticated session is active.
-2. Show `Tasks` when cached task data exists or an authenticated session is active.
-3. Show `Settings` when cached task data exists or an authenticated session is active.
-4. Keep refresh disabled unless authenticated credentials are available for the current session.
-5. Surface the latest workflow error above route content.
+2. Show `Dashboard` when cached account data exists, cached task data exists, or an authenticated session is active.
+3. Show `Tasks` when cached task data exists or an authenticated session is active.
+4. Show `Settings` when cached account data exists, cached task data exists, or an authenticated session is active.
+5. Keep refresh disabled unless authenticated credentials are available for the current session.
+6. Surface the latest workflow error above route content.
 ```
 
 ### Validation
@@ -1165,10 +1167,11 @@ Test:
 
 Current implementation:
 
-- `Sign In`, `Tasks`, and `Settings` routes;
+- `Sign In`, `Dashboard`, `Tasks`, and `Settings` routes;
 - top app bar with refresh action;
 - responsive drawer navigation;
-- shared error banner.
+- shared error banner;
+- cached identity summary in the app shell.
 
 Next:
 
@@ -1179,7 +1182,7 @@ Waiting:
 
 - future advanced modules to justify deeper navigation hierarchy.
 
-## 14. Task snapshot sync
+## 14. Account and task snapshot sync
 
 Status: implemented
 Owner module: `Habitica.Application.Auth`, `Habitica.Api`, and `Habitica.Storage`
@@ -1192,7 +1195,7 @@ Rate-limit sensitivity: low because sync is user-initiated only in MVP
 
 ### Goal
 
-Validate credentials, fetch the current Habitica user and tasks, and persist the latest read-only task snapshot locally.
+Validate credentials, fetch the current Habitica user and tasks, and persist the latest read-only account and task snapshots locally.
 
 ### Inputs
 
@@ -1201,6 +1204,7 @@ Habitica User ID
 Habitica API Token
 persistent-storage opt-in
 existing cached task snapshot
+existing cached user snapshot
 configured x-client value or fallback header strategy
 ```
 
@@ -1208,8 +1212,10 @@ configured x-client value or fallback header strategy
 
 ```text
 authenticated user summary
+latest account snapshot
 latest task snapshot
-task snapshot timestamp
+snapshot timestamps
+account freshness state
 task freshness state
 sign-in or refresh error state
 ```
@@ -1220,6 +1226,7 @@ Current MVP records:
 
 ```text
 auth/persistentCredentials
+user/latestSnapshot
 tasks/latestSnapshot
 ```
 
@@ -1228,7 +1235,7 @@ tasks/latestSnapshot
 Current sync flow uses:
 
 ```text
-GET /user
+GET /user?userFields=profile,stats,party,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts
 GET /tasks/user
 ```
 
@@ -1240,11 +1247,12 @@ Current flow:
 
 ```text
 1. Build authenticated request headers.
-2. Validate credentials by reading `/user`.
+2. Validate credentials and load the current account snapshot by reading `/user?userFields=...`.
 3. Fetch `/tasks/user`.
 4. Persist credentials only if the user selected persistent mode.
-5. Persist the latest task snapshot.
-6. Keep cached task data when refresh fails.
+5. Persist the latest account snapshot.
+6. Persist the latest task snapshot.
+7. Keep cached local data when refresh fails.
 ```
 
 ### Validation
@@ -1257,7 +1265,7 @@ If refresh is requested without available credentials, return a visible sign-in-
 
 Normalize API failures into redacted user-visible messages.
 
-Preserve the cached task snapshot when sign-in or refresh fails after a previous successful sync.
+Preserve the cached account and task snapshots when sign-in or refresh fails after a previous successful sync.
 
 ### Security / privacy
 
@@ -1274,6 +1282,7 @@ Test:
 - `/user` response mapping;
 - `/tasks/user` response mapping;
 - normalized unauthorized response handling;
+- account snapshot persistence round-trip;
 - task snapshot persistence round-trip.
 
 ### Open questions
@@ -1283,7 +1292,8 @@ Current implementation:
 - initial sync on sign-in;
 - manual refresh action;
 - persisted-credential restore on app startup;
-- freshness classification for cached tasks.
+- freshness classification for cached tasks;
+- cached account snapshot with class, stat, companion, and inventory-summary fields.
 
 Next:
 

@@ -3,6 +3,7 @@ using Habitica.Application.Sync;
 using Habitica.Api;
 using Habitica.Domain.Auth;
 using Habitica.Domain.Tasks;
+using Habitica.Domain.User;
 using Habitica.Storage;
 
 namespace Habitica.Application.Tests.Auth;
@@ -15,7 +16,8 @@ public sealed class LoginWorkflowTests
         var apiClient = new FakeHabiticaSyncClient();
         var credentialStore = new FakeCredentialStore();
         var taskStore = new FakeTaskSnapshotStore();
-        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore);
+        var userStore = new FakeUserSnapshotStore();
+        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore);
 
         var result = await workflow.AuthenticateAndSyncAsync(
             new LoginCommand("user-id", "api-token", false),
@@ -26,6 +28,7 @@ public sealed class LoginWorkflowTests
         Assert.True(credentialStore.ClearedPersistentCredentials);
         Assert.Null(credentialStore.SavedCredentials);
         Assert.NotNull(taskStore.LastSavedSnapshot);
+        Assert.NotNull(userStore.LastSavedSnapshot);
     }
 
     [Fact]
@@ -34,7 +37,8 @@ public sealed class LoginWorkflowTests
         var apiClient = new FakeHabiticaSyncClient();
         var credentialStore = new FakeCredentialStore();
         var taskStore = new FakeTaskSnapshotStore();
-        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore);
+        var userStore = new FakeUserSnapshotStore();
+        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore);
 
         await workflow.AuthenticateAndSyncAsync(
             new LoginCommand("user-id", "api-token", true),
@@ -48,6 +52,29 @@ public sealed class LoginWorkflowTests
         public Task<UserSummary> GetUserAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             return Task.FromResult(new UserSummary("Mage Tester", "wizard", 15));
+        }
+
+        public Task<UserSnapshot> GetUserSnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(new UserSnapshot(
+                DateTimeOffset.Parse("2026-04-24T12:00:00Z"),
+                "Mage Tester",
+                "wizard",
+                15,
+                42.5m,
+                50m,
+                33.5m,
+                40m,
+                125.1m,
+                74.9m,
+                88.25m,
+                "party-123",
+                "Wolf-Base",
+                "Wolf-Base",
+                new EquipmentSnapshot(
+                    new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_wizard_1"),
+                    new GearSlotsSnapshot("head_special_2", "armor_special_2", "weapon_special_2", "shield_special_2", "back_special_2")),
+                new InventorySnapshot(1, 1, 1, 1, 1, 1, new[] { "armor_wizard_4", "head_wizard_3" })));
         }
 
         public Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -104,6 +131,28 @@ public sealed class LoginWorkflowTests
         }
 
         public Task SaveAsync(TaskCollectionSnapshot snapshot, CancellationToken cancellationToken)
+        {
+            LastSavedSnapshot = snapshot;
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class FakeUserSnapshotStore : IUserSnapshotStore
+    {
+        public UserSnapshot? LastSavedSnapshot { get; private set; }
+
+        public Task ClearAsync(CancellationToken cancellationToken)
+        {
+            LastSavedSnapshot = null;
+            return Task.CompletedTask;
+        }
+
+        public Task<UserSnapshot?> GetLatestAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(LastSavedSnapshot);
+        }
+
+        public Task SaveAsync(UserSnapshot snapshot, CancellationToken cancellationToken)
         {
             LastSavedSnapshot = snapshot;
             return Task.CompletedTask;

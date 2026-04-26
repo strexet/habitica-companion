@@ -4,6 +4,7 @@ using System.Net.Mime;
 using System.Text;
 using Habitica.Domain.Auth;
 using Habitica.Domain.Tasks;
+using Habitica.Domain.User;
 
 namespace Habitica.Api.Tests;
 
@@ -37,7 +38,9 @@ public sealed class HabiticaApiClientTests
 
         Assert.NotNull(capturedRequest);
         Assert.Equal(HttpMethod.Get, capturedRequest!.Method);
-        Assert.Equal("https://habitica.com/api/v3/user", capturedRequest.RequestUri!.ToString());
+        Assert.Equal(
+            "https://habitica.com/api/v3/user?userFields=profile,stats,party,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts",
+            capturedRequest.RequestUri!.ToString());
         Assert.Equal("user-id", capturedRequest.Headers.GetValues("x-api-user").Single());
         Assert.Equal("api-token", capturedRequest.Headers.GetValues("x-api-key").Single());
         Assert.Equal("habitica-tool-author-habitica-tool", capturedRequest.Headers.GetValues("x-client").Single());
@@ -84,6 +87,104 @@ public sealed class HabiticaApiClientTests
         Assert.Equal("2 liters", snapshot.Items[0].Notes);
         Assert.Equal(TaskType.Daily, snapshot.Items[1].Type);
         Assert.True(snapshot.Items[1].IsCompleted);
+    }
+
+    [Fact]
+    public async Task GetUserSnapshotAsync_maps_account_and_inventory_fields()
+    {
+        var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = JsonContent("""
+            {
+              "success": true,
+              "data": {
+                "profile": { "name": "Mage Tester" },
+                "stats": {
+                  "class": "wizard",
+                  "lvl": 15,
+                  "hp": 42.5,
+                  "maxHealth": 50,
+                  "mp": 33.5,
+                  "maxMP": 40,
+                  "exp": 125.1,
+                  "toNextLevel": 74.9,
+                  "gp": 88.25
+                },
+                "party": {
+                  "_id": "party-123"
+                },
+                "items": {
+                  "currentPet": "Wolf-Base",
+                  "currentMount": "Wolf-Base",
+                  "gear": {
+                    "equipped": {
+                      "head": "head_wizard_3",
+                      "armor": "armor_wizard_4",
+                      "weapon": "weapon_wizard_5",
+                      "shield": "shield_wizard_2",
+                      "back": "back_wizard_1"
+                    },
+                    "costume": {
+                      "head": "head_special_2",
+                      "armor": "armor_special_2",
+                      "weapon": "weapon_special_2",
+                      "shield": "shield_special_2",
+                      "back": "back_special_2"
+                    },
+                    "owned": {
+                      "head_wizard_3": true,
+                      "armor_wizard_4": true,
+                      "weapon_wizard_5": true,
+                      "shield_wizard_2": true,
+                      "armor_warrior_6": false
+                    }
+                  },
+                  "eggs": {
+                    "Wolf": 2,
+                    "TigerCub": 0
+                  },
+                  "food": {
+                    "Meat": 5
+                  },
+                  "hatchingPotions": {
+                    "Base": 3,
+                    "Golden": 0
+                  },
+                  "quests": {
+                    "whale": 1
+                  },
+                  "pets": {
+                    "Wolf-Base": 5,
+                    "TigerCub-Base": -1
+                  },
+                  "mounts": {
+                    "Wolf-Base": true,
+                    "TigerCub-Base": false
+                  }
+                }
+              }
+            }
+            """)
+        });
+
+        var client = CreateClient(handler);
+
+        var snapshot = await client.GetUserSnapshotAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
+
+        Assert.Equal("Mage Tester", snapshot.DisplayName);
+        Assert.Equal("wizard", snapshot.ClassName);
+        Assert.Equal(15, snapshot.Level);
+        Assert.Equal(42.5m, snapshot.Health);
+        Assert.Equal(50m, snapshot.MaxHealth);
+        Assert.Equal("party-123", snapshot.PartyId);
+        Assert.Equal("Wolf-Base", snapshot.CurrentPetKey);
+        Assert.Equal("head_wizard_3", snapshot.Equipment.Battle.Head);
+        Assert.Equal("weapon_special_2", snapshot.Equipment.Costume.Weapon);
+        Assert.Equal(new[] { "armor_wizard_4", "head_wizard_3", "shield_wizard_2", "weapon_wizard_5" }, snapshot.Inventory.OwnedGearKeys);
+        Assert.Equal(1, snapshot.Inventory.EggCount);
+        Assert.Equal(1, snapshot.Inventory.HatchingPotionCount);
+        Assert.Equal(1, snapshot.Inventory.OwnedPetCount);
+        Assert.Equal(1, snapshot.Inventory.OwnedMountCount);
     }
 
     [Fact]

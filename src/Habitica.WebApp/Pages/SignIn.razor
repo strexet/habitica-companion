@@ -53,19 +53,19 @@
                     @(SessionController.State.IsBusy ? "Signing In..." : "Sign In")
                 </MudButton>
 
-                @if (SessionController.State.HasCachedTasks)
+                @if (SessionController.State.HasCachedTasks || SessionController.State.HasCachedUserSnapshot)
                 {
-                    <MudButton Class="action-button" Href="/tasks" Variant="Variant.Outlined">
-                        Open Cached Tasks
+                    <MudButton Class="action-button" Href="/dashboard" Variant="Variant.Outlined">
+                        Open Cached Data
                     </MudButton>
                 }
             </div>
         </EditForm>
 
-        @if (SessionController.State.HasCachedTasks && !SessionController.State.IsAuthenticated)
+        @if ((SessionController.State.HasCachedTasks || SessionController.State.HasCachedUserSnapshot) && !SessionController.State.IsAuthenticated)
         {
             <MudAlert Class="inline-banner" Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-                A cached task snapshot is already available locally. You can browse it now or sign in to refresh it.
+                Cached Habitica data is already available locally. You can browse it now or sign in to refresh it.
             </MudAlert>
         }
     </MudPaper>
@@ -85,7 +85,7 @@
 
         if (SessionController.State.IsAuthenticated)
         {
-            NavigationManager.NavigateTo("/tasks");
+            NavigationManager.NavigateTo("/dashboard");
         }
     }
 

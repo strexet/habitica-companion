@@ -26,6 +26,7 @@ public sealed class AppNavMenuTests : BunitContext
 
         var cut = Render<AppNavMenu>();
 
+        Assert.Contains("Dashboard", cut.Markup);
         Assert.Contains("Tasks", cut.Markup);
         Assert.Contains("Settings", cut.Markup);
         Assert.DoesNotContain("Sign In", cut.Markup);

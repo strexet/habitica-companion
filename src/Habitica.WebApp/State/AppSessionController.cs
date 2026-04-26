@@ -2,6 +2,7 @@ using Habitica.Application.Auth;
 using Habitica.Application.Sync;
 using Habitica.Domain.Auth;
 using Habitica.Domain.Sync;
+using Habitica.Domain.User;
 using Habitica.Storage;
 
 namespace Habitica.WebApp.State;
@@ -12,6 +13,7 @@ public sealed class AppSessionController : IAppSessionController
     private readonly LoginWorkflow _loginWorkflow;
     private readonly SnapshotFreshnessPolicy _snapshotFreshnessPolicy;
     private readonly ITaskSnapshotStore _taskSnapshotStore;
+    private readonly IUserSnapshotStore _userSnapshotStore;
     private readonly TimeProvider _timeProvider;
     private HabiticaCredentials? _currentCredentials;
     private bool _initialized;
@@ -21,12 +23,14 @@ public sealed class AppSessionController : IAppSessionController
         LoginWorkflow loginWorkflow,
         ICredentialStore credentialStore,
         ITaskSnapshotStore taskSnapshotStore,
+        IUserSnapshotStore userSnapshotStore,
         SnapshotFreshnessPolicy snapshotFreshnessPolicy,
         TimeProvider timeProvider)
     {
         _loginWorkflow = loginWorkflow;
         _credentialStore = credentialStore;
         _taskSnapshotStore = taskSnapshotStore;
+        _userSnapshotStore = userSnapshotStore;
         _snapshotFreshnessPolicy = snapshotFreshnessPolicy;
         _timeProvider = timeProvider;
     }
@@ -43,7 +47,7 @@ public sealed class AppSessionController : IAppSessionController
         }
 
         _initialized = true;
-        await LoadCachedSnapshotAsync(cancellationToken);
+        await LoadCachedStateAsync(cancellationToken);
 
         var persistedCredentials = await _credentialStore.GetPersistentCredentialsAsync(cancellationToken);
 
@@ -106,14 +110,15 @@ public sealed class AppSessionController : IAppSessionController
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         _currentCredentials = null;
+        var cachedUserSnapshot = State.UserSnapshot;
 
         SetState(State with
         {
-            DisplayName = null,
-            ClassName = null,
+            DisplayName = cachedUserSnapshot?.DisplayName,
+            ClassName = cachedUserSnapshot?.ClassName,
             ErrorMessage = null,
             IsAuthenticated = false,
-            Level = null
+            Level = cachedUserSnapshot?.Level
         });
 
         return Task.CompletedTask;
@@ -126,19 +131,26 @@ public sealed class AppSessionController : IAppSessionController
 
         await _credentialStore.ClearPersistentCredentialsAsync(cancellationToken);
         await _taskSnapshotStore.ClearAsync(cancellationToken);
+        await _userSnapshotStore.ClearAsync(cancellationToken);
 
         SetState(SessionViewModel.Empty);
     }
 
-    private async Task LoadCachedSnapshotAsync(CancellationToken cancellationToken)
+    private async Task LoadCachedStateAsync(CancellationToken cancellationToken)
     {
-        var snapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
+        var taskSnapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
+        var userSnapshot = await _userSnapshotStore.GetLatestAsync(cancellationToken);
 
         SetState(State with
         {
-            LastSyncedAtUtc = snapshot?.RetrievedAtUtc,
-            TaskFreshness = ClassifyFreshness(snapshot),
-            TaskSnapshot = snapshot
+            ClassName = userSnapshot?.ClassName ?? State.ClassName,
+            DisplayName = userSnapshot?.DisplayName ?? State.DisplayName,
+            LastSyncedAtUtc = GetLatestSyncTimestamp(taskSnapshot, userSnapshot),
+            Level = userSnapshot?.Level ?? State.Level,
+            TaskFreshness = ClassifyFreshness(taskSnapshot),
+            TaskSnapshot = taskSnapshot,
+            UserFreshness = ClassifyFreshness(userSnapshot),
+            UserSnapshot = userSnapshot
         });
     }
 
@@ -164,7 +176,8 @@ public sealed class AppSessionController : IAppSessionController
             var loginResult = await _loginWorkflow.AuthenticateAndSyncAsync(
                 new LoginCommand(request.UserId.Trim(), request.ApiToken.Trim(), request.PersistLocally),
                 cancellationToken);
-            var snapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
+            var taskSnapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
+            var userSnapshot = await _userSnapshotStore.GetLatestAsync(cancellationToken);
 
             _currentCredentials = new HabiticaCredentials(request.UserId.Trim(), request.ApiToken.Trim());
             _persistLocally = request.PersistLocally;
@@ -175,22 +188,27 @@ public sealed class AppSessionController : IAppSessionController
                 DisplayName: loginResult.DisplayName,
                 ErrorMessage: null,
                 LastSyncedAtUtc: loginResult.RetrievedAtUtc,
-                TaskFreshness: ClassifyFreshness(snapshot),
-                TaskSnapshot: snapshot,
+                TaskFreshness: ClassifyFreshness(taskSnapshot),
+                TaskSnapshot: taskSnapshot,
                 ClassName: loginResult.ClassName,
-                Level: loginResult.Level));
+                Level: loginResult.Level,
+                UserSnapshot: userSnapshot,
+                UserFreshness: ClassifyFreshness(userSnapshot)));
         }
         catch (Exception exception)
         {
-            var snapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
+            var taskSnapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
+            var userSnapshot = await _userSnapshotStore.GetLatestAsync(cancellationToken);
 
             SetState(State with
             {
                 ErrorMessage = exception.Message,
                 IsBusy = false,
-                LastSyncedAtUtc = snapshot?.RetrievedAtUtc ?? State.LastSyncedAtUtc,
-                TaskFreshness = ClassifyFreshness(snapshot ?? State.TaskSnapshot),
-                TaskSnapshot = snapshot ?? State.TaskSnapshot
+                LastSyncedAtUtc = GetLatestSyncTimestamp(taskSnapshot ?? State.TaskSnapshot, userSnapshot ?? State.UserSnapshot) ?? State.LastSyncedAtUtc,
+                TaskFreshness = ClassifyFreshness(taskSnapshot ?? State.TaskSnapshot),
+                TaskSnapshot = taskSnapshot ?? State.TaskSnapshot,
+                UserFreshness = ClassifyFreshness(userSnapshot ?? State.UserSnapshot),
+                UserSnapshot = userSnapshot ?? State.UserSnapshot
             });
         }
     }
@@ -201,6 +219,25 @@ public sealed class AppSessionController : IAppSessionController
             SnapshotCategory.VolatileGameplayState,
             snapshot?.RetrievedAtUtc,
             _timeProvider.GetUtcNow());
+    }
+
+    private SnapshotFreshnessState ClassifyFreshness(UserSnapshot? snapshot)
+    {
+        return _snapshotFreshnessPolicy.Classify(
+            SnapshotCategory.VolatileGameplayState,
+            snapshot?.RetrievedAtUtc,
+            _timeProvider.GetUtcNow());
+    }
+
+    private static DateTimeOffset? GetLatestSyncTimestamp(
+        Habitica.Domain.Tasks.TaskCollectionSnapshot? taskSnapshot,
+        UserSnapshot? userSnapshot)
+    {
+        return new[]
+        {
+            taskSnapshot?.RetrievedAtUtc,
+            userSnapshot?.RetrievedAtUtc
+        }.Max();
     }
 
     private void SetState(SessionViewModel nextState)

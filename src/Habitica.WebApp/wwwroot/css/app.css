@@ -125,6 +125,7 @@ a {
 }
 
 .landing-shell,
+.dashboard-shell,
 .tasks-shell,
 .settings-shell {
     display: grid;
@@ -137,6 +138,7 @@ a {
 }
 
 .hero-panel,
+.dashboard-hero,
 .sign-in-card,
 .tasks-header,
 .settings-card {
@@ -263,6 +265,68 @@ a {
 .task-group {
     display: grid;
     gap: 1rem;
+}
+
+.dashboard-card-grid,
+.dashboard-detail-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.dashboard-card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+}
+
+.dashboard-detail-grid {
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+}
+
+.dashboard-stat-card,
+.dashboard-panel {
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    border-radius: 1.25rem;
+}
+
+.dashboard-stat-card {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.dashboard-stat-card strong {
+    font-size: 1.5rem;
+    line-height: 1.1;
+}
+
+.dashboard-stat-label,
+.dashboard-definition-list dt {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.dashboard-stat-note {
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+.dashboard-definition-list {
+    display: grid;
+    gap: 0.9rem;
+    margin: 1rem 0 0;
+}
+
+.dashboard-definition-list div {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.dashboard-definition-list dd {
+    margin: 0;
+    font-weight: 700;
+    word-break: break-word;
 }
 
 .task-group-header {

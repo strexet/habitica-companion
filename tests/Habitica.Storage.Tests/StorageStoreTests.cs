@@ -1,5 +1,6 @@
 using Habitica.Domain.Auth;
 using Habitica.Domain.Tasks;
+using Habitica.Domain.User;
 
 namespace Habitica.Storage.Tests;
 
@@ -60,6 +61,80 @@ public sealed class StorageStoreTests
             {
                 new TaskSnapshot("todo-1", "Buy milk", TaskType.Todo, false, 1.5m, "2 liters", null)
             });
+
+        await store.SaveAsync(snapshot, CancellationToken.None);
+        await store.ClearAsync(CancellationToken.None);
+        var loadedSnapshot = await store.GetLatestAsync(CancellationToken.None);
+
+        Assert.Null(loadedSnapshot);
+    }
+
+    [Fact]
+    public async Task UserSnapshotStore_round_trips_latest_snapshot()
+    {
+        var adapter = new InMemoryKeyValueStorage();
+        var store = new UserSnapshotStore(adapter);
+        var snapshot = new UserSnapshot(
+            DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+            "Mage Tester",
+            "wizard",
+            15,
+            42.5m,
+            50m,
+            33.5m,
+            40m,
+            125.1m,
+            74.9m,
+            88.25m,
+            "party-123",
+            "Wolf-Base",
+            "Wolf-Base",
+            new EquipmentSnapshot(
+                new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_wizard_1"),
+                new GearSlotsSnapshot("head_special_2", "armor_special_2", "weapon_special_2", "shield_special_2", "back_special_2")),
+            new InventorySnapshot(
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                new[] { "armor_wizard_4", "head_wizard_3" }));
+
+        await store.SaveAsync(snapshot, CancellationToken.None);
+        var loadedSnapshot = await store.GetLatestAsync(CancellationToken.None);
+
+        Assert.NotNull(loadedSnapshot);
+        Assert.Equal(snapshot.DisplayName, loadedSnapshot!.DisplayName);
+        Assert.Equal(snapshot.Health, loadedSnapshot.Health);
+        Assert.Equal(snapshot.Equipment.Battle.Head, loadedSnapshot.Equipment.Battle.Head);
+        Assert.Equal(snapshot.Inventory.OwnedGearKeys, loadedSnapshot.Inventory.OwnedGearKeys);
+    }
+
+    [Fact]
+    public async Task UserSnapshotStore_clears_the_latest_snapshot()
+    {
+        var adapter = new InMemoryKeyValueStorage();
+        var store = new UserSnapshotStore(adapter);
+        var snapshot = new UserSnapshot(
+            DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+            "Mage Tester",
+            "wizard",
+            15,
+            42.5m,
+            50m,
+            33.5m,
+            40m,
+            125.1m,
+            74.9m,
+            88.25m,
+            null,
+            null,
+            null,
+            new EquipmentSnapshot(
+                new GearSlotsSnapshot(null, null, null, null, null),
+                new GearSlotsSnapshot(null, null, null, null, null)),
+            new InventorySnapshot(0, 0, 0, 0, 0, 0, Array.Empty<string>()));
 
         await store.SaveAsync(snapshot, CancellationToken.None);
         await store.ClearAsync(CancellationToken.None);

@@ -10,6 +10,10 @@
 
     @if (SessionController.State.HasCachedTasks || SessionController.State.IsAuthenticated)
     {
+        <MudNavLink Href="/dashboard" Icon="@Icons.Material.Outlined.DashboardCustomize">
+            Dashboard
+        </MudNavLink>
+
         <MudNavLink Href="/tasks" Icon="@Icons.Material.Outlined.TaskAlt">
             Tasks
         </MudNavLink>

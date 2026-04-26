@@ -2,20 +2,22 @@
 
 Third-party companion client for Habitica power users. The project is focused on local data analysis, explainable recommendations, and safe assisted actions rather than replacing the official Habitica app.
 
-Current status: initial web-app MVP implemented. The repository now contains a working Blazor WebAssembly PWA shell with Habitica credential sign-in, manual sync, local task snapshot storage, read-only task browsing, and local-data controls.
+Current status: initial web-app MVP implemented. The repository now contains a working Blazor WebAssembly PWA shell with Habitica credential sign-in, manual sync, cached account and task snapshots, a local dashboard, read-only task browsing, and local-data controls.
 
 ## Current MVP features
 
 - credential sign-in with session-only default and persistent local opt-in
 - manual sync against Habitica API v3
+- cached account dashboard with class, stat, companion, and inventory summary cards
 - local-first task snapshot storage through IndexedDB with a Dexie-backed JS module
-- responsive app shell with sign-in, tasks, and settings routes
+- local-first account snapshot storage for offline dashboard access
+- responsive app shell with sign-in, dashboard, tasks, and settings routes
 - read-only task workspace with search, completed toggle, and freshness indicators
 - sign-out for the current tab session and clear-local-data controls
 
 ## Planned feature areas
 
-- richer dashboard and data explorer views
+- richer inventory, equipment, party, and quest explorer views
 - party buff timing recommendations
 - gear sets and gear optimization
 - skill macros with dry-run previews

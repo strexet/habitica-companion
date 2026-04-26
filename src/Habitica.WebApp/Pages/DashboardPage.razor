@@ -1,0 +1,182 @@
+@page "/dashboard"
+@implements IDisposable
+@inject IAppSessionController SessionController
+
+<PageTitle>Dashboard</PageTitle>
+
+<div class="dashboard-shell">
+    <section class="card-surface dashboard-hero">
+        <div>
+            <p class="section-label">Account overview</p>
+            <h1>Local Habitica dashboard</h1>
+            <p class="panel-copy">
+                This view summarizes the latest account snapshot stored on this device: class stats, current companion
+                state, synced task counts, and a quick check of what data is ready for deeper feature modules.
+            </p>
+        </div>
+    </section>
+
+    @if (SessionController.State.UserSnapshot is null)
+    {
+        <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
+            No local account snapshot is available yet. Sign in or refresh to cache the richer user data needed for the dashboard.
+        </MudAlert>
+    }
+    else
+    {
+        var snapshot = SessionController.State.UserSnapshot;
+
+        <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
+            @GetFreshnessLabel(SessionController.State.UserFreshness)
+        </MudAlert>
+
+        <section class="dashboard-card-grid">
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Account</span>
+                <strong>@snapshot.DisplayName</strong>
+                <span class="dashboard-stat-value">Level @snapshot.Level</span>
+                <span class="dashboard-stat-note">@(string.IsNullOrWhiteSpace(snapshot.ClassName) ? "No class data" : snapshot.ClassName)</span>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">HP</span>
+                <strong>@FormatStat(snapshot.Health, snapshot.MaxHealth)</strong>
+                <span class="dashboard-stat-note">Health</span>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">MP</span>
+                <strong>@FormatStat(snapshot.Mana, snapshot.MaxMana)</strong>
+                <span class="dashboard-stat-note">Mana</span>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">XP</span>
+                <strong>@FormatStat(snapshot.Experience, snapshot.ToNextLevel)</strong>
+                <span class="dashboard-stat-note">Current / to next level</span>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Gold</span>
+                <strong>@snapshot.Gold.ToString("0.##") GP</strong>
+                <span class="dashboard-stat-note">Synced currency</span>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Open tasks</span>
+                <strong>@GetOpenTaskCount()</strong>
+                <span class="dashboard-stat-note">Across the cached task snapshot</span>
+            </article>
+        </section>
+
+        <section class="dashboard-detail-grid">
+            <article class="card-surface dashboard-panel">
+                <p class="section-label">Companion state</p>
+                <h2>Current pet, mount, and party link</h2>
+
+                <dl class="dashboard-definition-list">
+                    <div>
+                        <dt>Pet</dt>
+                        <dd>@(snapshot.CurrentPetKey ?? "None equipped")</dd>
+                    </div>
+
+                    <div>
+                        <dt>Mount</dt>
+                        <dd>@(snapshot.CurrentMountKey ?? "None equipped")</dd>
+                    </div>
+
+                    <div>
+                        <dt>Party</dt>
+                        <dd>@(snapshot.PartyId ?? "No active party data")</dd>
+                    </div>
+                </dl>
+            </article>
+
+            <article class="card-surface dashboard-panel">
+                <p class="section-label">Inventory readiness</p>
+                <h2>Cached counts for the next feature slices</h2>
+
+                <dl class="dashboard-definition-list">
+                    <div>
+                        <dt>Owned gear keys</dt>
+                        <dd>@snapshot.Inventory.OwnedGearKeys.Length</dd>
+                    </div>
+
+                    <div>
+                        <dt>Eggs</dt>
+                        <dd>@snapshot.Inventory.EggCount</dd>
+                    </div>
+
+                    <div>
+                        <dt>Food</dt>
+                        <dd>@snapshot.Inventory.FoodCount</dd>
+                    </div>
+
+                    <div>
+                        <dt>Hatching potions</dt>
+                        <dd>@snapshot.Inventory.HatchingPotionCount</dd>
+                    </div>
+
+                    <div>
+                        <dt>Quest scrolls</dt>
+                        <dd>@snapshot.Inventory.QuestCount</dd>
+                    </div>
+
+                    <div>
+                        <dt>Owned pets / mounts</dt>
+                        <dd>@snapshot.Inventory.OwnedPetCount / @snapshot.Inventory.OwnedMountCount</dd>
+                    </div>
+                </dl>
+            </article>
+        </section>
+    }
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        SessionController.Changed += HandleStateChanged;
+    }
+
+    private static string FormatStat(decimal current, decimal maxOrTarget)
+    {
+        return $"{current:0.##} / {maxOrTarget:0.##}";
+    }
+
+    private int GetOpenTaskCount()
+    {
+        return SessionController.State.TaskSnapshot?.Items.Count(static task => !task.IsCompleted) ?? 0;
+    }
+
+    private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => "Fresh local account snapshot",
+            SnapshotFreshnessState.Stale => "Stale local account snapshot",
+            SnapshotFreshnessState.Expired => "Expired local account snapshot",
+            _ => "Missing local account snapshot"
+        };
+    }
+
+    private static Severity GetFreshnessSeverity(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => Severity.Success,
+            SnapshotFreshnessState.Stale => Severity.Warning,
+            SnapshotFreshnessState.Expired => Severity.Error,
+            _ => Severity.Info
+        };
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        SessionController.Changed -= HandleStateChanged;
+    }
+}
