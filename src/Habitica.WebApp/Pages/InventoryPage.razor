@@ -1,0 +1,141 @@
+@page "/inventory"
+@implements IDisposable
+@inject InventoryViewModelFactory InventoryViewModelFactory
+@inject IAppSessionController SessionController
+
+<PageTitle>Inventory</PageTitle>
+
+<div class="inventory-shell">
+    <section class="card-surface dashboard-hero">
+        <div>
+            <p class="section-label">Equipment explorer</p>
+            <h1>Cached inventory and equipped gear</h1>
+            <p class="panel-copy">
+                Inspect the owned gear keys already stored on this device, grouped by slot and annotated with the
+                current battle and costume equipment state. This stays read-only in the app surface for now.
+            </p>
+        </div>
+    </section>
+
+    @if (SessionController.State.UserSnapshot is null)
+    {
+        <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
+            No cached account snapshot is available yet. Sign in or refresh before opening the equipment explorer.
+        </MudAlert>
+    }
+    else
+    {
+        var snapshot = SessionController.State.UserSnapshot;
+        var viewModel = InventoryViewModelFactory.Create(snapshot);
+
+        <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
+            @GetFreshnessLabel(SessionController.State.UserFreshness)
+        </MudAlert>
+
+        <section class="inventory-summary-grid">
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Owned gear keys</span>
+                <strong>@snapshot.Inventory.OwnedGearKeys.Length</strong>
+                <span class="dashboard-stat-note">Stored locally for slot grouping and future equip actions.</span>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Current companion</span>
+                <strong>@(snapshot.CurrentPetKey ?? "None")</strong>
+                <span class="dashboard-stat-note">Mount: @(snapshot.CurrentMountKey ?? "None")</span>
+            </article>
+        </section>
+
+        @if (viewModel.Groups.Count == 0)
+        {
+            <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
+                No owned gear keys are currently cached in the local account snapshot.
+            </MudAlert>
+        }
+        else
+        {
+            <div class="inventory-group-grid">
+                @foreach (var group in viewModel.Groups)
+                {
+                    <section class="card-surface inventory-group-card">
+                        <div class="task-group-header">
+                            <h2>@group.SlotTitle</h2>
+                            <span class="ui-pill count-pill">@group.Items.Count</span>
+                        </div>
+
+                        <dl class="dashboard-definition-list">
+                            <div>
+                                <dt>Battle equipped</dt>
+                                <dd>@(group.BattleEquippedKey ?? "None")</dd>
+                            </div>
+
+                            <div>
+                                <dt>Costume equipped</dt>
+                                <dd>@(group.CostumeEquippedKey ?? "None")</dd>
+                            </div>
+                        </dl>
+
+                        <div class="inventory-item-list">
+                            @foreach (var item in group.Items)
+                            {
+                                <article class="inventory-item-card">
+                                    <strong>@item.Key</strong>
+                                    <div class="inventory-item-tags">
+                                        @if (item.IsBattleEquipped)
+                                        {
+                                            <span class="ui-pill state-pill success-pill">Battle equipped</span>
+                                        }
+
+                                        @if (item.IsCostumeEquipped)
+                                        {
+                                            <span class="ui-pill state-pill warning-pill">Costume equipped</span>
+                                        }
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                    </section>
+                }
+            </div>
+        }
+    }
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        SessionController.Changed += HandleStateChanged;
+    }
+
+    private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => "Fresh local account snapshot",
+            SnapshotFreshnessState.Stale => "Stale local account snapshot",
+            SnapshotFreshnessState.Expired => "Expired local account snapshot",
+            _ => "Missing local account snapshot"
+        };
+    }
+
+    private static Severity GetFreshnessSeverity(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => Severity.Success,
+            SnapshotFreshnessState.Stale => Severity.Warning,
+            SnapshotFreshnessState.Expired => Severity.Error,
+            _ => Severity.Info
+        };
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        SessionController.Changed -= HandleStateChanged;
+    }
+}

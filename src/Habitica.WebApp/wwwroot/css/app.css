@@ -126,6 +126,7 @@ a {
 
 .landing-shell,
 .dashboard-shell,
+.inventory-shell,
 .tasks-shell,
 .settings-shell {
     display: grid;
@@ -273,6 +274,13 @@ a {
     gap: 1rem;
 }
 
+.inventory-summary-grid,
+.inventory-group-grid,
+.inventory-item-list {
+    display: grid;
+    gap: 1rem;
+}
+
 .dashboard-card-grid {
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
 }
@@ -281,8 +289,17 @@ a {
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
 }
 
+.inventory-summary-grid {
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.inventory-group-grid {
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+}
+
 .dashboard-stat-card,
-.dashboard-panel {
+.dashboard-panel,
+.inventory-group-card {
     padding: 1.2rem;
     background: rgba(255, 255, 255, 0.78);
     border: 1px solid rgba(22, 36, 35, 0.08);
@@ -327,6 +344,25 @@ a {
     margin: 0;
     font-weight: 700;
     word-break: break-word;
+}
+
+.inventory-item-card {
+    padding: 0.95rem 1rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(245, 239, 226, 0.58);
+}
+
+.inventory-item-card strong {
+    display: block;
+    word-break: break-word;
+}
+
+.inventory-item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
 }
 
 .task-group-header {

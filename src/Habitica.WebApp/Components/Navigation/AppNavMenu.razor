@@ -8,10 +8,14 @@
         </MudNavLink>
     }
 
-    @if (SessionController.State.HasCachedTasks || SessionController.State.IsAuthenticated)
+    @if (SessionController.State.HasCachedTasks || SessionController.State.HasCachedUserSnapshot || SessionController.State.IsAuthenticated)
     {
         <MudNavLink Href="/dashboard" Icon="@Icons.Material.Outlined.DashboardCustomize">
             Dashboard
+        </MudNavLink>
+
+        <MudNavLink Href="/inventory" Icon="@Icons.Material.Outlined.Inventory2">
+            Inventory
         </MudNavLink>
 
         <MudNavLink Href="/tasks" Icon="@Icons.Material.Outlined.TaskAlt">

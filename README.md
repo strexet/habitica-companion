@@ -9,15 +9,16 @@ Current status: initial web-app MVP implemented. The repository now contains a w
 - credential sign-in with session-only default and persistent local opt-in
 - manual sync against Habitica API v3
 - cached account dashboard with class, stat, companion, and inventory summary cards
+- read-only inventory and equipment explorer with slot-grouped owned gear keys
 - local-first task snapshot storage through IndexedDB with a Dexie-backed JS module
 - local-first account snapshot storage for offline dashboard access
-- responsive app shell with sign-in, dashboard, tasks, and settings routes
+- responsive app shell with sign-in, dashboard, inventory, tasks, and settings routes
 - read-only task workspace with search, completed toggle, and freshness indicators
 - sign-out for the current tab session and clear-local-data controls
 
 ## Planned feature areas
 
-- richer inventory, equipment, party, and quest explorer views
+- richer party and quest explorer views
 - party buff timing recommendations
 - gear sets and gear optimization
 - skill macros with dry-run previews

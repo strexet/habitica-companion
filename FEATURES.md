@@ -949,6 +949,7 @@ Current implementation:
 - responsive app shell;
 - sign-in entry route;
 - dashboard route with cached account cards;
+- dashboard inventory readiness summary;
 - read-only tasks workspace;
 - sync timestamp surface;
 - freshness banners for cached tasks and cached account data;
@@ -956,7 +957,7 @@ Current implementation:
 
 Next:
 
-- add party, inventory, equipment, and quest explorer surfaces;
+- add party and quest explorer surfaces;
 - add sync diagnostics and execution history views.
 
 Waiting:
@@ -1091,7 +1092,7 @@ Rate-limit sensitivity: none by itself
 
 ### Goal
 
-Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, tasks, and settings.
+Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, inventory, tasks, and settings.
 
 ### Inputs
 
@@ -1131,10 +1132,11 @@ Navigation rules:
 ```text
 1. Show `Sign In` when no authenticated session is active.
 2. Show `Dashboard` when cached account data exists, cached task data exists, or an authenticated session is active.
-3. Show `Tasks` when cached task data exists or an authenticated session is active.
-4. Show `Settings` when cached account data exists, cached task data exists, or an authenticated session is active.
-5. Keep refresh disabled unless authenticated credentials are available for the current session.
-6. Surface the latest workflow error above route content.
+3. Show `Inventory` when cached account data exists or an authenticated session is active.
+4. Show `Tasks` when cached task data exists or an authenticated session is active.
+5. Show `Settings` when cached account data exists, cached task data exists, or an authenticated session is active.
+6. Keep refresh disabled unless authenticated credentials are available for the current session.
+7. Surface the latest workflow error above route content.
 ```
 
 ### Validation
@@ -1167,7 +1169,7 @@ Test:
 
 Current implementation:
 
-- `Sign In`, `Dashboard`, `Tasks`, and `Settings` routes;
+- `Sign In`, `Dashboard`, `Inventory`, `Tasks`, and `Settings` routes;
 - top app bar with refresh action;
 - responsive drawer navigation;
 - shared error banner;
@@ -1304,7 +1306,110 @@ Waiting:
 
 - project-owned `x-client` header configuration for production deployments.
 
-## 15. Read-only task workspace
+## 15. Inventory and equipment explorer
+
+Status: implemented
+Owner module: `Habitica.Application.Inventory` and `Habitica.WebApp.Pages.InventoryPage`
+Application entry point: `Habitica.WebApp.Pages.InventoryPage`
+Primary Habitica data: cached user inventory summary and equipped gear keys
+Mutates Habitica state: no
+Requires confirmation: no
+Offline behavior: fully available from the cached account snapshot
+Rate-limit sensitivity: none without explicit refresh
+
+### Goal
+
+Provide a read-only explorer for currently equipped battle/costume gear and the locally cached owned gear keys, grouped by slot for later equip and optimizer workflows.
+
+### Inputs
+
+```text
+cached user snapshot
+user freshness state
+equipped battle gear keys
+equipped costume gear keys
+owned gear keys
+current pet/mount keys
+```
+
+### Outputs
+
+```text
+slot-grouped owned gear panels
+battle and costume equipped markers
+owned gear counts
+companion summary
+freshness banner
+empty-state messaging
+```
+
+### Local storage
+
+Reads `user/latestSnapshot`.
+
+### API interaction
+
+None directly. The page consumes local state prepared by the sync workflow.
+
+### Algorithm / rules
+
+Current view-model rules:
+
+```text
+1. Read the latest cached user snapshot.
+2. Group owned gear keys by slot prefix: head, armor, weapon, shield, back, other.
+3. Sort groups in slot order.
+4. Sort keys within each group lexicographically.
+5. Mark keys that match the current battle or costume equipped slot values.
+```
+
+### Validation
+
+Show explicit states for:
+
+- no cached account snapshot;
+- empty owned-gear cache;
+- fresh account snapshot;
+- stale account snapshot;
+- expired account snapshot.
+
+### Error handling
+
+Show cached inventory/equipment data even when a previous refresh attempt failed.
+
+### Security / privacy
+
+Display item API keys only. Do not expose raw credentials or request headers.
+
+### Tests
+
+Test:
+
+- grouping by slot prefix;
+- battle and costume equipped markers;
+- empty-state rendering;
+- inventory route navigation rendering.
+
+### Open questions
+
+Current implementation:
+
+- dedicated `Inventory` route in the app shell;
+- slot-grouped owned gear key explorer;
+- battle and costume equipped markers;
+- companion summary cards for the cached account snapshot.
+
+Next:
+
+- resolve keys against a cached content catalog for human-readable names and richer item details;
+- add slot filters and sort controls;
+- surface quest and consumable inventory details beyond aggregate counts.
+
+Waiting:
+
+- live equip workflows remain out of scope until the guarded mutation/test harness lands.
+
+## 16. Read-only task workspace
 
 Status: implemented
 Owner module: `Habitica.WebApp.Pages.TasksPage` and `Habitica.Application.Tasks`
@@ -1406,7 +1511,7 @@ Waiting:
 
 - task scoring, checkoff, and edit flows remain intentionally out of scope until mutation safeguards are designed.
 
-## 16. Task mutation controls
+## 17. Task mutation controls
 
 Status: skipped
 Owner module: `Habitica.WebApp.Tasks` and `Habitica.Application.Tasks`
@@ -1479,7 +1584,7 @@ Waiting:
 - confirmation UX;
 - execution log design.
 
-## 17. Feature status labels
+## 18. Feature status labels
 
 Use these labels consistently:
 
