@@ -53,6 +53,11 @@ public sealed class LoginWorkflowTests
 
     private sealed class FakeHabiticaSyncClient : IHabiticaSyncClient
     {
+        public Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
         public Task<UserSummary> GetUserAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             return Task.FromResult(new UserSummary("Mage Tester", "wizard", 15));

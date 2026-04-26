@@ -28,6 +28,7 @@ public sealed class AppNavMenuTests : BunitContext
 
         Assert.Contains("Dashboard", cut.Markup);
         Assert.Contains("Inventory", cut.Markup);
+        Assert.Contains("Live Tests", cut.Markup);
         Assert.Contains("Party", cut.Markup);
         Assert.Contains("Tasks", cut.Markup);
         Assert.Contains("Settings", cut.Markup);

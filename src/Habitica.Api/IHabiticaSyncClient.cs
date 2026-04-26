@@ -13,5 +13,7 @@ public interface IHabiticaSyncClient
 
     Task<PartySnapshot> GetPartySnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 
+    Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken);
+
     Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 }

@@ -1,4 +1,5 @@
 using Habitica.Application.Auth;
+using Habitica.Application.Diagnostics;
 using Habitica.Application.Sync;
 using Habitica.Domain.Auth;
 using Habitica.Domain.Party;
@@ -12,6 +13,7 @@ public sealed class AppSessionController : IAppSessionController
 {
     private readonly ICredentialStore _credentialStore;
     private readonly LoginWorkflow _loginWorkflow;
+    private readonly LiveTestWorkflow _liveTestWorkflow;
     private readonly IPartySnapshotStore _partySnapshotStore;
     private readonly SnapshotFreshnessPolicy _snapshotFreshnessPolicy;
     private readonly ITaskSnapshotStore _taskSnapshotStore;
@@ -23,6 +25,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public AppSessionController(
         LoginWorkflow loginWorkflow,
+        LiveTestWorkflow liveTestWorkflow,
         ICredentialStore credentialStore,
         IPartySnapshotStore partySnapshotStore,
         ITaskSnapshotStore taskSnapshotStore,
@@ -31,6 +34,7 @@ public sealed class AppSessionController : IAppSessionController
         TimeProvider timeProvider)
     {
         _loginWorkflow = loginWorkflow;
+        _liveTestWorkflow = liveTestWorkflow;
         _credentialStore = credentialStore;
         _partySnapshotStore = partySnapshotStore;
         _taskSnapshotStore = taskSnapshotStore;
@@ -75,30 +79,16 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task RefreshAsync(CancellationToken cancellationToken = default)
     {
-        if (_currentCredentials is not null)
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+
+        if (credentials is not null)
         {
             await SignInCoreAsync(
                 new SignInRequest
                 {
-                    ApiToken = _currentCredentials.ApiToken,
-                    PersistLocally = _persistLocally,
-                    UserId = _currentCredentials.UserId
-                },
-                cancellationToken);
-
-            return;
-        }
-
-        var persistedCredentials = await _credentialStore.GetPersistentCredentialsAsync(cancellationToken);
-
-        if (persistedCredentials is not null)
-        {
-            await SignInCoreAsync(
-                new SignInRequest
-                {
-                    ApiToken = persistedCredentials.ApiToken,
-                    PersistLocally = true,
-                    UserId = persistedCredentials.UserId
+                    ApiToken = credentials.ApiToken,
+                    PersistLocally = _persistLocally || _currentCredentials is null,
+                    UserId = credentials.UserId
                 },
                 cancellationToken);
 
@@ -109,6 +99,88 @@ public sealed class AppSessionController : IAppSessionController
         {
             ErrorMessage = "Sign in is required before refreshing."
         });
+    }
+
+    public async Task<LiveTestSuiteResult> RunSafeLiveTestsAsync(CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            throw new InvalidOperationException("Sign in is required before running live tests.");
+        }
+
+        SetState(State with
+        {
+            ErrorMessage = null,
+            IsBusy = true
+        });
+
+        try
+        {
+            var result = await _liveTestWorkflow.RunSafeLiveTestsAsync(credentials, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+
+            SetState(State with
+            {
+                ErrorMessage = null,
+                IsBusy = false
+            });
+
+            return result;
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+
+            SetState(State with
+            {
+                ErrorMessage = exception.Message,
+                IsBusy = false
+            });
+
+            throw;
+        }
+    }
+
+    public async Task<LiveTestSuiteResult> RunReversibleGearTestAsync(CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            throw new InvalidOperationException("Sign in is required before running the reversible gear test.");
+        }
+
+        SetState(State with
+        {
+            ErrorMessage = null,
+            IsBusy = true
+        });
+
+        try
+        {
+            var result = await _liveTestWorkflow.RunReversibleGearTestAsync(credentials, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+
+            SetState(State with
+            {
+                ErrorMessage = null,
+                IsBusy = false
+            });
+
+            return result;
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+
+            SetState(State with
+            {
+                ErrorMessage = exception.Message,
+                IsBusy = false
+            });
+
+            throw;
+        }
     }
 
     public Task LogoutAsync(CancellationToken cancellationToken = default)
@@ -268,5 +340,21 @@ public sealed class AppSessionController : IAppSessionController
     {
         State = nextState;
         Changed?.Invoke();
+    }
+
+    private async Task<HabiticaCredentials?> ResolveCredentialsAsync(CancellationToken cancellationToken)
+    {
+        if (_currentCredentials is not null)
+        {
+            return _currentCredentials;
+        }
+
+        var persistedCredentials = await _credentialStore.GetPersistentCredentialsAsync(cancellationToken);
+        if (persistedCredentials is not null)
+        {
+            _persistLocally = true;
+        }
+
+        return persistedCredentials;
     }
 }

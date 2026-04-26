@@ -284,6 +284,14 @@ For `/user/purchase/:type/:key`, the wiki notes that a `quantity` body parameter
 
 Do not expose destructive or premium-currency actions without explicit confirmation.
 
+For battle-gear swaps, this client uses:
+
+```http
+POST /user/equip/equipped/:key
+```
+
+Do not assume the write response contains all fields needed for local projection updates. Refresh `/user` after the equip call when the client must verify what is currently equipped.
+
 ### 8.5 Class and skills
 
 Common endpoints include:

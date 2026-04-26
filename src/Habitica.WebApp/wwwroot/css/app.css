@@ -127,6 +127,7 @@ a {
 .landing-shell,
 .dashboard-shell,
 .inventory-shell,
+.live-tests-shell,
 .party-shell,
 .tasks-shell,
 .settings-shell {
@@ -279,7 +280,9 @@ a {
 .inventory-group-grid,
 .inventory-item-list,
 .party-card-grid,
-.party-detail-grid {
+.party-detail-grid,
+.live-tests-grid,
+.live-results-list {
     display: grid;
     gap: 1rem;
 }
@@ -308,9 +311,15 @@ a {
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
 }
 
+.live-tests-grid {
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+}
+
 .dashboard-stat-card,
 .dashboard-panel,
-.inventory-group-card {
+.inventory-group-card,
+.live-test-card,
+.live-results-card {
     padding: 1.2rem;
     background: rgba(255, 255, 255, 0.78);
     border: 1px solid rgba(22, 36, 35, 0.08);
@@ -374,6 +383,13 @@ a {
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: 0.75rem;
+}
+
+.live-result-item {
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(245, 239, 226, 0.58);
 }
 
 .task-group-header {
@@ -458,6 +474,12 @@ a {
     background: rgba(197, 119, 43, 0.14);
     border-color: rgba(197, 119, 43, 0.2);
     color: #a86121;
+}
+
+.danger-pill {
+    background: rgba(161, 63, 53, 0.14);
+    border-color: rgba(161, 63, 53, 0.2);
+    color: #8f332b;
 }
 
 #blazor-error-ui {

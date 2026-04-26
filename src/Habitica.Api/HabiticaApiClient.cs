@@ -97,6 +97,12 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
                 : null);
     }
 
+    public async Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(HttpMethod.Post, $"user/equip/equipped/{Uri.EscapeDataString(key)}", credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
     private HttpRequestMessage CreateRequest(HttpMethod method, string relativePath, HabiticaCredentials credentials)
     {
         var request = new HttpRequestMessage(method, relativePath);

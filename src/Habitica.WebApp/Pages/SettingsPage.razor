@@ -9,7 +9,7 @@
         <p class="section-label">Session controls</p>
         <h1>Local data and sign-in behavior</h1>
         <p class="panel-copy">
-            This MVP keeps credentials and task snapshots on the current device only. Use the actions below to end the current tab session or remove all local data.
+            This MVP keeps credentials and synced Habitica snapshots on the current device only. Use the actions below to end the current tab session, run live diagnostics, or remove all local data.
         </p>
 
         <div class="settings-grid">
@@ -19,9 +19,15 @@
                 <MudButton Color="Color.Primary" OnClick="HandleLogoutAsync" Variant="Variant.Filled">Sign Out</MudButton>
             </MudPaper>
 
+            <MudPaper Class="card-surface action-card" Elevation="0">
+                <h2>Run live tests</h2>
+                <p>Open the controlled integration test lab for safe reads and the reversible gear roundtrip check.</p>
+                <MudButton Color="Color.Secondary" Href="/live-tests" Variant="Variant.Filled">Open Live Tests</MudButton>
+            </MudPaper>
+
             <MudPaper Class="card-surface action-card danger-card" Elevation="0">
                 <h2>Clear local data</h2>
-                <p>Removes stored credentials and the cached task snapshot from this browser.</p>
+                <p>Removes stored credentials and all cached account, party, and task snapshots from this browser.</p>
                 <MudButton Color="Color.Error" OnClick="HandleClearLocalDataAsync" Variant="Variant.Filled">Clear Local Data</MudButton>
             </MudPaper>
         </div>

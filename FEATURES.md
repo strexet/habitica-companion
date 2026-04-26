@@ -1092,7 +1092,7 @@ Rate-limit sensitivity: none by itself
 
 ### Goal
 
-Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, inventory, party, tasks, and settings.
+Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, inventory, party, live tests, tasks, and settings.
 
 ### Inputs
 
@@ -1134,10 +1134,11 @@ Navigation rules:
 2. Show `Dashboard` when cached account data exists, cached task data exists, or an authenticated session is active.
 3. Show `Inventory` when cached account data exists or an authenticated session is active.
 4. Show `Party` when cached party data exists, cached account data exists, or an authenticated session is active.
-5. Show `Tasks` when cached task data exists or an authenticated session is active.
-6. Show `Settings` when cached account data exists, cached task data exists, or an authenticated session is active.
-7. Keep refresh disabled unless authenticated credentials are available for the current session.
-8. Surface the latest workflow error above route content.
+5. Show `Live Tests` only when an authenticated session is active.
+6. Show `Tasks` when cached task data exists or an authenticated session is active.
+7. Show `Settings` when cached account data exists, cached task data exists, or an authenticated session is active.
+8. Keep refresh disabled unless authenticated credentials are available for the current session.
+9. Surface the latest workflow error above route content.
 ```
 
 ### Validation
@@ -1170,7 +1171,7 @@ Test:
 
 Current implementation:
 
-- `Sign In`, `Dashboard`, `Inventory`, `Party`, `Tasks`, and `Settings` routes;
+- `Sign In`, `Dashboard`, `Inventory`, `Party`, `Live Tests`, `Tasks`, and `Settings` routes;
 - top app bar with refresh action;
 - responsive drawer navigation;
 - shared error banner;
@@ -1418,7 +1419,7 @@ Next:
 
 Waiting:
 
-- live equip workflows remain out of scope until the guarded mutation/test harness lands.
+- full equip workflows remain out of scope outside the guarded live-test harness.
 
 ## 16. Party explorer
 
@@ -1517,7 +1518,122 @@ Waiting:
 
 - party mutations remain out of scope until confirmation and audit rules are defined.
 
-## 17. Read-only task workspace
+## 17. Live integration test lab
+
+Status: implemented
+Owner module: `Habitica.Application.Diagnostics` and `Habitica.WebApp.Pages.LiveTestsPage`
+Application entry point: `Habitica.WebApp.Pages.LiveTestsPage`
+Primary Habitica data: authenticated user snapshot, task snapshot, party snapshot, equipped battle gear
+Mutates Habitica state: yes for the reversible gear roundtrip only
+Requires confirmation: yes for the reversible gear roundtrip
+Offline behavior: not available offline; requires live authenticated API access
+Rate-limit sensitivity: low because tests are user-launched, sequential, and deliberately small
+
+### Goal
+
+Provide user-launchable live tests from the UI that validate implemented features against the real Habitica API while minimizing risk, request volume, and accidental destructive behavior.
+
+### Inputs
+
+```text
+authenticated credentials
+current cached user snapshot
+current cached party snapshot
+current cached task snapshot
+user acknowledgement for reversible gear mutation
+owned gear keys
+```
+
+### Outputs
+
+```text
+per-test pass/fail/skip results
+request counts
+human-readable result messages
+warning copy for reversible mutations
+updated local snapshots after successful checks
+```
+
+### Local storage
+
+Refreshes `user/latestSnapshot`, `party/latestSnapshot`, and `tasks/latestSnapshot` as part of the safe suite and gear roundtrip verification.
+
+### API interaction
+
+Current live test flow uses:
+
+```text
+GET /user?userFields=profile,stats,party,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts
+GET /groups/party
+GET /tasks/user
+POST /user/equip/equipped/:key
+```
+
+### Algorithm / rules
+
+Current workflow rules:
+
+```text
+1. Run safe checks sequentially and never in parallel.
+2. Reuse the same live `/user` response for account and inventory assertions.
+3. Fetch `/groups/party` only when the account snapshot shows an active party.
+4. Skip the reversible gear test when no alternate owned supported battle item exists.
+5. For the reversible gear test, equip an alternate owned battle item, verify with a fresh `/user`, restore the original item, and verify restoration with another fresh `/user`.
+6. If restoration or restore verification fails, report the test as failed and preserve the latest known local snapshot.
+```
+
+### Validation
+
+Require:
+
+- an authenticated session before any live test runs;
+- explicit user acknowledgement before the reversible gear test is enabled.
+
+Skip:
+
+- party checks when the user has no active party;
+- reversible gear checks when no alternate supported battle gear key exists.
+
+### Error handling
+
+Surface per-test failures in the result list.
+
+Attempt to restore the original battle gear in a `finally` path during the reversible mutation test and report cleanup failures explicitly.
+
+### Security / privacy
+
+Do not display raw credentials or request headers.
+
+Keep all live tests user-initiated. Do not introduce background polling or parallel batch execution through the test lab.
+
+### Tests
+
+Test:
+
+- safe-suite request reuse and snapshot persistence;
+- reversible gear test skip behavior when no alternate item exists;
+- reversible gear test restore behavior;
+- live test page rendering;
+- navigation rendering for the `Live Tests` route.
+
+### Open questions
+
+Current implementation:
+
+- dedicated `Live Tests` route plus a `Settings` entry point;
+- safe suite covering account, inventory, party, and task snapshots;
+- reversible gear roundtrip with acknowledgement gate and restore verification.
+
+Next:
+
+- add optional live checks for future task mutations with stronger warnings and dry-run summaries;
+- add richer diagnostics such as per-step timestamps and redacted raw status codes.
+
+Waiting:
+
+- any live test that consumes gold, mana, items, or irreversible state remains blocked until stronger warning and confirmation rules are defined.
+
+## 18. Read-only task workspace
 
 Status: implemented
 Owner module: `Habitica.WebApp.Pages.TasksPage` and `Habitica.Application.Tasks`
@@ -1619,7 +1735,7 @@ Waiting:
 
 - task scoring, checkoff, and edit flows remain intentionally out of scope until mutation safeguards are designed.
 
-## 18. Task mutation controls
+## 19. Task mutation controls
 
 Status: skipped
 Owner module: `Habitica.WebApp.Tasks` and `Habitica.Application.Tasks`
@@ -1692,7 +1808,7 @@ Waiting:
 - confirmation UX;
 - execution log design.
 
-## 19. Feature status labels
+## 20. Feature status labels
 
 Use these labels consistently:
 

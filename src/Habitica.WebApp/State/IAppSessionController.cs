@@ -1,3 +1,5 @@
+using Habitica.Application.Diagnostics;
+
 namespace Habitica.WebApp.State;
 
 public interface IAppSessionController
@@ -11,6 +13,10 @@ public interface IAppSessionController
     Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default);
 
     Task RefreshAsync(CancellationToken cancellationToken = default);
+
+    Task<LiveTestSuiteResult> RunSafeLiveTestsAsync(CancellationToken cancellationToken = default);
+
+    Task<LiveTestSuiteResult> RunReversibleGearTestAsync(CancellationToken cancellationToken = default);
 
     Task LogoutAsync(CancellationToken cancellationToken = default);
 

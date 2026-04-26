@@ -1,0 +1,123 @@
+@page "/live-tests"
+@implements IDisposable
+@inject IAppSessionController SessionController
+
+<PageTitle>Live Tests</PageTitle>
+
+<div class="live-tests-shell">
+    <section class="card-surface dashboard-hero">
+        <div>
+            <p class="section-label">Live test lab</p>
+            <h1>Run controlled Habitica integration checks</h1>
+            <p class="panel-copy">
+                These tests run sequentially, never in parallel, and keep request counts deliberately small. The safe
+                suite only performs read operations. The optional reversible gear test temporarily changes equipped battle gear and then restores it.
+            </p>
+        </div>
+    </section>
+
+    <section class="live-tests-grid">
+        <article class="card-surface live-test-card">
+            <p class="section-label">Safe suite</p>
+            <h2>Read-only connectivity and snapshot checks</h2>
+            <p class="panel-copy">
+                Refreshes the local account, inventory, party, and task snapshots using the minimum live requests needed for the implemented features.
+            </p>
+            <MudButton Color="Color.Primary" Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy)" OnClick="RunSafeLiveTestsAsync" Variant="Variant.Filled">
+                Run safe live tests
+            </MudButton>
+        </article>
+
+        <article class="card-surface live-test-card warning-card">
+            <p class="section-label">Reversible mutation</p>
+            <h2>Gear equip roundtrip</h2>
+            <p class="panel-copy">
+                This test temporarily changes equipped battle gear, verifies the new item, and restores the original gear. It should not consume items, gold, or mana, but it will briefly change the live avatar/stat loadout.
+            </p>
+            <label class="checkbox-row">
+                <input name="acknowledge-gear-test" type="checkbox" @bind="_acknowledgeGearMutation" />
+                <span>I understand that this temporarily changes equipped battle gear during the test.</span>
+            </label>
+            <MudButton Color="Color.Secondary" Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy || !_acknowledgeGearMutation)" OnClick="RunReversibleGearTestAsync" Variant="Variant.Filled">
+                Run reversible gear test
+            </MudButton>
+        </article>
+    </section>
+
+    @if (_lastRunResult is not null)
+    {
+        <section class="card-surface live-results-card">
+            <div class="task-group-header">
+                <div>
+                    <p class="section-label">Last run</p>
+                    <h2>Results</h2>
+                </div>
+                <span class="ui-pill count-pill">@_lastRunResult.TotalRequests requests</span>
+            </div>
+
+            <div class="live-results-list">
+                @foreach (var result in _lastRunResult.Results)
+                {
+                    <article class="live-result-item">
+                        <div class="task-group-header">
+                            <strong>@result.Title</strong>
+                            <span class="ui-pill @(GetStatusPillClass(result.Status))">@GetStatusLabel(result.Status)</span>
+                        </div>
+                        <p class="panel-copy">@result.Message</p>
+                        <span class="dashboard-stat-note">@result.RequestCount live request(s) in this test step.</span>
+                    </article>
+                }
+            </div>
+        </section>
+    }
+</div>
+
+@code {
+    private bool _acknowledgeGearMutation;
+    private LiveTestSuiteResult? _lastRunResult;
+
+    protected override void OnInitialized()
+    {
+        SessionController.Changed += HandleStateChanged;
+    }
+
+    private async Task RunSafeLiveTestsAsync()
+    {
+        _lastRunResult = await SessionController.RunSafeLiveTestsAsync();
+    }
+
+    private async Task RunReversibleGearTestAsync()
+    {
+        _lastRunResult = await SessionController.RunReversibleGearTestAsync();
+    }
+
+    private static string GetStatusLabel(LiveTestStatus status)
+    {
+        return status switch
+        {
+            LiveTestStatus.Passed => "Passed",
+            LiveTestStatus.Failed => "Failed",
+            _ => "Skipped"
+        };
+    }
+
+    private static string GetStatusPillClass(LiveTestStatus status)
+    {
+        return status switch
+        {
+            LiveTestStatus.Passed => "success-pill",
+            LiveTestStatus.Failed => "danger-pill",
+            _ => "count-pill"
+        };
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        SessionController.Changed -= HandleStateChanged;
+    }
+}
