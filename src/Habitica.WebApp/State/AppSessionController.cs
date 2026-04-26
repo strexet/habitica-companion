@@ -1,6 +1,7 @@
 using Habitica.Application.Auth;
 using Habitica.Application.Sync;
 using Habitica.Domain.Auth;
+using Habitica.Domain.Party;
 using Habitica.Domain.Sync;
 using Habitica.Domain.User;
 using Habitica.Storage;
@@ -11,6 +12,7 @@ public sealed class AppSessionController : IAppSessionController
 {
     private readonly ICredentialStore _credentialStore;
     private readonly LoginWorkflow _loginWorkflow;
+    private readonly IPartySnapshotStore _partySnapshotStore;
     private readonly SnapshotFreshnessPolicy _snapshotFreshnessPolicy;
     private readonly ITaskSnapshotStore _taskSnapshotStore;
     private readonly IUserSnapshotStore _userSnapshotStore;
@@ -22,6 +24,7 @@ public sealed class AppSessionController : IAppSessionController
     public AppSessionController(
         LoginWorkflow loginWorkflow,
         ICredentialStore credentialStore,
+        IPartySnapshotStore partySnapshotStore,
         ITaskSnapshotStore taskSnapshotStore,
         IUserSnapshotStore userSnapshotStore,
         SnapshotFreshnessPolicy snapshotFreshnessPolicy,
@@ -29,6 +32,7 @@ public sealed class AppSessionController : IAppSessionController
     {
         _loginWorkflow = loginWorkflow;
         _credentialStore = credentialStore;
+        _partySnapshotStore = partySnapshotStore;
         _taskSnapshotStore = taskSnapshotStore;
         _userSnapshotStore = userSnapshotStore;
         _snapshotFreshnessPolicy = snapshotFreshnessPolicy;
@@ -130,6 +134,7 @@ public sealed class AppSessionController : IAppSessionController
         _persistLocally = false;
 
         await _credentialStore.ClearPersistentCredentialsAsync(cancellationToken);
+        await _partySnapshotStore.ClearAsync(cancellationToken);
         await _taskSnapshotStore.ClearAsync(cancellationToken);
         await _userSnapshotStore.ClearAsync(cancellationToken);
 
@@ -140,13 +145,16 @@ public sealed class AppSessionController : IAppSessionController
     {
         var taskSnapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
         var userSnapshot = await _userSnapshotStore.GetLatestAsync(cancellationToken);
+        var partySnapshot = await _partySnapshotStore.GetLatestAsync(cancellationToken);
 
         SetState(State with
         {
             ClassName = userSnapshot?.ClassName ?? State.ClassName,
             DisplayName = userSnapshot?.DisplayName ?? State.DisplayName,
-            LastSyncedAtUtc = GetLatestSyncTimestamp(taskSnapshot, userSnapshot),
+            LastSyncedAtUtc = GetLatestSyncTimestamp(taskSnapshot, userSnapshot, partySnapshot),
             Level = userSnapshot?.Level ?? State.Level,
+            PartyFreshness = ClassifyFreshness(partySnapshot),
+            PartySnapshot = partySnapshot,
             TaskFreshness = ClassifyFreshness(taskSnapshot),
             TaskSnapshot = taskSnapshot,
             UserFreshness = ClassifyFreshness(userSnapshot),
@@ -176,6 +184,7 @@ public sealed class AppSessionController : IAppSessionController
             var loginResult = await _loginWorkflow.AuthenticateAndSyncAsync(
                 new LoginCommand(request.UserId.Trim(), request.ApiToken.Trim(), request.PersistLocally),
                 cancellationToken);
+            var partySnapshot = await _partySnapshotStore.GetLatestAsync(cancellationToken);
             var taskSnapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
             var userSnapshot = await _userSnapshotStore.GetLatestAsync(cancellationToken);
 
@@ -188,6 +197,8 @@ public sealed class AppSessionController : IAppSessionController
                 DisplayName: loginResult.DisplayName,
                 ErrorMessage: null,
                 LastSyncedAtUtc: loginResult.RetrievedAtUtc,
+                PartyFreshness: ClassifyFreshness(partySnapshot),
+                PartySnapshot: partySnapshot,
                 TaskFreshness: ClassifyFreshness(taskSnapshot),
                 TaskSnapshot: taskSnapshot,
                 ClassName: loginResult.ClassName,
@@ -197,6 +208,7 @@ public sealed class AppSessionController : IAppSessionController
         }
         catch (Exception exception)
         {
+            var partySnapshot = await _partySnapshotStore.GetLatestAsync(cancellationToken);
             var taskSnapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
             var userSnapshot = await _userSnapshotStore.GetLatestAsync(cancellationToken);
 
@@ -204,7 +216,9 @@ public sealed class AppSessionController : IAppSessionController
             {
                 ErrorMessage = exception.Message,
                 IsBusy = false,
-                LastSyncedAtUtc = GetLatestSyncTimestamp(taskSnapshot ?? State.TaskSnapshot, userSnapshot ?? State.UserSnapshot) ?? State.LastSyncedAtUtc,
+                LastSyncedAtUtc = GetLatestSyncTimestamp(taskSnapshot ?? State.TaskSnapshot, userSnapshot ?? State.UserSnapshot, partySnapshot ?? State.PartySnapshot) ?? State.LastSyncedAtUtc,
+                PartyFreshness = ClassifyFreshness(partySnapshot ?? State.PartySnapshot),
+                PartySnapshot = partySnapshot ?? State.PartySnapshot,
                 TaskFreshness = ClassifyFreshness(taskSnapshot ?? State.TaskSnapshot),
                 TaskSnapshot = taskSnapshot ?? State.TaskSnapshot,
                 UserFreshness = ClassifyFreshness(userSnapshot ?? State.UserSnapshot),
@@ -229,14 +243,24 @@ public sealed class AppSessionController : IAppSessionController
             _timeProvider.GetUtcNow());
     }
 
+    private SnapshotFreshnessState ClassifyFreshness(PartySnapshot? snapshot)
+    {
+        return _snapshotFreshnessPolicy.Classify(
+            SnapshotCategory.VolatileGameplayState,
+            snapshot?.RetrievedAtUtc,
+            _timeProvider.GetUtcNow());
+    }
+
     private static DateTimeOffset? GetLatestSyncTimestamp(
         Habitica.Domain.Tasks.TaskCollectionSnapshot? taskSnapshot,
-        UserSnapshot? userSnapshot)
+        UserSnapshot? userSnapshot,
+        PartySnapshot? partySnapshot)
     {
         return new[]
         {
             taskSnapshot?.RetrievedAtUtc,
-            userSnapshot?.RetrievedAtUtc
+            userSnapshot?.RetrievedAtUtc,
+            partySnapshot?.RetrievedAtUtc
         }.Max();
     }
 

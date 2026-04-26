@@ -1,4 +1,5 @@
 using Habitica.Domain.Auth;
+using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 
@@ -135,6 +136,46 @@ public sealed class StorageStoreTests
                 new GearSlotsSnapshot(null, null, null, null, null),
                 new GearSlotsSnapshot(null, null, null, null, null)),
             new InventorySnapshot(0, 0, 0, 0, 0, 0, Array.Empty<string>()));
+
+        await store.SaveAsync(snapshot, CancellationToken.None);
+        await store.ClearAsync(CancellationToken.None);
+        var loadedSnapshot = await store.GetLatestAsync(CancellationToken.None);
+
+        Assert.Null(loadedSnapshot);
+    }
+
+    [Fact]
+    public async Task PartySnapshotStore_round_trips_latest_snapshot()
+    {
+        var adapter = new InMemoryKeyValueStorage();
+        var store = new PartySnapshotStore(adapter);
+        var snapshot = new PartySnapshot(
+            DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+            "party-123",
+            "Night Owls",
+            "Quest-focused party",
+            4,
+            new PartyQuestSnapshot("dragon", true, 12.5m, 3m, 2));
+
+        await store.SaveAsync(snapshot, CancellationToken.None);
+        var loadedSnapshot = await store.GetLatestAsync(CancellationToken.None);
+
+        Assert.NotNull(loadedSnapshot);
+        Assert.Equal(snapshot, loadedSnapshot);
+    }
+
+    [Fact]
+    public async Task PartySnapshotStore_clears_the_latest_snapshot()
+    {
+        var adapter = new InMemoryKeyValueStorage();
+        var store = new PartySnapshotStore(adapter);
+        var snapshot = new PartySnapshot(
+            DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+            "party-123",
+            "Night Owls",
+            null,
+            4,
+            null);
 
         await store.SaveAsync(snapshot, CancellationToken.None);
         await store.ClearAsync(CancellationToken.None);

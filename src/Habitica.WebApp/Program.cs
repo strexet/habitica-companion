@@ -18,6 +18,7 @@ builder.Services.AddMudServices();
 builder.Services.AddScoped<TimeProvider>(_ => TimeProvider.System);
 builder.Services.AddScoped<IKeyValueStorage, IndexedDbStorageAdapter>();
 builder.Services.AddScoped<ICredentialStore, CredentialStore>();
+builder.Services.AddScoped<IPartySnapshotStore, PartySnapshotStore>();
 builder.Services.AddScoped<ITaskSnapshotStore, TaskSnapshotStore>();
 builder.Services.AddScoped<IUserSnapshotStore, UserSnapshotStore>();
 builder.Services.AddScoped<SnapshotFreshnessPolicy>();

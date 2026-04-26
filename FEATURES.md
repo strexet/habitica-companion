@@ -957,7 +957,7 @@ Current implementation:
 
 Next:
 
-- add party and quest explorer surfaces;
+- add deeper quest explorer surfaces;
 - add sync diagnostics and execution history views.
 
 Waiting:
@@ -1092,7 +1092,7 @@ Rate-limit sensitivity: none by itself
 
 ### Goal
 
-Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, inventory, tasks, and settings.
+Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, inventory, party, tasks, and settings.
 
 ### Inputs
 
@@ -1133,10 +1133,11 @@ Navigation rules:
 1. Show `Sign In` when no authenticated session is active.
 2. Show `Dashboard` when cached account data exists, cached task data exists, or an authenticated session is active.
 3. Show `Inventory` when cached account data exists or an authenticated session is active.
-4. Show `Tasks` when cached task data exists or an authenticated session is active.
-5. Show `Settings` when cached account data exists, cached task data exists, or an authenticated session is active.
-6. Keep refresh disabled unless authenticated credentials are available for the current session.
-7. Surface the latest workflow error above route content.
+4. Show `Party` when cached party data exists, cached account data exists, or an authenticated session is active.
+5. Show `Tasks` when cached task data exists or an authenticated session is active.
+6. Show `Settings` when cached account data exists, cached task data exists, or an authenticated session is active.
+7. Keep refresh disabled unless authenticated credentials are available for the current session.
+8. Surface the latest workflow error above route content.
 ```
 
 ### Validation
@@ -1169,7 +1170,7 @@ Test:
 
 Current implementation:
 
-- `Sign In`, `Dashboard`, `Inventory`, `Tasks`, and `Settings` routes;
+- `Sign In`, `Dashboard`, `Inventory`, `Party`, `Tasks`, and `Settings` routes;
 - top app bar with refresh action;
 - responsive drawer navigation;
 - shared error banner;
@@ -1184,7 +1185,7 @@ Waiting:
 
 - future advanced modules to justify deeper navigation hierarchy.
 
-## 14. Account and task snapshot sync
+## 14. Account, party, and task snapshot sync
 
 Status: implemented
 Owner module: `Habitica.Application.Auth`, `Habitica.Api`, and `Habitica.Storage`
@@ -1197,7 +1198,7 @@ Rate-limit sensitivity: low because sync is user-initiated only in MVP
 
 ### Goal
 
-Validate credentials, fetch the current Habitica user and tasks, and persist the latest read-only account and task snapshots locally.
+Validate credentials, fetch the current Habitica user, active party summary when present, and tasks, then persist the latest read-only account, party, and task snapshots locally.
 
 ### Inputs
 
@@ -1207,6 +1208,7 @@ Habitica API Token
 persistent-storage opt-in
 existing cached task snapshot
 existing cached user snapshot
+existing cached party snapshot
 configured x-client value or fallback header strategy
 ```
 
@@ -1215,9 +1217,11 @@ configured x-client value or fallback header strategy
 ```text
 authenticated user summary
 latest account snapshot
+latest party snapshot
 latest task snapshot
 snapshot timestamps
 account freshness state
+party freshness state
 task freshness state
 sign-in or refresh error state
 ```
@@ -1228,6 +1232,7 @@ Current MVP records:
 
 ```text
 auth/persistentCredentials
+party/latestSnapshot
 user/latestSnapshot
 tasks/latestSnapshot
 ```
@@ -1238,6 +1243,7 @@ Current sync flow uses:
 
 ```text
 GET /user?userFields=profile,stats,party,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts
+GET /groups/party
 GET /tasks/user
 ```
 
@@ -1250,11 +1256,13 @@ Current flow:
 ```text
 1. Build authenticated request headers.
 2. Validate credentials and load the current account snapshot by reading `/user?userFields=...`.
-3. Fetch `/tasks/user`.
-4. Persist credentials only if the user selected persistent mode.
-5. Persist the latest account snapshot.
-6. Persist the latest task snapshot.
-7. Keep cached local data when refresh fails.
+3. If the user snapshot shows an active party, fetch `/groups/party`.
+4. Fetch `/tasks/user`.
+5. Persist credentials only if the user selected persistent mode.
+6. Persist the latest account snapshot.
+7. Persist the latest party snapshot or clear the cached party snapshot when no active party is present.
+8. Persist the latest task snapshot.
+9. Keep cached local data when refresh fails.
 ```
 
 ### Validation
@@ -1267,7 +1275,7 @@ If refresh is requested without available credentials, return a visible sign-in-
 
 Normalize API failures into redacted user-visible messages.
 
-Preserve the cached account and task snapshots when sign-in or refresh fails after a previous successful sync.
+Preserve the cached account, party, and task snapshots when sign-in or refresh fails after a previous successful sync.
 
 ### Security / privacy
 
@@ -1282,9 +1290,11 @@ Test:
 - credential persistence toggle behavior;
 - authenticated request headers;
 - `/user` response mapping;
+- `/groups/party` response mapping;
 - `/tasks/user` response mapping;
 - normalized unauthorized response handling;
 - account snapshot persistence round-trip;
+- party snapshot persistence round-trip;
 - task snapshot persistence round-trip.
 
 ### Open questions
@@ -1295,7 +1305,8 @@ Current implementation:
 - manual refresh action;
 - persisted-credential restore on app startup;
 - freshness classification for cached tasks;
-- cached account snapshot with class, stat, companion, and inventory-summary fields.
+- cached account snapshot with class, stat, companion, and inventory-summary fields;
+- cached party snapshot with summary and quest progress fields when the user belongs to a party.
 
 Next:
 
@@ -1409,7 +1420,104 @@ Waiting:
 
 - live equip workflows remain out of scope until the guarded mutation/test harness lands.
 
-## 16. Read-only task workspace
+## 16. Party explorer
+
+Status: implemented
+Owner module: `Habitica.WebApp.Pages.PartyPage`
+Application entry point: `Habitica.WebApp.Pages.PartyPage`
+Primary Habitica data: cached party group summary and quest state
+Mutates Habitica state: no
+Requires confirmation: no
+Offline behavior: fully available from the cached party snapshot
+Rate-limit sensitivity: none without explicit refresh
+
+### Goal
+
+Provide a read-only party overview that surfaces the latest cached party name, summary, member count, and quest progress without exposing group mutations.
+
+### Inputs
+
+```text
+cached user snapshot
+cached party snapshot
+party freshness state
+party quest summary
+```
+
+### Outputs
+
+```text
+party summary cards
+member count
+quest progress snapshot
+freshness banner
+no-party empty state
+```
+
+### Local storage
+
+Reads `party/latestSnapshot` and `user/latestSnapshot`.
+
+### API interaction
+
+None directly. The page consumes local state prepared by the sync workflow.
+
+### Algorithm / rules
+
+Current display rules:
+
+```text
+1. If the cached user snapshot has no party id, render a no-party state.
+2. If a party id exists but no party snapshot exists, render a refresh-required state.
+3. Show the latest cached party name, summary, and member count.
+4. Show quest key, active state, progress, and participant count when a quest snapshot exists.
+```
+
+### Validation
+
+Show explicit states for:
+
+- no active party in the cached user snapshot;
+- missing cached party snapshot;
+- fresh party snapshot;
+- stale party snapshot;
+- expired party snapshot.
+
+### Error handling
+
+Show cached party data even when a previous refresh attempt failed.
+
+### Security / privacy
+
+Display only the locally cached group summary fields required for the read-only explorer. Do not expose credentials or raw request headers.
+
+### Tests
+
+Test:
+
+- `/groups/party` response mapping;
+- party snapshot persistence;
+- party page rendering;
+- navigation rendering for the `Party` route.
+
+### Open questions
+
+Current implementation:
+
+- dedicated `Party` route in the app shell;
+- cached party summary cards;
+- cached quest progress snapshot.
+
+Next:
+
+- add party-member explorer with throttled pagination and cancellation;
+- surface richer quest metadata and warnings about eventual consistency.
+
+Waiting:
+
+- party mutations remain out of scope until confirmation and audit rules are defined.
+
+## 17. Read-only task workspace
 
 Status: implemented
 Owner module: `Habitica.WebApp.Pages.TasksPage` and `Habitica.Application.Tasks`
@@ -1511,7 +1619,7 @@ Waiting:
 
 - task scoring, checkoff, and edit flows remain intentionally out of scope until mutation safeguards are designed.
 
-## 17. Task mutation controls
+## 18. Task mutation controls
 
 Status: skipped
 Owner module: `Habitica.WebApp.Tasks` and `Habitica.Application.Tasks`
@@ -1584,7 +1692,7 @@ Waiting:
 - confirmation UX;
 - execution log design.
 
-## 18. Feature status labels
+## 19. Feature status labels
 
 Use these labels consistently:
 

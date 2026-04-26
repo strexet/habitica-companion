@@ -1,3 +1,4 @@
+using Habitica.Domain.Party;
 using Habitica.Domain.Sync;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
@@ -15,7 +16,9 @@ public sealed record SessionViewModel(
     string? ClassName = null,
     int? Level = null,
     UserSnapshot? UserSnapshot = null,
-    SnapshotFreshnessState UserFreshness = SnapshotFreshnessState.Missing)
+    SnapshotFreshnessState UserFreshness = SnapshotFreshnessState.Missing,
+    PartySnapshot? PartySnapshot = null,
+    SnapshotFreshnessState PartyFreshness = SnapshotFreshnessState.Missing)
 {
     public static SessionViewModel Empty { get; } = new(
         IsBusy: false,
@@ -29,4 +32,6 @@ public sealed record SessionViewModel(
     public bool HasCachedTasks => TaskSnapshot?.Items.Count > 0;
 
     public bool HasCachedUserSnapshot => UserSnapshot is not null;
+
+    public bool HasCachedPartySnapshot => PartySnapshot is not null;
 }

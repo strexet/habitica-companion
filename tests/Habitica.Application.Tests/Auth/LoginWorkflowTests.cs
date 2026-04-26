@@ -2,6 +2,7 @@ using Habitica.Application.Auth;
 using Habitica.Application.Sync;
 using Habitica.Api;
 using Habitica.Domain.Auth;
+using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 using Habitica.Storage;
@@ -17,7 +18,8 @@ public sealed class LoginWorkflowTests
         var credentialStore = new FakeCredentialStore();
         var taskStore = new FakeTaskSnapshotStore();
         var userStore = new FakeUserSnapshotStore();
-        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore);
+        var partyStore = new FakePartySnapshotStore();
+        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore, partyStore);
 
         var result = await workflow.AuthenticateAndSyncAsync(
             new LoginCommand("user-id", "api-token", false),
@@ -29,6 +31,7 @@ public sealed class LoginWorkflowTests
         Assert.Null(credentialStore.SavedCredentials);
         Assert.NotNull(taskStore.LastSavedSnapshot);
         Assert.NotNull(userStore.LastSavedSnapshot);
+        Assert.NotNull(partyStore.LastSavedSnapshot);
     }
 
     [Fact]
@@ -38,7 +41,8 @@ public sealed class LoginWorkflowTests
         var credentialStore = new FakeCredentialStore();
         var taskStore = new FakeTaskSnapshotStore();
         var userStore = new FakeUserSnapshotStore();
-        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore);
+        var partyStore = new FakePartySnapshotStore();
+        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore, partyStore);
 
         await workflow.AuthenticateAndSyncAsync(
             new LoginCommand("user-id", "api-token", true),
@@ -75,6 +79,17 @@ public sealed class LoginWorkflowTests
                     new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_wizard_1"),
                     new GearSlotsSnapshot("head_special_2", "armor_special_2", "weapon_special_2", "shield_special_2", "back_special_2")),
                 new InventorySnapshot(1, 1, 1, 1, 1, 1, new[] { "armor_wizard_4", "head_wizard_3" })));
+        }
+
+        public Task<PartySnapshot> GetPartySnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(new PartySnapshot(
+                DateTimeOffset.Parse("2026-04-24T12:00:00Z"),
+                "party-123",
+                "Night Owls",
+                "Quest-focused party",
+                4,
+                new PartyQuestSnapshot("dragon", true, 12.5m, 3m, 2)));
         }
 
         public Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -153,6 +168,31 @@ public sealed class LoginWorkflowTests
         }
 
         public Task SaveAsync(UserSnapshot snapshot, CancellationToken cancellationToken)
+        {
+            LastSavedSnapshot = snapshot;
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class FakePartySnapshotStore : IPartySnapshotStore
+    {
+        public PartySnapshot? LastSavedSnapshot { get; private set; }
+
+        public bool Cleared { get; private set; }
+
+        public Task ClearAsync(CancellationToken cancellationToken)
+        {
+            Cleared = true;
+            LastSavedSnapshot = null;
+            return Task.CompletedTask;
+        }
+
+        public Task<PartySnapshot?> GetLatestAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(LastSavedSnapshot);
+        }
+
+        public Task SaveAsync(PartySnapshot snapshot, CancellationToken cancellationToken)
         {
             LastSavedSnapshot = snapshot;
             return Task.CompletedTask;

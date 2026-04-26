@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text.Json;
 using Habitica.Domain.Auth;
+using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 
@@ -71,6 +72,29 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             .ToArray();
 
         return new TaskCollectionSnapshot(DateTimeOffset.UtcNow, tasks);
+    }
+
+    public async Task<PartySnapshot> GetPartySnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(HttpMethod.Get, "groups/party", credentials);
+        using var document = await SendForDocumentAsync(request, cancellationToken);
+        var data = document.RootElement.GetProperty("data");
+        var quest = TryGetObject(data, "quest");
+
+        return new PartySnapshot(
+            RetrievedAtUtc: DateTimeOffset.UtcNow,
+            PartyId: GetOptionalString(data, "_id") ?? string.Empty,
+            Name: GetOptionalString(data, "name") ?? "Unnamed Party",
+            Summary: GetOptionalString(data, "summary"),
+            MemberCount: GetOptionalInt32(data, "memberCount"),
+            Quest: quest.ValueKind == JsonValueKind.Object
+                ? new PartyQuestSnapshot(
+                    Key: GetOptionalString(quest, "key"),
+                    IsActive: GetOptionalBoolean(quest, "active"),
+                    ProgressUp: TryGetObject(quest, "progress") is { ValueKind: JsonValueKind.Object } progress ? GetOptionalDecimal(progress, "up") : 0m,
+                    ProgressDown: TryGetObject(quest, "progress") is { ValueKind: JsonValueKind.Object } progressValues ? GetOptionalDecimal(progressValues, "down") : 0m,
+                    ParticipantCount: CountTrueEntries(TryGetObject(quest, "members")))
+                : null);
     }
 
     private HttpRequestMessage CreateRequest(HttpMethod method, string relativePath, HabiticaCredentials credentials)
@@ -231,6 +255,14 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             && property.ValueKind == JsonValueKind.Number
             ? property.GetInt32()
             : 0;
+    }
+
+    private static bool GetOptionalBoolean(JsonElement element, string propertyName)
+    {
+        return element.ValueKind == JsonValueKind.Object
+            && element.TryGetProperty(propertyName, out var property)
+            && property.ValueKind is JsonValueKind.True or JsonValueKind.False
+            && property.GetBoolean();
     }
 
     private static decimal GetOptionalDecimal(JsonElement element, string propertyName)

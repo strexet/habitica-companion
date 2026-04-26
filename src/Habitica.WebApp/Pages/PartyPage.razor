@@ -1,0 +1,140 @@
+@page "/party"
+@implements IDisposable
+@inject IAppSessionController SessionController
+
+<PageTitle>Party</PageTitle>
+
+<div class="party-shell">
+    <section class="card-surface dashboard-hero">
+        <div>
+            <p class="section-label">Party overview</p>
+            <h1>Cached party state</h1>
+            <p class="panel-copy">
+                Review the latest party summary stored on this device, including quest progress and member totals,
+                without making any live group mutations from the app.
+            </p>
+        </div>
+    </section>
+
+    @if (SessionController.State.UserSnapshot?.PartyId is null)
+    {
+        <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
+            The cached account snapshot does not show an active party connection.
+        </MudAlert>
+    }
+    else if (SessionController.State.PartySnapshot is null)
+    {
+        <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
+            No cached party snapshot is available yet. Refresh the account to pull the current party overview.
+        </MudAlert>
+    }
+    else
+    {
+        var snapshot = SessionController.State.PartySnapshot;
+
+        <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.PartyFreshness)" Variant="Variant.Filled">
+            @GetFreshnessLabel(SessionController.State.PartyFreshness)
+        </MudAlert>
+
+        <section class="party-card-grid">
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Party</span>
+                <strong>@snapshot.Name</strong>
+                <span class="dashboard-stat-note">@snapshot.PartyId</span>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Members</span>
+                <strong>@snapshot.MemberCount</strong>
+                <span class="dashboard-stat-note">Cached group size</span>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Quest</span>
+                <strong>@(snapshot.Quest?.Key ?? "No active quest")</strong>
+                <span class="dashboard-stat-note">@((snapshot.Quest?.IsActive ?? false) ? "Active" : "Inactive or missing")</span>
+            </article>
+        </section>
+
+        <section class="party-detail-grid">
+            <article class="card-surface dashboard-panel">
+                <p class="section-label">Summary</p>
+                <h2>Party notes</h2>
+                <p class="panel-copy">@(string.IsNullOrWhiteSpace(snapshot.Summary) ? "No cached summary text." : snapshot.Summary)</p>
+            </article>
+
+            <article class="card-surface dashboard-panel">
+                <p class="section-label">Quest state</p>
+                <h2>Quest progress snapshot</h2>
+
+                @if (snapshot.Quest is null)
+                {
+                    <p class="panel-copy">No cached active quest state is currently available for this party.</p>
+                }
+                else
+                {
+                    <dl class="dashboard-definition-list">
+                        <div>
+                            <dt>Quest key</dt>
+                            <dd>@snapshot.Quest.Key</dd>
+                        </div>
+
+                        <div>
+                            <dt>Damage dealt</dt>
+                            <dd>@snapshot.Quest.ProgressUp.ToString("0.##")</dd>
+                        </div>
+
+                        <div>
+                            <dt>Damage taken</dt>
+                            <dd>@snapshot.Quest.ProgressDown.ToString("0.##")</dd>
+                        </div>
+
+                        <div>
+                            <dt>Participants</dt>
+                            <dd>@snapshot.Quest.ParticipantCount</dd>
+                        </div>
+                    </dl>
+                }
+            </article>
+        </section>
+    }
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        SessionController.Changed += HandleStateChanged;
+    }
+
+    private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => "Fresh local party snapshot",
+            SnapshotFreshnessState.Stale => "Stale local party snapshot",
+            SnapshotFreshnessState.Expired => "Expired local party snapshot",
+            _ => "Missing local party snapshot"
+        };
+    }
+
+    private static Severity GetFreshnessSeverity(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => Severity.Success,
+            SnapshotFreshnessState.Stale => Severity.Warning,
+            SnapshotFreshnessState.Expired => Severity.Error,
+            _ => Severity.Info
+        };
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        SessionController.Changed -= HandleStateChanged;
+    }
+}

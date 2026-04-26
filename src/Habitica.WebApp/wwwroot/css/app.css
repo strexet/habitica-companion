@@ -127,6 +127,7 @@ a {
 .landing-shell,
 .dashboard-shell,
 .inventory-shell,
+.party-shell,
 .tasks-shell,
 .settings-shell {
     display: grid;
@@ -276,7 +277,9 @@ a {
 
 .inventory-summary-grid,
 .inventory-group-grid,
-.inventory-item-list {
+.inventory-item-list,
+.party-card-grid,
+.party-detail-grid {
     display: grid;
     gap: 1rem;
 }
@@ -294,6 +297,14 @@ a {
 }
 
 .inventory-group-grid {
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+}
+
+.party-card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.party-detail-grid {
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
 }
 

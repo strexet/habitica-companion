@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
 using Habitica.Domain.Auth;
+using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 
@@ -185,6 +186,53 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(1, snapshot.Inventory.HatchingPotionCount);
         Assert.Equal(1, snapshot.Inventory.OwnedPetCount);
         Assert.Equal(1, snapshot.Inventory.OwnedMountCount);
+    }
+
+    [Fact]
+    public async Task GetPartySnapshotAsync_maps_party_and_quest_fields()
+    {
+        var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = JsonContent("""
+            {
+              "success": true,
+              "data": {
+                "_id": "party-123",
+                "name": "Night Owls",
+                "summary": "Quest-focused party",
+                "memberCount": 4,
+                "quest": {
+                  "key": "dragon",
+                  "active": true,
+                  "progress": {
+                    "up": 12.5,
+                    "down": 3
+                  },
+                  "members": {
+                    "user-1": true,
+                    "user-2": true,
+                    "user-3": false
+                  }
+                }
+              }
+            }
+            """)
+        });
+
+        var client = CreateClient(handler);
+
+        var snapshot = await client.GetPartySnapshotAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
+
+        Assert.Equal("party-123", snapshot.PartyId);
+        Assert.Equal("Night Owls", snapshot.Name);
+        Assert.Equal("Quest-focused party", snapshot.Summary);
+        Assert.Equal(4, snapshot.MemberCount);
+        Assert.NotNull(snapshot.Quest);
+        Assert.Equal("dragon", snapshot.Quest!.Key);
+        Assert.True(snapshot.Quest.IsActive);
+        Assert.Equal(12.5m, snapshot.Quest.ProgressUp);
+        Assert.Equal(3m, snapshot.Quest.ProgressDown);
+        Assert.Equal(2, snapshot.Quest.ParticipantCount);
     }
 
     [Fact]

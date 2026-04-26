@@ -677,6 +677,22 @@ Common endpoints:
 | GET | `/groups/:groupId/chat` | Get chat. |
 | DELETE | `/groups/:groupId/chat/:chatId` | Delete chat message where permitted. |
 
+For lightweight party dashboards, a client can usually rely on these `GET /groups/:groupId` response fields when present:
+
+```text
+_id
+name
+summary
+memberCount
+quest.key
+quest.active
+quest.progress.up
+quest.progress.down
+quest.members
+```
+
+Treat each field as optional and schema-flexible. The server may omit or reshape quest details depending on current party state.
+
 ### 13.1 Group members pagination
 
 ```http
