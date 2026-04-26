@@ -925,6 +925,8 @@ Dashboard must not contain business logic. It displays already computed state an
 
 Show explicit `fresh` / `stale` / `expired` / `missing` state indicators when snapshots are outdated or unavailable.
 
+When derived stat targets such as max health, max mana, or XP-to-next-level are absent from the cached account snapshot, the dashboard must not render misleading `current / 0` output. Show the current value only and downgrade the explanatory label accordingly.
+
 ### Error handling
 
 Show partial data when some stores are unavailable, but surface storage errors clearly.
@@ -950,6 +952,7 @@ Current implementation:
 - sign-in entry route;
 - dashboard route with cached account cards;
 - dashboard inventory readiness summary;
+- dashboard stat cards fall back to current-only rendering when the API snapshot lacks non-zero stat targets;
 - read-only tasks workspace;
 - sync timestamp surface;
 - freshness banners for cached tasks and cached account data;

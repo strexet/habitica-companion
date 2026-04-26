@@ -63,4 +63,53 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("Wolf-Base", cut.Markup);
         Assert.Contains("Open tasks", cut.Markup);
     }
+
+    [Fact]
+    public void Does_not_render_zero_stat_targets_when_snapshot_does_not_include_caps()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Strixetus",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                    Array.Empty<TaskSnapshot>()),
+                ClassName: "rogue",
+                Level: 32,
+                UserSnapshot: new UserSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                    "Strixetus",
+                    "rogue",
+                    32,
+                    50m,
+                    0m,
+                    171.99m,
+                    0m,
+                    488.17m,
+                    0m,
+                    1127.82m,
+                    "party-123",
+                    "Wolf-Base",
+                    "Wolf-Base",
+                    new EquipmentSnapshot(
+                        new GearSlotsSnapshot("head_rogue_6", "armor_rogue_6", "weapon_rogue_6", "shield_rogue_6", "back_rogue_6"),
+                        new GearSlotsSnapshot(null, null, null, null, null)),
+                    new InventorySnapshot(1, 1, 1, 1, 1, 1, Array.Empty<string>())),
+                UserFreshness: SnapshotFreshnessState.Fresh)));
+
+        var cut = Render<DashboardPage>();
+
+        Assert.DoesNotContain("50 / 0", cut.Markup);
+        Assert.DoesNotContain("171.99 / 0", cut.Markup);
+        Assert.DoesNotContain("488.17 / 0", cut.Markup);
+        Assert.Contains(">50<", cut.Markup);
+        Assert.Contains(">171.99<", cut.Markup);
+        Assert.Contains("Current XP", cut.Markup);
+    }
 }

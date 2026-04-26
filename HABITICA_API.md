@@ -222,6 +222,7 @@ Recommended client usage:
 - Use narrow `userFields` for frequent refreshes.
 - Fetch the full user document only on initial sync, debug export, or explicit full refresh.
 - Use `tasksOrder` together with `/tasks/user` for client-side ordering.
+- Treat derived stat helper fields such as `stats.maxHealth`, `stats.maxMP`, and `stats.toNextLevel` as optional in third-party clients. If they are absent, avoid presenting `0` as a meaningful target/cap in the UI.
 
 ### 8.2 Update authenticated user
 

@@ -53,7 +53,7 @@
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">XP</span>
                 <strong>@FormatStat(snapshot.Experience, snapshot.ToNextLevel)</strong>
-                <span class="dashboard-stat-note">Current / to next level</span>
+                <span class="dashboard-stat-note">@(snapshot.ToNextLevel > 0 ? "Current / to next level" : "Current XP")</span>
             </article>
 
             <article class="dashboard-stat-card">
@@ -140,6 +140,11 @@
 
     private static string FormatStat(decimal current, decimal maxOrTarget)
     {
+        if (maxOrTarget <= 0)
+        {
+            return current.ToString("0.##");
+        }
+
         return $"{current:0.##} / {maxOrTarget:0.##}";
     }
 
