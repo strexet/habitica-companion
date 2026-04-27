@@ -1,4 +1,5 @@
 using Habitica.Domain.Auth;
+using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
@@ -182,6 +183,51 @@ public sealed class StorageStoreTests
         var loadedSnapshot = await store.GetLatestAsync(CancellationToken.None);
 
         Assert.Null(loadedSnapshot);
+    }
+
+    [Fact]
+    public async Task DiagnosticsLogStore_prepends_new_entries_and_caps_history()
+    {
+        var adapter = new InMemoryKeyValueStorage();
+        var store = new DiagnosticsLogStore(adapter, maxEntries: 2);
+
+        await store.AppendAsync(CreateLogEntry("one", DiagnosticsSeverity.Info), CancellationToken.None);
+        await store.AppendAsync(CreateLogEntry("two", DiagnosticsSeverity.Warning), CancellationToken.None);
+        await store.AppendAsync(CreateLogEntry("three", DiagnosticsSeverity.Error), CancellationToken.None);
+
+        var entries = await store.GetRecentAsync(CancellationToken.None);
+
+        Assert.Equal(new[] { "three", "two" }, entries.Select(entry => entry.Id));
+    }
+
+    [Fact]
+    public async Task DiagnosticsLogStore_clears_history()
+    {
+        var adapter = new InMemoryKeyValueStorage();
+        var store = new DiagnosticsLogStore(adapter);
+
+        await store.AppendAsync(CreateLogEntry("one", DiagnosticsSeverity.Info), CancellationToken.None);
+        await store.ClearAsync(CancellationToken.None);
+
+        var entries = await store.GetRecentAsync(CancellationToken.None);
+
+        Assert.Empty(entries);
+    }
+
+    private static DiagnosticsLogEntry CreateLogEntry(string id, DiagnosticsSeverity severity)
+    {
+        return new DiagnosticsLogEntry(
+            Id: id,
+            OccurredAtUtc: DateTimeOffset.Parse("2026-04-27T10:00:00Z"),
+            FeatureArea: DiagnosticsFeatureArea.Diagnostics,
+            Operation: "test",
+            Severity: severity,
+            Mode: DiagnosticsMode.Local,
+            Message: $"entry-{id}",
+            Metadata: new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["requestCount"] = "1"
+            });
     }
 
     private sealed class InMemoryKeyValueStorage : IKeyValueStorage
