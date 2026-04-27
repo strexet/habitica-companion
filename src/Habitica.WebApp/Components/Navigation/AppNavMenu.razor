@@ -8,7 +8,7 @@
         </MudNavLink>
     }
 
-    @if (SessionController.State.HasCachedTasks || SessionController.State.HasCachedUserSnapshot || SessionController.State.IsAuthenticated)
+    @if (SessionController.State.HasCachedTasks || SessionController.State.HasCachedUserSnapshot || SessionController.State.IsAuthenticated || SessionController.State.HasDiagnosticsHistory)
     {
         <MudNavLink Href="/dashboard" Icon="@Icons.Material.Outlined.DashboardCustomize">
             Dashboard
@@ -22,7 +22,7 @@
             Party
         </MudNavLink>
 
-        @if (SessionController.State.IsAuthenticated)
+        @if (SessionController.State.IsAuthenticated || SessionController.State.HasDiagnosticsHistory)
         {
             <MudNavLink Href="/diagnostics" Icon="@Icons.Material.Outlined.Science">
                 Diagnostics

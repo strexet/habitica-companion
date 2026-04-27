@@ -2,6 +2,7 @@ using Habitica.Application.Auth;
 using Habitica.Application.Diagnostics;
 using Habitica.Application.Sync;
 using Habitica.Domain.Auth;
+using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Party;
 using Habitica.Domain.Sync;
 using Habitica.Domain.User;
@@ -12,6 +13,9 @@ namespace Habitica.WebApp.State;
 public sealed class AppSessionController : IAppSessionController
 {
     private readonly ICredentialStore _credentialStore;
+    private readonly IDiagnosticsLogStore _diagnosticsLogStore;
+    private readonly DiagnosticsLogWriter _diagnosticsLogWriter;
+    private readonly DiagnosticsPresetWorkflow _diagnosticsPresetWorkflow;
     private readonly LoginWorkflow _loginWorkflow;
     private readonly LiveTestWorkflow _liveTestWorkflow;
     private readonly IPartySnapshotStore _partySnapshotStore;
@@ -26,19 +30,25 @@ public sealed class AppSessionController : IAppSessionController
     public AppSessionController(
         LoginWorkflow loginWorkflow,
         LiveTestWorkflow liveTestWorkflow,
+        DiagnosticsPresetWorkflow diagnosticsPresetWorkflow,
         ICredentialStore credentialStore,
         IPartySnapshotStore partySnapshotStore,
         ITaskSnapshotStore taskSnapshotStore,
         IUserSnapshotStore userSnapshotStore,
+        IDiagnosticsLogStore diagnosticsLogStore,
+        DiagnosticsLogWriter diagnosticsLogWriter,
         SnapshotFreshnessPolicy snapshotFreshnessPolicy,
         TimeProvider timeProvider)
     {
         _loginWorkflow = loginWorkflow;
         _liveTestWorkflow = liveTestWorkflow;
+        _diagnosticsPresetWorkflow = diagnosticsPresetWorkflow;
         _credentialStore = credentialStore;
         _partySnapshotStore = partySnapshotStore;
         _taskSnapshotStore = taskSnapshotStore;
         _userSnapshotStore = userSnapshotStore;
+        _diagnosticsLogStore = diagnosticsLogStore;
+        _diagnosticsLogWriter = diagnosticsLogWriter;
         _snapshotFreshnessPolicy = snapshotFreshnessPolicy;
         _timeProvider = timeProvider;
     }
@@ -195,6 +205,71 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    public async Task<DiagnosticsPresetRunResult> RunDiagnosticsPresetAsync(DiagnosticsPreset preset, CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            var message = "Sign in is required before running diagnostics presets.";
+            SetState(State with
+            {
+                ErrorMessage = message
+            });
+
+            return new DiagnosticsPresetRunResult(preset, false, 0, message, "{}");
+        }
+
+        SetState(State with
+        {
+            ErrorMessage = null,
+            IsBusy = true
+        });
+
+        try
+        {
+            var result = await _diagnosticsPresetWorkflow.RunAsync(credentials, preset, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+
+            SetState(State with
+            {
+                ErrorMessage = null,
+                IsBusy = false
+            });
+
+            return result;
+        }
+        catch (Exception exception)
+        {
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Diagnostics,
+                $"preset-{preset.ToString().ToLowerInvariant()}",
+                DiagnosticsSeverity.Error,
+                DiagnosticsMode.LiveRead,
+                exception.Message,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["preset"] = preset.ToString()
+                },
+                cancellationToken);
+
+            await LoadCachedStateAsync(cancellationToken);
+
+            SetState(State with
+            {
+                ErrorMessage = exception.Message,
+                IsBusy = false
+            });
+
+            return new DiagnosticsPresetRunResult(preset, false, 0, exception.Message, "{}");
+        }
+    }
+
+    public async Task ClearDiagnosticsLogsAsync(CancellationToken cancellationToken = default)
+    {
+        await _diagnosticsLogStore.ClearAsync(cancellationToken);
+        await LoadCachedStateAsync(cancellationToken);
+    }
+
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         _currentCredentials = null;
@@ -227,6 +302,7 @@ public sealed class AppSessionController : IAppSessionController
 
     private async Task LoadCachedStateAsync(CancellationToken cancellationToken)
     {
+        var diagnosticsLogEntries = await _diagnosticsLogStore.GetRecentAsync(cancellationToken);
         var taskSnapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
         var userSnapshot = await _userSnapshotStore.GetLatestAsync(cancellationToken);
         var partySnapshot = await _partySnapshotStore.GetLatestAsync(cancellationToken);
@@ -241,6 +317,7 @@ public sealed class AppSessionController : IAppSessionController
             PartySnapshot = partySnapshot,
             TaskFreshness = ClassifyFreshness(taskSnapshot),
             TaskSnapshot = taskSnapshot,
+            DiagnosticsLogEntries = diagnosticsLogEntries,
             UserFreshness = ClassifyFreshness(userSnapshot),
             UserSnapshot = userSnapshot
         });
@@ -285,6 +362,7 @@ public sealed class AppSessionController : IAppSessionController
                 PartySnapshot: partySnapshot,
                 TaskFreshness: ClassifyFreshness(taskSnapshot),
                 TaskSnapshot: taskSnapshot,
+                DiagnosticsLogEntries: await _diagnosticsLogStore.GetRecentAsync(cancellationToken),
                 ClassName: loginResult.ClassName,
                 Level: loginResult.Level,
                 UserSnapshot: userSnapshot,

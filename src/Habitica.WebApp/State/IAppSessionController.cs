@@ -18,6 +18,10 @@ public interface IAppSessionController
 
     Task<LiveTestSuiteResult> RunReversibleGearTestAsync(CancellationToken cancellationToken = default);
 
+    Task<DiagnosticsPresetRunResult> RunDiagnosticsPresetAsync(DiagnosticsPreset preset, CancellationToken cancellationToken = default);
+
+    Task ClearDiagnosticsLogsAsync(CancellationToken cancellationToken = default);
+
     Task LogoutAsync(CancellationToken cancellationToken = default);
 
     Task ClearLocalDataAsync(CancellationToken cancellationToken = default);

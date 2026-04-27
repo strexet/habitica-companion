@@ -1,6 +1,7 @@
 using Habitica.WebApp.State;
 
 using Habitica.Application.Diagnostics;
+using Habitica.Domain.Diagnostics;
 
 namespace Habitica.WebApp.Tests;
 
@@ -12,6 +13,10 @@ internal sealed class FakeAppSessionController : IAppSessionController
     }
 
     public event Action? Changed;
+
+    public int DiagnosticsPresetCalls { get; private set; }
+
+    public DiagnosticsPresetRunResult? DiagnosticsPresetResult { get; set; }
 
     public SignInRequest? LastSignInRequest { get; private set; }
 
@@ -30,6 +35,16 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.CompletedTask;
     }
 
+    public Task ClearDiagnosticsLogsAsync(CancellationToken cancellationToken = default)
+    {
+        State = State with
+        {
+            DiagnosticsLogEntries = Array.Empty<DiagnosticsLogEntry>()
+        };
+        Changed?.Invoke();
+        return Task.CompletedTask;
+    }
+
     public Task InitializeAsync(CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
@@ -38,6 +53,12 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
+    }
+
+    public Task<DiagnosticsPresetRunResult> RunDiagnosticsPresetAsync(DiagnosticsPreset preset, CancellationToken cancellationToken = default)
+    {
+        DiagnosticsPresetCalls++;
+        return Task.FromResult(DiagnosticsPresetResult ?? new DiagnosticsPresetRunResult(preset, true, 0, string.Empty, "{}"));
     }
 
     public Task<LiveTestSuiteResult> RunReversibleGearTestAsync(CancellationToken cancellationToken = default)
