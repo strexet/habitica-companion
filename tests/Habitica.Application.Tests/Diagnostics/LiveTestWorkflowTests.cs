@@ -1,6 +1,7 @@
 using Habitica.Api;
 using Habitica.Application.Diagnostics;
 using Habitica.Domain.Auth;
+using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
@@ -17,7 +18,8 @@ public sealed class LiveTestWorkflowTests
         var userStore = new FakeUserSnapshotStore();
         var taskStore = new FakeTaskSnapshotStore();
         var partyStore = new FakePartySnapshotStore();
-        var workflow = new LiveTestWorkflow(client, userStore, taskStore, partyStore, TimeProvider.System);
+        var logStore = new FakeDiagnosticsLogStore();
+        var workflow = new LiveTestWorkflow(client, userStore, taskStore, partyStore, new DiagnosticsLogWriter(logStore, TimeProvider.System), TimeProvider.System);
 
         var result = await workflow.RunSafeLiveTestsAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
 
@@ -27,6 +29,9 @@ public sealed class LiveTestWorkflowTests
         Assert.NotNull(userStore.LastSavedSnapshot);
         Assert.NotNull(taskStore.LastSavedSnapshot);
         Assert.NotNull(partyStore.LastSavedSnapshot);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.Operation == "safe-live-tests"
+            && entry.Severity == DiagnosticsSeverity.Success);
     }
 
     [Fact]
@@ -37,7 +42,7 @@ public sealed class LiveTestWorkflowTests
             Inventory = new InventorySnapshot(1, 5, 1, 1, 1, 1, new[] { "weapon_wizard_5" })
         };
         var client = new FakeHabiticaSyncClient(snapshot, CreateTaskSnapshot(), CreatePartySnapshot());
-        var workflow = new LiveTestWorkflow(client, new FakeUserSnapshotStore(), new FakeTaskSnapshotStore(), new FakePartySnapshotStore(), TimeProvider.System);
+        var workflow = new LiveTestWorkflow(client, new FakeUserSnapshotStore(), new FakeTaskSnapshotStore(), new FakePartySnapshotStore(), new DiagnosticsLogWriter(new FakeDiagnosticsLogStore(), TimeProvider.System), TimeProvider.System);
 
         var result = await workflow.RunReversibleGearTestAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
 
@@ -51,7 +56,7 @@ public sealed class LiveTestWorkflowTests
     {
         var client = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
         var userStore = new FakeUserSnapshotStore();
-        var workflow = new LiveTestWorkflow(client, userStore, new FakeTaskSnapshotStore(), new FakePartySnapshotStore(), TimeProvider.System);
+        var workflow = new LiveTestWorkflow(client, userStore, new FakeTaskSnapshotStore(), new FakePartySnapshotStore(), new DiagnosticsLogWriter(new FakeDiagnosticsLogStore(), TimeProvider.System), TimeProvider.System);
 
         var result = await workflow.RunReversibleGearTestAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
 
@@ -59,6 +64,28 @@ public sealed class LiveTestWorkflowTests
         Assert.Equal(LiveTestStatus.Passed, test.Status);
         Assert.Equal(new[] { "weapon_warrior_6", "weapon_wizard_5" }, client.EquipCalls);
         Assert.Equal("weapon_wizard_5", userStore.LastSavedSnapshot!.Equipment.Battle.Weapon);
+    }
+
+    private sealed class FakeDiagnosticsLogStore : IDiagnosticsLogStore
+    {
+        public List<DiagnosticsLogEntry> Entries { get; } = new();
+
+        public Task<IReadOnlyList<DiagnosticsLogEntry>> GetRecentAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult<IReadOnlyList<DiagnosticsLogEntry>>(Entries);
+        }
+
+        public Task AppendAsync(DiagnosticsLogEntry entry, CancellationToken cancellationToken)
+        {
+            Entries.Insert(0, entry);
+            return Task.CompletedTask;
+        }
+
+        public Task ClearAsync(CancellationToken cancellationToken)
+        {
+            Entries.Clear();
+            return Task.CompletedTask;
+        }
     }
 
     private static UserSnapshot CreateUserSnapshot()

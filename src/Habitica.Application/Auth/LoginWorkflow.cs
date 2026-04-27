@@ -1,4 +1,7 @@
+using System.Globalization;
 using Habitica.Api;
+using Habitica.Application.Diagnostics;
+using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Auth;
 using Habitica.Storage;
 
@@ -11,19 +14,22 @@ public sealed class LoginWorkflow
     private readonly IPartySnapshotStore _partySnapshotStore;
     private readonly ITaskSnapshotStore _taskSnapshotStore;
     private readonly IUserSnapshotStore _userSnapshotStore;
+    private readonly DiagnosticsLogWriter _diagnosticsLogWriter;
 
     public LoginWorkflow(
         IHabiticaSyncClient habiticaSyncClient,
         ICredentialStore credentialStore,
         ITaskSnapshotStore taskSnapshotStore,
         IUserSnapshotStore userSnapshotStore,
-        IPartySnapshotStore partySnapshotStore)
+        IPartySnapshotStore partySnapshotStore,
+        DiagnosticsLogWriter diagnosticsLogWriter)
     {
         _habiticaSyncClient = habiticaSyncClient;
         _credentialStore = credentialStore;
         _taskSnapshotStore = taskSnapshotStore;
         _userSnapshotStore = userSnapshotStore;
         _partySnapshotStore = partySnapshotStore;
+        _diagnosticsLogWriter = diagnosticsLogWriter;
     }
 
     public async Task<LoginResult> AuthenticateAndSyncAsync(LoginCommand command, CancellationToken cancellationToken)
@@ -58,6 +64,19 @@ public sealed class LoginWorkflow
         {
             await _partySnapshotStore.SaveAsync(party, cancellationToken);
         }
+
+        await _diagnosticsLogWriter.WriteAsync(
+            DiagnosticsFeatureArea.Auth,
+            "sign-in",
+            DiagnosticsSeverity.Success,
+            DiagnosticsMode.LiveRead,
+            $"Signed in and refreshed account snapshots for {user.DisplayName}.",
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["requestCount"] = string.IsNullOrWhiteSpace(user.PartyId) ? "2" : "3",
+                ["taskCount"] = tasks.Items.Count.ToString(CultureInfo.InvariantCulture)
+            },
+            cancellationToken);
 
         return new LoginResult(
             user.DisplayName,

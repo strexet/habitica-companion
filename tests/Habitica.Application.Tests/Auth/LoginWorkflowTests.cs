@@ -1,7 +1,9 @@
 using Habitica.Application.Auth;
+using Habitica.Application.Diagnostics;
 using Habitica.Application.Sync;
 using Habitica.Api;
 using Habitica.Domain.Auth;
+using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
@@ -19,7 +21,8 @@ public sealed class LoginWorkflowTests
         var taskStore = new FakeTaskSnapshotStore();
         var userStore = new FakeUserSnapshotStore();
         var partyStore = new FakePartySnapshotStore();
-        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore, partyStore);
+        var logStore = new FakeDiagnosticsLogStore();
+        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore, partyStore, new DiagnosticsLogWriter(logStore, TimeProvider.System));
 
         var result = await workflow.AuthenticateAndSyncAsync(
             new LoginCommand("user-id", "api-token", false),
@@ -32,6 +35,10 @@ public sealed class LoginWorkflowTests
         Assert.NotNull(taskStore.LastSavedSnapshot);
         Assert.NotNull(userStore.LastSavedSnapshot);
         Assert.NotNull(partyStore.LastSavedSnapshot);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.Operation == "sign-in"
+            && entry.FeatureArea == DiagnosticsFeatureArea.Auth
+            && entry.Severity == DiagnosticsSeverity.Success);
     }
 
     [Fact]
@@ -42,13 +49,36 @@ public sealed class LoginWorkflowTests
         var taskStore = new FakeTaskSnapshotStore();
         var userStore = new FakeUserSnapshotStore();
         var partyStore = new FakePartySnapshotStore();
-        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore, partyStore);
+        var logStore = new FakeDiagnosticsLogStore();
+        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore, partyStore, new DiagnosticsLogWriter(logStore, TimeProvider.System));
 
         await workflow.AuthenticateAndSyncAsync(
             new LoginCommand("user-id", "api-token", true),
             CancellationToken.None);
 
         Assert.Equal(new HabiticaCredentials("user-id", "api-token"), credentialStore.SavedCredentials);
+    }
+
+    private sealed class FakeDiagnosticsLogStore : IDiagnosticsLogStore
+    {
+        public List<DiagnosticsLogEntry> Entries { get; } = new();
+
+        public Task<IReadOnlyList<DiagnosticsLogEntry>> GetRecentAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult<IReadOnlyList<DiagnosticsLogEntry>>(Entries);
+        }
+
+        public Task AppendAsync(DiagnosticsLogEntry entry, CancellationToken cancellationToken)
+        {
+            Entries.Insert(0, entry);
+            return Task.CompletedTask;
+        }
+
+        public Task ClearAsync(CancellationToken cancellationToken)
+        {
+            Entries.Clear();
+            return Task.CompletedTask;
+        }
     }
 
     private sealed class FakeHabiticaSyncClient : IHabiticaSyncClient

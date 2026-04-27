@@ -1,5 +1,7 @@
+using System.Globalization;
 using Habitica.Api;
 using Habitica.Domain.Auth;
+using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
@@ -13,6 +15,7 @@ public sealed class LiveTestWorkflow
     private readonly IUserSnapshotStore _userSnapshotStore;
     private readonly ITaskSnapshotStore _taskSnapshotStore;
     private readonly IPartySnapshotStore _partySnapshotStore;
+    private readonly DiagnosticsLogWriter _logWriter;
     private readonly TimeProvider _timeProvider;
 
     public LiveTestWorkflow(
@@ -20,12 +23,14 @@ public sealed class LiveTestWorkflow
         IUserSnapshotStore userSnapshotStore,
         ITaskSnapshotStore taskSnapshotStore,
         IPartySnapshotStore partySnapshotStore,
+        DiagnosticsLogWriter logWriter,
         TimeProvider timeProvider)
     {
         _habiticaSyncClient = habiticaSyncClient;
         _userSnapshotStore = userSnapshotStore;
         _taskSnapshotStore = taskSnapshotStore;
         _partySnapshotStore = partySnapshotStore;
+        _logWriter = logWriter;
         _timeProvider = timeProvider;
     }
 
@@ -93,6 +98,19 @@ public sealed class LiveTestWorkflow
             RequestCount: 1,
             Message: $"{taskSnapshot.Items.Count} tasks refreshed from Habitica."));
 
+        await _logWriter.WriteAsync(
+            DiagnosticsFeatureArea.Diagnostics,
+            "safe-live-tests",
+            DiagnosticsSeverity.Success,
+            DiagnosticsMode.LiveRead,
+            "Completed the safe diagnostics suite.",
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture),
+                ["resultCount"] = results.Count.ToString(CultureInfo.InvariantCulture)
+            },
+            cancellationToken);
+
         return new LiveTestSuiteResult(
             startedAtUtc,
             _timeProvider.GetUtcNow(),
@@ -119,6 +137,18 @@ public sealed class LiveTestWorkflow
                 Risk: LiveTestRisk.ReversibleMutation,
                 RequestCount: requests,
                 Message: "Skipped because no alternate owned battle gear was found for a supported slot."));
+
+            await _logWriter.WriteAsync(
+                DiagnosticsFeatureArea.Diagnostics,
+                "reversible-gear-roundtrip",
+                DiagnosticsSeverity.Warning,
+                DiagnosticsMode.ReversibleTest,
+                "Skipped reversible gear test because no alternate owned battle gear was available.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["requestCount"] = requests.ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
 
             return new LiveTestSuiteResult(startedAtUtc, _timeProvider.GetUtcNow(), results);
         }
@@ -214,6 +244,19 @@ public sealed class LiveTestWorkflow
                 Message = $"{result.Message} Original gear restored successfully."
             };
         }
+
+        await _logWriter.WriteAsync(
+            DiagnosticsFeatureArea.Diagnostics,
+            "reversible-gear-roundtrip",
+            results[0].Status == LiveTestStatus.Passed ? DiagnosticsSeverity.Success : DiagnosticsSeverity.Error,
+            DiagnosticsMode.ReversibleTest,
+            results[0].Message,
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["requestCount"] = requests.ToString(CultureInfo.InvariantCulture),
+                ["slotTitle"] = candidate.SlotTitle
+            },
+            cancellationToken);
 
         return new LiveTestSuiteResult(startedAtUtc, _timeProvider.GetUtcNow(), results);
     }
