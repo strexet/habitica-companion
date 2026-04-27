@@ -54,3 +54,6 @@ Thumbs.db
 # Dual Graph (GrapeRoot)
 .dual-graph/
 .dual-graph-context/
+
+# Codex Superpowers
+.superpowers/
