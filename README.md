@@ -11,10 +11,10 @@ Current status: initial web-app MVP implemented. The repository now contains a w
 - cached account dashboard with class, stat, companion, and inventory summary cards
 - read-only inventory and equipment explorer with slot-grouped owned gear keys
 - read-only party overview with cached quest progress and member counts
-- UI-launchable live test lab with a safe read suite and an optional reversible gear roundtrip test
+- diagnostics workspace with safe checks, guarded reversible tests, curated API presets, and a shared redacted log console
 - local-first task snapshot storage through IndexedDB with a Dexie-backed JS module
 - local-first account snapshot storage for offline dashboard access
-- responsive app shell with sign-in, dashboard, inventory, party, live tests, tasks, and settings routes
+- responsive app shell with sign-in, dashboard, inventory, party, diagnostics, tasks, and settings routes
 - read-only task workspace with search, completed toggle, and freshness indicators
 - sign-out for the current tab session and clear-local-data controls
 

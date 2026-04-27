@@ -1,5 +1,6 @@
 using Bunit;
 using Habitica.Application.Diagnostics;
+using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Sync;
 using Habitica.WebApp.Pages;
 using Habitica.WebApp.State;
@@ -11,7 +12,7 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class LiveTestsPageTests : BunitContext
 {
     [Fact]
-    public void Renders_safe_and_reversible_test_actions()
+    public void Renders_diagnostics_sections_preset_runner_and_console()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
@@ -21,29 +22,37 @@ public sealed class LiveTestsPageTests : BunitContext
                 IsAuthenticated: true,
                 DisplayName: "Mage Tester",
                 ErrorMessage: null,
-                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T10:00:00Z"),
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
                 TaskFreshness: SnapshotFreshnessState.Fresh,
-                TaskSnapshot: null))
-        {
-            SafeLiveTestResult = new LiveTestSuiteResult(
-                DateTimeOffset.Parse("2026-04-26T10:00:00Z"),
-                DateTimeOffset.Parse("2026-04-26T10:00:10Z"),
-                new[]
+                TaskSnapshot: null,
+                DiagnosticsLogEntries: new[]
                 {
-                    new LiveTestResult("auth", "Account snapshot", LiveTestStatus.Passed, LiveTestRisk.Safe, 1, "Account snapshot refreshed.")
-                })
-        });
+                    new DiagnosticsLogEntry(
+                        "entry-1",
+                        DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+                        DiagnosticsFeatureArea.Diagnostics,
+                        "safe-live-tests",
+                        DiagnosticsSeverity.Success,
+                        DiagnosticsMode.LiveRead,
+                        "Completed safe diagnostics suite.",
+                        new Dictionary<string, string>())
+                })));
 
         var cut = Render<LiveTestsPage>();
 
-        Assert.Contains("Live test lab", cut.Markup);
+        Assert.Contains("Diagnostics", cut.Markup);
+        Assert.Contains("Safe checks", cut.Markup);
+        Assert.Contains("Guarded tests", cut.Markup);
+        Assert.Contains("Preset API runner", cut.Markup);
+        Assert.Contains("Shared console", cut.Markup);
+        Assert.Contains("Run /user account preset", cut.Markup);
         Assert.Contains("Run safe live tests", cut.Markup);
         Assert.Contains("Run reversible gear test", cut.Markup);
-        Assert.Contains("temporarily changes equipped battle gear", cut.Markup);
+        Assert.Contains("Completed safe diagnostics suite.", cut.Markup);
     }
 
     [Fact]
-    public void Safe_live_test_run_renders_returned_results()
+    public void Diagnostics_preset_button_renders_the_returned_preview()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
@@ -53,26 +62,25 @@ public sealed class LiveTestsPageTests : BunitContext
                 IsAuthenticated: true,
                 DisplayName: "Mage Tester",
                 ErrorMessage: null,
-                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T10:00:00Z"),
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
                 TaskFreshness: SnapshotFreshnessState.Fresh,
                 TaskSnapshot: null))
         {
-            SafeLiveTestResult = new LiveTestSuiteResult(
-                DateTimeOffset.Parse("2026-04-26T10:00:00Z"),
-                DateTimeOffset.Parse("2026-04-26T10:00:10Z"),
-                new[]
-                {
-                    new LiveTestResult("safe-live-tests", "Safe live tests", LiveTestStatus.Failed, LiveTestRisk.Safe, 0, "Sign in is required before running live tests.")
-                })
+            DiagnosticsPresetResult = new DiagnosticsPresetRunResult(
+                DiagnosticsPreset.UserAccount,
+                true,
+                1,
+                "Mage Tester level 15 account snapshot loaded.",
+                "{\n  \"displayName\": \"Mage Tester\"\n}")
         };
         Services.AddSingleton<IAppSessionController>(controller);
 
         var cut = Render<LiveTestsPage>();
 
-        cut.Find("button").Click();
+        cut.Find("[data-testid='preset-user-account']").Click();
 
-        Assert.Equal(1, controller.SafeLiveTestCalls);
-        Assert.Contains("Sign in is required before running live tests.", cut.Markup);
-        Assert.Contains("Failed", cut.Markup);
+        Assert.Equal(1, controller.DiagnosticsPresetCalls);
+        Assert.Contains("Mage Tester level 15 account snapshot loaded.", cut.Markup);
+        Assert.Contains("\"displayName\": \"Mage Tester\"", cut.Markup);
     }
 }

@@ -1087,15 +1087,15 @@ Waiting:
 Status: implemented
 Owner module: `Habitica.WebApp.Layout` and `Habitica.WebApp.Components.Navigation`
 Application entry point: `Habitica.WebApp.State.AppSessionController`
-Primary Habitica data: local session state, task snapshot freshness, sync timestamp
+Primary Habitica data: local session state, task snapshot freshness, sync timestamp, diagnostics history
 Mutates Habitica state: no
 Requires confirmation: no
-Offline behavior: fully available from local session and task stores
+Offline behavior: fully available from local session, snapshot, and diagnostics stores
 Rate-limit sensitivity: none by itself
 
 ### Goal
 
-Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, inventory, party, live tests, tasks, and settings.
+Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, inventory, party, diagnostics, tasks, and settings.
 
 ### Inputs
 
@@ -1106,6 +1106,8 @@ cached user snapshot presence
 task freshness state
 user freshness state
 latest sync timestamp
+diagnostics history presence
+diagnostics warning count
 global workflow error state
 ```
 
@@ -1118,6 +1120,7 @@ route links
 refresh action
 global warning banner
 identity summary
+diagnostics visibility and warning cues
 ```
 
 ### Local storage
@@ -1137,7 +1140,7 @@ Navigation rules:
 2. Show `Dashboard` when cached account data exists, cached task data exists, or an authenticated session is active.
 3. Show `Inventory` when cached account data exists or an authenticated session is active.
 4. Show `Party` when cached party data exists, cached account data exists, or an authenticated session is active.
-5. Show `Live Tests` only when an authenticated session is active.
+5. Show `Diagnostics` when an authenticated session is active or when cached diagnostics history exists.
 6. Show `Tasks` when cached task data exists or an authenticated session is active.
 7. Show `Settings` when cached account data exists, cached task data exists, or an authenticated session is active.
 8. Keep refresh disabled unless authenticated credentials are available for the current session.
@@ -1151,7 +1154,8 @@ Handle these states explicitly:
 - no local data;
 - cached data but no active authenticated session;
 - authenticated session with latest sync timestamp;
-- failed refresh with cached data still available.
+- failed refresh with cached data still available;
+- cached diagnostics history without an active authenticated session.
 
 ### Error handling
 
@@ -1167,6 +1171,7 @@ Test:
 
 - authenticated navigation links;
 - unauthenticated navigation links;
+- diagnostics-navigation visibility from cached history;
 - shell error banner rendering;
 - sync timestamp rendering when available.
 
@@ -1174,11 +1179,12 @@ Test:
 
 Current implementation:
 
-- `Sign In`, `Dashboard`, `Inventory`, `Party`, `Live Tests`, `Tasks`, and `Settings` routes;
+- `Sign In`, `Dashboard`, `Inventory`, `Party`, `Diagnostics`, `Tasks`, and `Settings` routes;
 - top app bar with refresh action;
 - responsive drawer navigation;
 - shared error banner;
-- cached identity summary in the app shell.
+- cached identity summary in the app shell;
+- diagnostics route visibility that survives offline cached-log inspection.
 
 Next:
 
@@ -1310,7 +1316,8 @@ Current implementation:
 - persisted-credential restore on app startup;
 - freshness classification for cached tasks;
 - cached account snapshot with class, stat, companion, and inventory-summary fields;
-- cached party snapshot with summary and quest progress fields when the user belongs to a party.
+- cached party snapshot with summary and quest progress fields when the user belongs to a party;
+- successful sign-in refreshes appended into the shared diagnostics journal with redacted metadata.
 
 Next:
 
@@ -1521,20 +1528,20 @@ Waiting:
 
 - party mutations remain out of scope until confirmation and audit rules are defined.
 
-## 17. Live integration test lab
+## 17. Diagnostics workspace and live integration tests
 
 Status: implemented
-Owner module: `Habitica.Application.Diagnostics` and `Habitica.WebApp.Pages.LiveTestsPage`
+Owner module: `Habitica.Application.Diagnostics`, `Habitica.Storage`, and `Habitica.WebApp.Pages.LiveTestsPage`
 Application entry point: `Habitica.WebApp.Pages.LiveTestsPage`
-Primary Habitica data: authenticated user snapshot, task snapshot, party snapshot, equipped battle gear
+Primary Habitica data: authenticated user snapshot, task snapshot, party snapshot, equipped battle gear, diagnostics log entries
 Mutates Habitica state: yes for the reversible gear roundtrip only
 Requires confirmation: yes for the reversible gear roundtrip
-Offline behavior: not available offline; requires live authenticated API access
+Offline behavior: diagnostics history and filters remain readable offline; live checks and presets require authenticated API access
 Rate-limit sensitivity: low because tests are user-launched, sequential, and deliberately small
 
 ### Goal
 
-Provide user-launchable live tests from the UI that validate implemented features against the real Habitica API while minimizing risk, request volume, and accidental destructive behavior.
+Provide a diagnostics workspace from the UI that validates implemented features against the real Habitica API, exposes curated read-only inspection presets, and keeps a persistent redacted diagnostics journal for cross-feature debugging.
 
 ### Inputs
 
@@ -1543,6 +1550,7 @@ authenticated credentials
 current cached user snapshot
 current cached party snapshot
 current cached task snapshot
+cached diagnostics log entries
 user acknowledgement for reversible gear mutation
 owned gear keys
 ```
@@ -1554,12 +1562,16 @@ per-test pass/fail/skip results
 request counts
 human-readable result messages
 warning copy for reversible mutations
+curated preset response previews
+filterable diagnostics console entries
 updated local snapshots after successful checks
 ```
 
 ### Local storage
 
 Refreshes `user/latestSnapshot`, `party/latestSnapshot`, and `tasks/latestSnapshot` as part of the safe suite and gear roundtrip verification.
+
+Persists a capped `diagnostics/logEntries` journal that stores newest-first redacted diagnostics entries across auth, preset inspection, and live test workflows.
 
 ### API interaction
 
@@ -1572,6 +1584,8 @@ GET /tasks/user
 POST /user/equip/equipped/:key
 ```
 
+Curated presets reuse the same narrow `/user`, `/tasks/user`, and `/groups/party` reads that the implemented account, inventory, task, and party pages already depend on.
+
 ### Algorithm / rules
 
 Current workflow rules:
@@ -1580,9 +1594,11 @@ Current workflow rules:
 1. Run safe checks sequentially and never in parallel.
 2. Reuse the same live `/user` response for account and inventory assertions.
 3. Fetch `/groups/party` only when the account snapshot shows an active party.
-4. Skip the reversible gear test when no alternate owned supported battle item exists.
-5. For the reversible gear test, equip an alternate owned battle item, verify with a fresh `/user`, restore the original item, and verify restoration with another fresh `/user`.
-6. If restoration or restore verification fails, report the test as failed and preserve the latest known local snapshot.
+4. Expose only curated diagnostics presets; do not allow arbitrary request paths from this workspace.
+5. Append successful and failed auth, preset, and live test workflow events into the same redacted diagnostics journal.
+6. Skip the reversible gear test when no alternate owned supported battle item exists.
+7. For the reversible gear test, equip an alternate owned battle item, verify with a fresh `/user`, restore the original item, and verify restoration with another fresh `/user`.
+8. If restoration or restore verification fails, report the test as failed and preserve the latest known local snapshot.
 ```
 
 ### Validation
@@ -1590,6 +1606,7 @@ Current workflow rules:
 Require:
 
 - an authenticated session before any live test runs;
+- an authenticated session before any curated preset runs;
 - explicit user acknowledgement before the reversible gear test is enabled.
 
 Skip:
@@ -1599,15 +1616,19 @@ Skip:
 
 ### Error handling
 
-Surface per-test failures in the result list.
+Surface per-test and preset failures in the diagnostics result panels.
 
 Attempt to restore the original battle gear in a `finally` path during the reversible mutation test and report cleanup failures explicitly.
+
+Allow diagnostics history to be cleared independently, and clear it together with other local stores when the user invokes the global clear-local-data action.
 
 ### Security / privacy
 
 Do not display raw credentials or request headers.
 
-Keep all live tests user-initiated. Do not introduce background polling or parallel batch execution through the test lab.
+Keep all live tests and presets user-initiated. Do not introduce background polling or parallel batch execution through the diagnostics workspace.
+
+Keep diagnostics metadata redacted by default. Do not persist tokens, raw auth headers, or full unrestricted user payloads in the journal.
 
 ### Tests
 
@@ -1616,25 +1637,31 @@ Test:
 - safe-suite request reuse and snapshot persistence;
 - reversible gear test skip behavior when no alternate item exists;
 - reversible gear test restore behavior;
-- live test page rendering;
-- navigation rendering for the `Live Tests` route.
+- diagnostics page rendering;
+- preset-run rendering and controller dispatch;
+- diagnostics journal hydration and clearing;
+- navigation rendering for the `Diagnostics` route.
 
 ### Open questions
 
 Current implementation:
 
-- dedicated `Live Tests` route plus a `Settings` entry point;
+- dedicated `Diagnostics` route plus a `Settings` entry point;
 - safe suite covering account, inventory, party, and task snapshots;
-- reversible gear roundtrip with acknowledgement gate and restore verification.
+- reversible gear roundtrip with acknowledgement gate and restore verification;
+- curated `/user`, `/tasks/user`, and `/groups/party` diagnostics presets;
+- shared diagnostics console with feature, severity, and mode filters;
+- persistent diagnostics logging for sign-in, preset runs, and live tests.
 
 Next:
 
 - add optional live checks for future task mutations with stronger warnings and dry-run summaries;
-- add richer diagnostics such as per-step timestamps and redacted raw status codes.
+- add richer diagnostics such as per-step timestamps and redacted raw status codes;
+- extend the shared journal to future mutation workflows such as equip actions and skill casts on their dedicated pages.
 
 Waiting:
 
-- any live test that consumes gold, mana, items, or irreversible state remains blocked until stronger warning and confirmation rules are defined.
+- any live test or future action check that consumes gold, mana, items, or irreversible state remains blocked until stronger warning and confirmation rules are defined.
 
 ## 18. Read-only task workspace
 

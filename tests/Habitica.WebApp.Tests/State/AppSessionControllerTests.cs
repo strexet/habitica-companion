@@ -64,6 +64,31 @@ public sealed class AppSessionControllerTests
         Assert.Equal(0, controller.State.DiagnosticsWarningCount);
     }
 
+    [Fact]
+    public async Task ClearLocalDataAsync_clears_diagnostics_history_with_other_local_state()
+    {
+        var logStore = new FakeDiagnosticsLogStore(new[]
+        {
+            new DiagnosticsLogEntry(
+                "entry-1",
+                DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+                DiagnosticsFeatureArea.Auth,
+                "sign-in",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveRead,
+                "signed in",
+                new Dictionary<string, string>())
+        });
+
+        var controller = CreateController(logStore);
+        await controller.InitializeAsync();
+
+        await controller.ClearLocalDataAsync();
+
+        Assert.Empty(controller.State.DiagnosticsLogEntries!);
+        Assert.False(controller.State.HasDiagnosticsHistory);
+    }
+
     private static AppSessionController CreateController(FakeDiagnosticsLogStore logStore)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());

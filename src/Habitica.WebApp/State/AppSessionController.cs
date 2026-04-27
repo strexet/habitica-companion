@@ -293,6 +293,7 @@ public sealed class AppSessionController : IAppSessionController
         _persistLocally = false;
 
         await _credentialStore.ClearPersistentCredentialsAsync(cancellationToken);
+        await _diagnosticsLogStore.ClearAsync(cancellationToken);
         await _partySnapshotStore.ClearAsync(cancellationToken);
         await _taskSnapshotStore.ClearAsync(cancellationToken);
         await _userSnapshotStore.ClearAsync(cancellationToken);

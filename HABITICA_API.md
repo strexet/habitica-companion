@@ -1009,6 +1009,7 @@ Log:
 - Request duration.
 - Habitica `error` code.
 - Sanitized response message.
+- Redacted diagnostics metadata or curated preview snippets only when the app exposes a user-facing diagnostics journal.
 
 Do not log:
 
@@ -1017,6 +1018,7 @@ Do not log:
 - Private messages.
 - Full user profile/inbox.
 - Full webhook payloads unless explicitly enabled in a secure debug mode.
+- Full unrestricted `/user` payloads in routine diagnostics history.
 
 ## 19. Security and privacy requirements
 
