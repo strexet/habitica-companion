@@ -10,7 +10,7 @@ namespace Habitica.WebApp.Tests;
 public sealed class AppNavMenuTests : BunitContext
 {
     [Fact]
-    public void Renders_authenticated_navigation_links_when_session_is_active()
+    public void Renders_diagnostics_link_instead_of_live_tests_for_authenticated_sessions()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
@@ -26,12 +26,8 @@ public sealed class AppNavMenuTests : BunitContext
 
         var cut = Render<AppNavMenu>();
 
-        Assert.Contains("Dashboard", cut.Markup);
-        Assert.Contains("Inventory", cut.Markup);
-        Assert.Contains("Live Tests", cut.Markup);
-        Assert.Contains("Party", cut.Markup);
-        Assert.Contains("Tasks", cut.Markup);
-        Assert.Contains("Settings", cut.Markup);
-        Assert.DoesNotContain("Sign In", cut.Markup);
+        Assert.Contains("Diagnostics", cut.Markup);
+        Assert.DoesNotContain("Live Tests", cut.Markup);
+        Assert.Contains("/diagnostics", cut.Markup);
     }
 }
