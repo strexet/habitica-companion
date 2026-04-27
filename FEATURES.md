@@ -1095,7 +1095,7 @@ Rate-limit sensitivity: none by itself
 
 ### Goal
 
-Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, inventory, party, diagnostics, tasks, and settings.
+Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, inventory, party, diagnostics, tasks, and settings, while keeping the foldable feature drawer hidden until an authenticated session exists.
 
 ### Inputs
 
@@ -1115,7 +1115,7 @@ global workflow error state
 
 ```text
 top app bar
-responsive navigation drawer
+responsive authenticated navigation drawer
 route links
 refresh action
 global warning banner
@@ -1136,15 +1136,10 @@ None directly. Refresh delegates to the sync workflow.
 Navigation rules:
 
 ```text
-1. Show `Sign In` when no authenticated session is active.
-2. Show `Dashboard` when cached account data exists, cached task data exists, or an authenticated session is active.
-3. Show `Inventory` when cached account data exists or an authenticated session is active.
-4. Show `Party` when cached party data exists, cached account data exists, or an authenticated session is active.
-5. Show `Diagnostics` when an authenticated session is active or when cached diagnostics history exists.
-6. Show `Tasks` when cached task data exists or an authenticated session is active.
-7. Show `Settings` when cached account data exists, cached task data exists, or an authenticated session is active.
-8. Keep refresh disabled unless authenticated credentials are available for the current session.
-9. Surface the latest workflow error above route content.
+1. Hide the foldable feature drawer entirely when no authenticated session is active.
+2. Show `Dashboard`, `Inventory`, `Party`, `Diagnostics`, `Tasks`, and `Settings` in the drawer once an authenticated session exists.
+3. Keep refresh disabled unless authenticated credentials are available for the current session.
+4. Surface the latest workflow error above route content.
 ```
 
 ### Validation
@@ -1152,7 +1147,7 @@ Navigation rules:
 Handle these states explicitly:
 
 - no local data;
-- cached data but no active authenticated session;
+- cached data but no active authenticated session with the drawer still hidden;
 - authenticated session with latest sync timestamp;
 - failed refresh with cached data still available;
 - cached diagnostics history without an active authenticated session.
@@ -1170,8 +1165,7 @@ Never display raw API headers or token material in the shell.
 Test:
 
 - authenticated navigation links;
-- unauthenticated navigation links;
-- diagnostics-navigation visibility from cached history;
+- unauthenticated drawer suppression;
 - shell error banner rendering;
 - sync timestamp rendering when available.
 
@@ -1181,10 +1175,10 @@ Current implementation:
 
 - `Sign In`, `Dashboard`, `Inventory`, `Party`, `Diagnostics`, `Tasks`, and `Settings` routes;
 - top app bar with refresh action;
-- responsive drawer navigation;
+- responsive drawer navigation shown only after authentication;
 - shared error banner;
 - cached identity summary in the app shell;
-- diagnostics route visibility that survives offline cached-log inspection.
+- diagnostics route included in the authenticated drawer.
 
 Next:
 

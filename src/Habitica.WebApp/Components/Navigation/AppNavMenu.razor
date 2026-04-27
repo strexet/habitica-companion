@@ -1,14 +1,7 @@
 @inject IAppSessionController SessionController
 
 <MudNavMenu Class="app-nav-menu">
-    @if (!SessionController.State.IsAuthenticated)
-    {
-        <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Login">
-            Sign In
-        </MudNavLink>
-    }
-
-    @if (SessionController.State.HasCachedTasks || SessionController.State.HasCachedUserSnapshot || SessionController.State.IsAuthenticated || SessionController.State.HasDiagnosticsHistory)
+    @if (SessionController.State.IsAuthenticated)
     {
         <MudNavLink Href="/dashboard" Icon="@Icons.Material.Outlined.DashboardCustomize">
             Dashboard
@@ -22,12 +15,9 @@
             Party
         </MudNavLink>
 
-        @if (SessionController.State.IsAuthenticated || SessionController.State.HasDiagnosticsHistory)
-        {
-            <MudNavLink Href="/diagnostics" Icon="@Icons.Material.Outlined.Science">
-                Diagnostics
-            </MudNavLink>
-        }
+        <MudNavLink Href="/diagnostics" Icon="@Icons.Material.Outlined.Science">
+            Diagnostics
+        </MudNavLink>
 
         <MudNavLink Href="/tasks" Icon="@Icons.Material.Outlined.TaskAlt">
             Tasks

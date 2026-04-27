@@ -4,7 +4,10 @@
 
 <MudLayout>
     <MudAppBar Class="topbar" Dense="true" Elevation="0">
-        <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Outlined.Menu" OnClick="ToggleDrawer" />
+        @if (ShowDrawer)
+        {
+            <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Outlined.Menu" OnClick="ToggleDrawer" />
+        }
         <div class="topbar-copy">
             <strong>Habitica Tool</strong>
             <span>@GetIdentityText()</span>
@@ -23,15 +26,18 @@
         </MudButton>
     </MudAppBar>
 
-    <MudDrawer @bind-Open="_drawerOpen" Class="app-drawer" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="DrawerVariant.Responsive">
-        <div class="drawer-hero">
-            <p class="section-label">Habitica companion</p>
-            <h2>Local-first planning surface</h2>
-            <p>Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.</p>
-        </div>
+    @if (ShowDrawer)
+    {
+        <MudDrawer @bind-Open="_drawerOpen" Class="app-drawer" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="DrawerVariant.Responsive">
+            <div class="drawer-hero">
+                <p class="section-label">Habitica companion</p>
+                <h2>Local-first planning surface</h2>
+                <p>Browse cached data, run diagnostics, and keep live mutations behind explicit workflow guardrails.</p>
+            </div>
 
-        <AppNavMenu />
-    </MudDrawer>
+            <AppNavMenu />
+        </MudDrawer>
+    }
 
     <MudMainContent>
         <div class="shell-content">
@@ -49,6 +55,7 @@
 
 @code {
     private bool _drawerOpen = true;
+    private bool ShowDrawer => SessionController.State.IsAuthenticated;
 
     protected override async Task OnInitializedAsync()
     {

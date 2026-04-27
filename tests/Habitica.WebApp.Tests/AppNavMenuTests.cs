@@ -1,5 +1,4 @@
 using Bunit;
-using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Sync;
 using Habitica.WebApp.Components.Navigation;
 using Habitica.WebApp.State;
@@ -33,7 +32,7 @@ public sealed class AppNavMenuTests : BunitContext
     }
 
     [Fact]
-    public void Renders_diagnostics_link_when_only_diagnostics_history_is_cached()
+    public void Does_not_render_feature_links_for_unauthenticated_sessions()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
@@ -45,23 +44,12 @@ public sealed class AppNavMenuTests : BunitContext
                 ErrorMessage: null,
                 LastSyncedAtUtc: null,
                 TaskFreshness: SnapshotFreshnessState.Missing,
-                TaskSnapshot: null,
-                DiagnosticsLogEntries: new[]
-                {
-                    new DiagnosticsLogEntry(
-                        "entry-1",
-                        DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
-                        DiagnosticsFeatureArea.Diagnostics,
-                        "safe-live-tests",
-                        DiagnosticsSeverity.Warning,
-                        DiagnosticsMode.LiveRead,
-                        "warning",
-                        new Dictionary<string, string>())
-                })));
+                TaskSnapshot: null)));
 
         var cut = Render<AppNavMenu>();
 
-        Assert.Contains("Diagnostics", cut.Markup);
-        Assert.Contains("/diagnostics", cut.Markup);
+        Assert.DoesNotContain("Sign In", cut.Markup);
+        Assert.DoesNotContain("Dashboard", cut.Markup);
+        Assert.DoesNotContain("Diagnostics", cut.Markup);
     }
 }
