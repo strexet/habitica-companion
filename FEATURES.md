@@ -448,10 +448,10 @@ Test:
 
 Verify formulas for each supported skill against Habitica source/docs before marking results as high confidence.
 
-## 7. Skill macro system
+## 7. Macros Collection and skill macro system
 
 Status: planned
-Owner module: `Habitica.Rules.Skills` and `Habitica.WebApp.Macros`
+Owner module: `Habitica.Rules.Skills`, `Habitica.Application.Macros`, and `Habitica.WebApp.Macros`
 Application entry point: `Habitica.Application.Macros`
 Primary Habitica data: user stats, mana, skills, tasks, equipment, inventory, party/quest state
 Mutates Habitica state: yes
@@ -461,16 +461,21 @@ Rate-limit sensitivity: high
 
 ### Goal
 
-Allow users to define and execute declarative macros consisting of gear changes, skill casts, task targeting, and optional state checks.
+Allow users to define and execute a local Macros Collection. A macro is a named declarative sequence of validated actions such as equipping a preset or item, casting a skill, selecting a target, refreshing snapshots, and restoring the original gear captured at macro start.
+
+Macros are not implemented yet. Inventory presets added by the Inventory page are designed as future macro references.
 
 ### Inputs
 
 ```text
 macro definition
+macro collection
 current user snapshot
 current task snapshot
 current equipment snapshot
 current party/quest snapshot
+local equipment presets
+owned gear catalog
 available skill metadata
 ```
 
@@ -491,12 +496,15 @@ execution log
 Suggested records:
 
 ```text
+macro_collection
 skill_macro
 skill_macro_step
 skill_macro_dry_run
 skill_macro_execution_log
 skill_macro_execution_step_log
 ```
+
+Equipment presets live in local per-user inventory preset storage. Macro steps should reference preset ids when possible, not duplicate preset slot mappings into the macro definition.
 
 ### API interaction
 
@@ -511,13 +519,35 @@ Macros must be declarative, not arbitrary code.
 Allowed initial step types:
 
 ```text
-equipGearSet
-castSkill
+equip
+cast
 selectBestTask
 assertManaAtLeast
 assertCurrentClass
 refreshSnapshot
 stopIfWarning
+restoreOriginalGear
+```
+
+Initial `equip` references should support:
+
+```text
+preset id
+single gear item key
+best gear query such as maximize perception or maximize strength
+restore original battle gear or costume captured when the macro starts
+```
+
+Selectable equip targets should list matching presets first, then individual owned gear items. Preset labels must include kind, name, and battle preset stat totals when available. Individual gear labels should use the inventory gear catalog display name with raw key fallback.
+
+Example macro:
+
+```text
+1. Equip gear that maximizes perception.
+2. Cast Tools of the Trade 3 times.
+3. Equip gear that maximizes strength.
+4. Cast Backstab until there is no mana left.
+5. Restore gear that was equipped before the macro started.
 ```
 
 Execution flow:
@@ -534,6 +564,8 @@ Execution flow:
 9. Persist execution log.
 ```
 
+Macro execution must snapshot original battle gear and costume gear before the first mutating step when any restore action is present. Restore actions must use that captured state, not the currently edited preset definitions.
+
 ### Validation
 
 Reject macros that:
@@ -541,6 +573,7 @@ Reject macros that:
 - contain unknown step types;
 - target missing tasks;
 - require unavailable gear;
+- reference deleted equipment presets;
 - exceed available mana at dry-run time;
 - contain unsupported class skills;
 - require stale data for destructive decisions;
@@ -574,6 +607,9 @@ Test:
 - macro validation;
 - insufficient mana;
 - missing gear;
+- deleted preset references;
+- restore-original-gear planning;
+- preset-first gear selection lists;
 - task target resolution;
 - sequential execution;
 - stop-on-failure;
@@ -1353,47 +1389,73 @@ Waiting:
 ## 15. Inventory and equipment explorer
 
 Status: implemented
-Owner module: `Habitica.Application.Inventory` and `Habitica.WebApp.Pages.InventoryPage`
+Owner module: `Habitica.Application.Inventory`, `Habitica.Storage`, `Habitica.Api`, and `Habitica.WebApp.Pages.InventoryPage`
 Application entry point: `Habitica.WebApp.Pages.InventoryPage`
-Primary Habitica data: cached user inventory summary and equipped gear keys
-Mutates Habitica state: no
-Requires confirmation: no
-Offline behavior: fully available from the cached account snapshot
-Rate-limit sensitivity: none without explicit refresh
+Primary Habitica data: cached user inventory summary, equipped gear keys, owned gear keys, and Habitica content gear catalog
+Mutates Habitica state: yes for explicit equip/unequip item actions and preset equip actions
+Requires confirmation: no for equip; yes for local preset removal
+Offline behavior: read-only inventory, equipped gear, and preset views remain available from local snapshots; equip execution requires authentication and fresh user data
+Rate-limit sensitivity: medium for preset equip because each changed slot is a separate user-initiated mutation
 
 ### Goal
 
-Provide a read-only explorer for currently equipped battle/costume gear and the locally cached owned gear keys, grouped by slot for later equip and optimizer workflows.
+Provide an equipment management page for currently equipped battle/costume gear, local per-user presets, and obtained gear. The page resolves gear keys to real names when the cached content catalog is available, shows current-class-adjusted stat totals, and lets users change gear through guarded Habitica API mutations.
 
 ### Inputs
 
 ```text
 cached user snapshot
 user freshness state
+authenticated user id
 equipped battle gear keys
 equipped costume gear keys
 owned gear keys
+cached gear content catalog
+local per-user equipment presets
 current pet/mount keys
 ```
 
 ### Outputs
 
 ```text
-slot-grouped owned gear panels
+equipped battle gear and costume blocks
+separate battle gear and costume preset lists
+slot-grouped obtained gear panels
+human-readable gear names with raw-key fallback
+gear stat totals
 battle and costume equipped markers
 owned gear counts
 companion summary
 freshness banner
 empty-state messaging
+snackbar feedback for completed or failed equipment changes
 ```
 
 ### Local storage
 
-Reads `user/latestSnapshot`.
+Reads:
+
+```text
+user/latestSnapshot
+inventory/gearCatalog
+inventory/equipmentPresets
+diagnostics/logEntries
+```
+
+Equipment presets are app-local records keyed by Habitica user id. Presets are not synced to Habitica and must not be shared across accounts on the same browser.
 
 ### API interaction
 
-None directly. The page consumes local state prepared by the sync workflow.
+Current requests:
+
+```text
+GET /content?language=en
+POST /user/equip/equipped/:key
+POST /user/equip/costume/:key
+GET /user
+```
+
+After every successful equip mutation, refresh `/user` and save the refreshed snapshot before updating visible equipped state.
 
 ### Algorithm / rules
 
@@ -1401,11 +1463,32 @@ Current view-model rules:
 
 ```text
 1. Read the latest cached user snapshot.
-2. Group owned gear keys by slot prefix: head, armor, weapon, shield, back, other.
-3. Sort groups in slot order.
-4. Sort keys within each group lexicographically.
-5. Mark keys that match the current battle or costume equipped slot values.
+2. Read cached gear catalog and local presets for the current Habitica user id.
+3. Group owned gear keys by slot prefix: head, armor, weapon, shield, back, other.
+4. Sort groups in slot order.
+5. Sort keys within each group lexicographically.
+6. Resolve display name, slot, class, notes, and base stats from the catalog when present.
+7. Fall back to the raw key when catalog metadata is missing.
+8. Apply the current-class 50% gear stat bonus when item class matches user class.
+9. Mark keys that match the current battle or costume equipped slot values.
+10. Sum battle preset stat totals from the resolved item totals.
 ```
+
+Equip action rules:
+
+```text
+1. Require authenticated credentials.
+2. Require a fresh user snapshot.
+3. Validate target keys against cached owned gear or currently equipped gear.
+4. Execute item equip/unequip immediately through the matching Habitica equip endpoint.
+5. Execute preset equip one changed slot at a time in deterministic slot order.
+6. Skip unchanged preset slots.
+7. Refresh `/user` after changed equip actions.
+8. Write diagnostics log entries for success and failure.
+9. Show non-blocking snackbar feedback and update equipped badges from the refreshed snapshot.
+```
+
+Preset removal is local-only. It requires a confirmation prompt because future Macros may reference preset ids.
 
 ### Validation
 
@@ -1415,15 +1498,20 @@ Show explicit states for:
 - empty owned-gear cache;
 - fresh account snapshot;
 - stale account snapshot;
-- expired account snapshot.
+- expired account snapshot;
+- duplicate preset names for the same user and preset kind;
+- missing owned gear for equip targets;
+- missing authenticated credentials for mutating actions.
 
 ### Error handling
 
 Show cached inventory/equipment data even when a previous refresh attempt failed.
 
+Equip failures leave cached state visible, write an `Inventory` diagnostics log entry, and show snackbar feedback.
+
 ### Security / privacy
 
-Display item API keys only. Do not expose raw credentials or request headers.
+Do not expose raw credentials or request headers. Diagnostics metadata may include preset ids, preset names, item keys, equipment kind, changed slot counts, skipped slot counts, request counts, and failed slot names, but never API tokens.
 
 ### Tests
 
@@ -1431,27 +1519,39 @@ Test:
 
 - grouping by slot prefix;
 - battle and costume equipped markers;
+- catalog name resolution and raw-key fallback;
+- current-class stat totals;
+- battle preset stat totals;
+- local per-user preset storage and duplicate-name validation;
+- preset removal;
+- item equip and preset equip controller dispatch;
 - empty-state rendering;
-- inventory route navigation rendering.
+- inventory route navigation rendering;
+- diagnostics logging for inventory actions.
 
 ### Open questions
 
 Current implementation:
 
 - dedicated `Inventory` route in the app shell;
-- slot-grouped owned gear key explorer;
+- equipped battle gear and costume blocks;
+- local battle gear and costume preset lists;
+- preset save, equip, and confirmed remove actions;
+- slot-grouped obtained gear explorer;
+- gear content catalog name/stat resolution;
 - battle and costume equipped markers;
+- battle and costume equip buttons on owned gear cards;
+- snackbar feedback for equipment changes;
 - companion summary cards for the cached account snapshot.
 
 Next:
 
-- resolve keys against a cached content catalog for human-readable names and richer item details;
 - add slot filters and sort controls;
 - surface quest and consumable inventory details beyond aggregate counts.
 
 Waiting:
 
-- full equip workflows remain out of scope outside the guarded live-test harness.
+- Macro execution remains out of scope; inventory presets are stored with stable ids so future Macros can reference them.
 
 ## 16. Party explorer
 
@@ -1595,7 +1695,8 @@ request counts
 human-readable result messages
 warning copy for reversible mutations
 curated preset response previews
-filterable diagnostics console entries
+filterable developer-oriented diagnostics console entries
+JSONL copy/export for filtered diagnostics entries
 updated local snapshots after successful checks
 ```
 
@@ -1603,7 +1704,7 @@ updated local snapshots after successful checks
 
 Refreshes `user/latestSnapshot`, `party/latestSnapshot`, and `tasks/latestSnapshot` as part of the safe suite and gear roundtrip verification.
 
-Persists a capped `diagnostics/logEntries` journal that stores newest-first redacted diagnostics entries across auth, preset inspection, and live test workflows.
+Persists a capped `diagnostics/logEntries` journal that stores newest-first redacted diagnostics entries across auth, inventory, preset inspection, and live test workflows.
 
 ### API interaction
 
@@ -1631,6 +1732,9 @@ Current workflow rules:
 6. Skip the reversible gear test when no alternate owned supported battle item exists.
 7. For the reversible gear test, equip an alternate owned battle item, verify with a fresh `/user`, restore the original item, and verify restoration with another fresh `/user`.
 8. If restoration or restore verification fails, report the test as failed and preserve the latest known local snapshot.
+9. The diagnostics console filters by feature, severity, and mode.
+10. Copy and download actions export the currently filtered entries as JSONL. With no filters, they export all stored entries.
+11. The selected entry detail renders structured JSON instead of loose key/value text.
 ```
 
 ### Validation
@@ -1654,6 +1758,8 @@ Attempt to restore the original battle gear in a `finally` path during the rever
 
 Allow diagnostics history to be cleared independently, and clear it together with other local stores when the user invokes the global clear-local-data action.
 
+If browser clipboard or download APIs fail, keep stored diagnostics entries unchanged.
+
 ### Security / privacy
 
 Do not display raw credentials or request headers.
@@ -1672,6 +1778,7 @@ Test:
 - diagnostics page rendering;
 - preset-run rendering and controller dispatch;
 - diagnostics journal hydration and clearing;
+- JSONL copy/download controls for filtered entries;
 - navigation rendering for the `Diagnostics` route.
 
 ### Open questions
@@ -1683,7 +1790,9 @@ Current implementation:
 - reversible gear roundtrip with acknowledgement gate and restore verification;
 - curated `/user`, `/tasks/user`, and `/groups/party` diagnostics presets;
 - shared diagnostics console with feature, severity, and mode filters;
-- persistent diagnostics logging for sign-in, preset runs, and live tests.
+- copy-all and download controls for JSONL diagnostics export;
+- structured selected-entry detail;
+- persistent diagnostics logging for sign-in, inventory actions, preset runs, and live tests.
 
 Next:
 

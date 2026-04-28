@@ -2,6 +2,7 @@
 @implements IDisposable
 @inject InventoryViewModelFactory InventoryViewModelFactory
 @inject IAppSessionController SessionController
+@inject ISnackbar Snackbar
 
 <PageTitle>Inventory</PageTitle>
 
@@ -11,8 +12,8 @@
             <p class="section-label">Equipment explorer</p>
             <h1>Cached inventory and equipped gear</h1>
             <p class="panel-copy">
-                Inspect the owned gear keys already stored on this device, grouped by slot and annotated with the
-                current battle and costume equipment state. This stays read-only in the app surface for now.
+                Manage equipped battle gear and costume gear from cached account data. Gear changes run through
+                Habitica API mutations and refresh the account snapshot after completion.
             </p>
         </div>
     </section>
@@ -26,7 +27,13 @@
     else
     {
         var snapshot = SessionController.State.UserSnapshot;
-        var viewModel = InventoryViewModelFactory.Create(snapshot);
+        var viewModel = InventoryViewModelFactory.Create(
+            snapshot,
+            SessionController.State.GearCatalogSnapshot,
+            SessionController.State.Presets);
+        var canMutate = SessionController.State.IsAuthenticated
+            && !SessionController.State.IsBusy
+            && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
 
         <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
             @GetFreshnessLabel(SessionController.State.UserFreshness)
@@ -43,6 +50,69 @@
                 <span class="dashboard-stat-label">Current companion</span>
                 <strong>@(snapshot.CurrentPetKey ?? "None")</strong>
                 <span class="dashboard-stat-note">Mount: @(snapshot.CurrentMountKey ?? "None")</span>
+            </article>
+        </section>
+
+        <section class="inventory-management-grid">
+            <article class="card-surface inventory-group-card">
+                <div class="task-group-header">
+                    <div>
+                        <p class="section-label">Equipped battle gear</p>
+                        <h2>Battle loadout</h2>
+                    </div>
+                    <span class="ui-pill count-pill">@FormatStats(viewModel.BattleEquipped.TotalStats)</span>
+                </div>
+
+                @RenderEquippedSet(viewModel.BattleEquipped)
+
+                <div class="preset-save-row">
+                    <input class="app-input" placeholder="Preset name" @bind="_battlePresetName" />
+                    <MudButton Color="Color.Primary" Disabled="@(!canMutate || string.IsNullOrWhiteSpace(_battlePresetName))" OnClick="@(() => SavePresetAsync(EquipmentSetKind.Battle))" Variant="Variant.Filled">
+                        Save battle gear preset
+                    </MudButton>
+                </div>
+            </article>
+
+            <article class="card-surface inventory-group-card">
+                <div class="task-group-header">
+                    <div>
+                        <p class="section-label">Equipped costume</p>
+                        <h2>Costume loadout</h2>
+                    </div>
+                </div>
+
+                @RenderEquippedSet(viewModel.CostumeEquipped)
+
+                <div class="preset-save-row">
+                    <input class="app-input" placeholder="Preset name" @bind="_costumePresetName" />
+                    <MudButton Color="Color.Primary" Disabled="@(!canMutate || string.IsNullOrWhiteSpace(_costumePresetName))" OnClick="@(() => SavePresetAsync(EquipmentSetKind.Costume))" Variant="Variant.Filled">
+                        Save costume preset
+                    </MudButton>
+                </div>
+            </article>
+        </section>
+
+        <section class="inventory-management-grid">
+            <article class="card-surface inventory-group-card">
+                <div class="task-group-header">
+                    <div>
+                        <p class="section-label">Battle gear presets</p>
+                        <h2>Saved battle presets</h2>
+                    </div>
+                    <span class="ui-pill count-pill">@viewModel.BattlePresets.Count</span>
+                </div>
+                @RenderPresetList(viewModel.BattlePresets, canMutate)
+            </article>
+
+            <article class="card-surface inventory-group-card">
+                <div class="task-group-header">
+                    <div>
+                        <p class="section-label">Costume presets</p>
+                        <h2>Saved costume presets</h2>
+                    </div>
+                    <span class="ui-pill count-pill">@viewModel.CostumePresets.Count</span>
+                </div>
+                @RenderPresetList(viewModel.CostumePresets, canMutate)
             </article>
         </section>
 
@@ -79,7 +149,18 @@
                             @foreach (var item in group.Items)
                             {
                                 <article class="inventory-item-card">
-                                    <strong>@item.Key</strong>
+                                    <div class="task-group-header">
+                                        <div>
+                                            <strong>@item.DisplayName</strong>
+                                            <span class="dashboard-stat-note">@item.Key</span>
+                                        </div>
+                                        <span class="ui-pill count-pill">@FormatStats(item.TotalStats)</span>
+                                    </div>
+                                    <span class="dashboard-stat-note">@item.SlotTitle@(string.IsNullOrWhiteSpace(item.ClassName) ? string.Empty : $" • {item.ClassName}")</span>
+                                    @if (!string.IsNullOrWhiteSpace(item.Notes))
+                                    {
+                                        <p class="panel-copy">@item.Notes</p>
+                                    }
                                     <div class="inventory-item-tags">
                                         @if (item.IsBattleEquipped)
                                         {
@@ -90,6 +171,14 @@
                                         {
                                             <span class="ui-pill state-pill warning-pill">Costume equipped</span>
                                         }
+                                    </div>
+                                    <div class="action-row inventory-actions">
+                                        <MudButton HtmlTag="button" data-testid="@($"equip-battle-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Variant="Variant.Outlined">
+                                            @(item.IsBattleEquipped ? "Unequip battle" : "Equip battle")
+                                        </MudButton>
+                                        <MudButton HtmlTag="button" data-testid="@($"equip-costume-{item.Key}")" Color="Color.Secondary" Disabled="@(!canMutate)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Costume, item.Key))" Variant="Variant.Outlined">
+                                            @(item.IsCostumeEquipped ? "Unequip costume" : "Equip costume")
+                                        </MudButton>
                                     </div>
                                 </article>
                             }
@@ -102,6 +191,10 @@
 </div>
 
 @code {
+    private string _battlePresetName = string.Empty;
+    private string _costumePresetName = string.Empty;
+    private string? _pendingRemovePresetId;
+
     protected override void OnInitialized()
     {
         SessionController.Changed += HandleStateChanged;
@@ -127,6 +220,181 @@
             SnapshotFreshnessState.Expired => Severity.Error,
             _ => Severity.Info
         };
+    }
+
+    private async Task SavePresetAsync(EquipmentSetKind kind)
+    {
+        var name = kind == EquipmentSetKind.Battle ? _battlePresetName : _costumePresetName;
+        var result = await SessionController.SaveEquipmentPresetAsync(kind, name);
+        ShowFeedback(result);
+
+        if (result.Succeeded)
+        {
+            if (kind == EquipmentSetKind.Battle)
+            {
+                _battlePresetName = string.Empty;
+            }
+            else
+            {
+                _costumePresetName = string.Empty;
+            }
+        }
+    }
+
+    private async Task EquipItemAsync(EquipmentSetKind kind, string key)
+    {
+        var result = await SessionController.EquipInventoryItemAsync(kind, key);
+        ShowFeedback(result);
+    }
+
+    private async Task EquipPresetAsync(string presetId)
+    {
+        var result = await SessionController.EquipEquipmentPresetAsync(presetId);
+        ShowFeedback(result);
+    }
+
+    private async Task ConfirmRemovePresetAsync(string presetId)
+    {
+        var result = await SessionController.RemoveEquipmentPresetAsync(presetId);
+        _pendingRemovePresetId = null;
+        ShowFeedback(result);
+    }
+
+    private void ShowFeedback(InventoryActionResult result)
+    {
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private RenderFragment RenderEquippedSet(InventoryEquippedSetViewModel set) => builder =>
+    {
+        if (set.Items.Count == 0)
+        {
+            builder.OpenElement(0, "p");
+            builder.AddAttribute(1, "class", "panel-copy");
+            builder.AddContent(2, "No equipped gear is cached for this loadout.");
+            builder.CloseElement();
+            return;
+        }
+
+        builder.OpenElement(3, "div");
+        builder.AddAttribute(4, "class", "inventory-item-list");
+        var sequence = 5;
+        foreach (var item in set.Items)
+        {
+            builder.OpenElement(sequence++, "article");
+            builder.AddAttribute(sequence++, "class", "inventory-item-card compact");
+            builder.OpenElement(sequence++, "strong");
+            builder.AddContent(sequence++, item.DisplayName);
+            builder.CloseElement();
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
+            builder.AddContent(sequence++, $"{item.SlotTitle} • {item.Key}");
+            builder.CloseElement();
+            if (set.Kind == EquipmentSetKind.Battle)
+            {
+                builder.OpenElement(sequence++, "span");
+                builder.AddAttribute(sequence++, "class", "ui-pill count-pill");
+                builder.AddContent(sequence++, FormatStats(item.TotalStats));
+                builder.CloseElement();
+            }
+            builder.CloseElement();
+        }
+
+        builder.CloseElement();
+    };
+
+    private RenderFragment RenderPresetList(IReadOnlyList<InventoryPresetViewModel> presets, bool canMutate) => builder =>
+    {
+        if (presets.Count == 0)
+        {
+            builder.OpenElement(0, "p");
+            builder.AddAttribute(1, "class", "panel-copy");
+            builder.AddContent(2, "No presets saved yet.");
+            builder.CloseElement();
+            return;
+        }
+
+        builder.OpenElement(3, "div");
+        builder.AddAttribute(4, "class", "inventory-item-list");
+        var sequence = 5;
+        foreach (var preset in presets)
+        {
+            builder.OpenElement(sequence++, "article");
+            builder.AddAttribute(sequence++, "class", "inventory-item-card");
+            builder.OpenElement(sequence++, "div");
+            builder.AddAttribute(sequence++, "class", "task-group-header");
+            builder.OpenElement(sequence++, "div");
+            builder.OpenElement(sequence++, "strong");
+            builder.AddContent(sequence++, preset.Name);
+            builder.CloseElement();
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
+            builder.AddContent(sequence++, $"{preset.ItemKeys.Count} item(s) • {preset.CreatedAtUtc.ToLocalTime():g}");
+            builder.CloseElement();
+            builder.CloseElement();
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "ui-pill count-pill");
+            builder.AddContent(sequence++, FormatStats(preset.TotalStats));
+            builder.CloseElement();
+            builder.CloseElement();
+            builder.OpenElement(sequence++, "div");
+            builder.AddAttribute(sequence++, "class", "action-row inventory-actions");
+            builder.OpenComponent<MudButton>(sequence++);
+            builder.AddAttribute(sequence++, "HtmlTag", "button");
+            builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"equip-preset-{preset.Id}" });
+            builder.AddAttribute(sequence++, "Color", Color.Primary);
+            builder.AddAttribute(sequence++, "Disabled", !canMutate);
+            builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => EquipPresetAsync(preset.Id)));
+            builder.AddAttribute(sequence++, "Variant", Variant.Filled);
+            builder.AddAttribute(sequence++, "ChildContent", (RenderFragment)(contentBuilder => contentBuilder.AddContent(0, "Equip")));
+            builder.CloseComponent();
+            builder.OpenComponent<MudButton>(sequence++);
+            builder.AddAttribute(sequence++, "HtmlTag", "button");
+            builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"remove-preset-{preset.Id}" });
+            builder.AddAttribute(sequence++, "Color", Color.Error);
+            builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => _pendingRemovePresetId = preset.Id));
+            builder.AddAttribute(sequence++, "Variant", Variant.Text);
+            builder.AddAttribute(sequence++, "ChildContent", (RenderFragment)(contentBuilder => contentBuilder.AddContent(0, "Remove")));
+            builder.CloseComponent();
+            builder.CloseElement();
+
+            if (string.Equals(_pendingRemovePresetId, preset.Id, StringComparison.Ordinal))
+            {
+                builder.OpenElement(sequence++, "div");
+                builder.AddAttribute(sequence++, "class", "preset-remove-confirm");
+                builder.OpenElement(sequence++, "span");
+                builder.AddContent(sequence++, $"Remove preset {preset.Name}?");
+                builder.CloseElement();
+                builder.OpenComponent<MudButton>(sequence++);
+                builder.AddAttribute(sequence++, "HtmlTag", "button");
+                builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"confirm-remove-preset-{preset.Id}" });
+                builder.AddAttribute(sequence++, "Color", Color.Error);
+                builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => ConfirmRemovePresetAsync(preset.Id)));
+                builder.AddAttribute(sequence++, "Variant", Variant.Filled);
+                builder.AddAttribute(sequence++, "ChildContent", (RenderFragment)(contentBuilder => contentBuilder.AddContent(0, "Confirm remove")));
+                builder.CloseComponent();
+                builder.OpenComponent<MudButton>(sequence++);
+                builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => _pendingRemovePresetId = null));
+                builder.AddAttribute(sequence++, "Variant", Variant.Text);
+                builder.AddAttribute(sequence++, "ChildContent", (RenderFragment)(contentBuilder => contentBuilder.AddContent(0, "Cancel")));
+                builder.CloseComponent();
+                builder.CloseElement();
+            }
+
+            builder.CloseElement();
+        }
+
+        builder.CloseElement();
+    };
+
+    private static string FormatStats(GearStatBlock stats)
+    {
+        if (stats == GearStatBlock.Zero)
+        {
+            return "No stats";
+        }
+
+        return $"STR {stats.Strength:0.#} • INT {stats.Intelligence:0.#} • CON {stats.Constitution:0.#} • PER {stats.Perception:0.#}";
     }
 
     private void HandleStateChanged()

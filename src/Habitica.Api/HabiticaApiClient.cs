@@ -159,8 +159,48 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
     public async Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
     {
-        using var request = CreateRequest(HttpMethod.Post, $"user/equip/equipped/{Uri.EscapeDataString(key)}", credentials);
+        await EquipGearAsync(credentials, EquipmentSetKind.Battle, key, cancellationToken);
+    }
+
+    public async Task EquipGearAsync(HabiticaCredentials credentials, EquipmentSetKind kind, string key, CancellationToken cancellationToken)
+    {
+        var equipType = kind == EquipmentSetKind.Costume ? "costume" : "equipped";
+        using var request = CreateRequest(HttpMethod.Post, $"user/equip/{equipType}/{Uri.EscapeDataString(key)}", credentials);
         using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
+    public async Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(HttpMethod.Get, "content?language=en", credentials);
+        using var document = await SendForDocumentAsync(request, cancellationToken);
+        var flatGear = TryGetObject(TryGetObject(document.RootElement.GetProperty("data"), "gear"), "flat");
+        var items = new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal);
+
+        if (flatGear.ValueKind == JsonValueKind.Object)
+        {
+            foreach (var property in flatGear.EnumerateObject())
+            {
+                if (property.Value.ValueKind != JsonValueKind.Object)
+                {
+                    continue;
+                }
+
+                var key = GetOptionalString(property.Value, "key") ?? property.Name;
+                items[key] = new GearCatalogItem(
+                    Key: key,
+                    Text: GetOptionalString(property.Value, "text") ?? key,
+                    SlotTitle: ParseSlotTitle(GetOptionalString(property.Value, "type") ?? key),
+                    ClassName: GetOptionalString(property.Value, "klass") ?? GetOptionalString(property.Value, "class"),
+                    Notes: GetOptionalString(property.Value, "notes"),
+                    Stats: new GearStatBlock(
+                        GetOptionalDecimal(property.Value, "str"),
+                        GetOptionalDecimal(property.Value, "int"),
+                        GetOptionalDecimal(property.Value, "con"),
+                        GetOptionalDecimal(property.Value, "per")));
+            }
+        }
+
+        return new GearCatalogSnapshot(DateTimeOffset.UtcNow, items);
     }
 
     private HttpRequestMessage CreateRequest(HttpMethod method, string relativePath, HabiticaCredentials credentials)
@@ -574,6 +614,19 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         return element.ValueKind == JsonValueKind.Object && element.TryGetProperty(propertyName, out var property)
             ? property
             : default;
+    }
+
+    private static string ParseSlotTitle(string value)
+    {
+        return value.Split('_', 2, StringSplitOptions.RemoveEmptyEntries)[0].ToLowerInvariant() switch
+        {
+            "head" => "Head",
+            "armor" => "Armor",
+            "weapon" => "Weapon",
+            "shield" => "Shield",
+            "back" => "Back",
+            _ => "Other"
+        };
     }
 
     private static TaskType ParseTaskType(string? taskType)

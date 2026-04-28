@@ -20,7 +20,10 @@ public sealed record SessionViewModel(
     SnapshotFreshnessState UserFreshness = SnapshotFreshnessState.Missing,
     PartySnapshot? PartySnapshot = null,
     SnapshotFreshnessState PartyFreshness = SnapshotFreshnessState.Missing,
-    IReadOnlyList<DiagnosticsLogEntry>? DiagnosticsLogEntries = null)
+    IReadOnlyList<DiagnosticsLogEntry>? DiagnosticsLogEntries = null,
+    string? UserId = null,
+    GearCatalogSnapshot? GearCatalogSnapshot = null,
+    IReadOnlyList<EquipmentPreset>? EquipmentPresets = null)
 {
     public static SessionViewModel Empty { get; } = new(
         IsBusy: false,
@@ -39,6 +42,8 @@ public sealed record SessionViewModel(
     public bool HasCachedPartySnapshot => PartySnapshot is not null;
 
     public bool HasDiagnosticsHistory => DiagnosticsLogEntries is { Count: > 0 };
+
+    public IReadOnlyList<EquipmentPreset> Presets => EquipmentPresets ?? Array.Empty<EquipmentPreset>();
 
     public int DiagnosticsWarningCount =>
         DiagnosticsLogEntries?.Count(entry => entry.Severity is DiagnosticsSeverity.Warning or DiagnosticsSeverity.Error) ?? 0;

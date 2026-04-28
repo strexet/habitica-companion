@@ -1,4 +1,6 @@
 using Habitica.Application.Diagnostics;
+using Habitica.Application.Inventory;
+using Habitica.Domain.User;
 
 namespace Habitica.WebApp.State;
 
@@ -21,6 +23,14 @@ public interface IAppSessionController
     Task<DiagnosticsPresetRunResult> RunDiagnosticsPresetAsync(DiagnosticsPreset preset, CancellationToken cancellationToken = default);
 
     Task ClearDiagnosticsLogsAsync(CancellationToken cancellationToken = default);
+
+    Task<InventoryActionResult> SaveEquipmentPresetAsync(EquipmentSetKind kind, string name, CancellationToken cancellationToken = default);
+
+    Task<InventoryActionResult> RemoveEquipmentPresetAsync(string presetId, CancellationToken cancellationToken = default);
+
+    Task<InventoryActionResult> EquipInventoryItemAsync(EquipmentSetKind kind, string key, CancellationToken cancellationToken = default);
+
+    Task<InventoryActionResult> EquipEquipmentPresetAsync(string presetId, CancellationToken cancellationToken = default);
 
     Task LogoutAsync(CancellationToken cancellationToken = default);
 

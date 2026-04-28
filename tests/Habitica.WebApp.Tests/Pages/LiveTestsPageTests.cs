@@ -45,10 +45,54 @@ public sealed class LiveTestsPageTests : BunitContext
         Assert.Contains("Guarded tests", cut.Markup);
         Assert.Contains("Preset API runner", cut.Markup);
         Assert.Contains("Shared console", cut.Markup);
+        Assert.Contains("Copy all messages", cut.Markup);
+        Assert.Contains("Download logs", cut.Markup);
+        Assert.Contains("Clear logs", cut.Markup);
         Assert.Contains("Run /user account preset", cut.Markup);
         Assert.Contains("Run safe live tests", cut.Markup);
         Assert.Contains("Run reversible gear test", cut.Markup);
         Assert.Contains("Completed safe diagnostics suite.", cut.Markup);
+    }
+
+    [Fact]
+    public void Diagnostics_console_exports_filtered_entries_as_jsonl()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                DiagnosticsLogEntries: new[]
+                {
+                    new DiagnosticsLogEntry(
+                        "entry-1",
+                        DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+                        DiagnosticsFeatureArea.Inventory,
+                        "inventory-equip-item",
+                        DiagnosticsSeverity.Success,
+                        DiagnosticsMode.LiveMutation,
+                        "Equipped Wizard Wand.",
+                        new Dictionary<string, string>
+                        {
+                            ["itemKey"] = "weapon_wizard_5"
+                        })
+                })));
+
+        var cut = Render<LiveTestsPage>();
+
+        cut.Find("[data-testid='copy-diagnostics-jsonl']").Click();
+        cut.Find("[data-testid='download-diagnostics-jsonl']").Click();
+
+        var invocations = JSInterop.Invocations.Select(invocation => invocation.Identifier).ToArray();
+        Assert.Contains("import", invocations);
+        Assert.Contains("inventory-equip-item", cut.Markup);
+        Assert.Contains("itemKey", cut.Markup);
     }
 
     [Fact]

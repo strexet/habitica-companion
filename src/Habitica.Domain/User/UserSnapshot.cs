@@ -37,3 +37,56 @@ public sealed record InventorySnapshot(
     int OwnedPetCount,
     int OwnedMountCount,
     string[] OwnedGearKeys);
+
+public enum EquipmentSetKind
+{
+    Battle,
+    Costume
+}
+
+public sealed record GearStatBlock(
+    decimal Strength,
+    decimal Intelligence,
+    decimal Constitution,
+    decimal Perception)
+{
+    public static GearStatBlock Zero { get; } = new(0m, 0m, 0m, 0m);
+
+    public GearStatBlock Add(GearStatBlock other)
+    {
+        return new GearStatBlock(
+            Strength + other.Strength,
+            Intelligence + other.Intelligence,
+            Constitution + other.Constitution,
+            Perception + other.Perception);
+    }
+
+    public GearStatBlock Scale(decimal multiplier)
+    {
+        return new GearStatBlock(
+            Strength * multiplier,
+            Intelligence * multiplier,
+            Constitution * multiplier,
+            Perception * multiplier);
+    }
+}
+
+public sealed record GearCatalogSnapshot(
+    DateTimeOffset RetrievedAtUtc,
+    IReadOnlyDictionary<string, GearCatalogItem> Items);
+
+public sealed record GearCatalogItem(
+    string Key,
+    string Text,
+    string SlotTitle,
+    string? ClassName,
+    string? Notes,
+    GearStatBlock Stats);
+
+public sealed record EquipmentPreset(
+    string Id,
+    string UserId,
+    EquipmentSetKind Kind,
+    string Name,
+    DateTimeOffset CreatedAtUtc,
+    GearSlotsSnapshot Slots);

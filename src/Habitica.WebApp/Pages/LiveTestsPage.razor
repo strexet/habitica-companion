@@ -1,7 +1,9 @@
 @page "/diagnostics"
 @page "/live-tests"
+@using System.Text.Json
 @implements IDisposable
 @inject IAppSessionController SessionController
+@inject IJSRuntime JsRuntime
 
 <PageTitle>Diagnostics</PageTitle>
 
@@ -122,7 +124,11 @@
                     <p class="section-label">Shared console</p>
                     <h2>Recent diagnostics history</h2>
                 </div>
-                <MudButton Color="Color.Default" OnClick="ClearLogsAsync" Variant="Variant.Text">Clear logs</MudButton>
+                <div class="action-row">
+                    <MudButton HtmlTag="button" data-testid="copy-diagnostics-jsonl" Color="Color.Default" OnClick="CopyLogsAsync" Variant="Variant.Text">Copy all messages</MudButton>
+                    <MudButton HtmlTag="button" data-testid="download-diagnostics-jsonl" Color="Color.Default" OnClick="DownloadLogsAsync" Variant="Variant.Text">Download logs</MudButton>
+                    <MudButton Color="Color.Default" OnClick="ClearLogsAsync" Variant="Variant.Text">Clear logs</MudButton>
+                </div>
             </div>
 
             <div class="diagnostics-filter-row">
@@ -176,6 +182,7 @@
                             </div>
                             <span>@entry.Message</span>
                             <span class="dashboard-stat-note">@entry.FeatureArea • @entry.Mode • @entry.OccurredAtUtc.ToLocalTime():g</span>
+                            <code class="diagnostics-metadata-inline">@FormatMetadataCompact(entry)</code>
                         </button>
                     }
                 }
@@ -189,7 +196,7 @@
                         <span class="ui-pill count-pill">@_selectedEntry.FeatureArea</span>
                     </div>
                     <p class="panel-copy">@_selectedEntry.Message</p>
-                    <pre>@FormatMetadata(_selectedEntry)</pre>
+                    <pre>@FormatEntryJson(_selectedEntry)</pre>
                 </div>
             }
         </aside>
@@ -259,6 +266,21 @@
         await SessionController.ClearDiagnosticsLogsAsync();
     }
 
+    private async Task CopyLogsAsync()
+    {
+        var module = await GetExportModuleAsync();
+        await module.InvokeVoidAsync("copyText", FormatEntriesJsonl(FilteredEntries));
+    }
+
+    private async Task DownloadLogsAsync()
+    {
+        var module = await GetExportModuleAsync();
+        await module.InvokeVoidAsync(
+            "downloadTextFile",
+            $"habitica-tool-diagnostics-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}.jsonl",
+            FormatEntriesJsonl(FilteredEntries));
+    }
+
     private static string GetStatusLabel(LiveTestStatus status)
     {
         return status switch
@@ -290,14 +312,27 @@
         };
     }
 
-    private static string FormatMetadata(Habitica.Domain.Diagnostics.DiagnosticsLogEntry entry)
+    private static string FormatEntryJson(Habitica.Domain.Diagnostics.DiagnosticsLogEntry entry)
     {
-        if (entry.Metadata.Count == 0)
-        {
-            return "{}";
-        }
+        return JsonSerializer.Serialize(entry, JsonOptions);
+    }
 
-        return string.Join(Environment.NewLine, entry.Metadata.Select(pair => $"{pair.Key}: {pair.Value}"));
+    private static string FormatMetadataCompact(Habitica.Domain.Diagnostics.DiagnosticsLogEntry entry)
+    {
+        return entry.Metadata.Count == 0
+            ? "{}"
+            : string.Join(" ", entry.Metadata.Select(pair => $"{pair.Key}={pair.Value}"));
+    }
+
+    private static string FormatEntriesJsonl(IReadOnlyList<Habitica.Domain.Diagnostics.DiagnosticsLogEntry> entries)
+    {
+        return string.Join(Environment.NewLine, entries.Select(entry => JsonSerializer.Serialize(entry, JsonOptions)));
+    }
+
+    private async Task<IJSObjectReference> GetExportModuleAsync()
+    {
+        _exportModule ??= await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/diagnosticsExport.js");
+        return _exportModule;
     }
 
     private void HandleStateChanged()
@@ -314,4 +349,11 @@
     {
         SessionController.Changed -= HandleStateChanged;
     }
+
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
+    {
+        WriteIndented = false
+    };
+
+    private IJSObjectReference? _exportModule;
 }

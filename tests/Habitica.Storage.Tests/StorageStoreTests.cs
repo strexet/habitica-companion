@@ -214,6 +214,83 @@ public sealed class StorageStoreTests
         Assert.Empty(entries);
     }
 
+    [Fact]
+    public async Task GearCatalogStore_round_trips_latest_catalog()
+    {
+        var adapter = new InMemoryKeyValueStorage();
+        var store = new GearCatalogStore(adapter);
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-28T09:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["weapon_wizard_5"] = new(
+                    "weapon_wizard_5",
+                    "Wizard Wand",
+                    "Weapon",
+                    "wizard",
+                    "A focused casting weapon.",
+                    new GearStatBlock(0m, 12m, 0m, 2m))
+            });
+
+        await store.SaveAsync(catalog, CancellationToken.None);
+        var loaded = await store.GetLatestAsync(CancellationToken.None);
+
+        Assert.NotNull(loaded);
+        Assert.Equal("Wizard Wand", loaded!.Items["weapon_wizard_5"].Text);
+    }
+
+    [Fact]
+    public async Task EquipmentPresetStore_keeps_presets_per_user_and_removes_selected_preset()
+    {
+        var adapter = new InMemoryKeyValueStorage();
+        var store = new EquipmentPresetStore(adapter);
+        var userOnePreset = new EquipmentPreset(
+            "preset-1",
+            "user-1",
+            EquipmentSetKind.Battle,
+            "Casting",
+            DateTimeOffset.Parse("2026-04-28T09:00:00Z"),
+            new GearSlotsSnapshot(null, null, "weapon_wizard_5", null, null));
+        var userTwoPreset = new EquipmentPreset(
+            "preset-2",
+            "user-2",
+            EquipmentSetKind.Battle,
+            "Casting",
+            DateTimeOffset.Parse("2026-04-28T09:05:00Z"),
+            new GearSlotsSnapshot(null, null, "weapon_warrior_6", null, null));
+
+        await store.SaveAsync(userOnePreset, CancellationToken.None);
+        await store.SaveAsync(userTwoPreset, CancellationToken.None);
+        await store.RemoveAsync("user-1", "preset-1", CancellationToken.None);
+
+        Assert.Empty(await store.GetForUserAsync("user-1", CancellationToken.None));
+        var remaining = Assert.Single(await store.GetForUserAsync("user-2", CancellationToken.None));
+        Assert.Equal("preset-2", remaining.Id);
+    }
+
+    [Fact]
+    public async Task EquipmentPresetStore_rejects_duplicate_names_for_same_user_and_kind()
+    {
+        var adapter = new InMemoryKeyValueStorage();
+        var store = new EquipmentPresetStore(adapter);
+        var first = new EquipmentPreset(
+            "preset-1",
+            "user-1",
+            EquipmentSetKind.Battle,
+            "Casting",
+            DateTimeOffset.Parse("2026-04-28T09:00:00Z"),
+            new GearSlotsSnapshot(null, null, "weapon_wizard_5", null, null));
+        var duplicate = first with
+        {
+            Id = "preset-2",
+            CreatedAtUtc = DateTimeOffset.Parse("2026-04-28T09:05:00Z")
+        };
+
+        await store.SaveAsync(first, CancellationToken.None);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => store.SaveAsync(duplicate, CancellationToken.None));
+    }
+
     private static DiagnosticsLogEntry CreateLogEntry(string id, DiagnosticsSeverity severity)
     {
         return new DiagnosticsLogEntry(

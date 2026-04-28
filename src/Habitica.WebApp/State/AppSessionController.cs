@@ -1,6 +1,9 @@
+using System.Globalization;
 using Habitica.Application.Auth;
 using Habitica.Application.Diagnostics;
+using Habitica.Application.Inventory;
 using Habitica.Application.Sync;
+using Habitica.Api;
 using Habitica.Domain.Auth;
 using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Party;
@@ -16,6 +19,9 @@ public sealed class AppSessionController : IAppSessionController
     private readonly IDiagnosticsLogStore _diagnosticsLogStore;
     private readonly DiagnosticsLogWriter _diagnosticsLogWriter;
     private readonly DiagnosticsPresetWorkflow _diagnosticsPresetWorkflow;
+    private readonly IEquipmentPresetStore _equipmentPresetStore;
+    private readonly IGearCatalogStore _gearCatalogStore;
+    private readonly IHabiticaSyncClient _habiticaSyncClient;
     private readonly LoginWorkflow _loginWorkflow;
     private readonly LiveTestWorkflow _liveTestWorkflow;
     private readonly IPartyCronHistoryStore _partyCronHistoryStore;
@@ -30,9 +36,12 @@ public sealed class AppSessionController : IAppSessionController
 
     public AppSessionController(
         LoginWorkflow loginWorkflow,
+        IHabiticaSyncClient habiticaSyncClient,
         LiveTestWorkflow liveTestWorkflow,
         DiagnosticsPresetWorkflow diagnosticsPresetWorkflow,
         ICredentialStore credentialStore,
+        IEquipmentPresetStore equipmentPresetStore,
+        IGearCatalogStore gearCatalogStore,
         IPartyCronHistoryStore partyCronHistoryStore,
         IPartySnapshotStore partySnapshotStore,
         ITaskSnapshotStore taskSnapshotStore,
@@ -43,9 +52,12 @@ public sealed class AppSessionController : IAppSessionController
         TimeProvider timeProvider)
     {
         _loginWorkflow = loginWorkflow;
+        _habiticaSyncClient = habiticaSyncClient;
         _liveTestWorkflow = liveTestWorkflow;
         _diagnosticsPresetWorkflow = diagnosticsPresetWorkflow;
         _credentialStore = credentialStore;
+        _equipmentPresetStore = equipmentPresetStore;
+        _gearCatalogStore = gearCatalogStore;
         _partyCronHistoryStore = partyCronHistoryStore;
         _partySnapshotStore = partySnapshotStore;
         _taskSnapshotStore = taskSnapshotStore;
@@ -273,6 +285,247 @@ public sealed class AppSessionController : IAppSessionController
         await LoadCachedStateAsync(cancellationToken);
     }
 
+    public async Task<InventoryActionResult> SaveEquipmentPresetAsync(
+        EquipmentSetKind kind,
+        string name,
+        CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null || State.UserSnapshot is null)
+        {
+            return await FailInventoryActionAsync("inventory-save-preset", "Sign in and refresh account data before saving equipment presets.", cancellationToken);
+        }
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return await FailInventoryActionAsync("inventory-save-preset", "Preset name is required.", cancellationToken);
+        }
+
+        var preset = new EquipmentPreset(
+            Guid.NewGuid().ToString("N"),
+            credentials.UserId,
+            kind,
+            name.Trim(),
+            _timeProvider.GetUtcNow(),
+            kind == EquipmentSetKind.Battle ? State.UserSnapshot.Equipment.Battle : State.UserSnapshot.Equipment.Costume);
+
+        try
+        {
+            await _equipmentPresetStore.SaveAsync(preset, cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "inventory-save-preset",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.Local,
+                $"Saved {kind.ToString().ToLowerInvariant()} preset '{preset.Name}'.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["presetId"] = preset.Id,
+                    ["presetName"] = preset.Name,
+                    ["presetKind"] = kind.ToString()
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            return InventoryActionResult.Success($"Saved preset {preset.Name}.");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            return await FailInventoryActionAsync(
+                "inventory-save-preset",
+                exception.Message,
+                cancellationToken,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["presetName"] = name.Trim(),
+                    ["presetKind"] = kind.ToString()
+                });
+        }
+    }
+
+    public async Task<InventoryActionResult> RemoveEquipmentPresetAsync(string presetId, CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return await FailInventoryActionAsync("inventory-remove-preset", "Sign in before removing equipment presets.", cancellationToken);
+        }
+
+        var preset = State.Presets.FirstOrDefault(item => string.Equals(item.Id, presetId, StringComparison.Ordinal));
+        await _equipmentPresetStore.RemoveAsync(credentials.UserId, presetId, cancellationToken);
+        await _diagnosticsLogWriter.WriteAsync(
+            DiagnosticsFeatureArea.Inventory,
+            "inventory-remove-preset",
+            DiagnosticsSeverity.Success,
+            DiagnosticsMode.Local,
+            preset is null ? "Removed equipment preset." : $"Removed preset '{preset.Name}'.",
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["presetId"] = presetId,
+                ["presetName"] = preset?.Name ?? "",
+                ["presetKind"] = preset?.Kind.ToString() ?? ""
+            },
+            cancellationToken);
+        await LoadCachedStateAsync(cancellationToken);
+        return InventoryActionResult.Success(preset is null ? "Removed preset." : $"Removed preset {preset.Name}.");
+    }
+
+    public async Task<InventoryActionResult> EquipInventoryItemAsync(
+        EquipmentSetKind kind,
+        string key,
+        CancellationToken cancellationToken = default)
+    {
+        var validation = await ValidateInventoryMutationAsync("inventory-equip-item", cancellationToken);
+        if (validation.Result is not null)
+        {
+            return validation.Result;
+        }
+
+        var snapshot = validation.Snapshot!;
+        if (!CanUseGearKey(snapshot, kind, key))
+        {
+            return await FailInventoryActionAsync(
+                "inventory-equip-item",
+                $"Cannot equip {key} because it is not in the cached owned or equipped gear list.",
+                cancellationToken,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["itemKey"] = key,
+                    ["equipmentKind"] = kind.ToString()
+                });
+        }
+
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        try
+        {
+            await _habiticaSyncClient.EquipGearAsync(validation.Credentials!, kind, key, cancellationToken);
+            var refreshedSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(validation.Credentials!, cancellationToken);
+            await _userSnapshotStore.SaveAsync(refreshedSnapshot, cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "inventory-equip-item",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                $"Changed {kind.ToString().ToLowerInvariant()} equipment to {key}.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["itemKey"] = key,
+                    ["equipmentKind"] = kind.ToString(),
+                    ["requestCount"] = "2"
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+            return InventoryActionResult.Success($"Equipment changed to {ResolveGearName(key)}.");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return await FailInventoryActionAsync(
+                "inventory-equip-item",
+                exception.Message,
+                cancellationToken,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["itemKey"] = key,
+                    ["equipmentKind"] = kind.ToString()
+                });
+        }
+    }
+
+    public async Task<InventoryActionResult> EquipEquipmentPresetAsync(string presetId, CancellationToken cancellationToken = default)
+    {
+        var validation = await ValidateInventoryMutationAsync("inventory-equip-preset", cancellationToken);
+        if (validation.Result is not null)
+        {
+            return validation.Result;
+        }
+
+        var preset = State.Presets.FirstOrDefault(item => string.Equals(item.Id, presetId, StringComparison.Ordinal));
+        if (preset is null)
+        {
+            return await FailInventoryActionAsync(
+                "inventory-equip-preset",
+                "Equipment preset was not found.",
+                cancellationToken,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["presetId"] = presetId
+                });
+        }
+
+        var desiredSlots = EnumerateSlots(preset.Slots).ToArray();
+        foreach (var slot in desiredSlots.Where(slot => !string.IsNullOrWhiteSpace(slot.Key)))
+        {
+            if (!CanUseGearKey(validation.Snapshot!, preset.Kind, slot.Key!))
+            {
+                return await FailInventoryActionAsync(
+                    "inventory-equip-preset",
+                    $"Cannot equip preset '{preset.Name}' because {slot.Key} is not owned.",
+                    cancellationToken,
+                    PresetMetadata(preset, failedSlot: slot.SlotTitle, itemKey: slot.Key));
+            }
+        }
+
+        var currentSlots = preset.Kind == EquipmentSetKind.Battle
+            ? validation.Snapshot!.Equipment.Battle
+            : validation.Snapshot!.Equipment.Costume;
+        var changedSlots = desiredSlots
+            .Where(slot => !string.Equals(GetSlotValue(currentSlots, slot.SlotTitle), slot.Key, StringComparison.Ordinal))
+            .ToArray();
+
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        var requestCount = 0;
+        try
+        {
+            foreach (var slot in changedSlots)
+            {
+                var keyToToggle = slot.Key ?? GetSlotValue(currentSlots, slot.SlotTitle);
+                if (string.IsNullOrWhiteSpace(keyToToggle))
+                {
+                    continue;
+                }
+
+                await _habiticaSyncClient.EquipGearAsync(validation.Credentials!, preset.Kind, keyToToggle, cancellationToken);
+                requestCount++;
+            }
+
+            if (changedSlots.Length > 0)
+            {
+                var refreshedSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(validation.Credentials!, cancellationToken);
+                requestCount++;
+                await _userSnapshotStore.SaveAsync(refreshedSnapshot, cancellationToken);
+            }
+
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "inventory-equip-preset",
+                DiagnosticsSeverity.Success,
+                changedSlots.Length == 0 ? DiagnosticsMode.Local : DiagnosticsMode.LiveMutation,
+                changedSlots.Length == 0
+                    ? $"Preset '{preset.Name}' was already equipped."
+                    : $"Equipped preset '{preset.Name}'.",
+                PresetMetadata(preset, changedSlots.Length, desiredSlots.Length - changedSlots.Length, requestCount),
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+            return InventoryActionResult.Success(changedSlots.Length == 0 ? $"Preset {preset.Name} was already equipped." : $"Equipped preset {preset.Name}.");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return await FailInventoryActionAsync(
+                "inventory-equip-preset",
+                exception.Message,
+                cancellationToken,
+                PresetMetadata(preset, changedSlots.Length, desiredSlots.Length - changedSlots.Length, requestCount));
+        }
+    }
+
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         _currentCredentials = null;
@@ -297,6 +550,8 @@ public sealed class AppSessionController : IAppSessionController
 
         await _credentialStore.ClearPersistentCredentialsAsync(cancellationToken);
         await _diagnosticsLogStore.ClearAsync(cancellationToken);
+        await _equipmentPresetStore.ClearAsync(cancellationToken);
+        await _gearCatalogStore.ClearAsync(cancellationToken);
         await _partyCronHistoryStore.ClearAsync(cancellationToken);
         await _partySnapshotStore.ClearAsync(cancellationToken);
         await _taskSnapshotStore.ClearAsync(cancellationToken);
@@ -308,9 +563,14 @@ public sealed class AppSessionController : IAppSessionController
     private async Task LoadCachedStateAsync(CancellationToken cancellationToken)
     {
         var diagnosticsLogEntries = await _diagnosticsLogStore.GetRecentAsync(cancellationToken);
+        var gearCatalog = await _gearCatalogStore.GetLatestAsync(cancellationToken);
         var taskSnapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
         var userSnapshot = await _userSnapshotStore.GetLatestAsync(cancellationToken);
         var partySnapshot = await _partySnapshotStore.GetLatestAsync(cancellationToken);
+        var userId = State.UserId ?? _currentCredentials?.UserId;
+        var equipmentPresets = string.IsNullOrWhiteSpace(userId)
+            ? Array.Empty<EquipmentPreset>()
+            : await _equipmentPresetStore.GetForUserAsync(userId, cancellationToken);
 
         SetState(State with
         {
@@ -323,6 +583,9 @@ public sealed class AppSessionController : IAppSessionController
             TaskFreshness = ClassifyFreshness(taskSnapshot),
             TaskSnapshot = taskSnapshot,
             DiagnosticsLogEntries = diagnosticsLogEntries,
+            GearCatalogSnapshot = gearCatalog,
+            EquipmentPresets = equipmentPresets,
+            UserId = userId,
             UserFreshness = ClassifyFreshness(userSnapshot),
             UserSnapshot = userSnapshot
         });
@@ -353,9 +616,11 @@ public sealed class AppSessionController : IAppSessionController
             var partySnapshot = await _partySnapshotStore.GetLatestAsync(cancellationToken);
             var taskSnapshot = await _taskSnapshotStore.GetLatestAsync(cancellationToken);
             var userSnapshot = await _userSnapshotStore.GetLatestAsync(cancellationToken);
+            var gearCatalog = await RefreshGearCatalogAsync(new HabiticaCredentials(request.UserId.Trim(), request.ApiToken.Trim()), cancellationToken);
 
             _currentCredentials = new HabiticaCredentials(request.UserId.Trim(), request.ApiToken.Trim());
             _persistLocally = request.PersistLocally;
+            var equipmentPresets = await _equipmentPresetStore.GetForUserAsync(_currentCredentials.UserId, cancellationToken);
 
             SetState(new SessionViewModel(
                 IsBusy: false,
@@ -371,7 +636,10 @@ public sealed class AppSessionController : IAppSessionController
                 ClassName: loginResult.ClassName,
                 Level: loginResult.Level,
                 UserSnapshot: userSnapshot,
-                UserFreshness: ClassifyFreshness(userSnapshot)));
+                UserFreshness: ClassifyFreshness(userSnapshot),
+                UserId: _currentCredentials.UserId,
+                GearCatalogSnapshot: gearCatalog,
+                EquipmentPresets: equipmentPresets));
         }
         catch (Exception exception)
         {
@@ -393,6 +661,166 @@ public sealed class AppSessionController : IAppSessionController
             });
         }
     }
+
+    private async Task<GearCatalogSnapshot?> RefreshGearCatalogAsync(
+        HabiticaCredentials credentials,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var catalog = await _habiticaSyncClient.GetContentCatalogAsync(credentials, cancellationToken);
+            await _gearCatalogStore.SaveAsync(catalog, cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "inventory-refresh-catalog",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveRead,
+                "Refreshed gear content catalog.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["itemCount"] = catalog.Items.Count.ToString(CultureInfo.InvariantCulture),
+                    ["requestCount"] = "1"
+                },
+                cancellationToken);
+            return catalog;
+        }
+        catch (Exception exception)
+        {
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "inventory-refresh-catalog",
+                DiagnosticsSeverity.Warning,
+                DiagnosticsMode.LiveRead,
+                exception.Message,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["requestCount"] = "1"
+                },
+                cancellationToken);
+            return await _gearCatalogStore.GetLatestAsync(cancellationToken);
+        }
+    }
+
+    private async Task<InventoryMutationValidation> ValidateInventoryMutationAsync(
+        string operation,
+        CancellationToken cancellationToken)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return new InventoryMutationValidation(null, null, await FailInventoryActionAsync(operation, "Sign in is required before changing equipment.", cancellationToken));
+        }
+
+        if (State.UserSnapshot is null)
+        {
+            return new InventoryMutationValidation(credentials, null, await FailInventoryActionAsync(operation, "Refresh account data before changing equipment.", cancellationToken));
+        }
+
+        if (State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return new InventoryMutationValidation(credentials, State.UserSnapshot, await FailInventoryActionAsync(operation, "Fresh account data is required before changing equipment.", cancellationToken));
+        }
+
+        return new InventoryMutationValidation(credentials, State.UserSnapshot, null);
+    }
+
+    private async Task<InventoryActionResult> FailInventoryActionAsync(
+        string operation,
+        string message,
+        CancellationToken cancellationToken,
+        IReadOnlyDictionary<string, string>? metadata = null)
+    {
+        await _diagnosticsLogWriter.WriteAsync(
+            DiagnosticsFeatureArea.Inventory,
+            operation,
+            DiagnosticsSeverity.Error,
+            operation.Contains("equip", StringComparison.Ordinal) ? DiagnosticsMode.LiveMutation : DiagnosticsMode.Local,
+            message,
+            metadata,
+            cancellationToken);
+        var diagnosticsLogEntries = await _diagnosticsLogStore.GetRecentAsync(cancellationToken);
+
+        SetState(State with
+        {
+            DiagnosticsLogEntries = diagnosticsLogEntries,
+            ErrorMessage = message,
+            IsBusy = false
+        });
+
+        return InventoryActionResult.Failure(message);
+    }
+
+    private string ResolveGearName(string key)
+    {
+        return State.GearCatalogSnapshot?.Items.TryGetValue(key, out var item) == true
+            ? item.Text
+            : key;
+    }
+
+    private static bool CanUseGearKey(UserSnapshot snapshot, EquipmentSetKind kind, string key)
+    {
+        return snapshot.Inventory.OwnedGearKeys.Contains(key, StringComparer.Ordinal)
+            || EnumerateSlots(kind == EquipmentSetKind.Battle ? snapshot.Equipment.Battle : snapshot.Equipment.Costume)
+                .Any(slot => string.Equals(slot.Key, key, StringComparison.Ordinal));
+    }
+
+    private static IReadOnlyDictionary<string, string> PresetMetadata(
+        EquipmentPreset preset,
+        int changedSlotCount = 0,
+        int skippedSlotCount = 0,
+        int requestCount = 0,
+        string? failedSlot = null,
+        string? itemKey = null)
+    {
+        var metadata = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["presetId"] = preset.Id,
+            ["presetName"] = preset.Name,
+            ["presetKind"] = preset.Kind.ToString(),
+            ["changedSlotCount"] = changedSlotCount.ToString(CultureInfo.InvariantCulture),
+            ["skippedSlotCount"] = skippedSlotCount.ToString(CultureInfo.InvariantCulture),
+            ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
+        };
+
+        if (!string.IsNullOrWhiteSpace(failedSlot))
+        {
+            metadata["failedSlot"] = failedSlot;
+        }
+
+        if (!string.IsNullOrWhiteSpace(itemKey))
+        {
+            metadata["itemKey"] = itemKey;
+        }
+
+        return metadata;
+    }
+
+    private static IEnumerable<(string SlotTitle, string? Key)> EnumerateSlots(GearSlotsSnapshot slots)
+    {
+        yield return ("Head", slots.Head);
+        yield return ("Armor", slots.Armor);
+        yield return ("Weapon", slots.Weapon);
+        yield return ("Shield", slots.Shield);
+        yield return ("Back", slots.Back);
+    }
+
+    private static string? GetSlotValue(GearSlotsSnapshot slots, string slotTitle)
+    {
+        return slotTitle switch
+        {
+            "Head" => slots.Head,
+            "Armor" => slots.Armor,
+            "Weapon" => slots.Weapon,
+            "Shield" => slots.Shield,
+            "Back" => slots.Back,
+            _ => null
+        };
+    }
+
+    private sealed record InventoryMutationValidation(
+        HabiticaCredentials? Credentials,
+        UserSnapshot? Snapshot,
+        InventoryActionResult? Result);
 
     private SnapshotFreshnessState ClassifyFreshness(Habitica.Domain.Tasks.TaskCollectionSnapshot? snapshot)
     {

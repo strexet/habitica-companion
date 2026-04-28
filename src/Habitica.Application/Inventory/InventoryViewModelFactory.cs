@@ -6,10 +6,14 @@ public sealed class InventoryViewModelFactory
 {
     private static readonly string[] SlotOrder = { "Head", "Armor", "Weapon", "Shield", "Back", "Other" };
 
-    public InventoryViewModel Create(UserSnapshot snapshot)
+    public InventoryViewModel Create(
+        UserSnapshot snapshot,
+        GearCatalogSnapshot? catalog = null,
+        IReadOnlyList<EquipmentPreset>? presets = null)
     {
         var battle = snapshot.Equipment.Battle;
         var costume = snapshot.Equipment.Costume;
+        var presetList = presets ?? Array.Empty<EquipmentPreset>();
 
         var groups = snapshot.Inventory.OwnedGearKeys
             .GroupBy(ParseSlotTitle)
@@ -22,12 +26,30 @@ public sealed class InventoryViewModelFactory
                     .OrderBy(key => key, StringComparer.Ordinal)
                     .Select(key => new InventoryGearItemViewModel(
                         Key: key,
+                        DisplayName: ResolveDisplayName(key, catalog),
+                        SlotTitle: ResolveSlotTitle(key, catalog),
+                        ClassName: ResolveClassName(key, catalog),
+                        Notes: ResolveNotes(key, catalog),
+                        TotalStats: CalculateStats(key, snapshot.ClassName, catalog),
                         IsBattleEquipped: string.Equals(key, GetEquippedKey(group.Key, battle), StringComparison.Ordinal),
                         IsCostumeEquipped: string.Equals(key, GetEquippedKey(group.Key, costume), StringComparison.Ordinal)))
                     .ToArray()))
             .ToArray();
 
-        return new InventoryViewModel(groups);
+        return new InventoryViewModel(
+            Groups: groups,
+            BattleEquipped: BuildEquippedSet(EquipmentSetKind.Battle, battle, snapshot.ClassName, catalog),
+            CostumeEquipped: BuildEquippedSet(EquipmentSetKind.Costume, costume, snapshot.ClassName, catalog),
+            BattlePresets: presetList
+                .Where(preset => preset.Kind == EquipmentSetKind.Battle)
+                .OrderBy(preset => preset.Name, StringComparer.OrdinalIgnoreCase)
+                .Select(preset => BuildPreset(snapshot.ClassName, catalog, preset))
+                .ToArray(),
+            CostumePresets: presetList
+                .Where(preset => preset.Kind == EquipmentSetKind.Costume)
+                .OrderBy(preset => preset.Name, StringComparer.OrdinalIgnoreCase)
+                .Select(preset => BuildPreset(snapshot.ClassName, catalog, preset))
+                .ToArray());
     }
 
     private static string ParseSlotTitle(string key)
@@ -55,10 +77,109 @@ public sealed class InventoryViewModelFactory
             _ => null
         };
     }
+
+    private static InventoryEquippedSetViewModel BuildEquippedSet(
+        EquipmentSetKind kind,
+        GearSlotsSnapshot slots,
+        string? userClass,
+        GearCatalogSnapshot? catalog)
+    {
+        var items = EnumerateSlots(slots)
+            .Where(slot => !string.IsNullOrWhiteSpace(slot.Key))
+            .Select(slot => new InventoryEquippedItemViewModel(
+                SlotTitle: slot.SlotTitle,
+                Key: slot.Key!,
+                DisplayName: ResolveDisplayName(slot.Key!, catalog),
+                TotalStats: kind == EquipmentSetKind.Battle ? CalculateStats(slot.Key!, userClass, catalog) : GearStatBlock.Zero))
+            .ToArray();
+
+        return new InventoryEquippedSetViewModel(
+            Kind: kind,
+            Items: items,
+            TotalStats: kind == EquipmentSetKind.Battle
+                ? items.Aggregate(GearStatBlock.Zero, (total, item) => total.Add(item.TotalStats))
+                : GearStatBlock.Zero);
+    }
+
+    private static InventoryPresetViewModel BuildPreset(
+        string? userClass,
+        GearCatalogSnapshot? catalog,
+        EquipmentPreset preset)
+    {
+        var itemKeys = EnumerateSlots(preset.Slots)
+            .Where(slot => !string.IsNullOrWhiteSpace(slot.Key))
+            .Select(slot => slot.Key!)
+            .ToArray();
+
+        var totalStats = preset.Kind == EquipmentSetKind.Battle
+            ? itemKeys.Aggregate(GearStatBlock.Zero, (total, key) => total.Add(CalculateStats(key, userClass, catalog)))
+            : GearStatBlock.Zero;
+
+        return new InventoryPresetViewModel(
+            preset.Id,
+            preset.Kind,
+            preset.Name,
+            preset.CreatedAtUtc,
+            itemKeys,
+            totalStats);
+    }
+
+    private static GearStatBlock CalculateStats(string key, string? userClass, GearCatalogSnapshot? catalog)
+    {
+        if (catalog is null || !catalog.Items.TryGetValue(key, out var item))
+        {
+            return GearStatBlock.Zero;
+        }
+
+        var multiplier = !string.IsNullOrWhiteSpace(userClass)
+            && !string.IsNullOrWhiteSpace(item.ClassName)
+            && string.Equals(userClass, item.ClassName, StringComparison.OrdinalIgnoreCase)
+            ? 1.5m
+            : 1m;
+
+        return item.Stats.Scale(multiplier);
+    }
+
+    private static string ResolveDisplayName(string key, GearCatalogSnapshot? catalog)
+    {
+        return catalog?.Items.TryGetValue(key, out var item) == true && !string.IsNullOrWhiteSpace(item.Text)
+            ? item.Text
+            : key;
+    }
+
+    private static string ResolveSlotTitle(string key, GearCatalogSnapshot? catalog)
+    {
+        return catalog?.Items.TryGetValue(key, out var item) == true && !string.IsNullOrWhiteSpace(item.SlotTitle)
+            ? item.SlotTitle
+            : ParseSlotTitle(key);
+    }
+
+    private static string? ResolveClassName(string key, GearCatalogSnapshot? catalog)
+    {
+        return catalog?.Items.TryGetValue(key, out var item) == true ? item.ClassName : null;
+    }
+
+    private static string? ResolveNotes(string key, GearCatalogSnapshot? catalog)
+    {
+        return catalog?.Items.TryGetValue(key, out var item) == true ? item.Notes : null;
+    }
+
+    private static IEnumerable<(string SlotTitle, string? Key)> EnumerateSlots(GearSlotsSnapshot slots)
+    {
+        yield return ("Head", slots.Head);
+        yield return ("Armor", slots.Armor);
+        yield return ("Weapon", slots.Weapon);
+        yield return ("Shield", slots.Shield);
+        yield return ("Back", slots.Back);
+    }
 }
 
 public sealed record InventoryViewModel(
-    IReadOnlyList<InventoryGearGroupViewModel> Groups);
+    IReadOnlyList<InventoryGearGroupViewModel> Groups,
+    InventoryEquippedSetViewModel BattleEquipped,
+    InventoryEquippedSetViewModel CostumeEquipped,
+    IReadOnlyList<InventoryPresetViewModel> BattlePresets,
+    IReadOnlyList<InventoryPresetViewModel> CostumePresets);
 
 public sealed record InventoryGearGroupViewModel(
     string SlotTitle,
@@ -68,5 +189,29 @@ public sealed record InventoryGearGroupViewModel(
 
 public sealed record InventoryGearItemViewModel(
     string Key,
+    string DisplayName,
+    string SlotTitle,
+    string? ClassName,
+    string? Notes,
+    GearStatBlock TotalStats,
     bool IsBattleEquipped,
     bool IsCostumeEquipped);
+
+public sealed record InventoryEquippedSetViewModel(
+    EquipmentSetKind Kind,
+    IReadOnlyList<InventoryEquippedItemViewModel> Items,
+    GearStatBlock TotalStats);
+
+public sealed record InventoryEquippedItemViewModel(
+    string SlotTitle,
+    string Key,
+    string DisplayName,
+    GearStatBlock TotalStats);
+
+public sealed record InventoryPresetViewModel(
+    string Id,
+    EquipmentSetKind Kind,
+    string Name,
+    DateTimeOffset CreatedAtUtc,
+    IReadOnlyList<string> ItemKeys,
+    GearStatBlock TotalStats);

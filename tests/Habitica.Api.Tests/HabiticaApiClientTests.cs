@@ -437,6 +437,74 @@ public sealed class HabiticaApiClientTests
         Assert.DoesNotContain("api-token", exception.Message, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public async Task EquipGearAsync_sends_battle_or_costume_equip_request()
+    {
+        var requestedUris = new List<string>();
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            requestedUris.Add(request.RequestUri!.ToString());
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+        var credentials = new HabiticaCredentials("user-id", "api-token");
+
+        await client.EquipGearAsync(credentials, EquipmentSetKind.Battle, "weapon_wizard_5", CancellationToken.None);
+        await client.EquipGearAsync(credentials, EquipmentSetKind.Costume, "head_special_2", CancellationToken.None);
+
+        Assert.Equal(
+            new[]
+            {
+                "https://habitica.com/api/v3/user/equip/equipped/weapon_wizard_5",
+                "https://habitica.com/api/v3/user/equip/costume/head_special_2"
+            },
+            requestedUris);
+    }
+
+    [Fact]
+    public async Task GetContentCatalogAsync_maps_flat_gear_catalog()
+    {
+        var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = JsonContent("""
+            {
+              "success": true,
+              "data": {
+                "gear": {
+                  "flat": {
+                    "weapon_wizard_5": {
+                      "key": "weapon_wizard_5",
+                      "text": "Wizard Wand",
+                      "type": "weapon",
+                      "klass": "wizard",
+                      "notes": "A focused casting weapon.",
+                      "str": 0,
+                      "int": 12,
+                      "con": 0,
+                      "per": 2
+                    }
+                  }
+                }
+              }
+            }
+            """)
+        });
+        var client = CreateClient(handler);
+
+        var catalog = await client.GetContentCatalogAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
+
+        var item = Assert.Single(catalog.Items.Values);
+        Assert.Equal("weapon_wizard_5", item.Key);
+        Assert.Equal("Wizard Wand", item.Text);
+        Assert.Equal("Weapon", item.SlotTitle);
+        Assert.Equal("wizard", item.ClassName);
+        Assert.Equal("A focused casting weapon.", item.Notes);
+        Assert.Equal(new GearStatBlock(0m, 12m, 0m, 2m), item.Stats);
+    }
+
     private static HabiticaApiClient CreateClient(HttpMessageHandler handler)
     {
         return new HabiticaApiClient(

@@ -1,7 +1,9 @@
 using Habitica.WebApp.State;
 
 using Habitica.Application.Diagnostics;
+using Habitica.Application.Inventory;
 using Habitica.Domain.Diagnostics;
+using Habitica.Domain.User;
 
 namespace Habitica.WebApp.Tests;
 
@@ -28,6 +30,14 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public LiveTestSuiteResult? SafeLiveTestResult { get; set; }
 
+    public List<(EquipmentSetKind Kind, string Key)> EquipItemCalls { get; } = new();
+
+    public List<string> EquipPresetCalls { get; } = new();
+
+    public List<string> RemovePresetCalls { get; } = new();
+
+    public List<(EquipmentSetKind Kind, string Name)> SavePresetCalls { get; } = new();
+
     public SessionViewModel State { get; private set; }
 
     public Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
@@ -45,6 +55,18 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.CompletedTask;
     }
 
+    public Task<InventoryActionResult> EquipEquipmentPresetAsync(string presetId, CancellationToken cancellationToken = default)
+    {
+        EquipPresetCalls.Add(presetId);
+        return Task.FromResult(InventoryActionResult.Success("Preset equipped."));
+    }
+
+    public Task<InventoryActionResult> EquipInventoryItemAsync(EquipmentSetKind kind, string key, CancellationToken cancellationToken = default)
+    {
+        EquipItemCalls.Add((kind, key));
+        return Task.FromResult(InventoryActionResult.Success("Equipment changed."));
+    }
+
     public Task InitializeAsync(CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
@@ -53,6 +75,17 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
+    }
+
+    public Task<InventoryActionResult> RemoveEquipmentPresetAsync(string presetId, CancellationToken cancellationToken = default)
+    {
+        RemovePresetCalls.Add(presetId);
+        State = State with
+        {
+            EquipmentPresets = State.Presets.Where(preset => !string.Equals(preset.Id, presetId, StringComparison.Ordinal)).ToArray()
+        };
+        Changed?.Invoke();
+        return Task.FromResult(InventoryActionResult.Success("Preset removed."));
     }
 
     public Task<DiagnosticsPresetRunResult> RunDiagnosticsPresetAsync(DiagnosticsPreset preset, CancellationToken cancellationToken = default)
@@ -83,6 +116,12 @@ internal sealed class FakeAppSessionController : IAppSessionController
         LastSignInRequest = request;
         Changed?.Invoke();
         return Task.CompletedTask;
+    }
+
+    public Task<InventoryActionResult> SaveEquipmentPresetAsync(EquipmentSetKind kind, string name, CancellationToken cancellationToken = default)
+    {
+        SavePresetCalls.Add((kind, name));
+        return Task.FromResult(InventoryActionResult.Success("Preset saved."));
     }
 
     private static LiveTestSuiteResult EmptyResult()

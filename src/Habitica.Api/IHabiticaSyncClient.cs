@@ -15,5 +15,9 @@ public interface IHabiticaSyncClient
 
     Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken);
 
+    Task EquipGearAsync(HabiticaCredentials credentials, EquipmentSetKind kind, string key, CancellationToken cancellationToken);
+
+    Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
+
     Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 }

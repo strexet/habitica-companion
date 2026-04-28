@@ -292,6 +292,12 @@ For battle-gear swaps, this client uses:
 POST /user/equip/equipped/:key
 ```
 
+For costume gear swaps, this client uses:
+
+```http
+POST /user/equip/costume/:key
+```
+
 Do not assume the write response contains all fields needed for local projection updates. Refresh `/user` after the equip call when the client must verify what is currently equipped.
 
 ### 8.5 Class and skills

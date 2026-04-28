@@ -89,6 +89,28 @@ public sealed class AppSessionControllerTests
         Assert.False(controller.State.HasDiagnosticsHistory);
     }
 
+    [Fact]
+    public async Task SaveEquipmentPresetAsync_persists_preset_and_writes_inventory_log()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var controller = CreateController(logStore);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.SaveEquipmentPresetAsync(EquipmentSetKind.Battle, "Casting");
+
+        Assert.True(result.Succeeded);
+        Assert.Contains(controller.State.Presets, preset => preset.Name == "Casting" && preset.Kind == EquipmentSetKind.Battle);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Inventory
+            && entry.Operation == "inventory-save-preset"
+            && entry.Metadata["presetName"] == "Casting");
+    }
+
     private static AppSessionController CreateController(FakeDiagnosticsLogStore logStore)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
@@ -97,13 +119,18 @@ public sealed class AppSessionControllerTests
         var userSnapshotStore = new FakeUserSnapshotStore();
         var partySnapshotStore = new FakePartySnapshotStore();
         var partyCronHistoryStore = new FakePartyCronHistoryStore();
+        var equipmentPresetStore = new FakeEquipmentPresetStore();
+        var gearCatalogStore = new FakeGearCatalogStore();
         var logWriter = new DiagnosticsLogWriter(logStore, TimeProvider.System);
 
         return new AppSessionController(
             loginWorkflow: new LoginWorkflow(syncClient, credentialStore, taskSnapshotStore, userSnapshotStore, partySnapshotStore, partyCronHistoryStore, logWriter),
+            habiticaSyncClient: syncClient,
             liveTestWorkflow: new LiveTestWorkflow(syncClient, userSnapshotStore, taskSnapshotStore, partySnapshotStore, logWriter, TimeProvider.System),
             diagnosticsPresetWorkflow: new DiagnosticsPresetWorkflow(syncClient, logWriter),
             credentialStore: credentialStore,
+            equipmentPresetStore: equipmentPresetStore,
+            gearCatalogStore: gearCatalogStore,
             partyCronHistoryStore: partyCronHistoryStore,
             partySnapshotStore: partySnapshotStore,
             taskSnapshotStore: taskSnapshotStore,
@@ -122,6 +149,8 @@ public sealed class AppSessionControllerTests
         {
             _entries = entries.ToList();
         }
+
+        public IReadOnlyList<DiagnosticsLogEntry> Entries => _entries;
 
         public Task<IReadOnlyList<DiagnosticsLogEntry>> GetRecentAsync(CancellationToken cancellationToken)
         {
@@ -238,6 +267,59 @@ public sealed class AppSessionControllerTests
         }
     }
 
+    private sealed class FakeEquipmentPresetStore : IEquipmentPresetStore
+    {
+        private readonly List<EquipmentPreset> _presets = new();
+
+        public Task ClearAsync(CancellationToken cancellationToken)
+        {
+            _presets.Clear();
+            return Task.CompletedTask;
+        }
+
+        public Task<IReadOnlyList<EquipmentPreset>> GetForUserAsync(string userId, CancellationToken cancellationToken)
+        {
+            return Task.FromResult<IReadOnlyList<EquipmentPreset>>(
+                _presets.Where(preset => string.Equals(preset.UserId, userId, StringComparison.Ordinal)).ToArray());
+        }
+
+        public Task RemoveAsync(string userId, string presetId, CancellationToken cancellationToken)
+        {
+            _presets.RemoveAll(preset =>
+                string.Equals(preset.UserId, userId, StringComparison.Ordinal)
+                && string.Equals(preset.Id, presetId, StringComparison.Ordinal));
+            return Task.CompletedTask;
+        }
+
+        public Task SaveAsync(EquipmentPreset preset, CancellationToken cancellationToken)
+        {
+            _presets.Add(preset);
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class FakeGearCatalogStore : IGearCatalogStore
+    {
+        public GearCatalogSnapshot? Snapshot { get; private set; }
+
+        public Task ClearAsync(CancellationToken cancellationToken)
+        {
+            Snapshot = null;
+            return Task.CompletedTask;
+        }
+
+        public Task<GearCatalogSnapshot?> GetLatestAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(Snapshot);
+        }
+
+        public Task SaveAsync(GearCatalogSnapshot catalog, CancellationToken cancellationToken)
+        {
+            Snapshot = catalog;
+            return Task.CompletedTask;
+        }
+    }
+
     private sealed class FakeHabiticaSyncClient : IHabiticaSyncClient
     {
         private readonly UserSnapshot _userSnapshot;
@@ -253,6 +335,12 @@ public sealed class AppSessionControllerTests
 
         public Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
             => Task.CompletedTask;
+
+        public Task EquipGearAsync(HabiticaCredentials credentials, EquipmentSetKind kind, string key, CancellationToken cancellationToken)
+            => Task.CompletedTask;
+
+        public Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+            => Task.FromResult(new GearCatalogSnapshot(DateTimeOffset.UtcNow, new Dictionary<string, GearCatalogItem>()));
 
         public Task<PartySnapshot> GetPartySnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
             => Task.FromResult(_partySnapshot);
