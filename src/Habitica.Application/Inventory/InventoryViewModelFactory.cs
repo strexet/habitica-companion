@@ -5,6 +5,13 @@ namespace Habitica.Application.Inventory;
 public sealed class InventoryViewModelFactory
 {
     private static readonly string[] SlotOrder = { "Head", "Armor", "Weapon", "Shield", "Back", "Other" };
+    private static readonly HashSet<string> MainBattleSlots = new(StringComparer.Ordinal)
+    {
+        "Head",
+        "Armor",
+        "Weapon",
+        "Shield"
+    };
 
     public InventoryViewModel Create(
         UserSnapshot snapshot,
@@ -15,29 +22,40 @@ public sealed class InventoryViewModelFactory
         var costume = snapshot.Equipment.Costume;
         var presetList = presets ?? Array.Empty<EquipmentPreset>();
 
-        var groups = snapshot.Inventory.OwnedGearKeys
-            .GroupBy(ParseSlotTitle)
+        var ownedItems = snapshot.Inventory.OwnedGearKeys
+            .Where(key => !IsUnequippedBaseKey(key))
+            .Select(key => BuildGearItem(key, snapshot.ClassName, battle, costume, catalog))
+            .ToArray();
+
+        var groups = ownedItems
+            .Where(IsMainGearItem)
+            .GroupBy(item => item.SlotTitle)
             .OrderBy(group => Array.IndexOf(SlotOrder, group.Key))
             .Select(group => new InventoryGearGroupViewModel(
                 SlotTitle: group.Key,
                 BattleEquippedKey: GetEquippedKey(group.Key, battle),
                 CostumeEquippedKey: GetEquippedKey(group.Key, costume),
                 Items: group
-                    .OrderBy(key => key, StringComparer.Ordinal)
-                    .Select(key => new InventoryGearItemViewModel(
-                        Key: key,
-                        DisplayName: ResolveDisplayName(key, catalog),
-                        SlotTitle: ResolveSlotTitle(key, catalog),
-                        ClassName: ResolveClassName(key, catalog),
-                        Notes: ResolveNotes(key, catalog),
-                        TotalStats: CalculateStats(key, snapshot.ClassName, catalog),
-                        IsBattleEquipped: string.Equals(key, GetEquippedKey(group.Key, battle), StringComparison.Ordinal),
-                        IsCostumeEquipped: string.Equals(key, GetEquippedKey(group.Key, costume), StringComparison.Ordinal)))
+                    .OrderBy(item => item.Key, StringComparer.Ordinal)
+                    .ToArray()))
+            .ToArray();
+
+        var accessoryGroups = ownedItems
+            .Where(item => !IsMainGearItem(item))
+            .GroupBy(item => item.SlotTitle)
+            .OrderBy(group => Array.IndexOf(SlotOrder, group.Key))
+            .Select(group => new InventoryGearGroupViewModel(
+                SlotTitle: group.Key,
+                BattleEquippedKey: GetEquippedKey(group.Key, battle),
+                CostumeEquippedKey: GetEquippedKey(group.Key, costume),
+                Items: group
+                    .OrderBy(item => item.DisplayName, StringComparer.OrdinalIgnoreCase)
                     .ToArray()))
             .ToArray();
 
         return new InventoryViewModel(
             Groups: groups,
+            AccessoryGroups: accessoryGroups,
             BattleEquipped: BuildEquippedSet(EquipmentSetKind.Battle, battle, snapshot.ClassName, catalog),
             CostumeEquipped: BuildEquippedSet(EquipmentSetKind.Costume, costume, snapshot.ClassName, catalog),
             BattlePresets: presetList
@@ -86,6 +104,7 @@ public sealed class InventoryViewModelFactory
     {
         var items = EnumerateSlots(slots)
             .Where(slot => !string.IsNullOrWhiteSpace(slot.Key))
+            .Where(slot => !IsUnequippedBaseKey(slot.Key!))
             .Select(slot => new InventoryEquippedItemViewModel(
                 SlotTitle: slot.SlotTitle,
                 Key: slot.Key!,
@@ -106,13 +125,18 @@ public sealed class InventoryViewModelFactory
         GearCatalogSnapshot? catalog,
         EquipmentPreset preset)
     {
-        var itemKeys = EnumerateSlots(preset.Slots)
+        var items = EnumerateSlots(preset.Slots)
             .Where(slot => !string.IsNullOrWhiteSpace(slot.Key))
-            .Select(slot => slot.Key!)
+            .Where(slot => !IsUnequippedBaseKey(slot.Key!))
+            .Select(slot => new InventoryPresetItemViewModel(
+                SlotTitle: slot.SlotTitle,
+                Key: slot.Key!,
+                DisplayName: ResolveDisplayName(slot.Key!, catalog),
+                TotalStats: preset.Kind == EquipmentSetKind.Battle ? CalculateStats(slot.Key!, userClass, catalog) : GearStatBlock.Zero))
             .ToArray();
 
         var totalStats = preset.Kind == EquipmentSetKind.Battle
-            ? itemKeys.Aggregate(GearStatBlock.Zero, (total, key) => total.Add(CalculateStats(key, userClass, catalog)))
+            ? items.Aggregate(GearStatBlock.Zero, (total, item) => total.Add(item.TotalStats))
             : GearStatBlock.Zero;
 
         return new InventoryPresetViewModel(
@@ -120,8 +144,37 @@ public sealed class InventoryViewModelFactory
             preset.Kind,
             preset.Name,
             preset.CreatedAtUtc,
-            itemKeys,
+            items,
             totalStats);
+    }
+
+    private static InventoryGearItemViewModel BuildGearItem(
+        string key,
+        string? userClass,
+        GearSlotsSnapshot battle,
+        GearSlotsSnapshot costume,
+        GearCatalogSnapshot? catalog)
+    {
+        var slotTitle = ResolveSlotTitle(key, catalog);
+        return new InventoryGearItemViewModel(
+            Key: key,
+            DisplayName: ResolveDisplayName(key, catalog),
+            SlotTitle: slotTitle,
+            ClassName: ResolveClassName(key, catalog),
+            Notes: ResolveNotes(key, catalog),
+            TotalStats: CalculateStats(key, userClass, catalog),
+            IsBattleEquipped: string.Equals(key, GetEquippedKey(slotTitle, battle), StringComparison.Ordinal),
+            IsCostumeEquipped: string.Equals(key, GetEquippedKey(slotTitle, costume), StringComparison.Ordinal));
+    }
+
+    private static bool IsMainGearItem(InventoryGearItemViewModel item)
+    {
+        return MainBattleSlots.Contains(item.SlotTitle) && item.TotalStats != GearStatBlock.Zero;
+    }
+
+    private static bool IsUnequippedBaseKey(string key)
+    {
+        return key.EndsWith("_base_0", StringComparison.OrdinalIgnoreCase);
     }
 
     private static GearStatBlock CalculateStats(string key, string? userClass, GearCatalogSnapshot? catalog)
@@ -176,6 +229,7 @@ public sealed class InventoryViewModelFactory
 
 public sealed record InventoryViewModel(
     IReadOnlyList<InventoryGearGroupViewModel> Groups,
+    IReadOnlyList<InventoryGearGroupViewModel> AccessoryGroups,
     InventoryEquippedSetViewModel BattleEquipped,
     InventoryEquippedSetViewModel CostumeEquipped,
     IReadOnlyList<InventoryPresetViewModel> BattlePresets,
@@ -213,5 +267,11 @@ public sealed record InventoryPresetViewModel(
     EquipmentSetKind Kind,
     string Name,
     DateTimeOffset CreatedAtUtc,
-    IReadOnlyList<string> ItemKeys,
+    IReadOnlyList<InventoryPresetItemViewModel> Items,
+    GearStatBlock TotalStats);
+
+public sealed record InventoryPresetItemViewModel(
+    string SlotTitle,
+    string Key,
+    string DisplayName,
     GearStatBlock TotalStats);

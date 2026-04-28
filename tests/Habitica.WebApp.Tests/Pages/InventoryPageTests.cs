@@ -81,8 +81,9 @@ public sealed class InventoryPageTests : BunitContext
         Assert.Contains("Equipped battle gear", cut.Markup);
         Assert.Contains("Equipped costume", cut.Markup);
         Assert.Contains("Battle gear presets", cut.Markup);
-        Assert.Contains("Costume presets", cut.Markup);
+        Assert.DoesNotContain("Costume presets", cut.Markup);
         Assert.Contains("Casting", cut.Markup);
+        Assert.Contains("preset-1", cut.Markup);
         Assert.Contains("Wizard Hat", cut.Markup);
         Assert.Contains("Wizard Wand", cut.Markup);
         Assert.Contains("Head", cut.Markup);
@@ -111,6 +112,14 @@ public sealed class InventoryPageTests : BunitContext
                 Level: 15,
                 UserSnapshot: CreateSnapshot(),
                 UserFreshness: SnapshotFreshnessState.Fresh,
+                GearCatalogSnapshot: new GearCatalogSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                    new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+                    {
+                        ["head_wizard_3"] = new("head_wizard_3", "Wizard Hat", "Head", "wizard", null, new GearStatBlock(0m, 2m, 0m, 0m)),
+                        ["weapon_wizard_5"] = new("weapon_wizard_5", "Wizard Wand", "Weapon", "wizard", null, new GearStatBlock(0m, 12m, 0m, 2m)),
+                        ["weapon_warrior_6"] = new("weapon_warrior_6", "Warrior Sword", "Weapon", "warrior", null, new GearStatBlock(10m, 0m, 1m, 0m))
+                    }),
                 EquipmentPresets: new[]
                 {
                     new EquipmentPreset(
@@ -127,11 +136,15 @@ public sealed class InventoryPageTests : BunitContext
 
         cut.Find("[data-testid='equip-battle-weapon_warrior_6']").Click();
         cut.Find("[data-testid='equip-preset-preset-1']").Click();
+        cut.Find("[data-testid='rename-preset-preset-1']").Click();
+        cut.Find("[data-testid='rename-preset-name-preset-1']").Input("Focused Casting");
+        cut.Find("[data-testid='save-rename-preset-preset-1']").Click();
         cut.Find("[data-testid='remove-preset-preset-1']").Click();
         cut.Find("[data-testid='confirm-remove-preset-preset-1']").Click();
 
         Assert.Equal((EquipmentSetKind.Battle, "weapon_warrior_6"), controller.EquipItemCalls.Single());
         Assert.Equal("preset-1", controller.EquipPresetCalls.Single());
+        Assert.Equal(("preset-1", "Focused Casting"), controller.RenamePresetCalls.Single());
         Assert.Equal("preset-1", controller.RemovePresetCalls.Single());
     }
 

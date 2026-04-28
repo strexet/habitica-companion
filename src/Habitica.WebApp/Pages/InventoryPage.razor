@@ -12,7 +12,7 @@
             <p class="section-label">Equipment explorer</p>
             <h1>Cached inventory and equipped gear</h1>
             <p class="panel-copy">
-                Manage equipped battle gear and costume gear from cached account data. Gear changes run through
+                Manage equipped battle gear and inspect costume gear from cached account data. Gear changes run through
                 Habitica API mutations and refresh the account snapshot after completion.
             </p>
         </div>
@@ -66,7 +66,7 @@
                 @RenderEquippedSet(viewModel.BattleEquipped)
 
                 <div class="preset-save-row">
-                    <input class="app-input" placeholder="Preset name" @bind="_battlePresetName" />
+                    <input class="app-input" placeholder="Preset name" @bind="_battlePresetName" @bind:event="oninput" />
                     <MudButton Color="Color.Primary" Disabled="@(!canMutate || string.IsNullOrWhiteSpace(_battlePresetName))" OnClick="@(() => SavePresetAsync(EquipmentSetKind.Battle))" Variant="Variant.Filled">
                         Save battle gear preset
                     </MudButton>
@@ -82,18 +82,11 @@
                 </div>
 
                 @RenderEquippedSet(viewModel.CostumeEquipped)
-
-                <div class="preset-save-row">
-                    <input class="app-input" placeholder="Preset name" @bind="_costumePresetName" />
-                    <MudButton Color="Color.Primary" Disabled="@(!canMutate || string.IsNullOrWhiteSpace(_costumePresetName))" OnClick="@(() => SavePresetAsync(EquipmentSetKind.Costume))" Variant="Variant.Filled">
-                        Save costume preset
-                    </MudButton>
-                </div>
             </article>
         </section>
 
-        <section class="inventory-management-grid">
-            <article class="card-surface inventory-group-card">
+        <section class="inventory-preset-section">
+            <article class="card-surface inventory-group-card inventory-preset-card">
                 <div class="task-group-header">
                     <div>
                         <p class="section-label">Battle gear presets</p>
@@ -102,17 +95,6 @@
                     <span class="ui-pill count-pill">@viewModel.BattlePresets.Count</span>
                 </div>
                 @RenderPresetList(viewModel.BattlePresets, canMutate)
-            </article>
-
-            <article class="card-surface inventory-group-card">
-                <div class="task-group-header">
-                    <div>
-                        <p class="section-label">Costume presets</p>
-                        <h2>Saved costume presets</h2>
-                    </div>
-                    <span class="ui-pill count-pill">@viewModel.CostumePresets.Count</span>
-                </div>
-                @RenderPresetList(viewModel.CostumePresets, canMutate)
             </article>
         </section>
 
@@ -187,13 +169,65 @@
                 }
             </div>
         }
+
+        @if (viewModel.AccessoryGroups.Count > 0)
+        {
+            <section class="accessory-section">
+                <div class="task-group-header">
+                    <div>
+                        <p class="section-label">Accessories and no-stat items</p>
+                        <h2>Non-battle equipment</h2>
+                    </div>
+                    <span class="ui-pill count-pill">@viewModel.AccessoryGroups.Sum(group => group.Items.Count)</span>
+                </div>
+
+                <div class="inventory-group-grid accessory-group-grid">
+                    @foreach (var group in viewModel.AccessoryGroups)
+                    {
+                        <section class="card-surface inventory-group-card accessory-group-card">
+                            <div class="task-group-header">
+                                <h3>@group.SlotTitle</h3>
+                                <span class="ui-pill count-pill">@group.Items.Count</span>
+                            </div>
+
+                            <div class="inventory-item-list accessory-item-list">
+                                @foreach (var item in group.Items)
+                                {
+                                    <article class="inventory-item-card accessory-item-card">
+                                        <strong>@item.DisplayName</strong>
+                                        <span class="dashboard-stat-note">@item.Key</span>
+                                        <span class="dashboard-stat-note">@item.SlotTitle@(string.IsNullOrWhiteSpace(item.ClassName) ? string.Empty : $" • {item.ClassName}")</span>
+                                        @if (!string.IsNullOrWhiteSpace(item.Notes))
+                                        {
+                                            <p class="panel-copy">@item.Notes</p>
+                                        }
+                                        <div class="inventory-item-tags">
+                                            @if (item.IsBattleEquipped)
+                                            {
+                                                <span class="ui-pill state-pill success-pill">Battle equipped</span>
+                                            }
+
+                                            @if (item.IsCostumeEquipped)
+                                            {
+                                                <span class="ui-pill state-pill warning-pill">Costume equipped</span>
+                                            }
+                                        </div>
+                                    </article>
+                                }
+                            </div>
+                        </section>
+                    }
+                </div>
+            </section>
+        }
     }
 </div>
 
 @code {
     private string _battlePresetName = string.Empty;
-    private string _costumePresetName = string.Empty;
     private string? _pendingRemovePresetId;
+    private string? _renamingPresetId;
+    private string _renamePresetName = string.Empty;
 
     protected override void OnInitialized()
     {
@@ -224,8 +258,7 @@
 
     private async Task SavePresetAsync(EquipmentSetKind kind)
     {
-        var name = kind == EquipmentSetKind.Battle ? _battlePresetName : _costumePresetName;
-        var result = await SessionController.SaveEquipmentPresetAsync(kind, name);
+        var result = await SessionController.SaveEquipmentPresetAsync(kind, _battlePresetName);
         ShowFeedback(result);
 
         if (result.Succeeded)
@@ -233,10 +266,6 @@
             if (kind == EquipmentSetKind.Battle)
             {
                 _battlePresetName = string.Empty;
-            }
-            else
-            {
-                _costumePresetName = string.Empty;
             }
         }
     }
@@ -257,6 +286,30 @@
     {
         var result = await SessionController.RemoveEquipmentPresetAsync(presetId);
         _pendingRemovePresetId = null;
+        if (string.Equals(_renamingPresetId, presetId, StringComparison.Ordinal))
+        {
+            _renamingPresetId = null;
+            _renamePresetName = string.Empty;
+        }
+        ShowFeedback(result);
+    }
+
+    private void BeginRenamePreset(InventoryPresetViewModel preset)
+    {
+        _pendingRemovePresetId = null;
+        _renamingPresetId = preset.Id;
+        _renamePresetName = preset.Name;
+    }
+
+    private async Task SaveRenamePresetAsync(string presetId)
+    {
+        var result = await SessionController.RenameEquipmentPresetAsync(presetId, _renamePresetName);
+        if (result.Succeeded)
+        {
+            _renamingPresetId = null;
+            _renamePresetName = string.Empty;
+        }
+
         ShowFeedback(result);
     }
 
@@ -329,7 +382,11 @@
             builder.CloseElement();
             builder.OpenElement(sequence++, "span");
             builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
-            builder.AddContent(sequence++, $"{preset.ItemKeys.Count} item(s) • {preset.CreatedAtUtc.ToLocalTime():g}");
+            builder.AddContent(sequence++, $"ID {preset.Id}");
+            builder.CloseElement();
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
+            builder.AddContent(sequence++, $"{preset.Items.Count} item(s) • {preset.CreatedAtUtc.ToLocalTime():g}");
             builder.CloseElement();
             builder.CloseElement();
             builder.OpenElement(sequence++, "span");
@@ -337,6 +394,65 @@
             builder.AddContent(sequence++, FormatStats(preset.TotalStats));
             builder.CloseElement();
             builder.CloseElement();
+
+            builder.OpenElement(sequence++, "div");
+            builder.AddAttribute(sequence++, "class", "preset-item-strip");
+            if (preset.Items.Count == 0)
+            {
+                builder.OpenElement(sequence++, "span");
+                builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
+                builder.AddContent(sequence++, "No gear saved in this preset.");
+                builder.CloseElement();
+            }
+            else
+            {
+                foreach (var item in preset.Items)
+                {
+                    builder.OpenElement(sequence++, "div");
+                    builder.AddAttribute(sequence++, "class", "preset-mini-item");
+                    builder.OpenElement(sequence++, "strong");
+                    builder.AddContent(sequence++, item.DisplayName);
+                    builder.CloseElement();
+                    builder.OpenElement(sequence++, "span");
+                    builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
+                    builder.AddContent(sequence++, $"{item.SlotTitle} • {item.Key}");
+                    builder.CloseElement();
+                    if (item.TotalStats != GearStatBlock.Zero)
+                    {
+                        builder.OpenElement(sequence++, "span");
+                        builder.AddAttribute(sequence++, "class", "ui-pill count-pill");
+                        builder.AddContent(sequence++, FormatStats(item.TotalStats));
+                        builder.CloseElement();
+                    }
+
+                    builder.CloseElement();
+                }
+            }
+
+            builder.CloseElement();
+
+            if (string.Equals(_renamingPresetId, preset.Id, StringComparison.Ordinal))
+            {
+                builder.OpenElement(sequence++, "div");
+                builder.AddAttribute(sequence++, "class", "preset-save-row");
+                builder.OpenElement(sequence++, "input");
+                builder.AddAttribute(sequence++, "class", "app-input");
+                builder.AddAttribute(sequence++, "data-testid", $"rename-preset-name-{preset.Id}");
+                builder.AddAttribute(sequence++, "value", BindConverter.FormatValue(_renamePresetName));
+                builder.AddAttribute(sequence++, "oninput", EventCallback.Factory.CreateBinder<string>(this, value => _renamePresetName = value, _renamePresetName));
+                builder.CloseElement();
+                builder.OpenComponent<MudButton>(sequence++);
+                builder.AddAttribute(sequence++, "HtmlTag", "button");
+                builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"save-rename-preset-{preset.Id}" });
+                builder.AddAttribute(sequence++, "Color", Color.Primary);
+                builder.AddAttribute(sequence++, "Disabled", !canMutate || string.IsNullOrWhiteSpace(_renamePresetName));
+                builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => SaveRenamePresetAsync(preset.Id)));
+                builder.AddAttribute(sequence++, "Variant", Variant.Filled);
+                builder.AddAttribute(sequence++, "ChildContent", (RenderFragment)(contentBuilder => contentBuilder.AddContent(0, "Save name")));
+                builder.CloseComponent();
+                builder.CloseElement();
+            }
+
             builder.OpenElement(sequence++, "div");
             builder.AddAttribute(sequence++, "class", "action-row inventory-actions");
             builder.OpenComponent<MudButton>(sequence++);
@@ -347,6 +463,14 @@
             builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => EquipPresetAsync(preset.Id)));
             builder.AddAttribute(sequence++, "Variant", Variant.Filled);
             builder.AddAttribute(sequence++, "ChildContent", (RenderFragment)(contentBuilder => contentBuilder.AddContent(0, "Equip")));
+            builder.CloseComponent();
+            builder.OpenComponent<MudButton>(sequence++);
+            builder.AddAttribute(sequence++, "HtmlTag", "button");
+            builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"rename-preset-{preset.Id}" });
+            builder.AddAttribute(sequence++, "Disabled", !canMutate);
+            builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => BeginRenamePreset(preset)));
+            builder.AddAttribute(sequence++, "Variant", Variant.Text);
+            builder.AddAttribute(sequence++, "ChildContent", (RenderFragment)(contentBuilder => contentBuilder.AddContent(0, "Rename")));
             builder.CloseComponent();
             builder.OpenComponent<MudButton>(sequence++);
             builder.AddAttribute(sequence++, "HtmlTag", "button");

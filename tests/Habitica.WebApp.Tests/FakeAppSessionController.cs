@@ -36,6 +36,8 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<string> RemovePresetCalls { get; } = new();
 
+    public List<(string PresetId, string Name)> RenamePresetCalls { get; } = new();
+
     public List<(EquipmentSetKind Kind, string Name)> SavePresetCalls { get; } = new();
 
     public SessionViewModel State { get; private set; }
@@ -86,6 +88,19 @@ internal sealed class FakeAppSessionController : IAppSessionController
         };
         Changed?.Invoke();
         return Task.FromResult(InventoryActionResult.Success("Preset removed."));
+    }
+
+    public Task<InventoryActionResult> RenameEquipmentPresetAsync(string presetId, string name, CancellationToken cancellationToken = default)
+    {
+        RenamePresetCalls.Add((presetId, name));
+        State = State with
+        {
+            EquipmentPresets = State.Presets
+                .Select(preset => string.Equals(preset.Id, presetId, StringComparison.Ordinal) ? preset with { Name = name } : preset)
+                .ToArray()
+        };
+        Changed?.Invoke();
+        return Task.FromResult(InventoryActionResult.Success("Preset renamed."));
     }
 
     public Task<DiagnosticsPresetRunResult> RunDiagnosticsPresetAsync(DiagnosticsPreset preset, CancellationToken cancellationToken = default)

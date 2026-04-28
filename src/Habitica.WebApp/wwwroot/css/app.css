@@ -281,6 +281,7 @@ a {
 .inventory-management-grid,
 .inventory-group-grid,
 .inventory-item-list,
+.inventory-preset-section,
 .party-card-grid,
 .party-detail-grid,
 .diagnostics-overview-grid,
@@ -308,7 +309,15 @@ a {
 }
 
 .inventory-group-grid {
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    grid-template-columns: 1fr;
+}
+
+.inventory-preset-section {
+    grid-template-columns: 1fr;
+}
+
+.inventory-item-list {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
 }
 
 .party-card-grid {
@@ -594,9 +603,30 @@ a {
     gap: 0.35rem;
 }
 
+.inventory-item-card,
+.inventory-group-card {
+    min-width: 0;
+}
+
+.inventory-item-card .task-group-header {
+    align-items: start;
+}
+
 .inventory-item-card strong {
     display: block;
-    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.inventory-item-card .panel-copy,
+.inventory-item-card .dashboard-stat-note,
+.preset-mini-item .dashboard-stat-note {
+    overflow-wrap: anywhere;
+}
+
+.inventory-item-card .count-pill,
+.preset-mini-item .count-pill {
+    white-space: normal;
+    text-align: left;
 }
 
 .inventory-item-tags {
@@ -610,6 +640,42 @@ a {
 .preset-save-row,
 .preset-remove-confirm {
     margin-top: 0.85rem;
+}
+
+.preset-item-strip {
+    display: grid;
+    gap: 0.65rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    margin-top: 0.85rem;
+}
+
+.preset-mini-item {
+    display: grid;
+    gap: 0.25rem;
+    min-width: 0;
+    padding: 0.65rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(245, 239, 226, 0.58);
+}
+
+.accessory-section {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.accessory-group-grid {
+    grid-template-columns: 1fr;
+}
+
+.accessory-item-list {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.accessory-item-card {
+    display: grid;
+    gap: 0.35rem;
 }
 
 .preset-save-row {

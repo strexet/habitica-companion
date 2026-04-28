@@ -307,7 +307,7 @@ public sealed class AppSessionController : IAppSessionController
             kind,
             name.Trim(),
             _timeProvider.GetUtcNow(),
-            kind == EquipmentSetKind.Battle ? State.UserSnapshot.Equipment.Battle : State.UserSnapshot.Equipment.Costume);
+            NormalizeBaseSlots(kind == EquipmentSetKind.Battle ? State.UserSnapshot.Equipment.Battle : State.UserSnapshot.Equipment.Costume));
 
         try
         {
@@ -370,6 +370,79 @@ public sealed class AppSessionController : IAppSessionController
         return InventoryActionResult.Success(preset is null ? "Removed preset." : $"Removed preset {preset.Name}.");
     }
 
+    public async Task<InventoryActionResult> RenameEquipmentPresetAsync(
+        string presetId,
+        string name,
+        CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return await FailInventoryActionAsync("inventory-rename-preset", "Sign in before renaming equipment presets.", cancellationToken);
+        }
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return await FailInventoryActionAsync(
+                "inventory-rename-preset",
+                "Preset name is required.",
+                cancellationToken,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["presetId"] = presetId
+                });
+        }
+
+        var preset = State.Presets.FirstOrDefault(item => string.Equals(item.Id, presetId, StringComparison.Ordinal));
+        if (preset is null)
+        {
+            return await FailInventoryActionAsync(
+                "inventory-rename-preset",
+                "Equipment preset was not found.",
+                cancellationToken,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["presetId"] = presetId
+                });
+        }
+
+        var renamedPreset = preset with { Name = name.Trim() };
+        try
+        {
+            await _equipmentPresetStore.SaveAsync(renamedPreset, cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "inventory-rename-preset",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.Local,
+                $"Renamed preset '{preset.Name}' to '{renamedPreset.Name}'.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["presetId"] = preset.Id,
+                    ["presetName"] = renamedPreset.Name,
+                    ["previousPresetName"] = preset.Name,
+                    ["presetKind"] = preset.Kind.ToString()
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            return InventoryActionResult.Success($"Renamed preset {renamedPreset.Name}.");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            return await FailInventoryActionAsync(
+                "inventory-rename-preset",
+                exception.Message,
+                cancellationToken,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["presetId"] = preset.Id,
+                    ["presetName"] = renamedPreset.Name,
+                    ["presetKind"] = preset.Kind.ToString()
+                });
+        }
+    }
+
     public async Task<InventoryActionResult> EquipInventoryItemAsync(
         EquipmentSetKind kind,
         string key,
@@ -382,6 +455,19 @@ public sealed class AppSessionController : IAppSessionController
         }
 
         var snapshot = validation.Snapshot!;
+        if (IsUnequippedBaseKey(key))
+        {
+            return await FailInventoryActionAsync(
+                "inventory-equip-item",
+                $"{key} is an unequipped slot marker and cannot be sent to Habitica as gear.",
+                cancellationToken,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["itemKey"] = key,
+                    ["equipmentKind"] = kind.ToString()
+                });
+        }
+
         if (!CanUseGearKey(snapshot, kind, key))
         {
             return await FailInventoryActionAsync(
@@ -456,7 +542,7 @@ public sealed class AppSessionController : IAppSessionController
                 });
         }
 
-        var desiredSlots = EnumerateSlots(preset.Slots).ToArray();
+        var desiredSlots = EnumerateSlots(NormalizeBaseSlots(preset.Slots)).ToArray();
         foreach (var slot in desiredSlots.Where(slot => !string.IsNullOrWhiteSpace(slot.Key)))
         {
             if (!CanUseGearKey(validation.Snapshot!, preset.Kind, slot.Key!))
@@ -473,7 +559,7 @@ public sealed class AppSessionController : IAppSessionController
             ? validation.Snapshot!.Equipment.Battle
             : validation.Snapshot!.Equipment.Costume;
         var changedSlots = desiredSlots
-            .Where(slot => !string.Equals(GetSlotValue(currentSlots, slot.SlotTitle), slot.Key, StringComparison.Ordinal))
+            .Where(slot => !string.Equals(NormalizeGearKey(GetSlotValue(currentSlots, slot.SlotTitle)), slot.Key, StringComparison.Ordinal))
             .ToArray();
 
         SetState(State with { ErrorMessage = null, IsBusy = true });
@@ -483,7 +569,7 @@ public sealed class AppSessionController : IAppSessionController
         {
             foreach (var slot in changedSlots)
             {
-                var keyToToggle = slot.Key ?? GetSlotValue(currentSlots, slot.SlotTitle);
+                var keyToToggle = slot.Key ?? NormalizeGearKey(GetSlotValue(currentSlots, slot.SlotTitle));
                 if (string.IsNullOrWhiteSpace(keyToToggle))
                 {
                     continue;
@@ -759,9 +845,34 @@ public sealed class AppSessionController : IAppSessionController
 
     private static bool CanUseGearKey(UserSnapshot snapshot, EquipmentSetKind kind, string key)
     {
+        if (IsUnequippedBaseKey(key))
+        {
+            return false;
+        }
+
         return snapshot.Inventory.OwnedGearKeys.Contains(key, StringComparer.Ordinal)
             || EnumerateSlots(kind == EquipmentSetKind.Battle ? snapshot.Equipment.Battle : snapshot.Equipment.Costume)
                 .Any(slot => string.Equals(slot.Key, key, StringComparison.Ordinal));
+    }
+
+    private static GearSlotsSnapshot NormalizeBaseSlots(GearSlotsSnapshot slots)
+    {
+        return new GearSlotsSnapshot(
+            NormalizeGearKey(slots.Head),
+            NormalizeGearKey(slots.Armor),
+            NormalizeGearKey(slots.Weapon),
+            NormalizeGearKey(slots.Shield),
+            NormalizeGearKey(slots.Back));
+    }
+
+    private static string? NormalizeGearKey(string? key)
+    {
+        return string.IsNullOrWhiteSpace(key) || IsUnequippedBaseKey(key) ? null : key;
+    }
+
+    private static bool IsUnequippedBaseKey(string key)
+    {
+        return key.EndsWith("_base_0", StringComparison.OrdinalIgnoreCase);
     }
 
     private static IReadOnlyDictionary<string, string> PresetMetadata(

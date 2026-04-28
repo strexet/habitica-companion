@@ -111,6 +111,50 @@ public sealed class AppSessionControllerTests
             && entry.Metadata["presetName"] == "Casting");
     }
 
+    [Fact]
+    public async Task RenameEquipmentPresetAsync_updates_local_preset_and_writes_inventory_log()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var controller = CreateController(logStore);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        await controller.SaveEquipmentPresetAsync(EquipmentSetKind.Battle, "Casting");
+        var preset = Assert.Single(controller.State.Presets);
+
+        var result = await controller.RenameEquipmentPresetAsync(preset.Id, "Focused Casting");
+
+        Assert.True(result.Succeeded);
+        var renamed = Assert.Single(controller.State.Presets);
+        Assert.Equal(preset.Id, renamed.Id);
+        Assert.Equal("Focused Casting", renamed.Name);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Inventory
+            && entry.Operation == "inventory-rename-preset"
+            && entry.Metadata["presetId"] == preset.Id
+            && entry.Metadata["presetName"] == "Focused Casting");
+    }
+
+    [Fact]
+    public async Task SaveEquipmentPresetAsync_normalizes_base_slots_to_empty()
+    {
+        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()));
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        await controller.SaveEquipmentPresetAsync(EquipmentSetKind.Battle, "Casting");
+
+        var preset = Assert.Single(controller.State.Presets);
+        Assert.Null(preset.Slots.Back);
+    }
+
     private static AppSessionController CreateController(FakeDiagnosticsLogStore logStore)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
@@ -293,6 +337,9 @@ public sealed class AppSessionControllerTests
 
         public Task SaveAsync(EquipmentPreset preset, CancellationToken cancellationToken)
         {
+            _presets.RemoveAll(existing =>
+                string.Equals(existing.UserId, preset.UserId, StringComparison.Ordinal)
+                && string.Equals(existing.Id, preset.Id, StringComparison.Ordinal));
             _presets.Add(preset);
             return Task.CompletedTask;
         }
@@ -373,7 +420,7 @@ public sealed class AppSessionControllerTests
             "Wolf-Base",
             "Wolf-Base",
             new EquipmentSnapshot(
-                new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_wizard_1"),
+                new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_base_0"),
                 new GearSlotsSnapshot("head_special_2", "armor_special_2", "weapon_special_2", "shield_special_2", "back_special_2")),
             new InventorySnapshot(1, 5, 1, 1, 1, 1, new[] { "weapon_wizard_5", "weapon_warrior_6" }));
     }

@@ -291,6 +291,27 @@ public sealed class StorageStoreTests
         await Assert.ThrowsAsync<InvalidOperationException>(() => store.SaveAsync(duplicate, CancellationToken.None));
     }
 
+    [Fact]
+    public async Task EquipmentPresetStore_renames_selected_preset_and_preserves_id()
+    {
+        var adapter = new InMemoryKeyValueStorage();
+        var store = new EquipmentPresetStore(adapter);
+        var preset = new EquipmentPreset(
+            "preset-1",
+            "user-1",
+            EquipmentSetKind.Battle,
+            "Casting",
+            DateTimeOffset.Parse("2026-04-28T09:00:00Z"),
+            new GearSlotsSnapshot(null, null, "weapon_wizard_5", null, null));
+
+        await store.SaveAsync(preset, CancellationToken.None);
+        await store.SaveAsync(preset with { Name = "Focused Casting" }, CancellationToken.None);
+
+        var renamed = Assert.Single(await store.GetForUserAsync("user-1", CancellationToken.None));
+        Assert.Equal("preset-1", renamed.Id);
+        Assert.Equal("Focused Casting", renamed.Name);
+    }
+
     private static DiagnosticsLogEntry CreateLogEntry(string id, DiagnosticsSeverity severity)
     {
         return new DiagnosticsLogEntry(
