@@ -61,7 +61,8 @@ public sealed class InventoryPageTests : BunitContext
                     new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
                     {
                         ["head_wizard_3"] = new("head_wizard_3", "Wizard Hat", "Head", "wizard", null, new GearStatBlock(0m, 2m, 0m, 0m)),
-                        ["weapon_wizard_5"] = new("weapon_wizard_5", "Wizard Wand", "Weapon", "wizard", null, new GearStatBlock(0m, 12m, 0m, 2m))
+                        ["weapon_wizard_5"] = new("weapon_wizard_5", "Wizard Wand", "Weapon", "wizard", null, new GearStatBlock(0m, 12m, 0m, 2m)),
+                        ["weapon_warrior_6"] = new("weapon_warrior_6", "Warrior Sword", "Weapon", "warrior", null, new GearStatBlock(10m, 0m, 1m, 0m))
                     }),
                 EquipmentPresets: new[]
                 {
@@ -87,6 +88,8 @@ public sealed class InventoryPageTests : BunitContext
         Assert.Contains("preset-1", cut.Markup);
         Assert.Contains("Wizard Hat", cut.Markup);
         Assert.Contains("Wizard Wand", cut.Markup);
+        Assert.Contains("Best in Category", cut.Markup);
+        Assert.Contains("Warrior Sword", cut.Markup);
         Assert.Contains("Head", cut.Markup);
         Assert.Contains("Weapon", cut.Markup);
         Assert.DoesNotContain("Battle equipped", cut.Markup);

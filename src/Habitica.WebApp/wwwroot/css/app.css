@@ -642,6 +642,12 @@ a {
     margin-top: 0.85rem;
 }
 
+.best-category-block {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
 .preset-item-strip {
     display: grid;
     gap: 0.65rem;

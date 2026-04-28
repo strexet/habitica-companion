@@ -35,6 +35,7 @@ public sealed class InventoryViewModelFactory
                 SlotTitle: group.Key,
                 BattleEquippedKey: GetEquippedKey(group.Key, battle),
                 CostumeEquippedKey: GetEquippedKey(group.Key, costume),
+                BestItems: SelectBestItems(group),
                 Items: group
                     .OrderBy(item => item.Key, StringComparer.Ordinal)
                     .ToArray()))
@@ -48,6 +49,7 @@ public sealed class InventoryViewModelFactory
                 SlotTitle: group.Key,
                 BattleEquippedKey: GetEquippedKey(group.Key, battle),
                 CostumeEquippedKey: GetEquippedKey(group.Key, costume),
+                BestItems: Array.Empty<InventoryGearItemViewModel>(),
                 Items: group
                     .OrderBy(item => item.DisplayName, StringComparer.OrdinalIgnoreCase)
                     .ToArray()))
@@ -179,6 +181,29 @@ public sealed class InventoryViewModelFactory
         return MainBattleSlots.Contains(slotTitle);
     }
 
+    private static IReadOnlyList<InventoryGearItemViewModel> SelectBestItems(IEnumerable<InventoryGearItemViewModel> items)
+    {
+        var itemArray = items.ToArray();
+        var bestStrength = itemArray.Max(item => item.TotalStats.Strength);
+        var bestIntelligence = itemArray.Max(item => item.TotalStats.Intelligence);
+        var bestConstitution = itemArray.Max(item => item.TotalStats.Constitution);
+        var bestPerception = itemArray.Max(item => item.TotalStats.Perception);
+
+        return itemArray
+            .Where(item =>
+                IsBestPositiveStat(item.TotalStats.Strength, bestStrength)
+                || IsBestPositiveStat(item.TotalStats.Intelligence, bestIntelligence)
+                || IsBestPositiveStat(item.TotalStats.Constitution, bestConstitution)
+                || IsBestPositiveStat(item.TotalStats.Perception, bestPerception))
+            .OrderBy(item => item.Key, StringComparer.Ordinal)
+            .ToArray();
+    }
+
+    private static bool IsBestPositiveStat(decimal value, decimal bestValue)
+    {
+        return value > 0m && value == bestValue;
+    }
+
     private static bool IsUnequippedBaseKey(string key)
     {
         return key.EndsWith("_base_0", StringComparison.OrdinalIgnoreCase);
@@ -246,6 +271,7 @@ public sealed record InventoryGearGroupViewModel(
     string SlotTitle,
     string? BattleEquippedKey,
     string? CostumeEquippedKey,
+    IReadOnlyList<InventoryGearItemViewModel> BestItems,
     IReadOnlyList<InventoryGearItemViewModel> Items);
 
 public sealed record InventoryGearItemViewModel(

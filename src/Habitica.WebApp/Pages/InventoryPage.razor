@@ -104,6 +104,30 @@
                             <span class="ui-pill count-pill">@group.Items.Count</span>
                         </div>
 
+                        @if (group.BestItems.Count > 0)
+                        {
+                            <div class="best-category-block">
+                                <div class="task-group-header">
+                                    <h3>Best in Category</h3>
+                                    <span class="ui-pill count-pill">@group.BestItems.Count</span>
+                                </div>
+
+                                <div class="preset-item-strip">
+                                    @foreach (var item in group.BestItems)
+                                    {
+                                        <article class="preset-mini-item">
+                                            <strong>@item.DisplayName</strong>
+                                            <span class="dashboard-stat-note">@item.Key</span>
+                                            <span class="ui-pill count-pill">@FormatStats(item.TotalStats)</span>
+                                            <MudButton HtmlTag="button" data-testid="@($"equip-best-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Size="Size.Small" Variant="Variant.Outlined">
+                                                Equip item
+                                            </MudButton>
+                                        </article>
+                                    }
+                                </div>
+                            </div>
+                        }
+
                         <div class="inventory-item-list">
                             @foreach (var item in group.Items)
                             {

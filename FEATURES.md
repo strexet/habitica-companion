@@ -1472,8 +1472,10 @@ Current view-model rules:
 8. Put back-slot items, no-stat items, and other accessory/cosmetic items into bottom accessory groups by item type.
 9. Sort groups in slot order and sort keys within each group deterministically.
 10. Exclude Back from the equipped battle display and from battle preset item views/execution.
-11. Sum battle preset stat totals from the resolved item totals.
-12. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
+11. For each actionable gear group, compute a `Best in Category` subset by taking every item that has the highest positive value for at least one stat in that group.
+12. Lower-value duplicate stat items stay in the full group list but are omitted from `Best in Category`.
+13. Sum battle preset stat totals from the resolved item totals.
+14. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
 ```
 
 Equip action rules:
@@ -1533,6 +1535,7 @@ Test:
 - preset removal;
 - base-slot marker normalization;
 - battle preset Back-slot removal;
+- best-in-category gear selection by per-stat maxima;
 - accessory/no-stat grouping;
 - item equip and preset equip controller dispatch;
 - empty-state rendering;
