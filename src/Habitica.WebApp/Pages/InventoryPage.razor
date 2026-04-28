@@ -98,6 +98,7 @@
             <div class="inventory-group-grid">
                 @foreach (var group in viewModel.Groups)
                 {
+                    var otherItemsExpanded = IsOtherItemsExpanded(group.SlotTitle);
                     <section class="card-surface inventory-group-card">
                         <div class="task-group-header">
                             <h2>@group.SlotTitle</h2>
@@ -128,30 +129,39 @@
                             </div>
                         }
 
-                        <div class="inventory-item-list">
-                            @foreach (var item in group.Items)
-                            {
-                                <article class="inventory-item-card">
-                                    <div class="task-group-header">
-                                        <div>
-                                            <strong>@item.DisplayName</strong>
-                                            <span class="dashboard-stat-note">@item.Key</span>
-                                        </div>
-                                        <span class="ui-pill count-pill">@FormatStats(item.TotalStats)</span>
-                                    </div>
-                                    <span class="dashboard-stat-note">@item.SlotTitle@(string.IsNullOrWhiteSpace(item.ClassName) ? string.Empty : $" • {item.ClassName}")</span>
-                                    @if (!string.IsNullOrWhiteSpace(item.Notes))
-                                    {
-                                        <p class="panel-copy">@item.Notes</p>
-                                    }
-                                    <div class="action-row inventory-actions">
-                                        <MudButton HtmlTag="button" data-testid="@($"equip-battle-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Variant="Variant.Outlined">
-                                            @(item.IsBattleEquipped ? "Unequip battle" : "Equip battle")
-                                        </MudButton>
-                                    </div>
-                                </article>
-                            }
+                        <div class="other-items-toggle-row">
+                            <MudButton HtmlTag="button" data-testid="@($"toggle-other-items-{group.SlotTitle}")" OnClick="@(() => ToggleOtherItems(group.SlotTitle))" Variant="Variant.Text">
+                                @(otherItemsExpanded ? "Hide other items" : $"Show other items ({group.Items.Count})")
+                            </MudButton>
                         </div>
+
+                        @if (otherItemsExpanded)
+                        {
+                            <div class="inventory-item-list">
+                                @foreach (var item in group.Items)
+                                {
+                                    <article class="inventory-item-card">
+                                        <div class="task-group-header">
+                                            <div>
+                                                <strong>@item.DisplayName</strong>
+                                                <span class="dashboard-stat-note">@item.Key</span>
+                                            </div>
+                                            <span class="ui-pill count-pill">@FormatStats(item.TotalStats)</span>
+                                        </div>
+                                        <span class="dashboard-stat-note">@item.SlotTitle@(string.IsNullOrWhiteSpace(item.ClassName) ? string.Empty : $" • {item.ClassName}")</span>
+                                        @if (!string.IsNullOrWhiteSpace(item.Notes))
+                                        {
+                                            <p class="panel-copy">@item.Notes</p>
+                                        }
+                                        <div class="action-row inventory-actions">
+                                            <MudButton HtmlTag="button" data-testid="@($"equip-battle-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Variant="Variant.Outlined">
+                                                @(item.IsBattleEquipped ? "Unequip battle" : "Equip battle")
+                                            </MudButton>
+                                        </div>
+                                    </article>
+                                }
+                            </div>
+                        }
                     </section>
                 }
             </div>
@@ -204,6 +214,7 @@
     private string? _pendingRemovePresetId;
     private string? _renamingPresetId;
     private string _renamePresetName = string.Empty;
+    private readonly HashSet<string> _expandedOtherItemGroups = new(StringComparer.Ordinal);
 
     protected override void OnInitialized()
     {
@@ -256,6 +267,19 @@
     {
         var result = await SessionController.EquipEquipmentPresetAsync(presetId);
         ShowFeedback(result);
+    }
+
+    private bool IsOtherItemsExpanded(string slotTitle)
+    {
+        return _expandedOtherItemGroups.Contains(slotTitle);
+    }
+
+    private void ToggleOtherItems(string slotTitle)
+    {
+        if (!_expandedOtherItemGroups.Add(slotTitle))
+        {
+            _expandedOtherItemGroups.Remove(slotTitle);
+        }
     }
 
     private async Task ConfirmRemovePresetAsync(string presetId)

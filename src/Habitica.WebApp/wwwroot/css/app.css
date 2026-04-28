@@ -650,6 +650,12 @@ a {
     border-bottom: 1px solid rgba(22, 36, 35, 0.12);
 }
 
+.other-items-toggle-row {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 0.85rem;
+}
+
 .preset-item-strip {
     display: grid;
     gap: 0.65rem;

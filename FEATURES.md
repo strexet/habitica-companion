@@ -1474,8 +1474,9 @@ Current view-model rules:
 10. Exclude Back from the equipped battle display and from battle preset item views/execution.
 11. For each actionable gear group, compute a `Best in Category` subset by taking every item that has the highest positive value for at least one stat in that group.
 12. Lower-value duplicate stat items stay in the full group list but are omitted from `Best in Category`.
-13. Sum battle preset stat totals from the resolved item totals.
-14. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
+13. Show `Best in Category` by default and keep the full per-category item list folded until the user expands it.
+14. Sum battle preset stat totals from the resolved item totals.
+15. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
 ```
 
 Equip action rules:
@@ -1550,7 +1551,7 @@ Current implementation:
 - equipped battle gear block;
 - local battle gear preset list;
 - preset save, rename, full-preset equip, individual preset-item equip, and confirmed remove actions;
-- slot-grouped obtained gear explorer;
+- slot-grouped obtained gear explorer with folded full item lists;
 - bottom accessory/no-stat item explorer grouped by item type;
 - gear content catalog name/stat resolution;
 - battle equipped markers;

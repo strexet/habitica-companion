@@ -98,6 +98,48 @@ public sealed class InventoryPageTests : BunitContext
     }
 
     [Fact]
+    public void Other_items_are_collapsed_by_default_and_can_be_expanded()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new InventoryViewModelFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                UserId: "user-id",
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: CreateSnapshot() with
+                {
+                    Inventory = new InventorySnapshot(1, 5, 1, 1, 1, 1, new[] { "weapon_per_6", "weapon_per_10" })
+                },
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                GearCatalogSnapshot: new GearCatalogSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                    new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+                    {
+                        ["weapon_per_6"] = new("weapon_per_6", "Scout Wand", "Weapon", "special", null, new GearStatBlock(0m, 0m, 0m, 6m)),
+                        ["weapon_per_10"] = new("weapon_per_10", "Seer Wand", "Weapon", "special", null, new GearStatBlock(0m, 0m, 0m, 10m))
+                    })));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<InventoryPage>();
+
+        Assert.Contains("Seer Wand", cut.Markup);
+        Assert.DoesNotContain("Scout Wand", cut.Markup);
+
+        cut.Find("[data-testid='toggle-other-items-Weapon']").Click();
+
+        Assert.Contains("Scout Wand", cut.Markup);
+    }
+
+    [Fact]
     public void Inventory_buttons_call_session_controller_actions()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -139,6 +181,7 @@ public sealed class InventoryPageTests : BunitContext
 
         var cut = Render<InventoryPage>();
 
+        cut.Find("[data-testid='toggle-other-items-Weapon']").Click();
         cut.Find("[data-testid='equip-battle-weapon_warrior_6']").Click();
         cut.Find("[data-testid='equip-preset-item-preset-1-weapon_wizard_5']").Click();
         cut.Find("[data-testid='equip-preset-preset-1']").Click();
