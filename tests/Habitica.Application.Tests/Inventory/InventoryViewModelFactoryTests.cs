@@ -123,6 +123,7 @@ public sealed class InventoryViewModelFactoryTests
             {
                 ["head_wizard_3"] = new("head_wizard_3", "Wizard Hat", "Head", "wizard", null, new GearStatBlock(0m, 2m, 0m, 0m)),
                 ["weapon_wizard_5"] = new("weapon_wizard_5", "Wizard Wand", "Weapon", "wizard", null, new GearStatBlock(0m, 12m, 0m, 2m)),
+                ["back_wizard_1"] = new("back_wizard_1", "Wizard Cape", "Back", "wizard", null, new GearStatBlock(0m, 0m, 0m, 10m)),
                 ["head_special_2"] = new("head_special_2", "Festival Mask", "Head", "special", null, new GearStatBlock(1m, 0m, 0m, 0m))
             });
         var presets = new[]
@@ -133,7 +134,7 @@ public sealed class InventoryViewModelFactoryTests
                 EquipmentSetKind.Battle,
                 "Casting",
                 DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
-                new GearSlotsSnapshot("head_wizard_3", null, "weapon_wizard_5", null, null)),
+                new GearSlotsSnapshot("head_wizard_3", null, "weapon_wizard_5", null, "back_wizard_1")),
             new EquipmentPreset(
                 "preset-costume",
                 "user-id",
@@ -152,6 +153,7 @@ public sealed class InventoryViewModelFactoryTests
         Assert.Equal("preset-battle", battlePreset.Id);
         Assert.Equal(new[] { "Wizard Hat", "Wizard Wand" }, battlePreset.Items.Select(item => item.DisplayName));
         Assert.Equal(new GearStatBlock(0m, 21m, 0m, 3m), battlePreset.TotalStats);
+        Assert.DoesNotContain(battlePreset.Items, item => item.SlotTitle == "Back");
         Assert.Equal("Party Look", costumePreset.Name);
         Assert.Equal(GearStatBlock.Zero, costumePreset.TotalStats);
     }

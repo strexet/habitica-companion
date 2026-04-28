@@ -105,6 +105,7 @@ public sealed class InventoryViewModelFactory
         var items = EnumerateSlots(slots)
             .Where(slot => !string.IsNullOrWhiteSpace(slot.Key))
             .Where(slot => !IsUnequippedBaseKey(slot.Key!))
+            .Where(slot => kind != EquipmentSetKind.Battle || IsBattleManagedSlot(slot.SlotTitle))
             .Select(slot => new InventoryEquippedItemViewModel(
                 SlotTitle: slot.SlotTitle,
                 Key: slot.Key!,
@@ -128,6 +129,7 @@ public sealed class InventoryViewModelFactory
         var items = EnumerateSlots(preset.Slots)
             .Where(slot => !string.IsNullOrWhiteSpace(slot.Key))
             .Where(slot => !IsUnequippedBaseKey(slot.Key!))
+            .Where(slot => preset.Kind != EquipmentSetKind.Battle || IsBattleManagedSlot(slot.SlotTitle))
             .Select(slot => new InventoryPresetItemViewModel(
                 SlotTitle: slot.SlotTitle,
                 Key: slot.Key!,
@@ -169,7 +171,12 @@ public sealed class InventoryViewModelFactory
 
     private static bool IsMainGearItem(InventoryGearItemViewModel item)
     {
-        return MainBattleSlots.Contains(item.SlotTitle) && item.TotalStats != GearStatBlock.Zero;
+        return IsBattleManagedSlot(item.SlotTitle) && item.TotalStats != GearStatBlock.Zero;
+    }
+
+    private static bool IsBattleManagedSlot(string slotTitle)
+    {
+        return MainBattleSlots.Contains(slotTitle);
     }
 
     private static bool IsUnequippedBaseKey(string key)

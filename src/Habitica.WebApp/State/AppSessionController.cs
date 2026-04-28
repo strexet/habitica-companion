@@ -307,7 +307,7 @@ public sealed class AppSessionController : IAppSessionController
             kind,
             name.Trim(),
             _timeProvider.GetUtcNow(),
-            NormalizeBaseSlots(kind == EquipmentSetKind.Battle ? State.UserSnapshot.Equipment.Battle : State.UserSnapshot.Equipment.Costume));
+            NormalizePresetSlots(kind, kind == EquipmentSetKind.Battle ? State.UserSnapshot.Equipment.Battle : State.UserSnapshot.Equipment.Costume));
 
         try
         {
@@ -542,7 +542,7 @@ public sealed class AppSessionController : IAppSessionController
                 });
         }
 
-        var desiredSlots = EnumerateSlots(NormalizeBaseSlots(preset.Slots)).ToArray();
+        var desiredSlots = EnumerateSlots(NormalizePresetSlots(preset.Kind, preset.Slots)).ToArray();
         foreach (var slot in desiredSlots.Where(slot => !string.IsNullOrWhiteSpace(slot.Key)))
         {
             if (!CanUseGearKey(validation.Snapshot!, preset.Kind, slot.Key!))
@@ -863,6 +863,14 @@ public sealed class AppSessionController : IAppSessionController
             NormalizeGearKey(slots.Weapon),
             NormalizeGearKey(slots.Shield),
             NormalizeGearKey(slots.Back));
+    }
+
+    private static GearSlotsSnapshot NormalizePresetSlots(EquipmentSetKind kind, GearSlotsSnapshot slots)
+    {
+        var normalized = NormalizeBaseSlots(slots);
+        return kind == EquipmentSetKind.Battle
+            ? normalized with { Back = null }
+            : normalized;
     }
 
     private static string? NormalizeGearKey(string? key)

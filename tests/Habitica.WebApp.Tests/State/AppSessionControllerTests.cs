@@ -139,7 +139,7 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
-    public async Task SaveEquipmentPresetAsync_normalizes_base_slots_to_empty()
+    public async Task SaveEquipmentPresetAsync_removes_battle_back_slot_from_preset()
     {
         var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()));
         await controller.SignInAsync(new SignInRequest
@@ -420,7 +420,7 @@ public sealed class AppSessionControllerTests
             "Wolf-Base",
             "Wolf-Base",
             new EquipmentSnapshot(
-                new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_base_0"),
+                new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_wizard_1"),
                 new GearSlotsSnapshot("head_special_2", "armor_special_2", "weapon_special_2", "shield_special_2", "back_special_2")),
             new InventorySnapshot(1, 5, 1, 1, 1, 1, new[] { "weapon_wizard_5", "weapon_warrior_6" }));
     }

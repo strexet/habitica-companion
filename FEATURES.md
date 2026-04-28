@@ -1392,14 +1392,14 @@ Status: implemented
 Owner module: `Habitica.Application.Inventory`, `Habitica.Storage`, `Habitica.Api`, and `Habitica.WebApp.Pages.InventoryPage`
 Application entry point: `Habitica.WebApp.Pages.InventoryPage`
 Primary Habitica data: cached user inventory summary, equipped gear keys, owned gear keys, and Habitica content gear catalog
-Mutates Habitica state: yes for explicit equip/unequip item actions and preset equip actions
+Mutates Habitica state: yes for explicit battle equip/unequip item actions and battle preset equip actions
 Requires confirmation: no for equip; yes for local preset removal
 Offline behavior: read-only inventory, equipped gear, and preset views remain available from local snapshots; equip execution requires authentication and fresh user data
 Rate-limit sensitivity: medium for preset equip because each changed slot is a separate user-initiated mutation
 
 ### Goal
 
-Provide an equipment management page for currently equipped battle/costume gear, local per-user battle presets, and obtained gear. The page resolves gear keys to real names when the cached content catalog is available, shows current-class-adjusted stat totals, and lets users change gear through guarded Habitica API mutations. Battle gear is the primary actionable surface; accessories, back-slot items, and no-stat items are separated into a bottom read-only section so empty-slot markers and cosmetic-only items are not sent as equip requests.
+Provide an equipment management page for currently equipped battle gear, local per-user battle presets, and obtained gear. The page resolves gear keys to real names when the cached content catalog is available, shows current-class-adjusted stat totals, and lets users change battle gear through guarded Habitica API mutations. Battle gear is the primary actionable surface; costume gear, accessories, back-slot items, and no-stat items are separated from the actionable equipment list so empty-slot markers and cosmetic-only items are not sent as equip requests.
 
 ### Inputs
 
@@ -1408,7 +1408,6 @@ cached user snapshot
 user freshness state
 authenticated user id
 equipped battle gear keys
-equipped costume gear keys
 owned gear keys
 cached gear content catalog
 local per-user equipment presets
@@ -1418,7 +1417,7 @@ current pet/mount keys
 ### Outputs
 
 ```text
-equipped battle gear and costume blocks
+equipped battle gear block
 battle gear preset list
 visible preset ids for future macro references
 preset rename controls
@@ -1426,7 +1425,6 @@ slot-grouped obtained gear panels
 accessory/no-stat item panels grouped by item type
 human-readable gear names with raw-key fallback
 gear stat totals
-battle and costume equipped markers
 owned gear counts
 companion summary
 freshness banner
@@ -1454,7 +1452,6 @@ Current requests:
 ```text
 GET /content?language=en
 POST /user/equip/equipped/:key
-POST /user/equip/costume/:key
 GET /user
 ```
 
@@ -1474,9 +1471,9 @@ Current view-model rules:
 7. Put stat-bearing head, armor, weapon, and shield items into the main actionable battle gear groups.
 8. Put back-slot items, no-stat items, and other accessory/cosmetic items into bottom accessory groups by item type.
 9. Sort groups in slot order and sort keys within each group deterministically.
-10. Mark keys that match the current battle or costume equipped slot values.
+10. Exclude Back from the equipped battle display and from battle preset item views/execution.
 11. Sum battle preset stat totals from the resolved item totals.
-12. Render each battle preset with its id, compact saved item views, and total battle stats.
+12. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
 ```
 
 Equip action rules:
@@ -1492,6 +1489,7 @@ Equip action rules:
 8. Write diagnostics log entries for success and failure.
 9. Show non-blocking snackbar feedback and update equipped badges from the refreshed snapshot.
 10. Reject `*_base_0` empty-slot markers before any Habitica API request.
+11. Ignore Back slots in battle preset save and equip flows.
 ```
 
 Battle preset removal and rename are local-only. Removal requires a confirmation prompt because future Macros may reference preset ids. Rename preserves the preset id so existing future macro references can remain stable.
@@ -1526,7 +1524,7 @@ Do not expose raw credentials or request headers. Diagnostics metadata may inclu
 Test:
 
 - grouping by slot prefix;
-- battle and costume equipped markers;
+- battle equipped markers;
 - catalog name resolution and raw-key fallback;
 - current-class stat totals;
 - battle preset stat totals;
@@ -1534,6 +1532,7 @@ Test:
 - stable preset ids and preset rename;
 - preset removal;
 - base-slot marker normalization;
+- battle preset Back-slot removal;
 - accessory/no-stat grouping;
 - item equip and preset equip controller dispatch;
 - empty-state rendering;
@@ -1545,14 +1544,14 @@ Test:
 Current implementation:
 
 - dedicated `Inventory` route in the app shell;
-- equipped battle gear and costume blocks;
+- equipped battle gear block;
 - local battle gear preset list;
-- preset save, rename, equip, and confirmed remove actions;
+- preset save, rename, full-preset equip, individual preset-item equip, and confirmed remove actions;
 - slot-grouped obtained gear explorer;
 - bottom accessory/no-stat item explorer grouped by item type;
 - gear content catalog name/stat resolution;
-- battle and costume equipped markers;
-- battle and costume equip buttons on owned gear cards;
+- battle equipped markers;
+- battle equip buttons on owned gear cards;
 - snackbar feedback for equipment changes;
 - companion summary cards for the cached account snapshot.
 

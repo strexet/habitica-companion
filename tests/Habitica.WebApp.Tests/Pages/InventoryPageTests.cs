@@ -79,7 +79,8 @@ public sealed class InventoryPageTests : BunitContext
 
         Assert.Contains("Equipment explorer", cut.Markup);
         Assert.Contains("Equipped battle gear", cut.Markup);
-        Assert.Contains("Equipped costume", cut.Markup);
+        Assert.DoesNotContain("Equipped costume", cut.Markup);
+        Assert.DoesNotContain("Costume loadout", cut.Markup);
         Assert.Contains("Battle gear presets", cut.Markup);
         Assert.DoesNotContain("Costume presets", cut.Markup);
         Assert.Contains("Casting", cut.Markup);
@@ -88,8 +89,9 @@ public sealed class InventoryPageTests : BunitContext
         Assert.Contains("Wizard Wand", cut.Markup);
         Assert.Contains("Head", cut.Markup);
         Assert.Contains("Weapon", cut.Markup);
-        Assert.Contains("Battle equipped", cut.Markup);
-        Assert.Contains("Costume equipped", cut.Markup);
+        Assert.DoesNotContain("Battle equipped", cut.Markup);
+        Assert.DoesNotContain("Costume equipped", cut.Markup);
+        Assert.DoesNotContain("equip-costume", cut.Markup);
     }
 
     [Fact]
@@ -135,6 +137,7 @@ public sealed class InventoryPageTests : BunitContext
         var cut = Render<InventoryPage>();
 
         cut.Find("[data-testid='equip-battle-weapon_warrior_6']").Click();
+        cut.Find("[data-testid='equip-preset-item-preset-1-weapon_wizard_5']").Click();
         cut.Find("[data-testid='equip-preset-preset-1']").Click();
         cut.Find("[data-testid='rename-preset-preset-1']").Click();
         cut.Find("[data-testid='rename-preset-name-preset-1']").Input("Focused Casting");
@@ -142,7 +145,9 @@ public sealed class InventoryPageTests : BunitContext
         cut.Find("[data-testid='remove-preset-preset-1']").Click();
         cut.Find("[data-testid='confirm-remove-preset-preset-1']").Click();
 
-        Assert.Equal((EquipmentSetKind.Battle, "weapon_warrior_6"), controller.EquipItemCalls.Single());
+        Assert.Equal(
+            new[] { (EquipmentSetKind.Battle, "weapon_warrior_6"), (EquipmentSetKind.Battle, "weapon_wizard_5") },
+            controller.EquipItemCalls);
         Assert.Equal("preset-1", controller.EquipPresetCalls.Single());
         Assert.Equal(("preset-1", "Focused Casting"), controller.RenamePresetCalls.Single());
         Assert.Equal("preset-1", controller.RemovePresetCalls.Single());

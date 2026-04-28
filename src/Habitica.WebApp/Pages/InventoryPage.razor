@@ -12,7 +12,7 @@
             <p class="section-label">Equipment explorer</p>
             <h1>Cached inventory and equipped gear</h1>
             <p class="panel-copy">
-                Manage equipped battle gear and inspect costume gear from cached account data. Gear changes run through
+                Manage equipped battle gear from cached account data. Gear changes run through
                 Habitica API mutations and refresh the account snapshot after completion.
             </p>
         </div>
@@ -72,17 +72,6 @@
                     </MudButton>
                 </div>
             </article>
-
-            <article class="card-surface inventory-group-card">
-                <div class="task-group-header">
-                    <div>
-                        <p class="section-label">Equipped costume</p>
-                        <h2>Costume loadout</h2>
-                    </div>
-                </div>
-
-                @RenderEquippedSet(viewModel.CostumeEquipped)
-            </article>
         </section>
 
         <section class="inventory-preset-section">
@@ -115,18 +104,6 @@
                             <span class="ui-pill count-pill">@group.Items.Count</span>
                         </div>
 
-                        <dl class="dashboard-definition-list">
-                            <div>
-                                <dt>Battle equipped</dt>
-                                <dd>@(group.BattleEquippedKey ?? "None")</dd>
-                            </div>
-
-                            <div>
-                                <dt>Costume equipped</dt>
-                                <dd>@(group.CostumeEquippedKey ?? "None")</dd>
-                            </div>
-                        </dl>
-
                         <div class="inventory-item-list">
                             @foreach (var item in group.Items)
                             {
@@ -143,23 +120,9 @@
                                     {
                                         <p class="panel-copy">@item.Notes</p>
                                     }
-                                    <div class="inventory-item-tags">
-                                        @if (item.IsBattleEquipped)
-                                        {
-                                            <span class="ui-pill state-pill success-pill">Battle equipped</span>
-                                        }
-
-                                        @if (item.IsCostumeEquipped)
-                                        {
-                                            <span class="ui-pill state-pill warning-pill">Costume equipped</span>
-                                        }
-                                    </div>
                                     <div class="action-row inventory-actions">
                                         <MudButton HtmlTag="button" data-testid="@($"equip-battle-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Variant="Variant.Outlined">
                                             @(item.IsBattleEquipped ? "Unequip battle" : "Equip battle")
-                                        </MudButton>
-                                        <MudButton HtmlTag="button" data-testid="@($"equip-costume-{item.Key}")" Color="Color.Secondary" Disabled="@(!canMutate)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Costume, item.Key))" Variant="Variant.Outlined">
-                                            @(item.IsCostumeEquipped ? "Unequip costume" : "Equip costume")
                                         </MudButton>
                                     </div>
                                 </article>
@@ -201,17 +164,6 @@
                                         {
                                             <p class="panel-copy">@item.Notes</p>
                                         }
-                                        <div class="inventory-item-tags">
-                                            @if (item.IsBattleEquipped)
-                                            {
-                                                <span class="ui-pill state-pill success-pill">Battle equipped</span>
-                                            }
-
-                                            @if (item.IsCostumeEquipped)
-                                            {
-                                                <span class="ui-pill state-pill warning-pill">Costume equipped</span>
-                                            }
-                                        </div>
                                     </article>
                                 }
                             </div>
@@ -425,6 +377,17 @@
                         builder.CloseElement();
                     }
 
+                    builder.OpenComponent<MudButton>(sequence++);
+                    builder.AddAttribute(sequence++, "HtmlTag", "button");
+                    builder.AddAttribute(sequence++, "UserAttributes", new Dictionary<string, object> { ["data-testid"] = $"equip-preset-item-{preset.Id}-{item.Key}" });
+                    builder.AddAttribute(sequence++, "Color", Color.Primary);
+                    builder.AddAttribute(sequence++, "Disabled", !canMutate);
+                    builder.AddAttribute(sequence++, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, () => EquipItemAsync(EquipmentSetKind.Battle, item.Key)));
+                    builder.AddAttribute(sequence++, "Size", Size.Small);
+                    builder.AddAttribute(sequence++, "Variant", Variant.Outlined);
+                    builder.AddAttribute(sequence++, "ChildContent", (RenderFragment)(contentBuilder => contentBuilder.AddContent(0, "Equip item")));
+                    builder.CloseComponent();
+
                     builder.CloseElement();
                 }
             }
@@ -518,7 +481,7 @@
             return "No stats";
         }
 
-        return $"STR {stats.Strength:0.#} • INT {stats.Intelligence:0.#} • CON {stats.Constitution:0.#} • PER {stats.Perception:0.#}";
+        return $"STR\u00a0{stats.Strength:0.#} • INT\u00a0{stats.Intelligence:0.#} • CON\u00a0{stats.Constitution:0.#} • PER\u00a0{stats.Perception:0.#}";
     }
 
     private void HandleStateChanged()
