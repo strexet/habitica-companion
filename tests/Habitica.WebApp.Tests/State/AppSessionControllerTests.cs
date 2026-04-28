@@ -96,13 +96,15 @@ public sealed class AppSessionControllerTests
         var taskSnapshotStore = new FakeTaskSnapshotStore();
         var userSnapshotStore = new FakeUserSnapshotStore();
         var partySnapshotStore = new FakePartySnapshotStore();
+        var partyCronHistoryStore = new FakePartyCronHistoryStore();
         var logWriter = new DiagnosticsLogWriter(logStore, TimeProvider.System);
 
         return new AppSessionController(
-            loginWorkflow: new LoginWorkflow(syncClient, credentialStore, taskSnapshotStore, userSnapshotStore, partySnapshotStore, logWriter),
+            loginWorkflow: new LoginWorkflow(syncClient, credentialStore, taskSnapshotStore, userSnapshotStore, partySnapshotStore, partyCronHistoryStore, logWriter),
             liveTestWorkflow: new LiveTestWorkflow(syncClient, userSnapshotStore, taskSnapshotStore, partySnapshotStore, logWriter, TimeProvider.System),
             diagnosticsPresetWorkflow: new DiagnosticsPresetWorkflow(syncClient, logWriter),
             credentialStore: credentialStore,
+            partyCronHistoryStore: partyCronHistoryStore,
             partySnapshotStore: partySnapshotStore,
             taskSnapshotStore: taskSnapshotStore,
             userSnapshotStore: userSnapshotStore,
@@ -207,6 +209,32 @@ public sealed class AppSessionControllerTests
         {
             Snapshot = snapshot;
             return Task.CompletedTask;
+        }
+    }
+
+    private sealed class FakePartyCronHistoryStore : IPartyCronHistoryStore
+    {
+        public bool Cleared { get; private set; }
+
+        public PartyCronHistorySnapshot Snapshot { get; private set; } = new(Array.Empty<PartyCronHistoryEvent>());
+
+        public Task ClearAsync(CancellationToken cancellationToken)
+        {
+            Cleared = true;
+            Snapshot = new PartyCronHistorySnapshot(Array.Empty<PartyCronHistoryEvent>());
+            return Task.CompletedTask;
+        }
+
+        public Task<PartyCronHistorySnapshot> GetAsync(CancellationToken cancellationToken)
+            => Task.FromResult(Snapshot);
+
+        public Task<PartyCronHistorySnapshot> UpsertAsync(
+            IEnumerable<PartyCronHistoryEvent> events,
+            DateTimeOffset pruneReferenceUtc,
+            CancellationToken cancellationToken)
+        {
+            Snapshot = new PartyCronHistorySnapshot(Snapshot.Events.Concat(events).ToArray());
+            return Task.FromResult(Snapshot);
         }
     }
 

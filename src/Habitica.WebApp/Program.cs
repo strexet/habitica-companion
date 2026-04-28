@@ -20,6 +20,7 @@ builder.Services.AddScoped<TimeProvider>(_ => TimeProvider.System);
 builder.Services.AddScoped<IKeyValueStorage, IndexedDbStorageAdapter>();
 builder.Services.AddScoped<ICredentialStore, CredentialStore>();
 builder.Services.AddScoped<IDiagnosticsLogStore, DiagnosticsLogStore>();
+builder.Services.AddScoped<IPartyCronHistoryStore, PartyCronHistoryStore>();
 builder.Services.AddScoped<IPartySnapshotStore, PartySnapshotStore>();
 builder.Services.AddScoped<ITaskSnapshotStore, TaskSnapshotStore>();
 builder.Services.AddScoped<IUserSnapshotStore, UserSnapshotStore>();

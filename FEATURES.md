@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-04-26
+Last updated: 2026-04-27
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -100,18 +100,18 @@ Rules:
 
 ## 4. Party buff timing optimizer
 
-Status: planned
-Owner module: `Habitica.Rules.BuffTiming`
-Application entry point: `Habitica.Application.BuffTiming`
-Primary Habitica data: party members, user activity data, login/activity timestamps when available
+Status: partial
+Owner module: `Habitica.Domain.Party`, `Habitica.Application.Auth`, `Habitica.Storage`
+Application entry point: `Habitica.WebApp.Pages.PartyPage`
+Primary Habitica data: party group, party members, member `lastCron`, member public quest progress, member preferences day start and timezone offset
 Mutates Habitica state: no
 Requires confirmation: no
-Offline behavior: available from latest party/member snapshot
+Offline behavior: available from latest party snapshot and local CRON history
 Rate-limit sensitivity: medium; party data should not be polled aggressively
 
 ### Goal
 
-Estimate the best time to cast team buffs by finding the median active/login time of party members.
+Estimate the best time to cast team buffs from read-only party-member CRON data. The Party page shows current `CRONed X/Y`, data-gap counts when unknown/stale members exist, member-level CRON state, average member CRON time, and early/low-confidence recommendations as soon as the first refresh stores CRON data.
 
 ### Inputs
 
@@ -120,8 +120,10 @@ party id
 party member list
 member display names
 member user ids when available
-last login or last activity timestamps when available
-time zone data when available
+member lastCron timestamps when available
+member pending quest damage when available
+member custom day start when available
+member timezone offset when available
 local user time zone
 snapshot timestamp
 ```
@@ -129,8 +131,13 @@ snapshot timestamp
 ### Outputs
 
 ```text
-recommended buff time
-median timestamp or median local time bucket
+current CRONed X/Y count
+data-gap counts when unknown or possibly stale members exist
+average best buff time
+self-first buff time
+party pending boss damage/items when available
+per-member CRON state and average CRON time
+viewer-local graph buckets
 member coverage count
 members excluded due to missing data
 confidence level
@@ -139,33 +146,44 @@ warnings
 
 ### Local storage
 
-Store party member activity snapshots separately from the current party state.
-
-Suggested records:
+Store current party state separately from historical CRON events.
 
 ```text
-party_member_activity_snapshot
-party_buff_timing_result
+party/latestSnapshot
+party/cronHistory
 ```
 
 ### API interaction
 
 Use Habitica API v3 according to `HABITICA_API.md`. Fetch party/group data only through the API client layer.
 
-Do not scrape Habitica pages.
+Current read-only requests:
+
+```text
+GET /groups/party
+GET /groups/party/members?includeAllPublicFields=true
+```
+
+Do not scrape Habitica pages. Do not call `POST /api/v3/cron` for this feature.
 
 ### Algorithm / rules
 
-Normalize all timestamps to UTC before calculations.
+Normalize all stored timestamps to UTC before calculations. Convert UTC event times to the viewer's local time only for display, graph buckets, and recommendations.
 
 Initial algorithm:
 
 ```text
-1. Collect activity timestamps for all party members with available data.
-2. Exclude members with missing or invalid timestamps.
-3. Convert timestamps to time-of-day buckets in the selected reference time zone.
-4. Compute circular median or closest practical median bucket.
-5. Return coverage and confidence.
+1. Fetch party group and public party members on normal refresh.
+2. Classify each member as Croned today, Not croned yet, Unknown, or Possibly stale.
+3. Upsert member CRON events by party id, member id, and lastCronUtc.
+4. Keep 90 days of stored history and use the latest 60 days for statistics.
+5. Deduplicate unchanged same-day refreshes while preserving newly observed lastCron values.
+6. Compute per-member average CRON time with a circular time-of-day average.
+7. Count stored history days by observation/fetch day, not by each member's old `lastCron` day, so a first refresh remains a 1-day sample even when members last CRONed on different dates.
+8. Build viewer-local hourly graph points from UTC CRON events.
+9. Recommend average best buff time from the practical CRON threshold; mark estimates low-confidence until 7 stored observation days exist.
+10. Recommend self-first buff time from the current user's own CRON anchor. Nearby member CRON times can move the recommendation later, but each member's influence halves every 90 minutes and the wait cost rises by 1 score point per 120 minutes, so far-away party members do not drag this recommendation across the day.
+11. For active quests, map member pending quest progress into the member list. Boss quests use member `party.quest.progress.up`; collection quests use member `party.quest.progress.collectedItems` or item totals from `party.quest.progress.collect`.
 ```
 
 Time-of-day is circular. Avoid naive arithmetic that treats 23:30 and 00:30 as far apart.
@@ -175,13 +193,14 @@ Time-of-day is circular. Avoid naive arithmetic that treats 23:30 and 00:30 as f
 Warn when:
 
 - less than 50% of members have usable activity data;
-- timestamps are older than the configured freshness threshold;
-- time zone data is unavailable;
-- party size is too small for a stable median.
+- fewer than 7 usable history days exist;
+- member lastCron is missing;
+- member day start or timezone offset is unavailable;
+- the member snapshot was fetched before that member's current Habitica day start.
 
 ### Error handling
 
-If party data cannot be fetched, use the latest local snapshot and mark the result stale.
+If party data cannot be fetched, use the latest local snapshot and mark the result stale. Unknown members do not block recommendations, but their count must be visible.
 
 ### Security / privacy
 
@@ -191,16 +210,23 @@ Do not expose party member private data beyond what the authenticated user can a
 
 Test:
 
-- circular time median around midnight;
+- CRON classification for midnight and non-midnight day starts;
+- timezone-offset classification;
+- missing member CRON fields;
+- stale fetch detection;
+- same-day refresh dedupe;
+- UTC storage and viewer-local graph bucketing;
+- stored observation day counting;
+- circular average around midnight;
+- self-first recommendation with exponentially diminishing member influence;
+- early estimate warning from first refresh;
+- Party page CRON summary and member average rendering;
 - missing members;
-- stale timestamps;
-- even and odd member counts;
-- single-member party;
 - all timestamps missing.
 
 ### Open questions
 
-Verify which activity/login fields are available through Habitica API v3 for party members and how privacy settings affect visibility.
+Verify how consistently `lastCron`, `preferences.dayStart`, and timezone offsets are returned for all party members under different privacy settings.
 
 ## 5. Gear set management
 
@@ -1067,7 +1093,7 @@ Current implementation:
 - login form with User ID and API Token fields;
 - session-only mode by default;
 - persistent local credential opt-in;
-- credential validation through authenticated `/user?userFields=...` request;
+- credential validation through authenticated `GET /user` request;
 - sign-out for the current tab session;
 - clear-local-data action that removes persisted credentials and cached task and account snapshots;
 - no token logging or token echo in normalized API errors.
@@ -1246,12 +1272,14 @@ tasks/latestSnapshot
 Current sync flow uses:
 
 ```text
-GET /user?userFields=profile.name,stats.class,stats.lvl,stats.hp,stats.maxHealth,stats.mp,stats.maxMP,stats.exp,stats.toNextLevel,stats.gp,party._id,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts
+GET /user
 GET /groups/party
+GET /groups/party/members?includeAllPublicFields=true
+GET /content?language=en when an active boss quest needs total boss HP
 GET /tasks/user
 ```
 
-All calls go through `Habitica.Api.HabiticaApiClient`.
+The full user response is used for account/dashboard refreshes because Habitica adds computed stat helpers such as `stats.maxHealth`, `stats.maxMP`, and `stats.toNextLevel` only to the full `/user` response. The app still stores only the parsed local projections it needs.
 
 ### Algorithm / rules
 
@@ -1259,8 +1287,8 @@ Current flow:
 
 ```text
 1. Build authenticated request headers.
-2. Validate credentials and load the current account snapshot by reading `/user?userFields=...`.
-3. If the user snapshot shows an active party, fetch `/groups/party`.
+2. Validate credentials and load the current account snapshot by reading `GET /user`.
+3. If the user snapshot shows an active party, fetch `/groups/party`, visible public members, and content data only when needed for active boss quest total HP.
 4. Fetch `/tasks/user`.
 5. Persist credentials only if the user selected persistent mode.
 6. Persist the latest account snapshot.
@@ -1430,7 +1458,7 @@ Waiting:
 Status: implemented
 Owner module: `Habitica.WebApp.Pages.PartyPage`
 Application entry point: `Habitica.WebApp.Pages.PartyPage`
-Primary Habitica data: cached party group summary and quest state
+Primary Habitica data: cached party group summary, quest state, party members, member CRON fields
 Mutates Habitica state: no
 Requires confirmation: no
 Offline behavior: fully available from the cached party snapshot
@@ -1438,7 +1466,7 @@ Rate-limit sensitivity: none without explicit refresh
 
 ### Goal
 
-Provide a read-only party overview that surfaces the latest cached party name, summary, member count, and quest progress without exposing group mutations.
+Provide a read-only party overview that surfaces the latest cached party name, summary, member count, quest progress, party-member CRON state, buff timing recommendations, and local CRON statistics without exposing group mutations.
 
 ### Inputs
 
@@ -1447,6 +1475,8 @@ cached user snapshot
 cached party snapshot
 party freshness state
 party quest summary
+party member CRON summary
+party CRON history
 ```
 
 ### Outputs
@@ -1455,13 +1485,18 @@ party quest summary
 party summary cards
 member count
 quest progress snapshot
+party pending boss damage/items, boss HP remaining, total boss HP when available, and pending damage to party
+CRONed X/Y summary
+buff timing recommendations
+party member CRON list
+viewer-local CRON statistics graph
 freshness banner
 no-party empty state
 ```
 
 ### Local storage
 
-Reads `party/latestSnapshot` and `user/latestSnapshot`.
+Reads `party/latestSnapshot`, `party/cronHistory`, and `user/latestSnapshot`.
 
 ### API interaction
 
@@ -1475,7 +1510,10 @@ Current display rules:
 1. If the cached user snapshot has no party id, render a no-party state.
 2. If a party id exists but no party snapshot exists, render a refresh-required state.
 3. Show the latest cached party name, summary, and member count.
-4. Show quest key, active state, progress, and participant count when a quest snapshot exists.
+4. Show quest key, active state, party pending boss damage or collection items when member progress is available, boss HP remaining, total boss HP when content data is available, pending damage to party, and participant count when a quest snapshot exists.
+5. Show a dedicated CRON summary when member CRON data exists.
+6. Show per-member CRON state, last CRON, average CRON time, and active-quest pending damage/items when available. Keep day-start/timezone diagnostics out of the main row because Habitica usually hides those public member fields.
+7. Show viewer-local CRON graph points and low-confidence warnings from local history.
 ```
 
 ### Validation
@@ -1572,13 +1610,13 @@ Persists a capped `diagnostics/logEntries` journal that stores newest-first reda
 Current live test flow uses:
 
 ```text
-GET /user?userFields=profile.name,stats.class,stats.lvl,stats.hp,stats.maxHealth,stats.mp,stats.maxMP,stats.exp,stats.toNextLevel,stats.gp,party._id,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts
+GET /user
 GET /groups/party
 GET /tasks/user
 POST /user/equip/equipped/:key
 ```
 
-Curated presets reuse the same narrow `/user`, `/tasks/user`, and `/groups/party` reads that the implemented account, inventory, task, and party pages already depend on.
+Curated presets reuse the same `/user`, `/tasks/user`, and `/groups/party` reads that the implemented account, inventory, task, and party pages already depend on.
 
 ### Algorithm / rules
 

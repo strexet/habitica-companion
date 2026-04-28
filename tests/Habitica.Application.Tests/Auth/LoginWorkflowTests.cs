@@ -21,8 +21,9 @@ public sealed class LoginWorkflowTests
         var taskStore = new FakeTaskSnapshotStore();
         var userStore = new FakeUserSnapshotStore();
         var partyStore = new FakePartySnapshotStore();
+        var partyCronHistoryStore = new FakePartyCronHistoryStore();
         var logStore = new FakeDiagnosticsLogStore();
-        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore, partyStore, new DiagnosticsLogWriter(logStore, TimeProvider.System));
+        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore, partyStore, partyCronHistoryStore, new DiagnosticsLogWriter(logStore, TimeProvider.System));
 
         var result = await workflow.AuthenticateAndSyncAsync(
             new LoginCommand("user-id", "api-token", false),
@@ -35,6 +36,9 @@ public sealed class LoginWorkflowTests
         Assert.NotNull(taskStore.LastSavedSnapshot);
         Assert.NotNull(userStore.LastSavedSnapshot);
         Assert.NotNull(partyStore.LastSavedSnapshot);
+        Assert.Single(partyCronHistoryStore.Snapshot.Events);
+        Assert.NotNull(partyStore.LastSavedSnapshot!.CronDashboard);
+        Assert.Equal("Early estimate: based on 1 day of CRON history.", partyStore.LastSavedSnapshot.CronDashboard!.SampleSizeWarning);
         Assert.Contains(logStore.Entries, entry =>
             entry.Operation == "sign-in"
             && entry.FeatureArea == DiagnosticsFeatureArea.Auth
@@ -49,8 +53,9 @@ public sealed class LoginWorkflowTests
         var taskStore = new FakeTaskSnapshotStore();
         var userStore = new FakeUserSnapshotStore();
         var partyStore = new FakePartySnapshotStore();
+        var partyCronHistoryStore = new FakePartyCronHistoryStore();
         var logStore = new FakeDiagnosticsLogStore();
-        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore, partyStore, new DiagnosticsLogWriter(logStore, TimeProvider.System));
+        var workflow = new LoginWorkflow(apiClient, credentialStore, taskStore, userStore, partyStore, partyCronHistoryStore, new DiagnosticsLogWriter(logStore, TimeProvider.System));
 
         await workflow.AuthenticateAndSyncAsync(
             new LoginCommand("user-id", "api-token", true),
@@ -124,7 +129,20 @@ public sealed class LoginWorkflowTests
                 "Night Owls",
                 "Quest-focused party",
                 4,
-                new PartyQuestSnapshot("dragon", true, 12.5m, 3m, 2)));
+                new PartyQuestSnapshot("dragon", true, 12.5m, 3m, 2),
+                new[]
+                {
+                    new PartyMemberSnapshot(
+                        "user-id",
+                        "Mage Tester",
+                        DateTimeOffset.Parse("2026-04-24T08:15:00Z"),
+                        0,
+                        0,
+                        PartyCronState.CronedToday,
+                        "Croned today.",
+                        "2026-04-24",
+                        DateTimeOffset.Parse("2026-04-24T00:00:00Z"))
+                }));
         }
 
         public Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -231,6 +249,31 @@ public sealed class LoginWorkflowTests
         {
             LastSavedSnapshot = snapshot;
             return Task.CompletedTask;
+        }
+    }
+
+    private sealed class FakePartyCronHistoryStore : IPartyCronHistoryStore
+    {
+        public PartyCronHistorySnapshot Snapshot { get; private set; } = new(Array.Empty<PartyCronHistoryEvent>());
+
+        public Task ClearAsync(CancellationToken cancellationToken)
+        {
+            Snapshot = new PartyCronHistorySnapshot(Array.Empty<PartyCronHistoryEvent>());
+            return Task.CompletedTask;
+        }
+
+        public Task<PartyCronHistorySnapshot> GetAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(Snapshot);
+        }
+
+        public Task<PartyCronHistorySnapshot> UpsertAsync(
+            IEnumerable<PartyCronHistoryEvent> events,
+            DateTimeOffset pruneReferenceUtc,
+            CancellationToken cancellationToken)
+        {
+            Snapshot = new PartyCronHistorySnapshot(Snapshot.Events.Concat(events).ToArray());
+            return Task.FromResult(Snapshot);
         }
     }
 }

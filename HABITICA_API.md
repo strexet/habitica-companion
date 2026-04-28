@@ -219,11 +219,11 @@ GET /user?userFields=stats,items.gear.equipped,tasksOrder
 
 Recommended client usage:
 
-- Use narrow `userFields` for frequent refreshes.
-- Fetch the full user document only on initial sync, debug export, or explicit full refresh.
+- Use `GET /user` for account dashboard refreshes that need computed stats such as `stats.maxHealth`, `stats.maxMP`, or `stats.toNextLevel`. Habitica's v3 server adds those computed stat helpers only for the full user response; a filtered `userFields` response can omit them because they are not stored user fields.
+- Use narrow `userFields` only when the selected data is known to be stored on the user document and computed helpers are not needed.
+- Fetch the full user document on manual account/dashboard refreshes where computed stats are needed; avoid background polling.
 - Use `tasksOrder` together with `/tasks/user` for client-side ordering.
-- If a filtered `/user` response needs computed stats, request `stats.maxHealth`, `stats.maxMP`, and `stats.toNextLevel` explicitly instead of assuming a coarse `stats` selector will always surface them.
-- Treat those computed stat helper fields as optional at runtime anyway. If they are absent, avoid presenting `0` as a meaningful target/cap in the UI.
+- Treat computed stat helper fields as optional at runtime anyway. If they are absent, avoid presenting `0` as a meaningful target/cap in the UI.
 
 ### 8.2 Update authenticated user
 
@@ -697,9 +697,25 @@ memberCount
 quest.key
 quest.active
 quest.progress.up
+quest.progress.hp
 quest.progress.down
+quest.progress.collect
 quest.members
 ```
+
+For boss quests, `quest.progress.hp` is the boss HP currently remaining. `quest.progress.up` can be present as pending boss progress, but do not treat the party-group value as the total pending party damage unless this is verified against the current API response. `quest.progress.down` is pending damage that the boss will apply to the party from missed dailies. The party response does not include the original total boss HP. Resolve that from the content catalog when needed:
+
+```http
+GET /content?language=en
+```
+
+Relevant content fields:
+
+```text
+quests.<questKey>.boss.hp
+```
+
+For collection quests, `quest.progress.collect` can contain already-applied collection progress by item key. Pending collection progress before members CRON is exposed on member-side quest progress when Habitica returns it.
 
 Treat each field as optional and schema-flexible. The server may omit or reshape quest details depending on current party state.
 
@@ -719,6 +735,33 @@ Query parameters:
 | `limit` | Optional. Max 60. |
 | `includeAllPublicFields` | If `true`, returns public member fields similar to single-member fetch. |
 | `search` | Search profile name / username. |
+
+For the read-only Party CRON dashboard, request the party member list without task data. The app currently uses:
+
+```http
+GET /groups/party/members?includeAllPublicFields=true
+```
+
+Fields used when returned:
+
+```text
+_id or id
+profile.name
+auth.timestamps.loggedin
+lastCron (only if Habitica ever returns it for the caller)
+party.quest.progress.up
+party.quest.progress.collectedItems
+party.quest.progress.collect
+preferences.dayStart (not present in the current public member field list)
+preferences.timezoneOffset (not present in the current public member field list)
+preferences.timezoneOffsetAtLastCron (not present in the current public member field list)
+```
+
+Habitica's current server source defines `includeAllPublicFields=true` as the same public member field set used by `GET /members/:memberId`. That public field set includes `auth.timestamps` but does not include `lastCron`, `preferences.dayStart`, `preferences.timezoneOffset`, or `preferences.timezoneOffsetAtLastCron`. The cron implementation updates both `auth.timestamps.loggedin` and `lastCron` when a user's cron succeeds, so the Party CRON dashboard uses `lastCron` when present and falls back to `auth.timestamps.loggedin` for public member data.
+
+When `party.quest.progress.up` is present on public member records, it is the member's pending boss damage. When `party.quest.progress.collectedItems` is present, it is the member's pending collection item count. To show total party pending quest progress, sum the relevant field across visible members who are active quest participants. If `quest.members` is missing or the quest has not started, include all members with a returned value. If no member values are returned, show the total as unknown instead of assuming `0`.
+
+Treat these member fields as optional. Store observed CRON timestamps as UTC timestamps for local statistics. If member-specific day start or timezone data is unavailable, classify the member from the public CRON timestamp using a UTC-day fallback and mark persisted history as low confidence; do not require webhooks or Habitica account setting changes for party reads.
 
 Pagination pattern:
 
@@ -881,7 +924,7 @@ For a production client, avoid embedding long-lived API tokens into static pages
 
 ```bash
 curl --compressed \
-  -X GET "https://habitica.com/api/v3/user?userFields=stats,tasksOrder" \
+  -X GET "https://habitica.com/api/v3/user" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
   -H "x-api-user: ${HABITICA_USER_ID}" \
@@ -980,7 +1023,7 @@ Keep derived UI state separate from server state.
 
 Minimum viable sync:
 
-1. Fetch `/user?userFields=stats,preferences,profile,party,tasksOrder,tags,items,notifications`.
+1. Fetch `/user` for account/dashboard syncs that display computed stat helpers such as `stats.maxHealth`, `stats.maxMP`, or `stats.toNextLevel`. Use `userFields` only for stored-field-only syncs.
 2. Fetch `/tasks/user`.
 3. Fetch `/content` if catalog is missing or stale.
 4. Build local projections.
@@ -1040,7 +1083,7 @@ Do not log:
 | Using API v4 | Do not use v4 for third-party clients. |
 | Assuming all task IDs are UUID aliases | Store server `id`; allow alias only as a convenience. |
 | Sending full stale objects in PUT | Send partial updates only. |
-| Fetching full user document repeatedly | Use `userFields`. |
+| Fetching full user document too frequently or for stored-field-only views | Use manual refresh, cache projections, and use `userFields` when computed stat helpers are not needed. |
 | Scanning large guilds in parallel | Paginate, throttle, and cancel. |
 | Assuming challenge/group tasks are user-editable | Check ownership and permissions. |
 | Ignoring quest eventual consistency | Refresh party state and communicate uncertainty in UI. |
@@ -1053,7 +1096,7 @@ A practical first implementation should support:
 
 | Feature | Endpoints |
 | --- | --- |
-| Auth check | `GET /user?userFields=profile,stats,preferences` |
+| Auth/account snapshot | `GET /user` when dashboard computed stats are displayed; `GET /user?userFields=profile,stats,preferences` is enough for auth-only checks. |
 | Content catalog | `GET /content` |
 | Task list | `GET /tasks/user` |
 | Task create | `POST /tasks/user` |

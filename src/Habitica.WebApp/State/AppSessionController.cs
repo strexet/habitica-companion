@@ -18,6 +18,7 @@ public sealed class AppSessionController : IAppSessionController
     private readonly DiagnosticsPresetWorkflow _diagnosticsPresetWorkflow;
     private readonly LoginWorkflow _loginWorkflow;
     private readonly LiveTestWorkflow _liveTestWorkflow;
+    private readonly IPartyCronHistoryStore _partyCronHistoryStore;
     private readonly IPartySnapshotStore _partySnapshotStore;
     private readonly SnapshotFreshnessPolicy _snapshotFreshnessPolicy;
     private readonly ITaskSnapshotStore _taskSnapshotStore;
@@ -32,6 +33,7 @@ public sealed class AppSessionController : IAppSessionController
         LiveTestWorkflow liveTestWorkflow,
         DiagnosticsPresetWorkflow diagnosticsPresetWorkflow,
         ICredentialStore credentialStore,
+        IPartyCronHistoryStore partyCronHistoryStore,
         IPartySnapshotStore partySnapshotStore,
         ITaskSnapshotStore taskSnapshotStore,
         IUserSnapshotStore userSnapshotStore,
@@ -44,6 +46,7 @@ public sealed class AppSessionController : IAppSessionController
         _liveTestWorkflow = liveTestWorkflow;
         _diagnosticsPresetWorkflow = diagnosticsPresetWorkflow;
         _credentialStore = credentialStore;
+        _partyCronHistoryStore = partyCronHistoryStore;
         _partySnapshotStore = partySnapshotStore;
         _taskSnapshotStore = taskSnapshotStore;
         _userSnapshotStore = userSnapshotStore;
@@ -294,6 +297,7 @@ public sealed class AppSessionController : IAppSessionController
 
         await _credentialStore.ClearPersistentCredentialsAsync(cancellationToken);
         await _diagnosticsLogStore.ClearAsync(cancellationToken);
+        await _partyCronHistoryStore.ClearAsync(cancellationToken);
         await _partySnapshotStore.ClearAsync(cancellationToken);
         await _taskSnapshotStore.ClearAsync(cancellationToken);
         await _userSnapshotStore.ClearAsync(cancellationToken);

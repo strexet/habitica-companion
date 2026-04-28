@@ -39,9 +39,7 @@ public sealed class HabiticaApiClientTests
 
         Assert.NotNull(capturedRequest);
         Assert.Equal(HttpMethod.Get, capturedRequest!.Method);
-        Assert.Equal(
-            "https://habitica.com/api/v3/user?userFields=profile.name,stats.class,stats.lvl,stats.hp,stats.maxHealth,stats.mp,stats.maxMP,stats.exp,stats.toNextLevel,stats.gp,party._id,items.currentPet,items.currentMount,items.gear.equipped,items.gear.costume,items.gear.owned,items.eggs,items.food,items.hatchingPotions,items.quests,items.pets,items.mounts",
-            capturedRequest.RequestUri!.ToString());
+        Assert.Equal("https://habitica.com/api/v3/user", capturedRequest.RequestUri!.ToString());
         Assert.Equal("user-id", capturedRequest.Headers.GetValues("x-api-user").Single());
         Assert.Equal("api-token", capturedRequest.Headers.GetValues("x-api-key").Single());
         Assert.Equal("habitica-tool-author-habitica-tool", capturedRequest.Headers.GetValues("x-client").Single());
@@ -177,6 +175,8 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(15, snapshot.Level);
         Assert.Equal(42.5m, snapshot.Health);
         Assert.Equal(50m, snapshot.MaxHealth);
+        Assert.Equal(40m, snapshot.MaxMana);
+        Assert.Equal(74.9m, snapshot.ToNextLevel);
         Assert.Equal("party-123", snapshot.PartyId);
         Assert.Equal("Wolf-Base", snapshot.CurrentPetKey);
         Assert.Equal("head_wizard_3", snapshot.Equipment.Battle.Head);
@@ -191,21 +191,27 @@ public sealed class HabiticaApiClientTests
     [Fact]
     public async Task GetPartySnapshotAsync_maps_party_and_quest_fields()
     {
-        var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
+        var todayUtc = DateTimeOffset.UtcNow.UtcDateTime.Date;
+        var alphaCron = new DateTimeOffset(todayUtc.AddHours(5).AddMinutes(15), TimeSpan.Zero);
+        var betaCron = new DateTimeOffset(todayUtc.AddHours(6).AddMinutes(45), TimeSpan.Zero);
+        var responses = new Queue<HttpResponseMessage>(new[]
         {
-            Content = JsonContent("""
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""
             {
               "success": true,
               "data": {
                 "_id": "party-123",
                 "name": "Night Owls",
-                "summary": "Quest-focused party",
+                "description": "Quest-focused party notes",
                 "memberCount": 4,
                 "quest": {
-                  "key": "dragon",
+                  "key": "seaserpent",
                   "active": true,
                   "progress": {
-                    "up": 12.5,
+                    "up": 2.1,
+                    "hp": 875.25,
                     "down": 3
                   },
                   "members": {
@@ -217,7 +223,68 @@ public sealed class HabiticaApiClientTests
               }
             }
             """)
+            },
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent($$"""
+            {
+              "success": true,
+              "data": [
+                {
+                  "_id": "user-1",
+                  "profile": { "name": "Alpha" },
+                  "lastCron": "{{alphaCron:O}}",
+                  "party": {
+                    "quest": {
+                      "progress": {
+                        "up": 7.2
+                      }
+                    }
+                  },
+                  "preferences": {
+                    "dayStart": 0,
+                    "timezoneOffset": 0
+                  }
+                },
+                {
+                  "_id": "user-2",
+                  "profile": { "name": "Beta" },
+                  "party": {
+                    "quest": {
+                      "progress": {
+                        "up": 5.3
+                      }
+                    }
+                  },
+                  "auth": {
+                    "timestamps": {
+                      "loggedin": "{{betaCron:O}}"
+                    }
+                  }
+                }
+              ]
+            }
+            """)
+            },
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""
+            {
+              "success": true,
+              "data": {
+                "quests": {
+                  "seaserpent": {
+                    "boss": {
+                      "hp": 1000
+                    }
+                  }
+                }
+              }
+            }
+            """)
+            }
         });
+        var handler = new StubHttpMessageHandler(_ => responses.Dequeue());
 
         var client = CreateClient(handler);
 
@@ -225,14 +292,125 @@ public sealed class HabiticaApiClientTests
 
         Assert.Equal("party-123", snapshot.PartyId);
         Assert.Equal("Night Owls", snapshot.Name);
-        Assert.Equal("Quest-focused party", snapshot.Summary);
+        Assert.Equal("Quest-focused party notes", snapshot.Summary);
         Assert.Equal(4, snapshot.MemberCount);
         Assert.NotNull(snapshot.Quest);
-        Assert.Equal("dragon", snapshot.Quest!.Key);
+        Assert.Equal("seaserpent", snapshot.Quest!.Key);
         Assert.True(snapshot.Quest.IsActive);
-        Assert.Equal(12.5m, snapshot.Quest.ProgressUp);
-        Assert.Equal(3m, snapshot.Quest.ProgressDown);
+        Assert.Equal(2.1m, snapshot.Quest.PendingDamage);
+        Assert.Equal(12.5m, snapshot.Quest.TotalPendingDamage);
+        Assert.Equal(875.25m, snapshot.Quest.BossHealthRemaining);
+        Assert.Equal(1000m, snapshot.Quest.BossHealthTotal);
+        Assert.Equal(3m, snapshot.Quest.PendingPartyDamage);
         Assert.Equal(2, snapshot.Quest.ParticipantCount);
+        Assert.Equal(2, snapshot.Members.Count);
+        Assert.Equal("Alpha", snapshot.Members[0].DisplayName);
+        Assert.Equal(alphaCron, snapshot.Members[0].LastCronUtc);
+        Assert.Equal(7.2m, snapshot.Members[0].PendingQuestDamage);
+        Assert.Equal(PartyCronState.CronedToday, snapshot.Members[0].CronState);
+        Assert.Equal("Beta", snapshot.Members[1].DisplayName);
+        Assert.Equal(betaCron, snapshot.Members[1].LastCronUtc);
+        Assert.Equal(5.3m, snapshot.Members[1].PendingQuestDamage);
+        Assert.Equal(PartyCronState.CronedToday, snapshot.Members[1].CronState);
+    }
+
+    [Fact]
+    public async Task GetPartySnapshotAsync_maps_collection_pending_items_from_party_members()
+    {
+        var todayUtc = DateTimeOffset.UtcNow.UtcDateTime.Date;
+        var alphaCron = new DateTimeOffset(todayUtc.AddHours(5), TimeSpan.Zero);
+        var betaCron = new DateTimeOffset(todayUtc.AddHours(6), TimeSpan.Zero);
+        var gammaCron = new DateTimeOffset(todayUtc.AddHours(7), TimeSpan.Zero);
+        var responses = new Queue<HttpResponseMessage>(new[]
+        {
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""
+            {
+              "success": true,
+              "data": {
+                "_id": "party-123",
+                "name": "Night Owls",
+                "memberCount": 3,
+                "quest": {
+                  "key": "evilsanta",
+                  "active": true,
+                  "progress": {
+                    "collect": {
+                      "milk": 4,
+                      "cookies": 5
+                    }
+                  },
+                  "members": {
+                    "user-1": true,
+                    "user-2": true,
+                    "user-3": false
+                  }
+                }
+              }
+            }
+            """)
+            },
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent($$"""
+            {
+              "success": true,
+              "data": [
+                {
+                  "_id": "user-1",
+                  "profile": { "name": "Alpha" },
+                  "lastCron": "{{alphaCron:O}}",
+                  "party": {
+                    "quest": {
+                      "progress": {
+                        "collectedItems": 3
+                      }
+                    }
+                  }
+                },
+                {
+                  "_id": "user-2",
+                  "profile": { "name": "Beta" },
+                  "lastCron": "{{betaCron:O}}",
+                  "party": {
+                    "quest": {
+                      "progress": {
+                        "collectedItems": 4
+                      }
+                    }
+                  }
+                },
+                {
+                  "_id": "user-3",
+                  "profile": { "name": "Gamma" },
+                  "lastCron": "{{gammaCron:O}}",
+                  "party": {
+                    "quest": {
+                      "progress": {
+                        "collectedItems": 9
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+            """)
+            }
+        });
+        var handler = new StubHttpMessageHandler(_ => responses.Dequeue());
+        var client = CreateClient(handler);
+
+        var snapshot = await client.GetPartySnapshotAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
+
+        Assert.NotNull(snapshot.Quest);
+        Assert.Equal("evilsanta", snapshot.Quest!.Key);
+        Assert.Null(snapshot.Quest.TotalPendingDamage);
+        Assert.Equal(7m, snapshot.Quest.TotalPendingCollectionItems);
+        Assert.Equal(3m, snapshot.Members[0].PendingQuestItems);
+        Assert.Equal(4m, snapshot.Members[1].PendingQuestItems);
+        Assert.Equal(9m, snapshot.Members[2].PendingQuestItems);
+        Assert.Empty(responses);
     }
 
     [Fact]

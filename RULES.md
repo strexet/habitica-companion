@@ -1,6 +1,6 @@
 # RULES.md
 
-Last updated: 2026-04-24
+Last updated: 2026-04-27
 Primary audience: AI agents working in this repository
 
 ## 1. Purpose
@@ -15,11 +15,13 @@ Before implementing changes, read the relevant documents in this order:
 
 1. `RULES.md`
 2. `HABITICA_API.md`
-3. `TECHNICAL.md`
-4. `FEATURES.md`
-5. Existing code in the affected area
+3. `HABITICA_TOOL_REFERENCES.md` when the change touches Habitica data fetching, sync, task/account/party parsing, quest progress, or rate-limit handling
+4. `TECHNICAL.md`
+5. `FEATURES.md`
+6. Existing code in the affected area
 
 For any code that interacts with Habitica, `HABITICA_API.md` is mandatory reading.
+For new or changed Habitica data features, read `HABITICA_TOOL_REFERENCES.md` after `HABITICA_API.md` and before implementation so stable third-party tool workflows are considered before adding new API assumptions.
 
 ## 3. Habitica API rule
 
@@ -188,14 +190,15 @@ For a requested change:
 
 1. Read `RULES.md`.
 2. Read `HABITICA_API.md` if the change touches Habitica data or API behavior.
-3. Read `TECHNICAL.md` if the change touches architecture, stack, storage, deployment, sync, credentials, tests, or logging.
-4. Read `FEATURES.md` if the change adds or modifies feature behavior.
-5. Inspect the affected code.
-6. Make the smallest technically correct change.
-7. Update documentation when required by these rules.
-8. Add or update tests when logic changes.
-9. Review changed files for real issues.
-10. Report changed files and any remaining risks.
+3. Read `HABITICA_TOOL_REFERENCES.md` if the change touches Habitica data fetching, parsing, sync, quest progress, or rate-limit behavior.
+4. Read `TECHNICAL.md` if the change touches architecture, stack, storage, deployment, sync, credentials, tests, or logging.
+5. Read `FEATURES.md` if the change adds or modifies feature behavior.
+6. Inspect the affected code.
+7. Make the smallest technically correct change.
+8. Update documentation when required by these rules.
+9. Add or update tests when logic changes.
+10. Review changed files for real issues.
+11. Report changed files and any remaining risks.
 
 Do not invent issues. If no issues are found during final review, state that the changed files look correct.
 

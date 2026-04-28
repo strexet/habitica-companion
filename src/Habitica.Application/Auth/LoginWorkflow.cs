@@ -11,6 +11,7 @@ public sealed class LoginWorkflow
 {
     private readonly IHabiticaSyncClient _habiticaSyncClient;
     private readonly ICredentialStore _credentialStore;
+    private readonly IPartyCronHistoryStore _partyCronHistoryStore;
     private readonly IPartySnapshotStore _partySnapshotStore;
     private readonly ITaskSnapshotStore _taskSnapshotStore;
     private readonly IUserSnapshotStore _userSnapshotStore;
@@ -22,6 +23,7 @@ public sealed class LoginWorkflow
         ITaskSnapshotStore taskSnapshotStore,
         IUserSnapshotStore userSnapshotStore,
         IPartySnapshotStore partySnapshotStore,
+        IPartyCronHistoryStore partyCronHistoryStore,
         DiagnosticsLogWriter diagnosticsLogWriter)
     {
         _habiticaSyncClient = habiticaSyncClient;
@@ -29,6 +31,7 @@ public sealed class LoginWorkflow
         _taskSnapshotStore = taskSnapshotStore;
         _userSnapshotStore = userSnapshotStore;
         _partySnapshotStore = partySnapshotStore;
+        _partyCronHistoryStore = partyCronHistoryStore;
         _diagnosticsLogWriter = diagnosticsLogWriter;
     }
 
@@ -62,8 +65,28 @@ public sealed class LoginWorkflow
         }
         else
         {
+            var cronEvents = Habitica.Domain.Party.PartyCronCalculator.CreateHistoryEvents(party);
+            var cronHistory = await _partyCronHistoryStore.UpsertAsync(cronEvents, party.RetrievedAtUtc, cancellationToken);
+            var cronDashboard = Habitica.Domain.Party.PartyCronCalculator.BuildDashboard(
+                party,
+                cronHistory,
+                command.UserId,
+                party.RetrievedAtUtc,
+                TimeZoneInfo.Local);
+            party = party with
+            {
+                Members = cronDashboard.Members,
+                CronDashboard = cronDashboard
+            };
+
             await _partySnapshotStore.SaveAsync(party, cancellationToken);
         }
+
+        var requestCount = string.IsNullOrWhiteSpace(user.PartyId)
+            ? 2
+            : party?.Quest?.BossHealthRemaining is not null
+                ? 5
+                : 4;
 
         await _diagnosticsLogWriter.WriteAsync(
             DiagnosticsFeatureArea.Auth,
@@ -73,7 +96,7 @@ public sealed class LoginWorkflow
             $"Signed in and refreshed account snapshots for {user.DisplayName}.",
             new Dictionary<string, string>(StringComparer.Ordinal)
             {
-                ["requestCount"] = string.IsNullOrWhiteSpace(user.PartyId) ? "2" : "3",
+                ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture),
                 ["taskCount"] = tasks.Items.Count.ToString(CultureInfo.InvariantCulture)
             },
             cancellationToken);

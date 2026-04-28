@@ -9,4 +9,4 @@ npm install
 npm run sync:vendor
 
 cd "$ROOT_DIR"
-dotnet run --project src/Habitica.WebApp --urls http://localhost:5080
+dotnet run --project src/Habitica.WebApp --urls http://localhost:5081

@@ -1,6 +1,8 @@
 @page "/party"
 @implements IDisposable
 @inject IAppSessionController SessionController
+@using System.Globalization
+@using Habitica.Domain.Party
 
 <PageTitle>Party</PageTitle>
 
@@ -79,15 +81,55 @@
                             <dd>@snapshot.Quest.Key</dd>
                         </div>
 
-                        <div>
-                            <dt>Damage dealt</dt>
-                            <dd>@snapshot.Quest.ProgressUp.ToString("0.##")</dd>
-                        </div>
+                        @if (snapshot.Quest.TotalPendingDamage is not null)
+                        {
+                            <div>
+                                <dt>Party pending damage</dt>
+                                <dd>@FormatQuestMetric(snapshot.Quest.TotalPendingDamage)</dd>
+                            </div>
+                        }
+                        else if (snapshot.Quest.TotalPendingCollectionItems is not null)
+                        {
+                            <div>
+                                <dt>Party pending items</dt>
+                                <dd>@FormatQuestItems(snapshot.Quest.TotalPendingCollectionItems)</dd>
+                            </div>
+                        }
+                        else if (snapshot.Quest.PendingDamage is not null)
+                        {
+                            <div>
+                                <dt>Pending damage</dt>
+                                <dd>@FormatQuestMetric(snapshot.Quest.PendingDamage)</dd>
+                            </div>
+                        }
 
-                        <div>
-                            <dt>Damage taken</dt>
-                            <dd>@snapshot.Quest.ProgressDown.ToString("0.##")</dd>
-                        </div>
+                        @if (snapshot.Quest.BossHealthRemaining is not null)
+                        {
+                            <div>
+                                <dt>Boss HP remaining</dt>
+                                <dd>@FormatQuestMetric(snapshot.Quest.BossHealthRemaining)</dd>
+                            </div>
+
+                            <div>
+                                <dt>Total boss HP</dt>
+                                <dd>@FormatQuestMetric(snapshot.Quest.BossHealthTotal)</dd>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <dt>@snapshot.Quest.ProgressLabel</dt>
+                                <dd>@FormatQuestMetric(snapshot.Quest.ProgressUp)</dd>
+                            </div>
+                        }
+
+                        @if (snapshot.Quest.PendingPartyDamage is not null)
+                        {
+                            <div>
+                                <dt>Pending damage to party</dt>
+                                <dd>@FormatQuestMetric(snapshot.Quest.PendingPartyDamage)</dd>
+                            </div>
+                        }
 
                         <div>
                             <dt>Participants</dt>
@@ -96,6 +138,175 @@
                     </dl>
                 }
             </article>
+        </section>
+
+        <section class="card-surface dashboard-panel party-cron-summary">
+            <div class="party-section-head">
+                <div>
+                    <p class="section-label">CRON summary</p>
+                    <h2>Buff timing window</h2>
+                </div>
+                <span class="ui-pill count-pill">CRONed @GetCronedLabel(snapshot)</span>
+            </div>
+
+            @if (snapshot.CronDashboard is null)
+            {
+                <p class="panel-copy">No party CRON statistics are cached yet. Refresh the account to start collecting read-only CRON history.</p>
+            }
+            else
+            {
+                <div class="party-cron-stat-grid">
+                    <article class="dashboard-stat-card">
+                        <span class="dashboard-stat-label">CRONed</span>
+                        <strong>@GetCronedLabel(snapshot)</strong>
+                        <span class="dashboard-stat-note">@GetCronStateBreakdown(snapshot.CronDashboard)</span>
+                    </article>
+
+                    @if (HasCronDataGaps(snapshot.CronDashboard))
+                    {
+                        <article class="dashboard-stat-card">
+                            <span class="dashboard-stat-label">Data gaps</span>
+                            <strong>@GetCronDataGapLabel(snapshot.CronDashboard)</strong>
+                            <span class="dashboard-stat-note">Excluded from high-confidence timing</span>
+                        </article>
+                    }
+
+                    <article class="dashboard-stat-card">
+                        <span class="dashboard-stat-label">Average best buff time</span>
+                        <strong>@FormatTime(snapshot.CronDashboard.AverageBestBuffTime)</strong>
+                        <span class="dashboard-stat-note">Viewer-local estimate</span>
+                    </article>
+
+                    <article class="dashboard-stat-card">
+                        <span class="dashboard-stat-label">Self-first buff time</span>
+                        <strong>@FormatTime(snapshot.CronDashboard.SelfFirstBuffTime)</strong>
+                        <span class="dashboard-stat-note">After your CRON when available</span>
+                    </article>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(snapshot.CronDashboard.SampleSizeWarning))
+                {
+                    <MudAlert Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined">
+                        @snapshot.CronDashboard.SampleSizeWarning
+                    </MudAlert>
+                }
+            }
+        </section>
+
+        <section class="card-surface dashboard-panel party-members-panel">
+            <div class="party-section-head">
+                <div>
+                    <p class="section-label">Members</p>
+                    <h2>Party member CRON state</h2>
+                </div>
+                <span class="ui-pill count-pill">@snapshot.Members.Count visible</span>
+            </div>
+
+            @if (snapshot.Members.Count == 0)
+            {
+                <p class="panel-copy">No cached party member CRON data is available yet.</p>
+            }
+            else
+            {
+                <div class="party-member-list">
+                    @foreach (var member in GetDisplayMembers(snapshot))
+                    {
+                        <article class="party-member-row">
+                            <div>
+                                <strong>@member.DisplayName</strong>
+                                <span class="dashboard-stat-note">@member.MemberId</span>
+                            </div>
+                            <span class="@GetCronStateClass(member.CronState)">@GetCronStateLabel(member.CronState)</span>
+                            <dl class="party-member-meta">
+                                <div>
+                                    <dt>Last CRON</dt>
+                                    <dd>@FormatDateTime(member.LastCronUtc)</dd>
+                                </div>
+                                <div>
+                                    <dt>Average CRON</dt>
+                                    <dd>@FormatAverageCron(member)</dd>
+                                </div>
+                                @if (snapshot.Quest?.IsActive == true)
+                                {
+                                    <div>
+                                        <dt>Pending quest</dt>
+                                        <dd>@FormatMemberPendingQuest(member)</dd>
+                                    </div>
+                                }
+                            </dl>
+                        </article>
+                    }
+                </div>
+            }
+        </section>
+
+        <section class="card-surface dashboard-panel party-cron-graph-panel">
+            <div class="party-section-head">
+                <div>
+                    <p class="section-label">CRON statistics</p>
+                    <h2>CRONed members by local hour</h2>
+                </div>
+                @if (snapshot.CronDashboard is not null)
+                {
+                    <span class="ui-pill count-pill">@snapshot.CronDashboard.SampleCount samples</span>
+                }
+            </div>
+
+            @if (snapshot.CronDashboard?.GraphPoints.Count > 0)
+            {
+                <div class="party-cron-legend">
+                    <span><i class="legend-line today-line"></i>Today</span>
+                    <span><i class="legend-line average-line"></i>Historical average</span>
+                    <span>@FormatStoredDayCount(snapshot.CronDashboard.HistoryDayCount)</span>
+                </div>
+
+                <svg class="party-cron-chart" viewBox="0 0 640 220" role="img" aria-label="Party CRON statistics by local hour">
+                    @{
+                        var graphPoints = snapshot.CronDashboard.GraphPoints;
+                        var bandPath = BuildBandPath(graphPoints, snapshot.CronDashboard.VisibleMemberCount);
+                        var todayPath = BuildChartPath(graphPoints, snapshot.CronDashboard.VisibleMemberCount, static point => point.TodayCount);
+                        var averagePath = BuildChartPath(graphPoints, snapshot.CronDashboard.VisibleMemberCount, static point => point.AverageCount);
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(bandPath))
+                    {
+                        <path d="@bandPath" class="cron-band-path" />
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(averagePath))
+                    {
+                        <path d="@averagePath" class="cron-average-path" />
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(todayPath))
+                    {
+                        <path d="@todayPath" class="cron-today-path" />
+                    }
+
+                    @foreach (var point in snapshot.CronDashboard.GraphPoints)
+                    {
+                        var x = ChartX(point.Hour);
+                        var todayY = ChartY(point.TodayCount, snapshot.CronDashboard.VisibleMemberCount);
+                        var averageY = point.AverageCount is null ? (decimal?)null : ChartY(point.AverageCount.Value, snapshot.CronDashboard.VisibleMemberCount);
+
+                        <circle cx="@FormatChartNumber(x)" cy="@FormatChartNumber(todayY)" r="4" class="cron-point-today" />
+
+                        @if (averageY is not null)
+                        {
+                            <circle cx="@FormatChartNumber(x)" cy="@FormatChartNumber(averageY.Value)" r="3" class="cron-point-average" />
+                        }
+                    }
+
+                    @foreach (var tick in new[] { 0, 6, 12, 18, 23 })
+                    {
+                        <svg:text x="@FormatChartNumber(ChartX(tick))" y="210" class="cron-axis-label" text-anchor="@GetAxisTextAnchor(tick)">@($"{tick:00}:00")</svg:text>
+                    }
+                </svg>
+            }
+            else
+            {
+                <p class="panel-copy">The graph will appear after the first party member CRON timestamp is stored.</p>
+            }
         </section>
     }
 </div>
@@ -125,6 +336,207 @@
             SnapshotFreshnessState.Stale => Severity.Warning,
             SnapshotFreshnessState.Expired => Severity.Error,
             _ => Severity.Info
+        };
+    }
+
+    private static IReadOnlyList<PartyMemberSnapshot> GetDisplayMembers(PartySnapshot snapshot)
+    {
+        return snapshot.Members;
+    }
+
+    private static string GetCronedLabel(PartySnapshot snapshot)
+    {
+        var dashboard = snapshot.CronDashboard;
+        if (dashboard is null)
+        {
+            var cronedCount = snapshot.Members.Count(static member => member.CronState == PartyCronState.CronedToday);
+            return $"{cronedCount}/{snapshot.Members.Count}";
+        }
+
+        return $"{dashboard.CronedCount}/{dashboard.VisibleMemberCount}";
+    }
+
+    private static string GetCronStateBreakdown(PartyCronDashboardSnapshot dashboard)
+    {
+        var waiting = dashboard.VisibleMemberCount - dashboard.CronedCount - dashboard.UnknownCount - dashboard.PossiblyStaleCount;
+        return $"{Math.Max(0, waiting)} not croned yet";
+    }
+
+    private static bool HasCronDataGaps(PartyCronDashboardSnapshot dashboard)
+    {
+        return dashboard.UnknownCount > 0 || dashboard.PossiblyStaleCount > 0;
+    }
+
+    private static string GetCronDataGapLabel(PartyCronDashboardSnapshot dashboard)
+    {
+        if (dashboard.UnknownCount > 0 && dashboard.PossiblyStaleCount > 0)
+        {
+            return $"{FormatCount(dashboard.UnknownCount, "unknown")}, {FormatCount(dashboard.PossiblyStaleCount, "possibly stale")}";
+        }
+
+        if (dashboard.UnknownCount > 0)
+        {
+            return FormatCount(dashboard.UnknownCount, "unknown");
+        }
+
+        return FormatCount(dashboard.PossiblyStaleCount, "possibly stale");
+    }
+
+    private static string FormatCount(int count, string label)
+    {
+        return $"{count} {label}";
+    }
+
+    private static string FormatStoredDayCount(int count)
+    {
+        var dayLabel = count == 1 ? "day" : "days";
+        return $"{count} stored observation {dayLabel}";
+    }
+
+    private static string GetCronStateLabel(PartyCronState state)
+    {
+        return state switch
+        {
+            PartyCronState.CronedToday => "Croned today",
+            PartyCronState.NotCronedYet => "Not croned yet",
+            PartyCronState.PossiblyStale => "Possibly stale",
+            _ => "Unknown"
+        };
+    }
+
+    private static string GetCronStateClass(PartyCronState state)
+    {
+        return state switch
+        {
+            PartyCronState.CronedToday => "ui-pill state-pill success-pill",
+            PartyCronState.NotCronedYet => "ui-pill state-pill warning-pill",
+            PartyCronState.PossiblyStale => "ui-pill state-pill warning-pill",
+            _ => "ui-pill state-pill"
+        };
+    }
+
+    private static string FormatDateTime(DateTimeOffset? utcTimestamp)
+    {
+        return utcTimestamp is null
+            ? "Unknown"
+            : utcTimestamp.Value.ToLocalTime().ToString("MMM d, HH:mm");
+    }
+
+    private static string FormatTime(TimeSpan? time)
+    {
+        return time is null ? "More history needed" : time.Value.ToString(@"hh\:mm");
+    }
+
+    private static string FormatAverageCron(PartyMemberSnapshot member)
+    {
+        if (member.AverageCronTime is null || member.AverageCronSampleCount == 0)
+        {
+            return "Not enough history";
+        }
+
+        var dayLabel = member.AverageCronSampleCount == 1 ? "day" : "days";
+        return $"Avg {member.AverageCronTime.Value:hh\\:mm} ({member.AverageCronSampleCount} {dayLabel})";
+    }
+
+    private static string FormatQuestMetric(decimal? value)
+    {
+        return value is null ? "Unknown" : value.Value.ToString("0.##");
+    }
+
+    private static string FormatQuestItems(decimal? value)
+    {
+        if (value is null)
+        {
+            return "Unknown";
+        }
+
+        var unit = value == 1m ? "item" : "items";
+        return $"{FormatQuestMetric(value)} {unit}";
+    }
+
+    private static string FormatMemberPendingQuest(PartyMemberSnapshot member)
+    {
+        if (member.PendingQuestDamage is not null && member.PendingQuestItems is not null)
+        {
+            return $"{FormatQuestMetric(member.PendingQuestDamage)} damage, {FormatQuestItems(member.PendingQuestItems)}";
+        }
+
+        if (member.PendingQuestDamage is not null)
+        {
+            return $"{FormatQuestMetric(member.PendingQuestDamage)} damage";
+        }
+
+        if (member.PendingQuestItems is not null)
+        {
+            return FormatQuestItems(member.PendingQuestItems);
+        }
+
+        return "Unknown";
+    }
+
+    private static decimal ChartX(int hour)
+    {
+        return 36m + hour / 23m * 568m;
+    }
+
+    private static decimal ChartY(decimal value, int memberCount)
+    {
+        if (memberCount <= 0)
+        {
+            return 190m;
+        }
+
+        return 190m - Math.Clamp(value / memberCount, 0m, 1m) * 160m;
+    }
+
+    private static string BuildChartPath(
+        IReadOnlyList<PartyCronGraphPoint> points,
+        int memberCount,
+        Func<PartyCronGraphPoint, decimal?> valueSelector)
+    {
+        var coordinates = points
+            .Select(point => valueSelector(point) is { } value
+                ? $"{FormatChartNumber(ChartX(point.Hour))},{FormatChartNumber(ChartY(value, memberCount))}"
+                : null)
+            .Where(static coordinate => !string.IsNullOrWhiteSpace(coordinate))
+            .ToArray();
+
+        return coordinates.Length < 2 ? string.Empty : $"M {string.Join(" L ", coordinates)}";
+    }
+
+    private static string BuildBandPath(IReadOnlyList<PartyCronGraphPoint> points, int memberCount)
+    {
+        var bandPoints = points
+            .Where(static point => point.LowerQuartileCount is not null && point.UpperQuartileCount is not null)
+            .ToArray();
+        if (bandPoints.Length < 2)
+        {
+            return string.Empty;
+        }
+
+        var upper = bandPoints
+            .Select(point => $"{FormatChartNumber(ChartX(point.Hour))},{FormatChartNumber(ChartY(point.UpperQuartileCount!.Value, memberCount))}")
+            .ToArray();
+        var lower = bandPoints
+            .Reverse()
+            .Select(point => $"{FormatChartNumber(ChartX(point.Hour))},{FormatChartNumber(ChartY(point.LowerQuartileCount!.Value, memberCount))}")
+            .ToArray();
+
+        return $"M {string.Join(" L ", upper)} L {string.Join(" L ", lower)} Z";
+    }
+
+    private static string FormatChartNumber(decimal value)
+    {
+        return value.ToString("0.##", CultureInfo.InvariantCulture);
+    }
+
+    private static string GetAxisTextAnchor(int hour)
+    {
+        return hour switch
+        {
+            0 => "start",
+            23 => "end",
+            _ => "middle"
         };
     }
 

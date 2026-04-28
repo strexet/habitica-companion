@@ -53,7 +53,91 @@ public sealed class PartyPageTests : BunitContext
                     "Night Owls",
                     "Quest-focused party",
                     4,
-                    new PartyQuestSnapshot("dragon", true, 12.5m, 3m, 2)),
+                    new PartyQuestSnapshot(
+                        "seaserpent",
+                        true,
+                        12.5m,
+                        3m,
+                        2,
+                        "Pending damage",
+                        PendingDamage: 12.5m,
+                        BossHealthRemaining: 875.25m,
+                        BossHealthTotal: 1000m,
+                        TotalPendingDamage: 42.75m,
+                        PendingPartyDamage: 3m),
+                    new[]
+                    {
+                        new PartyMemberSnapshot(
+                            "user-1",
+                            "Alpha",
+                            DateTimeOffset.Parse("2026-04-26T08:15:00Z"),
+                            0,
+                            0,
+                            PartyCronState.CronedToday,
+                            "Croned today.",
+                            "2026-04-26",
+                            DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
+                            TimeSpan.Parse("08:15"),
+                            1,
+                            PendingQuestDamage: 7.2m),
+                        new PartyMemberSnapshot(
+                            "user-2",
+                            "Beta",
+                            DateTimeOffset.Parse("2026-04-25T09:45:00Z"),
+                            null,
+                            null,
+                            PartyCronState.NotCronedYet,
+                            "Habitica public member data hides day start/timezone; classified from public CRON timestamp by UTC day.",
+                            "2026-04-26",
+                            DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
+                            TimeSpan.Parse("09:45"),
+                            1,
+                            PendingQuestDamage: 5.3m),
+                        new PartyMemberSnapshot(
+                            "user-3",
+                            "Gamma",
+                            null,
+                            null,
+                            null,
+                            PartyCronState.Unknown,
+                            "Missing lastCron.",
+                            null,
+                            null,
+                            null,
+                            0)
+                    },
+                    new PartyCronDashboardSnapshot(
+                        CronedCount: 1,
+                        VisibleMemberCount: 3,
+                        UnknownCount: 1,
+                        PossiblyStaleCount: 0,
+                        HistoryDayCount: 1,
+                        SampleCount: 2,
+                        IsLowConfidence: true,
+                        SampleSizeWarning: "Early estimate: based on 1 day of CRON history.",
+                        AverageBestBuffTime: TimeSpan.Parse("09:45"),
+                        SelfFirstBuffTime: TimeSpan.Parse("09:45"),
+                        Members: new[]
+                        {
+                            new PartyMemberSnapshot(
+                                "user-1",
+                                "Alpha",
+                                DateTimeOffset.Parse("2026-04-26T08:15:00Z"),
+                                0,
+                                0,
+                                PartyCronState.CronedToday,
+                                "Croned today.",
+                                "2026-04-26",
+                                DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
+                                TimeSpan.Parse("08:15"),
+                                1,
+                                PendingQuestDamage: 7.2m)
+                        },
+                        GraphPoints: new[]
+                        {
+                            new PartyCronGraphPoint(8, 1, 1m, 0m, 2m),
+                            new PartyCronGraphPoint(9, 2, 2m, 1m, 3m)
+                        })),
                 PartyFreshness: SnapshotFreshnessState.Fresh)));
 
         var cut = Render<PartyPage>();
@@ -61,7 +145,219 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Party overview", cut.Markup);
         Assert.Contains("Night Owls", cut.Markup);
         Assert.Contains("Quest-focused party", cut.Markup);
-        Assert.Contains("dragon", cut.Markup);
+        Assert.Contains("seaserpent", cut.Markup);
+        Assert.Contains("Party pending damage", cut.Markup);
+        Assert.Contains("42.75", cut.Markup);
+        Assert.Contains("Boss HP remaining", cut.Markup);
+        Assert.Contains("875.25", cut.Markup);
+        Assert.Contains("Total boss HP", cut.Markup);
+        Assert.Contains("1000", cut.Markup);
+        Assert.Contains("Pending damage to party", cut.Markup);
+        Assert.DoesNotContain("Damage taken", cut.Markup);
+        Assert.Contains("CRON summary", cut.Markup);
+        Assert.Contains("CRONed 1/3", cut.Markup);
+        Assert.Contains("Data gaps", cut.Markup);
+        Assert.Contains("1 unknown", cut.Markup);
+        Assert.Contains("Average best buff time", cut.Markup);
+        Assert.Contains("Self-first buff time", cut.Markup);
+        Assert.Contains("Early estimate: based on 1 day of CRON history.", cut.Markup);
+        Assert.Contains("Alpha", cut.Markup);
+        Assert.Contains("Beta", cut.Markup);
+        Assert.Contains("Gamma", cut.Markup);
+        Assert.Contains("Pending quest", cut.Markup);
+        Assert.Contains("7.2 damage", cut.Markup);
+        Assert.Contains("5.3 damage", cut.Markup);
+        Assert.Contains("Avg 08:15 (1 day)", cut.Markup);
+        Assert.Contains("Not enough history", cut.Markup);
+        Assert.Contains("CRON statistics", cut.Markup);
+        Assert.Contains("Historical average", cut.Markup);
+        Assert.Contains("1 stored observation day", cut.Markup);
+        Assert.Contains("cron-band-path", cut.Markup);
+        Assert.Contains("cron-today-path", cut.Markup);
+        Assert.Contains("cron-average-path", cut.Markup);
+        Assert.Contains("text-anchor=\"end\"", cut.Markup);
         Assert.Contains("Members", cut.Markup);
+        Assert.DoesNotContain("Details", cut.Markup);
+        Assert.DoesNotContain("Day start", cut.Markup);
+        Assert.DoesNotContain("Habitica public member data hides day start/timezone", cut.Markup);
+    }
+
+    [Fact]
+    public void Hides_zero_unknown_cron_summary_card()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: new UserSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                    "Mage Tester",
+                    "wizard",
+                    15,
+                    42.5m,
+                    50m,
+                    33.5m,
+                    40m,
+                    125.1m,
+                    74.9m,
+                    88.25m,
+                    "party-123",
+                    "Wolf-Base",
+                    "Wolf-Base",
+                    new EquipmentSnapshot(
+                        new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_wizard_1"),
+                        new GearSlotsSnapshot("head_special_2", "armor_special_2", "weapon_special_2", "shield_special_2", "back_special_2")),
+                    new InventorySnapshot(1, 5, 1, 1, 1, 1, Array.Empty<string>())),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                PartySnapshot: new PartySnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                    "party-123",
+                    "Night Owls",
+                    "Quest-focused party",
+                    2,
+                    null,
+                    new[]
+                    {
+                        new PartyMemberSnapshot(
+                            "user-1",
+                            "Alpha",
+                            DateTimeOffset.Parse("2026-04-26T08:15:00Z"),
+                            0,
+                            0,
+                            PartyCronState.CronedToday,
+                            "Croned today.",
+                            "2026-04-26",
+                            DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
+                            TimeSpan.Parse("08:15"),
+                            1),
+                        new PartyMemberSnapshot(
+                            "user-2",
+                            "Beta",
+                            DateTimeOffset.Parse("2026-04-26T09:45:00Z"),
+                            0,
+                            0,
+                            PartyCronState.CronedToday,
+                            "Croned today.",
+                            "2026-04-26",
+                            DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
+                            TimeSpan.Parse("09:45"),
+                            1)
+                    },
+                    new PartyCronDashboardSnapshot(
+                        CronedCount: 2,
+                        VisibleMemberCount: 2,
+                        UnknownCount: 0,
+                        PossiblyStaleCount: 0,
+                        HistoryDayCount: 1,
+                        SampleCount: 2,
+                        IsLowConfidence: true,
+                        SampleSizeWarning: "Early estimate: based on 1 day of CRON history.",
+                        AverageBestBuffTime: TimeSpan.Parse("09:45"),
+                        SelfFirstBuffTime: TimeSpan.Parse("09:45"),
+                        Members: Array.Empty<PartyMemberSnapshot>(),
+                        GraphPoints: Array.Empty<PartyCronGraphPoint>())),
+                PartyFreshness: SnapshotFreshnessState.Fresh)));
+
+        var cut = Render<PartyPage>();
+
+        Assert.Contains("CRONed 2/2", cut.Markup);
+        Assert.DoesNotContain("Unknown 0", cut.Markup);
+        Assert.DoesNotContain("0 possibly stale", cut.Markup);
+    }
+
+    [Fact]
+    public void Renders_collection_pending_items_in_quest_state_and_member_list()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: new UserSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                    "Mage Tester",
+                    "wizard",
+                    15,
+                    42.5m,
+                    50m,
+                    33.5m,
+                    40m,
+                    125.1m,
+                    74.9m,
+                    88.25m,
+                    "party-123",
+                    "Wolf-Base",
+                    "Wolf-Base",
+                    new EquipmentSnapshot(
+                        new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_wizard_1"),
+                        new GearSlotsSnapshot("head_special_2", "armor_special_2", "weapon_special_2", "shield_special_2", "back_special_2")),
+                    new InventorySnapshot(1, 5, 1, 1, 1, 1, Array.Empty<string>())),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                PartySnapshot: new PartySnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                    "party-123",
+                    "Night Owls",
+                    "Quest-focused party",
+                    2,
+                    new PartyQuestSnapshot(
+                        "evilsanta",
+                        true,
+                        9m,
+                        0m,
+                        2,
+                        "Items collected",
+                        TotalPendingCollectionItems: 7m),
+                    new[]
+                    {
+                        new PartyMemberSnapshot(
+                            "user-1",
+                            "Alpha",
+                            DateTimeOffset.Parse("2026-04-26T08:15:00Z"),
+                            0,
+                            0,
+                            PartyCronState.CronedToday,
+                            "Croned today.",
+                            "2026-04-26",
+                            DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
+                            PendingQuestItems: 3m),
+                        new PartyMemberSnapshot(
+                            "user-2",
+                            "Beta",
+                            DateTimeOffset.Parse("2026-04-26T09:45:00Z"),
+                            0,
+                            0,
+                            PartyCronState.CronedToday,
+                            "Croned today.",
+                            "2026-04-26",
+                            DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
+                            PendingQuestItems: 4m)
+                    }),
+                PartyFreshness: SnapshotFreshnessState.Fresh)));
+
+        var cut = Render<PartyPage>();
+
+        Assert.Contains("Party pending items", cut.Markup);
+        Assert.Contains("7 items", cut.Markup);
+        Assert.Contains("Pending quest", cut.Markup);
+        Assert.Contains("3 items", cut.Markup);
+        Assert.Contains("4 items", cut.Markup);
+        Assert.DoesNotContain("Party pending damage", cut.Markup);
     }
 }
