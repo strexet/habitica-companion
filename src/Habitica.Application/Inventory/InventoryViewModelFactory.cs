@@ -184,24 +184,34 @@ public sealed class InventoryViewModelFactory
     private static IReadOnlyList<InventoryGearItemViewModel> SelectBestItems(IEnumerable<InventoryGearItemViewModel> items)
     {
         var itemArray = items.ToArray();
-        var bestStrength = itemArray.Max(item => item.TotalStats.Strength);
-        var bestIntelligence = itemArray.Max(item => item.TotalStats.Intelligence);
-        var bestConstitution = itemArray.Max(item => item.TotalStats.Constitution);
-        var bestPerception = itemArray.Max(item => item.TotalStats.Perception);
-
         return itemArray
-            .Where(item =>
-                IsBestPositiveStat(item.TotalStats.Strength, bestStrength)
-                || IsBestPositiveStat(item.TotalStats.Intelligence, bestIntelligence)
-                || IsBestPositiveStat(item.TotalStats.Constitution, bestConstitution)
-                || IsBestPositiveStat(item.TotalStats.Perception, bestPerception))
+            .GroupBy(item => GetModifierSignature(item.TotalStats), StringComparer.Ordinal)
+            .Where(group => !string.IsNullOrWhiteSpace(group.Key))
+            .SelectMany(group => group.Where(item => !group.Any(candidate => Dominates(candidate.TotalStats, item.TotalStats))))
             .OrderBy(item => item.Key, StringComparer.Ordinal)
             .ToArray();
     }
 
-    private static bool IsBestPositiveStat(decimal value, decimal bestValue)
+    private static string GetModifierSignature(GearStatBlock stats)
     {
-        return value > 0m && value == bestValue;
+        return string.Join(
+            "|",
+            new[]
+            {
+                stats.Strength > 0m ? "STR" : string.Empty,
+                stats.Intelligence > 0m ? "INT" : string.Empty,
+                stats.Constitution > 0m ? "CON" : string.Empty,
+                stats.Perception > 0m ? "PER" : string.Empty
+            }.Where(value => value.Length > 0));
+    }
+
+    private static bool Dominates(GearStatBlock candidate, GearStatBlock item)
+    {
+        return candidate != item
+            && candidate.Strength >= item.Strength
+            && candidate.Intelligence >= item.Intelligence
+            && candidate.Constitution >= item.Constitution
+            && candidate.Perception >= item.Perception;
     }
 
     private static bool IsUnequippedBaseKey(string key)

@@ -113,7 +113,7 @@ public sealed class InventoryViewModelFactoryTests
     }
 
     [Fact]
-    public void Create_selects_best_unique_stat_items_per_gear_group()
+    public void Create_selects_best_items_by_matching_stat_modifier_sets()
     {
         var factory = new InventoryViewModelFactory();
         var snapshot = CreateSnapshot("wizard") with
@@ -125,23 +125,25 @@ public sealed class InventoryViewModelFactoryTests
                 1,
                 1,
                 1,
-                new[] { "weapon_per_6", "weapon_per_10", "weapon_int_5", "weapon_mix_str_5" })
+                new[] { "weapon_all_5", "weapon_int_16_a", "weapon_con_per_25", "weapon_str_16", "weapon_int_16_b", "weapon_int_10" })
         };
         var catalog = new GearCatalogSnapshot(
             DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
             new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
             {
-                ["weapon_per_6"] = new("weapon_per_6", "Scout Wand", "Weapon", "special", null, new GearStatBlock(0m, 0m, 0m, 6m)),
-                ["weapon_per_10"] = new("weapon_per_10", "Seer Wand", "Weapon", "special", null, new GearStatBlock(0m, 0m, 0m, 10m)),
-                ["weapon_int_5"] = new("weapon_int_5", "Sage Wand", "Weapon", "special", null, new GearStatBlock(0m, 5m, 0m, 0m)),
-                ["weapon_mix_str_5"] = new("weapon_mix_str_5", "Battle Wand", "Weapon", "special", null, new GearStatBlock(5m, 2m, 0m, 0m))
+                ["weapon_all_5"] = new("weapon_all_5", "Balanced Wand", "Weapon", "special", null, new GearStatBlock(5m, 5m, 5m, 5m)),
+                ["weapon_int_16_a"] = new("weapon_int_16_a", "Sage Wand", "Weapon", "special", null, new GearStatBlock(0m, 16m, 0m, 0m)),
+                ["weapon_con_per_25"] = new("weapon_con_per_25", "Sentinel Wand", "Weapon", "special", null, new GearStatBlock(0m, 0m, 25m, 25m)),
+                ["weapon_str_16"] = new("weapon_str_16", "Might Wand", "Weapon", "special", null, new GearStatBlock(16m, 0m, 0m, 0m)),
+                ["weapon_int_16_b"] = new("weapon_int_16_b", "Scholar Wand", "Weapon", "special", null, new GearStatBlock(0m, 16m, 0m, 0m)),
+                ["weapon_int_10"] = new("weapon_int_10", "Apprentice Wand", "Weapon", "special", null, new GearStatBlock(0m, 10m, 0m, 0m))
             });
 
         var viewModel = factory.Create(snapshot, catalog);
 
         var weaponGroup = Assert.Single(viewModel.Groups, group => group.SlotTitle == "Weapon");
         Assert.Equal(
-            new[] { "weapon_int_5", "weapon_mix_str_5", "weapon_per_10" },
+            new[] { "weapon_all_5", "weapon_con_per_25", "weapon_int_16_a", "weapon_int_16_b", "weapon_str_16" },
             weaponGroup.BestItems.Select(item => item.Key));
     }
 
