@@ -185,33 +185,22 @@ public sealed class InventoryViewModelFactory
     {
         var itemArray = items.ToArray();
         return itemArray
-            .GroupBy(item => GetModifierSignature(item.TotalStats), StringComparer.Ordinal)
-            .Where(group => !string.IsNullOrWhiteSpace(group.Key))
-            .SelectMany(group => group.Where(item => !group.Any(candidate => Dominates(candidate.TotalStats, item.TotalStats))))
+            .Where(item => item.TotalStats != GearStatBlock.Zero)
+            .Where(item => !itemArray.Any(candidate => Dominates(candidate.TotalStats, item.TotalStats)))
             .OrderBy(item => item.Key, StringComparer.Ordinal)
             .ToArray();
     }
 
-    private static string GetModifierSignature(GearStatBlock stats)
-    {
-        return string.Join(
-            "|",
-            new[]
-            {
-                stats.Strength > 0m ? "STR" : string.Empty,
-                stats.Intelligence > 0m ? "INT" : string.Empty,
-                stats.Constitution > 0m ? "CON" : string.Empty,
-                stats.Perception > 0m ? "PER" : string.Empty
-            }.Where(value => value.Length > 0));
-    }
-
     private static bool Dominates(GearStatBlock candidate, GearStatBlock item)
     {
-        return candidate != item
-            && candidate.Strength >= item.Strength
+        return candidate.Strength >= item.Strength
             && candidate.Intelligence >= item.Intelligence
             && candidate.Constitution >= item.Constitution
-            && candidate.Perception >= item.Perception;
+            && candidate.Perception >= item.Perception
+            && (candidate.Strength > item.Strength
+                || candidate.Intelligence > item.Intelligence
+                || candidate.Constitution > item.Constitution
+                || candidate.Perception > item.Perception);
     }
 
     private static bool IsUnequippedBaseKey(string key)

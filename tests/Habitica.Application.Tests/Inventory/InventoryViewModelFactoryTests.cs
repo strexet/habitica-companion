@@ -148,6 +148,36 @@ public sealed class InventoryViewModelFactoryTests
     }
 
     [Fact]
+    public void Create_removes_items_dominated_by_better_multi_stat_items()
+    {
+        var factory = new InventoryViewModelFactory();
+        var snapshot = CreateSnapshot("wizard") with
+        {
+            Inventory = new InventorySnapshot(
+                1,
+                5,
+                1,
+                1,
+                1,
+                1,
+                new[] { "weapon_str_int_25", "weapon_int_7", "weapon_str_15" })
+        };
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["weapon_str_int_25"] = new("weapon_str_int_25", "Archmage Blade", "Weapon", "special", null, new GearStatBlock(25m, 25m, 0m, 0m)),
+                ["weapon_int_7"] = new("weapon_int_7", "Apprentice Wand", "Weapon", "special", null, new GearStatBlock(0m, 7m, 0m, 0m)),
+                ["weapon_str_15"] = new("weapon_str_15", "Training Blade", "Weapon", "special", null, new GearStatBlock(15m, 0m, 0m, 0m))
+            });
+
+        var viewModel = factory.Create(snapshot, catalog);
+
+        var weaponGroup = Assert.Single(viewModel.Groups, group => group.SlotTitle == "Weapon");
+        Assert.Equal(new[] { "weapon_str_int_25" }, weaponGroup.BestItems.Select(item => item.Key));
+    }
+
+    [Fact]
     public void Create_builds_battle_and_costume_presets_with_battle_stat_totals()
     {
         var factory = new InventoryViewModelFactory();
