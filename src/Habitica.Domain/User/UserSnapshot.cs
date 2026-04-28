@@ -81,7 +81,8 @@ public sealed record GearCatalogItem(
     string SlotTitle,
     string? ClassName,
     string? Notes,
-    GearStatBlock Stats);
+    GearStatBlock Stats,
+    bool TwoHanded = false);
 
 public sealed record EquipmentPreset(
     string Id,

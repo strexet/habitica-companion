@@ -113,6 +113,38 @@ public sealed class InventoryViewModelFactoryTests
     }
 
     [Fact]
+    public void Create_moves_two_handed_weapons_to_own_group_after_weapons_and_shields()
+    {
+        var factory = new InventoryViewModelFactory();
+        var snapshot = CreateSnapshot("wizard") with
+        {
+            Inventory = new InventorySnapshot(
+                1,
+                5,
+                1,
+                1,
+                1,
+                1,
+                new[] { "weapon_one_handed", "weapon_two_handed", "shield_wizard_2" })
+        };
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["weapon_one_handed"] = new("weapon_one_handed", "Dagger", "Weapon", "special", null, new GearStatBlock(3m, 0m, 0m, 0m)),
+                ["weapon_two_handed"] = new("weapon_two_handed", "Greatsword", "Weapon", "special", null, new GearStatBlock(12m, 0m, 0m, 0m), true),
+                ["shield_wizard_2"] = new("shield_wizard_2", "Wizard Shield", "Shield", "wizard", null, new GearStatBlock(0m, 1m, 2m, 0m))
+            });
+
+        var viewModel = factory.Create(snapshot, catalog);
+
+        Assert.Equal(new[] { "Weapon", "Shield", "Two-Handed Weapons" }, viewModel.Groups.Select(group => group.SlotTitle));
+        var twoHandedGroup = Assert.Single(viewModel.Groups, group => group.SlotTitle == "Two-Handed Weapons");
+        Assert.Equal("weapon_two_handed", Assert.Single(twoHandedGroup.Items).Key);
+        Assert.Equal("weapon_two_handed", Assert.Single(twoHandedGroup.BestItems).Key);
+    }
+
+    [Fact]
     public void Create_selects_best_items_by_matching_stat_modifier_sets()
     {
         var factory = new InventoryViewModelFactory();

@@ -196,7 +196,8 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
                         GetOptionalDecimal(property.Value, "str"),
                         GetOptionalDecimal(property.Value, "int"),
                         GetOptionalDecimal(property.Value, "con"),
-                        GetOptionalDecimal(property.Value, "per")));
+                        GetOptionalDecimal(property.Value, "per")),
+                    TwoHanded: GetOptionalBoolean(property.Value, "twoHanded"));
             }
         }
 

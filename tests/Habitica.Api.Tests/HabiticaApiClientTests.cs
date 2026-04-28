@@ -481,6 +481,7 @@ public sealed class HabiticaApiClientTests
                       "type": "weapon",
                       "klass": "wizard",
                       "notes": "A focused casting weapon.",
+                      "twoHanded": true,
                       "str": 0,
                       "int": 12,
                       "con": 0,
@@ -503,6 +504,7 @@ public sealed class HabiticaApiClientTests
         Assert.Equal("wizard", item.ClassName);
         Assert.Equal("A focused casting weapon.", item.Notes);
         Assert.Equal(new GearStatBlock(0m, 12m, 0m, 2m), item.Stats);
+        Assert.True(item.TwoHanded);
     }
 
     private static HabiticaApiClient CreateClient(HttpMessageHandler handler)

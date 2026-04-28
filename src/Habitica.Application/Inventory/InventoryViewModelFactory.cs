@@ -4,7 +4,8 @@ namespace Habitica.Application.Inventory;
 
 public sealed class InventoryViewModelFactory
 {
-    private static readonly string[] SlotOrder = { "Head", "Armor", "Weapon", "Shield", "Back", "Other" };
+    private const string TwoHandedWeaponsSlotTitle = "Two-Handed Weapons";
+    private static readonly string[] SlotOrder = { "Head", "Armor", "Weapon", "Shield", TwoHandedWeaponsSlotTitle, "Back", "Other" };
     private static readonly HashSet<string> MainBattleSlots = new(StringComparer.Ordinal)
     {
         "Head",
@@ -160,6 +161,11 @@ public sealed class InventoryViewModelFactory
         GearCatalogSnapshot? catalog)
     {
         var slotTitle = ResolveSlotTitle(key, catalog);
+        if (slotTitle == "Weapon" && catalog?.Items.TryGetValue(key, out var catalogItem) == true && catalogItem.TwoHanded)
+        {
+            slotTitle = TwoHandedWeaponsSlotTitle;
+        }
+
         return new InventoryGearItemViewModel(
             Key: key,
             DisplayName: ResolveDisplayName(key, catalog),
@@ -178,7 +184,7 @@ public sealed class InventoryViewModelFactory
 
     private static bool IsBattleManagedSlot(string slotTitle)
     {
-        return MainBattleSlots.Contains(slotTitle);
+        return MainBattleSlots.Contains(slotTitle) || string.Equals(slotTitle, TwoHandedWeaponsSlotTitle, StringComparison.Ordinal);
     }
 
     private static IReadOnlyList<InventoryGearItemViewModel> SelectBestItems(IEnumerable<InventoryGearItemViewModel> items)

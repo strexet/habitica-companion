@@ -140,6 +140,48 @@ public sealed class InventoryPageTests : BunitContext
     }
 
     [Fact]
+    public void Non_battle_equipment_is_collapsed_by_default_and_can_be_expanded()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new InventoryViewModelFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                UserId: "user-id",
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: CreateSnapshot() with
+                {
+                    Inventory = new InventorySnapshot(1, 5, 1, 1, 1, 1, new[] { "back_special_1", "weapon_wizard_5" })
+                },
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                GearCatalogSnapshot: new GearCatalogSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                    new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+                    {
+                        ["back_special_1"] = new("back_special_1", "Festival Cape", "Back", "special", null, GearStatBlock.Zero),
+                        ["weapon_wizard_5"] = new("weapon_wizard_5", "Wizard Wand", "Weapon", "wizard", null, new GearStatBlock(0m, 12m, 0m, 2m))
+                    })));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<InventoryPage>();
+
+        Assert.Contains("Non-battle equipment", cut.Markup);
+        Assert.DoesNotContain("Festival Cape", cut.Markup);
+
+        cut.Find("[data-testid='toggle-non-battle-equipment']").Click();
+
+        Assert.Contains("Festival Cape", cut.Markup);
+    }
+
+    [Fact]
     public void Inventory_buttons_call_session_controller_actions()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

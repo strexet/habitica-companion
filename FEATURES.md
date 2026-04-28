@@ -1422,7 +1422,7 @@ battle gear preset list
 visible preset ids for future macro references
 preset rename controls
 slot-grouped obtained gear panels
-accessory/no-stat item panels grouped by item type
+folded accessory/no-stat item panels grouped by item type
 human-readable gear names with raw-key fallback
 gear stat totals
 owned gear counts
@@ -1468,15 +1468,17 @@ Current view-model rules:
 4. Resolve display name, slot, class, notes, and base stats from the catalog when present.
 5. Fall back to the raw key when catalog metadata is missing.
 6. Apply the current-class 50% gear stat bonus when item class matches user class.
-7. Put stat-bearing head, armor, weapon, and shield items into the main actionable battle gear groups.
+7. Put stat-bearing head, armor, one-handed weapon, shield, and two-handed weapon items into the main actionable battle gear groups.
 8. Put back-slot items, no-stat items, and other accessory/cosmetic items into bottom accessory groups by item type.
-9. Sort groups in slot order and sort keys within each group deterministically.
-10. Exclude Back from the equipped battle display and from battle preset item views/execution.
-11. For each actionable gear group, compute a `Best in Category` subset by removing items dominated by another item in every stat.
-12. A stat value of zero is worse than a positive modifier when another item has equal-or-better values for the remaining stats; exact stat ties remain visible.
-13. Show `Best in Category` by default and keep the full per-category item list folded until the user expands it.
-14. Sum battle preset stat totals from the resolved item totals.
-15. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
+9. Use catalog `twoHanded` metadata to move two-handed weapons into a separate `Two-Handed Weapons` group after one-handed weapons and shields.
+10. Sort groups in slot order and sort keys within each group deterministically.
+11. Exclude Back from the equipped battle display and from battle preset item views/execution.
+12. For each actionable gear group, compute a `Best in Category` subset by removing items dominated by another item in every stat.
+13. A stat value of zero is worse than a positive modifier when another item has equal-or-better values for the remaining stats; exact stat ties remain visible.
+14. Show `Best in Category` by default and keep the full per-category item list folded until the user expands it.
+15. Keep the bottom non-battle/accessory equipment section folded by default; users can expand it only when they need cosmetic, back-slot, or no-stat details.
+16. Sum battle preset stat totals from the resolved item totals.
+17. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
 ```
 
 Equip action rules:
@@ -1537,7 +1539,9 @@ Test:
 - base-slot marker normalization;
 - battle preset Back-slot removal;
 - best-in-category gear selection by non-dominated stat comparison;
+- two-handed weapon parsing and separate group ordering;
 - accessory/no-stat grouping;
+- folded non-battle equipment rendering;
 - item equip and preset equip controller dispatch;
 - empty-state rendering;
 - inventory route navigation rendering;
@@ -1552,7 +1556,7 @@ Current implementation:
 - local battle gear preset list;
 - preset save, rename, full-preset equip, individual preset-item equip, and confirmed remove actions;
 - slot-grouped obtained gear explorer with folded full item lists;
-- bottom accessory/no-stat item explorer grouped by item type;
+- bottom accessory/no-stat item explorer grouped by item type and folded by default;
 - gear content catalog name/stat resolution;
 - battle equipped markers;
 - battle equip buttons on owned gear cards;
