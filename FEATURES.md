@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-04-27
+Last updated: 2026-04-30
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -448,7 +448,133 @@ Test:
 
 Verify formulas for each supported skill against Habitica source/docs before marking results as high confidence.
 
-## 7. Macros Collection and skill macro system
+## 7. Spells page
+
+Status: implemented
+Owner module: `Habitica.Rules.Spells`, `Habitica.Rules.Stats`, `Habitica.Api`, `Habitica.WebApp.State`
+Application entry point: `Habitica.WebApp.Pages.SpellsPage`; stats allocation entry point: `Habitica.WebApp.Pages.DashboardPage`
+Primary Habitica data: full user snapshot, user stats, mana, buffs, class, level, task snapshot, owned gear, gear content catalog
+Mutates Habitica state: yes
+Requires confirmation: no for direct casts; repeated casts are sequential and visibly in progress
+Offline behavior: recommendations, estimates, and the stats table are available from cached snapshots; casting, stat allocation, and equip actions require API access
+Rate-limit sensitivity: high for repeated casts
+
+### Goal
+
+Provide a class-specific spell workspace that lets the user inspect available mana, unlocked and locked class spells, default targets, approximate outcomes, and dynamic gear recommendations before casting. The Dashboard owns the current STR/INT/CON/PER table and manual stat allocation when the user has unspent stat points.
+
+### Inputs
+
+```text
+current user snapshot
+current task snapshot
+gear content catalog
+owned battle gear keys
+current battle gear
+user class and level
+current mana and stat points
+current buffs
+```
+
+### Outputs
+
+```text
+class spell cards
+spell availability and mana costs
+default target task for task-targeted spells
+approximate spell result
+dynamic equipment recommendations
+cast progress state
+Dashboard stat table with base, equipment, buffs, and effective values
+stat allocation request from Dashboard
+diagnostics log entries
+```
+
+### API interaction
+
+All calls go through `Habitica.Api`.
+
+```text
+POST /user/class/cast/:skill
+POST /user/class/cast/:skill?targetId=:taskId
+POST /user/allocate-bulk
+POST /user/equip/equipped/:key
+GET /user
+GET /tasks/user
+```
+
+After successful spell casts, refresh `/user` and `/tasks/user` because mana, HP, XP, GP, buffs, quest contribution, and task values can change. After stat allocation from Dashboard, refresh `/user`. Dynamic gear recommendation Equip buttons reuse the existing inventory equip flow and refresh `/user`, which causes spell estimates and `Equipped` button states to be recalculated.
+
+### Algorithm / rules
+
+Only spells for the cached user class are shown. Supported spell ids are the current Habitica class skill ids:
+
+```text
+wizard: fireball, mpheal, earth, frost
+warrior: smash, defensiveStance, valorousPresence, intimidate
+rogue: pickPocket, backStab, toolsOfTrade, stealth
+healer: heal, brightness, protectAura, healAll
+```
+
+Unlock levels are 11, 12, 13, and 14 within each class. Locked spells render with their required level and disabled Cast button.
+
+Task-targeting spells default to the open non-reward task with the highest Habitica task `value`/cached task value, displayed as the selected target in the spell description. The user can choose another eligible habit, daily, or to-do from a selector ordered by descending task value with the value printed next to each task. Reward tasks and completed tasks are excluded. Spells that target self, party, or all tasks do not show a target selector.
+
+Effect estimates are approximation-based. Initial formulas are based on Habitica source spell definitions and cross-checked against the stable Habitica User Data Display Tool's Skills and Buffs behavior. Task spell estimates use the selected task's cached `value`, not task priority. Current spell estimates use base stats plus current battle gear plus buffs; unbuffed buff spells use base stats plus current battle gear. Estimates must remain labeled approximate until verified directly against live Habitica behavior for the current source version.
+
+Each spell card owns its dynamic equipment recommendations. Recommendations are transient and not saved as user presets. For spells with one relevant stat, show a primary-stat recommendation. For spells with multiple relevant stats, show primary/secondary stat recommendations and a balanced recommendation. If every non-empty recommended gear slot is already equipped in battle gear, its button is disabled and labeled `Equipped`.
+
+Dashboard stats are displayed as a single table with base/API stats, equipment-derived stats, active buffs, and effective values. Allocation uses per-stat `+` buttons with an Apply action instead of full-width numeric inputs.
+
+Multi-cast uses a direct Cast button but executes sequentially. The active spell card shows a progress bar and text such as `Casting 2 of 5`. Stop on API failure, cancellation, missing target, or stale local state.
+
+### Validation
+
+Block casting when:
+
+- user is not authenticated;
+- account snapshot is missing or not fresh;
+- spell id is missing;
+- selected spell is locked by level;
+- task-targeting spell has no eligible target;
+- local mana is below the requested count's total cost.
+
+Block stat allocation when:
+
+- user is not authenticated;
+- account snapshot is missing or not fresh;
+- no points are selected;
+- selected allocation exceeds `stats.points`.
+
+### Error handling
+
+Show API and validation errors via non-alert page feedback/snackbar. Persist diagnostics entries for spell casts and stat allocation. Partial multi-cast results must include completed/requested counts.
+
+### Security / privacy
+
+Do not log credentials. Diagnostics metadata may include spell id, target task id, requested count, completed count, and stat allocation counts. Do not log API tokens or full request headers.
+
+### Tests
+
+Test:
+
+- API endpoint shape for cast and allocate-bulk;
+- user snapshot mapping for stats, points, and buff flags;
+- class spell filtering and unlock levels;
+- default task-target selection;
+- approximate estimate text;
+- dynamic equipment recommendation generation and `Equipped` state;
+- session sequential cast orchestration and diagnostics logging;
+- stat allocation orchestration and diagnostics logging;
+- Spells page rendering, count totals, progress bar, target selection/value ordering, Cast button, and dynamic equipment recommendations;
+- Dashboard stats table, plus-button stat allocation controls, and unspent stat warning;
+- authenticated navigation link.
+
+### Open questions
+
+Verify exact live API response shape for cast results, `Retry-After` propagation, and current Habitica source formulas before raising estimate confidence.
+
+## 8. Macros Collection and skill macro system
 
 Status: planned
 Owner module: `Habitica.Rules.Skills`, `Habitica.Application.Macros`, and `Habitica.WebApp.Macros`
@@ -463,7 +589,7 @@ Rate-limit sensitivity: high
 
 Allow users to define and execute a local Macros Collection. A macro is a named declarative sequence of validated actions such as equipping a preset or item, casting a skill, selecting a target, refreshing snapshots, and restoring the original gear captured at macro start.
 
-Macros are not implemented yet. Inventory presets added by the Inventory page are designed as future macro references.
+Macros are not implemented yet. Inventory presets added by the Inventory page are designed as future macro references. Spells added by the Spells page are also designed as future macro references.
 
 ### Inputs
 
@@ -528,6 +654,22 @@ refreshSnapshot
 stopIfWarning
 restoreOriginalGear
 ```
+
+Spell references should use stable Habitica spell ids. Text macro shorthand may use:
+
+```text
+spell:fireball
+spell:pickPocket
+spell:healAll
+```
+
+Structured macro steps should use:
+
+```json
+{ "action": "castSpell", "spellId": "fireball", "targetTaskId": "task-id", "count": 1 }
+```
+
+For task-targeting spells, `targetTaskId` may be explicit or supplied by a future `selectBestTask` step. Dynamic spell equipment recommendations are not saved presets and must not be referenced by generated preset ids. Future macros should reference them as strategies, such as `maximize:int`, `maximize:per`, or `balanced:int,per`, then compile them against the current gear snapshot at execution time.
 
 Initial `equip` references should support:
 

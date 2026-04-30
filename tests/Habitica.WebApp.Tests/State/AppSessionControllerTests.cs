@@ -155,9 +155,67 @@ public sealed class AppSessionControllerTests
         Assert.Null(preset.Slots.Back);
     }
 
+    [Fact]
+    public async Task CastSpellAsync_casts_sequentially_refreshes_snapshots_and_writes_log()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot() with { RetrievedAtUtc = DateTimeOffset.UtcNow }, CreateTaskSnapshot(), CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.CastSpellAsync(new SpellCastRequest("fireball", "todo-1", 2));
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(2, syncClient.CastCalls.Count);
+        Assert.All(syncClient.CastCalls, call =>
+        {
+            Assert.Equal("fireball", call.SpellId);
+            Assert.Equal("todo-1", call.TargetTaskId);
+        });
+        Assert.Null(controller.State.ActiveSpellCastProgress);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Skills
+            && entry.Operation == "spell-cast"
+            && entry.Metadata["completed"] == "2");
+    }
+
+    [Fact]
+    public async Task AllocateStatsAsync_sends_bulk_allocation_refreshes_snapshot_and_writes_log()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot() with { RetrievedAtUtc = DateTimeOffset.UtcNow, UnallocatedStatPoints = 3 }, CreateTaskSnapshot(), CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.AllocateStatsAsync(new StatAllocation(0, 2, 0, 1));
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(new StatAllocation(0, 2, 0, 1), Assert.Single(syncClient.StatAllocationCalls));
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Skills
+            && entry.Operation == "stats-allocate"
+            && entry.Metadata["int"] == "2"
+            && entry.Metadata["per"] == "1");
+    }
+
     private static AppSessionController CreateController(FakeDiagnosticsLogStore logStore)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
+        return CreateController(logStore, syncClient);
+    }
+
+    private static AppSessionController CreateController(FakeDiagnosticsLogStore logStore, FakeHabiticaSyncClient syncClient)
+    {
         var credentialStore = new FakeCredentialStore();
         var taskSnapshotStore = new FakeTaskSnapshotStore();
         var userSnapshotStore = new FakeUserSnapshotStore();
@@ -380,11 +438,27 @@ public sealed class AppSessionControllerTests
             _partySnapshot = partySnapshot;
         }
 
+        public List<(string SpellId, string? TargetTaskId)> CastCalls { get; } = new();
+
+        public List<StatAllocation> StatAllocationCalls { get; } = new();
+
         public Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
             => Task.CompletedTask;
 
         public Task EquipGearAsync(HabiticaCredentials credentials, EquipmentSetKind kind, string key, CancellationToken cancellationToken)
             => Task.CompletedTask;
+
+        public Task CastSpellAsync(HabiticaCredentials credentials, string spellId, string? targetId, CancellationToken cancellationToken)
+        {
+            CastCalls.Add((spellId, targetId));
+            return Task.CompletedTask;
+        }
+
+        public Task AllocateStatsAsync(HabiticaCredentials credentials, StatAllocation allocation, CancellationToken cancellationToken)
+        {
+            StatAllocationCalls.Add(allocation);
+            return Task.CompletedTask;
+        }
 
         public Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
             => Task.FromResult(new GearCatalogSnapshot(DateTimeOffset.UtcNow, new Dictionary<string, GearCatalogItem>()));

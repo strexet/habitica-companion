@@ -61,6 +61,7 @@ public sealed class HabiticaApiClientTests
                   "notes": "2 liters",
                   "completed": false,
                   "priority": 1.5,
+                  "value": 18.25,
                   "date": "2026-04-24T12:00:00.000Z"
                 },
                 {
@@ -84,6 +85,8 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(2, snapshot.Items.Count);
         Assert.Equal(TaskType.Todo, snapshot.Items[0].Type);
         Assert.Equal("2 liters", snapshot.Items[0].Notes);
+        Assert.Equal(1.5m, snapshot.Items[0].Difficulty);
+        Assert.Equal(18.25m, snapshot.Items[0].Value);
         Assert.Equal(TaskType.Daily, snapshot.Items[1].Type);
         Assert.True(snapshot.Items[1].IsCompleted);
     }
@@ -107,7 +110,20 @@ public sealed class HabiticaApiClientTests
                   "maxMP": 40,
                   "exp": 125.1,
                   "toNextLevel": 74.9,
-                  "gp": 88.25
+                  "gp": 88.25,
+                  "points": 4,
+                  "str": 12,
+                  "int": 34,
+                  "con": 18,
+                  "per": 21,
+                  "buffs": {
+                    "str": 2,
+                    "int": 5,
+                    "con": 3,
+                    "per": 4,
+                    "streaks": true,
+                    "stealth": 7
+                  }
                 },
                 "party": {
                   "_id": "party-123"
@@ -177,6 +193,11 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(50m, snapshot.MaxHealth);
         Assert.Equal(40m, snapshot.MaxMana);
         Assert.Equal(74.9m, snapshot.ToNextLevel);
+        Assert.Equal(4, snapshot.UnallocatedStatPoints);
+        Assert.Equal(new CharacterStatsSnapshot(12m, 34m, 18m, 21m), snapshot.Stats);
+        Assert.Equal(new CharacterStatsSnapshot(2m, 5m, 3m, 4m), snapshot.Buffs);
+        Assert.True(snapshot.BuffFlags.ChillingFrost);
+        Assert.Equal(7, snapshot.BuffFlags.Stealth);
         Assert.Equal("party-123", snapshot.PartyId);
         Assert.Equal("Wolf-Base", snapshot.CurrentPetKey);
         Assert.Equal("head_wizard_3", snapshot.Equipment.Battle.Head);
@@ -186,6 +207,85 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(1, snapshot.Inventory.HatchingPotionCount);
         Assert.Equal(1, snapshot.Inventory.OwnedPetCount);
         Assert.Equal(1, snapshot.Inventory.OwnedMountCount);
+    }
+
+    [Fact]
+    public async Task CastSpellAsync_sends_spell_cast_request_with_target_id()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.CastSpellAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            "fireball",
+            "task-123",
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/user/class/cast/fireball?targetId=task-123", capturedRequest.RequestUri!.ToString());
+        Assert.Null(capturedRequest.Content);
+    }
+
+    [Fact]
+    public async Task CastSpellAsync_sends_spell_cast_request_without_target_for_party_or_self_spells()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.CastSpellAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            "earth",
+            targetId: null,
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/user/class/cast/earth", capturedRequest.RequestUri!.ToString());
+        Assert.Null(capturedRequest.Content);
+    }
+
+    [Fact]
+    public async Task AllocateStatsAsync_sends_bulk_allocation_request()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        string? capturedBody = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            capturedBody = request.Content?.ReadAsStringAsync().GetAwaiter().GetResult();
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.AllocateStatsAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            new StatAllocation(Strength: 1, Intelligence: 2, Constitution: 0, Perception: 1),
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/user/allocate-bulk", capturedRequest.RequestUri!.ToString());
+        Assert.Equal("""{"stats":{"str":1,"int":2,"con":0,"per":1}}""", capturedBody);
     }
 
     [Fact]

@@ -23,7 +23,8 @@ public sealed record SessionViewModel(
     IReadOnlyList<DiagnosticsLogEntry>? DiagnosticsLogEntries = null,
     string? UserId = null,
     GearCatalogSnapshot? GearCatalogSnapshot = null,
-    IReadOnlyList<EquipmentPreset>? EquipmentPresets = null)
+    IReadOnlyList<EquipmentPreset>? EquipmentPresets = null,
+    SpellCastProgress? ActiveSpellCastProgress = null)
 {
     public static SessionViewModel Empty { get; } = new(
         IsBusy: false,
@@ -47,4 +48,23 @@ public sealed record SessionViewModel(
 
     public int DiagnosticsWarningCount =>
         DiagnosticsLogEntries?.Count(entry => entry.Severity is DiagnosticsSeverity.Warning or DiagnosticsSeverity.Error) ?? 0;
+}
+
+public sealed record SpellCastRequest(
+    string SpellId,
+    string? TargetTaskId,
+    int Count);
+
+public sealed record SpellCastProgress(
+    string SpellId,
+    int Completed,
+    int Total);
+
+public sealed record SpellActionResult(
+    bool Succeeded,
+    string Message)
+{
+    public static SpellActionResult Success(string message) => new(true, message);
+
+    public static SpellActionResult Failure(string message) => new(false, message);
 }

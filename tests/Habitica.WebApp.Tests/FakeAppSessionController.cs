@@ -34,6 +34,10 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<string> EquipPresetCalls { get; } = new();
 
+    public List<SpellCastRequest> CastSpellCalls { get; } = new();
+
+    public List<StatAllocation> StatAllocationCalls { get; } = new();
+
     public List<string> RemovePresetCalls { get; } = new();
 
     public List<(string PresetId, string Name)> RenamePresetCalls { get; } = new();
@@ -67,6 +71,18 @@ internal sealed class FakeAppSessionController : IAppSessionController
     {
         EquipItemCalls.Add((kind, key));
         return Task.FromResult(InventoryActionResult.Success("Equipment changed."));
+    }
+
+    public Task<SpellActionResult> CastSpellAsync(SpellCastRequest request, CancellationToken cancellationToken = default)
+    {
+        CastSpellCalls.Add(request);
+        return Task.FromResult(SpellActionResult.Success("Spell cast."));
+    }
+
+    public Task<SpellActionResult> AllocateStatsAsync(StatAllocation allocation, CancellationToken cancellationToken = default)
+    {
+        StatAllocationCalls.Add(allocation);
+        return Task.FromResult(SpellActionResult.Success("Stats allocated."));
     }
 
     public Task InitializeAsync(CancellationToken cancellationToken = default)

@@ -1,6 +1,9 @@
 @page "/dashboard"
 @implements IDisposable
+@using Habitica.Rules.Stats
 @inject IAppSessionController SessionController
+@inject CharacterStatsViewModelFactory StatsViewModelFactory
+@inject ISnackbar Snackbar
 
 <PageTitle>Dashboard</PageTitle>
 
@@ -29,6 +32,13 @@
         <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
             @GetFreshnessLabel(SessionController.State.UserFreshness)
         </MudAlert>
+
+        @if (snapshot.UnallocatedStatPoints > 0)
+        {
+            <MudAlert Class="inline-banner" Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined">
+                <a href="#stats">@snapshot.UnallocatedStatPoints unspent stat points</a> are available for allocation.
+            </MudAlert>
+        }
 
         <section class="dashboard-card-grid">
             <article class="dashboard-stat-card">
@@ -67,6 +77,87 @@
                 <strong>@GetOpenTaskCount()</strong>
                 <span class="dashboard-stat-note">Across the cached task snapshot</span>
             </article>
+        </section>
+
+        <section id="stats" class="card-surface dashboard-panel stats-panel">
+            @{
+                var statsViewModel = StatsViewModelFactory.Create(snapshot, SessionController.State.GearCatalogSnapshot);
+                var pendingTotal = GetPendingTotal();
+                var remainingPoints = Math.Max(0, statsViewModel.UnallocatedPoints - pendingTotal);
+                var canMutate = SessionController.State.IsAuthenticated
+                    && !SessionController.State.IsBusy
+                    && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
+            }
+            <div class="stats-panel-head">
+                <div>
+                    <p class="section-label">Character stats</p>
+                    <h2>Stats and allocation</h2>
+                </div>
+                <div class="stats-points-summary">
+                    <strong>@remainingPoints</strong>
+                    <span>points available</span>
+                </div>
+            </div>
+
+            <div class="stats-table-wrap">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>Stat</th>
+                            <th>Base</th>
+                            <th>Equipment</th>
+                            <th>Buffs</th>
+                            <th>Effective</th>
+                            <th>Allocate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in statsViewModel.Rows)
+                        {
+                            var pending = GetPendingAllocation(row.Key);
+                            <tr>
+                                <th scope="row">
+                                    <span>@row.Label</span>
+                                    <small>@row.Name</small>
+                                </th>
+                                <td>@FormatDecimal(row.BaseValue)</td>
+                                <td>@FormatSignedDecimal(row.EquipmentValue)</td>
+                                <td>@FormatSignedDecimal(row.BuffValue)</td>
+                                <td><strong>@FormatDecimal(row.EffectiveValue + pending)</strong></td>
+                                <td>
+                                    <div class="stat-allocation-cell">
+                                        <span>@(pending > 0 ? $"+{pending}" : "0")</span>
+                                        <MudButton Color="Color.Primary"
+                                                   Disabled="@(!canMutate || remainingPoints <= 0)"
+                                                   OnClick="() => AddPendingAllocation(row.Key)"
+                                                   Size="Size.Small"
+                                                   Variant="Variant.Outlined"
+                                                   data-testid="@($"allocate-{row.Key}-plus")">
+                                            +
+                                        </MudButton>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="stats-actions">
+                <MudButton Color="Color.Primary"
+                           Disabled="@(!canMutate || pendingTotal <= 0 || pendingTotal > statsViewModel.UnallocatedPoints)"
+                           OnClick="ApplyStatAllocationAsync"
+                           Variant="Variant.Filled"
+                           data-testid="apply-stat-allocation">
+                    Apply allocation
+                </MudButton>
+                @if (pendingTotal > 0)
+                {
+                    <MudButton Color="Color.Default" OnClick="ClearPendingAllocation" Variant="Variant.Text">
+                        Clear
+                    </MudButton>
+                }
+            </div>
         </section>
 
         <section class="dashboard-detail-grid">
@@ -133,6 +224,8 @@
 </div>
 
 @code {
+    private readonly Dictionary<string, int> _pendingAllocation = new(StringComparer.Ordinal);
+
     protected override void OnInitialized()
     {
         SessionController.Changed += HandleStateChanged;
@@ -146,6 +239,61 @@
         }
 
         return $"{current:0.##} / {maxOrTarget:0.##}";
+    }
+
+    private static string FormatDecimal(decimal value)
+    {
+        return value.ToString("0.##");
+    }
+
+    private static string FormatSignedDecimal(decimal value)
+    {
+        return value > 0m ? $"+{value:0.##}" : value.ToString("0.##");
+    }
+
+    private int GetPendingAllocation(string key)
+    {
+        return _pendingAllocation.TryGetValue(key, out var value) ? value : 0;
+    }
+
+    private int GetPendingTotal()
+    {
+        return _pendingAllocation.Values.Sum();
+    }
+
+    private void AddPendingAllocation(string key)
+    {
+        if (SessionController.State.UserSnapshot is null)
+        {
+            return;
+        }
+
+        var available = SessionController.State.UserSnapshot.UnallocatedStatPoints;
+        if (GetPendingTotal() >= available)
+        {
+            return;
+        }
+
+        _pendingAllocation[key] = GetPendingAllocation(key) + 1;
+    }
+
+    private void ClearPendingAllocation()
+    {
+        _pendingAllocation.Clear();
+    }
+
+    private async Task ApplyStatAllocationAsync()
+    {
+        var result = await SessionController.AllocateStatsAsync(new StatAllocation(
+            Strength: GetPendingAllocation("str"),
+            Intelligence: GetPendingAllocation("int"),
+            Constitution: GetPendingAllocation("con"),
+            Perception: GetPendingAllocation("per")));
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+        if (result.Succeeded)
+        {
+            _pendingAllocation.Clear();
+        }
     }
 
     private int GetOpenTaskCount()

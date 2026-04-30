@@ -130,6 +130,7 @@ a {
 .inventory-shell,
 .live-tests-shell,
 .party-shell,
+.spells-shell,
 .tasks-shell,
 .settings-shell {
     display: grid;
@@ -282,6 +283,8 @@ a {
 .inventory-group-grid,
 .inventory-item-list,
 .inventory-preset-section,
+.spells-summary-grid,
+.spells-grid,
 .party-card-grid,
 .party-detail-grid,
 .diagnostics-overview-grid,
@@ -302,6 +305,14 @@ a {
 
 .inventory-summary-grid {
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.spells-summary-grid {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 14rem));
+}
+
+.spells-grid {
+    grid-template-columns: 1fr;
 }
 
 .inventory-management-grid {
@@ -470,6 +481,7 @@ a {
 .dashboard-panel,
 .diagnostics-panel,
 .inventory-group-card,
+.spell-card,
 .live-test-card,
 .live-results-card {
     padding: 1.2rem;
@@ -481,6 +493,183 @@ a {
 .dashboard-stat-card {
     display: grid;
     gap: 0.35rem;
+}
+
+.spell-card {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+}
+
+.spell-block {
+    overflow: hidden;
+    padding: 0;
+    border-color: rgba(22, 36, 35, 0.14);
+    background: rgba(255, 255, 255, 0.86);
+}
+
+.spell-card-section {
+    display: grid;
+    gap: 0.8rem;
+    min-width: 0;
+    padding: 1rem 1.15rem;
+    border-bottom: 1px solid rgba(22, 36, 35, 0.1);
+}
+
+.spell-card-section:last-child {
+    border-bottom: 0;
+}
+
+.spell-card-section p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.55;
+}
+
+.spell-card-summary {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+}
+
+.spell-card-summary h2 {
+    margin-top: 0.25rem;
+}
+
+.spell-cost-stack {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.spell-cast-controls {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: minmax(5rem, 7rem) minmax(14rem, 24rem) minmax(8rem, 10rem) auto;
+    align-items: end;
+}
+
+.spell-count-field {
+    min-width: 0;
+}
+
+.spell-target-field {
+    min-width: 0;
+}
+
+.spell-total {
+    display: grid;
+    gap: 0.2rem;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.spell-total span {
+    color: var(--muted);
+    font-size: 0.78rem;
+}
+
+.spell-progress {
+    color: var(--teal);
+    font-weight: 700;
+}
+
+.spell-recommendation {
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 0.85rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(245, 239, 226, 0.58);
+}
+
+.stats-panel {
+    display: grid;
+    gap: 1rem;
+}
+
+.stats-panel-head {
+    display: flex;
+    gap: 1rem;
+    align-items: start;
+    justify-content: space-between;
+}
+
+.stats-points-summary {
+    display: grid;
+    gap: 0.15rem;
+    justify-items: end;
+    min-width: 7rem;
+}
+
+.stats-points-summary strong {
+    font-size: 1.7rem;
+    line-height: 1;
+}
+
+.stats-points-summary span {
+    color: var(--muted);
+    font-size: 0.82rem;
+}
+
+.stats-table-wrap {
+    overflow-x: auto;
+}
+
+.stats-table {
+    width: 100%;
+    min-width: 44rem;
+    border-collapse: collapse;
+}
+
+.stats-table th,
+.stats-table td {
+    padding: 0.75rem 0.65rem;
+    border-bottom: 1px solid rgba(22, 36, 35, 0.08);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.stats-table thead th {
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.stats-table tbody th span {
+    display: block;
+    font-size: 1rem;
+}
+
+.stats-table tbody th small {
+    display: block;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.stat-allocation-cell {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.stats-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.warning-card {
+    border-color: rgba(197, 119, 43, 0.26);
+    background: rgba(255, 246, 226, 0.88);
+}
+
+.spell-recommendation strong {
+    display: block;
+    margin-bottom: 0.25rem;
 }
 
 .dashboard-stat-card strong {
@@ -901,6 +1090,26 @@ code {
 
     .party-member-row {
         grid-template-columns: 1fr;
+    }
+
+    .spell-card-summary,
+    .spell-cast-controls,
+    .stats-panel-head,
+    .spell-recommendation {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-panel-head {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .stats-points-summary {
+        justify-items: start;
+    }
+
+    .spell-cost-stack {
+        justify-content: flex-start;
     }
 
     .party-member-meta {

@@ -312,7 +312,26 @@ Common endpoints include:
 | POST | `/user/allocate` | Allocate one stat point. |
 | POST | `/user/allocate-bulk` | Allocate multiple stat points. |
 
-Automation rule: before casting skills automatically, verify mana and target validity. Stop the loop when the action can no longer be completed.
+Task-targeting skills pass the target task id as a query parameter:
+
+```http
+POST /user/class/cast/fireball?targetId=<task-id>
+```
+
+Bulk stat allocation uses a request body containing only the selected point counts:
+
+```json
+{
+  "stats": {
+    "str": 1,
+    "int": 2,
+    "con": 0,
+    "per": 1
+  }
+}
+```
+
+Automation rule: before casting skills automatically, verify mana and target validity. Execute repeated casts sequentially and stop the loop when the action can no longer be completed.
 
 ### 8.6 Blocking and private messages
 

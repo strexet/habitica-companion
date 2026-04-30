@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Net.Http.Json;
 using System.Text.Json;
 using Habitica.Domain.Auth;
 using Habitica.Domain.Party;
@@ -35,6 +36,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         var data = document.RootElement.GetProperty("data");
         var profile = data.GetProperty("profile");
         var stats = data.GetProperty("stats");
+        var buffs = TryGetObject(stats, "buffs");
         var items = data.TryGetProperty("items", out var itemsProperty) ? itemsProperty : default;
         var gear = TryGetObject(items, "gear");
         var inventory = MapInventory(gear, items);
@@ -57,7 +59,13 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             Equipment: new EquipmentSnapshot(
                 Battle: MapGearSlots(TryGetObject(gear, "equipped")),
                 Costume: MapGearSlots(TryGetObject(gear, "costume"))),
-            Inventory: inventory);
+            Inventory: inventory,
+            UnallocatedStatPoints: GetOptionalInt32(stats, "points"),
+            Stats: MapCharacterStats(stats),
+            Buffs: MapCharacterStats(buffs),
+            BuffFlags: new BuffFlagsSnapshot(
+                ChillingFrost: GetOptionalBoolean(buffs, "streaks"),
+                Stealth: GetOptionalInt32(buffs, "stealth")));
     }
 
     public async Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -169,6 +177,41 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         using var _ = await SendForDocumentAsync(request, cancellationToken);
     }
 
+    public async Task CastSpellAsync(
+        HabiticaCredentials credentials,
+        string spellId,
+        string? targetId,
+        CancellationToken cancellationToken)
+    {
+        var path = $"user/class/cast/{Uri.EscapeDataString(spellId)}";
+        if (!string.IsNullOrWhiteSpace(targetId))
+        {
+            path += $"?targetId={Uri.EscapeDataString(targetId)}";
+        }
+
+        using var request = CreateRequest(HttpMethod.Post, path, credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
+    public async Task AllocateStatsAsync(
+        HabiticaCredentials credentials,
+        StatAllocation allocation,
+        CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(HttpMethod.Post, "user/allocate-bulk", credentials);
+        request.Content = JsonContent.Create(new
+        {
+            stats = new
+            {
+                str = allocation.Strength,
+                @int = allocation.Intelligence,
+                con = allocation.Constitution,
+                per = allocation.Perception
+            }
+        });
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
     public async Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
     {
         using var request = CreateRequest(HttpMethod.Get, "content?language=en", credentials);
@@ -259,7 +302,8 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
                 ? priorityProperty.GetDecimal()
                 : 1m,
             task.TryGetProperty("notes", out var notesProperty) ? notesProperty.GetString() : null,
-            ParseNullableDate(task));
+            ParseNullableDate(task),
+            TryGetDecimal(task, "value", out var value) ? value : null);
     }
 
     private static InventorySnapshot MapInventory(JsonElement gear, JsonElement items)
@@ -410,6 +454,15 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             Weapon: GetOptionalString(slots, "weapon"),
             Shield: GetOptionalString(slots, "shield"),
             Back: GetOptionalString(slots, "back"));
+    }
+
+    private static CharacterStatsSnapshot MapCharacterStats(JsonElement stats)
+    {
+        return new CharacterStatsSnapshot(
+            Strength: GetOptionalDecimal(stats, "str"),
+            Intelligence: GetOptionalDecimal(stats, "int"),
+            Constitution: GetOptionalDecimal(stats, "con"),
+            Perception: GetOptionalDecimal(stats, "per"));
     }
 
     private static int CountPositiveEntries(JsonElement element)

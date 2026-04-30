@@ -7,4 +7,5 @@ public sealed record TaskSnapshot(
     bool IsCompleted,
     decimal Difficulty,
     string? Notes,
-    DateTimeOffset? DueDate);
+    DateTimeOffset? DueDate,
+    decimal? Value = null);

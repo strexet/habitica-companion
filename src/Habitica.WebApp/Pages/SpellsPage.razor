@@ -1,0 +1,325 @@
+@page "/spells"
+@implements IDisposable
+@inject SpellViewModelFactory SpellViewModelFactory
+@inject IAppSessionController SessionController
+@inject ISnackbar Snackbar
+
+<PageTitle>Spells</PageTitle>
+
+<div class="spells-shell">
+    <section class="card-surface dashboard-hero">
+        <div>
+            <p class="section-label">Skills and buffs</p>
+            <h1>Spells</h1>
+            <p class="panel-copy">
+                Cast current-class skills from fresh local snapshots. Estimates are approximate and use cached stats, task values, and gear data.
+            </p>
+        </div>
+    </section>
+
+    @if (SessionController.State.UserSnapshot is null)
+    {
+        <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
+            No cached account snapshot is available yet. Sign in or refresh before opening spells.
+        </MudAlert>
+    }
+    else
+    {
+        var viewModel = CurrentViewModel;
+        var canMutate = SessionController.State.IsAuthenticated
+            && !SessionController.State.IsBusy
+            && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
+
+        <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
+            @GetFreshnessLabel(SessionController.State.UserFreshness)
+        </MudAlert>
+
+        <section class="spells-summary-grid compact-summary-grid">
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Class</span>
+                <strong>@viewModel.ClassName</strong>
+                <span class="dashboard-stat-note">Level @viewModel.Level</span>
+            </article>
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">MP</span>
+                <strong>@FormatDecimal(viewModel.Mana) / @FormatDecimal(viewModel.MaxMana)</strong>
+                <span class="dashboard-stat-note">Available mana</span>
+            </article>
+            @if (viewModel.UnallocatedStatPoints > 0)
+            {
+                <article class="dashboard-stat-card warning-card">
+                    <span class="dashboard-stat-label">Stat points</span>
+                    <strong>@viewModel.UnallocatedStatPoints</strong>
+                    <a class="dashboard-stat-note" href="/dashboard#stats">Allocate on Dashboard</a>
+                </article>
+            }
+        </section>
+
+        @if (viewModel.Spells.Count == 0)
+        {
+            <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
+                No class spells are available for the cached account class.
+            </MudAlert>
+        }
+        else
+        {
+            <section class="spells-grid">
+                @foreach (var spell in viewModel.Spells)
+                {
+                    var count = GetSpellCount(spell.Id);
+                    var selectedTarget = GetSelectedTarget(spell, viewModel.TargetTasks);
+                    var isCasting = SessionController.State.ActiveSpellCastProgress?.SpellId == spell.Id;
+                    var castDisabled = !canMutate
+                        || !spell.IsUnlocked
+                        || spell.ManaCost * count > viewModel.Mana
+                        || (spell.TargetKind == SpellTargetKind.Task && !HasTarget(viewModel.TargetTasks, selectedTarget));
+
+                    <article class="spell-card spell-block">
+                        <div class="spell-card-section spell-card-summary">
+                            <div>
+                                <p class="section-label">@spell.TargetKind</p>
+                                <h2>@spell.Name</h2>
+                                <p>@GetSpellDescription(spell, selectedTarget)</p>
+                            </div>
+                            <div class="spell-cost-stack">
+                                <span class="ui-pill">@spell.ManaCost MP</span>
+                                <span class="ui-pill @(spell.IsUnlocked ? "success-pill" : "warning-pill")">@spell.AvailabilityLabel</span>
+                            </div>
+                        </div>
+
+                        <div class="spell-card-section spell-cast-section">
+                            <div class="spell-cast-controls">
+                                <label class="field-row compact spell-count-field">
+                                    <span>Count</span>
+                                    <input class="app-input"
+                                           data-testid="@($"spell-count-{spell.Id}")"
+                                           disabled="@isCasting"
+                                           min="1"
+                                           type="number"
+                                           value="@count"
+                                           @onchange="eventArgs => SetSpellCount(spell.Id, eventArgs.Value?.ToString())" />
+                                </label>
+
+                                @if (spell.TargetKind == SpellTargetKind.Task)
+                                {
+                                    <label class="field-row compact spell-target-field">
+                                        <span>Target</span>
+                                        <select class="app-input" value="@selectedTarget" @onchange="eventArgs => SetSelectedTarget(spell.Id, eventArgs.Value?.ToString())">
+                                            @foreach (var task in viewModel.TargetTasks)
+                                            {
+                                                <option value="@task.Id">@task.Text (@task.Type, value @FormatDecimal(task.Value))</option>
+                                            }
+                                        </select>
+                                    </label>
+                                }
+
+                                <div class="spell-total">
+                                    <span>Total mana</span>
+                                    <strong>@(spell.ManaCost * count) MP</strong>
+                                </div>
+
+                                <MudButton Color="Color.Primary"
+                                           Disabled="@castDisabled"
+                                           OnClick="() => CastSpellAsync(spell, count, selectedTarget)"
+                                           Variant="Variant.Filled"
+                                           data-testid="@($"cast-spell-{spell.Id}")">
+                                    Cast
+                                </MudButton>
+                            </div>
+                        </div>
+
+                        @if (isCasting)
+                        {
+                            var progress = SessionController.State.ActiveSpellCastProgress!;
+                            <div class="spell-card-section spell-progress">
+                                <span>Casting @progress.Completed of @progress.Total</span>
+                                <MudProgressLinear Color="Color.Primary" Max="@progress.Total" Value="@progress.Completed" />
+                            </div>
+                        }
+
+                        <div class="spell-card-section spell-effect-preview">
+                            <p class="section-label">Effect preview</p>
+                            <p>@GetEstimatedEffect(spell, selectedTarget, count)</p>
+                        </div>
+
+                        @if (spell.EquipmentRecommendations.Count > 0)
+                        {
+                            <div class="spell-card-section spell-equipment">
+                                <p class="section-label">Equipment recommendations</p>
+                                @foreach (var recommendation in spell.EquipmentRecommendations)
+                                {
+                                    <div class="spell-recommendation">
+                                        <div>
+                                            <strong>@recommendation.Name</strong>
+                                            <p>@recommendation.Rationale @FormatGearStats(recommendation.TotalStats)</p>
+                                        </div>
+                                        <MudButton Color="Color.Secondary"
+                                                   Disabled="@(recommendation.IsEquipped || !canMutate)"
+                                                   OnClick="() => EquipRecommendationAsync(recommendation)"
+                                                   Variant="@(recommendation.IsEquipped ? Variant.Outlined : Variant.Filled)">
+                                            @(recommendation.IsEquipped ? "Equipped" : "Equip")
+                                        </MudButton>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </article>
+                }
+            </section>
+        }
+    }
+</div>
+
+@code {
+    private readonly Dictionary<string, int> _spellCounts = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, string?> _selectedTargets = new(StringComparer.Ordinal);
+
+    private SpellsPageViewModel CurrentViewModel => SessionController.State.UserSnapshot is null
+        ? new SpellsPageViewModel("unknown", 0, 0m, 0m, 0, CharacterStatsSnapshot.Zero, Array.Empty<SpellTargetTaskViewModel>(), Array.Empty<SpellCardViewModel>())
+        : SpellViewModelFactory.Create(
+            SessionController.State.UserSnapshot,
+            SessionController.State.TaskSnapshot,
+            SessionController.State.GearCatalogSnapshot);
+
+    protected override void OnInitialized()
+    {
+        SessionController.Changed += HandleStateChanged;
+    }
+
+    private int GetSpellCount(string spellId)
+    {
+        return _spellCounts.TryGetValue(spellId, out var count) ? Math.Max(1, count) : 1;
+    }
+
+    private void SetSpellCount(string spellId, string? rawValue)
+    {
+        _spellCounts[spellId] = int.TryParse(rawValue, out var parsed) ? Math.Clamp(parsed, 1, 99) : 1;
+    }
+
+    private string? GetSelectedTarget(SpellCardViewModel spell, IReadOnlyList<SpellTargetTaskViewModel> targetTasks)
+    {
+        if (_selectedTargets.TryGetValue(spell.Id, out var selectedTarget))
+        {
+            if (spell.TargetKind != SpellTargetKind.Task || HasTarget(targetTasks, selectedTarget))
+            {
+                return selectedTarget;
+            }
+        }
+
+        _selectedTargets[spell.Id] = spell.SelectedTargetTaskId;
+        return spell.SelectedTargetTaskId;
+    }
+
+    private void SetSelectedTarget(string spellId, string? targetId)
+    {
+        _selectedTargets[spellId] = targetId;
+    }
+
+    private async Task CastSpellAsync(SpellCardViewModel spell, int count, string? selectedTarget)
+    {
+        var result = await SessionController.CastSpellAsync(new SpellCastRequest(spell.Id, selectedTarget, count));
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task EquipRecommendationAsync(SpellEquipmentRecommendation recommendation)
+    {
+        foreach (var key in GetRecommendationKeysToEquip(recommendation))
+        {
+            var result = await SessionController.EquipInventoryItemAsync(EquipmentSetKind.Battle, key);
+            if (!result.Succeeded)
+            {
+                Snackbar.Add(result.Message, Severity.Error);
+                return;
+            }
+        }
+
+        Snackbar.Add($"Equipped {recommendation.Name}.", Severity.Success);
+    }
+
+    private IEnumerable<string> GetRecommendationKeysToEquip(SpellEquipmentRecommendation recommendation)
+    {
+        var battle = SessionController.State.UserSnapshot?.Equipment.Battle;
+        if (battle is null)
+        {
+            yield break;
+        }
+
+        foreach (var slot in new[]
+        {
+            (RecommendationKey: recommendation.Slots.Head, CurrentKey: battle.Head),
+            (RecommendationKey: recommendation.Slots.Armor, CurrentKey: battle.Armor),
+            (RecommendationKey: recommendation.Slots.Weapon, CurrentKey: battle.Weapon),
+            (RecommendationKey: recommendation.Slots.Shield, CurrentKey: battle.Shield)
+        })
+        {
+            if (!string.IsNullOrWhiteSpace(slot.RecommendationKey)
+                && !string.Equals(slot.RecommendationKey, slot.CurrentKey, StringComparison.Ordinal))
+            {
+                yield return slot.RecommendationKey;
+            }
+        }
+    }
+
+    private static string FormatGearStats(GearStatBlock stats)
+    {
+        return $"STR {stats.Strength:0.##} / INT {stats.Intelligence:0.##} / CON {stats.Constitution:0.##} / PER {stats.Perception:0.##}";
+    }
+
+    private static string FormatDecimal(decimal value)
+    {
+        return value.ToString("0.##");
+    }
+
+    private static string GetSpellDescription(SpellCardViewModel spell, string? selectedTarget)
+    {
+        return selectedTarget is not null && spell.TargetDescriptions.TryGetValue(selectedTarget, out var description)
+            ? description
+            : spell.Description;
+    }
+
+    private static string GetEstimatedEffect(SpellCardViewModel spell, string? selectedTarget, int count)
+    {
+        var estimate = selectedTarget is not null && spell.TargetEstimates.TryGetValue(selectedTarget, out var selectedEstimate)
+            ? selectedEstimate
+            : spell.EstimatedEffect;
+        return count <= 1 ? estimate : $"{estimate} Total for {count} casts is approximately {count}x this result.";
+    }
+
+    private static bool HasTarget(IReadOnlyList<SpellTargetTaskViewModel> targetTasks, string? selectedTarget)
+    {
+        return !string.IsNullOrWhiteSpace(selectedTarget)
+            && targetTasks.Any(task => string.Equals(task.Id, selectedTarget, StringComparison.Ordinal));
+    }
+
+    private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => "Fresh local account snapshot",
+            SnapshotFreshnessState.Stale => "Stale local account snapshot",
+            SnapshotFreshnessState.Expired => "Expired local account snapshot",
+            _ => "Missing local account snapshot"
+        };
+    }
+
+    private static Severity GetFreshnessSeverity(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => Severity.Success,
+            SnapshotFreshnessState.Stale => Severity.Warning,
+            SnapshotFreshnessState.Expired => Severity.Error,
+            _ => Severity.Info
+        };
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        SessionController.Changed -= HandleStateChanged;
+    }
+}

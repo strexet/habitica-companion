@@ -34,6 +34,10 @@ public interface IAppSessionController
 
     Task<InventoryActionResult> EquipEquipmentPresetAsync(string presetId, CancellationToken cancellationToken = default);
 
+    Task<SpellActionResult> CastSpellAsync(SpellCastRequest request, CancellationToken cancellationToken = default);
+
+    Task<SpellActionResult> AllocateStatsAsync(StatAllocation allocation, CancellationToken cancellationToken = default);
+
     Task LogoutAsync(CancellationToken cancellationToken = default);
 
     Task ClearLocalDataAsync(CancellationToken cancellationToken = default);

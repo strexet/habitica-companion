@@ -9,6 +9,7 @@ using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Party;
 using Habitica.Domain.Sync;
 using Habitica.Domain.User;
+using Habitica.Rules.Spells;
 using Habitica.Storage;
 
 namespace Habitica.WebApp.State;
@@ -609,6 +610,185 @@ public sealed class AppSessionController : IAppSessionController
                 exception.Message,
                 cancellationToken,
                 PresetMetadata(preset, changedSlots.Length, desiredSlots.Length - changedSlots.Length, requestCount));
+        }
+    }
+
+    public async Task<SpellActionResult> CastSpellAsync(SpellCastRequest request, CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return SpellActionResult.Failure("Sign in is required before casting spells.");
+        }
+
+        if (State.UserSnapshot is null || State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return SpellActionResult.Failure("A fresh account snapshot is required before casting spells.");
+        }
+
+        if (string.IsNullOrWhiteSpace(request.SpellId))
+        {
+            return SpellActionResult.Failure("Spell id is required.");
+        }
+
+        var count = Math.Clamp(request.Count, 1, 99);
+        var spell = new SpellViewModelFactory()
+            .Create(State.UserSnapshot, State.TaskSnapshot, State.GearCatalogSnapshot)
+            .Spells
+            .FirstOrDefault(item => string.Equals(item.Id, request.SpellId, StringComparison.Ordinal));
+        if (spell is null)
+        {
+            return SpellActionResult.Failure("Spell is not available for the cached user class.");
+        }
+
+        if (!spell.IsUnlocked)
+        {
+            return SpellActionResult.Failure(spell.AvailabilityLabel);
+        }
+
+        if (spell.TargetKind == SpellTargetKind.Task && string.IsNullOrWhiteSpace(request.TargetTaskId))
+        {
+            return SpellActionResult.Failure("Choose a target task before casting this spell.");
+        }
+
+        if (State.UserSnapshot.Mana < spell.ManaCost * count)
+        {
+            return SpellActionResult.Failure("Not enough mana for the requested cast count.");
+        }
+
+        SetState(State with
+        {
+            ActiveSpellCastProgress = new SpellCastProgress(request.SpellId, 0, count),
+            ErrorMessage = null,
+            IsBusy = true
+        });
+
+        var completed = 0;
+        try
+        {
+            for (var index = 0; index < count; index++)
+            {
+                await _habiticaSyncClient.CastSpellAsync(credentials, request.SpellId, request.TargetTaskId, cancellationToken);
+                completed++;
+                SetState(State with
+                {
+                    ActiveSpellCastProgress = new SpellCastProgress(request.SpellId, completed, count)
+                });
+            }
+
+            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            var taskSnapshot = await _habiticaSyncClient.GetTasksAsync(credentials, cancellationToken);
+            await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
+            await _taskSnapshotStore.SaveAsync(taskSnapshot, cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Skills,
+                "spell-cast",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                $"Cast {request.SpellId} {completed} time(s).",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["spellId"] = request.SpellId,
+                    ["targetTaskId"] = request.TargetTaskId ?? string.Empty,
+                    ["completed"] = completed.ToString(CultureInfo.InvariantCulture),
+                    ["requested"] = count.ToString(CultureInfo.InvariantCulture),
+                    ["requestCount"] = (completed + 2).ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with
+            {
+                ActiveSpellCastProgress = null,
+                ErrorMessage = null,
+                IsBusy = false
+            });
+
+            return SpellActionResult.Success($"Cast {request.SpellId} {completed} time(s).");
+        }
+        catch (Exception exception)
+        {
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Skills,
+                "spell-cast",
+                DiagnosticsSeverity.Error,
+                DiagnosticsMode.LiveMutation,
+                exception.Message,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["spellId"] = request.SpellId,
+                    ["targetTaskId"] = request.TargetTaskId ?? string.Empty,
+                    ["completed"] = completed.ToString(CultureInfo.InvariantCulture),
+                    ["requested"] = count.ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with
+            {
+                ActiveSpellCastProgress = null,
+                ErrorMessage = exception.Message,
+                IsBusy = false
+            });
+
+            return SpellActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<SpellActionResult> AllocateStatsAsync(StatAllocation allocation, CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return SpellActionResult.Failure("Sign in is required before allocating stats.");
+        }
+
+        if (State.UserSnapshot is null || State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return SpellActionResult.Failure("A fresh account snapshot is required before allocating stats.");
+        }
+
+        var requestedPoints = allocation.Strength + allocation.Intelligence + allocation.Constitution + allocation.Perception;
+        if (requestedPoints <= 0)
+        {
+            return SpellActionResult.Failure("Choose at least one stat point to allocate.");
+        }
+
+        if (requestedPoints > State.UserSnapshot.UnallocatedStatPoints)
+        {
+            return SpellActionResult.Failure("Cannot allocate more stat points than are available.");
+        }
+
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        try
+        {
+            await _habiticaSyncClient.AllocateStatsAsync(credentials, allocation, cancellationToken);
+            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Skills,
+                "stats-allocate",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                "Allocated stat points.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["str"] = allocation.Strength.ToString(CultureInfo.InvariantCulture),
+                    ["int"] = allocation.Intelligence.ToString(CultureInfo.InvariantCulture),
+                    ["con"] = allocation.Constitution.ToString(CultureInfo.InvariantCulture),
+                    ["per"] = allocation.Perception.ToString(CultureInfo.InvariantCulture),
+                    ["requestCount"] = "2"
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+
+            return SpellActionResult.Success("Stat points allocated.");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return SpellActionResult.Failure(exception.Message);
         }
     }
 

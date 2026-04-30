@@ -1,0 +1,348 @@
+using Habitica.Domain.Tasks;
+using Habitica.Domain.User;
+using Habitica.Rules.Stats;
+
+namespace Habitica.Rules.Spells;
+
+public sealed class SpellViewModelFactory
+{
+    private static readonly IReadOnlyList<SpellDefinition> Definitions =
+    [
+        new("wizard", "fireball", "Burst of Flames", 10, 11, SpellTargetKind.Task, "Deal quest damage and gain experience from a selected task.", [SpellStat.Intelligence, SpellStat.Perception]),
+        new("wizard", "mpheal", "Ethereal Surge", 30, 12, SpellTargetKind.Party, "Restore mana to non-wizard party members.", [SpellStat.Intelligence]),
+        new("wizard", "earth", "Earthquake", 35, 13, SpellTargetKind.Party, "Increase party Intelligence.", [SpellStat.Intelligence]),
+        new("wizard", "frost", "Chilling Frost", 40, 14, SpellTargetKind.Self, "Pause daily streak reset until the next cron.", []),
+        new("warrior", "smash", "Brutal Smash", 10, 11, SpellTargetKind.Task, "Damage a selected task and contribute quest damage.", [SpellStat.Strength, SpellStat.Constitution]),
+        new("warrior", "defensiveStance", "Defensive Stance", 25, 12, SpellTargetKind.Self, "Increase Constitution.", [SpellStat.Constitution]),
+        new("warrior", "valorousPresence", "Valorous Presence", 20, 13, SpellTargetKind.Party, "Increase party Strength.", [SpellStat.Strength]),
+        new("warrior", "intimidate", "Intimidating Gaze", 15, 14, SpellTargetKind.Party, "Increase party Constitution.", [SpellStat.Constitution]),
+        new("rogue", "pickPocket", "Pickpocket", 10, 11, SpellTargetKind.Task, "Gain gold from a selected task.", [SpellStat.Perception]),
+        new("rogue", "backStab", "Backstab", 15, 12, SpellTargetKind.Task, "Gain experience and gold from a selected task.", [SpellStat.Strength]),
+        new("rogue", "toolsOfTrade", "Tools of the Trade", 25, 13, SpellTargetKind.Party, "Increase party Perception.", [SpellStat.Perception]),
+        new("rogue", "stealth", "Stealth", 45, 14, SpellTargetKind.Self, "Add stealth buffs to protect missed dailies.", [SpellStat.Perception]),
+        new("healer", "heal", "Healing Light", 15, 11, SpellTargetKind.Self, "Restore your HP.", [SpellStat.Constitution, SpellStat.Intelligence]),
+        new("healer", "brightness", "Searing Brightness", 15, 12, SpellTargetKind.Tasks, "Make all non-reward tasks bluer.", [SpellStat.Intelligence]),
+        new("healer", "protectAura", "Protective Aura", 30, 13, SpellTargetKind.Party, "Increase party Constitution.", [SpellStat.Constitution]),
+        new("healer", "healAll", "Blessing", 25, 14, SpellTargetKind.Party, "Restore party HP.", [SpellStat.Constitution, SpellStat.Intelligence])
+    ];
+
+    public SpellsPageViewModel Create(
+        UserSnapshot snapshot,
+        TaskCollectionSnapshot? tasks,
+        GearCatalogSnapshot? catalog)
+    {
+        var className = string.IsNullOrWhiteSpace(snapshot.ClassName) ? "unknown" : snapshot.ClassName;
+        var validTasks = tasks?.Items
+            .Where(static task => !task.IsCompleted)
+            .Where(static task => task.Type != TaskType.Reward)
+            .OrderByDescending(static task => GetTaskValue(task))
+            .ThenBy(static task => task.Text, StringComparer.OrdinalIgnoreCase)
+            .ToArray() ?? Array.Empty<TaskSnapshot>();
+        var targetTasks = validTasks
+            .Select(static task => new SpellTargetTaskViewModel(
+                task.Id,
+                task.Text,
+                task.Type,
+                GetTaskValue(task),
+                task.Value is not null))
+            .ToArray();
+
+        var spells = Definitions
+            .Where(definition => string.Equals(definition.ClassName, className, StringComparison.OrdinalIgnoreCase))
+            .Select(definition => BuildSpell(snapshot, definition, targetTasks, catalog))
+            .ToArray();
+
+        return new SpellsPageViewModel(
+            className,
+            snapshot.Level,
+            snapshot.Mana,
+            snapshot.MaxMana,
+            snapshot.UnallocatedStatPoints,
+            snapshot.Stats ?? CharacterStatsSnapshot.Zero,
+            targetTasks,
+            spells);
+    }
+
+    private static SpellCardViewModel BuildSpell(
+        UserSnapshot snapshot,
+        SpellDefinition definition,
+        IReadOnlyList<SpellTargetTaskViewModel> validTasks,
+        GearCatalogSnapshot? catalog)
+    {
+        var selectedTask = definition.TargetKind == SpellTargetKind.Task ? validTasks.FirstOrDefault() : null;
+        var description = BuildDescription(definition, selectedTask);
+        var isUnlocked = snapshot.Level >= definition.UnlockLevel;
+        var recommendations = BuildRecommendations(snapshot, definition, catalog);
+        var targetDescriptions = validTasks.ToDictionary(
+            static task => task.Id,
+            task => BuildDescription(definition, task),
+            StringComparer.Ordinal);
+        var targetEstimates = validTasks.ToDictionary(
+            static task => task.Id,
+            task => EstimateEffect(snapshot, catalog, definition, task),
+            StringComparer.Ordinal);
+
+        return new SpellCardViewModel(
+            definition.Id,
+            definition.Name,
+            definition.ManaCost,
+            definition.UnlockLevel,
+            definition.TargetKind,
+            isUnlocked,
+            isUnlocked ? "Available" : $"Unlocks at level {definition.UnlockLevel}",
+            description,
+            selectedTask?.Id,
+            EstimateEffect(snapshot, catalog, definition, selectedTask),
+            targetDescriptions,
+            targetEstimates,
+            recommendations);
+    }
+
+    private static IReadOnlyList<SpellEquipmentRecommendation> BuildRecommendations(
+        UserSnapshot snapshot,
+        SpellDefinition definition,
+        GearCatalogSnapshot? catalog)
+    {
+        if (catalog is null || definition.Stats.Count == 0)
+        {
+            return Array.Empty<SpellEquipmentRecommendation>();
+        }
+
+        var recommendations = new List<SpellEquipmentRecommendation>();
+        foreach (var stat in definition.Stats.Distinct())
+        {
+            recommendations.Add(BuildRecommendation(snapshot, catalog, $"Maximize {GetStatLabel(stat)}", [stat]));
+        }
+
+        if (definition.Stats.Count > 1)
+        {
+            recommendations.Add(BuildRecommendation(
+                snapshot,
+                catalog,
+                $"Balanced {string.Join("/", definition.Stats.Select(GetStatLabel))}",
+                definition.Stats));
+        }
+
+        return recommendations
+            .Where(static recommendation => recommendation.Slots != EmptySlots)
+            .DistinctBy(static recommendation => recommendation.Name)
+            .ToArray();
+    }
+
+    private static SpellEquipmentRecommendation BuildRecommendation(
+        UserSnapshot snapshot,
+        GearCatalogSnapshot catalog,
+        string name,
+        IReadOnlyList<SpellStat> stats)
+    {
+        var slots = new GearSlotsSnapshot(
+            Head: SelectBestForSlot(snapshot, catalog, "Head", stats),
+            Armor: SelectBestForSlot(snapshot, catalog, "Armor", stats),
+            Weapon: SelectBestForSlot(snapshot, catalog, "Weapon", stats),
+            Shield: SelectBestForSlot(snapshot, catalog, "Shield", stats),
+            Back: null);
+        var total = ToGearStatBlock(CharacterStatsCalculator.CalculateRecommendedGearStats(snapshot, catalog, slots));
+
+        return new SpellEquipmentRecommendation(
+            name,
+            slots,
+            total,
+            GearSlotsContainRecommendedKeys(slots, snapshot.Equipment.Battle),
+            $"Prioritizes {string.Join(", ", stats.Select(GetStatLabel))}.");
+    }
+
+    private static string? SelectBestForSlot(
+        UserSnapshot snapshot,
+        GearCatalogSnapshot catalog,
+        string slot,
+        IReadOnlyList<SpellStat> stats)
+    {
+        return snapshot.Inventory.OwnedGearKeys
+            .Where(key => catalog.Items.TryGetValue(key, out var item) && string.Equals(item.SlotTitle, slot, StringComparison.Ordinal))
+            .Select(key => new
+            {
+                Key = key,
+                Stats = ToGearStatBlock(CharacterStatsCalculator.CalculateItemStats(snapshot, catalog.Items[key]))
+            })
+            .Select(candidate => new
+            {
+                candidate.Key,
+                Score = Score(candidate.Stats, stats)
+            })
+            .Where(candidate => candidate.Score > 0m)
+            .OrderByDescending(candidate => candidate.Score)
+            .ThenBy(candidate => candidate.Key, StringComparer.Ordinal)
+            .FirstOrDefault()?.Key;
+    }
+
+    private static decimal Score(GearStatBlock stats, IReadOnlyList<SpellStat> prioritizedStats)
+    {
+        return prioritizedStats.Sum(stat => stat switch
+        {
+            SpellStat.Strength => stats.Strength,
+            SpellStat.Intelligence => stats.Intelligence,
+            SpellStat.Constitution => stats.Constitution,
+            SpellStat.Perception => stats.Perception,
+            _ => 0m
+        });
+    }
+
+    private static string BuildDescription(SpellDefinition definition, SpellTargetTaskViewModel? selectedTask)
+    {
+        return selectedTask is null
+            ? definition.Description
+            : $"{definition.Description} Best cached target: {selectedTask.Text} (value {selectedTask.Value:0.##}).";
+    }
+
+    private static string EstimateEffect(
+        UserSnapshot snapshot,
+        GearCatalogSnapshot? catalog,
+        SpellDefinition definition,
+        SpellTargetTaskViewModel? selectedTask)
+    {
+        var baseStats = snapshot.Stats ?? CharacterStatsSnapshot.Zero;
+        var equipmentStats = CharacterStatsCalculator.CalculateBattleGearStats(snapshot, catalog);
+        var unbuffedStats = CharacterStatsCalculator.Add(baseStats, equipmentStats);
+        var stats = CharacterStatsCalculator.Add(unbuffedStats, snapshot.Buffs ?? CharacterStatsSnapshot.Zero);
+        var targetValue = selectedTask?.Value ?? 0m;
+        var targetName = selectedTask is null ? "the selected target" : selectedTask.Text;
+
+        return definition.Id switch
+        {
+            "pickPocket" => $"Best cast on {targetName}. You will gain approximately {DiminishingReturns(CalculateTaskBonus(targetValue, stats.Perception), 25m, 75m):0.##} GP.",
+            "backStab" => $"Best cast on {targetName}. You will gain approximately {DiminishingReturns(CalculateTaskBonus(targetValue, stats.Strength), 75m, 50m):0.##} XP and {DiminishingReturns(CalculateTaskBonus(targetValue, stats.Strength), 18m, 75m):0.##} GP before possible critical hits.",
+            "fireball" => $"Best cast on {targetName}. You will gain approximately {DiminishingReturns(CalculateFireballBonus(targetValue, stats.Intelligence), 75m, 37.5m):0.##} XP and deal {Math.Ceiling(stats.Intelligence / 10m):0.##} boss damage before possible XP critical hits.",
+            "smash" => $"Best cast on {targetName}. You will add approximately {DiminishingReturns(stats.Strength, 2.5m, 35m):0.##} task value and deal {DiminishingReturns(stats.Strength, 55m, 70m):0.##} boss damage before possible critical hits.",
+            "mpheal" => $"Restores approximately {DiminishingReturns(stats.Intelligence, 25m, 125m):0.##} MP to each non-mage party member.",
+            "earth" => $"Adds approximately {DiminishingReturns(unbuffedStats.Intelligence, 30m, 200m):0.##} INT to each party member.",
+            "defensiveStance" => $"Adds approximately {DiminishingReturns(unbuffedStats.Constitution, 40m, 200m):0.##} CON to you.",
+            "valorousPresence" => $"Adds approximately {DiminishingReturns(unbuffedStats.Strength, 20m, 200m):0.##} STR to each party member.",
+            "intimidate" => $"Adds approximately {DiminishingReturns(unbuffedStats.Constitution, 24m, 200m):0.##} CON to each party member.",
+            "toolsOfTrade" => $"Adds approximately {DiminishingReturns(unbuffedStats.Perception, 100m, 50m):0.##} PER to each party member.",
+            "stealth" => $"Prevents approximately {Math.Max(1m, Math.Ceiling(stats.Perception / 100m)):0.##} unfinished Dailies from causing cron damage.",
+            "heal" => $"Restores approximately {((stats.Constitution + stats.Intelligence + 5m) * 0.075m):0.##} HP to you.",
+            "healAll" => $"Restores approximately {((stats.Constitution + stats.Intelligence + 5m) * 0.04m):0.##} HP to each party member.",
+            "brightness" => $"Adds approximately {4m * (stats.Intelligence / (stats.Intelligence + 40m)):0.##} task value to each non-reward task.",
+            _ => "Approximate effect depends on current stats and Habitica server state."
+        };
+    }
+
+    private static decimal CalculateTaskBonus(decimal value, decimal stat)
+    {
+        return Math.Max(value, 0m) + 1m + stat * 0.5m;
+    }
+
+    private static decimal CalculateFireballBonus(decimal value, decimal intelligence)
+    {
+        return (Math.Max(value, 0m) + 1m) * intelligence * 0.075m;
+    }
+
+    private static decimal DiminishingReturns(decimal bonus, decimal max, decimal halfway)
+    {
+        return bonus <= 0m ? 0m : max * (bonus / (bonus + halfway));
+    }
+
+    private static bool GearSlotsContainRecommendedKeys(GearSlotsSnapshot recommendation, GearSlotsSnapshot current)
+    {
+        return SlotMatches(recommendation.Head, current.Head)
+            && SlotMatches(recommendation.Armor, current.Armor)
+            && SlotMatches(recommendation.Weapon, current.Weapon)
+            && SlotMatches(recommendation.Shield, current.Shield)
+            && SlotMatches(recommendation.Back, current.Back);
+    }
+
+    private static bool SlotMatches(string? recommendedKey, string? currentKey)
+    {
+        return string.IsNullOrWhiteSpace(recommendedKey)
+            || string.Equals(recommendedKey, currentKey, StringComparison.Ordinal);
+    }
+
+    private static decimal GetTaskValue(TaskSnapshot task)
+    {
+        return task.Value ?? task.Difficulty;
+    }
+
+    private static GearStatBlock ToGearStatBlock(CharacterStatsSnapshot stats)
+    {
+        return new GearStatBlock(stats.Strength, stats.Intelligence, stats.Constitution, stats.Perception);
+    }
+
+    private static string GetStatLabel(SpellStat stat)
+    {
+        return stat switch
+        {
+            SpellStat.Strength => "STR",
+            SpellStat.Intelligence => "INT",
+            SpellStat.Constitution => "CON",
+            SpellStat.Perception => "PER",
+            _ => stat.ToString()
+        };
+    }
+
+    private static GearSlotsSnapshot EmptySlots { get; } = new(null, null, null, null, null);
+}
+
+public sealed record SpellsPageViewModel(
+    string ClassName,
+    int Level,
+    decimal Mana,
+    decimal MaxMana,
+    int UnallocatedStatPoints,
+    CharacterStatsSnapshot Stats,
+    IReadOnlyList<SpellTargetTaskViewModel> TargetTasks,
+    IReadOnlyList<SpellCardViewModel> Spells);
+
+public sealed record SpellCardViewModel(
+    string Id,
+    string Name,
+    int ManaCost,
+    int UnlockLevel,
+    SpellTargetKind TargetKind,
+    bool IsUnlocked,
+    string AvailabilityLabel,
+    string Description,
+    string? SelectedTargetTaskId,
+    string EstimatedEffect,
+    IReadOnlyDictionary<string, string> TargetDescriptions,
+    IReadOnlyDictionary<string, string> TargetEstimates,
+    IReadOnlyList<SpellEquipmentRecommendation> EquipmentRecommendations);
+
+public sealed record SpellTargetTaskViewModel(
+    string Id,
+    string Text,
+    TaskType Type,
+    decimal Value,
+    bool HasServerValue);
+
+public sealed record SpellEquipmentRecommendation(
+    string Name,
+    GearSlotsSnapshot Slots,
+    GearStatBlock TotalStats,
+    bool IsEquipped,
+    string Rationale);
+
+public enum SpellTargetKind
+{
+    Task,
+    Tasks,
+    Self,
+    Party
+}
+
+internal sealed record SpellDefinition(
+    string ClassName,
+    string Id,
+    string Name,
+    int ManaCost,
+    int UnlockLevel,
+    SpellTargetKind TargetKind,
+    string Description,
+    IReadOnlyList<SpellStat> Stats);
+
+internal enum SpellStat
+{
+    Strength,
+    Intelligence,
+    Constitution,
+    Perception
+}

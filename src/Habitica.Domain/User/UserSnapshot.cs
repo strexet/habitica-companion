@@ -16,7 +16,33 @@ public sealed record UserSnapshot(
     string? CurrentPetKey,
     string? CurrentMountKey,
     EquipmentSnapshot Equipment,
-    InventorySnapshot Inventory);
+    InventorySnapshot Inventory,
+    int UnallocatedStatPoints = 0,
+    CharacterStatsSnapshot? Stats = null,
+    CharacterStatsSnapshot? Buffs = null,
+    BuffFlagsSnapshot? BuffFlags = null);
+
+public sealed record CharacterStatsSnapshot(
+    decimal Strength,
+    decimal Intelligence,
+    decimal Constitution,
+    decimal Perception)
+{
+    public static CharacterStatsSnapshot Zero { get; } = new(0m, 0m, 0m, 0m);
+}
+
+public sealed record BuffFlagsSnapshot(
+    bool ChillingFrost,
+    int Stealth)
+{
+    public static BuffFlagsSnapshot Empty { get; } = new(false, 0);
+}
+
+public sealed record StatAllocation(
+    int Strength,
+    int Intelligence,
+    int Constitution,
+    int Perception);
 
 public sealed record EquipmentSnapshot(
     GearSlotsSnapshot Battle,
