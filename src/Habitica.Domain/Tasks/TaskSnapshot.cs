@@ -8,4 +8,5 @@ public sealed record TaskSnapshot(
     decimal Difficulty,
     string? Notes,
     DateTimeOffset? DueDate,
-    decimal? Value = null);
+    decimal? Value = null,
+    bool IsChallengeTask = false);

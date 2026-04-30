@@ -303,7 +303,15 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
                 : 1m,
             task.TryGetProperty("notes", out var notesProperty) ? notesProperty.GetString() : null,
             ParseNullableDate(task),
-            TryGetDecimal(task, "value", out var value) ? value : null);
+            TryGetDecimal(task, "value", out var value) ? value : null,
+            IsChallengeTask(task));
+    }
+
+    private static bool IsChallengeTask(JsonElement task)
+    {
+        var challenge = TryGetObject(task, "challenge");
+        return challenge.ValueKind == JsonValueKind.Object
+            && !string.IsNullOrWhiteSpace(GetOptionalString(challenge, "id"));
     }
 
     private static InventorySnapshot MapInventory(JsonElement gear, JsonElement items)

@@ -62,6 +62,10 @@ public sealed class HabiticaApiClientTests
                   "completed": false,
                   "priority": 1.5,
                   "value": 18.25,
+                  "challenge": {
+                    "id": "challenge-1",
+                    "taskId": "challenge-task-1"
+                  },
                   "date": "2026-04-24T12:00:00.000Z"
                 },
                 {
@@ -87,8 +91,10 @@ public sealed class HabiticaApiClientTests
         Assert.Equal("2 liters", snapshot.Items[0].Notes);
         Assert.Equal(1.5m, snapshot.Items[0].Difficulty);
         Assert.Equal(18.25m, snapshot.Items[0].Value);
+        Assert.True(snapshot.Items[0].IsChallengeTask);
         Assert.Equal(TaskType.Daily, snapshot.Items[1].Type);
         Assert.True(snapshot.Items[1].IsCompleted);
+        Assert.False(snapshot.Items[1].IsChallengeTask);
     }
 
     [Fact]

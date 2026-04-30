@@ -35,6 +35,7 @@ public sealed class SpellViewModelFactoryTests
             {
                 new TaskSnapshot("priority-high", "High priority but dull", TaskType.Habit, false, 9m, null, null, 1m),
                 new TaskSnapshot("todo-blue", "Bluest todo", TaskType.Todo, false, 1m, null, null, 18m),
+                new TaskSnapshot("challenge-blue", "Challenge blue", TaskType.Daily, false, 1m, null, null, 50m, true),
                 new TaskSnapshot("daily-complete", "Done daily", TaskType.Daily, true, 1m, null, null, 40m),
                 new TaskSnapshot("reward", "Reward", TaskType.Reward, false, 1m, null, null, 50m)
             });
@@ -44,6 +45,7 @@ public sealed class SpellViewModelFactoryTests
         var pickpocket = viewModel.Spells.Single(spell => spell.Id == "pickPocket");
 
         Assert.Equal("todo-blue", pickpocket.SelectedTargetTaskId);
+        Assert.DoesNotContain(viewModel.TargetTasks, task => task.Id == "challenge-blue");
         Assert.Contains("Bluest todo", pickpocket.Description, StringComparison.Ordinal);
         Assert.Contains("value 18", pickpocket.Description, StringComparison.Ordinal);
         Assert.Contains("Bluest todo", pickpocket.EstimatedEffect, StringComparison.Ordinal);

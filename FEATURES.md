@@ -518,7 +518,7 @@ healer: heal, brightness, protectAura, healAll
 
 Unlock levels are 11, 12, 13, and 14 within each class. Locked spells render with their required level and disabled Cast button.
 
-Task-targeting spells default to the open non-reward task with the highest Habitica task `value`/cached task value, displayed as the selected target in the spell description. The user can choose another eligible habit, daily, or to-do from a selector ordered by descending task value with the value printed next to each task. Reward tasks and completed tasks are excluded. Spells that target self, party, or all tasks do not show a target selector.
+Task-targeting spells default to the open non-reward, non-challenge task with the highest Habitica task `value`/cached task value, displayed as the selected target in the spell description. The user can choose another eligible habit, daily, or to-do from a selector ordered by descending task value with the value printed next to each task. Reward tasks, completed tasks, and challenge tasks are excluded because Habitica does not allow casting skills on challenge tasks. Spells that target self, party, or all tasks do not show a target selector.
 
 Effect estimates are approximation-based. Initial formulas are based on Habitica source spell definitions and cross-checked against the stable Habitica User Data Display Tool's Skills and Buffs behavior. Task spell estimates use the selected task's cached `value`, not task priority. Current spell estimates use base stats plus current battle gear plus buffs; unbuffed buff spells use base stats plus current battle gear. Estimates must remain labeled approximate until verified directly against live Habitica behavior for the current source version.
 

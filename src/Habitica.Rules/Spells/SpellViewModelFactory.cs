@@ -35,6 +35,7 @@ public sealed class SpellViewModelFactory
         var validTasks = tasks?.Items
             .Where(static task => !task.IsCompleted)
             .Where(static task => task.Type != TaskType.Reward)
+            .Where(static task => !task.IsChallengeTask)
             .OrderByDescending(static task => GetTaskValue(task))
             .ThenBy(static task => task.Text, StringComparer.OrdinalIgnoreCase)
             .ToArray() ?? Array.Empty<TaskSnapshot>();
