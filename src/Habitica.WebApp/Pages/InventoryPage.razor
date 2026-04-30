@@ -120,8 +120,8 @@
                                             <strong>@item.DisplayName</strong>
                                             <span class="dashboard-stat-note">@item.Key</span>
                                             <span class="ui-pill count-pill">@FormatStats(item.TotalStats)</span>
-                                            <MudButton HtmlTag="button" data-testid="@($"equip-best-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Size="Size.Small" Variant="Variant.Outlined">
-                                                Equip item
+                                            <MudButton HtmlTag="button" data-testid="@($"equip-best-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate || item.IsBattleEquipped)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Size="Size.Small" Variant="Variant.Outlined">
+                                                @(item.IsBattleEquipped ? "Equipped battle" : "Equip item")
                                             </MudButton>
                                         </article>
                                     }

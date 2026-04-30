@@ -182,6 +182,41 @@ public sealed class InventoryPageTests : BunitContext
     }
 
     [Fact]
+    public void Equipped_best_in_category_item_has_disabled_equipped_button()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new InventoryViewModelFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                UserId: "user-id",
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: CreateSnapshot(),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                GearCatalogSnapshot: new GearCatalogSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                    new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+                    {
+                        ["weapon_wizard_5"] = new("weapon_wizard_5", "Wizard Wand", "Weapon", "wizard", null, new GearStatBlock(0m, 12m, 0m, 2m))
+                    })));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<InventoryPage>();
+
+        var button = cut.Find("[data-testid='equip-best-weapon_wizard_5']");
+        Assert.Contains("Equipped battle", button.TextContent);
+        Assert.True(button.HasAttribute("disabled"));
+    }
+
+    [Fact]
     public void Inventory_buttons_call_session_controller_actions()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

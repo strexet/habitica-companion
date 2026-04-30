@@ -1476,9 +1476,10 @@ Current view-model rules:
 12. For each actionable gear group, compute a `Best in Category` subset by removing items dominated by another item in every stat.
 13. A stat value of zero is worse than a positive modifier when another item has equal-or-better values for the remaining stats; exact stat ties remain visible.
 14. Show `Best in Category` by default and keep the full per-category item list folded until the user expands it.
-15. Keep the bottom non-battle/accessory equipment section folded by default; users can expand it only when they need cosmetic, back-slot, or no-stat details.
-16. Sum battle preset stat totals from the resolved item totals.
-17. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
+15. Disable Best in Category equip buttons for already equipped battle items and label them as equipped.
+16. Keep the bottom non-battle/accessory equipment section folded by default; users can expand it only when they need cosmetic, back-slot, or no-stat details.
+17. Sum battle preset stat totals from the resolved item totals.
+18. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
 ```
 
 Equip action rules:
@@ -1539,6 +1540,7 @@ Test:
 - base-slot marker normalization;
 - battle preset Back-slot removal;
 - best-in-category gear selection by non-dominated stat comparison;
+- best-in-category equipped button state;
 - two-handed weapon parsing and separate group ordering;
 - accessory/no-stat grouping;
 - folded non-battle equipment rendering;
