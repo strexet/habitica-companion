@@ -39,6 +39,36 @@ public sealed class StaticAssetRegressionTests
         Assert.DoesNotContain("Habitica.WebApp.styles.css", indexHtmlContents);
     }
 
+    [Fact]
+    public void Cloudflare_pages_spa_fallback_does_not_ship_redirects_file()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var redirectsPath = Path.Combine(
+            repositoryRoot,
+            "src",
+            "Habitica.WebApp",
+            "wwwroot",
+            "_redirects");
+
+        Assert.False(File.Exists(redirectsPath));
+    }
+
+    [Fact]
+    public void Index_html_does_not_register_service_worker()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var indexHtmlPath = Path.Combine(
+            repositoryRoot,
+            "src",
+            "Habitica.WebApp",
+            "wwwroot",
+            "index.html");
+        var indexHtmlContents = File.ReadAllText(indexHtmlPath);
+
+        Assert.DoesNotContain("serviceWorker.register", indexHtmlContents);
+        Assert.DoesNotContain("service-worker.js", indexHtmlContents);
+    }
+
     private static string FindRepositoryRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

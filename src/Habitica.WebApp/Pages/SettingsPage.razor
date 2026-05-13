@@ -10,8 +10,12 @@
         <p class="section-label">Session controls</p>
         <h1>Local data and sign-in behavior</h1>
         <p class="panel-copy">
-            This MVP keeps credentials and synced Habitica snapshots on the current device only. Use the actions below to end the current tab session, run live diagnostics, or remove all local data.
+            Use the actions below to end the current tab session, run live diagnostics, manage local browser data, or sync supported data through Cloudflare.
         </p>
+
+        <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
+            If this site was opened before the Cloudflare Pages routing fix, unregister the old service worker in browser dev tools, clear site data, and hard refresh once.
+        </MudAlert>
 
         <div class="settings-grid">
             <MudPaper Class="card-surface action-card" Elevation="0">

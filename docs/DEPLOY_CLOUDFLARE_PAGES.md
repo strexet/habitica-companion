@@ -1,13 +1,15 @@
 # Deploy to Cloudflare Pages
 
-This app is a Blazor WebAssembly PWA with an optional Cloudflare Pages Function for encrypted user-data sync. Cloudflare Pages can build the app from GitHub and serve the published static files from the `*.pages.dev` domain.
+This app is a Blazor WebAssembly app with Cloudflare Pages Functions for personal encrypted user-data sync and shared party CRON sync. Cloudflare Pages can build the app from GitHub and serve the published static files from the `*.pages.dev` domain.
 
 ## Repository files
 
 - `build.sh` - installs the pinned .NET SDK, installs npm dependencies, syncs vendored Dexie, and publishes the Blazor WebAssembly app.
 - `.node-version` - asks Cloudflare Pages to use Node.js 22.
-- `src/Habitica.WebApp/wwwroot/_redirects` - sends app routes such as `/tasks` and `/settings` to `index.html` so refreshes work.
 - `functions/api/sync/[syncId].js` - Cloudflare Pages Function for encrypted sync uploads and downloads.
+- `functions/api/party-sync/[partyId].js` - Cloudflare Pages Function for shared party CRON data, protected by live Habitica party-membership verification.
+- `migrations/0001_party_sync.sql` - D1 schema for party state, CRON events, and placeholder quest queue/vote tables.
+- `wrangler.toml` - local/dev binding declarations for KV and D1.
 
 ## Cloudflare Pages settings
 
@@ -28,7 +30,7 @@ Do not set `npx wrangler deploy` as the deploy command for the Git-connected Pag
 
 ## Cloudflare sync storage
 
-Encrypted sync requires a KV namespace bound to the Pages project.
+Personal encrypted sync requires a KV namespace bound to the Pages project.
 
 1. In Cloudflare, open `Workers & Pages`.
 2. Open `KV`.
@@ -44,8 +46,27 @@ Encrypted sync requires a KV namespace bound to the Pages project.
 
 7. Add the same binding for preview and production environments if you use both.
 
-The Pages Function stores only encrypted payloads. Habitica User ID and API Token are used in the browser to derive the encryption key and sync id; they are not sent to Cloudflare.
+The personal sync Pages Function stores only encrypted payloads. Habitica User ID and API Token are used in the browser to derive the encryption key and sync id; they are not sent to the personal sync endpoint.
 When the app refreshes Habitica data or completes supported local data changes, it automatically downloads the existing encrypted bundle, merges it with local portable data, and uploads the merged bundle back to this KV namespace.
+
+Shared party sync requires a D1 database bound to the Pages project.
+
+1. In Cloudflare, open `Workers & Pages`.
+2. Open `D1 SQL Database`.
+3. Create a database, for example `habitica-companion-party-sync`.
+4. Apply `migrations/0001_party_sync.sql`.
+5. Open the Pages project settings.
+6. Open `Bindings`.
+7. Add a D1 database binding:
+
+   ```text
+   Variable name: HABITICA_PARTY_DB
+   D1 database: habitica-companion-party-sync
+   ```
+
+8. Add `HABITICA_X_CLIENT_HEADER` as an environment variable or secret for the Functions runtime.
+
+The party sync Function receives the caller's Habitica credentials only to verify current party membership with Habitica before read/write access. It stores shared party CRON history and derived party state in D1. Do not authorize party sync by `partyId` alone.
 
 ## First deployment
 
@@ -53,7 +74,7 @@ When the app refreshes Habitica data or completes supported local data changes, 
 2. In Cloudflare, open `Workers & Pages`.
 3. Create a Pages application and import the GitHub repository.
 4. Use the build settings listed above.
-5. Add this environment variable if you want a production Habitica `x-client` value baked into `appsettings.json`:
+5. Add this environment variable if you want a production Habitica `x-client` value available to the frontend and Pages Functions:
 
    ```text
    HABITICA_X_CLIENT_HEADER=your-habitica-user-id-habitica-tool
@@ -64,7 +85,21 @@ When the app refreshes Habitica data or completes supported local data changes, 
 6. Save and deploy.
 7. Open the generated `https://<project>.pages.dev` URL.
 8. Check a routed page refresh, for example `https://<project>.pages.dev/tasks`.
-9. In Settings, use `Upload` under encrypted Cloudflare sync. If the KV binding is missing, the upload will fail with a `HABITICA_SYNC_KV binding is not configured` error.
+9. In Settings, use `Upload` under encrypted Cloudflare sync. If the KV binding is missing, the upload will fail with a `HABITICA_SYNC_KV binding is not configured` error. If the D1 binding is missing, shared party sync is skipped and logged as a warning.
+
+## Local Functions testing
+
+Use Wrangler Pages dev for local Function parity with KV and D1 bindings:
+
+```text
+wrangler pages dev output/wwwroot
+```
+
+Create local KV/D1 resources or override the placeholder IDs in `wrangler.toml` before relying on local persistence.
+
+## Existing browser migration
+
+Older deployments registered a service worker and used a `_redirects` file. Current deployments rely on Cloudflare Pages native SPA behavior and do not register a service worker. Existing users should unregister the old service worker, clear site data, and hard refresh once after redeploy.
 
 ## Updates
 
@@ -72,7 +107,8 @@ Push to the production branch and Cloudflare Pages will rebuild automatically.
 
 ## Operational notes
 
-- A custom domain is optional. The generated `*.pages.dev` domain works for HTTPS and PWA testing.
+- A custom domain is optional. The generated `*.pages.dev` domain works for HTTPS testing.
 - The app must be served from the site root with `base href="/"`. Subpath hosting is not the baseline deployment target.
-- Habitica user credentials remain in the user's browser storage. Cloudflare Pages serves static assets and stores only encrypted sync blobs when Cloudflare sync is used.
-- PWA offline behavior should be validated from the published HTTPS site, not from `dotnet run`.
+- Personal sync keeps Habitica credentials in the browser and stores only encrypted KV blobs.
+- Shared party sync sends credentials to the Pages Function for live Habitica membership verification and stores shared party data in D1.
+- `service-worker*.js` files may remain in the repo, but `index.html` does not register them.
