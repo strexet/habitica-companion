@@ -10,6 +10,7 @@ using Habitica.Domain.User;
 using Habitica.Storage;
 using Habitica.WebApp.Sync;
 using Habitica.WebApp.State;
+using System.Text.Json;
 
 namespace Habitica.WebApp.Tests.State;
 
@@ -162,6 +163,42 @@ public sealed class AppSessionControllerTests
 
         Assert.True(remoteSync.UploadCount > uploadCountBeforePreset);
         Assert.NotNull(remoteSync.UploadedJson);
+    }
+
+    [Fact]
+    public async Task SignInAsync_merges_remote_cloud_data_into_visible_state()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var remoteSync = new FakeRemoteUserDataSyncProvider
+        {
+            Snapshot = new RemoteUserDataSnapshot(
+                """
+                {
+                  "schemaVersion": 1,
+                  "exportedAtUtc": "2026-05-13T03:00:00Z",
+                  "userId": "user-id",
+                  "records": [
+                    {
+                      "key": "inventory/equipmentPresets",
+                      "jsonText": "[{\"id\":\"remote-preset\",\"userId\":\"user-id\",\"kind\":0,\"name\":\"Remote Casting\",\"savedAtUtc\":\"2026-05-13T02:00:00Z\",\"slots\":{\"head\":\"head_wizard_3\",\"armor\":null,\"weapon\":\"weapon_wizard_5\",\"shield\":null,\"back\":null}}]"
+                    }
+                  ]
+                }
+                """,
+                DateTimeOffset.Parse("2026-05-13T03:00:00Z"))
+        };
+        var controller = CreateController(logStore, remoteUserDataSyncProvider: remoteSync);
+
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        Assert.Contains(controller.State.Presets, preset => preset.Id == "remote-preset" && preset.Name == "Remote Casting");
+        Assert.True(remoteSync.DownloadCount >= 1);
+        Assert.True(remoteSync.UploadCount >= 1);
     }
 
     [Fact]
@@ -327,10 +364,10 @@ public sealed class AppSessionControllerTests
         var userSnapshotStore = new FakeUserSnapshotStore();
         var partySnapshotStore = new FakePartySnapshotStore();
         var partyCronHistoryStore = new FakePartyCronHistoryStore();
-        var equipmentPresetStore = new FakeEquipmentPresetStore();
         var gearCatalogStore = new FakeGearCatalogStore();
         var logWriter = new DiagnosticsLogWriter(logStore, TimeProvider.System);
         var keyValueStorage = new FakeKeyValueStorage();
+        var equipmentPresetStore = new EquipmentPresetStore(keyValueStorage);
 
         return new AppSessionController(
             loginWorkflow: new LoginWorkflow(syncClient, credentialStore, taskSnapshotStore, userSnapshotStore, partySnapshotStore, partyCronHistoryStore, logWriter),
@@ -354,11 +391,14 @@ public sealed class AppSessionControllerTests
 
     private sealed class FakeKeyValueStorage : IKeyValueStorage
     {
+        private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
         private readonly Dictionary<string, string> _values = new(StringComparer.Ordinal);
 
         public Task<TValue?> GetAsync<TValue>(string key, CancellationToken cancellationToken)
         {
-            return Task.FromResult(default(TValue));
+            return Task.FromResult(_values.TryGetValue(key, out var json)
+                ? JsonSerializer.Deserialize<TValue>(json, JsonOptions)
+                : default);
         }
 
         public Task<string?> GetRawJsonAsync(string key, CancellationToken cancellationToken)
@@ -374,6 +414,7 @@ public sealed class AppSessionControllerTests
 
         public Task SetAsync<TValue>(string key, TValue value, CancellationToken cancellationToken)
         {
+            _values[key] = JsonSerializer.Serialize(value, JsonOptions);
             return Task.CompletedTask;
         }
 
@@ -531,40 +572,6 @@ public sealed class AppSessionControllerTests
         {
             Snapshot = new PartyCronHistorySnapshot(Snapshot.Events.Concat(events).ToArray());
             return Task.FromResult(Snapshot);
-        }
-    }
-
-    private sealed class FakeEquipmentPresetStore : IEquipmentPresetStore
-    {
-        private readonly List<EquipmentPreset> _presets = new();
-
-        public Task ClearAsync(CancellationToken cancellationToken)
-        {
-            _presets.Clear();
-            return Task.CompletedTask;
-        }
-
-        public Task<IReadOnlyList<EquipmentPreset>> GetForUserAsync(string userId, CancellationToken cancellationToken)
-        {
-            return Task.FromResult<IReadOnlyList<EquipmentPreset>>(
-                _presets.Where(preset => string.Equals(preset.UserId, userId, StringComparison.Ordinal)).ToArray());
-        }
-
-        public Task RemoveAsync(string userId, string presetId, CancellationToken cancellationToken)
-        {
-            _presets.RemoveAll(preset =>
-                string.Equals(preset.UserId, userId, StringComparison.Ordinal)
-                && string.Equals(preset.Id, presetId, StringComparison.Ordinal));
-            return Task.CompletedTask;
-        }
-
-        public Task SaveAsync(EquipmentPreset preset, CancellationToken cancellationToken)
-        {
-            _presets.RemoveAll(existing =>
-                string.Equals(existing.UserId, preset.UserId, StringComparison.Ordinal)
-                && string.Equals(existing.Id, preset.Id, StringComparison.Ordinal));
-            _presets.Add(preset);
-            return Task.CompletedTask;
         }
     }
 
