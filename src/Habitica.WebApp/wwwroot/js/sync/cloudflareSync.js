@@ -35,7 +35,10 @@ export async function downloadData(userId, apiToken) {
     throw new Error(await readError(response, "Cloud sync download failed."));
   }
 
-  const snapshot = await response.json();
+  const snapshot = await readJsonResponse(
+    response,
+    "Cloud sync endpoint returned an invalid response.",
+  );
   const plainTextJson = await decryptText(identity.key, snapshot.encryptedPayload);
   return {
     plainTextJson,
@@ -124,7 +127,43 @@ async function decryptText(key, encryptedPayload) {
 
 async function readError(response, fallback) {
   const text = await response.text();
+  if (looksLikeHtml(text)) {
+    return `${fallback} ${buildHtmlEndpointMessage()}`;
+  }
+
   return text ? `${fallback} ${text}` : fallback;
+}
+
+async function readJsonResponse(response, fallback) {
+  const text = await response.text();
+  if (!text) {
+    throw new Error(fallback);
+  }
+
+  if (looksLikeHtml(text)) {
+    throw new Error(buildHtmlEndpointMessage());
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error(`${fallback} Response body was not valid JSON.`);
+  }
+}
+
+function looksLikeHtml(text) {
+  const normalized = text.trimStart();
+  return normalized.startsWith("<!DOCTYPE")
+    || normalized.startsWith("<html")
+    || normalized.startsWith("<head")
+    || normalized.startsWith("<body");
+}
+
+function buildHtmlEndpointMessage() {
+  return window.location.hostname === "localhost"
+    || window.location.hostname === "127.0.0.1"
+    ? "Cloud sync endpoint is not available from the local app host. Use the deployed Cloudflare Pages site or run the app through Cloudflare Pages Functions locally."
+    : "Cloud sync endpoint returned HTML instead of JSON. Check that the Cloudflare Pages Function is deployed and the route is not falling back to the app shell.";
 }
 
 function toBase64Url(bytes) {
@@ -152,4 +191,3 @@ function fromBase64Url(value) {
 
   return bytes;
 }
-
