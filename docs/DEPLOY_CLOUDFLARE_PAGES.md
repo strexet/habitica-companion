@@ -18,9 +18,12 @@ Build command: ./build.sh
 Build output directory: output/wwwroot
 Root directory: repository root
 Production branch: main
+Deploy command: leave empty
 ```
 
 The build script installs .NET SDK `8.0.125` by default to match `global.json`. Override it only if `global.json` is updated in the same change.
+
+Do not set `npx wrangler deploy` as the deploy command for the Git-connected Pages project. That command deploys a Worker and does not know which static output directory to publish. Cloudflare Pages should publish the configured `output/wwwroot` directory after `build.sh` finishes.
 
 ## First deployment
 
@@ -50,4 +53,3 @@ Push to the production branch and Cloudflare Pages will rebuild automatically.
 - The app must be served from the site root with `base href="/"`. Subpath hosting is not the baseline deployment target.
 - Habitica user credentials remain in the user's browser storage. Cloudflare Pages only serves static assets.
 - PWA offline behavior should be validated from the published HTTPS site, not from `dotnet run`.
-
