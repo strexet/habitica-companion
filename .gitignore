@@ -22,6 +22,9 @@ packages/
 # Blazor / static web build artifacts
 **/wwwroot/service-worker-assets.js
 **/wwwroot/_framework/
+/dotnet/
+/dotnet-install.sh
+/output/
 
 # npm / JavaScript tooling
 node_modules/

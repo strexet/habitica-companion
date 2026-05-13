@@ -70,6 +70,10 @@ dotnet test Habitica.sln -m:1 -nodeReuse:false
 dotnet build Habitica.sln -m:1 -nodeReuse:false
 ```
 
+## Deploy
+
+For Cloudflare Pages deployment, use [`docs/DEPLOY_CLOUDFLARE_PAGES.md`](docs/DEPLOY_CLOUDFLARE_PAGES.md). This is the simplest hosted path for the Blazor WebAssembly app and works without a custom domain.
+
 ## Habitica API header note
 
 The app reads `Habitica:XClientHeader` from [`src/Habitica.WebApp/wwwroot/appsettings.json`](src/Habitica.WebApp/wwwroot/appsettings.json). If it is left empty, the MVP falls back to `<current-user-id>-habitica-tool` so development remains usable, but production deployment should replace that with a project-owned Habitica `x-client` header value.
