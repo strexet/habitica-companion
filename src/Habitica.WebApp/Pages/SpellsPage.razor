@@ -68,7 +68,10 @@
                 {
                     var count = GetSpellCount(spell.Id);
                     var selectedTarget = GetSelectedTarget(spell, viewModel.TargetTasks);
+                    var autoEquip = GetAutoEquip(spell);
+                    var selectedRecommendation = GetSelectedRecommendation(spell);
                     var isCasting = SessionController.State.ActiveSpellCastProgress?.SpellId == spell.Id;
+                    var equipmentProgress = GetEquipmentProgress(spell.Id);
                     var castDisabled = !canMutate
                         || !spell.IsUnlocked
                         || spell.ManaCost * count > viewModel.Mana
@@ -118,9 +121,21 @@
                                     <strong>@(spell.ManaCost * count) MP</strong>
                                 </div>
 
+                                @if (spell.EquipmentRecommendations.Count > 0)
+                                {
+                                    <label class="checkbox-row compact spell-auto-equip-field">
+                                        <input data-testid="@($"spell-auto-equip-{spell.Id}")"
+                                               disabled="@isCasting"
+                                               type="checkbox"
+                                               checked="@autoEquip"
+                                               @onchange="eventArgs => SetAutoEquip(spell.Id, eventArgs.Value is true)" />
+                                        <span>Auto equip</span>
+                                    </label>
+                                }
+
                                 <MudButton Color="Color.Primary"
                                            Disabled="@castDisabled"
-                                           OnClick="() => CastSpellAsync(spell, count, selectedTarget)"
+                                           OnClick="() => CastSpellAsync(spell, count, selectedTarget, autoEquip, selectedRecommendation)"
                                            Variant="Variant.Filled"
                                            data-testid="@($"cast-spell-{spell.Id}")">
                                     Cast
@@ -137,15 +152,35 @@
                             </div>
                         }
 
+                        @if (equipmentProgress is not null)
+                        {
+                            <div class="spell-card-section spell-progress">
+                                <span>@equipmentProgress.Label: @equipmentProgress.Completed of @equipmentProgress.Total</span>
+                                <MudProgressLinear Color="Color.Secondary" Max="@equipmentProgress.Total" Value="@equipmentProgress.Completed" />
+                            </div>
+                        }
+
                         <div class="spell-card-section spell-effect-preview">
                             <p class="section-label">Effect preview</p>
-                            <p>@GetEstimatedEffect(spell, selectedTarget, count)</p>
+                            <p>@GetEstimatedEffect(spell, selectedTarget, count, autoEquip, selectedRecommendation)</p>
                         </div>
 
                         @if (spell.EquipmentRecommendations.Count > 0)
                         {
                             <div class="spell-card-section spell-equipment">
                                 <p class="section-label">Equipment recommendations</p>
+                                @if (spell.EquipmentRecommendations.Count > 1)
+                                {
+                                    <label class="field-row compact spell-recommendation-selector">
+                                        <span>Auto equip preset</span>
+                                        <select class="app-input" value="@selectedRecommendation?.Name" @onchange="eventArgs => SetSelectedRecommendation(spell.Id, eventArgs.Value?.ToString())">
+                                            @foreach (var recommendation in spell.EquipmentRecommendations)
+                                            {
+                                                <option value="@recommendation.Name">@recommendation.Name</option>
+                                            }
+                                        </select>
+                                    </label>
+                                }
                                 @foreach (var recommendation in spell.EquipmentRecommendations)
                                 {
                                     <div class="spell-recommendation">
@@ -155,8 +190,9 @@
                                         </div>
                                         <MudButton Color="Color.Secondary"
                                                    Disabled="@(recommendation.IsEquipped || !canMutate)"
-                                                   OnClick="() => EquipRecommendationAsync(recommendation)"
-                                                   Variant="@(recommendation.IsEquipped ? Variant.Outlined : Variant.Filled)">
+                                                   OnClick="() => EquipRecommendationAsync(spell, recommendation)"
+                                                   Variant="@(recommendation.IsEquipped ? Variant.Outlined : Variant.Filled)"
+                                                   data-testid="@($"equip-spell-recommendation-{spell.Id}-{recommendation.Name}")">
                                             @(recommendation.IsEquipped ? "Equipped" : "Equip")
                                         </MudButton>
                                     </div>
@@ -173,6 +209,8 @@
 @code {
     private readonly Dictionary<string, int> _spellCounts = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string?> _selectedTargets = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, bool> _autoEquip = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, string?> _selectedRecommendations = new(StringComparer.Ordinal);
 
     private SpellsPageViewModel CurrentViewModel => SessionController.State.UserSnapshot is null
         ? new SpellsPageViewModel("unknown", 0, 0m, 0m, 0, CharacterStatsSnapshot.Zero, Array.Empty<SpellTargetTaskViewModel>(), Array.Empty<SpellCardViewModel>())
@@ -215,49 +253,62 @@
         _selectedTargets[spellId] = targetId;
     }
 
-    private async Task CastSpellAsync(SpellCardViewModel spell, int count, string? selectedTarget)
+    private bool GetAutoEquip(SpellCardViewModel spell)
     {
-        var result = await SessionController.CastSpellAsync(new SpellCastRequest(spell.Id, selectedTarget, count));
+        return spell.EquipmentRecommendations.Count > 0
+            && (!_autoEquip.TryGetValue(spell.Id, out var enabled) || enabled);
+    }
+
+    private void SetAutoEquip(string spellId, bool enabled)
+    {
+        _autoEquip[spellId] = enabled;
+    }
+
+    private SpellEquipmentRecommendation? GetSelectedRecommendation(SpellCardViewModel spell)
+    {
+        if (_selectedRecommendations.TryGetValue(spell.Id, out var selectedName))
+        {
+            var selected = spell.EquipmentRecommendations.FirstOrDefault(recommendation => string.Equals(recommendation.Name, selectedName, StringComparison.Ordinal));
+            if (selected is not null)
+            {
+                return selected;
+            }
+        }
+
+        var defaultRecommendation = spell.EquipmentRecommendations.FirstOrDefault();
+        _selectedRecommendations[spell.Id] = defaultRecommendation?.Name;
+        return defaultRecommendation;
+    }
+
+    private void SetSelectedRecommendation(string spellId, string? recommendationName)
+    {
+        _selectedRecommendations[spellId] = recommendationName;
+    }
+
+    private async Task CastSpellAsync(
+        SpellCardViewModel spell,
+        int count,
+        string? selectedTarget,
+        bool autoEquip,
+        SpellEquipmentRecommendation? recommendation)
+    {
+        var result = await SessionController.CastSpellAsync(new SpellCastRequest(
+            spell.Id,
+            selectedTarget,
+            count,
+            autoEquip && recommendation is not null,
+            autoEquip ? recommendation?.Slots : null));
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 
-    private async Task EquipRecommendationAsync(SpellEquipmentRecommendation recommendation)
+    private async Task EquipRecommendationAsync(SpellCardViewModel spell, SpellEquipmentRecommendation recommendation)
     {
-        foreach (var key in GetRecommendationKeysToEquip(recommendation))
-        {
-            var result = await SessionController.EquipInventoryItemAsync(EquipmentSetKind.Battle, key);
-            if (!result.Succeeded)
-            {
-                Snackbar.Add(result.Message, Severity.Error);
-                return;
-            }
-        }
-
-        Snackbar.Add($"Equipped {recommendation.Name}.", Severity.Success);
-    }
-
-    private IEnumerable<string> GetRecommendationKeysToEquip(SpellEquipmentRecommendation recommendation)
-    {
-        var battle = SessionController.State.UserSnapshot?.Equipment.Battle;
-        if (battle is null)
-        {
-            yield break;
-        }
-
-        foreach (var slot in new[]
-        {
-            (RecommendationKey: recommendation.Slots.Head, CurrentKey: battle.Head),
-            (RecommendationKey: recommendation.Slots.Armor, CurrentKey: battle.Armor),
-            (RecommendationKey: recommendation.Slots.Weapon, CurrentKey: battle.Weapon),
-            (RecommendationKey: recommendation.Slots.Shield, CurrentKey: battle.Shield)
-        })
-        {
-            if (!string.IsNullOrWhiteSpace(slot.RecommendationKey)
-                && !string.Equals(slot.RecommendationKey, slot.CurrentKey, StringComparison.Ordinal))
-            {
-                yield return slot.RecommendationKey;
-            }
-        }
+        var result = await SessionController.EquipGearSlotsAsync(
+            EquipmentSetKind.Battle,
+            recommendation.Slots,
+            $"spell:{spell.Id}:{recommendation.Name}",
+            $"Equipping {recommendation.Name}");
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 
     private static string FormatGearStats(GearStatBlock stats)
@@ -277,12 +328,44 @@
             : spell.Description;
     }
 
-    private static string GetEstimatedEffect(SpellCardViewModel spell, string? selectedTarget, int count)
+    private static string GetEstimatedEffect(
+        SpellCardViewModel spell,
+        string? selectedTarget,
+        int count,
+        bool autoEquip,
+        SpellEquipmentRecommendation? recommendation)
     {
-        var estimate = selectedTarget is not null && spell.TargetEstimates.TryGetValue(selectedTarget, out var selectedEstimate)
+        var estimateSource = autoEquip && recommendation is not null
+            ? new EffectEstimateSource(
+                recommendation.EstimatedEffect,
+                recommendation.EstimatedEffectValues,
+                recommendation.TargetEstimates,
+                recommendation.TargetEffectValues)
+            : new EffectEstimateSource(
+                spell.EstimatedEffect,
+                spell.EstimatedEffectValues,
+                spell.TargetEstimates,
+                spell.TargetEffectValues);
+        var estimate = selectedTarget is not null && estimateSource.TargetEstimates.TryGetValue(selectedTarget, out var selectedEstimate)
             ? selectedEstimate
-            : spell.EstimatedEffect;
-        return count <= 1 ? estimate : $"{estimate} Total for {count} casts is approximately {count}x this result.";
+            : estimateSource.DefaultEstimate;
+        var values = selectedTarget is not null && estimateSource.TargetEffectValues.TryGetValue(selectedTarget, out var selectedValues)
+            ? selectedValues
+            : estimateSource.DefaultValues;
+        if (count <= 1 || values.Count == 0)
+        {
+            return estimate;
+        }
+
+        return $"{estimate} Total for {count} casts: approximately {string.Join(" and ", values.Select(value => $"{value.Value * count:0.##} {value.Unit}"))}.";
+    }
+
+    private EquipmentProgress? GetEquipmentProgress(string spellId)
+    {
+        var progress = SessionController.State.ActiveEquipmentProgress;
+        return progress is not null && progress.OperationId.StartsWith($"spell:{spellId}:", StringComparison.Ordinal)
+            ? progress
+            : null;
     }
 
     private static bool HasTarget(IReadOnlyList<SpellTargetTaskViewModel> targetTasks, string? selectedTarget)
@@ -290,6 +373,12 @@
         return !string.IsNullOrWhiteSpace(selectedTarget)
             && targetTasks.Any(task => string.Equals(task.Id, selectedTarget, StringComparison.Ordinal));
     }
+
+    private sealed record EffectEstimateSource(
+        string DefaultEstimate,
+        IReadOnlyList<SpellEffectValue> DefaultValues,
+        IReadOnlyDictionary<string, string> TargetEstimates,
+        IReadOnlyDictionary<string, IReadOnlyList<SpellEffectValue>> TargetEffectValues);
 
     private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)
     {

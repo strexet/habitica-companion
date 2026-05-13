@@ -34,6 +34,8 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<string> EquipPresetCalls { get; } = new();
 
+    public List<(EquipmentSetKind Kind, GearSlotsSnapshot Slots, string OperationId, string Label)> EquipGearSlotsCalls { get; } = new();
+
     public List<SpellCastRequest> CastSpellCalls { get; } = new();
 
     public List<StatAllocation> StatAllocationCalls { get; } = new();
@@ -65,6 +67,17 @@ internal sealed class FakeAppSessionController : IAppSessionController
     {
         EquipPresetCalls.Add(presetId);
         return Task.FromResult(InventoryActionResult.Success("Preset equipped."));
+    }
+
+    public Task<InventoryActionResult> EquipGearSlotsAsync(
+        EquipmentSetKind kind,
+        GearSlotsSnapshot slots,
+        string operationId,
+        string label,
+        CancellationToken cancellationToken = default)
+    {
+        EquipGearSlotsCalls.Add((kind, slots, operationId, label));
+        return Task.FromResult(InventoryActionResult.Success("Gear equipped."));
     }
 
     public Task<InventoryActionResult> EquipInventoryItemAsync(EquipmentSetKind kind, string key, CancellationToken cancellationToken = default)

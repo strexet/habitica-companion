@@ -276,6 +276,46 @@ public sealed class InventoryPageTests : BunitContext
         Assert.Equal("preset-1", controller.RemovePresetCalls.Single());
     }
 
+    [Fact]
+    public void Active_preset_equip_progress_renders_for_matching_preset()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new InventoryViewModelFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: true,
+                IsAuthenticated: true,
+                UserId: "user-id",
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: CreateSnapshot(),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                EquipmentPresets: new[]
+                {
+                    new EquipmentPreset(
+                        "preset-1",
+                        "user-id",
+                        EquipmentSetKind.Battle,
+                        "Casting",
+                        DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                        new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", null))
+                },
+                ActiveEquipmentProgress: new EquipmentProgress("preset:preset-1", "Equipping Casting", 2, 4)));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<InventoryPage>();
+
+        Assert.Contains("Equipping Casting", cut.Markup);
+        Assert.Contains("2 of 4", cut.Markup);
+        Assert.Contains("mud-progress-linear", cut.Markup);
+    }
+
     private static UserSnapshot CreateSnapshot()
     {
         return new UserSnapshot(

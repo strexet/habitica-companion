@@ -543,27 +543,88 @@ public sealed class AppSessionController : IAppSessionController
                 });
         }
 
-        var desiredSlots = EnumerateSlots(NormalizePresetSlots(preset.Kind, preset.Slots)).ToArray();
+        return await EquipGearSlotsCoreAsync(
+            validation.Credentials!,
+            validation.Snapshot!,
+            preset.Kind,
+            NormalizePresetSlots(preset.Kind, preset.Slots),
+            $"preset:{preset.Id}",
+            $"Equipping {preset.Name}",
+            "inventory-equip-preset",
+            PresetMetadata(preset),
+            preset.Name,
+            cancellationToken);
+    }
+
+    public async Task<InventoryActionResult> EquipGearSlotsAsync(
+        EquipmentSetKind kind,
+        GearSlotsSnapshot slots,
+        string operationId,
+        string label,
+        CancellationToken cancellationToken = default)
+    {
+        var validation = await ValidateInventoryMutationAsync("inventory-equip-slots", cancellationToken);
+        if (validation.Result is not null)
+        {
+            return validation.Result;
+        }
+
+        return await EquipGearSlotsCoreAsync(
+            validation.Credentials!,
+            validation.Snapshot!,
+            kind,
+            NormalizePresetSlots(kind, slots),
+            operationId,
+            label,
+            "inventory-equip-slots",
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["operationId"] = operationId,
+                ["label"] = label,
+                ["equipmentKind"] = kind.ToString()
+            },
+            label,
+            cancellationToken);
+    }
+
+    private async Task<InventoryActionResult> EquipGearSlotsCoreAsync(
+        HabiticaCredentials credentials,
+        UserSnapshot snapshot,
+        EquipmentSetKind kind,
+        GearSlotsSnapshot slots,
+        string operationId,
+        string label,
+        string diagnosticsOperation,
+        IReadOnlyDictionary<string, string> baseMetadata,
+        string resultName,
+        CancellationToken cancellationToken)
+    {
+        var desiredSlots = EnumerateSlots(NormalizePresetSlots(kind, slots)).ToArray();
         foreach (var slot in desiredSlots.Where(slot => !string.IsNullOrWhiteSpace(slot.Key)))
         {
-            if (!CanUseGearKey(validation.Snapshot!, preset.Kind, slot.Key!))
+            if (!CanUseGearKey(snapshot, kind, slot.Key!))
             {
                 return await FailInventoryActionAsync(
-                    "inventory-equip-preset",
-                    $"Cannot equip preset '{preset.Name}' because {slot.Key} is not owned.",
+                    diagnosticsOperation,
+                    $"Cannot equip {resultName} because {slot.Key} is not owned.",
                     cancellationToken,
-                    PresetMetadata(preset, failedSlot: slot.SlotTitle, itemKey: slot.Key));
+                    MergeMetadata(baseMetadata, failedSlot: slot.SlotTitle, itemKey: slot.Key));
             }
         }
 
-        var currentSlots = preset.Kind == EquipmentSetKind.Battle
-            ? validation.Snapshot!.Equipment.Battle
-            : validation.Snapshot!.Equipment.Costume;
+        var currentSlots = kind == EquipmentSetKind.Battle
+            ? snapshot.Equipment.Battle
+            : snapshot.Equipment.Costume;
         var changedSlots = desiredSlots
             .Where(slot => !string.Equals(NormalizeGearKey(GetSlotValue(currentSlots, slot.SlotTitle)), slot.Key, StringComparison.Ordinal))
             .ToArray();
 
-        SetState(State with { ErrorMessage = null, IsBusy = true });
+        SetState(State with
+        {
+            ActiveEquipmentProgress = changedSlots.Length == 0 ? null : new EquipmentProgress(operationId, label, 0, changedSlots.Length),
+            ErrorMessage = null,
+            IsBusy = true
+        });
 
         var requestCount = 0;
         try
@@ -576,40 +637,44 @@ public sealed class AppSessionController : IAppSessionController
                     continue;
                 }
 
-                await _habiticaSyncClient.EquipGearAsync(validation.Credentials!, preset.Kind, keyToToggle, cancellationToken);
+                await _habiticaSyncClient.EquipGearAsync(credentials, kind, keyToToggle, cancellationToken);
                 requestCount++;
+                SetState(State with
+                {
+                    ActiveEquipmentProgress = new EquipmentProgress(operationId, label, requestCount, changedSlots.Length)
+                });
             }
 
             if (changedSlots.Length > 0)
             {
-                var refreshedSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(validation.Credentials!, cancellationToken);
+                var refreshedSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
                 requestCount++;
                 await _userSnapshotStore.SaveAsync(refreshedSnapshot, cancellationToken);
             }
 
             await _diagnosticsLogWriter.WriteAsync(
                 DiagnosticsFeatureArea.Inventory,
-                "inventory-equip-preset",
+                diagnosticsOperation,
                 DiagnosticsSeverity.Success,
                 changedSlots.Length == 0 ? DiagnosticsMode.Local : DiagnosticsMode.LiveMutation,
                 changedSlots.Length == 0
-                    ? $"Preset '{preset.Name}' was already equipped."
-                    : $"Equipped preset '{preset.Name}'.",
-                PresetMetadata(preset, changedSlots.Length, desiredSlots.Length - changedSlots.Length, requestCount),
+                    ? $"{resultName} was already equipped."
+                    : $"Equipped {resultName}.",
+                MergeMetadata(baseMetadata, changedSlots.Length, desiredSlots.Length - changedSlots.Length, requestCount),
                 cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
-            SetState(State with { ErrorMessage = null, IsBusy = false });
-            return InventoryActionResult.Success(changedSlots.Length == 0 ? $"Preset {preset.Name} was already equipped." : $"Equipped preset {preset.Name}.");
+            SetState(State with { ActiveEquipmentProgress = null, ErrorMessage = null, IsBusy = false });
+            return InventoryActionResult.Success(changedSlots.Length == 0 ? $"{resultName} was already equipped." : $"Equipped {resultName}.");
         }
         catch (Exception exception)
         {
             await LoadCachedStateAsync(cancellationToken);
-            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            SetState(State with { ActiveEquipmentProgress = null, ErrorMessage = exception.Message, IsBusy = false });
             return await FailInventoryActionAsync(
-                "inventory-equip-preset",
+                diagnosticsOperation,
                 exception.Message,
                 cancellationToken,
-                PresetMetadata(preset, changedSlots.Length, desiredSlots.Length - changedSlots.Length, requestCount));
+                MergeMetadata(baseMetadata, changedSlots.Length, desiredSlots.Length - changedSlots.Length, requestCount));
         }
     }
 
@@ -656,6 +721,30 @@ public sealed class AppSessionController : IAppSessionController
             return SpellActionResult.Failure("Not enough mana for the requested cast count.");
         }
 
+        var originalBattleGear = NormalizePresetSlots(EquipmentSetKind.Battle, State.UserSnapshot.Equipment.Battle);
+        var autoEquipSlots = request.AutoEquipRecommendedGear && request.AutoEquipGearSlots is not null
+            ? NormalizePresetSlots(EquipmentSetKind.Battle, request.AutoEquipGearSlots)
+            : null;
+        if (autoEquipSlots is not null)
+        {
+            foreach (var slot in EnumerateSlots(autoEquipSlots).Where(slot => !string.IsNullOrWhiteSpace(slot.Key)))
+            {
+                if (!CanUseGearKey(State.UserSnapshot, EquipmentSetKind.Battle, slot.Key!))
+                {
+                    return SpellActionResult.Failure($"Cannot auto-equip {slot.Key} because it is not owned.");
+                }
+            }
+
+            await EquipSlotsWithoutRefreshAsync(
+                credentials,
+                EquipmentSetKind.Battle,
+                State.UserSnapshot.Equipment.Battle,
+                autoEquipSlots,
+                $"spell:{request.SpellId}:auto-equip",
+                "Auto-equipping spell gear",
+                cancellationToken);
+        }
+
         SetState(State with
         {
             ActiveSpellCastProgress = new SpellCastProgress(request.SpellId, 0, count),
@@ -676,6 +765,18 @@ public sealed class AppSessionController : IAppSessionController
                 });
             }
 
+            if (autoEquipSlots is not null)
+            {
+                await EquipSlotsWithoutRefreshAsync(
+                    credentials,
+                    EquipmentSetKind.Battle,
+                    autoEquipSlots,
+                    originalBattleGear,
+                    $"spell:{request.SpellId}:restore-gear",
+                    "Restoring battle gear",
+                    cancellationToken);
+            }
+
             var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
             var taskSnapshot = await _habiticaSyncClient.GetTasksAsync(credentials, cancellationToken);
             await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
@@ -692,6 +793,7 @@ public sealed class AppSessionController : IAppSessionController
                     ["targetTaskId"] = request.TargetTaskId ?? string.Empty,
                     ["completed"] = completed.ToString(CultureInfo.InvariantCulture),
                     ["requested"] = count.ToString(CultureInfo.InvariantCulture),
+                    ["autoEquip"] = (autoEquipSlots is not null).ToString(CultureInfo.InvariantCulture),
                     ["requestCount"] = (completed + 2).ToString(CultureInfo.InvariantCulture)
                 },
                 cancellationToken);
@@ -699,6 +801,7 @@ public sealed class AppSessionController : IAppSessionController
             SetState(State with
             {
                 ActiveSpellCastProgress = null,
+                ActiveEquipmentProgress = null,
                 ErrorMessage = null,
                 IsBusy = false
             });
@@ -707,6 +810,24 @@ public sealed class AppSessionController : IAppSessionController
         }
         catch (Exception exception)
         {
+            if (autoEquipSlots is not null)
+            {
+                try
+                {
+                    await EquipSlotsWithoutRefreshAsync(
+                        credentials,
+                        EquipmentSetKind.Battle,
+                        autoEquipSlots,
+                        originalBattleGear,
+                        $"spell:{request.SpellId}:restore-gear",
+                        "Restoring battle gear",
+                        cancellationToken);
+                }
+                catch
+                {
+                }
+            }
+
             await _diagnosticsLogWriter.WriteAsync(
                 DiagnosticsFeatureArea.Skills,
                 "spell-cast",
@@ -718,13 +839,15 @@ public sealed class AppSessionController : IAppSessionController
                     ["spellId"] = request.SpellId,
                     ["targetTaskId"] = request.TargetTaskId ?? string.Empty,
                     ["completed"] = completed.ToString(CultureInfo.InvariantCulture),
-                    ["requested"] = count.ToString(CultureInfo.InvariantCulture)
+                    ["requested"] = count.ToString(CultureInfo.InvariantCulture),
+                    ["autoEquip"] = (autoEquipSlots is not null).ToString(CultureInfo.InvariantCulture)
                 },
                 cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
             SetState(State with
             {
                 ActiveSpellCastProgress = null,
+                ActiveEquipmentProgress = null,
                 ErrorMessage = exception.Message,
                 IsBusy = false
             });
@@ -1092,6 +1215,79 @@ public sealed class AppSessionController : IAppSessionController
         }
 
         return metadata;
+    }
+
+    private static IReadOnlyDictionary<string, string> MergeMetadata(
+        IReadOnlyDictionary<string, string> baseMetadata,
+        int changedSlotCount = 0,
+        int skippedSlotCount = 0,
+        int requestCount = 0,
+        string? failedSlot = null,
+        string? itemKey = null)
+    {
+        var metadata = new Dictionary<string, string>(baseMetadata, StringComparer.Ordinal)
+        {
+            ["changedSlotCount"] = changedSlotCount.ToString(CultureInfo.InvariantCulture),
+            ["skippedSlotCount"] = skippedSlotCount.ToString(CultureInfo.InvariantCulture),
+            ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
+        };
+
+        if (!string.IsNullOrWhiteSpace(failedSlot))
+        {
+            metadata["failedSlot"] = failedSlot;
+        }
+
+        if (!string.IsNullOrWhiteSpace(itemKey))
+        {
+            metadata["itemKey"] = itemKey;
+        }
+
+        return metadata;
+    }
+
+    private async Task<int> EquipSlotsWithoutRefreshAsync(
+        HabiticaCredentials credentials,
+        EquipmentSetKind kind,
+        GearSlotsSnapshot currentSlots,
+        GearSlotsSnapshot desiredSlots,
+        string operationId,
+        string label,
+        CancellationToken cancellationToken)
+    {
+        var changedSlots = EnumerateSlots(NormalizePresetSlots(kind, desiredSlots))
+            .Where(slot => !string.Equals(NormalizeGearKey(GetSlotValue(currentSlots, slot.SlotTitle)), slot.Key, StringComparison.Ordinal))
+            .ToArray();
+        if (changedSlots.Length == 0)
+        {
+            SetState(State with { ActiveEquipmentProgress = null });
+            return 0;
+        }
+
+        SetState(State with
+        {
+            ActiveEquipmentProgress = new EquipmentProgress(operationId, label, 0, changedSlots.Length),
+            ErrorMessage = null,
+            IsBusy = true
+        });
+
+        var completed = 0;
+        foreach (var slot in changedSlots)
+        {
+            var keyToToggle = slot.Key ?? NormalizeGearKey(GetSlotValue(currentSlots, slot.SlotTitle));
+            if (string.IsNullOrWhiteSpace(keyToToggle))
+            {
+                continue;
+            }
+
+            await _habiticaSyncClient.EquipGearAsync(credentials, kind, keyToToggle, cancellationToken);
+            completed++;
+            SetState(State with
+            {
+                ActiveEquipmentProgress = new EquipmentProgress(operationId, label, completed, changedSlots.Length)
+            });
+        }
+
+        return completed;
     }
 
     private static IEnumerable<(string SlotTitle, string? Key)> EnumerateSlots(GearSlotsSnapshot slots)

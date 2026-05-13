@@ -33,9 +33,9 @@ public sealed class SpellViewModelFactory
     {
         var className = string.IsNullOrWhiteSpace(snapshot.ClassName) ? "unknown" : snapshot.ClassName;
         var validTasks = tasks?.Items
-            .Where(static task => !task.IsCompleted)
             .Where(static task => task.Type != TaskType.Reward)
             .Where(static task => !task.IsChallengeTask)
+            .Where(static task => task.Type != TaskType.Todo || !task.IsCompleted)
             .OrderByDescending(static task => GetTaskValue(task))
             .ThenBy(static task => task.Text, StringComparer.OrdinalIgnoreCase)
             .ToArray() ?? Array.Empty<TaskSnapshot>();
@@ -82,6 +82,10 @@ public sealed class SpellViewModelFactory
             static task => task.Id,
             task => EstimateEffect(snapshot, catalog, definition, task),
             StringComparer.Ordinal);
+        var defaultEstimate = EstimateEffect(snapshot, catalog, definition, selectedTask);
+        var recommendationsWithEstimates = recommendations
+            .Select(recommendation => AddEstimateToRecommendation(snapshot, catalog, definition, selectedTask, validTasks, recommendation))
+            .ToArray();
 
         return new SpellCardViewModel(
             definition.Id,
@@ -93,10 +97,12 @@ public sealed class SpellViewModelFactory
             isUnlocked ? "Available" : $"Unlocks at level {definition.UnlockLevel}",
             description,
             selectedTask?.Id,
-            EstimateEffect(snapshot, catalog, definition, selectedTask),
+            defaultEstimate.Text,
+            defaultEstimate.Values,
             targetDescriptions,
-            targetEstimates,
-            recommendations);
+            targetEstimates.ToDictionary(pair => pair.Key, pair => pair.Value.Text, StringComparer.Ordinal),
+            targetEstimates.ToDictionary(pair => pair.Key, pair => pair.Value.Values, StringComparer.Ordinal),
+            recommendationsWithEstimates);
     }
 
     private static IReadOnlyList<SpellEquipmentRecommendation> BuildRecommendations(
@@ -152,6 +158,29 @@ public sealed class SpellViewModelFactory
             $"Prioritizes {string.Join(", ", stats.Select(GetStatLabel))}.");
     }
 
+    private static SpellEquipmentRecommendation AddEstimateToRecommendation(
+        UserSnapshot snapshot,
+        GearCatalogSnapshot? catalog,
+        SpellDefinition definition,
+        SpellTargetTaskViewModel? selectedTask,
+        IReadOnlyList<SpellTargetTaskViewModel> validTasks,
+        SpellEquipmentRecommendation recommendation)
+    {
+        var defaultEstimate = EstimateEffect(snapshot, catalog, definition, selectedTask, recommendation.Slots);
+        var targetEstimates = validTasks.ToDictionary(
+            static task => task.Id,
+            task => EstimateEffect(snapshot, catalog, definition, task, recommendation.Slots),
+            StringComparer.Ordinal);
+
+        return recommendation with
+        {
+            EstimatedEffect = defaultEstimate.Text,
+            EstimatedEffectValues = defaultEstimate.Values,
+            TargetEstimates = targetEstimates.ToDictionary(pair => pair.Key, pair => pair.Value.Text, StringComparer.Ordinal),
+            TargetEffectValues = targetEstimates.ToDictionary(pair => pair.Key, pair => pair.Value.Values, StringComparer.Ordinal)
+        };
+    }
+
     private static string? SelectBestForSlot(
         UserSnapshot snapshot,
         GearCatalogSnapshot catalog,
@@ -195,37 +224,48 @@ public sealed class SpellViewModelFactory
             : $"{definition.Description} Best cached target: {selectedTask.Text} (value {selectedTask.Value:0.##}).";
     }
 
-    private static string EstimateEffect(
+    private static SpellEffectEstimate EstimateEffect(
         UserSnapshot snapshot,
         GearCatalogSnapshot? catalog,
         SpellDefinition definition,
-        SpellTargetTaskViewModel? selectedTask)
+        SpellTargetTaskViewModel? selectedTask,
+        GearSlotsSnapshot? battleGearOverride = null)
     {
         var baseStats = snapshot.Stats ?? CharacterStatsSnapshot.Zero;
-        var equipmentStats = CharacterStatsCalculator.CalculateBattleGearStats(snapshot, catalog);
-        var unbuffedStats = CharacterStatsCalculator.Add(baseStats, equipmentStats);
+        var equipmentStats = battleGearOverride is not null && catalog is not null
+            ? CharacterStatsCalculator.CalculateRecommendedGearStats(snapshot, catalog, battleGearOverride)
+            : CharacterStatsCalculator.CalculateBattleGearStats(snapshot, catalog);
+        var unbuffedStats = CharacterStatsCalculator.Add(
+            CharacterStatsCalculator.Add(baseStats, equipmentStats),
+            CalculateLevelBonusStats(snapshot.Level));
         var stats = CharacterStatsCalculator.Add(unbuffedStats, snapshot.Buffs ?? CharacterStatsSnapshot.Zero);
         var targetValue = selectedTask?.Value ?? 0m;
         var targetName = selectedTask is null ? "the selected target" : selectedTask.Text;
 
         return definition.Id switch
         {
-            "pickPocket" => $"Best cast on {targetName}. You will gain approximately {DiminishingReturns(CalculateTaskBonus(targetValue, stats.Perception), 25m, 75m):0.##} GP.",
-            "backStab" => $"Best cast on {targetName}. You will gain approximately {DiminishingReturns(CalculateTaskBonus(targetValue, stats.Strength), 75m, 50m):0.##} XP and {DiminishingReturns(CalculateTaskBonus(targetValue, stats.Strength), 18m, 75m):0.##} GP before possible critical hits.",
-            "fireball" => $"Best cast on {targetName}. You will gain approximately {DiminishingReturns(CalculateFireballBonus(targetValue, stats.Intelligence), 75m, 37.5m):0.##} XP and deal {Math.Ceiling(stats.Intelligence / 10m):0.##} boss damage before possible XP critical hits.",
-            "smash" => $"Best cast on {targetName}. You will add approximately {DiminishingReturns(stats.Strength, 2.5m, 35m):0.##} task value and deal {DiminishingReturns(stats.Strength, 55m, 70m):0.##} boss damage before possible critical hits.",
-            "mpheal" => $"Restores approximately {DiminishingReturns(stats.Intelligence, 25m, 125m):0.##} MP to each non-mage party member.",
-            "earth" => $"Adds approximately {DiminishingReturns(unbuffedStats.Intelligence, 30m, 200m):0.##} INT to each party member.",
-            "defensiveStance" => $"Adds approximately {DiminishingReturns(unbuffedStats.Constitution, 40m, 200m):0.##} CON to you.",
-            "valorousPresence" => $"Adds approximately {DiminishingReturns(unbuffedStats.Strength, 20m, 200m):0.##} STR to each party member.",
-            "intimidate" => $"Adds approximately {DiminishingReturns(unbuffedStats.Constitution, 24m, 200m):0.##} CON to each party member.",
-            "toolsOfTrade" => $"Adds approximately {DiminishingReturns(unbuffedStats.Perception, 100m, 50m):0.##} PER to each party member.",
-            "stealth" => $"Prevents approximately {Math.Max(1m, Math.Ceiling(stats.Perception / 100m)):0.##} unfinished Dailies from causing cron damage.",
-            "heal" => $"Restores approximately {((stats.Constitution + stats.Intelligence + 5m) * 0.075m):0.##} HP to you.",
-            "healAll" => $"Restores approximately {((stats.Constitution + stats.Intelligence + 5m) * 0.04m):0.##} HP to each party member.",
-            "brightness" => $"Adds approximately {4m * (stats.Intelligence / (stats.Intelligence + 40m)):0.##} task value to each non-reward task.",
-            _ => "Approximate effect depends on current stats and Habitica server state."
+            "pickPocket" => BuildEstimate($"Best cast on {targetName}. You will gain approximately {DiminishingReturns(CalculateTaskBonus(targetValue, stats.Perception), 25m, 75m):0.##} GP.", new SpellEffectValue(DiminishingReturns(CalculateTaskBonus(targetValue, stats.Perception), 25m, 75m), "GP")),
+            "backStab" => BuildEstimate($"Best cast on {targetName}. You will gain approximately {DiminishingReturns(CalculateTaskBonus(targetValue, stats.Strength), 75m, 50m):0.##} XP and {DiminishingReturns(CalculateTaskBonus(targetValue, stats.Strength), 18m, 75m):0.##} GP before possible critical hits.", new SpellEffectValue(DiminishingReturns(CalculateTaskBonus(targetValue, stats.Strength), 75m, 50m), "XP"), new SpellEffectValue(DiminishingReturns(CalculateTaskBonus(targetValue, stats.Strength), 18m, 75m), "GP")),
+            "fireball" => BuildEstimate($"Best cast on {targetName}. You will gain approximately {DiminishingReturns(CalculateFireballBonus(targetValue, stats.Intelligence), 75m, 37.5m):0.##} XP and deal {Math.Ceiling(stats.Intelligence / 10m):0.##} boss damage before possible XP critical hits.", new SpellEffectValue(DiminishingReturns(CalculateFireballBonus(targetValue, stats.Intelligence), 75m, 37.5m), "XP"), new SpellEffectValue(Math.Ceiling(stats.Intelligence / 10m), "boss damage")),
+            "smash" => BuildEstimate($"Best cast on {targetName}. You will add approximately {DiminishingReturns(stats.Strength, 2.5m, 35m):0.##} task value and deal {DiminishingReturns(stats.Strength, 55m, 70m):0.##} boss damage before possible critical hits.", new SpellEffectValue(DiminishingReturns(stats.Strength, 2.5m, 35m), "task value"), new SpellEffectValue(DiminishingReturns(stats.Strength, 55m, 70m), "boss damage")),
+            "mpheal" => BuildEstimate($"Restores approximately {RoundSpellIncrement(DiminishingReturns(stats.Intelligence, 25m, 125m)):0.##} MP to each non-mage party member.", new SpellEffectValue(RoundSpellIncrement(DiminishingReturns(stats.Intelligence, 25m, 125m)), "MP to each non-mage party member")),
+            "earth" => BuildEstimate($"Adds approximately {RoundSpellIncrement(DiminishingReturns(unbuffedStats.Intelligence, 30m, 200m)):0.##} INT to each party member.", new SpellEffectValue(RoundSpellIncrement(DiminishingReturns(unbuffedStats.Intelligence, 30m, 200m)), "INT to each party member")),
+            "defensiveStance" => BuildEstimate($"Adds approximately {RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 40m, 200m)):0.##} CON to you.", new SpellEffectValue(RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 40m, 200m)), "CON to you")),
+            "valorousPresence" => BuildEstimate($"Adds approximately {RoundSpellIncrement(DiminishingReturns(unbuffedStats.Strength, 20m, 200m)):0.##} STR to each party member.", new SpellEffectValue(RoundSpellIncrement(DiminishingReturns(unbuffedStats.Strength, 20m, 200m)), "STR to each party member")),
+            "intimidate" => BuildEstimate($"Adds approximately {RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 24m, 200m)):0.##} CON to each party member.", new SpellEffectValue(RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 24m, 200m)), "CON to each party member")),
+            "toolsOfTrade" => BuildEstimate($"Adds approximately {RoundSpellIncrement(DiminishingReturns(unbuffedStats.Perception, 100m, 50m)):0.##} PER to each party member.", new SpellEffectValue(RoundSpellIncrement(DiminishingReturns(unbuffedStats.Perception, 100m, 50m)), "PER to each party member")),
+            "stealth" => BuildEstimate($"Prevents approximately {Math.Max(1m, Math.Ceiling(stats.Perception / 100m)):0.##} unfinished Dailies from causing cron damage.", new SpellEffectValue(Math.Max(1m, Math.Ceiling(stats.Perception / 100m)), "protected Dailies")),
+            "heal" => BuildEstimate($"Restores approximately {((stats.Constitution + stats.Intelligence + 5m) * 0.075m):0.##} HP to you.", new SpellEffectValue((stats.Constitution + stats.Intelligence + 5m) * 0.075m, "HP to you")),
+            "healAll" => BuildEstimate($"Restores approximately {((stats.Constitution + stats.Intelligence + 5m) * 0.04m):0.##} HP to each party member.", new SpellEffectValue((stats.Constitution + stats.Intelligence + 5m) * 0.04m, "HP to each party member")),
+            "brightness" => BuildEstimate($"Adds approximately {4m * (stats.Intelligence / (stats.Intelligence + 40m)):0.##} task value to each non-reward task.", new SpellEffectValue(4m * (stats.Intelligence / (stats.Intelligence + 40m)), "task value to each non-reward task")),
+            "protectAura" => BuildEstimate($"Adds approximately {RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 200m, 200m)):0.##} CON to each party member.", new SpellEffectValue(RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 200m, 200m)), "CON to each party member")),
+            _ => new SpellEffectEstimate("Approximate effect depends on current stats and Habitica server state.", Array.Empty<SpellEffectValue>())
         };
+    }
+
+    private static SpellEffectEstimate BuildEstimate(string text, params SpellEffectValue[] values)
+    {
+        return new SpellEffectEstimate(text, values);
     }
 
     private static decimal CalculateTaskBonus(decimal value, decimal stat)
@@ -241,6 +281,17 @@ public sealed class SpellViewModelFactory
     private static decimal DiminishingReturns(decimal bonus, decimal max, decimal halfway)
     {
         return bonus <= 0m ? 0m : max * (bonus / (bonus + halfway));
+    }
+
+    private static decimal RoundSpellIncrement(decimal value)
+    {
+        return Math.Ceiling(value);
+    }
+
+    private static CharacterStatsSnapshot CalculateLevelBonusStats(int level)
+    {
+        var levelBonus = Math.Floor(Math.Min(level, 100) / 2m);
+        return new CharacterStatsSnapshot(levelBonus, levelBonus, levelBonus, levelBonus);
     }
 
     private static bool GearSlotsContainRecommendedKeys(GearSlotsSnapshot recommendation, GearSlotsSnapshot current)
@@ -304,9 +355,19 @@ public sealed record SpellCardViewModel(
     string Description,
     string? SelectedTargetTaskId,
     string EstimatedEffect,
+    IReadOnlyList<SpellEffectValue> EstimatedEffectValues,
     IReadOnlyDictionary<string, string> TargetDescriptions,
     IReadOnlyDictionary<string, string> TargetEstimates,
+    IReadOnlyDictionary<string, IReadOnlyList<SpellEffectValue>> TargetEffectValues,
     IReadOnlyList<SpellEquipmentRecommendation> EquipmentRecommendations);
+
+public sealed record SpellEffectEstimate(
+    string Text,
+    IReadOnlyList<SpellEffectValue> Values);
+
+public sealed record SpellEffectValue(
+    decimal Value,
+    string Unit);
 
 public sealed record SpellTargetTaskViewModel(
     string Id,
@@ -320,7 +381,18 @@ public sealed record SpellEquipmentRecommendation(
     GearSlotsSnapshot Slots,
     GearStatBlock TotalStats,
     bool IsEquipped,
-    string Rationale);
+    string Rationale)
+{
+    public string EstimatedEffect { get; init; } = string.Empty;
+
+    public IReadOnlyList<SpellEffectValue> EstimatedEffectValues { get; init; } = Array.Empty<SpellEffectValue>();
+
+    public IReadOnlyDictionary<string, string> TargetEstimates { get; init; } =
+        new Dictionary<string, string>(StringComparer.Ordinal);
+
+    public IReadOnlyDictionary<string, IReadOnlyList<SpellEffectValue>> TargetEffectValues { get; init; } =
+        new Dictionary<string, IReadOnlyList<SpellEffectValue>>(StringComparer.Ordinal);
+}
 
 public enum SpellTargetKind
 {

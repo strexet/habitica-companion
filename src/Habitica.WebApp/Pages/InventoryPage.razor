@@ -508,6 +508,22 @@
             builder.CloseComponent();
             builder.CloseElement();
 
+            var progress = GetPresetProgress(preset.Id);
+            if (progress is not null)
+            {
+                builder.OpenElement(sequence++, "div");
+                builder.AddAttribute(sequence++, "class", "preset-progress");
+                builder.OpenElement(sequence++, "span");
+                builder.AddContent(sequence++, $"{progress.Label}: {progress.Completed} of {progress.Total}");
+                builder.CloseElement();
+                builder.OpenComponent<MudProgressLinear>(sequence++);
+                builder.AddAttribute(sequence++, "Color", Color.Primary);
+                builder.AddAttribute(sequence++, "Max", progress.Total);
+                builder.AddAttribute(sequence++, "Value", progress.Completed);
+                builder.CloseComponent();
+                builder.CloseElement();
+            }
+
             if (string.Equals(_pendingRemovePresetId, preset.Id, StringComparison.Ordinal))
             {
                 builder.OpenElement(sequence++, "div");
@@ -545,6 +561,14 @@
         }
 
         return $"STR\u00a0{stats.Strength:0.#} • INT\u00a0{stats.Intelligence:0.#} • CON\u00a0{stats.Constitution:0.#} • PER\u00a0{stats.Perception:0.#}";
+    }
+
+    private EquipmentProgress? GetPresetProgress(string presetId)
+    {
+        var progress = SessionController.State.ActiveEquipmentProgress;
+        return progress is not null && string.Equals(progress.OperationId, $"preset:{presetId}", StringComparison.Ordinal)
+            ? progress
+            : null;
     }
 
     private void HandleStateChanged()

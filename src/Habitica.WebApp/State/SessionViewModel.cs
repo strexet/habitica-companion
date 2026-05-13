@@ -24,7 +24,8 @@ public sealed record SessionViewModel(
     string? UserId = null,
     GearCatalogSnapshot? GearCatalogSnapshot = null,
     IReadOnlyList<EquipmentPreset>? EquipmentPresets = null,
-    SpellCastProgress? ActiveSpellCastProgress = null)
+    SpellCastProgress? ActiveSpellCastProgress = null,
+    EquipmentProgress? ActiveEquipmentProgress = null)
 {
     public static SessionViewModel Empty { get; } = new(
         IsBusy: false,
@@ -53,10 +54,18 @@ public sealed record SessionViewModel(
 public sealed record SpellCastRequest(
     string SpellId,
     string? TargetTaskId,
-    int Count);
+    int Count,
+    bool AutoEquipRecommendedGear = false,
+    GearSlotsSnapshot? AutoEquipGearSlots = null);
 
 public sealed record SpellCastProgress(
     string SpellId,
+    int Completed,
+    int Total);
+
+public sealed record EquipmentProgress(
+    string OperationId,
+    string Label,
     int Completed,
     int Total);
 

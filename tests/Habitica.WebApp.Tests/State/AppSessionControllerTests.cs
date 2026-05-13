@@ -185,6 +185,54 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task CastSpellAsync_auto_equips_recommended_gear_then_restores_original_gear()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Equipment = new EquipmentSnapshot(
+                    new GearSlotsSnapshot("head_old", "armor_old", "weapon_old", "shield_old", null),
+                    new GearSlotsSnapshot(null, null, null, null, null)),
+                Inventory = new InventorySnapshot(0, 0, 0, 0, 0, 0, new[] { "head_new", "armor_new", "weapon_new", "shield_new" })
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.CastSpellAsync(new SpellCastRequest(
+            "fireball",
+            "todo-1",
+            1,
+            AutoEquipRecommendedGear: true,
+            AutoEquipGearSlots: new GearSlotsSnapshot("head_new", "armor_new", "weapon_new", "shield_new", null)));
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(
+            new[]
+            {
+                (EquipmentSetKind.Battle, "head_new"),
+                (EquipmentSetKind.Battle, "armor_new"),
+                (EquipmentSetKind.Battle, "weapon_new"),
+                (EquipmentSetKind.Battle, "shield_new"),
+                (EquipmentSetKind.Battle, "head_old"),
+                (EquipmentSetKind.Battle, "armor_old"),
+                (EquipmentSetKind.Battle, "weapon_old"),
+                (EquipmentSetKind.Battle, "shield_old")
+            },
+            syncClient.EquipCalls);
+        Assert.Single(syncClient.CastCalls);
+        Assert.Null(controller.State.ActiveEquipmentProgress);
+    }
+
+    [Fact]
     public async Task AllocateStatsAsync_sends_bulk_allocation_refreshes_snapshot_and_writes_log()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
@@ -440,13 +488,23 @@ public sealed class AppSessionControllerTests
 
         public List<(string SpellId, string? TargetTaskId)> CastCalls { get; } = new();
 
+        public List<(EquipmentSetKind Kind, string Key)> EquipCalls { get; } = new();
+
+        public UserSnapshot UserSnapshot => _userSnapshot;
+
         public List<StatAllocation> StatAllocationCalls { get; } = new();
 
         public Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
-            => Task.CompletedTask;
+        {
+            EquipCalls.Add((EquipmentSetKind.Battle, key));
+            return Task.CompletedTask;
+        }
 
         public Task EquipGearAsync(HabiticaCredentials credentials, EquipmentSetKind kind, string key, CancellationToken cancellationToken)
-            => Task.CompletedTask;
+        {
+            EquipCalls.Add((kind, key));
+            return Task.CompletedTask;
+        }
 
         public Task CastSpellAsync(HabiticaCredentials credentials, string spellId, string? targetId, CancellationToken cancellationToken)
         {
