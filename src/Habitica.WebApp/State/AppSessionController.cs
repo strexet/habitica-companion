@@ -1021,6 +1021,9 @@ public sealed class AppSessionController : IAppSessionController
             SetState(State with { ErrorMessage = null, IsBusy = true });
             var bundle = _localUserDataPortabilityService.Deserialize(jsonText);
             var result = await _localUserDataPortabilityService.ImportAsync(bundle, mode, cancellationToken);
+            await RebuildDerivedLocalStateAsync(
+                State.UserId ?? _currentCredentials?.UserId ?? bundle.UserId,
+                cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
 
             var syncMessage = await TryUploadLocalDataAfterImportAsync(cancellationToken);
@@ -1155,6 +1158,7 @@ public sealed class AppSessionController : IAppSessionController
         {
             var remoteBundle = _localUserDataPortabilityService.Deserialize(remoteSnapshot.PlainTextJson);
             await _localUserDataPortabilityService.ImportAsync(remoteBundle, LocalDataImportMode.Merge, cancellationToken);
+            await RebuildDerivedLocalStateAsync(credentials.UserId, cancellationToken);
             mergedRemoteData = true;
         }
 
@@ -1165,6 +1169,37 @@ public sealed class AppSessionController : IAppSessionController
             cancellationToken);
 
         return new CloudSyncUploadResult(mergedRemoteData, bundle.Records.Count);
+    }
+
+    private async Task RebuildDerivedLocalStateAsync(
+        string? userId,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return;
+        }
+
+        var partySnapshot = await _partySnapshotStore.GetLatestAsync(cancellationToken);
+        if (partySnapshot is null || partySnapshot.Members.Count == 0)
+        {
+            return;
+        }
+
+        var cronHistory = await _partyCronHistoryStore.GetAsync(cancellationToken);
+        var cronDashboard = PartyCronCalculator.BuildDashboard(
+            partySnapshot,
+            cronHistory,
+            userId,
+            partySnapshot.RetrievedAtUtc,
+            TimeZoneInfo.Local);
+        await _partySnapshotStore.SaveAsync(
+            partySnapshot with
+            {
+                Members = cronDashboard.Members,
+                CronDashboard = cronDashboard
+            },
+            cancellationToken);
     }
 
     private async Task LoadCachedStateAsync(CancellationToken cancellationToken)

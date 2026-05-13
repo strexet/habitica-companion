@@ -202,6 +202,44 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task SignInAsync_rebuilds_party_dashboard_after_merging_remote_history()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var remoteSync = new FakeRemoteUserDataSyncProvider
+        {
+            Snapshot = new RemoteUserDataSnapshot(
+                """
+                {
+                  "schemaVersion": 1,
+                  "exportedAtUtc": "2026-05-13T03:00:00Z",
+                  "userId": "user-id",
+                  "records": [
+                    {
+                      "key": "party/cronHistory",
+                      "jsonText": "{\"events\":[{\"partyId\":\"party-123\",\"memberId\":\"user-id\",\"displayName\":\"Mage Tester\",\"lastCronUtc\":\"2026-04-26T09:00:00Z\",\"memberHabiticaDayKey\":\"2026-04-26\",\"observedAtUtc\":\"2026-04-26T12:00:00Z\",\"confidence\":0}]}"
+                    }
+                  ]
+                }
+                """,
+                DateTimeOffset.Parse("2026-05-13T03:00:00Z"))
+        };
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot(),
+            CreateTaskSnapshot(),
+            CreatePartySnapshotWithMember());
+        var controller = CreateController(logStore, syncClient, remoteSync);
+
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        Assert.Equal(2, controller.State.PartySnapshot!.CronDashboard!.HistoryDayCount);
+    }
+
+    [Fact]
     public async Task RenameEquipmentPresetAsync_updates_local_preset_and_writes_inventory_log()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
@@ -360,14 +398,14 @@ public sealed class AppSessionControllerTests
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null)
     {
         var credentialStore = new FakeCredentialStore();
-        var taskSnapshotStore = new FakeTaskSnapshotStore();
-        var userSnapshotStore = new FakeUserSnapshotStore();
-        var partySnapshotStore = new FakePartySnapshotStore();
-        var partyCronHistoryStore = new FakePartyCronHistoryStore();
-        var gearCatalogStore = new FakeGearCatalogStore();
-        var logWriter = new DiagnosticsLogWriter(logStore, TimeProvider.System);
         var keyValueStorage = new FakeKeyValueStorage();
+        var taskSnapshotStore = new TaskSnapshotStore(keyValueStorage);
+        var userSnapshotStore = new UserSnapshotStore(keyValueStorage);
+        var partySnapshotStore = new PartySnapshotStore(keyValueStorage);
+        var partyCronHistoryStore = new PartyCronHistoryStore(keyValueStorage);
+        var gearCatalogStore = new GearCatalogStore(keyValueStorage);
         var equipmentPresetStore = new EquipmentPresetStore(keyValueStorage);
+        var logWriter = new DiagnosticsLogWriter(logStore, TimeProvider.System);
 
         return new AppSessionController(
             loginWorkflow: new LoginWorkflow(syncClient, credentialStore, taskSnapshotStore, userSnapshotStore, partySnapshotStore, partyCronHistoryStore, logWriter),
@@ -489,114 +527,6 @@ public sealed class AppSessionControllerTests
             => Task.CompletedTask;
     }
 
-    private sealed class FakeTaskSnapshotStore : ITaskSnapshotStore
-    {
-        public TaskCollectionSnapshot? Snapshot { get; set; }
-
-        public Task ClearAsync(CancellationToken cancellationToken)
-        {
-            Snapshot = null;
-            return Task.CompletedTask;
-        }
-
-        public Task<TaskCollectionSnapshot?> GetLatestAsync(CancellationToken cancellationToken)
-            => Task.FromResult(Snapshot);
-
-        public Task SaveAsync(TaskCollectionSnapshot snapshot, CancellationToken cancellationToken)
-        {
-            Snapshot = snapshot;
-            return Task.CompletedTask;
-        }
-    }
-
-    private sealed class FakeUserSnapshotStore : IUserSnapshotStore
-    {
-        public UserSnapshot? Snapshot { get; set; }
-
-        public Task ClearAsync(CancellationToken cancellationToken)
-        {
-            Snapshot = null;
-            return Task.CompletedTask;
-        }
-
-        public Task<UserSnapshot?> GetLatestAsync(CancellationToken cancellationToken)
-            => Task.FromResult(Snapshot);
-
-        public Task SaveAsync(UserSnapshot snapshot, CancellationToken cancellationToken)
-        {
-            Snapshot = snapshot;
-            return Task.CompletedTask;
-        }
-    }
-
-    private sealed class FakePartySnapshotStore : IPartySnapshotStore
-    {
-        public PartySnapshot? Snapshot { get; set; }
-
-        public Task ClearAsync(CancellationToken cancellationToken)
-        {
-            Snapshot = null;
-            return Task.CompletedTask;
-        }
-
-        public Task<PartySnapshot?> GetLatestAsync(CancellationToken cancellationToken)
-            => Task.FromResult(Snapshot);
-
-        public Task SaveAsync(PartySnapshot snapshot, CancellationToken cancellationToken)
-        {
-            Snapshot = snapshot;
-            return Task.CompletedTask;
-        }
-    }
-
-    private sealed class FakePartyCronHistoryStore : IPartyCronHistoryStore
-    {
-        public bool Cleared { get; private set; }
-
-        public PartyCronHistorySnapshot Snapshot { get; private set; } = new(Array.Empty<PartyCronHistoryEvent>());
-
-        public Task ClearAsync(CancellationToken cancellationToken)
-        {
-            Cleared = true;
-            Snapshot = new PartyCronHistorySnapshot(Array.Empty<PartyCronHistoryEvent>());
-            return Task.CompletedTask;
-        }
-
-        public Task<PartyCronHistorySnapshot> GetAsync(CancellationToken cancellationToken)
-            => Task.FromResult(Snapshot);
-
-        public Task<PartyCronHistorySnapshot> UpsertAsync(
-            IEnumerable<PartyCronHistoryEvent> events,
-            DateTimeOffset pruneReferenceUtc,
-            CancellationToken cancellationToken)
-        {
-            Snapshot = new PartyCronHistorySnapshot(Snapshot.Events.Concat(events).ToArray());
-            return Task.FromResult(Snapshot);
-        }
-    }
-
-    private sealed class FakeGearCatalogStore : IGearCatalogStore
-    {
-        public GearCatalogSnapshot? Snapshot { get; private set; }
-
-        public Task ClearAsync(CancellationToken cancellationToken)
-        {
-            Snapshot = null;
-            return Task.CompletedTask;
-        }
-
-        public Task<GearCatalogSnapshot?> GetLatestAsync(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(Snapshot);
-        }
-
-        public Task SaveAsync(GearCatalogSnapshot catalog, CancellationToken cancellationToken)
-        {
-            Snapshot = catalog;
-            return Task.CompletedTask;
-        }
-    }
-
     private sealed class FakeHabiticaSyncClient : IHabiticaSyncClient
     {
         private readonly UserSnapshot _userSnapshot;
@@ -700,5 +630,29 @@ public sealed class AppSessionControllerTests
             "Quest-focused party",
             4,
             new PartyQuestSnapshot("dragon", true, 12.5m, 3m, 2));
+    }
+
+    private static PartySnapshot CreatePartySnapshotWithMember()
+    {
+        return new PartySnapshot(
+            DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+            "party-123",
+            "Night Owls",
+            "Quest-focused party",
+            1,
+            new PartyQuestSnapshot("dragon", true, 12.5m, 3m, 1),
+            new[]
+            {
+                new PartyMemberSnapshot(
+                    "user-id",
+                    "Mage Tester",
+                    DateTimeOffset.Parse("2026-04-27T09:00:00Z"),
+                    0,
+                    0,
+                    PartyCronState.CronedToday,
+                    "Croned today.",
+                    "2026-04-27",
+                    DateTimeOffset.Parse("2026-04-27T00:00:00Z"))
+            });
     }
 }
