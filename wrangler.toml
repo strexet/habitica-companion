@@ -4,11 +4,11 @@ pages_build_output_dir = "output/wwwroot"
 
 [[kv_namespaces]]
 binding = "HABITICA_SYNC_KV"
-id = "habitica-companion-sync"
-preview_id = "habitica-companion-sync"
+id = "8f3984e2aa7c4bff8dc245f3552927e5"
+preview_id = "8f3984e2aa7c4bff8dc245f3552927e5"
 
 [[d1_databases]]
 binding = "HABITICA_PARTY_DB"
 database_name = "habitica-companion-party-sync"
-database_id = "habitica-companion-party-sync"
-preview_database_id = "habitica-companion-party-sync"
+database_id = "fec1ea40-3502-4b66-9051-c3f566999a03"
+preview_database_id = "fec1ea40-3502-4b66-9051-c3f566999a03"
