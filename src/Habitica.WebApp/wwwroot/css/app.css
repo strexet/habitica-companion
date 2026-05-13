@@ -344,6 +344,10 @@ a {
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
 }
 
+.party-quest-panel {
+    grid-column: 1 / -1;
+}
+
 .party-cron-stat-grid {
     display: grid;
     gap: 1rem;
@@ -362,6 +366,36 @@ a {
 .party-member-list {
     display: grid;
     gap: 0.85rem;
+}
+
+.party-member-card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+}
+
+.party-member-card {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(245, 239, 226, 0.58);
+}
+
+.party-member-card-head,
+.party-member-pill-row,
+.party-member-classline,
+.party-toggle {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.party-member-classline {
+    justify-content: flex-start;
+    color: var(--muted);
+    font-size: 0.92rem;
 }
 
 .party-member-row {
@@ -398,6 +432,51 @@ a {
     margin: 0.2rem 0 0;
     font-weight: 700;
     word-break: break-word;
+}
+
+.party-quest-metric-grid,
+.party-stat-grid {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.party-quest-metric-grid {
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    margin-bottom: 1rem;
+}
+
+.party-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+
+.party-member-stats {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.party-stat-section {
+    display: grid;
+    gap: 0.4rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(22, 36, 35, 0.08);
+}
+
+.party-summary-markdown p,
+.party-summary-markdown ul {
+    margin: 0;
+}
+
+.party-summary-markdown ul {
+    padding-left: 1.2rem;
+}
+
+.party-summary-markdown p + p,
+.party-summary-markdown p + ul,
+.party-summary-markdown ul + p,
+.party-summary-markdown ul + ul {
+    margin-top: 0.8rem;
 }
 
 .party-cron-legend {
@@ -1121,6 +1200,12 @@ code {
         grid-template-columns: 1fr;
     }
 
+    .party-member-card-head,
+    .party-member-pill-row {
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
     .spell-card-summary,
     .spell-cast-controls,
     .stats-panel-head,
@@ -1170,6 +1255,10 @@ code {
     }
 
     .party-member-meta {
+        grid-template-columns: 1fr;
+    }
+
+    .party-stat-grid {
         grid-template-columns: 1fr;
     }
 }

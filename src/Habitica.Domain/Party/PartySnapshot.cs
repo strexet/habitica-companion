@@ -1,3 +1,5 @@
+using Habitica.Domain.User;
+
 namespace Habitica.Domain.Party;
 
 public sealed record PartySnapshot
@@ -51,14 +53,46 @@ public sealed record PartyQuestSnapshot(
     decimal? BossHealthTotal = null,
     decimal? TotalPendingDamage = null,
     decimal? TotalPendingCollectionItems = null,
-    decimal? PendingPartyDamage = null);
+    decimal? PendingPartyDamage = null,
+    PartyQuestType QuestType = PartyQuestType.Unknown,
+    decimal? CollectionItemsTotal = null,
+    PartyQuestMetricSnapshot? AppliedProgress = null,
+    PartyQuestMetricSnapshot? PendingUserProgress = null,
+    PartyQuestMetricSnapshot? PendingPartyProgress = null,
+    PartyQuestMetricSnapshot? EstimatedPostCronProgress = null,
+    PartyQuestParticipationSummary? ParticipationSummary = null,
+    PartyQuestCompletionEstimate? CompletionEstimate = null);
 
 public enum PartyCronState
 {
     CronedToday,
     NotCronedYet,
+    InInn,
     Unknown,
     PossiblyStale
+}
+
+public enum PartyQuestType
+{
+    Unknown,
+    Boss,
+    Collection
+}
+
+public enum PartyQuestParticipationStatus
+{
+    Accepted,
+    Pending,
+    Rejected,
+    Unknown
+}
+
+public enum PartyQuestEstimateConfidence
+{
+    Unknown,
+    Low,
+    Medium,
+    High
 }
 
 public enum PartyCronEventConfidence
@@ -72,7 +106,8 @@ public sealed record PartyMemberCronInput(
     string DisplayName,
     DateTimeOffset? LastCronUtc,
     int? DayStartHour,
-    int? TimezoneOffsetMinutes);
+    int? TimezoneOffsetMinutes,
+    bool IsInInn = false);
 
 public sealed record PartyMemberSnapshot(
     string MemberId,
@@ -87,7 +122,13 @@ public sealed record PartyMemberSnapshot(
     TimeSpan? AverageCronTime = null,
     int AverageCronSampleCount = 0,
     decimal? PendingQuestDamage = null,
-    decimal? PendingQuestItems = null);
+    decimal? PendingQuestItems = null,
+    string? ClassName = null,
+    int? Level = null,
+    bool IsInInn = false,
+    PartyQuestParticipationStatus ParticipationStatus = PartyQuestParticipationStatus.Unknown,
+    bool IsStale = false,
+    PartyMemberStatBreakdownSnapshot? Stats = null);
 
 public sealed record PartyCronHistoryEvent(
     string PartyId,
@@ -112,7 +153,10 @@ public sealed record PartyCronDashboardSnapshot(
     TimeSpan? AverageBestBuffTime,
     TimeSpan? SelfFirstBuffTime,
     IReadOnlyList<PartyMemberSnapshot> Members,
-    IReadOnlyList<PartyCronGraphPoint> GraphPoints);
+    IReadOnlyList<PartyCronGraphPoint> GraphPoints,
+    int AwaitingCount = 0,
+    int InnCount = 0,
+    int StaleCount = 0);
 
 public sealed record PartyCronGraphPoint(
     int Hour,
@@ -121,11 +165,74 @@ public sealed record PartyCronGraphPoint(
     decimal? LowerQuartileCount,
     decimal? UpperQuartileCount);
 
+public sealed record PartyQuestMetricSnapshot(
+    string Label,
+    decimal Value,
+    decimal? Total = null,
+    string Unit = "points")
+{
+    public decimal? Remaining =>
+        Total is null
+            ? null
+            : Math.Max(0m, Total.Value - Value);
+}
+
+public sealed record PartyQuestParticipationSummary(
+    int AcceptedCount,
+    int PendingCount,
+    int RejectedCount,
+    int UnknownCount,
+    int InnCount);
+
+public sealed record PartyQuestCompletionEstimate(
+    bool WillCompleteAfterAwaitingCron,
+    DateTimeOffset? EarliestCompletionUtc,
+    DateTimeOffset? LatestCompletionUtc,
+    PartyQuestEstimateConfidence Confidence,
+    string Summary);
+
+public sealed record PartyStatSectionSnapshot(
+    decimal? Strength,
+    decimal? Intelligence,
+    decimal? Constitution,
+    decimal? Perception)
+{
+    public bool HasAnyValue =>
+        Strength is not null
+        || Intelligence is not null
+        || Constitution is not null
+        || Perception is not null;
+
+    public static PartyStatSectionSnapshot? FromCharacterStats(CharacterStatsSnapshot snapshot)
+    {
+        var section = new PartyStatSectionSnapshot(
+            snapshot.Strength,
+            snapshot.Intelligence,
+            snapshot.Constitution,
+            snapshot.Perception);
+        return section.HasAnyValue ? section : null;
+    }
+}
+
+public sealed record PartyMemberStatBreakdownSnapshot(
+    PartyStatSectionSnapshot? BaseAllocated,
+    PartyStatSectionSnapshot? Gear,
+    PartyStatSectionSnapshot? Buffs,
+    PartyStatSectionSnapshot? Total)
+{
+    public bool HasAnySection =>
+        BaseAllocated?.HasAnyValue == true
+        || Gear?.HasAnyValue == true
+        || Buffs?.HasAnyValue == true
+        || Total?.HasAnyValue == true;
+}
+
 public static class PartyCronCalculator
 {
     public const int StoredHistoryDays = 90;
     public const int StatisticsWindowDays = 60;
     public const int LowConfidenceDayThreshold = 7;
+    public const int StaleMemberDayThreshold = 7;
     private const double FullPartyThresholdRatio = 0.9d;
     private const double PracticalThresholdRatio = 0.8d;
     private const double SelfFirstInfluenceHalfLifeMinutes = 90d;
@@ -137,9 +244,14 @@ public static class PartyCronCalculator
         DateTimeOffset fetchedAtUtc,
         DateTimeOffset nowUtc)
     {
+        if (input.IsInInn)
+        {
+            return BuildInnMember(input, nowUtc);
+        }
+
         if (input.LastCronUtc is null)
         {
-            return BuildUnknownMember(input, "Missing CRON timestamp.");
+            return BuildUnknownMember(input, "Missing CRON timestamp.", false);
         }
 
         if (input.DayStartHour is null || input.TimezoneOffsetMinutes is null)
@@ -150,6 +262,7 @@ public static class PartyCronCalculator
         var dayStartHour = Math.Clamp(input.DayStartHour.Value, 0, 23);
         var currentDayStartUtc = ComputeCurrentHabiticaDayStartUtc(nowUtc, dayStartHour, input.TimezoneOffsetMinutes.Value);
         var habiticaDayKey = ComputeHabiticaDayKey(nowUtc, dayStartHour, input.TimezoneOffsetMinutes.Value);
+        var isStale = IsStaleMember(input.LastCronUtc, currentDayStartUtc, nowUtc);
 
         if (input.LastCronUtc.Value >= currentDayStartUtc)
         {
@@ -162,7 +275,8 @@ public static class PartyCronCalculator
                 PartyCronState.CronedToday,
                 "Croned today.",
                 habiticaDayKey,
-                currentDayStartUtc);
+                currentDayStartUtc,
+                IsStale: isStale);
         }
 
         if (fetchedAtUtc < currentDayStartUtc && nowUtc >= currentDayStartUtc)
@@ -176,7 +290,8 @@ public static class PartyCronCalculator
                 PartyCronState.PossiblyStale,
                 "Refresh happened before this member's current Habitica day could start.",
                 habiticaDayKey,
-                currentDayStartUtc);
+                currentDayStartUtc,
+                IsStale: isStale);
         }
 
         return new PartyMemberSnapshot(
@@ -188,7 +303,8 @@ public static class PartyCronCalculator
             PartyCronState.NotCronedYet,
             "Not croned yet.",
             habiticaDayKey,
-            currentDayStartUtc);
+            currentDayStartUtc,
+            IsStale: isStale);
     }
 
     public static IReadOnlyList<PartyCronHistoryEvent> CreateHistoryEvents(PartySnapshot party)
@@ -244,10 +360,13 @@ public static class PartyCronCalculator
             AverageBestBuffTime: averageBestBuffTime,
             SelfFirstBuffTime: selfFirstBuffTime,
             Members: enrichedMembers,
-            GraphPoints: graphPoints);
+            GraphPoints: graphPoints,
+            AwaitingCount: visibleMembers.Count(static member => member.CronState == PartyCronState.NotCronedYet),
+            InnCount: visibleMembers.Count(static member => member.CronState == PartyCronState.InInn),
+            StaleCount: visibleMembers.Count(static member => member.IsStale));
     }
 
-    private static PartyMemberSnapshot BuildUnknownMember(PartyMemberCronInput input, string reason)
+    private static PartyMemberSnapshot BuildUnknownMember(PartyMemberCronInput input, string reason, bool isStale)
     {
         return new PartyMemberSnapshot(
             input.MemberId,
@@ -258,7 +377,34 @@ public static class PartyCronCalculator
             PartyCronState.Unknown,
             reason,
             null,
-            null);
+            null,
+            IsInInn: input.IsInInn,
+            IsStale: isStale);
+    }
+
+    private static PartyMemberSnapshot BuildInnMember(PartyMemberCronInput input, DateTimeOffset nowUtc)
+    {
+        DateTimeOffset? currentDayStartUtc = null;
+        string? habiticaDayKey = null;
+        if (input.DayStartHour is not null && input.TimezoneOffsetMinutes is not null)
+        {
+            var dayStartHour = Math.Clamp(input.DayStartHour.Value, 0, 23);
+            currentDayStartUtc = ComputeCurrentHabiticaDayStartUtc(nowUtc, dayStartHour, input.TimezoneOffsetMinutes.Value);
+            habiticaDayKey = ComputeHabiticaDayKey(nowUtc, dayStartHour, input.TimezoneOffsetMinutes.Value);
+        }
+
+        return new PartyMemberSnapshot(
+            input.MemberId,
+            input.DisplayName,
+            input.LastCronUtc,
+            input.DayStartHour,
+            input.TimezoneOffsetMinutes,
+            PartyCronState.InInn,
+            "Member is resting in the Inn.",
+            habiticaDayKey,
+            currentDayStartUtc,
+            IsInInn: true,
+            IsStale: IsStaleMember(input.LastCronUtc, currentDayStartUtc, nowUtc));
     }
 
     private static PartyMemberSnapshot ClassifyPublicMemberTimestamp(
@@ -269,6 +415,7 @@ public static class PartyCronCalculator
         var currentUtcDayStart = new DateTimeOffset(nowUtc.UtcDateTime.Date, TimeSpan.Zero);
         var dayKey = currentUtcDayStart.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
         const string limitedPublicDataReason = "Habitica public member data hides day start/timezone; classified from public CRON timestamp by UTC day.";
+        var isStale = IsStaleMember(input.LastCronUtc, currentUtcDayStart, nowUtc);
 
         if (input.LastCronUtc!.Value >= currentUtcDayStart)
         {
@@ -281,7 +428,8 @@ public static class PartyCronCalculator
                 PartyCronState.CronedToday,
                 limitedPublicDataReason,
                 dayKey,
-                currentUtcDayStart);
+                currentUtcDayStart,
+                IsStale: isStale);
         }
 
         if (fetchedAtUtc < currentUtcDayStart && nowUtc >= currentUtcDayStart)
@@ -295,7 +443,8 @@ public static class PartyCronCalculator
                 PartyCronState.PossiblyStale,
                 "Refresh happened before the current UTC day started; public member day start/timezone is hidden.",
                 dayKey,
-                currentUtcDayStart);
+                currentUtcDayStart,
+                IsStale: isStale);
         }
 
         return new PartyMemberSnapshot(
@@ -307,7 +456,22 @@ public static class PartyCronCalculator
             PartyCronState.NotCronedYet,
             limitedPublicDataReason,
             dayKey,
-            currentUtcDayStart);
+            currentUtcDayStart,
+            IsStale: isStale);
+    }
+
+    private static bool IsStaleMember(
+        DateTimeOffset? lastCronUtc,
+        DateTimeOffset? currentDayStartUtc,
+        DateTimeOffset nowUtc)
+    {
+        if (lastCronUtc is null)
+        {
+            return false;
+        }
+
+        var referenceUtc = currentDayStartUtc?.ToUniversalTime() ?? nowUtc.ToUniversalTime();
+        return lastCronUtc.Value.ToUniversalTime() < referenceUtc.AddDays(-StaleMemberDayThreshold);
     }
 
     private static DateTimeOffset ComputeCurrentHabiticaDayStartUtc(

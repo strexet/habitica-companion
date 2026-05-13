@@ -78,6 +78,19 @@ public sealed class LoginWorkflow
                 Members = cronDashboard.Members,
                 CronDashboard = cronDashboard
             };
+            if (party.Quest is not null)
+            {
+                party = party with
+                {
+                    Quest = Habitica.Domain.Party.PartyQuestProgressCalculator.Enrich(
+                        party,
+                        party.Quest,
+                        command.UserId,
+                        party.RetrievedAtUtc,
+                        TimeZoneInfo.Local,
+                        includeStaleMembers: false)
+                };
+            }
 
             await _partySnapshotStore.SaveAsync(party, cancellationToken);
         }

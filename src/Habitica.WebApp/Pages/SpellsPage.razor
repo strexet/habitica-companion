@@ -3,6 +3,7 @@
 @inject SpellViewModelFactory SpellViewModelFactory
 @inject IAppSessionController SessionController
 @inject ISnackbar Snackbar
+@using Habitica.Domain.Party
 
 <PageTitle>Spells</PageTitle>
 
@@ -33,6 +34,32 @@
         <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
             @GetFreshnessLabel(SessionController.State.UserFreshness)
         </MudAlert>
+
+        @if (SessionController.State.PartySnapshot?.Quest is { } quest)
+        {
+            <section class="spells-summary-grid compact-summary-grid">
+                <article class="dashboard-stat-card">
+                    <span class="dashboard-stat-label">Quest</span>
+                    <strong>@(quest.Key ?? "Unknown quest")</strong>
+                    <span class="dashboard-stat-note">@(quest.IsActive ? "Active" : "Inactive")</span>
+                </article>
+                <article class="dashboard-stat-card">
+                    <span class="dashboard-stat-label">Current progress</span>
+                    <strong>@FormatQuestMetric(quest.AppliedProgress)</strong>
+                    <span class="dashboard-stat-note">@quest.AppliedProgress?.Label</span>
+                </article>
+                <article class="dashboard-stat-card">
+                    <span class="dashboard-stat-label">Your pending</span>
+                    <strong>@FormatQuestMetric(quest.PendingUserProgress)</strong>
+                    <span class="dashboard-stat-note">@quest.PendingUserProgress?.Label</span>
+                </article>
+                <article class="dashboard-stat-card">
+                    <span class="dashboard-stat-label">Party pending</span>
+                    <strong>@FormatQuestMetric(quest.PendingPartyProgress)</strong>
+                    <span class="dashboard-stat-note">@quest.PendingPartyProgress?.Label</span>
+                </article>
+            </section>
+        }
 
         <section class="spells-summary-grid compact-summary-grid">
             <article class="dashboard-stat-card">
@@ -319,6 +346,19 @@
     private static string FormatDecimal(decimal value)
     {
         return value.ToString("0.##");
+    }
+
+    private static string FormatQuestMetric(PartyQuestMetricSnapshot? metric)
+    {
+        if (metric is null)
+        {
+            return "Unknown";
+        }
+
+        var value = FormatDecimal(metric.Value);
+        return metric.Total is null
+            ? $"{value} {metric.Unit}"
+            : $"{value}/{FormatDecimal(metric.Total.Value)} {metric.Unit}";
     }
 
     private static string GetSpellDescription(SpellCardViewModel spell, string? selectedTarget)

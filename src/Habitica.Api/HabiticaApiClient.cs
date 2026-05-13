@@ -88,8 +88,10 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         using var document = await SendForDocumentAsync(request, cancellationToken);
         var data = document.RootElement.GetProperty("data");
         var quest = TryGetObject(data, "quest");
+        var questMembers = TryGetObject(quest, "members");
         var members = await GetPartyMembersAsync(credentials, retrievedAtUtc, cancellationToken);
-        var questSnapshot = MapPartyQuest(quest);
+        members = ApplyQuestParticipation(members, questMembers);
+        var questSnapshot = MapPartyQuest(quest, members);
         if (questSnapshot?.BossHealthRemaining is not null)
         {
             var totalPendingDamage = SumPartyPendingQuestDamage(quest, members);
@@ -114,14 +116,15 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             }
         }
 
-        if (questSnapshot?.BossHealthRemaining is not null && !string.IsNullOrWhiteSpace(questSnapshot.Key))
+        if (questSnapshot is not null && !string.IsNullOrWhiteSpace(questSnapshot.Key))
         {
-            var totalBossHealth = await GetQuestBossHealthTotalAsync(credentials, questSnapshot.Key, cancellationToken);
-            if (totalBossHealth is not null)
+            var questMetadata = await GetQuestContentMetadataAsync(credentials, questSnapshot.Key, cancellationToken);
+            if (questMetadata.BossHealthTotal is not null || questMetadata.CollectionItemsTotal is not null)
             {
                 questSnapshot = questSnapshot with
                 {
-                    BossHealthTotal = totalBossHealth
+                    BossHealthTotal = questMetadata.BossHealthTotal ?? questSnapshot.BossHealthTotal,
+                    CollectionItemsTotal = questMetadata.CollectionItemsTotal ?? questSnapshot.CollectionItemsTotal
                 };
             }
         }
@@ -136,7 +139,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             members: members);
     }
 
-    private async Task<decimal?> GetQuestBossHealthTotalAsync(
+    private async Task<PartyQuestContentMetadata> GetQuestContentMetadataAsync(
         HabiticaCredentials credentials,
         string questKey,
         CancellationToken cancellationToken)
@@ -148,20 +151,23 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             var data = document.RootElement.GetProperty("data");
             var quest = TryGetObject(TryGetObject(data, "quests"), questKey);
             var boss = TryGetObject(quest, "boss");
+            var collect = TryGetObject(quest, "collect");
 
-            return TryGetDecimal(boss, "hp", out var bossHealth) ? bossHealth : null;
+            return new PartyQuestContentMetadata(
+                BossHealthTotal: TryGetDecimal(boss, "hp", out var bossHealth) ? bossHealth : null,
+                CollectionItemsTotal: SumCollectionRequirements(collect));
         }
         catch (HabiticaApiException)
         {
-            return null;
+            return PartyQuestContentMetadata.Empty;
         }
         catch (JsonException)
         {
-            return null;
+            return PartyQuestContentMetadata.Empty;
         }
         catch (HttpRequestException)
         {
-            return null;
+            return PartyQuestContentMetadata.Empty;
         }
     }
 
@@ -291,6 +297,33 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             .ToArray();
     }
 
+    private static IReadOnlyList<PartyMemberSnapshot> ApplyQuestParticipation(
+        IReadOnlyList<PartyMemberSnapshot> members,
+        JsonElement questMembers)
+    {
+        if (questMembers.ValueKind != JsonValueKind.Object)
+        {
+            return members;
+        }
+
+        return members
+            .Select(member =>
+            {
+                var status = questMembers.TryGetProperty(member.MemberId, out var participation)
+                    ? participation.ValueKind == JsonValueKind.True
+                        ? PartyQuestParticipationStatus.Accepted
+                        : participation.ValueKind == JsonValueKind.False
+                            ? PartyQuestParticipationStatus.Unknown
+                            : PartyQuestParticipationStatus.Unknown
+                    : PartyQuestParticipationStatus.Unknown;
+                return member with
+                {
+                    ParticipationStatus = status
+                };
+            })
+            .ToArray();
+    }
+
     private static TaskSnapshot MapTask(JsonElement task)
     {
         return new TaskSnapshot(
@@ -338,6 +371,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
     {
         var profile = TryGetObject(member, "profile");
         var preferences = TryGetObject(member, "preferences");
+        var stats = TryGetObject(member, "stats");
         var id = GetOptionalString(member, "_id") ?? GetOptionalString(member, "id") ?? string.Empty;
         var displayName = GetOptionalString(profile, "name")
             ?? GetOptionalString(member, "displayName")
@@ -345,25 +379,31 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             ?? "Unknown party member";
         var authTimestamps = TryGetObject(TryGetObject(member, "auth"), "timestamps");
         var partyQuestProgress = TryGetObject(TryGetObject(TryGetObject(member, "party"), "quest"), "progress");
+        var isInInn = GetOptionalBoolean(preferences, "sleep");
         var input = new PartyMemberCronInput(
             id,
             displayName,
             ParseDateTimeOffset(GetOptionalString(member, "lastCron"))
                 ?? ParseDateTimeOffset(GetOptionalString(authTimestamps, "loggedin")),
             GetOptionalNullableInt32(preferences, "dayStart"),
-            GetOptionalNullableInt32(preferences, "timezoneOffset") ?? GetOptionalNullableInt32(preferences, "timezoneOffsetAtLastCron"));
+            GetOptionalNullableInt32(preferences, "timezoneOffset") ?? GetOptionalNullableInt32(preferences, "timezoneOffsetAtLastCron"),
+            isInInn);
 
         var snapshot = PartyCronCalculator.ClassifyMember(input, retrievedAtUtc, DateTimeOffset.UtcNow);
         return snapshot with
         {
+            ClassName = GetOptionalString(stats, "class"),
+            Level = TryGetOptionalInt32(stats, "lvl"),
+            IsInInn = isInInn,
             PendingQuestDamage = TryGetDecimal(partyQuestProgress, "up", out var pendingQuestDamage)
                 ? pendingQuestDamage
                 : null,
-            PendingQuestItems = GetPendingQuestItems(partyQuestProgress)
+            PendingQuestItems = GetPendingQuestItems(partyQuestProgress),
+            Stats = MapPartyMemberStats(stats)
         };
     }
 
-    private static PartyQuestSnapshot? MapPartyQuest(JsonElement quest)
+    private static PartyQuestSnapshot? MapPartyQuest(JsonElement quest, IReadOnlyList<PartyMemberSnapshot> members)
     {
         if (quest.ValueKind != JsonValueKind.Object)
         {
@@ -381,11 +421,12 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             IsActive: GetOptionalBoolean(quest, "active"),
             ProgressUp: questProgress.Value,
             ProgressDown: pendingPartyDamage ?? 0m,
-            ParticipantCount: CountTrueEntries(TryGetObject(quest, "members")),
+            ParticipantCount: members.Count(static member => member.ParticipationStatus == PartyQuestParticipationStatus.Accepted),
             ProgressLabel: questProgress.Label,
             PendingDamage: pendingDamage,
             BossHealthRemaining: bossHealthRemaining,
-            PendingPartyDamage: pendingPartyDamage);
+            PendingPartyDamage: pendingPartyDamage,
+            QuestType: bossHealthRemaining is not null ? PartyQuestType.Boss : PartyQuestType.Collection);
     }
 
     private static decimal? GetPendingQuestItems(JsonElement progress)
@@ -445,6 +486,11 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         JsonElement questMembers,
         bool isActive)
     {
+        if (member.IsInInn)
+        {
+            return false;
+        }
+
         if (!isActive || questMembers.ValueKind != JsonValueKind.Object)
         {
             return true;
@@ -471,6 +517,35 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             Intelligence: GetOptionalDecimal(stats, "int"),
             Constitution: GetOptionalDecimal(stats, "con"),
             Perception: GetOptionalDecimal(stats, "per"));
+    }
+
+    private static PartyMemberStatBreakdownSnapshot? MapPartyMemberStats(JsonElement stats)
+    {
+        if (stats.ValueKind != JsonValueKind.Object)
+        {
+            return null;
+        }
+
+        var baseAllocated = PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(
+            TryGetObject(stats, "training").ValueKind == JsonValueKind.Object
+                ? TryGetObject(stats, "training")
+                : TryGetObject(stats, "allocated")));
+        var gear = PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(TryGetObject(stats, "gear")));
+        var buffs = PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(TryGetObject(stats, "buffs")));
+        var total = HasAnyStats(stats)
+            ? PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(stats))
+            : null;
+
+        var breakdown = new PartyMemberStatBreakdownSnapshot(baseAllocated, gear, buffs, total);
+        return breakdown.HasAnySection ? breakdown : null;
+    }
+
+    private static bool HasAnyStats(JsonElement stats)
+    {
+        return TryGetDecimal(stats, "str", out _)
+            || TryGetDecimal(stats, "int", out _)
+            || TryGetDecimal(stats, "con", out _)
+            || TryGetDecimal(stats, "per", out _);
     }
 
     private static int CountPositiveEntries(JsonElement element)
@@ -559,6 +634,48 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         return hasValue ? total : null;
     }
 
+    private static decimal? SumCollectionRequirements(JsonElement collect)
+    {
+        if (collect.ValueKind != JsonValueKind.Object)
+        {
+            return null;
+        }
+
+        var total = 0m;
+        var hasValue = false;
+        foreach (var property in collect.EnumerateObject())
+        {
+            var item = property.Value;
+            decimal requiredValue;
+            if (item.ValueKind == JsonValueKind.Number)
+            {
+                requiredValue = item.GetDecimal();
+            }
+            else if (TryGetDecimal(item, "count", out var count))
+            {
+                requiredValue = count;
+            }
+            else if (TryGetDecimal(item, "required", out var required))
+            {
+                requiredValue = required;
+            }
+            else
+            {
+                continue;
+            }
+
+            if (requiredValue <= 0m)
+            {
+                continue;
+            }
+
+            hasValue = true;
+            total += requiredValue;
+        }
+
+        return hasValue ? total : null;
+    }
+
     private static string ExtractErrorMessage(string responseBody, string? fallbackReasonPhrase)
     {
         try
@@ -608,6 +725,15 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             && property.ValueKind == JsonValueKind.Number
             ? property.GetInt32()
             : 0;
+    }
+
+    private static int? TryGetOptionalInt32(JsonElement element, string propertyName)
+    {
+        return element.ValueKind == JsonValueKind.Object
+            && element.TryGetProperty(propertyName, out var property)
+            && property.ValueKind == JsonValueKind.Number
+            ? property.GetInt32()
+            : null;
     }
 
     private static int? GetOptionalNullableInt32(JsonElement element, string propertyName)
@@ -701,5 +827,12 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             "reward" => TaskType.Reward,
             _ => TaskType.Todo
         };
+    }
+
+    private sealed record PartyQuestContentMetadata(
+        decimal? BossHealthTotal,
+        decimal? CollectionItemsTotal)
+    {
+        public static PartyQuestContentMetadata Empty { get; } = new(null, null);
     }
 }

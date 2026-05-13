@@ -187,6 +187,16 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.FromResult(LocalDataResult);
     }
 
+    public Task SetIncludeStalePartyMembersAsync(bool include, CancellationToken cancellationToken = default)
+    {
+        State = State with
+        {
+            IncludeStalePartyMembersInQuestForecasts = include
+        };
+        Changed?.Invoke();
+        return Task.CompletedTask;
+    }
+
     public Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default)
     {
         LastSignInRequest = request;

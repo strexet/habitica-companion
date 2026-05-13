@@ -26,7 +26,8 @@ public sealed record SessionViewModel(
     GearCatalogSnapshot? GearCatalogSnapshot = null,
     IReadOnlyList<EquipmentPreset>? EquipmentPresets = null,
     SpellCastProgress? ActiveSpellCastProgress = null,
-    EquipmentProgress? ActiveEquipmentProgress = null)
+    EquipmentProgress? ActiveEquipmentProgress = null,
+    bool IncludeStalePartyMembersInQuestForecasts = false)
 {
     public static SessionViewModel Empty { get; } = new(
         IsBusy: false,

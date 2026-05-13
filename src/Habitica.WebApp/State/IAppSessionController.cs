@@ -62,4 +62,6 @@ public interface IAppSessionController
     Task<LocalDataActionResult> PushCloudSyncAsync(CancellationToken cancellationToken = default);
 
     Task<LocalDataActionResult> DownloadCloudSyncAsync(CancellationToken cancellationToken = default);
+
+    Task SetIncludeStalePartyMembersAsync(bool include, CancellationToken cancellationToken = default);
 }

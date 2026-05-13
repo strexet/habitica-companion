@@ -40,6 +40,7 @@ builder.Services.AddScoped<LiveTestWorkflow>();
 builder.Services.AddScoped<TaskListViewModelFactory>();
 builder.Services.AddScoped<LoginWorkflow>();
 builder.Services.AddScoped<IRemoteUserDataSyncProvider, CloudflareUserDataSyncProvider>();
+builder.Services.AddScoped<IRemotePartyDataSyncProvider, CloudflarePartyDataSyncProvider>();
 builder.Services.AddScoped<IAppSessionController, AppSessionController>();
 builder.Services.AddScoped<IHabiticaSyncClient>(_ => new HabiticaApiClient(
     new HttpClient

@@ -146,16 +146,15 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Night Owls", cut.Markup);
         Assert.Contains("Quest-focused party", cut.Markup);
         Assert.Contains("seaserpent", cut.Markup);
-        Assert.Contains("Party pending damage", cut.Markup);
-        Assert.Contains("42.75", cut.Markup);
-        Assert.Contains("Boss HP remaining", cut.Markup);
-        Assert.Contains("875.25", cut.Markup);
-        Assert.Contains("Total boss HP", cut.Markup);
-        Assert.Contains("1000", cut.Markup);
-        Assert.Contains("Pending damage to party", cut.Markup);
+        Assert.Contains("Pending party progress", cut.Markup);
+        Assert.Contains("42.75 damage", cut.Markup);
+        Assert.Contains("Current boss HP", cut.Markup);
+        Assert.Contains("875.25/1000 hp", cut.Markup);
+        Assert.Contains("Estimated boss HP after CRON", cut.Markup);
+        Assert.Contains("832.5/1000 hp", cut.Markup);
         Assert.DoesNotContain("Damage taken", cut.Markup);
         Assert.Contains("CRON summary", cut.Markup);
-        Assert.Contains("CRONed 1/3", cut.Markup);
+        Assert.Contains("CRON applied 1/3", cut.Markup);
         Assert.Contains("Data gaps", cut.Markup);
         Assert.Contains("1 unknown", cut.Markup);
         Assert.Contains("Average best buff time", cut.Markup);
@@ -180,6 +179,44 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("Details", cut.Markup);
         Assert.DoesNotContain("Day start", cut.Markup);
         Assert.DoesNotContain("Habitica public member data hides day start/timezone", cut.Markup);
+    }
+
+    [Fact]
+    public void Renders_party_description_markdown_without_raw_html()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: CreateSnapshot(),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                PartySnapshot: new PartySnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                    "party-123",
+                    "Night Owls",
+                    "Line one\n**Bold move** <script>alert(1)</script>\n[Site](https://example.com)",
+                    1,
+                    null,
+                    Array.Empty<PartyMemberSnapshot>()),
+                PartyFreshness: SnapshotFreshnessState.Fresh)));
+
+        var cut = Render<PartyPage>();
+
+        Assert.Contains("Line one", cut.Markup);
+        Assert.Contains("<br", cut.Markup);
+        Assert.Contains("<strong>Bold move</strong>", cut.Markup);
+        Assert.Contains("<a href=\"https://example.com/\"", cut.Markup);
+        Assert.Contains("&lt;script&gt;alert(1)&lt;/script&gt;", cut.Markup);
+        Assert.DoesNotContain("<script>", cut.Markup);
     }
 
     [Fact]
@@ -269,7 +306,7 @@ public sealed class PartyPageTests : BunitContext
 
         var cut = Render<PartyPage>();
 
-        Assert.Contains("CRONed 2/2", cut.Markup);
+        Assert.Contains("CRON applied 2/2", cut.Markup);
         Assert.DoesNotContain("Unknown 0", cut.Markup);
         Assert.DoesNotContain("0 possibly stale", cut.Markup);
     }
@@ -353,11 +390,34 @@ public sealed class PartyPageTests : BunitContext
 
         var cut = Render<PartyPage>();
 
-        Assert.Contains("Party pending items", cut.Markup);
+        Assert.Contains("Pending party items", cut.Markup);
         Assert.Contains("7 items", cut.Markup);
         Assert.Contains("Pending quest", cut.Markup);
         Assert.Contains("3 items", cut.Markup);
         Assert.Contains("4 items", cut.Markup);
-        Assert.DoesNotContain("Party pending damage", cut.Markup);
+        Assert.DoesNotContain("Pending party damage", cut.Markup);
+    }
+
+    private static UserSnapshot CreateSnapshot()
+    {
+        return new UserSnapshot(
+            DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+            "Mage Tester",
+            "wizard",
+            15,
+            42.5m,
+            50m,
+            33.5m,
+            40m,
+            125.1m,
+            74.9m,
+            88.25m,
+            "party-123",
+            "Wolf-Base",
+            "Wolf-Base",
+            new EquipmentSnapshot(
+                new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_wizard_1"),
+                new GearSlotsSnapshot("head_special_2", "armor_special_2", "weapon_special_2", "shield_special_2", "back_special_2")),
+            new InventorySnapshot(1, 5, 1, 1, 1, 1, Array.Empty<string>()));
     }
 }

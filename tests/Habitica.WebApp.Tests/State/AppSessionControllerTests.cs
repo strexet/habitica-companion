@@ -386,16 +386,18 @@ public sealed class AppSessionControllerTests
 
     private static AppSessionController CreateController(
         FakeDiagnosticsLogStore logStore,
-        IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null)
+        IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
+        IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
-        return CreateController(logStore, syncClient, remoteUserDataSyncProvider);
+        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider);
     }
 
     private static AppSessionController CreateController(
         FakeDiagnosticsLogStore logStore,
         FakeHabiticaSyncClient syncClient,
-        IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null)
+        IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
+        IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null)
     {
         var credentialStore = new FakeCredentialStore();
         var keyValueStorage = new FakeKeyValueStorage();
@@ -418,6 +420,7 @@ public sealed class AppSessionControllerTests
             partyCronHistoryStore: partyCronHistoryStore,
             partySnapshotStore: partySnapshotStore,
             localUserDataPortabilityService: new LocalUserDataPortabilityService(keyValueStorage, TimeProvider.System),
+            remotePartyDataSyncProvider: remotePartyDataSyncProvider ?? new FakeRemotePartyDataSyncProvider(),
             remoteUserDataSyncProvider: remoteUserDataSyncProvider ?? new FakeRemoteUserDataSyncProvider(),
             taskSnapshotStore: taskSnapshotStore,
             userSnapshotStore: userSnapshotStore,
@@ -483,6 +486,41 @@ public sealed class AppSessionControllerTests
         {
             UploadCount++;
             UploadedJson = plainTextJson;
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class FakeRemotePartyDataSyncProvider : IRemotePartyDataSyncProvider
+    {
+        public int DownloadCount { get; private set; }
+
+        public int UploadCount { get; private set; }
+
+        public RemotePartyDataSnapshot? Snapshot { get; set; }
+
+        public string? UploadedPartySnapshotJson { get; private set; }
+
+        public string? UploadedCronHistoryJson { get; private set; }
+
+        public Task<RemotePartyDataSnapshot?> DownloadAsync(
+            HabiticaCredentials credentials,
+            string partyId,
+            CancellationToken cancellationToken)
+        {
+            DownloadCount++;
+            return Task.FromResult(Snapshot);
+        }
+
+        public Task UploadAsync(
+            HabiticaCredentials credentials,
+            string partyId,
+            string partySnapshotJson,
+            string cronHistoryJson,
+            CancellationToken cancellationToken)
+        {
+            UploadCount++;
+            UploadedPartySnapshotJson = partySnapshotJson;
+            UploadedCronHistoryJson = cronHistoryJson;
             return Task.CompletedTask;
         }
     }

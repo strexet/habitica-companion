@@ -518,8 +518,8 @@
                 builder.CloseElement();
                 builder.OpenComponent<MudProgressLinear>(sequence++);
                 builder.AddAttribute(sequence++, "Color", Color.Primary);
-                builder.AddAttribute(sequence++, "Max", progress.Total);
-                builder.AddAttribute(sequence++, "Value", progress.Completed);
+                builder.AddAttribute(sequence++, "Max", (double)progress.Total);
+                builder.AddAttribute(sequence++, "Value", (double)progress.Completed);
                 builder.CloseComponent();
                 builder.CloseElement();
             }

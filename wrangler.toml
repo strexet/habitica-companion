@@ -1,0 +1,14 @@
+name = "habitica-companion"
+compatibility_date = "2026-05-13"
+pages_build_output_dir = "output/wwwroot"
+
+[[kv_namespaces]]
+binding = "HABITICA_SYNC_KV"
+id = "REPLACE_WITH_PRODUCTION_KV_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_PREVIEW_KV_NAMESPACE_ID"
+
+[[d1_databases]]
+binding = "HABITICA_PARTY_DB"
+database_name = "habitica-companion-party-sync"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+preview_database_id = "REPLACE_WITH_PREVIEW_D1_DATABASE_ID"

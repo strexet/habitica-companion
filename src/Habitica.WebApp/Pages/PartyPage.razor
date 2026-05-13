@@ -3,6 +3,7 @@
 @inject IAppSessionController SessionController
 @using System.Globalization
 @using Habitica.Domain.Party
+@using Habitica.WebApp.Formatting
 
 <PageTitle>Party</PageTitle>
 
@@ -12,8 +13,7 @@
             <p class="section-label">Party overview</p>
             <h1>Cached party state</h1>
             <p class="panel-copy">
-                Review the latest party summary stored on this device, including quest progress and member totals,
-                without making any live group mutations from the app.
+                Review the latest synced party summary, quest state, CRON timing, and participant details without mutating party data from this app.
             </p>
         </div>
     </section>
@@ -33,6 +33,8 @@
     else
     {
         var snapshot = SessionController.State.PartySnapshot;
+        var members = GetDisplayMembers(snapshot);
+        var quest = snapshot.Quest;
 
         <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.PartyFreshness)" Variant="Variant.Filled">
             @GetFreshnessLabel(SessionController.State.PartyFreshness)
@@ -53,8 +55,8 @@
 
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">Quest</span>
-                <strong>@(snapshot.Quest?.Key ?? "No active quest")</strong>
-                <span class="dashboard-stat-note">@((snapshot.Quest?.IsActive ?? false) ? "Active" : "Inactive or missing")</span>
+                <strong>@(quest?.Key ?? "No active quest")</strong>
+                <span class="dashboard-stat-note">@((quest?.IsActive ?? false) ? "Active" : "Inactive or missing")</span>
             </article>
         </section>
 
@@ -62,80 +64,108 @@
             <article class="card-surface dashboard-panel">
                 <p class="section-label">Summary</p>
                 <h2>Party notes</h2>
-                <p class="panel-copy">@(string.IsNullOrWhiteSpace(snapshot.Summary) ? "No cached summary text." : snapshot.Summary)</p>
+                <div class="panel-copy party-summary-markdown">@SafeMarkdownRenderer.Render(snapshot.Summary)</div>
             </article>
 
-            <article class="card-surface dashboard-panel">
-                <p class="section-label">Quest state</p>
-                <h2>Quest progress snapshot</h2>
+            <article class="card-surface dashboard-panel party-quest-panel">
+                <div class="party-section-head">
+                    <div>
+                        <p class="section-label">Quest state</p>
+                        <h2>Quest progress snapshot</h2>
+                    </div>
+                    <label class="checkbox-row compact party-toggle">
+                        <input checked="@SessionController.State.IncludeStalePartyMembersInQuestForecasts"
+                               type="checkbox"
+                               @onchange="HandleIncludeStaleChangedAsync" />
+                        <span>Include stale members</span>
+                    </label>
+                </div>
 
-                @if (snapshot.Quest is null)
+                @if (quest is null)
                 {
                     <p class="panel-copy">No cached active quest state is currently available for this party.</p>
                 }
                 else
                 {
-                    <dl class="dashboard-definition-list">
+                    var appliedProgress = GetAppliedProgress(quest);
+                    var pendingUserProgress = GetPendingUserProgress(quest);
+                    var pendingPartyProgress = GetPendingPartyProgress(quest);
+                    var estimatedPostCronProgress = GetEstimatedPostCronProgress(quest);
+
+                    <div class="party-quest-metric-grid">
+                        <article class="dashboard-stat-card">
+                            <span class="dashboard-stat-label">Current progress</span>
+                            <strong>@FormatQuestMetric(appliedProgress)</strong>
+                            <span class="dashboard-stat-note">@appliedProgress?.Label</span>
+                        </article>
+
+                        <article class="dashboard-stat-card">
+                            <span class="dashboard-stat-label">Your pending progress</span>
+                            <strong>@FormatQuestMetric(pendingUserProgress)</strong>
+                            <span class="dashboard-stat-note">@pendingUserProgress?.Label</span>
+                        </article>
+
+                        <article class="dashboard-stat-card">
+                            <span class="dashboard-stat-label">Pending party progress</span>
+                            <strong>@FormatQuestMetric(pendingPartyProgress)</strong>
+                            <span class="dashboard-stat-note">@pendingPartyProgress?.Label</span>
+                        </article>
+
+                        <article class="dashboard-stat-card">
+                            <span class="dashboard-stat-label">Estimated post-CRON</span>
+                            <strong>@FormatQuestMetric(estimatedPostCronProgress)</strong>
+                            <span class="dashboard-stat-note">@estimatedPostCronProgress?.Label</span>
+                        </article>
+                    </div>
+
+                    <dl class="dashboard-definition-list party-quest-definition-list">
                         <div>
                             <dt>Quest key</dt>
-                            <dd>@snapshot.Quest.Key</dd>
+                            <dd>@quest.Key</dd>
                         </div>
-
-                        @if (snapshot.Quest.TotalPendingDamage is not null)
-                        {
-                            <div>
-                                <dt>Party pending damage</dt>
-                                <dd>@FormatQuestMetric(snapshot.Quest.TotalPendingDamage)</dd>
-                            </div>
-                        }
-                        else if (snapshot.Quest.TotalPendingCollectionItems is not null)
-                        {
-                            <div>
-                                <dt>Party pending items</dt>
-                                <dd>@FormatQuestItems(snapshot.Quest.TotalPendingCollectionItems)</dd>
-                            </div>
-                        }
-                        else if (snapshot.Quest.PendingDamage is not null)
-                        {
-                            <div>
-                                <dt>Pending damage</dt>
-                                <dd>@FormatQuestMetric(snapshot.Quest.PendingDamage)</dd>
-                            </div>
-                        }
-
-                        @if (snapshot.Quest.BossHealthRemaining is not null)
-                        {
-                            <div>
-                                <dt>Boss HP remaining</dt>
-                                <dd>@FormatQuestMetric(snapshot.Quest.BossHealthRemaining)</dd>
-                            </div>
-
-                            <div>
-                                <dt>Total boss HP</dt>
-                                <dd>@FormatQuestMetric(snapshot.Quest.BossHealthTotal)</dd>
-                            </div>
-                        }
-                        else
-                        {
-                            <div>
-                                <dt>@snapshot.Quest.ProgressLabel</dt>
-                                <dd>@FormatQuestMetric(snapshot.Quest.ProgressUp)</dd>
-                            </div>
-                        }
-
-                        @if (snapshot.Quest.PendingPartyDamage is not null)
-                        {
-                            <div>
-                                <dt>Pending damage to party</dt>
-                                <dd>@FormatQuestMetric(snapshot.Quest.PendingPartyDamage)</dd>
-                            </div>
-                        }
-
                         <div>
-                            <dt>Participants</dt>
-                            <dd>@snapshot.Quest.ParticipantCount</dd>
+                            <dt>Accepted</dt>
+                            <dd>@quest.ParticipationSummary?.AcceptedCount</dd>
+                        </div>
+                        <div>
+                            <dt>Pending</dt>
+                            <dd>@quest.ParticipationSummary?.PendingCount</dd>
+                        </div>
+                        <div>
+                            <dt>Rejected</dt>
+                            <dd>@quest.ParticipationSummary?.RejectedCount</dd>
+                        </div>
+                        <div>
+                            <dt>Unknown</dt>
+                            <dd>@quest.ParticipationSummary?.UnknownCount</dd>
+                        </div>
+                        <div>
+                            <dt>In Inn</dt>
+                            <dd>@quest.ParticipationSummary?.InnCount</dd>
+                        </div>
+                        @if (quest.PendingPartyDamage is not null)
+                        {
+                            <div>
+                                <dt>Pending party damage</dt>
+                                <dd>@FormatDecimal(quest.PendingPartyDamage.Value)</dd>
+                            </div>
+                        }
+                        <div>
+                            <dt>Estimate confidence</dt>
+                            <dd>@FormatEstimateConfidence(quest.CompletionEstimate)</dd>
+                        </div>
+                        <div>
+                            <dt>Estimate range</dt>
+                            <dd>@FormatCompletionRange(quest.CompletionEstimate)</dd>
                         </div>
                     </dl>
+
+                    @if (quest.CompletionEstimate is not null)
+                    {
+                        <MudAlert Dense="true" Severity="@GetEstimateSeverity(quest.CompletionEstimate)" Variant="Variant.Outlined">
+                            @quest.CompletionEstimate.Summary
+                        </MudAlert>
+                    }
                 }
             </article>
         </section>
@@ -146,7 +176,7 @@
                     <p class="section-label">CRON summary</p>
                     <h2>Buff timing window</h2>
                 </div>
-                <span class="ui-pill count-pill">CRONed @GetCronedLabel(snapshot)</span>
+                <span class="ui-pill count-pill">CRON applied @GetCronedLabel(snapshot)</span>
             </div>
 
             @if (snapshot.CronDashboard is null)
@@ -157,19 +187,10 @@
             {
                 <div class="party-cron-stat-grid">
                     <article class="dashboard-stat-card">
-                        <span class="dashboard-stat-label">CRONed</span>
+                        <span class="dashboard-stat-label">CRON applied</span>
                         <strong>@GetCronedLabel(snapshot)</strong>
                         <span class="dashboard-stat-note">@GetCronStateBreakdown(snapshot.CronDashboard)</span>
                     </article>
-
-                    @if (HasCronDataGaps(snapshot.CronDashboard))
-                    {
-                        <article class="dashboard-stat-card">
-                            <span class="dashboard-stat-label">Data gaps</span>
-                            <strong>@GetCronDataGapLabel(snapshot.CronDashboard)</strong>
-                            <span class="dashboard-stat-note">Excluded from high-confidence timing</span>
-                        </article>
-                    }
 
                     <article class="dashboard-stat-card">
                         <span class="dashboard-stat-label">Average best buff time</span>
@@ -182,6 +203,15 @@
                         <strong>@FormatTime(snapshot.CronDashboard.SelfFirstBuffTime)</strong>
                         <span class="dashboard-stat-note">After your CRON when available</span>
                     </article>
+
+                    @if (HasCronDataGaps(snapshot.CronDashboard))
+                    {
+                        <article class="dashboard-stat-card">
+                            <span class="dashboard-stat-label">Data gaps</span>
+                            <strong>@GetCronDataGapLabel(snapshot.CronDashboard)</strong>
+                            <span class="dashboard-stat-note">Reduced confidence</span>
+                        </article>
+                    }
                 </div>
 
                 @if (!string.IsNullOrWhiteSpace(snapshot.CronDashboard.SampleSizeWarning))
@@ -197,26 +227,41 @@
             <div class="party-section-head">
                 <div>
                     <p class="section-label">Members</p>
-                    <h2>Party member CRON state</h2>
+                    <h2>Party member status</h2>
                 </div>
-                <span class="ui-pill count-pill">@snapshot.Members.Count visible</span>
+                <span class="ui-pill count-pill">@members.Count visible</span>
             </div>
 
-            @if (snapshot.Members.Count == 0)
+            @if (members.Count == 0)
             {
-                <p class="panel-copy">No cached party member CRON data is available yet.</p>
+                <p class="panel-copy">No cached party member data is available yet.</p>
             }
             else
             {
-                <div class="party-member-list">
-                    @foreach (var member in GetDisplayMembers(snapshot))
+                <div class="party-member-list party-member-card-grid">
+                    @foreach (var member in members)
                     {
-                        <article class="party-member-row">
-                            <div>
-                                <strong>@member.DisplayName</strong>
-                                <span class="dashboard-stat-note">@member.MemberId</span>
+                        <article class="party-member-card">
+                            <div class="party-member-card-head">
+                                <div>
+                                    <strong>@member.DisplayName</strong>
+                                    <span class="dashboard-stat-note">@member.MemberId</span>
+                                </div>
+                                <div class="party-member-pill-row">
+                                    <span class="@GetCronStateClass(member.CronState)">@GetCronStateLabel(member.CronState)</span>
+                                    <span class="ui-pill state-pill">@GetParticipationLabel(member.ParticipationStatus)</span>
+                                    @if (member.IsStale)
+                                    {
+                                        <span class="ui-pill state-pill warning-pill">Stale</span>
+                                    }
+                                </div>
                             </div>
-                            <span class="@GetCronStateClass(member.CronState)">@GetCronStateLabel(member.CronState)</span>
+
+                            <div class="party-member-classline">
+                                <span>@FormatClass(member.ClassName)</span>
+                                <span>Level @FormatLevel(member.Level)</span>
+                            </div>
+
                             <dl class="party-member-meta">
                                 <div>
                                     <dt>Last CRON</dt>
@@ -226,7 +271,7 @@
                                     <dt>Average CRON</dt>
                                     <dd>@FormatAverageCron(member)</dd>
                                 </div>
-                                @if (snapshot.Quest?.IsActive == true)
+                                @if (quest?.IsActive == true)
                                 {
                                     <div>
                                         <dt>Pending quest</dt>
@@ -234,6 +279,24 @@
                                     </div>
                                 }
                             </dl>
+
+                            @if (member.Stats?.HasAnySection == true)
+                            {
+                                <div class="party-member-stats">
+                                    @foreach (var statSection in GetStatSections(member))
+                                    {
+                                        <div class="party-stat-section">
+                                            <span class="dashboard-stat-label">@statSection.Label</span>
+                                            <div class="party-stat-grid">
+                                                <span>STR @FormatStat(statSection.Stats.Strength)</span>
+                                                <span>INT @FormatStat(statSection.Stats.Intelligence)</span>
+                                                <span>CON @FormatStat(statSection.Stats.Constitution)</span>
+                                                <span>PER @FormatStat(statSection.Stats.Perception)</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
                         </article>
                     }
                 </div>
@@ -341,7 +404,22 @@
 
     private static IReadOnlyList<PartyMemberSnapshot> GetDisplayMembers(PartySnapshot snapshot)
     {
-        return snapshot.Members;
+        if (snapshot.CronDashboard?.Members is not { Count: > 0 } enrichedMembers)
+        {
+            return snapshot.Members;
+        }
+
+        var enrichedById = new Dictionary<string, PartyMemberSnapshot>(StringComparer.Ordinal);
+        foreach (var member in enrichedMembers)
+        {
+            enrichedById[member.MemberId] = member;
+        }
+
+        return snapshot.Members
+            .Select(member => enrichedById.TryGetValue(member.MemberId, out var enrichedMember)
+                ? enrichedMember
+                : member)
+            .ToArray();
     }
 
     private static string GetCronedLabel(PartySnapshot snapshot)
@@ -358,28 +436,33 @@
 
     private static string GetCronStateBreakdown(PartyCronDashboardSnapshot dashboard)
     {
-        var waiting = dashboard.VisibleMemberCount - dashboard.CronedCount - dashboard.UnknownCount - dashboard.PossiblyStaleCount;
-        return $"{Math.Max(0, waiting)} not croned yet";
+        return $"{dashboard.AwaitingCount} awaiting, {dashboard.InnCount} in Inn, {dashboard.UnknownCount + dashboard.PossiblyStaleCount} unknown";
     }
 
     private static bool HasCronDataGaps(PartyCronDashboardSnapshot dashboard)
     {
-        return dashboard.UnknownCount > 0 || dashboard.PossiblyStaleCount > 0;
+        return dashboard.UnknownCount > 0 || dashboard.PossiblyStaleCount > 0 || dashboard.StaleCount > 0 || dashboard.InnCount > 0;
     }
 
     private static string GetCronDataGapLabel(PartyCronDashboardSnapshot dashboard)
     {
-        if (dashboard.UnknownCount > 0 && dashboard.PossiblyStaleCount > 0)
+        var parts = new List<string>();
+        if (dashboard.UnknownCount + dashboard.PossiblyStaleCount > 0)
         {
-            return $"{FormatCount(dashboard.UnknownCount, "unknown")}, {FormatCount(dashboard.PossiblyStaleCount, "possibly stale")}";
+            parts.Add(FormatCount(dashboard.UnknownCount + dashboard.PossiblyStaleCount, "unknown"));
         }
 
-        if (dashboard.UnknownCount > 0)
+        if (dashboard.StaleCount > 0)
         {
-            return FormatCount(dashboard.UnknownCount, "unknown");
+            parts.Add(FormatCount(dashboard.StaleCount, "stale"));
         }
 
-        return FormatCount(dashboard.PossiblyStaleCount, "possibly stale");
+        if (dashboard.InnCount > 0)
+        {
+            parts.Add(FormatCount(dashboard.InnCount, "in Inn"));
+        }
+
+        return string.Join(", ", parts);
     }
 
     private static string FormatCount(int count, string label)
@@ -397,9 +480,9 @@
     {
         return state switch
         {
-            PartyCronState.CronedToday => "Croned today",
-            PartyCronState.NotCronedYet => "Not croned yet",
-            PartyCronState.PossiblyStale => "Possibly stale",
+            PartyCronState.CronedToday => "CRON applied",
+            PartyCronState.NotCronedYet => "Awaiting CRON",
+            PartyCronState.InInn => "In Inn",
             _ => "Unknown"
         };
     }
@@ -410,8 +493,19 @@
         {
             PartyCronState.CronedToday => "ui-pill state-pill success-pill",
             PartyCronState.NotCronedYet => "ui-pill state-pill warning-pill",
-            PartyCronState.PossiblyStale => "ui-pill state-pill warning-pill",
+            PartyCronState.InInn => "ui-pill state-pill",
             _ => "ui-pill state-pill"
+        };
+    }
+
+    private static string GetParticipationLabel(PartyQuestParticipationStatus status)
+    {
+        return status switch
+        {
+            PartyQuestParticipationStatus.Accepted => "Accepted",
+            PartyQuestParticipationStatus.Pending => "Pending",
+            PartyQuestParticipationStatus.Rejected => "Rejected",
+            _ => "Unknown"
         };
     }
 
@@ -438,40 +532,199 @@
         return $"Avg {member.AverageCronTime.Value:hh\\:mm} ({member.AverageCronSampleCount} {dayLabel})";
     }
 
-    private static string FormatQuestMetric(decimal? value)
+    private static string FormatQuestMetric(PartyQuestMetricSnapshot? metric)
     {
-        return value is null ? "Unknown" : value.Value.ToString("0.##");
-    }
-
-    private static string FormatQuestItems(decimal? value)
-    {
-        if (value is null)
+        if (metric is null)
         {
             return "Unknown";
         }
 
-        var unit = value == 1m ? "item" : "items";
-        return $"{FormatQuestMetric(value)} {unit}";
+        var value = FormatDecimal(metric.Value);
+        if (metric.Total is null)
+        {
+            return $"{value} {metric.Unit}";
+        }
+
+        return $"{value}/{FormatDecimal(metric.Total.Value)} {metric.Unit}";
+    }
+
+    private static PartyQuestMetricSnapshot? GetAppliedProgress(PartyQuestSnapshot quest)
+    {
+        if (quest.AppliedProgress is not null)
+        {
+            return quest.AppliedProgress;
+        }
+
+        if (quest.BossHealthRemaining is not null)
+        {
+            return new PartyQuestMetricSnapshot(
+                "Current boss HP",
+                quest.BossHealthRemaining.Value,
+                quest.BossHealthTotal,
+                "hp");
+        }
+
+        return new PartyQuestMetricSnapshot(
+            quest.ProgressLabel,
+            quest.ProgressUp,
+            quest.CollectionItemsTotal,
+            quest.QuestType == PartyQuestType.Collection ? "items" : "points");
+    }
+
+    private static PartyQuestMetricSnapshot? GetPendingUserProgress(PartyQuestSnapshot quest)
+    {
+        return quest.PendingUserProgress;
+    }
+
+    private static PartyQuestMetricSnapshot? GetPendingPartyProgress(PartyQuestSnapshot quest)
+    {
+        if (quest.PendingPartyProgress is not null)
+        {
+            return quest.PendingPartyProgress;
+        }
+
+        if (quest.TotalPendingDamage is not null)
+        {
+            return new PartyQuestMetricSnapshot("Pending party damage", quest.TotalPendingDamage.Value, null, "damage");
+        }
+
+        if (quest.TotalPendingCollectionItems is not null)
+        {
+            return new PartyQuestMetricSnapshot("Pending party items", quest.TotalPendingCollectionItems.Value, null, "items");
+        }
+
+        if (quest.PendingDamage is not null)
+        {
+            return new PartyQuestMetricSnapshot("Pending damage", quest.PendingDamage.Value, null, "damage");
+        }
+
+        return null;
+    }
+
+    private static PartyQuestMetricSnapshot? GetEstimatedPostCronProgress(PartyQuestSnapshot quest)
+    {
+        if (quest.EstimatedPostCronProgress is not null)
+        {
+            return quest.EstimatedPostCronProgress;
+        }
+
+        var pendingPartyProgress = GetPendingPartyProgress(quest);
+        if (quest.BossHealthRemaining is not null && pendingPartyProgress is not null)
+        {
+            return new PartyQuestMetricSnapshot(
+                "Estimated boss HP after CRON",
+                Math.Max(0m, quest.BossHealthRemaining.Value - pendingPartyProgress.Value),
+                quest.BossHealthTotal,
+                "hp");
+        }
+
+        if (quest.CollectionItemsTotal is not null && pendingPartyProgress is not null)
+        {
+            return new PartyQuestMetricSnapshot(
+                "Estimated items after CRON",
+                Math.Min(quest.CollectionItemsTotal.Value, quest.ProgressUp + pendingPartyProgress.Value),
+                quest.CollectionItemsTotal,
+                "items");
+        }
+
+        return null;
+    }
+
+    private static string FormatDecimal(decimal value)
+    {
+        return value.ToString("0.##", CultureInfo.InvariantCulture);
     }
 
     private static string FormatMemberPendingQuest(PartyMemberSnapshot member)
     {
         if (member.PendingQuestDamage is not null && member.PendingQuestItems is not null)
         {
-            return $"{FormatQuestMetric(member.PendingQuestDamage)} damage, {FormatQuestItems(member.PendingQuestItems)}";
+            return $"{FormatDecimal(member.PendingQuestDamage.Value)} damage, {FormatDecimal(member.PendingQuestItems.Value)} items";
         }
 
         if (member.PendingQuestDamage is not null)
         {
-            return $"{FormatQuestMetric(member.PendingQuestDamage)} damage";
+            return $"{FormatDecimal(member.PendingQuestDamage.Value)} damage";
         }
 
         if (member.PendingQuestItems is not null)
         {
-            return FormatQuestItems(member.PendingQuestItems);
+            return $"{FormatDecimal(member.PendingQuestItems.Value)} items";
         }
 
         return "Unknown";
+    }
+
+    private static string FormatEstimateConfidence(PartyQuestCompletionEstimate? estimate)
+    {
+        return estimate?.Confidence.ToString() ?? "Unknown";
+    }
+
+    private static string FormatCompletionRange(PartyQuestCompletionEstimate? estimate)
+    {
+        if (estimate?.EarliestCompletionUtc is null)
+        {
+            return "Unknown";
+        }
+
+        if (estimate.LatestCompletionUtc is null || estimate.LatestCompletionUtc == estimate.EarliestCompletionUtc)
+        {
+            return estimate.EarliestCompletionUtc.Value.ToLocalTime().ToString("MMM d, HH:mm");
+        }
+
+        return $"{estimate.EarliestCompletionUtc.Value.ToLocalTime():MMM d, HH:mm} - {estimate.LatestCompletionUtc.Value.ToLocalTime():MMM d, HH:mm}";
+    }
+
+    private static Severity GetEstimateSeverity(PartyQuestCompletionEstimate estimate)
+    {
+        return estimate.Confidence switch
+        {
+            PartyQuestEstimateConfidence.High => Severity.Success,
+            PartyQuestEstimateConfidence.Medium => Severity.Info,
+            PartyQuestEstimateConfidence.Low => Severity.Warning,
+            _ => Severity.Info
+        };
+    }
+
+    private static string FormatClass(string? className)
+    {
+        return string.IsNullOrWhiteSpace(className) ? "Class unknown" : className;
+    }
+
+    private static string FormatLevel(int? level)
+    {
+        return level?.ToString(CultureInfo.InvariantCulture) ?? "Unknown";
+    }
+
+    private static string FormatStat(decimal? value)
+    {
+        return value?.ToString("0.##", CultureInfo.InvariantCulture) ?? "-";
+    }
+
+    private static IReadOnlyList<(string Label, PartyStatSectionSnapshot Stats)> GetStatSections(PartyMemberSnapshot member)
+    {
+        var sections = new List<(string Label, PartyStatSectionSnapshot Stats)>();
+        if (member.Stats?.BaseAllocated?.HasAnyValue == true)
+        {
+            sections.Add(("Base/Allocated", member.Stats.BaseAllocated));
+        }
+
+        if (member.Stats?.Gear?.HasAnyValue == true)
+        {
+            sections.Add(("Gear", member.Stats.Gear));
+        }
+
+        if (member.Stats?.Buffs?.HasAnyValue == true)
+        {
+            sections.Add(("Buffs", member.Stats.Buffs));
+        }
+
+        if (member.Stats?.Total?.HasAnyValue == true)
+        {
+            sections.Add(("Total", member.Stats.Total));
+        }
+
+        return sections;
     }
 
     private static decimal ChartX(int hour)
@@ -538,6 +791,11 @@
             23 => "end",
             _ => "middle"
         };
+    }
+
+    private async Task HandleIncludeStaleChangedAsync(ChangeEventArgs args)
+    {
+        await SessionController.SetIncludeStalePartyMembersAsync(args.Value is true);
     }
 
     private void HandleStateChanged()

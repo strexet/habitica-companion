@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json;
 using Habitica.Application.Auth;
 using Habitica.Application.Diagnostics;
 using Habitica.Application.Inventory;
@@ -29,12 +30,15 @@ public sealed class AppSessionController : IAppSessionController
     private readonly IPartyCronHistoryStore _partyCronHistoryStore;
     private readonly IPartySnapshotStore _partySnapshotStore;
     private readonly LocalUserDataPortabilityService _localUserDataPortabilityService;
+    private readonly IRemotePartyDataSyncProvider _remotePartyDataSyncProvider;
     private readonly IRemoteUserDataSyncProvider _remoteUserDataSyncProvider;
     private readonly SnapshotFreshnessPolicy _snapshotFreshnessPolicy;
     private readonly ITaskSnapshotStore _taskSnapshotStore;
     private readonly IUserSnapshotStore _userSnapshotStore;
     private readonly TimeProvider _timeProvider;
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
     private HabiticaCredentials? _currentCredentials;
+    private bool _includeStalePartyMembersInQuestForecasts;
     private bool _initialized;
     private bool _persistLocally;
 
@@ -49,6 +53,7 @@ public sealed class AppSessionController : IAppSessionController
         IPartyCronHistoryStore partyCronHistoryStore,
         IPartySnapshotStore partySnapshotStore,
         LocalUserDataPortabilityService localUserDataPortabilityService,
+        IRemotePartyDataSyncProvider remotePartyDataSyncProvider,
         IRemoteUserDataSyncProvider remoteUserDataSyncProvider,
         ITaskSnapshotStore taskSnapshotStore,
         IUserSnapshotStore userSnapshotStore,
@@ -67,6 +72,7 @@ public sealed class AppSessionController : IAppSessionController
         _partyCronHistoryStore = partyCronHistoryStore;
         _partySnapshotStore = partySnapshotStore;
         _localUserDataPortabilityService = localUserDataPortabilityService;
+        _remotePartyDataSyncProvider = remotePartyDataSyncProvider;
         _remoteUserDataSyncProvider = remoteUserDataSyncProvider;
         _taskSnapshotStore = taskSnapshotStore;
         _userSnapshotStore = userSnapshotStore;
@@ -132,6 +138,13 @@ public sealed class AppSessionController : IAppSessionController
         {
             ErrorMessage = "Sign in is required before refreshing."
         });
+    }
+
+    public async Task SetIncludeStalePartyMembersAsync(bool include, CancellationToken cancellationToken = default)
+    {
+        _includeStalePartyMembersInQuestForecasts = include;
+        await RebuildDerivedLocalStateAsync(State.UserId ?? _currentCredentials?.UserId, cancellationToken);
+        await LoadCachedStateAsync(cancellationToken);
     }
 
     public async Task<LiveTestSuiteResult> RunSafeLiveTestsAsync(CancellationToken cancellationToken = default)
@@ -1054,13 +1067,22 @@ public sealed class AppSessionController : IAppSessionController
         {
             SetState(State with { ErrorMessage = null, IsBusy = true });
             var result = await MergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            var partyResult = await TryMergeAndUploadPartySyncAsync(credentials, cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
 
             SetState(State with { ErrorMessage = null, IsBusy = false });
+            var message = result.MergedRemoteData
+                ? $"Merged existing cloud data and uploaded {result.UploadedRecordCount} encrypted local data records to Cloudflare sync."
+                : $"Uploaded {result.UploadedRecordCount} encrypted local data records to Cloudflare sync.";
+            if (partyResult is not null)
+            {
+                message += partyResult.MergedRemoteHistory
+                    ? " Shared party CRON data was merged and uploaded."
+                    : " Shared party CRON data was uploaded.";
+            }
+
             return LocalDataActionResult.Success(
-                result.MergedRemoteData
-                    ? $"Merged existing cloud data and uploaded {result.UploadedRecordCount} encrypted local data records to Cloudflare sync."
-                    : $"Uploaded {result.UploadedRecordCount} encrypted local data records to Cloudflare sync.");
+                message);
         }
         catch (Exception exception)
         {
@@ -1113,9 +1135,22 @@ public sealed class AppSessionController : IAppSessionController
         }
 
         var result = await MergeAndUploadCloudSyncAsync(credentials, cancellationToken);
-        return result.MergedRemoteData
-            ? "Imported data, merged existing encrypted cloud sync data, and uploaded the result."
-            : "Imported data was uploaded to encrypted cloud sync.";
+        var messages = new List<string>
+        {
+            result.MergedRemoteData
+                ? "Imported data, merged existing encrypted cloud sync data, and uploaded the result."
+                : "Imported data was uploaded to encrypted cloud sync."
+        };
+
+        var partyResult = await TryMergeAndUploadPartySyncAsync(credentials, cancellationToken);
+        if (partyResult is not null)
+        {
+            messages.Add(partyResult.MergedRemoteHistory
+                ? "Shared party CRON data was merged and uploaded."
+                : "Shared party CRON data was uploaded.");
+        }
+
+        return string.Join(" ", messages);
     }
 
     private async Task<CloudSyncUploadResult?> TryMergeAndUploadCloudSyncAsync(
@@ -1171,6 +1206,71 @@ public sealed class AppSessionController : IAppSessionController
         return new CloudSyncUploadResult(mergedRemoteData, bundle.Records.Count);
     }
 
+    private async Task<PartySyncUploadResult?> TryMergeAndUploadPartySyncAsync(
+        HabiticaCredentials credentials,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await MergeAndUploadPartySyncAsync(credentials, cancellationToken);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception exception)
+        {
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Auth,
+                "party-sync",
+                DiagnosticsSeverity.Warning,
+                DiagnosticsMode.Local,
+                $"Shared party sync was skipped: {exception.Message}",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["provider"] = "cloudflare",
+                    ["automatic"] = "true"
+                },
+                cancellationToken);
+            return null;
+        }
+    }
+
+    private async Task<PartySyncUploadResult?> MergeAndUploadPartySyncAsync(
+        HabiticaCredentials credentials,
+        CancellationToken cancellationToken)
+    {
+        var partySnapshot = await _partySnapshotStore.GetLatestAsync(cancellationToken);
+        if (partySnapshot is null || string.IsNullOrWhiteSpace(partySnapshot.PartyId))
+        {
+            return null;
+        }
+
+        var mergedRemoteHistory = false;
+        var remoteSnapshot = await _remotePartyDataSyncProvider.DownloadAsync(credentials, partySnapshot.PartyId, cancellationToken);
+        if (remoteSnapshot is not null && !string.IsNullOrWhiteSpace(remoteSnapshot.CronHistoryJson))
+        {
+            var remoteHistory = JsonSerializer.Deserialize<PartyCronHistorySnapshot>(remoteSnapshot.CronHistoryJson, JsonOptions);
+            if (remoteHistory is not null && remoteHistory.Events.Count > 0)
+            {
+                await _partyCronHistoryStore.UpsertAsync(remoteHistory.Events, partySnapshot.RetrievedAtUtc, cancellationToken);
+                await RebuildDerivedLocalStateAsync(credentials.UserId, cancellationToken);
+                partySnapshot = await _partySnapshotStore.GetLatestAsync(cancellationToken) ?? partySnapshot;
+                mergedRemoteHistory = true;
+            }
+        }
+
+        var cronHistory = await _partyCronHistoryStore.GetAsync(cancellationToken);
+        await _remotePartyDataSyncProvider.UploadAsync(
+            credentials,
+            partySnapshot.PartyId,
+            JsonSerializer.Serialize(partySnapshot, JsonOptions),
+            JsonSerializer.Serialize(cronHistory, JsonOptions),
+            cancellationToken);
+
+        return new PartySyncUploadResult(mergedRemoteHistory, cronHistory.Events.Count);
+    }
+
     private async Task RebuildDerivedLocalStateAsync(
         string? userId,
         CancellationToken cancellationToken)
@@ -1193,11 +1293,24 @@ public sealed class AppSessionController : IAppSessionController
             userId,
             partySnapshot.RetrievedAtUtc,
             TimeZoneInfo.Local);
+        var enrichedParty = partySnapshot with
+        {
+            Members = cronDashboard.Members,
+            CronDashboard = cronDashboard
+        };
+        var enrichedQuest = enrichedParty.Quest is null
+            ? null
+            : PartyQuestProgressCalculator.Enrich(
+                enrichedParty,
+                enrichedParty.Quest,
+                userId,
+                partySnapshot.RetrievedAtUtc,
+                TimeZoneInfo.Local,
+                _includeStalePartyMembersInQuestForecasts);
         await _partySnapshotStore.SaveAsync(
-            partySnapshot with
+            enrichedParty with
             {
-                Members = cronDashboard.Members,
-                CronDashboard = cronDashboard
+                Quest = enrichedQuest
             },
             cancellationToken);
     }
@@ -1227,6 +1340,7 @@ public sealed class AppSessionController : IAppSessionController
             DiagnosticsLogEntries = diagnosticsLogEntries,
             GearCatalogSnapshot = gearCatalog,
             EquipmentPresets = equipmentPresets,
+            IncludeStalePartyMembersInQuestForecasts = _includeStalePartyMembersInQuestForecasts,
             UserId = userId,
             UserFreshness = ClassifyFreshness(userSnapshot),
             UserSnapshot = userSnapshot
@@ -1281,8 +1395,10 @@ public sealed class AppSessionController : IAppSessionController
                 UserFreshness: ClassifyFreshness(userSnapshot),
                 UserId: _currentCredentials.UserId,
                 GearCatalogSnapshot: gearCatalog,
-                EquipmentPresets: equipmentPresets));
+                EquipmentPresets: equipmentPresets,
+                IncludeStalePartyMembersInQuestForecasts: _includeStalePartyMembersInQuestForecasts));
             await TryMergeAndUploadCloudSyncAsync(_currentCredentials, cancellationToken);
+            await TryMergeAndUploadPartySyncAsync(_currentCredentials, cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
             SetState(State with
             {
@@ -1580,6 +1696,10 @@ public sealed class AppSessionController : IAppSessionController
     private sealed record CloudSyncUploadResult(
         bool MergedRemoteData,
         int UploadedRecordCount);
+
+    private sealed record PartySyncUploadResult(
+        bool MergedRemoteHistory,
+        int UploadedEventCount);
 
     private SnapshotFreshnessState ClassifyFreshness(Habitica.Domain.Tasks.TaskCollectionSnapshot? snapshot)
     {
