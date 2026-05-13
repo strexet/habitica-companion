@@ -8,6 +8,7 @@ using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 using Habitica.Storage;
+using Habitica.WebApp.Sync;
 using Habitica.WebApp.State;
 
 namespace Habitica.WebApp.Tests.State;
@@ -109,6 +110,58 @@ public sealed class AppSessionControllerTests
             entry.FeatureArea == DiagnosticsFeatureArea.Inventory
             && entry.Operation == "inventory-save-preset"
             && entry.Metadata["presetName"] == "Casting");
+    }
+
+    [Fact]
+    public async Task RefreshAsync_merges_cloud_data_before_uploading_local_sync_bundle()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var remoteSync = new FakeRemoteUserDataSyncProvider
+        {
+            Snapshot = new RemoteUserDataSnapshot(
+                """
+                {
+                  "schemaVersion": 1,
+                  "exportedAtUtc": "2026-05-13T03:00:00Z",
+                  "userId": "user-id",
+                  "records": []
+                }
+                """,
+                DateTimeOffset.Parse("2026-05-13T03:00:00Z"))
+        };
+        var controller = CreateController(logStore, remoteUserDataSyncProvider: remoteSync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        await controller.RefreshAsync();
+
+        Assert.True(remoteSync.DownloadCount >= 2);
+        Assert.True(remoteSync.UploadCount >= 2);
+        Assert.NotNull(remoteSync.UploadedJson);
+    }
+
+    [Fact]
+    public async Task SaveEquipmentPresetAsync_uploads_encrypted_cloud_sync_bundle_after_local_change()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var remoteSync = new FakeRemoteUserDataSyncProvider();
+        var controller = CreateController(logStore, remoteUserDataSyncProvider: remoteSync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        var uploadCountBeforePreset = remoteSync.UploadCount;
+
+        await controller.SaveEquipmentPresetAsync(EquipmentSetKind.Battle, "Casting");
+
+        Assert.True(remoteSync.UploadCount > uploadCountBeforePreset);
+        Assert.NotNull(remoteSync.UploadedJson);
     }
 
     [Fact]
@@ -256,13 +309,18 @@ public sealed class AppSessionControllerTests
             && entry.Metadata["per"] == "1");
     }
 
-    private static AppSessionController CreateController(FakeDiagnosticsLogStore logStore)
+    private static AppSessionController CreateController(
+        FakeDiagnosticsLogStore logStore,
+        IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
-        return CreateController(logStore, syncClient);
+        return CreateController(logStore, syncClient, remoteUserDataSyncProvider);
     }
 
-    private static AppSessionController CreateController(FakeDiagnosticsLogStore logStore, FakeHabiticaSyncClient syncClient)
+    private static AppSessionController CreateController(
+        FakeDiagnosticsLogStore logStore,
+        FakeHabiticaSyncClient syncClient,
+        IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null)
     {
         var credentialStore = new FakeCredentialStore();
         var taskSnapshotStore = new FakeTaskSnapshotStore();
@@ -272,6 +330,7 @@ public sealed class AppSessionControllerTests
         var equipmentPresetStore = new FakeEquipmentPresetStore();
         var gearCatalogStore = new FakeGearCatalogStore();
         var logWriter = new DiagnosticsLogWriter(logStore, TimeProvider.System);
+        var keyValueStorage = new FakeKeyValueStorage();
 
         return new AppSessionController(
             loginWorkflow: new LoginWorkflow(syncClient, credentialStore, taskSnapshotStore, userSnapshotStore, partySnapshotStore, partyCronHistoryStore, logWriter),
@@ -283,12 +342,70 @@ public sealed class AppSessionControllerTests
             gearCatalogStore: gearCatalogStore,
             partyCronHistoryStore: partyCronHistoryStore,
             partySnapshotStore: partySnapshotStore,
+            localUserDataPortabilityService: new LocalUserDataPortabilityService(keyValueStorage, TimeProvider.System),
+            remoteUserDataSyncProvider: remoteUserDataSyncProvider ?? new FakeRemoteUserDataSyncProvider(),
             taskSnapshotStore: taskSnapshotStore,
             userSnapshotStore: userSnapshotStore,
             diagnosticsLogStore: logStore,
             diagnosticsLogWriter: logWriter,
             snapshotFreshnessPolicy: new SnapshotFreshnessPolicy(),
             timeProvider: TimeProvider.System);
+    }
+
+    private sealed class FakeKeyValueStorage : IKeyValueStorage
+    {
+        private readonly Dictionary<string, string> _values = new(StringComparer.Ordinal);
+
+        public Task<TValue?> GetAsync<TValue>(string key, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(default(TValue));
+        }
+
+        public Task<string?> GetRawJsonAsync(string key, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_values.GetValueOrDefault(key));
+        }
+
+        public Task RemoveAsync(string key, CancellationToken cancellationToken)
+        {
+            _values.Remove(key);
+            return Task.CompletedTask;
+        }
+
+        public Task SetAsync<TValue>(string key, TValue value, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task SetRawJsonAsync(string key, string jsonText, CancellationToken cancellationToken)
+        {
+            _values[key] = jsonText;
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class FakeRemoteUserDataSyncProvider : IRemoteUserDataSyncProvider
+    {
+        public int DownloadCount { get; private set; }
+
+        public int UploadCount { get; private set; }
+
+        public RemoteUserDataSnapshot? Snapshot { get; set; }
+
+        public string? UploadedJson { get; private set; }
+
+        public Task<RemoteUserDataSnapshot?> DownloadAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            DownloadCount++;
+            return Task.FromResult(Snapshot);
+        }
+
+        public Task UploadAsync(HabiticaCredentials credentials, string plainTextJson, CancellationToken cancellationToken)
+        {
+            UploadCount++;
+            UploadedJson = plainTextJson;
+            return Task.CompletedTask;
+        }
     }
 
     private sealed class FakeDiagnosticsLogStore : IDiagnosticsLogStore

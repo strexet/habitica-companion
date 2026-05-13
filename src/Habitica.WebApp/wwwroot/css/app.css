@@ -170,6 +170,11 @@ a {
     max-width: 42rem;
 }
 
+.compact-copy {
+    margin: 0.9rem 0 0;
+    font-size: 0.92rem;
+}
+
 .hero-panel .hero-copy {
     color: rgba(255, 249, 240, 0.86);
     margin-top: 1.1rem;
@@ -972,6 +977,30 @@ a {
 
 .danger-card {
     border-color: rgba(161, 63, 53, 0.18);
+}
+
+.import-status,
+.import-warning {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+}
+
+.import-warning {
+    background: rgba(197, 119, 43, 0.12);
+    border-color: rgba(197, 119, 43, 0.22);
+}
+
+.import-warning h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+}
+
+.import-warning p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.55;
 }
 
 .count-pill {

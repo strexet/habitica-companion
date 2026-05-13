@@ -254,15 +254,15 @@ Native shell work must not fork domain logic or Habitica API behavior.
 
 ### 4.8 Backend
 
-Do not add a backend for the initial architecture.
+Do not add a backend for the initial architecture unless a documented feature requires it.
 
-The baseline architecture is:
+The baseline read/write Habitica architecture is:
 
 ```text
 Browser PWA -> Habitica API v3 -> Local IndexedDB
 ```
 
-A backend may be proposed only for documented product needs such as:
+Optional backend surfaces may be introduced only for documented product needs such as:
 
 - team-shared analytics;
 - cloud sync of app-specific presets;
@@ -274,6 +274,14 @@ A backend may be proposed only for documented product needs such as:
 - secure proxying with explicit credential-handling design.
 
 If a backend is introduced, update this document before or during the implementation.
+
+Current optional backend:
+
+```text
+Browser PWA -> Cloudflare Pages Function -> Cloudflare KV
+```
+
+This backend is only for encrypted app-data sync. Habitica API credentials must never be sent to the Cloudflare endpoint. The browser derives a sync id and AES-GCM key from the active Habitica User ID and API Token, encrypts the local export payload, and uploads only encrypted JSON. The provider boundary must stay abstract so another remote sync provider can replace Cloudflare later.
 
 ## 5. Repository structure
 
@@ -657,7 +665,7 @@ Logs must redact:
 Primary deployment target:
 
 ```text
-static web hosting for Blazor WebAssembly PWA
+Cloudflare Pages for Blazor WebAssembly PWA
 ```
 
 MVP deployment contract:
@@ -666,6 +674,8 @@ MVP deployment contract:
 - require HTTPS;
 - require SPA fallback to `index.html` for app routes;
 - keep the service worker scope at the app root;
+- deploy `functions/api/sync/[syncId].js` as a Cloudflare Pages Function when encrypted cloud sync is enabled;
+- configure a Cloudflare KV binding named `HABITICA_SYNC_KV` for encrypted sync payloads;
 - treat subpath hosting as a non-baseline deployment that requires an explicit documented configuration change in the same change set.
 
 Acceptable hosts:

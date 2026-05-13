@@ -10,6 +10,7 @@ using Habitica.Rules.Spells;
 using Habitica.Rules.Stats;
 using Habitica.Storage;
 using Habitica.WebApp;
+using Habitica.WebApp.Sync;
 using Habitica.WebApp.State;
 using MudBlazor.Services;
 
@@ -29,6 +30,7 @@ builder.Services.AddScoped<IPartySnapshotStore, PartySnapshotStore>();
 builder.Services.AddScoped<ITaskSnapshotStore, TaskSnapshotStore>();
 builder.Services.AddScoped<IUserSnapshotStore, UserSnapshotStore>();
 builder.Services.AddScoped<SnapshotFreshnessPolicy>();
+builder.Services.AddScoped<LocalUserDataPortabilityService>();
 builder.Services.AddScoped<DiagnosticsLogWriter>();
 builder.Services.AddScoped<DiagnosticsPresetWorkflow>();
 builder.Services.AddScoped<InventoryViewModelFactory>();
@@ -37,6 +39,7 @@ builder.Services.AddScoped<CharacterStatsViewModelFactory>();
 builder.Services.AddScoped<LiveTestWorkflow>();
 builder.Services.AddScoped<TaskListViewModelFactory>();
 builder.Services.AddScoped<LoginWorkflow>();
+builder.Services.AddScoped<IRemoteUserDataSyncProvider, CloudflareUserDataSyncProvider>();
 builder.Services.AddScoped<IAppSessionController, AppSessionController>();
 builder.Services.AddScoped<IHabiticaSyncClient>(_ => new HabiticaApiClient(
     new HttpClient

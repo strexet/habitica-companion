@@ -1,0 +1,30 @@
+@page "/privacy"
+
+<PageTitle>Privacy</PageTitle>
+
+<div class="settings-shell">
+    <section class="card-surface settings-card">
+        <p class="section-label">Privacy</p>
+        <h1>Data handling</h1>
+        <p class="panel-copy">
+            Habitica API tokens stay in this browser. Export files are plain JSON and encrypted cloud sync stores only browser-encrypted payloads.
+        </p>
+
+        <div class="settings-grid">
+            <MudPaper Class="card-surface action-card" Elevation="0">
+                <h2>Habitica credentials</h2>
+                <p>Credentials are used to call Habitica from the browser and to derive encrypted cloud sync keys. They are not included in exports or sent to the Cloudflare sync endpoint.</p>
+            </MudPaper>
+
+            <MudPaper Class="card-surface action-card" Elevation="0">
+                <h2>Local and exported data</h2>
+                <p>Snapshots, party history, diagnostics, gear catalog data, and equipment presets are stored in browser storage. Exported backup files are not encrypted.</p>
+            </MudPaper>
+
+            <MudPaper Class="card-surface action-card" Elevation="0">
+                <h2>Cloudflare sync</h2>
+                <p>Cloudflare stores encrypted sync blobs when cloud sync is used manually or after successful refreshes and supported local data changes. Cloudflare may process request metadata such as IP address and timestamps as part of hosting and security operations.</p>
+            </MudPaper>
+        </div>
+    </section>
+</div>

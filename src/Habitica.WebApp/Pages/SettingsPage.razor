@@ -1,5 +1,6 @@
 @page "/settings"
 @inject IAppSessionController SessionController
+@inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
 
 <PageTitle>Settings</PageTitle>
@@ -25,16 +26,107 @@
                 <MudButton Color="Color.Secondary" Href="/live-tests" Variant="Variant.Filled">Open Live Tests</MudButton>
             </MudPaper>
 
+        </div>
+    </section>
+
+    <section class="card-surface settings-card">
+        <p class="section-label">Portable app data</p>
+        <h2>Export, import, and encrypted sync</h2>
+        <p class="panel-copy">
+            Exported files include saved snapshots, party CRON history, diagnostics history, gear catalog data, and app-local equipment presets. Habitica API tokens are not included.
+            <a href="/privacy">Privacy and data handling</a>
+        </p>
+
+        <div class="settings-grid">
+            <MudPaper Class="card-surface action-card" Elevation="0">
+                <h2>Export local data</h2>
+                <p>Downloads a readable JSON backup of this browser's saved app data. Keep the file private.</p>
+                <MudButton Color="Color.Primary"
+                           data-testid="export-local-data"
+                           Disabled="@SessionController.State.IsBusy"
+                           OnClick="HandleExportAsync"
+                           Variant="Variant.Filled">
+                    Export
+                </MudButton>
+            </MudPaper>
+
+            <MudPaper Class="card-surface action-card" Elevation="0">
+                <h2>Import local data</h2>
+                <p>Imports a Habitica Tool JSON backup. If this browser already has app data, choose merge or override before importing.</p>
+                <InputFile class="app-input"
+                           data-testid="import-local-data"
+                           OnChange="HandleImportFileSelectedAsync" />
+            </MudPaper>
+
+            <MudPaper Class="card-surface action-card" Elevation="0">
+                <h2>Encrypted Cloudflare sync</h2>
+                <p>Uses the current Habitica User ID and API Token in this browser to encrypt data before upload. Cloudflare stores only encrypted JSON.</p>
+                <div class="action-row">
+                    <MudButton Color="Color.Primary"
+                               data-testid="push-cloud-sync"
+                               Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy)"
+                               OnClick="HandleCloudUploadAsync"
+                               Variant="Variant.Filled">
+                        Upload
+                    </MudButton>
+                    <MudButton Color="Color.Secondary"
+                               data-testid="download-cloud-sync"
+                               Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy)"
+                               OnClick="HandleCloudDownloadAsync"
+                               Variant="Variant.Filled">
+                        Download
+                    </MudButton>
+                </div>
+            </MudPaper>
+
             <MudPaper Class="card-surface action-card danger-card" Elevation="0">
                 <h2>Clear local data</h2>
-                <p>Removes stored credentials and all cached account, party, and task snapshots from this browser.</p>
-                <MudButton Color="Color.Error" OnClick="HandleClearLocalDataAsync" Variant="Variant.Filled">Clear Local Data</MudButton>
+                <p>Removes stored credentials, cached snapshots, party history, diagnostics history, and local app setup from this browser.</p>
+                <MudButton Color="Color.Error"
+                           data-testid="clear-local-data"
+                           OnClick="HandleClearLocalDataAsync"
+                           Variant="Variant.Filled">
+                    Clear Local Data
+                </MudButton>
             </MudPaper>
         </div>
+
+        @if (!string.IsNullOrWhiteSpace(_dataMessage))
+        {
+            <div class="@($"import-status {(_dataSucceeded ? "success-pill" : "danger-pill")}")" data-testid="local-data-message">
+                @_dataMessage
+            </div>
+        }
+
+        @if (_pendingImportPreview is not null)
+        {
+            <div class="import-warning" data-testid="import-conflict-warning">
+                <h3>Existing app data found</h3>
+                <p>
+                    The incoming data has @_pendingImportPreview.IncomingRecordCount records. This browser has @_pendingImportPreview.LocalRecordCount records,
+                    with @_pendingImportPreview.ConflictingKeys.Count overlapping keys.
+                </p>
+                <div class="action-row">
+                    <MudButton Color="Color.Secondary" OnClick="@(() => CompleteImportAsync(LocalDataImportMode.Merge))" Variant="Variant.Filled">
+                        Merge
+                    </MudButton>
+                    <MudButton Color="Color.Default" OnClick="CancelPendingImport" Variant="Variant.Outlined">
+                        Cancel
+                    </MudButton>
+                </div>
+            </div>
+        }
     </section>
 </div>
 
 @code {
+    private const long ImportFileLimitBytes = 4 * 1024 * 1024;
+    private IJSObjectReference? _exportModule;
+    private string? _pendingImportJson;
+    private LocalUserDataImportPreview? _pendingImportPreview;
+    private string? _dataMessage;
+    private bool _dataSucceeded = true;
+
     private async Task HandleLogoutAsync()
     {
         await SessionController.LogoutAsync();
@@ -45,5 +137,95 @@
     {
         await SessionController.ClearLocalDataAsync();
         NavigationManager.NavigateTo("/");
+    }
+
+    private async Task HandleExportAsync()
+    {
+        var result = await SessionController.ExportLocalDataAsync();
+        SetDataMessage(result);
+        if (result.Succeeded && !string.IsNullOrWhiteSpace(result.JsonText))
+        {
+            var module = await GetExportModuleAsync();
+            await module.InvokeVoidAsync(
+                "downloadTextFile",
+                $"habitica-tool-data-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}.json",
+                result.JsonText,
+                "application/json;charset=utf-8");
+        }
+    }
+
+    private async Task HandleImportFileSelectedAsync(InputFileChangeEventArgs eventArgs)
+    {
+        var file = eventArgs.File;
+        await using var stream = file.OpenReadStream(ImportFileLimitBytes);
+        using var reader = new StreamReader(stream);
+        var json = await reader.ReadToEndAsync();
+        var result = await SessionController.PreviewImportLocalDataAsync(json);
+        await StartImportFromPreviewAsync(result);
+    }
+
+    private async Task HandleCloudUploadAsync()
+    {
+        var result = await SessionController.PushCloudSyncAsync();
+        SetDataMessage(result);
+    }
+
+    private async Task HandleCloudDownloadAsync()
+    {
+        var result = await SessionController.DownloadCloudSyncAsync();
+        await StartImportFromPreviewAsync(result);
+    }
+
+    private async Task StartImportFromPreviewAsync(LocalDataActionResult result)
+    {
+        SetDataMessage(result);
+        if (!result.Succeeded || string.IsNullOrWhiteSpace(result.JsonText) || result.ImportPreview is null)
+        {
+            return;
+        }
+
+        if (result.ImportPreview.HasLocalData)
+        {
+            _pendingImportJson = result.JsonText;
+            _pendingImportPreview = result.ImportPreview;
+            return;
+        }
+
+        var importResult = await SessionController.ImportLocalDataAsync(result.JsonText, LocalDataImportMode.Merge);
+        SetDataMessage(importResult);
+    }
+
+    private async Task CompleteImportAsync(LocalDataImportMode mode)
+    {
+        if (string.IsNullOrWhiteSpace(_pendingImportJson))
+        {
+            CancelPendingImport();
+            return;
+        }
+
+        var importResult = await SessionController.ImportLocalDataAsync(_pendingImportJson, mode);
+        _pendingImportJson = null;
+        _pendingImportPreview = null;
+        SetDataMessage(importResult);
+    }
+
+    private void CancelPendingImport()
+    {
+        _pendingImportJson = null;
+        _pendingImportPreview = null;
+        _dataSucceeded = true;
+        _dataMessage = "Import cancelled.";
+    }
+
+    private void SetDataMessage(LocalDataActionResult result)
+    {
+        _dataSucceeded = result.Succeeded;
+        _dataMessage = result.Message;
+    }
+
+    private async Task<IJSObjectReference> GetExportModuleAsync()
+    {
+        _exportModule ??= await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/diagnosticsExport.js");
+        return _exportModule;
     }
 }

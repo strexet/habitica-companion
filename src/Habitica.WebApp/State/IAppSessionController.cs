@@ -1,5 +1,6 @@
 using Habitica.Application.Diagnostics;
 using Habitica.Application.Inventory;
+using Habitica.Application.Sync;
 using Habitica.Domain.User;
 
 namespace Habitica.WebApp.State;
@@ -48,4 +49,17 @@ public interface IAppSessionController
     Task LogoutAsync(CancellationToken cancellationToken = default);
 
     Task ClearLocalDataAsync(CancellationToken cancellationToken = default);
+
+    Task<LocalDataActionResult> ExportLocalDataAsync(CancellationToken cancellationToken = default);
+
+    Task<LocalDataActionResult> PreviewImportLocalDataAsync(string jsonText, CancellationToken cancellationToken = default);
+
+    Task<LocalDataActionResult> ImportLocalDataAsync(
+        string jsonText,
+        LocalDataImportMode mode,
+        CancellationToken cancellationToken = default);
+
+    Task<LocalDataActionResult> PushCloudSyncAsync(CancellationToken cancellationToken = default);
+
+    Task<LocalDataActionResult> DownloadCloudSyncAsync(CancellationToken cancellationToken = default);
 }

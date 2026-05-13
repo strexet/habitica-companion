@@ -1,6 +1,6 @@
 namespace Habitica.Storage;
 
-internal static class StorageKeys
+public static class StorageKeys
 {
     public const string PersistentCredentials = "auth/persistentCredentials";
     public const string LatestTaskSnapshot = "tasks/latestSnapshot";
@@ -10,4 +10,16 @@ internal static class StorageKeys
     public const string LatestPartySnapshot = "party/latestSnapshot";
     public const string PartyCronHistory = "party/cronHistory";
     public const string DiagnosticsLogEntries = "diagnostics/logEntries";
+
+    public static IReadOnlyList<string> PortableDataKeys { get; } =
+        new[]
+        {
+            LatestTaskSnapshot,
+            LatestUserSnapshot,
+            LatestGearCatalog,
+            EquipmentPresets,
+            LatestPartySnapshot,
+            PartyCronHistory,
+            DiagnosticsLogEntries
+        };
 }

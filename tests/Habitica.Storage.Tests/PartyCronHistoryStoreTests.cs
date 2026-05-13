@@ -1,4 +1,5 @@
 using Habitica.Domain.Party;
+using System.Text.Json;
 
 namespace Habitica.Storage.Tests;
 
@@ -51,6 +52,7 @@ public sealed class PartyCronHistoryStoreTests
 
     private sealed class InMemoryKeyValueStorage : IKeyValueStorage
     {
+        private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
         private readonly Dictionary<string, object?> _values = new(StringComparer.Ordinal);
 
         public Task<TValue?> GetAsync<TValue>(string key, CancellationToken cancellationToken)
@@ -64,9 +66,22 @@ public sealed class PartyCronHistoryStoreTests
             return Task.CompletedTask;
         }
 
+        public Task<string?> GetRawJsonAsync(string key, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_values.TryGetValue(key, out var value) && value is not null
+                ? JsonSerializer.Serialize(value, JsonOptions)
+                : null);
+        }
+
         public Task SetAsync<TValue>(string key, TValue value, CancellationToken cancellationToken)
         {
             _values[key] = value;
+            return Task.CompletedTask;
+        }
+
+        public Task SetRawJsonAsync(string key, string jsonText, CancellationToken cancellationToken)
+        {
+            _values[key] = JsonSerializer.Deserialize<object>(jsonText, JsonOptions);
             return Task.CompletedTask;
         }
     }

@@ -30,6 +30,24 @@ public sealed class IndexedDbStorageAdapter : IKeyValueStorage, IAsyncDisposable
         await module.InvokeVoidAsync("setJson", cancellationToken, key, json);
     }
 
+    public async Task<string?> GetRawJsonAsync(string key, CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<string?>("getJson", cancellationToken, key);
+    }
+
+    public async Task SetRawJsonAsync(string key, string jsonText, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(jsonText))
+        {
+            throw new InvalidOperationException("Storage JSON payload is required.");
+        }
+
+        JsonDocument.Parse(jsonText);
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("setJson", cancellationToken, key, jsonText);
+    }
+
     public async Task RemoveAsync(string key, CancellationToken cancellationToken)
     {
         var module = await _moduleTask.Value;

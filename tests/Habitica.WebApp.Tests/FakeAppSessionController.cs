@@ -2,6 +2,7 @@ using Habitica.WebApp.State;
 
 using Habitica.Application.Diagnostics;
 using Habitica.Application.Inventory;
+using Habitica.Application.Sync;
 using Habitica.Domain.Diagnostics;
 using Habitica.Domain.User;
 
@@ -48,6 +49,9 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public SessionViewModel State { get; private set; }
 
+    public LocalDataActionResult LocalDataResult { get; set; } =
+        LocalDataActionResult.Success("Local data operation completed.", "{}");
+
     public Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
@@ -86,6 +90,11 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.FromResult(InventoryActionResult.Success("Equipment changed."));
     }
 
+    public Task<LocalDataActionResult> ExportLocalDataAsync(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(LocalDataResult);
+    }
+
     public Task<SpellActionResult> CastSpellAsync(SpellCastRequest request, CancellationToken cancellationToken = default)
     {
         CastSpellCalls.Add(request);
@@ -101,6 +110,14 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task InitializeAsync(CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
+    }
+
+    public Task<LocalDataActionResult> ImportLocalDataAsync(
+        string jsonText,
+        LocalDataImportMode mode,
+        CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(LocalDataResult with { JsonText = jsonText });
     }
 
     public Task LogoutAsync(CancellationToken cancellationToken = default)
@@ -153,6 +170,21 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task RefreshAsync(CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
+    }
+
+    public Task<LocalDataActionResult> PreviewImportLocalDataAsync(string jsonText, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(LocalDataResult with { JsonText = jsonText });
+    }
+
+    public Task<LocalDataActionResult> PushCloudSyncAsync(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(LocalDataResult);
+    }
+
+    public Task<LocalDataActionResult> DownloadCloudSyncAsync(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(LocalDataResult);
     }
 
     public Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default)

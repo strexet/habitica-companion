@@ -48,6 +48,10 @@
                 <span>Remember credentials on this device for future sessions. Sign out only ends the current tab session; Clear local data removes cached credentials and all synced local snapshots.</span>
             </label>
 
+            <p class="panel-copy compact-copy">
+                <a href="/privacy">Privacy and data handling</a>
+            </p>
+
             <div class="action-row">
                 <MudButton ButtonType="ButtonType.Submit" Class="action-button" Color="Color.Primary" Disabled="@SessionController.State.IsBusy" Variant="Variant.Filled">
                     @(SessionController.State.IsBusy ? "Signing In..." : "Sign In")

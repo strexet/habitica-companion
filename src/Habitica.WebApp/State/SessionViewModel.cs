@@ -3,6 +3,7 @@ using Habitica.Domain.Party;
 using Habitica.Domain.Sync;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
+using Habitica.Application.Sync;
 
 namespace Habitica.WebApp.State;
 
@@ -76,4 +77,24 @@ public sealed record SpellActionResult(
     public static SpellActionResult Success(string message) => new(true, message);
 
     public static SpellActionResult Failure(string message) => new(false, message);
+}
+
+public sealed record LocalDataActionResult(
+    bool Succeeded,
+    string Message,
+    string? JsonText = null,
+    LocalUserDataImportPreview? ImportPreview = null)
+{
+    public static LocalDataActionResult Success(
+        string message,
+        string? jsonText = null,
+        LocalUserDataImportPreview? importPreview = null)
+    {
+        return new LocalDataActionResult(true, message, jsonText, importPreview);
+    }
+
+    public static LocalDataActionResult Failure(string message)
+    {
+        return new LocalDataActionResult(false, message);
+    }
 }

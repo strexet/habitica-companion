@@ -1286,6 +1286,127 @@ Waiting:
 
 - production deployment should replace the fallback `x-client` behavior with a project-owned Habitica author header value.
 
+## 12.1 Local data portability and encrypted cloud sync
+
+Status: partial
+Owner module: `Habitica.Application.Sync`, `Habitica.WebApp.Sync`, `Habitica.WebApp.Pages.SettingsPage`
+Application entry point: `Habitica.WebApp.Pages.SettingsPage`
+Primary Habitica data: local user, task, party, inventory, gear catalog, diagnostics, and party CRON history snapshots
+Mutates Habitica state: no
+Requires confirmation: yes when importing over existing local app data
+Offline behavior: export and file import work offline; Cloudflare sync requires network access
+Rate-limit sensitivity: none for Habitica API because sync does not call Habitica
+
+### Goal
+
+Allow users to move local app data between browsers and devices without exposing Habitica API tokens to Cloudflare or export files.
+
+### Inputs
+
+```text
+current local app records
+optional Habitica User ID and API Token from the active browser session
+uploaded Habitica Tool JSON export file
+encrypted cloud sync blob from Cloudflare KV
+```
+
+### Outputs
+
+```text
+plain JSON export file for user-controlled backups
+local import preview with conflicts
+merged local records
+encrypted Cloudflare sync payload
+status messages for export, import, upload, and download
+```
+
+### Local storage
+
+Portable records:
+
+```text
+tasks/latestSnapshot
+user/latestSnapshot
+inventory/gearCatalog
+inventory/equipmentPresets
+party/latestSnapshot
+party/cronHistory
+diagnostics/logEntries
+```
+
+Excluded records:
+
+```text
+auth/persistentCredentials
+```
+
+### API interaction
+
+No Habitica API calls are made by export, import, or Cloudflare sync. Cloud sync calls the local Pages Function endpoint:
+
+```text
+GET /api/sync/{syncId}
+PUT /api/sync/{syncId}
+```
+
+### Algorithm / rules
+
+Export serializes portable storage keys as raw JSON records. Import validates the bundle schema and unsupported keys before writing data.
+
+When existing local data is present, Settings must show explicit options:
+
+```text
+Merge
+Cancel
+```
+
+Settings always imports through merge mode. The lower-level portability service retains override support for future admin/recovery tooling, but the user-facing app must not expose it by default. Merge keeps local records and merges known append-only collections:
+
+- equipment presets by `id`;
+- diagnostics log entries by `id`;
+- party CRON history events by `partyId`, `memberId`, and `lastCronUtc`;
+- latest snapshots by newer `retrievedAtUtc`.
+
+Cloud sync derives both the sync identifier and AES-GCM key locally from the active Habitica User ID and API Token. The Cloudflare Pages Function stores only the encrypted payload.
+
+After successful refreshes and app data mutations, the WebApp attempts automatic encrypted sync when Habitica credentials are available. Automatic sync downloads any existing cloud bundle, merges it into local portable data, then uploads the merged local bundle back to Cloudflare. This keeps fresh Habitica snapshots current in cloud storage while preserving cloud-only local records such as equipment presets from another browser. Cloud sync failures are logged as warnings and must not fail the original Habitica refresh or equipment/stat/spell action.
+
+### Validation
+
+Reject:
+
+- unsupported bundle schema versions;
+- unsupported storage keys;
+- empty record payloads;
+- invalid JSON;
+- cloud sync requests when the user is not signed in.
+
+### Error handling
+
+Surface import parse errors, unsupported schema errors, missing cloud data, and Cloudflare upload/download failures in Settings. If import succeeds but cloud upload fails, the local data may already be changed; the UI must report the upload failure instead of pretending cloud sync succeeded.
+
+### Security / privacy
+
+Habitica API tokens are not exported and are not sent to Cloudflare sync endpoints. The API token is used only inside the browser to derive the sync identifier and encryption key. Cloudflare KV stores encrypted JSON and cannot decrypt it without the user's Habitica credentials.
+
+Plain JSON export files are not encrypted. The UI must tell users to keep export files private because snapshots and party history may contain personal or party data.
+
+### Tests
+
+Test:
+
+- credential exclusion from export;
+- import conflict preview;
+- merge behavior for equipment presets and party CRON history;
+- automatic cloud sync after refresh and equipment preset changes;
+- Settings controls for export, import, and cloud sync;
+- WebApp build after adding Pages Function assets.
+
+### Open questions
+
+- Token rotation breaks access to data encrypted with the previous API token unless a future migration/export path is added.
+- A future provider can replace Cloudflare by implementing the remote sync provider boundary.
+
 ## 13. App shell and navigation
 
 Status: implemented

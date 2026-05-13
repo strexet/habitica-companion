@@ -11,6 +11,7 @@ using Habitica.Domain.Sync;
 using Habitica.Domain.User;
 using Habitica.Rules.Spells;
 using Habitica.Storage;
+using Habitica.WebApp.Sync;
 
 namespace Habitica.WebApp.State;
 
@@ -27,6 +28,8 @@ public sealed class AppSessionController : IAppSessionController
     private readonly LiveTestWorkflow _liveTestWorkflow;
     private readonly IPartyCronHistoryStore _partyCronHistoryStore;
     private readonly IPartySnapshotStore _partySnapshotStore;
+    private readonly LocalUserDataPortabilityService _localUserDataPortabilityService;
+    private readonly IRemoteUserDataSyncProvider _remoteUserDataSyncProvider;
     private readonly SnapshotFreshnessPolicy _snapshotFreshnessPolicy;
     private readonly ITaskSnapshotStore _taskSnapshotStore;
     private readonly IUserSnapshotStore _userSnapshotStore;
@@ -45,6 +48,8 @@ public sealed class AppSessionController : IAppSessionController
         IGearCatalogStore gearCatalogStore,
         IPartyCronHistoryStore partyCronHistoryStore,
         IPartySnapshotStore partySnapshotStore,
+        LocalUserDataPortabilityService localUserDataPortabilityService,
+        IRemoteUserDataSyncProvider remoteUserDataSyncProvider,
         ITaskSnapshotStore taskSnapshotStore,
         IUserSnapshotStore userSnapshotStore,
         IDiagnosticsLogStore diagnosticsLogStore,
@@ -61,6 +66,8 @@ public sealed class AppSessionController : IAppSessionController
         _gearCatalogStore = gearCatalogStore;
         _partyCronHistoryStore = partyCronHistoryStore;
         _partySnapshotStore = partySnapshotStore;
+        _localUserDataPortabilityService = localUserDataPortabilityService;
+        _remoteUserDataSyncProvider = remoteUserDataSyncProvider;
         _taskSnapshotStore = taskSnapshotStore;
         _userSnapshotStore = userSnapshotStore;
         _diagnosticsLogStore = diagnosticsLogStore;
@@ -327,6 +334,8 @@ public sealed class AppSessionController : IAppSessionController
                 },
                 cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
+            await TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
             return InventoryActionResult.Success($"Saved preset {preset.Name}.");
         }
         catch (Exception exception)
@@ -367,6 +376,8 @@ public sealed class AppSessionController : IAppSessionController
                 ["presetKind"] = preset?.Kind.ToString() ?? ""
             },
             cancellationToken);
+        await LoadCachedStateAsync(cancellationToken);
+        await TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
         await LoadCachedStateAsync(cancellationToken);
         return InventoryActionResult.Success(preset is null ? "Removed preset." : $"Removed preset {preset.Name}.");
     }
@@ -425,6 +436,8 @@ public sealed class AppSessionController : IAppSessionController
                     ["presetKind"] = preset.Kind.ToString()
                 },
                 cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            await TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
             return InventoryActionResult.Success($"Renamed preset {renamedPreset.Name}.");
         }
@@ -502,6 +515,8 @@ public sealed class AppSessionController : IAppSessionController
                     ["requestCount"] = "2"
                 },
                 cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            await TryMergeAndUploadCloudSyncAsync(validation.Credentials!, cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
             SetState(State with { ErrorMessage = null, IsBusy = false });
             return InventoryActionResult.Success($"Equipment changed to {ResolveGearName(key)}.");
@@ -663,6 +678,8 @@ public sealed class AppSessionController : IAppSessionController
                 MergeMetadata(baseMetadata, changedSlots.Length, desiredSlots.Length - changedSlots.Length, requestCount),
                 cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
+            await TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
             SetState(State with { ActiveEquipmentProgress = null, ErrorMessage = null, IsBusy = false });
             return InventoryActionResult.Success(changedSlots.Length == 0 ? $"{resultName} was already equipped." : $"Equipped {resultName}.");
         }
@@ -798,6 +815,8 @@ public sealed class AppSessionController : IAppSessionController
                 },
                 cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
+            await TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
             SetState(State with
             {
                 ActiveSpellCastProgress = null,
@@ -903,6 +922,8 @@ public sealed class AppSessionController : IAppSessionController
                 },
                 cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
+            await TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
             SetState(State with { ErrorMessage = null, IsBusy = false });
 
             return SpellActionResult.Success("Stat points allocated.");
@@ -947,6 +968,203 @@ public sealed class AppSessionController : IAppSessionController
         await _userSnapshotStore.ClearAsync(cancellationToken);
 
         SetState(SessionViewModel.Empty);
+    }
+
+    public async Task<LocalDataActionResult> ExportLocalDataAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var bundle = await _localUserDataPortabilityService.ExportAsync(State.UserId ?? _currentCredentials?.UserId, cancellationToken);
+            var json = _localUserDataPortabilityService.Serialize(bundle);
+            return LocalDataActionResult.Success(
+                bundle.Records.Count == 0
+                    ? "No local app data is currently saved for export."
+                    : $"Prepared export with {bundle.Records.Count} local data records.",
+                json);
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message });
+            return LocalDataActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<LocalDataActionResult> PreviewImportLocalDataAsync(
+        string jsonText,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var bundle = _localUserDataPortabilityService.Deserialize(jsonText);
+            var preview = await _localUserDataPortabilityService.PreviewImportAsync(bundle, cancellationToken);
+            return LocalDataActionResult.Success(
+                preview.HasLocalData
+                    ? $"Import contains {preview.IncomingRecordCount} records and conflicts with {preview.ConflictingKeys.Count} local records."
+                    : $"Import contains {preview.IncomingRecordCount} records.",
+                jsonText,
+                preview);
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message });
+            return LocalDataActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<LocalDataActionResult> ImportLocalDataAsync(
+        string jsonText,
+        LocalDataImportMode mode,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            SetState(State with { ErrorMessage = null, IsBusy = true });
+            var bundle = _localUserDataPortabilityService.Deserialize(jsonText);
+            var result = await _localUserDataPortabilityService.ImportAsync(bundle, mode, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+
+            var syncMessage = await TryUploadLocalDataAfterImportAsync(cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+            return LocalDataActionResult.Success(
+                string.IsNullOrWhiteSpace(syncMessage)
+                    ? result.Message
+                    : $"{result.Message} {syncMessage}");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return LocalDataActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<LocalDataActionResult> PushCloudSyncAsync(CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return LocalDataActionResult.Failure("Sign in with Habitica credentials before uploading encrypted cloud sync data.");
+        }
+
+        try
+        {
+            SetState(State with { ErrorMessage = null, IsBusy = true });
+            var result = await MergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+            return LocalDataActionResult.Success(
+                result.MergedRemoteData
+                    ? $"Merged existing cloud data and uploaded {result.UploadedRecordCount} encrypted local data records to Cloudflare sync."
+                    : $"Uploaded {result.UploadedRecordCount} encrypted local data records to Cloudflare sync.");
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return LocalDataActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<LocalDataActionResult> DownloadCloudSyncAsync(CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return LocalDataActionResult.Failure("Sign in with Habitica credentials before downloading encrypted cloud sync data.");
+        }
+
+        try
+        {
+            SetState(State with { ErrorMessage = null, IsBusy = true });
+            var snapshot = await _remoteUserDataSyncProvider.DownloadAsync(credentials, cancellationToken);
+            if (snapshot is null)
+            {
+                SetState(State with { ErrorMessage = null, IsBusy = false });
+                return LocalDataActionResult.Failure("No cloud sync data exists for these Habitica credentials.");
+            }
+
+            var bundle = _localUserDataPortabilityService.Deserialize(snapshot.PlainTextJson);
+            var preview = await _localUserDataPortabilityService.PreviewImportAsync(bundle, cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+            return LocalDataActionResult.Success(
+                snapshot.UpdatedAtUtc is null
+                    ? $"Downloaded cloud sync data with {preview.IncomingRecordCount} records."
+                    : $"Downloaded cloud sync data from {snapshot.UpdatedAtUtc.Value.LocalDateTime:g} with {preview.IncomingRecordCount} records.",
+                snapshot.PlainTextJson,
+                preview);
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return LocalDataActionResult.Failure(exception.Message);
+        }
+    }
+
+    private async Task<string> TryUploadLocalDataAfterImportAsync(CancellationToken cancellationToken)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return "Sign in to upload the imported data to encrypted cloud sync.";
+        }
+
+        var result = await MergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+        return result.MergedRemoteData
+            ? "Imported data, merged existing encrypted cloud sync data, and uploaded the result."
+            : "Imported data was uploaded to encrypted cloud sync.";
+    }
+
+    private async Task<CloudSyncUploadResult?> TryMergeAndUploadCloudSyncAsync(
+        HabiticaCredentials credentials,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await MergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception exception)
+        {
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Auth,
+                "cloud-sync",
+                DiagnosticsSeverity.Warning,
+                DiagnosticsMode.Local,
+                $"Encrypted cloud sync was skipped: {exception.Message}",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["provider"] = "cloudflare",
+                    ["automatic"] = "true"
+                },
+                cancellationToken);
+            return null;
+        }
+    }
+
+    private async Task<CloudSyncUploadResult> MergeAndUploadCloudSyncAsync(
+        HabiticaCredentials credentials,
+        CancellationToken cancellationToken)
+    {
+        var mergedRemoteData = false;
+        var remoteSnapshot = await _remoteUserDataSyncProvider.DownloadAsync(credentials, cancellationToken);
+        if (remoteSnapshot is not null && !string.IsNullOrWhiteSpace(remoteSnapshot.PlainTextJson))
+        {
+            var remoteBundle = _localUserDataPortabilityService.Deserialize(remoteSnapshot.PlainTextJson);
+            await _localUserDataPortabilityService.ImportAsync(remoteBundle, LocalDataImportMode.Merge, cancellationToken);
+            mergedRemoteData = true;
+        }
+
+        var bundle = await _localUserDataPortabilityService.ExportAsync(credentials.UserId, cancellationToken);
+        await _remoteUserDataSyncProvider.UploadAsync(
+            credentials,
+            _localUserDataPortabilityService.Serialize(bundle),
+            cancellationToken);
+
+        return new CloudSyncUploadResult(mergedRemoteData, bundle.Records.Count);
     }
 
     private async Task LoadCachedStateAsync(CancellationToken cancellationToken)
@@ -1012,7 +1230,7 @@ public sealed class AppSessionController : IAppSessionController
             var equipmentPresets = await _equipmentPresetStore.GetForUserAsync(_currentCredentials.UserId, cancellationToken);
 
             SetState(new SessionViewModel(
-                IsBusy: false,
+                IsBusy: true,
                 IsAuthenticated: true,
                 DisplayName: loginResult.DisplayName,
                 ErrorMessage: null,
@@ -1029,6 +1247,13 @@ public sealed class AppSessionController : IAppSessionController
                 UserId: _currentCredentials.UserId,
                 GearCatalogSnapshot: gearCatalog,
                 EquipmentPresets: equipmentPresets));
+            await TryMergeAndUploadCloudSyncAsync(_currentCredentials, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with
+            {
+                ErrorMessage = null,
+                IsBusy = false
+            });
         }
         catch (Exception exception)
         {
@@ -1316,6 +1541,10 @@ public sealed class AppSessionController : IAppSessionController
         HabiticaCredentials? Credentials,
         UserSnapshot? Snapshot,
         InventoryActionResult? Result);
+
+    private sealed record CloudSyncUploadResult(
+        bool MergedRemoteData,
+        int UploadedRecordCount);
 
     private SnapshotFreshnessState ClassifyFreshness(Habitica.Domain.Tasks.TaskCollectionSnapshot? snapshot)
     {
