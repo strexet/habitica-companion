@@ -432,7 +432,10 @@
                                 </div>
                                 <div class="party-member-pill-row">
                                     <span class="@GetCronStateClass(member.CronState)">@GetCronStateLabel(member.CronState)</span>
-                                    <span class="ui-pill state-pill">@GetParticipationLabel(member.ParticipationStatus)</span>
+                                    @if (SessionController.State.PartySnapshot?.Quest is not null)
+                                    {
+                                        <span class="ui-pill state-pill">@GetParticipationLabel(member.ParticipationStatus)</span>
+                                    }
                                     @if (member.IsStale)
                                     {
                                         <span class="ui-pill state-pill warning-pill">Stale</span>

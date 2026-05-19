@@ -421,6 +421,12 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             return null;
         }
 
+        var questKey = GetOptionalString(quest, "key");
+        if (string.IsNullOrWhiteSpace(questKey))
+        {
+            return null;
+        }
+
         var progress = TryGetObject(quest, "progress");
         var questProgress = MapQuestProgress(progress);
         var pendingDamage = TryGetDecimal(progress, "up", out var up) ? up : (decimal?)null;
@@ -428,7 +434,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         var pendingPartyDamage = TryGetDecimal(progress, "down", out var down) ? down : (decimal?)null;
 
         return new PartyQuestSnapshot(
-            Key: GetOptionalString(quest, "key"),
+            Key: questKey,
             IsActive: GetOptionalBoolean(quest, "active"),
             ProgressUp: questProgress.Value,
             ProgressDown: pendingPartyDamage ?? 0m,
