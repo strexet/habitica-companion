@@ -218,7 +218,9 @@ public sealed record PartyMemberSnapshot(
     bool IsInInn = false,
     PartyQuestParticipationStatus ParticipationStatus = PartyQuestParticipationStatus.Unknown,
     bool IsStale = false,
-    PartyMemberStatBreakdownSnapshot? Stats = null);
+    PartyMemberStatBreakdownSnapshot? Stats = null,
+    DateTimeOffset? CreatedAtUtc = null,
+    DateTimeOffset? LastLoggedInUtc = null);
 
 public sealed record PartyCronHistoryEvent(
     string PartyId,

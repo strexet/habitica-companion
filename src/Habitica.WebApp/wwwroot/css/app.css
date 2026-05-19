@@ -660,8 +660,7 @@ a {
     border-top: 1px solid rgba(22, 36, 35, 0.08);
 }
 
-.party-quest-metric-grid,
-.party-stat-grid {
+.party-quest-metric-grid {
     display: grid;
     gap: 0.75rem;
 }
@@ -671,25 +670,17 @@ a {
     margin-bottom: 1rem;
 }
 
-.party-stat-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    color: var(--muted);
-    font-size: 0.88rem;
-}
-
 .party-member-stats {
-    display: grid;
-    gap: 0.75rem;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    min-width: 0;
 }
 
-.party-stat-section {
-    display: grid;
-    gap: 0.4rem;
-    padding: 0.75rem;
-    border-radius: 0.75rem;
-    border: 1px solid rgba(22, 36, 35, 0.08);
-    background: rgba(255, 255, 255, 0.42);
+.party-stats-table {
+    min-width: 36rem;
+}
+
+.party-stats-table th,
+.party-stats-table td {
+    padding: 0.55rem 0.6rem;
 }
 
 .party-summary-markdown p,
@@ -1576,7 +1567,4 @@ code {
         grid-template-columns: 1fr;
     }
 
-    .party-stat-grid {
-        grid-template-columns: 1fr;
-    }
 }

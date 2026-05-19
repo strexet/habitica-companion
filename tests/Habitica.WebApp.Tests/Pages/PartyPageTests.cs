@@ -174,7 +174,8 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Pending quest", cut.Markup);
         Assert.Contains("7.2 damage", cut.Markup);
         Assert.Contains("5.3 damage", cut.Markup);
-        Assert.Contains("Avg 08:15 (1 day)", cut.Markup);
+        Assert.Contains("Avg 08:15", cut.Markup);
+        Assert.DoesNotContain("Avg 08:15 (1 day)", cut.Markup);
         Assert.Contains("Not enough history", cut.Markup);
         Assert.Contains("Sea Serpent Egg", cut.Markup);
         Assert.DoesNotContain("Reward details are not available yet.", cut.Markup);
@@ -187,18 +188,23 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("text-anchor=\"end\"", cut.Markup);
         Assert.Contains("Members", cut.Markup);
         Assert.Contains("Details", cut.Markup);
-        Assert.DoesNotContain("Member ID", cut.Markup);
+        Assert.DoesNotContain("User ID", cut.Markup);
         Assert.DoesNotContain("user-1", cut.Markup);
-        Assert.DoesNotContain("STR 12", cut.Markup);
+        Assert.DoesNotContain("Strength", cut.Markup);
         Assert.DoesNotContain("Day start", cut.Markup);
         Assert.DoesNotContain("Habitica public member data hides day start/timezone", cut.Markup);
 
         cut.FindAll("[data-testid='member-details']").First().Click();
 
-        Assert.DoesNotContain("Member ID", cut.Markup);
-        Assert.DoesNotContain("user-1", cut.Markup);
-        Assert.Contains("Total", cut.Markup);
-        Assert.Contains("STR 12", cut.Markup);
+        Assert.Contains("User ID", cut.Markup);
+        Assert.Contains("user-1", cut.Markup);
+        Assert.DoesNotContain("CRON reason", cut.Markup);
+        Assert.DoesNotContain("Habitica public member data hides day start/timezone", cut.Markup);
+        Assert.Contains("Equipment", cut.Markup);
+        Assert.Contains("Buffs", cut.Markup);
+        Assert.Contains("Effective", cut.Markup);
+        Assert.Contains("Strength", cut.Markup);
+        Assert.Contains("12", cut.Markup);
     }
 
     [Fact]

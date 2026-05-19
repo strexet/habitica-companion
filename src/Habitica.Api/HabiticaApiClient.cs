@@ -410,7 +410,9 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
                 ? pendingQuestDamage
                 : null,
             PendingQuestItems = GetPendingQuestItems(partyQuestProgress),
-            Stats = MapPartyMemberStats(stats)
+            Stats = MapPartyMemberStats(stats),
+            CreatedAtUtc = ParseDateTimeOffset(GetOptionalString(authTimestamps, "created")),
+            LastLoggedInUtc = ParseDateTimeOffset(GetOptionalString(authTimestamps, "loggedin"))
         };
     }
 

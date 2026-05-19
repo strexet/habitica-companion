@@ -464,30 +464,62 @@
                                 <div class="party-member-details">
                                     <dl class="party-member-meta">
                                         <div>
+                                            <dt>User ID</dt>
+                                            <dd>@FormatMemberId(member.MemberId)</dd>
+                                        </div>
+                                        <div>
                                             <dt>Level</dt>
                                             <dd>@FormatLevel(member.Level)</dd>
                                         </div>
                                         <div>
-                                            <dt>CRON reason</dt>
-                                            <dd>@member.CronStateReason</dd>
+                                            <dt>Account created</dt>
+                                            <dd>@FormatDateTime(member.CreatedAtUtc)</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Last login</dt>
+                                            <dd>@FormatDateTime(member.LastLoggedInUtc)</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Habitica day</dt>
+                                            <dd>@FormatHabiticaDay(member)</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Day starts</dt>
+                                            <dd>@FormatDayStart(member)</dd>
                                         </div>
                                     </dl>
 
                                     @if (member.Stats?.HasAnySection == true)
                                     {
                                         <div class="party-member-stats">
-                                            @foreach (var statSection in GetStatSections(member))
-                                            {
-                                                <div class="party-stat-section">
-                                                    <span class="dashboard-stat-label">@statSection.Label</span>
-                                                    <div class="party-stat-grid">
-                                                        <span>STR @FormatStat(statSection.Stats.Strength)</span>
-                                                        <span>INT @FormatStat(statSection.Stats.Intelligence)</span>
-                                                        <span>CON @FormatStat(statSection.Stats.Constitution)</span>
-                                                        <span>PER @FormatStat(statSection.Stats.Perception)</span>
-                                                    </div>
-                                                </div>
-                                            }
+                                            <div class="stats-table-wrap party-stats-table-wrap">
+                                                <table class="stats-table party-stats-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Stat</th>
+                                                            <th>Base</th>
+                                                            <th>Equipment</th>
+                                                            <th>Buffs</th>
+                                                            <th>Effective</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var row in GetStatRows(member))
+                                                        {
+                                                            <tr>
+                                                                <th scope="row">
+                                                                    <span>@row.Label</span>
+                                                                    <small>@row.Name</small>
+                                                                </th>
+                                                                <td>@FormatStat(row.Base)</td>
+                                                                <td>@FormatSignedStat(row.Equipment)</td>
+                                                                <td>@FormatSignedStat(row.Buffs)</td>
+                                                                <td><strong>@FormatStat(row.Effective)</strong></td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     }
                                     else
@@ -984,8 +1016,7 @@
             return "Not enough history";
         }
 
-        var dayLabel = member.AverageCronSampleCount == 1 ? "day" : "days";
-        return $"Avg {member.AverageCronTime.Value:hh\\:mm} ({member.AverageCronSampleCount} {dayLabel})";
+        return $"Avg {member.AverageCronTime.Value:hh\\:mm}";
     }
 
     private static string FormatQuestMetric(PartyQuestMetricSnapshot? metric)
@@ -1154,36 +1185,89 @@
         return level?.ToString(CultureInfo.InvariantCulture) ?? "Unknown";
     }
 
+    private static string FormatMemberId(string? memberId)
+    {
+        return string.IsNullOrWhiteSpace(memberId) ? "Unknown" : memberId;
+    }
+
     private static string FormatStat(decimal? value)
     {
         return value?.ToString("0.##", CultureInfo.InvariantCulture) ?? "-";
     }
 
-    private static IReadOnlyList<(string Label, PartyStatSectionSnapshot Stats)> GetStatSections(PartyMemberSnapshot member)
+    private static string FormatSignedStat(decimal? value)
     {
-        var sections = new List<(string Label, PartyStatSectionSnapshot Stats)>();
-        if (member.Stats?.BaseAllocated?.HasAnyValue == true)
+        if (value is null)
         {
-            sections.Add(("Base/Allocated", member.Stats.BaseAllocated));
+            return "-";
         }
 
-        if (member.Stats?.Gear?.HasAnyValue == true)
-        {
-            sections.Add(("Gear", member.Stats.Gear));
-        }
-
-        if (member.Stats?.Buffs?.HasAnyValue == true)
-        {
-            sections.Add(("Buffs", member.Stats.Buffs));
-        }
-
-        if (member.Stats?.Total?.HasAnyValue == true)
-        {
-            sections.Add(("Total", member.Stats.Total));
-        }
-
-        return sections;
+        return value.Value > 0m
+            ? $"+{value.Value:0.##}"
+            : value.Value.ToString("0.##", CultureInfo.InvariantCulture);
     }
+
+    private static string FormatHabiticaDay(PartyMemberSnapshot member)
+    {
+        return string.IsNullOrWhiteSpace(member.CurrentHabiticaDayKey) ? "Unknown" : member.CurrentHabiticaDayKey;
+    }
+
+    private static string FormatDayStart(PartyMemberSnapshot member)
+    {
+        if (member.DayStartHour is null)
+        {
+            return "Not public";
+        }
+
+        return $"{member.DayStartHour.Value:00}:00";
+    }
+
+    private static IReadOnlyList<PartyStatRow> GetStatRows(PartyMemberSnapshot member)
+    {
+        var stats = member.Stats;
+        if (stats is null)
+        {
+            return Array.Empty<PartyStatRow>();
+        }
+
+        return new[]
+        {
+            BuildStatRow("STR", "Strength", stats, static section => section.Strength),
+            BuildStatRow("INT", "Intelligence", stats, static section => section.Intelligence),
+            BuildStatRow("CON", "Constitution", stats, static section => section.Constitution),
+            BuildStatRow("PER", "Perception", stats, static section => section.Perception)
+        };
+    }
+
+    private static PartyStatRow BuildStatRow(
+        string label,
+        string name,
+        PartyMemberStatBreakdownSnapshot stats,
+        Func<PartyStatSectionSnapshot, decimal?> selector)
+    {
+        var baseValue = stats.BaseAllocated is null ? null : selector(stats.BaseAllocated);
+        var equipment = stats.Gear is null ? null : selector(stats.Gear);
+        var buffs = stats.Buffs is null ? null : selector(stats.Buffs);
+        var total = stats.Total is null ? null : selector(stats.Total);
+        var effective = total ?? SumKnownStats(baseValue, equipment, buffs);
+
+        return new PartyStatRow(label, name, baseValue, equipment, buffs, effective);
+    }
+
+    private static decimal? SumKnownStats(params decimal?[] values)
+    {
+        return values.Any(static value => value is not null)
+            ? values.Sum(static value => value ?? 0m)
+            : null;
+    }
+
+    private sealed record PartyStatRow(
+        string Label,
+        string Name,
+        decimal? Base,
+        decimal? Equipment,
+        decimal? Buffs,
+        decimal? Effective);
 
     private static decimal ChartX(int hour)
     {

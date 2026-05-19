@@ -300,6 +300,7 @@ public sealed class HabiticaApiClientTests
         var todayUtc = DateTimeOffset.UtcNow.UtcDateTime.Date;
         var alphaCron = new DateTimeOffset(todayUtc.AddHours(5).AddMinutes(15), TimeSpan.Zero);
         var betaCron = new DateTimeOffset(todayUtc.AddHours(6).AddMinutes(45), TimeSpan.Zero);
+        var betaCreated = DateTimeOffset.Parse("2025-01-02T03:04:05Z");
         var responses = new Queue<HttpResponseMessage>(new[]
         {
             new HttpResponseMessage(HttpStatusCode.OK)
@@ -364,6 +365,7 @@ public sealed class HabiticaApiClientTests
                   },
                   "auth": {
                     "timestamps": {
+                      "created": "{{betaCreated:O}}",
                       "loggedin": "{{betaCron:O}}"
                     }
                   }
@@ -424,6 +426,8 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(PartyCronState.CronedToday, snapshot.Members[0].CronState);
         Assert.Equal("Beta", snapshot.Members[1].DisplayName);
         Assert.Equal(betaCron, snapshot.Members[1].LastCronUtc);
+        Assert.Equal(betaCreated, snapshot.Members[1].CreatedAtUtc);
+        Assert.Equal(betaCron, snapshot.Members[1].LastLoggedInUtc);
         Assert.Equal(5.3m, snapshot.Members[1].PendingQuestDamage);
         Assert.Equal(PartyCronState.CronedToday, snapshot.Members[1].CronState);
     }
