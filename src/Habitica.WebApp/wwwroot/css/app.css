@@ -175,6 +175,49 @@ a {
     font-size: 0.92rem;
 }
 
+.sign-in-help-grid {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1rem;
+}
+
+.sign-in-help-card {
+    display: grid;
+    gap: 0.6rem;
+    padding: 0.9rem 1rem;
+    border-radius: 0.8rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(245, 239, 226, 0.55);
+}
+
+.sign-in-help-card.safe-card {
+    border-color: rgba(45, 116, 110, 0.16);
+    background: rgba(45, 116, 110, 0.08);
+}
+
+.sign-in-help-card ol,
+.sign-in-help-card ul {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0;
+    padding-left: 1.15rem;
+    color: var(--muted);
+    line-height: 1.45;
+}
+
+.inline-link {
+    color: var(--teal);
+    font-weight: 700;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.18em;
+}
+
+.field-hint {
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.35;
+}
+
 .hero-panel .hero-copy {
     color: rgba(255, 249, 240, 0.86);
     margin-top: 1.1rem;
@@ -193,6 +236,16 @@ a {
     border: 1px solid rgba(255, 249, 240, 0.18);
     background: rgba(255, 249, 240, 0.1);
     font-size: 0.92rem;
+}
+
+.feature-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+.feature-card-grid .feature-chip {
+    border-radius: 0.8rem;
+    line-height: 1.35;
 }
 
 .section-label {

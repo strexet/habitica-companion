@@ -1200,6 +1200,8 @@ configured x-client value
 credential validation result
 redacted credential state
 current authenticated user summary
+credential discovery guidance
+device-local credential safety explanation
 ```
 
 ### Local storage
@@ -1232,11 +1234,13 @@ Validation flow:
 ```text
 1. Check local format.
 2. Let the user choose session-only mode (default) or persistent mode with explicit opt-in.
-3. Send minimal authenticated request with x-client.
-4. Handle 401/403 as invalid credentials.
-5. Handle 429 using Retry-After.
-6. Store credentials only after successful validation, using the selected storage mode.
-7. Do not offer save-unverified mode in MVP.
+3. Show where to find the Habitica User ID and API Token on web, Android, and iOS before submission.
+4. State that the API token is password-equivalent and is sent only to Habitica for authentication.
+5. Send minimal authenticated request with x-client.
+6. Handle 401/403 as invalid credentials.
+7. Handle 429 using Retry-After.
+8. Store credentials only after successful validation, using the selected storage mode.
+9. Do not offer save-unverified mode in MVP.
 ```
 
 ### Validation
@@ -1253,6 +1257,8 @@ Do not leak token in error messages.
 
 Token is password-equivalent. Never log it.
 
+The sign-in page must say that session-only sign-in is the default, persistent credential storage is optional and device-local, and credentials are not sent to Cloudflare sync, exports, diagnostics, or logs.
+
 ### Tests
 
 Test:
@@ -1263,12 +1269,16 @@ Test:
 - clear-data flow;
 - session-only mode;
 - persistent opt-in flow.
+- credential discovery and safety guidance rendering.
 
 ### Open questions
 
 Current implementation:
 
 - login form with User ID and API Token fields;
+- visible guidance for finding credentials in Habitica Settings/API paths on web, Android, and iOS;
+- visible token safety copy explaining local/session storage and non-sharing boundaries;
+- compact feature overview for dashboard, party, inventory, spells, task helpers, and local snapshots;
 - session-only mode by default;
 - persistent local credential opt-in;
 - credential validation through authenticated `GET /user` request;
