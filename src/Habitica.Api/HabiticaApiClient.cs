@@ -119,12 +119,15 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         if (questSnapshot is not null && !string.IsNullOrWhiteSpace(questSnapshot.Key))
         {
             var questMetadata = await GetQuestContentMetadataAsync(credentials, questSnapshot.Key, cancellationToken);
-            if (questMetadata.BossHealthTotal is not null || questMetadata.CollectionItemsTotal is not null)
+            if (questMetadata.HasAnyValue)
             {
                 questSnapshot = questSnapshot with
                 {
                     BossHealthTotal = questMetadata.BossHealthTotal ?? questSnapshot.BossHealthTotal,
-                    CollectionItemsTotal = questMetadata.CollectionItemsTotal ?? questSnapshot.CollectionItemsTotal
+                    CollectionItemsTotal = questMetadata.CollectionItemsTotal ?? questSnapshot.CollectionItemsTotal,
+                    Name = questMetadata.Name ?? questSnapshot.Name,
+                    Description = questMetadata.Description ?? questSnapshot.Description,
+                    RewardSummary = questMetadata.RewardSummary.Count > 0 ? questMetadata.RewardSummary : questSnapshot.RewardSummary
                 };
             }
         }
@@ -155,7 +158,10 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
             return new PartyQuestContentMetadata(
                 BossHealthTotal: TryGetDecimal(boss, "hp", out var bossHealth) ? bossHealth : null,
-                CollectionItemsTotal: SumCollectionRequirements(collect));
+                CollectionItemsTotal: SumCollectionRequirements(collect),
+                Name: GetOptionalString(quest, "text") ?? GetOptionalString(quest, "name"),
+                Description: GetOptionalString(quest, "notes"),
+                RewardSummary: BuildQuestRewardSummary(quest));
         }
         catch (HabiticaApiException)
         {
@@ -250,7 +256,9 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             }
         }
 
-        return new GearCatalogSnapshot(DateTimeOffset.UtcNow, items);
+        var questCatalog = MapQuestCatalog(TryGetObject(document.RootElement.GetProperty("data"), "quests"));
+
+        return new GearCatalogSnapshot(DateTimeOffset.UtcNow, items, questCatalog);
     }
 
     private HttpRequestMessage CreateRequest(HttpMethod method, string relativePath, HabiticaCredentials credentials)
@@ -364,7 +372,8 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             QuestCount: CountPositiveEntries(TryGetObject(items, "quests")),
             OwnedPetCount: CountPositiveEntries(TryGetObject(items, "pets")),
             OwnedMountCount: CountTrueEntries(TryGetObject(items, "mounts")),
-            OwnedGearKeys: ownedGearKeys);
+            OwnedGearKeys: ownedGearKeys,
+            OwnedQuestScrolls: CountEntries(TryGetObject(items, "quests")));
     }
 
     private static PartyMemberSnapshot MapPartyMember(JsonElement member, DateTimeOffset retrievedAtUtc)
@@ -574,6 +583,32 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         return count;
     }
 
+    private static IReadOnlyDictionary<string, int> CountEntries(JsonElement element)
+    {
+        if (element.ValueKind != JsonValueKind.Object)
+        {
+            return new Dictionary<string, int>(StringComparer.Ordinal);
+        }
+
+        var entries = new Dictionary<string, int>(StringComparer.Ordinal);
+        foreach (var property in element.EnumerateObject())
+        {
+            var count = property.Value.ValueKind switch
+            {
+                JsonValueKind.Number => property.Value.GetInt32(),
+                JsonValueKind.True => 1,
+                _ => 0
+            };
+
+            if (count > 0)
+            {
+                entries[property.Name] = count;
+            }
+        }
+
+        return entries;
+    }
+
     private static int CountTrueEntries(JsonElement element)
     {
         if (element.ValueKind != JsonValueKind.Object)
@@ -674,6 +709,95 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         }
 
         return hasValue ? total : null;
+    }
+
+    private static IReadOnlyDictionary<string, QuestCatalogItem> MapQuestCatalog(JsonElement quests)
+    {
+        if (quests.ValueKind != JsonValueKind.Object)
+        {
+            return new Dictionary<string, QuestCatalogItem>(StringComparer.Ordinal);
+        }
+
+        var catalog = new Dictionary<string, QuestCatalogItem>(StringComparer.Ordinal);
+        foreach (var property in quests.EnumerateObject())
+        {
+            if (property.Value.ValueKind != JsonValueKind.Object)
+            {
+                continue;
+            }
+
+            var quest = property.Value;
+            var key = GetOptionalString(quest, "key") ?? property.Name;
+            catalog[key] = new QuestCatalogItem(
+                Key: key,
+                Text: GetOptionalString(quest, "text") ?? GetOptionalString(quest, "name") ?? key,
+                Notes: GetOptionalString(quest, "notes"),
+                Category: GetOptionalString(quest, "category") ?? "Quest",
+                QuestType: ResolveQuestType(quest),
+                RewardSummary: BuildQuestRewardSummary(quest));
+        }
+
+        return catalog;
+    }
+
+    private static string ResolveQuestType(JsonElement quest)
+    {
+        return TryGetObject(quest, "boss").ValueKind == JsonValueKind.Object
+            ? "Boss"
+            : TryGetObject(quest, "collect").ValueKind == JsonValueKind.Object
+                ? "Collection"
+                : "Quest";
+    }
+
+    private static IReadOnlyList<string> BuildQuestRewardSummary(JsonElement quest)
+    {
+        var rewards = new List<string>();
+        var rewardElement = TryGetObject(quest, "rewards");
+        if (TryGetDecimal(rewardElement, "gp", out var gold) && gold > 0m)
+        {
+            rewards.Add($"{gold:0.##} Gold");
+        }
+
+        if (TryGetDecimal(rewardElement, "exp", out var experience) && experience > 0m)
+        {
+            rewards.Add($"{experience:0.##} XP");
+        }
+
+        AddRewardItems(rewards, TryGetObject(rewardElement, "items"));
+        AddRewardItems(rewards, TryGetObject(quest, "drop"));
+        AddRewardItems(rewards, TryGetObject(quest, "unlock"));
+        return rewards;
+    }
+
+    private static void AddRewardItems(List<string> rewards, JsonElement value)
+    {
+        if (value.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var item in value.EnumerateArray())
+            {
+                AddRewardItem(rewards, item);
+            }
+
+            return;
+        }
+
+        AddRewardItem(rewards, value);
+    }
+
+    private static void AddRewardItem(List<string> rewards, JsonElement item)
+    {
+        if (item.ValueKind != JsonValueKind.Object)
+        {
+            return;
+        }
+
+        var name = GetOptionalString(item, "text")
+            ?? GetOptionalString(item, "name")
+            ?? GetOptionalString(item, "key");
+        if (!string.IsNullOrWhiteSpace(name) && !rewards.Contains(name, StringComparer.OrdinalIgnoreCase))
+        {
+            rewards.Add(name);
+        }
     }
 
     private static string ExtractErrorMessage(string responseBody, string? fallbackReasonPhrase)
@@ -831,8 +955,18 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
     private sealed record PartyQuestContentMetadata(
         decimal? BossHealthTotal,
-        decimal? CollectionItemsTotal)
+        decimal? CollectionItemsTotal,
+        string? Name,
+        string? Description,
+        IReadOnlyList<string> RewardSummary)
     {
-        public static PartyQuestContentMetadata Empty { get; } = new(null, null);
+        public bool HasAnyValue =>
+            BossHealthTotal is not null
+            || CollectionItemsTotal is not null
+            || !string.IsNullOrWhiteSpace(Name)
+            || !string.IsNullOrWhiteSpace(Description)
+            || RewardSummary.Count > 0;
+
+        public static PartyQuestContentMetadata Empty { get; } = new(null, null, null, null, Array.Empty<string>());
     }
 }

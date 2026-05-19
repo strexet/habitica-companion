@@ -1,4 +1,5 @@
 using Habitica.Domain.User;
+using System.Text.Json.Serialization;
 
 namespace Habitica.Domain.Party;
 
@@ -61,7 +62,93 @@ public sealed record PartyQuestSnapshot(
     PartyQuestMetricSnapshot? PendingPartyProgress = null,
     PartyQuestMetricSnapshot? EstimatedPostCronProgress = null,
     PartyQuestParticipationSummary? ParticipationSummary = null,
-    PartyQuestCompletionEstimate? CompletionEstimate = null);
+    PartyQuestCompletionEstimate? CompletionEstimate = null,
+    string? Name = null,
+    string? Description = null,
+    IReadOnlyList<string>? RewardSummary = null)
+{
+    public IReadOnlyList<string> Rewards => RewardSummary ?? Array.Empty<string>();
+}
+
+public sealed record PartyQuestQueueSnapshot(
+    DateTimeOffset? UpdatedAtUtc,
+    IReadOnlyList<PartyQuestPoolEntry> QuestPool,
+    IReadOnlyList<PartyQuestQueueEntry> Queue,
+    IReadOnlyList<PartyRecentlyCompletedQuest> RecentlyCompleted);
+
+public sealed record PartyQuestPoolEntry(
+    string PartyId,
+    string QuestKey,
+    string QuestName,
+    string OwnerUserId,
+    string OwnerDisplayName,
+    int AvailableCount,
+    DateTimeOffset LastSeenAtUtc,
+    string QuestType = "Unknown",
+    IReadOnlyList<string>? RewardSummary = null)
+{
+    public IReadOnlyList<string> Rewards => RewardSummary ?? Array.Empty<string>();
+}
+
+public sealed record PartyQuestQueueEntry(
+    string QueueItemId,
+    string PartyId,
+    string QuestKey,
+    string QuestName,
+    string OwnerUserId,
+    string OwnerDisplayName,
+    PartyQuestQueueStatus Status,
+    DateTimeOffset CreatedAtUtc,
+    DateTimeOffset UpdatedAtUtc,
+    int SortOrder,
+    int? ManualPinRank,
+    bool OwnerReady,
+    int Version,
+    IReadOnlyList<PartyQuestVote> Votes,
+    IReadOnlyList<string>? RewardSummary = null,
+    DateTimeOffset? SelectedAtUtc = null,
+    DateTimeOffset? StartedAtUtc = null,
+    DateTimeOffset? CompletedAtUtc = null)
+{
+    public int VoteCount => Votes.Count;
+
+    public IReadOnlyList<string> Rewards => RewardSummary ?? Array.Empty<string>();
+}
+
+public sealed record PartyQuestVote(
+    string VoterUserId,
+    string VoterDisplayName,
+    int VoteWeight,
+    DateTimeOffset CreatedAtUtc,
+    DateTimeOffset? UpdatedAtUtc = null);
+
+public sealed record PartyRecentlyCompletedQuest(
+    string PartyId,
+    string QuestKey,
+    string QuestName,
+    DateTimeOffset CompletedAtUtc,
+    DateTimeOffset? StartedAtUtc,
+    string? OwnerUserId,
+    string? OwnerDisplayName,
+    int? ParticipantsCount,
+    IReadOnlyList<string>? RewardSummary = null,
+    string? SourceQueueItemId = null)
+{
+    public IReadOnlyList<string> Rewards => RewardSummary ?? Array.Empty<string>();
+}
+
+[JsonConverter(typeof(JsonStringEnumConverter<PartyQuestQueueStatus>))]
+public enum PartyQuestQueueStatus
+{
+    Queued,
+    Selected,
+    InviteSent,
+    Active,
+    Completed,
+    Skipped,
+    Removed,
+    Expired
+}
 
 public enum PartyCronState
 {

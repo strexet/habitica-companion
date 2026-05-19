@@ -62,7 +62,14 @@ public sealed record InventorySnapshot(
     int QuestCount,
     int OwnedPetCount,
     int OwnedMountCount,
-    string[] OwnedGearKeys);
+    string[] OwnedGearKeys,
+    IReadOnlyDictionary<string, int>? OwnedQuestScrolls = null)
+{
+    public IReadOnlyDictionary<string, int> QuestScrolls => OwnedQuestScrolls ?? EmptyQuestScrolls;
+
+    private static readonly IReadOnlyDictionary<string, int> EmptyQuestScrolls =
+        new Dictionary<string, int>(StringComparer.Ordinal);
+}
 
 public enum EquipmentSetKind
 {
@@ -99,7 +106,14 @@ public sealed record GearStatBlock(
 
 public sealed record GearCatalogSnapshot(
     DateTimeOffset RetrievedAtUtc,
-    IReadOnlyDictionary<string, GearCatalogItem> Items);
+    IReadOnlyDictionary<string, GearCatalogItem> Items,
+    IReadOnlyDictionary<string, QuestCatalogItem>? Quests = null)
+{
+    public IReadOnlyDictionary<string, QuestCatalogItem> QuestItems => Quests ?? EmptyQuestCatalog;
+
+    private static readonly IReadOnlyDictionary<string, QuestCatalogItem> EmptyQuestCatalog =
+        new Dictionary<string, QuestCatalogItem>(StringComparer.Ordinal);
+}
 
 public sealed record GearCatalogItem(
     string Key,
@@ -109,6 +123,14 @@ public sealed record GearCatalogItem(
     string? Notes,
     GearStatBlock Stats,
     bool TwoHanded = false);
+
+public sealed record QuestCatalogItem(
+    string Key,
+    string Text,
+    string? Notes,
+    string Category,
+    string QuestType,
+    IReadOnlyList<string> RewardSummary);
 
 public sealed record EquipmentPreset(
     string Id,

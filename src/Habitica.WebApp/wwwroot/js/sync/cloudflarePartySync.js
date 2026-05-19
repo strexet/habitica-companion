@@ -47,6 +47,66 @@ export async function downloadPartyData(userId, apiToken, partyId) {
   );
 }
 
+export async function publishQuestPool(userId, apiToken, partyId, entries) {
+  return await postPartyAction(userId, apiToken, partyId, {
+    action: "publishQuestPool",
+    entries: entries ?? [],
+  });
+}
+
+export async function addQuestQueueItem(userId, apiToken, partyId, entry) {
+  return await postPartyAction(userId, apiToken, partyId, {
+    action: "addQueueItem",
+    queueItemId: crypto.randomUUID(),
+    questKey: entry.questKey,
+    questName: entry.questName,
+    ownerUserId: entry.ownerUserId,
+    ownerDisplayName: entry.ownerDisplayName,
+    rewardSummary: entry.rewardSummary ?? entry.rewards ?? [],
+  });
+}
+
+export async function toggleQuestVote(userId, apiToken, partyId, queueItemId, voterDisplayName) {
+  return await postPartyAction(userId, apiToken, partyId, {
+    action: "toggleVote",
+    queueItemId,
+    voterDisplayName,
+  });
+}
+
+export async function removeQuestQueueItem(userId, apiToken, partyId, queueItemId, version) {
+  return await postPartyAction(userId, apiToken, partyId, {
+    action: "removeQueueItem",
+    queueItemId,
+    version,
+  });
+}
+
+async function postPartyAction(userId, apiToken, partyId, body) {
+  validateCredentials(userId, apiToken);
+  validatePartyId(partyId);
+
+  const response = await fetch(`/api/party-sync/${encodeURIComponent(partyId)}`, {
+    method: "POST",
+    headers: {
+      "accept": "application/json",
+      "content-type": "application/json",
+      "x-api-user": userId.trim(),
+      "x-api-key": apiToken.trim(),
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    throw new Error(await readError(response, "Party quest action failed."));
+  }
+
+  return await readJsonResponse(
+    response,
+    "Party quest endpoint returned an invalid response.",
+  );
+}
+
 function validateCredentials(userId, apiToken) {
   if (!userId || !apiToken) {
     throw new Error("Habitica credentials are required for party sync.");

@@ -523,6 +523,60 @@ public sealed class AppSessionControllerTests
             UploadedCronHistoryJson = cronHistoryJson;
             return Task.CompletedTask;
         }
+
+        public Task<RemotePartyQuestState> PublishQuestPoolAsync(
+            HabiticaCredentials credentials,
+            string partyId,
+            IReadOnlyList<PartyQuestPoolEntry> entries,
+            CancellationToken cancellationToken)
+        {
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow, QuestPool: entries));
+        }
+
+        public Task<RemotePartyQuestState> AddQuestQueueItemAsync(
+            HabiticaCredentials credentials,
+            string partyId,
+            PartyQuestPoolEntry entry,
+            CancellationToken cancellationToken)
+        {
+            var queueEntry = new PartyQuestQueueEntry(
+                Guid.NewGuid().ToString("N"),
+                partyId,
+                entry.QuestKey,
+                entry.QuestName,
+                credentials.UserId,
+                entry.OwnerDisplayName,
+                PartyQuestQueueStatus.Queued,
+                DateTimeOffset.UtcNow,
+                DateTimeOffset.UtcNow,
+                1,
+                null,
+                false,
+                1,
+                Array.Empty<PartyQuestVote>(),
+                entry.Rewards);
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow, QuestQueue: new[] { queueEntry }, QuestPool: new[] { entry }));
+        }
+
+        public Task<RemotePartyQuestState> ToggleQuestVoteAsync(
+            HabiticaCredentials credentials,
+            string partyId,
+            string queueItemId,
+            string voterDisplayName,
+            CancellationToken cancellationToken)
+        {
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyQuestState> RemoveQuestQueueItemAsync(
+            HabiticaCredentials credentials,
+            string partyId,
+            string queueItemId,
+            int version,
+            CancellationToken cancellationToken)
+        {
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
     }
 
     private sealed class FakeDiagnosticsLogStore : IDiagnosticsLogStore
