@@ -42,6 +42,16 @@ public interface IRemotePartyDataSyncProvider
         string queueItemId,
         int version,
         CancellationToken cancellationToken);
+
+    Task<RemotePartyQuestState> ReconcileQuestLifecycleAsync(
+        HabiticaCredentials credentials,
+        string partyId,
+        string queueItemId,
+        string questKey,
+        string transition,
+        int? participantsCount,
+        string? completedByDisplayName,
+        CancellationToken cancellationToken);
 }
 
 public sealed record RemotePartyDataSnapshot(

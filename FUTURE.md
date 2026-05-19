@@ -8,7 +8,7 @@ This file tracks items from `habitica_companion_pending_features_plan.md` that r
 - Add explicit owner readiness toggle in the shared queue UI.
 - Add party leader controls for manual pinning, force-selecting, resolving conflicts, and locking queue changes during selection.
 - Add queue states and actions for `Selected`, `InviteSent`, `Skipped`, and `Expired` beyond the implemented queued/active/completed/removed storage path.
-- Add automatic queue lifecycle reconciliation from Habitica active quest changes: queued -> active -> completed.
+- ~~Add automatic queue lifecycle reconciliation from Habitica active quest changes: queued -> active -> completed.~~ Implemented: `ReconcileQuestLifecycleAsync` in `AppSessionController` auto-detects quest state transitions on each party sync. Cloudflare function `autoReconcileQuest` action handles idempotent activate/complete with conflict dedup via unique constraint on `source_queue_item_id`.
 - Add direct Habitica quest invite/start action for the selected quest owner after confirming the exact API flow.
 - Add limited vote budgets as an optional advanced voting mode.
 - Add queue expiration and stale-owner cleanup rules.

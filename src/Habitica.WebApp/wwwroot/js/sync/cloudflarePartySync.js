@@ -82,6 +82,17 @@ export async function removeQuestQueueItem(userId, apiToken, partyId, queueItemI
   });
 }
 
+export async function reconcileQuestLifecycle(userId, apiToken, partyId, queueItemId, questKey, transition, participantsCount, completedByDisplayName) {
+  return await postPartyAction(userId, apiToken, partyId, {
+    action: "autoReconcileQuest",
+    queueItemId,
+    questKey,
+    transition,
+    participantsCount: participantsCount ?? null,
+    completedByDisplayName: completedByDisplayName ?? null,
+  });
+}
+
 async function postPartyAction(userId, apiToken, partyId, body) {
   validateCredentials(userId, apiToken);
   validatePartyId(partyId);

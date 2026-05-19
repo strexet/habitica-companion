@@ -116,6 +116,30 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
             version);
     }
 
+    public async Task<RemotePartyQuestState> ReconcileQuestLifecycleAsync(
+        HabiticaCredentials credentials,
+        string partyId,
+        string queueItemId,
+        string questKey,
+        string transition,
+        int? participantsCount,
+        string? completedByDisplayName,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "reconcileQuestLifecycle",
+            cancellationToken,
+            credentials.UserId,
+            credentials.ApiToken,
+            partyId,
+            queueItemId,
+            questKey,
+            transition,
+            participantsCount,
+            completedByDisplayName);
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_moduleTask.IsValueCreated)

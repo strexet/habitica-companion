@@ -607,6 +607,19 @@ public sealed class AppSessionControllerTests
         {
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
         }
+
+        public Task<RemotePartyQuestState> ReconcileQuestLifecycleAsync(
+            HabiticaCredentials credentials,
+            string partyId,
+            string queueItemId,
+            string questKey,
+            string transition,
+            int? participantsCount,
+            string? completedByDisplayName,
+            CancellationToken cancellationToken)
+        {
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
     }
 
     private sealed class FakeDiagnosticsLogStore : IDiagnosticsLogStore

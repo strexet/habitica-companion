@@ -1686,7 +1686,80 @@ public sealed class AppSessionController : IAppSessionController
             ApplyPartyQuestState(partySnapshot.PartyId, questState);
         }
 
+        await ReconcileQuestLifecycleAsync(credentials, partySnapshot.PartyId, cancellationToken);
+
         return new PartySyncUploadResult(mergedRemoteHistory, cronHistory.Events.Count);
+    }
+
+    private async Task ReconcileQuestLifecycleAsync(
+        HabiticaCredentials credentials,
+        string partyId,
+        CancellationToken cancellationToken)
+    {
+        var queue = State.PartyQuestQueue?.Queue;
+        if (queue is null || queue.Count == 0)
+        {
+            return;
+        }
+
+        var habiticaQuest = State.PartySnapshot?.Quest;
+        var habiticaQuestKey = habiticaQuest is { IsActive: true } ? habiticaQuest.Key : null;
+
+        foreach (var entry in queue)
+        {
+            if (entry.Status is PartyQuestQueueStatus.Active && !string.Equals(entry.QuestKey, habiticaQuestKey, StringComparison.Ordinal))
+            {
+                try
+                {
+                    var participantsCount = habiticaQuest?.ParticipantCount;
+                    var state = await _remotePartyDataSyncProvider.ReconcileQuestLifecycleAsync(
+                        credentials, partyId, entry.QueueItemId, entry.QuestKey, "complete",
+                        participantsCount, State.DisplayName, cancellationToken);
+                    ApplyPartyQuestState(partyId, state);
+                }
+                catch (Exception exception) when (exception is not OperationCanceledException)
+                {
+                    await _diagnosticsLogWriter.WriteAsync(
+                        DiagnosticsFeatureArea.Party,
+                        "quest-lifecycle-complete",
+                        DiagnosticsSeverity.Warning,
+                        DiagnosticsMode.Local,
+                        $"Auto-complete for '{entry.QuestName}' failed: {exception.Message}",
+                        new Dictionary<string, string>(StringComparer.Ordinal)
+                        {
+                            ["queueItemId"] = entry.QueueItemId,
+                            ["questKey"] = entry.QuestKey
+                        },
+                        cancellationToken);
+                }
+            }
+            else if (entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.InviteSent
+                     && string.Equals(entry.QuestKey, habiticaQuestKey, StringComparison.Ordinal))
+            {
+                try
+                {
+                    var state = await _remotePartyDataSyncProvider.ReconcileQuestLifecycleAsync(
+                        credentials, partyId, entry.QueueItemId, entry.QuestKey, "activate",
+                        null, null, cancellationToken);
+                    ApplyPartyQuestState(partyId, state);
+                }
+                catch (Exception exception) when (exception is not OperationCanceledException)
+                {
+                    await _diagnosticsLogWriter.WriteAsync(
+                        DiagnosticsFeatureArea.Party,
+                        "quest-lifecycle-activate",
+                        DiagnosticsSeverity.Warning,
+                        DiagnosticsMode.Local,
+                        $"Auto-activate for '{entry.QuestName}' failed: {exception.Message}",
+                        new Dictionary<string, string>(StringComparer.Ordinal)
+                        {
+                            ["queueItemId"] = entry.QueueItemId,
+                            ["questKey"] = entry.QuestKey
+                        },
+                        cancellationToken);
+                }
+            }
+        }
     }
 
     private async Task<RemotePartyQuestState?> PublishCurrentQuestPoolAsync(

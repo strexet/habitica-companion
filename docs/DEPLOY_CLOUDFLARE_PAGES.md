@@ -59,7 +59,7 @@ Shared party sync requires a D1 database bound to the Pages project.
 1. In Cloudflare, open `Workers & Pages`.
 2. Open `D1 SQL Database`.
 3. Create a database, for example `habitica-companion-party-sync`.
-4. Apply `migrations/0001_party_sync.sql`.
+4. Apply all migrations in order: `migrations/0001_party_sync.sql`, `migrations/0002_party_quest_queue.sql`, `migrations/0003_quest_lifecycle.sql`.
 5. Open the Pages project settings.
 6. Open `Bindings`.
 7. Add a D1 database binding:

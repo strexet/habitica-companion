@@ -326,7 +326,7 @@
 
                 @if (recentEntries.Count == 0)
                 {
-                    <p class="panel-copy">Recently completed shared quest history will appear after queued quests are marked completed.</p>
+                    <p class="panel-copy">Recently completed shared quest history will appear automatically when active quests finish in Habitica.</p>
                 }
                 else
                 {
@@ -339,6 +339,10 @@
                                         <span class="dashboard-stat-label">Completed @FormatDateTime(recent.CompletedAtUtc)</span>
                                         <strong>@recent.QuestName</strong>
                                         <span class="dashboard-stat-note">@GetOwnerLabel(recent.OwnerDisplayName)</span>
+                                        @if (recent.CompletionSource is "auto" && !string.IsNullOrWhiteSpace(recent.CompletedByDisplayName))
+                                        {
+                                            <span class="dashboard-stat-note">Detected by @recent.CompletedByDisplayName</span>
+                                        }
                                     </div>
                                     @if (recent.ParticipantsCount is not null)
                                     {

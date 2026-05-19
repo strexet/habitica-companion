@@ -173,6 +173,8 @@ export async function onRequestPost(context) {
       return await updateQueueStatus(db, partyId, membership, payload, "Active", nowIso);
     case "markCompleted":
       return await markCompleted(db, partyId, membership, payload, nowIso);
+    case "autoReconcileQuest":
+      return await autoReconcileQuest(db, partyId, membership, payload, nowIso);
     default:
       return textResponse("Unsupported party quest action.", 400);
   }
@@ -284,7 +286,7 @@ async function readQuestPool(db, partyId) {
 async function readRecentlyCompleted(db, partyId) {
   const result = await db
     .prepare(`
-      SELECT party_id, quest_key, quest_name, completed_at_utc, started_at_utc, owner_user_id, owner_display_name, participants_count, reward_summary_json, source_queue_item_id
+      SELECT party_id, quest_key, quest_name, completed_at_utc, started_at_utc, owner_user_id, owner_display_name, participants_count, reward_summary_json, source_queue_item_id, completed_by_user_id, completed_by_display_name, completion_source
       FROM party_recently_completed_quests
       WHERE party_id = ?
       ORDER BY completed_at_utc DESC
@@ -303,6 +305,9 @@ async function readRecentlyCompleted(db, partyId) {
     participantsCount: row.participants_count,
     rewardSummary: parseStringArray(row.reward_summary_json),
     sourceQueueItemId: row.source_queue_item_id,
+    completedByUserId: row.completed_by_user_id,
+    completedByDisplayName: row.completed_by_display_name,
+    completionSource: row.completion_source ?? "manual",
   }));
 }
 
@@ -562,6 +567,120 @@ async function markCompleted(db, partyId, membership, payload, nowIso) {
         item.queue_item_id,
       )
       .run();
+  }
+
+  return jsonResponse({
+    ok: true,
+    updatedAtUtc: nowIso,
+    questQueue: await readQuestQueue(db, partyId),
+    questPool: await readQuestPool(db, partyId),
+    recentlyCompleted: await readRecentlyCompleted(db, partyId),
+  });
+}
+
+async function autoReconcileQuest(db, partyId, membership, payload, nowIso) {
+  const transition = payload?.transition;
+  const queueItemId = payload?.queueItemId;
+  const questKey = payload?.questKey;
+  if (!transition || !queueItemId || !questKey) {
+    return textResponse("Missing transition, queueItemId, or questKey.", 400);
+  }
+  if (transition !== "activate" && transition !== "complete") {
+    return textResponse("Transition must be 'activate' or 'complete'.", 400);
+  }
+
+  const item = await db
+    .prepare("SELECT quest_key, status, version, started_at_utc FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
+    .bind(partyId, queueItemId)
+    .first();
+  if (!item) {
+    return textResponse("Queue item was not found.", 404);
+  }
+  if (item.quest_key !== questKey) {
+    return textResponse("Quest key does not match queue item.", 409);
+  }
+
+  if (transition === "activate") {
+    if (item.status === "Active") {
+      return jsonResponse({
+        ok: true,
+        alreadyInState: true,
+        updatedAtUtc: nowIso,
+        questQueue: await readQuestQueue(db, partyId),
+        questPool: await readQuestPool(db, partyId),
+        recentlyCompleted: await readRecentlyCompleted(db, partyId),
+      });
+    }
+    if (item.status !== "Queued" && item.status !== "Selected" && item.status !== "InviteSent") {
+      return textResponse(`Cannot activate quest in '${item.status}' state.`, 409);
+    }
+    await db
+      .prepare(`
+        UPDATE party_quest_queue
+        SET status = 'Active', started_at_utc = ?, updated_at_utc = ?, version = COALESCE(version, 1) + 1
+        WHERE party_id = ? AND queue_item_id = ?
+      `)
+      .bind(nowIso, nowIso, partyId, queueItemId)
+      .run();
+  }
+
+  if (transition === "complete") {
+    if (item.status === "Completed") {
+      return jsonResponse({
+        ok: true,
+        alreadyInState: true,
+        updatedAtUtc: nowIso,
+        questQueue: await readQuestQueue(db, partyId),
+        questPool: await readQuestPool(db, partyId),
+        recentlyCompleted: await readRecentlyCompleted(db, partyId),
+      });
+    }
+    if (item.status !== "Active") {
+      return textResponse(`Cannot complete quest in '${item.status}' state.`, 409);
+    }
+    await db
+      .prepare(`
+        UPDATE party_quest_queue
+        SET status = 'Completed', completed_at_utc = ?, updated_at_utc = ?, version = COALESCE(version, 1) + 1
+        WHERE party_id = ? AND queue_item_id = ?
+      `)
+      .bind(nowIso, nowIso, partyId, queueItemId)
+      .run();
+
+    const completedItem = await db
+      .prepare("SELECT quest_key, quest_name, owner_user_id, owner_display_name, started_at_utc, reward_summary_json FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
+      .bind(partyId, queueItemId)
+      .first();
+    if (completedItem) {
+      try {
+        await db
+          .prepare(`
+            INSERT INTO party_recently_completed_quests (
+              party_id, quest_key, quest_name, completed_at_utc, started_at_utc,
+              owner_user_id, owner_display_name, participants_count,
+              reward_summary_json, source_queue_item_id,
+              completed_by_user_id, completed_by_display_name, completion_source
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'auto')
+          `)
+          .bind(
+            partyId,
+            completedItem.quest_key,
+            completedItem.quest_name ?? completedItem.quest_key,
+            nowIso,
+            completedItem.started_at_utc ?? item.started_at_utc,
+            completedItem.owner_user_id,
+            completedItem.owner_display_name,
+            payload.participantsCount ?? null,
+            completedItem.reward_summary_json,
+            queueItemId,
+            membership.userId,
+            payload.completedByDisplayName ?? membership.userId,
+          )
+          .run();
+      } catch (insertError) {
+        // unique constraint on source_queue_item_id — another user already recorded completion
+      }
+    }
   }
 
   return jsonResponse({

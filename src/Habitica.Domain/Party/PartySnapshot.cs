@@ -132,7 +132,10 @@ public sealed record PartyRecentlyCompletedQuest(
     string? OwnerDisplayName,
     int? ParticipantsCount,
     IReadOnlyList<string>? RewardSummary = null,
-    string? SourceQueueItemId = null)
+    string? SourceQueueItemId = null,
+    string? CompletedByUserId = null,
+    string? CompletedByDisplayName = null,
+    string? CompletionSource = null)
 {
     public IReadOnlyList<string> Rewards => RewardSummary ?? Array.Empty<string>();
 }
