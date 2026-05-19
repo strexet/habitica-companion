@@ -14,7 +14,7 @@ public sealed class TaskListViewModelFactoryTests
             DateTimeOffset.Parse("2026-04-24T12:00:00Z"),
             new[]
             {
-                new TaskSnapshot("todo-open", "Buy milk", TaskType.Todo, false, 1, null, null),
+                new TaskSnapshot("todo-open", "Buy milk", TaskType.Todo, false, 1, null, null, 2.7m),
                 new TaskSnapshot("todo-complete", "Archive notes", TaskType.Todo, true, 1, null, null),
                 new TaskSnapshot("daily-open", "Exercise", TaskType.Daily, false, 1.5m, null, null),
                 new TaskSnapshot("habit-open", "Read docs", TaskType.Habit, false, 0.5m, null, null)
@@ -27,6 +27,7 @@ public sealed class TaskListViewModelFactoryTests
             viewModel.Groups.Select(group => group.Type).ToArray());
         Assert.Single(viewModel.Groups.Single(group => group.Type == TaskType.Todo).Items);
         Assert.Equal("Buy milk", viewModel.Groups.Single(group => group.Type == TaskType.Todo).Items[0].Text);
+        Assert.Equal(2.7m, viewModel.Groups.Single(group => group.Type == TaskType.Todo).Items[0].Value);
     }
 
     [Fact]

@@ -1134,6 +1134,37 @@ a {
     gap: 0.75rem;
 }
 
+.task-group-title,
+.task-group-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.secondary-action-button {
+    min-height: 2.25rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(45, 116, 110, 0.22);
+    background: rgba(255, 255, 255, 0.68);
+    color: var(--teal);
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.secondary-action-button:hover {
+    background: rgba(45, 116, 110, 0.1);
+}
+
+.secondary-action-button.icon-toggle {
+    width: 2.25rem;
+    padding: 0;
+    font-size: 1.1rem;
+}
+
 .task-card-grid,
 .settings-grid {
     display: grid;
@@ -1147,6 +1178,15 @@ a {
     background: rgba(255, 255, 255, 0.75);
     border: 1px solid rgba(22, 36, 35, 0.08);
     border-radius: 1.25rem;
+}
+
+.task-card.completed-task {
+    border-color: rgba(95, 109, 103, 0.14);
+    color: rgba(22, 36, 35, 0.72);
+}
+
+.task-card.completed-task .task-title {
+    color: rgba(22, 36, 35, 0.62);
 }
 
 .task-card-head {
@@ -1185,6 +1225,12 @@ a {
 .task-meta dd {
     margin: 0.2rem 0 0;
     font-weight: 700;
+}
+
+.task-empty-state {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.55;
 }
 
 .danger-card {

@@ -6,4 +6,5 @@ public sealed record TaskListItemViewModel(
     bool IsCompleted,
     decimal Difficulty,
     string? Notes,
-    DateTimeOffset? DueDate);
+    DateTimeOffset? DueDate,
+    decimal? Value);

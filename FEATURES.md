@@ -2136,15 +2136,21 @@ Provide a read-only task browser that loads from the local snapshot and keeps ta
 cached task snapshot
 task freshness state
 search text
-include-completed toggle
+per-category folded preferences
+per-category completed visibility preferences
 ```
 
 ### Outputs
 
 ```text
 task groups by type
+foldable task group sections
+per-category Show completed / Hide completed controls
 task cards
 task notes
+numeric task value
+subtle value-based card background for open tasks
+muted completed-task styling
 priority and due-date metadata
 freshness banner
 empty-state messaging
@@ -2152,7 +2158,18 @@ empty-state messaging
 
 ### Local storage
 
-Reads `tasks/latestSnapshot`.
+Reads:
+
+```text
+tasks/latestSnapshot
+preferences/tasksPage/{userId}
+```
+
+Writes:
+
+```text
+preferences/tasksPage/{userId}
+```
 
 ### API interaction
 
@@ -2168,6 +2185,11 @@ Current view-model rules:
 3. Hide completed tasks by default.
 4. Group visible tasks in this order: To-Dos, Dailies, Habits, Rewards.
 5. Sort items within each group by completion state then text.
+6. Keep group fold state and completed visibility separately for each task type.
+7. Persist task-page preferences by user id on the current device.
+8. Show the numeric task value when available.
+9. Tint open task cards with a continuous low-saturation value gradient from warm negative values to cool positive values.
+10. Render completed tasks with neutral muted styling when the category is set to show completed.
 ```
 
 ### Validation
@@ -2195,6 +2217,10 @@ Test:
 - grouping by task type;
 - search filtering;
 - completed-task filtering;
+- per-category completed visibility;
+- foldable task groups;
+- persisted user task-page preferences;
+- numeric task value rendering;
 - freshness banner rendering;
 - cached empty-state rendering.
 
@@ -2204,7 +2230,11 @@ Current implementation:
 
 - grouped task cards;
 - search field;
-- completed-task toggle;
+- per-category completed-task controls;
+- persisted per-user folded category and completed visibility preferences;
+- numeric task value display;
+- continuous value-based open-task card tinting;
+- muted completed-task styling;
 - freshness banner driven by the shared freshness policy.
 
 Next:

@@ -35,7 +35,8 @@ public sealed class TaskListViewModelFactory
                         task.IsCompleted,
                         task.Difficulty,
                         task.Notes,
-                        task.DueDate))
+                        task.DueDate,
+                        task.Value))
                     .ToArray()))
             .ToArray();
 

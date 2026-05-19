@@ -23,11 +23,8 @@ This file tracks items from `habitica_companion_pending_features_plan.md` that r
 
 ## Tasks Page Enhancements
 
-- Foldable To-Dos, Dailies, and Habits categories with per-user local preferences.
-- Per-category completed visibility controls.
 - Task scoring/completion actions.
 - Habit multi-score controls.
-- Continuous task-value background tinting.
 - Expandable task details with week/month/year statistics.
 - Task activity histograms and activity charts.
 

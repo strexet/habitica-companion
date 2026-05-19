@@ -10,6 +10,7 @@ public static class StorageKeys
     public const string LatestPartySnapshot = "party/latestSnapshot";
     public const string PartyCronHistory = "party/cronHistory";
     public const string DiagnosticsLogEntries = "diagnostics/logEntries";
+    public const string TasksPagePreferences = "preferences/tasksPage";
 
     public static IReadOnlyList<string> PortableDataKeys { get; } =
         new[]
