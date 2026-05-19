@@ -28,7 +28,8 @@ public sealed record SessionViewModel(
     IReadOnlyList<EquipmentPreset>? EquipmentPresets = null,
     SpellCastProgress? ActiveSpellCastProgress = null,
     EquipmentProgress? ActiveEquipmentProgress = null,
-    bool IncludeStalePartyMembersInQuestForecasts = false)
+    bool IncludeStalePartyMembersInQuestForecasts = false,
+    IReadOnlyDictionary<Habitica.Application.Sync.RefreshDomain, Habitica.Application.Sync.DomainRefreshState>? DomainStates = null)
 {
     public static SessionViewModel Empty { get; } = new(
         IsBusy: false,

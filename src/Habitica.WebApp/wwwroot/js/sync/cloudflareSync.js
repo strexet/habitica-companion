@@ -166,6 +166,91 @@ function buildHtmlEndpointMessage() {
     : "Cloud sync endpoint returned HTML instead of JSON. Check that the Cloudflare Pages Function is deployed and the route is not falling back to the app shell.";
 }
 
+export async function uploadSection(userId, apiToken, sectionKey, plainTextJson) {
+  const identity = await deriveIdentity(userId, apiToken);
+  const encryptedPayload = await encryptText(identity.key, plainTextJson);
+  const response = await fetch(`/api/sync/${encodeURIComponent(identity.syncId)}/section/${encodeURIComponent(sectionKey)}`, {
+    method: "PUT",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(encryptedPayload),
+  });
+
+  const result = await readJsonResponse(
+    response,
+    `Cloud sync section upload failed for ${sectionKey}.`,
+  );
+
+  return {
+    ok: result.ok ?? response.ok,
+    sectionKey: result.sectionKey ?? sectionKey,
+    error: result.error ?? null,
+    payloadBytes: result.payloadBytes ?? null,
+    updatedAtUtc: result.updatedAtUtc ?? null,
+  };
+}
+
+export async function downloadSection(userId, apiToken, sectionKey) {
+  const identity = await deriveIdentity(userId, apiToken);
+  const response = await fetch(`/api/sync/${encodeURIComponent(identity.syncId)}/section/${encodeURIComponent(sectionKey)}`, {
+    headers: {
+      "accept": "application/json",
+    },
+  });
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  if (!response.ok) {
+    const errorResult = await readJsonResponse(response, `Cloud sync section download failed for ${sectionKey}.`);
+    return { ok: false, error: errorResult.error ?? "download_failed", sectionKey };
+  }
+
+  const snapshot = await readJsonResponse(
+    response,
+    `Cloud sync section endpoint returned an invalid response for ${sectionKey}.`,
+  );
+  const plainTextJson = await decryptText(identity.key, snapshot.encryptedPayload);
+  return {
+    ok: true,
+    sectionKey,
+    plainTextJson,
+    updatedAtUtc: snapshot.updatedAtUtc ?? null,
+  };
+}
+
+export async function downloadAllSections(userId, apiToken, sectionKeys) {
+  const results = [];
+  for (const sectionKey of sectionKeys) {
+    try {
+      const result = await downloadSection(userId, apiToken, sectionKey);
+      results.push(result);
+    } catch (error) {
+      results.push({ ok: false, sectionKey, error: error?.message ?? "download_failed" });
+    }
+  }
+
+  return results;
+}
+
+export async function listSections(userId, apiToken) {
+  const identity = await deriveIdentity(userId, apiToken);
+  const response = await fetch(`/api/sync/${encodeURIComponent(identity.syncId)}/sections`, {
+    headers: {
+      "accept": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    return [];
+  }
+
+  const result = await readJsonResponse(response, "Cloud sync list sections failed.");
+  return (result.sections ?? []).map((entry) => entry.sectionKey);
+}
+
 function toBase64Url(bytes) {
   let binary = "";
   for (const byte of bytes) {

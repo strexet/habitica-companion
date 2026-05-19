@@ -39,6 +39,7 @@ builder.Services.AddScoped<CharacterStatsViewModelFactory>();
 builder.Services.AddScoped<LiveTestWorkflow>();
 builder.Services.AddScoped<TaskListViewModelFactory>();
 builder.Services.AddScoped<LoginWorkflow>();
+builder.Services.AddScoped<RefreshCoordinator>();
 builder.Services.AddScoped<IRemoteUserDataSyncProvider, CloudflareUserDataSyncProvider>();
 builder.Services.AddScoped<IRemotePartyDataSyncProvider, CloudflarePartyDataSyncProvider>();
 builder.Services.AddScoped<IAppSessionController, AppSessionController>();

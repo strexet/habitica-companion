@@ -172,6 +172,11 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.CompletedTask;
     }
 
+    public Task RefreshForPageAsync(string pageRoute, CancellationToken cancellationToken = default)
+    {
+        return Task.CompletedTask;
+    }
+
     public Task<LocalDataActionResult> PreviewImportLocalDataAsync(string jsonText, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(LocalDataResult with { JsonText = jsonText });

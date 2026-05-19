@@ -41,6 +41,75 @@ public sealed class CloudflareUserDataSyncProvider : IRemoteUserDataSyncProvider
             plainTextJson);
     }
 
+    public async Task<RemoteUserDataSnapshot?> DownloadSectionAsync(
+        HabiticaCredentials credentials,
+        string sectionKey,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemoteUserDataSnapshot?>(
+            "downloadSection",
+            cancellationToken,
+            credentials.UserId,
+            credentials.ApiToken,
+            sectionKey);
+    }
+
+    public async Task<SectionUploadResult> UploadSectionAsync(
+        HabiticaCredentials credentials,
+        string sectionKey,
+        string plainTextJson,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        var result = await module.InvokeAsync<SectionUploadJsResult>(
+            "uploadSection",
+            cancellationToken,
+            credentials.UserId,
+            credentials.ApiToken,
+            sectionKey,
+            plainTextJson);
+
+        return new SectionUploadResult(
+            result.Ok,
+            result.Ok ? null : (result.Error ?? "Upload failed"),
+            result.PayloadBytes);
+    }
+
+    public async Task<IReadOnlyList<RemoteUserDataSnapshot?>> DownloadAllSectionsAsync(
+        HabiticaCredentials credentials,
+        IReadOnlyList<string> sectionKeys,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        var results = await module.InvokeAsync<DownloadSectionJsResult?[]>(
+            "downloadAllSections",
+            cancellationToken,
+            credentials.UserId,
+            credentials.ApiToken,
+            sectionKeys);
+
+        return results
+            .Select(static result => result is { Ok: true, PlainTextJson: not null }
+                ? new RemoteUserDataSnapshot(result.PlainTextJson, result.UpdatedAtUtc)
+                : null)
+            .ToArray();
+    }
+
+    public async Task<IReadOnlyList<string>> ListSectionsAsync(
+        HabiticaCredentials credentials,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        var sections = await module.InvokeAsync<string[]>(
+            "listSections",
+            cancellationToken,
+            credentials.UserId,
+            credentials.ApiToken);
+
+        return sections ?? Array.Empty<string>();
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_moduleTask.IsValueCreated)
@@ -49,5 +118,15 @@ public sealed class CloudflareUserDataSyncProvider : IRemoteUserDataSyncProvider
             await module.DisposeAsync();
         }
     }
+
+    private sealed record SectionUploadJsResult(
+        bool Ok,
+        string? Error,
+        int? PayloadBytes);
+
+    private sealed record DownloadSectionJsResult(
+        bool Ok,
+        string? PlainTextJson,
+        DateTimeOffset? UpdatedAtUtc);
 }
 

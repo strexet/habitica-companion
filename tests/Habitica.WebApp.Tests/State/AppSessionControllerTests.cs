@@ -141,8 +141,7 @@ public sealed class AppSessionControllerTests
         await controller.RefreshAsync();
 
         Assert.True(remoteSync.DownloadCount >= 2);
-        Assert.True(remoteSync.UploadCount >= 2);
-        Assert.NotNull(remoteSync.UploadedJson);
+        Assert.True(remoteSync.SectionUploadCount >= 2);
     }
 
     [Fact]
@@ -157,12 +156,11 @@ public sealed class AppSessionControllerTests
             PersistLocally = false,
             UserId = "user-id"
         });
-        var uploadCountBeforePreset = remoteSync.UploadCount;
+        var uploadCountBeforePreset = remoteSync.SectionUploadCount;
 
         await controller.SaveEquipmentPresetAsync(EquipmentSetKind.Battle, "Casting");
 
-        Assert.True(remoteSync.UploadCount > uploadCountBeforePreset);
-        Assert.NotNull(remoteSync.UploadedJson);
+        Assert.True(remoteSync.SectionUploadCount > uploadCountBeforePreset);
     }
 
     [Fact]
@@ -198,7 +196,7 @@ public sealed class AppSessionControllerTests
 
         Assert.Contains(controller.State.Presets, preset => preset.Id == "remote-preset" && preset.Name == "Remote Casting");
         Assert.True(remoteSync.DownloadCount >= 1);
-        Assert.True(remoteSync.UploadCount >= 1);
+        Assert.True(remoteSync.SectionUploadCount >= 1);
     }
 
     [Fact]
@@ -409,6 +407,11 @@ public sealed class AppSessionControllerTests
         var equipmentPresetStore = new EquipmentPresetStore(keyValueStorage);
         var logWriter = new DiagnosticsLogWriter(logStore, TimeProvider.System);
 
+        var freshnessPolicy = new SnapshotFreshnessPolicy();
+        var refreshCoordinator = new RefreshCoordinator(
+            syncClient, userSnapshotStore, taskSnapshotStore, partySnapshotStore,
+            partyCronHistoryStore, gearCatalogStore, logWriter, freshnessPolicy, TimeProvider.System);
+
         return new AppSessionController(
             loginWorkflow: new LoginWorkflow(syncClient, credentialStore, taskSnapshotStore, userSnapshotStore, partySnapshotStore, partyCronHistoryStore, logWriter),
             habiticaSyncClient: syncClient,
@@ -420,13 +423,14 @@ public sealed class AppSessionControllerTests
             partyCronHistoryStore: partyCronHistoryStore,
             partySnapshotStore: partySnapshotStore,
             localUserDataPortabilityService: new LocalUserDataPortabilityService(keyValueStorage, TimeProvider.System),
+            refreshCoordinator: refreshCoordinator,
             remotePartyDataSyncProvider: remotePartyDataSyncProvider ?? new FakeRemotePartyDataSyncProvider(),
             remoteUserDataSyncProvider: remoteUserDataSyncProvider ?? new FakeRemoteUserDataSyncProvider(),
             taskSnapshotStore: taskSnapshotStore,
             userSnapshotStore: userSnapshotStore,
             diagnosticsLogStore: logStore,
             diagnosticsLogWriter: logWriter,
-            snapshotFreshnessPolicy: new SnapshotFreshnessPolicy(),
+            snapshotFreshnessPolicy: freshnessPolicy,
             timeProvider: TimeProvider.System);
     }
 
@@ -472,9 +476,13 @@ public sealed class AppSessionControllerTests
 
         public int UploadCount { get; private set; }
 
+        public int SectionUploadCount { get; private set; }
+
         public RemoteUserDataSnapshot? Snapshot { get; set; }
 
         public string? UploadedJson { get; private set; }
+
+        public List<string> UploadedSectionKeys { get; } = new();
 
         public Task<RemoteUserDataSnapshot?> DownloadAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
@@ -487,6 +495,28 @@ public sealed class AppSessionControllerTests
             UploadCount++;
             UploadedJson = plainTextJson;
             return Task.CompletedTask;
+        }
+
+        public Task<RemoteUserDataSnapshot?> DownloadSectionAsync(HabiticaCredentials credentials, string sectionKey, CancellationToken cancellationToken)
+        {
+            return Task.FromResult<RemoteUserDataSnapshot?>(null);
+        }
+
+        public Task<SectionUploadResult> UploadSectionAsync(HabiticaCredentials credentials, string sectionKey, string plainTextJson, CancellationToken cancellationToken)
+        {
+            SectionUploadCount++;
+            UploadedSectionKeys.Add(sectionKey);
+            return Task.FromResult(new SectionUploadResult(true));
+        }
+
+        public Task<IReadOnlyList<RemoteUserDataSnapshot?>> DownloadAllSectionsAsync(HabiticaCredentials credentials, IReadOnlyList<string> sectionKeys, CancellationToken cancellationToken)
+        {
+            return Task.FromResult<IReadOnlyList<RemoteUserDataSnapshot?>>(Array.Empty<RemoteUserDataSnapshot?>());
+        }
+
+        public Task<IReadOnlyList<string>> ListSectionsAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
         }
     }
 

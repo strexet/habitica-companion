@@ -17,6 +17,8 @@ public interface IAppSessionController
 
     Task RefreshAsync(CancellationToken cancellationToken = default);
 
+    Task RefreshForPageAsync(string pageRoute, CancellationToken cancellationToken = default);
+
     Task<LiveTestSuiteResult> RunSafeLiveTestsAsync(CancellationToken cancellationToken = default);
 
     Task<LiveTestSuiteResult> RunReversibleGearTestAsync(CancellationToken cancellationToken = default);

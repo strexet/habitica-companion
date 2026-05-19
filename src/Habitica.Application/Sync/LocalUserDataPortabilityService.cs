@@ -95,6 +95,30 @@ public sealed class LocalUserDataPortabilityService
             importedCount);
     }
 
+    public async Task<LocalUserDataRecord?> ExportSectionAsync(string storageKey, CancellationToken cancellationToken)
+    {
+        var json = await _keyValueStorage.GetRawJsonAsync(storageKey, cancellationToken);
+        return string.IsNullOrWhiteSpace(json) ? null : new LocalUserDataRecord(storageKey, json);
+    }
+
+    public async Task ImportSectionAsync(
+        LocalUserDataRecord record,
+        LocalDataImportMode mode,
+        CancellationToken cancellationToken)
+    {
+        if (!StorageKeys.PortableDataKeys.Contains(record.Key, StringComparer.Ordinal))
+        {
+            return;
+        }
+
+        var localJson = await _keyValueStorage.GetRawJsonAsync(record.Key, cancellationToken);
+        var nextJson = mode == LocalDataImportMode.Merge && !string.IsNullOrWhiteSpace(localJson)
+            ? MergeJson(record.Key, localJson!, record.JsonText)
+            : record.JsonText;
+
+        await _keyValueStorage.SetRawJsonAsync(record.Key, nextJson, cancellationToken);
+    }
+
     public string Serialize(LocalUserDataBundle bundle)
     {
         return JsonSerializer.Serialize(bundle, JsonOptions);

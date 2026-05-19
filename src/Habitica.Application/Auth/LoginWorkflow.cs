@@ -35,6 +35,30 @@ public sealed class LoginWorkflow
         _diagnosticsLogWriter = diagnosticsLogWriter;
     }
 
+    public async Task<LoginResult> AuthenticateMinimalAsync(LoginCommand command, CancellationToken cancellationToken)
+    {
+        var credentials = new HabiticaCredentials(command.UserId, command.ApiToken);
+        var user = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+
+        if (command.PersistLocally)
+        {
+            await _credentialStore.SavePersistentCredentialsAsync(credentials, cancellationToken);
+        }
+        else
+        {
+            await _credentialStore.ClearPersistentCredentialsAsync(cancellationToken);
+        }
+
+        await _userSnapshotStore.SaveAsync(user, cancellationToken);
+
+        return new LoginResult(
+            user.DisplayName,
+            user.ClassName,
+            user.Level,
+            0,
+            user.RetrievedAtUtc);
+    }
+
     public async Task<LoginResult> AuthenticateAndSyncAsync(LoginCommand command, CancellationToken cancellationToken)
     {
         var credentials = new HabiticaCredentials(command.UserId, command.ApiToken);

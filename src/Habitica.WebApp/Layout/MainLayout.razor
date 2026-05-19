@@ -1,6 +1,7 @@
 @inherits LayoutComponentBase
 @implements IDisposable
 @inject IAppSessionController SessionController
+@inject NavigationManager NavigationManager
 
 <MudLayout>
     <MudAppBar Class="topbar" Dense="true" Elevation="0">
@@ -85,7 +86,7 @@
 
     private async Task RefreshAsync()
     {
-        await SessionController.RefreshAsync();
+        await SessionController.RefreshForPageAsync(NavigationManager.Uri);
     }
 
     private void ToggleDrawer()
