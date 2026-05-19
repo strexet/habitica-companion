@@ -282,7 +282,9 @@ Browser PWA -> Cloudflare Pages Function -> Cloudflare KV
 Browser PWA -> Cloudflare Pages Function -> Cloudflare D1
 ```
 
-The KV backend is only for encrypted app-data sync. Habitica API credentials must never be sent to the encrypted app-data sync endpoint. The browser derives a sync id and AES-GCM key from the active Habitica User ID and API Token, encrypts the local export payload, and uploads only encrypted JSON.
+The KV backend is only for encrypted app-data sync. Habitica API credentials must never be sent to the encrypted app-data sync endpoint. The browser derives a sync id and AES-GCM key from the active Habitica User ID and API Token, encrypts each section payload independently, and uploads only encrypted JSON.
+
+Cloud sync uses per-section KV records (`sync:{syncId}:section:{sectionKey}`) instead of a single blob. Each section corresponds to one portable data key and has its own 2MB KV limit. A `sync-metadata` section tracks schema version 2, upload timestamp, and succeeded/failed sections. Legacy single-blob records (`sync:{syncId}`) are still readable for backward-compatible migration but are no longer written.
 
 The D1 backend stores shared party data for CRON history and party quest planning under `functions/api/party-sync/[partyId].js`. It stores party snapshots, CRON events, quest pool availability, quest queue entries, quest votes, and recently completed quest history. Party-sync verifies Habitica party membership before reads and writes using the existing credential-header flow; replacing that with a tokenless membership proof is tracked in `FUTURE.md`.
 
@@ -679,7 +681,7 @@ MVP deployment contract:
 - require HTTPS;
 - require SPA fallback to `index.html` for app routes;
 - keep the service worker scope at the app root;
-- deploy `functions/api/sync/[syncId].js` as a Cloudflare Pages Function when encrypted cloud sync is enabled;
+- deploy `functions/api/sync/[syncId].js`, `functions/api/sync/[syncId]/section/[sectionKey].js`, and `functions/api/sync/[syncId]/sections.js` as Cloudflare Pages Functions when encrypted cloud sync is enabled;
 - configure a Cloudflare KV binding named `HABITICA_SYNC_KV` for encrypted sync payloads;
 - treat subpath hosting as a non-baseline deployment that requires an explicit documented configuration change in the same change set.
 

@@ -6,7 +6,9 @@ This app is a Blazor WebAssembly app with Cloudflare Pages Functions for persona
 
 - `build.sh` - installs the pinned .NET SDK, installs npm dependencies, syncs vendored Dexie, and publishes the Blazor WebAssembly app.
 - `.node-version` - asks Cloudflare Pages to use Node.js 22.
-- `functions/api/sync/[syncId].js` - Cloudflare Pages Function for encrypted sync uploads and downloads.
+- `functions/api/sync/[syncId].js` - Cloudflare Pages Function for legacy single-blob encrypted sync (read-only fallback during migration).
+- `functions/api/sync/[syncId]/section/[sectionKey].js` - Cloudflare Pages Function for per-section encrypted sync uploads and downloads (active path).
+- `functions/api/sync/[syncId]/sections.js` - Cloudflare Pages Function listing all section keys for a sync id.
 - `functions/api/party-sync/[partyId].js` - Cloudflare Pages Function for shared party CRON data, protected by live Habitica party-membership verification.
 - `migrations/0001_party_sync.sql` - D1 schema for party state, CRON events, and placeholder quest queue/vote tables.
 - `wrangler.toml` - local/dev binding declarations for KV and D1.
@@ -46,8 +48,11 @@ Personal encrypted sync requires a KV namespace bound to the Pages project.
 
 7. Add the same binding for preview and production environments if you use both.
 
-The personal sync Pages Function stores only encrypted payloads. Habitica User ID and API Token are used in the browser to derive the encryption key and sync id; they are not sent to the personal sync endpoint.
-When the app refreshes Habitica data or completes supported local data changes, it automatically downloads the existing encrypted bundle, merges it with local portable data, and uploads the merged bundle back to this KV namespace.
+The personal sync Pages Functions store only encrypted payloads. Habitica User ID and API Token are used in the browser to derive the encryption key and sync id; they are not sent to the personal sync endpoints.
+
+Cloud sync uses per-section KV records (`sync:{syncId}:section:{sectionKey}`). Each section is encrypted and uploaded independently, staying within the 2MB per-key KV limit. When the app refreshes Habitica data or completes supported local data changes, it automatically lists remote sections, downloads and merges each section into local data, then uploads each local section back to this KV namespace.
+
+Legacy single-blob records (`sync:{syncId}`) from older deployments are automatically migrated: the app detects no sections exist, downloads the legacy blob, imports it locally, and re-uploads as individual sections. The legacy blob remains in KV but is no longer updated. No manual migration is required.
 
 Shared party sync requires a D1 database bound to the Pages project.
 

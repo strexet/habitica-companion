@@ -38,8 +38,15 @@ This file tracks items from `habitica_companion_pending_features_plan.md` that r
 ## Login and Refresh Improvements
 
 - Login redirect guard that skips the sign-in page for authenticated stored credentials without flashing the login UI.
-- Staged refresh coordinator with domain-specific refresh keys.
-- Narrow Habitica API endpoint refreshes by visible page/domain.
+- ~~Staged refresh coordinator with domain-specific refresh keys.~~ Implemented: `RefreshCoordinator` in `Habitica.Application.Sync` with domain-level dedup, priority scheduling, and per-domain callbacks.
+- ~~Narrow Habitica API endpoint refreshes by visible page/domain.~~ Implemented: `RefreshForPageAsync` dispatches page-route→domain mapping with visible/background priorities.
 - Stale-while-revalidate UI state and field/card-level refresh indicators.
-- Dependency-based invalidation after mutations.
-- Request scheduling, deduplication, and current-page refresh priority.
+- ~~Dependency-based invalidation after mutations.~~ Implemented: `DomainInvalidationMap` maps mutations to affected domains; cloud sync is fire-and-forget after mutations.
+- ~~Request scheduling, deduplication, and current-page refresh priority.~~ Implemented: `RefreshCoordinator` deduplicates in-flight domain refreshes and schedules by `RefreshPriority`.
+
+## Cloud Sync Improvements
+
+- ~~Split single-blob cloud sync into per-section encrypted KV records to avoid 2MB payload limit.~~ Implemented: per-section upload/download via `CloudSyncSectionMapping`, legacy single-blob backward compat with auto-migration.
+- Per-section sync status reporting in Settings UI (show which sections succeeded/failed/skipped).
+- Configurable section-level sync exclusions (e.g., skip diagnostics sync to save space).
+- Cloud sync conflict resolution UI when remote and local sections diverge.
