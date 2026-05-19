@@ -318,11 +318,13 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             .Select(member =>
             {
                 var status = questMembers.TryGetProperty(member.MemberId, out var participation)
-                    ? participation.ValueKind == JsonValueKind.True
-                        ? PartyQuestParticipationStatus.Accepted
-                        : participation.ValueKind == JsonValueKind.False
-                            ? PartyQuestParticipationStatus.Unknown
-                            : PartyQuestParticipationStatus.Unknown
+                    ? participation.ValueKind switch
+                    {
+                        JsonValueKind.True => PartyQuestParticipationStatus.Accepted,
+                        JsonValueKind.False => PartyQuestParticipationStatus.Rejected,
+                        JsonValueKind.Null => PartyQuestParticipationStatus.Pending,
+                        _ => PartyQuestParticipationStatus.Unknown
+                    }
                     : PartyQuestParticipationStatus.Unknown;
                 return member with
                 {

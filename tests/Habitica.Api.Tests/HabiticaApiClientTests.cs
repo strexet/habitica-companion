@@ -502,6 +502,26 @@ public sealed class HabiticaApiClientTests
               ]
             }
             """)
+            },
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""
+            {
+              "success": true,
+              "data": {
+                "quests": {
+                  "evilsanta": {
+                    "text": "Trapper Santa",
+                    "notes": "A quest about Santa.",
+                    "collect": {
+                      "milk": { "text": "Milk", "count": 10 },
+                      "cookies": { "text": "Cookies", "count": 10 }
+                    }
+                  }
+                }
+              }
+            }
+            """)
             }
         });
         var handler = new StubHttpMessageHandler(_ => responses.Dequeue());
@@ -511,11 +531,15 @@ public sealed class HabiticaApiClientTests
 
         Assert.NotNull(snapshot.Quest);
         Assert.Equal("evilsanta", snapshot.Quest!.Key);
+        Assert.Equal("Trapper Santa", snapshot.Quest.Name);
         Assert.Null(snapshot.Quest.TotalPendingDamage);
         Assert.Equal(7m, snapshot.Quest.TotalPendingCollectionItems);
         Assert.Equal(3m, snapshot.Members[0].PendingQuestItems);
         Assert.Equal(4m, snapshot.Members[1].PendingQuestItems);
         Assert.Equal(9m, snapshot.Members[2].PendingQuestItems);
+        Assert.Equal(PartyQuestParticipationStatus.Accepted, snapshot.Members[0].ParticipationStatus);
+        Assert.Equal(PartyQuestParticipationStatus.Accepted, snapshot.Members[1].ParticipationStatus);
+        Assert.Equal(PartyQuestParticipationStatus.Rejected, snapshot.Members[2].ParticipationStatus);
         Assert.Empty(responses);
     }
 

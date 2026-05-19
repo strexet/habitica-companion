@@ -156,6 +156,8 @@ public sealed class AppSessionController : IAppSessionController
             return;
         }
 
+        SetState(State with { IsBusy = true });
+
         var pageDomains = ResolvePageDomains(pageRoute);
         var allDomains = new[] { RefreshDomain.UserProfile, RefreshDomain.Tasks, RefreshDomain.Party, RefreshDomain.GearCatalog };
         var requests = new List<(RefreshDomain Domain, RefreshPriority Priority)>();
@@ -212,7 +214,7 @@ public sealed class AppSessionController : IAppSessionController
         {
             "" or "/" or "/dashboard" => new[] { RefreshDomain.UserProfile, RefreshDomain.Tasks, RefreshDomain.GearCatalog },
             "/tasks" => new[] { RefreshDomain.Tasks, RefreshDomain.UserProfile },
-            "/party" => new[] { RefreshDomain.Party, RefreshDomain.UserProfile },
+            "/party" => new[] { RefreshDomain.Party, RefreshDomain.UserProfile, RefreshDomain.GearCatalog },
             "/inventory" => new[] { RefreshDomain.UserProfile, RefreshDomain.GearCatalog },
             "/spells" => new[] { RefreshDomain.UserProfile, RefreshDomain.Tasks, RefreshDomain.GearCatalog },
             _ => new[] { RefreshDomain.UserProfile, RefreshDomain.Tasks }
