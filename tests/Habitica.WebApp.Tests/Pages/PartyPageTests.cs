@@ -220,6 +220,97 @@ public sealed class PartyPageTests : BunitContext
     }
 
     [Fact]
+    public void Renders_shared_quest_queue_pool_and_recent_history()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                UserId: "user-id",
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: CreateSnapshot(),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                PartySnapshot: new PartySnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                    "party-123",
+                    "Night Owls",
+                    "Quest-focused party",
+                    1,
+                    null,
+                    Array.Empty<PartyMemberSnapshot>()),
+                PartyFreshness: SnapshotFreshnessState.Fresh,
+                PartyQuestQueue: new PartyQuestQueueSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:30:00Z"),
+                    new[]
+                    {
+                        new PartyQuestPoolEntry(
+                            "party-123",
+                            "moonstone",
+                            "Moonstone Chain",
+                            "user-id",
+                            "Mage Tester",
+                            2,
+                            DateTimeOffset.Parse("2026-04-26T09:30:00Z"),
+                            "Collection",
+                            new[] { "450 Gold", "Wolf Cub" })
+                    },
+                    new[]
+                    {
+                        new PartyQuestQueueEntry(
+                            "queue-1",
+                            "party-123",
+                            "moonstone",
+                            "Moonstone Chain",
+                            "user-id",
+                            "Mage Tester",
+                            PartyQuestQueueStatus.Queued,
+                            DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                            DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                            1,
+                            null,
+                            false,
+                            1,
+                            new[]
+                            {
+                                new PartyQuestVote("user-2", "Alpha", 1, DateTimeOffset.Parse("2026-04-26T09:10:00Z"))
+                            },
+                            new[] { "450 Gold", "Wolf Cub" })
+                    },
+                    new[]
+                    {
+                        new PartyRecentlyCompletedQuest(
+                            "party-123",
+                            "gryphon",
+                            "Gryphon Quest",
+                            DateTimeOffset.Parse("2026-04-25T09:00:00Z"),
+                            null,
+                            "user-2",
+                            "Alpha",
+                            3,
+                            new[] { "300 XP" })
+                    }))));
+
+        var cut = Render<PartyPage>();
+
+        Assert.Contains("Shared quest planning", cut.Markup);
+        Assert.Contains("Moonstone Chain", cut.Markup);
+        Assert.Contains("1 vote", cut.Markup);
+        Assert.Contains("Alpha", cut.Markup);
+        Assert.Contains("450 Gold", cut.Markup);
+        Assert.Contains("Wolf Cub", cut.Markup);
+        Assert.Contains("Gryphon Quest", cut.Markup);
+        Assert.Contains("300 XP", cut.Markup);
+    }
+
+    [Fact]
     public void Hides_zero_unknown_cron_summary_card()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

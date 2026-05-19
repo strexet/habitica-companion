@@ -64,4 +64,12 @@ public interface IAppSessionController
     Task<LocalDataActionResult> DownloadCloudSyncAsync(CancellationToken cancellationToken = default);
 
     Task SetIncludeStalePartyMembersAsync(bool include, CancellationToken cancellationToken = default);
+
+    Task<PartyQuestActionResult> RefreshPartyQuestStateAsync(CancellationToken cancellationToken = default);
+
+    Task<PartyQuestActionResult> AddPartyQuestToQueueAsync(string questKey, CancellationToken cancellationToken = default);
+
+    Task<PartyQuestActionResult> TogglePartyQuestVoteAsync(string queueItemId, CancellationToken cancellationToken = default);
+
+    Task<PartyQuestActionResult> RemovePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default);
 }

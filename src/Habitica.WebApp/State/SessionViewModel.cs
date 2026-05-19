@@ -21,6 +21,7 @@ public sealed record SessionViewModel(
     SnapshotFreshnessState UserFreshness = SnapshotFreshnessState.Missing,
     PartySnapshot? PartySnapshot = null,
     SnapshotFreshnessState PartyFreshness = SnapshotFreshnessState.Missing,
+    PartyQuestQueueSnapshot? PartyQuestQueue = null,
     IReadOnlyList<DiagnosticsLogEntry>? DiagnosticsLogEntries = null,
     string? UserId = null,
     GearCatalogSnapshot? GearCatalogSnapshot = null,
@@ -78,6 +79,15 @@ public sealed record SpellActionResult(
     public static SpellActionResult Success(string message) => new(true, message);
 
     public static SpellActionResult Failure(string message) => new(false, message);
+}
+
+public sealed record PartyQuestActionResult(
+    bool Succeeded,
+    string Message)
+{
+    public static PartyQuestActionResult Success(string message) => new(true, message);
+
+    public static PartyQuestActionResult Failure(string message) => new(false, message);
 }
 
 public sealed record LocalDataActionResult(

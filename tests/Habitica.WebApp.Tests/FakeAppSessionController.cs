@@ -197,6 +197,26 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.CompletedTask;
     }
 
+    public Task<PartyQuestActionResult> RefreshPartyQuestStateAsync(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartyQuestActionResult.Success("Shared quest state refreshed."));
+    }
+
+    public Task<PartyQuestActionResult> AddPartyQuestToQueueAsync(string questKey, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartyQuestActionResult.Success("Quest queued."));
+    }
+
+    public Task<PartyQuestActionResult> TogglePartyQuestVoteAsync(string queueItemId, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartyQuestActionResult.Success("Vote updated."));
+    }
+
+    public Task<PartyQuestActionResult> RemovePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartyQuestActionResult.Success("Queue item removed."));
+    }
+
     public Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default)
     {
         LastSignInRequest = request;

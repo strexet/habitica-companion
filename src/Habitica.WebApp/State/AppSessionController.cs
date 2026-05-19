@@ -147,6 +147,114 @@ public sealed class AppSessionController : IAppSessionController
         await LoadCachedStateAsync(cancellationToken);
     }
 
+    public async Task<PartyQuestActionResult> RefreshPartyQuestStateAsync(CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        var partyId = State.PartySnapshot?.PartyId ?? State.UserSnapshot?.PartyId;
+        if (credentials is null || string.IsNullOrWhiteSpace(partyId))
+        {
+            return PartyQuestActionResult.Failure("Sign in with an active party before loading shared quest state.");
+        }
+
+        try
+        {
+            var publishedPool = await PublishCurrentQuestPoolAsync(credentials, partyId, cancellationToken);
+            if (publishedPool is not null)
+            {
+                ApplyPartyQuestState(partyId, publishedPool);
+                return PartyQuestActionResult.Success("Shared quest state refreshed.");
+            }
+
+            var remoteSnapshot = await _remotePartyDataSyncProvider.DownloadAsync(credentials, partyId, cancellationToken);
+            ApplyPartyQuestState(partyId, remoteSnapshot);
+            return PartyQuestActionResult.Success("Shared quest state refreshed.");
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message });
+            return PartyQuestActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<PartyQuestActionResult> AddPartyQuestToQueueAsync(string questKey, CancellationToken cancellationToken = default)
+    {
+        var validation = await ValidatePartyQuestMutationAsync(questKey, cancellationToken);
+        if (validation.Result is not null)
+        {
+            return validation.Result;
+        }
+
+        try
+        {
+            var state = await _remotePartyDataSyncProvider.AddQuestQueueItemAsync(
+                validation.Credentials!,
+                validation.PartyId!,
+                validation.PoolEntry!,
+                cancellationToken);
+            ApplyPartyQuestState(validation.PartyId!, state);
+            return PartyQuestActionResult.Success($"{validation.PoolEntry!.QuestName} was added to the party queue.");
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message });
+            return PartyQuestActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<PartyQuestActionResult> TogglePartyQuestVoteAsync(string queueItemId, CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        var partyId = State.PartySnapshot?.PartyId ?? State.UserSnapshot?.PartyId;
+        if (credentials is null || string.IsNullOrWhiteSpace(partyId))
+        {
+            return PartyQuestActionResult.Failure("Sign in with an active party before voting.");
+        }
+
+        try
+        {
+            var state = await _remotePartyDataSyncProvider.ToggleQuestVoteAsync(
+                credentials,
+                partyId,
+                queueItemId,
+                State.DisplayName ?? credentials.UserId,
+                cancellationToken);
+            ApplyPartyQuestState(partyId, state);
+            return PartyQuestActionResult.Success("Quest vote updated.");
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message });
+            return PartyQuestActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<PartyQuestActionResult> RemovePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        var partyId = State.PartySnapshot?.PartyId ?? State.UserSnapshot?.PartyId;
+        if (credentials is null || string.IsNullOrWhiteSpace(partyId))
+        {
+            return PartyQuestActionResult.Failure("Sign in with an active party before removing queue items.");
+        }
+
+        try
+        {
+            var state = await _remotePartyDataSyncProvider.RemoveQuestQueueItemAsync(
+                credentials,
+                partyId,
+                queueItemId,
+                version,
+                cancellationToken);
+            ApplyPartyQuestState(partyId, state);
+            return PartyQuestActionResult.Success("Quest queue item removed.");
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message });
+            return PartyQuestActionResult.Failure(exception.Message);
+        }
+    }
+
     public async Task<LiveTestSuiteResult> RunSafeLiveTestsAsync(CancellationToken cancellationToken = default)
     {
         var credentials = await ResolveCredentialsAsync(cancellationToken);
@@ -1250,6 +1358,7 @@ public sealed class AppSessionController : IAppSessionController
         var remoteSnapshot = await _remotePartyDataSyncProvider.DownloadAsync(credentials, partySnapshot.PartyId, cancellationToken);
         if (remoteSnapshot is not null && !string.IsNullOrWhiteSpace(remoteSnapshot.CronHistoryJson))
         {
+            ApplyPartyQuestState(partySnapshot.PartyId, remoteSnapshot);
             var remoteHistory = JsonSerializer.Deserialize<PartyCronHistorySnapshot>(remoteSnapshot.CronHistoryJson, JsonOptions);
             if (remoteHistory is not null && remoteHistory.Events.Count > 0)
             {
@@ -1267,8 +1376,112 @@ public sealed class AppSessionController : IAppSessionController
             JsonSerializer.Serialize(partySnapshot, JsonOptions),
             JsonSerializer.Serialize(cronHistory, JsonOptions),
             cancellationToken);
+        var questState = await PublishCurrentQuestPoolAsync(credentials, partySnapshot.PartyId, cancellationToken);
+        if (questState is not null)
+        {
+            ApplyPartyQuestState(partySnapshot.PartyId, questState);
+        }
 
         return new PartySyncUploadResult(mergedRemoteHistory, cronHistory.Events.Count);
+    }
+
+    private async Task<RemotePartyQuestState?> PublishCurrentQuestPoolAsync(
+        HabiticaCredentials credentials,
+        string partyId,
+        CancellationToken cancellationToken)
+    {
+        var entries = BuildCurrentUserQuestPoolEntries(partyId, credentials.UserId);
+        if (entries.Count == 0)
+        {
+            var remoteSnapshot = await _remotePartyDataSyncProvider.DownloadAsync(credentials, partyId, cancellationToken);
+            ApplyPartyQuestState(partyId, remoteSnapshot);
+            return null;
+        }
+
+        return await _remotePartyDataSyncProvider.PublishQuestPoolAsync(credentials, partyId, entries, cancellationToken);
+    }
+
+    private IReadOnlyList<PartyQuestPoolEntry> BuildCurrentUserQuestPoolEntries(string partyId, string userId)
+    {
+        var snapshot = State.UserSnapshot;
+        if (snapshot is null)
+        {
+            return Array.Empty<PartyQuestPoolEntry>();
+        }
+
+        var now = _timeProvider.GetUtcNow();
+        var entries = new List<PartyQuestPoolEntry>();
+        foreach (var quest in snapshot.Inventory.QuestScrolls.OrderBy(entry => entry.Key, StringComparer.Ordinal))
+        {
+            QuestCatalogItem? metadata = null;
+            State.GearCatalogSnapshot?.QuestItems.TryGetValue(quest.Key, out metadata);
+            entries.Add(new PartyQuestPoolEntry(
+                partyId,
+                quest.Key,
+                metadata?.Text ?? quest.Key,
+                userId,
+                snapshot.DisplayName,
+                quest.Value,
+                now,
+                metadata?.QuestType ?? "Quest",
+                metadata?.RewardSummary ?? Array.Empty<string>()));
+        }
+
+        return entries;
+    }
+
+    private async Task<PartyQuestMutationValidation> ValidatePartyQuestMutationAsync(
+        string questKey,
+        CancellationToken cancellationToken)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        var partyId = State.PartySnapshot?.PartyId ?? State.UserSnapshot?.PartyId;
+        if (credentials is null || string.IsNullOrWhiteSpace(partyId))
+        {
+            return PartyQuestMutationValidation.Fail("Sign in with an active party before queueing quests.");
+        }
+
+        var entry = BuildCurrentUserQuestPoolEntries(partyId, credentials.UserId)
+            .FirstOrDefault(candidate => string.Equals(candidate.QuestKey, questKey, StringComparison.Ordinal));
+        if (entry is null)
+        {
+            return PartyQuestMutationValidation.Fail("Only your own available quest scrolls can be added to the queue.");
+        }
+
+        return new PartyQuestMutationValidation(credentials, partyId, entry, null);
+    }
+
+    private void ApplyPartyQuestState(string partyId, RemotePartyDataSnapshot? snapshot)
+    {
+        if (snapshot is null)
+        {
+            SetState(State with
+            {
+                PartyQuestQueue = new PartyQuestQueueSnapshot(null, Array.Empty<PartyQuestPoolEntry>(), Array.Empty<PartyQuestQueueEntry>(), Array.Empty<PartyRecentlyCompletedQuest>())
+            });
+            return;
+        }
+
+        SetState(State with
+        {
+            PartyQuestQueue = new PartyQuestQueueSnapshot(
+                snapshot.UpdatedAtUtc,
+                snapshot.QuestPool ?? Array.Empty<PartyQuestPoolEntry>(),
+                snapshot.QuestQueue ?? Array.Empty<PartyQuestQueueEntry>(),
+                snapshot.RecentlyCompleted ?? Array.Empty<PartyRecentlyCompletedQuest>())
+        });
+    }
+
+    private void ApplyPartyQuestState(string partyId, RemotePartyQuestState state)
+    {
+        SetState(State with
+        {
+            PartyQuestQueue = new PartyQuestQueueSnapshot(
+                state.UpdatedAtUtc,
+                state.QuestPool ?? Array.Empty<PartyQuestPoolEntry>(),
+                state.QuestQueue ?? Array.Empty<PartyQuestQueueEntry>(),
+                state.RecentlyCompleted ?? Array.Empty<PartyRecentlyCompletedQuest>())
+        });
     }
 
     private async Task RebuildDerivedLocalStateAsync(
@@ -1700,6 +1913,18 @@ public sealed class AppSessionController : IAppSessionController
     private sealed record PartySyncUploadResult(
         bool MergedRemoteHistory,
         int UploadedEventCount);
+
+    private sealed record PartyQuestMutationValidation(
+        HabiticaCredentials? Credentials,
+        string? PartyId,
+        PartyQuestPoolEntry? PoolEntry,
+        PartyQuestActionResult? Result)
+    {
+        public static PartyQuestMutationValidation Fail(string message)
+        {
+            return new PartyQuestMutationValidation(null, null, null, PartyQuestActionResult.Failure(message));
+        }
+    }
 
     private SnapshotFreshnessState ClassifyFreshness(Habitica.Domain.Tasks.TaskCollectionSnapshot? snapshot)
     {

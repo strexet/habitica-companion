@@ -1,6 +1,7 @@
 @page "/party"
 @implements IDisposable
 @inject IAppSessionController SessionController
+@inject ISnackbar Snackbar
 @using System.Globalization
 @using Habitica.Domain.Party
 @using Habitica.WebApp.Formatting
@@ -70,8 +71,8 @@
             <article class="card-surface dashboard-panel party-quest-panel">
                 <div class="party-section-head">
                     <div>
-                        <p class="section-label">Quest state</p>
-                        <h2>Quest progress snapshot</h2>
+                        <p class="section-label">Active quest</p>
+                        <h2>@(quest is null ? "No active quest" : GetQuestName(quest))</h2>
                     </div>
                     <label class="checkbox-row compact party-toggle">
                         <input checked="@SessionController.State.IncludeStalePartyMembersInQuestForecasts"
@@ -91,6 +92,37 @@
                     var pendingUserProgress = GetPendingUserProgress(quest);
                     var pendingPartyProgress = GetPendingPartyProgress(quest);
                     var estimatedPostCronProgress = GetEstimatedPostCronProgress(quest);
+
+                    <article class="party-quest-card active-quest-card">
+                        <div class="party-quest-card-head">
+                            <div>
+                                <span class="dashboard-stat-label">@GetQuestTypeLabel(quest)</span>
+                                <strong>@GetQuestName(quest)</strong>
+                                <span class="dashboard-stat-note">@GetQuestDescription(quest)</span>
+                            </div>
+                            <div class="party-quest-card-actions">
+                                <MudButton Href="https://habitica.com/party" Target="_blank" Variant="Variant.Outlined">Open in Habitica</MudButton>
+                                <MudButton Disabled="@SessionController.State.IsBusy" OnClick="RefreshPartyQuestStateAsync" Variant="Variant.Text">Refresh quest state</MudButton>
+                            </div>
+                        </div>
+
+                        <dl class="dashboard-definition-list party-quest-definition-list compact-definition-list">
+                            <div>
+                                <dt>Quest owner / starter</dt>
+                                <dd>From Habitica party state</dd>
+                            </div>
+                            <div>
+                                <dt>Started date</dt>
+                                <dd>Not exposed in cached snapshot</dd>
+                            </div>
+                            <div>
+                                <dt>Participant status</dt>
+                                <dd>@GetParticipationSummaryLabel(quest)</dd>
+                            </div>
+                        </dl>
+
+                        @RenderRewards(quest.Rewards)
+                    </article>
 
                     <div class="party-quest-metric-grid">
                         <article class="dashboard-stat-card">
@@ -168,6 +200,157 @@
                     }
                 }
             </article>
+        </section>
+
+        <section class="card-surface dashboard-panel party-quest-workspace">
+            <div class="party-section-head">
+                <div>
+                    <p class="section-label">Party quest queue</p>
+                    <h2>Shared quest planning</h2>
+                </div>
+                <MudButton Disabled="@SessionController.State.IsBusy" OnClick="RefreshPartyQuestStateAsync" Variant="Variant.Outlined">
+                    Refresh queue
+                </MudButton>
+            </div>
+
+            @{
+                var questState = SessionController.State.PartyQuestQueue;
+                var queueEntries = GetOrderedQueueEntries(questState).ToArray();
+                var poolEntries = questState?.QuestPool ?? Array.Empty<PartyQuestPoolEntry>();
+                var recentEntries = questState?.RecentlyCompleted ?? Array.Empty<PartyRecentlyCompletedQuest>();
+            }
+
+            <div class="party-quest-section">
+                <div class="party-section-head compact-head">
+                    <h3>Party Quest Queue</h3>
+                    <span class="ui-pill count-pill">@queueEntries.Length</span>
+                </div>
+
+                @if (queueEntries.Length == 0)
+                {
+                    <p class="panel-copy">No shared quest queue entries are available yet. Add one of your quest scrolls from the pool below.</p>
+                }
+                else
+                {
+                    <div class="party-quest-card-list">
+                        @foreach (var entry in queueEntries)
+                        {
+                            <article class="@GetQueueCardClass(entry)">
+                                <div class="party-quest-card-head">
+                                    <div>
+                                        <span class="dashboard-stat-label">@entry.Status • Position @GetQueuePosition(queueEntries, entry)</span>
+                                        <strong>@entry.QuestName</strong>
+                                        <span class="dashboard-stat-note">Owner: @entry.OwnerDisplayName</span>
+                                    </div>
+                                    <span class="ui-pill count-pill">@entry.VoteCount votes</span>
+                                </div>
+
+                                <dl class="dashboard-definition-list compact-definition-list">
+                                    <div>
+                                        <dt>Type</dt>
+                                        <dd>@ResolveQuestType(entry.QuestKey)</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Owner readiness</dt>
+                                        <dd>@(entry.OwnerReady ? "Ready" : "Not marked ready")</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Recently completed</dt>
+                                        <dd>@GetRecentlyCompletedLabel(entry.QuestKey, recentEntries)</dd>
+                                    </div>
+                                </dl>
+
+                                @RenderRewards(entry.Rewards)
+                                @RenderVoters(entry.Votes)
+
+                                <div class="party-quest-card-actions">
+                                    <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => ToggleVoteAsync(entry.QueueItemId))" Variant="Variant.Outlined">
+                                        @(HasCurrentUserVote(entry) ? "Remove vote" : "Vote")
+                                    </MudButton>
+                                    @if (IsCurrentUser(entry.OwnerUserId))
+                                    {
+                                        <MudButton Color="Color.Error" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RemoveQueueItemAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Text">
+                                            Remove
+                                        </MudButton>
+                                    }
+                                </div>
+                            </article>
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="party-quest-section">
+                <div class="party-section-head compact-head">
+                    <h3>Quest Pool</h3>
+                    <span class="ui-pill count-pill">@poolEntries.Count</span>
+                </div>
+
+                @if (poolEntries.Count == 0)
+                {
+                    <p class="panel-copy">No shared quest scroll availability has been published yet. Refresh after syncing inventory to publish your owned quest scrolls.</p>
+                }
+                else
+                {
+                    <div class="party-quest-card-grid">
+                        @foreach (var poolEntry in poolEntries.OrderBy(entry => entry.QuestName, StringComparer.OrdinalIgnoreCase))
+                        {
+                            <article class="@GetPoolCardClass(poolEntry)">
+                                <div class="party-quest-card-head">
+                                    <div>
+                                        <span class="dashboard-stat-label">@poolEntry.QuestType</span>
+                                        <strong>@poolEntry.QuestName</strong>
+                                        <span class="dashboard-stat-note">Available from @poolEntry.OwnerDisplayName</span>
+                                    </div>
+                                    <span class="ui-pill count-pill">@poolEntry.AvailableCount owned</span>
+                                </div>
+
+                                @RenderRewards(poolEntry.Rewards)
+
+                                <div class="party-quest-card-actions">
+                                    <MudButton Color="Color.Primary" Disabled="@(!IsCurrentUser(poolEntry.OwnerUserId) || SessionController.State.IsBusy)" OnClick="@(() => AddQuestToQueueAsync(poolEntry.QuestKey))" Variant="Variant.Outlined">
+                                        Add to queue
+                                    </MudButton>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="party-quest-section">
+                <div class="party-section-head compact-head">
+                    <h3>Recently Completed</h3>
+                    <span class="ui-pill count-pill">@recentEntries.Count</span>
+                </div>
+
+                @if (recentEntries.Count == 0)
+                {
+                    <p class="panel-copy">Recently completed shared quest history will appear after queued quests are marked completed.</p>
+                }
+                else
+                {
+                    <div class="party-quest-card-grid">
+                        @foreach (var recent in recentEntries.OrderByDescending(entry => entry.CompletedAtUtc).Take(8))
+                        {
+                            <article class="party-quest-card neutral-quest-card">
+                                <div class="party-quest-card-head">
+                                    <div>
+                                        <span class="dashboard-stat-label">Completed @FormatDateTime(recent.CompletedAtUtc)</span>
+                                        <strong>@recent.QuestName</strong>
+                                        <span class="dashboard-stat-note">@GetOwnerLabel(recent.OwnerDisplayName)</span>
+                                    </div>
+                                    @if (recent.ParticipantsCount is not null)
+                                    {
+                                        <span class="ui-pill count-pill">@recent.ParticipantsCount participants</span>
+                                    }
+                                </div>
+                                @RenderRewards(recent.Rewards)
+                            </article>
+                        }
+                    </div>
+                }
+            </div>
         </section>
 
         <section class="card-surface dashboard-panel party-cron-summary">
@@ -375,9 +558,20 @@
 </div>
 
 @code {
+    private bool _requestedSharedQuestState;
+
     protected override void OnInitialized()
     {
         SessionController.Changed += HandleStateChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_requestedSharedQuestState && SessionController.State.PartySnapshot is not null)
+        {
+            _requestedSharedQuestState = true;
+            await SessionController.RefreshPartyQuestStateAsync();
+        }
     }
 
     private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)
@@ -514,6 +708,234 @@
         return utcTimestamp is null
             ? "Unknown"
             : utcTimestamp.Value.ToLocalTime().ToString("MMM d, HH:mm");
+    }
+
+    private static string FormatDateTime(DateTimeOffset utcTimestamp)
+    {
+        return utcTimestamp.ToLocalTime().ToString("MMM d, HH:mm");
+    }
+
+    private static string GetQuestName(PartyQuestSnapshot quest)
+    {
+        return string.IsNullOrWhiteSpace(quest.Name)
+            ? quest.Key ?? "Unknown quest"
+            : quest.Name;
+    }
+
+    private static string GetQuestDescription(PartyQuestSnapshot quest)
+    {
+        return string.IsNullOrWhiteSpace(quest.Description)
+            ? "Quest description is not available in the cached content catalog yet."
+            : quest.Description;
+    }
+
+    private static string GetQuestTypeLabel(PartyQuestSnapshot quest)
+    {
+        return quest.QuestType switch
+        {
+            PartyQuestType.Boss => "Boss quest",
+            PartyQuestType.Collection => "Collection quest",
+            _ => "Party quest"
+        };
+    }
+
+    private static string GetParticipationSummaryLabel(PartyQuestSnapshot quest)
+    {
+        return quest.ParticipationSummary is null
+            ? $"{quest.ParticipantCount} accepted participants"
+            : $"{quest.ParticipationSummary.AcceptedCount} accepted, {quest.ParticipationSummary.PendingCount} pending, {quest.ParticipationSummary.RejectedCount} rejected";
+    }
+
+    private string ResolveQuestType(string questKey)
+    {
+        return SessionController.State.GearCatalogSnapshot?.QuestItems.TryGetValue(questKey, out var metadata) == true
+            ? metadata.QuestType
+            : "Quest";
+    }
+
+    private IEnumerable<PartyQuestQueueEntry> GetOrderedQueueEntries(PartyQuestQueueSnapshot? questState)
+    {
+        if (questState is null)
+        {
+            return Array.Empty<PartyQuestQueueEntry>();
+        }
+
+        return questState.Queue
+            .Where(static entry => entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.InviteSent or PartyQuestQueueStatus.Active)
+            .OrderByDescending(entry => CalculateQueuePriority(entry, questState.RecentlyCompleted))
+            .ThenBy(entry => entry.CreatedAtUtc);
+    }
+
+    private static decimal CalculateQueuePriority(PartyQuestQueueEntry entry, IReadOnlyList<PartyRecentlyCompletedQuest> recentlyCompleted)
+    {
+        var hoursInQueue = Math.Min(72m, (decimal)Math.Max(0d, (DateTimeOffset.UtcNow - entry.CreatedAtUtc).TotalHours));
+        var readinessBonus = entry.OwnerReady ? 50m : 0m;
+        return entry.VoteCount * 1000m + readinessBonus + hoursInQueue - GetRecentlyCompletedPenalty(entry.QuestKey, recentlyCompleted);
+    }
+
+    private static decimal GetRecentlyCompletedPenalty(string questKey, IReadOnlyList<PartyRecentlyCompletedQuest> recentlyCompleted)
+    {
+        var latest = recentlyCompleted
+            .Where(entry => string.Equals(entry.QuestKey, questKey, StringComparison.Ordinal))
+            .OrderByDescending(entry => entry.CompletedAtUtc)
+            .FirstOrDefault();
+        if (latest is null)
+        {
+            return 0m;
+        }
+
+        var age = DateTimeOffset.UtcNow - latest.CompletedAtUtc;
+        if (age.TotalDays <= 7)
+        {
+            return 300m;
+        }
+
+        return age.TotalDays <= 30 ? 150m : 0m;
+    }
+
+    private static int GetQueuePosition(IReadOnlyList<PartyQuestQueueEntry> orderedEntries, PartyQuestQueueEntry entry)
+    {
+        for (var index = 0; index < orderedEntries.Count; index++)
+        {
+            if (string.Equals(orderedEntries[index].QueueItemId, entry.QueueItemId, StringComparison.Ordinal))
+            {
+                return index + 1;
+            }
+        }
+
+        return entry.SortOrder;
+    }
+
+    private string GetQueueCardClass(PartyQuestQueueEntry entry)
+    {
+        return IsCurrentUser(entry.OwnerUserId)
+            ? "party-quest-card owned-quest-card"
+            : "party-quest-card neutral-quest-card";
+    }
+
+    private string GetPoolCardClass(PartyQuestPoolEntry entry)
+    {
+        return IsCurrentUser(entry.OwnerUserId)
+            ? "party-quest-card owned-quest-card"
+            : "party-quest-card neutral-quest-card";
+    }
+
+    private bool IsCurrentUser(string? userId)
+    {
+        return !string.IsNullOrWhiteSpace(userId)
+            && string.Equals(userId, SessionController.State.UserId, StringComparison.Ordinal);
+    }
+
+    private bool HasCurrentUserVote(PartyQuestQueueEntry entry)
+    {
+        return entry.Votes.Any(vote => IsCurrentUser(vote.VoterUserId));
+    }
+
+    private static string GetRecentlyCompletedLabel(string questKey, IReadOnlyList<PartyRecentlyCompletedQuest> recentlyCompleted)
+    {
+        var latest = recentlyCompleted
+            .Where(entry => string.Equals(entry.QuestKey, questKey, StringComparison.Ordinal))
+            .OrderByDescending(entry => entry.CompletedAtUtc)
+            .FirstOrDefault();
+        if (latest is null)
+        {
+            return "No recent completion";
+        }
+
+        var days = Math.Max(0, (int)Math.Round((DateTimeOffset.UtcNow - latest.CompletedAtUtc).TotalDays));
+        return days == 0 ? "Completed today" : $"Completed {days} day(s) ago";
+    }
+
+    private static string GetOwnerLabel(string? ownerDisplayName)
+    {
+        return string.IsNullOrWhiteSpace(ownerDisplayName) ? "Owner unknown" : $"Owner: {ownerDisplayName}";
+    }
+
+    private RenderFragment RenderRewards(IReadOnlyList<string> rewards) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "div");
+        builder.AddAttribute(sequence++, "class", "quest-reward-list");
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "dashboard-stat-label");
+        builder.AddContent(sequence++, "Rewards");
+        builder.CloseElement();
+
+        if (rewards.Count == 0)
+        {
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
+            builder.AddContent(sequence++, "Reward metadata is not cached yet.");
+            builder.CloseElement();
+        }
+        else
+        {
+            foreach (var reward in rewards.Take(6))
+            {
+                builder.OpenElement(sequence++, "span");
+                builder.AddAttribute(sequence++, "class", "ui-pill reward-pill");
+                builder.AddContent(sequence++, reward);
+                builder.CloseElement();
+            }
+        }
+
+        builder.CloseElement();
+    };
+
+    private RenderFragment RenderVoters(IReadOnlyList<PartyQuestVote> votes) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "details");
+        builder.AddAttribute(sequence++, "class", "quest-voter-list");
+        builder.OpenElement(sequence++, "summary");
+        builder.AddContent(sequence++, votes.Count == 1 ? "1 vote" : $"{votes.Count} votes");
+        builder.CloseElement();
+        if (votes.Count == 0)
+        {
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
+            builder.AddContent(sequence++, "No votes yet.");
+            builder.CloseElement();
+        }
+        else
+        {
+            builder.OpenElement(sequence++, "ul");
+            foreach (var vote in votes)
+            {
+                builder.OpenElement(sequence++, "li");
+                builder.AddContent(sequence++, vote.VoterDisplayName);
+                builder.CloseElement();
+            }
+            builder.CloseElement();
+        }
+        builder.CloseElement();
+    };
+
+    private async Task RefreshPartyQuestStateAsync()
+    {
+        var result = await SessionController.RefreshPartyQuestStateAsync();
+        if (!result.Succeeded)
+        {
+            Snackbar.Add(result.Message, Severity.Warning);
+        }
+    }
+
+    private async Task AddQuestToQueueAsync(string questKey)
+    {
+        var result = await SessionController.AddPartyQuestToQueueAsync(questKey);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task ToggleVoteAsync(string queueItemId)
+    {
+        var result = await SessionController.TogglePartyQuestVoteAsync(queueItemId);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task RemoveQueueItemAsync(string queueItemId, int version)
+    {
+        var result = await SessionController.RemovePartyQuestQueueItemAsync(queueItemId, version);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 
     private static string FormatTime(TimeSpan? time)
