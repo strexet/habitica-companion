@@ -275,13 +275,18 @@ Optional backend surfaces may be introduced only for documented product needs su
 
 If a backend is introduced, update this document before or during the implementation.
 
-Current optional backend:
+Current optional backend surfaces:
 
 ```text
 Browser PWA -> Cloudflare Pages Function -> Cloudflare KV
+Browser PWA -> Cloudflare Pages Function -> Cloudflare D1
 ```
 
-This backend is only for encrypted app-data sync. Habitica API credentials must never be sent to the Cloudflare endpoint. The browser derives a sync id and AES-GCM key from the active Habitica User ID and API Token, encrypts the local export payload, and uploads only encrypted JSON. The provider boundary must stay abstract so another remote sync provider can replace Cloudflare later.
+The KV backend is only for encrypted app-data sync. Habitica API credentials must never be sent to the encrypted app-data sync endpoint. The browser derives a sync id and AES-GCM key from the active Habitica User ID and API Token, encrypts the local export payload, and uploads only encrypted JSON.
+
+The D1 backend stores shared party data for CRON history and party quest planning under `functions/api/party-sync/[partyId].js`. It stores party snapshots, CRON events, quest pool availability, quest queue entries, quest votes, and recently completed quest history. Party-sync verifies Habitica party membership before reads and writes using the existing credential-header flow; replacing that with a tokenless membership proof is tracked in `FUTURE.md`.
+
+Both provider boundaries must stay abstract so another remote sync provider can replace Cloudflare later.
 
 ## 5. Repository structure
 

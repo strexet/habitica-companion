@@ -1842,15 +1842,15 @@ Waiting:
 Status: implemented
 Owner module: `Habitica.WebApp.Pages.PartyPage`
 Application entry point: `Habitica.WebApp.Pages.PartyPage`
-Primary Habitica data: cached party group summary, quest state, party members, member CRON fields
-Mutates Habitica state: no
+Primary Habitica data: cached party group summary, quest state, party members, member CRON fields, user quest-scroll inventory, Habitica content quest metadata
+Mutates Habitica state: no; mutates shared Cloudflare party quest queue state
 Requires confirmation: no
-Offline behavior: fully available from the cached party snapshot
-Rate-limit sensitivity: none without explicit refresh
+Offline behavior: party overview is available from cached snapshots; shared queue/pool/history requires the Cloudflare party-sync endpoint
+Rate-limit sensitivity: low for Habitica reads; shared queue actions verify party membership through party-sync
 
 ### Goal
 
-Provide a read-only party overview that surfaces the latest cached party name, summary, member count, quest progress, party-member CRON state, buff timing recommendations, and local CRON statistics without exposing group mutations.
+Provide a party overview that surfaces the latest cached party name, summary, member count, quest progress, party-member CRON state, buff timing recommendations, local CRON statistics, and shared party quest planning data without directly mutating Habitica quest state.
 
 ### Inputs
 
@@ -1861,6 +1861,11 @@ party freshness state
 party quest summary
 party member CRON summary
 party CRON history
+current user's owned quest scrolls
+quest content metadata
+shared party quest pool
+shared party quest queue and votes
+recently completed shared party quests
 ```
 
 ### Outputs
@@ -1874,17 +1879,21 @@ CRONed X/Y summary
 buff timing recommendations
 party member CRON list
 viewer-local CRON statistics graph
+active quest card with real quest metadata when cached
+shared quest queue cards with vote counts and voter names
+quest pool cards with owner availability
+recently completed quest cards
 freshness banner
 no-party empty state
 ```
 
 ### Local storage
 
-Reads `party/latestSnapshot`, `party/cronHistory`, and `user/latestSnapshot`.
+Reads `party/latestSnapshot`, `party/cronHistory`, `user/latestSnapshot`, `inventory/gearCatalog`, and Cloudflare party-sync quest state.
 
 ### API interaction
 
-None directly. The page consumes local state prepared by the sync workflow.
+The page consumes local Habitica snapshots prepared by the sync workflow. Shared quest queue actions go through the application/session controller and Cloudflare party-sync; Razor components do not call Habitica API directly.
 
 ### Algorithm / rules
 
@@ -1898,6 +1907,12 @@ Current display rules:
 5. Show a dedicated CRON summary when member CRON data exists.
 6. Show per-member CRON state, last CRON, average CRON time, and active-quest pending damage/items when available. Keep day-start/timezone diagnostics out of the main row because Habitica usually hides those public member fields.
 7. Show viewer-local CRON graph points and low-confidence warnings from local history.
+8. Publish the current user's owned quest scrolls to the shared party quest pool after party sync when inventory and content metadata are available.
+9. Allow only the current quest owner to add that user's quest scroll to the shared queue.
+10. Allow one vote per party member per queued quest; clicking again removes the vote.
+11. Sort visible queue cards by vote count, owner readiness, queue age, and recently completed penalty.
+12. Let the quest owner remove their own queue item; party-sync also allows party leader removal when membership verification identifies the leader.
+13. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
 ```
 
 ### Validation
@@ -1908,15 +1923,18 @@ Show explicit states for:
 - missing cached party snapshot;
 - fresh party snapshot;
 - stale party snapshot;
-- expired party snapshot.
+- expired party snapshot;
+- empty shared quest queue;
+- empty shared quest pool;
+- queued quests with and without votes.
 
 ### Error handling
 
-Show cached party data even when a previous refresh attempt failed.
+Show cached party data even when a previous refresh attempt failed. Shared party queue failures are reported through the session error/snackbar and do not hide the local party overview.
 
 ### Security / privacy
 
-Display only the locally cached group summary fields required for the read-only explorer. Do not expose credentials or raw request headers.
+Display only the locally cached group summary fields required for the explorer. Do not expose credentials or raw request headers. Shared party-sync verifies membership before queue/pool reads and writes. The current endpoint still uses the existing credential-header verification flow; replacing it with tokenless signed membership assertions is tracked in `FUTURE.md`.
 
 ### Tests
 
@@ -1926,6 +1944,8 @@ Test:
 - party snapshot persistence;
 - party page rendering;
 - navigation rendering for the `Party` route.
+- shared quest queue/pool rendering;
+- party-sync queue and vote mutations.
 
 ### Open questions
 
@@ -1934,15 +1954,16 @@ Current implementation:
 - dedicated `Party` route in the app shell;
 - cached party summary cards;
 - cached quest progress snapshot.
+- active quest card with real cached quest metadata and compact rewards;
+- shared quest pool from published member quest-scroll availability;
+- shared quest queue with owner-only add/remove and one-vote-per-member voting;
+- recently completed shared quest history table and UI.
 
 Next:
 
 - add party-member explorer with throttled pagination and cancellation;
-- surface richer quest metadata and warnings about eventual consistency.
-
-Waiting:
-
-- party mutations remain out of scope until confirmation and audit rules are defined.
+- add owner readiness toggle and leader pin/force-select controls;
+- replace party-sync credential verification with a tokenless party membership proof.
 
 ## 17. Diagnostics workspace and live integration tests
 
