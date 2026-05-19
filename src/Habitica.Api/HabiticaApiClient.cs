@@ -761,50 +761,93 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
     {
         var rewards = new List<string>();
         var rewardElement = TryGetObject(quest, "rewards");
-        if (TryGetDecimal(rewardElement, "gp", out var gold) && gold > 0m)
-        {
-            rewards.Add($"{gold:0.##} Gold");
-        }
-
-        if (TryGetDecimal(rewardElement, "exp", out var experience) && experience > 0m)
-        {
-            rewards.Add($"{experience:0.##} XP");
-        }
-
+        var dropElement = TryGetObject(quest, "drop");
+        AddRewardCurrency(rewards, rewardElement);
+        AddRewardCurrency(rewards, dropElement);
         AddRewardItems(rewards, TryGetObject(rewardElement, "items"));
-        AddRewardItems(rewards, TryGetObject(quest, "drop"));
+        AddRewardItems(rewards, TryGetObject(dropElement, "items"));
+        AddRewardItems(rewards, TryGetObject(rewardElement, "unlock"));
+        AddRewardItems(rewards, TryGetObject(dropElement, "unlock"));
         AddRewardItems(rewards, TryGetObject(quest, "unlock"));
         return rewards;
     }
 
-    private static void AddRewardItems(List<string> rewards, JsonElement value)
+    private static void AddRewardCurrency(List<string> rewards, JsonElement value)
     {
-        if (value.ValueKind == JsonValueKind.Array)
+        if (TryGetDecimal(value, "gp", out var gold) && gold > 0m)
         {
-            foreach (var item in value.EnumerateArray())
-            {
-                AddRewardItem(rewards, item);
-            }
-
-            return;
+            AddRewardLabel(rewards, $"{gold:0.##} Gold");
         }
 
-        AddRewardItem(rewards, value);
+        if (TryGetDecimal(value, "exp", out var experience) && experience > 0m)
+        {
+            AddRewardLabel(rewards, $"{experience:0.##} XP");
+        }
     }
 
-    private static void AddRewardItem(List<string> rewards, JsonElement item)
+    private static void AddRewardItems(List<string> rewards, JsonElement value)
+    {
+        switch (value.ValueKind)
+        {
+            case JsonValueKind.Array:
+                foreach (var item in value.EnumerateArray())
+                {
+                    AddRewardItems(rewards, item);
+                }
+
+                break;
+            case JsonValueKind.Object:
+                if (TryAddRewardItem(rewards, value))
+                {
+                    break;
+                }
+
+                foreach (var property in value.EnumerateObject())
+                {
+                    if (property.Value.ValueKind is JsonValueKind.Number or JsonValueKind.True)
+                    {
+                        AddRewardLabel(rewards, property.Name);
+                    }
+                    else
+                    {
+                        AddRewardItems(rewards, property.Value);
+                    }
+                }
+
+                break;
+            case JsonValueKind.String:
+                AddRewardLabel(rewards, value.GetString());
+                break;
+            case JsonValueKind.Number:
+            case JsonValueKind.True:
+                break;
+        }
+    }
+
+    private static bool TryAddRewardItem(List<string> rewards, JsonElement item)
     {
         if (item.ValueKind != JsonValueKind.Object)
         {
-            return;
+            return false;
         }
 
         var name = GetOptionalString(item, "text")
             ?? GetOptionalString(item, "name")
             ?? GetOptionalString(item, "key");
-        if (!string.IsNullOrWhiteSpace(name) && !rewards.Contains(name, StringComparer.OrdinalIgnoreCase))
+        if (string.IsNullOrWhiteSpace(name))
         {
-            rewards.Add(name);
+            return false;
+        }
+
+        AddRewardLabel(rewards, name);
+        return true;
+    }
+
+    private static void AddRewardLabel(List<string> rewards, string? label)
+    {
+        if (!string.IsNullOrWhiteSpace(label) && !rewards.Contains(label, StringComparer.OrdinalIgnoreCase))
+        {
+            rewards.Add(label);
         }
     }
 

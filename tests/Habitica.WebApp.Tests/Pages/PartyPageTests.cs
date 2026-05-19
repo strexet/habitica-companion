@@ -64,7 +64,8 @@ public sealed class PartyPageTests : BunitContext
                         BossHealthRemaining: 875.25m,
                         BossHealthTotal: 1000m,
                         TotalPendingDamage: 42.75m,
-                        PendingPartyDamage: 3m),
+                        PendingPartyDamage: 3m,
+                        RewardSummary: new[] { "10 Gold", "100 XP", "Sea Serpent Egg" }),
                     new[]
                     {
                         new PartyMemberSnapshot(
@@ -128,10 +129,17 @@ public sealed class PartyPageTests : BunitContext
                                 PartyCronState.CronedToday,
                                 "Croned today.",
                                 "2026-04-26",
-                                DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
-                                TimeSpan.Parse("08:15"),
-                                1,
-                                PendingQuestDamage: 7.2m)
+                            DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
+                            TimeSpan.Parse("08:15"),
+                            1,
+                            PendingQuestDamage: 7.2m,
+                            ClassName: "wizard",
+                            Level: 15,
+                            Stats: new PartyMemberStatBreakdownSnapshot(
+                                null,
+                                null,
+                                null,
+                                new PartyStatSectionSnapshot(12m, 34m, 18m, 21m)))
                         },
                         GraphPoints: new[]
                         {
@@ -168,6 +176,8 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("5.3 damage", cut.Markup);
         Assert.Contains("Avg 08:15 (1 day)", cut.Markup);
         Assert.Contains("Not enough history", cut.Markup);
+        Assert.Contains("Sea Serpent Egg", cut.Markup);
+        Assert.DoesNotContain("Reward metadata is not cached yet.", cut.Markup);
         Assert.Contains("CRON statistics", cut.Markup);
         Assert.Contains("Historical average", cut.Markup);
         Assert.Contains("1 stored observation day", cut.Markup);
@@ -176,9 +186,19 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("cron-average-path", cut.Markup);
         Assert.Contains("text-anchor=\"end\"", cut.Markup);
         Assert.Contains("Members", cut.Markup);
-        Assert.DoesNotContain("Details", cut.Markup);
+        Assert.Contains("Details", cut.Markup);
+        Assert.DoesNotContain("Member ID", cut.Markup);
+        Assert.DoesNotContain("user-1", cut.Markup);
+        Assert.DoesNotContain("STR 12", cut.Markup);
         Assert.DoesNotContain("Day start", cut.Markup);
         Assert.DoesNotContain("Habitica public member data hides day start/timezone", cut.Markup);
+
+        cut.FindAll("[data-testid='member-details']").First().Click();
+
+        Assert.Contains("Member ID", cut.Markup);
+        Assert.Contains("user-1", cut.Markup);
+        Assert.Contains("Total", cut.Markup);
+        Assert.Contains("STR 12", cut.Markup);
     }
 
     [Fact]

@@ -428,60 +428,90 @@
                 <div class="party-member-list party-member-card-grid">
                     @foreach (var member in members)
                     {
+                        var detailsExpanded = IsMemberDetailsExpanded(member.MemberId);
                         <article class="party-member-card">
-                            <div class="party-member-card-head">
-                                <div>
+                            <div class="party-member-summary-row">
+                                <div class="party-member-identity">
                                     <strong>@member.DisplayName</strong>
-                                    <span class="dashboard-stat-note">@member.MemberId</span>
+                                    <span class="ui-pill state-pill">@FormatClass(member.ClassName)</span>
                                 </div>
-                                <div class="party-member-pill-row">
-                                    <span class="@GetCronStateClass(member.CronState)">@GetCronStateLabel(member.CronState)</span>
-                                    @if (SessionController.State.PartySnapshot?.Quest is not null)
-                                    {
-                                        <span class="ui-pill state-pill">@GetParticipationLabel(member.ParticipationStatus)</span>
-                                    }
-                                    @if (member.IsStale)
-                                    {
-                                        <span class="ui-pill state-pill warning-pill">Stale</span>
-                                    }
-                                </div>
-                            </div>
 
-                            <div class="party-member-classline">
-                                <span>@FormatClass(member.ClassName)</span>
-                                <span>Level @FormatLevel(member.Level)</span>
-                            </div>
-
-                            <dl class="party-member-meta">
-                                <div>
-                                    <dt>Last CRON</dt>
-                                    <dd>@FormatDateTime(member.LastCronUtc)</dd>
-                                </div>
-                                <div>
-                                    <dt>Average CRON</dt>
-                                    <dd>@FormatAverageCron(member)</dd>
-                                </div>
-                                @if (quest?.IsActive == true)
-                                {
+                                <dl class="party-member-meta compact">
                                     <div>
-                                        <dt>Pending quest</dt>
-                                        <dd>@FormatMemberPendingQuest(member)</dd>
+                                        <dt>Last CRON</dt>
+                                        <dd>@FormatDateTime(member.LastCronUtc)</dd>
                                     </div>
-                                }
-                            </dl>
-
-                            @if (member.Stats?.HasAnySection == true)
-                            {
-                                <div class="party-member-stats">
-                                    @foreach (var statSection in GetStatSections(member))
+                                    <div>
+                                        <dt>Average CRON</dt>
+                                        <dd>@FormatAverageCron(member)</dd>
+                                    </div>
+                                    @if (quest?.IsActive == true)
                                     {
-                                        <div class="party-stat-section">
-                                            <span class="dashboard-stat-label">@statSection.Label</span>
-                                            <div class="party-stat-grid">
-                                                <span>STR @FormatStat(statSection.Stats.Strength)</span>
-                                                <span>INT @FormatStat(statSection.Stats.Intelligence)</span>
-                                                <span>CON @FormatStat(statSection.Stats.Constitution)</span>
-                                                <span>PER @FormatStat(statSection.Stats.Perception)</span>
+                                        <div>
+                                            <dt>Pending quest</dt>
+                                            <dd>@FormatMemberPendingQuest(member)</dd>
+                                        </div>
+                                    }
+                                </dl>
+
+                                <div class="party-member-actions">
+                                    <div class="party-member-pill-row">
+                                        <span class="@GetCronStateClass(member.CronState)">@GetCronStateLabel(member.CronState)</span>
+                                        @if (SessionController.State.PartySnapshot?.Quest is not null)
+                                        {
+                                            <span class="ui-pill state-pill">@GetParticipationLabel(member.ParticipationStatus)</span>
+                                        }
+                                        @if (member.IsStale)
+                                        {
+                                            <span class="ui-pill state-pill warning-pill">Stale</span>
+                                        }
+                                    </div>
+                                    <button class="secondary-action-button compact" type="button" data-testid="member-details" @onclick="@(() => ToggleMemberDetails(member.MemberId))">
+                                        @(detailsExpanded ? "Hide details" : "Details")
+                                    </button>
+                                </div>
+                            </div>
+
+                            @if (detailsExpanded)
+                            {
+                                <div class="party-member-details">
+                                    <dl class="party-member-meta">
+                                        <div>
+                                            <dt>Member ID</dt>
+                                            <dd>@member.MemberId</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Level</dt>
+                                            <dd>@FormatLevel(member.Level)</dd>
+                                        </div>
+                                        <div>
+                                            <dt>CRON reason</dt>
+                                            <dd>@member.CronStateReason</dd>
+                                        </div>
+                                    </dl>
+
+                                    @if (member.Stats?.HasAnySection == true)
+                                    {
+                                        <div class="party-member-stats">
+                                            @foreach (var statSection in GetStatSections(member))
+                                            {
+                                                <div class="party-stat-section">
+                                                    <span class="dashboard-stat-label">@statSection.Label</span>
+                                                    <div class="party-stat-grid">
+                                                        <span>STR @FormatStat(statSection.Stats.Strength)</span>
+                                                        <span>INT @FormatStat(statSection.Stats.Intelligence)</span>
+                                                        <span>CON @FormatStat(statSection.Stats.Constitution)</span>
+                                                        <span>PER @FormatStat(statSection.Stats.Perception)</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="party-member-stats">
+                                            <div class="party-stat-section">
+                                                <span class="dashboard-stat-note">No stat breakdown cached for this member.</span>
                                             </div>
                                         </div>
                                     }
@@ -565,6 +595,7 @@
 </div>
 
 @code {
+    private readonly HashSet<string> _expandedMemberDetails = new(StringComparer.Ordinal);
     private bool _requestedSharedQuestState;
 
     protected override void OnInitialized()
@@ -621,6 +652,19 @@
                 ? enrichedMember
                 : member)
             .ToArray();
+    }
+
+    private bool IsMemberDetailsExpanded(string memberId)
+    {
+        return _expandedMemberDetails.Contains(memberId);
+    }
+
+    private void ToggleMemberDetails(string memberId)
+    {
+        if (!_expandedMemberDetails.Add(memberId))
+        {
+            _expandedMemberDetails.Remove(memberId);
+        }
     }
 
     private static string GetCronedLabel(PartySnapshot snapshot)

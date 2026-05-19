@@ -382,6 +382,13 @@ public sealed class HabiticaApiClientTests
                   "seaserpent": {
                     "boss": {
                       "hp": 1000
+                    },
+                    "drop": {
+                      "gp": 10,
+                      "exp": 100,
+                      "items": [
+                        { "text": "Sea Serpent Egg" }
+                      ]
                     }
                   }
                 }
@@ -408,6 +415,7 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(875.25m, snapshot.Quest.BossHealthRemaining);
         Assert.Equal(1000m, snapshot.Quest.BossHealthTotal);
         Assert.Equal(3m, snapshot.Quest.PendingPartyDamage);
+        Assert.Equal(new[] { "10 Gold", "100 XP", "Sea Serpent Egg" }, snapshot.Quest.Rewards);
         Assert.Equal(2, snapshot.Quest.ParticipantCount);
         Assert.Equal(2, snapshot.Members.Count);
         Assert.Equal("Alpha", snapshot.Members[0].DisplayName);
@@ -451,6 +459,26 @@ public sealed class HabiticaApiClientTests
                     "user-1": true,
                     "user-2": true,
                     "user-3": false
+                  }
+                },
+                "quests": {
+                  "seaserpent": {
+                    "key": "seaserpent",
+                    "text": "Sea Serpent",
+                    "boss": {
+                      "hp": 1000
+                    },
+                    "rewards": {
+                      "gp": 20,
+                      "exp": 250,
+                      "items": {
+                        "egg": { "text": "Sea Serpent Egg" },
+                        "hatchingPotion": { "key": "Shade Hatching Potion" }
+                      },
+                      "unlock": [
+                        { "name": "Sea Serpent Questline" }
+                      ]
+                    }
                   }
                 }
               }
@@ -618,6 +646,26 @@ public sealed class HabiticaApiClientTests
                       "per": 2
                     }
                   }
+                },
+                "quests": {
+                  "seaserpent": {
+                    "key": "seaserpent",
+                    "text": "Sea Serpent",
+                    "boss": {
+                      "hp": 1000
+                    },
+                    "rewards": {
+                      "gp": 20,
+                      "exp": 250,
+                      "items": {
+                        "egg": { "text": "Sea Serpent Egg" },
+                        "hatchingPotion": { "key": "Shade Hatching Potion" }
+                      },
+                      "unlock": [
+                        { "name": "Sea Serpent Questline" }
+                      ]
+                    }
+                  }
                 }
               }
             }
@@ -635,6 +683,9 @@ public sealed class HabiticaApiClientTests
         Assert.Equal("A focused casting weapon.", item.Notes);
         Assert.Equal(new GearStatBlock(0m, 12m, 0m, 2m), item.Stats);
         Assert.True(item.TwoHanded);
+        var quest = Assert.Single(catalog.QuestItems.Values);
+        Assert.Equal("seaserpent", quest.Key);
+        Assert.Equal(new[] { "20 Gold", "250 XP", "Sea Serpent Egg", "Shade Hatching Potion", "Sea Serpent Questline" }, quest.RewardSummary);
     }
 
     private static HabiticaApiClient CreateClient(HttpMessageHandler handler)

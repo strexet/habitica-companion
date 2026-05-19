@@ -1948,9 +1948,9 @@ quest progress snapshot
 party pending boss damage/items, boss HP remaining, total boss HP when available, and pending damage to party
 CRONed X/Y summary
 buff timing recommendations
-party member CRON list
+compact party member CRON list with foldable details
 viewer-local CRON statistics graph
-active quest card with real quest metadata when cached
+active quest card with real quest metadata and rewards when cached
 shared quest queue cards with vote counts and voter names
 quest pool cards with owner availability
 recently completed quest cards
@@ -1976,14 +1976,15 @@ Current display rules:
 3. Show the latest cached party name, summary, and member count.
 4. Show quest key, active state, party pending boss damage or collection items when member progress is available, boss HP remaining, total boss HP when content data is available, pending damage to party, and participant count when a quest snapshot exists.
 5. Show a dedicated CRON summary when member CRON data exists.
-6. Show per-member CRON state, last CRON, average CRON time, and active-quest pending damage/items when available. Keep day-start/timezone diagnostics out of the main row because Habitica usually hides those public member fields.
-7. Show viewer-local CRON graph points and low-confidence warnings from local history.
-8. Publish the current user's owned quest scrolls to the shared party quest pool after party sync when inventory and content metadata are available.
-9. Allow only the current quest owner to add that user's quest scroll to the shared queue.
-10. Allow one vote per party member per queued quest; clicking again removes the vote.
-11. Sort visible queue cards by vote count, owner readiness, queue age, and recently completed penalty.
-12. Let the quest owner remove their own queue item; party-sync also allows party leader removal when membership verification identifies the leader.
-13. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
+6. Show compact per-member cards with display name, class, CRON state, last CRON, average CRON time, and active-quest pending damage/items when available.
+7. Keep member id, level, CRON reason, and stat breakdowns behind a collapsed in-memory details toggle on each member card.
+8. Show viewer-local CRON graph points and low-confidence warnings from local history.
+9. Publish the current user's owned quest scrolls to the shared party quest pool after party sync when inventory and content metadata are available.
+10. Allow only the current quest owner to add that user's quest scroll to the shared queue.
+11. Allow one vote per party member per queued quest; clicking again removes the vote.
+12. Sort visible queue cards by vote count, owner readiness, queue age, and recently completed penalty.
+13. Let the quest owner remove their own queue item; party-sync also allows party leader removal when membership verification identifies the leader.
+14. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
 ```
 
 ### Validation
@@ -2014,6 +2015,8 @@ Test:
 - `/groups/party` response mapping;
 - party snapshot persistence;
 - party page rendering;
+- compact member card details toggling;
+- quest reward metadata rendering from cached Habitica content;
 - navigation rendering for the `Party` route.
 - shared quest queue/pool rendering;
 - party-sync queue and vote mutations.
@@ -2025,6 +2028,7 @@ Current implementation:
 - dedicated `Party` route in the app shell;
 - cached party summary cards;
 - cached quest progress snapshot.
+- compact party member cards with foldable extra info and stats;
 - active quest card with real cached quest metadata and compact rewards;
 - shared quest pool from published member quest-scroll availability;
 - shared quest queue with owner-only add/remove and one-vote-per-member voting;
