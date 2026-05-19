@@ -62,7 +62,7 @@ public sealed class InventoryPageTests : BunitContext
                     {
                         ["head_wizard_3"] = new("head_wizard_3", "Wizard Hat", "Head", "wizard", null, new GearStatBlock(0m, 2m, 0m, 0m)),
                         ["weapon_wizard_5"] = new("weapon_wizard_5", "Wizard Wand", "Weapon", "wizard", null, new GearStatBlock(0m, 12m, 0m, 2m)),
-                        ["weapon_warrior_6"] = new("weapon_warrior_6", "Warrior Sword", "Weapon", "warrior", null, new GearStatBlock(10m, 0m, 1m, 0m))
+                        ["weapon_warrior_6"] = new("weapon_warrior_6", "Warrior Sword", "Weapon", "warrior", null, new GearStatBlock(10m, 0m, 10m, 0m))
                     }),
                 EquipmentPresets: new[]
                 {
@@ -92,6 +92,11 @@ public sealed class InventoryPageTests : BunitContext
         Assert.Contains("Warrior Sword", cut.Markup);
         Assert.Contains("Head", cut.Markup);
         Assert.Contains("Weapon", cut.Markup);
+        Assert.NotEmpty(cut.FindAll(".inventory-preset-list"));
+        var highlightedStats = cut.FindAll(".highest-stat").Select(element => element.TextContent).ToArray();
+        Assert.Contains("INT\u00a018", highlightedStats);
+        Assert.Contains("STR\u00a010", highlightedStats);
+        Assert.Contains("CON\u00a010", highlightedStats);
         Assert.DoesNotContain("Battle equipped", cut.Markup);
         Assert.DoesNotContain("Costume equipped", cut.Markup);
         Assert.DoesNotContain("equip-costume", cut.Markup);

@@ -1,6 +1,6 @@
 # Future Work
 
-This file tracks items from `habitica_companion_pending_features_plan.md` that were not implemented in the Party Quest Improvements pass.
+This file tracks items from `habitica_companion_pending_features_plan.md` that remain unimplemented.
 
 ## Party Quest Improvements
 
@@ -20,11 +20,6 @@ This file tracks items from `habitica_companion_pending_features_plan.md` that w
 - Habitica Cron API wrapper and post-Cron targeted refresh.
 - Buff warning before casting not-Croned stat buffs.
 - Per-user, per-Habitica-day local warning suppression.
-
-## Inventory Final Improvement
-
-- Full-width vertical preset card layout.
-- Highest-stat highlighting for normal equipment, best-in-category cards, battle gear cards, and saved preset item cards.
 
 ## Tasks Page Enhancements
 

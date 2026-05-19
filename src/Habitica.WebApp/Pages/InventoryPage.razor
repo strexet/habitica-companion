@@ -1,5 +1,6 @@
 @page "/inventory"
 @implements IDisposable
+@using Microsoft.AspNetCore.Components.Rendering
 @inject InventoryViewModelFactory InventoryViewModelFactory
 @inject IAppSessionController SessionController
 @inject ISnackbar Snackbar
@@ -60,7 +61,7 @@
                         <p class="section-label">Equipped battle gear</p>
                         <h2>Battle loadout</h2>
                     </div>
-                    <span class="ui-pill count-pill">@FormatStats(viewModel.BattleEquipped.TotalStats)</span>
+                    @RenderStats(viewModel.BattleEquipped.TotalStats)
                 </div>
 
                 @RenderEquippedSet(viewModel.BattleEquipped)
@@ -119,7 +120,7 @@
                                         <article class="preset-mini-item">
                                             <strong>@item.DisplayName</strong>
                                             <span class="dashboard-stat-note">@item.Key</span>
-                                            <span class="ui-pill count-pill">@FormatStats(item.TotalStats)</span>
+                                            @RenderStats(item.TotalStats)
                                             <MudButton HtmlTag="button" data-testid="@($"equip-best-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate || item.IsBattleEquipped)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Size="Size.Small" Variant="Variant.Outlined">
                                                 @(item.IsBattleEquipped ? "Equipped battle" : "Equip item")
                                             </MudButton>
@@ -146,7 +147,7 @@
                                                 <strong>@item.DisplayName</strong>
                                                 <span class="dashboard-stat-note">@item.Key</span>
                                             </div>
-                                            <span class="ui-pill count-pill">@FormatStats(item.TotalStats)</span>
+                                            @RenderStats(item.TotalStats)
                                         </div>
                                         <span class="dashboard-stat-note">@item.SlotTitle@(string.IsNullOrWhiteSpace(item.ClassName) ? string.Empty : $" • {item.ClassName}")</span>
                                         @if (!string.IsNullOrWhiteSpace(item.Notes))
@@ -360,10 +361,7 @@
             builder.CloseElement();
             if (set.Kind == EquipmentSetKind.Battle)
             {
-                builder.OpenElement(sequence++, "span");
-                builder.AddAttribute(sequence++, "class", "ui-pill count-pill");
-                builder.AddContent(sequence++, FormatStats(item.TotalStats));
-                builder.CloseElement();
+                RenderStats(item.TotalStats)(builder);
             }
             builder.CloseElement();
         }
@@ -383,7 +381,7 @@
         }
 
         builder.OpenElement(3, "div");
-        builder.AddAttribute(4, "class", "inventory-item-list");
+        builder.AddAttribute(4, "class", "inventory-preset-list");
         var sequence = 5;
         foreach (var preset in presets)
         {
@@ -404,10 +402,7 @@
             builder.AddContent(sequence++, $"{preset.Items.Count} item(s) • {preset.CreatedAtUtc.ToLocalTime():g}");
             builder.CloseElement();
             builder.CloseElement();
-            builder.OpenElement(sequence++, "span");
-            builder.AddAttribute(sequence++, "class", "ui-pill count-pill");
-            builder.AddContent(sequence++, FormatStats(preset.TotalStats));
-            builder.CloseElement();
+            RenderStats(preset.TotalStats)(builder);
             builder.CloseElement();
 
             builder.OpenElement(sequence++, "div");
@@ -434,10 +429,7 @@
                     builder.CloseElement();
                     if (item.TotalStats != GearStatBlock.Zero)
                     {
-                        builder.OpenElement(sequence++, "span");
-                        builder.AddAttribute(sequence++, "class", "ui-pill count-pill");
-                        builder.AddContent(sequence++, FormatStats(item.TotalStats));
-                        builder.CloseElement();
+                        RenderStats(item.TotalStats)(builder);
                     }
 
                     builder.OpenComponent<MudButton>(sequence++);
@@ -553,14 +545,53 @@
         builder.CloseElement();
     };
 
-    private static string FormatStats(GearStatBlock stats)
+    private static RenderFragment RenderStats(GearStatBlock stats) => builder =>
     {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "ui-pill count-pill stat-pill-group");
+
         if (stats == GearStatBlock.Zero)
         {
-            return "No stats";
+            builder.AddContent(sequence++, "No stats");
+            builder.CloseElement();
+            return;
         }
 
-        return $"STR\u00a0{stats.Strength:0.#} • INT\u00a0{stats.Intelligence:0.#} • CON\u00a0{stats.Constitution:0.#} • PER\u00a0{stats.Perception:0.#}";
+        var highest = GetHighestPositiveStat(stats);
+        RenderStatValue(builder, ref sequence, "STR", stats.Strength, highest);
+        RenderSeparator(builder, ref sequence);
+        RenderStatValue(builder, ref sequence, "INT", stats.Intelligence, highest);
+        RenderSeparator(builder, ref sequence);
+        RenderStatValue(builder, ref sequence, "CON", stats.Constitution, highest);
+        RenderSeparator(builder, ref sequence);
+        RenderStatValue(builder, ref sequence, "PER", stats.Perception, highest);
+        builder.CloseElement();
+    };
+
+    private static decimal? GetHighestPositiveStat(GearStatBlock stats)
+    {
+        var highest = new[] { stats.Strength, stats.Intelligence, stats.Constitution, stats.Perception }.Max();
+        return highest > 0m ? highest : null;
+    }
+
+    private static void RenderStatValue(RenderTreeBuilder builder, ref int sequence, string label, decimal value, decimal? highest)
+    {
+        var className = highest is not null && value == highest.Value
+            ? "inventory-stat-value highest-stat"
+            : "inventory-stat-value";
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", className);
+        builder.AddContent(sequence++, $"{label}\u00a0{value:0.#}");
+        builder.CloseElement();
+    }
+
+    private static void RenderSeparator(RenderTreeBuilder builder, ref int sequence)
+    {
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "inventory-stat-separator");
+        builder.AddContent(sequence++, "•");
+        builder.CloseElement();
     }
 
     private EquipmentProgress? GetPresetProgress(string presetId)

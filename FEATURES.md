@@ -1743,6 +1743,8 @@ Current view-model rules:
 16. Keep the bottom non-battle/accessory equipment section folded by default; users can expand it only when they need cosmetic, back-slot, or no-stat details.
 17. Sum battle preset stat totals from the resolved item totals.
 18. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
+19. Stack battle preset cards vertically at full content width.
+20. Highlight the highest positive visible stat values on battle gear, best-in-category items, normal equipment cards, and saved preset item cards; tied highest stats are highlighted together.
 ```
 
 Equip action rules:
@@ -1808,6 +1810,8 @@ Test:
 - accessory/no-stat grouping;
 - folded non-battle equipment rendering;
 - item equip and preset equip controller dispatch;
+- full-width vertical battle preset layout;
+- highest-stat highlighting, including tied highest stats;
 - empty-state rendering;
 - inventory route navigation rendering;
 - diagnostics logging for inventory actions.
@@ -1822,6 +1826,8 @@ Current implementation:
 - preset save, rename, full-preset equip, individual preset-item equip, and confirmed remove actions;
 - slot-grouped obtained gear explorer with folded full item lists;
 - bottom accessory/no-stat item explorer grouped by item type and folded by default;
+- full-width vertical battle preset layout;
+- highest-stat highlighting across battle gear, best-in-category items, normal equipment cards, and saved preset item cards;
 - gear content catalog name/stat resolution;
 - battle equipped markers;
 - battle equip buttons on owned gear cards;

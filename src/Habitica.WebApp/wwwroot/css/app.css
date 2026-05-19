@@ -1038,6 +1038,12 @@ a {
     margin-top: 0.85rem;
 }
 
+.inventory-preset-list {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+}
+
 .preset-mini-item {
     display: grid;
     gap: 0.25rem;
@@ -1046,6 +1052,31 @@ a {
     border-radius: 0.5rem;
     border: 1px solid rgba(22, 36, 35, 0.08);
     background: rgba(245, 239, 226, 0.58);
+}
+
+.stat-pill-group {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.25rem;
+}
+
+.inventory-stat-value {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.3rem;
+    color: var(--muted);
+}
+
+.inventory-stat-value.highest-stat {
+    padding: 0.05rem 0.32rem;
+    border-radius: 0.35rem;
+    background: rgba(45, 116, 110, 0.12);
+    color: var(--teal);
+    font-weight: 700;
+}
+
+.inventory-stat-separator {
+    color: rgba(95, 109, 103, 0.55);
 }
 
 .accessory-section {
