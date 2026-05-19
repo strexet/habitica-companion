@@ -7,28 +7,28 @@
         <p class="section-label">Privacy</p>
         <h1>Data handling</h1>
         <p class="panel-copy">
-            Personal sync keeps Habitica API tokens in this browser. Shared party sync sends credentials to the Cloudflare Pages Function only to verify current party membership with Habitica.
+            Habitica credentials stay in this browser unless they are needed to verify your party membership with Habitica. Exports and private device sync do not include your API token.
         </p>
 
         <div class="settings-grid">
             <MudPaper Class="card-surface action-card" Elevation="0">
-                <h2>Cloudflare Pages migration note</h2>
-                <p>If you opened the Pages deployment before the service-worker rollback, unregister the old service worker, clear site data, and hard refresh once so cached redirected responses are removed.</p>
+                <h2>If the app looks out of date</h2>
+                <p>Clear this site's browser data and refresh once. This removes old browser files from earlier deployments.</p>
             </MudPaper>
 
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Habitica credentials</h2>
-                <p>Credentials are used to call Habitica from the browser and to derive encrypted personal sync keys. They are not included in exports. The shared party sync endpoint receives credentials only for membership verification before reading or writing party CRON data.</p>
+                <p>Credentials are used to load your Habitica data and protect private device sync. They are not included in exports. Party sync verifies membership before reading or writing shared party CRON data.</p>
             </MudPaper>
 
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Local and exported data</h2>
-                <p>Snapshots, party history, diagnostics, gear catalog data, and equipment presets are stored in browser storage. Exported backup files are not encrypted.</p>
+                <p>Saved Habitica data, party history, app messages, gear information, and equipment presets are stored in browser storage. Downloaded backup files are readable, so keep them private.</p>
             </MudPaper>
 
             <MudPaper Class="card-surface action-card" Elevation="0">
-                <h2>Cloudflare sync</h2>
-                <p>Personal Cloudflare sync stores encrypted KV blobs. Shared party sync stores party CRON history and derived party state in D1 after membership verification. Cloudflare may process request metadata such as IP address and timestamps as part of hosting and security operations.</p>
+                <h2>Private sync</h2>
+                <p>Private device sync stores encrypted data. Shared party sync stores party CRON history and derived party state after membership verification. Hosting providers may process request details such as IP address and timestamps for security.</p>
             </MudPaper>
         </div>
     </section>

@@ -10,24 +10,24 @@
         <p class="section-label">Session controls</p>
         <h1>Local data and sign-in behavior</h1>
         <p class="panel-copy">
-            Use the actions below to end the current tab session, run live diagnostics, manage local browser data, or sync supported data through Cloudflare.
+            Use the actions below to sign out, check connections, manage saved browser data, or sync supported data between your devices.
         </p>
 
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
-            If this site was opened before the Cloudflare Pages routing fix, unregister the old service worker in browser dev tools, clear site data, and hard refresh once.
+            If the app keeps showing an old version, clear this site's browser data and refresh the page once.
         </MudAlert>
 
         <div class="settings-grid">
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Sign out for this tab</h2>
-                <p>Ends the current authenticated session without deleting the cached task snapshot.</p>
+                <p>Ends the current sign-in session without deleting saved app data in this browser.</p>
                 <MudButton Color="Color.Primary" OnClick="HandleLogoutAsync" Variant="Variant.Filled">Sign Out</MudButton>
             </MudPaper>
 
             <MudPaper Class="card-surface action-card" Elevation="0">
-                <h2>Run live tests</h2>
-                <p>Open the controlled integration test lab for safe reads and the reversible gear roundtrip check.</p>
-                <MudButton Color="Color.Secondary" Href="/live-tests" Variant="Variant.Filled">Open Live Tests</MudButton>
+                <h2>Check app connections</h2>
+                <p>Open safe connection checks and the optional reversible gear check.</p>
+                <MudButton Color="Color.Secondary" Href="/live-tests" Variant="Variant.Filled">Open Checks</MudButton>
             </MudPaper>
 
         </div>
@@ -35,16 +35,16 @@
 
     <section class="card-surface settings-card">
         <p class="section-label">Portable app data</p>
-        <h2>Export, import, and encrypted sync</h2>
+        <h2>Backup, restore, and private sync</h2>
         <p class="panel-copy">
-            Exported files include saved snapshots, party CRON history, diagnostics history, gear catalog data, and app-local equipment presets. Habitica API tokens are not included.
+            Backup files include saved Habitica data, party CRON history, app messages, gear information, and equipment presets. Habitica API tokens are not included.
             <a href="/privacy">Privacy and data handling</a>
         </p>
 
         <div class="settings-grid">
             <MudPaper Class="card-surface action-card" Elevation="0">
-                <h2>Export local data</h2>
-                <p>Downloads a readable JSON backup of this browser's saved app data. Keep the file private.</p>
+                <h2>Download backup</h2>
+                <p>Downloads a readable backup of this browser's saved app data. Keep the file private.</p>
                 <MudButton Color="Color.Primary"
                            data-testid="export-local-data"
                            Disabled="@SessionController.State.IsBusy"
@@ -55,16 +55,16 @@
             </MudPaper>
 
             <MudPaper Class="card-surface action-card" Elevation="0">
-                <h2>Import local data</h2>
-                <p>Imports a Habitica Tool JSON backup. If this browser already has app data, choose merge or override before importing.</p>
+                <h2>Restore backup</h2>
+                <p>Imports a Habitica Tool backup. If this browser already has app data, choose merge before importing.</p>
                 <InputFile class="app-input"
                            data-testid="import-local-data"
                            OnChange="HandleImportFileSelectedAsync" />
             </MudPaper>
 
             <MudPaper Class="card-surface action-card" Elevation="0">
-                <h2>Encrypted Cloudflare sync</h2>
-                <p>Uses the current Habitica User ID and API Token in this browser to encrypt data before upload. Cloudflare stores only encrypted JSON.</p>
+                <h2>Private device sync</h2>
+                <p>Your browser encrypts the upload before it leaves this device. The sync server stores only encrypted data.</p>
                 <div class="action-row">
                     <MudButton Color="Color.Primary"
                                data-testid="push-cloud-sync"
@@ -84,8 +84,8 @@
             </MudPaper>
 
             <MudPaper Class="card-surface action-card danger-card" Elevation="0">
-                <h2>Clear local data</h2>
-                <p>Removes stored credentials, cached snapshots, party history, diagnostics history, and local app setup from this browser.</p>
+                <h2>Clear this browser</h2>
+                <p>Removes saved credentials, saved Habitica data, party history, app messages, and local app setup from this browser.</p>
                 <MudButton Color="Color.Error"
                            data-testid="clear-local-data"
                            OnClick="HandleClearLocalDataAsync"
@@ -108,7 +108,7 @@
                 <h3>Existing app data found</h3>
                 <p>
                     The incoming data has @_pendingImportPreview.IncomingRecordCount records. This browser has @_pendingImportPreview.LocalRecordCount records,
-                    with @_pendingImportPreview.ConflictingKeys.Count overlapping keys.
+                    with @_pendingImportPreview.ConflictingKeys.Count matching saved sections.
                 </p>
                 <div class="action-row">
                     <MudButton Color="Color.Secondary" OnClick="@(() => CompleteImportAsync(LocalDataImportMode.Merge))" Variant="Variant.Filled">

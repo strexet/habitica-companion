@@ -1,5 +1,6 @@
 @page "/spells"
 @implements IDisposable
+@using System.Globalization
 @inject SpellViewModelFactory SpellViewModelFactory
 @inject IAppSessionController SessionController
 @inject ISnackbar Snackbar
@@ -13,7 +14,7 @@
             <p class="section-label">Skills and buffs</p>
             <h1>Spells</h1>
             <p class="panel-copy">
-                Cast current-class skills from fresh local snapshots. Estimates are approximate and use cached stats, task values, and gear data.
+                Cast current-class skills from fresh Habitica data. Estimates are approximate and use saved stats, task values, and gear data.
             </p>
         </div>
     </section>
@@ -21,7 +22,7 @@
     @if (SessionController.State.UserSnapshot is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-            No cached account snapshot is available yet. Sign in or refresh before opening spells.
+            No saved account data is available yet. Sign in or refresh before opening spells.
         </MudAlert>
     }
     else
@@ -40,7 +41,7 @@
             <section class="spells-summary-grid compact-summary-grid">
                 <article class="dashboard-stat-card">
                     <span class="dashboard-stat-label">Quest</span>
-                    <strong>@(quest.Key ?? "Unknown quest")</strong>
+                    <strong>@GetQuestTitle(quest)</strong>
                     <span class="dashboard-stat-note">@(quest.IsActive ? "Active" : "Inactive")</span>
                 </article>
                 <article class="dashboard-stat-card">
@@ -64,7 +65,7 @@
         <section class="spells-summary-grid compact-summary-grid">
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">Class</span>
-                <strong>@viewModel.ClassName</strong>
+                <strong>@FormatReadableName(viewModel.ClassName)</strong>
                 <span class="dashboard-stat-note">Level @viewModel.Level</span>
             </article>
             <article class="dashboard-stat-card">
@@ -85,7 +86,7 @@
         @if (viewModel.Spells.Count == 0)
         {
             <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
-                No class spells are available for the cached account class.
+                No class spells are available for the saved account class.
             </MudAlert>
         }
         else
@@ -348,6 +349,11 @@
         return value.ToString("0.##");
     }
 
+    private static string FormatReadableName(string value)
+    {
+        return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value.Replace('_', ' ').Replace('-', ' '));
+    }
+
     private static string FormatQuestMetric(PartyQuestMetricSnapshot? metric)
     {
         if (metric is null)
@@ -359,6 +365,11 @@
         return metric.Total is null
             ? $"{value} {metric.Unit}"
             : $"{value}/{FormatDecimal(metric.Total.Value)} {metric.Unit}";
+    }
+
+    private static string GetQuestTitle(PartyQuestSnapshot quest)
+    {
+        return string.IsNullOrWhiteSpace(quest.Name) ? "Current quest" : quest.Name;
     }
 
     private static string GetSpellDescription(SpellCardViewModel spell, string? selectedTarget)
@@ -424,10 +435,10 @@
     {
         return freshnessState switch
         {
-            SnapshotFreshnessState.Fresh => "Fresh local account snapshot",
-            SnapshotFreshnessState.Stale => "Stale local account snapshot",
-            SnapshotFreshnessState.Expired => "Expired local account snapshot",
-            _ => "Missing local account snapshot"
+            SnapshotFreshnessState.Fresh => "Account data is up to date",
+            SnapshotFreshnessState.Stale => "Account data may need refresh",
+            SnapshotFreshnessState.Expired => "Account data needs refresh",
+            _ => "No saved account data"
         };
     }
 

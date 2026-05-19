@@ -1,5 +1,6 @@
 @page "/inventory"
 @implements IDisposable
+@using System.Globalization
 @using Microsoft.AspNetCore.Components.Rendering
 @inject InventoryViewModelFactory InventoryViewModelFactory
 @inject IAppSessionController SessionController
@@ -11,10 +12,9 @@
     <section class="card-surface dashboard-hero">
         <div>
             <p class="section-label">Equipment explorer</p>
-            <h1>Cached inventory and equipped gear</h1>
+            <h1>Inventory and equipped gear</h1>
             <p class="panel-copy">
-                Manage equipped battle gear from cached account data. Gear changes run through
-                Habitica API mutations and refresh the account snapshot after completion.
+                Compare owned gear, save battle presets, and equip items from fresh Habitica account data.
             </p>
         </div>
     </section>
@@ -22,7 +22,7 @@
     @if (SessionController.State.UserSnapshot is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-            No cached account snapshot is available yet. Sign in or refresh before opening the equipment explorer.
+            No saved account data is available yet. Sign in or refresh before opening the equipment explorer.
         </MudAlert>
     }
     else
@@ -42,15 +42,15 @@
 
         <section class="inventory-summary-grid">
             <article class="dashboard-stat-card">
-                <span class="dashboard-stat-label">Owned gear keys</span>
+                <span class="dashboard-stat-label">Owned gear</span>
                 <strong>@snapshot.Inventory.OwnedGearKeys.Length</strong>
-                <span class="dashboard-stat-note">Stored locally for slot grouping and future equip actions.</span>
+                <span class="dashboard-stat-note">Ready for comparison and equipment changes.</span>
             </article>
 
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">Current companion</span>
-                <strong>@(snapshot.CurrentPetKey ?? "None")</strong>
-                <span class="dashboard-stat-note">Mount: @(snapshot.CurrentMountKey ?? "None")</span>
+                <strong>@FormatReadableName(snapshot.CurrentPetKey, "None")</strong>
+                <span class="dashboard-stat-note">Mount: @FormatReadableName(snapshot.CurrentMountKey, "None")</span>
             </article>
         </section>
 
@@ -91,7 +91,7 @@
         @if (viewModel.Groups.Count == 0)
         {
             <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
-                No owned gear keys are currently cached in the local account snapshot.
+                No owned gear is saved yet. Refresh inventory after signing in.
             </MudAlert>
         }
         else
@@ -119,7 +119,7 @@
                                     {
                                         <article class="preset-mini-item">
                                             <strong>@item.DisplayName</strong>
-                                            <span class="dashboard-stat-note">@item.Key</span>
+                                            <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
                                             @RenderStats(item.TotalStats)
                                             <MudButton HtmlTag="button" data-testid="@($"equip-best-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate || item.IsBattleEquipped)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Size="Size.Small" Variant="Variant.Outlined">
                                                 @(item.IsBattleEquipped ? "Equipped battle" : "Equip item")
@@ -145,11 +145,11 @@
                                         <div class="task-group-header">
                                             <div>
                                                 <strong>@item.DisplayName</strong>
-                                                <span class="dashboard-stat-note">@item.Key</span>
+                                                <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
                                             </div>
                                             @RenderStats(item.TotalStats)
                                         </div>
-                                        <span class="dashboard-stat-note">@item.SlotTitle@(string.IsNullOrWhiteSpace(item.ClassName) ? string.Empty : $" • {item.ClassName}")</span>
+                                        <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
                                         @if (!string.IsNullOrWhiteSpace(item.Notes))
                                         {
                                             <p class="panel-copy">@item.Notes</p>
@@ -201,8 +201,7 @@
                                     {
                                         <article class="inventory-item-card accessory-item-card">
                                             <strong>@item.DisplayName</strong>
-                                            <span class="dashboard-stat-note">@item.Key</span>
-                                            <span class="dashboard-stat-note">@item.SlotTitle@(string.IsNullOrWhiteSpace(item.ClassName) ? string.Empty : $" • {item.ClassName}")</span>
+                                            <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
                                             @if (!string.IsNullOrWhiteSpace(item.Notes))
                                             {
                                                 <p class="panel-copy">@item.Notes</p>
@@ -236,10 +235,10 @@
     {
         return freshnessState switch
         {
-            SnapshotFreshnessState.Fresh => "Fresh local account snapshot",
-            SnapshotFreshnessState.Stale => "Stale local account snapshot",
-            SnapshotFreshnessState.Expired => "Expired local account snapshot",
-            _ => "Missing local account snapshot"
+            SnapshotFreshnessState.Fresh => "Account data is up to date",
+            SnapshotFreshnessState.Stale => "Account data may need refresh",
+            SnapshotFreshnessState.Expired => "Account data needs refresh",
+            _ => "No saved account data"
         };
     }
 
@@ -298,6 +297,21 @@
         _nonBattleEquipmentExpanded = !_nonBattleEquipmentExpanded;
     }
 
+    private static string FormatGearInfo(string slotTitle, string? className)
+    {
+        return string.IsNullOrWhiteSpace(className) ? slotTitle : $"{slotTitle} • {FormatReadableName(className, string.Empty)}";
+    }
+
+    private static string FormatReadableName(string? value, string emptyLabel)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return emptyLabel;
+        }
+
+        return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value.Replace('_', ' ').Replace('-', ' '));
+    }
+
     private async Task ConfirmRemovePresetAsync(string presetId)
     {
         var result = await SessionController.RemoveEquipmentPresetAsync(presetId);
@@ -340,7 +354,7 @@
         {
             builder.OpenElement(0, "p");
             builder.AddAttribute(1, "class", "panel-copy");
-            builder.AddContent(2, "No equipped gear is cached for this loadout.");
+            builder.AddContent(2, "No equipped gear is saved for this loadout.");
             builder.CloseElement();
             return;
         }
@@ -357,7 +371,7 @@
             builder.CloseElement();
             builder.OpenElement(sequence++, "span");
             builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
-            builder.AddContent(sequence++, $"{item.SlotTitle} • {item.Key}");
+            builder.AddContent(sequence++, item.SlotTitle);
             builder.CloseElement();
             if (set.Kind == EquipmentSetKind.Battle)
             {
@@ -395,10 +409,6 @@
             builder.CloseElement();
             builder.OpenElement(sequence++, "span");
             builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
-            builder.AddContent(sequence++, $"ID {preset.Id}");
-            builder.CloseElement();
-            builder.OpenElement(sequence++, "span");
-            builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
             builder.AddContent(sequence++, $"{preset.Items.Count} item(s) • {preset.CreatedAtUtc.ToLocalTime():g}");
             builder.CloseElement();
             builder.CloseElement();
@@ -425,7 +435,7 @@
                     builder.CloseElement();
                     builder.OpenElement(sequence++, "span");
                     builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
-                    builder.AddContent(sequence++, $"{item.SlotTitle} • {item.Key}");
+                    builder.AddContent(sequence++, item.SlotTitle);
                     builder.CloseElement();
                     if (item.TotalStats != GearStatBlock.Zero)
                     {

@@ -26,9 +26,9 @@ public sealed class SettingsPageTests : BunitContext
 
         var cut = Render<SettingsPage>();
 
-        Assert.Contains("Export local data", cut.Markup);
-        Assert.Contains("Import local data", cut.Markup);
-        Assert.Contains("Encrypted Cloudflare sync", cut.Markup);
+        Assert.Contains("Download backup", cut.Markup);
+        Assert.Contains("Restore backup", cut.Markup);
+        Assert.Contains("Private device sync", cut.Markup);
         Assert.NotNull(cut.Find("[data-testid='export-local-data']"));
         Assert.NotNull(cut.Find("[data-testid='import-local-data']"));
         Assert.NotNull(cut.Find("[data-testid='push-cloud-sync']"));

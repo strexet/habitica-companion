@@ -5,16 +5,15 @@
 @inject IAppSessionController SessionController
 @inject IJSRuntime JsRuntime
 
-<PageTitle>Diagnostics</PageTitle>
+<PageTitle>Connection Checks</PageTitle>
 
 <div class="diagnostics-shell">
     <section class="card-surface dashboard-hero">
         <div>
-            <p class="section-label">Diagnostics</p>
-            <h1>Run controlled checks and inspect app behavior</h1>
+            <p class="section-label">Connection checks</p>
+            <h1>Check Habitica connections safely</h1>
             <p class="panel-copy">
-                Use this workspace for safe checks, guarded live tests, curated API inspection, and the shared
-                cross-feature diagnostics log.
+                Use this page for safe refresh checks, optional gear verification, quick Habitica account reads, and recent app messages.
             </p>
         </div>
     </section>
@@ -23,9 +22,9 @@
         <div class="diagnostics-main">
             <article class="card-surface diagnostics-panel">
                 <p class="section-label">Overview</p>
-                <h2>Session and snapshot state</h2>
+                <h2>Current saved data</h2>
                 <div class="diagnostics-overview-grid">
-                    <span class="ui-pill">Auth @(SessionController.State.IsAuthenticated ? "Live session ready" : "Offline only")</span>
+                    <span class="ui-pill">Sign-in @(SessionController.State.IsAuthenticated ? "Ready" : "Offline only")</span>
                     <span class="ui-pill">Warnings @SessionController.State.DiagnosticsWarningCount</span>
                     <span class="ui-pill">User @SessionController.State.UserFreshness</span>
                     <span class="ui-pill">Tasks @SessionController.State.TaskFreshness</span>
@@ -36,9 +35,9 @@
 
             <article class="card-surface diagnostics-panel">
                 <p class="section-label">Safe checks</p>
-                <h2>Read-only live checks</h2>
+                <h2>Safe refresh checks</h2>
                 <p class="panel-copy">
-                    Refreshes the implemented snapshots sequentially using a small number of live requests.
+                    Refreshes supported Habitica data one step at a time using a small number of requests.
                 </p>
                 <MudButton Color="Color.Primary" Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy)" OnClick="RunSafeLiveTestsAsync" Variant="Variant.Filled">
                     Run safe live tests
@@ -47,13 +46,13 @@
 
             <article class="card-surface diagnostics-panel warning-card">
                 <p class="section-label">Guarded tests</p>
-                <h2>Reversible and destructive verification</h2>
+                <h2>Optional gear check</h2>
                 <p class="panel-copy">
-                    This reversible test temporarily changes equipped battle gear, verifies the change, and restores the original loadout.
+                    This reversible check temporarily changes equipped battle gear, verifies the change, and restores the original loadout.
                 </p>
                 <label class="checkbox-row">
                     <input name="acknowledge-gear-test" type="checkbox" @bind="_acknowledgeGearMutation" />
-                    <span>I understand that this temporarily changes equipped battle gear during the test.</span>
+                    <span>I understand this temporarily changes equipped battle gear during the check.</span>
                 </label>
                 <MudButton Color="Color.Secondary" Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy || !_acknowledgeGearMutation)" OnClick="RunReversibleGearTestAsync" Variant="Variant.Filled">
                     Run reversible gear test
@@ -61,20 +60,20 @@
             </article>
 
             <article class="card-surface diagnostics-panel">
-                <p class="section-label">Preset API runner</p>
-                <h2>Curated live inspection presets</h2>
+                <p class="section-label">Quick account reads</p>
+                <h2>Choose what to inspect</h2>
                 <div class="action-row">
                     <MudButton HtmlTag="button" data-testid="preset-user-account" OnClick="@(() => RunPresetAsync(DiagnosticsPreset.UserAccount))" Variant="Variant.Filled">
-                        Run /user account preset
+                        Check account
                     </MudButton>
                     <MudButton OnClick="@(() => RunPresetAsync(DiagnosticsPreset.UserInventory))" Variant="Variant.Outlined">
-                        Run /user inventory preset
+                        Check inventory
                     </MudButton>
                     <MudButton OnClick="@(() => RunPresetAsync(DiagnosticsPreset.TasksUser))" Variant="Variant.Outlined">
-                        Run /tasks/user preset
+                        Check tasks
                     </MudButton>
                     <MudButton OnClick="@(() => RunPresetAsync(DiagnosticsPreset.Party))" Variant="Variant.Outlined">
-                        Run /groups/party preset
+                        Check party
                     </MudButton>
                 </div>
 
@@ -121,13 +120,13 @@
         <aside class="card-surface diagnostics-console">
             <div class="task-group-header">
                 <div>
-                    <p class="section-label">Shared console</p>
-                    <h2>Recent diagnostics history</h2>
+                    <p class="section-label">App messages</p>
+                    <h2>Recent app messages</h2>
                 </div>
                 <div class="action-row">
                     <MudButton HtmlTag="button" data-testid="copy-diagnostics-jsonl" Color="Color.Default" OnClick="CopyLogsAsync" Variant="Variant.Text">Copy all messages</MudButton>
-                    <MudButton HtmlTag="button" data-testid="download-diagnostics-jsonl" Color="Color.Default" OnClick="DownloadLogsAsync" Variant="Variant.Text">Download logs</MudButton>
-                    <MudButton Color="Color.Default" OnClick="ClearLogsAsync" Variant="Variant.Text">Clear logs</MudButton>
+                    <MudButton HtmlTag="button" data-testid="download-diagnostics-jsonl" Color="Color.Default" OnClick="DownloadLogsAsync" Variant="Variant.Text">Download messages</MudButton>
+                    <MudButton Color="Color.Default" OnClick="ClearLogsAsync" Variant="Variant.Text">Clear messages</MudButton>
                 </div>
             </div>
 
@@ -169,7 +168,7 @@
             <div class="diagnostics-log-list">
                 @if (FilteredEntries.Count == 0)
                 {
-                    <p class="panel-copy">No diagnostics entries match the current filters.</p>
+                    <p class="panel-copy">No app messages match the current filters.</p>
                 }
                 else
                 {

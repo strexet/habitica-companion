@@ -177,7 +177,7 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Avg 08:15 (1 day)", cut.Markup);
         Assert.Contains("Not enough history", cut.Markup);
         Assert.Contains("Sea Serpent Egg", cut.Markup);
-        Assert.DoesNotContain("Reward metadata is not cached yet.", cut.Markup);
+        Assert.DoesNotContain("Reward details are not available yet.", cut.Markup);
         Assert.Contains("CRON statistics", cut.Markup);
         Assert.Contains("Historical average", cut.Markup);
         Assert.Contains("1 stored observation day", cut.Markup);
@@ -195,8 +195,8 @@ public sealed class PartyPageTests : BunitContext
 
         cut.FindAll("[data-testid='member-details']").First().Click();
 
-        Assert.Contains("Member ID", cut.Markup);
-        Assert.Contains("user-1", cut.Markup);
+        Assert.DoesNotContain("Member ID", cut.Markup);
+        Assert.DoesNotContain("user-1", cut.Markup);
         Assert.Contains("Total", cut.Markup);
         Assert.Contains("STR 12", cut.Markup);
     }

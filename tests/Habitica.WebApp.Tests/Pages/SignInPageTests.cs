@@ -33,9 +33,9 @@ public sealed class SignInPageTests : BunitContext
         Assert.Contains("Android: Settings", cut.Markup);
         Assert.Contains("iOS: Settings", cut.Markup);
         Assert.Contains("Party quest queue and CRON timing", cut.Markup);
-        Assert.Contains("Inventory gear comparison and presets", cut.Markup);
+        Assert.Contains("Gear comparison and presets", cut.Markup);
         Assert.Contains("Session-only sign-in is the default.", cut.Markup);
-        Assert.Contains("Credentials are never saved in exports, diagnostics, logs, or Cloudflare sync.", cut.Markup);
+        Assert.Contains("Credentials are never saved in exports, app messages, or device sync.", cut.Markup);
         Assert.Contains("Treat this like a password", cut.Markup);
     }
 

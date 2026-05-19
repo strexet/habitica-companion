@@ -71,11 +71,11 @@ public sealed class DashboardPageTests : BunitContext
 
         var cut = Render<DashboardPage>();
 
-        Assert.Contains("Fresh local account snapshot", cut.Markup);
+        Assert.Contains("Account data is up to date", cut.Markup);
         Assert.Contains("Mage Tester", cut.Markup);
         Assert.Contains("Level 15", cut.Markup);
         Assert.Contains("HP", cut.Markup);
-        Assert.Contains("Wolf-Base", cut.Markup);
+        Assert.Contains("Wolf Base", cut.Markup);
         Assert.Contains("Open tasks", cut.Markup);
         Assert.Contains("3 unspent stat points", cut.Markup);
         Assert.Contains("#stats", cut.Markup);

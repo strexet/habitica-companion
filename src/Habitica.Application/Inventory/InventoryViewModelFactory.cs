@@ -1,3 +1,4 @@
+using System.Globalization;
 using Habitica.Domain.User;
 
 namespace Habitica.Application.Inventory;
@@ -232,9 +233,23 @@ public sealed class InventoryViewModelFactory
 
     private static string ResolveDisplayName(string key, GearCatalogSnapshot? catalog)
     {
-        return catalog?.Items.TryGetValue(key, out var item) == true && !string.IsNullOrWhiteSpace(item.Text)
-            ? item.Text
-            : key;
+        if (catalog?.Items.TryGetValue(key, out var item) == true && !string.IsNullOrWhiteSpace(item.Text))
+        {
+            return item.Text;
+        }
+
+        var parts = key.Split('_', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 0)
+        {
+            return "Unknown gear";
+        }
+
+        var readableParts = parts
+            .Where(static part => !int.TryParse(part, out _))
+            .Select(static part => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(part.Replace('-', ' ')))
+            .ToArray();
+
+        return readableParts.Length == 0 ? "Unknown gear" : string.Join(' ', readableParts);
     }
 
     private static string ResolveSlotTitle(string key, GearCatalogSnapshot? catalog)

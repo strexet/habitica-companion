@@ -1,5 +1,6 @@
 @page "/dashboard"
 @implements IDisposable
+@using System.Globalization
 @using Habitica.Rules.Stats
 @inject IAppSessionController SessionController
 @inject CharacterStatsViewModelFactory StatsViewModelFactory
@@ -13,8 +14,8 @@
             <p class="section-label">Account overview</p>
             <h1>Local Habitica dashboard</h1>
             <p class="panel-copy">
-                This view summarizes the latest account snapshot stored on this device: class stats, current companion
-                state, synced task counts, and a quick check of what data is ready for deeper feature modules.
+                This view summarizes the latest Habitica data saved on this device: class stats, current companion,
+                task counts, and what is ready to explore next.
             </p>
         </div>
     </section>
@@ -22,7 +23,7 @@
     @if (SessionController.State.UserSnapshot is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-            No local account snapshot is available yet. Sign in or refresh to cache the richer user data needed for the dashboard.
+            No saved account data is available yet. Sign in or refresh to load the data needed for the dashboard.
         </MudAlert>
     }
     else
@@ -45,7 +46,7 @@
                 <span class="dashboard-stat-label">Account</span>
                 <strong>@snapshot.DisplayName</strong>
                 <span class="dashboard-stat-value">Level @snapshot.Level</span>
-                <span class="dashboard-stat-note">@(string.IsNullOrWhiteSpace(snapshot.ClassName) ? "No class data" : snapshot.ClassName)</span>
+                <span class="dashboard-stat-note">@FormatReadableName(snapshot.ClassName, "No class data")</span>
             </article>
 
             <article class="dashboard-stat-card">
@@ -75,7 +76,7 @@
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">Open tasks</span>
                 <strong>@GetOpenTaskCount()</strong>
-                <span class="dashboard-stat-note">Across the cached task snapshot</span>
+                <span class="dashboard-stat-note">Across saved tasks</span>
             </article>
         </section>
 
@@ -163,33 +164,33 @@
         <section class="dashboard-detail-grid">
             <article class="card-surface dashboard-panel">
                 <p class="section-label">Companion state</p>
-                <h2>Current pet, mount, and party link</h2>
+                <h2>Current pet, mount, and party</h2>
 
                 <dl class="dashboard-definition-list">
                     <div>
                         <dt>Pet</dt>
-                        <dd>@(snapshot.CurrentPetKey ?? "None equipped")</dd>
+                        <dd>@FormatReadableName(snapshot.CurrentPetKey, "None equipped")</dd>
                     </div>
 
                     <div>
                         <dt>Mount</dt>
-                        <dd>@(snapshot.CurrentMountKey ?? "None equipped")</dd>
+                        <dd>@FormatReadableName(snapshot.CurrentMountKey, "None equipped")</dd>
                     </div>
 
                     <div>
                         <dt>Party</dt>
-                        <dd>@(snapshot.PartyId ?? "No active party data")</dd>
+                        <dd>@(string.IsNullOrWhiteSpace(snapshot.PartyId) ? "No active party" : "Active party")</dd>
                     </div>
                 </dl>
             </article>
 
             <article class="card-surface dashboard-panel">
-                <p class="section-label">Inventory readiness</p>
-                <h2>Cached counts for the next feature slices</h2>
+                <p class="section-label">Inventory</p>
+                <h2>Saved inventory counts</h2>
 
                 <dl class="dashboard-definition-list">
                     <div>
-                        <dt>Owned gear keys</dt>
+                        <dt>Owned gear</dt>
                         <dd>@snapshot.Inventory.OwnedGearKeys.Length</dd>
                     </div>
 
@@ -251,6 +252,16 @@
         return value > 0m ? $"+{value:0.##}" : value.ToString("0.##");
     }
 
+    private static string FormatReadableName(string? value, string emptyLabel)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return emptyLabel;
+        }
+
+        return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value.Replace('_', ' ').Replace('-', ' '));
+    }
+
     private int GetPendingAllocation(string key)
     {
         return _pendingAllocation.TryGetValue(key, out var value) ? value : 0;
@@ -305,10 +316,10 @@
     {
         return freshnessState switch
         {
-            SnapshotFreshnessState.Fresh => "Fresh local account snapshot",
-            SnapshotFreshnessState.Stale => "Stale local account snapshot",
-            SnapshotFreshnessState.Expired => "Expired local account snapshot",
-            _ => "Missing local account snapshot"
+            SnapshotFreshnessState.Fresh => "Account data is up to date",
+            SnapshotFreshnessState.Stale => "Account data may need refresh",
+            SnapshotFreshnessState.Expired => "Account data needs refresh",
+            _ => "No saved account data"
         };
     }
 

@@ -13,10 +13,9 @@
     <section class="card-surface tasks-header">
         <div>
             <p class="section-label">Read-only workspace</p>
-            <h1>Task snapshot</h1>
+            <h1>Tasks</h1>
             <p class="panel-copy">
-                Browse the latest tasks stored on this device. Completion and scoring actions stay out of scope here
-                until the mutation workflow is wired, so the page is optimized for visibility, filtering, and sync status.
+                Browse the latest Habitica tasks saved on this device. This page is read-only and built for quick scanning, filtering, and refresh status.
             </p>
         </div>
 
@@ -31,7 +30,7 @@
     @if (SessionController.State.TaskSnapshot is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-            No local task snapshot is available yet. Sign in and run the initial sync to populate this workspace.
+            No saved tasks are available yet. Sign in and refresh to load this page.
         </MudAlert>
     }
     else
@@ -310,10 +309,10 @@
     {
         return freshnessState switch
         {
-            SnapshotFreshnessState.Fresh => "Fresh local snapshot",
-            SnapshotFreshnessState.Stale => "Stale local snapshot",
-            SnapshotFreshnessState.Expired => "Expired local snapshot",
-            _ => "Missing local snapshot"
+            SnapshotFreshnessState.Fresh => "Tasks are up to date",
+            SnapshotFreshnessState.Stale => "Tasks may need refresh",
+            SnapshotFreshnessState.Expired => "Tasks need refresh",
+            _ => "No saved tasks"
         };
     }
 

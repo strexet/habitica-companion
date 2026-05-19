@@ -38,7 +38,7 @@ public sealed class TasksPageTests : BunitContext
 
         var cut = Render<TasksPage>();
 
-        Assert.Contains("Stale local snapshot", cut.Markup);
+        Assert.Contains("Tasks may need refresh", cut.Markup);
         Assert.Contains("Buy milk", cut.Markup);
         Assert.Contains("Value", cut.Markup);
         Assert.Contains("-4.2", cut.Markup);

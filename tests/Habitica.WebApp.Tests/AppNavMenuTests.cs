@@ -26,7 +26,7 @@ public sealed class AppNavMenuTests : BunitContext
 
         var cut = Render<AppNavMenu>();
 
-        Assert.Contains("Diagnostics", cut.Markup);
+        Assert.Contains("Checks", cut.Markup);
         Assert.Contains("Spells", cut.Markup);
         Assert.DoesNotContain("Live Tests", cut.Markup);
         Assert.Contains("/diagnostics", cut.Markup);
@@ -52,6 +52,6 @@ public sealed class AppNavMenuTests : BunitContext
 
         Assert.DoesNotContain("Sign In", cut.Markup);
         Assert.DoesNotContain("Dashboard", cut.Markup);
-        Assert.DoesNotContain("Diagnostics", cut.Markup);
+        Assert.DoesNotContain("Checks", cut.Markup);
     }
 }

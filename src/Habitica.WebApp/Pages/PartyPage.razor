@@ -12,9 +12,9 @@
     <section class="card-surface dashboard-hero">
         <div>
             <p class="section-label">Party overview</p>
-            <h1>Cached party state</h1>
+            <h1>Party status</h1>
             <p class="panel-copy">
-                Review the latest synced party summary, quest state, CRON timing, and participant details without mutating party data from this app.
+                Review the latest saved party summary, quest progress, CRON timing, and member status without changing party data.
             </p>
         </div>
     </section>
@@ -22,13 +22,13 @@
     @if (SessionController.State.UserSnapshot?.PartyId is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-            The cached account snapshot does not show an active party connection.
+            Your saved account data does not show an active party.
         </MudAlert>
     }
     else if (SessionController.State.PartySnapshot is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-            No cached party snapshot is available yet. Refresh the account to pull the current party overview.
+            No saved party data is available yet. Refresh the account to load the current party overview.
         </MudAlert>
     }
     else
@@ -45,18 +45,17 @@
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">Party</span>
                 <strong>@snapshot.Name</strong>
-                <span class="dashboard-stat-note">@snapshot.PartyId</span>
             </article>
 
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">Members</span>
                 <strong>@snapshot.MemberCount</strong>
-                <span class="dashboard-stat-note">Cached group size</span>
+                <span class="dashboard-stat-note">Visible party size</span>
             </article>
 
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">Quest</span>
-                <strong>@(quest?.Key ?? "No active quest")</strong>
+                <strong>@(quest is null ? "No active quest" : GetQuestName(quest))</strong>
                 <span class="dashboard-stat-note">@((quest?.IsActive ?? false) ? "Active" : "Inactive or missing")</span>
             </article>
         </section>
@@ -84,7 +83,7 @@
 
                 @if (quest is null)
                 {
-                    <p class="panel-copy">No cached active quest state is currently available for this party.</p>
+                    <p class="panel-copy">No active quest is saved for this party yet.</p>
                 }
                 else
                 {
@@ -107,14 +106,6 @@
                         </div>
 
                         <dl class="dashboard-definition-list party-quest-definition-list compact-definition-list">
-                            <div>
-                                <dt>Quest owner / starter</dt>
-                                <dd>From Habitica party state</dd>
-                            </div>
-                            <div>
-                                <dt>Started date</dt>
-                                <dd>Not exposed in cached snapshot</dd>
-                            </div>
                             <div>
                                 <dt>Participant status</dt>
                                 <dd>@GetParticipationSummaryLabel(quest)</dd>
@@ -151,10 +142,6 @@
                     </div>
 
                     <dl class="dashboard-definition-list party-quest-definition-list">
-                        <div>
-                            <dt>Quest key</dt>
-                            <dd>@quest.Key</dd>
-                        </div>
                         <div>
                             <dt>Accepted</dt>
                             <dd>@quest.ParticipationSummary?.AcceptedCount</dd>
@@ -368,7 +355,7 @@
 
             @if (snapshot.CronDashboard is null)
             {
-                <p class="panel-copy">No party CRON statistics are cached yet. Refresh the account to start collecting read-only CRON history.</p>
+                <p class="panel-copy">No party CRON statistics are saved yet. Refresh the account to start collecting read-only CRON history.</p>
             }
             else
             {
@@ -421,7 +408,7 @@
 
             @if (members.Count == 0)
             {
-                <p class="panel-copy">No cached party member data is available yet.</p>
+                <p class="panel-copy">No party member data is saved yet.</p>
             }
             else
             {
@@ -477,10 +464,6 @@
                                 <div class="party-member-details">
                                     <dl class="party-member-meta">
                                         <div>
-                                            <dt>Member ID</dt>
-                                            <dd>@member.MemberId</dd>
-                                        </div>
-                                        <div>
                                             <dt>Level</dt>
                                             <dd>@FormatLevel(member.Level)</dd>
                                         </div>
@@ -511,7 +494,7 @@
                                     {
                                         <div class="party-member-stats">
                                             <div class="party-stat-section">
-                                                <span class="dashboard-stat-note">No stat breakdown cached for this member.</span>
+                                                <span class="dashboard-stat-note">No stat breakdown is saved for this member.</span>
                                             </div>
                                         </div>
                                     }
@@ -616,10 +599,10 @@
     {
         return freshnessState switch
         {
-            SnapshotFreshnessState.Fresh => "Fresh local party snapshot",
-            SnapshotFreshnessState.Stale => "Stale local party snapshot",
-            SnapshotFreshnessState.Expired => "Expired local party snapshot",
-            _ => "Missing local party snapshot"
+            SnapshotFreshnessState.Fresh => "Party data is up to date",
+            SnapshotFreshnessState.Stale => "Party data may need refresh",
+            SnapshotFreshnessState.Expired => "Party data needs refresh",
+            _ => "No saved party data"
         };
     }
 
@@ -776,7 +759,7 @@
     private static string GetQuestDescription(PartyQuestSnapshot quest)
     {
         return string.IsNullOrWhiteSpace(quest.Description)
-            ? "Quest description is not available in the cached content catalog yet."
+            ? "Quest description is not available yet."
             : quest.Description;
     }
 
@@ -916,7 +899,7 @@
         {
             builder.OpenElement(sequence++, "span");
             builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
-            builder.AddContent(sequence++, "Reward metadata is not cached yet.");
+            builder.AddContent(sequence++, "Reward details are not available yet.");
             builder.CloseElement();
         }
         else
@@ -1161,7 +1144,9 @@
 
     private static string FormatClass(string? className)
     {
-        return string.IsNullOrWhiteSpace(className) ? "Class unknown" : className;
+        return string.IsNullOrWhiteSpace(className)
+            ? "Class unknown"
+            : CultureInfo.InvariantCulture.TextInfo.ToTitleCase(className.Replace('_', ' ').Replace('-', ' '));
     }
 
     private static string FormatLevel(int? level)

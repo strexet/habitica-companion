@@ -40,15 +40,15 @@ public sealed class LiveTestsPageTests : BunitContext
 
         var cut = Render<LiveTestsPage>();
 
-        Assert.Contains("Diagnostics", cut.Markup);
+        Assert.Contains("Connection checks", cut.Markup);
         Assert.Contains("Safe checks", cut.Markup);
         Assert.Contains("Guarded tests", cut.Markup);
-        Assert.Contains("Preset API runner", cut.Markup);
-        Assert.Contains("Shared console", cut.Markup);
+        Assert.Contains("Quick account reads", cut.Markup);
+        Assert.Contains("App messages", cut.Markup);
         Assert.Contains("Copy all messages", cut.Markup);
-        Assert.Contains("Download logs", cut.Markup);
-        Assert.Contains("Clear logs", cut.Markup);
-        Assert.Contains("Run /user account preset", cut.Markup);
+        Assert.Contains("Download messages", cut.Markup);
+        Assert.Contains("Clear messages", cut.Markup);
+        Assert.Contains("Check account", cut.Markup);
         Assert.Contains("Run safe live tests", cut.Markup);
         Assert.Contains("Run reversible gear test", cut.Markup);
         Assert.Contains("Completed safe diagnostics suite.", cut.Markup);
