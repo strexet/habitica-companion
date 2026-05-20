@@ -199,6 +199,8 @@ public static class PartyQuestProgressCalculator
         decimal cumulative = 0m;
         DateTimeOffset? earliest = null;
         DateTimeOffset? latest = null;
+        string? finishingMemberDisplayName = null;
+        string? finishingMemberId = null;
         var missingTimes = false;
         foreach (var contributor in contributors)
         {
@@ -212,6 +214,8 @@ public static class PartyQuestProgressCalculator
             {
                 earliest = contributor.ExpectedCronUtc;
                 latest = contributor.ExpectedCronUtc;
+                finishingMemberDisplayName = contributor.Member.DisplayName;
+                finishingMemberId = contributor.Member.MemberId;
                 break;
             }
         }
@@ -231,14 +235,16 @@ public static class PartyQuestProgressCalculator
                 : PartyQuestEstimateConfidence.High;
         var summary = earliest is null
             ? "Pending progress can finish the quest, but exact CRON timing is unknown."
-            : $"Estimated completion around {TimeZoneInfo.ConvertTime(earliest.Value, viewerTimeZone):MMM d, HH:mm}.";
+            : BuildCompletionSummary(finishingMemberDisplayName, earliest.Value, viewerTimeZone);
 
         return new PartyQuestCompletionEstimate(
             true,
             earliest,
             latest,
             confidence,
-            summary);
+            summary,
+            finishingMemberDisplayName,
+            finishingMemberId);
     }
 
     private static DateTimeOffset? ResolveExpectedCronUtc(
@@ -270,5 +276,17 @@ public static class PartyQuestProgressCalculator
         }
 
         return candidateUtc;
+    }
+
+    private static string BuildCompletionSummary(
+        string? finishingMemberDisplayName,
+        DateTimeOffset expectedCronUtc,
+        TimeZoneInfo viewerTimeZone)
+    {
+        var localTime = TimeZoneInfo.ConvertTime(expectedCronUtc, viewerTimeZone);
+        var memberLabel = string.IsNullOrWhiteSpace(finishingMemberDisplayName)
+            ? "the finishing member"
+            : finishingMemberDisplayName;
+        return $"Expected to finish when {memberLabel} checks in around {localTime:MMM d, HH:mm}.";
     }
 }

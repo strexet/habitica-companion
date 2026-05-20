@@ -15,6 +15,7 @@ public sealed class PartyPageTests : BunitContext
     public void Renders_cached_party_summary_and_quest_state()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(
@@ -65,6 +66,14 @@ public sealed class PartyPageTests : BunitContext
                         BossHealthTotal: 1000m,
                         TotalPendingDamage: 42.75m,
                         PendingPartyDamage: 3m,
+                        CompletionEstimate: new PartyQuestCompletionEstimate(
+                            true,
+                            DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
+                            DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
+                            PartyQuestEstimateConfidence.High,
+                            "Expected to finish when Alpha checks in around Apr 26, 10:15.",
+                            "Alpha",
+                            "user-1"),
                         RewardSummary: new[] { "10 Gold", "100 XP", "Sea Serpent Egg" }),
                     new[]
                     {
@@ -160,6 +169,10 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("875.25/1000 hp", cut.Markup);
         Assert.Contains("Estimated boss HP after CRON", cut.Markup);
         Assert.Contains("832.5/1000 hp", cut.Markup);
+        Assert.Contains("Expected finish", cut.Markup);
+        Assert.Contains("Finishing member", cut.Markup);
+        Assert.Contains("Alpha", cut.Find(".inline-link-button").TextContent);
+        Assert.DoesNotContain("Estimate range", cut.Markup);
         Assert.DoesNotContain("Damage taken", cut.Markup);
         Assert.Contains("CRON summary", cut.Markup);
         Assert.Contains("CRON applied 1/3", cut.Markup);
@@ -189,12 +202,11 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Members", cut.Markup);
         Assert.Contains("Details", cut.Markup);
         Assert.DoesNotContain("User ID", cut.Markup);
-        Assert.DoesNotContain("user-1", cut.Markup);
         Assert.DoesNotContain("Strength", cut.Markup);
         Assert.DoesNotContain("Day start", cut.Markup);
         Assert.DoesNotContain("Habitica public member data hides day start/timezone", cut.Markup);
 
-        cut.FindAll("[data-testid='member-details']").First().Click();
+        cut.Find(".inline-link-button").Click();
 
         Assert.Contains("User ID", cut.Markup);
         Assert.Contains("user-1", cut.Markup);
@@ -286,6 +298,16 @@ public sealed class PartyPageTests : BunitContext
                             2,
                             DateTimeOffset.Parse("2026-04-26T09:30:00Z"),
                             "Collection",
+                            new[] { "450 Gold", "Wolf Cub" }),
+                        new PartyQuestPoolEntry(
+                            "party-123",
+                            "moonstone",
+                            "Moonstone Chain",
+                            "user-2",
+                            "Alpha",
+                            3,
+                            DateTimeOffset.Parse("2026-04-26T09:31:00Z"),
+                            "Collection",
                             new[] { "450 Gold", "Wolf Cub" })
                     },
                     new[]
@@ -330,6 +352,15 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Moonstone Chain", cut.Markup);
         Assert.Contains("1 vote", cut.Markup);
         Assert.Contains("Alpha", cut.Markup);
+        Assert.Contains("Quest pool is folded by default", cut.Markup);
+        Assert.Contains("Quest pool is hidden", cut.Markup);
+        Assert.DoesNotContain("Available from Alpha, Mage Tester", cut.Markup);
+        Assert.DoesNotContain("5 scrolls owned", cut.Markup);
+
+        cut.Find("[data-testid='toggle-quest-pool']").Click();
+
+        Assert.Contains("Available from Alpha, Mage Tester", cut.Markup);
+        Assert.Contains("5 scrolls owned", cut.Markup);
         Assert.Contains("450 Gold", cut.Markup);
         Assert.Contains("Wolf Cub", cut.Markup);
         Assert.Contains("Gryphon Quest", cut.Markup);

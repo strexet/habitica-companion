@@ -1,6 +1,8 @@
 @page "/party"
 @implements IDisposable
+@implements IAsyncDisposable
 @inject IAppSessionController SessionController
+@inject IJSRuntime JsRuntime
 @inject ISnackbar Snackbar
 @using System.Globalization
 @using Habitica.Domain.Party
@@ -170,19 +172,34 @@
                             </div>
                         }
                         <div>
-                            <dt>Estimate confidence</dt>
-                            <dd>@FormatEstimateConfidence(quest.CompletionEstimate)</dd>
+                            <dt>Expected finish</dt>
+                            <dd>@FormatExpectedFinish(quest.CompletionEstimate)</dd>
                         </div>
                         <div>
-                            <dt>Estimate range</dt>
-                            <dd>@FormatCompletionRange(quest.CompletionEstimate)</dd>
+                            <dt>Finishing member</dt>
+                            <dd>
+                                @if (quest.CompletionEstimate?.FinishingMemberId is { } finishingMemberId && !string.IsNullOrWhiteSpace(quest.CompletionEstimate.FinishingMemberDisplayName))
+                                {
+                                    <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(finishingMemberId))">
+                                        @quest.CompletionEstimate.FinishingMemberDisplayName
+                                    </button>
+                                }
+                                else
+                                {
+                                    @FormatFinishingMember(quest.CompletionEstimate)
+                                }
+                            </dd>
+                        </div>
+                        <div>
+                            <dt>Timing confidence</dt>
+                            <dd>@FormatEstimateConfidence(quest.CompletionEstimate)</dd>
                         </div>
                     </dl>
 
                     @if (quest.CompletionEstimate is not null)
                     {
                         <MudAlert Dense="true" Severity="@GetEstimateSeverity(quest.CompletionEstimate)" Variant="Variant.Outlined">
-                            @quest.CompletionEstimate.Summary
+                            @FormatEstimateSummary(quest.CompletionEstimate)
                         </MudAlert>
                     }
                 }
@@ -204,6 +221,7 @@
                 var questState = SessionController.State.PartyQuestQueue;
                 var queueEntries = GetOrderedQueueEntries(questState).ToArray();
                 var poolEntries = questState?.QuestPool ?? Array.Empty<PartyQuestPoolEntry>();
+                var groupedPoolEntries = GetGroupedPoolEntries(poolEntries).ToArray();
                 var recentEntries = questState?.RecentlyCompleted ?? Array.Empty<PartyRecentlyCompletedQuest>();
             }
 
@@ -270,32 +288,44 @@
             <div class="party-quest-section">
                 <div class="party-section-head compact-head">
                     <h3>Quest Pool</h3>
-                    <span class="ui-pill count-pill">@poolEntries.Count</span>
+                    <div class="party-member-actions">
+                        <span class="ui-pill count-pill">@FormatQuestPoolCount(groupedPoolEntries, poolEntries.Count)</span>
+                        <button class="secondary-action-button compact" type="button" data-testid="toggle-quest-pool" @onclick="ToggleQuestPool">
+                            @(_questPoolExpanded ? "Hide quest pool" : "Show quest pool")
+                        </button>
+                    </div>
                 </div>
+                <p class="panel-copy compact-copy">
+                    Quest pool is folded by default to keep shared planning focused. Expand it when you want to add a scroll to the queue.
+                </p>
 
-                @if (poolEntries.Count == 0)
+                @if (!_questPoolExpanded)
+                {
+                    <p class="panel-copy">Quest pool is hidden. Use Show quest pool to browse available scrolls.</p>
+                }
+                else if (groupedPoolEntries.Length == 0)
                 {
                     <p class="panel-copy">No shared quest scroll availability has been published yet. Refresh after syncing inventory to publish your owned quest scrolls.</p>
                 }
                 else
                 {
                     <div class="party-quest-card-grid">
-                        @foreach (var poolEntry in poolEntries.OrderBy(entry => entry.QuestName, StringComparer.OrdinalIgnoreCase))
+                        @foreach (var poolEntry in groupedPoolEntries)
                         {
                             <article class="@GetPoolCardClass(poolEntry)">
                                 <div class="party-quest-card-head">
                                     <div>
                                         <span class="dashboard-stat-label">@poolEntry.QuestType</span>
                                         <strong>@poolEntry.QuestName</strong>
-                                        <span class="dashboard-stat-note">Available from @poolEntry.OwnerDisplayName</span>
+                                        <span class="dashboard-stat-note">Available from @poolEntry.OwnerNames</span>
                                     </div>
-                                    <span class="ui-pill count-pill">@poolEntry.AvailableCount owned</span>
+                                    <span class="ui-pill count-pill">@FormatOwnedScrollCount(poolEntry.TotalAvailableCount)</span>
                                 </div>
 
                                 @RenderRewards(poolEntry.Rewards)
 
                                 <div class="party-quest-card-actions">
-                                    <MudButton Color="Color.Primary" Disabled="@(!IsCurrentUser(poolEntry.OwnerUserId) || SessionController.State.IsBusy)" OnClick="@(() => AddQuestToQueueAsync(poolEntry.QuestKey))" Variant="Variant.Outlined">
+                                    <MudButton Color="Color.Primary" Disabled="@(!poolEntry.CurrentUserCanQueue || SessionController.State.IsBusy)" OnClick="@(() => AddQuestToQueueAsync(poolEntry.QuestKey))" Variant="Variant.Outlined">
                                         Add to queue
                                     </MudButton>
                                 </div>
@@ -416,7 +446,7 @@
                     @foreach (var member in members)
                     {
                         var detailsExpanded = IsMemberDetailsExpanded(member.MemberId);
-                        <article class="party-member-card">
+                        <article class="party-member-card" id="@BuildMemberElementId(member.MemberId)">
                             <div class="party-member-summary-row">
                                 <div class="party-member-identity">
                                     <strong>@member.DisplayName</strong>
@@ -488,6 +518,33 @@
                                             <dd>@FormatDayStart(member)</dd>
                                         </div>
                                     </dl>
+
+                                    <div class="party-login-rhythm">
+                                        <div class="party-login-rhythm-head">
+                                            <div>
+                                                <span class="dashboard-stat-label">Login rhythm</span>
+                                                <strong>@FormatLoginRhythmTitle(member)</strong>
+                                            </div>
+                                            <span class="ui-pill count-pill">@FormatAverageCron(member)</span>
+                                        </div>
+                                        <div class="party-login-timeline" role="img" aria-label="@FormatLoginRhythmTitle(member)">
+                                            <span class="party-login-band"></span>
+                                            @if (member.AverageCronTime is not null)
+                                            {
+                                                <span class="party-login-marker average-marker" style="@BuildTimeMarkerStyle(member.AverageCronTime.Value)" title="@FormatLoginRhythmTitle(member)"></span>
+                                            }
+                                            @if (member.CronState == PartyCronState.CronedToday && member.LastCronUtc is not null)
+                                            {
+                                                <span class="party-login-marker last-marker" style="@BuildTimeMarkerStyle(member.LastCronUtc.Value.ToLocalTime().TimeOfDay)" title="Checked in today at @FormatTime(member.LastCronUtc.Value.ToLocalTime().TimeOfDay)"></span>
+                                            }
+                                        </div>
+                                        <div class="party-login-axis" aria-hidden="true">
+                                            <span>Night</span>
+                                            <span>Morning</span>
+                                            <span>Afternoon</span>
+                                            <span>Evening</span>
+                                        </div>
+                                    </div>
 
                                     @if (member.Stats?.HasAnySection == true)
                                     {
@@ -611,7 +668,10 @@
 
 @code {
     private readonly HashSet<string> _expandedMemberDetails = new(StringComparer.Ordinal);
+    private IJSObjectReference? _partyPageModule;
+    private string? _pendingScrollElementId;
     private bool _requestedSharedQuestState;
+    private bool _questPoolExpanded;
 
     protected override void OnInitialized()
     {
@@ -624,6 +684,13 @@
         {
             _requestedSharedQuestState = true;
             await SessionController.RefreshPartyQuestStateAsync();
+        }
+
+        if (_pendingScrollElementId is { } elementId)
+        {
+            _pendingScrollElementId = null;
+            var module = await GetPartyPageModuleAsync();
+            await module.InvokeVoidAsync("scrollToElement", elementId);
         }
     }
 
@@ -680,6 +747,29 @@
         {
             _expandedMemberDetails.Remove(memberId);
         }
+    }
+
+    private Task FocusMemberDetailsAsync(string memberId)
+    {
+        _expandedMemberDetails.Add(memberId);
+        _pendingScrollElementId = BuildMemberElementId(memberId);
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private void ToggleQuestPool()
+    {
+        _questPoolExpanded = !_questPoolExpanded;
+    }
+
+    private static string BuildMemberElementId(string memberId)
+    {
+        return $"party-member-{Uri.EscapeDataString(memberId)}";
+    }
+
+    private async Task<IJSObjectReference> GetPartyPageModuleAsync()
+    {
+        _partyPageModule ??= await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/partyPage.js");
+        return _partyPageModule;
     }
 
     private static string GetCronedLabel(PartySnapshot snapshot)
@@ -884,6 +974,56 @@
         return IsCurrentUser(entry.OwnerUserId)
             ? "party-quest-card owned-quest-card"
             : "party-quest-card neutral-quest-card";
+    }
+
+    private string GetPoolCardClass(QuestPoolGroup entry)
+    {
+        return entry.CurrentUserCanQueue
+            ? "party-quest-card owned-quest-card"
+            : "party-quest-card neutral-quest-card";
+    }
+
+    private IEnumerable<QuestPoolGroup> GetGroupedPoolEntries(IReadOnlyList<PartyQuestPoolEntry> entries)
+    {
+        return entries
+            .GroupBy(entry => entry.QuestKey, StringComparer.Ordinal)
+            .Select(group =>
+            {
+                var orderedEntries = group
+                    .OrderBy(entry => entry.OwnerDisplayName, StringComparer.OrdinalIgnoreCase)
+                    .ToArray();
+                var first = orderedEntries.First();
+                var ownerNames = orderedEntries
+                    .Select(static entry => entry.OwnerDisplayName)
+                    .Where(static owner => !string.IsNullOrWhiteSpace(owner))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(static owner => owner, StringComparer.OrdinalIgnoreCase)
+                    .ToArray();
+                var rewards = orderedEntries.FirstOrDefault(static entry => entry.Rewards.Count > 0)?.Rewards
+                    ?? Array.Empty<string>();
+
+                return new QuestPoolGroup(
+                    first.QuestKey,
+                    first.QuestName,
+                    first.QuestType,
+                    string.Join(", ", ownerNames),
+                    orderedEntries.Sum(static entry => entry.AvailableCount),
+                    orderedEntries.Any(entry => IsCurrentUser(entry.OwnerUserId)),
+                    rewards);
+            })
+            .OrderBy(static entry => entry.QuestName, StringComparer.OrdinalIgnoreCase);
+    }
+
+    private static string FormatQuestPoolCount(IReadOnlyList<QuestPoolGroup> groups, int ownerEntryCount)
+    {
+        var questLabel = groups.Count == 1 ? "quest" : "quests";
+        var ownerLabel = ownerEntryCount == 1 ? "owner" : "owners";
+        return $"{groups.Count} {questLabel}, {ownerEntryCount} {ownerLabel}";
+    }
+
+    private static string FormatOwnedScrollCount(int count)
+    {
+        return count == 1 ? "1 scroll owned" : $"{count} scrolls owned";
     }
 
     private bool IsCurrentUser(string? userId)
@@ -1147,19 +1287,68 @@
         return estimate?.Confidence.ToString() ?? "Unknown";
     }
 
-    private static string FormatCompletionRange(PartyQuestCompletionEstimate? estimate)
+    private static string FormatExpectedFinish(PartyQuestCompletionEstimate? estimate)
     {
         if (estimate?.EarliestCompletionUtc is null)
         {
             return "Unknown";
         }
 
-        if (estimate.LatestCompletionUtc is null || estimate.LatestCompletionUtc == estimate.EarliestCompletionUtc)
+        return FormatFriendlyDateTime(estimate.EarliestCompletionUtc.Value);
+    }
+
+    private static string FormatFinishingMember(PartyQuestCompletionEstimate? estimate)
+    {
+        return string.IsNullOrWhiteSpace(estimate?.FinishingMemberDisplayName)
+            ? "Unknown"
+            : estimate.FinishingMemberDisplayName;
+    }
+
+    private static string FormatEstimateSummary(PartyQuestCompletionEstimate estimate)
+    {
+        if (estimate.EarliestCompletionUtc is null)
         {
-            return estimate.EarliestCompletionUtc.Value.ToLocalTime().ToString("MMM d, HH:mm");
+            return estimate.Summary;
         }
 
-        return $"{estimate.EarliestCompletionUtc.Value.ToLocalTime():MMM d, HH:mm} - {estimate.LatestCompletionUtc.Value.ToLocalTime():MMM d, HH:mm}";
+        var memberLabel = string.IsNullOrWhiteSpace(estimate.FinishingMemberDisplayName)
+            ? "the finishing member"
+            : estimate.FinishingMemberDisplayName;
+        return $"Expected to finish when {memberLabel} checks in {FormatFriendlyDateTimeForSentence(estimate.EarliestCompletionUtc.Value)}.";
+    }
+
+    private static string FormatFriendlyDateTime(DateTimeOffset utcTimestamp)
+    {
+        var local = utcTimestamp.ToLocalTime();
+        var today = DateTimeOffset.Now.Date;
+        if (local.Date == today)
+        {
+            return $"Today around {local:HH:mm}";
+        }
+
+        if (local.Date == today.AddDays(1))
+        {
+            return $"Tomorrow around {local:HH:mm}";
+        }
+
+        return $"{local:MMM d} around {local:HH:mm}";
+    }
+
+    private static string FormatFriendlyDateTimeForSentence(DateTimeOffset utcTimestamp)
+    {
+        var local = utcTimestamp.ToLocalTime();
+        var today = DateTimeOffset.Now.Date;
+        if (local.Date == today)
+        {
+            return $"today around {local:HH:mm}";
+        }
+
+        if (local.Date == today.AddDays(1))
+        {
+            return $"tomorrow around {local:HH:mm}";
+        }
+
+        return $"around {local:HH:mm} on {local:MMM d}";
     }
 
     private static Severity GetEstimateSeverity(PartyQuestCompletionEstimate estimate)
@@ -1222,6 +1411,19 @@
         return $"{member.DayStartHour.Value:00}:00";
     }
 
+    private static string FormatLoginRhythmTitle(PartyMemberSnapshot member)
+    {
+        return member.AverageCronTime is null
+            ? "Not enough history yet"
+            : $"Expected around {FormatTime(member.AverageCronTime)}";
+    }
+
+    private static string BuildTimeMarkerStyle(TimeSpan time)
+    {
+        var percent = Math.Clamp(time.TotalMinutes / 1440d * 100d, 0d, 100d);
+        return $"left: {percent:0.##}%;";
+    }
+
     private static IReadOnlyList<PartyStatRow> GetStatRows(PartyMemberSnapshot member)
     {
         var stats = member.Stats;
@@ -1268,6 +1470,15 @@
         decimal? Equipment,
         decimal? Buffs,
         decimal? Effective);
+
+    private sealed record QuestPoolGroup(
+        string QuestKey,
+        string QuestName,
+        string QuestType,
+        string OwnerNames,
+        int TotalAvailableCount,
+        bool CurrentUserCanQueue,
+        IReadOnlyList<string> Rewards);
 
     private static decimal ChartX(int hour)
     {
@@ -1348,5 +1559,14 @@
     public void Dispose()
     {
         SessionController.Changed -= HandleStateChanged;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        Dispose();
+        if (_partyPageModule is not null)
+        {
+            await _partyPageModule.DisposeAsync();
+        }
     }
 }

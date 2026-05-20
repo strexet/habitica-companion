@@ -212,6 +212,19 @@ a {
     text-underline-offset: 0.18em;
 }
 
+.inline-link-button {
+    border: 0;
+    padding: 0;
+    background: none;
+    color: var(--teal);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.18em;
+}
+
 .field-hint {
     color: var(--muted);
     font-size: 0.84rem;
@@ -672,6 +685,67 @@ a {
 
 .party-member-stats {
     min-width: 0;
+}
+
+.party-login-rhythm {
+    display: grid;
+    gap: 0.55rem;
+    padding: 0.85rem;
+    border-radius: 0.85rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(255, 255, 255, 0.46);
+}
+
+.party-login-rhythm-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+}
+
+.party-login-rhythm-head strong {
+    display: block;
+    margin-top: 0.2rem;
+}
+
+.party-login-timeline {
+    position: relative;
+    height: 1.35rem;
+}
+
+.party-login-band {
+    position: absolute;
+    inset: 0.45rem 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(22, 36, 35, 0.16), rgba(45, 116, 110, 0.42), rgba(197, 119, 43, 0.35), rgba(22, 36, 35, 0.16));
+}
+
+.party-login-marker {
+    position: absolute;
+    top: 50%;
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 4px rgba(255, 250, 241, 0.9);
+}
+
+.party-login-marker.average-marker {
+    background: var(--teal);
+}
+
+.party-login-marker.last-marker {
+    width: 0.6rem;
+    height: 0.6rem;
+    background: var(--gold);
+}
+
+.party-login-axis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    color: var(--muted);
+    font-size: 0.76rem;
 }
 
 .party-stats-table {

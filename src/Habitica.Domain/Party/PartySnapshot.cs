@@ -281,7 +281,9 @@ public sealed record PartyQuestCompletionEstimate(
     DateTimeOffset? EarliestCompletionUtc,
     DateTimeOffset? LatestCompletionUtc,
     PartyQuestEstimateConfidence Confidence,
-    string Summary);
+    string Summary,
+    string? FinishingMemberDisplayName = null,
+    string? FinishingMemberId = null);
 
 public sealed record PartyStatSectionSnapshot(
     decimal? Strength,
@@ -330,6 +332,7 @@ public static class PartyCronCalculator
     private const double SelfFirstInfluenceHalfLifeMinutes = 90d;
     private const double SelfFirstDelayPenaltyMinutes = 120d;
     private const int SelfFirstMaximumDelayMinutes = 12 * 60;
+    private const double AverageCronHalfLifeDays = 14d;
 
     public static PartyMemberSnapshot ClassifyMember(
         PartyMemberCronInput input,
@@ -433,7 +436,7 @@ public static class PartyCronCalculator
             .Count();
         var sampleCount = relevantEvents.Count;
         var isLowConfidence = observedDayCount < LowConfidenceDayThreshold;
-        var enrichedMembers = EnrichMembersWithAverages(visibleMembers, relevantEvents, viewerTimeZone);
+        var enrichedMembers = EnrichMembersWithAverages(visibleMembers, relevantEvents, nowUtc, viewerTimeZone);
         var graphPoints = BuildGraphPoints(relevantEvents, nowUtc, viewerTimeZone, observedDayCount);
         var averageBestBuffTime = ComputeAverageBestBuffTime(relevantEvents, visibleMembers.Count, nowUtc, viewerTimeZone);
         var currentUser = enrichedMembers.FirstOrDefault(member => string.Equals(member.MemberId, currentUserId, StringComparison.Ordinal));
@@ -624,21 +627,23 @@ public static class PartyCronCalculator
     private static IReadOnlyList<PartyMemberSnapshot> EnrichMembersWithAverages(
         IReadOnlyList<PartyMemberSnapshot> members,
         IReadOnlyList<PartyCronHistoryEvent> events,
+        DateTimeOffset nowUtc,
         TimeZoneInfo viewerTimeZone)
     {
         return members
             .Select(member =>
             {
-                var memberTimes = events
+                var memberEvents = events
                     .Where(eventEntry => string.Equals(eventEntry.MemberId, member.MemberId, StringComparison.Ordinal))
-                    .Select(eventEntry => ToViewerLocal(eventEntry.LastCronUtc, viewerTimeZone).TimeOfDay)
                     .ToArray();
-                TimeSpan? average = memberTimes.Length == 0 ? null : CircularAverage(memberTimes);
+                TimeSpan? average = memberEvents.Length == 0
+                    ? null
+                    : WeightedCircularAverage(memberEvents, nowUtc, viewerTimeZone);
 
                 return member with
                 {
                     AverageCronTime = average,
-                    AverageCronSampleCount = memberTimes.Length
+                    AverageCronSampleCount = memberEvents.Length
                 };
             })
             .ToArray();
@@ -859,6 +864,39 @@ public static class PartyCronCalculator
         }
 
         var averageAngle = Math.Atan2(sin / times.Count, cos / times.Count);
+        if (averageAngle < 0)
+        {
+            averageAngle += Math.Tau;
+        }
+
+        return MinutesToTimeSpan((int)Math.Round(averageAngle / Math.Tau * 1440d) % 1440);
+    }
+
+    private static TimeSpan WeightedCircularAverage(
+        IReadOnlyList<PartyCronHistoryEvent> events,
+        DateTimeOffset nowUtc,
+        TimeZoneInfo viewerTimeZone)
+    {
+        var sin = 0d;
+        var cos = 0d;
+        var totalWeight = 0d;
+        foreach (var eventEntry in events)
+        {
+            var ageDays = Math.Max(0d, (nowUtc.ToUniversalTime() - eventEntry.LastCronUtc.ToUniversalTime()).TotalDays);
+            var weight = Math.Pow(0.5d, ageDays / AverageCronHalfLifeDays);
+            var time = ToViewerLocal(eventEntry.LastCronUtc, viewerTimeZone).TimeOfDay;
+            var angle = MinutesOfDay(time) / 1440d * Math.Tau;
+            sin += Math.Sin(angle) * weight;
+            cos += Math.Cos(angle) * weight;
+            totalWeight += weight;
+        }
+
+        if (totalWeight <= 0d)
+        {
+            return CircularAverage(events.Select(eventEntry => ToViewerLocal(eventEntry.LastCronUtc, viewerTimeZone).TimeOfDay).ToArray());
+        }
+
+        var averageAngle = Math.Atan2(sin / totalWeight, cos / totalWeight);
         if (averageAngle < 0)
         {
             averageAngle += Math.Tau;
