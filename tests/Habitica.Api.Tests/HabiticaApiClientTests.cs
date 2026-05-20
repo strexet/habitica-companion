@@ -438,6 +438,7 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(PartyCronState.CronedToday, snapshot.Members[0].CronState);
         Assert.Equal(30m, snapshot.Members[0].Stats!.BaseAllocated!.Strength);
         Assert.Equal(80m, snapshot.Members[0].Stats!.Buffs!.Strength);
+        Assert.Null(snapshot.Members[0].Stats!.Gear);
         Assert.Null(snapshot.Members[0].Stats!.Total);
         Assert.Equal("Beta", snapshot.Members[1].DisplayName);
         Assert.Equal(betaCron, snapshot.Members[1].LastCronUtc);

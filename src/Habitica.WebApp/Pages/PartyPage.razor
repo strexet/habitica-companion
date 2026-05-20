@@ -1451,14 +1451,14 @@
         var equipment = stats.Gear is null ? null : selector(stats.Gear);
         var buffs = stats.Buffs is null ? null : selector(stats.Buffs);
         var total = stats.Total is null ? null : selector(stats.Total);
-        var effective = total ?? SumKnownStats(baseValue, equipment, buffs);
+        var effective = total ?? SumCompleteStats(baseValue, equipment, buffs);
 
         return new PartyStatRow(label, name, baseValue, equipment, buffs, effective);
     }
 
-    private static decimal? SumKnownStats(params decimal?[] values)
+    private static decimal? SumCompleteStats(params decimal?[] values)
     {
-        return values.Any(static value => value is not null)
+        return values.All(static value => value is not null)
             ? values.Sum(static value => value ?? 0m)
             : null;
     }

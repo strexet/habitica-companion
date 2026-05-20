@@ -547,24 +547,40 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
         var training = TryGetObject(stats, "training");
         var allocated = TryGetObject(stats, "allocated");
-        var baseAllocated = PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(
+        var baseAllocated = MapPartyStatSection(
             training.ValueKind == JsonValueKind.Object
                 ? training
                 : allocated.ValueKind == JsonValueKind.Object
                     ? allocated
-                    : stats));
-        var gear = PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(TryGetObject(stats, "gear")));
-        var buffs = PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(TryGetObject(stats, "buffs")));
+                    : stats);
+        var gear = MapPartyStatSection(TryGetObject(stats, "gear"));
+        var buffs = MapPartyStatSection(TryGetObject(stats, "buffs"));
         var totalStats = TryGetObject(stats, "total");
         var effectiveStats = TryGetObject(stats, "effective");
         var total = totalStats.ValueKind == JsonValueKind.Object
-            ? PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(totalStats))
+            ? MapPartyStatSection(totalStats)
             : effectiveStats.ValueKind == JsonValueKind.Object
-                ? PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(effectiveStats))
+                ? MapPartyStatSection(effectiveStats)
             : null;
 
         var breakdown = new PartyMemberStatBreakdownSnapshot(baseAllocated, gear, buffs, total);
         return breakdown.HasAnySection ? breakdown : null;
+    }
+
+    private static PartyStatSectionSnapshot? MapPartyStatSection(JsonElement stats)
+    {
+        if (stats.ValueKind != JsonValueKind.Object)
+        {
+            return null;
+        }
+
+        var section = new PartyStatSectionSnapshot(
+            TryGetDecimal(stats, "str", out var strength) ? strength : null,
+            TryGetDecimal(stats, "int", out var intelligence) ? intelligence : null,
+            TryGetDecimal(stats, "con", out var constitution) ? constitution : null,
+            TryGetDecimal(stats, "per", out var perception) ? perception : null);
+
+        return section.HasAnyValue ? section : null;
     }
 
     private static int CountPositiveEntries(JsonElement element)

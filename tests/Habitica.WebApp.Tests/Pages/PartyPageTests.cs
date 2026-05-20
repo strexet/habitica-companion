@@ -146,7 +146,7 @@ public sealed class PartyPageTests : BunitContext
                             Level: 15,
                             Stats: new PartyMemberStatBreakdownSnapshot(
                                 new PartyStatSectionSnapshot(30m, 70m, 0m, 0m),
-                                null,
+                                new PartyStatSectionSnapshot(20m, 10m, 5m, 7m),
                                 new PartyStatSectionSnapshot(80m, 50m, 213m, 192m),
                                 null))
                         },
@@ -216,7 +216,7 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Buffs", cut.Markup);
         Assert.Contains("Effective", cut.Markup);
         Assert.Contains("Strength", cut.Markup);
-        Assert.Contains("110", cut.Markup);
+        Assert.Contains("130", cut.Markup);
     }
 
     [Fact]
