@@ -227,6 +227,11 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.FromResult(PartyQuestActionResult.Success("Queue item removed."));
     }
 
+    public Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartyQuestActionResult.Success("Quest marked completed."));
+    }
+
     public Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default)
     {
         LastSignInRequest = request;

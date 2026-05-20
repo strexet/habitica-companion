@@ -168,11 +168,11 @@ export async function onRequestPost(context) {
     case "toggleVote":
       return await toggleVote(db, partyId, membership, payload, nowIso);
     case "removeQueueItem":
-      return await removeQueueItem(db, partyId, membership, payload, nowIso);
+      return await removeQueueItem(db, env, partyId, membership, payload, nowIso);
     case "markActive":
-      return await updateQueueStatus(db, partyId, membership, payload, "Active", nowIso);
+      return await updateQueueStatus(db, env, partyId, membership, payload, "Active", nowIso);
     case "markCompleted":
-      return await markCompleted(db, partyId, membership, payload, nowIso);
+      return await markCompleted(db, env, partyId, membership, payload, nowIso);
     case "autoReconcileQuest":
       return await autoReconcileQuest(db, partyId, membership, payload, nowIso);
     default:
@@ -449,7 +449,7 @@ async function toggleVote(db, partyId, membership, payload, nowIso) {
   });
 }
 
-async function removeQueueItem(db, partyId, membership, payload, nowIso) {
+async function removeQueueItem(db, env, partyId, membership, payload, nowIso) {
   const item = await db
     .prepare("SELECT owner_user_id, created_by_user_id, version FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
     .bind(partyId, payload?.queueItemId)
@@ -460,7 +460,8 @@ async function removeQueueItem(db, partyId, membership, payload, nowIso) {
 
   const isOwner = (item.owner_user_id ?? item.created_by_user_id) === membership.userId;
   const isLeader = membership.leaderId === membership.userId;
-  if (!isOwner && !isLeader) {
+  const isAdmin = isPartySyncAdmin(env, membership.userId);
+  if (!isOwner && !isLeader && !isAdmin) {
     return textResponse("Only the quest owner or party leader can remove this queue item.", 403);
   }
 
@@ -486,7 +487,7 @@ async function removeQueueItem(db, partyId, membership, payload, nowIso) {
   });
 }
 
-async function updateQueueStatus(db, partyId, membership, payload, status, nowIso) {
+async function updateQueueStatus(db, env, partyId, membership, payload, status, nowIso) {
   const item = await db
     .prepare("SELECT owner_user_id, created_by_user_id, version FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
     .bind(partyId, payload?.queueItemId)
@@ -497,7 +498,8 @@ async function updateQueueStatus(db, partyId, membership, payload, status, nowIs
 
   const isOwner = (item.owner_user_id ?? item.created_by_user_id) === membership.userId;
   const isLeader = membership.leaderId === membership.userId;
-  if (!isOwner && !isLeader) {
+  const isAdmin = isPartySyncAdmin(env, membership.userId);
+  if (!isOwner && !isLeader && !isAdmin) {
     return textResponse("Only the quest owner or party leader can update this queue item.", 403);
   }
 
@@ -524,8 +526,8 @@ async function updateQueueStatus(db, partyId, membership, payload, status, nowIs
   });
 }
 
-async function markCompleted(db, partyId, membership, payload, nowIso) {
-  const statusResponse = await updateQueueStatus(db, partyId, membership, payload, "Completed", nowIso);
+async function markCompleted(db, env, partyId, membership, payload, nowIso) {
+  const statusResponse = await updateQueueStatus(db, env, partyId, membership, payload, "Completed", nowIso);
   if (!statusResponse.ok) {
     return statusResponse;
   }
@@ -776,6 +778,19 @@ function isValidEvent(eventEntry) {
     && typeof eventEntry.displayName === "string"
     && typeof eventEntry.lastCronUtc === "string"
     && typeof eventEntry.observedAtUtc === "string";
+}
+
+function isPartySyncAdmin(env, userId) {
+  if (!userId) {
+    return false;
+  }
+
+  const configured = env.HABITICA_PARTY_ADMIN_USER_IDS || env.PARTY_SYNC_ADMIN_USER_IDS || "";
+  return configured
+    .split(",")
+    .map(value => value.trim())
+    .filter(Boolean)
+    .some(value => value.toLowerCase() === userId.toLowerCase());
 }
 
 function extractErrorMessage(responseText, fallback) {

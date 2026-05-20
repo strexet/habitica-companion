@@ -431,6 +431,7 @@ public sealed class AppSessionControllerTests
             diagnosticsLogStore: logStore,
             diagnosticsLogWriter: logWriter,
             snapshotFreshnessPolicy: freshnessPolicy,
+            featureOptions: new AppFeatureOptions(),
             timeProvider: TimeProvider.System);
     }
 
@@ -603,6 +604,17 @@ public sealed class AppSessionControllerTests
             string partyId,
             string queueItemId,
             int version,
+            CancellationToken cancellationToken)
+        {
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyQuestState> MarkQuestCompletedAsync(
+            HabiticaCredentials credentials,
+            string partyId,
+            string queueItemId,
+            int version,
+            int? participantsCount,
             CancellationToken cancellationToken)
         {
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));

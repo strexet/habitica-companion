@@ -43,6 +43,14 @@ public interface IRemotePartyDataSyncProvider
         int version,
         CancellationToken cancellationToken);
 
+    Task<RemotePartyQuestState> MarkQuestCompletedAsync(
+        HabiticaCredentials credentials,
+        string partyId,
+        string queueItemId,
+        int version,
+        int? participantsCount,
+        CancellationToken cancellationToken);
+
     Task<RemotePartyQuestState> ReconcileQuestLifecycleAsync(
         HabiticaCredentials credentials,
         string partyId,

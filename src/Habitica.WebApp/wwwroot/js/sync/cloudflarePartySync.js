@@ -82,6 +82,15 @@ export async function removeQuestQueueItem(userId, apiToken, partyId, queueItemI
   });
 }
 
+export async function markQuestCompleted(userId, apiToken, partyId, queueItemId, version, participantsCount) {
+  return await postPartyAction(userId, apiToken, partyId, {
+    action: "markCompleted",
+    queueItemId,
+    version,
+    participantsCount: participantsCount ?? null,
+  });
+}
+
 export async function reconcileQuestLifecycle(userId, apiToken, partyId, queueItemId, questKey, transition, participantsCount, completedByDisplayName) {
   return await postPartyAction(userId, apiToken, partyId, {
     action: "autoReconcileQuest",

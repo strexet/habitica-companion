@@ -36,6 +36,7 @@ public sealed class AppSessionController : IAppSessionController
     private readonly ITaskSnapshotStore _taskSnapshotStore;
     private readonly IUserSnapshotStore _userSnapshotStore;
     private readonly RefreshCoordinator _refreshCoordinator;
+    private readonly AppFeatureOptions _featureOptions;
     private readonly TimeProvider _timeProvider;
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
     private HabiticaCredentials? _currentCredentials;
@@ -62,6 +63,7 @@ public sealed class AppSessionController : IAppSessionController
         IDiagnosticsLogStore diagnosticsLogStore,
         DiagnosticsLogWriter diagnosticsLogWriter,
         SnapshotFreshnessPolicy snapshotFreshnessPolicy,
+        AppFeatureOptions featureOptions,
         TimeProvider timeProvider)
     {
         _loginWorkflow = loginWorkflow;
@@ -82,6 +84,7 @@ public sealed class AppSessionController : IAppSessionController
         _diagnosticsLogStore = diagnosticsLogStore;
         _diagnosticsLogWriter = diagnosticsLogWriter;
         _snapshotFreshnessPolicy = snapshotFreshnessPolicy;
+        _featureOptions = featureOptions;
         _timeProvider = timeProvider;
     }
 
@@ -230,6 +233,11 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<PartyQuestActionResult> RefreshPartyQuestStateAsync(CancellationToken cancellationToken = default)
     {
+        if (!_featureOptions.PartySyncEnabled)
+        {
+            return PartyQuestActionResult.Failure("Shared party sync is disabled.");
+        }
+
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         var partyId = State.PartySnapshot?.PartyId ?? State.UserSnapshot?.PartyId;
         if (credentials is null || string.IsNullOrWhiteSpace(partyId))
@@ -259,6 +267,11 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<PartyQuestActionResult> AddPartyQuestToQueueAsync(string questKey, CancellationToken cancellationToken = default)
     {
+        if (!_featureOptions.PartySyncEnabled)
+        {
+            return PartyQuestActionResult.Failure("Shared party sync is disabled.");
+        }
+
         var validation = await ValidatePartyQuestMutationAsync(questKey, cancellationToken);
         if (validation.Result is not null)
         {
@@ -284,6 +297,11 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<PartyQuestActionResult> TogglePartyQuestVoteAsync(string queueItemId, CancellationToken cancellationToken = default)
     {
+        if (!_featureOptions.PartySyncEnabled)
+        {
+            return PartyQuestActionResult.Failure("Shared party sync is disabled.");
+        }
+
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         var partyId = State.PartySnapshot?.PartyId ?? State.UserSnapshot?.PartyId;
         if (credentials is null || string.IsNullOrWhiteSpace(partyId))
@@ -311,6 +329,11 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<PartyQuestActionResult> RemovePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
     {
+        if (!_featureOptions.PartySyncEnabled)
+        {
+            return PartyQuestActionResult.Failure("Shared party sync is disabled.");
+        }
+
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         var partyId = State.PartySnapshot?.PartyId ?? State.UserSnapshot?.PartyId;
         if (credentials is null || string.IsNullOrWhiteSpace(partyId))
@@ -328,6 +351,45 @@ public sealed class AppSessionController : IAppSessionController
                 cancellationToken);
             ApplyPartyQuestState(partyId, state);
             return PartyQuestActionResult.Success("Quest queue item removed.");
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message });
+            return PartyQuestActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        if (!_featureOptions.PartySyncEnabled)
+        {
+            return PartyQuestActionResult.Failure("Shared party sync is disabled.");
+        }
+
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        var partyId = State.PartySnapshot?.PartyId ?? State.UserSnapshot?.PartyId;
+        if (credentials is null || string.IsNullOrWhiteSpace(partyId))
+        {
+            return PartyQuestActionResult.Failure("Sign in with an active party before marking quests completed.");
+        }
+
+        try
+        {
+            var entry = State.PartyQuestQueue?.Queue.FirstOrDefault(candidate =>
+                string.Equals(candidate.QueueItemId, queueItemId, StringComparison.Ordinal));
+            var participantsCount = entry is not null
+                && string.Equals(State.PartySnapshot?.Quest?.Key, entry.QuestKey, StringComparison.Ordinal)
+                ? State.PartySnapshot?.Quest?.ParticipantCount
+                : null;
+            var state = await _remotePartyDataSyncProvider.MarkQuestCompletedAsync(
+                credentials,
+                partyId,
+                queueItemId,
+                version,
+                participantsCount,
+                cancellationToken);
+            ApplyPartyQuestState(partyId, state);
+            return PartyQuestActionResult.Success("Quest marked completed.");
         }
         catch (Exception exception)
         {
@@ -1685,6 +1747,11 @@ public sealed class AppSessionController : IAppSessionController
         HabiticaCredentials credentials,
         CancellationToken cancellationToken)
     {
+        if (!_featureOptions.PartySyncEnabled)
+        {
+            return null;
+        }
+
         try
         {
             return await MergeAndUploadPartySyncAsync(credentials, cancellationToken);
@@ -1748,8 +1815,6 @@ public sealed class AppSessionController : IAppSessionController
         {
             ApplyPartyQuestState(partySnapshot.PartyId, questState);
         }
-
-        await ReconcileQuestLifecycleAsync(credentials, partySnapshot.PartyId, cancellationToken);
 
         return new PartySyncUploadResult(mergedRemoteHistory, cronHistory.Events.Count);
     }
@@ -2453,7 +2518,12 @@ public sealed class AppSessionController : IAppSessionController
 
     private void SetState(SessionViewModel nextState)
     {
-        State = nextState;
+        var userId = nextState.UserId ?? _currentCredentials?.UserId;
+        State = nextState with
+        {
+            IsAdmin = _featureOptions.IsAdmin(userId),
+            IsPartySyncEnabled = _featureOptions.PartySyncEnabled
+        };
         Changed?.Invoke();
     }
 

@@ -206,6 +206,14 @@
             </article>
         </section>
 
+        @if (!SessionController.State.IsPartySyncEnabled)
+        {
+            <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
+                Shared party sync is disabled for this app build.
+            </MudAlert>
+        }
+        else
+        {
         <section class="card-surface dashboard-panel party-quest-workspace">
             <div class="party-section-head">
                 <div>
@@ -272,10 +280,16 @@
                                     <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => ToggleVoteAsync(entry.QueueItemId))" Variant="Variant.Outlined">
                                         @(HasCurrentUserVote(entry) ? "Remove vote" : "Vote")
                                     </MudButton>
-                                    @if (IsCurrentUser(entry.OwnerUserId))
+                                    @if (CanManageQueueEntry(entry))
                                     {
                                         <MudButton Color="Color.Error" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RemoveQueueItemAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Text">
                                             Remove
+                                        </MudButton>
+                                    }
+                                    @if (CanMarkCompleted(entry))
+                                    {
+                                        <MudButton Color="Color.Success" Disabled="@SessionController.State.IsBusy" OnClick="@(() => MarkCompletedAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Text">
+                                            Mark completed
                                         </MudButton>
                                     }
                                 </div>
@@ -343,7 +357,7 @@
 
                 @if (recentEntries.Count == 0)
                 {
-                    <p class="panel-copy">Recently completed shared quest history will appear automatically when active quests finish in Habitica.</p>
+                    <p class="panel-copy">Completed shared quest history appears here after a quest owner or party leader marks a queue item completed.</p>
                 }
                 else
                 {
@@ -373,6 +387,7 @@
                 }
             </div>
         </section>
+        }
 
         <section class="card-surface dashboard-panel party-cron-summary">
             <div class="party-section-head">
@@ -697,7 +712,10 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && !_requestedSharedQuestState && SessionController.State.PartySnapshot is not null)
+        if (firstRender
+            && !_requestedSharedQuestState
+            && SessionController.State.IsPartySyncEnabled
+            && SessionController.State.PartySnapshot is not null)
         {
             _requestedSharedQuestState = true;
             await SessionController.RefreshPartyQuestStateAsync();
@@ -1108,6 +1126,23 @@
             && string.Equals(userId, SessionController.State.UserId, StringComparison.Ordinal);
     }
 
+    private bool IsCurrentUserPartyLeader()
+    {
+        return IsCurrentUser(SessionController.State.PartySnapshot?.LeaderId);
+    }
+
+    private bool CanManageQueueEntry(PartyQuestQueueEntry entry)
+    {
+        return IsCurrentUser(entry.OwnerUserId)
+            || IsCurrentUserPartyLeader()
+            || SessionController.State.IsAdmin;
+    }
+
+    private bool CanMarkCompleted(PartyQuestQueueEntry entry)
+    {
+        return CanManageQueueEntry(entry);
+    }
+
     private bool HasCurrentUserVote(PartyQuestQueueEntry entry)
     {
         return entry.Votes.Any(vote => IsCurrentUser(vote.VoterUserId));
@@ -1217,6 +1252,12 @@
     private async Task RemoveQueueItemAsync(string queueItemId, int version)
     {
         var result = await SessionController.RemovePartyQuestQueueItemAsync(queueItemId, version);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task MarkCompletedAsync(string queueItemId, int version)
+    {
+        var result = await SessionController.MarkPartyQuestCompletedAsync(queueItemId, version);
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 

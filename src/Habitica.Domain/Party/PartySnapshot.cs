@@ -13,7 +13,8 @@ public sealed record PartySnapshot
         int memberCount,
         PartyQuestSnapshot? quest,
         IReadOnlyList<PartyMemberSnapshot>? members = null,
-        PartyCronDashboardSnapshot? cronDashboard = null)
+        PartyCronDashboardSnapshot? cronDashboard = null,
+        string? leaderId = null)
     {
         RetrievedAtUtc = retrievedAtUtc;
         PartyId = partyId;
@@ -23,6 +24,7 @@ public sealed record PartySnapshot
         Quest = quest;
         Members = members ?? Array.Empty<PartyMemberSnapshot>();
         CronDashboard = cronDashboard;
+        LeaderId = leaderId;
     }
 
     public DateTimeOffset RetrievedAtUtc { get; init; }
@@ -40,6 +42,8 @@ public sealed record PartySnapshot
     public IReadOnlyList<PartyMemberSnapshot> Members { get; init; }
 
     public PartyCronDashboardSnapshot? CronDashboard { get; init; }
+
+    public string? LeaderId { get; init; }
 }
 
 public sealed record PartyQuestSnapshot(

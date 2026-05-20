@@ -312,6 +312,7 @@ public sealed class HabiticaApiClientTests
                 "_id": "party-123",
                 "name": "Night Owls",
                 "description": "Quest-focused party notes",
+                "leader": "user-1",
                 "memberCount": 4,
                 "quest": {
                   "key": "seaserpent",
@@ -441,6 +442,7 @@ public sealed class HabiticaApiClientTests
         Assert.Equal("party-123", snapshot.PartyId);
         Assert.Equal("Night Owls", snapshot.Name);
         Assert.Equal("Quest-focused party notes", snapshot.Summary);
+        Assert.Equal("user-1", snapshot.LeaderId);
         Assert.Equal(4, snapshot.MemberCount);
         Assert.NotNull(snapshot.Quest);
         Assert.Equal("seaserpent", snapshot.Quest!.Key);

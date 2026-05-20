@@ -29,7 +29,9 @@ public sealed record SessionViewModel(
     SpellCastProgress? ActiveSpellCastProgress = null,
     EquipmentProgress? ActiveEquipmentProgress = null,
     bool IncludeStalePartyMembersInQuestForecasts = false,
-    IReadOnlyDictionary<Habitica.Application.Sync.RefreshDomain, Habitica.Application.Sync.DomainRefreshState>? DomainStates = null)
+    IReadOnlyDictionary<Habitica.Application.Sync.RefreshDomain, Habitica.Application.Sync.DomainRefreshState>? DomainStates = null,
+    bool IsAdmin = false,
+    bool IsPartySyncEnabled = true)
 {
     public static SessionViewModel Empty { get; } = new(
         IsBusy: false,

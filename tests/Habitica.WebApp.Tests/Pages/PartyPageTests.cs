@@ -351,6 +351,7 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Shared quest planning", cut.Markup);
         Assert.Contains("Moonstone Chain", cut.Markup);
         Assert.Contains("1 vote", cut.Markup);
+        Assert.Contains("Mark completed", cut.Markup);
         Assert.Contains("Alpha", cut.Markup);
         Assert.Contains("Quest pool is folded by default", cut.Markup);
         Assert.Contains("Quest pool is hidden", cut.Markup);

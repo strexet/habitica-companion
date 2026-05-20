@@ -142,7 +142,8 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             summary: GetOptionalString(data, "description") ?? GetOptionalString(data, "summary"),
             memberCount: GetOptionalInt32(data, "memberCount"),
             quest: questSnapshot,
-            members: members);
+            members: members,
+            leaderId: GetOptionalString(data, "leader"));
     }
 
     private async Task<PartyContentMetadata> GetPartyContentMetadataAsync(
