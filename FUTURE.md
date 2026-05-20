@@ -34,6 +34,7 @@ This file tracks items from `habitica_companion_pending_features_plan.md` that r
 - Buy Health Potion action.
 - Dashboard navigation cards for major app sections.
 - Dashboard and context-sensitive `Open Habitica` links.
+- Revisit subscriber free Enchanted Armoire openings if Habitica exposes a public API flow for the mobile-only extra opening.
 
 ## Login and Refresh Improvements
 

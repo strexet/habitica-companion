@@ -353,6 +353,8 @@ public sealed class HabiticaApiClientTests
                     "timezoneOffset": 0
                   },
                   "stats": {
+                    "lvl": 72,
+                    "class": "warrior",
                     "str": 30,
                     "int": 70,
                     "con": 0,
@@ -362,6 +364,13 @@ public sealed class HabiticaApiClientTests
                       "int": 50,
                       "con": 213,
                       "per": 192
+                    }
+                  },
+                  "items": {
+                    "gear": {
+                      "equipped": {
+                        "weapon": "weapon_warrior_1"
+                      }
                     }
                   }
                 },
@@ -392,6 +401,18 @@ public sealed class HabiticaApiClientTests
             {
               "success": true,
               "data": {
+                "gear": {
+                  "flat": {
+                    "weapon_warrior_1": {
+                      "key": "weapon_warrior_1",
+                      "klass": "warrior",
+                      "str": 10,
+                      "int": 0,
+                      "con": 0,
+                      "per": 0
+                    }
+                  }
+                },
                 "quests": {
                   "seaserpent": {
                     "boss": {
@@ -438,8 +459,9 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(PartyCronState.CronedToday, snapshot.Members[0].CronState);
         Assert.Equal(30m, snapshot.Members[0].Stats!.BaseAllocated!.Strength);
         Assert.Equal(80m, snapshot.Members[0].Stats!.Buffs!.Strength);
-        Assert.Null(snapshot.Members[0].Stats!.Gear);
-        Assert.Null(snapshot.Members[0].Stats!.Total);
+        Assert.Equal(15m, snapshot.Members[0].Stats!.Gear!.Strength);
+        Assert.Equal(36m, snapshot.Members[0].Stats!.LevelBonus!.Strength);
+        Assert.Equal(161m, snapshot.Members[0].Stats!.Total!.Strength);
         Assert.Equal("Beta", snapshot.Members[1].DisplayName);
         Assert.Equal(betaCron, snapshot.Members[1].LastCronUtc);
         Assert.Equal(betaCreated, snapshot.Members[1].CreatedAtUtc);

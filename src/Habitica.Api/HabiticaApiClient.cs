@@ -116,35 +116,38 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             }
         }
 
-        if (questSnapshot is not null && !string.IsNullOrWhiteSpace(questSnapshot.Key))
+        var contentMetadata = await GetPartyContentMetadataAsync(credentials, questSnapshot?.Key, cancellationToken);
+        if (contentMetadata.Gear.Count > 0)
         {
-            var questMetadata = await GetQuestContentMetadataAsync(credentials, questSnapshot.Key, cancellationToken);
-            if (questMetadata.HasAnyValue)
+            members = EnrichPartyMemberStatsWithGear(members, contentMetadata.Gear);
+        }
+
+        if (questSnapshot is not null && contentMetadata.Quest.HasAnyValue)
+        {
+            var questMetadata = contentMetadata.Quest;
+            questSnapshot = questSnapshot with
             {
-                questSnapshot = questSnapshot with
-                {
-                    BossHealthTotal = questMetadata.BossHealthTotal ?? questSnapshot.BossHealthTotal,
-                    CollectionItemsTotal = questMetadata.CollectionItemsTotal ?? questSnapshot.CollectionItemsTotal,
-                    Name = questMetadata.Name ?? questSnapshot.Name,
-                    Description = questMetadata.Description ?? questSnapshot.Description,
-                    RewardSummary = questMetadata.RewardSummary.Count > 0 ? questMetadata.RewardSummary : questSnapshot.RewardSummary
-                };
-            }
+                BossHealthTotal = questMetadata.BossHealthTotal ?? questSnapshot.BossHealthTotal,
+                CollectionItemsTotal = questMetadata.CollectionItemsTotal ?? questSnapshot.CollectionItemsTotal,
+                Name = questMetadata.Name ?? questSnapshot.Name,
+                Description = questMetadata.Description ?? questSnapshot.Description,
+                RewardSummary = questMetadata.RewardSummary.Count > 0 ? questMetadata.RewardSummary : questSnapshot.RewardSummary
+            };
         }
 
         return new PartySnapshot(
             retrievedAtUtc: retrievedAtUtc,
             partyId: GetOptionalString(data, "_id") ?? string.Empty,
             name: GetOptionalString(data, "name") ?? "Unnamed Party",
-            summary: GetOptionalString(data, "summary") ?? GetOptionalString(data, "description"),
+            summary: GetOptionalString(data, "description") ?? GetOptionalString(data, "summary"),
             memberCount: GetOptionalInt32(data, "memberCount"),
             quest: questSnapshot,
             members: members);
     }
 
-    private async Task<PartyQuestContentMetadata> GetQuestContentMetadataAsync(
+    private async Task<PartyContentMetadata> GetPartyContentMetadataAsync(
         HabiticaCredentials credentials,
-        string questKey,
+        string? questKey,
         CancellationToken cancellationToken)
     {
         try
@@ -152,28 +155,33 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             using var request = CreateRequest(HttpMethod.Get, "content?language=en", credentials);
             using var document = await SendForDocumentAsync(request, cancellationToken);
             var data = document.RootElement.GetProperty("data");
-            var quest = TryGetObject(TryGetObject(data, "quests"), questKey);
-            var boss = TryGetObject(quest, "boss");
-            var collect = TryGetObject(quest, "collect");
+            var quest = string.IsNullOrWhiteSpace(questKey) ? default : TryGetObject(TryGetObject(data, "quests"), questKey);
+            var questMetadata = PartyQuestContentMetadata.Empty;
+            if (quest.ValueKind == JsonValueKind.Object)
+            {
+                var boss = TryGetObject(quest, "boss");
+                var collect = TryGetObject(quest, "collect");
+                questMetadata = new PartyQuestContentMetadata(
+                    BossHealthTotal: TryGetDecimal(boss, "hp", out var bossHealth) ? bossHealth : null,
+                    CollectionItemsTotal: SumCollectionRequirements(collect),
+                    Name: GetOptionalString(quest, "text") ?? GetOptionalString(quest, "name"),
+                    Description: GetOptionalString(quest, "notes"),
+                    RewardSummary: BuildQuestRewardSummary(quest));
+            }
 
-            return new PartyQuestContentMetadata(
-                BossHealthTotal: TryGetDecimal(boss, "hp", out var bossHealth) ? bossHealth : null,
-                CollectionItemsTotal: SumCollectionRequirements(collect),
-                Name: GetOptionalString(quest, "text") ?? GetOptionalString(quest, "name"),
-                Description: GetOptionalString(quest, "notes"),
-                RewardSummary: BuildQuestRewardSummary(quest));
+            return new PartyContentMetadata(questMetadata, MapPartyGearCatalog(TryGetObject(TryGetObject(data, "gear"), "flat")));
         }
         catch (HabiticaApiException)
         {
-            return PartyQuestContentMetadata.Empty;
+            return PartyContentMetadata.Empty;
         }
         catch (JsonException)
         {
-            return PartyQuestContentMetadata.Empty;
+            return PartyContentMetadata.Empty;
         }
         catch (HttpRequestException)
         {
-            return PartyQuestContentMetadata.Empty;
+            return PartyContentMetadata.Empty;
         }
     }
 
@@ -222,6 +230,22 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             }
         });
         using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
+    public async Task<ArmoirePurchaseSnapshot> BuyArmoireAsync(
+        HabiticaCredentials credentials,
+        CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(HttpMethod.Post, "user/buy-armoire", credentials);
+        using var document = await SendForDocumentAsync(request, cancellationToken);
+        var data = document.RootElement.TryGetProperty("data", out var dataElement) ? dataElement : default;
+        var armoire = TryGetObject(data, "armoire");
+        return new ArmoirePurchaseSnapshot(
+            DropType: GetOptionalString(armoire, "type") ?? "reward",
+            DropKey: GetOptionalString(armoire, "dropKey"),
+            DropText: GetOptionalString(armoire, "dropText"),
+            Experience: TryGetDecimal(armoire, "value", out var experience) ? experience : null,
+            Message: GetOptionalString(document.RootElement, "message") ?? "Armoire opened.");
     }
 
     public async Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -318,13 +342,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             .Select(member =>
             {
                 var status = questMembers.TryGetProperty(member.MemberId, out var participation)
-                    ? participation.ValueKind switch
-                    {
-                        JsonValueKind.True => PartyQuestParticipationStatus.Accepted,
-                        JsonValueKind.False => PartyQuestParticipationStatus.Rejected,
-                        JsonValueKind.Null => PartyQuestParticipationStatus.Pending,
-                        _ => PartyQuestParticipationStatus.Unknown
-                    }
+                    ? MapQuestParticipationStatus(participation)
                     : PartyQuestParticipationStatus.Unknown;
                 return member with
                 {
@@ -332,6 +350,20 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
                 };
             })
             .ToArray();
+    }
+
+    private static PartyQuestParticipationStatus MapQuestParticipationStatus(JsonElement participation)
+    {
+        return participation.ValueKind switch
+        {
+            JsonValueKind.True => PartyQuestParticipationStatus.Accepted,
+            JsonValueKind.False => PartyQuestParticipationStatus.Rejected,
+            JsonValueKind.Null => PartyQuestParticipationStatus.Pending,
+            JsonValueKind.String when string.Equals(participation.GetString(), "true", StringComparison.OrdinalIgnoreCase) => PartyQuestParticipationStatus.Accepted,
+            JsonValueKind.String when string.Equals(participation.GetString(), "false", StringComparison.OrdinalIgnoreCase) => PartyQuestParticipationStatus.Rejected,
+            JsonValueKind.String when string.Equals(participation.GetString(), "null", StringComparison.OrdinalIgnoreCase) => PartyQuestParticipationStatus.Pending,
+            _ => PartyQuestParticipationStatus.Unknown
+        };
     }
 
     private static TaskSnapshot MapTask(JsonElement task)
@@ -383,6 +415,8 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         var profile = TryGetObject(member, "profile");
         var preferences = TryGetObject(member, "preferences");
         var stats = TryGetObject(member, "stats");
+        var items = TryGetObject(member, "items");
+        var gear = TryGetObject(items, "gear");
         var id = GetOptionalString(member, "_id") ?? GetOptionalString(member, "id") ?? string.Empty;
         var displayName = GetOptionalString(profile, "name")
             ?? GetOptionalString(member, "displayName")
@@ -412,7 +446,10 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             PendingQuestItems = GetPendingQuestItems(partyQuestProgress),
             Stats = MapPartyMemberStats(stats),
             CreatedAtUtc = ParseDateTimeOffset(GetOptionalString(authTimestamps, "created")),
-            LastLoggedInUtc = ParseDateTimeOffset(GetOptionalString(authTimestamps, "loggedin"))
+            LastLoggedInUtc = ParseDateTimeOffset(GetOptionalString(authTimestamps, "loggedin")),
+            TotalLogins = GetOptionalNullableInt32(member, "loginIncentives")
+                ?? GetOptionalNullableInt32(TryGetObject(member, "flags"), "cronCount"),
+            EquippedGearKeys = GetEquippedGearKeys(TryGetObject(gear, "equipped"))
         };
     }
 
@@ -567,6 +604,100 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         return breakdown.HasAnySection ? breakdown : null;
     }
 
+    private static IReadOnlyList<PartyMemberSnapshot> EnrichPartyMemberStatsWithGear(
+        IReadOnlyList<PartyMemberSnapshot> members,
+        IReadOnlyDictionary<string, PartyGearCatalogItem> gearCatalog)
+    {
+        return members
+            .Select(member => member.EquippedGearKeys is { Count: > 0 } equippedGearKeys
+                ? EnrichPartyMemberStatsWithGear(member, equippedGearKeys, gearCatalog)
+                : member)
+            .ToArray();
+    }
+
+    private static PartyMemberSnapshot EnrichPartyMemberStatsWithGear(
+        PartyMemberSnapshot member,
+        IReadOnlyList<string> equippedGearKeys,
+        IReadOnlyDictionary<string, PartyGearCatalogItem> gearCatalog)
+    {
+        var gear = ComputeEquipmentStats(equippedGearKeys, gearCatalog, member.ClassName);
+        var levelBonus = ComputeLevelBonus(member.Level);
+        var current = member.Stats ?? new PartyMemberStatBreakdownSnapshot(null, null, null, null);
+        var next = current with
+        {
+            Gear = gear ?? current.Gear,
+            LevelBonus = levelBonus,
+            Total = current.Total ?? SumPartyStatSections(levelBonus, current.BaseAllocated, gear ?? current.Gear, current.Buffs)
+        };
+
+        return next.HasAnySection
+            ? member with { Stats = next }
+            : member;
+    }
+
+    private static PartyStatSectionSnapshot? ComputeLevelBonus(int? level)
+    {
+        if (level is null)
+        {
+            return null;
+        }
+
+        var levelBonus = Math.Floor(Math.Min(level.Value, 100) / 2m);
+        return new PartyStatSectionSnapshot(levelBonus, levelBonus, levelBonus, levelBonus);
+    }
+
+    private static PartyStatSectionSnapshot? ComputeEquipmentStats(
+        IReadOnlyList<string> equippedGearKeys,
+        IReadOnlyDictionary<string, PartyGearCatalogItem> gearCatalog,
+        string? className)
+    {
+        var hasAnyGear = false;
+        var strength = 0m;
+        var intelligence = 0m;
+        var constitution = 0m;
+        var perception = 0m;
+
+        foreach (var key in equippedGearKeys)
+        {
+            if (!gearCatalog.TryGetValue(key, out var item))
+            {
+                continue;
+            }
+
+            hasAnyGear = true;
+            var multiplier = IsClassGear(item, className) ? 1.5m : 1m;
+            strength += item.Strength * multiplier;
+            intelligence += item.Intelligence * multiplier;
+            constitution += item.Constitution * multiplier;
+            perception += item.Perception * multiplier;
+        }
+
+        return hasAnyGear
+            ? new PartyStatSectionSnapshot(strength, intelligence, constitution, perception)
+            : null;
+    }
+
+    private static bool IsClassGear(PartyGearCatalogItem item, string? className)
+    {
+        return !string.IsNullOrWhiteSpace(className)
+            && (string.Equals(item.ClassName, className, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(item.SpecialClassName, className, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static PartyStatSectionSnapshot? SumPartyStatSections(params PartyStatSectionSnapshot?[] sections)
+    {
+        if (sections.Any(static section => section is null))
+        {
+            return null;
+        }
+
+        return new PartyStatSectionSnapshot(
+            sections.Sum(static section => section!.Strength ?? 0m),
+            sections.Sum(static section => section!.Intelligence ?? 0m),
+            sections.Sum(static section => section!.Constitution ?? 0m),
+            sections.Sum(static section => section!.Perception ?? 0m));
+    }
+
     private static PartyStatSectionSnapshot? MapPartyStatSection(JsonElement stats)
     {
         if (stats.ValueKind != JsonValueKind.Object)
@@ -581,6 +712,51 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             TryGetDecimal(stats, "per", out var perception) ? perception : null);
 
         return section.HasAnyValue ? section : null;
+    }
+
+    private static IReadOnlyList<string> GetEquippedGearKeys(JsonElement equipped)
+    {
+        if (equipped.ValueKind != JsonValueKind.Object)
+        {
+            return Array.Empty<string>();
+        }
+
+        return equipped
+            .EnumerateObject()
+            .Select(static property => property.Value.ValueKind == JsonValueKind.String ? property.Value.GetString() : null)
+            .Where(static key => !string.IsNullOrWhiteSpace(key))
+            .Select(static key => key!)
+            .Distinct(StringComparer.Ordinal)
+            .ToArray();
+    }
+
+    private static IReadOnlyDictionary<string, PartyGearCatalogItem> MapPartyGearCatalog(JsonElement flatGear)
+    {
+        if (flatGear.ValueKind != JsonValueKind.Object)
+        {
+            return new Dictionary<string, PartyGearCatalogItem>(StringComparer.Ordinal);
+        }
+
+        var gear = new Dictionary<string, PartyGearCatalogItem>(StringComparer.Ordinal);
+        foreach (var property in flatGear.EnumerateObject())
+        {
+            if (property.Value.ValueKind != JsonValueKind.Object)
+            {
+                continue;
+            }
+
+            var key = GetOptionalString(property.Value, "key") ?? property.Name;
+            gear[key] = new PartyGearCatalogItem(
+                key,
+                GetOptionalString(property.Value, "klass") ?? GetOptionalString(property.Value, "class"),
+                GetOptionalString(property.Value, "specialClass"),
+                GetOptionalDecimal(property.Value, "str"),
+                GetOptionalDecimal(property.Value, "int"),
+                GetOptionalDecimal(property.Value, "con"),
+                GetOptionalDecimal(property.Value, "per"));
+        }
+
+        return gear;
     }
 
     private static int CountPositiveEntries(JsonElement element)
@@ -1038,4 +1214,22 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
         public static PartyQuestContentMetadata Empty { get; } = new(null, null, null, null, Array.Empty<string>());
     }
+
+    private sealed record PartyContentMetadata(
+        PartyQuestContentMetadata Quest,
+        IReadOnlyDictionary<string, PartyGearCatalogItem> Gear)
+    {
+        public static PartyContentMetadata Empty { get; } = new(
+            PartyQuestContentMetadata.Empty,
+            new Dictionary<string, PartyGearCatalogItem>(StringComparer.Ordinal));
+    }
+
+    private sealed record PartyGearCatalogItem(
+        string Key,
+        string? ClassName,
+        string? SpecialClassName,
+        decimal Strength,
+        decimal Intelligence,
+        decimal Constitution,
+        decimal Perception);
 }

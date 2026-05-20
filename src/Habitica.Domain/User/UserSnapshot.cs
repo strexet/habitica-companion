@@ -44,6 +44,13 @@ public sealed record StatAllocation(
     int Constitution,
     int Perception);
 
+public sealed record ArmoirePurchaseSnapshot(
+    string DropType,
+    string? DropKey,
+    string? DropText,
+    decimal? Experience,
+    string Message);
+
 public sealed record EquipmentSnapshot(
     GearSlotsSnapshot Battle,
     GearSlotsSnapshot Costume);

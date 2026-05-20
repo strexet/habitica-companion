@@ -220,7 +220,9 @@ public sealed record PartyMemberSnapshot(
     bool IsStale = false,
     PartyMemberStatBreakdownSnapshot? Stats = null,
     DateTimeOffset? CreatedAtUtc = null,
-    DateTimeOffset? LastLoggedInUtc = null);
+    DateTimeOffset? LastLoggedInUtc = null,
+    int? TotalLogins = null,
+    IReadOnlyList<string>? EquippedGearKeys = null);
 
 public sealed record PartyCronHistoryEvent(
     string PartyId,
@@ -312,13 +314,15 @@ public sealed record PartyMemberStatBreakdownSnapshot(
     PartyStatSectionSnapshot? BaseAllocated,
     PartyStatSectionSnapshot? Gear,
     PartyStatSectionSnapshot? Buffs,
-    PartyStatSectionSnapshot? Total)
+    PartyStatSectionSnapshot? Total,
+    PartyStatSectionSnapshot? LevelBonus = null)
 {
     public bool HasAnySection =>
         BaseAllocated?.HasAnyValue == true
         || Gear?.HasAnyValue == true
         || Buffs?.HasAnyValue == true
-        || Total?.HasAnyValue == true;
+        || Total?.HasAnyValue == true
+        || LevelBonus?.HasAnyValue == true;
 }
 
 public static class PartyCronCalculator

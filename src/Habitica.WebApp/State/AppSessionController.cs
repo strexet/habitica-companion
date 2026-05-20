@@ -1133,6 +1133,69 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    public async Task<InventoryActionResult> BuyArmoireAsync(int count, CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return InventoryActionResult.Failure("Sign in before opening the armoire.");
+        }
+
+        if (State.UserSnapshot is null || State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return InventoryActionResult.Failure("Refresh your account before opening the armoire.");
+        }
+
+        var safeCount = Math.Clamp(count, 1, 50);
+        var availableCount = (int)Math.Floor(State.UserSnapshot.Gold / 100m);
+        if (availableCount <= 0)
+        {
+            return InventoryActionResult.Failure("You need at least 100 GP to open the armoire.");
+        }
+
+        if (safeCount > availableCount)
+        {
+            return InventoryActionResult.Failure($"You have enough gold for {availableCount} armoire opening{(availableCount == 1 ? string.Empty : "s")}.");
+        }
+
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        var drops = new List<ArmoirePurchaseSnapshot>();
+        try
+        {
+            for (var i = 0; i < safeCount; i++)
+            {
+                drops.Add(await _habiticaSyncClient.BuyArmoireAsync(credentials, cancellationToken));
+            }
+
+            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "armoire-bulk-buy",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                "Opened the armoire.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["count"] = safeCount.ToString(CultureInfo.InvariantCulture),
+                    ["requestCount"] = (safeCount + 1).ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+
+            return InventoryActionResult.Success(BuildArmoireResultMessage(drops));
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return InventoryActionResult.Failure(exception.Message);
+        }
+    }
+
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         _currentCredentials = null;
@@ -2355,6 +2418,37 @@ public sealed class AppSessionController : IAppSessionController
             userSnapshot?.RetrievedAtUtc,
             partySnapshot?.RetrievedAtUtc
         }.Max();
+    }
+
+    private static string BuildArmoireResultMessage(IReadOnlyList<ArmoirePurchaseSnapshot> drops)
+    {
+        if (drops.Count == 0)
+        {
+            return "Armoire opened.";
+        }
+
+        var gearCount = drops.Count(static drop => string.Equals(drop.DropType, "gear", StringComparison.OrdinalIgnoreCase));
+        var foodCount = drops.Count(static drop => string.Equals(drop.DropType, "food", StringComparison.OrdinalIgnoreCase));
+        var experienceCount = drops.Count(static drop => string.Equals(drop.DropType, "experience", StringComparison.OrdinalIgnoreCase));
+        var parts = new List<string>();
+        if (gearCount > 0)
+        {
+            parts.Add($"{gearCount} gear");
+        }
+
+        if (foodCount > 0)
+        {
+            parts.Add($"{foodCount} food");
+        }
+
+        if (experienceCount > 0)
+        {
+            parts.Add($"{experienceCount} XP");
+        }
+
+        return parts.Count == 0
+            ? $"Opened the armoire {drops.Count} time{(drops.Count == 1 ? string.Empty : "s")}."
+            : $"Opened the armoire {drops.Count} time{(drops.Count == 1 ? string.Empty : "s")}: {string.Join(", ", parts)}.";
     }
 
     private void SetState(SessionViewModel nextState)

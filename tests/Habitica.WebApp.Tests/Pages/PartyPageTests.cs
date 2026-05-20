@@ -216,7 +216,7 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Buffs", cut.Markup);
         Assert.Contains("Effective", cut.Markup);
         Assert.Contains("Strength", cut.Markup);
-        Assert.Contains("130", cut.Markup);
+        Assert.Contains("137", cut.Markup);
     }
 
     [Fact]

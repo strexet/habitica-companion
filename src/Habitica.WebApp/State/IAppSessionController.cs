@@ -48,6 +48,8 @@ public interface IAppSessionController
 
     Task<SpellActionResult> AllocateStatsAsync(StatAllocation allocation, CancellationToken cancellationToken = default);
 
+    Task<InventoryActionResult> BuyArmoireAsync(int count, CancellationToken cancellationToken = default);
+
     Task LogoutAsync(CancellationToken cancellationToken = default);
 
     Task ClearLocalDataAsync(CancellationToken cancellationToken = default);

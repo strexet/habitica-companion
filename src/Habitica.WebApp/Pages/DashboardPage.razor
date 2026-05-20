@@ -163,6 +163,31 @@
 
         <section class="dashboard-detail-grid">
             <article class="card-surface dashboard-panel">
+                <p class="section-label">Spend gold</p>
+                <h2>Bulk armoire</h2>
+                <p class="panel-copy">
+                    Spend 100 GP per opening. Subscriber bonus openings are only offered inside the official Android and iOS apps, so this button spends gold for every opening.
+                </p>
+                <div class="armoire-controls">
+                    <label>
+                        <span>Open count</span>
+                        <input min="1"
+                               max="@GetMaxArmoirePurchases(snapshot)"
+                               type="number"
+                               @bind="_armoirePurchaseCount"
+                               @bind:event="oninput" />
+                    </label>
+                    <MudButton Color="Color.Primary"
+                               Disabled="@(!CanBuyArmoire(snapshot))"
+                               OnClick="BuyArmoireAsync"
+                               Variant="Variant.Filled">
+                        Open armoire
+                    </MudButton>
+                </div>
+                <span class="dashboard-stat-note">@FormatArmoireCapacity(snapshot)</span>
+            </article>
+
+            <article class="card-surface dashboard-panel">
                 <p class="section-label">Companion state</p>
                 <h2>Current pet, mount, and party</h2>
 
@@ -226,6 +251,7 @@
 
 @code {
     private readonly Dictionary<string, int> _pendingAllocation = new(StringComparer.Ordinal);
+    private int _armoirePurchaseCount = 1;
 
     protected override void OnInitialized()
     {
@@ -304,6 +330,37 @@
         if (result.Succeeded)
         {
             _pendingAllocation.Clear();
+        }
+    }
+
+    private bool CanBuyArmoire(UserSnapshot snapshot)
+    {
+        return SessionController.State.IsAuthenticated
+            && !SessionController.State.IsBusy
+            && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh
+            && GetMaxArmoirePurchases(snapshot) > 0;
+    }
+
+    private static int GetMaxArmoirePurchases(UserSnapshot snapshot)
+    {
+        return Math.Min(50, (int)Math.Floor(snapshot.Gold / 100m));
+    }
+
+    private static string FormatArmoireCapacity(UserSnapshot snapshot)
+    {
+        var count = GetMaxArmoirePurchases(snapshot);
+        return count <= 0
+            ? "Needs 100 GP."
+            : $"Enough gold for {count} opening{(count == 1 ? string.Empty : "s")}.";
+    }
+
+    private async Task BuyArmoireAsync()
+    {
+        var result = await SessionController.BuyArmoireAsync(_armoirePurchaseCount);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+        if (result.Succeeded && SessionController.State.UserSnapshot is { } snapshot)
+        {
+            _armoirePurchaseCount = Math.Clamp(_armoirePurchaseCount, 1, Math.Max(1, GetMaxArmoirePurchases(snapshot)));
         }
     }
 

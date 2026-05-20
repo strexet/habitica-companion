@@ -107,6 +107,11 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.FromResult(SpellActionResult.Success("Stats allocated."));
     }
 
+    public Task<InventoryActionResult> BuyArmoireAsync(int count, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(InventoryActionResult.Success("Armoire opened."));
+    }
+
     public Task InitializeAsync(CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;

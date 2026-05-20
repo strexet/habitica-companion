@@ -565,6 +565,42 @@ a {
     margin-bottom: 1rem;
 }
 
+.party-member-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.segmented-control {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: 0.65rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(255, 255, 255, 0.56);
+}
+
+.segmented-control button {
+    min-height: 2rem;
+    padding: 0.25rem 0.6rem;
+    border: 0;
+    border-radius: 0.45rem;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.segmented-control button.active {
+    background: var(--teal);
+    color: white;
+}
+
 .party-member-list {
     display: grid;
     gap: 0.85rem;
@@ -1038,6 +1074,33 @@ a {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+}
+
+.armoire-controls {
+    display: flex;
+    align-items: end;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 1rem 0 0.5rem;
+}
+
+.armoire-controls label {
+    display: grid;
+    gap: 0.35rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.armoire-controls input {
+    width: 7rem;
+    min-height: 2.5rem;
+    padding: 0.35rem 0.55rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(22, 36, 35, 0.16);
+    background: rgba(255, 255, 255, 0.82);
+    color: var(--ink);
+    font: inherit;
 }
 
 .warning-card {
@@ -1581,6 +1644,10 @@ code {
 
     .party-member-actions {
         justify-items: start;
+    }
+
+    .party-member-toolbar {
+        justify-content: flex-start;
     }
 
     .spell-card-summary,

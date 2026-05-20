@@ -433,7 +433,17 @@
                     <p class="section-label">Members</p>
                     <h2>Party member status</h2>
                 </div>
-                <span class="ui-pill count-pill">@members.Count visible</span>
+                <div class="party-member-toolbar">
+                    <div class="segmented-control" aria-label="Sort party members">
+                        @foreach (var sortMode in Enum.GetValues<PartyMemberSortMode>())
+                        {
+                            <button class="@GetMemberSortButtonClass(sortMode)" type="button" @onclick="@(() => SetMemberSortMode(sortMode))">
+                                @GetMemberSortLabel(sortMode)
+                            </button>
+                        }
+                    </div>
+                    <span class="ui-pill count-pill">@members.Count visible</span>
+                </div>
             </div>
 
             @if (members.Count == 0)
@@ -502,7 +512,7 @@
                                             <dd>@FormatLevel(member.Level)</dd>
                                         </div>
                                         <div>
-                                            <dt>Account created</dt>
+                                            <dt>Joined</dt>
                                             <dd>@FormatDateTime(member.CreatedAtUtc)</dd>
                                         </div>
                                         <div>
@@ -510,12 +520,16 @@
                                             <dd>@FormatDateTime(member.LastLoggedInUtc)</dd>
                                         </div>
                                         <div>
+                                            <dt>Total log ins</dt>
+                                            <dd>@FormatOptionalInt(member.TotalLogins)</dd>
+                                        </div>
+                                        <div>
                                             <dt>Habitica day</dt>
                                             <dd>@FormatHabiticaDay(member)</dd>
                                         </div>
                                         <div>
-                                            <dt>Day starts</dt>
-                                            <dd>@FormatDayStart(member)</dd>
+                                            <dt>Official chat</dt>
+                                            <dd><a href="@BuildHabiticaMessageUrl(member.MemberId)" target="_blank" rel="noopener">Send message</a></dd>
                                         </div>
                                     </dl>
 
@@ -554,10 +568,11 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Stat</th>
-                                                            <th>Base</th>
-                                                            <th>Equipment</th>
-                                                            <th>Buffs</th>
                                                             <th>Effective</th>
+                                                            <th>Buffs</th>
+                                                            <th>Equipment</th>
+                                                            <th>Allocated</th>
+                                                            <th>Base</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -568,10 +583,11 @@
                                                                     <span>@row.Label</span>
                                                                     <small>@row.Name</small>
                                                                 </th>
-                                                                <td>@FormatStat(row.Base)</td>
-                                                                <td>@FormatSignedStat(row.Equipment)</td>
-                                                                <td>@FormatSignedStat(row.Buffs)</td>
                                                                 <td><strong>@FormatStat(row.Effective)</strong></td>
+                                                                <td>@FormatSignedStat(row.Buffs)</td>
+                                                                <td>@FormatSignedStat(row.Equipment)</td>
+                                                                <td>@FormatStat(row.Allocated)</td>
+                                                                <td>@FormatStat(row.Base)</td>
                                                             </tr>
                                                         }
                                                     </tbody>
@@ -672,6 +688,7 @@
     private string? _pendingScrollElementId;
     private bool _requestedSharedQuestState;
     private bool _questPoolExpanded;
+    private PartyMemberSortMode _memberSortMode = PartyMemberSortMode.Name;
 
     protected override void OnInitialized()
     {
@@ -716,24 +733,83 @@
         };
     }
 
-    private static IReadOnlyList<PartyMemberSnapshot> GetDisplayMembers(PartySnapshot snapshot)
+    private IReadOnlyList<PartyMemberSnapshot> GetDisplayMembers(PartySnapshot snapshot)
     {
+        IReadOnlyList<PartyMemberSnapshot> members;
         if (snapshot.CronDashboard?.Members is not { Count: > 0 } enrichedMembers)
         {
-            return snapshot.Members;
+            members = snapshot.Members;
         }
-
-        var enrichedById = new Dictionary<string, PartyMemberSnapshot>(StringComparer.Ordinal);
-        foreach (var member in enrichedMembers)
+        else
         {
-            enrichedById[member.MemberId] = member;
+            var enrichedById = new Dictionary<string, PartyMemberSnapshot>(StringComparer.Ordinal);
+            foreach (var member in enrichedMembers)
+            {
+                enrichedById[member.MemberId] = member;
+            }
+
+            members = snapshot.Members
+                .Select(member => enrichedById.TryGetValue(member.MemberId, out var enrichedMember)
+                    ? enrichedMember
+                    : member)
+                .ToArray();
         }
 
-        return snapshot.Members
-            .Select(member => enrichedById.TryGetValue(member.MemberId, out var enrichedMember)
-                ? enrichedMember
-                : member)
-            .ToArray();
+        return SortMembers(members);
+    }
+
+    private IReadOnlyList<PartyMemberSnapshot> SortMembers(IReadOnlyList<PartyMemberSnapshot> members)
+    {
+        return _memberSortMode switch
+        {
+            PartyMemberSortMode.AverageCron => members
+                .OrderBy(static member => member.AverageCronTime is null)
+                .ThenBy(static member => member.AverageCronTime)
+                .ThenBy(static member => member.DisplayName, StringComparer.CurrentCultureIgnoreCase)
+                .ToArray(),
+            PartyMemberSortMode.LatestCron => members
+                .OrderByDescending(static member => member.LastCronUtc)
+                .ThenBy(static member => member.DisplayName, StringComparer.CurrentCultureIgnoreCase)
+                .ToArray(),
+            PartyMemberSortMode.PendingQuest => members
+                .OrderByDescending(GetPendingQuestSortValue)
+                .ThenBy(static member => member.DisplayName, StringComparer.CurrentCultureIgnoreCase)
+                .ToArray(),
+            PartyMemberSortMode.CronStatus => members
+                .OrderBy(static member => member.CronState)
+                .ThenBy(static member => member.DisplayName, StringComparer.CurrentCultureIgnoreCase)
+                .ToArray(),
+            _ => members
+                .OrderBy(static member => member.DisplayName, StringComparer.CurrentCultureIgnoreCase)
+                .ToArray()
+        };
+    }
+
+    private static decimal GetPendingQuestSortValue(PartyMemberSnapshot member)
+    {
+        return Math.Max(member.PendingQuestDamage ?? 0m, member.PendingQuestItems ?? 0m);
+    }
+
+    private void SetMemberSortMode(PartyMemberSortMode sortMode)
+    {
+        _memberSortMode = sortMode;
+    }
+
+    private string GetMemberSortButtonClass(PartyMemberSortMode sortMode)
+    {
+        return sortMode == _memberSortMode ? "active" : string.Empty;
+    }
+
+    private static string GetMemberSortLabel(PartyMemberSortMode sortMode)
+    {
+        return sortMode switch
+        {
+            PartyMemberSortMode.AverageCron => "Average CRON",
+            PartyMemberSortMode.LatestCron => "Latest CRON",
+            PartyMemberSortMode.PendingQuest => "Pending quest",
+            PartyMemberSortMode.CronStatus => "CRON status",
+            _ => "Name"
+        };
     }
 
     private bool IsMemberDetailsExpanded(string memberId)
@@ -1396,19 +1472,14 @@
             : value.Value.ToString("0.##", CultureInfo.InvariantCulture);
     }
 
+    private static string FormatOptionalInt(int? value)
+    {
+        return value?.ToString(CultureInfo.InvariantCulture) ?? "Unknown";
+    }
+
     private static string FormatHabiticaDay(PartyMemberSnapshot member)
     {
         return string.IsNullOrWhiteSpace(member.CurrentHabiticaDayKey) ? "Unknown" : member.CurrentHabiticaDayKey;
-    }
-
-    private static string FormatDayStart(PartyMemberSnapshot member)
-    {
-        if (member.DayStartHour is null)
-        {
-            return "Not public";
-        }
-
-        return $"{member.DayStartHour.Value:00}:00";
     }
 
     private static string FormatLoginRhythmTitle(PartyMemberSnapshot member)
@@ -1434,10 +1505,10 @@
 
         return new[]
         {
-            BuildStatRow("STR", "Strength", stats, static section => section.Strength),
-            BuildStatRow("INT", "Intelligence", stats, static section => section.Intelligence),
-            BuildStatRow("CON", "Constitution", stats, static section => section.Constitution),
-            BuildStatRow("PER", "Perception", stats, static section => section.Perception)
+            BuildStatRow("STR", "Strength", stats, member.Level, static section => section.Strength),
+            BuildStatRow("INT", "Intelligence", stats, member.Level, static section => section.Intelligence),
+            BuildStatRow("CON", "Constitution", stats, member.Level, static section => section.Constitution),
+            BuildStatRow("PER", "Perception", stats, member.Level, static section => section.Perception)
         };
     }
 
@@ -1445,15 +1516,22 @@
         string label,
         string name,
         PartyMemberStatBreakdownSnapshot stats,
+        int? level,
         Func<PartyStatSectionSnapshot, decimal?> selector)
     {
-        var baseValue = stats.BaseAllocated is null ? null : selector(stats.BaseAllocated);
+        var allocated = stats.BaseAllocated is null ? null : selector(stats.BaseAllocated);
+        var baseValue = stats.LevelBonus is null ? CalculateLevelBase(level) : selector(stats.LevelBonus);
         var equipment = stats.Gear is null ? null : selector(stats.Gear);
         var buffs = stats.Buffs is null ? null : selector(stats.Buffs);
         var total = stats.Total is null ? null : selector(stats.Total);
-        var effective = total ?? SumCompleteStats(baseValue, equipment, buffs);
+        var effective = total ?? SumCompleteStats(baseValue, allocated, equipment, buffs);
 
-        return new PartyStatRow(label, name, baseValue, equipment, buffs, effective);
+        return new PartyStatRow(label, name, baseValue, allocated, equipment, buffs, effective);
+    }
+
+    private static decimal? CalculateLevelBase(int? level)
+    {
+        return level is null ? null : Math.Floor(Math.Min(level.Value, 100) / 2m);
     }
 
     private static decimal? SumCompleteStats(params decimal?[] values)
@@ -1467,9 +1545,24 @@
         string Label,
         string Name,
         decimal? Base,
+        decimal? Allocated,
         decimal? Equipment,
         decimal? Buffs,
         decimal? Effective);
+
+    private static string BuildHabiticaMessageUrl(string memberId)
+    {
+        return $"https://habitica.com/private-messages?uuid={Uri.EscapeDataString(memberId)}";
+    }
+
+    private enum PartyMemberSortMode
+    {
+        Name,
+        AverageCron,
+        LatestCron,
+        PendingQuest,
+        CronStatus
+    }
 
     private sealed record QuestPoolGroup(
         string QuestKey,
