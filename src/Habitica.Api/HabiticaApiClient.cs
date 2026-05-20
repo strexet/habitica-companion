@@ -545,26 +545,26 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             return null;
         }
 
+        var training = TryGetObject(stats, "training");
+        var allocated = TryGetObject(stats, "allocated");
         var baseAllocated = PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(
-            TryGetObject(stats, "training").ValueKind == JsonValueKind.Object
-                ? TryGetObject(stats, "training")
-                : TryGetObject(stats, "allocated")));
+            training.ValueKind == JsonValueKind.Object
+                ? training
+                : allocated.ValueKind == JsonValueKind.Object
+                    ? allocated
+                    : stats));
         var gear = PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(TryGetObject(stats, "gear")));
         var buffs = PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(TryGetObject(stats, "buffs")));
-        var total = HasAnyStats(stats)
-            ? PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(stats))
+        var totalStats = TryGetObject(stats, "total");
+        var effectiveStats = TryGetObject(stats, "effective");
+        var total = totalStats.ValueKind == JsonValueKind.Object
+            ? PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(totalStats))
+            : effectiveStats.ValueKind == JsonValueKind.Object
+                ? PartyStatSectionSnapshot.FromCharacterStats(MapCharacterStats(effectiveStats))
             : null;
 
         var breakdown = new PartyMemberStatBreakdownSnapshot(baseAllocated, gear, buffs, total);
         return breakdown.HasAnySection ? breakdown : null;
-    }
-
-    private static bool HasAnyStats(JsonElement stats)
-    {
-        return TryGetDecimal(stats, "str", out _)
-            || TryGetDecimal(stats, "int", out _)
-            || TryGetDecimal(stats, "con", out _)
-            || TryGetDecimal(stats, "per", out _);
     }
 
     private static int CountPositiveEntries(JsonElement element)

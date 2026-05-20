@@ -145,10 +145,10 @@ public sealed class PartyPageTests : BunitContext
                             ClassName: "wizard",
                             Level: 15,
                             Stats: new PartyMemberStatBreakdownSnapshot(
+                                new PartyStatSectionSnapshot(30m, 70m, 0m, 0m),
                                 null,
-                                null,
-                                null,
-                                new PartyStatSectionSnapshot(12m, 34m, 18m, 21m)))
+                                new PartyStatSectionSnapshot(80m, 50m, 213m, 192m),
+                                null))
                         },
                         GraphPoints: new[]
                         {
@@ -216,7 +216,7 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Buffs", cut.Markup);
         Assert.Contains("Effective", cut.Markup);
         Assert.Contains("Strength", cut.Markup);
-        Assert.Contains("12", cut.Markup);
+        Assert.Contains("110", cut.Markup);
     }
 
     [Fact]

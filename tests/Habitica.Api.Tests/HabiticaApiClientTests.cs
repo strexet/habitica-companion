@@ -351,6 +351,18 @@ public sealed class HabiticaApiClientTests
                   "preferences": {
                     "dayStart": 0,
                     "timezoneOffset": 0
+                  },
+                  "stats": {
+                    "str": 30,
+                    "int": 70,
+                    "con": 0,
+                    "per": 0,
+                    "buffs": {
+                      "str": 80,
+                      "int": 50,
+                      "con": 213,
+                      "per": 192
+                    }
                   }
                 },
                 {
@@ -424,6 +436,9 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(alphaCron, snapshot.Members[0].LastCronUtc);
         Assert.Equal(7.2m, snapshot.Members[0].PendingQuestDamage);
         Assert.Equal(PartyCronState.CronedToday, snapshot.Members[0].CronState);
+        Assert.Equal(30m, snapshot.Members[0].Stats!.BaseAllocated!.Strength);
+        Assert.Equal(80m, snapshot.Members[0].Stats!.Buffs!.Strength);
+        Assert.Null(snapshot.Members[0].Stats!.Total);
         Assert.Equal("Beta", snapshot.Members[1].DisplayName);
         Assert.Equal(betaCron, snapshot.Members[1].LastCronUtc);
         Assert.Equal(betaCreated, snapshot.Members[1].CreatedAtUtc);
