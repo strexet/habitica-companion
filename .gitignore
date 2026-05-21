@@ -63,3 +63,6 @@ Thumbs.db
 
 # Wrangler
 .wrangler/
+
+# Operator-filled seed scripts (contain personal user IDs)
+/migrations/seed_app_admins*

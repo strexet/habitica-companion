@@ -59,7 +59,7 @@ Shared party sync requires a D1 database bound to the Pages project.
 1. In Cloudflare, open `Workers & Pages`.
 2. Open `D1 SQL Database`.
 3. Create a database, for example `habitica-companion-party-sync`.
-4. Apply all migrations in order: `migrations/0001_party_sync.sql`, `migrations/0002_party_quest_queue.sql`, `migrations/0003_quest_lifecycle.sql`, `migrations/0004_party_sync_management.sql`.
+4. Apply all migrations in order: `migrations/0001_party_sync.sql`, `migrations/0002_party_quest_queue.sql`, `migrations/0003_quest_lifecycle.sql`, `migrations/0004_party_sync_management.sql`, `migrations/0005_app_admins.sql`.
 5. Open the Pages project settings.
 6. Open `Bindings`.
 7. Add a D1 database binding:
@@ -69,7 +69,7 @@ Shared party sync requires a D1 database bound to the Pages project.
    D1 database: habitica-companion-party-sync
    ```
 
-8. Optionally add `HABITICA_PARTY_ADMIN_USER_IDS` or `PARTY_SYNC_ADMIN_USER_IDS` as a comma-separated list of Habitica user IDs that should have app-admin party-sync management permissions.
+8. Grant app-admin permissions (separate from party owner; grants management access across all parties) by copying `migrations/seed_app_admins.example.sql` to `migrations/seed_app_admins.sql` (gitignored), filling in Habitica user IDs, and running `wrangler d1 execute habitica-companion-party-sync --file migrations/seed_app_admins.sql`. Revoke by setting `revoked_at_utc` on the row.
 
 The party sync Function receives a local party claim from the browser and must not receive Habitica API tokens. Local claims are token-private but trust-based; party IDs alone are not enough for authorization. The Worker routes all access through `readAccessProof()` and `resolvePartySyncAccess()` so a future tokenized manager-invite proof can replace local claims without rewriting queue and moderation actions.
 

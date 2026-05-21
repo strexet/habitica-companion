@@ -801,7 +801,7 @@ async function kickMember(db, env, partyId, access, payload, nowIso) {
   if (access.leaderId && user.userId === access.leaderId) {
     return textResponse("Officers cannot remove the party owner from party sync.", 403);
   }
-  if (isPartySyncAdmin(env, user.userId)) {
+  if (await isAppAdmin(db, user.userId)) {
     return textResponse("App admins cannot be removed from party sync.", 403);
   }
   if (await hasActiveOfficerRole(db, partyId, user.userId) && !access.isOwner && !access.isAdmin) {
@@ -972,7 +972,7 @@ async function resolvePartySyncAccess(request, env, db, expectedPartyId) {
   }
 
   const settings = await readPartySyncSettings(db, expectedPartyId);
-  const isAdmin = isPartySyncAdmin(env, proof.userId);
+  const isAdmin = await isAppAdmin(db, proof.userId);
   const isOwner = !!proof.leaderId && proof.leaderId === proof.userId;
   const isOfficer = await hasActiveOfficerRole(db, expectedPartyId, proof.userId);
   const isKicked = await hasActiveKick(db, expectedPartyId, proof.userId);
@@ -1079,7 +1079,7 @@ async function hasActiveKick(db, partyId, userId) {
 async function buildManagementState(db, env, partyId, access) {
   const settings = access?.settings ?? await readPartySyncSettings(db, partyId);
   const officers = await readActiveOfficers(db, partyId);
-  const appAdmins = getPartySyncAdminIds(env).map(userId => ({
+  const appAdmins = (await getAppAdminIds(db)).map(userId => ({
     userId,
     displayName: userId,
   }));
@@ -1168,20 +1168,25 @@ function isValidEvent(eventEntry) {
     && typeof eventEntry.observedAtUtc === "string";
 }
 
-function isPartySyncAdmin(env, userId) {
-  if (!userId) {
+async function isAppAdmin(db, userId) {
+  if (!userId || !db) {
     return false;
   }
-
-  return getPartySyncAdminIds(env)
-    .some(value => value.toLowerCase() === userId.toLowerCase());
+  const ids = await getAppAdminIds(db);
+  const target = userId.toLowerCase();
+  return ids.some(value => value.toLowerCase() === target);
 }
 
-function getPartySyncAdminIds(env) {
-  const configured = env.HABITICA_PARTY_ADMIN_USER_IDS || env.PARTY_SYNC_ADMIN_USER_IDS || "";
-  return configured
-    .split(",")
-    .map(value => value.trim())
+async function getAppAdminIds(db) {
+  if (!db) {
+    return [];
+  }
+  const result = await db
+    .prepare("SELECT user_id FROM app_admins WHERE revoked_at_utc IS NULL")
+    .all();
+  const rows = result?.results ?? [];
+  return rows
+    .map(row => (typeof row.user_id === "string" ? row.user_id.trim() : ""))
     .filter(Boolean);
 }
 
