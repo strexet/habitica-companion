@@ -1952,7 +1952,7 @@ Primary Habitica data: cached party group summary, quest state, party members, m
 Mutates Habitica state: no; mutates shared Cloudflare party quest queue state
 Requires confirmation: no
 Offline behavior: party overview is available from cached snapshots; shared queue/pool/history requires the Cloudflare party-sync endpoint
-Rate-limit sensitivity: low for Habitica reads; shared queue actions verify party membership through party-sync
+Rate-limit sensitivity: low for Habitica reads; shared queue actions use tokenless local party claims through party-sync
 
 ### Goal
 
@@ -1973,6 +1973,9 @@ quest content metadata
 shared party quest pool
 shared party quest queue and votes
 recently completed shared party quests
+party-sync owner/admin/Officer roles
+party-sync settings
+party-sync kick list
 ```
 
 ### Outputs
@@ -1990,6 +1993,10 @@ active quest card with real quest metadata and rewards when cached
 shared quest queue cards with vote counts and voter names
 quest pool cards with owner availability
 recently completed quest cards
+owner/admin/Officer strip after party notes
+owner/admin settings controls
+member-detail Officer and kick controls for management roles
+bottom-page kick list for management roles
 freshness banner
 no-party empty state
 ```
@@ -2021,8 +2028,11 @@ Current display rules:
 12. Allow only the current quest owner to add that user's quest scroll to the shared queue.
 13. Allow one vote per party member per queued quest; clicking again removes the vote.
 14. Sort visible queue cards by vote count, owner readiness, queue age, and recently completed penalty.
-15. Let the quest owner remove their own queue item; party-sync also allows party leader removal when membership verification identifies the leader.
-16. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
+15. Let the quest owner remove their own queue item unless owner/admin settings restrict queue edits to management roles.
+16. Let owner/app admins assign and remove Officers from expanded member details.
+17. Let owner/app admins update party-sync settings: Officer queue management, Officer moderation, management-only queue edits, and member auto-reconcile.
+18. Let owner/app admins and authorized Officers kick and unkick party-sync users. Kicked users cannot read or write normal party-sync data; owner/app admins bypass kicks to recover from mistakes.
+19. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
 ```
 
 ### Validation
@@ -2044,7 +2054,7 @@ Show cached party data even when a previous refresh attempt failed. Shared party
 
 ### Security / privacy
 
-Display only the locally cached group summary fields required for the explorer. Do not expose credentials or raw request headers. Shared party-sync verifies membership before queue/pool reads and writes. The current endpoint still uses the existing credential-header verification flow; replacing it with tokenless signed membership assertions is tracked in `FUTURE.md`.
+Display only the locally cached group summary fields required for the explorer. Do not expose credentials or raw request headers. Shared party-sync sends a tokenless local claim to Cloudflare instead of Habitica API tokens. The local claim is token-private but trust-based; the Worker keeps access proof parsing separate from role/action checks so a future tokenized manager-invite proof can replace local claims if needed.
 
 ### Tests
 
@@ -2059,6 +2069,8 @@ Test:
 - shared quest queue/pool rendering;
 - party-sync queue and vote mutations.
 - safe markdown and supported inline HTML rendering for party and quest descriptions.
+- local party-sync claims that do not pass API tokens to Cloudflare.
+- Officer/settings/kick visibility and management actions.
 
 ### Open questions
 

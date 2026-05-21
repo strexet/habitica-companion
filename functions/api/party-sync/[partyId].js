@@ -1,6 +1,13 @@
 const maxBodyBytes = 2 * 1024 * 1024;
 const partyIdPattern = /^[A-Za-z0-9_-]{8,128}$/;
+const userIdPattern = /^[A-Za-z0-9_-]{3,128}$/;
 const eventRetentionDays = 120;
+const defaultSettings = Object.freeze({
+  officerCanManageQueue: true,
+  officerCanModerateMembers: true,
+  officerOnlyQueueEdits: false,
+  memberAutoReconcileEnabled: true,
+});
 
 export async function onRequestGet(context) {
   const { env, params, request } = context;
@@ -10,9 +17,9 @@ export async function onRequestGet(context) {
     return textResponse("Invalid party id.", 400);
   }
 
-  const membership = await verifyMembership(request, env, partyId);
-  if (membership.response) {
-    return membership.response;
+  const access = await resolvePartySyncAccess(request, env, db, partyId);
+  if (access.response) {
+    return access.response;
   }
 
   const state = await db
@@ -54,6 +61,7 @@ export async function onRequestGet(context) {
     questQueue,
     questPool,
     recentlyCompleted,
+    management: await buildManagementState(db, env, partyId, access),
   });
 }
 
@@ -65,9 +73,9 @@ export async function onRequestPut(context) {
     return textResponse("Invalid party id.", 400);
   }
 
-  const membership = await verifyMembership(request, env, partyId);
-  if (membership.response) {
-    return membership.response;
+  const access = await resolvePartySyncAccess(request, env, db, partyId);
+  if (access.response) {
+    return access.response;
   }
 
   const contentLength = Number(request.headers.get("content-length") ?? "0");
@@ -148,9 +156,9 @@ export async function onRequestPost(context) {
     return textResponse("Invalid party id.", 400);
   }
 
-  const membership = await verifyMembership(request, env, partyId);
-  if (membership.response) {
-    return membership.response;
+  const access = await resolvePartySyncAccess(request, env, db, partyId);
+  if (access.response) {
+    return access.response;
   }
 
   const contentLength = Number(request.headers.get("content-length") ?? "0");
@@ -162,19 +170,29 @@ export async function onRequestPost(context) {
   const nowIso = new Date().toISOString();
   switch (payload?.action) {
     case "publishQuestPool":
-      return await publishQuestPool(db, partyId, membership, payload, nowIso);
+      return await publishQuestPool(db, env, partyId, access, payload, nowIso);
     case "addQueueItem":
-      return await addQueueItem(db, partyId, membership, payload, nowIso);
+      return await addQueueItem(db, env, partyId, access, payload, nowIso);
     case "toggleVote":
-      return await toggleVote(db, partyId, membership, payload, nowIso);
+      return await toggleVote(db, env, partyId, access, payload, nowIso);
     case "removeQueueItem":
-      return await removeQueueItem(db, env, partyId, membership, payload, nowIso);
+      return await removeQueueItem(db, env, partyId, access, payload, nowIso);
     case "markActive":
-      return await updateQueueStatus(db, env, partyId, membership, payload, "Active", nowIso);
+      return await updateQueueStatus(db, env, partyId, access, payload, "Active", nowIso);
     case "markCompleted":
-      return await markCompleted(db, env, partyId, membership, payload, nowIso);
+      return await markCompleted(db, env, partyId, access, payload, nowIso);
     case "autoReconcileQuest":
-      return await autoReconcileQuest(db, partyId, membership, payload, nowIso);
+      return await autoReconcileQuest(db, env, partyId, access, payload, nowIso);
+    case "assignOfficer":
+      return await assignOfficer(db, env, partyId, access, payload, nowIso);
+    case "removeOfficer":
+      return await removeOfficer(db, env, partyId, access, payload, nowIso);
+    case "kickMember":
+      return await kickMember(db, env, partyId, access, payload, nowIso);
+    case "unkickMember":
+      return await unkickMember(db, env, partyId, access, payload, nowIso);
+    case "updateSettings":
+      return await updateSettings(db, env, partyId, access, payload, nowIso);
     default:
       return textResponse("Unsupported party quest action.", 400);
   }
@@ -311,11 +329,11 @@ async function readRecentlyCompleted(db, partyId) {
   }));
 }
 
-async function publishQuestPool(db, partyId, membership, payload, nowIso) {
+async function publishQuestPool(db, env, partyId, access, payload, nowIso) {
   const entries = Array.isArray(payload.entries) ? payload.entries.filter(isValidPoolEntry) : [];
   await db
     .prepare("DELETE FROM party_quest_pool_entries WHERE party_id = ? AND owner_user_id = ?")
-    .bind(partyId, membership.userId)
+    .bind(partyId, access.userId)
     .run();
 
   if (entries.length > 0) {
@@ -342,8 +360,8 @@ async function publishQuestPool(db, partyId, membership, payload, nowIso) {
       partyId,
       entry.questKey,
       entry.questName ?? entry.questKey,
-      membership.userId,
-      entry.ownerDisplayName ?? membership.displayName ?? membership.userId,
+      access.userId,
+      entry.ownerDisplayName ?? access.displayName ?? access.userId,
       entry.questType ?? "Unknown",
       JSON.stringify(entry.rewardSummary ?? []),
       Math.max(1, Number(entry.availableCount ?? 1)),
@@ -357,11 +375,16 @@ async function publishQuestPool(db, partyId, membership, payload, nowIso) {
     questPool: await readQuestPool(db, partyId),
     questQueue: await readQuestQueue(db, partyId),
     recentlyCompleted: await readRecentlyCompleted(db, partyId),
+    management: await buildManagementState(db, env, partyId, access),
   });
 }
 
-async function addQueueItem(db, partyId, membership, payload, nowIso) {
-  if (!payload?.questKey || payload.ownerUserId !== membership.userId) {
+async function addQueueItem(db, env, partyId, access, payload, nowIso) {
+  if (!access.canEditQueue) {
+    return textResponse("Only party sync management can edit the quest queue right now.", 403);
+  }
+
+  if (!payload?.questKey || payload.ownerUserId !== access.userId) {
     return textResponse("Only a quest owner can add their quest to the queue.", 403);
   }
 
@@ -397,9 +420,9 @@ async function addQueueItem(db, partyId, membership, payload, nowIso) {
       queueItemId,
       payload.questKey,
       payload.questName ?? payload.questKey,
-      membership.userId,
-      membership.userId,
-      payload.ownerDisplayName ?? membership.displayName ?? membership.userId,
+      access.userId,
+      access.userId,
+      payload.ownerDisplayName ?? access.displayName ?? access.userId,
       nowIso,
       nowIso,
       Number(sortOrderRow?.next_sort_order ?? 1),
@@ -413,22 +436,23 @@ async function addQueueItem(db, partyId, membership, payload, nowIso) {
     questQueue: await readQuestQueue(db, partyId),
     questPool: await readQuestPool(db, partyId),
     recentlyCompleted: await readRecentlyCompleted(db, partyId),
+    management: await buildManagementState(db, env, partyId, access),
   }, 201);
 }
 
-async function toggleVote(db, partyId, membership, payload, nowIso) {
+async function toggleVote(db, env, partyId, access, payload, nowIso) {
   if (!payload?.queueItemId) {
     return textResponse("Queue item id is required.", 400);
   }
 
   const existing = await db
     .prepare("SELECT queue_item_id FROM party_quest_votes WHERE party_id = ? AND queue_item_id = ? AND voter_user_id = ?")
-    .bind(partyId, payload.queueItemId, membership.userId)
+    .bind(partyId, payload.queueItemId, access.userId)
     .first();
   if (existing) {
     await db
       .prepare("DELETE FROM party_quest_votes WHERE party_id = ? AND queue_item_id = ? AND voter_user_id = ?")
-      .bind(partyId, payload.queueItemId, membership.userId)
+      .bind(partyId, payload.queueItemId, access.userId)
       .run();
   } else {
     await db
@@ -436,7 +460,7 @@ async function toggleVote(db, partyId, membership, payload, nowIso) {
         INSERT INTO party_quest_votes (party_id, queue_item_id, voter_user_id, voter_display_name, vote_weight, created_at_utc, updated_at_utc)
         VALUES (?, ?, ?, ?, 1, ?, ?)
       `)
-      .bind(partyId, payload.queueItemId, membership.userId, payload.voterDisplayName ?? membership.displayName ?? membership.userId, nowIso, nowIso)
+      .bind(partyId, payload.queueItemId, access.userId, payload.voterDisplayName ?? access.displayName ?? access.userId, nowIso, nowIso)
       .run();
   }
 
@@ -446,10 +470,11 @@ async function toggleVote(db, partyId, membership, payload, nowIso) {
     questQueue: await readQuestQueue(db, partyId),
     questPool: await readQuestPool(db, partyId),
     recentlyCompleted: await readRecentlyCompleted(db, partyId),
+    management: await buildManagementState(db, env, partyId, access),
   });
 }
 
-async function removeQueueItem(db, env, partyId, membership, payload, nowIso) {
+async function removeQueueItem(db, env, partyId, access, payload, nowIso) {
   const item = await db
     .prepare("SELECT owner_user_id, created_by_user_id, version FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
     .bind(partyId, payload?.queueItemId)
@@ -458,11 +483,12 @@ async function removeQueueItem(db, env, partyId, membership, payload, nowIso) {
     return textResponse("Queue item was not found.", 404);
   }
 
-  const isOwner = (item.owner_user_id ?? item.created_by_user_id) === membership.userId;
-  const isLeader = membership.leaderId === membership.userId;
-  const isAdmin = isPartySyncAdmin(env, membership.userId);
-  if (!isOwner && !isLeader && !isAdmin) {
-    return textResponse("Only the quest owner or party leader can remove this queue item.", 403);
+  const ownsQuest = (item.owner_user_id ?? item.created_by_user_id) === access.userId;
+  if (!access.canEditQueue) {
+    return textResponse("Only party sync management can edit the quest queue right now.", 403);
+  }
+  if (!ownsQuest && !access.canManageQueue) {
+    return textResponse("Only the quest owner or party sync management can remove this queue item.", 403);
   }
 
   if (payload.version && Number(payload.version) !== Number(item.version ?? 1)) {
@@ -484,10 +510,11 @@ async function removeQueueItem(db, env, partyId, membership, payload, nowIso) {
     questQueue: await readQuestQueue(db, partyId),
     questPool: await readQuestPool(db, partyId),
     recentlyCompleted: await readRecentlyCompleted(db, partyId),
+    management: await buildManagementState(db, env, partyId, access),
   });
 }
 
-async function updateQueueStatus(db, env, partyId, membership, payload, status, nowIso) {
+async function updateQueueStatus(db, env, partyId, access, payload, status, nowIso) {
   const item = await db
     .prepare("SELECT owner_user_id, created_by_user_id, version FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
     .bind(partyId, payload?.queueItemId)
@@ -496,11 +523,12 @@ async function updateQueueStatus(db, env, partyId, membership, payload, status, 
     return textResponse("Queue item was not found.", 404);
   }
 
-  const isOwner = (item.owner_user_id ?? item.created_by_user_id) === membership.userId;
-  const isLeader = membership.leaderId === membership.userId;
-  const isAdmin = isPartySyncAdmin(env, membership.userId);
-  if (!isOwner && !isLeader && !isAdmin) {
-    return textResponse("Only the quest owner or party leader can update this queue item.", 403);
+  const ownsQuest = (item.owner_user_id ?? item.created_by_user_id) === access.userId;
+  if (!access.canEditQueue) {
+    return textResponse("Only party sync management can edit the quest queue right now.", 403);
+  }
+  if (!ownsQuest && !access.canManageQueue) {
+    return textResponse("Only the quest owner or party sync management can update this queue item.", 403);
   }
 
   if (payload.version && Number(payload.version) !== Number(item.version ?? 1)) {
@@ -523,11 +551,12 @@ async function updateQueueStatus(db, env, partyId, membership, payload, status, 
     questQueue: await readQuestQueue(db, partyId),
     questPool: await readQuestPool(db, partyId),
     recentlyCompleted: await readRecentlyCompleted(db, partyId),
+    management: await buildManagementState(db, env, partyId, access),
   });
 }
 
-async function markCompleted(db, env, partyId, membership, payload, nowIso) {
-  const statusResponse = await updateQueueStatus(db, env, partyId, membership, payload, "Completed", nowIso);
+async function markCompleted(db, env, partyId, access, payload, nowIso) {
+  const statusResponse = await updateQueueStatus(db, env, partyId, access, payload, "Completed", nowIso);
   if (!statusResponse.ok) {
     return statusResponse;
   }
@@ -577,10 +606,11 @@ async function markCompleted(db, env, partyId, membership, payload, nowIso) {
     questQueue: await readQuestQueue(db, partyId),
     questPool: await readQuestPool(db, partyId),
     recentlyCompleted: await readRecentlyCompleted(db, partyId),
+    management: await buildManagementState(db, env, partyId, access),
   });
 }
 
-async function autoReconcileQuest(db, partyId, membership, payload, nowIso) {
+async function autoReconcileQuest(db, env, partyId, access, payload, nowIso) {
   const transition = payload?.transition;
   const queueItemId = payload?.queueItemId;
   const questKey = payload?.questKey;
@@ -589,6 +619,9 @@ async function autoReconcileQuest(db, partyId, membership, payload, nowIso) {
   }
   if (transition !== "activate" && transition !== "complete") {
     return textResponse("Transition must be 'activate' or 'complete'.", 400);
+  }
+  if (!access.settings.memberAutoReconcileEnabled && !access.canManageQueue) {
+    return textResponse("Party sync management has disabled member queue reconciliation.", 403);
   }
 
   const item = await db
@@ -611,6 +644,7 @@ async function autoReconcileQuest(db, partyId, membership, payload, nowIso) {
         questQueue: await readQuestQueue(db, partyId),
         questPool: await readQuestPool(db, partyId),
         recentlyCompleted: await readRecentlyCompleted(db, partyId),
+        management: await buildManagementState(db, env, partyId, access),
       });
     }
     if (item.status !== "Queued" && item.status !== "Selected" && item.status !== "InviteSent") {
@@ -635,6 +669,7 @@ async function autoReconcileQuest(db, partyId, membership, payload, nowIso) {
         questQueue: await readQuestQueue(db, partyId),
         questPool: await readQuestPool(db, partyId),
         recentlyCompleted: await readRecentlyCompleted(db, partyId),
+        management: await buildManagementState(db, env, partyId, access),
       });
     }
     if (item.status !== "Active") {
@@ -675,8 +710,8 @@ async function autoReconcileQuest(db, partyId, membership, payload, nowIso) {
             payload.participantsCount ?? null,
             completedItem.reward_summary_json,
             queueItemId,
-            membership.userId,
-            payload.completedByDisplayName ?? membership.userId,
+            access.userId,
+            payload.completedByDisplayName ?? access.userId,
           )
           .run();
       } catch (insertError) {
@@ -691,7 +726,216 @@ async function autoReconcileQuest(db, partyId, membership, payload, nowIso) {
     questQueue: await readQuestQueue(db, partyId),
     questPool: await readQuestPool(db, partyId),
     recentlyCompleted: await readRecentlyCompleted(db, partyId),
+    management: await buildManagementState(db, env, partyId, access),
   });
+}
+
+async function assignOfficer(db, env, partyId, access, payload, nowIso) {
+  if (!access.canManageOfficers) {
+    return textResponse("Only the party owner or app admins can assign Officers.", 403);
+  }
+
+  const user = readTargetUser(payload);
+  if (user.response) {
+    return user.response;
+  }
+  if (access.leaderId && user.userId === access.leaderId) {
+    return textResponse("The party owner does not need the Officer role.", 409);
+  }
+
+  await db
+    .prepare(`
+      UPDATE party_sync_roles
+      SET revoked_by_user_id = ?, revoked_by_display_name = ?, revoked_at_utc = ?
+      WHERE party_id = ? AND user_id = ? AND role = 'Officer' AND revoked_at_utc IS NULL
+    `)
+    .bind(access.userId, access.displayName, nowIso, partyId, user.userId)
+    .run();
+  await db
+    .prepare(`
+      INSERT INTO party_sync_roles (
+        party_id, user_id, display_name, role,
+        assigned_by_user_id, assigned_by_display_name, assigned_at_utc
+      ) VALUES (?, ?, ?, 'Officer', ?, ?, ?)
+    `)
+    .bind(partyId, user.userId, user.displayName, access.userId, access.displayName, nowIso)
+    .run();
+
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function removeOfficer(db, env, partyId, access, payload, nowIso) {
+  if (!access.canManageOfficers) {
+    return textResponse("Only the party owner or app admins can remove Officers.", 403);
+  }
+
+  const userId = payload?.userId?.trim();
+  if (!userIdPattern.test(userId ?? "")) {
+    return textResponse("Officer user id is required.", 400);
+  }
+
+  await db
+    .prepare(`
+      UPDATE party_sync_roles
+      SET revoked_by_user_id = ?, revoked_by_display_name = ?, revoked_at_utc = ?
+      WHERE party_id = ? AND user_id = ? AND role = 'Officer' AND revoked_at_utc IS NULL
+    `)
+    .bind(access.userId, access.displayName, nowIso, partyId, userId)
+    .run();
+
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function kickMember(db, env, partyId, access, payload, nowIso) {
+  if (!access.canModerateMembers) {
+    return textResponse("Only party sync management can remove members from party sync.", 403);
+  }
+
+  const user = readTargetUser(payload);
+  if (user.response) {
+    return user.response;
+  }
+  if (user.userId === access.userId) {
+    return textResponse("You cannot remove yourself from party sync.", 409);
+  }
+  if (access.leaderId && user.userId === access.leaderId) {
+    return textResponse("Officers cannot remove the party owner from party sync.", 403);
+  }
+  if (isPartySyncAdmin(env, user.userId)) {
+    return textResponse("App admins cannot be removed from party sync.", 403);
+  }
+  if (await hasActiveOfficerRole(db, partyId, user.userId) && !access.isOwner && !access.isAdmin) {
+    return textResponse("Officers cannot remove other Officers from party sync.", 403);
+  }
+
+  await db
+    .prepare(`
+      UPDATE party_sync_kicks
+      SET revoked_by_user_id = ?, revoked_by_display_name = ?, revoked_at_utc = ?
+      WHERE party_id = ? AND user_id = ? AND revoked_at_utc IS NULL
+    `)
+    .bind(access.userId, access.displayName, nowIso, partyId, user.userId)
+    .run();
+  await db
+    .prepare(`
+      INSERT INTO party_sync_kicks (
+        party_id, user_id, display_name,
+        kicked_by_user_id, kicked_by_display_name, kicked_at_utc, reason
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    `)
+    .bind(
+      partyId,
+      user.userId,
+      user.displayName,
+      access.userId,
+      access.displayName,
+      nowIso,
+      typeof payload.reason === "string" && payload.reason.trim() ? payload.reason.trim().slice(0, 240) : null,
+    )
+    .run();
+
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function unkickMember(db, env, partyId, access, payload, nowIso) {
+  if (!access.canModerateMembers) {
+    return textResponse("Only party sync management can restore members to party sync.", 403);
+  }
+
+  const userId = payload?.userId?.trim();
+  if (!userIdPattern.test(userId ?? "")) {
+    return textResponse("Member user id is required.", 400);
+  }
+
+  await db
+    .prepare(`
+      UPDATE party_sync_kicks
+      SET revoked_by_user_id = ?, revoked_by_display_name = ?, revoked_at_utc = ?
+      WHERE party_id = ? AND user_id = ? AND revoked_at_utc IS NULL
+    `)
+    .bind(access.userId, access.displayName, nowIso, partyId, userId)
+    .run();
+
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function updateSettings(db, env, partyId, access, payload, nowIso) {
+  if (!access.canManageSettings) {
+    return textResponse("Only the party owner or app admins can update party sync settings.", 403);
+  }
+
+  const settings = normalizeSettings(payload?.settings);
+  await db
+    .prepare(`
+      INSERT INTO party_sync_settings (
+        party_id,
+        officer_can_manage_queue,
+        officer_can_moderate_members,
+        officer_only_queue_edits,
+        member_auto_reconcile_enabled,
+        updated_by_user_id,
+        updated_by_display_name,
+        updated_at_utc
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(party_id) DO UPDATE SET
+        officer_can_manage_queue = excluded.officer_can_manage_queue,
+        officer_can_moderate_members = excluded.officer_can_moderate_members,
+        officer_only_queue_edits = excluded.officer_only_queue_edits,
+        member_auto_reconcile_enabled = excluded.member_auto_reconcile_enabled,
+        updated_by_user_id = excluded.updated_by_user_id,
+        updated_by_display_name = excluded.updated_by_display_name,
+        updated_at_utc = excluded.updated_at_utc
+    `)
+    .bind(
+      partyId,
+      settings.officerCanManageQueue ? 1 : 0,
+      settings.officerCanModerateMembers ? 1 : 0,
+      settings.officerOnlyQueueEdits ? 1 : 0,
+      settings.memberAutoReconcileEnabled ? 1 : 0,
+      access.userId,
+      access.displayName,
+      nowIso,
+    )
+    .run();
+
+  access.settings = settings;
+  access.canManageQueue = access.isOwner || access.isAdmin || (access.isOfficer && settings.officerCanManageQueue);
+  access.canModerateMembers = access.isOwner || access.isAdmin || (access.isOfficer && settings.officerCanModerateMembers);
+  access.canEditQueue = access.canManageQueue || !settings.officerOnlyQueueEdits;
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function partyQuestStateResponse(db, env, partyId, access, nowIso) {
+  return jsonResponse({
+    ok: true,
+    updatedAtUtc: nowIso,
+    questQueue: await readQuestQueue(db, partyId),
+    questPool: await readQuestPool(db, partyId),
+    recentlyCompleted: await readRecentlyCompleted(db, partyId),
+    management: await buildManagementState(db, env, partyId, access),
+  });
+}
+
+function readTargetUser(payload) {
+  const userId = payload?.userId?.trim();
+  const displayName = payload?.displayName?.trim();
+  if (!userIdPattern.test(userId ?? "") || !displayName) {
+    return { response: textResponse("Target user id and display name are required.", 400) };
+  }
+
+  return {
+    userId,
+    displayName: displayName.slice(0, 120),
+  };
+}
+
+function normalizeSettings(value) {
+  return {
+    officerCanManageQueue: value?.officerCanManageQueue !== false,
+    officerCanModerateMembers: value?.officerCanModerateMembers !== false,
+    officerOnlyQueueEdits: value?.officerOnlyQueueEdits === true,
+    memberAutoReconcileEnabled: value?.memberAutoReconcileEnabled !== false,
+  };
 }
 
 function isValidPoolEntry(entry) {
@@ -721,38 +965,182 @@ function normalizePartyId(value) {
   return partyIdPattern.test(partyId ?? "") ? partyId : null;
 }
 
-async function verifyMembership(request, env, expectedPartyId) {
-  const userId = request.headers.get("x-api-user")?.trim();
-  const apiToken = request.headers.get("x-api-key")?.trim();
-  if (!userId || !apiToken) {
-    return { response: textResponse("Habitica credentials are required for shared party sync.", 401) };
+async function resolvePartySyncAccess(request, env, db, expectedPartyId) {
+  const proof = readAccessProof(request, expectedPartyId);
+  if (proof.response) {
+    return proof;
   }
 
-  const response = await fetch("https://habitica.com/api/v3/groups/party", {
-    headers: {
-      "accept": "application/json",
-      "x-api-user": userId,
-      "x-api-key": apiToken,
-      "x-client": env.HABITICA_X_CLIENT_HEADER || "habitica-tool-author-habitica-tool",
-    },
-  });
-  const responseText = await response.text();
-
-  if (!response.ok) {
-    return { response: textResponse(extractErrorMessage(responseText, "Party membership verification failed."), response.status) };
+  const settings = await readPartySyncSettings(db, expectedPartyId);
+  const isAdmin = isPartySyncAdmin(env, proof.userId);
+  const isOwner = !!proof.leaderId && proof.leaderId === proof.userId;
+  const isOfficer = await hasActiveOfficerRole(db, expectedPartyId, proof.userId);
+  const isKicked = await hasActiveKick(db, expectedPartyId, proof.userId);
+  if (isKicked && !isOwner && !isAdmin) {
+    return { response: textResponse("This user was removed from party sync by party management.", 403) };
   }
 
-  const document = JSON.parse(responseText);
-  const actualPartyId = document?.data?._id ?? null;
-  if (!actualPartyId || actualPartyId !== expectedPartyId) {
-    return { response: textResponse("Current Habitica credentials are not a member of this party.", 403) };
+  const canManageSettings = isOwner || isAdmin;
+  const canManageOfficers = isOwner || isAdmin;
+  const canManageQueue = isOwner || isAdmin || (isOfficer && settings.officerCanManageQueue);
+  const canModerateMembers = isOwner || isAdmin || (isOfficer && settings.officerCanModerateMembers);
+  const canEditQueue = canManageQueue || !settings.officerOnlyQueueEdits;
+  return {
+    ...proof,
+    isAdmin,
+    isOwner,
+    isOfficer,
+    isKicked,
+    settings,
+    canManageSettings,
+    canManageOfficers,
+    canManageQueue,
+    canModerateMembers,
+    canEditQueue,
+  };
+}
+
+function readAccessProof(request, expectedPartyId) {
+  const proofVersion = request.headers.get("x-party-sync-proof-version")?.trim() || "local-claim-v1";
+  if (proofVersion !== "local-claim-v1") {
+    return { response: textResponse("Unsupported party-sync access proof.", 401) };
+  }
+
+  const partyId = request.headers.get("x-party-sync-party-id")?.trim();
+  const userId = request.headers.get("x-party-sync-user-id")?.trim();
+  const displayName = request.headers.get("x-party-sync-display-name")?.trim();
+  const leaderId = request.headers.get("x-party-sync-leader-id")?.trim() || null;
+  if (partyId !== expectedPartyId) {
+    return { response: textResponse("Party-sync claim does not match the requested party.", 403) };
+  }
+  if (!userIdPattern.test(userId ?? "") || !displayName || displayName.length > 120) {
+    return { response: textResponse("Invalid local party-sync claim.", 401) };
+  }
+  if (leaderId && !userIdPattern.test(leaderId)) {
+    return { response: textResponse("Invalid local party-sync leader claim.", 401) };
   }
 
   return {
+    proofVersion,
+    partyId,
     userId,
-    displayName: document?.data?.members?.[userId]?.profile?.name ?? null,
-    leaderId: document?.data?.leader?._id ?? document?.data?.leader ?? null,
+    displayName,
+    leaderId,
   };
+}
+
+async function readPartySyncSettings(db, partyId) {
+  const row = await db
+    .prepare(`
+      SELECT officer_can_manage_queue, officer_can_moderate_members, officer_only_queue_edits, member_auto_reconcile_enabled
+      FROM party_sync_settings
+      WHERE party_id = ?
+    `)
+    .bind(partyId)
+    .first();
+  if (!row) {
+    return { ...defaultSettings };
+  }
+
+  return {
+    officerCanManageQueue: Number(row.officer_can_manage_queue ?? 1) === 1,
+    officerCanModerateMembers: Number(row.officer_can_moderate_members ?? 1) === 1,
+    officerOnlyQueueEdits: Number(row.officer_only_queue_edits ?? 0) === 1,
+    memberAutoReconcileEnabled: Number(row.member_auto_reconcile_enabled ?? 1) === 1,
+  };
+}
+
+async function hasActiveOfficerRole(db, partyId, userId) {
+  const row = await db
+    .prepare(`
+      SELECT user_id
+      FROM party_sync_roles
+      WHERE party_id = ? AND user_id = ? AND role = 'Officer' AND revoked_at_utc IS NULL
+      LIMIT 1
+    `)
+    .bind(partyId, userId)
+    .first();
+  return !!row;
+}
+
+async function hasActiveKick(db, partyId, userId) {
+  const row = await db
+    .prepare(`
+      SELECT user_id
+      FROM party_sync_kicks
+      WHERE party_id = ? AND user_id = ? AND revoked_at_utc IS NULL
+      LIMIT 1
+    `)
+    .bind(partyId, userId)
+    .first();
+  return !!row;
+}
+
+async function buildManagementState(db, env, partyId, access) {
+  const settings = access?.settings ?? await readPartySyncSettings(db, partyId);
+  const officers = await readActiveOfficers(db, partyId);
+  const appAdmins = getPartySyncAdminIds(env).map(userId => ({
+    userId,
+    displayName: userId,
+  }));
+  const currentUserCanViewManagement = access.isOwner || access.isAdmin || access.isOfficer;
+  const kicks = currentUserCanViewManagement ? await readActiveKicks(db, partyId) : [];
+
+  return {
+    ownerUserId: access.leaderId ?? null,
+    ownerDisplayName: access.isOwner ? access.displayName : access.leaderId ?? null,
+    appAdmins,
+    officers,
+    kicks,
+    settings,
+    currentUserIsOwner: !!access.isOwner,
+    currentUserIsAdmin: !!access.isAdmin,
+    currentUserIsOfficer: !!access.isOfficer,
+    currentUserCanManageSettings: !!access.canManageSettings,
+    currentUserCanManageOfficers: !!access.canManageOfficers,
+    currentUserCanManageQueue: !!access.canManageQueue,
+    currentUserCanModerateMembers: !!access.canModerateMembers,
+    currentUserIsKicked: !!access.isKicked,
+  };
+}
+
+async function readActiveOfficers(db, partyId) {
+  const result = await db
+    .prepare(`
+      SELECT user_id, display_name, assigned_by_user_id, assigned_by_display_name, assigned_at_utc
+      FROM party_sync_roles
+      WHERE party_id = ? AND role = 'Officer' AND revoked_at_utc IS NULL
+      ORDER BY display_name ASC, user_id ASC
+    `)
+    .bind(partyId)
+    .all();
+  return (result.results ?? []).map(row => ({
+    userId: row.user_id,
+    displayName: row.display_name ?? row.user_id,
+    assignedByUserId: row.assigned_by_user_id,
+    assignedByDisplayName: row.assigned_by_display_name,
+    assignedAtUtc: row.assigned_at_utc,
+  }));
+}
+
+async function readActiveKicks(db, partyId) {
+  const result = await db
+    .prepare(`
+      SELECT user_id, display_name, kicked_by_user_id, kicked_by_display_name, kicked_at_utc, reason
+      FROM party_sync_kicks
+      WHERE party_id = ? AND revoked_at_utc IS NULL
+      ORDER BY kicked_at_utc DESC, display_name ASC
+    `)
+    .bind(partyId)
+    .all();
+  return (result.results ?? []).map(row => ({
+    userId: row.user_id,
+    displayName: row.display_name ?? row.user_id,
+    kickedByUserId: row.kicked_by_user_id,
+    kickedByDisplayName: row.kicked_by_display_name,
+    kickedAtUtc: row.kicked_at_utc,
+    reason: row.reason,
+  }));
 }
 
 function isValidPayload(value) {
@@ -785,21 +1173,16 @@ function isPartySyncAdmin(env, userId) {
     return false;
   }
 
+  return getPartySyncAdminIds(env)
+    .some(value => value.toLowerCase() === userId.toLowerCase());
+}
+
+function getPartySyncAdminIds(env) {
   const configured = env.HABITICA_PARTY_ADMIN_USER_IDS || env.PARTY_SYNC_ADMIN_USER_IDS || "";
   return configured
     .split(",")
     .map(value => value.trim())
-    .filter(Boolean)
-    .some(value => value.toLowerCase() === userId.toLowerCase());
-}
-
-function extractErrorMessage(responseText, fallback) {
-  try {
-    const parsed = JSON.parse(responseText);
-    return parsed?.message || fallback;
-  } catch {
-    return responseText || fallback;
-  }
+    .filter(Boolean);
 }
 
 function jsonResponse(value, status = 200) {
@@ -821,3 +1204,8 @@ function textResponse(message, status) {
     },
   });
 }
+
+export const partySyncAccessTestHooks = {
+  normalizeSettings,
+  readAccessProof,
+};

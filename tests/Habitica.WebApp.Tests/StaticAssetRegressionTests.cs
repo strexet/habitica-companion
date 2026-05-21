@@ -69,6 +69,25 @@ public sealed class StaticAssetRegressionTests
         Assert.DoesNotContain("service-worker.js", indexHtmlContents);
     }
 
+    [Fact]
+    public void Party_sync_module_does_not_send_habitica_api_token()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var modulePath = Path.Combine(
+            repositoryRoot,
+            "src",
+            "Habitica.WebApp",
+            "wwwroot",
+            "js",
+            "sync",
+            "cloudflarePartySync.js");
+        var moduleContents = File.ReadAllText(modulePath);
+
+        Assert.DoesNotContain("apiToken", moduleContents);
+        Assert.DoesNotContain("x-api-key", moduleContents);
+        Assert.DoesNotContain("x-api-user", moduleContents);
+    }
+
     private static string FindRepositoryRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

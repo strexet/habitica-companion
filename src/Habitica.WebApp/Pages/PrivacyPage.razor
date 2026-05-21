@@ -7,7 +7,7 @@
         <p class="section-label">Privacy</p>
         <h1>Data handling</h1>
         <p class="panel-copy">
-            Habitica credentials stay in this browser unless they are needed to verify your party membership with Habitica. Exports and private device sync do not include your API token.
+            Habitica credentials stay in this browser and are sent only to Habitica. Exports, private device sync, and shared party sync do not include your API token.
         </p>
 
         <div class="settings-grid">
@@ -18,7 +18,7 @@
 
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Habitica credentials</h2>
-                <p>Credentials are used to load your Habitica data and protect private device sync. They are not included in exports. Party sync verifies membership before reading or writing shared party CRON data.</p>
+                <p>Credentials are used to load your Habitica data and protect private device sync. They are not included in exports. Party sync uses a local party claim, so the API token is not sent to Cloudflare party-sync endpoints.</p>
             </MudPaper>
 
             <MudPaper Class="card-surface action-card" Elevation="0">
@@ -28,7 +28,7 @@
 
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Private sync</h2>
-                <p>Private device sync stores encrypted data. Shared party sync stores party CRON history and derived party state after membership verification. Hosting providers may process request details such as IP address and timestamps for security.</p>
+                <p>Private device sync stores encrypted data. Shared party sync stores party CRON history, derived party state, roles, settings, and kick records. Local party claims are token-private but trust-based. Hosting providers may process request details such as IP address and timestamps for security.</p>
             </MudPaper>
         </div>
     </section>

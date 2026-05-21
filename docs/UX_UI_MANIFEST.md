@@ -204,6 +204,9 @@ Files: `src/Habitica.WebApp/Pages/PartyPage.razor`
 Current pattern:
 
 - Party overview cards, quest panel, quest queue workspace, member summaries, progress metrics, CRON rhythm/timeline visualization, and refresh actions.
+- Party-sync role strip appears near the party notes, with owner/app-admin/Officer visibility before queue decisions.
+- Owner/app-admin party-sync settings are a compact operational panel, and kick records stay at the bottom so moderation history does not interrupt quest review.
+- Officer assignment and kick/unkick controls live in expanded member details, close to the affected member identity.
 - Member cards show subtle HP/MP chips near display name/class.
 - Member sorting includes Low HP and Low MP modes; those sort current values ascending so the lowest member appears first, with unknown values last.
 
@@ -219,6 +222,7 @@ Drift:
 
 - Party pages are the densest part of the app. The number of cards, pills, definition lists, and nested panels can make hierarchy hard to scan.
 - Quest queue actions and read-only quest state share similar visual weight.
+- Management controls add more density; keep them compact and avoid turning the page into a generic admin console.
 - Some table-style member/stat areas still depend on horizontal scrolling.
 
 Improvement:

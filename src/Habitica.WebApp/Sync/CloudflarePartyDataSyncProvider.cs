@@ -1,4 +1,3 @@
-using Habitica.Domain.Auth;
 using Habitica.Domain.Party;
 using Microsoft.JSInterop;
 
@@ -17,22 +16,18 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
     }
 
     public async Task<RemotePartyDataSnapshot?> DownloadAsync(
-        HabiticaCredentials credentials,
-        string partyId,
+        PartySyncClaim claim,
         CancellationToken cancellationToken)
     {
         var module = await _moduleTask.Value;
         return await module.InvokeAsync<RemotePartyDataSnapshot?>(
             "downloadPartyData",
             cancellationToken,
-            credentials.UserId,
-            credentials.ApiToken,
-            partyId);
+            claim);
     }
 
     public async Task UploadAsync(
-        HabiticaCredentials credentials,
-        string partyId,
+        PartySyncClaim claim,
         string partySnapshotJson,
         string cronHistoryJson,
         CancellationToken cancellationToken)
@@ -41,16 +36,13 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
         await module.InvokeVoidAsync(
             "uploadPartyData",
             cancellationToken,
-            credentials.UserId,
-            credentials.ApiToken,
-            partyId,
+            claim,
             partySnapshotJson,
             cronHistoryJson);
     }
 
     public async Task<RemotePartyQuestState> PublishQuestPoolAsync(
-        HabiticaCredentials credentials,
-        string partyId,
+        PartySyncClaim claim,
         IReadOnlyList<PartyQuestPoolEntry> entries,
         CancellationToken cancellationToken)
     {
@@ -58,15 +50,12 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
         return await module.InvokeAsync<RemotePartyQuestState>(
             "publishQuestPool",
             cancellationToken,
-            credentials.UserId,
-            credentials.ApiToken,
-            partyId,
+            claim,
             entries);
     }
 
     public async Task<RemotePartyQuestState> AddQuestQueueItemAsync(
-        HabiticaCredentials credentials,
-        string partyId,
+        PartySyncClaim claim,
         PartyQuestPoolEntry entry,
         CancellationToken cancellationToken)
     {
@@ -74,15 +63,12 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
         return await module.InvokeAsync<RemotePartyQuestState>(
             "addQuestQueueItem",
             cancellationToken,
-            credentials.UserId,
-            credentials.ApiToken,
-            partyId,
+            claim,
             entry);
     }
 
     public async Task<RemotePartyQuestState> ToggleQuestVoteAsync(
-        HabiticaCredentials credentials,
-        string partyId,
+        PartySyncClaim claim,
         string queueItemId,
         string voterDisplayName,
         CancellationToken cancellationToken)
@@ -91,16 +77,13 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
         return await module.InvokeAsync<RemotePartyQuestState>(
             "toggleQuestVote",
             cancellationToken,
-            credentials.UserId,
-            credentials.ApiToken,
-            partyId,
+            claim,
             queueItemId,
             voterDisplayName);
     }
 
     public async Task<RemotePartyQuestState> RemoveQuestQueueItemAsync(
-        HabiticaCredentials credentials,
-        string partyId,
+        PartySyncClaim claim,
         string queueItemId,
         int version,
         CancellationToken cancellationToken)
@@ -109,16 +92,13 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
         return await module.InvokeAsync<RemotePartyQuestState>(
             "removeQuestQueueItem",
             cancellationToken,
-            credentials.UserId,
-            credentials.ApiToken,
-            partyId,
+            claim,
             queueItemId,
             version);
     }
 
     public async Task<RemotePartyQuestState> MarkQuestCompletedAsync(
-        HabiticaCredentials credentials,
-        string partyId,
+        PartySyncClaim claim,
         string queueItemId,
         int version,
         int? participantsCount,
@@ -128,17 +108,14 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
         return await module.InvokeAsync<RemotePartyQuestState>(
             "markQuestCompleted",
             cancellationToken,
-            credentials.UserId,
-            credentials.ApiToken,
-            partyId,
+            claim,
             queueItemId,
             version,
             participantsCount);
     }
 
     public async Task<RemotePartyQuestState> ReconcileQuestLifecycleAsync(
-        HabiticaCredentials credentials,
-        string partyId,
+        PartySyncClaim claim,
         string queueItemId,
         string questKey,
         string transition,
@@ -150,14 +127,83 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
         return await module.InvokeAsync<RemotePartyQuestState>(
             "reconcileQuestLifecycle",
             cancellationToken,
-            credentials.UserId,
-            credentials.ApiToken,
-            partyId,
+            claim,
             queueItemId,
             questKey,
             transition,
             participantsCount,
             completedByDisplayName);
+    }
+
+    public async Task<RemotePartyQuestState> AssignOfficerAsync(
+        PartySyncClaim claim,
+        string userId,
+        string displayName,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "assignOfficer",
+            cancellationToken,
+            claim,
+            userId,
+            displayName);
+    }
+
+    public async Task<RemotePartyQuestState> RemoveOfficerAsync(
+        PartySyncClaim claim,
+        string userId,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "removeOfficer",
+            cancellationToken,
+            claim,
+            userId);
+    }
+
+    public async Task<RemotePartyQuestState> KickMemberAsync(
+        PartySyncClaim claim,
+        string userId,
+        string displayName,
+        string? reason,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "kickMember",
+            cancellationToken,
+            claim,
+            userId,
+            displayName,
+            reason);
+    }
+
+    public async Task<RemotePartyQuestState> UnkickMemberAsync(
+        PartySyncClaim claim,
+        string userId,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "unkickMember",
+            cancellationToken,
+            claim,
+            userId);
+    }
+
+    public async Task<RemotePartyQuestState> UpdateSettingsAsync(
+        PartySyncClaim claim,
+        PartySyncSettings settings,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "updatePartySyncSettings",
+            cancellationToken,
+            claim,
+            settings);
     }
 
     public async ValueTask DisposeAsync()

@@ -11,7 +11,7 @@ Current status: web-app MVP implemented and expanding into guarded actions. The 
 - cached account dashboard with class, stat, companion, and inventory summary cards
 - Dashboard `Start New Day` action when the current user needs Cron
 - inventory and equipment explorer with slot-grouped owned gear keys, battle presets, highest-stat highlights, and guarded equip actions
-- party overview with cached quest progress, member CRON timing, shared quest pool, shared queue voting, and recently completed quest history
+- party overview with cached quest progress, member CRON timing, shared quest pool, shared queue voting, recently completed quest history, tokenless party-sync claims, Officers, settings, and kick management
 - spells workspace with target selection, approximate effect previews, dynamic gear recommendations, sequential casting, and Cron-sensitive buff warning
 - diagnostics workspace with safe checks, guarded reversible tests, curated API presets, and a shared redacted log console
 - local-first task snapshot storage through IndexedDB with a Dexie-backed JS module
@@ -24,7 +24,6 @@ Current status: web-app MVP implemented and expanding into guarded actions. The 
 ## Planned feature areas
 
 - richer quest explorer and party member views
-- tokenless party-sync membership proof
 - dashboard pending damage estimates and health-potion helper
 - task history statistics and charts
 - gear optimization

@@ -15,7 +15,7 @@ Implemented items are removed instead of kept as strikethrough. Current implemen
 
 ### Party Page Quest Improvements
 
-- Replace party-sync credential-header membership verification with a tokenless or signed membership proof so Habitica API tokens are never sent to Cloudflare party-sync endpoints.
+- Add tokenized manager-invite party-sync proofs if local claims become too easy to abuse in real parties. The current access path is isolated behind `readAccessProof()` / `resolvePartySyncAccess()` so a future proof version can replace `local-claim-v1`.
 - Fill remaining active quest card metadata and actions: quest owner or starter, started date, details view, participants view, and reward/details affordances when the data is available.
 - Add an owner readiness mutation flow. The database field and read-only display exist, but the shared queue UI does not expose a toggle action yet.
 - Add party leader queue controls for manual pinning, force-selecting, conflict resolution, and locking queue changes during selection.

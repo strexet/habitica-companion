@@ -1,6 +1,7 @@
 using Habitica.Application.Diagnostics;
 using Habitica.Application.Inventory;
 using Habitica.Application.Sync;
+using Habitica.Domain.Party;
 using Habitica.Domain.User;
 
 namespace Habitica.WebApp.State;
@@ -82,4 +83,14 @@ public interface IAppSessionController
     Task<PartyQuestActionResult> RemovePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default);
 
     Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default);
+
+    Task<PartyQuestActionResult> AssignPartySyncOfficerAsync(string userId, string displayName, CancellationToken cancellationToken = default);
+
+    Task<PartyQuestActionResult> RemovePartySyncOfficerAsync(string userId, CancellationToken cancellationToken = default);
+
+    Task<PartyQuestActionResult> KickPartySyncMemberAsync(string userId, string displayName, string? reason, CancellationToken cancellationToken = default);
+
+    Task<PartyQuestActionResult> UnkickPartySyncMemberAsync(string userId, CancellationToken cancellationToken = default);
+
+    Task<PartyQuestActionResult> UpdatePartySyncSettingsAsync(PartySyncSettings settings, CancellationToken cancellationToken = default);
 }

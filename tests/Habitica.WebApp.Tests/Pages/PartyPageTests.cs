@@ -618,6 +618,68 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("Pending party damage", cut.Markup);
     }
 
+    [Fact]
+    public void Renders_party_sync_roles_settings_and_kick_list_for_management()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                UserId: "owner-id",
+                UserSnapshot: CreateSnapshot(),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                PartySnapshot: new PartySnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                    "party-123",
+                    "Night Owls",
+                    "Quest-focused party",
+                    3,
+                    null,
+                    new[]
+                    {
+                        new PartyMemberSnapshot("owner-id", "Mage Tester", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
+                        new PartyMemberSnapshot("officer-id", "Alpha", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
+                        new PartyMemberSnapshot("kicked-id", "Beta", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
+                    },
+                    leaderId: "owner-id"),
+                PartyFreshness: SnapshotFreshnessState.Fresh,
+                PartyQuestQueue: new PartyQuestQueueSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:30:00Z"),
+                    Array.Empty<PartyQuestPoolEntry>(),
+                    Array.Empty<PartyQuestQueueEntry>(),
+                    Array.Empty<PartyRecentlyCompletedQuest>(),
+                    new PartySyncManagementState(
+                        "owner-id",
+                        "Mage Tester",
+                        new[] { new PartySyncParticipant("admin-id", "Admin") },
+                        new[] { new PartySyncOfficer("officer-id", "Alpha", DateTimeOffset.Parse("2026-04-26T09:20:00Z"), "owner-id", "Mage Tester") },
+                        new[] { new PartySyncKick("kicked-id", "Beta", DateTimeOffset.Parse("2026-04-26T09:25:00Z"), "owner-id", "Mage Tester", null) },
+                        PartySyncSettings.Default,
+                        CurrentUserIsOwner: true,
+                        CurrentUserIsAdmin: false,
+                        CurrentUserIsOfficer: false,
+                        CurrentUserCanManageSettings: true,
+                        CurrentUserCanManageOfficers: true,
+                        CurrentUserCanManageQueue: true,
+                        CurrentUserCanModerateMembers: true,
+                        CurrentUserIsKicked: false)))));
+
+        var cut = Render<PartyPage>();
+
+        Assert.Contains("Owner, admins, and Officers", cut.Markup);
+        Assert.Contains("Party sync settings", cut.Markup);
+        Assert.Contains("Officers can manage queue entries", cut.Markup);
+        Assert.Contains("Kicked users", cut.Markup);
+        Assert.Contains("Beta", cut.Markup);
+    }
+
     private static UserSnapshot CreateSnapshot()
     {
         return new UserSnapshot(

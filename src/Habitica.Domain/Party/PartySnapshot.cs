@@ -78,7 +78,75 @@ public sealed record PartyQuestQueueSnapshot(
     DateTimeOffset? UpdatedAtUtc,
     IReadOnlyList<PartyQuestPoolEntry> QuestPool,
     IReadOnlyList<PartyQuestQueueEntry> Queue,
-    IReadOnlyList<PartyRecentlyCompletedQuest> RecentlyCompleted);
+    IReadOnlyList<PartyRecentlyCompletedQuest> RecentlyCompleted,
+    PartySyncManagementState? Management = null);
+
+public sealed record PartySyncManagementState(
+    string? OwnerUserId,
+    string? OwnerDisplayName,
+    IReadOnlyList<PartySyncParticipant> AppAdmins,
+    IReadOnlyList<PartySyncOfficer> Officers,
+    IReadOnlyList<PartySyncKick> Kicks,
+    PartySyncSettings Settings,
+    bool CurrentUserIsOwner,
+    bool CurrentUserIsAdmin,
+    bool CurrentUserIsOfficer,
+    bool CurrentUserCanManageSettings,
+    bool CurrentUserCanManageOfficers,
+    bool CurrentUserCanManageQueue,
+    bool CurrentUserCanModerateMembers,
+    bool CurrentUserIsKicked)
+{
+    public bool CurrentUserCanViewManagement => CurrentUserIsOwner || CurrentUserIsAdmin || CurrentUserIsOfficer;
+
+    public static PartySyncManagementState Empty { get; } = new(
+        null,
+        null,
+        Array.Empty<PartySyncParticipant>(),
+        Array.Empty<PartySyncOfficer>(),
+        Array.Empty<PartySyncKick>(),
+        PartySyncSettings.Default,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false);
+}
+
+public sealed record PartySyncParticipant(
+    string UserId,
+    string DisplayName);
+
+public sealed record PartySyncOfficer(
+    string UserId,
+    string DisplayName,
+    DateTimeOffset AssignedAtUtc,
+    string AssignedByUserId,
+    string? AssignedByDisplayName);
+
+public sealed record PartySyncKick(
+    string UserId,
+    string DisplayName,
+    DateTimeOffset KickedAtUtc,
+    string KickedByUserId,
+    string? KickedByDisplayName,
+    string? Reason);
+
+public sealed record PartySyncSettings(
+    bool OfficerCanManageQueue,
+    bool OfficerCanModerateMembers,
+    bool OfficerOnlyQueueEdits,
+    bool MemberAutoReconcileEnabled)
+{
+    public static PartySyncSettings Default { get; } = new(
+        OfficerCanManageQueue: true,
+        OfficerCanModerateMembers: true,
+        OfficerOnlyQueueEdits: false,
+        MemberAutoReconcileEnabled: true);
+}
 
 public sealed record PartyQuestPoolEntry(
     string PartyId,

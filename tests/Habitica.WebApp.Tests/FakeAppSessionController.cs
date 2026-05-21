@@ -4,6 +4,7 @@ using Habitica.Application.Diagnostics;
 using Habitica.Application.Inventory;
 using Habitica.Application.Sync;
 using Habitica.Domain.Diagnostics;
+using Habitica.Domain.Party;
 using Habitica.Domain.User;
 
 namespace Habitica.WebApp.Tests;
@@ -246,6 +247,31 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(PartyQuestActionResult.Success("Quest marked completed."));
+    }
+
+    public Task<PartyQuestActionResult> AssignPartySyncOfficerAsync(string userId, string displayName, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartyQuestActionResult.Success("Officer assigned."));
+    }
+
+    public Task<PartyQuestActionResult> RemovePartySyncOfficerAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartyQuestActionResult.Success("Officer removed."));
+    }
+
+    public Task<PartyQuestActionResult> KickPartySyncMemberAsync(string userId, string displayName, string? reason, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartyQuestActionResult.Success("Member removed from party sync."));
+    }
+
+    public Task<PartyQuestActionResult> UnkickPartySyncMemberAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartyQuestActionResult.Success("Member restored to party sync."));
+    }
+
+    public Task<PartyQuestActionResult> UpdatePartySyncSettingsAsync(PartySyncSettings settings, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartyQuestActionResult.Success("Party sync settings updated."));
     }
 
     public Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default)

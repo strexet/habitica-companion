@@ -601,22 +601,24 @@ public sealed class AppSessionControllerTests
 
         public string? UploadedCronHistoryJson { get; private set; }
 
+        public PartySyncClaim? LastClaim { get; private set; }
+
         public Task<RemotePartyDataSnapshot?> DownloadAsync(
-            HabiticaCredentials credentials,
-            string partyId,
+            PartySyncClaim claim,
             CancellationToken cancellationToken)
         {
+            LastClaim = claim;
             DownloadCount++;
             return Task.FromResult(Snapshot);
         }
 
         public Task UploadAsync(
-            HabiticaCredentials credentials,
-            string partyId,
+            PartySyncClaim claim,
             string partySnapshotJson,
             string cronHistoryJson,
             CancellationToken cancellationToken)
         {
+            LastClaim = claim;
             UploadCount++;
             UploadedPartySnapshotJson = partySnapshotJson;
             UploadedCronHistoryJson = cronHistoryJson;
@@ -624,26 +626,26 @@ public sealed class AppSessionControllerTests
         }
 
         public Task<RemotePartyQuestState> PublishQuestPoolAsync(
-            HabiticaCredentials credentials,
-            string partyId,
+            PartySyncClaim claim,
             IReadOnlyList<PartyQuestPoolEntry> entries,
             CancellationToken cancellationToken)
         {
+            LastClaim = claim;
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow, QuestPool: entries));
         }
 
         public Task<RemotePartyQuestState> AddQuestQueueItemAsync(
-            HabiticaCredentials credentials,
-            string partyId,
+            PartySyncClaim claim,
             PartyQuestPoolEntry entry,
             CancellationToken cancellationToken)
         {
+            LastClaim = claim;
             var queueEntry = new PartyQuestQueueEntry(
                 Guid.NewGuid().ToString("N"),
-                partyId,
+                claim.PartyId,
                 entry.QuestKey,
                 entry.QuestName,
-                credentials.UserId,
+                claim.UserId,
                 entry.OwnerDisplayName,
                 PartyQuestQueueStatus.Queued,
                 DateTimeOffset.UtcNow,
@@ -658,39 +660,38 @@ public sealed class AppSessionControllerTests
         }
 
         public Task<RemotePartyQuestState> ToggleQuestVoteAsync(
-            HabiticaCredentials credentials,
-            string partyId,
+            PartySyncClaim claim,
             string queueItemId,
             string voterDisplayName,
             CancellationToken cancellationToken)
         {
+            LastClaim = claim;
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
         }
 
         public Task<RemotePartyQuestState> RemoveQuestQueueItemAsync(
-            HabiticaCredentials credentials,
-            string partyId,
+            PartySyncClaim claim,
             string queueItemId,
             int version,
             CancellationToken cancellationToken)
         {
+            LastClaim = claim;
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
         }
 
         public Task<RemotePartyQuestState> MarkQuestCompletedAsync(
-            HabiticaCredentials credentials,
-            string partyId,
+            PartySyncClaim claim,
             string queueItemId,
             int version,
             int? participantsCount,
             CancellationToken cancellationToken)
         {
+            LastClaim = claim;
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
         }
 
         public Task<RemotePartyQuestState> ReconcileQuestLifecycleAsync(
-            HabiticaCredentials credentials,
-            string partyId,
+            PartySyncClaim claim,
             string queueItemId,
             string questKey,
             string transition,
@@ -698,6 +699,55 @@ public sealed class AppSessionControllerTests
             string? completedByDisplayName,
             CancellationToken cancellationToken)
         {
+            LastClaim = claim;
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyQuestState> AssignOfficerAsync(
+            PartySyncClaim claim,
+            string userId,
+            string displayName,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyQuestState> RemoveOfficerAsync(
+            PartySyncClaim claim,
+            string userId,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyQuestState> KickMemberAsync(
+            PartySyncClaim claim,
+            string userId,
+            string displayName,
+            string? reason,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyQuestState> UnkickMemberAsync(
+            PartySyncClaim claim,
+            string userId,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyQuestState> UpdateSettingsAsync(
+            PartySyncClaim claim,
+            PartySyncSettings settings,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
         }
     }

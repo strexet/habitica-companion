@@ -38,6 +38,7 @@
         var snapshot = SessionController.State.PartySnapshot;
         var members = GetDisplayMembers(snapshot);
         var quest = snapshot.Quest;
+        var management = SessionController.State.PartyQuestQueue?.Management;
 
         <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.PartyFreshness)" Variant="Variant.Filled">
             @GetFreshnessLabel(SessionController.State.PartyFreshness)
@@ -207,6 +208,90 @@
                 }
             </article>
         </section>
+
+        @if (SessionController.State.IsPartySyncEnabled)
+        {
+            <section class="card-surface dashboard-panel party-management-summary">
+                <div class="party-section-head">
+                    <div>
+                        <p class="section-label">Party sync roles</p>
+                        <h2>Owner, admins, and Officers</h2>
+                    </div>
+                    <span class="ui-pill count-pill">@FormatManagementRoleCount(management)</span>
+                </div>
+
+                <div class="party-management-role-grid">
+                    <article class="party-management-role-group">
+                        <span class="dashboard-stat-label">Owner</span>
+                        <strong>@ResolveDisplayName(management?.OwnerUserId ?? snapshot.LeaderId)</strong>
+                    </article>
+                    <article class="party-management-role-group">
+                        <span class="dashboard-stat-label">App admins</span>
+                        <div class="party-management-chip-row">
+                            @foreach (var admin in management?.AppAdmins ?? Array.Empty<PartySyncParticipant>())
+                            {
+                                <span class="ui-pill state-pill">@ResolveDisplayName(admin.UserId, admin.DisplayName)</span>
+                            }
+                            @if (management?.AppAdmins.Count is null or 0)
+                            {
+                                <span class="dashboard-stat-note">No app admins reported by party sync.</span>
+                            }
+                        </div>
+                    </article>
+                    <article class="party-management-role-group">
+                        <span class="dashboard-stat-label">Officers</span>
+                        <div class="party-management-chip-row">
+                            @foreach (var officer in management?.Officers ?? Array.Empty<PartySyncOfficer>())
+                            {
+                                <span class="ui-pill state-pill">@ResolveDisplayName(officer.UserId, officer.DisplayName)</span>
+                            }
+                            @if (management?.Officers.Count is null or 0)
+                            {
+                                <span class="dashboard-stat-note">No Officers assigned.</span>
+                            }
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            @if (management?.CurrentUserCanManageSettings == true)
+            {
+                <section class="card-surface dashboard-panel party-sync-settings-panel">
+                    <div class="party-section-head">
+                        <div>
+                            <p class="section-label">Party sync settings</p>
+                            <h2>Shared queue controls</h2>
+                        </div>
+                    </div>
+                    <div class="party-sync-settings-grid">
+                        <label class="checkbox-row">
+                            <input checked="@management.Settings.OfficerCanManageQueue"
+                                   type="checkbox"
+                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanManageQueue = IsChecked(eventArgs) }))" />
+                            <span>Officers can manage queue entries</span>
+                        </label>
+                        <label class="checkbox-row">
+                            <input checked="@management.Settings.OfficerCanModerateMembers"
+                                   type="checkbox"
+                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanModerateMembers = IsChecked(eventArgs) }))" />
+                            <span>Officers can kick and unkick members</span>
+                        </label>
+                        <label class="checkbox-row">
+                            <input checked="@management.Settings.OfficerOnlyQueueEdits"
+                                   type="checkbox"
+                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerOnlyQueueEdits = IsChecked(eventArgs) }))" />
+                            <span>Only management can edit the queue</span>
+                        </label>
+                        <label class="checkbox-row">
+                            <input checked="@management.Settings.MemberAutoReconcileEnabled"
+                                   type="checkbox"
+                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { MemberAutoReconcileEnabled = IsChecked(eventArgs) }))" />
+                            <span>Members can auto-reconcile quest lifecycle</span>
+                        </label>
+                    </div>
+                </section>
+            }
+        }
 
         @if (!SessionController.State.IsPartySyncEnabled)
         {
@@ -554,6 +639,42 @@
                                         </div>
                                     </dl>
 
+                                    @if (management?.CurrentUserCanViewManagement == true)
+                                    {
+                                        <div class="party-member-management">
+                                            <div>
+                                                <span class="dashboard-stat-label">Party sync management</span>
+                                                <strong>@GetMemberManagementRoleLabel(member.MemberId, management)</strong>
+                                            </div>
+                                            <div class="party-quest-card-actions">
+                                                @if (management.CurrentUserCanManageOfficers && CanAssignOfficer(member.MemberId, management))
+                                                {
+                                                    <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => AssignOfficerAsync(member))" Variant="Variant.Outlined">
+                                                        Make Officer
+                                                    </MudButton>
+                                                }
+                                                @if (management.CurrentUserCanManageOfficers && IsOfficer(member.MemberId, management))
+                                                {
+                                                    <MudButton Color="Color.Warning" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RemoveOfficerAsync(member.MemberId))" Variant="Variant.Text">
+                                                        Remove Officer
+                                                    </MudButton>
+                                                }
+                                                @if (management.CurrentUserCanModerateMembers && CanKickMember(member.MemberId, management))
+                                                {
+                                                    <MudButton Color="Color.Error" Disabled="@SessionController.State.IsBusy" OnClick="@(() => KickMemberAsync(member))" Variant="Variant.Text">
+                                                        Kick from sync
+                                                    </MudButton>
+                                                }
+                                                @if (management.CurrentUserCanModerateMembers && IsKicked(member.MemberId, management))
+                                                {
+                                                    <MudButton Color="Color.Success" Disabled="@SessionController.State.IsBusy" OnClick="@(() => UnkickMemberAsync(member.MemberId))" Variant="Variant.Text">
+                                                        Unkick
+                                                    </MudButton>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+
                                     <div class="party-login-rhythm">
                                         <div class="party-login-rhythm-head">
                                             <div>
@@ -700,6 +821,48 @@
                 <p class="panel-copy">The graph will appear after the first party member CRON timestamp is stored.</p>
             }
         </section>
+
+        @if (management?.CurrentUserCanViewManagement == true)
+        {
+            <section class="card-surface dashboard-panel party-kick-list-panel">
+                <div class="party-section-head">
+                    <div>
+                        <p class="section-label">Party sync moderation</p>
+                        <h2>Kicked users</h2>
+                    </div>
+                    <span class="ui-pill count-pill">@management.Kicks.Count active</span>
+                </div>
+
+                @if (management.Kicks.Count == 0)
+                {
+                    <p class="panel-copy">No users are currently removed from party sync.</p>
+                }
+                else
+                {
+                    <div class="party-kick-list">
+                        @foreach (var kicked in management.Kicks)
+                        {
+                            <article class="party-kick-list-item">
+                                <div>
+                                    <strong>@ResolveDisplayName(kicked.UserId, kicked.DisplayName)</strong>
+                                    <span class="dashboard-stat-note">Kicked @FormatDateTime(kicked.KickedAtUtc) by @ResolveDisplayName(kicked.KickedByUserId, kicked.KickedByDisplayName)</span>
+                                    @if (!string.IsNullOrWhiteSpace(kicked.Reason))
+                                    {
+                                        <span class="dashboard-stat-note">@kicked.Reason</span>
+                                    }
+                                </div>
+                                @if (management.CurrentUserCanModerateMembers)
+                                {
+                                    <MudButton Color="Color.Success" Disabled="@SessionController.State.IsBusy" OnClick="@(() => UnkickMemberAsync(kicked.UserId))" Variant="Variant.Text">
+                                        Unkick
+                                    </MudButton>
+                                }
+                            </article>
+                        }
+                    </div>
+                }
+            </section>
+        }
     }
 </div>
 
@@ -1142,8 +1305,90 @@
         return IsCurrentUser(SessionController.State.PartySnapshot?.LeaderId);
     }
 
+    private string ResolveDisplayName(string? userId, string? fallback = null)
+    {
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return string.IsNullOrWhiteSpace(fallback) ? "Unknown" : fallback;
+        }
+
+        var member = SessionController.State.PartySnapshot?.Members.FirstOrDefault(candidate =>
+            string.Equals(candidate.MemberId, userId, StringComparison.Ordinal));
+        return member?.DisplayName
+            ?? (string.IsNullOrWhiteSpace(fallback) ? FormatMemberId(userId) : fallback);
+    }
+
+    private static string FormatManagementRoleCount(PartySyncManagementState? management)
+    {
+        if (management is null)
+        {
+            return "Loading roles";
+        }
+
+        var adminCount = management.AppAdmins.Count;
+        var officerCount = management.Officers.Count;
+        return $"{adminCount} admin{(adminCount == 1 ? string.Empty : "s")}, {officerCount} Officer{(officerCount == 1 ? string.Empty : "s")}";
+    }
+
+    private bool IsOfficer(string userId, PartySyncManagementState management)
+    {
+        return management.Officers.Any(officer => string.Equals(officer.UserId, userId, StringComparison.Ordinal));
+    }
+
+    private bool IsKicked(string userId, PartySyncManagementState management)
+    {
+        return management.Kicks.Any(kick => string.Equals(kick.UserId, userId, StringComparison.Ordinal));
+    }
+
+    private bool IsOwnerOrAdmin(string userId, PartySyncManagementState management)
+    {
+        return string.Equals(management.OwnerUserId, userId, StringComparison.Ordinal)
+            || management.AppAdmins.Any(admin => string.Equals(admin.UserId, userId, StringComparison.Ordinal));
+    }
+
+    private bool CanAssignOfficer(string userId, PartySyncManagementState management)
+    {
+        return !IsCurrentUser(userId)
+            && !IsOwnerOrAdmin(userId, management)
+            && !IsOfficer(userId, management);
+    }
+
+    private bool CanKickMember(string userId, PartySyncManagementState management)
+    {
+        return !IsCurrentUser(userId)
+            && !IsOwnerOrAdmin(userId, management)
+            && !IsKicked(userId, management)
+            && (management.CurrentUserIsOwner || management.CurrentUserIsAdmin || !IsOfficer(userId, management));
+    }
+
+    private string GetMemberManagementRoleLabel(string userId, PartySyncManagementState management)
+    {
+        if (string.Equals(management.OwnerUserId, userId, StringComparison.Ordinal))
+        {
+            return "Owner";
+        }
+
+        if (management.AppAdmins.Any(admin => string.Equals(admin.UserId, userId, StringComparison.Ordinal)))
+        {
+            return "App admin";
+        }
+
+        if (IsOfficer(userId, management))
+        {
+            return "Officer";
+        }
+
+        return IsKicked(userId, management) ? "Kicked" : "Member";
+    }
+
     private bool CanManageQueueEntry(PartyQuestQueueEntry entry)
     {
+        var management = SessionController.State.PartyQuestQueue?.Management;
+        if (management?.CurrentUserCanManageQueue == true)
+        {
+            return true;
+        }
+
         return IsCurrentUser(entry.OwnerUserId)
             || IsCurrentUserPartyLeader()
             || SessionController.State.IsAdmin;
@@ -1270,6 +1515,42 @@
     {
         var result = await SessionController.MarkPartyQuestCompletedAsync(queueItemId, version);
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task AssignOfficerAsync(PartyMemberSnapshot member)
+    {
+        var result = await SessionController.AssignPartySyncOfficerAsync(member.MemberId, member.DisplayName);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task RemoveOfficerAsync(string userId)
+    {
+        var result = await SessionController.RemovePartySyncOfficerAsync(userId);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task KickMemberAsync(PartyMemberSnapshot member)
+    {
+        var result = await SessionController.KickPartySyncMemberAsync(member.MemberId, member.DisplayName, null);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task UnkickMemberAsync(string userId)
+    {
+        var result = await SessionController.UnkickPartySyncMemberAsync(userId);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task UpdatePartySyncSettingAsync(Func<PartySyncSettings, PartySyncSettings> update)
+    {
+        var current = SessionController.State.PartyQuestQueue?.Management?.Settings ?? PartySyncSettings.Default;
+        var result = await SessionController.UpdatePartySyncSettingsAsync(update(current));
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private static bool IsChecked(ChangeEventArgs eventArgs)
+    {
+        return eventArgs.Value is true || string.Equals(eventArgs.Value?.ToString(), "true", StringComparison.OrdinalIgnoreCase);
     }
 
     private static string FormatTime(TimeSpan? time)

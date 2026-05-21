@@ -588,6 +588,60 @@ a {
     padding-left: 1.1rem;
 }
 
+.party-management-summary,
+.party-sync-settings-panel,
+.party-kick-list-panel {
+    display: grid;
+    gap: 1rem;
+}
+
+.party-management-role-grid,
+.party-sync-settings-grid {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+}
+
+.party-management-role-group,
+.party-member-management,
+.party-kick-list-item {
+    display: grid;
+    gap: 0.65rem;
+    min-width: 0;
+    padding: 0.85rem;
+    border-radius: 0.85rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(255, 255, 255, 0.54);
+}
+
+.party-management-role-group strong,
+.party-kick-list-item strong {
+    overflow-wrap: anywhere;
+}
+
+.party-management-chip-row,
+.party-kick-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    align-items: center;
+}
+
+.party-kick-list {
+    display: grid;
+    align-items: stretch;
+}
+
+.party-kick-list-item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+}
+
+.party-kick-list-item .dashboard-stat-note {
+    display: block;
+    margin-top: 0.25rem;
+}
+
 .party-section-head {
     display: flex;
     align-items: start;

@@ -1,15 +1,9 @@
-export async function uploadPartyData(userId, apiToken, partyId, partySnapshotJson, cronHistoryJson) {
-  validateCredentials(userId, apiToken);
-  validatePartyId(partyId);
+export async function uploadPartyData(claim, partySnapshotJson, cronHistoryJson) {
+  validateClaim(claim);
 
-  const response = await fetch(`/api/party-sync/${encodeURIComponent(partyId)}`, {
+  const response = await fetch(buildPartySyncUrl(claim), {
     method: "PUT",
-    headers: {
-      "accept": "application/json",
-      "content-type": "application/json",
-      "x-api-user": userId.trim(),
-      "x-api-key": apiToken.trim(),
-    },
+    headers: buildJsonHeaders(claim),
     body: JSON.stringify({
       partySnapshotJson,
       cronHistoryJson,
@@ -21,16 +15,11 @@ export async function uploadPartyData(userId, apiToken, partyId, partySnapshotJs
   }
 }
 
-export async function downloadPartyData(userId, apiToken, partyId) {
-  validateCredentials(userId, apiToken);
-  validatePartyId(partyId);
+export async function downloadPartyData(claim) {
+  validateClaim(claim);
 
-  const response = await fetch(`/api/party-sync/${encodeURIComponent(partyId)}`, {
-    headers: {
-      "accept": "application/json",
-      "x-api-user": userId.trim(),
-      "x-api-key": apiToken.trim(),
-    },
+  const response = await fetch(buildPartySyncUrl(claim), {
+    headers: buildClaimHeaders(claim),
   });
 
   if (response.status === 404) {
@@ -47,15 +36,15 @@ export async function downloadPartyData(userId, apiToken, partyId) {
   );
 }
 
-export async function publishQuestPool(userId, apiToken, partyId, entries) {
-  return await postPartyAction(userId, apiToken, partyId, {
+export async function publishQuestPool(claim, entries) {
+  return await postPartyAction(claim, {
     action: "publishQuestPool",
     entries: entries ?? [],
   });
 }
 
-export async function addQuestQueueItem(userId, apiToken, partyId, entry) {
-  return await postPartyAction(userId, apiToken, partyId, {
+export async function addQuestQueueItem(claim, entry) {
+  return await postPartyAction(claim, {
     action: "addQueueItem",
     queueItemId: crypto.randomUUID(),
     questKey: entry.questKey,
@@ -66,24 +55,24 @@ export async function addQuestQueueItem(userId, apiToken, partyId, entry) {
   });
 }
 
-export async function toggleQuestVote(userId, apiToken, partyId, queueItemId, voterDisplayName) {
-  return await postPartyAction(userId, apiToken, partyId, {
+export async function toggleQuestVote(claim, queueItemId, voterDisplayName) {
+  return await postPartyAction(claim, {
     action: "toggleVote",
     queueItemId,
     voterDisplayName,
   });
 }
 
-export async function removeQuestQueueItem(userId, apiToken, partyId, queueItemId, version) {
-  return await postPartyAction(userId, apiToken, partyId, {
+export async function removeQuestQueueItem(claim, queueItemId, version) {
+  return await postPartyAction(claim, {
     action: "removeQueueItem",
     queueItemId,
     version,
   });
 }
 
-export async function markQuestCompleted(userId, apiToken, partyId, queueItemId, version, participantsCount) {
-  return await postPartyAction(userId, apiToken, partyId, {
+export async function markQuestCompleted(claim, queueItemId, version, participantsCount) {
+  return await postPartyAction(claim, {
     action: "markCompleted",
     queueItemId,
     version,
@@ -91,8 +80,8 @@ export async function markQuestCompleted(userId, apiToken, partyId, queueItemId,
   });
 }
 
-export async function reconcileQuestLifecycle(userId, apiToken, partyId, queueItemId, questKey, transition, participantsCount, completedByDisplayName) {
-  return await postPartyAction(userId, apiToken, partyId, {
+export async function reconcileQuestLifecycle(claim, queueItemId, questKey, transition, participantsCount, completedByDisplayName) {
+  return await postPartyAction(claim, {
     action: "autoReconcileQuest",
     queueItemId,
     questKey,
@@ -102,18 +91,50 @@ export async function reconcileQuestLifecycle(userId, apiToken, partyId, queueIt
   });
 }
 
-async function postPartyAction(userId, apiToken, partyId, body) {
-  validateCredentials(userId, apiToken);
-  validatePartyId(partyId);
+export async function assignOfficer(claim, userId, displayName) {
+  return await postPartyAction(claim, {
+    action: "assignOfficer",
+    userId,
+    displayName,
+  });
+}
 
-  const response = await fetch(`/api/party-sync/${encodeURIComponent(partyId)}`, {
+export async function removeOfficer(claim, userId) {
+  return await postPartyAction(claim, {
+    action: "removeOfficer",
+    userId,
+  });
+}
+
+export async function kickMember(claim, userId, displayName, reason) {
+  return await postPartyAction(claim, {
+    action: "kickMember",
+    userId,
+    displayName,
+    reason: reason ?? null,
+  });
+}
+
+export async function unkickMember(claim, userId) {
+  return await postPartyAction(claim, {
+    action: "unkickMember",
+    userId,
+  });
+}
+
+export async function updatePartySyncSettings(claim, settings) {
+  return await postPartyAction(claim, {
+    action: "updateSettings",
+    settings: settings ?? {},
+  });
+}
+
+async function postPartyAction(claim, body) {
+  validateClaim(claim);
+
+  const response = await fetch(buildPartySyncUrl(claim), {
     method: "POST",
-    headers: {
-      "accept": "application/json",
-      "content-type": "application/json",
-      "x-api-user": userId.trim(),
-      "x-api-key": apiToken.trim(),
-    },
+    headers: buildJsonHeaders(claim),
     body: JSON.stringify(body),
   });
 
@@ -127,10 +148,38 @@ async function postPartyAction(userId, apiToken, partyId, body) {
   );
 }
 
-function validateCredentials(userId, apiToken) {
-  if (!userId || !apiToken) {
-    throw new Error("Habitica credentials are required for party sync.");
+function buildPartySyncUrl(claim) {
+  return `/api/party-sync/${encodeURIComponent(claim.partyId.trim())}`;
+}
+
+function buildJsonHeaders(claim) {
+  return {
+    ...buildClaimHeaders(claim),
+    "content-type": "application/json",
+  };
+}
+
+function buildClaimHeaders(claim) {
+  return {
+    "accept": "application/json",
+    "x-party-sync-proof-version": normalizeProofVersion(claim.proofVersion),
+    "x-party-sync-party-id": claim.partyId.trim(),
+    "x-party-sync-user-id": claim.userId.trim(),
+    "x-party-sync-display-name": claim.displayName.trim(),
+    "x-party-sync-leader-id": claim.leaderId?.trim() ?? "",
+  };
+}
+
+function validateClaim(claim) {
+  if (!claim || !claim.partyId?.trim() || !claim.userId?.trim() || !claim.displayName?.trim()) {
+    throw new Error("A local party-sync claim is required for shared party sync.");
   }
+
+  validatePartyId(claim.partyId);
+}
+
+function normalizeProofVersion(proofVersion) {
+  return proofVersion?.trim() || "local-claim-v1";
 }
 
 function validatePartyId(partyId) {
