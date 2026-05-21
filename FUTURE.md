@@ -47,28 +47,7 @@ These rules apply to every entry below. Violating them is drift.
 
 Work top to bottom. Each entry is self-contained.
 
-### P1 — "Open in Habitica" deep-links to the installed mobile app
-
-- **Goal:** when the user taps the "Open in Habitica" affordance in the Active Quest section of the Party page on iOS or Android, the official Habitica mobile app opens to the party/quest view if installed; otherwise the existing web fallback opens.
-- **Precondition:** the official Habitica app's URL scheme and/or universal/app links for the party/quest view are documented in `HABITICA_API.md` (or a new `docs/HABITICA_DEEPLINKS.md`). If they are not, stop and add a follow-up entry that records exactly what to research (App Store / Play Store listing, `apple-app-site-association`, Android intent filters, `habitica://` scheme presence). Do not guess scheme names.
-- **Touch (only once precondition holds):**
-  - `src/Habitica.WebApp/Pages/PartyPage.razor` — Active Quest section's "Open in Habitica" control; pass a single resolved URL to a shared helper instead of inlining platform logic.
-  - New helper, e.g. `src/Habitica.WebApp/Services/HabiticaDeepLinkResolver.cs` (or extend an existing services file if one fits) — pure function returning the best URL for the current user agent: universal/app link if iOS+Android-safe, custom scheme with web fallback otherwise, plain web URL on desktop.
-  - `src/Habitica.WebApp/wwwroot/js/` — small JS interop only if a `window.location` assignment or a hidden `<a>` click is needed to trigger the OS link handler reliably (Blazor `NavigationManager` is preferred when it works).
-  - Tests: unit tests on the resolver (`tests/Habitica.WebApp.Tests/`) covering desktop, iOS Safari, Android Chrome, and an unknown UA; Razor test asserting the rendered `href`/click target wires through the resolver.
-- **Platform behavior rules:**
-  - iOS: prefer a universal link (`https://habitica.com/...`) — iOS dispatches to the app if installed, otherwise Safari handles it. Only fall back to a custom scheme (`habitica://`) if the universal link is confirmed not to dispatch.
-  - Android: prefer an App Link (`https://habitica.com/...` with verified `assetlinks.json`). If unverified, use an `intent://` URL with a web fallback via `S.browser_fallback_url`.
-  - Desktop and unknown UAs: use the existing web URL with no change.
-  - Do not block the click waiting for an app-detection probe; the link itself must do the right thing.
-- **Out of scope:** building a native app, prompting the user to install the app, persisting "prefers app vs web" preferences, deep-linking to non-quest views, adding deep-link buttons elsewhere on the Party page or other pages.
-- **Acceptance:**
-  - On iOS with the Habitica app installed, tapping the control opens the app at the relevant view; uninstalled, it opens the web view.
-  - On Android with the app installed and App Links verified, tapping opens the app; otherwise it opens the web view (no broken `intent://` error page).
-  - On desktop and unknown UAs, behavior is identical to today.
-  - Resolver unit tests cover the four UA cases listed above; Razor test confirms the control uses the resolver output.
-  - Manual verification steps are recorded in the PR description (one line per platform).
-- **UX/UI reference:** `docs/UX_UI_MANIFEST.md` → Party page / Active Quest section and the manifest's external-link affordance rules. Visible label, icon, and styling stay identical to the current "Open in Habitica" button; only the destination changes.
+> Not currently supported: "Open in Habitica" cannot deep-link to the official mobile app's party/quest view. See `docs/HABITICA_DEEPLINKS.md`. Keep the existing web fallback until Habitica documents and ships iOS/Android party or quest deep links.
 
 ### P2 — Side menu reorganization
 

@@ -2033,6 +2033,7 @@ Current display rules:
 17. Let owner/app admins update party-sync settings: Officer queue management, Officer moderation, management-only queue edits, and member auto-reconcile.
 18. Let owner/app admins and authorized Officers kick and unkick party-sync users. Kicked users cannot read or write normal party-sync data; owner/app admins bypass kicks to recover from mistakes.
 19. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
+20. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
 ```
 
 ### Validation
