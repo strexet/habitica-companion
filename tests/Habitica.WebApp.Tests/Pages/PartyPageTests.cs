@@ -675,7 +675,15 @@ public sealed class PartyPageTests : BunitContext
 
         Assert.Contains("Owner, admins, and Officers", cut.Markup);
         Assert.Contains("Party sync settings", cut.Markup);
-        Assert.Contains("Officers can manage queue entries", cut.Markup);
+        Assert.Contains("Officer queue changes", cut.Markup);
+        Assert.Contains("Lets Officers add, remove, and update shared quest queue entries; enable when trusted Officers help plan quests.", cut.Markup);
+        Assert.Contains("Officer moderation", cut.Markup);
+        Assert.Contains("Lets Officers remove or restore members in the companion app; enable when trusted Officers help keep the shared queue clean.", cut.Markup);
+        Assert.Contains("Limit queue editing", cut.Markup);
+        Assert.Contains("Only Officers and the party owner can change the quest queue; enable when regular members should vote but not edit entries.", cut.Markup);
+        Assert.Contains("Member auto updates", cut.Markup);
+        Assert.Contains("Lets members publish start and completion updates for their own queued quests; enable when quest owners should keep shared status current.", cut.Markup);
+        Assert.DoesNotContain("officer-only queue edits", cut.Markup, StringComparison.OrdinalIgnoreCase);
         AssertMarkupOrder(cut.Markup, "Summary", "Party sync roles", "Party sync settings", "Active quest");
         Assert.Contains("Kicked users", cut.Markup);
         Assert.Contains("Beta", cut.Markup);

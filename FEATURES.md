@@ -2031,7 +2031,7 @@ Current display rules:
 14. Sort visible queue cards by vote count, owner readiness, queue age, and recently completed penalty.
 15. Let the quest owner remove their own queue item unless owner/admin settings restrict queue edits to management roles.
 16. Let owner/app admins assign and remove Officers from expanded member details.
-17. Let owner/app admins update party-sync settings: Officer queue management, Officer moderation, management-only queue edits, and member auto-reconcile.
+17. Let owner/app admins update party-sync settings with short labels and direct helper copy for Officer queue management, Officer moderation, limited queue editing, and member auto updates.
 18. Let owner/app admins and authorized Officers kick and unkick party-sync users. Kicked users cannot read or write normal party-sync data; owner/app admins bypass kicks to recover from mistakes.
 19. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
 20. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
@@ -2085,6 +2085,7 @@ Current implementation:
 - subtle HP/MP values and low-HP/low-MP member sorting;
 - active quest card with real cached quest metadata and compact rewards;
 - party detail section order of summary, party-sync roles, party-sync settings, then active quest state;
+- party-sync settings labels and helper descriptions for non-technical party members;
 - shared quest pool from published member quest-scroll availability;
 - shared quest queue with owner-only add/remove and one-vote-per-member voting;
 - recently completed shared quest history table and UI.

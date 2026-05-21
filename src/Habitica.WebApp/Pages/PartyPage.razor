@@ -129,25 +129,37 @@
                                 <input checked="@management.Settings.OfficerCanManageQueue"
                                        type="checkbox"
                                        @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanManageQueue = IsChecked(eventArgs) }))" />
-                                <span>Officers can manage queue entries</span>
+                                <span class="checkbox-copy">
+                                    <span class="checkbox-label">Officer queue changes</span>
+                                    <span class="checkbox-help">Lets Officers add, remove, and update shared quest queue entries; enable when trusted Officers help plan quests.</span>
+                                </span>
                             </label>
                             <label class="checkbox-row">
                                 <input checked="@management.Settings.OfficerCanModerateMembers"
                                        type="checkbox"
                                        @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanModerateMembers = IsChecked(eventArgs) }))" />
-                                <span>Officers can kick and unkick members</span>
+                                <span class="checkbox-copy">
+                                    <span class="checkbox-label">Officer moderation</span>
+                                    <span class="checkbox-help">Lets Officers remove or restore members in the companion app; enable when trusted Officers help keep the shared queue clean.</span>
+                                </span>
                             </label>
                             <label class="checkbox-row">
                                 <input checked="@management.Settings.OfficerOnlyQueueEdits"
                                        type="checkbox"
                                        @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerOnlyQueueEdits = IsChecked(eventArgs) }))" />
-                                <span>Only management can edit the queue</span>
+                                <span class="checkbox-copy">
+                                    <span class="checkbox-label">Limit queue editing</span>
+                                    <span class="checkbox-help">Only Officers and the party owner can change the quest queue; enable when regular members should vote but not edit entries.</span>
+                                </span>
                             </label>
                             <label class="checkbox-row">
                                 <input checked="@management.Settings.MemberAutoReconcileEnabled"
                                        type="checkbox"
                                        @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { MemberAutoReconcileEnabled = IsChecked(eventArgs) }))" />
-                                <span>Members can auto-reconcile quest lifecycle</span>
+                                <span class="checkbox-copy">
+                                    <span class="checkbox-label">Member auto updates</span>
+                                    <span class="checkbox-help">Lets members publish start and completion updates for their own queued quests; enable when quest owners should keep shared status current.</span>
+                                </span>
                             </label>
                         </div>
                     </section>

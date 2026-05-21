@@ -49,21 +49,6 @@ Work top to bottom. Each entry is self-contained.
 
 > Not currently supported: "Open in Habitica" cannot deep-link to the official mobile app's party/quest view. See `docs/HABITICA_DEEPLINKS.md`. Keep the existing web fallback until Habitica documents and ships iOS/Android party or quest deep links.
 
-### P4 — Party Sync Settings: clearer labels and descriptions
-
-- **Goal:** the toggles in **Party Sync Settings** must be understandable by a non-technical party member.
-- **Touch:**
-  - `src/Habitica.WebApp/Pages/PartyPage.razor` (settings block markup).
-  - Any related ViewModel / strings if the labels live outside the Razor file — search for `officerCanManageQueue`, `officerCanModerateMembers`, `officerOnlyQueueEdits` and update display text only, not property names.
-  - Tests that assert on the current label strings.
-- **Required for each toggle:** a short label (≤ 6 words, sentence case) and a one-sentence helper description placed directly under the label that explains (a) what the check controls, (b) who it affects, (c) when to enable it.
-- **Out of scope:** renaming the underlying settings properties, adding/removing settings, changing default values, adding tooltips or modals.
-- **Acceptance:**
-  - Each Party Sync Settings toggle shows a label + helper line.
-  - Copy avoids internal jargon (no "officer-only queue edits"; use "Only Officers and the party owner can change the quest queue" instead).
-  - Tests updated to assert on new labels/helpers; all pass.
-- **UX/UI reference:** manifest's "User-facing copy" guidance and form-control patterns.
-
 ### P5 — Clickable member names in Party Sync Roles and Kicked users list
 
 - **Goal:** make member display names in **Party Sync Roles** and **Party Sync Moderation → Kicked users** behave like the clickable quest completor name in the **Active Quest** section.
