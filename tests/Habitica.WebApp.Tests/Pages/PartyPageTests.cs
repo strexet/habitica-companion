@@ -280,6 +280,55 @@ public sealed class PartyPageTests : BunitContext
     }
 
     [Fact]
+    public void Renders_quest_description_markdown_and_html_breaks_without_raw_html()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: CreateSnapshot(),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                PartySnapshot: new PartySnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                    "party-123",
+                    "Night Owls",
+                    "Quest-focused party",
+                    1,
+                    new PartyQuestSnapshot(
+                        "magicalAxolotl",
+                        true,
+                        0m,
+                        0m,
+                        1,
+                        "Pending damage",
+                        Name: "Magical Axolotl",
+                        Description: "Bubbles and <strong>fire</strong>.<br><br>Look out, <em>willpower</em> and **habits**! <script>alert(1)</script>"),
+                    Array.Empty<PartyMemberSnapshot>()),
+                PartyFreshness: SnapshotFreshnessState.Fresh)));
+
+        var cut = Render<PartyPage>();
+
+        Assert.Contains("Magical Axolotl", cut.Markup);
+        Assert.Contains("<strong>fire</strong>", cut.Markup);
+        Assert.Contains("<strong>habits</strong>", cut.Markup);
+        Assert.Contains("<em>willpower</em>", cut.Markup);
+        Assert.Contains("<p>Bubbles and", cut.Markup);
+        Assert.Contains("</p><p>Look out", cut.Markup);
+        Assert.DoesNotContain("&lt;br", cut.Markup);
+        Assert.Contains("&lt;script&gt;alert(1)&lt;/script&gt;", cut.Markup);
+        Assert.DoesNotContain("<script>", cut.Markup);
+    }
+
+    [Fact]
     public void Renders_shared_quest_queue_pool_and_recent_history()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

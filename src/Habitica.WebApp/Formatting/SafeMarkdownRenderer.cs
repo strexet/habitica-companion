@@ -11,15 +11,22 @@ internal static partial class SafeMarkdownRenderer
     private static readonly Regex BoldRegex = BuildBoldRegex();
     private static readonly Regex ItalicRegex = BuildItalicRegex();
     private static readonly Regex CodeRegex = BuildCodeRegex();
+    private static readonly Regex HtmlBreakRegex = BuildHtmlBreakRegex();
+    private static readonly Regex HtmlStrongOpenRegex = BuildHtmlStrongOpenRegex();
+    private static readonly Regex HtmlStrongCloseRegex = BuildHtmlStrongCloseRegex();
+    private static readonly Regex HtmlEmphasisOpenRegex = BuildHtmlEmphasisOpenRegex();
+    private static readonly Regex HtmlEmphasisCloseRegex = BuildHtmlEmphasisCloseRegex();
+    private static readonly Regex HtmlCodeOpenRegex = BuildHtmlCodeOpenRegex();
+    private static readonly Regex HtmlCodeCloseRegex = BuildHtmlCodeCloseRegex();
 
-    public static MarkupString Render(string? markdown)
+    public static MarkupString Render(string? markdown, string emptyText = "No cached summary text.")
     {
         if (string.IsNullOrWhiteSpace(markdown))
         {
-            return new MarkupString("No cached summary text.");
+            return new MarkupString(WebUtility.HtmlEncode(emptyText));
         }
 
-        var normalized = markdown.Replace("\r\n", "\n", StringComparison.Ordinal).Trim();
+        var normalized = NormalizeLineBreaks(markdown).Trim();
         var blocks = normalized.Split("\n\n", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         var html = new StringBuilder();
 
@@ -48,6 +55,13 @@ internal static partial class SafeMarkdownRenderer
         return new MarkupString(html.ToString());
     }
 
+    private static string NormalizeLineBreaks(string markdown)
+    {
+        var normalized = markdown.Replace("\r\n", "\n", StringComparison.Ordinal);
+        normalized = normalized.Replace('\r', '\n');
+        return HtmlBreakRegex.Replace(normalized, "\n");
+    }
+
     private static string FormatInline(string text)
     {
         var encoded = WebUtility.HtmlEncode(text);
@@ -66,7 +80,18 @@ internal static partial class SafeMarkdownRenderer
         encoded = BoldRegex.Replace(encoded, "<strong>$1</strong>");
         encoded = ItalicRegex.Replace(encoded, "<em>$1</em>");
         encoded = CodeRegex.Replace(encoded, "<code>$1</code>");
+        encoded = RestoreSafeHtmlFormatting(encoded);
         return encoded;
+    }
+
+    private static string RestoreSafeHtmlFormatting(string encoded)
+    {
+        encoded = HtmlStrongOpenRegex.Replace(encoded, "<strong>");
+        encoded = HtmlStrongCloseRegex.Replace(encoded, "</strong>");
+        encoded = HtmlEmphasisOpenRegex.Replace(encoded, "<em>");
+        encoded = HtmlEmphasisCloseRegex.Replace(encoded, "</em>");
+        encoded = HtmlCodeOpenRegex.Replace(encoded, "<code>");
+        return HtmlCodeCloseRegex.Replace(encoded, "</code>");
     }
 
     [GeneratedRegex(@"\[(?<label>[^\]]+)\]\((?<href>[^)]+)\)", RegexOptions.Compiled)]
@@ -80,4 +105,25 @@ internal static partial class SafeMarkdownRenderer
 
     [GeneratedRegex(@"`(.+?)`", RegexOptions.Compiled)]
     private static partial Regex BuildCodeRegex();
+
+    [GeneratedRegex(@"<\s*br\s*/?\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    private static partial Regex BuildHtmlBreakRegex();
+
+    [GeneratedRegex(@"&lt;\s*(?:strong|b)\s*&gt;", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    private static partial Regex BuildHtmlStrongOpenRegex();
+
+    [GeneratedRegex(@"&lt;\s*/\s*(?:strong|b)\s*&gt;", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    private static partial Regex BuildHtmlStrongCloseRegex();
+
+    [GeneratedRegex(@"&lt;\s*(?:em|i)\s*&gt;", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    private static partial Regex BuildHtmlEmphasisOpenRegex();
+
+    [GeneratedRegex(@"&lt;\s*/\s*(?:em|i)\s*&gt;", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    private static partial Regex BuildHtmlEmphasisCloseRegex();
+
+    [GeneratedRegex(@"&lt;\s*code\s*&gt;", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    private static partial Regex BuildHtmlCodeOpenRegex();
+
+    [GeneratedRegex(@"&lt;\s*/\s*code\s*&gt;", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    private static partial Regex BuildHtmlCodeCloseRegex();
 }

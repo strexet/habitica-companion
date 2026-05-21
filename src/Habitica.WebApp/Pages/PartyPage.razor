@@ -99,7 +99,9 @@
                             <div>
                                 <span class="dashboard-stat-label">@GetQuestTypeLabel(quest)</span>
                                 <strong>@GetQuestName(quest)</strong>
-                                <span class="dashboard-stat-note">@GetQuestDescription(quest)</span>
+                                <div class="dashboard-stat-note party-summary-markdown party-quest-description">
+                                    @SafeMarkdownRenderer.Render(quest.Description, "Quest description is not available yet.")
+                                </div>
                             </div>
                             <div class="party-quest-card-actions">
                                 <MudButton Href="https://habitica.com/party" Target="_blank" Variant="Variant.Outlined">Open in Habitica</MudButton>
@@ -986,13 +988,6 @@
         return string.IsNullOrWhiteSpace(quest.Name)
             ? quest.Key ?? "Unknown quest"
             : quest.Name;
-    }
-
-    private static string GetQuestDescription(PartyQuestSnapshot quest)
-    {
-        return string.IsNullOrWhiteSpace(quest.Description)
-            ? "Quest description is not available yet."
-            : quest.Description;
     }
 
     private static string GetQuestTypeLabel(PartyQuestSnapshot quest)
