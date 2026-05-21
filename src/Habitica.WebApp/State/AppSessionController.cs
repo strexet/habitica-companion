@@ -399,6 +399,14 @@ public sealed class AppSessionController : IAppSessionController
             cancellationToken);
     }
 
+    public async Task<PartyQuestActionResult> AssignPartySyncOwnerAsync(string userId, string displayName, CancellationToken cancellationToken = default)
+    {
+        return await RunPartySyncManagementActionAsync(
+            claim => _remotePartyDataSyncProvider.AssignPartyOwnerAsync(claim, userId, displayName, cancellationToken),
+            "Party owner assigned.",
+            cancellationToken);
+    }
+
     public async Task<PartyQuestActionResult> RemovePartySyncOfficerAsync(string userId, CancellationToken cancellationToken = default)
     {
         return await RunPartySyncManagementActionAsync(

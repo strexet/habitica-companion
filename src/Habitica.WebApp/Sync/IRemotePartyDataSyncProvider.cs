@@ -58,6 +58,12 @@ public interface IRemotePartyDataSyncProvider
         string displayName,
         CancellationToken cancellationToken);
 
+    Task<RemotePartyQuestState> AssignPartyOwnerAsync(
+        PartySyncClaim claim,
+        string userId,
+        string displayName,
+        CancellationToken cancellationToken);
+
     Task<RemotePartyQuestState> RemoveOfficerAsync(
         PartySyncClaim claim,
         string userId,

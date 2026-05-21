@@ -1,6 +1,6 @@
 # TECHNICAL.md
 
-Last updated: 2026-05-21
+Last updated: 2026-05-22
 Primary audience: AI agents and senior developers
 Project type: third-party Habitica companion client
 Primary Habitica integration reference: `HABITICA_API.md`
@@ -286,7 +286,7 @@ The KV backend is only for encrypted app-data sync. Habitica API credentials mus
 
 Cloud sync uses per-section KV records (`sync:{syncId}:section:{sectionKey}`) instead of a single blob. Each section corresponds to one portable data key and has its own 2MB KV limit. A `sync-metadata` section tracks schema version 2, upload timestamp, and succeeded/failed sections. Legacy single-blob records (`sync:{syncId}`) are still readable for backward-compatible migration but are no longer written.
 
-The D1 backend stores shared party data for CRON history and party quest planning under `functions/api/party-sync/[partyId].js`. It stores party snapshots, CRON events, quest pool availability, quest queue entries, quest votes, recently completed quest history, Officer roles, party-sync settings, and active kick records. Party-sync uses a tokenless local claim (`local-claim-v1`) derived from the browser's local Habitica snapshots; the Cloudflare party-sync Function must not receive the Habitica API token. This claim is token-private but trust-based, so the Worker keeps access checks behind `readAccessProof()` and `resolvePartySyncAccess()` to allow a future tokenized manager-invite proof if malicious clients become a real problem.
+The D1 backend stores shared party data for CRON history and party quest planning under `functions/api/party-sync/[partyId].js`. It stores party snapshots, CRON events, quest pool availability, quest queue entries, quest votes, recently completed quest history, companion-app Owner and Officer roles, party-sync settings, and active kick records. Party-sync uses a tokenless local claim (`local-claim-v1`) derived from the browser's local Habitica snapshots; the Cloudflare party-sync Function must not receive the Habitica API token. This claim is token-private but trust-based, so the Worker keeps access checks behind `readAccessProof()` and `resolvePartySyncAccess()` to allow a future tokenized manager-invite proof if malicious clients become a real problem.
 
 Both provider boundaries must stay abstract so another remote sync provider can replace Cloudflare later.
 

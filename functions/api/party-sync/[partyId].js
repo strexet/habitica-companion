@@ -185,6 +185,8 @@ export async function onRequestPost(context) {
       return await autoReconcileQuest(db, env, partyId, access, payload, nowIso);
     case "assignOfficer":
       return await assignOfficer(db, env, partyId, access, payload, nowIso);
+    case "assignPartyOwner":
+      return await assignPartyOwner(db, env, partyId, access, payload, nowIso);
     case "removeOfficer":
       return await removeOfficer(db, env, partyId, access, payload, nowIso);
     case "kickMember":
@@ -739,7 +741,8 @@ async function assignOfficer(db, env, partyId, access, payload, nowIso) {
   if (user.response) {
     return user.response;
   }
-  if (access.leaderId && user.userId === access.leaderId) {
+  const ownerUserId = access.activeOwner?.userId ?? access.leaderId;
+  if (ownerUserId && user.userId === ownerUserId) {
     return textResponse("The party owner does not need the Officer role.", 409);
   }
 
@@ -762,6 +765,56 @@ async function assignOfficer(db, env, partyId, access, payload, nowIso) {
     .run();
 
   return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function assignPartyOwner(db, env, partyId, access, payload, nowIso) {
+  if (!access.isAdmin) {
+    return textResponse("Only app admins can assign the party owner role.", 403);
+  }
+
+  const user = readTargetUser(payload);
+  if (user.response) {
+    return user.response;
+  }
+  if (!await isCurrentPartyMember(db, partyId, user.userId)) {
+    return textResponse("Party owner must be a current party member.", 409);
+  }
+
+  const ownerRole = await readOwnerRoleValue(db, partyId);
+  await db
+    .prepare(`
+      UPDATE party_sync_roles
+      SET revoked_by_user_id = ?, revoked_by_display_name = ?, revoked_at_utc = ?
+      WHERE party_id = ? AND role = ? AND revoked_at_utc IS NULL
+    `)
+    .bind(access.userId, access.displayName, nowIso, partyId, ownerRole)
+    .run();
+  await db
+    .prepare(`
+      INSERT INTO party_sync_roles (
+        party_id, user_id, display_name, role,
+        assigned_by_user_id, assigned_by_display_name, assigned_at_utc
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    `)
+    .bind(partyId, user.userId, user.displayName, ownerRole, access.userId, access.displayName, nowIso)
+    .run();
+
+  const isAssignedOwner = user.userId === access.userId;
+  const updatedAccess = {
+    ...access,
+    activeOwner: {
+      userId: user.userId,
+      displayName: user.displayName,
+    },
+    isOwner: isAssignedOwner,
+    canManageSettings: isAssignedOwner || access.isAdmin,
+    canManageOfficers: isAssignedOwner || access.isAdmin,
+    canManageQueue: isAssignedOwner || access.isAdmin || (access.isOfficer && access.settings.officerCanManageQueue),
+    canModerateMembers: isAssignedOwner || access.isAdmin || (access.isOfficer && access.settings.officerCanModerateMembers),
+    canEditQueue: isAssignedOwner || access.isAdmin || (access.isOfficer && access.settings.officerCanManageQueue) || !access.settings.officerOnlyQueueEdits,
+  };
+
+  return await partyQuestStateResponse(db, env, partyId, updatedAccess, nowIso);
 }
 
 async function removeOfficer(db, env, partyId, access, payload, nowIso) {
@@ -973,7 +1026,10 @@ async function resolvePartySyncAccess(request, env, db, expectedPartyId) {
 
   const settings = await readPartySyncSettings(db, expectedPartyId);
   const isAdmin = await isAppAdmin(db, proof.userId);
-  const isOwner = !!proof.leaderId && proof.leaderId === proof.userId;
+  const activeOwner = await readActivePartyOwner(db, expectedPartyId);
+  const isOwner = activeOwner
+    ? activeOwner.userId === proof.userId
+    : !!proof.leaderId && proof.leaderId === proof.userId;
   const isOfficer = await hasActiveOfficerRole(db, expectedPartyId, proof.userId);
   const isKicked = await hasActiveKick(db, expectedPartyId, proof.userId);
   if (isKicked && !isOwner && !isAdmin) {
@@ -991,6 +1047,7 @@ async function resolvePartySyncAccess(request, env, db, expectedPartyId) {
     isOwner,
     isOfficer,
     isKicked,
+    activeOwner,
     settings,
     canManageSettings,
     canManageOfficers,
@@ -1063,6 +1120,46 @@ async function hasActiveOfficerRole(db, partyId, userId) {
   return !!row;
 }
 
+async function readOwnerRoleValue(db, partyId) {
+  const row = await db
+    .prepare(`
+      SELECT role
+      FROM party_sync_roles
+      WHERE party_id = ?
+        AND lower(role) IN ('owner', 'partyowner', 'party-owner', 'party owner')
+      ORDER BY assigned_at_utc DESC
+      LIMIT 1
+    `)
+    .bind(partyId)
+    .first();
+  return typeof row?.role === "string" && row.role.trim()
+    ? row.role.trim()
+    : "Owner";
+}
+
+async function readActivePartyOwner(db, partyId) {
+  const ownerRole = await readOwnerRoleValue(db, partyId);
+  const row = await db
+    .prepare(`
+      SELECT user_id, display_name, assigned_by_user_id, assigned_by_display_name, assigned_at_utc
+      FROM party_sync_roles
+      WHERE party_id = ? AND role = ? AND revoked_at_utc IS NULL
+      ORDER BY assigned_at_utc DESC
+      LIMIT 1
+    `)
+    .bind(partyId, ownerRole)
+    .first();
+  return row
+    ? {
+        userId: row.user_id,
+        displayName: row.display_name ?? row.user_id,
+        assignedByUserId: row.assigned_by_user_id,
+        assignedByDisplayName: row.assigned_by_display_name,
+        assignedAtUtc: row.assigned_at_utc,
+      }
+    : null;
+}
+
 async function hasActiveKick(db, partyId, userId) {
   const row = await db
     .prepare(`
@@ -1078,6 +1175,7 @@ async function hasActiveKick(db, partyId, userId) {
 
 async function buildManagementState(db, env, partyId, access) {
   const settings = access?.settings ?? await readPartySyncSettings(db, partyId);
+  const activeOwner = access?.activeOwner ?? await readActivePartyOwner(db, partyId);
   const officers = await readActiveOfficers(db, partyId);
   const appAdmins = (await getAppAdminIds(db)).map(userId => ({
     userId,
@@ -1087,8 +1185,8 @@ async function buildManagementState(db, env, partyId, access) {
   const kicks = currentUserCanViewManagement ? await readActiveKicks(db, partyId) : [];
 
   return {
-    ownerUserId: access.leaderId ?? null,
-    ownerDisplayName: access.isOwner ? access.displayName : access.leaderId ?? null,
+    ownerUserId: activeOwner?.userId ?? access.leaderId ?? null,
+    ownerDisplayName: activeOwner?.displayName ?? (access.isOwner ? access.displayName : access.leaderId ?? null),
     appAdmins,
     officers,
     kicks,
@@ -1102,6 +1200,27 @@ async function buildManagementState(db, env, partyId, access) {
     currentUserCanModerateMembers: !!access.canModerateMembers,
     currentUserIsKicked: !!access.isKicked,
   };
+}
+
+async function isCurrentPartyMember(db, partyId, userId) {
+  const row = await db
+    .prepare("SELECT snapshot_json FROM party_state WHERE party_id = ?")
+    .bind(partyId)
+    .first();
+  if (!row?.snapshot_json) {
+    return false;
+  }
+
+  try {
+    const snapshot = JSON.parse(row.snapshot_json);
+    const members = Array.isArray(snapshot?.members) ? snapshot.members : [];
+    return members.some(member => {
+      const memberId = member?.memberId ?? member?.MemberId ?? member?.id ?? member?._id;
+      return memberId === userId;
+    });
+  } catch {
+    return false;
+  }
 }
 
 async function readActiveOfficers(db, partyId) {

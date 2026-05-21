@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-05-21
+Last updated: 2026-05-22
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -2031,12 +2031,13 @@ Current display rules:
 13. Allow one vote per party member per queued quest; clicking again removes the vote.
 14. Sort visible queue cards by vote count, owner readiness, queue age, and recently completed penalty.
 15. Let the quest owner remove their own queue item unless owner/admin settings restrict queue edits to management roles.
-16. Let owner/app admins assign and remove Officers from expanded member details.
-17. Let owner/app admins update party-sync settings with short labels and direct helper copy for Officer queue management, Officer moderation, limited queue editing, and member auto updates.
-18. Let owner/app admins and authorized Officers kick and unkick party-sync users. Kicked users cannot read or write normal party-sync data; owner/app admins bypass kicks to recover from mistakes.
-19. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
-20. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
-21. Let role-strip and kick-list member names focus the same expanded member details UI used by the Active Quest finishing-member link.
+16. Let app admins assign the explicit companion-app party owner from expanded member details; when no explicit owner exists, the Habitica party leader remains the automatic party-sync owner.
+17. Let owner/app admins assign and remove Officers from expanded member details.
+18. Let owner/app admins update party-sync settings with short labels and direct helper copy for Officer queue management, Officer moderation, limited queue editing, and member auto updates.
+19. Let owner/app admins and authorized Officers kick and unkick party-sync users. Kicked users cannot read or write normal party-sync data; owner/app admins bypass kicks to recover from mistakes.
+20. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
+21. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
+22. Let role-strip and kick-list member names focus the same expanded member details UI used by the Active Quest finishing-member link.
 ```
 
 ### Validation

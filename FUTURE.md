@@ -49,22 +49,6 @@ Work top to bottom. Each entry is self-contained.
 
 > Not currently supported: "Open in Habitica" cannot deep-link to the official mobile app's party/quest view. See `docs/HABITICA_DEEPLINKS.md`. Keep the existing web fallback until Habitica documents and ships iOS/Android party or quest deep links.
 
-### P6 — App admin can assign the companion-app party-owner role
-
-- **Goal:** users present in D1 `app_admins` can promote any current party member to the companion-app party-owner role (separate from the Habitica party leader).
-- **Touch:**
-  - `functions/api/party-sync/[partyId].js` — new authorized action that writes a role row (reuse `party_sync_roles` table; role value `"Owner"` if a value is not already chosen — check the table first and reuse if present).
-  - `src/Habitica.WebApp/Pages/PartyPage.razor` — admin-only "Assign party owner" control in the Party Sync Roles section (visible only when the current user is an app admin).
-  - `src/Habitica.WebApp/Sync/CloudflarePartyDataSyncProvider.cs` and `IRemotePartyDataSyncProvider.cs` — new client method matching the existing role-assignment patterns.
-  - Tests: `tests/Functions/party-sync-access.test.mjs` and `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`.
-- **Authorization rule:** only callers where `isAppAdmin(db, userId)` returns true may invoke the action. The Habitica party leader does NOT get this ability via this entry.
-- **Out of scope:** revoking the Habitica leader role, changing how `isOwner` is computed for non-admin flows, building a UI for managing app admins themselves (admins are still seeded via `migrations/seed_app_admins.sql`).
-- **Acceptance:**
-  - App admins see and can use the Assign Party Owner control; non-admins do not see it.
-  - Endpoint rejects non-admin callers with 403 and a clear message.
-  - Tests cover the allow path (admin succeeds), the deny path (non-admin 403), and the UI visibility rule.
-- **UX/UI reference:** manifest's role/permission badge patterns; new control must match existing officer-assignment styling.
-
 ### P7 — Quest owner can start the selected quest from the companion app
 
 - **Goal:** the Active Quest section gains a "Start quest" action visible only to the selected quest's owner, which calls Habitica to actually start the quest.

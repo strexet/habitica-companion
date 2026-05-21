@@ -99,6 +99,16 @@
                                     @ResolveDisplayName(ownerUserId, management?.OwnerDisplayName)
                                 }
                             </strong>
+                            @if (management?.CurrentUserIsAdmin == true)
+                            {
+                                <select aria-label="Assign party owner" class="app-input" disabled="@SessionController.State.IsBusy" @onchange="AssignPartyOwnerFromSelectAsync">
+                                    <option value="">Assign party owner</option>
+                                    @foreach (var member in GetAssignablePartyOwnerMembers(management))
+                                    {
+                                        <option value="@member.MemberId">@member.DisplayName</option>
+                                    }
+                                </select>
+                            }
                         </article>
                         <article class="party-management-role-group">
                             <span class="dashboard-stat-label">App admins</span>
@@ -681,6 +691,12 @@
                                                 <strong>@GetMemberManagementRoleLabel(member.MemberId, management)</strong>
                                             </div>
                                             <div class="party-quest-card-actions">
+                                                @if (CanAssignPartyOwner(member.MemberId, management))
+                                                {
+                                                    <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => AssignPartyOwnerAsync(member))" Variant="Variant.Outlined">
+                                                        Assign party owner
+                                                    </MudButton>
+                                                }
                                                 @if (management.CurrentUserCanManageOfficers && CanAssignOfficer(member.MemberId, management))
                                                 {
                                                     <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => AssignOfficerAsync(member))" Variant="Variant.Outlined">
@@ -1391,6 +1407,21 @@
             && !IsOfficer(userId, management);
     }
 
+    private static bool CanAssignPartyOwner(string userId, PartySyncManagementState management)
+    {
+        return management.CurrentUserIsAdmin
+            && !string.Equals(management.OwnerUserId, userId, StringComparison.Ordinal);
+    }
+
+    private IReadOnlyList<PartyMemberSnapshot> GetAssignablePartyOwnerMembers(PartySyncManagementState management)
+    {
+        return SessionController.State.PartySnapshot?.Members
+            .Where(member => CanAssignPartyOwner(member.MemberId, management))
+            .OrderBy(member => member.DisplayName, StringComparer.OrdinalIgnoreCase)
+            .ToArray()
+            ?? Array.Empty<PartyMemberSnapshot>();
+    }
+
     private bool CanKickMember(string userId, PartySyncManagementState management)
     {
         return !IsCurrentUser(userId)
@@ -1559,6 +1590,28 @@
     {
         var result = await SessionController.AssignPartySyncOfficerAsync(member.MemberId, member.DisplayName);
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task AssignPartyOwnerAsync(PartyMemberSnapshot member)
+    {
+        var result = await SessionController.AssignPartySyncOwnerAsync(member.MemberId, member.DisplayName);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task AssignPartyOwnerFromSelectAsync(ChangeEventArgs eventArgs)
+    {
+        var memberId = eventArgs.Value?.ToString();
+        if (string.IsNullOrWhiteSpace(memberId))
+        {
+            return;
+        }
+
+        var member = SessionController.State.PartySnapshot?.Members.FirstOrDefault(candidate =>
+            string.Equals(candidate.MemberId, memberId, StringComparison.Ordinal));
+        if (member is not null)
+        {
+            await AssignPartyOwnerAsync(member);
+        }
     }
 
     private async Task RemoveOfficerAsync(string userId)

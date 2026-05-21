@@ -150,6 +150,21 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
             displayName);
     }
 
+    public async Task<RemotePartyQuestState> AssignPartyOwnerAsync(
+        PartySyncClaim claim,
+        string userId,
+        string displayName,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "assignPartyOwner",
+            cancellationToken,
+            claim,
+            userId,
+            displayName);
+    }
+
     public async Task<RemotePartyQuestState> RemoveOfficerAsync(
         PartySyncClaim claim,
         string userId,

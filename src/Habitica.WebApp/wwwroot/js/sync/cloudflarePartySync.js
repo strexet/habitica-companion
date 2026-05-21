@@ -99,6 +99,14 @@ export async function assignOfficer(claim, userId, displayName) {
   });
 }
 
+export async function assignPartyOwner(claim, userId, displayName) {
+  return await postPartyAction(claim, {
+    action: "assignPartyOwner",
+    userId,
+    displayName,
+  });
+}
+
 export async function removeOfficer(claim, userId) {
   return await postPartyAction(claim, {
     action: "removeOfficer",

@@ -685,6 +685,7 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Member auto updates", cut.Markup);
         Assert.Contains("Lets members publish start and completion updates for their own queued quests; enable when quest owners should keep shared status current.", cut.Markup);
         Assert.DoesNotContain("officer-only queue edits", cut.Markup, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("Assign party owner", cut.Markup);
         AssertMarkupOrder(cut.Markup, "Summary", "Party sync roles", "Party sync settings", "Active quest");
         Assert.Contains("Kicked users", cut.Markup);
         Assert.Contains("Beta", cut.Markup);
@@ -712,6 +713,67 @@ public sealed class PartyPageTests : BunitContext
             .Single(button => button.TextContent.Trim() == "Beta")
             .Click();
         Assert.Contains("User ID", cut.Find("#party-member-kicked-id").TextContent);
+    }
+
+    [Fact]
+    public void App_admin_can_assign_party_owner_from_role_control()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        var sessionController = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Admin",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                UserId: "admin-id",
+                UserSnapshot: CreateSnapshot(),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                PartySnapshot: new PartySnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                    "party-123",
+                    "Night Owls",
+                    "Quest-focused party",
+                    3,
+                    null,
+                    new[]
+                    {
+                        new PartyMemberSnapshot("owner-id", "Mage Tester", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
+                        new PartyMemberSnapshot("admin-id", "Admin", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
+                        new PartyMemberSnapshot("member-id", "Beta", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
+                    },
+                    leaderId: "owner-id"),
+                PartyFreshness: SnapshotFreshnessState.Fresh,
+                PartyQuestQueue: new PartyQuestQueueSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:30:00Z"),
+                    Array.Empty<PartyQuestPoolEntry>(),
+                    Array.Empty<PartyQuestQueueEntry>(),
+                    Array.Empty<PartyRecentlyCompletedQuest>(),
+                    new PartySyncManagementState(
+                        "owner-id",
+                        "Mage Tester",
+                        new[] { new PartySyncParticipant("admin-id", "Admin") },
+                        Array.Empty<PartySyncOfficer>(),
+                        Array.Empty<PartySyncKick>(),
+                        PartySyncSettings.Default,
+                        CurrentUserIsOwner: false,
+                        CurrentUserIsAdmin: true,
+                        CurrentUserIsOfficer: false,
+                        CurrentUserCanManageSettings: true,
+                        CurrentUserCanManageOfficers: true,
+                        CurrentUserCanManageQueue: true,
+                        CurrentUserCanModerateMembers: true,
+                        CurrentUserIsKicked: false))));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<PartyPage>();
+
+        cut.Find(".party-management-summary select[aria-label=\"Assign party owner\"]").Change("member-id");
+
+        Assert.Equal(("member-id", "Beta"), sessionController.AssignPartyOwnerCalls.Single());
     }
 
     private static void AssertMarkupOrder(string markup, params string[] labels)

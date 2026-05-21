@@ -42,6 +42,8 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<TaskScoreRequest> ScoreTaskCalls { get; } = new();
 
+    public List<(string UserId, string DisplayName)> AssignPartyOwnerCalls { get; } = new();
+
     public int StartNewDayCalls { get; private set; }
 
     public List<StatAllocation> StatAllocationCalls { get; } = new();
@@ -252,6 +254,12 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task<PartyQuestActionResult> AssignPartySyncOfficerAsync(string userId, string displayName, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(PartyQuestActionResult.Success("Officer assigned."));
+    }
+
+    public Task<PartyQuestActionResult> AssignPartySyncOwnerAsync(string userId, string displayName, CancellationToken cancellationToken = default)
+    {
+        AssignPartyOwnerCalls.Add((userId, displayName));
+        return Task.FromResult(PartyQuestActionResult.Success("Party owner assigned."));
     }
 
     public Task<PartyQuestActionResult> RemovePartySyncOfficerAsync(string userId, CancellationToken cancellationToken = default)

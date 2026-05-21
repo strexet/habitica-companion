@@ -713,6 +713,16 @@ public sealed class AppSessionControllerTests
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
         }
 
+        public Task<RemotePartyQuestState> AssignPartyOwnerAsync(
+            PartySyncClaim claim,
+            string userId,
+            string displayName,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
+
         public Task<RemotePartyQuestState> RemoveOfficerAsync(
             PartySyncClaim claim,
             string userId,
