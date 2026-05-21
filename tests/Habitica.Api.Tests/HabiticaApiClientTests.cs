@@ -202,7 +202,8 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(4, snapshot.UnallocatedStatPoints);
         Assert.Equal(new CharacterStatsSnapshot(12m, 34m, 18m, 21m), snapshot.Stats);
         Assert.Equal(new CharacterStatsSnapshot(2m, 5m, 3m, 4m), snapshot.Buffs);
-        Assert.True(snapshot.BuffFlags.ChillingFrost);
+        Assert.NotNull(snapshot.BuffFlags);
+        Assert.True(snapshot.BuffFlags!.ChillingFrost);
         Assert.Equal(7, snapshot.BuffFlags.Stealth);
         Assert.Equal("party-123", snapshot.PartyId);
         Assert.Equal("Wolf-Base", snapshot.CurrentPetKey);
@@ -356,6 +357,10 @@ public sealed class HabiticaApiClientTests
                   "stats": {
                     "lvl": 72,
                     "class": "warrior",
+                    "hp": 28.5,
+                    "maxHealth": 50,
+                    "mp": 12,
+                    "maxMP": 80,
                     "str": 30,
                     "int": 70,
                     "con": 0,
@@ -458,6 +463,10 @@ public sealed class HabiticaApiClientTests
         Assert.Equal("Alpha", snapshot.Members[0].DisplayName);
         Assert.Equal(alphaCron, snapshot.Members[0].LastCronUtc);
         Assert.Equal(7.2m, snapshot.Members[0].PendingQuestDamage);
+        Assert.Equal(28.5m, snapshot.Members[0].Health);
+        Assert.Equal(50m, snapshot.Members[0].MaxHealth);
+        Assert.Equal(12m, snapshot.Members[0].Mana);
+        Assert.Equal(80m, snapshot.Members[0].MaxMana);
         Assert.Equal(PartyCronState.CronedToday, snapshot.Members[0].CronState);
         Assert.Equal(30m, snapshot.Members[0].Stats!.BaseAllocated!.Strength);
         Assert.Equal(80m, snapshot.Members[0].Stats!.Buffs!.Strength);

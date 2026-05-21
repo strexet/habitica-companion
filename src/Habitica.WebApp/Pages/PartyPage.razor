@@ -475,7 +475,11 @@
                             <div class="party-member-summary-row">
                                 <div class="party-member-identity">
                                     <strong>@member.DisplayName</strong>
-                                    <span class="ui-pill state-pill">@FormatClass(member.ClassName)</span>
+                                    <div class="party-member-classline">
+                                        <span class="ui-pill state-pill">@FormatClass(member.ClassName)</span>
+                                        <span class="party-resource-chip">@FormatMemberResource("HP", member.Health, member.MaxHealth)</span>
+                                        <span class="party-resource-chip">@FormatMemberResource("MP", member.Mana, member.MaxMana)</span>
+                                    </div>
                                 </div>
 
                                 <dl class="party-member-meta compact">
@@ -793,6 +797,16 @@
                 .OrderByDescending(GetPendingQuestSortValue)
                 .ThenBy(static member => member.DisplayName, StringComparer.CurrentCultureIgnoreCase)
                 .ToArray(),
+            PartyMemberSortMode.Health => members
+                .OrderBy(static member => member.Health is null)
+                .ThenBy(static member => member.Health)
+                .ThenBy(static member => member.DisplayName, StringComparer.CurrentCultureIgnoreCase)
+                .ToArray(),
+            PartyMemberSortMode.Mana => members
+                .OrderBy(static member => member.Mana is null)
+                .ThenBy(static member => member.Mana)
+                .ThenBy(static member => member.DisplayName, StringComparer.CurrentCultureIgnoreCase)
+                .ToArray(),
             PartyMemberSortMode.CronStatus => members
                 .OrderBy(static member => member.CronState)
                 .ThenBy(static member => member.DisplayName, StringComparer.CurrentCultureIgnoreCase)
@@ -825,6 +839,8 @@
             PartyMemberSortMode.AverageCron => "Average CRON",
             PartyMemberSortMode.LatestCron => "Latest CRON",
             PartyMemberSortMode.PendingQuest => "Pending quest",
+            PartyMemberSortMode.Health => "Low HP",
+            PartyMemberSortMode.Mana => "Low MP",
             PartyMemberSortMode.CronStatus => "CRON status",
             _ => "Name"
         };
@@ -1501,6 +1517,18 @@
         return value?.ToString("0.##", CultureInfo.InvariantCulture) ?? "-";
     }
 
+    private static string FormatMemberResource(string label, decimal? current, decimal? max)
+    {
+        if (current is null)
+        {
+            return $"{label} -";
+        }
+
+        return max is > 0m
+            ? $"{label} {FormatDecimal(current.Value)}/{FormatDecimal(max.Value)}"
+            : $"{label} {FormatDecimal(current.Value)}";
+    }
+
     private static string FormatSignedStat(decimal? value)
     {
         if (value is null)
@@ -1602,6 +1630,8 @@
         AverageCron,
         LatestCron,
         PendingQuest,
+        Health,
+        Mana,
         CronStatus
     }
 

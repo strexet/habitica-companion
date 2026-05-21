@@ -52,18 +52,27 @@
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">HP</span>
                 <strong>@FormatStat(snapshot.Health, snapshot.MaxHealth)</strong>
+                <div class="dashboard-stat-meter health-meter" aria-hidden="true">
+                    <span style="@GetMeterWidthStyle(snapshot.Health, snapshot.MaxHealth)"></span>
+                </div>
                 <span class="dashboard-stat-note">Health</span>
             </article>
 
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">MP</span>
                 <strong>@FormatStat(snapshot.Mana, snapshot.MaxMana)</strong>
+                <div class="dashboard-stat-meter mana-meter" aria-hidden="true">
+                    <span style="@GetMeterWidthStyle(snapshot.Mana, snapshot.MaxMana)"></span>
+                </div>
                 <span class="dashboard-stat-note">Mana</span>
             </article>
 
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">XP</span>
                 <strong>@FormatStat(snapshot.Experience, snapshot.ToNextLevel)</strong>
+                <div class="dashboard-stat-meter xp-meter" aria-hidden="true">
+                    <span style="@GetMeterWidthStyle(snapshot.Experience, snapshot.ToNextLevel)"></span>
+                </div>
                 <span class="dashboard-stat-note">@(snapshot.ToNextLevel > 0 ? "Current / to next level" : "Current XP")</span>
             </article>
 
@@ -271,6 +280,17 @@
     private static string FormatDecimal(decimal value)
     {
         return value.ToString("0.##");
+    }
+
+    private static string GetMeterWidthStyle(decimal value, decimal total)
+    {
+        if (total <= 0m)
+        {
+            return "width: 0%;";
+        }
+
+        var percent = Math.Clamp(Math.Round(value / total * 100m, 2), 0m, 100m);
+        return $"width: {percent.ToString("0.##", CultureInfo.InvariantCulture)}%;";
     }
 
     private static string FormatSignedDecimal(decimal value)

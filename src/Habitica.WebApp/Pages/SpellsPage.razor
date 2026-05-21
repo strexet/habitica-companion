@@ -36,6 +36,17 @@
             @GetFreshnessLabel(SessionController.State.UserFreshness)
         </MudAlert>
 
+        <section class="spell-mana-bar" aria-label="Available mana">
+            <div>
+                <span class="dashboard-stat-label">Available mana</span>
+                <strong>@FormatDecimal(viewModel.Mana) MP</strong>
+            </div>
+            <div class="spell-mana-bar-meter" aria-hidden="true">
+                <span style="@GetManaWidthStyle(viewModel.Mana, viewModel.MaxMana)"></span>
+            </div>
+            <span class="dashboard-stat-note">Max @FormatDecimal(viewModel.MaxMana) MP</span>
+        </section>
+
         @if (SessionController.State.PartySnapshot?.Quest is { } quest)
         {
             <section class="spells-summary-grid compact-summary-grid">
@@ -100,9 +111,12 @@
                     var selectedRecommendation = GetSelectedRecommendation(spell);
                     var isCasting = SessionController.State.ActiveSpellCastProgress?.SpellId == spell.Id;
                     var equipmentProgress = GetEquipmentProgress(spell.Id);
+                    var totalMana = spell.ManaCost * count;
+                    var hasEnoughMana = totalMana <= viewModel.Mana;
+                    var manaAfterCast = viewModel.Mana - totalMana;
                     var castDisabled = !canMutate
                         || !spell.IsUnlocked
-                        || spell.ManaCost * count > viewModel.Mana
+                        || !hasEnoughMana
                         || (spell.TargetKind == SpellTargetKind.Task && !HasTarget(viewModel.TargetTasks, selectedTarget));
 
                     <article class="spell-card spell-block">
@@ -120,54 +134,78 @@
 
                         <div class="spell-card-section spell-cast-section">
                             <div class="spell-cast-controls">
-                                <label class="field-row compact spell-count-field">
-                                    <span>Count</span>
-                                    <input class="app-input"
-                                           data-testid="@($"spell-count-{spell.Id}")"
-                                           disabled="@isCasting"
-                                           min="1"
-                                           type="number"
-                                           value="@count"
-                                           @onchange="eventArgs => SetSpellCount(spell.Id, eventArgs.Value?.ToString())" />
-                                </label>
-
-                                @if (spell.TargetKind == SpellTargetKind.Task)
-                                {
-                                    <label class="field-row compact spell-target-field">
-                                        <span>Target</span>
-                                        <select class="app-input" value="@selectedTarget" @onchange="eventArgs => SetSelectedTarget(spell.Id, eventArgs.Value?.ToString())">
-                                            @foreach (var task in viewModel.TargetTasks)
-                                            {
-                                                <option value="@task.Id">@task.Text (@task.Type, value @FormatDecimal(task.Value))</option>
-                                            }
-                                        </select>
+                                <div class="spell-cast-inputs">
+                                    <label class="field-row compact spell-count-field">
+                                        <span>Count</span>
+                                        <input class="app-input"
+                                               data-testid="@($"spell-count-{spell.Id}")"
+                                               disabled="@isCasting"
+                                               min="1"
+                                               type="number"
+                                               value="@count"
+                                               @onchange="eventArgs => SetSpellCount(spell.Id, eventArgs.Value?.ToString())" />
                                     </label>
-                                }
 
-                                <div class="spell-total">
-                                    <span>Total mana</span>
-                                    <strong>@(spell.ManaCost * count) MP</strong>
+                                    @if (spell.TargetKind == SpellTargetKind.Task)
+                                    {
+                                        <label class="field-row compact spell-target-field">
+                                            <span>Target</span>
+                                            <select class="app-input" value="@selectedTarget" @onchange="eventArgs => SetSelectedTarget(spell.Id, eventArgs.Value?.ToString())">
+                                                @foreach (var task in viewModel.TargetTasks)
+                                                {
+                                                    <option value="@task.Id">@task.Text (@task.Type, value @FormatDecimal(task.Value))</option>
+                                                }
+                                            </select>
+                                        </label>
+                                    }
                                 </div>
 
-                                @if (spell.EquipmentRecommendations.Count > 0)
-                                {
-                                    <label class="checkbox-row compact spell-auto-equip-field">
-                                        <input data-testid="@($"spell-auto-equip-{spell.Id}")"
-                                               disabled="@isCasting"
-                                               type="checkbox"
-                                               checked="@autoEquip"
-                                               @onchange="eventArgs => SetAutoEquip(spell.Id, eventArgs.Value is true)" />
-                                        <span>Auto equip</span>
-                                    </label>
-                                }
+                                <div class="spell-cast-status">
+                                    <div class="spell-mana-preview @(hasEnoughMana ? string.Empty : "danger-mana")">
+                                        <div class="spell-mana-preview-row">
+                                            <span>Mana spent</span>
+                                            <strong>@FormatDecimal(totalMana) MP</strong>
+                                        </div>
+                                        <div class="spell-mana-meter" aria-hidden="true">
+                                            <span style="@GetManaWidthStyle(totalMana, viewModel.Mana)"></span>
+                                        </div>
+                                        <div class="spell-mana-preview-row">
+                                            <span>Available</span>
+                                            <strong>@FormatDecimal(viewModel.Mana) MP</strong>
+                                        </div>
+                                        <div class="spell-mana-preview-row">
+                                            <span>After cast</span>
+                                            <strong>@FormatDecimal(manaAfterCast) MP</strong>
+                                        </div>
+                                        @if (!hasEnoughMana)
+                                        {
+                                            <span class="spell-disabled-note">Not enough mana for this cast count.</span>
+                                        }
+                                    </div>
 
-                                <MudButton Color="Color.Primary"
-                                           Disabled="@castDisabled"
-                                           OnClick="() => CastSpellAsync(spell, count, selectedTarget, autoEquip, selectedRecommendation)"
-                                           Variant="Variant.Filled"
-                                           data-testid="@($"cast-spell-{spell.Id}")">
-                                    Cast
-                                </MudButton>
+                                    <div class="spell-action-row">
+                                        @if (spell.EquipmentRecommendations.Count > 0)
+                                        {
+                                            <label class="checkbox-row compact spell-auto-equip-field">
+                                                <input data-testid="@($"spell-auto-equip-{spell.Id}")"
+                                                       disabled="@isCasting"
+                                                       type="checkbox"
+                                                       checked="@autoEquip"
+                                                       @onchange="eventArgs => SetAutoEquip(spell.Id, eventArgs.Value is true)" />
+                                                <span>Auto equip</span>
+                                            </label>
+                                        }
+
+                                        <MudButton Class="spell-cast-button"
+                                                   Color="Color.Primary"
+                                                   Disabled="@castDisabled"
+                                                   OnClick="() => CastSpellAsync(spell, count, selectedTarget, autoEquip, selectedRecommendation)"
+                                                   Variant="Variant.Filled"
+                                                   data-testid="@($"cast-spell-{spell.Id}")">
+                                            Cast
+                                        </MudButton>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -347,6 +385,17 @@
     private static string FormatDecimal(decimal value)
     {
         return value.ToString("0.##");
+    }
+
+    private static string GetManaWidthStyle(decimal value, decimal total)
+    {
+        if (total <= 0m)
+        {
+            return "width: 0%;";
+        }
+
+        var percent = Math.Clamp(Math.Round(value / total * 100m, 2), 0m, 100m);
+        return $"width: {percent.ToString("0.##", CultureInfo.InvariantCulture)}%;";
     }
 
     private static string FormatReadableName(string value)

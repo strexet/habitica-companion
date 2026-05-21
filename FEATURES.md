@@ -103,7 +103,7 @@ Rules:
 Status: partial
 Owner module: `Habitica.Domain.Party`, `Habitica.Application.Auth`, `Habitica.Storage`
 Application entry point: `Habitica.WebApp.Pages.PartyPage`
-Primary Habitica data: party group, party members, member `lastCron`, member public quest progress, member preferences day start and timezone offset
+Primary Habitica data: party group, party members, member `lastCron`, member HP/MP, member public quest progress, member preferences day start and timezone offset
 Mutates Habitica state: no
 Requires confirmation: no
 Offline behavior: available from latest party snapshot and local CRON history
@@ -121,6 +121,7 @@ party member list
 member display names
 member user ids when available
 member lastCron timestamps when available
+member HP/MP when available
 member pending quest damage when available
 member custom day start when available
 member timezone offset when available
@@ -1941,6 +1942,7 @@ cached party snapshot
 party freshness state
 party quest summary
 party member CRON summary
+party member HP/MP summary
 party CRON history
 current user's owned quest scrolls
 quest content metadata
@@ -1958,7 +1960,7 @@ quest progress snapshot
 party pending boss damage/items, boss HP remaining, total boss HP when available, and pending damage to party
 CRONed X/Y summary
 buff timing recommendations
-compact party member CRON list with foldable details
+compact party member CRON list with HP/MP, sortable low-HP/low-MP modes, and foldable details
 viewer-local CRON statistics graph
 active quest card with real quest metadata and rewards when cached
 shared quest queue cards with vote counts and voter names
@@ -1986,15 +1988,16 @@ Current display rules:
 3. Show the latest cached party name, summary, and member count.
 4. Show quest key, active state, party pending boss damage or collection items when member progress is available, boss HP remaining, total boss HP when content data is available, pending damage to party, and participant count when a quest snapshot exists.
 5. Show a dedicated CRON summary when member CRON data exists.
-6. Show compact per-member cards with display name, class, CRON state, last CRON, average CRON time, and active-quest pending damage/items when available.
+6. Show compact per-member cards with display name, class, subtle HP/MP values, CRON state, last CRON, average CRON time, and active-quest pending damage/items when available.
 7. Keep member id, level, CRON reason, and stat breakdowns behind a collapsed in-memory details toggle on each member card.
-8. Show viewer-local CRON graph points and low-confidence warnings from local history.
-9. Publish the current user's owned quest scrolls to the shared party quest pool after party sync when inventory and content metadata are available.
-10. Allow only the current quest owner to add that user's quest scroll to the shared queue.
-11. Allow one vote per party member per queued quest; clicking again removes the vote.
-12. Sort visible queue cards by vote count, owner readiness, queue age, and recently completed penalty.
-13. Let the quest owner remove their own queue item; party-sync also allows party leader removal when membership verification identifies the leader.
-14. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
+8. Let the member list sort by name, average CRON, latest CRON, pending quest contribution, low HP, low MP, and CRON status. HP/MP sorts are ascending so the lowest current value appears first; unknown values sort last.
+9. Show viewer-local CRON graph points and low-confidence warnings from local history.
+10. Publish the current user's owned quest scrolls to the shared party quest pool after party sync when inventory and content metadata are available.
+11. Allow only the current quest owner to add that user's quest scroll to the shared queue.
+12. Allow one vote per party member per queued quest; clicking again removes the vote.
+13. Sort visible queue cards by vote count, owner readiness, queue age, and recently completed penalty.
+14. Let the quest owner remove their own queue item; party-sync also allows party leader removal when membership verification identifies the leader.
+15. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
 ```
 
 ### Validation
@@ -2039,6 +2042,7 @@ Current implementation:
 - cached party summary cards;
 - cached quest progress snapshot.
 - compact party member cards with foldable extra info and stats;
+- subtle HP/MP values and low-HP/low-MP member sorting;
 - active quest card with real cached quest metadata and compact rewards;
 - shared quest pool from published member quest-scroll availability;
 - shared quest queue with owner-only add/remove and one-vote-per-member voting;

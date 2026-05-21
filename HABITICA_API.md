@@ -777,6 +777,10 @@ lastCron (only if Habitica ever returns it for the caller)
 party.quest.progress.up
 party.quest.progress.collectedItems
 party.quest.progress.collect
+stats.hp
+stats.maxHealth
+stats.mp
+stats.maxMP
 preferences.dayStart (not present in the current public member field list)
 preferences.timezoneOffset (not present in the current public member field list)
 preferences.timezoneOffsetAtLastCron (not present in the current public member field list)

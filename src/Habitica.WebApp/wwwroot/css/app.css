@@ -416,6 +416,29 @@ a {
     grid-template-columns: repeat(auto-fit, minmax(10rem, 14rem));
 }
 
+.spell-mana-bar {
+    position: sticky;
+    top: 4.25rem;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: auto minmax(8rem, 18rem) auto;
+    gap: 0.8rem;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    border: 1px solid rgba(45, 116, 110, 0.18);
+    border-radius: 1rem;
+    background: rgba(255, 250, 241, 0.94);
+    box-shadow: 0 0.85rem 2rem rgba(22, 36, 35, 0.1);
+    backdrop-filter: blur(12px);
+}
+
+.spell-mana-bar strong {
+    display: block;
+    margin-top: 0.12rem;
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
 .spells-grid {
     grid-template-columns: 1fr;
 }
@@ -577,6 +600,7 @@ a {
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem;
+    max-width: 100%;
     padding: 0.25rem;
     border-radius: 0.65rem;
     border: 1px solid rgba(22, 36, 35, 0.08);
@@ -660,6 +684,21 @@ a {
     justify-content: flex-start;
     color: var(--muted);
     font-size: 0.92rem;
+}
+
+.party-resource-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.65rem;
+    padding: 0.2rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(255, 255, 255, 0.44);
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.1;
+    white-space: nowrap;
 }
 
 .party-member-row {
@@ -958,9 +997,23 @@ a {
 
 .spell-cast-controls {
     display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 26rem);
+    align-items: start;
+}
+
+.spell-cast-inputs {
+    display: grid;
     gap: 0.85rem;
-    grid-template-columns: minmax(5rem, 7rem) minmax(14rem, 24rem) minmax(8rem, 10rem) auto;
+    grid-template-columns: minmax(5.5rem, 7rem) minmax(16rem, 1fr);
     align-items: end;
+    min-width: 0;
+}
+
+.spell-cast-status {
+    display: grid;
+    gap: 0.75rem;
+    min-width: 0;
 }
 
 .spell-count-field {
@@ -969,6 +1022,15 @@ a {
 
 .spell-target-field {
     min-width: 0;
+}
+
+.spell-cast-controls .field-row.compact {
+    min-width: 0;
+}
+
+.spell-target-field .app-input {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .spell-total {
@@ -981,6 +1043,86 @@ a {
 .spell-total span {
     color: var(--muted);
     font-size: 0.78rem;
+}
+
+.spell-mana-preview {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0.75rem;
+    border: 1px solid rgba(45, 116, 110, 0.14);
+    border-radius: 0.75rem;
+    background: rgba(45, 116, 110, 0.06);
+}
+
+.spell-mana-preview.danger-mana {
+    border-color: rgba(161, 63, 53, 0.22);
+    background: rgba(161, 63, 53, 0.08);
+}
+
+.spell-mana-preview-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.25;
+}
+
+.spell-mana-preview-row strong {
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.spell-disabled-note {
+    color: var(--danger);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.spell-mana-meter,
+.spell-mana-bar-meter {
+    height: 0.5rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(22, 36, 35, 0.1);
+}
+
+.spell-mana-meter span,
+.spell-mana-bar-meter span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--teal), #43a397);
+    transition: width 180ms ease;
+}
+
+.danger-mana .spell-mana-meter span {
+    background: linear-gradient(90deg, var(--danger), #d0695d);
+}
+
+.spell-action-row {
+    display: grid;
+    grid-template-columns: minmax(8rem, 1fr) minmax(8rem, 12rem);
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.spell-cast-button {
+    width: 100%;
+    min-height: 2.75rem;
+}
+
+.spell-action-row > .spell-cast-button:only-child {
+    grid-column: 1 / -1;
+}
+
+.spell-auto-equip-field {
+    min-width: 0;
+}
+
+.spell-auto-equip-field span {
+    overflow-wrap: anywhere;
 }
 
 .spell-progress {
@@ -1116,6 +1258,32 @@ a {
 .dashboard-stat-card strong {
     font-size: 1.5rem;
     line-height: 1.1;
+}
+
+.dashboard-stat-meter {
+    height: 0.42rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(22, 36, 35, 0.1);
+}
+
+.dashboard-stat-meter span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    transition: width 180ms ease;
+}
+
+.dashboard-stat-meter.health-meter span {
+    background: linear-gradient(90deg, #9f3f38, #d56f62);
+}
+
+.dashboard-stat-meter.mana-meter span {
+    background: linear-gradient(90deg, var(--teal), #43a397);
+}
+
+.dashboard-stat-meter.xp-meter span {
+    background: linear-gradient(90deg, var(--gold), #e1a347);
 }
 
 .dashboard-stat-label,
@@ -1647,11 +1815,14 @@ code {
     }
 
     .party-member-toolbar {
+        width: 100%;
         justify-content: flex-start;
     }
 
     .spell-card-summary,
     .spell-cast-controls,
+    .spell-cast-inputs,
+    .spell-action-row,
     .stats-panel-head,
     .spell-recommendation {
         grid-template-columns: 1fr;
@@ -1706,6 +1877,16 @@ code {
     .party-member-meta,
     .party-member-meta.compact {
         grid-template-columns: 1fr;
+    }
+
+    .spell-mana-bar {
+        top: 3.75rem;
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+    }
+
+    .spell-card-section {
+        padding: 0.9rem;
     }
 
 }

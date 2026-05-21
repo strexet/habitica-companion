@@ -450,7 +450,11 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             LastLoggedInUtc = ParseDateTimeOffset(GetOptionalString(authTimestamps, "loggedin")),
             TotalLogins = GetOptionalNullableInt32(member, "loginIncentives")
                 ?? GetOptionalNullableInt32(TryGetObject(member, "flags"), "cronCount"),
-            EquippedGearKeys = GetEquippedGearKeys(TryGetObject(gear, "equipped"))
+            EquippedGearKeys = GetEquippedGearKeys(TryGetObject(gear, "equipped")),
+            Health = GetOptionalDecimal(stats, "hp"),
+            MaxHealth = GetOptionalDecimal(stats, "maxHealth"),
+            Mana = GetOptionalDecimal(stats, "mp"),
+            MaxMana = GetOptionalDecimal(stats, "maxMP")
         };
     }
 

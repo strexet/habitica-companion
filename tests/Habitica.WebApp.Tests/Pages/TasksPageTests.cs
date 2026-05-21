@@ -56,13 +56,13 @@ public sealed class TasksPageTests : BunitContext
     }
 
     [Fact]
-    public void Loads_stored_task_category_preferences_for_current_user()
+    public async Task Loads_stored_task_category_preferences_for_current_user()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new TaskListViewModelFactory());
         var storage = new FakeKeyValueStorage();
-        storage.SetAsync(
+        await storage.SetAsync(
             $"{StorageKeys.TasksPagePreferences}/user-id",
             new
             {
@@ -75,7 +75,7 @@ public sealed class TasksPageTests : BunitContext
                     ["Habit"] = true
                 }
             },
-            CancellationToken.None).GetAwaiter().GetResult();
+            CancellationToken.None);
         Services.AddSingleton<IKeyValueStorage>(storage);
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(

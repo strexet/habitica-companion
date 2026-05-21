@@ -89,7 +89,11 @@ public sealed class PartyPageTests : BunitContext
                             DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
                             TimeSpan.Parse("08:15"),
                             1,
-                            PendingQuestDamage: 7.2m),
+                            PendingQuestDamage: 7.2m,
+                            Health: 28.5m,
+                            MaxHealth: 50m,
+                            Mana: 12m,
+                            MaxMana: 80m),
                         new PartyMemberSnapshot(
                             "user-2",
                             "Beta",
@@ -102,7 +106,11 @@ public sealed class PartyPageTests : BunitContext
                             DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
                             TimeSpan.Parse("09:45"),
                             1,
-                            PendingQuestDamage: 5.3m),
+                            PendingQuestDamage: 5.3m,
+                            Health: 7m,
+                            MaxHealth: 50m,
+                            Mana: 22m,
+                            MaxMana: 60m),
                         new PartyMemberSnapshot(
                             "user-3",
                             "Gamma",
@@ -138,17 +146,21 @@ public sealed class PartyPageTests : BunitContext
                                 PartyCronState.CronedToday,
                                 "Croned today.",
                                 "2026-04-26",
-                            DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
-                            TimeSpan.Parse("08:15"),
-                            1,
-                            PendingQuestDamage: 7.2m,
-                            ClassName: "wizard",
-                            Level: 15,
-                            Stats: new PartyMemberStatBreakdownSnapshot(
-                                new PartyStatSectionSnapshot(30m, 70m, 0m, 0m),
-                                new PartyStatSectionSnapshot(20m, 10m, 5m, 7m),
-                                new PartyStatSectionSnapshot(80m, 50m, 213m, 192m),
-                                null))
+                                DateTimeOffset.Parse("2026-04-26T00:00:00Z"),
+                                TimeSpan.Parse("08:15"),
+                                1,
+                                PendingQuestDamage: 7.2m,
+                                ClassName: "wizard",
+                                Level: 15,
+                                Health: 28.5m,
+                                MaxHealth: 50m,
+                                Mana: 12m,
+                                MaxMana: 80m,
+                                Stats: new PartyMemberStatBreakdownSnapshot(
+                                    new PartyStatSectionSnapshot(30m, 70m, 0m, 0m),
+                                    new PartyStatSectionSnapshot(20m, 10m, 5m, 7m),
+                                    new PartyStatSectionSnapshot(80m, 50m, 213m, 192m),
+                                    null))
                         },
                         GraphPoints: new[]
                         {
@@ -184,6 +196,10 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Alpha", cut.Markup);
         Assert.Contains("Beta", cut.Markup);
         Assert.Contains("Gamma", cut.Markup);
+        Assert.Contains("HP 28.5/50", cut.Markup);
+        Assert.Contains("MP 12/80", cut.Markup);
+        Assert.Contains("Low HP", cut.Markup);
+        Assert.Contains("Low MP", cut.Markup);
         Assert.Contains("Pending quest", cut.Markup);
         Assert.Contains("7.2 damage", cut.Markup);
         Assert.Contains("5.3 damage", cut.Markup);
@@ -205,6 +221,12 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("Strength", cut.Markup);
         Assert.DoesNotContain("Day start", cut.Markup);
         Assert.DoesNotContain("Habitica public member data hides day start/timezone", cut.Markup);
+
+        cut.FindAll("button").Single(button => button.TextContent.Trim() == "Low HP").Click();
+        Assert.Equal("Beta", cut.FindAll(".party-member-card .party-member-identity strong").First().TextContent);
+
+        cut.FindAll("button").Single(button => button.TextContent.Trim() == "Low MP").Click();
+        Assert.Equal("Alpha", cut.FindAll(".party-member-card .party-member-identity strong").First().TextContent);
 
         cut.Find(".inline-link-button").Click();
 

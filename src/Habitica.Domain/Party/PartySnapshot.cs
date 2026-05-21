@@ -226,7 +226,11 @@ public sealed record PartyMemberSnapshot(
     DateTimeOffset? CreatedAtUtc = null,
     DateTimeOffset? LastLoggedInUtc = null,
     int? TotalLogins = null,
-    IReadOnlyList<string>? EquippedGearKeys = null);
+    IReadOnlyList<string>? EquippedGearKeys = null,
+    decimal? Health = null,
+    decimal? MaxHealth = null,
+    decimal? Mana = null,
+    decimal? MaxMana = null);
 
 public sealed record PartyCronHistoryEvent(
     string PartyId,

@@ -113,7 +113,7 @@
 
                                             <div>
                                                 <dt>Due</dt>
-                                                <dd>@(item.DueDate?.ToString("u") ?? "No due date")</dd>
+                                                <dd>@FormatDueDate(item.DueDate)</dd>
                                             </div>
                                         </dl>
                                     </article>
@@ -238,6 +238,33 @@
     private static string FormatTaskValue(decimal? value)
     {
         return value?.ToString("0.#", CultureInfo.InvariantCulture) ?? "Unknown";
+    }
+
+    private static string FormatDueDate(DateTimeOffset? dueDate)
+    {
+        if (dueDate is null)
+        {
+            return "No due date";
+        }
+
+        var localDate = dueDate.Value.ToLocalTime().Date;
+        var today = DateTimeOffset.Now.Date;
+        if (localDate == today)
+        {
+            return "Today";
+        }
+
+        if (localDate == today.AddDays(1))
+        {
+            return "Tomorrow";
+        }
+
+        if (localDate == today.AddDays(-1))
+        {
+            return "Yesterday";
+        }
+
+        return dueDate.Value.ToLocalTime().ToString("MMM d, yyyy", CultureInfo.CurrentCulture);
     }
 
     private static string GetFoldLabel(string groupTitle, bool isFolded)

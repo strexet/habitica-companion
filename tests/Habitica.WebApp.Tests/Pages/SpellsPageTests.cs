@@ -25,6 +25,8 @@ public sealed class SpellsPageTests : BunitContext
         Assert.Contains("Spells", cut.Markup);
         Assert.Contains("MP", cut.Markup);
         Assert.Contains("33.5 / 40", cut.Markup);
+        Assert.Contains("Available mana", cut.Markup);
+        Assert.Contains("Max 40 MP", cut.Markup);
         Assert.Contains("Burst of Flames", cut.Markup);
         Assert.Contains("Ethereal Surge", cut.Markup);
         Assert.Contains("Bluest todo", cut.Markup);
@@ -55,6 +57,8 @@ public sealed class SpellsPageTests : BunitContext
         countInput.Change("3");
 
         Assert.Contains("30 MP", cut.Markup);
+        Assert.Contains("After cast", cut.Markup);
+        Assert.Contains("3.5 MP", cut.Markup);
         Assert.Contains("Casting 2 of 5", cut.Markup);
         Assert.Contains("mud-progress-linear", cut.Markup);
     }

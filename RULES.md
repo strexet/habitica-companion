@@ -1,6 +1,6 @@
 # RULES.md
 
-Last updated: 2026-04-27
+Last updated: 2026-05-21
 Primary audience: AI agents working in this repository
 
 ## 1. Purpose
@@ -18,10 +18,12 @@ Before implementing changes, read the relevant documents in this order:
 3. `HABITICA_TOOL_REFERENCES.md` when the change touches Habitica data fetching, sync, task/account/party parsing, quest progress, or rate-limit handling
 4. `TECHNICAL.md`
 5. `FEATURES.md`
-6. Existing code in the affected area
+6. `docs/UX_UI_MANIFEST.md` when the change touches UI, UX, layout, visual design, interaction flow, responsive behavior, or user-facing copy
+7. Existing code in the affected area
 
 For any code that interacts with Habitica, `HABITICA_API.md` is mandatory reading.
 For new or changed Habitica data features, read `HABITICA_TOOL_REFERENCES.md` after `HABITICA_API.md` and before implementation so stable third-party tool workflows are considered before adding new API assumptions.
+For UI or UX work, `docs/UX_UI_MANIFEST.md` is mandatory reading before editing UI code or styles.
 
 ## 3. Habitica API rule
 
@@ -107,6 +109,7 @@ Documentation changes should be minimal, accurate, and placed in the correct fil
 Habitica API behavior -> HABITICA_API.md
 Project stack/architecture -> TECHNICAL.md
 Feature behavior -> FEATURES.md
+UI/UX patterns, review findings, and responsive-design guidance -> docs/UX_UI_MANIFEST.md
 AI-agent workflow rules -> RULES.md
 ```
 
@@ -193,12 +196,13 @@ For a requested change:
 3. Read `HABITICA_TOOL_REFERENCES.md` if the change touches Habitica data fetching, parsing, sync, quest progress, or rate-limit behavior.
 4. Read `TECHNICAL.md` if the change touches architecture, stack, storage, deployment, sync, credentials, tests, or logging.
 5. Read `FEATURES.md` if the change adds or modifies feature behavior.
-6. Inspect the affected code.
-7. Make the smallest technically correct change.
-8. Update documentation when required by these rules.
-9. Add or update tests when logic changes.
-10. Review changed files for real issues.
-11. Report changed files and any remaining risks.
+6. Read `docs/UX_UI_MANIFEST.md` if the change touches UI, UX, layout, visual design, interaction flow, responsive behavior, or user-facing copy.
+7. Inspect the affected code.
+8. Make the smallest technically correct change.
+9. Update documentation when required by these rules.
+10. Add or update tests when logic changes.
+11. Review changed files for real issues.
+12. Report changed files and any remaining risks.
 
 Do not invent issues. If no issues are found during final review, state that the changed files look correct.
 

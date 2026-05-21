@@ -1,0 +1,404 @@
+# UX/UI Manifest
+
+Last reviewed: 2026-05-21
+
+This manifest records the current UI implementation, what is working, where readability or responsiveness has drifted, and which outside patterns are worth copying. Treat it as product guidance for future UI work, not as a pixel spec.
+
+## Product Posture
+
+Habitica Tool is a dense companion app for power users. The UI should feel like an operational dashboard with clear game-state affordances, not like a marketing site or a generic CRUD admin panel.
+
+Core principles:
+
+- Keep mutation controls explicit and close to the state they change.
+- Prefer readable summaries first, deeper detail second.
+- Keep resource state visible when the user is making resource-spending decisions.
+- Use cards for repeated records and bounded tools, not for every page section.
+- Use responsive grids with `minmax(0, 1fr)` or `minmax(min(100%, ...), 1fr)` where content can contain long task names, gear names, quest names, or translated text.
+- Never let a fixed-width action row own the layout when user data is variable.
+
+## Agent Usage Rules
+
+Before changing UI or UX:
+
+1. Read the relevant page section in this manifest.
+2. Inspect the affected Razor and CSS before choosing a design.
+3. Preserve established shared primitives unless they are the source of the problem.
+4. Check whether the change affects readability, interaction safety, responsiveness, or user-facing copy.
+5. If the change creates or changes a reusable pattern, update this manifest in the same change set.
+
+When reviewing UI changes:
+
+- Look for overlap, clipping, hidden overflow, cramped action rows, text that cannot wrap, and controls that move unpredictably across breakpoints.
+- Check long real-world Habitica data: translated task names, long gear names, long party names, unknown quest names, large numeric values, and disabled states.
+- Prefer evidence from current code and known product workflows over generic UI taste.
+- Use outside examples only to clarify a pattern. Do not copy another app if its workflow optimizes for a different job.
+
+Responsive review targets:
+
+- Narrow phone: 360px wide.
+- Large phone: 390-430px wide.
+- Tablet: 768px wide.
+- Small desktop or split view: 1024px wide.
+- Wide desktop: 1200px and above.
+
+UI change completion checklist:
+
+- Primary action remains visible or easy to reach.
+- Disabled actions explain their cause when the cause is not obvious.
+- Data freshness remains visible when stale data can make an action unsafe.
+- Any progress indicator is determinate when the app knows total work.
+- Touch targets and form controls are usable on phone widths.
+- The page still works with long user-generated strings.
+- The color palette does not rely on color alone to communicate state.
+
+## Current Implementation
+
+### App Shell
+
+Files: `src/Habitica.WebApp/Layout/MainLayout.razor`, `src/Habitica.WebApp/wwwroot/css/app.css`
+
+Current pattern:
+
+- MudBlazor app bar with drawer navigation for authenticated sessions.
+- Centered `.shell-content` with a `1200px` max width.
+- Reusable `card-surface`, `ui-pill`, `section-label`, `panel-copy`, `field-row`, `checkbox-row`, `app-input`, and responsive grid classes.
+
+What works:
+
+- Navigation is predictable and app-like.
+- Freshness/error status appears near the page content rather than hidden in settings.
+- Shared typography and pill styles make status labels recognizable.
+
+Drift:
+
+- The visual language leans heavily on beige/teal/gold. It is coherent, but the app can become one-note across long pages.
+- Many sections use card-like surfaces. Repeated records are appropriate as cards; top-level sections should remain plain bands or single surfaces.
+- The top app bar consumes vertical space on small screens; sticky page controls must account for it.
+
+### Sign In
+
+Files: `src/Habitica.WebApp/Pages/SignIn.razor`
+
+Current pattern:
+
+- Two-column landing/sign-in layout.
+- Trust strip, explicit token handling notes, optional saved credentials, and direct Habitica API settings link.
+
+What works:
+
+- The risk model is unusually clear for a third-party API-token app.
+- Help text is close to the credential fields.
+- Session-only sign-in is the default, which matches the privacy posture.
+
+Drift:
+
+- The hero copy is useful on first run, but returning users mostly need the form and saved-data path.
+- On small devices, the help sections can push the primary form far down the page.
+
+Improvement:
+
+- If authenticated cached data exists, move "Open Saved Data" higher and reduce introductory copy.
+
+### Dashboard
+
+Files: `src/Habitica.WebApp/Pages/DashboardPage.razor`
+
+Current pattern:
+
+- Summary stat cards for account, HP, MP, XP, gold, and open tasks.
+- HP, MP, and XP cards include compact meters so the current ratio has a readable shape, not only text.
+- Stats allocation table with horizontal overflow.
+- Explicit armoire action and companion/inventory summary panels.
+
+What works:
+
+- Stat cards are scannable and stable.
+- Resource/progress meters make HP, MP, and XP easier to compare at a glance.
+- The stats allocation table preserves comparison columns, which is better than collapsing stat math into disconnected mobile cards.
+- Pending stat allocation has clear apply/clear actions.
+
+Drift:
+
+- The table is readable on desktop but becomes a scroll task on phones.
+
+Improvement:
+
+- For mobile stats, keep horizontal scroll but add a sticky first column or repeated stat label so context does not disappear.
+
+### Tasks
+
+Files: `src/Habitica.WebApp/Pages/TasksPage.razor`
+
+Current pattern:
+
+- Read-only task groups with search, collapse controls, completed toggle, task cards, state pills, and metadata.
+- Due dates render as readable local date labels such as Today, Tomorrow, Yesterday, or a local calendar date instead of UTC-style timestamps.
+
+What works:
+
+- Read-only state is clear.
+- Group controls preserve context and reduce page length.
+- Cards handle notes and metadata better than a narrow table would.
+- Due dates are now easier to scan on task cards.
+
+Drift:
+
+- Completed/open state is clear, but task type and Habitica color/value meaning rely on surrounding group context.
+- Search is present, but there are no quick filters for task type, due soon, high value, or red/blue task value.
+
+Comparable apps:
+
+- Todoist exposes task layouts such as list, board, and calendar, and treats filtering as a first-class task-view feature.
+- Linear makes filters accessible from list and board views and lets users refine by issue properties.
+
+Assessment:
+
+- Our task cards are better for showing Habitica-specific value and notes in a local data browser.
+- Todoist/Linear are better at fast filter composition and view switching.
+
+Improvement:
+
+- Add a compact filter row for type, status, due window, and value polarity.
+- Add exact due timestamps as secondary detail only where precision matters.
+
+### Inventory
+
+Files: `src/Habitica.WebApp/Pages/InventoryPage.razor`
+
+Current pattern:
+
+- Summary cards, battle loadout, preset save/restore, best-in-category strip, collapsible other items, accessory groups.
+- Responsive `auto-fit` grids and `overflow-wrap` for long gear names.
+
+What works:
+
+- "Best in Category" gives users a sensible default path before exposing the full gear list.
+- Presets map well to the power-user workflow.
+- Responsive card grids and wrap rules are stronger here than on earlier spell-card layouts.
+
+Drift:
+
+- Repeated gear info appears in some cards, increasing visual noise.
+- Preset saving uses a text input plus action button, which is clear but can feel detached from the current loadout state.
+- Gear stat pills are dense; users may need stronger highlighting of what changes if they equip an item.
+
+Improvement:
+
+- Add before/after stat deltas to equip actions when possible.
+- Avoid duplicated slot/class text inside the same gear card.
+- Consider a compact comparison drawer for selected gear rather than expanding every item.
+
+### Party
+
+Files: `src/Habitica.WebApp/Pages/PartyPage.razor`
+
+Current pattern:
+
+- Party overview cards, quest panel, quest queue workspace, member summaries, progress metrics, CRON rhythm/timeline visualization, and refresh actions.
+- Member cards show subtle HP/MP chips near display name/class.
+- Member sorting includes Low HP and Low MP modes; those sort current values ascending so the lowest member appears first, with unknown values last.
+
+What works:
+
+- Quest progress distinguishes current, user pending, party pending, and estimated post-CRON state.
+- The CRON rhythm visualization is a good domain-specific UI and should be preserved.
+- Member rows use responsive grid fallback and word breaking for long names.
+- HP/MP chips add useful party context without turning the member list into a stats table.
+- Low HP/Low MP sorting supports quick support-target review.
+
+Drift:
+
+- Party pages are the densest part of the app. The number of cards, pills, definition lists, and nested panels can make hierarchy hard to scan.
+- Quest queue actions and read-only quest state share similar visual weight.
+- Some table-style member/stat areas still depend on horizontal scrolling.
+
+Improvement:
+
+- Separate "current quest state" and "planning queue" more strongly with tabs or a segmented switch.
+- Promote only the next relevant party action; demote secondary refresh/open links.
+- Keep the CRON visualization but add short labels for confidence and uncertainty near the chart.
+
+### Spells
+
+Files: `src/Habitica.WebApp/Pages/SpellsPage.razor`, `src/Habitica.WebApp/wwwroot/css/app.css`
+
+Current pattern after the latest UI pass:
+
+- Sticky available mana bar with current/max MP and a meter.
+- Spell cards with stable summary, cost/availability pills, count/target input zone, mana spent/available/after-cast preview, auto-equip toggle, cast button, progress bars, effect preview, and equipment recommendations.
+- Responsive two-zone layout: variable user inputs on the left, mana/action status on the right; stacks at narrower widths.
+
+What works:
+
+- Available mana is always visible while evaluating spells.
+- Mana spent and after-cast value provide before/after feedback before the user commits.
+- Unaffordable spell counts show a local reason in the mana preview instead of relying only on a disabled Cast button.
+- Determinate progress bars match the known cast/equip counts.
+- Auto-equip remains close to Cast without stealing space from target selection.
+- The layout avoids the prior overlap caused by placing count, target, total mana, auto-equip, and Cast in one fragile row.
+
+Drift:
+
+- Spell cards are still information-heavy. The page is good for precise bulk casting, but less close to Habitica's original fast "skill drawer" interaction.
+- Target selection is explicit and safe, but less spatial than selecting a task directly from a task list.
+- Equipment recommendations increase confidence, but they lengthen every spell card.
+
+Comparable apps and games:
+
+- Habitica's web flow puts skills in a drawer on the Tasks page; task-targeting skills are selected first, then applied to a task. Habitica mobile shows skill name, description, and mana cost, and greys out unaffordable skills.
+- Habitica confirms skill use and mana deduction after applying a skill.
+- RPG UIs such as World of Warcraft make the resource bar persistent and show casting/progress near the action; this makes resource state and action state hard to miss.
+
+Assessment:
+
+- Our implementation is better for planning because it supports count, target choice, effect estimates, auto-equip, and after-cast mana before mutation.
+- Habitica's official UI is better for lightweight direct manipulation because it keeps skills close to tasks and uses task highlighting.
+- RPG resource bars are better for immediate combat readability, but our denser operational layout is appropriate because this app optimizes deliberate batch actions rather than real-time play.
+
+Improvement:
+
+- Add a compact mode that shows one-line spell summaries with expandable details.
+- Consider an optional task-picker drawer that reuses task cards for spatial target selection.
+- Add "not enough mana" text inside the mana preview when after-cast value is negative.
+
+### Diagnostics and Live Tests
+
+Files: `src/Habitica.WebApp/Pages/LiveTestsPage.razor`
+
+Current pattern:
+
+- Safe checks, guarded reversible gear check, quick account reads, recent app messages, filters, JSON preview, copy/download actions.
+
+What works:
+
+- Risky checks require explicit acknowledgement.
+- The diagnostics console is sticky on wider screens and filterable.
+- Request counts make network cost visible.
+
+Drift:
+
+- The button cluster in the diagnostics console can become visually busy.
+- JSON preview is useful for developers but heavy for normal users.
+
+Improvement:
+
+- Keep JSON available but collapse it behind "Details" by default after a successful check.
+- Split app-message actions into an overflow menu or secondary row.
+
+### Settings
+
+Files: `src/Habitica.WebApp/Pages/SettingsPage.razor`
+
+Current pattern:
+
+- Action cards for sign out, checks, backup, restore, private sync, and clear local data.
+- Import conflict warning and merge/cancel path.
+
+What works:
+
+- Sensitive actions are grouped under local data and sync.
+- Backup copy explains that credentials are excluded.
+- Import conflict flow prevents silent overwrite.
+
+Drift:
+
+- Clear local data is visually marked as danger, but it sits in the same grid pattern as safe actions.
+- Upload/download sync actions have equal visual weight, though their risks differ by context.
+
+Improvement:
+
+- Give destructive actions a second confirmation step or separate danger zone.
+- Add a compact sync status line showing last push/download and whether local/remote data diverged.
+
+## Cross-App Reference Patterns
+
+### Status and Progress
+
+Apple's Human Interface Guidelines frame feedback as a way to show current status, success/failure, warnings, and next steps. They also recommend putting status feedback near the thing it describes when possible.
+
+Android/Material progress guidance separates determinate progress, which shows exact completion, from indeterminate progress, which only signals that work is ongoing.
+
+Application rule:
+
+- Use determinate progress when the app knows `completed` and `total`, as it does for spell casting, equipment slot changes, and multi-step diagnostics.
+- Use passive inline status for freshness, sync, mana, and cached data.
+- Reserve interrupting warnings for destructive local data actions, credential handling, and irreversible Habitica mutations.
+
+### Resource-Spending Actions
+
+Habitica skills require MP and target either a task, the player, or the party. Official Habitica flows show skill cost, grey out unaffordable skills, apply immediately after target selection, and confirm the result.
+
+Application rule:
+
+- Keep MP visible on every spell decision surface.
+- Show cost, availability, and after-cast state before mutation.
+- Disable unaffordable actions and explain why near the disabled control.
+- Preserve Habitica's terminology in user-facing text: use "skills" when describing the game concept, but `spell` remains acceptable in code.
+
+### Dense Productivity Lists
+
+Todoist, Linear, Notion, and Trello all converge on the same pattern for dense work data: list/board/card surfaces plus filters, sorts, visible properties, and saved/custom views.
+
+Application rule:
+
+- For tasks, inventory, and party queues, improve filtering before adding more visual decoration.
+- Expose only the metadata that helps the current decision; move secondary metadata into details, toggles, or collapsed sections.
+- Prefer saved view state for power-user workflows, as Tasks already does with folded/completed preferences.
+
+## Review Findings
+
+### Good Patterns to Keep
+
+- Freshness banners are visible on data-dependent pages.
+- Explicit mutation gates are consistent: buttons disable when data is stale, unauthenticated, or busy.
+- Summary stat cards work well for dashboard, party, inventory, and spells.
+- Dashboard resource meters and party member HP/MP chips improve scanability without adding large new panels.
+- Responsive grid primitives are already strong in inventory and party areas.
+- Guarded diagnostics and session-only sign-in match the app's safety model.
+- Spell-page mana preview is now aligned with resource-spending UX best practice.
+
+### Readability Drift
+
+- Several pages use uppercase labels, muted notes, pills, cards, and panels at the same time. This can flatten hierarchy.
+- Long pages often start with explanatory copy that is useful once but less useful on repeat visits.
+- Technical values leak into user display in remaining developer-oriented areas, especially raw-ish diagnostic previews.
+- Some controls are word-heavy where a compact segmented control, menu, or icon button would scan better.
+
+### Responsiveness Drift
+
+- Horizontal tables preserve data comparison, but mobile users need sticky labels or clearer scroll affordances.
+- Any row that mixes fixed controls with variable user data is a future overlap risk.
+- Sticky elements need explicit offsets for the top app bar.
+- Button rows should stack earlier than content starts to compress.
+
+### Interaction Drift
+
+- The app is strong at safe mutation but sometimes weak at "what changed" feedback.
+- Inventory can equip, but spells now show a stronger before/after preview and disabled reason.
+- Settings and diagnostics have multiple same-weight actions where the primary next action should be clearer.
+
+## Prioritized Improvements
+
+1. Add disabled-action reason text for inventory and dashboard allocation.
+2. Add task filters for type, status, due window, and value polarity.
+3. Add inventory before/after stat deltas for equip actions.
+4. Split party quest state and queue planning into clearer modes.
+5. Add a settings danger zone with confirmation for destructive actions.
+6. Reduce repeated hero/help copy for returning authenticated users.
+7. Introduce a compact spell-card mode after the current stable card layout has been tested.
+8. Add sticky first-column or label context for mobile stat tables.
+
+## Source Notes
+
+- Habitica Skills: https://habitica.fandom.com/wiki/Skills
+- Habitica FAQ on mana: https://habitica.fandom.com/wiki/FAQ
+- Habitica Android skills behavior: https://habitica.fandom.com/wiki/Mobile_App_for_Android%3A_Habitica
+- Apple HIG Feedback: https://developer.apple.com/design/human-interface-guidelines/feedback
+- Android progress indicators: https://developer.android.com/develop/ui/compose/components/progress
+- MUI responsive UI summary: https://mui.com/material-ui/guides/responsive-ui/
+- World of Warcraft cast-time/resource behavior: https://warcraft.wiki.gg/wiki/Cast_time
+- Todoist view customization: https://www.todoist.com/en/help/articles/customize-views-in-todoist-AoHhBxFdZ
+- Linear filters: https://linear.app/docs/filters
+- Notion views, filters, and sorts: https://www.notion.com/help/views-filters-and-sorts
+- Trello views: https://support.atlassian.com/trello/docs/trello-views/
