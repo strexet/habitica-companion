@@ -20,7 +20,58 @@ public sealed record UserSnapshot(
     int UnallocatedStatPoints = 0,
     CharacterStatsSnapshot? Stats = null,
     CharacterStatsSnapshot? Buffs = null,
-    BuffFlagsSnapshot? BuffFlags = null);
+    BuffFlagsSnapshot? BuffFlags = null,
+    DateTimeOffset? LastCronUtc = null,
+    int? DayStartHour = null,
+    int? TimezoneOffsetMinutes = null,
+    string? CurrentHabiticaDayKey = null,
+    DateTimeOffset? CurrentHabiticaDayStartUtc = null,
+    bool? NeedsCron = null);
+
+public static class HabiticaDayCalculator
+{
+    public static DateTimeOffset ComputeCurrentDayStartUtc(
+        DateTimeOffset nowUtc,
+        int dayStartHour,
+        int timezoneOffsetMinutes)
+    {
+        var nowLocal = ToHabiticaLocalClock(nowUtc, timezoneOffsetMinutes);
+        var safeDayStartHour = Math.Clamp(dayStartHour, 0, 23);
+        var todayStartLocal = new DateTimeOffset(
+            nowLocal.Year,
+            nowLocal.Month,
+            nowLocal.Day,
+            safeDayStartHour,
+            0,
+            0,
+            nowLocal.Offset);
+        var currentStartLocal = nowLocal < todayStartLocal
+            ? todayStartLocal.AddDays(-1)
+            : todayStartLocal;
+
+        return currentStartLocal.ToUniversalTime();
+    }
+
+    public static string ComputeDayKey(DateTimeOffset utcTimestamp, int dayStartHour, int timezoneOffsetMinutes)
+    {
+        var local = ToHabiticaLocalClock(utcTimestamp, timezoneOffsetMinutes).AddHours(-Math.Clamp(dayStartHour, 0, 23));
+        return local.Date.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+    }
+
+    public static bool? NeedsCron(
+        DateTimeOffset? lastCronUtc,
+        DateTimeOffset? currentHabiticaDayStartUtc)
+    {
+        return lastCronUtc is null || currentHabiticaDayStartUtc is null
+            ? null
+            : lastCronUtc.Value.ToUniversalTime() < currentHabiticaDayStartUtc.Value.ToUniversalTime();
+    }
+
+    public static DateTimeOffset ToHabiticaLocalClock(DateTimeOffset utcTimestamp, int timezoneOffsetMinutes)
+    {
+        return utcTimestamp.ToUniversalTime().ToOffset(TimeSpan.FromMinutes(-timezoneOffsetMinutes));
+    }
+}
 
 public sealed record CharacterStatsSnapshot(
     decimal Strength,

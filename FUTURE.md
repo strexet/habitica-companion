@@ -16,15 +16,15 @@ This file tracks items from `habitica_companion_pending_features_plan.md` that r
 
 ## CRON Button and Buff Warning
 
-- Dashboard `Start New Day` button with confirmation.
-- Habitica Cron API wrapper and post-Cron targeted refresh.
-- Buff warning before casting not-Croned stat buffs.
-- Per-user, per-Habitica-day local warning suppression.
+- ~~Dashboard `Start New Day` button with confirmation.~~ Implemented on Dashboard when the current-user snapshot says Cron is due.
+- ~~Habitica Cron API wrapper and post-Cron targeted refresh.~~ Implemented: `RunCronAsync` plus account/tasks/party refresh after success.
+- ~~Buff warning before casting not-Croned stat buffs.~~ Implemented inline on Spells for Cron-sensitive stat buffs.
+- ~~Per-user, per-Habitica-day local warning suppression.~~ Implemented under `preferences/spells/cronWarningSuppression`.
 
 ## Tasks Page Enhancements
 
-- Task scoring/completion actions.
-- Habit multi-score controls.
+- ~~Task scoring/completion actions.~~ Implemented inline on task cards with freshness/auth gating and post-action refresh.
+- ~~Habit multi-score controls.~~ Implemented with clamped count, sequential requests, and determinate progress.
 - Expandable task details with week/month/year statistics.
 - Task activity histograms and activity charts.
 

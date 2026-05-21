@@ -9,4 +9,12 @@ public sealed record TaskSnapshot(
     string? Notes,
     DateTimeOffset? DueDate,
     decimal? Value = null,
-    bool IsChallengeTask = false);
+    bool IsChallengeTask = false,
+    bool? SupportsPositiveScore = null,
+    bool? SupportsNegativeScore = null);
+
+public enum TaskScoreDirection
+{
+    Up,
+    Down
+}

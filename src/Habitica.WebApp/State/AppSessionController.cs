@@ -9,6 +9,7 @@ using Habitica.Domain.Auth;
 using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Party;
 using Habitica.Domain.Sync;
+using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 using Habitica.Rules.Spells;
 using Habitica.Storage;
@@ -1135,6 +1136,209 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    public async Task<SpellActionResult> StartNewDayAsync(CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return SpellActionResult.Failure("Sign in is required before starting a new Habitica day.");
+        }
+
+        if (State.UserSnapshot is null || State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return SpellActionResult.Failure("A fresh account snapshot is required before starting a new Habitica day.");
+        }
+
+        if (State.UserSnapshot.NeedsCron == false)
+        {
+            return SpellActionResult.Success("Habitica day is already started.");
+        }
+
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        var requestCount = 0;
+        string? partyRefreshError = null;
+        try
+        {
+            await _habiticaSyncClient.RunCronAsync(credentials, cancellationToken);
+            requestCount++;
+
+            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            requestCount++;
+            await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
+
+            var taskSnapshot = await _habiticaSyncClient.GetTasksAsync(credentials, cancellationToken);
+            requestCount++;
+            await _taskSnapshotStore.SaveAsync(taskSnapshot, cancellationToken);
+
+            if (!string.IsNullOrWhiteSpace(userSnapshot.PartyId ?? State.PartySnapshot?.PartyId))
+            {
+                try
+                {
+                    var partySnapshot = await _habiticaSyncClient.GetPartySnapshotAsync(credentials, cancellationToken);
+                    requestCount++;
+                    await _partySnapshotStore.SaveAsync(partySnapshot, cancellationToken);
+                }
+                catch (Exception exception)
+                {
+                    partyRefreshError = exception.Message;
+                    await _diagnosticsLogWriter.WriteAsync(
+                        DiagnosticsFeatureArea.Sync,
+                        "cron-party-refresh",
+                        DiagnosticsSeverity.Warning,
+                        DiagnosticsMode.LiveRead,
+                        exception.Message,
+                        new Dictionary<string, string>(StringComparer.Ordinal)
+                        {
+                            ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
+                        },
+                        cancellationToken);
+                }
+            }
+
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Sync,
+                "cron-start-new-day",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                "Started a new Habitica day.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["previousHabiticaDayKey"] = State.UserSnapshot.CurrentHabiticaDayKey ?? string.Empty,
+                    ["currentHabiticaDayKey"] = userSnapshot.CurrentHabiticaDayKey ?? string.Empty,
+                    ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
+
+            await LoadCachedStateAsync(cancellationToken);
+            _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            _ = TryMergeAndUploadPartySyncAsync(credentials, cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+
+            return SpellActionResult.Success(partyRefreshError is null
+                ? "Started a new Habitica day."
+                : $"Started a new Habitica day. Party refresh needs retry: {partyRefreshError}");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Sync,
+                "cron-start-new-day",
+                DiagnosticsSeverity.Error,
+                DiagnosticsMode.LiveMutation,
+                exception.Message,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
+            return SpellActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<TaskActionResult> ScoreTaskAsync(TaskScoreRequest request, CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return TaskActionResult.Failure("Sign in is required before scoring tasks.");
+        }
+
+        if (State.TaskSnapshot is null || State.TaskFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return TaskActionResult.Failure("Fresh task data is required before scoring tasks.");
+        }
+
+        if (State.UserSnapshot is null || State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return TaskActionResult.Failure("Fresh account data is required before scoring tasks.");
+        }
+
+        var task = State.TaskSnapshot.Items.FirstOrDefault(item => string.Equals(item.Id, request.TaskId, StringComparison.Ordinal));
+        if (task is null)
+        {
+            return TaskActionResult.Failure("Task is not available in the cached task snapshot.");
+        }
+
+        if (!CanScoreTask(task, request.Direction))
+        {
+            return TaskActionResult.Failure("This task does not support that action.");
+        }
+
+        var count = task.Type == TaskType.Habit ? Math.Clamp(request.Count, 1, 20) : 1;
+        SetState(State with
+        {
+            ActiveTaskMutationProgress = new TaskMutationProgress(request.TaskId, request.Direction, 0, count),
+            ErrorMessage = null,
+            IsBusy = true
+        });
+
+        var completed = 0;
+        try
+        {
+            for (var index = 0; index < count; index++)
+            {
+                await _habiticaSyncClient.ScoreTaskAsync(credentials, request.TaskId, request.Direction, cancellationToken);
+                completed++;
+                SetState(State with
+                {
+                    ActiveTaskMutationProgress = new TaskMutationProgress(request.TaskId, request.Direction, completed, count)
+                });
+            }
+
+            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            var taskSnapshot = await _habiticaSyncClient.GetTasksAsync(credentials, cancellationToken);
+            await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
+            await _taskSnapshotStore.SaveAsync(taskSnapshot, cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Tasks,
+                "task-score",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                $"Scored task {completed} time(s).",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["taskId"] = request.TaskId,
+                    ["taskType"] = task.Type.ToString(),
+                    ["direction"] = request.Direction.ToString(),
+                    ["completed"] = completed.ToString(CultureInfo.InvariantCulture),
+                    ["requested"] = count.ToString(CultureInfo.InvariantCulture),
+                    ["requestCount"] = (completed + 2).ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            SetState(State with { ActiveTaskMutationProgress = null, ErrorMessage = null, IsBusy = false });
+
+            return TaskActionResult.Success(BuildTaskScoreSuccessMessage(task, request.Direction, completed));
+        }
+        catch (Exception exception)
+        {
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Tasks,
+                "task-score",
+                DiagnosticsSeverity.Error,
+                DiagnosticsMode.LiveMutation,
+                exception.Message,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["taskId"] = request.TaskId,
+                    ["taskType"] = task.Type.ToString(),
+                    ["direction"] = request.Direction.ToString(),
+                    ["completed"] = completed.ToString(CultureInfo.InvariantCulture),
+                    ["requested"] = count.ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ActiveTaskMutationProgress = null, ErrorMessage = exception.Message, IsBusy = false });
+            return TaskActionResult.Failure(completed > 0
+                ? $"{exception.Message} Completed {completed} of {count} request(s)."
+                : exception.Message);
+        }
+    }
+
     public async Task<SpellActionResult> AllocateStatsAsync(StatAllocation allocation, CancellationToken cancellationToken = default)
     {
         var credentials = await ResolveCredentialsAsync(cancellationToken);
@@ -1193,6 +1397,33 @@ public sealed class AppSessionController : IAppSessionController
             SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
             return SpellActionResult.Failure(exception.Message);
         }
+    }
+
+    private static bool CanScoreTask(TaskSnapshot task, TaskScoreDirection direction)
+    {
+        return task.Type switch
+        {
+            TaskType.Habit => direction == TaskScoreDirection.Up
+                ? task.SupportsPositiveScore != false
+                : task.SupportsNegativeScore != false,
+            TaskType.Daily or TaskType.Todo => direction == TaskScoreDirection.Up
+                ? !task.IsCompleted
+                : task.IsCompleted,
+            _ => false
+        };
+    }
+
+    private static string BuildTaskScoreSuccessMessage(TaskSnapshot task, TaskScoreDirection direction, int completed)
+    {
+        if (task.Type == TaskType.Habit)
+        {
+            var label = direction == TaskScoreDirection.Up ? "+" : "-";
+            return $"Scored habit {label}{completed}.";
+        }
+
+        return direction == TaskScoreDirection.Up
+            ? "Task completed."
+            : "Task uncompleted.";
     }
 
     public async Task<InventoryActionResult> BuyArmoireAsync(int count, CancellationToken cancellationToken = default)

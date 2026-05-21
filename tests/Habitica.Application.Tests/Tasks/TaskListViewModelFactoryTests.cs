@@ -47,4 +47,27 @@ public sealed class TaskListViewModelFactoryTests
         Assert.Single(viewModel.Groups);
         Assert.Equal("Evening Run", viewModel.Groups[0].Items[0].Text);
     }
+
+    [Fact]
+    public void Create_filters_by_selected_types_and_sorts_by_value()
+    {
+        var snapshot = new TaskCollectionSnapshot(
+            DateTimeOffset.Parse("2026-04-24T12:00:00Z"),
+            new[]
+            {
+                new TaskSnapshot("habit-low", "Low habit", TaskType.Habit, false, 1m, null, null, -3m),
+                new TaskSnapshot("habit-high", "High habit", TaskType.Habit, false, 1m, null, null, 10m),
+                new TaskSnapshot("todo-open", "Buy milk", TaskType.Todo, false, 1m, null, null, 2m)
+            });
+
+        var viewModel = _factory.Create(
+            snapshot,
+            new TaskListFilter(
+                SelectedTypes: new[] { TaskType.Habit },
+                SortMode: TaskListSortMode.ValueHigh));
+
+        var group = Assert.Single(viewModel.Groups);
+        Assert.Equal(TaskType.Habit, group.Type);
+        Assert.Equal(new[] { "High habit", "Low habit" }, group.Items.Select(item => item.Text).ToArray());
+    }
 }

@@ -382,6 +382,74 @@ public sealed class AppSessionControllerTests
             && entry.Metadata["per"] == "1");
     }
 
+    [Fact]
+    public async Task ScoreTaskAsync_scores_sequentially_refreshes_snapshots_and_writes_log()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with { RetrievedAtUtc = DateTimeOffset.UtcNow },
+            new TaskCollectionSnapshot(
+                DateTimeOffset.UtcNow,
+                new[]
+                {
+                    new TaskSnapshot("habit-1", "Read docs", TaskType.Habit, false, 1m, null, null, 8m, SupportsPositiveScore: true, SupportsNegativeScore: true)
+                }),
+            CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.ScoreTaskAsync(new TaskScoreRequest("habit-1", TaskScoreDirection.Up, 3));
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(3, syncClient.ScoreTaskCalls.Count);
+        Assert.All(syncClient.ScoreTaskCalls, call =>
+        {
+            Assert.Equal("habit-1", call.TaskId);
+            Assert.Equal(TaskScoreDirection.Up, call.Direction);
+        });
+        Assert.Null(controller.State.ActiveTaskMutationProgress);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Tasks
+            && entry.Operation == "task-score"
+            && entry.Metadata["completed"] == "3");
+    }
+
+    [Fact]
+    public async Task StartNewDayAsync_runs_cron_refreshes_snapshots_and_writes_log()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                CurrentHabiticaDayKey = "2026-04-27",
+                NeedsCron = true
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.StartNewDayAsync();
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(1, syncClient.RunCronCalls);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Sync
+            && entry.Operation == "cron-start-new-day"
+            && entry.Severity == DiagnosticsSeverity.Success);
+    }
+
     private static AppSessionController CreateController(
         FakeDiagnosticsLogStore logStore,
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
@@ -695,6 +763,8 @@ public sealed class AppSessionControllerTests
 
         public List<StatAllocation> StatAllocationCalls { get; } = new();
 
+        public List<(string TaskId, TaskScoreDirection Direction)> ScoreTaskCalls { get; } = new();
+
         public Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
         {
             EquipCalls.Add((EquipmentSetKind.Battle, key));
@@ -713,9 +783,23 @@ public sealed class AppSessionControllerTests
             return Task.CompletedTask;
         }
 
+        public int RunCronCalls { get; private set; }
+
+        public Task RunCronAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            RunCronCalls++;
+            return Task.CompletedTask;
+        }
+
         public Task AllocateStatsAsync(HabiticaCredentials credentials, StatAllocation allocation, CancellationToken cancellationToken)
         {
             StatAllocationCalls.Add(allocation);
+            return Task.CompletedTask;
+        }
+
+        public Task ScoreTaskAsync(HabiticaCredentials credentials, string taskId, TaskScoreDirection direction, CancellationToken cancellationToken)
+        {
+            ScoreTaskCalls.Add((taskId, direction));
             return Task.CompletedTask;
         }
 

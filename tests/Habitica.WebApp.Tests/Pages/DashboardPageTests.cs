@@ -185,4 +185,55 @@ public sealed class DashboardPageTests : BunitContext
 
         Assert.Equal(new StatAllocation(0, 2, 0, 1), controller.StatAllocationCalls.Single());
     }
+
+    [Fact]
+    public void Start_new_day_card_requires_confirmation_and_calls_session_controller()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(DateTimeOffset.Parse("2026-04-25T08:00:00Z"), Array.Empty<TaskSnapshot>()),
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: new UserSnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    "Mage Tester",
+                    "wizard",
+                    15,
+                    42.5m,
+                    50m,
+                    33.5m,
+                    40m,
+                    125.1m,
+                    74.9m,
+                    88.25m,
+                    "party-123",
+                    null,
+                    null,
+                    new EquipmentSnapshot(
+                        new GearSlotsSnapshot(null, null, null, null, null),
+                        new GearSlotsSnapshot(null, null, null, null, null)),
+                    new InventorySnapshot(0, 0, 0, 0, 0, 0, Array.Empty<string>()),
+                    CurrentHabiticaDayKey: "2026-04-25",
+                    NeedsCron: true),
+                UserFreshness: SnapshotFreshnessState.Fresh));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<DashboardPage>();
+
+        cut.Find("[data-testid='start-new-day']").Click();
+        Assert.Contains("Missed Dailies may be processed", cut.Markup);
+
+        cut.Find("[data-testid='confirm-start-new-day']").Click();
+
+        Assert.Equal(1, controller.StartNewDayCalls);
+    }
 }

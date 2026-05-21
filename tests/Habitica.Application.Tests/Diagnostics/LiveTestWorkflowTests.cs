@@ -188,7 +188,17 @@ public sealed class LiveTestWorkflowTests
             return Task.CompletedTask;
         }
 
+        public Task RunCronAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
         public Task AllocateStatsAsync(HabiticaCredentials credentials, StatAllocation allocation, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task ScoreTaskAsync(HabiticaCredentials credentials, string taskId, TaskScoreDirection direction, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }

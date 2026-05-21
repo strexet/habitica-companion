@@ -108,6 +108,7 @@ Current pattern:
 
 - Summary stat cards for account, HP, MP, XP, gold, and open tasks.
 - HP, MP, and XP cards include compact meters so the current ratio has a readable shape, not only text.
+- Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action uses inline confirmation instead of an immediate mutation.
 - Stats allocation table with horizontal overflow.
 - Explicit armoire action and companion/inventory summary panels.
 
@@ -115,6 +116,7 @@ What works:
 
 - Stat cards are scannable and stable.
 - Resource/progress meters make HP, MP, and XP easier to compare at a glance.
+- Start New Day explains missed Dailies, quest progress, and buff expiry before calling Habitica Cron, matching the app's explicit-mutation posture.
 - The stats allocation table preserves comparison columns, which is better than collapsing stat math into disconnected mobile cards.
 - Pending stat allocation has clear apply/clear actions.
 
@@ -125,6 +127,7 @@ Drift:
 Improvement:
 
 - For mobile stats, keep horizontal scroll but add a sticky first column or repeated stat label so context does not disappear.
+- Keep Start New Day as a small operational panel, not a hero or persistent global warning, because it is important only when Cron is due.
 
 ### Tasks
 
@@ -132,20 +135,24 @@ Files: `src/Habitica.WebApp/Pages/TasksPage.razor`
 
 Current pattern:
 
-- Read-only task groups with search, collapse controls, completed toggle, task cards, state pills, and metadata.
+- Cached task groups with search, type filters, sort control, collapse controls, completed toggle, task cards, state pills, and metadata.
 - Due dates render as readable local date labels such as Today, Tomorrow, Yesterday, or a local calendar date instead of UTC-style timestamps.
+- Task mutation controls stay inline with the affected task, show disabled reasons from freshness/auth state, and use visible progress for repeated Habit scoring.
+- Task details expand inside the card and show cached metadata without navigating away from the current scan position.
 
 What works:
 
-- Read-only state is clear.
+- Cached browsing state is clear.
 - Group controls preserve context and reduce page length.
+- Type filters and sorting are in the header toolbar, matching Todoist/Linear-style fast list refinement without introducing a separate filter page.
 - Cards handle notes and metadata better than a narrow table would.
+- Inline scoring follows the Spells page's safer multi-action pattern: count, explicit action, determinate progress, then refresh.
 - Due dates are now easier to scan on task cards.
 
 Drift:
 
 - Completed/open state is clear, but task type and Habitica color/value meaning rely on surrounding group context.
-- Search is present, but there are no quick filters for task type, due soon, high value, or red/blue task value.
+- The task history/statistics surface is still shallow; details currently expose cached metadata rather than week/month/year behavior charts.
 
 Comparable apps:
 
@@ -159,8 +166,9 @@ Assessment:
 
 Improvement:
 
-- Add a compact filter row for type, status, due window, and value polarity.
+- Add status, due-window, and value-polarity filters once the type/sort row proves stable.
 - Add exact due timestamps as secondary detail only where precision matters.
+- Add task history charts in expanded details without making each card visually heavy by default.
 
 ### Inventory
 
@@ -227,6 +235,7 @@ Current pattern after the latest UI pass:
 
 - Sticky available mana bar with current/max MP and a meter.
 - Spell cards with stable summary, cost/availability pills, count/target input zone, mana spent/available/after-cast preview, auto-equip toggle, cast button, progress bars, effect preview, and equipment recommendations.
+- Cron-sensitive stat buffs show an inline warning inside the spell card when the user has not started the current Habitica day. The warning offers Cancel, Cast anyway, and Start New Day and Cast, plus local per-day suppression.
 - Responsive two-zone layout: variable user inputs on the left, mana/action status on the right; stacks at narrower widths.
 
 What works:
@@ -236,6 +245,7 @@ What works:
 - Unaffordable spell counts show a local reason in the mana preview instead of relying only on a disabled Cast button.
 - Determinate progress bars match the known cast/equip counts.
 - Auto-equip remains close to Cast without stealing space from target selection.
+- The buff timing warning is close to the Cast decision and does not block unrelated spell cards.
 - The layout avoids the prior overlap caused by placing count, target, total mana, auto-equip, and Cast in one fragile row.
 
 Drift:
@@ -260,7 +270,7 @@ Improvement:
 
 - Add a compact mode that shows one-line spell summaries with expandable details.
 - Consider an optional task-picker drawer that reuses task cards for spatial target selection.
-- Add "not enough mana" text inside the mana preview when after-cast value is negative.
+- Consider a future party-wide buff coordination surface that combines party CRON rhythm with current buff state, instead of making each spell card carry all coordination context.
 
 ### Diagnostics and Live Tests
 

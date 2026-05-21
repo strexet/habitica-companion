@@ -27,6 +27,7 @@ public sealed record SessionViewModel(
     GearCatalogSnapshot? GearCatalogSnapshot = null,
     IReadOnlyList<EquipmentPreset>? EquipmentPresets = null,
     SpellCastProgress? ActiveSpellCastProgress = null,
+    TaskMutationProgress? ActiveTaskMutationProgress = null,
     EquipmentProgress? ActiveEquipmentProgress = null,
     bool IncludeStalePartyMembersInQuestForecasts = false,
     IReadOnlyDictionary<Habitica.Application.Sync.RefreshDomain, Habitica.Application.Sync.DomainRefreshState>? DomainStates = null,
@@ -64,8 +65,19 @@ public sealed record SpellCastRequest(
     bool AutoEquipRecommendedGear = false,
     GearSlotsSnapshot? AutoEquipGearSlots = null);
 
+public sealed record TaskScoreRequest(
+    string TaskId,
+    Habitica.Domain.Tasks.TaskScoreDirection Direction,
+    int Count = 1);
+
 public sealed record SpellCastProgress(
     string SpellId,
+    int Completed,
+    int Total);
+
+public sealed record TaskMutationProgress(
+    string TaskId,
+    Habitica.Domain.Tasks.TaskScoreDirection Direction,
     int Completed,
     int Total);
 
@@ -91,6 +103,15 @@ public sealed record PartyQuestActionResult(
     public static PartyQuestActionResult Success(string message) => new(true, message);
 
     public static PartyQuestActionResult Failure(string message) => new(false, message);
+}
+
+public sealed record TaskActionResult(
+    bool Succeeded,
+    string Message)
+{
+    public static TaskActionResult Success(string message) => new(true, message);
+
+    public static TaskActionResult Failure(string message) => new(false, message);
 }
 
 public sealed record LocalDataActionResult(

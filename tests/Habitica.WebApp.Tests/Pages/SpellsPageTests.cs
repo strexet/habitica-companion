@@ -3,10 +3,12 @@ using Habitica.Domain.Sync;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 using Habitica.Rules.Spells;
+using Habitica.Storage;
 using Habitica.WebApp.Pages;
 using Habitica.WebApp.State;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
+using System.Text.Json;
 
 namespace Habitica.WebApp.Tests.Pages;
 
@@ -18,6 +20,7 @@ public sealed class SpellsPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateState()));
 
         var cut = Render<SpellsPage>();
@@ -45,6 +48,7 @@ public sealed class SpellsPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
         var controller = new FakeAppSessionController(CreateState() with
         {
             ActiveSpellCastProgress = new SpellCastProgress("fireball", 2, 5)
@@ -69,6 +73,7 @@ public sealed class SpellsPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
         var controller = new FakeAppSessionController(CreateState());
         Services.AddSingleton<IAppSessionController>(controller);
 
@@ -92,6 +97,7 @@ public sealed class SpellsPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
         var controller = new FakeAppSessionController(CreateState());
         Services.AddSingleton<IAppSessionController>(controller);
 
@@ -111,6 +117,7 @@ public sealed class SpellsPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateRogueStateForToolsOfTrade()));
 
         var cut = Render<SpellsPage>();
@@ -132,6 +139,7 @@ public sealed class SpellsPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
         var controller = new FakeAppSessionController(CreateState());
         Services.AddSingleton<IAppSessionController>(controller);
 
@@ -143,6 +151,37 @@ public sealed class SpellsPageTests : BunitContext
         Assert.Equal(EquipmentSetKind.Battle, call.Kind);
         Assert.Equal("spell:fireball:Maximize PER", call.OperationId);
         Assert.Equal("head_per", call.Slots.Head);
+    }
+
+    [Fact]
+    public void Cron_sensitive_buff_prompts_before_casting_when_habitica_day_is_not_started()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var controller = new FakeAppSessionController(CreateRogueStateForToolsOfTrade() with
+        {
+            UserId = "user-id",
+            UserSnapshot = CreateRogueStateForToolsOfTrade().UserSnapshot! with
+            {
+                NeedsCron = true,
+                CurrentHabiticaDayKey = "2026-04-30"
+            }
+        });
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<SpellsPage>();
+
+        cut.Find("[data-testid='cast-spell-toolsOfTrade']").Click();
+
+        Assert.Contains("Buff timing", cut.Markup);
+        Assert.Empty(controller.CastSpellCalls);
+
+        cut.Find("[data-testid='start-day-and-cast-toolsOfTrade']").Click();
+
+        Assert.Equal(1, controller.StartNewDayCalls);
+        Assert.Single(controller.CastSpellCalls);
     }
 
     private static SessionViewModel CreateState()
@@ -242,5 +281,41 @@ public sealed class SpellsPageTests : BunitContext
                 {
                     ["head_per"] = new("head_per", "Per Hood", "Head", "rogue", null, new GearStatBlock(0m, 0m, 0m, 8m))
                 }));
+    }
+
+    private sealed class FakeKeyValueStorage : IKeyValueStorage
+    {
+        private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
+        private readonly Dictionary<string, string> _values = new(StringComparer.Ordinal);
+
+        public Task<TValue?> GetAsync<TValue>(string key, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_values.TryGetValue(key, out var json)
+                ? JsonSerializer.Deserialize<TValue>(json, JsonOptions)
+                : default);
+        }
+
+        public Task<string?> GetRawJsonAsync(string key, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_values.GetValueOrDefault(key));
+        }
+
+        public Task RemoveAsync(string key, CancellationToken cancellationToken)
+        {
+            _values.Remove(key);
+            return Task.CompletedTask;
+        }
+
+        public Task SetAsync<TValue>(string key, TValue value, CancellationToken cancellationToken)
+        {
+            _values[key] = JsonSerializer.Serialize(value, JsonOptions);
+            return Task.CompletedTask;
+        }
+
+        public Task SetRawJsonAsync(string key, string jsonText, CancellationToken cancellationToken)
+        {
+            _values[key] = jsonText;
+            return Task.CompletedTask;
+        }
     }
 }

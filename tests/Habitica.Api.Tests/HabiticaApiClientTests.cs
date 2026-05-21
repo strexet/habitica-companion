@@ -62,6 +62,8 @@ public sealed class HabiticaApiClientTests
                   "completed": false,
                   "priority": 1.5,
                   "value": 18.25,
+                  "up": true,
+                  "down": false,
                   "challenge": {
                     "id": "challenge-1",
                     "taskId": "challenge-task-1"
@@ -92,6 +94,8 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(1.5m, snapshot.Items[0].Difficulty);
         Assert.Equal(18.25m, snapshot.Items[0].Value);
         Assert.True(snapshot.Items[0].IsChallengeTask);
+        Assert.True(snapshot.Items[0].SupportsPositiveScore.GetValueOrDefault());
+        Assert.False(snapshot.Items[0].SupportsNegativeScore.GetValueOrDefault());
         Assert.Equal(TaskType.Daily, snapshot.Items[1].Type);
         Assert.True(snapshot.Items[1].IsCompleted);
         Assert.False(snapshot.Items[1].IsChallengeTask);
@@ -107,6 +111,14 @@ public sealed class HabiticaApiClientTests
               "success": true,
               "data": {
                 "profile": { "name": "Mage Tester" },
+                "lastCron": "2026-04-24T08:00:00.000Z",
+                "flags": {
+                  "needsCron": true
+                },
+                "preferences": {
+                  "dayStart": 4,
+                  "timezoneOffset": -420
+                },
                 "stats": {
                   "class": "wizard",
                   "lvl": 15,
@@ -214,6 +226,12 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(1, snapshot.Inventory.HatchingPotionCount);
         Assert.Equal(1, snapshot.Inventory.OwnedPetCount);
         Assert.Equal(1, snapshot.Inventory.OwnedMountCount);
+        Assert.Equal(DateTimeOffset.Parse("2026-04-24T08:00:00.000Z"), snapshot.LastCronUtc);
+        Assert.Equal(4, snapshot.DayStartHour);
+        Assert.Equal(-420, snapshot.TimezoneOffsetMinutes);
+        Assert.Equal((bool?)true, snapshot.NeedsCron);
+        Assert.NotNull(snapshot.CurrentHabiticaDayKey);
+        Assert.NotNull(snapshot.CurrentHabiticaDayStartUtc);
     }
 
     [Fact]
@@ -265,6 +283,56 @@ public sealed class HabiticaApiClientTests
         Assert.NotNull(capturedRequest);
         Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
         Assert.Equal("https://habitica.com/api/v3/user/class/cast/earth", capturedRequest.RequestUri!.ToString());
+        Assert.Null(capturedRequest.Content);
+    }
+
+    [Fact]
+    public async Task RunCronAsync_sends_cron_request()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.RunCronAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/cron", capturedRequest.RequestUri!.ToString());
+        Assert.Null(capturedRequest.Content);
+    }
+
+    [Fact]
+    public async Task ScoreTaskAsync_sends_task_score_request()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.ScoreTaskAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            "task-123",
+            TaskScoreDirection.Down,
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/tasks/task-123/score/down", capturedRequest.RequestUri!.ToString());
         Assert.Null(capturedRequest.Content);
     }
 

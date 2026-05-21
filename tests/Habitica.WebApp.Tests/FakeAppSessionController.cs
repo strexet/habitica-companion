@@ -39,6 +39,10 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<SpellCastRequest> CastSpellCalls { get; } = new();
 
+    public List<TaskScoreRequest> ScoreTaskCalls { get; } = new();
+
+    public int StartNewDayCalls { get; private set; }
+
     public List<StatAllocation> StatAllocationCalls { get; } = new();
 
     public List<string> RemovePresetCalls { get; } = new();
@@ -99,6 +103,18 @@ internal sealed class FakeAppSessionController : IAppSessionController
     {
         CastSpellCalls.Add(request);
         return Task.FromResult(SpellActionResult.Success("Spell cast."));
+    }
+
+    public Task<TaskActionResult> ScoreTaskAsync(TaskScoreRequest request, CancellationToken cancellationToken = default)
+    {
+        ScoreTaskCalls.Add(request);
+        return Task.FromResult(TaskActionResult.Success("Task scored."));
+    }
+
+    public Task<SpellActionResult> StartNewDayAsync(CancellationToken cancellationToken = default)
+    {
+        StartNewDayCalls++;
+        return Task.FromResult(SpellActionResult.Success("Started a new Habitica day."));
     }
 
     public Task<SpellActionResult> AllocateStatsAsync(StatAllocation allocation, CancellationToken cancellationToken = default)

@@ -1,10 +1,12 @@
 @page "/spells"
 @implements IDisposable
 @using System.Globalization
+@using Habitica.Domain.Party
+@using Habitica.Storage
 @inject SpellViewModelFactory SpellViewModelFactory
 @inject IAppSessionController SessionController
+@inject IKeyValueStorage KeyValueStorage
 @inject ISnackbar Snackbar
-@using Habitica.Domain.Party
 
 <PageTitle>Spells</PageTitle>
 
@@ -199,7 +201,7 @@
                                         <MudButton Class="spell-cast-button"
                                                    Color="Color.Primary"
                                                    Disabled="@castDisabled"
-                                                   OnClick="() => CastSpellAsync(spell, count, selectedTarget, autoEquip, selectedRecommendation)"
+                                                   OnClick="() => RequestCastSpellAsync(spell, count, selectedTarget, autoEquip, selectedRecommendation)"
                                                    Variant="Variant.Filled"
                                                    data-testid="@($"cast-spell-{spell.Id}")">
                                             Cast
@@ -208,6 +210,35 @@
                                 </div>
                             </div>
                         </div>
+
+                        @if (IsPendingCronWarning(spell.Id))
+                        {
+                            <div class="spell-card-section spell-cron-warning">
+                                <div>
+                                    <p class="section-label">Buff timing</p>
+                                    <p>
+                                        You haven't started your Habitica day yet. Buffs last until Cron. If you cast this buff before starting your new day, it may expire sooner than you expect.
+                                    </p>
+                                </div>
+                                <label class="checkbox-row compact">
+                                    <input type="checkbox"
+                                           checked="@_suppressCronWarningForDay"
+                                           @onchange="eventArgs => _suppressCronWarningForDay = eventArgs.Value is true" />
+                                    <span>Do not warn again for this Habitica day</span>
+                                </label>
+                                <div class="spell-cron-warning-actions">
+                                    <MudButton Color="Color.Default" Disabled="@SessionController.State.IsBusy" OnClick="CancelPendingCronWarning" Variant="Variant.Text">
+                                        Cancel
+                                    </MudButton>
+                                    <MudButton Color="Color.Secondary" Disabled="@SessionController.State.IsBusy" OnClick="() => ContinuePendingCastAsync(false)" Variant="Variant.Outlined" data-testid="@($"cast-anyway-{spell.Id}")">
+                                        Cast anyway
+                                    </MudButton>
+                                    <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="() => ContinuePendingCastAsync(true)" Variant="Variant.Filled" data-testid="@($"start-day-and-cast-{spell.Id}")">
+                                        Start New Day and Cast
+                                    </MudButton>
+                                </div>
+                            </div>
+                        }
 
                         @if (isCasting)
                         {
@@ -277,6 +308,8 @@
     private readonly Dictionary<string, string?> _selectedTargets = new(StringComparer.Ordinal);
     private readonly Dictionary<string, bool> _autoEquip = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string?> _selectedRecommendations = new(StringComparer.Ordinal);
+    private PendingSpellCast? _pendingCronWarning;
+    private bool _suppressCronWarningForDay;
 
     private SpellsPageViewModel CurrentViewModel => SessionController.State.UserSnapshot is null
         ? new SpellsPageViewModel("unknown", 0, 0m, 0m, 0, CharacterStatsSnapshot.Zero, Array.Empty<SpellTargetTaskViewModel>(), Array.Empty<SpellCardViewModel>())
@@ -351,20 +384,113 @@
         _selectedRecommendations[spellId] = recommendationName;
     }
 
-    private async Task CastSpellAsync(
+    private async Task RequestCastSpellAsync(
         SpellCardViewModel spell,
         int count,
         string? selectedTarget,
         bool autoEquip,
         SpellEquipmentRecommendation? recommendation)
     {
-        var result = await SessionController.CastSpellAsync(new SpellCastRequest(
+        var request = new SpellCastRequest(
             spell.Id,
             selectedTarget,
             count,
             autoEquip && recommendation is not null,
-            autoEquip ? recommendation?.Slots : null));
+            autoEquip ? recommendation?.Slots : null);
+
+        if (ShouldWarnBeforeCronSensitiveBuff(spell.Id)
+            && !await IsCronWarningSuppressedAsync())
+        {
+            _suppressCronWarningForDay = false;
+            _pendingCronWarning = new PendingSpellCast(spell.Id, request);
+            return;
+        }
+
+        await CastSpellAsync(request);
+    }
+
+    private async Task CastSpellAsync(SpellCastRequest request)
+    {
+        var result = await SessionController.CastSpellAsync(request);
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private bool ShouldWarnBeforeCronSensitiveBuff(string spellId)
+    {
+        return SessionController.State.UserSnapshot?.NeedsCron == true
+            && IsCronSensitiveBuff(spellId);
+    }
+
+    private static bool IsCronSensitiveBuff(string spellId)
+    {
+        return spellId is "earth"
+            or "defensiveStance"
+            or "valorousPresence"
+            or "intimidate"
+            or "toolsOfTrade"
+            or "protectAura";
+    }
+
+    private bool IsPendingCronWarning(string spellId)
+    {
+        return _pendingCronWarning is not null
+            && string.Equals(_pendingCronWarning.SpellId, spellId, StringComparison.Ordinal);
+    }
+
+    private void CancelPendingCronWarning()
+    {
+        _pendingCronWarning = null;
+        _suppressCronWarningForDay = false;
+    }
+
+    private async Task ContinuePendingCastAsync(bool startNewDayFirst)
+    {
+        if (_pendingCronWarning is null)
+        {
+            return;
+        }
+
+        var request = _pendingCronWarning.Request;
+        if (_suppressCronWarningForDay)
+        {
+            await SaveCronWarningSuppressionAsync();
+        }
+
+        _pendingCronWarning = null;
+        _suppressCronWarningForDay = false;
+
+        if (startNewDayFirst)
+        {
+            var cronResult = await SessionController.StartNewDayAsync();
+            Snackbar.Add(cronResult.Message, cronResult.Succeeded ? Severity.Success : Severity.Error);
+            if (!cronResult.Succeeded)
+            {
+                return;
+            }
+        }
+
+        await CastSpellAsync(request);
+    }
+
+    private async Task<bool> IsCronWarningSuppressedAsync()
+    {
+        var key = GetCronWarningSuppressionKey();
+        return await KeyValueStorage.GetAsync<bool>(key, CancellationToken.None);
+    }
+
+    private Task SaveCronWarningSuppressionAsync()
+    {
+        return KeyValueStorage.SetAsync(GetCronWarningSuppressionKey(), true, CancellationToken.None);
+    }
+
+    private string GetCronWarningSuppressionKey()
+    {
+        var userId = string.IsNullOrWhiteSpace(SessionController.State.UserId)
+            ? "local"
+            : SessionController.State.UserId;
+        var dayKey = SessionController.State.UserSnapshot?.CurrentHabiticaDayKey
+            ?? DateTimeOffset.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+        return $"{StorageKeys.SpellCronWarningSuppression}/{userId}/{dayKey}";
     }
 
     private async Task EquipRecommendationAsync(SpellCardViewModel spell, SpellEquipmentRecommendation recommendation)
@@ -479,6 +605,10 @@
         IReadOnlyList<SpellEffectValue> DefaultValues,
         IReadOnlyDictionary<string, string> TargetEstimates,
         IReadOnlyDictionary<string, IReadOnlyList<SpellEffectValue>> TargetEffectValues);
+
+    private sealed record PendingSpellCast(
+        string SpellId,
+        SpellCastRequest Request);
 
     private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)
     {

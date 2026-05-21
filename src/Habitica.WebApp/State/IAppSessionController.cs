@@ -46,6 +46,10 @@ public interface IAppSessionController
 
     Task<SpellActionResult> CastSpellAsync(SpellCastRequest request, CancellationToken cancellationToken = default);
 
+    Task<SpellActionResult> StartNewDayAsync(CancellationToken cancellationToken = default);
+
+    Task<TaskActionResult> ScoreTaskAsync(TaskScoreRequest request, CancellationToken cancellationToken = default);
+
     Task<SpellActionResult> AllocateStatsAsync(StatAllocation allocation, CancellationToken cancellationToken = default);
 
     Task<InventoryActionResult> BuyArmoireAsync(int count, CancellationToken cancellationToken = default);

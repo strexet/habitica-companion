@@ -11,6 +11,7 @@ public static class StorageKeys
     public const string PartyCronHistory = "party/cronHistory";
     public const string DiagnosticsLogEntries = "diagnostics/logEntries";
     public const string TasksPagePreferences = "preferences/tasksPage";
+    public const string SpellCronWarningSuppression = "preferences/spells/cronWarningSuppression";
 
     public static IReadOnlyList<string> PortableDataKeys { get; } =
         new[]

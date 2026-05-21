@@ -6,16 +6,17 @@
 @inject IAppSessionController SessionController
 @inject TaskListViewModelFactory TaskListViewModelFactory
 @inject IKeyValueStorage KeyValueStorage
+@inject ISnackbar Snackbar
 
 <PageTitle>Tasks</PageTitle>
 
 <div class="tasks-shell">
     <section class="card-surface tasks-header">
         <div>
-            <p class="section-label">Read-only workspace</p>
+            <p class="section-label">Task workspace</p>
             <h1>Tasks</h1>
             <p class="panel-copy">
-                Browse the latest Habitica tasks saved on this device. This page is read-only and built for quick scanning, filtering, and refresh status.
+                Browse and score the latest Habitica tasks saved on this device. Mutations require fresh data and refresh account/task state after completion.
             </p>
         </div>
 
@@ -24,6 +25,29 @@
                 <span>Search</span>
                 <input class="app-input" name="task-search" @bind="_searchText" />
             </label>
+
+            <label class="field-row compact">
+                <span>Sort</span>
+                <select class="app-input" value="@_sortMode.ToString()" @onchange="eventArgs => SetSortMode(eventArgs.Value?.ToString())">
+                    <option value="Name">Name</option>
+                    <option value="ValueHigh">Highest value</option>
+                    <option value="ValueLow">Lowest value</option>
+                    <option value="DueSoon">Due soon</option>
+                </select>
+            </label>
+
+            <div class="task-type-filter" aria-label="Task type filters">
+                @foreach (var taskType in TaskTypeFilters)
+                {
+                    <label class="checkbox-row compact">
+                        <input type="checkbox"
+                               data-testid="@($"task-type-filter-{taskType}")"
+                               checked="@IsTaskTypeSelected(taskType)"
+                               @onchange="eventArgs => SetTaskTypeSelected(taskType, eventArgs.Value is true)" />
+                        <span>@FormatTaskType(taskType)</span>
+                    </label>
+                }
+            </div>
         </div>
     </section>
 
@@ -81,6 +105,9 @@
                             <div class="task-card-grid">
                                 @foreach (var item in visibleItems)
                                 {
+                                    var mutationDisabledReason = GetTaskMutationDisabledReason();
+                                    var progress = GetTaskProgress(item.Id);
+                                    var isMutating = progress is not null;
                                     <article class="@GetTaskCardClass(item)" style="@GetTaskCardStyle(item)">
                                         <div class="task-card-head">
                                             <span class="task-title">@item.Text</span>
@@ -116,6 +143,97 @@
                                                 <dd>@FormatDueDate(item.DueDate)</dd>
                                             </div>
                                         </dl>
+
+                                        @if (IsTaskExpanded(item.Id))
+                                        {
+                                            <div class="task-detail-panel">
+                                                <dl class="task-meta expanded">
+                                                    <div>
+                                                        <dt>Task type</dt>
+                                                        <dd>@FormatTaskType(item.Type)</dd>
+                                                    </div>
+
+                                                    <div>
+                                                        <dt>Challenge</dt>
+                                                        <dd>@(item.IsChallengeTask ? "Yes" : "No")</dd>
+                                                    </div>
+
+                                                    <div>
+                                                        <dt>Status</dt>
+                                                        <dd>@(item.IsCompleted ? "Completed" : "Open")</dd>
+                                                    </div>
+
+                                                    <div>
+                                                        <dt>Source</dt>
+                                                        <dd>Cached snapshot</dd>
+                                                    </div>
+                                                </dl>
+                                            </div>
+                                        }
+
+                                        <div class="task-card-actions">
+                                            <button class="secondary-action-button compact" type="button" @onclick="@(() => ToggleTaskExpanded(item.Id))">
+                                                @(IsTaskExpanded(item.Id) ? "Hide details" : "Details")
+                                            </button>
+
+                                            @if (item.Type == TaskType.Habit)
+                                            {
+                                                <label class="field-row compact habit-score-count">
+                                                    <span>Score count</span>
+                                                    <input class="app-input"
+                                                           data-testid="@($"task-score-count-{item.Id}")"
+                                                           disabled="@isMutating"
+                                                           min="1"
+                                                           max="20"
+                                                           type="number"
+                                                           value="@GetHabitScoreCount(item.Id)"
+                                                           @onchange="eventArgs => SetHabitScoreCount(item.Id, eventArgs.Value?.ToString())" />
+                                                </label>
+
+                                                <MudButton Color="Color.Primary"
+                                                           Disabled="@(!CanScoreTask(item, TaskScoreDirection.Up, mutationDisabledReason) || isMutating)"
+                                                           OnClick="() => ScoreTaskAsync(item, TaskScoreDirection.Up)"
+                                                           Size="Size.Small"
+                                                           Variant="Variant.Filled"
+                                                           data-testid="@($"score-task-up-{item.Id}")">
+                                                    Score +@GetHabitScoreCount(item.Id)
+                                                </MudButton>
+
+                                                <MudButton Color="Color.Secondary"
+                                                           Disabled="@(!CanScoreTask(item, TaskScoreDirection.Down, mutationDisabledReason) || isMutating)"
+                                                           OnClick="() => ScoreTaskAsync(item, TaskScoreDirection.Down)"
+                                                           Size="Size.Small"
+                                                           Variant="Variant.Outlined"
+                                                           data-testid="@($"score-task-down-{item.Id}")">
+                                                    Score -@GetHabitScoreCount(item.Id)
+                                                </MudButton>
+                                            }
+                                            else if (item.Type is TaskType.Daily or TaskType.Todo)
+                                            {
+                                                var direction = item.IsCompleted ? TaskScoreDirection.Down : TaskScoreDirection.Up;
+                                                <MudButton Color="Color.Primary"
+                                                           Disabled="@(!CanScoreTask(item, direction, mutationDisabledReason) || isMutating)"
+                                                           OnClick="() => ScoreTaskAsync(item, direction)"
+                                                           Size="Size.Small"
+                                                           Variant="Variant.Filled"
+                                                           data-testid="@($"score-task-{item.Id}")">
+                                                    @(item.IsCompleted ? "Uncomplete" : "Complete")
+                                                </MudButton>
+                                            }
+                                        </div>
+
+                                        @if (mutationDisabledReason is not null)
+                                        {
+                                            <span class="task-action-note">@mutationDisabledReason</span>
+                                        }
+
+                                        @if (progress is not null)
+                                        {
+                                            <div class="task-progress">
+                                                <span>@FormatTaskProgress(progress)</span>
+                                                <MudProgressLinear Color="Color.Primary" Max="@progress.Total" Value="@progress.Completed" />
+                                            </div>
+                                        }
                                     </article>
                                 }
                             </div>
@@ -130,8 +248,13 @@
 @code {
     private readonly Dictionary<TaskType, bool> _foldedCategories = new();
     private readonly Dictionary<TaskType, bool> _showCompletedCategories = new();
+    private readonly Dictionary<TaskType, bool> _selectedTaskTypes = new();
+    private readonly Dictionary<string, bool> _expandedTasks = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, int> _habitScoreCounts = new(StringComparer.Ordinal);
+    private static readonly TaskType[] TaskTypeFilters = [TaskType.Todo, TaskType.Daily, TaskType.Habit, TaskType.Reward];
     private string? _searchText;
     private string? _loadedPreferenceUserId;
+    private TaskListSortMode _sortMode = TaskListSortMode.Name;
 
     private TaskListViewModel CurrentViewModel => SessionController.State.TaskSnapshot is null
         ? new TaskListViewModel(Array.Empty<TaskGroupViewModel>(), 0)
@@ -139,7 +262,9 @@
             SessionController.State.TaskSnapshot,
             new TaskListFilter(
                 SearchText: _searchText,
-                IncludeCompleted: true));
+                IncludeCompleted: true,
+                SelectedTypes: GetSelectedTaskTypes(),
+                SortMode: _sortMode));
 
     protected override async Task OnInitializedAsync()
     {
@@ -162,6 +287,104 @@
     private bool ShouldShowCompleted(TaskType taskType)
     {
         return _showCompletedCategories.TryGetValue(taskType, out var showCompleted) && showCompleted;
+    }
+
+    private IReadOnlyCollection<TaskType> GetSelectedTaskTypes()
+    {
+        return _selectedTaskTypes.Count == 0
+            ? TaskTypeFilters
+            : TaskTypeFilters.Where(IsTaskTypeSelected).ToArray();
+    }
+
+    private bool IsTaskTypeSelected(TaskType taskType)
+    {
+        return !_selectedTaskTypes.TryGetValue(taskType, out var selected) || selected;
+    }
+
+    private void SetTaskTypeSelected(TaskType taskType, bool selected)
+    {
+        _selectedTaskTypes[taskType] = selected;
+    }
+
+    private void SetSortMode(string? rawValue)
+    {
+        _sortMode = Enum.TryParse<TaskListSortMode>(rawValue, out var sortMode)
+            ? sortMode
+            : TaskListSortMode.Name;
+    }
+
+    private bool IsTaskExpanded(string taskId)
+    {
+        return _expandedTasks.TryGetValue(taskId, out var expanded) && expanded;
+    }
+
+    private void ToggleTaskExpanded(string taskId)
+    {
+        _expandedTasks[taskId] = !IsTaskExpanded(taskId);
+    }
+
+    private int GetHabitScoreCount(string taskId)
+    {
+        return _habitScoreCounts.TryGetValue(taskId, out var count) ? Math.Clamp(count, 1, 20) : 1;
+    }
+
+    private void SetHabitScoreCount(string taskId, string? rawValue)
+    {
+        _habitScoreCounts[taskId] = int.TryParse(rawValue, out var parsed) ? Math.Clamp(parsed, 1, 20) : 1;
+    }
+
+    private TaskMutationProgress? GetTaskProgress(string taskId)
+    {
+        var progress = SessionController.State.ActiveTaskMutationProgress;
+        return progress is not null && string.Equals(progress.TaskId, taskId, StringComparison.Ordinal)
+            ? progress
+            : null;
+    }
+
+    private string? GetTaskMutationDisabledReason()
+    {
+        if (!SessionController.State.IsAuthenticated)
+        {
+            return "Sign in to score tasks.";
+        }
+
+        if (SessionController.State.TaskFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return "Refresh tasks before scoring.";
+        }
+
+        if (SessionController.State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return "Refresh account data before scoring.";
+        }
+
+        return null;
+    }
+
+    private static bool CanScoreTask(TaskListItemViewModel item, TaskScoreDirection direction, string? disabledReason)
+    {
+        if (disabledReason is not null)
+        {
+            return false;
+        }
+
+        return item.Type switch
+        {
+            TaskType.Habit => direction == TaskScoreDirection.Up
+                ? item.SupportsPositiveScore != false
+                : item.SupportsNegativeScore != false,
+            TaskType.Daily or TaskType.Todo => direction == TaskScoreDirection.Up
+                ? !item.IsCompleted
+                : item.IsCompleted,
+            _ => false
+        };
+    }
+
+    private async Task ScoreTaskAsync(TaskListItemViewModel item, TaskScoreDirection direction)
+    {
+        var count = item.Type == TaskType.Habit ? GetHabitScoreCount(item.Id) : 1;
+        var result = await SessionController.ScoreTaskAsync(new TaskScoreRequest(item.Id, direction, count));
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 
     private async Task ToggleFoldedAsync(TaskType taskType)
@@ -238,6 +461,24 @@
     private static string FormatTaskValue(decimal? value)
     {
         return value?.ToString("0.#", CultureInfo.InvariantCulture) ?? "Unknown";
+    }
+
+    private static string FormatTaskType(TaskType taskType)
+    {
+        return taskType switch
+        {
+            TaskType.Todo => "To-Do",
+            TaskType.Daily => "Daily",
+            TaskType.Habit => "Habit",
+            TaskType.Reward => "Reward",
+            _ => taskType.ToString()
+        };
+    }
+
+    private static string FormatTaskProgress(TaskMutationProgress progress)
+    {
+        var direction = progress.Direction == TaskScoreDirection.Up ? "+" : "-";
+        return $"Scoring {direction}: {progress.Completed} of {progress.Total}";
     }
 
     private static string FormatDueDate(DateTimeOffset? dueDate)

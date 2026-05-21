@@ -456,7 +456,7 @@ Owner module: `Habitica.Rules.Spells`, `Habitica.Rules.Stats`, `Habitica.Api`, `
 Application entry point: `Habitica.WebApp.Pages.SpellsPage`; stats allocation entry point: `Habitica.WebApp.Pages.DashboardPage`
 Primary Habitica data: full user snapshot, user stats, mana, buffs, class, level, task snapshot, owned gear, gear content catalog
 Mutates Habitica state: yes
-Requires confirmation: no for direct casts; repeated casts are sequential and visibly in progress
+Requires confirmation: yes when a Cron-sensitive stat buff is cast before the current Habitica day is started; otherwise no for direct casts
 Offline behavior: recommendations, estimates, and the stats table are available from cached snapshots; casting, stat allocation, and equip actions require API access
 Rate-limit sensitivity: high for repeated casts
 
@@ -498,13 +498,14 @@ All calls go through `Habitica.Api`.
 ```text
 POST /user/class/cast/:skill
 POST /user/class/cast/:skill?targetId=:taskId
+POST /cron
 POST /user/allocate-bulk
 POST /user/equip/equipped/:key
 GET /user
 GET /tasks/user
 ```
 
-After successful spell casts, refresh `/user` and `/tasks/user` because mana, HP, XP, GP, buffs, quest contribution, and task values can change. After stat allocation from Dashboard, refresh `/user`. Dynamic gear recommendation Equip buttons reuse the existing inventory equip flow and refresh `/user`, which causes spell estimates and `Equipped` button states to be recalculated.
+After successful spell casts, refresh `/user` and `/tasks/user` because mana, HP, XP, GP, buffs, quest contribution, and task values can change. If the user chooses `Start New Day and Cast` from the buff timing warning, run `/cron` first, refresh account/tasks/party state, and only cast after Cron succeeds. After stat allocation from Dashboard, refresh `/user`. Dynamic gear recommendation Equip buttons reuse the existing inventory equip flow and refresh `/user`, which causes spell estimates and `Equipped` button states to be recalculated.
 
 ### Algorithm / rules
 
@@ -528,6 +529,17 @@ Each spell card owns its dynamic equipment recommendations. Recommendations are 
 Dashboard stats are displayed as a single table with base/API stats, equipment-derived stats, active buffs, and effective values. Allocation uses per-stat `+` buttons with an Apply action instead of full-width numeric inputs.
 
 Multi-cast uses a direct Cast button but executes sequentially. The active spell card shows a progress bar and text such as `Casting 2 of 5`. Stop on API failure, cancellation, missing target, or stale local state.
+
+Cron-sensitive stat buffs warn when `UserSnapshot.NeedsCron == true`:
+
+```text
+wizard: earth
+warrior: defensiveStance, valorousPresence, intimidate
+rogue: toolsOfTrade
+healer: protectAura
+```
+
+The warning is rendered inside the affected spell card to keep the decision close to the Cast button. Actions are `Cancel`, `Cast anyway`, and `Start New Day and Cast`. The optional `Do not warn again for this Habitica day` checkbox stores a local per-user/per-Habitica-day preference under `preferences/spells/cronWarningSuppression`.
 
 ### Validation
 
@@ -567,7 +579,7 @@ Test:
 - dynamic equipment recommendation generation and `Equipped` state;
 - session sequential cast orchestration and diagnostics logging;
 - stat allocation orchestration and diagnostics logging;
-- Spells page rendering, count totals, progress bar, target selection/value ordering, Cast button, and dynamic equipment recommendations;
+- Spells page rendering, count totals, progress bar, target selection/value ordering, Cast button, Cron-sensitive buff warning, and dynamic equipment recommendations;
 - Dashboard stats table, plus-button stat allocation controls, and unspent stat warning;
 - authenticated navigation link.
 
@@ -981,8 +993,8 @@ Status: planned
 Owner module: `Habitica.Rules.Calculations`
 Application entry point: `Habitica.Application.Calculations`
 Primary Habitica data: user stats, class, buffs, gear, tasks, party/quest state, skill metadata
-Mutates Habitica state: no
-Requires confirmation: no
+Mutates Habitica state: yes for Start New Day; otherwise no
+Requires confirmation: yes for Start New Day
 Offline behavior: available from latest snapshots
 Rate-limit sensitivity: low
 
@@ -1112,6 +1124,7 @@ inventory readiness summary
 task-count summary
 warnings
 sync status
+Start New Day confirmation and action result
 ```
 
 ### Local storage
@@ -1120,11 +1133,20 @@ Reads from existing snapshot and derived read-model stores.
 
 ### API interaction
 
-Only through explicit refresh actions.
+Only through explicit refresh actions and the confirmed Start New Day action.
+
+```text
+POST /cron
+GET /user
+GET /tasks/user
+GET /groups/party
+```
 
 ### Algorithm / rules
 
 Dashboard must not contain business logic. It displays already computed state and invokes use-case services.
+
+Render `Start New Day` only when the current account snapshot says `NeedsCron == true`. The confirmation copy must explain that Habitica will process missed Dailies, active quest progress, and temporary buff expiry. After confirmed Cron, refresh account/tasks/party state through the session controller.
 
 ### Validation
 
@@ -1148,6 +1170,7 @@ Test:
 - empty state;
 - partial sync failure state;
 - redacted diagnostics.
+- Start New Day confirmation and session-controller call.
 
 ### Open questions
 
@@ -1158,7 +1181,8 @@ Current implementation:
 - dashboard route with cached account cards;
 - dashboard inventory readiness summary;
 - dashboard stat cards fall back to current-only rendering when the API snapshot lacks non-zero stat targets;
-- read-only tasks workspace;
+- dashboard Start New Day confirmation when current-user Cron is due;
+- task workspace with cached browsing and planned guarded mutations;
 - sync timestamp surface;
 - freshness banners for cached tasks and cached account data;
 - global error banner for sign-in and refresh failures.
@@ -2190,28 +2214,28 @@ Current implementation:
 
 Next:
 
-- add optional live checks for future task mutations with stronger warnings and dry-run summaries;
+- add optional live checks for task mutations with stronger warnings and dry-run summaries;
 - add richer diagnostics such as per-step timestamps and redacted raw status codes;
 - extend the shared journal to future mutation workflows such as equip actions and skill casts on their dedicated pages.
 
 Waiting:
 
-- any live test or future action check that consumes gold, mana, items, or irreversible state remains blocked until stronger warning and confirmation rules are defined.
+- any live test or action check that consumes gold, mana, items, or irreversible state must use the shared guarded-mutation confirmation rules before execution.
 
-## 18. Read-only task workspace
+## 18. Task workspace
 
 Status: implemented
 Owner module: `Habitica.WebApp.Pages.TasksPage` and `Habitica.Application.Tasks`
 Application entry point: `Habitica.WebApp.Pages.TasksPage`
 Primary Habitica data: local task snapshot
-Mutates Habitica state: no
-Requires confirmation: no
-Offline behavior: fully available from cached task snapshot
-Rate-limit sensitivity: none without explicit refresh
+Mutates Habitica state: yes for inline task scoring/checkoff controls
+Requires confirmation: no for browsing; task mutations follow section 19 confirmation and progress rules
+Offline behavior: browsing is fully available from cached task snapshot; mutations require authentication and fresh task/user data
+Rate-limit sensitivity: none for browsing; medium for task mutation controls
 
 ### Goal
 
-Provide a read-only task browser that loads from the local snapshot and keeps task scoring out of the MVP.
+Provide a task workspace that loads from the local snapshot for scanning, filtering, and detail review, with guarded live scoring/checkoff controls for common task actions.
 
 ### Inputs
 
@@ -2219,6 +2243,8 @@ Provide a read-only task browser that loads from the local snapshot and keeps ta
 cached task snapshot
 task freshness state
 search text
+selected task types
+sort mode
 per-category folded preferences
 per-category completed visibility preferences
 ```
@@ -2236,6 +2262,11 @@ subtle value-based card background for open tasks
 muted completed-task styling
 priority and due-date metadata
 freshness banner
+type filters
+sort control
+inline task scoring/checkoff controls
+habit multi-score progress
+task detail panel
 empty-state messaging
 ```
 
@@ -2256,7 +2287,7 @@ preferences/tasksPage/{userId}
 
 ### API interaction
 
-None directly. The page consumes local state prepared by the sync workflow.
+Browsing consumes local state prepared by the sync workflow. Mutating actions must go through `Habitica.Api` and the session/application layer described in section 19.
 
 ### Algorithm / rules
 
@@ -2267,12 +2298,14 @@ Current view-model rules:
 2. Filter by search text over task text and notes.
 3. Hide completed tasks by default.
 4. Group visible tasks in this order: To-Dos, Dailies, Habits, Rewards.
-5. Sort items within each group by completion state then text.
+5. Sort items within each group by completion state, then the selected sort mode: name, highest value, lowest value, or due soon.
 6. Keep group fold state and completed visibility separately for each task type.
 7. Persist task-page preferences by user id on the current device.
 8. Show the numeric task value when available.
 9. Tint open task cards with a continuous low-saturation value gradient from warm negative values to cool positive values.
 10. Render completed tasks with neutral muted styling when the category is set to show completed.
+11. Render task actions inline on each card when authentication and freshness allow mutation.
+12. For Habit scoring, clamp multi-score count to 1-20 and show determinate progress while requests execute sequentially.
 ```
 
 ### Validation
@@ -2291,7 +2324,7 @@ Show cached data even when a previous refresh attempt failed.
 
 ### Security / privacy
 
-The MVP intentionally omits all task mutation controls from this workspace.
+Task mutation controls are allowed in this workspace when they use the conservative execution rules in section 19 and do not log credentials or raw request headers.
 
 ### Tests
 
@@ -2304,6 +2337,10 @@ Test:
 - foldable task groups;
 - persisted user task-page preferences;
 - numeric task value rendering;
+- type filtering;
+- explicit sort modes;
+- task scoring/checkoff action rendering;
+- habit multi-score request and progress wiring;
 - freshness banner rendering;
 - cached empty-state rendering.
 
@@ -2318,27 +2355,26 @@ Current implementation:
 - numeric task value display;
 - continuous value-based open-task card tinting;
 - muted completed-task styling;
+- type filters and explicit sort modes;
+- inline Complete/Uncomplete controls for Dailies and To-Dos;
+- inline positive/negative Habit scoring with count and determinate progress;
+- compact cached task detail panel;
 - freshness banner driven by the shared freshness policy.
 
 Next:
 
-- type filters;
-- explicit sort controls;
+- richer expandable task details and history/stat surfaces;
 - larger-data optimizations such as virtualization.
-
-Waiting:
-
-- task scoring, checkoff, and edit flows remain intentionally out of scope until mutation safeguards are designed.
 
 ## 19. Task mutation controls
 
-Status: skipped
+Status: partial
 Owner module: `Habitica.WebApp.Tasks` and `Habitica.Application.Tasks`
 Application entry point: `Habitica.Application.Tasks`
 Primary Habitica data: live task mutation endpoints and task snapshot state
 Mutates Habitica state: yes
-Requires confirmation: depends on action
-Offline behavior: not available in MVP
+Requires confirmation: yes for multi-step, repeated, destructive, or ambiguous actions; single checkoff/score actions may use inline buttons with clear labels and undo-aware result feedback when supported
+Offline behavior: not available for execution; dry-run/disabled previews may render from cached snapshots
 Rate-limit sensitivity: medium
 
 ### Goal
@@ -2365,27 +2401,41 @@ execution log
 
 ### Local storage
 
-Would require mutation logs and task snapshot invalidation metadata.
+Requires mutation diagnostics and task snapshot invalidation metadata. Existing diagnostics logging may be used for the initial implementation.
 
 ### API interaction
 
-Would require Habitica mutating task endpoints through `Habitica.Api`.
+Task mutations are available for implementation through `Habitica.Api`. Supported endpoint shapes must be documented in `HABITICA_API.md` before wiring UI controls.
 
 ### Algorithm / rules
 
-Skipped for the initial MVP. The current task workspace is intentionally read-only.
+Implement conservatively:
+
+```text
+1. Require authenticated credentials.
+2. Require fresh task data and fresh user data when HP/MP/XP/GP can change.
+3. Validate the selected task still exists in the local snapshot.
+4. Render action-specific controls only when the task type supports the action.
+5. For Habit multi-score, execute requests sequentially with visible completed/total progress.
+6. Stop on the first API failure and report completed/requested counts.
+7. Refresh `/user` and `/tasks/user` after successful mutation because stats, rewards, task values, and quest progress can change.
+8. Persist diagnostics metadata for task id, task type, action, requested count, completed count, and request count.
+```
 
 ### Validation
 
-Do not implement until:
+Before mutation:
 
-- mutation confirmation rules are defined;
-- stale-snapshot gating is wired end to end;
-- partial-success reporting is designed.
+- block when unauthenticated;
+- block when task snapshot is missing, stale, or expired;
+- block when account snapshot is missing, stale, or expired and the action can affect user stats/resources;
+- block unsupported habit directions;
+- clamp multi-score counts to a small explicit limit;
+- explain disabled actions near the affected task card.
 
 ### Error handling
 
-Deferred until the mutation workflow exists.
+Show validation/API errors through the same non-alert feedback pattern used by spells and inventory. Partial multi-score results must include completed/requested counts and leave the page refreshed from the latest available cached state.
 
 ### Security / privacy
 
@@ -2393,15 +2443,19 @@ Mutating task actions must not ship without the conservative execution rules fro
 
 ### Tests
 
-Deferred until the feature moves out of `skipped`.
+Test:
+
+- API endpoint shape for task score/checkoff mutations;
+- session orchestration, refresh, partial-progress handling, and diagnostics logging;
+- Tasks page action rendering by task type and supported direction;
+- disabled state for stale/missing snapshots;
+- habit multi-score count clamping and progress display.
 
 ### Open questions
 
-Waiting:
-
-- exact MVP mutation scope;
-- confirmation UX;
-- execution log design.
+- exact Habitica endpoint behavior for uncompleting Dailies/To-Dos;
+- whether a completed To-Do can be safely uncompleted through the public API in all cases;
+- whether first implementation should include only scoring/checkoff or also task editing.
 
 ## 20. Feature status labels
 

@@ -19,6 +19,8 @@ public interface IHabiticaSyncClient
 
     Task CastSpellAsync(HabiticaCredentials credentials, string spellId, string? targetId, CancellationToken cancellationToken);
 
+    Task RunCronAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
+
     Task AllocateStatsAsync(HabiticaCredentials credentials, StatAllocation allocation, CancellationToken cancellationToken);
 
     Task<ArmoirePurchaseSnapshot> BuyArmoireAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
@@ -26,4 +28,6 @@ public interface IHabiticaSyncClient
     Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 
     Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
+
+    Task ScoreTaskAsync(HabiticaCredentials credentials, string taskId, TaskScoreDirection direction, CancellationToken cancellationToken);
 }

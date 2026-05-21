@@ -31,18 +31,33 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
     public async Task<UserSnapshot> GetUserSnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
     {
+        var retrievedAtUtc = DateTimeOffset.UtcNow;
         using var request = CreateRequest(HttpMethod.Get, "user", credentials);
         using var document = await SendForDocumentAsync(request, cancellationToken);
         var data = document.RootElement.GetProperty("data");
         var profile = data.GetProperty("profile");
         var stats = data.GetProperty("stats");
         var buffs = TryGetObject(stats, "buffs");
+        var preferences = TryGetObject(data, "preferences");
+        var flags = TryGetObject(data, "flags");
         var items = data.TryGetProperty("items", out var itemsProperty) ? itemsProperty : default;
         var gear = TryGetObject(items, "gear");
         var inventory = MapInventory(gear, items);
+        var lastCronUtc = ParseDateTimeOffset(GetOptionalString(data, "lastCron"));
+        var dayStartHour = GetOptionalNullableInt32(preferences, "dayStart");
+        var timezoneOffsetMinutes = GetOptionalNullableInt32(preferences, "timezoneOffset")
+            ?? GetOptionalNullableInt32(preferences, "timezoneOffsetAtLastCron");
+        var currentHabiticaDayStartUtc = dayStartHour is not null && timezoneOffsetMinutes is not null
+            ? HabiticaDayCalculator.ComputeCurrentDayStartUtc(retrievedAtUtc, dayStartHour.Value, timezoneOffsetMinutes.Value)
+            : (DateTimeOffset?)null;
+        var currentHabiticaDayKey = dayStartHour is not null && timezoneOffsetMinutes is not null
+            ? HabiticaDayCalculator.ComputeDayKey(retrievedAtUtc, dayStartHour.Value, timezoneOffsetMinutes.Value)
+            : null;
+        var needsCron = GetOptionalNullableBoolean(flags, "needsCron")
+            ?? HabiticaDayCalculator.NeedsCron(lastCronUtc, currentHabiticaDayStartUtc);
 
         return new UserSnapshot(
-            RetrievedAtUtc: DateTimeOffset.UtcNow,
+            RetrievedAtUtc: retrievedAtUtc,
             DisplayName: profile.GetProperty("name").GetString() ?? "Unknown Habitica User",
             ClassName: GetOptionalString(stats, "class"),
             Level: GetOptionalInt32(stats, "lvl"),
@@ -65,7 +80,13 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             Buffs: MapCharacterStats(buffs),
             BuffFlags: new BuffFlagsSnapshot(
                 ChillingFrost: GetOptionalBoolean(buffs, "streaks"),
-                Stealth: GetOptionalInt32(buffs, "stealth")));
+                Stealth: GetOptionalInt32(buffs, "stealth")),
+            LastCronUtc: lastCronUtc,
+            DayStartHour: dayStartHour,
+            TimezoneOffsetMinutes: timezoneOffsetMinutes,
+            CurrentHabiticaDayKey: currentHabiticaDayKey,
+            CurrentHabiticaDayStartUtc: currentHabiticaDayStartUtc,
+            NeedsCron: needsCron);
     }
 
     public async Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -79,6 +100,20 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             .ToArray();
 
         return new TaskCollectionSnapshot(DateTimeOffset.UtcNow, tasks);
+    }
+
+    public async Task ScoreTaskAsync(
+        HabiticaCredentials credentials,
+        string taskId,
+        TaskScoreDirection direction,
+        CancellationToken cancellationToken)
+    {
+        var directionSegment = direction == TaskScoreDirection.Down ? "down" : "up";
+        using var request = CreateRequest(
+            HttpMethod.Post,
+            $"tasks/{Uri.EscapeDataString(taskId)}/score/{directionSegment}",
+            credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
     }
 
     public async Task<PartySnapshot> GetPartySnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -211,6 +246,12 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         }
 
         using var request = CreateRequest(HttpMethod.Post, path, credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
+    public async Task RunCronAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(HttpMethod.Post, "cron", credentials);
         using var _ = await SendForDocumentAsync(request, cancellationToken);
     }
 
@@ -380,7 +421,9 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             task.TryGetProperty("notes", out var notesProperty) ? notesProperty.GetString() : null,
             ParseNullableDate(task),
             TryGetDecimal(task, "value", out var value) ? value : null,
-            IsChallengeTask(task));
+            IsChallengeTask(task),
+            GetOptionalNullableBoolean(task, "up"),
+            GetOptionalNullableBoolean(task, "down"));
     }
 
     private static bool IsChallengeTask(JsonElement task)
@@ -1125,6 +1168,15 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             && element.TryGetProperty(propertyName, out var property)
             && property.ValueKind is JsonValueKind.True or JsonValueKind.False
             && property.GetBoolean();
+    }
+
+    private static bool? GetOptionalNullableBoolean(JsonElement element, string propertyName)
+    {
+        return element.ValueKind == JsonValueKind.Object
+            && element.TryGetProperty(propertyName, out var property)
+            && property.ValueKind is JsonValueKind.True or JsonValueKind.False
+            ? property.GetBoolean()
+            : null;
     }
 
     private static decimal GetOptionalDecimal(JsonElement element, string propertyName)

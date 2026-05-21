@@ -224,6 +224,7 @@ Recommended client usage:
 - Fetch the full user document on manual account/dashboard refreshes where computed stats are needed; avoid background polling.
 - Use `tasksOrder` together with `/tasks/user` for client-side ordering.
 - Treat computed stat helper fields as optional at runtime anyway. If they are absent, avoid presenting `0` as a meaningful target/cap in the UI.
+- For current-user Cron safety, map `lastCron`, `flags.needsCron`, `preferences.dayStart`, `preferences.timezoneOffset`, and `preferences.timezoneOffsetAtLastCron` when present. Use the explicit `flags.needsCron` value first; otherwise derive it by comparing `lastCron` with the current Habitica day start.
 
 ### 8.2 Update authenticated user
 
@@ -333,7 +334,26 @@ Bulk stat allocation uses a request body containing only the selected point coun
 
 Automation rule: before casting skills automatically, verify mana and target validity. Execute repeated casts sequentially and stop the loop when the action can no longer be completed.
 
-### 8.6 Blocking and private messages
+Cron-sensitive stat buffs should warn when the authenticated user has not started the current Habitica day. Offer `Cast anyway`, `Start New Day and Cast`, and `Cancel`; do not cast automatically if Cron fails.
+
+### 8.6 Cron / Start New Day
+
+```http
+POST /cron
+```
+
+Runs Habitica's daily reset for the authenticated user. This can process missed Dailies, active quest progress, health/mana/stat changes, notifications, and temporary buff expiry.
+
+Recommended client usage:
+
+- Show the action as `Start New Day` in UI copy; keep `Cron` in technical logs/docs.
+- Render the Dashboard button only when current-user data indicates `flags.needsCron == true` or a derived `lastCron < currentHabiticaDayStartUtc`.
+- Require confirmation before calling the endpoint.
+- After success, refresh `/user`, `/tasks/user`, and party state if the user is in a party.
+- If Cron succeeds but a follow-up refresh fails, report the refresh failure separately; do not repeat Cron implicitly.
+- If Cron fails before completion, do not continue with any chained spell cast.
+
+### 8.7 Blocking and private messages
 
 Common endpoints:
 
@@ -552,8 +572,9 @@ Scoring can also return drop and quest progress data under `_tmp`.
 
 Client behavior:
 
-- Refresh the affected task list after scoring a daily or todo.
-- Refresh user stats after any score operation.
+- Refresh `/tasks/user` after scoring because completion state and task value can change.
+- Refresh `/user` after any score operation because HP, MP, XP, GP, level, and quest progress can change.
+- Execute repeated habit scores sequentially with visible completed/total progress; stop on first failure and report partial completion.
 - Do not assume task completion toggling semantics are identical for habits, dailies, todos, and rewards.
 - For group tasks requiring approval, a score request can return an approval-request state rather than immediate completion.
 

@@ -41,6 +41,53 @@
             </MudAlert>
         }
 
+        @if (snapshot.NeedsCron == true)
+        {
+            var canStartNewDay = SessionController.State.IsAuthenticated
+                && !SessionController.State.IsBusy
+                && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
+
+            <section class="card-surface dashboard-panel cron-action-panel">
+                <div>
+                    <p class="section-label">Habitica day</p>
+                    <h2>Start New Day</h2>
+                    <p class="panel-copy">
+                        Habitica has not processed today for this account yet. Starting a new day runs Habitica's daily reset and refreshes account, tasks, and party data.
+                    </p>
+                </div>
+
+                @if (_showCronConfirmation)
+                {
+                    <div class="confirmation-panel">
+                        <p>
+                            Start new Habitica day? This will run Habitica's daily reset for your account. Missed Dailies may be processed, active quest progress may be updated, and temporary buffs may expire.
+                        </p>
+                        <div class="confirmation-actions">
+                            <MudButton Color="Color.Default" Disabled="@SessionController.State.IsBusy" OnClick="CancelStartNewDay" Variant="Variant.Text">
+                                Cancel
+                            </MudButton>
+                            <MudButton Color="Color.Primary" Disabled="@(!canStartNewDay)" OnClick="StartNewDayAsync" Variant="Variant.Filled" data-testid="confirm-start-new-day">
+                                Start New Day
+                            </MudButton>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="cron-action-row">
+                        <span class="dashboard-stat-note">@FormatHabiticaDay(snapshot)</span>
+                        <MudButton Color="Color.Primary"
+                                   Disabled="@(!canStartNewDay)"
+                                   OnClick="ShowStartNewDayConfirmation"
+                                   Variant="Variant.Filled"
+                                   data-testid="start-new-day">
+                            Start New Day
+                        </MudButton>
+                    </div>
+                }
+            </section>
+        }
+
         <section class="dashboard-card-grid">
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">Account</span>
@@ -261,6 +308,7 @@
 @code {
     private readonly Dictionary<string, int> _pendingAllocation = new(StringComparer.Ordinal);
     private int _armoirePurchaseCount = 1;
+    private bool _showCronConfirmation;
 
     protected override void OnInitialized()
     {
@@ -306,6 +354,30 @@
         }
 
         return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value.Replace('_', ' ').Replace('-', ' '));
+    }
+
+    private static string FormatHabiticaDay(UserSnapshot snapshot)
+    {
+        return string.IsNullOrWhiteSpace(snapshot.CurrentHabiticaDayKey)
+            ? "Current Habitica day needs processing."
+            : $"Habitica day {snapshot.CurrentHabiticaDayKey} needs processing.";
+    }
+
+    private void ShowStartNewDayConfirmation()
+    {
+        _showCronConfirmation = true;
+    }
+
+    private void CancelStartNewDay()
+    {
+        _showCronConfirmation = false;
+    }
+
+    private async Task StartNewDayAsync()
+    {
+        var result = await SessionController.StartNewDayAsync();
+        _showCronConfirmation = false;
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 
     private int GetPendingAllocation(string key)
