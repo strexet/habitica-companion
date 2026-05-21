@@ -1,5 +1,7 @@
 # Habitica Companion — Cloud Sync Split-Key Fix and Refresh Optimization Instructions
 
+Status note, 2026-05-21: this is a historical implementation instruction. Split-key Cloudflare sync, legacy single-blob restore fallback, and the refresh coordinator are implemented. Use `FUTURE.md` for the remaining cloud-sync/refresh follow-up backlog and `FEATURES.md` / `TECHNICAL.md` for the current behavior.
+
 This document is optimized for AI coding agents working in the `strexet/habitica-companion` repository.
 
 ## Goal
@@ -13,7 +15,7 @@ Encrypted cloud sync was skipped: Cloud sync upload failed. Cloud sync payload i
 uploadData@https://habitica-companion.pages.dev/js/sync/cloudflareSync.js:18:20
 ```
 
-The current cloud sync flow likely uploads one large encrypted payload. Replace it with separated encrypted sync records keyed by data domain, then improve refresh logic so the app does not fetch/update everything at once.
+The original cloud sync flow likely uploaded one large encrypted payload. Replace it with separated encrypted sync records keyed by data domain, then improve refresh logic so the app does not fetch/update everything at once.
 
 ---
 

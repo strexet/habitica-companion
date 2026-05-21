@@ -1,5 +1,7 @@
 # Habitica Companion App — Pending Feature Implementation Plan
 
+Status note, 2026-05-21: this is a historical source plan. Many MVP items in this file are now implemented. Use `FUTURE.md` for the validated remaining backlog and `FEATURES.md` for the current implemented feature behavior.
+
 This document is optimized for AI coding agents. It is intentionally explicit about feature boundaries, data ownership, UI behavior, edge cases, and MVP scope.
 
 ## Agent Rules

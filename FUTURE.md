@@ -1,53 +1,101 @@
 # Future Work
 
-This file tracks items from `habitica_companion_pending_features_plan.md` that remain unimplemented.
+Last validated: 2026-05-21.
 
-## Party Quest Improvements
+This file tracks unimplemented work after checking the current repository against:
 
-- Replace party-sync credential-header membership verification with a tokenless/signed membership proof so Habitica API tokens are never sent to Cloudflare party-sync endpoints.
-- Add explicit owner readiness toggle in the shared queue UI.
-- Add party leader controls for manual pinning, force-selecting, resolving conflicts, and locking queue changes during selection.
-- Add queue states and actions for `Selected`, `InviteSent`, `Skipped`, and `Expired` beyond the implemented queued/active/completed/removed storage path.
-- ~~Add automatic queue lifecycle reconciliation from Habitica active quest changes: queued -> active -> completed.~~ Implemented: `ReconcileQuestLifecycleAsync` in `AppSessionController` auto-detects quest state transitions on each party sync. Cloudflare function `autoReconcileQuest` action handles idempotent activate/complete with conflict dedup via unique constraint on `source_queue_item_id`.
-- Add direct Habitica quest invite/start action for the selected quest owner after confirming the exact API flow.
-- Add limited vote budgets as an optional advanced voting mode.
+- `1_habitica_companion_pending_features_plan.md`
+- `2_cloud_sync_split_key_refresh_instructions.md`
+- existing `FUTURE.md`
+- current source files under `src/`, `functions/`, `migrations/`, and `tests/`
+
+Implemented items are removed instead of kept as strikethrough. Current implemented behavior belongs in `FEATURES.md`, with foundational architecture notes in `TECHNICAL.md` and Habitica endpoint rules in `HABITICA_API.md`.
+
+## From `1_habitica_companion_pending_features_plan.md`
+
+### Party Page Quest Improvements
+
+- Replace party-sync credential-header membership verification with a tokenless or signed membership proof so Habitica API tokens are never sent to Cloudflare party-sync endpoints.
+- Fill remaining active quest card metadata and actions: quest owner or starter, started date, details view, participants view, and reward/details affordances when the data is available.
+- Add an owner readiness mutation flow. The database field and read-only display exist, but the shared queue UI does not expose a toggle action yet.
+- Add party leader queue controls for manual pinning, force-selecting, conflict resolution, and locking queue changes during selection.
+- Add user-facing actions and handling for `Selected`, `InviteSent`, `Skipped`, and `Expired` queue states beyond the current queued, active, completed, and removed path.
+- Add direct Habitica quest invite/start action for the selected quest owner after the exact Habitica API flow is confirmed.
 - Add queue expiration and stale-owner cleanup rules.
-- Add historical quest analytics beyond the recent-completion list and queue penalty.
+- Add optional limited vote budgets only if requested as an advanced voting mode.
+- Add historical quest analytics beyond the recent-completion list and soft queue penalty.
 
-## CRON Button and Buff Warning
+### Tasks Page Enhancements
 
-- ~~Dashboard `Start New Day` button with confirmation.~~ Implemented on Dashboard when the current-user snapshot says Cron is due.
-- ~~Habitica Cron API wrapper and post-Cron targeted refresh.~~ Implemented: `RunCronAsync` plus account/tasks/party refresh after success.
-- ~~Buff warning before casting not-Croned stat buffs.~~ Implemented inline on Spells for Cron-sensitive stat buffs.
-- ~~Per-user, per-Habitica-day local warning suppression.~~ Implemented under `preferences/spells/cronWarningSuppression`.
+- Add week/month/year period selector for task statistics.
+- Add task-history histogram and month activity chart on the Tasks page.
+- Add a smaller activity chart inside expanded task details.
 
-## Tasks Page Enhancements
+### Dashboard Improvements
 
-- ~~Task scoring/completion actions.~~ Implemented inline on task cards with freshness/auth gating and post-action refresh.
-- ~~Habit multi-score controls.~~ Implemented with clamped count, sequential requests, and determinate progress.
-- Expandable task details with week/month/year statistics.
-- Task activity histograms and activity charts.
+- Add a pending damage estimate box.
+- Explain which damage sources are included and excluded from the estimate.
+- Add warning state when estimated damage may kill or nearly kill the user.
+- Add a manual Buy Health Potion action near damage information. Do not make potion purchase automatic.
+- Add dashboard section cards with direct navigation.
+- Add an Open Habitica button and context-sensitive Habitica links where stable URLs are known.
 
-## Dashboard Improvements
+### Login and Refresh Improvements
 
-- Pending damage estimate and near-death warning.
-- Buy Health Potion action.
-- Dashboard navigation cards for major app sections.
-- Dashboard and context-sensitive `Open Habitica` links.
-- Revisit subscriber free Enchanted Armoire openings if Habitica exposes a public API flow for the mobile-only extra opening.
+- Add a redirect guard that skips the sign-in page for authenticated stored credentials without flashing the login UI.
+- Return to the dashboard after the minimal successful user fetch; defer non-critical domain refreshes behind usable cached/current data.
+- Add stale-while-revalidate UI behavior so cached values stay visible while stale domains refresh in the background.
+- Add field/card-level refresh indicators for manual refresh and Cloudflare sync progress.
+- Add subtle changed-value animation after background updates.
+- Add loading skeletons where delayed content has a stable final structure.
 
-## Login and Refresh Improvements
+## From `2_cloud_sync_split_key_refresh_instructions.md`
 
-- Login redirect guard that skips the sign-in page for authenticated stored credentials without flashing the login UI.
-- ~~Staged refresh coordinator with domain-specific refresh keys.~~ Implemented: `RefreshCoordinator` in `Habitica.Application.Sync` with domain-level dedup, priority scheduling, and per-domain callbacks.
-- ~~Narrow Habitica API endpoint refreshes by visible page/domain.~~ Implemented: `RefreshForPageAsync` dispatches page-route→domain mapping with visible/background priorities.
-- Stale-while-revalidate UI state and field/card-level refresh indicators.
-- ~~Dependency-based invalidation after mutations.~~ Implemented: `DomainInvalidationMap` maps mutations to affected domains; cloud sync is fire-and-forget after mutations.
-- ~~Request scheduling, deduplication, and current-page refresh priority.~~ Implemented: `RefreshCoordinator` deduplicates in-flight domain refreshes and schedules by `RefreshPriority`.
+### Cloud Sync Improvements
 
-## Cloud Sync Improvements
+- Expand cloud sync metadata from uploaded/failed section lists into per-section status records with section key, updated time, payload size, and status.
+- Surface per-section sync status in Settings so users can see which sections succeeded, failed, or were skipped.
+- Add configurable section-level sync exclusions, for example skipping diagnostics sync to save storage.
+- Add cloud sync conflict resolution UI when remote and local sections diverge.
+- Add diagnostics for sync section key, payload size, upload/download status, partial skipped sections, refresh domain, refresh reason, refresh duration, deduplication hit/miss, and mutation invalidation result.
 
-- ~~Split single-blob cloud sync into per-section encrypted KV records to avoid 2MB payload limit.~~ Implemented: per-section upload/download via `CloudSyncSectionMapping`, legacy single-blob backward compat with auto-migration.
-- Per-section sync status reporting in Settings UI (show which sections succeeded/failed/skipped).
-- Configurable section-level sync exclusions (e.g., skip diagnostics sync to save space).
-- Cloud sync conflict resolution UI when remote and local sections diverge.
+### Refresh Optimization Follow-Up
+
+- Keep visible page data interactive while background domains refresh; avoid global busy states for background-only work.
+- Surface refresh status next to the affected card or field, not only as page-level busy state.
+- Log request deduplication hit/miss and refresh duration per domain.
+- Make mutation invalidation results visible in diagnostics.
+
+## Other Future Features
+
+### Gear and Equipment Planning
+
+- Add inventory before/after stat deltas for equip actions.
+- Add equipment optimization for goals such as Perception, Strength, balanced stats, boss damage, and survival.
+- Allow saving optimizer recommendations as named gear sets or presets.
+
+### Skill Macros
+
+- Add a macro collection for predefined skill/equipment sequences.
+- Add dry-run previews with planned equipment changes, target selection, mana cost, expected requests, warnings, and stop conditions.
+- Keep macro execution sequential and stop on validation failures or unexpected state changes.
+
+### Bulk Sell Planner
+
+- Add a bulk sell helper that identifies items likely safe to sell.
+- Include explanation for why each item is considered safe or unsafe.
+- Require preview and explicit confirmation before any sell action.
+
+### Action Result Estimates
+
+- Add estimates for selected actions, including expected damage, gold, skill effects, boss progress, and player damage risk.
+- Clearly distinguish exact API-returned values from local estimates and assumption-based formulas.
+
+### UX Cleanup
+
+- Split current party quest state and queue planning into clearer modes, such as tabs or a segmented switch.
+- Add task filters for type, status, due window, and value polarity.
+- Add confirmation to Settings destructive actions such as clearing local browser data.
+- Reduce repeated hero/help copy for returning authenticated users.
+- Add sticky first-column or label context for mobile stat tables.
+- Consider compact spell cards after the current spell card layout has been tested with real use.

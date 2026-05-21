@@ -2,32 +2,36 @@
 
 Third-party companion client for Habitica power users. The project is focused on local data analysis, explainable recommendations, and safe assisted actions rather than replacing the official Habitica app.
 
-Current status: initial web-app MVP implemented. The repository now contains a working Blazor WebAssembly PWA shell with Habitica credential sign-in, manual sync, cached account and task snapshots, a local dashboard, read-only task browsing, and local-data controls.
+Current status: web-app MVP implemented and expanding into guarded actions. The repository contains a Blazor WebAssembly PWA shell with Habitica credential sign-in, staged refresh, cached account/task/party/inventory snapshots, local dashboards, task and spell actions with freshness gates, shared party quest planning, diagnostics, and local/cloud data controls.
 
 ## Current MVP features
 
 - credential sign-in with session-only default and persistent local opt-in
-- manual sync against Habitica API v3
+- manual and page-prioritized refresh against Habitica API v3
 - cached account dashboard with class, stat, companion, and inventory summary cards
-- read-only inventory and equipment explorer with slot-grouped owned gear keys
-- read-only party overview with cached quest progress and member counts
+- Dashboard `Start New Day` action when the current user needs Cron
+- inventory and equipment explorer with slot-grouped owned gear keys, battle presets, highest-stat highlights, and guarded equip actions
+- party overview with cached quest progress, member CRON timing, shared quest pool, shared queue voting, and recently completed quest history
+- spells workspace with target selection, approximate effect previews, dynamic gear recommendations, sequential casting, and Cron-sensitive buff warning
 - diagnostics workspace with safe checks, guarded reversible tests, curated API presets, and a shared redacted log console
 - local-first task snapshot storage through IndexedDB with a Dexie-backed JS module
 - local-first account snapshot storage for offline dashboard access
+- encrypted per-section Cloudflare sync for portable app data, with legacy single-blob restore fallback
 - responsive app shell with sign-in, dashboard, inventory, party, diagnostics, tasks, and settings routes
-- read-only task workspace with search, completed toggle, and freshness indicators
+- task workspace with search, filters, completed toggles, detail panels, freshness indicators, inline scoring/checkoff, and Habit multi-score controls
 - sign-out for the current tab session and clear-local-data controls
 
 ## Planned feature areas
 
 - richer quest explorer and party member views
-- party buff timing recommendations
-- gear sets and gear optimization
+- tokenless party-sync membership proof
+- dashboard pending damage estimates and health-potion helper
+- task history statistics and charts
+- gear optimization
 - skill macros with dry-run previews
-- best task selection for skill usage
 - bulk sell planning
 - skill and action result estimates
-- task mutation workflows after conservative guardrails are designed
+- per-section cloud sync status and conflict UI
 
 ## Technical baseline
 
@@ -35,8 +39,9 @@ Current status: initial web-app MVP implemented. The repository now contains a w
 - .NET 8 (`net8.0`)
 - MudBlazor UI components
 - Local-first storage with IndexedDB behind a Dexie.js interop boundary
+- Cloudflare Pages Functions/KV for encrypted app-data sync
+- Cloudflare Pages Functions/D1 for shared party quest planning state
 - Habitica API v3
-- No backend in the MVP architecture
 
 ## Prerequisites
 
@@ -82,12 +87,13 @@ The app reads `Habitica:XClientHeader` from [`src/Habitica.WebApp/wwwroot/appset
 
 - `PROJECT.md` - product context and goals
 - `TECHNICAL.md` - stack, architecture, storage, sync, and deployment rules
-- `FEATURES.md` - planned feature behavior and constraints
+- `FEATURES.md` - implemented and planned feature behavior
+- `FUTURE.md` - validated remaining backlog
 - `HABITICA_API.md` - Habitica API integration rules
 - `RULES.md` - repository and AI-agent workflow rules
 
 ## Notes
 
 - Credentials are treated as password-equivalent and stay local to the user's device.
-- The initial task UI is intentionally read-only.
-- Mutating actions are intended to be validated, previewed, and executed conservatively before they are added.
+- Habitica-changing actions are explicit, freshness-gated, and run through the application/API layers.
+- Larger or destructive future actions should keep using validation, preview, confirmation, and follow-up refresh.

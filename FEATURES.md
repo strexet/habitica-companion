@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-04-30
+Last updated: 2026-05-21
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -2016,12 +2016,13 @@ Current display rules:
 7. Keep member id, level, CRON reason, and stat breakdowns behind a collapsed in-memory details toggle on each member card.
 8. Let the member list sort by name, average CRON, latest CRON, pending quest contribution, low HP, low MP, and CRON status. HP/MP sorts are ascending so the lowest current value appears first; unknown values sort last.
 9. Show viewer-local CRON graph points and low-confidence warnings from local history.
-10. Publish the current user's owned quest scrolls to the shared party quest pool after party sync when inventory and content metadata are available.
-11. Allow only the current quest owner to add that user's quest scroll to the shared queue.
-12. Allow one vote per party member per queued quest; clicking again removes the vote.
-13. Sort visible queue cards by vote count, owner readiness, queue age, and recently completed penalty.
-14. Let the quest owner remove their own queue item; party-sync also allows party leader removal when membership verification identifies the leader.
-15. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
+10. Render party summaries and quest descriptions through `SafeMarkdownRenderer`, including Markdown inline formatting and a small safe HTML subset (`br`, `strong`/`b`, `em`/`i`, `code`) while escaping unsafe tags.
+11. Publish the current user's owned quest scrolls to the shared party quest pool after party sync when inventory and content metadata are available.
+12. Allow only the current quest owner to add that user's quest scroll to the shared queue.
+13. Allow one vote per party member per queued quest; clicking again removes the vote.
+14. Sort visible queue cards by vote count, owner readiness, queue age, and recently completed penalty.
+15. Let the quest owner remove their own queue item; party-sync also allows party leader removal when membership verification identifies the leader.
+16. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
 ```
 
 ### Validation
@@ -2057,6 +2058,7 @@ Test:
 - navigation rendering for the `Party` route.
 - shared quest queue/pool rendering;
 - party-sync queue and vote mutations.
+- safe markdown and supported inline HTML rendering for party and quest descriptions.
 
 ### Open questions
 

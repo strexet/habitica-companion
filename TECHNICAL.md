@@ -1,6 +1,6 @@
 # TECHNICAL.md
 
-Last updated: 2026-04-24
+Last updated: 2026-05-21
 Primary audience: AI agents and senior developers
 Project type: third-party Habitica companion client
 Primary Habitica integration reference: `HABITICA_API.md`
@@ -540,7 +540,14 @@ Native credential policy, if native shell is added:
 
 ## 10. Sync strategy
 
-Start with manual sync plus user-initiated refresh.
+Use local-first snapshots with staged sign-in sync and page-prioritized user-initiated refresh.
+
+Current implementation:
+
+- sign-in validates credentials with a minimal `/user` fetch, stores the account snapshot, and makes the authenticated UI usable before loading non-critical domains;
+- `RefreshCoordinator` runs independent refresh domains with visible/background priority and deduplicates concurrent same-domain requests;
+- `RefreshForPageAsync` prioritizes domains needed by the current route, then refreshes other domains in the background priority group;
+- successful refreshes and mutations attempt encrypted cloud sync and shared party sync without making the original Habitica action depend on remote-sync success.
 
 Background sync may be added only if:
 
