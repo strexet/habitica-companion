@@ -40,7 +40,7 @@ public sealed class LiveTestsPageTests : BunitContext
 
         var cut = Render<LiveTestsPage>();
 
-        Assert.Contains("Connection checks", cut.Markup);
+        Assert.Contains("Diagnostics", cut.Markup);
         Assert.Contains("Safe checks", cut.Markup);
         Assert.Contains("Guarded tests", cut.Markup);
         Assert.Contains("Quick account reads", cut.Markup);

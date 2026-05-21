@@ -26,11 +26,14 @@ public sealed class AppNavMenuTests : BunitContext
 
         var cut = Render<AppNavMenu>();
 
-        Assert.Contains("Checks", cut.Markup);
+        Assert.Contains("Diagnostics", cut.Markup);
         Assert.Contains("Spells", cut.Markup);
         Assert.DoesNotContain("Live Tests", cut.Markup);
+        Assert.DoesNotContain("Checks", cut.Markup);
         Assert.Contains("/diagnostics", cut.Markup);
         Assert.Contains("/spells", cut.Markup);
+
+        AssertNavOrder(cut.Markup, "Dashboard", "Tasks", "Inventory", "Party", "Spells", "Settings", "Diagnostics");
     }
 
     [Fact]
@@ -52,6 +55,18 @@ public sealed class AppNavMenuTests : BunitContext
 
         Assert.DoesNotContain("Sign In", cut.Markup);
         Assert.DoesNotContain("Dashboard", cut.Markup);
-        Assert.DoesNotContain("Checks", cut.Markup);
+        Assert.DoesNotContain("Diagnostics", cut.Markup);
+    }
+
+    private static void AssertNavOrder(string markup, params string[] labels)
+    {
+        var previousIndex = -1;
+
+        foreach (var label in labels)
+        {
+            var index = markup.IndexOf(label, StringComparison.Ordinal);
+            Assert.True(index > previousIndex, $"{label} should render after the previous navigation item.");
+            previousIndex = index;
+        }
     }
 }
