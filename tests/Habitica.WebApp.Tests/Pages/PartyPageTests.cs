@@ -676,8 +676,21 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Owner, admins, and Officers", cut.Markup);
         Assert.Contains("Party sync settings", cut.Markup);
         Assert.Contains("Officers can manage queue entries", cut.Markup);
+        AssertMarkupOrder(cut.Markup, "Summary", "Party sync roles", "Party sync settings", "Active quest");
         Assert.Contains("Kicked users", cut.Markup);
         Assert.Contains("Beta", cut.Markup);
+    }
+
+    private static void AssertMarkupOrder(string markup, params string[] labels)
+    {
+        var previousIndex = -1;
+
+        foreach (var label in labels)
+        {
+            var index = markup.IndexOf(label, StringComparison.Ordinal);
+            Assert.True(index > previousIndex, $"{label} should render after the previous section.");
+            previousIndex = index;
+        }
     }
 
     private static UserSnapshot CreateSnapshot()

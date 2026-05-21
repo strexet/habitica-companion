@@ -1524,7 +1524,7 @@ Navigation rules:
 
 ```text
 1. Hide the foldable feature drawer entirely when no authenticated session is active.
-2. Show `Dashboard`, `Inventory`, `Party`, `Diagnostics`, `Tasks`, and `Settings` in the drawer once an authenticated session exists.
+2. Show `Dashboard`, `Tasks`, `Inventory`, `Party`, `Spells`, `Settings`, and `Diagnostics` in the drawer once an authenticated session exists.
 3. Keep refresh disabled unless authenticated credentials are available for the current session.
 4. Surface the latest workflow error above route content.
 ```
@@ -1560,7 +1560,8 @@ Test:
 
 Current implementation:
 
-- `Sign In`, `Dashboard`, `Inventory`, `Party`, `Diagnostics`, `Tasks`, and `Settings` routes;
+- `Sign In`, `Dashboard`, `Tasks`, `Inventory`, `Party`, `Spells`, `Settings`, and `Diagnostics` routes;
+- authenticated drawer order is `Dashboard`, `Tasks`, `Inventory`, `Party`, `Spells`, `Settings`, `Diagnostics`;
 - top app bar with refresh action;
 - responsive drawer navigation shown only after authentication;
 - shared error banner;
@@ -1993,7 +1994,7 @@ active quest card with real quest metadata and rewards when cached
 shared quest queue cards with vote counts and voter names
 quest pool cards with owner availability
 recently completed quest cards
-owner/admin/Officer strip after party notes
+owner/admin/Officer strip after party notes and before active quest state
 owner/admin settings controls
 member-detail Officer and kick controls for management roles
 bottom-page kick list for management roles
@@ -2083,6 +2084,7 @@ Current implementation:
 - compact party member cards with foldable extra info and stats;
 - subtle HP/MP values and low-HP/low-MP member sorting;
 - active quest card with real cached quest metadata and compact rewards;
+- party detail section order of summary, party-sync roles, party-sync settings, then active quest state;
 - shared quest pool from published member quest-scroll availability;
 - shared quest queue with owner-only add/remove and one-vote-per-member voting;
 - recently completed shared quest history table and UI.

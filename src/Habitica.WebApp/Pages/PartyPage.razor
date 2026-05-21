@@ -70,6 +70,90 @@
                 <div class="panel-copy party-summary-markdown">@SafeMarkdownRenderer.Render(snapshot.Summary)</div>
             </article>
 
+            @if (SessionController.State.IsPartySyncEnabled)
+            {
+                <section class="card-surface dashboard-panel party-management-summary">
+                    <div class="party-section-head">
+                        <div>
+                            <p class="section-label">Party sync roles</p>
+                            <h2>Owner, admins, and Officers</h2>
+                        </div>
+                        <span class="ui-pill count-pill">@FormatManagementRoleCount(management)</span>
+                    </div>
+
+                    <div class="party-management-role-grid">
+                        <article class="party-management-role-group">
+                            <span class="dashboard-stat-label">Owner</span>
+                            <strong>@ResolveDisplayName(management?.OwnerUserId ?? snapshot.LeaderId)</strong>
+                        </article>
+                        <article class="party-management-role-group">
+                            <span class="dashboard-stat-label">App admins</span>
+                            <div class="party-management-chip-row">
+                                @foreach (var admin in management?.AppAdmins ?? Array.Empty<PartySyncParticipant>())
+                                {
+                                    <span class="ui-pill state-pill">@ResolveDisplayName(admin.UserId, admin.DisplayName)</span>
+                                }
+                                @if (management?.AppAdmins.Count is null or 0)
+                                {
+                                    <span class="dashboard-stat-note">No app admins reported by party sync.</span>
+                                }
+                            </div>
+                        </article>
+                        <article class="party-management-role-group">
+                            <span class="dashboard-stat-label">Officers</span>
+                            <div class="party-management-chip-row">
+                                @foreach (var officer in management?.Officers ?? Array.Empty<PartySyncOfficer>())
+                                {
+                                    <span class="ui-pill state-pill">@ResolveDisplayName(officer.UserId, officer.DisplayName)</span>
+                                }
+                                @if (management?.Officers.Count is null or 0)
+                                {
+                                    <span class="dashboard-stat-note">No Officers assigned.</span>
+                                }
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                @if (management?.CurrentUserCanManageSettings == true)
+                {
+                    <section class="card-surface dashboard-panel party-sync-settings-panel">
+                        <div class="party-section-head">
+                            <div>
+                                <p class="section-label">Party sync settings</p>
+                                <h2>Shared queue controls</h2>
+                            </div>
+                        </div>
+                        <div class="party-sync-settings-grid">
+                            <label class="checkbox-row">
+                                <input checked="@management.Settings.OfficerCanManageQueue"
+                                       type="checkbox"
+                                       @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanManageQueue = IsChecked(eventArgs) }))" />
+                                <span>Officers can manage queue entries</span>
+                            </label>
+                            <label class="checkbox-row">
+                                <input checked="@management.Settings.OfficerCanModerateMembers"
+                                       type="checkbox"
+                                       @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanModerateMembers = IsChecked(eventArgs) }))" />
+                                <span>Officers can kick and unkick members</span>
+                            </label>
+                            <label class="checkbox-row">
+                                <input checked="@management.Settings.OfficerOnlyQueueEdits"
+                                       type="checkbox"
+                                       @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerOnlyQueueEdits = IsChecked(eventArgs) }))" />
+                                <span>Only management can edit the queue</span>
+                            </label>
+                            <label class="checkbox-row">
+                                <input checked="@management.Settings.MemberAutoReconcileEnabled"
+                                       type="checkbox"
+                                       @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { MemberAutoReconcileEnabled = IsChecked(eventArgs) }))" />
+                                <span>Members can auto-reconcile quest lifecycle</span>
+                            </label>
+                        </div>
+                    </section>
+                }
+            }
+
             <article class="card-surface dashboard-panel party-quest-panel">
                 <div class="party-section-head">
                     <div>
@@ -208,90 +292,6 @@
                 }
             </article>
         </section>
-
-        @if (SessionController.State.IsPartySyncEnabled)
-        {
-            <section class="card-surface dashboard-panel party-management-summary">
-                <div class="party-section-head">
-                    <div>
-                        <p class="section-label">Party sync roles</p>
-                        <h2>Owner, admins, and Officers</h2>
-                    </div>
-                    <span class="ui-pill count-pill">@FormatManagementRoleCount(management)</span>
-                </div>
-
-                <div class="party-management-role-grid">
-                    <article class="party-management-role-group">
-                        <span class="dashboard-stat-label">Owner</span>
-                        <strong>@ResolveDisplayName(management?.OwnerUserId ?? snapshot.LeaderId)</strong>
-                    </article>
-                    <article class="party-management-role-group">
-                        <span class="dashboard-stat-label">App admins</span>
-                        <div class="party-management-chip-row">
-                            @foreach (var admin in management?.AppAdmins ?? Array.Empty<PartySyncParticipant>())
-                            {
-                                <span class="ui-pill state-pill">@ResolveDisplayName(admin.UserId, admin.DisplayName)</span>
-                            }
-                            @if (management?.AppAdmins.Count is null or 0)
-                            {
-                                <span class="dashboard-stat-note">No app admins reported by party sync.</span>
-                            }
-                        </div>
-                    </article>
-                    <article class="party-management-role-group">
-                        <span class="dashboard-stat-label">Officers</span>
-                        <div class="party-management-chip-row">
-                            @foreach (var officer in management?.Officers ?? Array.Empty<PartySyncOfficer>())
-                            {
-                                <span class="ui-pill state-pill">@ResolveDisplayName(officer.UserId, officer.DisplayName)</span>
-                            }
-                            @if (management?.Officers.Count is null or 0)
-                            {
-                                <span class="dashboard-stat-note">No Officers assigned.</span>
-                            }
-                        </div>
-                    </article>
-                </div>
-            </section>
-
-            @if (management?.CurrentUserCanManageSettings == true)
-            {
-                <section class="card-surface dashboard-panel party-sync-settings-panel">
-                    <div class="party-section-head">
-                        <div>
-                            <p class="section-label">Party sync settings</p>
-                            <h2>Shared queue controls</h2>
-                        </div>
-                    </div>
-                    <div class="party-sync-settings-grid">
-                        <label class="checkbox-row">
-                            <input checked="@management.Settings.OfficerCanManageQueue"
-                                   type="checkbox"
-                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanManageQueue = IsChecked(eventArgs) }))" />
-                            <span>Officers can manage queue entries</span>
-                        </label>
-                        <label class="checkbox-row">
-                            <input checked="@management.Settings.OfficerCanModerateMembers"
-                                   type="checkbox"
-                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanModerateMembers = IsChecked(eventArgs) }))" />
-                            <span>Officers can kick and unkick members</span>
-                        </label>
-                        <label class="checkbox-row">
-                            <input checked="@management.Settings.OfficerOnlyQueueEdits"
-                                   type="checkbox"
-                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerOnlyQueueEdits = IsChecked(eventArgs) }))" />
-                            <span>Only management can edit the queue</span>
-                        </label>
-                        <label class="checkbox-row">
-                            <input checked="@management.Settings.MemberAutoReconcileEnabled"
-                                   type="checkbox"
-                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { MemberAutoReconcileEnabled = IsChecked(eventArgs) }))" />
-                            <span>Members can auto-reconcile quest lifecycle</span>
-                        </label>
-                    </div>
-                </section>
-            }
-        }
 
         @if (!SessionController.State.IsPartySyncEnabled)
         {

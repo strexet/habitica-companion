@@ -49,34 +49,6 @@ Work top to bottom. Each entry is self-contained.
 
 > Not currently supported: "Open in Habitica" cannot deep-link to the official mobile app's party/quest view. See `docs/HABITICA_DEEPLINKS.md`. Keep the existing web fallback until Habitica documents and ships iOS/Android party or quest deep links.
 
-### P2 — Side menu reorganization
-
-- **Goal:** restore the previous `Diagnostics` name for the connection-checks page and reorder the side menu.
-- **Touch:**
-  - `src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor` (link label + order).
-  - `src/Habitica.WebApp/Pages/LiveTestsPage.razor` (`<PageTitle>` and any visible "Checks" text; keep route `/diagnostics`).
-  - Any test asserting on the label `Checks` (search `tests/Habitica.WebApp.Tests` for `"Checks"`).
-- **Required final order in `AppNavMenu.razor`:** Dashboard, Tasks, Inventory, Party, Spells, Settings, Diagnostics.
-- **Out of scope:** changing the route URL (`/diagnostics` stays), renaming the C# class `LiveTestsPage`, restyling the menu, adding new menu entries.
-- **Acceptance:**
-  - Side menu renders in the order above for authenticated users.
-  - The connection-checks menu entry reads "Diagnostics" and is the last entry.
-  - `<PageTitle>` and on-page heading say "Diagnostics" (not "Checks").
-  - All existing nav-related tests pass after copy/order updates.
-- **UX/UI reference:** `docs/UX_UI_MANIFEST.md` → navigation / global chrome section.
-
-### P3 — Party page section reorder
-
-- **Goal:** on the Party page, surface management context before quest state.
-- **Touch:** `src/Habitica.WebApp/Pages/PartyPage.razor` only (markup reorder; do not split into new components).
-- **Required final section order:** Summary → Party Sync Roles → Party Sync Settings → Active Quest → (rest of existing sections unchanged).
-- **Out of scope:** restructuring any section's internal markup, renaming sections (except as covered by P3), extracting partials, CSS changes beyond what is required to preserve current visual spacing.
-- **Acceptance:**
-  - Section order in the rendered DOM matches the list above.
-  - `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs` is updated to assert on the new order; all tests pass.
-  - No visual regression in card spacing on desktop and mobile widths defined in the manifest.
-- **UX/UI reference:** manifest's Party page section and the "Keep mutation controls explicit and close to the state they change" core principle.
-
 ### P4 — Party Sync Settings: clearer labels and descriptions
 
 - **Goal:** the toggles in **Party Sync Settings** must be understandable by a non-technical party member.
