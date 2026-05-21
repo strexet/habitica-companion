@@ -84,14 +84,32 @@
                     <div class="party-management-role-grid">
                         <article class="party-management-role-group">
                             <span class="dashboard-stat-label">Owner</span>
-                            <strong>@ResolveDisplayName(management?.OwnerUserId ?? snapshot.LeaderId)</strong>
+                            @{
+                                var ownerUserId = management?.OwnerUserId ?? snapshot.LeaderId;
+                            }
+                            <strong>
+                                @if (!string.IsNullOrWhiteSpace(ownerUserId))
+                                {
+                                    <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(ownerUserId!))">
+                                        @ResolveDisplayName(ownerUserId, management?.OwnerDisplayName)
+                                    </button>
+                                }
+                                else
+                                {
+                                    @ResolveDisplayName(ownerUserId, management?.OwnerDisplayName)
+                                }
+                            </strong>
                         </article>
                         <article class="party-management-role-group">
                             <span class="dashboard-stat-label">App admins</span>
                             <div class="party-management-chip-row">
                                 @foreach (var admin in management?.AppAdmins ?? Array.Empty<PartySyncParticipant>())
                                 {
-                                    <span class="ui-pill state-pill">@ResolveDisplayName(admin.UserId, admin.DisplayName)</span>
+                                    <span class="ui-pill state-pill">
+                                        <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(admin.UserId))">
+                                            @ResolveDisplayName(admin.UserId, admin.DisplayName)
+                                        </button>
+                                    </span>
                                 }
                                 @if (management?.AppAdmins.Count is null or 0)
                                 {
@@ -104,7 +122,11 @@
                             <div class="party-management-chip-row">
                                 @foreach (var officer in management?.Officers ?? Array.Empty<PartySyncOfficer>())
                                 {
-                                    <span class="ui-pill state-pill">@ResolveDisplayName(officer.UserId, officer.DisplayName)</span>
+                                    <span class="ui-pill state-pill">
+                                        <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(officer.UserId))">
+                                            @ResolveDisplayName(officer.UserId, officer.DisplayName)
+                                        </button>
+                                    </span>
                                 }
                                 @if (management?.Officers.Count is null or 0)
                                 {
@@ -856,7 +878,11 @@
                         {
                             <article class="party-kick-list-item">
                                 <div>
-                                    <strong>@ResolveDisplayName(kicked.UserId, kicked.DisplayName)</strong>
+                                    <strong>
+                                        <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(kicked.UserId))">
+                                            @ResolveDisplayName(kicked.UserId, kicked.DisplayName)
+                                        </button>
+                                    </strong>
                                     <span class="dashboard-stat-note">Kicked @FormatDateTime(kicked.KickedAtUtc) by @ResolveDisplayName(kicked.KickedByUserId, kicked.KickedByDisplayName)</span>
                                     @if (!string.IsNullOrWhiteSpace(kicked.Reason))
                                     {

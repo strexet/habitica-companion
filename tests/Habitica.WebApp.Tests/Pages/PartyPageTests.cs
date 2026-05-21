@@ -640,11 +640,12 @@ public sealed class PartyPageTests : BunitContext
                     "party-123",
                     "Night Owls",
                     "Quest-focused party",
-                    3,
+                    4,
                     null,
                     new[]
                     {
                         new PartyMemberSnapshot("owner-id", "Mage Tester", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
+                        new PartyMemberSnapshot("admin-id", "Admin", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
                         new PartyMemberSnapshot("officer-id", "Alpha", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
                         new PartyMemberSnapshot("kicked-id", "Beta", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
                     },
@@ -687,6 +688,30 @@ public sealed class PartyPageTests : BunitContext
         AssertMarkupOrder(cut.Markup, "Summary", "Party sync roles", "Party sync settings", "Active quest");
         Assert.Contains("Kicked users", cut.Markup);
         Assert.Contains("Beta", cut.Markup);
+
+        Assert.DoesNotContain("User ID", cut.Find("#party-member-owner-id").TextContent);
+        cut.FindAll(".party-management-summary .inline-link-button")
+            .Single(button => button.TextContent.Trim() == "Mage Tester")
+            .Click();
+        Assert.Contains("User ID", cut.Find("#party-member-owner-id").TextContent);
+
+        Assert.DoesNotContain("User ID", cut.Find("#party-member-admin-id").TextContent);
+        cut.FindAll(".party-management-summary .inline-link-button")
+            .Single(button => button.TextContent.Trim() == "Admin")
+            .Click();
+        Assert.Contains("User ID", cut.Find("#party-member-admin-id").TextContent);
+
+        Assert.DoesNotContain("User ID", cut.Find("#party-member-officer-id").TextContent);
+        cut.FindAll(".party-management-summary .inline-link-button")
+            .Single(button => button.TextContent.Trim() == "Alpha")
+            .Click();
+        Assert.Contains("User ID", cut.Find("#party-member-officer-id").TextContent);
+
+        Assert.DoesNotContain("User ID", cut.Find("#party-member-kicked-id").TextContent);
+        cut.FindAll(".party-kick-list-panel .inline-link-button")
+            .Single(button => button.TextContent.Trim() == "Beta")
+            .Click();
+        Assert.Contains("User ID", cut.Find("#party-member-kicked-id").TextContent);
     }
 
     private static void AssertMarkupOrder(string markup, params string[] labels)

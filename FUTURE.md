@@ -49,19 +49,6 @@ Work top to bottom. Each entry is self-contained.
 
 > Not currently supported: "Open in Habitica" cannot deep-link to the official mobile app's party/quest view. See `docs/HABITICA_DEEPLINKS.md`. Keep the existing web fallback until Habitica documents and ships iOS/Android party or quest deep links.
 
-### P5 — Clickable member names in Party Sync Roles and Kicked users list
-
-- **Goal:** make member display names in **Party Sync Roles** and **Party Sync Moderation → Kicked users** behave like the clickable quest completor name in the **Active Quest** section.
-- **Touch:**
-  - `src/Habitica.WebApp/Pages/PartyPage.razor`.
-  - Reuse the existing component / handler the Active Quest completor name uses. Locate it first (grep for the existing click handler in `PartyPage.razor`); do not introduce a new component.
-- **Out of scope:** changing the destination of the click (open the same affordance the completor name already opens), adding new profile data, restyling the rest of the role/kick rows.
-- **Acceptance:**
-  - Clicking a name in Roles or in the Kicked list opens the same UI as clicking the Active Quest completor name.
-  - Keyboard focus + accessible name match the Active Quest pattern (same component → same a11y).
-  - Tests assert click behavior in the new locations.
-- **UX/UI reference:** manifest's "interaction safety" and link/affordance rules.
-
 ### P6 — App admin can assign the companion-app party-owner role
 
 - **Goal:** users present in D1 `app_admins` can promote any current party member to the companion-app party-owner role (separate from the Habitica party leader).

@@ -1998,6 +1998,7 @@ owner/admin/Officer strip after party notes and before active quest state
 owner/admin settings controls
 member-detail Officer and kick controls for management roles
 bottom-page kick list for management roles
+party-sync role and kick-list names open the same member details affordance as Active Quest finishing-member names
 freshness banner
 no-party empty state
 ```
@@ -2035,6 +2036,7 @@ Current display rules:
 18. Let owner/app admins and authorized Officers kick and unkick party-sync users. Kicked users cannot read or write normal party-sync data; owner/app admins bypass kicks to recover from mistakes.
 19. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
 20. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
+21. Let role-strip and kick-list member names focus the same expanded member details UI used by the Active Quest finishing-member link.
 ```
 
 ### Validation
