@@ -36,6 +36,35 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Split-key encrypted Cloudflare app-data sync, legacy single-blob restore fallback, per-section payload guard, partial-success sync behavior, and refresh coordinator deduplication.
 - Refresh-domain invalidation basics after implemented mutations.
 
+## Pending to be added to `Prioritized Next Changes`
+
+Work top to bottom. Create AI optimized entry to the `Prioritized Next Changes` for every pending list item. Each entry should be added to `Prioritized Next Changes` list with priority based on instructions in the entry or if there are no such instructions to the bottom of `Prioritized Next Changes list`.
+
+Update pending items list after items are moved to `Prioritized Next Changes` - added entries can be removed from pending list.
+
+### Priority Instructions
+
+- Top - add to the top of the `Prioritized Next Changes` list (max priority).
+- Middle - right after the `Top` entries and before current `Prioritized Next Changes` list items.
+- Bottom - (default) the lowest priority entries, add to the bottom of the `Prioritized Next Changes` list.
+
+### Entries:
+
+- Top. Optimize this `FUTURE.md` document's new Pending to be added to `Prioritized Next Changes`. You can move it and add to document's rules/instruction. The etries structure must persist. Add an instruction for processing that list when interacting with the `FUTURE.md` document.
+- Middle. App says: "3 unspent stat points are available for allocation" - but I'm only level 3, stats are unlocked on level 10 (check other conditions in Habitica docs).
+- Top. Add drag and drop capabilities to tasks/dailies/habbits reordering logic. After that, 'task' moving arrows can be removed from 'task' cards, because user we'll use drag n drop.
+- Middle. Login page should not open if  user is logged in. Rather the default page in the app should be `Dashboard` rather than login. Login page should only open for not logged in users.
+- Middle. Need to remove irrelevant fields from the top of the `Spells` page: 
+  - AVAILABLE MANA (duplicated - every spell has its own mana block), 
+  - QUEST (irrelevant), 
+  - CURRENT PROGRESS (only relevant if active quest type is boss, and spell is damaging spell - could be move to each spell card with show condition and merged into one info block with `PARTY PENDING`), 
+  - YOUR PENDING (irrelevant), 
+  - PARTY PENDING (only relevant if active quest type is boss, and spell is damaging spell - could be move to each spell card with show condition and merged into one info block with `CURRENT PROGRESS`), 
+  - CLASS (irrelevant),
+  - MP (another duplicate mana value),
+  - STAT POINTS (only relevant if spell can grant XP points - could be move to each spell card with show condition of unspent points).
+- `Dashboard` should have a warning with link to `Party` page if there is active quest that the user did not respond to (not accepted, nor rejected).
+
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
