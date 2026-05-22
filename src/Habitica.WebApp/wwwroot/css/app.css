@@ -578,6 +578,49 @@ a {
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
 }
 
+.party-quest-response-grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    margin-bottom: 1rem;
+}
+
+.party-quest-response-grid.compact {
+    grid-template-columns: 1fr;
+}
+
+.party-quest-response-card {
+    display: grid;
+    gap: 0.65rem;
+    min-width: 0;
+    padding: 0.9rem;
+    border-radius: 0.85rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.party-quest-response-card-head {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.party-quest-response-card-head strong {
+    font-size: 1.2rem;
+}
+
+.party-quest-response-list {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
+.party-quest-response-list li {
+    overflow-wrap: anywhere;
+}
+
 .quest-reward-list {
     display: flex;
     flex-wrap: wrap;

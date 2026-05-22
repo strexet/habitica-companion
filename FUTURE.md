@@ -1,143 +1,222 @@
 # Future Work
 
-Last validated: 2026-05-21.
+Last validated: 2026-05-22.
 
-This file is the implementation queue. Each entry is written so an autonomous coding agent can pick it up, ship it, and stop — without drifting into unrelated refactors. Entries higher in the file are higher priority; finish them first.
+This is the single implementation queue. Historical source plans were merged here and removed after implemented items were filtered out. Entries higher in the file are higher priority; finish them first.
 
-Implemented items are deleted from this file (not kept as strikethrough). Current implemented behavior belongs in `FEATURES.md`, foundational architecture notes in `TECHNICAL.md`, Habitica endpoint rules in `HABITICA_API.md`, and UI/UX guidance in `docs/UX_UI_MANIFEST.md`.
+Implemented behavior belongs in `FEATURES.md`, foundational architecture notes in `TECHNICAL.md`, Habitica endpoint rules in `HABITICA_API.md`, and UI guidance in `docs/UX_UI_MANIFEST.md`. Delete an entry from this file when it ships.
 
-## Implementor Rules (read before picking a task)
+## Implementor Rules
 
-These rules apply to every entry below. Violating them is drift.
+1. Read the relevant source-of-truth docs before editing:
+   - UI/UX: `docs/UX_UI_MANIFEST.md`
+   - Architecture, sync, storage: `TECHNICAL.md`
+   - Habitica API rules: `HABITICA_API.md`
+   - Cloudflare deployment and D1/KV: `docs/DEPLOY_CLOUDFLARE_PAGES.md`
+2. Implement one entry only. Do not bundle unrelated cleanup, renames, or opportunistic refactors.
+3. If a task lists `Touch:`, edit only those paths and direct tests unless the task explicitly permits more.
+4. Add or update tests next to affected code. UI behavior changes need Razor component tests where similar tests exist.
+5. User-facing behavior changes must update `FEATURES.md`; sync architecture or backend behavior changes must update `TECHNICAL.md`.
+6. Schema changes need the next numbered migration under `migrations/` and a deployment-doc update.
+7. Never send Habitica API tokens to Cloudflare party-sync or app-data sync endpoints.
+8. Keep labels short and plain. If UI copy is ambiguous, choose the smallest clear label and proceed.
+9. If a needed Habitica endpoint is not documented in `HABITICA_API.md`, stop and add a follow-up entry instead of guessing.
 
-1. **Authoritative docs.**
-   - UI/UX decisions (layout, copy, controls, responsiveness): `docs/UX_UI_MANIFEST.md` is binding. Read the relevant page section before writing markup or CSS. If a change creates a new reusable pattern, update the manifest in the same change set.
-   - Architecture, sync, storage: `TECHNICAL.md`.
-   - Habitica API rules (rate limits, headers, allowed endpoints): `HABITICA_API.md`. Do not call endpoints that are not documented as allowed.
-   - Deployment / D1 / KV: `docs/DEPLOY_CLOUDFLARE_PAGES.md`.
+## Validated Implemented And Removed From Backlog
 
-2. **Scope discipline.**
-   - Implement only the entry you picked. Do not bundle "while I'm here" cleanups, renames, or refactors in unrelated files.
-   - If a task lists `Touch:` paths, you may edit those plus their direct tests. Editing files outside that list requires either the task explicitly allowing it ("may also touch …") or a separate task entry.
-   - If a task lists `Out of scope:`, those items are forbidden in this change set even if they look related.
-   - Do not introduce new abstractions, helper layers, feature flags, or "future-proof" parameters unless the task asks for them.
-
-3. **Done means done.**
-   - Every task lists `Acceptance:` bullets. All of them must be true before marking the task complete.
-   - Add or update tests next to the affected code (same project / folder pattern as existing tests). UI behavior changes require Razor component tests where similar tests already exist (`tests/Habitica.WebApp.Tests/Pages/*`).
-   - Run the relevant test project(s) and the JS Node tests under `tests/Functions/` if you touched a Cloudflare Function.
-   - After completing a task, delete its entry from this file and add a one-line summary to `FEATURES.md` under the matching section.
-
-4. **No silent behavior change.**
-   - User-facing copy changes must be reflected in any test that asserts on the old copy.
-   - Schema or sync-shape changes need a numbered SQL migration under `migrations/` (next free `NNNN_*.sql`) and a corresponding update to `docs/DEPLOY_CLOUDFLARE_PAGES.md` step 4.
-   - Storage-key changes that affect synced user data must update `src/Habitica.Storage/StorageKeys.cs` plus the export/import path in `LocalUserDataPortabilityService.cs`.
-
-5. **Don't drift on naming.**
-   - Reuse existing C# record/property names from `src/Habitica.Domain/` and `src/Habitica.Application/` rather than coining new ones.
-   - The companion-app management role taxonomy is fixed: `app admin` (cross-party, stored in D1 `app_admins`), `party owner` (companion-app role assigned per party), `Officer` (per-party, assigned by owner/admin). Do not invent additional roles.
-
-6. **Ask only when blocked.**
-   - If a task is ambiguous on UI copy, pick the shortest plain-English label and proceed; the manifest's tone wins ties.
-   - If a task is ambiguous on a Habitica API call that is not documented in `HABITICA_API.md`, stop and leave a follow-up entry; do not guess endpoints.
-
----
+- Web-app MVP shell, sign-in, staged refresh, cached dashboard/task/party/inventory snapshots, diagnostics, and local/cloud data controls.
+- Inventory preset layout, stat highlighting, equipment explorer, and preset persistence.
+- Task browsing, type/status filters, guarded task scoring controls, expandable details, and task mutation freshness gates.
+- Spell page, target recommendations, resource checks, and not-CRONed buff warning flow.
+- Party page active quest metadata/rewards, CRON summary, member CRON graph, shared quest pool, queue, voting, recent completions, owner/admin/Officer controls, and quest start action.
+- Split-key encrypted Cloudflare app-data sync, legacy single-blob restore fallback, per-section payload guard, partial-success sync behavior, and refresh coordinator deduplication.
+- Refresh-domain invalidation basics after implemented mutations.
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
 
-> Not currently supported: "Open in Habitica" cannot deep-link to the official mobile app's party/quest view. See `docs/HABITICA_DEEPLINKS.md`. Keep the existing web fallback until Habitica documents and ships iOS/Android party or quest deep links.
+### Dashboard Pending Damage And Potion Action
 
----
+Goal: show the user's likely damage risk from outstanding Dailies and party quest state, then offer a guarded manual health-potion action.
 
-## Backlog (lower priority)
+Touch:
+- `src/Habitica.Application`
+- `src/Habitica.Domain`
+- `src/Habitica.Api`
+- `src/Habitica.WebApp/Pages/DashboardPage.razor`
+- direct tests under `tests/`
+- `FEATURES.md`
 
-The entries below are not yet broken down into Touch/Acceptance form. Before picking one, restructure it into the same format as the prioritized section above (Goal / Touch / Out of scope / Acceptance / UX-UI reference). Do not start coding until the entry is restructured and the Implementor Rules are re-read.
+Out of scope:
+- automatic potion purchase;
+- new Habitica endpoints not documented in `HABITICA_API.md`;
+- task-history charts.
 
-### From `1_habitica_companion_pending_features_plan.md`
+Acceptance:
+- Dashboard shows pending damage estimate with included/excluded source copy.
+- Dashboard warns when estimated damage may kill or nearly kill the user.
+- Health potion action is manual, explicit, disabled when unsafe, and refreshes affected account/dashboard data after success.
+- Diagnostics do not log credentials or sensitive user data.
 
-#### Party Page Quest Improvements
+UX-UI reference: `docs/UX_UI_MANIFEST.md` resource-spending and dashboard sections.
 
-- Add tokenized manager-invite party-sync proofs if local claims become too easy to abuse in real parties. The current access path is isolated behind `readAccessProof()` / `resolvePartySyncAccess()` so a future proof version can replace `local-claim-v1`.
-- Fill remaining active quest card metadata and actions: quest owner or starter, started date, details view, participants view, and reward/details affordances when the data is available.
-- Add an owner readiness mutation flow. The database field and read-only display exist, but the shared queue UI does not expose a toggle action yet.
-- Add party leader queue controls for manual pinning, force-selecting, conflict resolution, and locking queue changes during selection.
-- Add user-facing actions and handling for `Selected`, `InviteSent`, `Skipped`, and `Expired` queue states beyond the current queued, active, completed, and removed path.
-- Add queue expiration and stale-owner cleanup rules.
-- Add optional limited vote budgets only if requested as an advanced voting mode.
-- Add historical quest analytics beyond the recent-completion list and soft queue penalty.
+### CRON Button Safety Flow
 
-#### Tasks Page Enhancements
+Goal: add a user-triggered CRON action only if the documented Habitica API route and app flow support it safely.
+
+Touch:
+- `HABITICA_API.md`
+- `src/Habitica.Api`
+- `src/Habitica.Application`
+- `src/Habitica.WebApp/Pages/DashboardPage.razor`
+- direct tests under `tests/`
+- `FEATURES.md`
+
+Out of scope:
+- bypassing Habitica's "Record Yesterday's Activity" flow;
+- auto-running CRON;
+- broad refresh refactors.
+
+Acceptance:
+- If the route is unavailable or unsafe, add a documented blocked-state UI instead of a mutation.
+- If implemented, the action has explicit confirmation, clear success/error states, and invalidates UserSummary, Tasks, Party, Skills/buffs, Inventory if needed, and derived dashboard data.
+- Buff warning copy explains that party buffs expire per member's next CRON.
+
+UX-UI reference: `docs/UX_UI_MANIFEST.md` mutating-action and feedback sections.
+
+### Party Queue Control Completion
+
+Goal: finish the remaining shared quest queue controls now that the base pool, queue, voting, recent-completion, and quest-start path exist.
+
+Touch:
+- `functions/api/party-sync/[partyId].js`
+- `migrations/`
+- `src/Habitica.Domain/Party`
+- `src/Habitica.WebApp/State`
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- direct tests under `tests/`
+- `docs/DEPLOY_CLOUDFLARE_PAGES.md`
+- `FEATURES.md`
+
+Out of scope:
+- optional vote budgets;
+- historical analytics beyond the existing recent-completion list.
+
+Acceptance:
+- Quest owners can toggle owner readiness from the shared queue UI.
+- Party owner/admin/Officer controls can pin, force-select, resolve conflicts, and lock queue changes during selection.
+- `Selected`, `InviteSent`, `Skipped`, and `Expired` states have user-facing actions and clear read states.
+- Queue expiration and stale-owner cleanup are deterministic and migration-safe.
+
+UX-UI reference: `docs/UX_UI_MANIFEST.md` party quest planning sections.
+
+### Party Access Proof Hardening
+
+Goal: replace trust-only local party-sync claims with tokenized manager-invite proofs if local claims are too easy to abuse in real parties.
+
+Touch:
+- `functions/api/party-sync/[partyId].js`
+- `src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js`
+- `src/Habitica.WebApp/State`
+- direct tests under `tests/Functions/` and `tests/Habitica.WebApp.Tests/`
+- `TECHNICAL.md`
+- `FEATURES.md`
+
+Out of scope:
+- sending Habitica API tokens to Cloudflare;
+- changing role names (`app admin`, `party owner`, `Officer`).
+
+Acceptance:
+- `readAccessProof()` / `resolvePartySyncAccess()` can accept the new proof without breaking existing local-claim migration.
+- Owner/admin recovery remains possible.
+- Worker tests cover invalid, expired, wrong-party, kicked-user, and owner/admin bypass cases.
+
+### Active Quest Metadata And Detail Affordances
+
+Goal: fill remaining active quest card metadata and drill-ins when data is available.
+
+Touch:
+- `src/Habitica.Api`
+- `src/Habitica.Domain/Party`
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- direct tests under `tests/`
+- `FEATURES.md`
+
+Out of scope:
+- mobile app deep links; keep web fallback from `docs/HABITICA_DEEPLINKS.md`;
+- fake values when Habitica data is missing.
+
+Acceptance:
+- Active quest card shows owner or starter, started date, details view, participants view, and rewards/details affordances when cached data exists.
+- Missing fields render concise unavailable states.
+- Participant names use the same member-detail focus behavior as the party member list.
+
+## Backlog
+
+These entries are lower priority but already merged from the historical plans. Before coding, split a broad bullet into the same `Goal / Touch / Out of scope / Acceptance / UX-UI reference` shape used above.
+
+### Tasks Page Enhancements
 
 - Add week/month/year period selector for task statistics.
 - Add task-history histogram and month activity chart on the Tasks page.
 - Add a smaller activity chart inside expanded task details.
 
-#### Dashboard Improvements
+### Dashboard Navigation And Habitica Links
 
-- Add a pending damage estimate box.
-- Explain which damage sources are included and excluded from the estimate.
-- Add warning state when estimated damage may kill or nearly kill the user.
-- Add a manual Buy Health Potion action near damage information. Do not make potion purchase automatic.
 - Add dashboard section cards with direct navigation.
-- Add an Open Habitica button and context-sensitive Habitica links where stable URLs are known.
+- Add an Open Habitica button and context-sensitive Habitica web links where stable URLs are known.
 
-#### Login and Refresh Improvements
+### Login And Refresh UX
 
 - Add a redirect guard that skips the sign-in page for authenticated stored credentials without flashing the login UI.
 - Return to the dashboard after the minimal successful user fetch; defer non-critical domain refreshes behind usable cached/current data.
-- Add stale-while-revalidate UI behavior so cached values stay visible while stale domains refresh in the background.
+- Keep visible page data interactive while background domains refresh; avoid global busy states for background-only work.
+- Surface refresh status next to the affected card or field, not only as page-level busy state.
 - Add field/card-level refresh indicators for manual refresh and Cloudflare sync progress.
 - Add subtle changed-value animation after background updates.
 - Add loading skeletons where delayed content has a stable final structure.
 
-### From `2_cloud_sync_split_key_refresh_instructions.md`
-
-#### Cloud Sync Improvements
+### Cloud Sync Follow-Up
 
 - Expand cloud sync metadata from uploaded/failed section lists into per-section status records with section key, updated time, payload size, and status.
 - Surface per-section sync status in Settings so users can see which sections succeeded, failed, or were skipped.
 - Add configurable section-level sync exclusions, for example skipping diagnostics sync to save storage.
 - Add cloud sync conflict resolution UI when remote and local sections diverge.
 - Add diagnostics for sync section key, payload size, upload/download status, partial skipped sections, refresh domain, refresh reason, refresh duration, deduplication hit/miss, and mutation invalidation result.
-
-#### Refresh Optimization Follow-Up
-
-- Keep visible page data interactive while background domains refresh; avoid global busy states for background-only work.
-- Surface refresh status next to the affected card or field, not only as page-level busy state.
-- Log request deduplication hit/miss and refresh duration per domain.
 - Make mutation invalidation results visible in diagnostics.
 
-### Other Future Features
+### Advanced Party Quest Features
 
-#### Gear and Equipment Planning
+- Add optional limited vote budgets only if requested as an advanced voting mode.
+- Add historical quest analytics beyond the recent-completion list and soft queue penalty.
+- Split current party quest state and queue planning into clearer modes, such as tabs or a segmented switch.
+
+### Gear And Equipment Planning
 
 - Add inventory before/after stat deltas for equip actions.
 - Add equipment optimization for goals such as Perception, Strength, balanced stats, boss damage, and survival.
 - Allow saving optimizer recommendations as named gear sets or presets.
 
-#### Skill Macros
+### Skill Macros
 
 - Add a macro collection for predefined skill/equipment sequences.
 - Add dry-run previews with planned equipment changes, target selection, mana cost, expected requests, warnings, and stop conditions.
 - Keep macro execution sequential and stop on validation failures or unexpected state changes.
 
-#### Bulk Sell Planner
+### Bulk Sell Planner
 
 - Add a bulk sell helper that identifies items likely safe to sell.
 - Include explanation for why each item is considered safe or unsafe.
 - Require preview and explicit confirmation before any sell action.
 
-#### Action Result Estimates
+### Action Result Estimates
 
 - Add estimates for selected actions, including expected damage, gold, skill effects, boss progress, and player damage risk.
 - Clearly distinguish exact API-returned values from local estimates and assumption-based formulas.
 
-#### UX Cleanup
+### UX Cleanup
 
-- Split current party quest state and queue planning into clearer modes, such as tabs or a segmented switch.
-- Add task filters for type, status, due window, and value polarity.
 - Add confirmation to Settings destructive actions such as clearing local browser data.
 - Reduce repeated hero/help copy for returning authenticated users.
 - Add sticky first-column or label context for mobile stat tables.

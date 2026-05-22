@@ -2014,6 +2014,7 @@ buff timing recommendations
 compact party member CRON list with HP/MP, sortable low-HP/low-MP modes, and foldable details
 viewer-local CRON statistics graph
 active quest card with real quest metadata and rewards when cached
+quest invitation card with accepted, pending, and rejected response lists before the quest starts
 shared quest queue cards with vote counts and voter names
 quest pool cards with owner availability
 recently completed quest cards
@@ -2061,6 +2062,7 @@ Current display rules:
 20. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
 21. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
 22. Let role-strip and kick-list member names focus the same expanded member details UI used by the Active Quest finishing-member link.
+23. When Habitica has a quest invitation that is not active yet, hide progress and finish estimates and show accepted, pending, and rejected member response lists instead; names focus the same expanded member details UI.
 ```
 
 ### Validation
@@ -2110,6 +2112,7 @@ Current implementation:
 - compact party member cards with foldable extra info and stats;
 - subtle HP/MP values and low-HP/low-MP member sorting;
 - active quest card with real cached quest metadata and compact rewards;
+- inactive quest invitation response lists before quest progress exists;
 - party detail section order of summary, party-sync roles, party-sync settings, then active quest state;
 - party-sync settings labels and helper descriptions for non-technical party members;
 - shared quest pool from published member quest-scroll availability;

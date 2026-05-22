@@ -59,7 +59,7 @@
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">Quest</span>
                 <strong>@(quest is null ? "No active quest" : GetQuestName(quest))</strong>
-                <span class="dashboard-stat-note">@((quest?.IsActive ?? false) ? "Active" : "Inactive or missing")</span>
+                <span class="dashboard-stat-note">@GetQuestStateLabel(quest)</span>
             </article>
         </section>
 
@@ -201,15 +201,18 @@
             <article class="card-surface dashboard-panel party-quest-panel">
                 <div class="party-section-head">
                     <div>
-                        <p class="section-label">Active quest</p>
+                        <p class="section-label">@GetQuestSectionLabel(quest)</p>
                         <h2>@(quest is null ? "No active quest" : GetQuestName(quest))</h2>
                     </div>
-                    <label class="checkbox-row compact party-toggle">
-                        <input checked="@SessionController.State.IncludeStalePartyMembersInQuestForecasts"
-                               type="checkbox"
-                               @onchange="HandleIncludeStaleChangedAsync" />
-                        <span>Include stale members</span>
-                    </label>
+                    @if (quest?.IsActive == true)
+                    {
+                        <label class="checkbox-row compact party-toggle">
+                            <input checked="@SessionController.State.IncludeStalePartyMembersInQuestForecasts"
+                                   type="checkbox"
+                                   @onchange="HandleIncludeStaleChangedAsync" />
+                            <span>Include stale members</span>
+                        </label>
+                    }
                 </div>
 
                 @if (quest is null)
@@ -223,6 +226,7 @@
                     var pendingPartyProgress = GetPendingPartyProgress(quest);
                     var estimatedPostCronProgress = GetEstimatedPostCronProgress(quest);
                     var startableQuestEntry = GetStartableSelectedQuestEntry(quest);
+                    var isAwaitingResponses = IsQuestAwaitingResponses(quest);
 
                     <article class="party-quest-card active-quest-card">
                         <div class="party-quest-card-head">
@@ -262,90 +266,108 @@
                         @RenderRewards(quest.Rewards)
                     </article>
 
-                    <div class="party-quest-metric-grid">
-                        <article class="dashboard-stat-card">
-                            <span class="dashboard-stat-label">Current progress</span>
-                            <strong>@FormatQuestMetric(appliedProgress)</strong>
-                            <span class="dashboard-stat-note">@appliedProgress?.Label</span>
-                        </article>
+                    @if (isAwaitingResponses)
+                    {
+                        <div class="party-quest-response-grid">
+                            @RenderQuestResponseGroup("Accepted", members, PartyQuestParticipationStatus.Accepted)
+                            @RenderQuestResponseGroup("Pending", members, PartyQuestParticipationStatus.Pending)
+                            @RenderQuestResponseGroup("Rejected", members, PartyQuestParticipationStatus.Rejected)
+                        </div>
 
-                        <article class="dashboard-stat-card">
-                            <span class="dashboard-stat-label">Your pending progress</span>
-                            <strong>@FormatQuestMetric(pendingUserProgress)</strong>
-                            <span class="dashboard-stat-note">@pendingUserProgress?.Label</span>
-                        </article>
-
-                        <article class="dashboard-stat-card">
-                            <span class="dashboard-stat-label">Pending party progress</span>
-                            <strong>@FormatQuestMetric(pendingPartyProgress)</strong>
-                            <span class="dashboard-stat-note">@pendingPartyProgress?.Label</span>
-                        </article>
-
-                        <article class="dashboard-stat-card">
-                            <span class="dashboard-stat-label">Estimated post-CRON</span>
-                            <strong>@FormatQuestMetric(estimatedPostCronProgress)</strong>
-                            <span class="dashboard-stat-note">@estimatedPostCronProgress?.Label</span>
-                        </article>
-                    </div>
-
-                    <dl class="dashboard-definition-list party-quest-definition-list">
-                        <div>
-                            <dt>Accepted</dt>
-                            <dd>@quest.ParticipationSummary?.AcceptedCount</dd>
-                        </div>
-                        <div>
-                            <dt>Pending</dt>
-                            <dd>@quest.ParticipationSummary?.PendingCount</dd>
-                        </div>
-                        <div>
-                            <dt>Rejected</dt>
-                            <dd>@quest.ParticipationSummary?.RejectedCount</dd>
-                        </div>
-                        <div>
-                            <dt>Unknown</dt>
-                            <dd>@quest.ParticipationSummary?.UnknownCount</dd>
-                        </div>
-                        <div>
-                            <dt>In Inn</dt>
-                            <dd>@quest.ParticipationSummary?.InnCount</dd>
-                        </div>
-                        @if (quest.PendingPartyDamage is not null)
+                        @if (HasQuestResponseMembers(members, PartyQuestParticipationStatus.Unknown))
                         {
-                            <div>
-                                <dt>Pending party damage</dt>
-                                <dd>@FormatDecimal(quest.PendingPartyDamage.Value)</dd>
+                            <div class="party-quest-response-grid compact">
+                                @RenderQuestResponseGroup("Unknown", members, PartyQuestParticipationStatus.Unknown)
                             </div>
                         }
-                        <div>
-                            <dt>Expected finish</dt>
-                            <dd>@FormatExpectedFinish(quest.CompletionEstimate)</dd>
-                        </div>
-                        <div>
-                            <dt>Finishing member</dt>
-                            <dd>
-                                @if (quest.CompletionEstimate?.FinishingMemberId is { } finishingMemberId && !string.IsNullOrWhiteSpace(quest.CompletionEstimate.FinishingMemberDisplayName))
-                                {
-                                    <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(finishingMemberId))">
-                                        @quest.CompletionEstimate.FinishingMemberDisplayName
-                                    </button>
-                                }
-                                else
-                                {
-                                    @FormatFinishingMember(quest.CompletionEstimate)
-                                }
-                            </dd>
-                        </div>
-                        <div>
-                            <dt>Timing confidence</dt>
-                            <dd>@FormatEstimateConfidence(quest.CompletionEstimate)</dd>
-                        </div>
-                    </dl>
-
-                    @if (quest.CompletionEstimate is not null)
+                    }
+                    else
                     {
-                        <MudAlert Dense="true" Severity="@GetEstimateSeverity(quest.CompletionEstimate)" Variant="Variant.Outlined">
-                            @FormatEstimateSummary(quest.CompletionEstimate)
-                        </MudAlert>
+                        <div class="party-quest-metric-grid">
+                            <article class="dashboard-stat-card">
+                                <span class="dashboard-stat-label">Current progress</span>
+                                <strong>@FormatQuestMetric(appliedProgress)</strong>
+                                <span class="dashboard-stat-note">@appliedProgress?.Label</span>
+                            </article>
+
+                            <article class="dashboard-stat-card">
+                                <span class="dashboard-stat-label">Your pending progress</span>
+                                <strong>@FormatQuestMetric(pendingUserProgress)</strong>
+                                <span class="dashboard-stat-note">@pendingUserProgress?.Label</span>
+                            </article>
+
+                            <article class="dashboard-stat-card">
+                                <span class="dashboard-stat-label">Pending party progress</span>
+                                <strong>@FormatQuestMetric(pendingPartyProgress)</strong>
+                                <span class="dashboard-stat-note">@pendingPartyProgress?.Label</span>
+                            </article>
+
+                            <article class="dashboard-stat-card">
+                                <span class="dashboard-stat-label">Estimated post-CRON</span>
+                                <strong>@FormatQuestMetric(estimatedPostCronProgress)</strong>
+                                <span class="dashboard-stat-note">@estimatedPostCronProgress?.Label</span>
+                            </article>
+                        </div>
+
+                        <dl class="dashboard-definition-list party-quest-definition-list">
+                            <div>
+                                <dt>Accepted</dt>
+                                <dd>@quest.ParticipationSummary?.AcceptedCount</dd>
+                            </div>
+                            <div>
+                                <dt>Pending</dt>
+                                <dd>@quest.ParticipationSummary?.PendingCount</dd>
+                            </div>
+                            <div>
+                                <dt>Rejected</dt>
+                                <dd>@quest.ParticipationSummary?.RejectedCount</dd>
+                            </div>
+                            <div>
+                                <dt>Unknown</dt>
+                                <dd>@quest.ParticipationSummary?.UnknownCount</dd>
+                            </div>
+                            <div>
+                                <dt>In Inn</dt>
+                                <dd>@quest.ParticipationSummary?.InnCount</dd>
+                            </div>
+                            @if (quest.PendingPartyDamage is not null)
+                            {
+                                <div>
+                                    <dt>Pending party damage</dt>
+                                    <dd>@FormatDecimal(quest.PendingPartyDamage.Value)</dd>
+                                </div>
+                            }
+                            <div>
+                                <dt>Expected finish</dt>
+                                <dd>@FormatExpectedFinish(quest.CompletionEstimate)</dd>
+                            </div>
+                            <div>
+                                <dt>Finishing member</dt>
+                                <dd>
+                                    @if (quest.CompletionEstimate?.FinishingMemberId is { } finishingMemberId && !string.IsNullOrWhiteSpace(quest.CompletionEstimate.FinishingMemberDisplayName))
+                                    {
+                                        <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(finishingMemberId))">
+                                            @quest.CompletionEstimate.FinishingMemberDisplayName
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        @FormatFinishingMember(quest.CompletionEstimate)
+                                    }
+                                </dd>
+                            </div>
+                            <div>
+                                <dt>Timing confidence</dt>
+                                <dd>@FormatEstimateConfidence(quest.CompletionEstimate)</dd>
+                            </div>
+                        </dl>
+
+                        @if (quest.CompletionEstimate is not null)
+                        {
+                            <MudAlert Dense="true" Severity="@GetEstimateSeverity(quest.CompletionEstimate)" Variant="Variant.Outlined">
+                                @FormatEstimateSummary(quest.CompletionEstimate)
+                            </MudAlert>
+                        }
                     }
                 }
             </article>
@@ -1232,12 +1254,82 @@
         };
     }
 
+    private static string GetQuestSectionLabel(PartyQuestSnapshot? quest)
+    {
+        return quest is null || quest.IsActive
+            ? "Active quest"
+            : "Quest invitation";
+    }
+
+    private static string GetQuestStateLabel(PartyQuestSnapshot? quest)
+    {
+        if (quest is null)
+        {
+            return "Inactive or missing";
+        }
+
+        return quest.IsActive
+            ? "Active"
+            : "Waiting for party responses";
+    }
+
+    private static bool IsQuestAwaitingResponses(PartyQuestSnapshot quest)
+    {
+        return !quest.IsActive;
+    }
+
     private static string GetParticipationSummaryLabel(PartyQuestSnapshot quest)
     {
         return quest.ParticipationSummary is null
             ? $"{quest.ParticipantCount} accepted participants"
             : $"{quest.ParticipationSummary.AcceptedCount} accepted, {quest.ParticipationSummary.PendingCount} pending, {quest.ParticipationSummary.RejectedCount} rejected";
     }
+
+    private static IReadOnlyList<PartyMemberSnapshot> GetQuestResponseMembers(
+        IReadOnlyList<PartyMemberSnapshot> members,
+        PartyQuestParticipationStatus status)
+    {
+        return members
+            .Where(member => member.ParticipationStatus == status)
+            .ToArray();
+    }
+
+    private static bool HasQuestResponseMembers(
+        IReadOnlyList<PartyMemberSnapshot> members,
+        PartyQuestParticipationStatus status)
+    {
+        return members.Any(member => member.ParticipationStatus == status);
+    }
+
+    private RenderFragment RenderQuestResponseGroup(
+        string label,
+        IReadOnlyList<PartyMemberSnapshot> members,
+        PartyQuestParticipationStatus status) => @<article class="party-quest-response-card">
+            @{
+                var responseMembers = GetQuestResponseMembers(members, status);
+            }
+            <div class="party-quest-response-card-head">
+                <span class="dashboard-stat-label">@label</span>
+                <strong>@responseMembers.Count</strong>
+            </div>
+            @if (responseMembers.Count == 0)
+            {
+                <p class="dashboard-stat-note">No members.</p>
+            }
+            else
+            {
+                <ul class="party-quest-response-list">
+                    @foreach (var member in responseMembers)
+                    {
+                        <li>
+                            <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(member.MemberId))">
+                                @member.DisplayName
+                            </button>
+                        </li>
+                    }
+                </ul>
+            }
+        </article>;
 
     private string ResolveQuestType(string questKey)
     {

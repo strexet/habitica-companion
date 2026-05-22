@@ -793,6 +793,30 @@ public sealed class PartyPageTests : BunitContext
     }
 
     [Fact]
+    public void Inactive_quest_renders_response_lists_instead_of_progress_estimates()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("user-id")));
+
+        var cut = Render<PartyPage>();
+
+        Assert.Contains("Quest invitation", cut.Markup);
+        Assert.Contains("Waiting for party responses", cut.Markup);
+        Assert.Contains("Accepted", cut.Markup);
+        Assert.Contains("Mage Tester", cut.Markup);
+        Assert.Contains("Pending", cut.Markup);
+        Assert.Contains("Beta", cut.Markup);
+        Assert.Contains("Rejected", cut.Markup);
+        Assert.Contains("Gamma", cut.Markup);
+        Assert.DoesNotContain("Current progress", cut.Markup);
+        Assert.DoesNotContain("Estimated post-CRON", cut.Markup);
+        Assert.DoesNotContain("Expected finish", cut.Markup);
+        Assert.All(cut.FindAll(".party-quest-response-list .inline-link-button"), button => Assert.Equal("button", button.GetAttribute("type")));
+    }
+
+    [Fact]
     public void Selected_quest_start_action_is_hidden_for_non_owner()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -867,18 +891,30 @@ public sealed class PartyPageTests : BunitContext
                 "party-123",
                 "Night Owls",
                 "Quest-focused party",
-                2,
+                3,
                 new PartyQuestSnapshot(
                     "dragon",
                     isActive,
                     0m,
                     0m,
-                    2,
+                    1,
+                    AppliedProgress: new PartyQuestMetricSnapshot("Current boss HP", 50m, 100m, "hp"),
+                    EstimatedPostCronProgress: new PartyQuestMetricSnapshot("Estimated boss HP after CRON", 25m, 100m, "hp"),
+                    ParticipationSummary: new PartyQuestParticipationSummary(1, 1, 1, 0, 0),
+                    CompletionEstimate: new PartyQuestCompletionEstimate(
+                        true,
+                        DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
+                        DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
+                        PartyQuestEstimateConfidence.High,
+                        "Expected to finish when Mage Tester checks in around Apr 26, 10:15.",
+                        "Mage Tester",
+                        "user-id"),
                     Name: "Dragon"),
                 new[]
                 {
-                    new PartyMemberSnapshot("user-id", "Mage Tester", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
-                    new PartyMemberSnapshot("other-user", "Beta", null, null, null, PartyCronState.Unknown, "Unknown.", null, null)
+                    new PartyMemberSnapshot("user-id", "Mage Tester", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ParticipationStatus: PartyQuestParticipationStatus.Accepted),
+                    new PartyMemberSnapshot("other-user", "Beta", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ParticipationStatus: PartyQuestParticipationStatus.Pending),
+                    new PartyMemberSnapshot("rejected-user", "Gamma", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ParticipationStatus: PartyQuestParticipationStatus.Rejected)
                 },
                 leaderId: "user-id"),
             PartyFreshness: SnapshotFreshnessState.Fresh,
