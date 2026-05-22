@@ -1294,6 +1294,85 @@ a {
     gap: 1rem;
 }
 
+.pending-damage-panel {
+    display: grid;
+    gap: 1rem;
+}
+
+.pending-damage-head,
+.health-potion-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: start;
+    justify-content: space-between;
+}
+
+.pending-damage-total,
+.health-potion-panel > div:first-child {
+    display: grid;
+    gap: 0.25rem;
+    min-width: min(100%, 12rem);
+}
+
+.pending-damage-total {
+    justify-items: end;
+}
+
+.pending-damage-total strong {
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+.pending-damage-total span {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.pending-damage-grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.pending-damage-source-card {
+    display: grid;
+    gap: 0.65rem;
+    min-width: 0;
+    padding: 0.9rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.pending-damage-list {
+    display: grid;
+    gap: 0.55rem;
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.pending-damage-list li {
+    overflow-wrap: anywhere;
+}
+
+.pending-damage-list strong,
+.pending-damage-list span {
+    display: block;
+}
+
+.pending-damage-list span,
+.muted-list {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.health-potion-panel {
+    padding-top: 0.9rem;
+    border-top: 1px solid rgba(22, 36, 35, 0.08);
+}
+
 .spell-recommendation {
     display: grid;
     gap: 0.8rem;

@@ -242,7 +242,7 @@ Rate-limit sensitivity: medium; performs one mutation and one party refresh
 
 ### Goal
 
-The Party page Active Quest card exposes `Start quest` only when the cached Habitica party quest is inactive, matches a `Selected` or `InviteSent` shared queue entry, and the current user owns that queue entry.
+The Party page Active Quest card exposes `Start quest` only when the cached Habitica party quest is inactive, matches a `Selected` or `InviteSent` shared queue entry, and the current user owns that queue entry or is the current Habitica party leader.
 
 ### API interaction
 
@@ -1119,8 +1119,8 @@ Status: partial
 Owner module: `Habitica.WebApp.Dashboard`
 Application entry point: `Habitica.Application.Dashboard`
 Primary Habitica data: user, tasks, party, inventory, equipment, quest, sync metadata
-Mutates Habitica state: no
-Requires confirmation: no
+Mutates Habitica state: yes for Start New Day and manual health-potion purchase
+Requires confirmation: yes for Start New Day and health-potion purchase
 Offline behavior: primary feature works offline from snapshots
 Rate-limit sensitivity: low unless refresh is triggered
 
@@ -1145,6 +1145,9 @@ user summary
 current pet and mount state
 inventory readiness summary
 task-count summary
+pending damage estimate with included and excluded sources
+knockout risk warning when estimated damage is high relative to current HP
+manual health-potion confirmation and action result
 warnings
 sync status
 Start New Day confirmation and action result
@@ -1160,6 +1163,7 @@ Only through explicit refresh actions and the confirmed Start New Day action.
 
 ```text
 POST /cron
+POST /user/buy/potion
 GET /user
 GET /tasks/user
 GET /groups/party
@@ -1170,6 +1174,18 @@ GET /groups/party
 Dashboard must not contain business logic. It displays already computed state and invokes use-case services.
 
 Render `Start New Day` only when the current account snapshot says `NeedsCron == true`. The confirmation copy must explain that Habitica will process missed Dailies, active quest progress, and temporary buff expiry. After confirmed Cron, refresh account/tasks/party state through the session controller.
+
+The pending damage panel uses `PendingDamageEstimateFactory` to combine incomplete Daily estimates and saved active boss quest pending damage. It must show included sources and unavailable sources separately, and must label the result as an estimate based on synced data.
+
+Risk thresholds:
+
+```text
+Danger: estimatedDamage >= current HP
+Warning: estimatedDamage >= current HP * 0.75
+Info: estimatedDamage > 0
+```
+
+Health-potion purchase is manual only. It is disabled when the account snapshot is stale, the user is signed out, health is full, or saved gold is below 25 GP. After purchase, refresh `/user` so HP, gold, and the dashboard warning recalculate from server state.
 
 ### Validation
 
@@ -1194,6 +1210,8 @@ Test:
 - partial sync failure state;
 - redacted diagnostics.
 - Start New Day confirmation and session-controller call.
+- pending damage estimate sources and risk state.
+- health-potion confirmation and session-controller call.
 
 ### Open questions
 
@@ -1205,6 +1223,8 @@ Current implementation:
 - dashboard inventory readiness summary;
 - dashboard stat cards fall back to current-only rendering when the API snapshot lacks non-zero stat targets;
 - dashboard Start New Day confirmation when current-user Cron is due;
+- dashboard pending damage estimate with included/excluded source copy and knockout warning;
+- manual health-potion purchase action with confirmation and account refresh;
 - task workspace with cached browsing and planned guarded mutations;
 - sync timestamp surface;
 - freshness banners for cached tasks and cached account data;
@@ -2063,6 +2083,8 @@ Current display rules:
 21. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
 22. Let role-strip and kick-list member names focus the same expanded member details UI used by the Active Quest finishing-member link.
 23. When Habitica has a quest invitation that is not active yet, hide progress and finish estimates and show accepted, pending, and rejected member response lists instead; names focus the same expanded member details UI.
+24. Show an `Invite party` button on every shared queue card. The button is enabled only for the current quest owner while the queue item is `Queued` or `Selected`; success sends `POST /groups/party/quests/invite/:questKey`, refreshes party state, and marks the shared queue item `InviteSent`.
+25. Let users toggle an owned-only queue filter that hides not-owned queue entries and not-owned quest-pool scrolls without mutating shared party-sync data.
 ```
 
 ### Validation
@@ -2117,6 +2139,7 @@ Current implementation:
 - party-sync settings labels and helper descriptions for non-technical party members;
 - shared quest pool from published member quest-scroll availability;
 - shared quest queue with owner-only add/remove and one-vote-per-member voting;
+- shared queue invite action and owned-only queue/pool filter;
 - recently completed shared quest history table and UI.
 
 Next:

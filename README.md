@@ -8,7 +8,7 @@ Current status: web-app MVP implemented and expanding into guarded actions. The 
 
 - credential sign-in with session-only default and persistent local opt-in
 - manual and page-prioritized refresh against Habitica API v3
-- cached account dashboard with class, stat, companion, and inventory summary cards
+- cached account dashboard with class, stat, companion, inventory, pending-damage, and health-potion helper cards
 - Dashboard `Start New Day` action when the current user needs Cron
 - inventory and equipment explorer with slot-grouped owned gear keys, battle presets, highest-stat highlights, and guarded equip actions
 - party overview with cached quest progress, member CRON timing, shared quest pool, shared queue voting, recently completed quest history, tokenless party-sync claims, Officers, settings, and kick management
@@ -24,7 +24,6 @@ Current status: web-app MVP implemented and expanding into guarded actions. The 
 ## Planned feature areas
 
 - richer quest explorer and party member views
-- dashboard pending damage estimates and health-potion helper
 - task history statistics and charts
 - gear optimization
 - skill macros with dry-run previews

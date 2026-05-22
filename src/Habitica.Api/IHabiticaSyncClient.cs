@@ -25,11 +25,15 @@ public interface IHabiticaSyncClient
 
     Task<ArmoirePurchaseSnapshot> BuyArmoireAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 
+    Task BuyHealthPotionAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
+
     Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 
     Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 
     Task ScoreTaskAsync(HabiticaCredentials credentials, string taskId, TaskScoreDirection direction, CancellationToken cancellationToken);
+
+    Task InvitePartyToQuestAsync(HabiticaCredentials credentials, string questKey, CancellationToken cancellationToken);
 
     Task StartPartyQuestAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 }

@@ -19,6 +19,7 @@ namespace Habitica.WebApp.State;
 
 public sealed class AppSessionController : IAppSessionController
 {
+    private const decimal HealthPotionGoldCost = 25m;
     private readonly ICredentialStore _credentialStore;
     private readonly IDiagnosticsLogStore _diagnosticsLogStore;
     private readonly DiagnosticsLogWriter _diagnosticsLogWriter;
@@ -391,6 +392,95 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    public async Task<PartyQuestActionResult> InvitePartyToQuestAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return PartyQuestActionResult.Failure("Sign in before inviting the party to quests.");
+        }
+
+        var entry = State.PartyQuestQueue?.Queue.FirstOrDefault(candidate =>
+            string.Equals(candidate.QueueItemId, queueItemId, StringComparison.Ordinal));
+        if (entry is null)
+        {
+            return PartyQuestActionResult.Failure("Quest queue item was not found.");
+        }
+
+        if (!string.Equals(entry.OwnerUserId, credentials.UserId, StringComparison.Ordinal))
+        {
+            return PartyQuestActionResult.Failure("Only the quest owner can invite the party.");
+        }
+
+        if (entry.Status is not (PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected))
+        {
+            return PartyQuestActionResult.Failure("Only queued or selected quests can invite the party.");
+        }
+
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        try
+        {
+            await _habiticaSyncClient.InvitePartyToQuestAsync(credentials, entry.QuestKey, cancellationToken);
+            var partySnapshot = await _habiticaSyncClient.GetPartySnapshotAsync(credentials, cancellationToken);
+            await _partySnapshotStore.SaveAsync(partySnapshot, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+
+            var claim = await ResolvePartySyncClaimAsync(cancellationToken);
+            if (claim is not null)
+            {
+                try
+                {
+                    var remoteState = await _remotePartyDataSyncProvider.InvitePartyAsync(
+                        claim,
+                        queueItemId,
+                        version,
+                        cancellationToken);
+                    ApplyPartyQuestState(claim.PartyId, remoteState);
+                }
+                catch (Exception exception) when (exception is not OperationCanceledException)
+                {
+                    await _diagnosticsLogWriter.WriteAsync(
+                        DiagnosticsFeatureArea.Party,
+                        "party-quest-invite-sync",
+                        DiagnosticsSeverity.Warning,
+                        DiagnosticsMode.Local,
+                        $"Quest invited, but shared queue invite status failed: {exception.Message}",
+                        new Dictionary<string, string>(StringComparer.Ordinal)
+                        {
+                            ["queueItemId"] = queueItemId,
+                            ["questKey"] = entry.QuestKey
+                        },
+                        cancellationToken);
+                }
+            }
+
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Party,
+                "party-quest-invite",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                $"Invited party to quest '{entry.QuestName}'.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["queueItemId"] = queueItemId,
+                    ["questKey"] = entry.QuestKey,
+                    ["requestCount"] = "2"
+                },
+                cancellationToken);
+
+            _ = TryMergeAndUploadPartySyncAsync(credentials, cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+            return PartyQuestActionResult.Success("Party invited to quest.");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return PartyQuestActionResult.Failure(exception.Message);
+        }
+    }
+
     public async Task<PartyQuestActionResult> StartSelectedPartyQuestAsync(string queueItemId, CancellationToken cancellationToken = default)
     {
         var credentials = await ResolveCredentialsAsync(cancellationToken);
@@ -406,9 +496,11 @@ public sealed class AppSessionController : IAppSessionController
             return PartyQuestActionResult.Failure("Selected quest was not found.");
         }
 
-        if (!string.Equals(entry.OwnerUserId, credentials.UserId, StringComparison.Ordinal))
+        var canForceStart = string.Equals(entry.OwnerUserId, credentials.UserId, StringComparison.Ordinal)
+            || string.Equals(State.PartySnapshot?.LeaderId, credentials.UserId, StringComparison.Ordinal);
+        if (!canForceStart)
         {
-            return PartyQuestActionResult.Failure("Only the selected quest owner can start it.");
+            return PartyQuestActionResult.Failure("Only the selected quest owner or party leader can start it.");
         }
 
         if (entry.Status is not (PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.InviteSent))
@@ -1626,6 +1718,80 @@ public sealed class AppSessionController : IAppSessionController
         {
             await LoadCachedStateAsync(cancellationToken);
             SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return InventoryActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<InventoryActionResult> BuyHealthPotionAsync(CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return InventoryActionResult.Failure("Sign in before buying a health potion.");
+        }
+
+        if (State.UserSnapshot is null || State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return InventoryActionResult.Failure("Refresh your account before buying a health potion.");
+        }
+
+        if (State.UserSnapshot.MaxHealth > 0m && State.UserSnapshot.Health >= State.UserSnapshot.MaxHealth)
+        {
+            return InventoryActionResult.Failure("Health is already full.");
+        }
+
+        if (State.UserSnapshot.Gold < HealthPotionGoldCost)
+        {
+            return InventoryActionResult.Failure("You need at least 25 GP to buy a health potion.");
+        }
+
+        var previousHealth = State.UserSnapshot.Health;
+        var previousGold = State.UserSnapshot.Gold;
+
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        try
+        {
+            await _habiticaSyncClient.BuyHealthPotionAsync(credentials, cancellationToken);
+            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "health-potion-buy",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                "Bought a health potion.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["healthBefore"] = previousHealth.ToString(CultureInfo.InvariantCulture),
+                    ["healthAfter"] = userSnapshot.Health.ToString(CultureInfo.InvariantCulture),
+                    ["goldBefore"] = previousGold.ToString(CultureInfo.InvariantCulture),
+                    ["goldAfter"] = userSnapshot.Gold.ToString(CultureInfo.InvariantCulture),
+                    ["requestCount"] = "2"
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+
+            return InventoryActionResult.Success("Health potion bought.");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "health-potion-buy",
+                DiagnosticsSeverity.Error,
+                DiagnosticsMode.LiveMutation,
+                exception.Message,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["healthBefore"] = previousHealth.ToString(CultureInfo.InvariantCulture),
+                    ["goldBefore"] = previousGold.ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
             return InventoryActionResult.Failure(exception.Message);
         }
     }

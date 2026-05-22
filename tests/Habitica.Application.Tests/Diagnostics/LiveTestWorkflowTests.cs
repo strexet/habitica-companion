@@ -208,9 +208,19 @@ public sealed class LiveTestWorkflowTests
             return Task.CompletedTask;
         }
 
+        public Task InvitePartyToQuestAsync(HabiticaCredentials credentials, string questKey, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
         public Task<ArmoirePurchaseSnapshot> BuyArmoireAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             return Task.FromResult(new ArmoirePurchaseSnapshot("food", "Fish", "Fish", null, "Found Fish."));
+        }
+
+        public Task BuyHealthPotionAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
 
         public Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)

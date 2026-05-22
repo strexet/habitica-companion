@@ -179,6 +179,8 @@ export async function onRequestPost(context) {
       return await removeQueueItem(db, env, partyId, access, payload, nowIso);
     case "markActive":
       return await updateQueueStatus(db, env, partyId, access, payload, "Active", nowIso);
+    case "inviteParty":
+      return await updateQueueStatus(db, env, partyId, access, payload, "InviteSent", nowIso);
     case "markCompleted":
       return await markCompleted(db, env, partyId, access, payload, nowIso);
     case "autoReconcileQuest":

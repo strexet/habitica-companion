@@ -122,6 +122,15 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         using var _ = await SendForDocumentAsync(request, cancellationToken);
     }
 
+    public async Task InvitePartyToQuestAsync(HabiticaCredentials credentials, string questKey, CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(
+            HttpMethod.Post,
+            $"groups/party/quests/invite/{Uri.EscapeDataString(questKey)}",
+            credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
     public async Task<PartySnapshot> GetPartySnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
     {
         var retrievedAtUtc = DateTimeOffset.UtcNow;
@@ -294,6 +303,12 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             DropText: GetOptionalString(armoire, "dropText"),
             Experience: TryGetDecimal(armoire, "value", out var experience) ? experience : null,
             Message: GetOptionalString(document.RootElement, "message") ?? "Armoire opened.");
+    }
+
+    public async Task BuyHealthPotionAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(HttpMethod.Post, "user/buy/potion", credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
     }
 
     public async Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)

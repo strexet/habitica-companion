@@ -361,6 +361,31 @@ public sealed class HabiticaApiClientTests
     }
 
     [Fact]
+    public async Task InvitePartyToQuestAsync_sends_invite_request()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.InvitePartyToQuestAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            "moon/stone",
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/groups/party/quests/invite/moon%2Fstone", capturedRequest.RequestUri!.ToString());
+        Assert.Null(capturedRequest.Content);
+    }
+
+    [Fact]
     public async Task AllocateStatsAsync_sends_bulk_allocation_request()
     {
         HttpRequestMessage? capturedRequest = null;
@@ -385,6 +410,30 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
         Assert.Equal("https://habitica.com/api/v3/user/allocate-bulk", capturedRequest.RequestUri!.ToString());
         Assert.Equal("""{"stats":{"str":1,"int":2,"con":0,"per":1}}""", capturedBody);
+    }
+
+    [Fact]
+    public async Task BuyHealthPotionAsync_sends_buy_potion_request()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.BuyHealthPotionAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/user/buy/potion", capturedRequest.RequestUri!.ToString());
+        Assert.Null(capturedRequest.Content);
     }
 
     [Fact]

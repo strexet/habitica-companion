@@ -114,6 +114,21 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
             participantsCount);
     }
 
+    public async Task<RemotePartyQuestState> InvitePartyAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "invitePartyToQuest",
+            cancellationToken,
+            claim,
+            queueItemId,
+            version);
+    }
+
     public async Task<RemotePartyQuestState> ReconcileQuestLifecycleAsync(
         PartySyncClaim claim,
         string queueItemId,

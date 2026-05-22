@@ -1,4 +1,5 @@
 using Bunit;
+using Habitica.Application.Dashboard;
 using Habitica.Domain.Sync;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
@@ -18,6 +19,7 @@ public sealed class DashboardPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -77,6 +79,9 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("HP", cut.Markup);
         Assert.Contains("Wolf Base", cut.Markup);
         Assert.Contains("Open tasks", cut.Markup);
+        Assert.Contains("Pending damage estimate", cut.Markup);
+        Assert.Contains("Incomplete Dailies", cut.Markup);
+        Assert.Contains("2 HP", cut.Markup);
         Assert.Contains("3 unspent stat points", cut.Markup);
         Assert.Contains("#stats", cut.Markup);
         Assert.Contains("Equipment", cut.Markup);
@@ -90,6 +95,7 @@ public sealed class DashboardPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -140,6 +146,7 @@ public sealed class DashboardPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -192,6 +199,7 @@ public sealed class DashboardPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -235,5 +243,60 @@ public sealed class DashboardPageTests : BunitContext
         cut.Find("[data-testid='confirm-start-new-day']").Click();
 
         Assert.Equal(1, controller.StartNewDayCalls);
+    }
+
+    [Fact]
+    public void Health_potion_action_requires_confirmation_and_calls_session_controller()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    new[]
+                    {
+                        new TaskSnapshot("daily-1", "Exercise", TaskType.Daily, false, 1.5m, null, null)
+                    }),
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: new UserSnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    "Mage Tester",
+                    "wizard",
+                    15,
+                    10m,
+                    50m,
+                    33.5m,
+                    40m,
+                    125.1m,
+                    74.9m,
+                    25m,
+                    "party-123",
+                    null,
+                    null,
+                    new EquipmentSnapshot(
+                        new GearSlotsSnapshot(null, null, null, null, null),
+                        new GearSlotsSnapshot(null, null, null, null, null)),
+                    new InventorySnapshot(0, 0, 0, 0, 0, 0, Array.Empty<string>())),
+                UserFreshness: SnapshotFreshnessState.Fresh));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<DashboardPage>();
+
+        cut.Find("[data-testid='buy-health-potion']").Click();
+        Assert.Contains("Confirm purchase", cut.Markup);
+
+        cut.Find("[data-testid='confirm-buy-health-potion']").Click();
+
+        Assert.Equal(1, controller.BuyHealthPotionCalls);
     }
 }

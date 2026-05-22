@@ -31,37 +31,13 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Task browsing, type/status filters, guarded task scoring controls, expandable details, and task mutation freshness gates.
 - Spell page, target recommendations, resource checks, and not-CRONed buff warning flow.
 - Party page active quest metadata/rewards, CRON summary, member CRON graph, shared quest pool, queue, voting, recent completions, owner/admin/Officer controls, and quest start action.
+- Dashboard pending damage estimate, knockout warning, and manual health-potion purchase action.
 - Split-key encrypted Cloudflare app-data sync, legacy single-blob restore fallback, per-section payload guard, partial-success sync behavior, and refresh coordinator deduplication.
 - Refresh-domain invalidation basics after implemented mutations.
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Dashboard Pending Damage And Potion Action
-
-Goal: show the user's likely damage risk from outstanding Dailies and party quest state, then offer a guarded manual health-potion action.
-
-Touch:
-- `src/Habitica.Application`
-- `src/Habitica.Domain`
-- `src/Habitica.Api`
-- `src/Habitica.WebApp/Pages/DashboardPage.razor`
-- direct tests under `tests/`
-- `FEATURES.md`
-
-Out of scope:
-- automatic potion purchase;
-- new Habitica endpoints not documented in `HABITICA_API.md`;
-- task-history charts.
-
-Acceptance:
-- Dashboard shows pending damage estimate with included/excluded source copy.
-- Dashboard warns when estimated damage may kill or nearly kill the user.
-- Health potion action is manual, explicit, disabled when unsafe, and refreshes affected account/dashboard data after success.
-- Diagnostics do not log credentials or sensitive user data.
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` resource-spending and dashboard sections.
 
 ### CRON Button Safety Flow
 
@@ -108,7 +84,7 @@ Out of scope:
 Acceptance:
 - Quest owners can toggle owner readiness from the shared queue UI.
 - Party owner/admin/Officer controls can pin, force-select, resolve conflicts, and lock queue changes during selection.
-- `Selected`, `InviteSent`, `Skipped`, and `Expired` states have user-facing actions and clear read states.
+- `Selected`, `Skipped`, and `Expired` states have user-facing actions and clear read states beyond the implemented invite/start flow.
 - Queue expiration and stale-owner cleanup are deterministic and migration-safe.
 
 UX-UI reference: `docs/UX_UI_MANIFEST.md` party quest planning sections.

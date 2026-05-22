@@ -55,6 +55,8 @@ public interface IAppSessionController
 
     Task<InventoryActionResult> BuyArmoireAsync(int count, CancellationToken cancellationToken = default);
 
+    Task<InventoryActionResult> BuyHealthPotionAsync(CancellationToken cancellationToken = default);
+
     Task LogoutAsync(CancellationToken cancellationToken = default);
 
     Task ClearLocalDataAsync(CancellationToken cancellationToken = default);
@@ -83,6 +85,8 @@ public interface IAppSessionController
     Task<PartyQuestActionResult> RemovePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default);
 
     Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default);
+
+    Task<PartyQuestActionResult> InvitePartyToQuestAsync(string queueItemId, int version, CancellationToken cancellationToken = default);
 
     Task<PartyQuestActionResult> StartSelectedPartyQuestAsync(string queueItemId, CancellationToken cancellationToken = default);
 

@@ -44,11 +44,15 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<(string UserId, string DisplayName)> AssignPartyOwnerCalls { get; } = new();
 
+    public List<(string QueueItemId, int Version)> InvitePartyQuestCalls { get; } = new();
+
     public List<string> StartSelectedPartyQuestCalls { get; } = new();
 
     public int StartNewDayCalls { get; private set; }
 
     public List<StatAllocation> StatAllocationCalls { get; } = new();
+
+    public int BuyHealthPotionCalls { get; private set; }
 
     public List<string> RemovePresetCalls { get; } = new();
 
@@ -63,6 +67,9 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public PartyQuestActionResult StartSelectedPartyQuestResult { get; set; } =
         PartyQuestActionResult.Success("Quest started.");
+
+    public PartyQuestActionResult InvitePartyQuestResult { get; set; } =
+        PartyQuestActionResult.Success("Party invited to quest.");
 
     public Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
     {
@@ -134,6 +141,12 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task<InventoryActionResult> BuyArmoireAsync(int count, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(InventoryActionResult.Success("Armoire opened."));
+    }
+
+    public Task<InventoryActionResult> BuyHealthPotionAsync(CancellationToken cancellationToken = default)
+    {
+        BuyHealthPotionCalls++;
+        return Task.FromResult(InventoryActionResult.Success("Health potion bought."));
     }
 
     public Task InitializeAsync(CancellationToken cancellationToken = default)
@@ -254,6 +267,12 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(PartyQuestActionResult.Success("Quest marked completed."));
+    }
+
+    public Task<PartyQuestActionResult> InvitePartyToQuestAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        InvitePartyQuestCalls.Add((queueItemId, version));
+        return Task.FromResult(InvitePartyQuestResult);
     }
 
     public Task<PartyQuestActionResult> StartSelectedPartyQuestAsync(string queueItemId, CancellationToken cancellationToken = default)

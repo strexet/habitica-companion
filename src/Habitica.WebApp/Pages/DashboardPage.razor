@@ -1,9 +1,12 @@
 @page "/dashboard"
 @implements IDisposable
 @using System.Globalization
+@using Habitica.Application.Dashboard
+@using Habitica.Domain.Dashboard
 @using Habitica.Rules.Stats
 @inject IAppSessionController SessionController
 @inject CharacterStatsViewModelFactory StatsViewModelFactory
+@inject PendingDamageEstimateFactory PendingDamageEstimateFactory
 @inject ISnackbar Snackbar
 
 <PageTitle>Dashboard</PageTitle>
@@ -136,15 +139,100 @@
             </article>
         </section>
 
-        <section id="stats" class="card-surface dashboard-panel stats-panel">
-            @{
-                var statsViewModel = StatsViewModelFactory.Create(snapshot, SessionController.State.GearCatalogSnapshot);
-                var pendingTotal = GetPendingTotal();
-                var remainingPoints = Math.Max(0, statsViewModel.UnallocatedPoints - pendingTotal);
-                var canMutate = SessionController.State.IsAuthenticated
-                    && !SessionController.State.IsBusy
-                    && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
+        var damageEstimate = PendingDamageEstimateFactory.Create(
+            snapshot,
+            SessionController.State.TaskSnapshot,
+            SessionController.State.PartySnapshot);
+
+        <section class="card-surface dashboard-panel pending-damage-panel">
+            <div class="pending-damage-head">
+                <div>
+                    <p class="section-label">Damage risk</p>
+                    <h2>Pending damage estimate</h2>
+                    <p class="panel-copy">
+                        This estimate uses saved task and party data. Habitica's final Cron result can differ if tasks, buffs, party state, or server formulas changed after the last refresh.
+                    </p>
+                </div>
+                <div class="pending-damage-total">
+                    <strong>@FormatDecimal(damageEstimate.TotalDamage) HP</strong>
+                    <span>estimated incoming damage</span>
+                </div>
+            </div>
+
+            @if (damageEstimate.Risk is PendingDamageRisk.Danger or PendingDamageRisk.Warning)
+            {
+                <MudAlert Dense="true" Severity="@GetPendingDamageSeverity(damageEstimate.Risk)" Variant="Variant.Outlined">
+                    @GetPendingDamageWarning(damageEstimate.Risk)
+                </MudAlert>
             }
+
+            <div class="pending-damage-grid">
+                <article class="pending-damage-source-card">
+                    <span class="dashboard-stat-label">Included</span>
+                    <ul class="pending-damage-list">
+                        @foreach (var source in damageEstimate.IncludedSources)
+                        {
+                            <li>
+                                <strong>@source.Label: @FormatDecimal(source.Damage) HP</strong>
+                                <span>@source.Detail</span>
+                            </li>
+                        }
+                    </ul>
+                </article>
+
+                <article class="pending-damage-source-card">
+                    <span class="dashboard-stat-label">Not included</span>
+                    <ul class="pending-damage-list muted-list">
+                        @foreach (var source in damageEstimate.ExcludedSources)
+                        {
+                            <li>@source</li>
+                        }
+                    </ul>
+                </article>
+            </div>
+
+            <div class="health-potion-panel">
+                <div>
+                    <span class="dashboard-stat-label">Manual recovery</span>
+                    <strong>Buy Health Potion</strong>
+                    <span class="dashboard-stat-note">@GetHealthPotionStatus(snapshot)</span>
+                </div>
+                @if (_showHealthPotionConfirmation)
+                {
+                    <div class="confirmation-actions">
+                        <MudButton Color="Color.Default" Disabled="@SessionController.State.IsBusy" OnClick="CancelHealthPotion" Variant="Variant.Text">
+                            Cancel
+                        </MudButton>
+                        <MudButton Color="Color.Primary"
+                                   Disabled="@(!CanBuyHealthPotion(snapshot))"
+                                   OnClick="BuyHealthPotionAsync"
+                                   Variant="Variant.Filled"
+                                   data-testid="confirm-buy-health-potion">
+                            Confirm purchase
+                        </MudButton>
+                    </div>
+                }
+                else
+                {
+                    <MudButton Color="Color.Primary"
+                               Disabled="@(!CanBuyHealthPotion(snapshot))"
+                               OnClick="ShowHealthPotionConfirmation"
+                               Variant="Variant.Outlined"
+                               data-testid="buy-health-potion">
+                        Buy Health Potion
+                    </MudButton>
+                }
+            </div>
+        </section>
+
+        var statsViewModel = StatsViewModelFactory.Create(snapshot, SessionController.State.GearCatalogSnapshot);
+        var pendingTotal = GetPendingTotal();
+        var remainingPoints = Math.Max(0, statsViewModel.UnallocatedPoints - pendingTotal);
+        var canMutate = SessionController.State.IsAuthenticated
+            && !SessionController.State.IsBusy
+            && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
+
+        <section id="stats" class="card-surface dashboard-panel stats-panel">
             <div class="stats-panel-head">
                 <div>
                     <p class="section-label">Character stats</p>
@@ -307,8 +395,10 @@
 
 @code {
     private readonly Dictionary<string, int> _pendingAllocation = new(StringComparer.Ordinal);
+    private const decimal HealthPotionGoldCost = 25m;
     private int _armoirePurchaseCount = 1;
     private bool _showCronConfirmation;
+    private bool _showHealthPotionConfirmation;
 
     protected override void OnInitialized()
     {
@@ -377,6 +467,80 @@
     {
         var result = await SessionController.StartNewDayAsync();
         _showCronConfirmation = false;
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private static Severity GetPendingDamageSeverity(PendingDamageRisk risk)
+    {
+        return risk switch
+        {
+            PendingDamageRisk.Danger => Severity.Error,
+            PendingDamageRisk.Warning => Severity.Warning,
+            PendingDamageRisk.Info => Severity.Info,
+            _ => Severity.Normal
+        };
+    }
+
+    private static string GetPendingDamageWarning(PendingDamageRisk risk)
+    {
+        return risk switch
+        {
+            PendingDamageRisk.Danger => "You may be knocked out after Cron. Estimated incoming damage is close to or higher than your current HP.",
+            PendingDamageRisk.Warning => "Estimated incoming damage is high compared with your current HP. Consider completing Dailies, healing, or buying a health potion.",
+            _ => "Estimated incoming damage is based on synced data."
+        };
+    }
+
+    private bool CanBuyHealthPotion(UserSnapshot snapshot)
+    {
+        return SessionController.State.IsAuthenticated
+            && !SessionController.State.IsBusy
+            && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh
+            && snapshot.Gold >= HealthPotionGoldCost
+            && (snapshot.MaxHealth <= 0m || snapshot.Health < snapshot.MaxHealth);
+    }
+
+    private string GetHealthPotionStatus(UserSnapshot snapshot)
+    {
+        if (!SessionController.State.IsAuthenticated)
+        {
+            return "Sign in before buying a health potion.";
+        }
+
+        if (SessionController.State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return "Refresh account data before buying a health potion.";
+        }
+
+        if (SessionController.State.IsBusy)
+        {
+            return "Another action is running.";
+        }
+
+        if (snapshot.MaxHealth > 0m && snapshot.Health >= snapshot.MaxHealth)
+        {
+            return "Health is already full.";
+        }
+
+        return snapshot.Gold < HealthPotionGoldCost
+            ? "Needs 25 GP."
+            : "Costs 25 GP and refreshes account health and gold after purchase.";
+    }
+
+    private void ShowHealthPotionConfirmation()
+    {
+        _showHealthPotionConfirmation = true;
+    }
+
+    private void CancelHealthPotion()
+    {
+        _showHealthPotionConfirmation = false;
+    }
+
+    private async Task BuyHealthPotionAsync()
+    {
+        var result = await SessionController.BuyHealthPotionAsync();
+        _showHealthPotionConfirmation = false;
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 

@@ -43,6 +43,12 @@ public interface IRemotePartyDataSyncProvider
         int? participantsCount,
         CancellationToken cancellationToken);
 
+    Task<RemotePartyQuestState> InvitePartyAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        CancellationToken cancellationToken);
+
     Task<RemotePartyQuestState> ReconcileQuestLifecycleAsync(
         PartySyncClaim claim,
         string queueItemId,

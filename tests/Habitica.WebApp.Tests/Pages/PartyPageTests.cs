@@ -246,7 +246,7 @@ public sealed class PartyPageTests : BunitContext
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
-        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+        var sessionController = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
                 IsAuthenticated: true,
@@ -267,7 +267,8 @@ public sealed class PartyPageTests : BunitContext
                     1,
                     null,
                     Array.Empty<PartyMemberSnapshot>()),
-                PartyFreshness: SnapshotFreshnessState.Fresh)));
+                PartyFreshness: SnapshotFreshnessState.Fresh));
+        Services.AddSingleton<IAppSessionController>(sessionController);
 
         var cut = Render<PartyPage>();
 
@@ -284,7 +285,7 @@ public sealed class PartyPageTests : BunitContext
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
-        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+        var sessionController = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
                 IsAuthenticated: true,
@@ -313,7 +314,8 @@ public sealed class PartyPageTests : BunitContext
                         Name: "Magical Axolotl",
                         Description: "Bubbles and <strong>fire</strong>.<br><br>Look out, <em>willpower</em> and **habits**! <script>alert(1)</script>"),
                     Array.Empty<PartyMemberSnapshot>()),
-                PartyFreshness: SnapshotFreshnessState.Fresh)));
+                PartyFreshness: SnapshotFreshnessState.Fresh));
+        Services.AddSingleton<IAppSessionController>(sessionController);
 
         var cut = Render<PartyPage>();
 
@@ -333,7 +335,7 @@ public sealed class PartyPageTests : BunitContext
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
-        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+        var sessionController = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
                 IsAuthenticated: true,
@@ -379,6 +381,16 @@ public sealed class PartyPageTests : BunitContext
                             3,
                             DateTimeOffset.Parse("2026-04-26T09:31:00Z"),
                             "Collection",
+                            new[] { "450 Gold", "Wolf Cub" }),
+                        new PartyQuestPoolEntry(
+                            "party-123",
+                            "sunstone",
+                            "Sunstone Chain",
+                            "user-2",
+                            "Alpha",
+                            1,
+                            DateTimeOffset.Parse("2026-04-26T09:32:00Z"),
+                            "Collection",
                             new[] { "450 Gold", "Wolf Cub" })
                     },
                     new[]
@@ -401,6 +413,22 @@ public sealed class PartyPageTests : BunitContext
                             {
                                 new PartyQuestVote("user-2", "Alpha", 1, DateTimeOffset.Parse("2026-04-26T09:10:00Z"))
                             },
+                            new[] { "450 Gold", "Wolf Cub" }),
+                        new PartyQuestQueueEntry(
+                            "queue-2",
+                            "party-123",
+                            "sunstone",
+                            "Alpha Quest",
+                            "user-2",
+                            "Alpha",
+                            PartyQuestQueueStatus.Queued,
+                            DateTimeOffset.Parse("2026-04-26T09:05:00Z"),
+                            DateTimeOffset.Parse("2026-04-26T09:05:00Z"),
+                            2,
+                            null,
+                            false,
+                            1,
+                            Array.Empty<PartyQuestVote>(),
                             new[] { "450 Gold", "Wolf Cub" })
                     },
                     new[]
@@ -415,13 +443,16 @@ public sealed class PartyPageTests : BunitContext
                             "Alpha",
                             3,
                             new[] { "300 XP" })
-                    }))));
+                    })));
+        Services.AddSingleton<IAppSessionController>(sessionController);
 
         var cut = Render<PartyPage>();
 
         Assert.Contains("Shared quest planning", cut.Markup);
         Assert.Contains("Moonstone Chain", cut.Markup);
+        Assert.Contains("Alpha Quest", cut.Markup);
         Assert.Contains("1 vote", cut.Markup);
+        Assert.Contains("Invite party", cut.Markup);
         Assert.Contains("Mark completed", cut.Markup);
         Assert.Contains("Alpha", cut.Markup);
         Assert.Contains("Quest pool is folded by default", cut.Markup);
@@ -435,8 +466,23 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("5 scrolls owned", cut.Markup);
         Assert.Contains("450 Gold", cut.Markup);
         Assert.Contains("Wolf Cub", cut.Markup);
+        Assert.Contains("Sunstone Chain", cut.Markup);
         Assert.Contains("Gryphon Quest", cut.Markup);
         Assert.Contains("300 XP", cut.Markup);
+
+        cut.FindAll("button")
+            .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal)
+                && !button.HasAttribute("disabled"))
+            .Click();
+        Assert.Equal(("queue-1", 1), Assert.Single(sessionController.InvitePartyQuestCalls));
+
+        cut.Find("[data-testid='hide-not-owned-quests']").Change(true);
+
+        Assert.Contains("Moonstone Chain", cut.Markup);
+        Assert.DoesNotContain("Alpha Quest", cut.Markup);
+        Assert.DoesNotContain("Sunstone Chain", cut.Markup);
+        Assert.Contains("Available from Mage Tester", cut.Markup);
+        Assert.DoesNotContain("Available from Alpha, Mage Tester", cut.Markup);
     }
 
     [Fact]
@@ -793,6 +839,25 @@ public sealed class PartyPageTests : BunitContext
     }
 
     [Fact]
+    public void Selected_quest_party_leader_can_start_inactive_selected_quest()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        var sessionController = new FakeAppSessionController(CreateSelectedQuestState(
+            "leader-id",
+            ownerUserId: "user-id",
+            leaderId: "leader-id"));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<PartyPage>();
+
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Start quest", StringComparison.Ordinal)).Click();
+
+        Assert.Equal("queue-1", Assert.Single(sessionController.StartSelectedPartyQuestCalls));
+    }
+
+    [Fact]
     public void Inactive_quest_renders_response_lists_instead_of_progress_estimates()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -873,7 +938,11 @@ public sealed class PartyPageTests : BunitContext
         }
     }
 
-    private static SessionViewModel CreateSelectedQuestState(string currentUserId, bool isActive = false)
+    private static SessionViewModel CreateSelectedQuestState(
+        string currentUserId,
+        bool isActive = false,
+        string ownerUserId = "user-id",
+        string leaderId = "user-id")
     {
         return new SessionViewModel(
             IsBusy: false,
@@ -916,7 +985,7 @@ public sealed class PartyPageTests : BunitContext
                     new PartyMemberSnapshot("other-user", "Beta", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ParticipationStatus: PartyQuestParticipationStatus.Pending),
                     new PartyMemberSnapshot("rejected-user", "Gamma", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ParticipationStatus: PartyQuestParticipationStatus.Rejected)
                 },
-                leaderId: "user-id"),
+                leaderId: leaderId),
             PartyFreshness: SnapshotFreshnessState.Fresh,
             PartyQuestQueue: new PartyQuestQueueSnapshot(
                 DateTimeOffset.Parse("2026-04-26T09:30:00Z"),
@@ -928,7 +997,7 @@ public sealed class PartyPageTests : BunitContext
                         "party-123",
                         "dragon",
                         "Dragon",
-                        "user-id",
+                        ownerUserId,
                         "Mage Tester",
                         PartyQuestQueueStatus.Selected,
                         DateTimeOffset.Parse("2026-04-26T08:00:00Z"),

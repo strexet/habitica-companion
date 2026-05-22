@@ -80,6 +80,14 @@ export async function markQuestCompleted(claim, queueItemId, version, participan
   });
 }
 
+export async function invitePartyToQuest(claim, queueItemId, version) {
+  return await postPartyAction(claim, {
+    action: "inviteParty",
+    queueItemId,
+    version,
+  });
+}
+
 export async function reconcileQuestLifecycle(claim, queueItemId, questKey, transition, participantsCount, completedByDisplayName) {
   return await postPartyAction(claim, {
     action: "autoReconcileQuest",

@@ -387,15 +387,24 @@
                     <p class="section-label">Party quest queue</p>
                     <h2>Shared quest planning</h2>
                 </div>
-                <MudButton Disabled="@SessionController.State.IsBusy" OnClick="RefreshPartyQuestStateAsync" Variant="Variant.Outlined">
-                    Refresh queue
-                </MudButton>
+                <div class="party-member-actions">
+                    <label class="checkbox-row compact party-toggle">
+                        <input checked="@_hideNotOwnedQuests"
+                               data-testid="hide-not-owned-quests"
+                               type="checkbox"
+                               @onchange="eventArgs => _hideNotOwnedQuests = eventArgs.Value is true" />
+                        <span>Hide quests I do not own</span>
+                    </label>
+                    <MudButton Disabled="@SessionController.State.IsBusy" OnClick="RefreshPartyQuestStateAsync" Variant="Variant.Outlined">
+                        Refresh queue
+                    </MudButton>
+                </div>
             </div>
 
             @{
                 var questState = SessionController.State.PartyQuestQueue;
-                var queueEntries = GetOrderedQueueEntries(questState).ToArray();
-                var poolEntries = questState?.QuestPool ?? Array.Empty<PartyQuestPoolEntry>();
+                var queueEntries = FilterVisibleQueueEntries(GetOrderedQueueEntries(questState)).ToArray();
+                var poolEntries = FilterVisiblePoolEntries(questState?.QuestPool ?? Array.Empty<PartyQuestPoolEntry>()).ToArray();
                 var groupedPoolEntries = GetGroupedPoolEntries(poolEntries).ToArray();
                 var recentEntries = questState?.RecentlyCompleted ?? Array.Empty<PartyRecentlyCompletedQuest>();
             }
@@ -408,7 +417,7 @@
 
                 @if (queueEntries.Length == 0)
                 {
-                    <p class="panel-copy">No shared quest queue entries are available yet. Add one of your quest scrolls from the pool below.</p>
+                    <p class="panel-copy">@(_hideNotOwnedQuests ? "No owned quest queue entries are visible. Clear the owned-only filter to see other party quests." : "No shared quest queue entries are available yet. Add one of your quest scrolls from the pool below.")</p>
                 }
                 else
                 {
@@ -447,6 +456,9 @@
                                     <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => ToggleVoteAsync(entry.QueueItemId))" Variant="Variant.Outlined">
                                         @(HasCurrentUserVote(entry) ? "Remove vote" : "Vote")
                                     </MudButton>
+                                    <MudButton Color="Color.Secondary" Disabled="@(!CanInviteParty(entry) || SessionController.State.IsBusy)" OnClick="@(() => InvitePartyAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Outlined">
+                                        Invite party
+                                    </MudButton>
                                     @if (CanManageQueueEntry(entry))
                                     {
                                         <MudButton Color="Color.Error" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RemoveQueueItemAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Text">
@@ -470,7 +482,7 @@
                 <div class="party-section-head compact-head">
                     <h3>Quest Pool</h3>
                     <div class="party-member-actions">
-                        <span class="ui-pill count-pill">@FormatQuestPoolCount(groupedPoolEntries, poolEntries.Count)</span>
+                        <span class="ui-pill count-pill">@FormatQuestPoolCount(groupedPoolEntries, poolEntries.Length)</span>
                         <button class="secondary-action-button compact" type="button" data-testid="toggle-quest-pool" @onclick="ToggleQuestPool">
                             @(_questPoolExpanded ? "Hide quest pool" : "Show quest pool")
                         </button>
@@ -486,7 +498,7 @@
                 }
                 else if (groupedPoolEntries.Length == 0)
                 {
-                    <p class="panel-copy">No shared quest scroll availability has been published yet. Refresh after syncing inventory to publish your owned quest scrolls.</p>
+                    <p class="panel-copy">@(_hideNotOwnedQuests ? "No owned quest scrolls are visible. Clear the owned-only filter to see other party scrolls." : "No shared quest scroll availability has been published yet. Refresh after syncing inventory to publish your owned quest scrolls.")</p>
                 }
                 else
                 {
@@ -962,6 +974,7 @@
     private string? _pendingScrollElementId;
     private bool _requestedSharedQuestState;
     private bool _questPoolExpanded;
+    private bool _hideNotOwnedQuests;
     private string? _startQuestError;
     private PartyMemberSortMode _memberSortMode = PartyMemberSortMode.Name;
 
@@ -1351,6 +1364,20 @@
             .ThenBy(entry => entry.CreatedAtUtc);
     }
 
+    private IEnumerable<PartyQuestQueueEntry> FilterVisibleQueueEntries(IEnumerable<PartyQuestQueueEntry> entries)
+    {
+        return _hideNotOwnedQuests
+            ? entries.Where(entry => IsCurrentUser(entry.OwnerUserId))
+            : entries;
+    }
+
+    private IEnumerable<PartyQuestPoolEntry> FilterVisiblePoolEntries(IEnumerable<PartyQuestPoolEntry> entries)
+    {
+        return _hideNotOwnedQuests
+            ? entries.Where(entry => IsCurrentUser(entry.OwnerUserId))
+            : entries;
+    }
+
     private static decimal CalculateQueuePriority(PartyQuestQueueEntry entry, IReadOnlyList<PartyRecentlyCompletedQuest> recentlyCompleted)
     {
         var hoursInQueue = Math.Min(72m, (decimal)Math.Max(0d, (DateTimeOffset.UtcNow - entry.CreatedAtUtc).TotalHours));
@@ -1575,6 +1602,17 @@
         return CanManageQueueEntry(entry);
     }
 
+    private bool CanInviteParty(PartyQuestQueueEntry entry)
+    {
+        return IsCurrentUser(entry.OwnerUserId)
+            && entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected;
+    }
+
+    private bool CanForceStartSelectedQuest(PartyQuestQueueEntry entry)
+    {
+        return IsCurrentUser(entry.OwnerUserId) || IsCurrentUserPartyLeader();
+    }
+
     private PartyQuestQueueEntry? GetStartableSelectedQuestEntry(PartyQuestSnapshot quest)
     {
         if (quest.IsActive || string.IsNullOrWhiteSpace(quest.Key))
@@ -1585,7 +1623,7 @@
         return SessionController.State.PartyQuestQueue?.Queue.FirstOrDefault(entry =>
             (entry.Status is PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.InviteSent)
             && string.Equals(entry.QuestKey, quest.Key, StringComparison.Ordinal)
-            && IsCurrentUser(entry.OwnerUserId));
+            && CanForceStartSelectedQuest(entry));
     }
 
     private bool HasCurrentUserVote(PartyQuestQueueEntry entry)
@@ -1703,6 +1741,12 @@
     private async Task MarkCompletedAsync(string queueItemId, int version)
     {
         var result = await SessionController.MarkPartyQuestCompletedAsync(queueItemId, version);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task InvitePartyAsync(string queueItemId, int version)
+    {
+        var result = await SessionController.InvitePartyToQuestAsync(queueItemId, version);
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 
