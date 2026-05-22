@@ -44,8 +44,6 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<(string UserId, string DisplayName)> AssignPartyOwnerCalls { get; } = new();
 
-    public List<(string QueueItemId, int Version, bool OwnerReady)> OwnerReadyCalls { get; } = new();
-
     public List<(string QueueItemId, int Version)> InvitePartyQuestCalls { get; } = new();
 
     public List<string> StartSelectedPartyQuestCalls { get; } = new();
@@ -259,12 +257,6 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task<PartyQuestActionResult> TogglePartyQuestVoteAsync(string queueItemId, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(PartyQuestActionResult.Success("Vote updated."));
-    }
-
-    public Task<PartyQuestActionResult> SetPartyQuestOwnerReadyAsync(string queueItemId, int version, bool ownerReady, CancellationToken cancellationToken = default)
-    {
-        OwnerReadyCalls.Add((queueItemId, version, ownerReady));
-        return Task.FromResult(PartyQuestActionResult.Success(ownerReady ? "Quest owner marked ready." : "Quest owner readiness cleared."));
     }
 
     public Task<PartyQuestActionResult> RemovePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)

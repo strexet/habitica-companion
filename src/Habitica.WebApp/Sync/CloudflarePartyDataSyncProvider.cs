@@ -82,23 +82,6 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
             voterDisplayName);
     }
 
-    public async Task<RemotePartyQuestState> SetQuestOwnerReadyAsync(
-        PartySyncClaim claim,
-        string queueItemId,
-        int version,
-        bool ownerReady,
-        CancellationToken cancellationToken)
-    {
-        var module = await _moduleTask.Value;
-        return await module.InvokeAsync<RemotePartyQuestState>(
-            "setQuestOwnerReady",
-            cancellationToken,
-            claim,
-            queueItemId,
-            version,
-            ownerReady);
-    }
-
     public async Task<RemotePartyQuestState> RemoveQuestQueueItemAsync(
         PartySyncClaim claim,
         string queueItemId,

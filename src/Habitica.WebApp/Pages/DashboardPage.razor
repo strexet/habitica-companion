@@ -37,6 +37,13 @@
             @GetFreshnessLabel(SessionController.State.UserFreshness)
         </MudAlert>
 
+        @if (!string.IsNullOrWhiteSpace(_startNewDayResultMessage))
+        {
+            <MudAlert Class="inline-banner" Dense="true" Severity="@(_startNewDayResultSucceeded ? Severity.Success : Severity.Error)" Variant="Variant.Filled">
+                @_startNewDayResultMessage
+            </MudAlert>
+        }
+
         @if (snapshot.UnallocatedStatPoints > 0)
         {
             <MudAlert Class="inline-banner" Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined">
@@ -55,7 +62,7 @@
                     <p class="section-label">Habitica day</p>
                     <h2>Start New Day</h2>
                     <p class="panel-copy">
-                        Habitica has not processed today for this account yet. Starting a new day runs Habitica's daily reset and refreshes account, tasks, and party data.
+                        Habitica has not processed today for this account yet. Starting a new day uses Habitica's documented daily reset for this account, then refreshes account, tasks, and party data.
                     </p>
                 </div>
 
@@ -63,7 +70,9 @@
                 {
                     <div class="confirmation-panel">
                         <p>
-                            Start new Habitica day? This will run Habitica's daily reset for your account. Missed Dailies may be processed, active quest progress may be updated, and temporary buffs may expire.
+                            Start new Habitica day? This will run Habitica's daily reset for your account.
+                            Missed Dailies may be processed, active quest progress may update, and your temporary buffs may expire.
+                            Party buffs expire separately for each member on that member's next CRON.
                         </p>
                         <div class="confirmation-actions">
                             <MudButton Color="Color.Default" Disabled="@SessionController.State.IsBusy" OnClick="CancelStartNewDay" Variant="Variant.Text">
@@ -398,6 +407,8 @@
     private const decimal HealthPotionGoldCost = 25m;
     private int _armoirePurchaseCount = 1;
     private bool _showCronConfirmation;
+    private bool _startNewDayResultSucceeded;
+    private string? _startNewDayResultMessage;
     private bool _showHealthPotionConfirmation;
 
     protected override void OnInitialized()
@@ -456,6 +467,7 @@
     private void ShowStartNewDayConfirmation()
     {
         _showCronConfirmation = true;
+        _startNewDayResultMessage = null;
     }
 
     private void CancelStartNewDay()
@@ -467,6 +479,8 @@
     {
         var result = await SessionController.StartNewDayAsync();
         _showCronConfirmation = false;
+        _startNewDayResultSucceeded = result.Succeeded;
+        _startNewDayResultMessage = result.Message;
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 

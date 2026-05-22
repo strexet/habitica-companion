@@ -239,10 +239,12 @@ public sealed class DashboardPageTests : BunitContext
 
         cut.Find("[data-testid='start-new-day']").Click();
         Assert.Contains("Missed Dailies may be processed", cut.Markup);
+        Assert.Contains("Party buffs expire separately for each member", cut.Markup);
 
         cut.Find("[data-testid='confirm-start-new-day']").Click();
 
         Assert.Equal(1, controller.StartNewDayCalls);
+        Assert.Contains("Started a new Habitica day.", cut.Markup);
     }
 
     [Fact]

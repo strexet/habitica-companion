@@ -562,7 +562,7 @@ rogue: toolsOfTrade
 healer: protectAura
 ```
 
-The warning is rendered inside the affected spell card to keep the decision close to the Cast button. Actions are `Cancel`, `Cast anyway`, and `Start New Day and Cast`. The optional `Do not warn again for this Habitica day` checkbox stores a local per-user/per-Habitica-day preference under `preferences/spells/cronWarningSuppression`.
+The warning is rendered inside the affected spell card to keep the decision close to the Cast button. It explains that the current user's buffs can expire on that user's CRON and that party buffs expire separately for each member on that member's next CRON. Actions are `Cancel`, `Cast anyway`, and `Start New Day and Cast`. The optional `Do not warn again for this Habitica day` checkbox stores a local per-user/per-Habitica-day preference under `preferences/spells/cronWarningSuppression`.
 
 ### Validation
 
@@ -1173,7 +1173,7 @@ GET /groups/party
 
 Dashboard must not contain business logic. It displays already computed state and invokes use-case services.
 
-Render `Start New Day` only when the current account snapshot says `NeedsCron == true`. The confirmation copy must explain that Habitica will process missed Dailies, active quest progress, and temporary buff expiry. After confirmed Cron, refresh account/tasks/party state through the session controller.
+Render `Start New Day` only when the current account snapshot says `NeedsCron == true`. The confirmation copy must explain that Habitica will process missed Dailies, active quest progress, current-user temporary buff expiry, and party buffs per member's next CRON. After confirmed CRON, refresh account/tasks/party state through the session controller and show an inline success or error result in addition to the snackbar.
 
 The pending damage panel uses `PendingDamageEstimateFactory` to combine incomplete Daily estimates and saved active boss quest pending damage. It must show included sources and unavailable sources separately, and must label the result as an estimate based on synced data.
 
@@ -1209,7 +1209,7 @@ Test:
 - empty state;
 - partial sync failure state;
 - redacted diagnostics.
-- Start New Day confirmation and session-controller call.
+- Start New Day confirmation, result feedback, and session-controller refresh contract.
 - pending damage estimate sources and risk state.
 - health-potion confirmation and session-controller call.
 
@@ -1222,7 +1222,7 @@ Current implementation:
 - dashboard route with cached account cards;
 - dashboard inventory readiness summary;
 - dashboard stat cards fall back to current-only rendering when the API snapshot lacks non-zero stat targets;
-- dashboard Start New Day confirmation when current-user Cron is due;
+- dashboard Start New Day confirmation and inline result when current-user Cron is due;
 - dashboard pending damage estimate with included/excluded source copy and knockout warning;
 - manual health-potion purchase action with confirmation and account refresh;
 - task workspace with cached browsing and planned guarded mutations;
@@ -2073,19 +2073,18 @@ Current display rules:
 11. Publish the current user's owned quest scrolls to the shared party quest pool after party sync when inventory and content metadata are available.
 12. Allow only the current quest owner to add that user's quest scroll to the shared queue.
 13. Allow one vote per party member per queued quest; clicking again removes the vote.
-14. Sort visible queue cards by vote count, owner readiness, queue age, and recently completed penalty.
-15. Let quest owners mark or clear readiness on their own `Queued`, `Selected`, or `InviteSent` queue cards. Readiness is shared party-sync state only; it does not call Habitica.
-16. Let the quest owner remove their own queue item unless owner/admin settings restrict queue edits to management roles.
-17. Let app admins assign the explicit companion-app party owner from expanded member details; when no explicit owner exists, the Habitica party leader remains the automatic party-sync owner.
-18. Let owner/app admins assign and remove Officers from expanded member details.
-19. Let owner/app admins update party-sync settings with short labels and direct helper copy for Officer queue management, Officer moderation, limited queue editing, and member auto updates.
-20. Let owner/app admins and authorized Officers kick and unkick party-sync users. Kicked users cannot read or write normal party-sync data; owner/app admins bypass kicks to recover from mistakes.
-21. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
-22. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
-23. Let role-strip and kick-list member names focus the same expanded member details UI used by the Active Quest finishing-member link.
-24. When Habitica has a quest invitation that is not active yet, hide progress and finish estimates and show accepted, pending, and rejected member response lists instead; names focus the same expanded member details UI.
-25. Show an `Invite party` button on every shared queue card. The button is enabled only for the current quest owner while the queue item is `Queued` or `Selected`; success sends `POST /groups/party/quests/invite/:questKey`, refreshes party state, and marks the shared queue item `InviteSent`.
-26. Let users toggle an owned-only queue filter that hides not-owned queue entries and not-owned quest-pool scrolls without mutating shared party-sync data.
+14. Sort visible queue cards by vote count, queue age, and recently completed penalty.
+15. Let the quest owner remove their own queue item unless owner/admin settings restrict queue edits to management roles.
+16. Let app admins assign the explicit companion-app party owner from expanded member details; when no explicit owner exists, the Habitica party leader remains the automatic party-sync owner.
+17. Let owner/app admins assign and remove Officers from expanded member details.
+18. Let owner/app admins update party-sync settings with short labels and direct helper copy for Officer queue management, Officer moderation, limited queue editing, and member auto updates.
+19. Let owner/app admins and authorized Officers kick and unkick party-sync users. Kicked users cannot read or write normal party-sync data; owner/app admins bypass kicks to recover from mistakes.
+20. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
+21. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
+22. Let role-strip and kick-list member names focus the same expanded member details UI used by the Active Quest finishing-member link.
+23. When Habitica has a quest invitation that is not active yet, hide progress and finish estimates and show accepted, pending, and rejected member response lists instead; names focus the same expanded member details UI.
+24. Show an `Invite party` button on every shared queue card. The button is enabled only when the party has no current Habitica quest and the current user owns a `Queued` or `Selected` item; success sends `POST /groups/party/quests/invite/:questKey`, refreshes party state, and marks the shared queue item `InviteSent`.
+25. Let users toggle an owned-only queue filter that hides not-owned queue entries and not-owned quest-pool scrolls without mutating shared party-sync data.
 ```
 
 ### Validation
@@ -2146,7 +2145,7 @@ Current implementation:
 Next:
 
 - add party-member explorer with throttled pagination and cancellation;
-- add owner readiness toggle and leader pin/force-select controls;
+- add leader pin/force-select controls;
 - replace party-sync credential verification with a tokenless party membership proof.
 
 ## 17. Diagnostics workspace and live integration tests

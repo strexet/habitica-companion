@@ -472,10 +472,17 @@ public sealed class AppSessionControllerTests
             UserId = "user-id"
         });
 
+        var baselineUserSnapshotCalls = syncClient.GetUserSnapshotCalls;
+        var baselineTasksCalls = syncClient.GetTasksCalls;
+        var baselinePartyCalls = syncClient.GetPartySnapshotCalls;
+
         var result = await controller.StartNewDayAsync();
 
         Assert.True(result.Succeeded);
         Assert.Equal(1, syncClient.RunCronCalls);
+        Assert.Equal(baselineUserSnapshotCalls + 1, syncClient.GetUserSnapshotCalls);
+        Assert.Equal(baselineTasksCalls + 1, syncClient.GetTasksCalls);
+        Assert.Equal(baselinePartyCalls + 1, syncClient.GetPartySnapshotCalls);
         Assert.Contains(logStore.Entries, entry =>
             entry.FeatureArea == DiagnosticsFeatureArea.Sync
             && entry.Operation == "cron-start-new-day"
@@ -610,7 +617,7 @@ public sealed class AppSessionControllerTests
             CreateTaskSnapshot(),
             CreatePartySnapshot() with
             {
-                Quest = new PartyQuestSnapshot("dragon", false, 0m, 0m, 2)
+                Quest = null
             });
         var remotePartySync = new FakeRemotePartyDataSyncProvider
         {
@@ -659,13 +666,16 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
-    public async Task SetPartyQuestOwnerReadyAsync_updates_owned_queued_quest()
+    public async Task InvitePartyToQuestAsync_rejects_when_party_already_has_quest()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
         var syncClient = new FakeHabiticaSyncClient(
             CreateUserSnapshot(),
             CreateTaskSnapshot(),
-            CreatePartySnapshot());
+            CreatePartySnapshot() with
+            {
+                Quest = new PartyQuestSnapshot("dragon", false, 0m, 0m, 2)
+            });
         var remotePartySync = new FakeRemotePartyDataSyncProvider
         {
             Snapshot = new RemotePartyDataSnapshot(
@@ -701,10 +711,12 @@ public sealed class AppSessionControllerTests
         await controller.RefreshForPageAsync("/party");
         await controller.RefreshPartyQuestStateAsync();
 
-        var result = await controller.SetPartyQuestOwnerReadyAsync("queue-1", 1, true);
+        var result = await controller.InvitePartyToQuestAsync("queue-1", 1);
 
-        Assert.True(result.Succeeded);
-        Assert.Equal(("queue-1", 1, true), Assert.Single(remotePartySync.OwnerReadyCalls));
+        Assert.False(result.Succeeded);
+        Assert.Equal("The party already has an active or pending quest.", result.Message);
+        Assert.Empty(syncClient.InvitePartyQuestCalls);
+        Assert.Empty(remotePartySync.InvitePartyCalls);
     }
 
     private static AppSessionController CreateController(
@@ -862,8 +874,6 @@ public sealed class AppSessionControllerTests
 
         public List<(string QueueItemId, int Version)> InvitePartyCalls { get; } = new();
 
-        public List<(string QueueItemId, int Version, bool OwnerReady)> OwnerReadyCalls { get; } = new();
-
         public Task<RemotePartyDataSnapshot?> DownloadAsync(
             PartySyncClaim claim,
             CancellationToken cancellationToken)
@@ -892,7 +902,12 @@ public sealed class AppSessionControllerTests
             CancellationToken cancellationToken)
         {
             LastClaim = claim;
-            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow, QuestPool: entries));
+            return Task.FromResult(new RemotePartyQuestState(
+                DateTimeOffset.UtcNow,
+                Snapshot?.QuestQueue,
+                entries,
+                Snapshot?.RecentlyCompleted,
+                Snapshot?.Management));
         }
 
         public Task<RemotePartyQuestState> AddQuestQueueItemAsync(
@@ -927,18 +942,6 @@ public sealed class AppSessionControllerTests
             CancellationToken cancellationToken)
         {
             LastClaim = claim;
-            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
-        }
-
-        public Task<RemotePartyQuestState> SetQuestOwnerReadyAsync(
-            PartySyncClaim claim,
-            string queueItemId,
-            int version,
-            bool ownerReady,
-            CancellationToken cancellationToken)
-        {
-            LastClaim = claim;
-            OwnerReadyCalls.Add((queueItemId, version, ownerReady));
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
         }
 
@@ -1180,17 +1183,32 @@ public sealed class AppSessionControllerTests
 
         public PartySnapshot PartySnapshot { get; set; }
 
+        public int GetPartySnapshotCalls { get; private set; }
+
         public Task<PartySnapshot> GetPartySnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
-            => Task.FromResult(PartySnapshot);
+        {
+            GetPartySnapshotCalls++;
+            return Task.FromResult(PartySnapshot);
+        }
+
+        public int GetTasksCalls { get; private set; }
 
         public Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
-            => Task.FromResult(_taskSnapshot);
+        {
+            GetTasksCalls++;
+            return Task.FromResult(_taskSnapshot);
+        }
 
         public Task<UserSummary> GetUserAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
             => Task.FromResult(new UserSummary(_userSnapshot.DisplayName, _userSnapshot.ClassName, _userSnapshot.Level));
 
+        public int GetUserSnapshotCalls { get; private set; }
+
         public Task<UserSnapshot> GetUserSnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
-            => Task.FromResult(_userSnapshot);
+        {
+            GetUserSnapshotCalls++;
+            return Task.FromResult(_userSnapshot);
+        }
     }
 
     private static UserSnapshot CreateUserSnapshot()

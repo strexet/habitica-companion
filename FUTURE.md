@@ -30,6 +30,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Inventory preset layout, stat highlighting, equipment explorer, and preset persistence.
 - Task browsing, type/status filters, guarded task scoring controls, expandable details, and task mutation freshness gates.
 - Spell page, target recommendations, resource checks, and not-CRONed buff warning flow.
+- Dashboard Start New Day action with explicit CRON confirmation, result feedback, and post-CRON refresh.
 - Party page active quest metadata/rewards, CRON summary, member CRON graph, shared quest pool, queue, voting, recent completions, owner/admin/Officer controls, and quest start action.
 - Dashboard pending damage estimate, knockout warning, and manual health-potion purchase action.
 - Split-key encrypted Cloudflare app-data sync, legacy single-blob restore fallback, per-section payload guard, partial-success sync behavior, and refresh coordinator deduplication.
@@ -38,30 +39,6 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### CRON Button Safety Flow
-
-Goal: add a user-triggered CRON action only if the documented Habitica API route and app flow support it safely.
-
-Touch:
-- `HABITICA_API.md`
-- `src/Habitica.Api`
-- `src/Habitica.Application`
-- `src/Habitica.WebApp/Pages/DashboardPage.razor`
-- direct tests under `tests/`
-- `FEATURES.md`
-
-Out of scope:
-- bypassing Habitica's "Record Yesterday's Activity" flow;
-- auto-running CRON;
-- broad refresh refactors.
-
-Acceptance:
-- If the route is unavailable or unsafe, add a documented blocked-state UI instead of a mutation.
-- If implemented, the action has explicit confirmation, clear success/error states, and invalidates UserSummary, Tasks, Party, Skills/buffs, Inventory if needed, and derived dashboard data.
-- Buff warning copy explains that party buffs expire per member's next CRON.
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` mutating-action and feedback sections.
 
 ### Party Queue Control Completion
 

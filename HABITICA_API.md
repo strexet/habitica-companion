@@ -349,6 +349,7 @@ Recommended client usage:
 - Show the action as `Start New Day` in UI copy; keep `Cron` in technical logs/docs.
 - Render the Dashboard button only when current-user data indicates `flags.needsCron == true` or a derived `lastCron < currentHabiticaDayStartUtc`.
 - Require confirmation before calling the endpoint.
+- Confirmation and buff-warning copy must distinguish the authenticated user's temporary buff expiry from party-wide buff expiry, which happens separately for each member on that member's next Cron.
 - After success, refresh `/user`, `/tasks/user`, and party state if the user is in a party.
 - If Cron succeeds but a follow-up refresh fails, report the refresh failure separately; do not repeat Cron implicitly.
 - If Cron fails before completion, do not continue with any chained spell cast.

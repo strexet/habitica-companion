@@ -63,15 +63,6 @@ export async function toggleQuestVote(claim, queueItemId, voterDisplayName) {
   });
 }
 
-export async function setQuestOwnerReady(claim, queueItemId, version, ownerReady) {
-  return await postPartyAction(claim, {
-    action: "setOwnerReady",
-    queueItemId,
-    version,
-    ownerReady: ownerReady === true,
-  });
-}
-
 export async function removeQuestQueueItem(claim, queueItemId, version) {
   return await postPartyAction(claim, {
     action: "removeQueueItem",

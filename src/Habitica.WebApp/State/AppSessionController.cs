@@ -325,52 +325,6 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
-    public async Task<PartyQuestActionResult> SetPartyQuestOwnerReadyAsync(string queueItemId, int version, bool ownerReady, CancellationToken cancellationToken = default)
-    {
-        if (!_featureOptions.PartySyncEnabled)
-        {
-            return PartyQuestActionResult.Failure("Shared party sync is disabled.");
-        }
-
-        var claim = await ResolvePartySyncClaimAsync(cancellationToken);
-        if (claim is null)
-        {
-            return PartyQuestActionResult.Failure("Sign in with an active party before updating quest readiness.");
-        }
-
-        var entry = State.PartyQuestQueue?.Queue.FirstOrDefault(candidate =>
-            string.Equals(candidate.QueueItemId, queueItemId, StringComparison.Ordinal));
-        if (entry is null)
-        {
-            return PartyQuestActionResult.Failure("Quest queue item was not found.");
-        }
-        if (!string.Equals(entry.OwnerUserId, claim.UserId, StringComparison.Ordinal))
-        {
-            return PartyQuestActionResult.Failure("Only the quest owner can update readiness.");
-        }
-        if (entry.Status is not (PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.InviteSent))
-        {
-            return PartyQuestActionResult.Failure("Only queued, selected, or invited quests can update readiness.");
-        }
-
-        try
-        {
-            var state = await _remotePartyDataSyncProvider.SetQuestOwnerReadyAsync(
-                claim,
-                queueItemId,
-                version,
-                ownerReady,
-                cancellationToken);
-            ApplyPartyQuestState(claim.PartyId, state);
-            return PartyQuestActionResult.Success(ownerReady ? "Quest owner marked ready." : "Quest owner readiness cleared.");
-        }
-        catch (Exception exception)
-        {
-            SetState(State with { ErrorMessage = exception.Message });
-            return PartyQuestActionResult.Failure(exception.Message);
-        }
-    }
-
     public async Task<PartyQuestActionResult> RemovePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
     {
         if (!_featureOptions.PartySyncEnabled)
@@ -461,6 +415,10 @@ public sealed class AppSessionController : IAppSessionController
         if (entry.Status is not (PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected))
         {
             return PartyQuestActionResult.Failure("Only queued or selected quests can invite the party.");
+        }
+        if (!string.IsNullOrWhiteSpace(State.PartySnapshot?.Quest?.Key))
+        {
+            return PartyQuestActionResult.Failure("The party already has an active or pending quest.");
         }
 
         SetState(State with { ErrorMessage = null, IsBusy = true });

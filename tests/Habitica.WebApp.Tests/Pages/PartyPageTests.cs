@@ -452,7 +452,6 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Moonstone Chain", cut.Markup);
         Assert.Contains("Alpha Quest", cut.Markup);
         Assert.Contains("1 vote", cut.Markup);
-        Assert.Contains("Mark ready", cut.Markup);
         Assert.Contains("Invite party", cut.Markup);
         Assert.Contains("Mark completed", cut.Markup);
         Assert.Contains("Alpha", cut.Markup);
@@ -470,12 +469,6 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Sunstone Chain", cut.Markup);
         Assert.Contains("Gryphon Quest", cut.Markup);
         Assert.Contains("300 XP", cut.Markup);
-
-        cut.FindAll("button")
-            .Single(button => button.TextContent.Contains("Mark ready", StringComparison.Ordinal)
-                && !button.HasAttribute("disabled"))
-            .Click();
-        Assert.Equal(("queue-1", 1, true), Assert.Single(sessionController.OwnerReadyCalls));
 
         cut.FindAll("button")
             .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal)
@@ -843,6 +836,23 @@ public sealed class PartyPageTests : BunitContext
         cut.FindAll("button").Single(button => button.TextContent.Contains("Start quest", StringComparison.Ordinal)).Click();
 
         Assert.Equal("queue-1", Assert.Single(sessionController.StartSelectedPartyQuestCalls));
+    }
+
+    [Fact]
+    public void Quest_invite_action_is_disabled_when_party_already_has_quest()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id"));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<PartyPage>();
+
+        var inviteButton = cut.FindAll("button")
+            .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal));
+
+        Assert.True(inviteButton.HasAttribute("disabled"));
     }
 
     [Fact]

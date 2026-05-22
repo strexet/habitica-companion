@@ -440,10 +440,6 @@
                                         <dd>@ResolveQuestType(entry.QuestKey)</dd>
                                     </div>
                                     <div>
-                                        <dt>Owner readiness</dt>
-                                        <dd>@(entry.OwnerReady ? "Ready" : "Not marked ready")</dd>
-                                    </div>
-                                    <div>
                                         <dt>Recently completed</dt>
                                         <dd>@GetRecentlyCompletedLabel(entry.QuestKey, recentEntries)</dd>
                                     </div>
@@ -455,9 +451,6 @@
                                 <div class="party-quest-card-actions">
                                     <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => ToggleVoteAsync(entry.QueueItemId))" Variant="Variant.Outlined">
                                         @(HasCurrentUserVote(entry) ? "Remove vote" : "Vote")
-                                    </MudButton>
-                                    <MudButton Color="Color.Info" Disabled="@(!CanToggleOwnerReady(entry) || SessionController.State.IsBusy)" OnClick="@(() => SetOwnerReadyAsync(entry.QueueItemId, entry.Version, !entry.OwnerReady))" Variant="Variant.Outlined">
-                                        @(entry.OwnerReady ? "Clear ready" : "Mark ready")
                                     </MudButton>
                                     <MudButton Color="Color.Secondary" Disabled="@(!CanInviteParty(entry) || SessionController.State.IsBusy)" OnClick="@(() => InvitePartyAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Outlined">
                                         Invite party
@@ -1384,8 +1377,7 @@
     private static decimal CalculateQueuePriority(PartyQuestQueueEntry entry, IReadOnlyList<PartyRecentlyCompletedQuest> recentlyCompleted)
     {
         var hoursInQueue = Math.Min(72m, (decimal)Math.Max(0d, (DateTimeOffset.UtcNow - entry.CreatedAtUtc).TotalHours));
-        var readinessBonus = entry.OwnerReady ? 50m : 0m;
-        return entry.VoteCount * 1000m + readinessBonus + hoursInQueue - GetRecentlyCompletedPenalty(entry.QuestKey, recentlyCompleted);
+        return entry.VoteCount * 1000m + hoursInQueue - GetRecentlyCompletedPenalty(entry.QuestKey, recentlyCompleted);
     }
 
     private static decimal GetRecentlyCompletedPenalty(string questKey, IReadOnlyList<PartyRecentlyCompletedQuest> recentlyCompleted)
@@ -1608,13 +1600,13 @@
     private bool CanInviteParty(PartyQuestQueueEntry entry)
     {
         return IsCurrentUser(entry.OwnerUserId)
-            && entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected;
+            && entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected
+            && !HasCurrentPartyQuest();
     }
 
-    private bool CanToggleOwnerReady(PartyQuestQueueEntry entry)
+    private bool HasCurrentPartyQuest()
     {
-        return IsCurrentUser(entry.OwnerUserId)
-            && entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.InviteSent;
+        return !string.IsNullOrWhiteSpace(SessionController.State.PartySnapshot?.Quest?.Key);
     }
 
     private bool CanForceStartSelectedQuest(PartyQuestQueueEntry entry)
@@ -1738,12 +1730,6 @@
     private async Task ToggleVoteAsync(string queueItemId)
     {
         var result = await SessionController.TogglePartyQuestVoteAsync(queueItemId);
-        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
-    }
-
-    private async Task SetOwnerReadyAsync(string queueItemId, int version, bool ownerReady)
-    {
-        var result = await SessionController.SetPartyQuestOwnerReadyAsync(queueItemId, version, ownerReady);
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 

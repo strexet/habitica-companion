@@ -176,6 +176,7 @@ public sealed class SpellsPageTests : BunitContext
         cut.Find("[data-testid='cast-spell-toolsOfTrade']").Click();
 
         Assert.Contains("Buff timing", cut.Markup);
+        Assert.Contains("Party buffs expire separately for each member", cut.Markup);
         Assert.Empty(controller.CastSpellCalls);
 
         cut.Find("[data-testid='start-day-and-cast-toolsOfTrade']").Click();

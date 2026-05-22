@@ -30,13 +30,6 @@ public interface IRemotePartyDataSyncProvider
         string voterDisplayName,
         CancellationToken cancellationToken);
 
-    Task<RemotePartyQuestState> SetQuestOwnerReadyAsync(
-        PartySyncClaim claim,
-        string queueItemId,
-        int version,
-        bool ownerReady,
-        CancellationToken cancellationToken);
-
     Task<RemotePartyQuestState> RemoveQuestQueueItemAsync(
         PartySyncClaim claim,
         string queueItemId,
