@@ -222,6 +222,7 @@
                     var pendingUserProgress = GetPendingUserProgress(quest);
                     var pendingPartyProgress = GetPendingPartyProgress(quest);
                     var estimatedPostCronProgress = GetEstimatedPostCronProgress(quest);
+                    var startableQuestEntry = GetStartableSelectedQuestEntry(quest);
 
                     <article class="party-quest-card active-quest-card">
                         <div class="party-quest-card-head">
@@ -234,9 +235,22 @@
                             </div>
                             <div class="party-quest-card-actions">
                                 <MudButton Href="https://habitica.com/party" Target="_blank" Variant="Variant.Outlined">Open in Habitica</MudButton>
+                                @if (startableQuestEntry is not null)
+                                {
+                                    <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => StartSelectedQuestAsync(startableQuestEntry.QueueItemId))" Variant="Variant.Filled">
+                                        Start quest
+                                    </MudButton>
+                                }
                                 <MudButton Disabled="@SessionController.State.IsBusy" OnClick="RefreshPartyQuestStateAsync" Variant="Variant.Text">Refresh quest state</MudButton>
                             </div>
                         </div>
+
+                        @if (!string.IsNullOrWhiteSpace(_startQuestError))
+                        {
+                            <MudAlert Dense="true" Severity="Severity.Error" Variant="Variant.Outlined">
+                                @_startQuestError
+                            </MudAlert>
+                        }
 
                         <dl class="dashboard-definition-list party-quest-definition-list compact-definition-list">
                             <div>
@@ -926,6 +940,7 @@
     private string? _pendingScrollElementId;
     private bool _requestedSharedQuestState;
     private bool _questPoolExpanded;
+    private string? _startQuestError;
     private PartyMemberSortMode _memberSortMode = PartyMemberSortMode.Name;
 
     protected override void OnInitialized()
@@ -1468,6 +1483,19 @@
         return CanManageQueueEntry(entry);
     }
 
+    private PartyQuestQueueEntry? GetStartableSelectedQuestEntry(PartyQuestSnapshot quest)
+    {
+        if (quest.IsActive || string.IsNullOrWhiteSpace(quest.Key))
+        {
+            return null;
+        }
+
+        return SessionController.State.PartyQuestQueue?.Queue.FirstOrDefault(entry =>
+            (entry.Status is PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.InviteSent)
+            && string.Equals(entry.QuestKey, quest.Key, StringComparison.Ordinal)
+            && IsCurrentUser(entry.OwnerUserId));
+    }
+
     private bool HasCurrentUserVote(PartyQuestQueueEntry entry)
     {
         return entry.Votes.Any(vote => IsCurrentUser(vote.VoterUserId));
@@ -1584,6 +1612,19 @@
     {
         var result = await SessionController.MarkPartyQuestCompletedAsync(queueItemId, version);
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task StartSelectedQuestAsync(string queueItemId)
+    {
+        _startQuestError = null;
+        var result = await SessionController.StartSelectedPartyQuestAsync(queueItemId);
+        if (result.Succeeded)
+        {
+            Snackbar.Add(result.Message, Severity.Success);
+            return;
+        }
+
+        _startQuestError = result.Message;
     }
 
     private async Task AssignOfficerAsync(PartyMemberSnapshot member)

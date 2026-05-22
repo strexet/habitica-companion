@@ -776,6 +776,67 @@ public sealed class PartyPageTests : BunitContext
         Assert.Equal(("member-id", "Beta"), sessionController.AssignPartyOwnerCalls.Single());
     }
 
+    [Fact]
+    public void Selected_quest_owner_can_start_inactive_selected_quest()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id"));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<PartyPage>();
+
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Start quest", StringComparison.Ordinal)).Click();
+
+        Assert.Equal("queue-1", Assert.Single(sessionController.StartSelectedPartyQuestCalls));
+    }
+
+    [Fact]
+    public void Selected_quest_start_action_is_hidden_for_non_owner()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("other-user")));
+
+        var cut = Render<PartyPage>();
+
+        Assert.DoesNotContain("Start quest", cut.Markup);
+    }
+
+    [Fact]
+    public void Selected_quest_start_action_is_hidden_for_active_quest()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("user-id", isActive: true)));
+
+        var cut = Render<PartyPage>();
+
+        Assert.DoesNotContain("Start quest", cut.Markup);
+    }
+
+    [Fact]
+    public void Selected_quest_start_failure_renders_inline_error()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id"))
+        {
+            StartSelectedPartyQuestResult = PartyQuestActionResult.Failure("Habitica rejected the quest start.")
+        };
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<PartyPage>();
+
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Start quest", StringComparison.Ordinal)).Click();
+
+        Assert.Contains("Habitica rejected the quest start.", cut.Markup);
+    }
+
     private static void AssertMarkupOrder(string markup, params string[] labels)
     {
         var previousIndex = -1;
@@ -786,6 +847,63 @@ public sealed class PartyPageTests : BunitContext
             Assert.True(index > previousIndex, $"{label} should render after the previous section.");
             previousIndex = index;
         }
+    }
+
+    private static SessionViewModel CreateSelectedQuestState(string currentUserId, bool isActive = false)
+    {
+        return new SessionViewModel(
+            IsBusy: false,
+            IsAuthenticated: true,
+            DisplayName: "Mage Tester",
+            ErrorMessage: null,
+            LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+            TaskFreshness: SnapshotFreshnessState.Fresh,
+            TaskSnapshot: null,
+            UserId: currentUserId,
+            UserSnapshot: CreateSnapshot(),
+            UserFreshness: SnapshotFreshnessState.Fresh,
+            PartySnapshot: new PartySnapshot(
+                DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                "party-123",
+                "Night Owls",
+                "Quest-focused party",
+                2,
+                new PartyQuestSnapshot(
+                    "dragon",
+                    isActive,
+                    0m,
+                    0m,
+                    2,
+                    Name: "Dragon"),
+                new[]
+                {
+                    new PartyMemberSnapshot("user-id", "Mage Tester", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
+                    new PartyMemberSnapshot("other-user", "Beta", null, null, null, PartyCronState.Unknown, "Unknown.", null, null)
+                },
+                leaderId: "user-id"),
+            PartyFreshness: SnapshotFreshnessState.Fresh,
+            PartyQuestQueue: new PartyQuestQueueSnapshot(
+                DateTimeOffset.Parse("2026-04-26T09:30:00Z"),
+                Array.Empty<PartyQuestPoolEntry>(),
+                new[]
+                {
+                    new PartyQuestQueueEntry(
+                        "queue-1",
+                        "party-123",
+                        "dragon",
+                        "Dragon",
+                        "user-id",
+                        "Mage Tester",
+                        PartyQuestQueueStatus.Selected,
+                        DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                        DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                        1,
+                        null,
+                        true,
+                        1,
+                        Array.Empty<PartyQuestVote>())
+                },
+                Array.Empty<PartyRecentlyCompletedQuest>()));
     }
 
     private static UserSnapshot CreateSnapshot()

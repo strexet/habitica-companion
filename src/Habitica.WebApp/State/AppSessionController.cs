@@ -391,6 +391,107 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    public async Task<PartyQuestActionResult> StartSelectedPartyQuestAsync(string queueItemId, CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return PartyQuestActionResult.Failure("Sign in before starting selected quests.");
+        }
+
+        var entry = State.PartyQuestQueue?.Queue.FirstOrDefault(candidate =>
+            string.Equals(candidate.QueueItemId, queueItemId, StringComparison.Ordinal));
+        if (entry is null)
+        {
+            return PartyQuestActionResult.Failure("Selected quest was not found.");
+        }
+
+        if (!string.Equals(entry.OwnerUserId, credentials.UserId, StringComparison.Ordinal))
+        {
+            return PartyQuestActionResult.Failure("Only the selected quest owner can start it.");
+        }
+
+        if (entry.Status is not (PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.InviteSent))
+        {
+            return PartyQuestActionResult.Failure("Only selected quests can be started.");
+        }
+
+        var quest = State.PartySnapshot?.Quest;
+        if (quest is null
+            || quest.IsActive
+            || string.IsNullOrWhiteSpace(quest.Key)
+            || !string.Equals(quest.Key, entry.QuestKey, StringComparison.Ordinal))
+        {
+            return PartyQuestActionResult.Failure("Refresh party quest state before starting the selected quest.");
+        }
+
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        try
+        {
+            await _habiticaSyncClient.StartPartyQuestAsync(credentials, cancellationToken);
+            var partySnapshot = await _habiticaSyncClient.GetPartySnapshotAsync(credentials, cancellationToken);
+            await _partySnapshotStore.SaveAsync(partySnapshot, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+
+            var claim = await ResolvePartySyncClaimAsync(cancellationToken);
+            if (claim is not null)
+            {
+                try
+                {
+                    var remoteState = await _remotePartyDataSyncProvider.ReconcileQuestLifecycleAsync(
+                        claim,
+                        entry.QueueItemId,
+                        entry.QuestKey,
+                        "activate",
+                        null,
+                        null,
+                        cancellationToken);
+                    ApplyPartyQuestState(claim.PartyId, remoteState);
+                }
+                catch (Exception exception) when (exception is not OperationCanceledException)
+                {
+                    await _diagnosticsLogWriter.WriteAsync(
+                        DiagnosticsFeatureArea.Party,
+                        "party-quest-start-reconcile",
+                        DiagnosticsSeverity.Warning,
+                        DiagnosticsMode.Local,
+                        $"Quest started, but shared queue activation failed: {exception.Message}",
+                        new Dictionary<string, string>(StringComparer.Ordinal)
+                        {
+                            ["queueItemId"] = entry.QueueItemId,
+                            ["questKey"] = entry.QuestKey
+                        },
+                        cancellationToken);
+                }
+            }
+
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Party,
+                "party-quest-start",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                $"Started quest '{entry.QuestName}'.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["queueItemId"] = entry.QueueItemId,
+                    ["questKey"] = entry.QuestKey,
+                    ["requestCount"] = "2"
+                },
+                cancellationToken);
+
+            _ = TryMergeAndUploadPartySyncAsync(credentials, cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+            return PartyQuestActionResult.Success("Quest started.");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return PartyQuestActionResult.Failure(exception.Message);
+        }
+    }
+
     public async Task<PartyQuestActionResult> AssignPartySyncOfficerAsync(string userId, string displayName, CancellationToken cancellationToken = default)
     {
         return await RunPartySyncManagementActionAsync(

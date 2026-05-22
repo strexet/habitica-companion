@@ -116,6 +116,12 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         using var _ = await SendForDocumentAsync(request, cancellationToken);
     }
 
+    public async Task StartPartyQuestAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(HttpMethod.Post, "groups/party/quests/force-start", credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
     public async Task<PartySnapshot> GetPartySnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
     {
         var retrievedAtUtc = DateTimeOffset.UtcNow;

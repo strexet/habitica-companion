@@ -44,6 +44,8 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<(string UserId, string DisplayName)> AssignPartyOwnerCalls { get; } = new();
 
+    public List<string> StartSelectedPartyQuestCalls { get; } = new();
+
     public int StartNewDayCalls { get; private set; }
 
     public List<StatAllocation> StatAllocationCalls { get; } = new();
@@ -58,6 +60,9 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public LocalDataActionResult LocalDataResult { get; set; } =
         LocalDataActionResult.Success("Local data operation completed.", "{}");
+
+    public PartyQuestActionResult StartSelectedPartyQuestResult { get; set; } =
+        PartyQuestActionResult.Success("Quest started.");
 
     public Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
     {
@@ -249,6 +254,12 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(PartyQuestActionResult.Success("Quest marked completed."));
+    }
+
+    public Task<PartyQuestActionResult> StartSelectedPartyQuestAsync(string queueItemId, CancellationToken cancellationToken = default)
+    {
+        StartSelectedPartyQuestCalls.Add(queueItemId);
+        return Task.FromResult(StartSelectedPartyQuestResult);
     }
 
     public Task<PartyQuestActionResult> AssignPartySyncOfficerAsync(string userId, string displayName, CancellationToken cancellationToken = default)

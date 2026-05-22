@@ -337,6 +337,30 @@ public sealed class HabiticaApiClientTests
     }
 
     [Fact]
+    public async Task StartPartyQuestAsync_sends_force_start_request()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.StartPartyQuestAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/groups/party/quests/force-start", capturedRequest.RequestUri!.ToString());
+        Assert.Null(capturedRequest.Content);
+    }
+
+    [Fact]
     public async Task AllocateStatsAsync_sends_bulk_allocation_request()
     {
         HttpRequestMessage? capturedRequest = null;

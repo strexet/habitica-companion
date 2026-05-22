@@ -30,4 +30,6 @@ public interface IHabiticaSyncClient
     Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 
     Task ScoreTaskAsync(HabiticaCredentials credentials, string taskId, TaskScoreDirection direction, CancellationToken cancellationToken);
+
+    Task StartPartyQuestAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 }

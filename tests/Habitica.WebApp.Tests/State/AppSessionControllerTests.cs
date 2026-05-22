@@ -450,6 +450,67 @@ public sealed class AppSessionControllerTests
             && entry.Severity == DiagnosticsSeverity.Success);
     }
 
+    [Fact]
+    public async Task StartSelectedPartyQuestAsync_force_starts_selected_owned_quest_and_refreshes_party()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot(),
+            CreateTaskSnapshot(),
+            CreatePartySnapshot() with
+            {
+                Quest = new PartyQuestSnapshot("dragon", false, 0m, 0m, 2)
+            });
+        var remotePartySync = new FakeRemotePartyDataSyncProvider
+        {
+            Snapshot = new RemotePartyDataSnapshot(
+                null,
+                null,
+                DateTimeOffset.UtcNow,
+                QuestQueue: new[]
+                {
+                    new PartyQuestQueueEntry(
+                        "queue-1",
+                        "party-123",
+                        "dragon",
+                        "Dragon",
+                        "user-id",
+                        "Mage Tester",
+                        PartyQuestQueueStatus.Selected,
+                        DateTimeOffset.UtcNow,
+                        DateTimeOffset.UtcNow,
+                        1,
+                        null,
+                        true,
+                        1,
+                        Array.Empty<PartyQuestVote>())
+                })
+        };
+        var controller = CreateController(logStore, syncClient, remotePartyDataSyncProvider: remotePartySync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        await controller.RefreshForPageAsync("/party");
+        await controller.RefreshPartyQuestStateAsync();
+        syncClient.PartySnapshot = syncClient.PartySnapshot with
+        {
+            Quest = new PartyQuestSnapshot("dragon", true, 12.5m, 3m, 2)
+        };
+
+        var result = await controller.StartSelectedPartyQuestAsync("queue-1");
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(1, syncClient.StartPartyQuestCalls);
+        Assert.True(controller.State.PartySnapshot?.Quest?.IsActive);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Party
+            && entry.Operation == "party-quest-start"
+            && entry.Severity == DiagnosticsSeverity.Success);
+    }
+
     private static AppSessionController CreateController(
         FakeDiagnosticsLogStore logStore,
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
@@ -806,13 +867,12 @@ public sealed class AppSessionControllerTests
     {
         private readonly UserSnapshot _userSnapshot;
         private readonly TaskCollectionSnapshot _taskSnapshot;
-        private readonly PartySnapshot _partySnapshot;
 
         public FakeHabiticaSyncClient(UserSnapshot userSnapshot, TaskCollectionSnapshot taskSnapshot, PartySnapshot partySnapshot)
         {
             _userSnapshot = userSnapshot;
             _taskSnapshot = taskSnapshot;
-            _partySnapshot = partySnapshot;
+            PartySnapshot = partySnapshot;
         }
 
         public List<(string SpellId, string? TargetTaskId)> CastCalls { get; } = new();
@@ -824,6 +884,8 @@ public sealed class AppSessionControllerTests
         public List<StatAllocation> StatAllocationCalls { get; } = new();
 
         public List<(string TaskId, TaskScoreDirection Direction)> ScoreTaskCalls { get; } = new();
+
+        public int StartPartyQuestCalls { get; private set; }
 
         public Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
         {
@@ -863,6 +925,12 @@ public sealed class AppSessionControllerTests
             return Task.CompletedTask;
         }
 
+        public Task StartPartyQuestAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            StartPartyQuestCalls++;
+            return Task.CompletedTask;
+        }
+
         public Task<ArmoirePurchaseSnapshot> BuyArmoireAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             return Task.FromResult(new ArmoirePurchaseSnapshot("food", "Fish", "Fish", null, "Found Fish."));
@@ -871,8 +939,10 @@ public sealed class AppSessionControllerTests
         public Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
             => Task.FromResult(new GearCatalogSnapshot(DateTimeOffset.UtcNow, new Dictionary<string, GearCatalogItem>()));
 
+        public PartySnapshot PartySnapshot { get; set; }
+
         public Task<PartySnapshot> GetPartySnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
-            => Task.FromResult(_partySnapshot);
+            => Task.FromResult(PartySnapshot);
 
         public Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
             => Task.FromResult(_taskSnapshot);

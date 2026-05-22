@@ -84,6 +84,8 @@ public interface IAppSessionController
 
     Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default);
 
+    Task<PartyQuestActionResult> StartSelectedPartyQuestAsync(string queueItemId, CancellationToken cancellationToken = default);
+
     Task<PartyQuestActionResult> AssignPartySyncOfficerAsync(string userId, string displayName, CancellationToken cancellationToken = default);
 
     Task<PartyQuestActionResult> AssignPartySyncOwnerAsync(string userId, string displayName, CancellationToken cancellationToken = default);
