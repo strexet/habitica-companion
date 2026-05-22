@@ -119,6 +119,14 @@ public sealed class LocalUserDataPortabilityService
         await _keyValueStorage.SetRawJsonAsync(record.Key, nextJson, cancellationToken);
     }
 
+    public async Task ClearSectionAsync(string storageKey, CancellationToken cancellationToken)
+    {
+        if (StorageKeys.PortableDataKeys.Contains(storageKey, StringComparer.Ordinal))
+        {
+            await _keyValueStorage.RemoveAsync(storageKey, cancellationToken);
+        }
+    }
+
     public string Serialize(LocalUserDataBundle bundle)
     {
         return JsonSerializer.Serialize(bundle, JsonOptions);
@@ -182,6 +190,7 @@ public sealed class LocalUserDataPortabilityService
             StorageKeys.EquipmentPresets => MergeArrayByProperty(localJson, incomingJson, "id"),
             StorageKeys.DiagnosticsLogEntries => MergeArrayByProperty(localJson, incomingJson, "id"),
             StorageKeys.PartyCronHistory => MergePartyCronHistory(localJson, incomingJson),
+            StorageKeys.TaskOrderPreferences => MergeTaskOrderPreferences(localJson, incomingJson),
             StorageKeys.LatestTaskSnapshot => PickNewerSnapshot(localJson, incomingJson, "retrievedAtUtc"),
             StorageKeys.LatestUserSnapshot => PickNewerSnapshot(localJson, incomingJson, "retrievedAtUtc"),
             StorageKeys.LatestPartySnapshot => PickNewerSnapshot(localJson, incomingJson, "retrievedAtUtc"),
@@ -230,6 +239,38 @@ public sealed class LocalUserDataPortabilityService
         });
     }
 
+    private static string MergeTaskOrderPreferences(string localJson, string incomingJson)
+    {
+        var local = JsonNode.Parse(localJson)?["ordersByType"]?.AsObject() ?? new JsonObject();
+        var incoming = JsonNode.Parse(incomingJson)?["ordersByType"]?.AsObject() ?? new JsonObject();
+        var merged = new JsonObject();
+
+        foreach (var key in incoming.Select(static pair => pair.Key).Concat(local.Select(static pair => pair.Key)).Distinct(StringComparer.Ordinal))
+        {
+            var localIds = ReadStringArray(local[key]);
+            var incomingIds = ReadStringArray(incoming[key]);
+            merged[key] = new JsonArray(MergeTaskOrderIds(localIds, incomingIds).Select<string, JsonNode?>(static id => JsonValue.Create(id)).ToArray());
+        }
+
+        return SerializeNode(new JsonObject
+        {
+            ["ordersByType"] = merged
+        });
+    }
+
+    private static IReadOnlyList<string> MergeTaskOrderIds(IReadOnlyList<string> localIds, IReadOnlyList<string> incomingIds)
+    {
+        var localSet = localIds.ToHashSet(StringComparer.Ordinal);
+        var incomingSet = incomingIds.ToHashSet(StringComparer.Ordinal);
+        var result = new List<string>();
+
+        result.AddRange(incomingIds.Where(localSet.Contains));
+        result.AddRange(localIds.Where(id => !incomingSet.Contains(id)));
+        result.AddRange(incomingIds.Where(id => !localSet.Contains(id)));
+
+        return result.Distinct(StringComparer.Ordinal).ToArray();
+    }
+
     private static string PickNewerSnapshot(string localJson, string incomingJson, string timestampProperty)
     {
         var localTimestamp = ReadTimestamp(localJson, timestampProperty);
@@ -257,6 +298,26 @@ public sealed class LocalUserDataPortabilityService
     {
         return obj[propertyName]?.AsArray().Select(static node => node?.DeepClone())
             ?? Array.Empty<JsonNode?>();
+    }
+
+    private static IReadOnlyList<string> ReadStringArray(JsonNode? node)
+    {
+        if (node is not JsonArray array)
+        {
+            return Array.Empty<string>();
+        }
+
+        var values = new List<string>();
+        foreach (var value in array)
+        {
+            var id = value?.GetValue<string>();
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                values.Add(id);
+            }
+        }
+
+        return values.Distinct(StringComparer.Ordinal).ToArray();
     }
 
     private static string SerializeNode(JsonNode node)

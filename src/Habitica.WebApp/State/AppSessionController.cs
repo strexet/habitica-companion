@@ -1660,6 +1660,7 @@ public sealed class AppSessionController : IAppSessionController
         await _partySnapshotStore.ClearAsync(cancellationToken);
         await _taskSnapshotStore.ClearAsync(cancellationToken);
         await _userSnapshotStore.ClearAsync(cancellationToken);
+        await _localUserDataPortabilityService.ClearSectionAsync(StorageKeys.TaskOrderPreferences, cancellationToken);
 
         SetState(SessionViewModel.Empty);
     }

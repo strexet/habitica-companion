@@ -11,6 +11,7 @@ public static class StorageKeys
     public const string PartyCronHistory = "party/cronHistory";
     public const string DiagnosticsLogEntries = "diagnostics/logEntries";
     public const string TasksPagePreferences = "preferences/tasksPage";
+    public const string TaskOrderPreferences = "preferences/taskOrder";
     public const string SpellCronWarningSuppression = "preferences/spells/cronWarningSuppression";
 
     public static IReadOnlyList<string> PortableDataKeys { get; } =
@@ -22,6 +23,10 @@ public static class StorageKeys
             EquipmentPresets,
             LatestPartySnapshot,
             PartyCronHistory,
-            DiagnosticsLogEntries
+            DiagnosticsLogEntries,
+            TaskOrderPreferences
         };
 }
+
+public sealed record TaskOrderPreferences(
+    IReadOnlyDictionary<string, string[]> OrdersByType);

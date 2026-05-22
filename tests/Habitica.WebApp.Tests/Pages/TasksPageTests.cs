@@ -188,6 +188,94 @@ public sealed class TasksPageTests : BunitContext
         Assert.Contains("Read docs", cut.Markup);
     }
 
+    [Fact]
+    public async Task Task_reorder_buttons_persist_order_for_current_list()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new TaskListViewModelFactory());
+        var storage = new FakeKeyValueStorage();
+        Services.AddSingleton<IKeyValueStorage>(storage);
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: false,
+                DisplayName: null,
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(
+                    DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
+                    new[]
+                    {
+                        new TaskSnapshot("todo-1", "Alpha", TaskType.Todo, false, 1m, null, null, 1m),
+                        new TaskSnapshot("todo-2", "Beta", TaskType.Todo, false, 1m, null, null, 2m),
+                        new TaskSnapshot("todo-3", "Gamma", TaskType.Todo, false, 1m, null, null, 3m)
+                    }))));
+
+        var cut = Render<TasksPage>();
+        AssertMarkupOrder(cut.Markup, "Alpha", "Beta", "Gamma");
+
+        cut.Find("[data-testid='move-task-down-todo-1']").Click();
+
+        AssertMarkupOrder(cut.Markup, "Beta", "Alpha", "Gamma");
+        var preferences = await storage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
+        Assert.NotNull(preferences);
+        Assert.Equal(new[] { "todo-2", "todo-1", "todo-3" }, preferences!.OrdersByType["Todo"]);
+
+        var rerendered = Render<TasksPage>();
+        AssertMarkupOrder(rerendered.Markup, "Beta", "Alpha", "Gamma");
+    }
+
+    [Fact]
+    public async Task Stored_task_order_ignores_unknown_ids_and_appends_new_tasks()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new TaskListViewModelFactory());
+        var storage = new FakeKeyValueStorage();
+        await storage.SetAsync(
+            StorageKeys.TaskOrderPreferences,
+            new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)
+            {
+                ["Todo"] = new[] { "missing-task", "todo-2" }
+            }),
+            CancellationToken.None);
+        Services.AddSingleton<IKeyValueStorage>(storage);
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: false,
+                DisplayName: null,
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(
+                    DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
+                    new[]
+                    {
+                        new TaskSnapshot("todo-1", "Alpha", TaskType.Todo, false, 1m, null, null, 1m),
+                        new TaskSnapshot("todo-2", "Beta", TaskType.Todo, false, 1m, null, null, 2m),
+                        new TaskSnapshot("todo-3", "Gamma", TaskType.Todo, false, 1m, null, null, 3m)
+                    }))));
+
+        var cut = Render<TasksPage>();
+
+        AssertMarkupOrder(cut.Markup, "Beta", "Alpha", "Gamma");
+    }
+
+    private static void AssertMarkupOrder(string markup, params string[] labels)
+    {
+        var previousIndex = -1;
+
+        foreach (var label in labels)
+        {
+            var index = markup.IndexOf(label, StringComparison.Ordinal);
+            Assert.True(index > previousIndex, $"{label} should render after the previous label.");
+            previousIndex = index;
+        }
+    }
+
     private sealed class FakeKeyValueStorage : IKeyValueStorage
     {
         private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);

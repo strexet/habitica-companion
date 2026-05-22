@@ -4,6 +4,7 @@ public enum CloudSyncSection
 {
     UserProfile,
     TasksCurrent,
+    TaskOrderPreferences,
     InventoryCatalog,
     SavedPresets,
     PartyCurrent,

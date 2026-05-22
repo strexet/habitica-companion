@@ -9,6 +9,7 @@ public static class CloudSyncSectionMapping
         CloudSyncSection.UserProfile,
         CloudSyncSection.SavedPresets,
         CloudSyncSection.TasksCurrent,
+        CloudSyncSection.TaskOrderPreferences,
         CloudSyncSection.InventoryCatalog,
         CloudSyncSection.PartyCurrent,
         CloudSyncSection.PartyCronHistory,
@@ -31,6 +32,7 @@ public static class CloudSyncSectionMapping
         {
             CloudSyncSection.UserProfile => StorageKeys.LatestUserSnapshot,
             CloudSyncSection.TasksCurrent => StorageKeys.LatestTaskSnapshot,
+            CloudSyncSection.TaskOrderPreferences => StorageKeys.TaskOrderPreferences,
             CloudSyncSection.InventoryCatalog => StorageKeys.LatestGearCatalog,
             CloudSyncSection.SavedPresets => StorageKeys.EquipmentPresets,
             CloudSyncSection.PartyCurrent => StorageKeys.LatestPartySnapshot,
@@ -47,6 +49,7 @@ public static class CloudSyncSectionMapping
         {
             StorageKeys.LatestUserSnapshot => CloudSyncSection.UserProfile,
             StorageKeys.LatestTaskSnapshot => CloudSyncSection.TasksCurrent,
+            StorageKeys.TaskOrderPreferences => CloudSyncSection.TaskOrderPreferences,
             StorageKeys.LatestGearCatalog => CloudSyncSection.InventoryCatalog,
             StorageKeys.EquipmentPresets => CloudSyncSection.SavedPresets,
             StorageKeys.LatestPartySnapshot => CloudSyncSection.PartyCurrent,
@@ -62,6 +65,7 @@ public static class CloudSyncSectionMapping
         {
             CloudSyncSection.UserProfile => "user-profile",
             CloudSyncSection.TasksCurrent => "tasks-current",
+            CloudSyncSection.TaskOrderPreferences => "task-order-preferences",
             CloudSyncSection.InventoryCatalog => "inventory-catalog",
             CloudSyncSection.SavedPresets => "saved-presets",
             CloudSyncSection.PartyCurrent => "party-current",

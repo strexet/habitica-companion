@@ -10,6 +10,13 @@ namespace Habitica.Storage.Tests;
 public sealed class StorageStoreTests
 {
     [Fact]
+    public void StorageKeys_include_task_order_preferences_as_portable_data()
+    {
+        Assert.Equal("preferences/taskOrder", StorageKeys.TaskOrderPreferences);
+        Assert.Contains(StorageKeys.TaskOrderPreferences, StorageKeys.PortableDataKeys);
+    }
+
+    [Fact]
     public async Task CredentialStore_round_trips_persistent_credentials()
     {
         var adapter = new InMemoryKeyValueStorage();

@@ -172,6 +172,24 @@
                                         }
 
                                         <div class="task-card-actions">
+                                            <button class="secondary-action-button compact icon-toggle"
+                                                    type="button"
+                                                    aria-label="@($"Move {item.Text} up")"
+                                                    title="@($"Move {item.Text} up")"
+                                                    disabled="@(!CanMoveTask(visibleItems, item.Id, -1))"
+                                                    data-testid="@($"move-task-up-{item.Id}")"
+                                                    @onclick="@(() => MoveTaskAsync(group, item.Id, -1))">
+                                                ↑
+                                            </button>
+                                            <button class="secondary-action-button compact icon-toggle"
+                                                    type="button"
+                                                    aria-label="@($"Move {item.Text} down")"
+                                                    title="@($"Move {item.Text} down")"
+                                                    disabled="@(!CanMoveTask(visibleItems, item.Id, 1))"
+                                                    data-testid="@($"move-task-down-{item.Id}")"
+                                                    @onclick="@(() => MoveTaskAsync(group, item.Id, 1))">
+                                                ↓
+                                            </button>
                                             <button class="secondary-action-button compact" type="button" @onclick="@(() => ToggleTaskExpanded(item.Id))">
                                                 @(IsTaskExpanded(item.Id) ? "Hide details" : "Details")
                                             </button>
@@ -251,6 +269,7 @@
     private readonly Dictionary<TaskType, bool> _selectedTaskTypes = new();
     private readonly Dictionary<string, bool> _expandedTasks = new(StringComparer.Ordinal);
     private readonly Dictionary<string, int> _habitScoreCounts = new(StringComparer.Ordinal);
+    private readonly Dictionary<TaskType, string[]> _taskOrderPreferences = new();
     private static readonly TaskType[] TaskTypeFilters = [TaskType.Todo, TaskType.Daily, TaskType.Habit, TaskType.Reward];
     private string? _searchText;
     private string? _loadedPreferenceUserId;
@@ -274,9 +293,11 @@
 
     private IEnumerable<TaskListItemViewModel> GetVisibleItems(TaskGroupViewModel group)
     {
-        return ShouldShowCompleted(group.Type)
+        var items = ShouldShowCompleted(group.Type)
             ? group.Items
             : group.Items.Where(static item => !item.IsCompleted);
+
+        return ApplyTaskOrder(group.Type, items);
     }
 
     private bool IsGroupFolded(TaskType taskType)
@@ -321,6 +342,74 @@
     private void ToggleTaskExpanded(string taskId)
     {
         _expandedTasks[taskId] = !IsTaskExpanded(taskId);
+    }
+
+    private IEnumerable<TaskListItemViewModel> ApplyTaskOrder(TaskType taskType, IEnumerable<TaskListItemViewModel> items)
+    {
+        var orderedItems = items.ToArray();
+        if (!_taskOrderPreferences.TryGetValue(taskType, out var taskIds) || taskIds.Length == 0)
+        {
+            return orderedItems;
+        }
+
+        var orderIndex = taskIds
+            .Select((id, index) => new { id, index })
+            .GroupBy(static entry => entry.id, StringComparer.Ordinal)
+            .ToDictionary(static group => group.Key, static group => group.First().index, StringComparer.Ordinal);
+
+        return orderedItems
+            .OrderBy(item => orderIndex.TryGetValue(item.Id, out var index) ? index : int.MaxValue)
+            .ThenBy(item => Array.IndexOf(orderedItems, item));
+    }
+
+    private static bool CanMoveTask(IReadOnlyList<TaskListItemViewModel> items, string taskId, int direction)
+    {
+        var index = FindTaskIndex(items, taskId);
+        var targetIndex = index + direction;
+        return index >= 0 && targetIndex >= 0 && targetIndex < items.Count;
+    }
+
+    private async Task MoveTaskAsync(TaskGroupViewModel group, string taskId, int direction)
+    {
+        var visibleItems = GetVisibleItems(group).ToArray();
+        var index = FindTaskIndex(visibleItems, taskId);
+        var targetIndex = index + direction;
+        if (index < 0 || targetIndex < 0 || targetIndex >= visibleItems.Length)
+        {
+            return;
+        }
+
+        (visibleItems[index], visibleItems[targetIndex]) = (visibleItems[targetIndex], visibleItems[index]);
+        var reorderedVisibleIds = new Queue<string>(visibleItems.Select(static item => item.Id));
+        var visibleIdSet = visibleItems.Select(static item => item.Id).ToHashSet(StringComparer.Ordinal);
+        var allItems = ApplyTaskOrder(group.Type, group.Items).ToArray();
+        var nextOrder = new List<string>(allItems.Length);
+
+        foreach (var item in allItems)
+        {
+            nextOrder.Add(visibleIdSet.Contains(item.Id) ? reorderedVisibleIds.Dequeue() : item.Id);
+        }
+
+        while (reorderedVisibleIds.Count > 0)
+        {
+            nextOrder.Add(reorderedVisibleIds.Dequeue());
+        }
+
+        _taskOrderPreferences[group.Type] = nextOrder.Distinct(StringComparer.Ordinal).ToArray();
+        await SaveTaskOrderPreferencesAsync();
+    }
+
+    private static int FindTaskIndex(IReadOnlyList<TaskListItemViewModel> items, string taskId)
+    {
+        for (var index = 0; index < items.Count; index++)
+        {
+            if (string.Equals(items[index].Id, taskId, StringComparison.Ordinal))
+            {
+                return index;
+            }
+        }
+
+        return -1;
     }
 
     private int GetHabitScoreCount(string taskId)
@@ -404,10 +493,13 @@
         var userId = GetPreferenceUserId();
         _loadedPreferenceUserId = userId;
         var preferences = await KeyValueStorage.GetAsync<TasksPagePreferences>(GetPreferenceStorageKey(userId), CancellationToken.None);
+        var taskOrderPreferences = await KeyValueStorage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
         _foldedCategories.Clear();
         _showCompletedCategories.Clear();
+        _taskOrderPreferences.Clear();
         ApplyPreferences(_foldedCategories, preferences?.FoldedCategories);
         ApplyPreferences(_showCompletedCategories, preferences?.ShowCompletedCategories);
+        ApplyTaskOrderPreferences(taskOrderPreferences);
     }
 
     private async Task SavePreferencesAsync()
@@ -418,6 +510,16 @@
             ToPreferenceDictionary(_foldedCategories),
             ToPreferenceDictionary(_showCompletedCategories));
         await KeyValueStorage.SetAsync(GetPreferenceStorageKey(userId), preferences, CancellationToken.None);
+    }
+
+    private async Task SaveTaskOrderPreferencesAsync()
+    {
+        var preferences = new TaskOrderPreferences(
+            _taskOrderPreferences.ToDictionary(
+                pair => pair.Key.ToString(),
+                pair => pair.Value,
+                StringComparer.Ordinal));
+        await KeyValueStorage.SetAsync(StorageKeys.TaskOrderPreferences, preferences, CancellationToken.None);
     }
 
     private string GetPreferenceUserId()
@@ -451,6 +553,25 @@
     private static Dictionary<string, bool> ToPreferenceDictionary(IReadOnlyDictionary<TaskType, bool> source)
     {
         return source.ToDictionary(pair => pair.Key.ToString(), pair => pair.Value, StringComparer.Ordinal);
+    }
+
+    private void ApplyTaskOrderPreferences(TaskOrderPreferences? preferences)
+    {
+        if (preferences?.OrdersByType is null)
+        {
+            return;
+        }
+
+        foreach (var (key, value) in preferences.OrdersByType)
+        {
+            if (Enum.TryParse<TaskType>(key, ignoreCase: true, out var taskType))
+            {
+                _taskOrderPreferences[taskType] = value
+                    .Where(static id => !string.IsNullOrWhiteSpace(id))
+                    .Distinct(StringComparer.Ordinal)
+                    .ToArray();
+            }
+        }
     }
 
     private static string FormatGroupCount(int visibleCount, int totalCount)

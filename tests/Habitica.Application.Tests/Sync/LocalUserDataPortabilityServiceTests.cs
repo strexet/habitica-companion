@@ -10,6 +10,15 @@ namespace Habitica.Application.Tests.Sync;
 public sealed class LocalUserDataPortabilityServiceTests
 {
     [Fact]
+    public void CloudSyncSectionMapping_includes_task_order_preferences_section()
+    {
+        Assert.Contains(CloudSyncSection.TaskOrderPreferences, CloudSyncSectionMapping.AllSections);
+        Assert.Equal(StorageKeys.TaskOrderPreferences, CloudSyncSectionMapping.StorageKeyFor(CloudSyncSection.TaskOrderPreferences));
+        Assert.Equal(CloudSyncSection.TaskOrderPreferences, CloudSyncSectionMapping.SectionForStorageKey(StorageKeys.TaskOrderPreferences));
+        Assert.Equal("task-order-preferences", CloudSyncSectionMapping.KvSuffix(CloudSyncSection.TaskOrderPreferences));
+    }
+
+    [Fact]
     public async Task ExportAsync_excludes_persistent_credentials_and_includes_portable_records()
     {
         var storage = new InMemoryKeyValueStorage();
@@ -22,11 +31,19 @@ public sealed class LocalUserDataPortabilityServiceTests
                 new EquipmentPreset("preset-1", "user-id", EquipmentSetKind.Battle, "Casting", DateTimeOffset.Parse("2026-05-13T02:00:00Z"), new GearSlotsSnapshot(null, null, "weapon_wizard_5", null, null))
             },
             CancellationToken.None);
+        await storage.SetAsync(
+            StorageKeys.TaskOrderPreferences,
+            new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)
+            {
+                ["Todo"] = new[] { "todo-2", "todo-1" }
+            }),
+            CancellationToken.None);
 
         var bundle = await service.ExportAsync("user-id", CancellationToken.None);
 
         Assert.Equal("user-id", bundle.UserId);
         Assert.Contains(bundle.Records, record => record.Key == StorageKeys.EquipmentPresets);
+        Assert.Contains(bundle.Records, record => record.Key == StorageKeys.TaskOrderPreferences);
         Assert.DoesNotContain(bundle.Records, record => record.Key == StorageKeys.PersistentCredentials);
         Assert.DoesNotContain(service.Serialize(bundle), "api-token", StringComparison.Ordinal);
     }
@@ -105,6 +122,63 @@ public sealed class LocalUserDataPortabilityServiceTests
         Assert.NotNull(mergedHistory);
         Assert.Contains(mergedHistory!.Events, entry => entry.MemberId == "member-1");
         Assert.Contains(mergedHistory.Events, entry => entry.MemberId == "member-2");
+    }
+
+    [Fact]
+    public async Task ImportAsync_merges_task_order_preferences_with_imported_shared_ids_first()
+    {
+        var storage = new InMemoryKeyValueStorage();
+        var service = new LocalUserDataPortabilityService(storage, TimeProvider.System);
+        await storage.SetAsync(
+            StorageKeys.TaskOrderPreferences,
+            new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)
+            {
+                ["Todo"] = new[] { "local-only", "shared-1", "shared-2" },
+                ["Habit"] = new[] { "habit-local" }
+            }),
+            CancellationToken.None);
+        var incomingOrder = JsonSerializer.Serialize(
+            new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)
+            {
+                ["Todo"] = new[] { "shared-2", "shared-1", "incoming-only" },
+                ["Daily"] = new[] { "daily-incoming" }
+            }),
+            InMemoryKeyValueStorage.JsonOptions);
+        var bundle = new LocalUserDataBundle(
+            1,
+            DateTimeOffset.Parse("2026-05-13T03:00:00Z"),
+            "user-id",
+            new[]
+            {
+                new LocalUserDataRecord(StorageKeys.TaskOrderPreferences, incomingOrder)
+            });
+
+        await service.ImportAsync(bundle, LocalDataImportMode.Merge, CancellationToken.None);
+
+        var merged = await storage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
+
+        Assert.NotNull(merged);
+        Assert.Equal(new[] { "shared-2", "shared-1", "local-only", "incoming-only" }, merged!.OrdersByType["Todo"]);
+        Assert.Equal(new[] { "habit-local" }, merged.OrdersByType["Habit"]);
+        Assert.Equal(new[] { "daily-incoming" }, merged.OrdersByType["Daily"]);
+    }
+
+    [Fact]
+    public async Task ClearSectionAsync_removes_task_order_preferences()
+    {
+        var storage = new InMemoryKeyValueStorage();
+        var service = new LocalUserDataPortabilityService(storage, TimeProvider.System);
+        await storage.SetAsync(
+            StorageKeys.TaskOrderPreferences,
+            new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)
+            {
+                ["Todo"] = new[] { "todo-1" }
+            }),
+            CancellationToken.None);
+
+        await service.ClearSectionAsync(StorageKeys.TaskOrderPreferences, CancellationToken.None);
+
+        Assert.Null(await storage.GetRawJsonAsync(StorageKeys.TaskOrderPreferences, CancellationToken.None));
     }
 
     private static PartyCronHistoryEvent CreateCronEvent(string memberId, string lastCronUtc)
