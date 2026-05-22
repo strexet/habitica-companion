@@ -49,40 +49,6 @@ Work top to bottom. Each entry is self-contained.
 
 > Not currently supported: "Open in Habitica" cannot deep-link to the official mobile app's party/quest view. See `docs/HABITICA_DEEPLINKS.md`. Keep the existing web fallback until Habitica documents and ships iOS/Android party or quest deep links.
 
-### P7 — Quest owner can start the selected quest from the companion app
-
-- **Goal:** the Active Quest section gains a "Start quest" action visible only to the selected quest's owner, which calls Habitica to actually start the quest.
-- **Precondition:** the exact Habitica endpoint and request shape are documented in `HABITICA_API.md`. If they are not, stop and add a follow-up entry instead of guessing; do not call undocumented endpoints.
-- **Touch (only once precondition holds):**
-  - `src/Habitica.Api/HabiticaApiClient.cs` — new method following the existing call/retry/logging conventions.
-  - `src/Habitica.WebApp/Pages/PartyPage.razor` — Start-quest control inside the Active Quest section, gated on `currentUserId == selectedQuestOwnerId`.
-  - `src/Habitica.WebApp/State/AppSessionController.cs` + `IAppSessionController.cs` — new session-level action that wraps the API call and triggers a refresh of party + quest state on success.
-  - Tests: API client test (mock HTTP), session controller test, Razor test for visibility and click.
-- **Out of scope:** invite flows, quest-creation flows, automatic start triggers, retry loops beyond what `HabiticaApiClient` already provides.
-- **Acceptance:**
-  - Control is visible only when the current user owns the selected quest and the quest is in a startable state.
-  - Successful click triggers a Party state refresh and the Active Quest card updates to the active state without a full reload.
-  - Failure surfaces an inline error matching the manifest's error-display pattern.
-- **UX/UI reference:** manifest's mutation-control placement rules ("close to the state they change").
-
-### P8 — Reorderable tasks, dailies, and habits on the Tasks page
-
-- **Goal:** users can reorder items inside each Tasks-page list (tasks, dailies, habits) and the order persists across reloads and devices.
-- **Touch:**
-  - `src/Habitica.WebApp/Pages/TasksPage.razor` — reorder UI (prefer the simplest control that is keyboard-accessible; up/down arrow buttons are acceptable, drag-and-drop only if a shared primitive already exists).
-  - New storage key in `src/Habitica.Storage/StorageKeys.cs` (e.g. `TaskOrderPreferences`) holding a per-list array of task IDs.
-  - `src/Habitica.Application/Sync/LocalUserDataPortabilityService.cs` — include the new key in export, import-merge, and clear-data paths.
-  - `src/Habitica.WebApp/Sync/CloudflareUserDataSyncProvider.cs` and `src/Habitica.WebApp/wwwroot/js/sync/cloudflareSync.js` — include the new key in the KV sync section list.
-  - Tests: storage test for the new key, portability test for export/import round-trip, Razor test for reorder UI.
-- **Conflict / merge rule:** on import-merge, the imported order wins for IDs present in both; IDs only on one side keep their relative position and append after shared IDs.
-- **Out of scope:** server-side reordering on Habitica itself (this is local-only display order), reordering across list types, bulk-edit UI, filtering or grouping.
-- **Acceptance:**
-  - User can move any item up/down within its list; new order persists after reload.
-  - New order is included in the export blob and survives a clear-data + import round trip.
-  - KV sync uploads and downloads the new order section; verified by an existing sync-section test pattern.
-  - Adding/removing tasks on the Habitica side does not break the saved order (unknown IDs are ignored; new IDs appear at the end).
-- **UX/UI reference:** manifest's Tasks page section; "Keep mutation controls explicit" applies — reorder controls must live on the row they affect.
-
 ---
 
 ## Backlog (lower priority)

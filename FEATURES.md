@@ -229,6 +229,29 @@ Test:
 
 Verify how consistently `lastCron`, `preferences.dayStart`, and timezone offsets are returned for all party members under different privacy settings.
 
+## 4.1 Party quest start action
+
+Status: implemented
+Owner module: `Habitica.Api`, `Habitica.WebApp.State`, `Habitica.WebApp.Pages.PartyPage`
+Application entry point: `Habitica.WebApp.Pages.PartyPage`
+Primary Habitica data: party group quest state, shared party quest queue entry
+Mutates Habitica state: yes
+Requires confirmation: no
+Offline behavior: unavailable; requires authenticated Habitica API access and a cached startable party quest
+Rate-limit sensitivity: medium; performs one mutation and one party refresh
+
+### Goal
+
+The Party page Active Quest card exposes `Start quest` only when the cached Habitica party quest is inactive, matches a `Selected` or `InviteSent` shared queue entry, and the current user owns that queue entry.
+
+### API interaction
+
+`HabiticaApiClient.StartPartyQuestAsync` sends `POST /groups/party/quests/force-start` with no request body, then `AppSessionController.StartSelectedPartyQuestAsync` refreshes `/groups/party` through `GetPartySnapshotAsync` and reconciles the shared queue entry to active when party sync is available.
+
+### Error handling
+
+Validation failures and Habitica API failures return `PartyQuestActionResult.Failure`; the Party page renders start failures inline on the Active Quest card.
+
 ## 5. Gear set management
 
 Status: planned
@@ -2268,6 +2291,7 @@ selected task types
 sort mode
 per-category folded preferences
 per-category completed visibility preferences
+per-task-type display order preferences
 ```
 
 ### Outputs
@@ -2288,6 +2312,7 @@ sort control
 inline task scoring/checkoff controls
 habit multi-score progress
 task detail panel
+row-local reorder controls
 empty-state messaging
 ```
 
@@ -2298,12 +2323,14 @@ Reads:
 ```text
 tasks/latestSnapshot
 preferences/tasksPage/{userId}
+preferences/taskOrder
 ```
 
 Writes:
 
 ```text
 preferences/tasksPage/{userId}
+preferences/taskOrder
 ```
 
 ### API interaction
@@ -2327,6 +2354,8 @@ Current view-model rules:
 10. Render completed tasks with neutral muted styling when the category is set to show completed.
 11. Render task actions inline on each card when authentication and freshness allow mutation.
 12. For Habit scoring, clamp multi-score count to 1-20 and show determinate progress while requests execute sequentially.
+13. Apply saved per-type task order after filtering/sorting; unknown saved IDs are ignored and new task IDs append after ordered known IDs.
+14. Reorder buttons move items within the currently visible list and persist the resulting per-type ID order for export/import and cloud sync.
 ```
 
 ### Validation
@@ -2360,6 +2389,8 @@ Test:
 - numeric task value rendering;
 - type filtering;
 - explicit sort modes;
+- row-local reorder controls;
+- persisted per-type task order;
 - task scoring/checkoff action rendering;
 - habit multi-score request and progress wiring;
 - freshness banner rendering;
@@ -2377,6 +2408,7 @@ Current implementation:
 - continuous value-based open-task card tinting;
 - muted completed-task styling;
 - type filters and explicit sort modes;
+- row-local task reordering with per-type order persistence;
 - inline Complete/Uncomplete controls for Dailies and To-Dos;
 - inline positive/negative Habit scoring with count and determinate progress;
 - compact cached task detail panel;
