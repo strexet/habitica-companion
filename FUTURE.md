@@ -12,6 +12,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
    - UI/UX: `docs/UX_UI_MANIFEST.md`
    - Architecture, sync, storage: `TECHNICAL.md`
    - Habitica API rules: `HABITICA_API.md`
+   - Habitica party/quest link behavior: `docs/HABITICA_DEEPLINKS.md`
    - Cloudflare deployment and D1/KV: `docs/DEPLOY_CLOUDFLARE_PAGES.md`
 2. Implement one entry only. Do not bundle unrelated cleanup, renames, or opportunistic refactors.
 3. If a task lists `Touch:`, edit only those paths and direct tests unless the task explicitly permits more.
@@ -21,6 +22,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 7. Never send Habitica API tokens to Cloudflare party-sync or app-data sync endpoints.
 8. Keep labels short and plain. If UI copy is ambiguous, choose the smallest clear label and proceed.
 9. If a needed Habitica endpoint is not documented in `HABITICA_API.md`, stop and add a follow-up entry instead of guessing.
+10. For Habitica party/quest links, use stable web URLs only. Do not add `habitica://`, Android `intent://`, app-opening probes, or mobile-app-specific party/quest links unless `docs/HABITICA_DEEPLINKS.md` is updated with new official support.
 
 ## Validated Implemented And Removed From Backlog
 
@@ -165,7 +167,7 @@ These entries are lower priority but already merged from the historical plans. B
 ### Dashboard Navigation And Habitica Links
 
 - Add dashboard section cards with direct navigation.
-- Add an Open Habitica button and context-sensitive Habitica web links where stable URLs are known.
+- Add an Open Habitica button and context-sensitive Habitica web links where stable URLs are known; follow `docs/HABITICA_DEEPLINKS.md` and do not add mobile app deep links or custom-scheme fallbacks.
 
 ### Login And Refresh UX
 
