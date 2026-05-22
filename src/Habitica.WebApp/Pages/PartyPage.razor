@@ -456,6 +456,9 @@
                                     <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => ToggleVoteAsync(entry.QueueItemId))" Variant="Variant.Outlined">
                                         @(HasCurrentUserVote(entry) ? "Remove vote" : "Vote")
                                     </MudButton>
+                                    <MudButton Color="Color.Info" Disabled="@(!CanToggleOwnerReady(entry) || SessionController.State.IsBusy)" OnClick="@(() => SetOwnerReadyAsync(entry.QueueItemId, entry.Version, !entry.OwnerReady))" Variant="Variant.Outlined">
+                                        @(entry.OwnerReady ? "Clear ready" : "Mark ready")
+                                    </MudButton>
                                     <MudButton Color="Color.Secondary" Disabled="@(!CanInviteParty(entry) || SessionController.State.IsBusy)" OnClick="@(() => InvitePartyAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Outlined">
                                         Invite party
                                     </MudButton>
@@ -1608,6 +1611,12 @@
             && entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected;
     }
 
+    private bool CanToggleOwnerReady(PartyQuestQueueEntry entry)
+    {
+        return IsCurrentUser(entry.OwnerUserId)
+            && entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.InviteSent;
+    }
+
     private bool CanForceStartSelectedQuest(PartyQuestQueueEntry entry)
     {
         return IsCurrentUser(entry.OwnerUserId) || IsCurrentUserPartyLeader();
@@ -1729,6 +1738,12 @@
     private async Task ToggleVoteAsync(string queueItemId)
     {
         var result = await SessionController.TogglePartyQuestVoteAsync(queueItemId);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task SetOwnerReadyAsync(string queueItemId, int version, bool ownerReady)
+    {
+        var result = await SessionController.SetPartyQuestOwnerReadyAsync(queueItemId, version, ownerReady);
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 

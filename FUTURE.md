@@ -82,7 +82,6 @@ Out of scope:
 - historical analytics beyond the existing recent-completion list.
 
 Acceptance:
-- Quest owners can toggle owner readiness from the shared queue UI.
 - Party owner/admin/Officer controls can pin, force-select, resolve conflicts, and lock queue changes during selection.
 - `Selected`, `Skipped`, and `Expired` states have user-facing actions and clear read states beyond the implemented invite/start flow.
 - Queue expiration and stale-owner cleanup are deterministic and migration-safe.

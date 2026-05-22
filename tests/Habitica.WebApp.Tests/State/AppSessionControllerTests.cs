@@ -658,6 +658,55 @@ public sealed class AppSessionControllerTests
             && entry.Severity == DiagnosticsSeverity.Success);
     }
 
+    [Fact]
+    public async Task SetPartyQuestOwnerReadyAsync_updates_owned_queued_quest()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot(),
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var remotePartySync = new FakeRemotePartyDataSyncProvider
+        {
+            Snapshot = new RemotePartyDataSnapshot(
+                null,
+                null,
+                DateTimeOffset.UtcNow,
+                QuestQueue: new[]
+                {
+                    new PartyQuestQueueEntry(
+                        "queue-1",
+                        "party-123",
+                        "dragon",
+                        "Dragon",
+                        "user-id",
+                        "Mage Tester",
+                        PartyQuestQueueStatus.Queued,
+                        DateTimeOffset.UtcNow,
+                        DateTimeOffset.UtcNow,
+                        1,
+                        null,
+                        false,
+                        1,
+                        Array.Empty<PartyQuestVote>())
+                })
+        };
+        var controller = CreateController(logStore, syncClient, remotePartyDataSyncProvider: remotePartySync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        await controller.RefreshForPageAsync("/party");
+        await controller.RefreshPartyQuestStateAsync();
+
+        var result = await controller.SetPartyQuestOwnerReadyAsync("queue-1", 1, true);
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(("queue-1", 1, true), Assert.Single(remotePartySync.OwnerReadyCalls));
+    }
+
     private static AppSessionController CreateController(
         FakeDiagnosticsLogStore logStore,
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
@@ -813,6 +862,8 @@ public sealed class AppSessionControllerTests
 
         public List<(string QueueItemId, int Version)> InvitePartyCalls { get; } = new();
 
+        public List<(string QueueItemId, int Version, bool OwnerReady)> OwnerReadyCalls { get; } = new();
+
         public Task<RemotePartyDataSnapshot?> DownloadAsync(
             PartySyncClaim claim,
             CancellationToken cancellationToken)
@@ -876,6 +927,18 @@ public sealed class AppSessionControllerTests
             CancellationToken cancellationToken)
         {
             LastClaim = claim;
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyQuestState> SetQuestOwnerReadyAsync(
+            PartySyncClaim claim,
+            string queueItemId,
+            int version,
+            bool ownerReady,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            OwnerReadyCalls.Add((queueItemId, version, ownerReady));
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
         }
 

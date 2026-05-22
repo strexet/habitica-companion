@@ -82,6 +82,8 @@ public interface IAppSessionController
 
     Task<PartyQuestActionResult> TogglePartyQuestVoteAsync(string queueItemId, CancellationToken cancellationToken = default);
 
+    Task<PartyQuestActionResult> SetPartyQuestOwnerReadyAsync(string queueItemId, int version, bool ownerReady, CancellationToken cancellationToken = default);
+
     Task<PartyQuestActionResult> RemovePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default);
 
     Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default);

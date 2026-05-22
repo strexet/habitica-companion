@@ -175,6 +175,8 @@ export async function onRequestPost(context) {
       return await addQueueItem(db, env, partyId, access, payload, nowIso);
     case "toggleVote":
       return await toggleVote(db, env, partyId, access, payload, nowIso);
+    case "setOwnerReady":
+      return await setOwnerReady(db, env, partyId, access, payload, nowIso);
     case "removeQueueItem":
       return await removeQueueItem(db, env, partyId, access, payload, nowIso);
     case "markActive":
@@ -467,6 +469,45 @@ async function toggleVote(db, env, partyId, access, payload, nowIso) {
       .bind(partyId, payload.queueItemId, access.userId, payload.voterDisplayName ?? access.displayName ?? access.userId, nowIso, nowIso)
       .run();
   }
+
+  return jsonResponse({
+    ok: true,
+    updatedAtUtc: nowIso,
+    questQueue: await readQuestQueue(db, partyId),
+    questPool: await readQuestPool(db, partyId),
+    recentlyCompleted: await readRecentlyCompleted(db, partyId),
+    management: await buildManagementState(db, env, partyId, access),
+  });
+}
+
+async function setOwnerReady(db, env, partyId, access, payload, nowIso) {
+  const item = await db
+    .prepare("SELECT owner_user_id, created_by_user_id, status, version FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
+    .bind(partyId, payload?.queueItemId)
+    .first();
+  if (!item) {
+    return textResponse("Queue item was not found.", 404);
+  }
+
+  const ownsQuest = (item.owner_user_id ?? item.created_by_user_id) === access.userId;
+  if (!ownsQuest) {
+    return textResponse("Only the quest owner can update readiness.", 403);
+  }
+  if (!["Queued", "Selected", "InviteSent"].includes(item.status ?? "Queued")) {
+    return textResponse(`Cannot update readiness for quest in '${item.status}' state.`, 409);
+  }
+  if (payload.version && Number(payload.version) !== Number(item.version ?? 1)) {
+    return textResponse("Queue item changed before this request. Refresh and try again.", 409);
+  }
+
+  await db
+    .prepare(`
+      UPDATE party_quest_queue
+      SET owner_ready = ?, updated_at_utc = ?, version = COALESCE(version, 1) + 1
+      WHERE party_id = ? AND queue_item_id = ?
+    `)
+    .bind(payload.ownerReady === true ? 1 : 0, nowIso, partyId, payload.queueItemId)
+    .run();
 
   return jsonResponse({
     ok: true,
