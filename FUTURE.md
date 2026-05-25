@@ -23,6 +23,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 8. Keep labels short and plain. If UI copy is ambiguous, choose the smallest clear label and proceed.
 9. If a needed Habitica endpoint is not documented in `HABITICA_API.md`, stop and add a follow-up entry instead of guessing.
 10. For Habitica party/quest links, use stable web URLs only. Do not add `habitica://`, Android `intent://`, app-opening probes, or mobile-app-specific party/quest links unless `docs/HABITICA_DEEPLINKS.md` is updated with new official support.
+11. When interacting with this file, process `Pending to be added to Prioritized Next Changes` before starting implementation work. Move one pending item at a time into `Prioritized Next Changes`, either as a new self-contained entry or merged into an existing matching entry, then remove the moved item from pending. Keep `Top` additions before current prioritized entries, `Middle` additions after all `Top` additions and before current prioritized entries, and `Bottom` additions at the bottom of `Prioritized Next Changes`.
 
 ## Validated Implemented And Removed From Backlog
 
@@ -38,32 +39,32 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 
 ## Pending to be added to `Prioritized Next Changes`
 
-Work top to bottom. Create AI optimized entry to the `Prioritized Next Changes` for every pending list item. Each entry should be added to `Prioritized Next Changes` list with priority based on instructions in the entry or if there are no such instructions to the bottom of `Prioritized Next Changes list`.
-
-Update pending items list after items are moved to `Prioritized Next Changes` - added entries can be removed from pending list.
+Work top to bottom. This is an intake list for rough notes that must become self-contained `Prioritized Next Changes` entries before implementation. Preserve the `Priority Instructions` and `Entries` structure.
 
 ### Priority Instructions
 
-- Top - add to the top of the `Prioritized Next Changes` list (max priority).
-- Middle - right after the `Top` entries and before current `Prioritized Next Changes` list items.
-- Bottom - (default) the lowest priority entries, add to the bottom of the `Prioritized Next Changes` list.
+- Top – add to the top of the `Prioritized Next Changes` list (max priority).
+- Middle – right after the `Top` entries and before current `Prioritized Next Changes` list items.
+- Bottom – (default) the lowest priority entries, add to the bottom of the `Prioritized Next Changes` list.
 
 ### Entries:
 
-- Top. Optimize this `FUTURE.md` document's new Pending to be added to `Prioritized Next Changes`. You can move it and add to document's rules/instruction. The etries structure must persist. Add an instruction for processing that list when interacting with the `FUTURE.md` document.
-- Middle. App says: "3 unspent stat points are available for allocation" - but I'm only level 3, stats are unlocked on level 10 (check other conditions in Habitica docs).
+- Middle. App says: "3 unspent stat points are available for allocation" – but I'm only level 3, stats are unlocked on level 10 (check other conditions in Habitica docs).
 - Top. Add drag and drop capabilities to tasks/dailies/habbits reordering logic. After that, 'task' moving arrows can be removed from 'task' cards, because user we'll use drag n drop.
 - Middle. Login page should not open if  user is logged in. Rather the default page in the app should be `Dashboard` rather than login. Login page should only open for not logged in users.
 - Middle. Need to remove irrelevant fields from the top of the `Spells` page: 
-  - AVAILABLE MANA (duplicated - every spell has its own mana block), 
+  - AVAILABLE MANA (duplicated – every spell has its own mana block), 
   - QUEST (irrelevant), 
-  - CURRENT PROGRESS (only relevant if active quest type is boss, and spell is damaging spell - could be move to each spell card with show condition and merged into one info block with `PARTY PENDING`), 
+  - CURRENT PROGRESS (only relevant if active quest type is boss, and spell is damaging spell – could be move to each spell card with show condition and merged into one info block with `PARTY PENDING`), 
   - YOUR PENDING (irrelevant), 
-  - PARTY PENDING (only relevant if active quest type is boss, and spell is damaging spell - could be move to each spell card with show condition and merged into one info block with `CURRENT PROGRESS`), 
+  - PARTY PENDING (only relevant if active quest type is boss, and spell is damaging spell – could be move to each spell card with show condition and merged into one info block with `CURRENT PROGRESS`), 
   - CLASS (irrelevant),
   - MP (another duplicate mana value),
-  - STAT POINTS (only relevant if spell can grant XP points - could be move to each spell card with show condition of unspent points).
+  - STAT POINTS (only relevant if spell can grant XP points – could be move to each spell card with show condition of unspent points).
 - `Dashboard` should have a warning with link to `Party` page if there is active quest that the user did not respond to (not accepted, nor rejected).
+- Top. Recently completed quests list still not working properly. It should contain all quests completed by party that were tracked as active and started quest by companion app. Also, we could implement some finish signals to validate quest completion, example: party chat has message “All items found! Party has received their rewards.” on finishing collection quest type — we could look for other common chat messages that automatically appear on quest completion. Such validation should add the recently active quest to completed list, even if it never was in the companion app’s quests queue.
+- Top. Check that invite party logic is implemented correctly: if there is no active quest, invite button should be active and available for quest owner.
+- Refresh enhancement — update UI/UX rules manifest with this improvement. 
 
 ## Prioritized Next Changes
 
