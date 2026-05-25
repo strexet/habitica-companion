@@ -49,26 +49,155 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Middle. App says: "3 unspent stat points are available for allocation" – but I'm only level 3, stats are unlocked on level 10 (check other conditions in Habitica docs).
-- Top. Add drag and drop capabilities to tasks/dailies/habbits reordering logic. After that, 'task' moving arrows can be removed from 'task' cards, because user we'll use drag n drop.
-- Middle. Login page should not open if  user is logged in. Rather the default page in the app should be `Dashboard` rather than login. Login page should only open for not logged in users.
-- Middle. Need to remove irrelevant fields from the top of the `Spells` page: 
-  - AVAILABLE MANA (duplicated – every spell has its own mana block), 
-  - QUEST (irrelevant), 
-  - CURRENT PROGRESS (only relevant if active quest type is boss, and spell is damaging spell – could be move to each spell card with show condition and merged into one info block with `PARTY PENDING`), 
-  - YOUR PENDING (irrelevant), 
-  - PARTY PENDING (only relevant if active quest type is boss, and spell is damaging spell – could be move to each spell card with show condition and merged into one info block with `CURRENT PROGRESS`), 
-  - CLASS (irrelevant),
-  - MP (another duplicate mana value),
-  - STAT POINTS (only relevant if spell can grant XP points – could be move to each spell card with show condition of unspent points).
-- `Dashboard` should have a warning with link to `Party` page if there is active quest that the user did not respond to (not accepted, nor rejected).
-- Top. Recently completed quests list still not working properly. It should contain all quests completed by party that were tracked as active and started quest by companion app. Also, we could implement some finish signals to validate quest completion, example: party chat has message “All items found! Party has received their rewards.” on finishing collection quest type — we could look for other common chat messages that automatically appear on quest completion. Such validation should add the recently active quest to completed list, even if it never was in the companion app’s quests queue.
-- Top. Check that invite party logic is implemented correctly: if there is no active quest, invite button should be active and available for quest owner.
-- Refresh enhancement — update UI/UX rules manifest with this improvement. 
+- None.
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
+
+### Task Drag And Drop Reordering
+
+Goal: replace task-card move arrows with drag-and-drop reordering for task lists that already support manual ordering.
+
+Touch:
+- `src/Habitica.WebApp/Pages/TasksPage.razor`
+- `src/Habitica.WebApp/wwwroot/js`
+- `src/Habitica.Application/Tasks`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs` and `tests/Habitica.Application.Tests/Tasks/`
+- `docs/UX_UI_MANIFEST.md`
+- `FEATURES.md`
+
+Out of scope:
+- changing Habitica server-side task order unless a documented endpoint already exists in `HABITICA_API.md`;
+- adding kanban, calendar, or bulk task editing.
+
+Acceptance:
+- Habits, dailies, and todos can be reordered by drag and drop within the same visible group.
+- Drop result persists through the same local ordering path that current move arrows use, including hidden/completed item preservation.
+- Task-card move arrows are removed after drag-and-drop controls are usable on pointer and touch devices.
+- Tests cover drag/drop ordering behavior and existing stored-order edge cases.
+
+UX-UI reference: `docs/UX_UI_MANIFEST.md` task management sections.
+
+### Recently Completed Quest Detection
+
+Goal: make recently completed quests include party quests that were tracked as active and quests completed outside the shared queue when reliable completion signals exist.
+
+Touch:
+- `functions/api/party-sync/[partyId].js`
+- `migrations/`
+- `src/Habitica.Api`
+- `src/Habitica.Domain/Party`
+- `src/Habitica.WebApp/State`
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- direct tests under `tests/`
+- `HABITICA_API.md`
+- `FEATURES.md`
+
+Out of scope:
+- broad historical analytics beyond the existing recent-completion list;
+- guessing unsupported chat message formats without documented or fixture-backed evidence.
+
+Acceptance:
+- Quests started through the companion app are added to recently completed when the active quest disappears with a reliable completion signal.
+- Supported Habitica party chat finish messages, including collection completion messages, can mark the most recently active matching quest completed even if it was never queued in companion app data.
+- Duplicate completion records are avoided across manual and automatic completion paths.
+- Recently completed UI distinguishes manual and automatic detection with concise labels.
+
+UX-UI reference: `docs/UX_UI_MANIFEST.md` party quest planning sections.
+
+### Quest Invite Availability
+
+Goal: verify and fix party quest invite availability so quest owners can invite when no party quest is active.
+
+Touch:
+- `src/Habitica.Api`
+- `src/Habitica.WebApp/State`
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs` and `tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs`
+- `FEATURES.md`
+
+Out of scope:
+- changing queue voting or owner/admin permissions beyond invite availability;
+- mobile app deep links.
+
+Acceptance:
+- Quest owner sees an enabled invite action for an owned queued or selected quest when party has no active quest.
+- Invite action remains disabled with clear copy when another party quest is active, selected quest is not owned, or data is stale enough to block mutation.
+- Tests cover enabled and disabled invite states.
+
+UX-UI reference: `docs/UX_UI_MANIFEST.md` party quest planning sections.
+
+### Stat Point Unlock Guard
+
+Goal: hide or reframe unspent stat-point prompts until Habitica stat allocation is unlocked for the user.
+
+Touch:
+- `HABITICA_API.md`
+- `src/Habitica.Domain/Auth`
+- `src/Habitica.Application/Dashboard`
+- `src/Habitica.Rules/Spells`
+- `src/Habitica.WebApp/Pages/DashboardPage.razor`
+- `src/Habitica.WebApp/Pages/SpellsPage.razor`
+- direct tests under `tests/`
+- `FEATURES.md`
+
+Out of scope:
+- changing the stat allocation mutation itself except for validation gates;
+- inventing unlock rules not confirmed by Habitica docs or observed API fields.
+
+Acceptance:
+- Habitica stat allocation unlock conditions are documented before UI logic depends on them.
+- Dashboard does not show “unspent stat points are available for allocation” for users below the documented unlock threshold.
+- Spell cards or spell summaries only surface stat-point context when stat allocation is unlocked and relevant.
+- Allocation attempts fail locally with clear copy if the user is not eligible.
+
+UX-UI reference: `docs/UX_UI_MANIFEST.md` dashboard and spells sections.
+
+### Authenticated Default Route And Sign-In Redirect
+
+Goal: make Dashboard the default page for authenticated users and keep Sign In visible only for unauthenticated users.
+
+Touch:
+- `src/Habitica.WebApp/App.razor`
+- `src/Habitica.WebApp/Pages/SignIn.razor`
+- `src/Habitica.WebApp/State`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/SignInPageTests.cs`, `tests/Habitica.WebApp.Tests/AppNavMenuTests.cs`, and `tests/Habitica.WebApp.Tests/State/`
+- `FEATURES.md`
+
+Out of scope:
+- redesigning sign-in fields or credential storage;
+- changing post-login refresh scope beyond routing needed for this task.
+
+Acceptance:
+- Opening `/` routes authenticated users to Dashboard and unauthenticated users to Sign In.
+- Opening `/signin` while authenticated redirects to Dashboard without rendering the sign-in form.
+- Returning users with saved local credentials do not see a sign-in flash before the dashboard route is chosen.
+
+UX-UI reference: `docs/UX_UI_MANIFEST.md` sign-in and navigation sections.
+
+### Spells Summary Field Cleanup
+
+Goal: remove irrelevant top-of-page spell summary fields and move conditional context into spell cards where it helps the action.
+
+Touch:
+- `src/Habitica.Rules/Spells`
+- `src/Habitica.WebApp/Pages/SpellsPage.razor`
+- direct tests under `tests/Habitica.Rules.Tests/Spells/SpellViewModelFactoryTests.cs` and `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs`
+- `docs/UX_UI_MANIFEST.md`
+- `FEATURES.md`
+
+Out of scope:
+- changing spell target recommendation formulas;
+- compact spell-card redesign beyond fields needed for this cleanup.
+
+Acceptance:
+- Top spell summary no longer shows duplicated or irrelevant fields: available mana, quest, current progress, your pending, party pending, class, MP, and stat points.
+- Boss progress and party pending damage appear only on damaging spell cards when an active boss quest makes them relevant, merged into one concise info block.
+- Stat-point context appears only on spell cards that can grant XP or otherwise make unspent points actionable, and only when stat allocation is unlocked.
+- Existing spell casting warnings and resource checks still render in their current action flow.
+
+UX-UI reference: `docs/UX_UI_MANIFEST.md` spells sections.
 
 ### Party Queue Control Completion
 
@@ -136,6 +265,46 @@ Acceptance:
 - Missing fields render concise unavailable states.
 - Participant names use the same member-detail focus behavior as the party member list.
 
+### Dashboard Pending Quest Response Warning
+
+Goal: show a dashboard warning when the party has an active quest invitation and the current user has not accepted or rejected it.
+
+Touch:
+- `src/Habitica.Domain/Party`
+- `src/Habitica.Application/Dashboard`
+- `src/Habitica.WebApp/Pages/DashboardPage.razor`
+- direct tests under `tests/Habitica.Application.Tests/Dashboard/` and `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs`
+- `FEATURES.md`
+
+Out of scope:
+- accepting or rejecting the quest from Dashboard;
+- changing Party page quest response actions.
+
+Acceptance:
+- Dashboard shows a concise warning with a link to Party when the current user has not responded to the active quest invitation.
+- Warning does not show after the user accepts, rejects, or when no active quest invitation exists.
+- Link lands on the Party page where the response action is available.
+
+UX-UI reference: `docs/UX_UI_MANIFEST.md` dashboard and party quest planning sections.
+
+### Refresh UX Manifest Update
+
+Goal: update the UI/UX manifest with refresh-state guidance before adding more refresh indicators.
+
+Touch:
+- `docs/UX_UI_MANIFEST.md`
+
+Out of scope:
+- implementing refresh UI changes;
+- changing refresh coordinator behavior.
+
+Acceptance:
+- Manifest defines where page-level, card-level, and field-level refresh states belong.
+- Manifest covers manual refresh, background refresh, Cloudflare sync progress, changed-value animation, and skeleton usage.
+- Guidance keeps visible cached data interactive while background-only work runs.
+
+UX-UI reference: `docs/UX_UI_MANIFEST.md` app-wide interaction rules.
+
 ## Backlog
 
 These entries are lower priority but already merged from the historical plans. Before coding, split a broad bullet into the same `Goal / Touch / Out of scope / Acceptance / UX-UI reference` shape used above.
@@ -153,7 +322,6 @@ These entries are lower priority but already merged from the historical plans. B
 
 ### Login And Refresh UX
 
-- Add a redirect guard that skips the sign-in page for authenticated stored credentials without flashing the login UI.
 - Return to the dashboard after the minimal successful user fetch; defer non-critical domain refreshes behind usable cached/current data.
 - Keep visible page data interactive while background domains refresh; avoid global busy states for background-only work.
 - Surface refresh status next to the affected card or field, not only as page-level busy state.
