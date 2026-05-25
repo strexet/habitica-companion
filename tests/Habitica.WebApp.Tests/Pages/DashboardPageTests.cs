@@ -141,6 +141,58 @@ public sealed class DashboardPageTests : BunitContext
     }
 
     [Fact]
+    public void Stat_allocation_prompt_is_hidden_until_level_ten()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "New Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(DateTimeOffset.Parse("2026-04-25T08:00:00Z"), Array.Empty<TaskSnapshot>()),
+                ClassName: "warrior",
+                Level: 9,
+                UserSnapshot: new UserSnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    "New Tester",
+                    "warrior",
+                    9,
+                    42.5m,
+                    50m,
+                    0m,
+                    0m,
+                    125.1m,
+                    74.9m,
+                    88.25m,
+                    null,
+                    null,
+                    null,
+                    new EquipmentSnapshot(
+                        new GearSlotsSnapshot(null, null, null, null, null),
+                        new GearSlotsSnapshot(null, null, null, null, null)),
+                    new InventorySnapshot(0, 0, 0, 0, 0, 0, Array.Empty<string>()),
+                    UnallocatedStatPoints: 3,
+                    Stats: CharacterStatsSnapshot.Zero,
+                    Buffs: CharacterStatsSnapshot.Zero),
+                UserFreshness: SnapshotFreshnessState.Fresh));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<DashboardPage>();
+
+        Assert.DoesNotContain("3 unspent stat points", cut.Markup);
+        Assert.Contains("Stat allocation unlocks at level 10.", cut.Markup);
+        Assert.Contains("allocation unlock", cut.Markup);
+        Assert.True(cut.Find("[data-testid='allocate-int-plus']").HasAttribute("disabled"));
+        Assert.True(cut.Find("[data-testid='apply-stat-allocation']").HasAttribute("disabled"));
+    }
+
+    [Fact]
     public void Stat_allocation_uses_plus_buttons_and_applies_selected_points()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

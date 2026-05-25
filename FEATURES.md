@@ -485,7 +485,7 @@ Rate-limit sensitivity: high for repeated casts
 
 ### Goal
 
-Provide a class-specific spell workspace that lets the user inspect available mana, unlocked and locked class spells, default targets, approximate outcomes, and dynamic gear recommendations before casting. The Dashboard owns the current STR/INT/CON/PER table and manual stat allocation when the user has unspent stat points.
+Provide a class-specific spell workspace that lets the user inspect available mana, unlocked and locked class spells, default targets, approximate outcomes, and dynamic gear recommendations before casting. The Dashboard owns the current STR/INT/CON/PER table and manual stat allocation when the user has unspent stat points and stat allocation is unlocked.
 
 ### Inputs
 
@@ -549,7 +549,7 @@ Effect estimates are approximation-based. Initial formulas are based on Habitica
 
 Each spell card owns its dynamic equipment recommendations. Recommendations are transient and not saved as user presets. For spells with one relevant stat, show a primary-stat recommendation. For spells with multiple relevant stats, show primary/secondary stat recommendations and a balanced recommendation. If every non-empty recommended gear slot is already equipped in battle gear, its button is disabled and labeled `Equipped`.
 
-Dashboard stats are displayed as a single table with base/API stats, equipment-derived stats, active buffs, and effective values. Allocation uses per-stat `+` buttons with an Apply action instead of full-width numeric inputs.
+Dashboard stats are displayed as a single table with base/API stats, equipment-derived stats, active buffs, and effective values. Allocation uses per-stat `+` buttons with an Apply action instead of full-width numeric inputs. Stat allocation is treated as locked before level 10; below that level the Dashboard shows unlock copy instead of an unspent-points prompt, the allocation controls are disabled, and Spells hides stat-point context.
 
 Multi-cast uses a direct Cast button but executes sequentially. The active spell card shows a progress bar and text such as `Casting 2 of 5`. Stop on API failure, cancellation, missing target, or stale local state.
 
@@ -579,6 +579,7 @@ Block stat allocation when:
 
 - user is not authenticated;
 - account snapshot is missing or not fresh;
+- cached user level is below 10;
 - no points are selected;
 - selected allocation exceeds `stats.points`.
 
@@ -603,7 +604,7 @@ Test:
 - session sequential cast orchestration and diagnostics logging;
 - stat allocation orchestration and diagnostics logging;
 - Spells page rendering, count totals, progress bar, target selection/value ordering, Cast button, Cron-sensitive buff warning, and dynamic equipment recommendations;
-- Dashboard stats table, plus-button stat allocation controls, and unspent stat warning;
+- Dashboard stats table, plus-button stat allocation controls, stat unlock guard, and unspent stat warning;
 - authenticated navigation link.
 
 ### Open questions
@@ -1192,6 +1193,8 @@ Health-potion purchase is manual only. It is disabled when the account snapshot 
 Show explicit `fresh` / `stale` / `expired` / `missing` state indicators when snapshots are outdated or unavailable.
 
 When derived stat targets such as max health, max mana, or XP-to-next-level are absent from the cached account snapshot, the dashboard must not render misleading `current / 0` output. Show the current value only and downgrade the explanatory label accordingly.
+
+Stat allocation prompts are shown only when cached user level is 10 or higher and unallocated points are available. Below level 10, the stats panel explains that allocation unlocks at level 10 and keeps allocation controls disabled.
 
 ### Error handling
 

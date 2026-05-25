@@ -43,6 +43,30 @@ public sealed class SpellsPageTests : BunitContext
     }
 
     [Fact]
+    public void Hides_stat_point_context_until_allocation_unlocks()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var state = CreateState() with
+        {
+            Level = 9,
+            UserSnapshot = CreateState().UserSnapshot! with
+            {
+                Level = 9,
+                UnallocatedStatPoints = 3
+            }
+        };
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(state));
+
+        var cut = Render<SpellsPage>();
+
+        Assert.DoesNotContain("Stat points", cut.Markup);
+        Assert.DoesNotContain("Allocate on Dashboard", cut.Markup);
+    }
+
+    [Fact]
     public void Count_updates_total_mana_and_progress_bar_renders_for_active_cast()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

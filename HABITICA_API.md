@@ -332,6 +332,8 @@ Bulk stat allocation uses a request body containing only the selected point coun
 }
 ```
 
+Stat allocation unlock rule: Habitica's user-facing docs describe the class/stat system as unlocking at level 10, with stat points becoming allocatable after that unlock. Treat cached users below level 10 as ineligible for stat allocation even if `stats.points` is non-zero. Preserve the saved point count for diagnostics/read-models, but do not show an allocation prompt or call `/user/allocate` or `/user/allocate-bulk` until cached `stats.lvl >= 10`.
+
 Automation rule: before casting skills automatically, verify mana and target validity. Execute repeated casts sequentially and stop the loop when the action can no longer be completed.
 
 Cron-sensitive stat buffs should warn when the authenticated user has not started the current Habitica day. Offer `Cast anyway`, `Start New Day and Cast`, and `Cancel`; do not cast automatically if Cron fails.

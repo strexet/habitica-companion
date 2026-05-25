@@ -55,32 +55,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Stat Point Unlock Guard
-
-Goal: hide or reframe unspent stat-point prompts until Habitica stat allocation is unlocked for the user.
-
-Touch:
-- `HABITICA_API.md`
-- `src/Habitica.Domain/Auth`
-- `src/Habitica.Application/Dashboard`
-- `src/Habitica.Rules/Spells`
-- `src/Habitica.WebApp/Pages/DashboardPage.razor`
-- `src/Habitica.WebApp/Pages/SpellsPage.razor`
-- direct tests under `tests/`
-- `FEATURES.md`
-
-Out of scope:
-- changing the stat allocation mutation itself except for validation gates;
-- inventing unlock rules not confirmed by Habitica docs or observed API fields.
-
-Acceptance:
-- Habitica stat allocation unlock conditions are documented before UI logic depends on them.
-- Dashboard does not show “unspent stat points are available for allocation” for users below the documented unlock threshold.
-- Spell cards or spell summaries only surface stat-point context when stat allocation is unlocked and relevant.
-- Allocation attempts fail locally with clear copy if the user is not eligible.
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` dashboard and spells sections.
-
 ### Authenticated Default Route And Sign-In Redirect
 
 Goal: make Dashboard the default page for authenticated users and keep Sign In visible only for unauthenticated users.

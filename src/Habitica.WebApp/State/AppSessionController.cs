@@ -1596,6 +1596,11 @@ public sealed class AppSessionController : IAppSessionController
             return SpellActionResult.Failure("A fresh account snapshot is required before allocating stats.");
         }
 
+        if (!StatAllocationEligibility.IsUnlocked(State.UserSnapshot.Level))
+        {
+            return SpellActionResult.Failure(StatAllocationEligibility.GetLockedReason(State.UserSnapshot.Level));
+        }
+
         var requestedPoints = allocation.Strength + allocation.Intelligence + allocation.Constitution + allocation.Perception;
         if (requestedPoints <= 0)
         {

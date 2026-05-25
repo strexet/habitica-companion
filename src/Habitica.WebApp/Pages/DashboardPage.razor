@@ -2,6 +2,7 @@
 @implements IDisposable
 @using System.Globalization
 @using Habitica.Application.Dashboard
+@using Habitica.Domain.Auth
 @using Habitica.Domain.Dashboard
 @using Habitica.Rules.Stats
 @inject IAppSessionController SessionController
@@ -32,6 +33,7 @@
     else
     {
         var snapshot = SessionController.State.UserSnapshot;
+        var statAllocation = new StatAllocationUnlockViewModelFactory().Create(snapshot);
 
         <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
             @GetFreshnessLabel(SessionController.State.UserFreshness)
@@ -44,10 +46,10 @@
             </MudAlert>
         }
 
-        @if (snapshot.UnallocatedStatPoints > 0)
+        @if (statAllocation.HasAllocatablePoints)
         {
             <MudAlert Class="inline-banner" Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined">
-                <a href="#stats">@snapshot.UnallocatedStatPoints unspent stat points</a> are available for allocation.
+                <a href="#stats">@statAllocation.UnallocatedPoints unspent stat points</a> are available for allocation.
             </MudAlert>
         }
 
@@ -236,10 +238,13 @@
 
         var statsViewModel = StatsViewModelFactory.Create(snapshot, SessionController.State.GearCatalogSnapshot);
         var pendingTotal = GetPendingTotal();
-        var remainingPoints = Math.Max(0, statsViewModel.UnallocatedPoints - pendingTotal);
+        var remainingPoints = statAllocation.IsUnlocked
+            ? Math.Max(0, statsViewModel.UnallocatedPoints - pendingTotal)
+            : 0;
         var canMutate = SessionController.State.IsAuthenticated
             && !SessionController.State.IsBusy
             && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
+        var canAllocateStats = canMutate && statAllocation.IsUnlocked;
 
         <section id="stats" class="card-surface dashboard-panel stats-panel">
             <div class="stats-panel-head">
@@ -248,10 +253,25 @@
                     <h2>Stats and allocation</h2>
                 </div>
                 <div class="stats-points-summary">
-                    <strong>@remainingPoints</strong>
-                    <span>points available</span>
+                    @if (statAllocation.IsUnlocked)
+                    {
+                        <strong>@remainingPoints</strong>
+                        <span>points available</span>
+                    }
+                    else
+                    {
+                        <strong>Level @StatAllocationEligibility.UnlockLevel</strong>
+                        <span>allocation unlock</span>
+                    }
                 </div>
             </div>
+
+            @if (!statAllocation.IsUnlocked)
+            {
+                <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
+                    @statAllocation.LockedReason
+                </MudAlert>
+            }
 
             <div class="stats-table-wrap">
                 <table class="stats-table">
@@ -282,7 +302,7 @@
                                     <div class="stat-allocation-cell">
                                         <span>@(pending > 0 ? $"+{pending}" : "0")</span>
                                         <MudButton Color="Color.Primary"
-                                                   Disabled="@(!canMutate || remainingPoints <= 0)"
+                                                   Disabled="@(!canAllocateStats || remainingPoints <= 0)"
                                                    OnClick="() => AddPendingAllocation(row.Key)"
                                                    Size="Size.Small"
                                                    Variant="Variant.Outlined"
@@ -299,7 +319,7 @@
 
             <div class="stats-actions">
                 <MudButton Color="Color.Primary"
-                           Disabled="@(!canMutate || pendingTotal <= 0 || pendingTotal > statsViewModel.UnallocatedPoints)"
+                           Disabled="@(!canAllocateStats || pendingTotal <= 0 || pendingTotal > statsViewModel.UnallocatedPoints)"
                            OnClick="ApplyStatAllocationAsync"
                            Variant="Variant.Filled"
                            data-testid="apply-stat-allocation">
@@ -571,6 +591,11 @@
     private void AddPendingAllocation(string key)
     {
         if (SessionController.State.UserSnapshot is null)
+        {
+            return;
+        }
+
+        if (!StatAllocationEligibility.IsUnlocked(SessionController.State.UserSnapshot.Level))
         {
             return;
         }

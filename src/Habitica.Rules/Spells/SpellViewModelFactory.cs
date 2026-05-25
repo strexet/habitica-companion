@@ -1,3 +1,4 @@
+using Habitica.Domain.Auth;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 using Habitica.Rules.Stats;
@@ -59,6 +60,8 @@ public sealed class SpellViewModelFactory
             snapshot.Mana,
             snapshot.MaxMana,
             snapshot.UnallocatedStatPoints,
+            StatAllocationEligibility.IsUnlocked(snapshot.Level),
+            StatAllocationEligibility.GetLockedReason(snapshot.Level),
             snapshot.Stats ?? CharacterStatsSnapshot.Zero,
             targetTasks,
             spells);
@@ -340,6 +343,8 @@ public sealed record SpellsPageViewModel(
     decimal Mana,
     decimal MaxMana,
     int UnallocatedStatPoints,
+    bool IsStatAllocationUnlocked,
+    string StatAllocationLockedReason,
     CharacterStatsSnapshot Stats,
     IReadOnlyList<SpellTargetTaskViewModel> TargetTasks,
     IReadOnlyList<SpellCardViewModel> Spells);

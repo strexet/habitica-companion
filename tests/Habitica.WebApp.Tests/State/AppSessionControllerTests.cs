@@ -383,6 +383,34 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task AllocateStatsAsync_rejects_when_stat_allocation_is_locked()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Level = 9,
+                UnallocatedStatPoints = 3
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.AllocateStatsAsync(new StatAllocation(0, 2, 0, 1));
+
+        Assert.False(result.Succeeded);
+        Assert.Equal("Stat allocation unlocks at level 10.", result.Message);
+        Assert.Empty(syncClient.StatAllocationCalls);
+    }
+
+    [Fact]
     public async Task BuyHealthPotionAsync_buys_potion_refreshes_snapshot_and_writes_log()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());

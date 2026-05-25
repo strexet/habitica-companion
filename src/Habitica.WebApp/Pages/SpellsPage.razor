@@ -86,7 +86,7 @@
                 <strong>@FormatDecimal(viewModel.Mana) / @FormatDecimal(viewModel.MaxMana)</strong>
                 <span class="dashboard-stat-note">Available mana</span>
             </article>
-            @if (viewModel.UnallocatedStatPoints > 0)
+            @if (viewModel.IsStatAllocationUnlocked && viewModel.UnallocatedStatPoints > 0)
             {
                 <article class="dashboard-stat-card warning-card">
                     <span class="dashboard-stat-label">Stat points</span>
@@ -312,7 +312,7 @@
     private bool _suppressCronWarningForDay;
 
     private SpellsPageViewModel CurrentViewModel => SessionController.State.UserSnapshot is null
-        ? new SpellsPageViewModel("unknown", 0, 0m, 0m, 0, CharacterStatsSnapshot.Zero, Array.Empty<SpellTargetTaskViewModel>(), Array.Empty<SpellCardViewModel>())
+        ? new SpellsPageViewModel("unknown", 0, 0m, 0m, 0, false, "Stat allocation unlocks at level 10.", CharacterStatsSnapshot.Zero, Array.Empty<SpellTargetTaskViewModel>(), Array.Empty<SpellCardViewModel>())
         : SpellViewModelFactory.Create(
             SessionController.State.UserSnapshot,
             SessionController.State.TaskSnapshot,

@@ -23,6 +23,22 @@ public sealed class SpellViewModelFactoryTests
     }
 
     [Fact]
+    public void Create_marks_stat_allocation_locked_before_level_ten()
+    {
+        var snapshot = CreateUserSnapshot(className: "wizard", level: 9) with
+        {
+            UnallocatedStatPoints = 3
+        };
+        var factory = new SpellViewModelFactory();
+
+        var viewModel = factory.Create(snapshot, null, null);
+
+        Assert.Equal(3, viewModel.UnallocatedStatPoints);
+        Assert.False(viewModel.IsStatAllocationUnlocked);
+        Assert.Equal("Stat allocation unlocks at level 10.", viewModel.StatAllocationLockedReason);
+    }
+
+    [Fact]
     public void Create_selects_highest_value_open_non_reward_task_for_task_spells()
     {
         var snapshot = CreateUserSnapshot(
