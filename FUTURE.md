@@ -55,33 +55,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Recently Completed Quest Detection
-
-Goal: make recently completed quests include party quests that were tracked as active and quests completed outside the shared queue when reliable completion signals exist.
-
-Touch:
-- `functions/api/party-sync/[partyId].js`
-- `migrations/`
-- `src/Habitica.Api`
-- `src/Habitica.Domain/Party`
-- `src/Habitica.WebApp/State`
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- direct tests under `tests/`
-- `HABITICA_API.md`
-- `FEATURES.md`
-
-Out of scope:
-- broad historical analytics beyond the existing recent-completion list;
-- guessing unsupported chat message formats without documented or fixture-backed evidence.
-
-Acceptance:
-- Quests started through the companion app are added to recently completed when the active quest disappears with a reliable completion signal.
-- Supported Habitica party chat finish messages, including collection completion messages, can mark the most recently active matching quest completed even if it was never queued in companion app data.
-- Duplicate completion records are avoided across manual and automatic completion paths.
-- Recently completed UI distinguishes manual and automatic detection with concise labels.
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` party quest planning sections.
-
 ### Quest Invite Availability
 
 Goal: verify and fix party quest invite availability so quest owners can invite when no party quest is active.

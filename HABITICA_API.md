@@ -1,6 +1,6 @@
 # Habitica API Integration Guide
 
-Last researched: 2026-04-26
+Last researched: 2026-05-25
 Target API: Habitica API v3
 Audience: developers building a new Habitica client or integration
 
@@ -840,6 +840,8 @@ Common party quest endpoints include:
 Quest state is stored primarily on the party/group and user party fields. Refresh party/group state after quest actions.
 
 Known nuance: historical GitHub discussion notes that group quest data may reflect progress from each user's last cron and may not show all in-day progress in every context. Treat quest progress displays as eventually consistent unless verified by a fresh party state response.
+
+When a previously active quest disappears from `GET /groups/party`, `GET /groups/party/chat` can provide a reliable completion signal if the structured chat `info` fields are present. Habitica server source currently emits `info.type = "boss_defeated"` with `info.quest = <questKey>` for boss completions, and emits `info.type = "all_items_found"` for collection completions. Collection completion chat does not include the quest key, so only treat it as a completion for the most recently active quest when that prior quest was known to be a collection quest and the chat message is newer than the prior snapshot. Do not parse localized chat text for quest completion.
 
 ### 13.3 Party & Guild Data Tool observations
 

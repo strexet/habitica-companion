@@ -442,7 +442,22 @@ public sealed class PartyPageTests : BunitContext
                             "user-2",
                             "Alpha",
                             3,
-                            new[] { "300 XP" })
+                            new[] { "300 XP" }),
+                        new PartyRecentlyCompletedQuest(
+                            "party-123",
+                            "phoenix",
+                            "Phoenix Quest",
+                            DateTimeOffset.Parse("2026-04-25T10:00:00Z"),
+                            null,
+                            null,
+                            null,
+                            2,
+                            new[] { "400 XP" },
+                            null,
+                            "user-id",
+                            "Mage Tester",
+                            "auto",
+                            "habitica-chat-boss:phoenix:chat-1")
                     })));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
@@ -469,6 +484,9 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Sunstone Chain", cut.Markup);
         Assert.Contains("Gryphon Quest", cut.Markup);
         Assert.Contains("300 XP", cut.Markup);
+        Assert.Contains("Marked manually", cut.Markup);
+        Assert.Contains("Phoenix Quest", cut.Markup);
+        Assert.Contains("Auto-detected by Mage Tester", cut.Markup);
 
         cut.FindAll("button")
             .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal)

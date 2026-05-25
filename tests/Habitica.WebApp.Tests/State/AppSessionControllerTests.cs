@@ -719,6 +719,205 @@ public sealed class AppSessionControllerTests
         Assert.Empty(remotePartySync.InvitePartyCalls);
     }
 
+    [Fact]
+    public async Task PushCloudSyncAsync_auto_completes_active_queue_item_when_completion_chat_matches()
+    {
+        var completedAtUtc = DateTimeOffset.Parse("2026-04-27T12:05:00Z");
+        var previousPartySnapshot = CreatePartySnapshot() with
+        {
+            RetrievedAtUtc = DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+            Quest = new PartyQuestSnapshot(
+                "dragon",
+                true,
+                12.5m,
+                3m,
+                2,
+                Name: "Dragon")
+        };
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot(),
+            CreateTaskSnapshot(),
+            CreatePartySnapshot() with
+            {
+                RetrievedAtUtc = completedAtUtc,
+                Quest = null,
+                RecentChatMessages = new[]
+                {
+                    new PartyChatMessageSnapshot(
+                        "chat-1",
+                        completedAtUtc,
+                        null,
+                        new PartyChatMessageInfoSnapshot("boss_defeated", "dragon"))
+                }
+            });
+        var remotePartySync = new FakeRemotePartyDataSyncProvider
+        {
+            Snapshot = new RemotePartyDataSnapshot(
+                JsonSerializer.Serialize(previousPartySnapshot, new JsonSerializerOptions(JsonSerializerDefaults.Web)),
+                null,
+                previousPartySnapshot.RetrievedAtUtc,
+                QuestQueue: new[]
+                {
+                    new PartyQuestQueueEntry(
+                        "queue-1",
+                        "party-123",
+                        "dragon",
+                        "Dragon",
+                        "user-id",
+                        "Mage Tester",
+                        PartyQuestQueueStatus.Active,
+                        DateTimeOffset.Parse("2026-04-27T11:59:00Z"),
+                        DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+                        1,
+                        null,
+                        true,
+                        1,
+                        Array.Empty<PartyQuestVote>(),
+                        StartedAtUtc: DateTimeOffset.Parse("2026-04-27T12:00:00Z"))
+                })
+        };
+        var controller = CreateController(
+            new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()),
+            syncClient,
+            remotePartyDataSyncProvider: remotePartySync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        await controller.PushCloudSyncAsync();
+
+        Assert.Contains(remotePartySync.ReconcileCalls, call =>
+            call.QueueItemId == "queue-1"
+            && call.Transition == "complete"
+            && call.DetectionKey == "habitica-chat-boss:dragon:chat-1");
+        Assert.Empty(remotePartySync.DetectedCompletionCalls);
+    }
+
+    [Fact]
+    public async Task PushCloudSyncAsync_does_not_complete_active_queue_item_without_completion_chat()
+    {
+        var previousPartySnapshot = CreatePartySnapshot() with
+        {
+            RetrievedAtUtc = DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+            Quest = new PartyQuestSnapshot("dragon", true, 12.5m, 3m, 2)
+        };
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot(),
+            CreateTaskSnapshot(),
+            CreatePartySnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.Parse("2026-04-27T12:05:00Z"),
+                Quest = null,
+                RecentChatMessages = Array.Empty<PartyChatMessageSnapshot>()
+            });
+        var remotePartySync = new FakeRemotePartyDataSyncProvider
+        {
+            Snapshot = new RemotePartyDataSnapshot(
+                JsonSerializer.Serialize(previousPartySnapshot, new JsonSerializerOptions(JsonSerializerDefaults.Web)),
+                null,
+                previousPartySnapshot.RetrievedAtUtc,
+                QuestQueue: new[]
+                {
+                    new PartyQuestQueueEntry(
+                        "queue-1",
+                        "party-123",
+                        "dragon",
+                        "Dragon",
+                        "user-id",
+                        "Mage Tester",
+                        PartyQuestQueueStatus.Active,
+                        DateTimeOffset.Parse("2026-04-27T11:59:00Z"),
+                        DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+                        1,
+                        null,
+                        true,
+                        1,
+                        Array.Empty<PartyQuestVote>(),
+                        StartedAtUtc: DateTimeOffset.Parse("2026-04-27T12:00:00Z"))
+                })
+        };
+        var controller = CreateController(
+            new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()),
+            syncClient,
+            remotePartyDataSyncProvider: remotePartySync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        await controller.PushCloudSyncAsync();
+
+        Assert.DoesNotContain(remotePartySync.ReconcileCalls, call => call.Transition == "complete");
+        Assert.Empty(remotePartySync.DetectedCompletionCalls);
+    }
+
+    [Fact]
+    public async Task PushCloudSyncAsync_records_unqueued_collection_completion_from_chat_signal()
+    {
+        var completedAtUtc = DateTimeOffset.Parse("2026-04-27T12:06:00Z");
+        var previousPartySnapshot = CreatePartySnapshot() with
+        {
+            RetrievedAtUtc = DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+            Quest = new PartyQuestSnapshot(
+                "evilsanta",
+                true,
+                0m,
+                0m,
+                3,
+                QuestType: PartyQuestType.Collection,
+                Name: "Trapper Santa",
+                RewardSummary: new[] { "100 XP" })
+        };
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot(),
+            CreateTaskSnapshot(),
+            CreatePartySnapshot() with
+            {
+                RetrievedAtUtc = completedAtUtc,
+                Quest = null,
+                RecentChatMessages = new[]
+                {
+                    new PartyChatMessageSnapshot(
+                        "chat-collection",
+                        completedAtUtc,
+                        null,
+                        new PartyChatMessageInfoSnapshot("all_items_found", null))
+                }
+            });
+        var remotePartySync = new FakeRemotePartyDataSyncProvider
+        {
+            Snapshot = new RemotePartyDataSnapshot(
+                JsonSerializer.Serialize(previousPartySnapshot, new JsonSerializerOptions(JsonSerializerDefaults.Web)),
+                null,
+                previousPartySnapshot.RetrievedAtUtc)
+        };
+        var controller = CreateController(
+            new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()),
+            syncClient,
+            remotePartyDataSyncProvider: remotePartySync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        await controller.PushCloudSyncAsync();
+
+        var completion = Assert.Single(remotePartySync.DetectedCompletionCalls
+            .Where(entry => entry.DetectionKey == "habitica-chat-collection:evilsanta:chat-collection")
+            .DistinctBy(entry => entry.DetectionKey));
+        Assert.Equal("evilsanta", completion.QuestKey);
+        Assert.Equal("Trapper Santa", completion.QuestName);
+        Assert.Equal("habitica-chat-collection:evilsanta:chat-collection", completion.DetectionKey);
+        Assert.Equal(new[] { "100 XP" }, completion.RewardSummary);
+    }
+
     private static AppSessionController CreateController(
         FakeDiagnosticsLogStore logStore,
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
@@ -874,6 +1073,10 @@ public sealed class AppSessionControllerTests
 
         public List<(string QueueItemId, int Version)> InvitePartyCalls { get; } = new();
 
+        public List<(string QueueItemId, string QuestKey, string Transition, int? ParticipantsCount, string? CompletedByDisplayName, string? DetectionKey)> ReconcileCalls { get; } = new();
+
+        public List<PartyDetectedQuestCompletion> DetectedCompletionCalls { get; } = new();
+
         public Task<RemotePartyDataSnapshot?> DownloadAsync(
             PartySyncClaim claim,
             CancellationToken cancellationToken)
@@ -984,9 +1187,21 @@ public sealed class AppSessionControllerTests
             string transition,
             int? participantsCount,
             string? completedByDisplayName,
+            string? detectionKey,
             CancellationToken cancellationToken)
         {
             LastClaim = claim;
+            ReconcileCalls.Add((queueItemId, questKey, transition, participantsCount, completedByDisplayName, detectionKey));
+            return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyQuestState> RecordDetectedQuestCompletionAsync(
+            PartySyncClaim claim,
+            PartyDetectedQuestCompletion completion,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            DetectedCompletionCalls.Add(completion);
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
         }
 

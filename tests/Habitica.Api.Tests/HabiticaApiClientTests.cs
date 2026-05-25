@@ -766,6 +766,82 @@ public sealed class HabiticaApiClientTests
     }
 
     [Fact]
+    public async Task GetPartySnapshotAsync_fetches_recent_chat_when_no_quest_is_active()
+    {
+        var chatSentAtUtc = DateTimeOffset.Parse("2026-04-27T12:05:00Z");
+        var requests = new List<string>();
+        var responses = new Queue<HttpResponseMessage>(new[]
+        {
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""
+            {
+              "success": true,
+              "data": {
+                "_id": "party-123",
+                "name": "Night Owls",
+                "memberCount": 0
+              }
+            }
+            """)
+            },
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""
+            {
+              "success": true,
+              "data": []
+            }
+            """)
+            },
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""
+            {
+              "success": true,
+              "data": {}
+            }
+            """)
+            },
+            new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent($$"""
+            {
+              "success": true,
+              "data": [
+                {
+                  "id": "chat-1",
+                  "timestamp": "{{chatSentAtUtc:O}}",
+                  "text": "The boss was defeated.",
+                  "info": {
+                    "type": "boss_defeated",
+                    "quest": "dragon"
+                  }
+                }
+              ]
+            }
+            """)
+            }
+        });
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            requests.Add(request.RequestUri?.PathAndQuery ?? string.Empty);
+            return responses.Dequeue();
+        });
+        var client = CreateClient(handler);
+
+        var snapshot = await client.GetPartySnapshotAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
+
+        var chatMessage = Assert.Single(snapshot.RecentChatMessages);
+        Assert.Equal("chat-1", chatMessage.MessageId);
+        Assert.Equal(chatSentAtUtc, chatMessage.SentAtUtc);
+        Assert.Equal("boss_defeated", chatMessage.Info?.Type);
+        Assert.Equal("dragon", chatMessage.Info?.QuestKey);
+        Assert.Contains("/api/v3/groups/party/chat", requests);
+        Assert.Empty(responses);
+    }
+
+    [Fact]
     public async Task GetUserAsync_throws_normalized_exception_for_error_responses()
     {
         var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.Unauthorized)

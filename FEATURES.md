@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-05-22
+Last updated: 2026-05-25
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -2017,6 +2017,7 @@ quest content metadata
 shared party quest pool
 shared party quest queue and votes
 recently completed shared party quests
+recent party chat finish signals when no quest is active
 party-sync owner/admin/Officer roles
 party-sync settings
 party-sync kick list
@@ -2037,7 +2038,7 @@ active quest card with real quest metadata and rewards when cached
 quest invitation card with accepted, pending, and rejected response lists before the quest starts
 shared quest queue cards with vote counts and voter names
 quest pool cards with owner availability
-recently completed quest cards
+recently completed quest cards with manual vs automatic source labels
 owner/admin/Officer strip after party notes and before active quest state
 owner/admin settings controls
 member-detail Officer and kick controls for management roles
@@ -2053,7 +2054,7 @@ Reads `party/latestSnapshot`, `party/cronHistory`, `user/latestSnapshot`, `inven
 
 ### API interaction
 
-The page consumes local Habitica snapshots prepared by the sync workflow. Shared quest queue actions go through the application/session controller and Cloudflare party-sync; Razor components do not call Habitica API directly.
+The page consumes local Habitica snapshots prepared by the sync workflow. Shared quest queue actions go through the application/session controller and Cloudflare party-sync; Razor components do not call Habitica API directly. When the party has no active quest, the sync workflow may fetch recent party chat so it can detect structured Habitica quest-finish messages without parsing localized text.
 
 ### Algorithm / rules
 
@@ -2085,6 +2086,9 @@ Current display rules:
 23. When Habitica has a quest invitation that is not active yet, hide progress and finish estimates and show accepted, pending, and rejected member response lists instead; names focus the same expanded member details UI.
 24. Show an `Invite party` button on every shared queue card. The button is enabled only when the party has no current Habitica quest and the current user owns a `Queued` or `Selected` item; success sends `POST /groups/party/quests/invite/:questKey`, refreshes party state, and marks the shared queue item `InviteSent`.
 25. Let users toggle an owned-only queue filter that hides not-owned queue entries and not-owned quest-pool scrolls without mutating shared party-sync data.
+26. When a previously active companion-app quest disappears and recent party chat contains a reliable structured completion signal, mark the active shared queue item completed automatically and store an idempotent detection key.
+27. When a previously active collection quest disappears and recent party chat contains `info.type = "all_items_found"`, record it as an automatic recently completed quest even if it was never in the shared queue. Boss completions require `info.type = "boss_defeated"` and a matching `info.quest`.
+28. Label recently completed entries as `Marked manually` or `Auto-detected`, including the local detecting user when available.
 ```
 
 ### Validation
@@ -2140,7 +2144,8 @@ Current implementation:
 - shared quest pool from published member quest-scroll availability;
 - shared quest queue with owner-only add/remove and one-vote-per-member voting;
 - shared queue invite action and owned-only queue/pool filter;
-- recently completed shared quest history table and UI.
+- recently completed shared quest history table and UI;
+- automatic recent-completion detection from structured Habitica party chat signals.
 
 Next:
 

@@ -532,7 +532,7 @@
 
                 @if (recentEntries.Count == 0)
                 {
-                    <p class="panel-copy">Completed shared quest history appears here after a quest owner or party leader marks a queue item completed.</p>
+                    <p class="panel-copy">Completed shared quest history appears here after manual completion or automatic quest-finish detection.</p>
                 }
                 else
                 {
@@ -545,10 +545,7 @@
                                         <span class="dashboard-stat-label">Completed @FormatDateTime(recent.CompletedAtUtc)</span>
                                         <strong>@recent.QuestName</strong>
                                         <span class="dashboard-stat-note">@GetOwnerLabel(recent.OwnerDisplayName)</span>
-                                        @if (recent.CompletionSource is "auto" && !string.IsNullOrWhiteSpace(recent.CompletedByDisplayName))
-                                        {
-                                            <span class="dashboard-stat-note">Detected by @recent.CompletedByDisplayName</span>
-                                        }
+                                        <span class="dashboard-stat-note">@GetCompletionSourceLabel(recent)</span>
                                     </div>
                                     @if (recent.ParticipantsCount is not null)
                                     {
@@ -1650,6 +1647,20 @@
     private static string GetOwnerLabel(string? ownerDisplayName)
     {
         return string.IsNullOrWhiteSpace(ownerDisplayName) ? "Owner unknown" : $"Owner: {ownerDisplayName}";
+    }
+
+    private static string GetCompletionSourceLabel(PartyRecentlyCompletedQuest recent)
+    {
+        if (string.Equals(recent.CompletionSource, "auto", StringComparison.Ordinal))
+        {
+            return string.IsNullOrWhiteSpace(recent.CompletedByDisplayName)
+                ? "Auto-detected"
+                : $"Auto-detected by {recent.CompletedByDisplayName}";
+        }
+
+        return string.IsNullOrWhiteSpace(recent.CompletedByDisplayName)
+            ? "Marked manually"
+            : $"Marked manually by {recent.CompletedByDisplayName}";
     }
 
     private RenderFragment RenderRewards(IReadOnlyList<string> rewards) => builder =>

@@ -185,6 +185,8 @@ export async function onRequestPost(context) {
       return await markCompleted(db, env, partyId, access, payload, nowIso);
     case "autoReconcileQuest":
       return await autoReconcileQuest(db, env, partyId, access, payload, nowIso);
+    case "recordDetectedCompletion":
+      return await recordDetectedCompletion(db, env, partyId, access, payload, nowIso);
     case "assignOfficer":
       return await assignOfficer(db, env, partyId, access, payload, nowIso);
     case "assignPartyOwner":
@@ -308,7 +310,7 @@ async function readQuestPool(db, partyId) {
 async function readRecentlyCompleted(db, partyId) {
   const result = await db
     .prepare(`
-      SELECT party_id, quest_key, quest_name, completed_at_utc, started_at_utc, owner_user_id, owner_display_name, participants_count, reward_summary_json, source_queue_item_id, completed_by_user_id, completed_by_display_name, completion_source
+      SELECT party_id, quest_key, quest_name, completed_at_utc, started_at_utc, owner_user_id, owner_display_name, participants_count, reward_summary_json, source_queue_item_id, completed_by_user_id, completed_by_display_name, completion_source, detection_key
       FROM party_recently_completed_quests
       WHERE party_id = ?
       ORDER BY completed_at_utc DESC
@@ -330,6 +332,7 @@ async function readRecentlyCompleted(db, partyId) {
     completedByUserId: row.completed_by_user_id,
     completedByDisplayName: row.completed_by_display_name,
     completionSource: row.completion_source ?? "manual",
+    detectionKey: row.detection_key,
   }));
 }
 
@@ -576,7 +579,7 @@ async function markCompleted(db, env, partyId, access, payload, nowIso) {
   if (item) {
     await db
       .prepare(`
-        INSERT INTO party_recently_completed_quests (
+        INSERT OR IGNORE INTO party_recently_completed_quests (
           party_id,
           quest_key,
           quest_name,
@@ -700,8 +703,8 @@ async function autoReconcileQuest(db, env, partyId, access, payload, nowIso) {
               party_id, quest_key, quest_name, completed_at_utc, started_at_utc,
               owner_user_id, owner_display_name, participants_count,
               reward_summary_json, source_queue_item_id,
-              completed_by_user_id, completed_by_display_name, completion_source
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'auto')
+              completed_by_user_id, completed_by_display_name, completion_source, detection_key
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'auto', ?)
           `)
           .bind(
             partyId,
@@ -716,6 +719,7 @@ async function autoReconcileQuest(db, env, partyId, access, payload, nowIso) {
             queueItemId,
             access.userId,
             payload.completedByDisplayName ?? access.userId,
+            normalizeDetectionKey(payload.detectionKey),
           )
           .run();
       } catch (insertError) {
@@ -723,6 +727,62 @@ async function autoReconcileQuest(db, env, partyId, access, payload, nowIso) {
       }
     }
   }
+
+  return jsonResponse({
+    ok: true,
+    updatedAtUtc: nowIso,
+    questQueue: await readQuestQueue(db, partyId),
+    questPool: await readQuestPool(db, partyId),
+    recentlyCompleted: await readRecentlyCompleted(db, partyId),
+    management: await buildManagementState(db, env, partyId, access),
+  });
+}
+
+async function recordDetectedCompletion(db, env, partyId, access, payload, nowIso) {
+  if (!access.settings.memberAutoReconcileEnabled && !access.canManageQueue) {
+    return textResponse("Party sync management has disabled member queue reconciliation.", 403);
+  }
+
+  const questKey = typeof payload?.questKey === "string" ? payload.questKey.trim() : "";
+  const detectionKey = normalizeDetectionKey(payload?.detectionKey);
+  if (!questKey || !detectionKey) {
+    return textResponse("Quest key and detection key are required.", 400);
+  }
+
+  await db
+    .prepare(`
+      INSERT OR IGNORE INTO party_recently_completed_quests (
+        party_id,
+        quest_key,
+        quest_name,
+        completed_at_utc,
+        started_at_utc,
+        owner_user_id,
+        owner_display_name,
+        participants_count,
+        reward_summary_json,
+        source_queue_item_id,
+        completed_by_user_id,
+        completed_by_display_name,
+        completion_source,
+        detection_key
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?, 'auto', ?)
+    `)
+    .bind(
+      partyId,
+      questKey,
+      typeof payload.questName === "string" && payload.questName.trim() ? payload.questName.trim() : questKey,
+      typeof payload.completedAtUtc === "string" && payload.completedAtUtc ? payload.completedAtUtc : nowIso,
+      typeof payload.startedAtUtc === "string" && payload.startedAtUtc ? payload.startedAtUtc : null,
+      null,
+      null,
+      Number.isFinite(Number(payload.participantsCount)) ? Number(payload.participantsCount) : null,
+      JSON.stringify(Array.isArray(payload.rewardSummary) ? payload.rewardSummary.filter(value => typeof value === "string") : []),
+      access.userId,
+      access.displayName ?? access.userId,
+      detectionKey,
+    )
+    .run();
 
   return jsonResponse({
     ok: true,
@@ -991,6 +1051,12 @@ function normalizeSettings(value) {
     officerOnlyQueueEdits: value?.officerOnlyQueueEdits === true,
     memberAutoReconcileEnabled: value?.memberAutoReconcileEnabled !== false,
   };
+}
+
+function normalizeDetectionKey(value) {
+  return typeof value === "string" && value.trim()
+    ? value.trim().slice(0, 240)
+    : null;
 }
 
 function isValidPoolEntry(entry) {
@@ -1332,6 +1398,7 @@ function textResponse(message, status) {
 }
 
 export const partySyncAccessTestHooks = {
+  normalizeDetectionKey,
   normalizeSettings,
   readAccessProof,
 };

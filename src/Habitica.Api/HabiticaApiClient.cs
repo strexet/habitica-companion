@@ -185,6 +185,10 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             };
         }
 
+        var recentChatMessages = questSnapshot?.IsActive == true
+            ? Array.Empty<PartyChatMessageSnapshot>()
+            : await GetPartyChatMessagesAsync(credentials, cancellationToken);
+
         return new PartySnapshot(
             retrievedAtUtc: retrievedAtUtc,
             partyId: GetOptionalString(data, "_id") ?? string.Empty,
@@ -193,7 +197,41 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             memberCount: GetOptionalInt32(data, "memberCount"),
             quest: questSnapshot,
             members: members,
-            leaderId: GetOptionalString(data, "leader"));
+            leaderId: GetOptionalString(data, "leader"),
+            recentChatMessages: recentChatMessages);
+    }
+
+    private async Task<IReadOnlyList<PartyChatMessageSnapshot>> GetPartyChatMessagesAsync(
+        HabiticaCredentials credentials,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var request = CreateRequest(HttpMethod.Get, "groups/party/chat", credentials);
+            using var document = await SendForDocumentAsync(request, cancellationToken);
+            var data = document.RootElement.TryGetProperty("data", out var dataElement) ? dataElement : default;
+            if (data.ValueKind != JsonValueKind.Array)
+            {
+                return Array.Empty<PartyChatMessageSnapshot>();
+            }
+
+            return data
+                .EnumerateArray()
+                .Select(MapPartyChatMessage)
+                .ToArray();
+        }
+        catch (HabiticaApiException)
+        {
+            return Array.Empty<PartyChatMessageSnapshot>();
+        }
+        catch (JsonException)
+        {
+            return Array.Empty<PartyChatMessageSnapshot>();
+        }
+        catch (HttpRequestException)
+        {
+            return Array.Empty<PartyChatMessageSnapshot>();
+        }
     }
 
     private async Task<PartyContentMetadata> GetPartyContentMetadataAsync(
@@ -520,6 +558,33 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             Mana = GetOptionalDecimal(stats, "mp"),
             MaxMana = GetOptionalDecimal(stats, "maxMP")
         };
+    }
+
+    private static PartyChatMessageSnapshot MapPartyChatMessage(JsonElement message)
+    {
+        var info = TryGetObject(message, "info");
+        return new PartyChatMessageSnapshot(
+            MessageId: GetOptionalString(message, "id") ?? GetOptionalString(message, "_id"),
+            SentAtUtc: ParseChatTimestamp(message),
+            Text: GetOptionalString(message, "text") ?? GetOptionalString(message, "unformattedText"),
+            Info: info.ValueKind == JsonValueKind.Object
+                ? new PartyChatMessageInfoSnapshot(
+                    GetOptionalString(info, "type"),
+                    GetOptionalString(info, "quest"))
+                : null);
+    }
+
+    private static DateTimeOffset? ParseChatTimestamp(JsonElement message)
+    {
+        var timestamp = TryGetObject(message, "timestamp");
+        if (timestamp.ValueKind == JsonValueKind.Number && timestamp.TryGetInt64(out var milliseconds))
+        {
+            return DateTimeOffset.FromUnixTimeMilliseconds(milliseconds);
+        }
+
+        return GetOptionalString(message, "timestamp") is { } timestampText
+            ? ParseDateTimeOffset(timestampText)
+            : null;
     }
 
     private static PartyQuestSnapshot? MapPartyQuest(JsonElement quest, IReadOnlyList<PartyMemberSnapshot> members)

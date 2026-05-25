@@ -56,6 +56,12 @@ public interface IRemotePartyDataSyncProvider
         string transition,
         int? participantsCount,
         string? completedByDisplayName,
+        string? detectionKey,
+        CancellationToken cancellationToken);
+
+    Task<RemotePartyQuestState> RecordDetectedQuestCompletionAsync(
+        PartySyncClaim claim,
+        PartyDetectedQuestCompletion completion,
         CancellationToken cancellationToken);
 
     Task<RemotePartyQuestState> AssignOfficerAsync(
@@ -115,3 +121,12 @@ public sealed record RemotePartyQuestState(
     IReadOnlyList<PartyQuestPoolEntry>? QuestPool = null,
     IReadOnlyList<PartyRecentlyCompletedQuest>? RecentlyCompleted = null,
     PartySyncManagementState? Management = null);
+
+public sealed record PartyDetectedQuestCompletion(
+    string QuestKey,
+    string QuestName,
+    DateTimeOffset? StartedAtUtc,
+    int? ParticipantsCount,
+    IReadOnlyList<string> RewardSummary,
+    string DetectionKey,
+    DateTimeOffset CompletedAtUtc);

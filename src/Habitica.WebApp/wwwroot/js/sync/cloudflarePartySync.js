@@ -88,7 +88,7 @@ export async function invitePartyToQuest(claim, queueItemId, version) {
   });
 }
 
-export async function reconcileQuestLifecycle(claim, queueItemId, questKey, transition, participantsCount, completedByDisplayName) {
+export async function reconcileQuestLifecycle(claim, queueItemId, questKey, transition, participantsCount, completedByDisplayName, detectionKey) {
   return await postPartyAction(claim, {
     action: "autoReconcileQuest",
     queueItemId,
@@ -96,6 +96,20 @@ export async function reconcileQuestLifecycle(claim, queueItemId, questKey, tran
     transition,
     participantsCount: participantsCount ?? null,
     completedByDisplayName: completedByDisplayName ?? null,
+    detectionKey: detectionKey ?? null,
+  });
+}
+
+export async function recordDetectedQuestCompletion(claim, completion) {
+  return await postPartyAction(claim, {
+    action: "recordDetectedCompletion",
+    questKey: completion.questKey,
+    questName: completion.questName,
+    startedAtUtc: completion.startedAtUtc ?? null,
+    participantsCount: completion.participantsCount ?? null,
+    rewardSummary: completion.rewardSummary ?? [],
+    detectionKey: completion.detectionKey,
+    completedAtUtc: completion.completedAtUtc,
   });
 }
 

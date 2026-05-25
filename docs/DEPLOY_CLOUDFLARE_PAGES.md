@@ -10,7 +10,7 @@ This app is a Blazor WebAssembly app with Cloudflare Pages Functions for persona
 - `functions/api/sync/[syncId]/section/[sectionKey].js` - Cloudflare Pages Function for per-section encrypted sync uploads and downloads (active path).
 - `functions/api/sync/[syncId]/sections.js` - Cloudflare Pages Function listing all section keys for a sync id.
 - `functions/api/party-sync/[partyId].js` - Cloudflare Pages Function for shared party CRON data, quest planning, and party-sync management, protected by tokenless local party claims.
-- `migrations/0001_party_sync.sql` - D1 schema for party state, CRON events, and placeholder quest queue/vote tables.
+- `migrations/0001_party_sync.sql` and later numbered migrations - D1 schema for party state, CRON events, quest queue/vote tables, management roles, and automatic quest completion detection.
 - `wrangler.toml` - local/dev binding declarations for KV and D1.
 
 ## Cloudflare Pages settings
@@ -59,7 +59,7 @@ Shared party sync requires a D1 database bound to the Pages project.
 1. In Cloudflare, open `Workers & Pages`.
 2. Open `D1 SQL Database`.
 3. Create a database, for example `habitica-companion-party-sync`.
-4. Apply all migrations in order: `migrations/0001_party_sync.sql`, `migrations/0002_party_quest_queue.sql`, `migrations/0003_quest_lifecycle.sql`, `migrations/0004_party_sync_management.sql`, `migrations/0005_app_admins.sql`.
+4. Apply all migrations in order: `migrations/0001_party_sync.sql`, `migrations/0002_party_quest_queue.sql`, `migrations/0003_quest_lifecycle.sql`, `migrations/0004_party_sync_management.sql`, `migrations/0005_app_admins.sql`, `migrations/0006_detected_quest_completion.sql`.
 5. Open the Pages project settings.
 6. Open `Bindings`.
 7. Add a D1 database binding:

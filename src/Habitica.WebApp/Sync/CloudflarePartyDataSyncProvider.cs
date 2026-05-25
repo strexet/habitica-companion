@@ -136,6 +136,7 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
         string transition,
         int? participantsCount,
         string? completedByDisplayName,
+        string? detectionKey,
         CancellationToken cancellationToken)
     {
         var module = await _moduleTask.Value;
@@ -147,7 +148,21 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
             questKey,
             transition,
             participantsCount,
-            completedByDisplayName);
+            completedByDisplayName,
+            detectionKey);
+    }
+
+    public async Task<RemotePartyQuestState> RecordDetectedQuestCompletionAsync(
+        PartySyncClaim claim,
+        PartyDetectedQuestCompletion completion,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "recordDetectedQuestCompletion",
+            cancellationToken,
+            claim,
+            completion);
     }
 
     public async Task<RemotePartyQuestState> AssignOfficerAsync(

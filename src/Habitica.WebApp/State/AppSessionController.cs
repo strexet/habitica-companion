@@ -542,6 +542,7 @@ public sealed class AppSessionController : IAppSessionController
                         "activate",
                         null,
                         null,
+                        null,
                         cancellationToken);
                     ApplyPartyQuestState(claim.PartyId, remoteState);
                 }
@@ -2388,6 +2389,7 @@ public sealed class AppSessionController : IAppSessionController
         var claim = BuildPartySyncClaim(credentials, partySnapshot.PartyId, partySnapshot);
         var mergedRemoteHistory = false;
         var remoteSnapshot = await _remotePartyDataSyncProvider.DownloadAsync(claim, cancellationToken);
+        var previousPartySnapshot = TryDeserializePartySnapshot(remoteSnapshot?.PartySnapshotJson);
         if (remoteSnapshot is not null && !string.IsNullOrWhiteSpace(remoteSnapshot.CronHistoryJson))
         {
             ApplyPartyQuestState(partySnapshot.PartyId, remoteSnapshot);
@@ -2412,35 +2414,44 @@ public sealed class AppSessionController : IAppSessionController
         {
             ApplyPartyQuestState(partySnapshot.PartyId, questState);
         }
-        await ReconcileQuestLifecycleAsync(claim, cancellationToken);
+        await ReconcileQuestLifecycleAsync(claim, previousPartySnapshot, partySnapshot, cancellationToken);
 
         return new PartySyncUploadResult(mergedRemoteHistory, cronHistory.Events.Count);
     }
 
     private async Task ReconcileQuestLifecycleAsync(
         PartySyncClaim claim,
+        PartySnapshot? previousPartySnapshot,
+        PartySnapshot currentPartySnapshot,
         CancellationToken cancellationToken)
     {
         var queue = State.PartyQuestQueue?.Queue;
-        if (queue is null || queue.Count == 0)
+        var completionDetection = DetectCompletedQuest(previousPartySnapshot, currentPartySnapshot);
+        if ((queue is null || queue.Count == 0) && completionDetection is null)
         {
             return;
         }
 
-        var habiticaQuest = State.PartySnapshot?.Quest;
+        var habiticaQuest = currentPartySnapshot.Quest;
         var habiticaQuestKey = habiticaQuest is { IsActive: true } ? habiticaQuest.Key : null;
+        var completedQueuedQuest = false;
+        var matchedQueuedQuest = false;
 
-        foreach (var entry in queue)
+        foreach (var entry in queue ?? Array.Empty<PartyQuestQueueEntry>())
         {
-            if (entry.Status is PartyQuestQueueStatus.Active && !string.Equals(entry.QuestKey, habiticaQuestKey, StringComparison.Ordinal))
+            if (entry.Status is PartyQuestQueueStatus.Active
+                && completionDetection is not null
+                && string.Equals(entry.QuestKey, completionDetection.Quest.Key, StringComparison.Ordinal)
+                && !string.Equals(entry.QuestKey, habiticaQuestKey, StringComparison.Ordinal))
             {
+                matchedQueuedQuest = true;
                 try
                 {
-                    var participantsCount = habiticaQuest?.ParticipantCount;
                     var state = await _remotePartyDataSyncProvider.ReconcileQuestLifecycleAsync(
                         claim, entry.QueueItemId, entry.QuestKey, "complete",
-                        participantsCount, State.DisplayName, cancellationToken);
+                        completionDetection.Quest.ParticipantCount, State.DisplayName, completionDetection.DetectionKey, cancellationToken);
                     ApplyPartyQuestState(claim.PartyId, state);
+                    completedQueuedQuest = true;
                 }
                 catch (Exception exception) when (exception is not OperationCanceledException)
                 {
@@ -2465,7 +2476,7 @@ public sealed class AppSessionController : IAppSessionController
                 {
                     var state = await _remotePartyDataSyncProvider.ReconcileQuestLifecycleAsync(
                         claim, entry.QueueItemId, entry.QuestKey, "activate",
-                        null, null, cancellationToken);
+                        null, null, null, cancellationToken);
                     ApplyPartyQuestState(claim.PartyId, state);
                 }
                 catch (Exception exception) when (exception is not OperationCanceledException)
@@ -2485,7 +2496,125 @@ public sealed class AppSessionController : IAppSessionController
                 }
             }
         }
+
+        if (completionDetection is not null && !completedQueuedQuest && !matchedQueuedQuest)
+        {
+            try
+            {
+                var state = await _remotePartyDataSyncProvider.RecordDetectedQuestCompletionAsync(
+                    claim,
+                    new PartyDetectedQuestCompletion(
+                        completionDetection.Quest.Key!,
+                        GetQuestDisplayName(completionDetection.Quest),
+                        previousPartySnapshot?.RetrievedAtUtc,
+                        completionDetection.Quest.ParticipantCount,
+                        completionDetection.Quest.Rewards,
+                        completionDetection.DetectionKey,
+                        completionDetection.CompletedAtUtc),
+                    cancellationToken);
+                ApplyPartyQuestState(claim.PartyId, state);
+            }
+            catch (Exception exception) when (exception is not OperationCanceledException)
+            {
+                await _diagnosticsLogWriter.WriteAsync(
+                    DiagnosticsFeatureArea.Party,
+                    "quest-lifecycle-detect-complete",
+                    DiagnosticsSeverity.Warning,
+                    DiagnosticsMode.Local,
+                    $"Detected completion for '{GetQuestDisplayName(completionDetection.Quest)}' could not be recorded: {exception.Message}",
+                    new Dictionary<string, string>(StringComparer.Ordinal)
+                    {
+                        ["questKey"] = completionDetection.Quest.Key ?? string.Empty,
+                        ["detectionKey"] = completionDetection.DetectionKey
+                    },
+                    cancellationToken);
+            }
+        }
     }
+
+    private static PartySnapshot? TryDeserializePartySnapshot(string? jsonText)
+    {
+        if (string.IsNullOrWhiteSpace(jsonText))
+        {
+            return null;
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<PartySnapshot>(jsonText, JsonOptions);
+        }
+        catch (JsonException)
+        {
+            return null;
+        }
+    }
+
+    private static QuestCompletionDetection? DetectCompletedQuest(
+        PartySnapshot? previousPartySnapshot,
+        PartySnapshot currentPartySnapshot)
+    {
+        var previousQuest = previousPartySnapshot?.Quest;
+        if (previousQuest is not { IsActive: true } || string.IsNullOrWhiteSpace(previousQuest.Key))
+        {
+            return null;
+        }
+
+        if (currentPartySnapshot.Quest is { IsActive: true } currentQuest
+            && string.Equals(currentQuest.Key, previousQuest.Key, StringComparison.Ordinal))
+        {
+            return null;
+        }
+
+        var oldestReliableSignalUtc = previousPartySnapshot!.RetrievedAtUtc.AddMinutes(-5);
+        foreach (var chatMessage in currentPartySnapshot.RecentChatMessages.OrderByDescending(message => message.SentAtUtc))
+        {
+            if (chatMessage.SentAtUtc is not { } sentAtUtc || sentAtUtc < oldestReliableSignalUtc)
+            {
+                continue;
+            }
+
+            var type = chatMessage.Info?.Type;
+            if (string.Equals(type, "boss_defeated", StringComparison.Ordinal)
+                && string.Equals(chatMessage.Info?.QuestKey, previousQuest.Key, StringComparison.Ordinal))
+            {
+                return new QuestCompletionDetection(
+                    previousQuest,
+                    BuildDetectionKey("habitica-chat-boss", previousQuest.Key!, chatMessage),
+                    sentAtUtc);
+            }
+
+            if (string.Equals(type, "all_items_found", StringComparison.Ordinal)
+                && previousQuest.QuestType == PartyQuestType.Collection)
+            {
+                return new QuestCompletionDetection(
+                    previousQuest,
+                    BuildDetectionKey("habitica-chat-collection", previousQuest.Key!, chatMessage),
+                    sentAtUtc);
+            }
+        }
+
+        return null;
+    }
+
+    private static string BuildDetectionKey(string source, string questKey, PartyChatMessageSnapshot chatMessage)
+    {
+        var signalId = !string.IsNullOrWhiteSpace(chatMessage.MessageId)
+            ? chatMessage.MessageId
+            : chatMessage.SentAtUtc?.UtcDateTime.Ticks.ToString(CultureInfo.InvariantCulture) ?? "unknown";
+        return $"{source}:{questKey}:{signalId}";
+    }
+
+    private static string GetQuestDisplayName(PartyQuestSnapshot quest)
+    {
+        return string.IsNullOrWhiteSpace(quest.Name)
+            ? quest.Key ?? "Unknown quest"
+            : quest.Name;
+    }
+
+    private sealed record QuestCompletionDetection(
+        PartyQuestSnapshot Quest,
+        string DetectionKey,
+        DateTimeOffset CompletedAtUtc);
 
     private async Task<RemotePartyQuestState?> PublishCurrentQuestPoolAsync(
         PartySyncClaim claim,

@@ -14,7 +14,8 @@ public sealed record PartySnapshot
         PartyQuestSnapshot? quest,
         IReadOnlyList<PartyMemberSnapshot>? members = null,
         PartyCronDashboardSnapshot? cronDashboard = null,
-        string? leaderId = null)
+        string? leaderId = null,
+        IReadOnlyList<PartyChatMessageSnapshot>? recentChatMessages = null)
     {
         RetrievedAtUtc = retrievedAtUtc;
         PartyId = partyId;
@@ -25,6 +26,7 @@ public sealed record PartySnapshot
         Members = members ?? Array.Empty<PartyMemberSnapshot>();
         CronDashboard = cronDashboard;
         LeaderId = leaderId;
+        RecentChatMessages = recentChatMessages ?? Array.Empty<PartyChatMessageSnapshot>();
     }
 
     public DateTimeOffset RetrievedAtUtc { get; init; }
@@ -44,7 +46,19 @@ public sealed record PartySnapshot
     public PartyCronDashboardSnapshot? CronDashboard { get; init; }
 
     public string? LeaderId { get; init; }
+
+    public IReadOnlyList<PartyChatMessageSnapshot> RecentChatMessages { get; init; }
 }
+
+public sealed record PartyChatMessageSnapshot(
+    string? MessageId,
+    DateTimeOffset? SentAtUtc,
+    string? Text,
+    PartyChatMessageInfoSnapshot? Info);
+
+public sealed record PartyChatMessageInfoSnapshot(
+    string? Type,
+    string? QuestKey);
 
 public sealed record PartyQuestSnapshot(
     string? Key,
@@ -207,7 +221,8 @@ public sealed record PartyRecentlyCompletedQuest(
     string? SourceQueueItemId = null,
     string? CompletedByUserId = null,
     string? CompletedByDisplayName = null,
-    string? CompletionSource = null)
+    string? CompletionSource = null,
+    string? DetectionKey = null)
 {
     public IReadOnlyList<string> Rewards => RewardSummary ?? Array.Empty<string>();
 }

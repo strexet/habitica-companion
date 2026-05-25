@@ -57,6 +57,12 @@ test("party-sync settings normalize to safe defaults", () => {
   });
 });
 
+test("automatic quest completion detection keys are trimmed and bounded", () => {
+  assert.equal(partySyncAccessTestHooks.normalizeDetectionKey(" habitica-chat-boss:dragon:chat-1 "), "habitica-chat-boss:dragon:chat-1");
+  assert.equal(partySyncAccessTestHooks.normalizeDetectionKey(""), null);
+  assert.equal(partySyncAccessTestHooks.normalizeDetectionKey("x".repeat(300)).length, 240);
+});
+
 test("app admin can assign the party owner role", async () => {
   const db = new FakePartySyncDb({
     adminIds: ["admin-123"],
