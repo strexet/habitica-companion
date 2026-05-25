@@ -55,30 +55,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Task Drag And Drop Reordering
-
-Goal: replace task-card move arrows with drag-and-drop reordering for task lists that already support manual ordering.
-
-Touch:
-- `src/Habitica.WebApp/Pages/TasksPage.razor`
-- `src/Habitica.WebApp/wwwroot/js`
-- `src/Habitica.Application/Tasks`
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs` and `tests/Habitica.Application.Tests/Tasks/`
-- `docs/UX_UI_MANIFEST.md`
-- `FEATURES.md`
-
-Out of scope:
-- changing Habitica server-side task order unless a documented endpoint already exists in `HABITICA_API.md`;
-- adding kanban, calendar, or bulk task editing.
-
-Acceptance:
-- Habits, dailies, and todos can be reordered by drag and drop within the same visible group.
-- Drop result persists through the same local ordering path that current move arrows use, including hidden/completed item preservation.
-- Task-card move arrows are removed after drag-and-drop controls are usable on pointer and touch devices.
-- Tests cover drag/drop ordering behavior and existing stored-order edge cases.
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` task management sections.
-
 ### Recently Completed Quest Detection
 
 Goal: make recently completed quests include party quests that were tracked as active and quests completed outside the shared queue when reliable completion signals exist.

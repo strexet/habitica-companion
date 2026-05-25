@@ -171,7 +171,7 @@ Improvement:
 - Add task history charts in expanded details without making each card visually heavy by default.
 - For drag-and-drop task ordering, make reordering available only where manual order is the active ordering model, or clearly explain why a visible sorted/filtered view cannot accept a drop at that position.
 - Use an explicit drag handle, lift state, insertion marker, and invalid-drop feedback so task cards do not feel like they can be accidentally dragged while selecting text, expanding details, or pressing score controls.
-- Keep keyboard and single-pointer reorder alternatives available after drag-and-drop ships; replacing arrow buttons with drag only would fail accessibility and make precise mobile reordering harder.
+- Keep keyboard and single-pointer reorder alternatives available; the current Tasks page drag handle also supports arrow-key reordering for precise moves without separate task-card arrow buttons.
 - Preserve hidden/completed items when reordering the visible subset, and keep the dropped task in view with a brief inline confirmation.
 
 ### Inventory
@@ -375,7 +375,7 @@ Application rule:
 - During drag, show a lifted card preview, reserve original space or show a placeholder, and show a full-width insertion marker between valid targets.
 - Invalid destinations should show "not allowed" feedback and leave order unchanged; failed drops should restore the item and show a concise inline error.
 - Long task lists need edge auto-scroll during drag and must keep the focused/dropped item visible after reorder.
-- Pointer/touch drag is not enough. Provide keyboard and single-pointer alternatives such as focusable reorder handles, Move up/down commands, or a compact reorder mode. Announce moved item position through a live region where practical.
+- Pointer/touch drag is not enough. Provide keyboard and single-pointer alternatives such as focusable reorder handles, Move up/down commands, or a compact reorder mode. Announce moved item position through a live region where practical; the Tasks page uses a focusable drag handle with arrow-key movement and a polite live region.
 - Preserve filtered-out and collapsed items when reordering a visible subset. Reorder only within the current task group unless the UI explicitly supports cross-group moves and explains the property change.
 - Do not persist every hover position. Persist only on committed drop; debounce storage/cloud writes if a future implementation syncs order remotely.
 

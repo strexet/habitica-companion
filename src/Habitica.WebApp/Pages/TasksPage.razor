@@ -1,16 +1,19 @@
 @page "/tasks"
 @implements IDisposable
+@implements IAsyncDisposable
 @using System.Globalization
 @using Habitica.Domain.Tasks
 @using Habitica.Storage
 @inject IAppSessionController SessionController
 @inject TaskListViewModelFactory TaskListViewModelFactory
+@inject TaskOrderPlanner TaskOrderPlanner
 @inject IKeyValueStorage KeyValueStorage
+@inject IJSRuntime JsRuntime
 @inject ISnackbar Snackbar
 
 <PageTitle>Tasks</PageTitle>
 
-<div class="tasks-shell">
+<div class="tasks-shell" @ref="_tasksRoot">
     <section class="card-surface tasks-header">
         <div>
             <p class="section-label">Task workspace</p>
@@ -62,6 +65,7 @@
         <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.TaskFreshness)" Variant="Variant.Filled">
             @GetFreshnessLabel(SessionController.State.TaskFreshness)
         </MudAlert>
+        <span class="sr-only" aria-live="polite">@_reorderAnnouncement</span>
 
         @if (CurrentViewModel.Groups.Count == 0)
         {
@@ -102,14 +106,27 @@
                         }
                         else
                         {
-                            <div class="task-card-grid">
+                            <div class="task-card-grid" data-task-type="@group.Type">
                                 @foreach (var item in visibleItems)
                                 {
                                     var mutationDisabledReason = GetTaskMutationDisabledReason();
                                     var progress = GetTaskProgress(item.Id);
                                     var isMutating = progress is not null;
-                                    <article class="@GetTaskCardClass(item)" style="@GetTaskCardStyle(item)">
+                                    <article class="@GetTaskCardClass(item)"
+                                             id="@BuildTaskElementId(item.Id)"
+                                             style="@GetTaskCardStyle(item)"
+                                             data-task-id="@item.Id"
+                                             data-task-type="@group.Type">
                                         <div class="task-card-head">
+                                            <button class="task-drag-handle"
+                                                    type="button"
+                                                    aria-label="@($"Reorder {item.Text}")"
+                                                    aria-keyshortcuts="ArrowUp ArrowDown"
+                                                    title="@($"Drag to reorder {item.Text}; use arrow keys while focused for precise moves.")"
+                                                    data-testid="@($"drag-task-{item.Id}")"
+                                                    @onkeydown="eventArgs => HandleTaskReorderKeyAsync(group, item.Id, eventArgs)">
+                                                <span aria-hidden="true">::</span>
+                                            </button>
                                             <span class="task-title">@item.Text</span>
 
                                             @if (item.IsCompleted)
@@ -172,24 +189,6 @@
                                         }
 
                                         <div class="task-card-actions">
-                                            <button class="secondary-action-button compact icon-toggle"
-                                                    type="button"
-                                                    aria-label="@($"Move {item.Text} up")"
-                                                    title="@($"Move {item.Text} up")"
-                                                    disabled="@(!CanMoveTask(visibleItems, item.Id, -1))"
-                                                    data-testid="@($"move-task-up-{item.Id}")"
-                                                    @onclick="@(() => MoveTaskAsync(group, item.Id, -1))">
-                                                ↑
-                                            </button>
-                                            <button class="secondary-action-button compact icon-toggle"
-                                                    type="button"
-                                                    aria-label="@($"Move {item.Text} down")"
-                                                    title="@($"Move {item.Text} down")"
-                                                    disabled="@(!CanMoveTask(visibleItems, item.Id, 1))"
-                                                    data-testid="@($"move-task-down-{item.Id}")"
-                                                    @onclick="@(() => MoveTaskAsync(group, item.Id, 1))">
-                                                ↓
-                                            </button>
                                             <button class="secondary-action-button compact" type="button" @onclick="@(() => ToggleTaskExpanded(item.Id))">
                                                 @(IsTaskExpanded(item.Id) ? "Hide details" : "Details")
                                             </button>
@@ -271,8 +270,12 @@
     private readonly Dictionary<string, int> _habitScoreCounts = new(StringComparer.Ordinal);
     private readonly Dictionary<TaskType, string[]> _taskOrderPreferences = new();
     private static readonly TaskType[] TaskTypeFilters = [TaskType.Todo, TaskType.Daily, TaskType.Habit, TaskType.Reward];
+    private ElementReference _tasksRoot;
+    private IJSObjectReference? _tasksPageModule;
+    private DotNetObjectReference<TasksPage>? _dotNetReference;
     private string? _searchText;
     private string? _loadedPreferenceUserId;
+    private string? _reorderAnnouncement;
     private TaskListSortMode _sortMode = TaskListSortMode.Name;
 
     private TaskListViewModel CurrentViewModel => SessionController.State.TaskSnapshot is null
@@ -289,6 +292,18 @@
     {
         SessionController.Changed += HandleStateChanged;
         await LoadPreferencesAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        _dotNetReference = DotNetObjectReference.Create(this);
+        _tasksPageModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/tasksPage.js");
+        await _tasksPageModule.InvokeVoidAsync("initializeTaskReorder", _tasksRoot, _dotNetReference);
     }
 
     private IEnumerable<TaskListItemViewModel> GetVisibleItems(TaskGroupViewModel group)
@@ -362,48 +377,89 @@
             .ThenBy(item => Array.IndexOf(orderedItems, item));
     }
 
-    private static bool CanMoveTask(IReadOnlyList<TaskListItemViewModel> items, string taskId, int direction)
-    {
-        var index = FindTaskIndex(items, taskId);
-        var targetIndex = index + direction;
-        return index >= 0 && targetIndex >= 0 && targetIndex < items.Count;
-    }
-
     private async Task MoveTaskAsync(TaskGroupViewModel group, string taskId, int direction)
     {
         var visibleItems = GetVisibleItems(group).ToArray();
-        var index = FindTaskIndex(visibleItems, taskId);
-        var targetIndex = index + direction;
-        if (index < 0 || targetIndex < 0 || targetIndex >= visibleItems.Length)
+        var allItems = ApplyTaskOrder(group.Type, group.Items).ToArray();
+        var nextOrder = TaskOrderPlanner.MoveVisibleItem(
+            allItems.Select(static item => item.Id),
+            visibleItems.Select(static item => item.Id),
+            taskId,
+            direction);
+        await PersistTaskOrderAsync(group.Type, allItems.Select(static item => item.Id).ToArray(), nextOrder, taskId, visibleItems.Length);
+    }
+
+    [JSInvokable]
+    public async Task HandleTaskDropped(string taskTypeName, string draggedTaskId, string targetTaskId, bool insertAfter)
+    {
+        if (!Enum.TryParse<TaskType>(taskTypeName, ignoreCase: true, out var taskType))
         {
             return;
         }
 
-        (visibleItems[index], visibleItems[targetIndex]) = (visibleItems[targetIndex], visibleItems[index]);
-        var reorderedVisibleIds = new Queue<string>(visibleItems.Select(static item => item.Id));
-        var visibleIdSet = visibleItems.Select(static item => item.Id).ToHashSet(StringComparer.Ordinal);
+        var group = CurrentViewModel.Groups.FirstOrDefault(candidate => candidate.Type == taskType);
+        if (group is null)
+        {
+            return;
+        }
+
+        var visibleItems = GetVisibleItems(group).ToArray();
         var allItems = ApplyTaskOrder(group.Type, group.Items).ToArray();
-        var nextOrder = new List<string>(allItems.Length);
-
-        foreach (var item in allItems)
-        {
-            nextOrder.Add(visibleIdSet.Contains(item.Id) ? reorderedVisibleIds.Dequeue() : item.Id);
-        }
-
-        while (reorderedVisibleIds.Count > 0)
-        {
-            nextOrder.Add(reorderedVisibleIds.Dequeue());
-        }
-
-        _taskOrderPreferences[group.Type] = nextOrder.Distinct(StringComparer.Ordinal).ToArray();
-        await SaveTaskOrderPreferencesAsync();
+        var nextOrder = TaskOrderPlanner.ReorderVisibleSubset(
+            allItems.Select(static item => item.Id),
+            visibleItems.Select(static item => item.Id),
+            draggedTaskId,
+            targetTaskId,
+            insertAfter ? TaskDropPlacement.After : TaskDropPlacement.Before);
+        await PersistTaskOrderAsync(group.Type, allItems.Select(static item => item.Id).ToArray(), nextOrder, draggedTaskId, visibleItems.Length);
     }
 
-    private static int FindTaskIndex(IReadOnlyList<TaskListItemViewModel> items, string taskId)
+    private async Task HandleTaskReorderKeyAsync(TaskGroupViewModel group, string taskId, KeyboardEventArgs eventArgs)
     {
-        for (var index = 0; index < items.Count; index++)
+        if (eventArgs.Key == "ArrowUp")
         {
-            if (string.Equals(items[index].Id, taskId, StringComparison.Ordinal))
+            await MoveTaskAsync(group, taskId, -1);
+        }
+        else if (eventArgs.Key == "ArrowDown")
+        {
+            await MoveTaskAsync(group, taskId, 1);
+        }
+    }
+
+    private async Task PersistTaskOrderAsync(
+        TaskType taskType,
+        IReadOnlyList<string> currentEffectiveOrder,
+        IReadOnlyList<string> nextOrder,
+        string movedTaskId,
+        int visibleCount)
+    {
+        if (currentEffectiveOrder.SequenceEqual(nextOrder, StringComparer.Ordinal))
+        {
+            return;
+        }
+
+        _taskOrderPreferences[taskType] = nextOrder.ToArray();
+        await SaveTaskOrderPreferencesAsync();
+
+        var position = GetVisiblePosition(taskType, movedTaskId);
+        _reorderAnnouncement = position >= 0
+            ? $"Task moved to position {Math.Min(position + 1, visibleCount)} of {visibleCount}."
+            : "Task order updated.";
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private int GetVisiblePosition(TaskType taskType, string taskId)
+    {
+        var group = CurrentViewModel.Groups.FirstOrDefault(candidate => candidate.Type == taskType);
+        if (group is null)
+        {
+            return -1;
+        }
+
+        var visibleItems = GetVisibleItems(group).ToArray();
+        for (var index = 0; index < visibleItems.Length; index++)
+        {
+            if (string.Equals(visibleItems[index].Id, taskId, StringComparison.Ordinal))
             {
                 return index;
             }
@@ -729,9 +785,26 @@
         });
     }
 
+    private static string BuildTaskElementId(string taskId)
+    {
+        return $"task-card-{Uri.EscapeDataString(taskId)}";
+    }
+
     public void Dispose()
     {
         SessionController.Changed -= HandleStateChanged;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        Dispose();
+        if (_tasksPageModule is not null)
+        {
+            await _tasksPageModule.InvokeVoidAsync("disposeTaskReorder", _tasksRoot);
+            await _tasksPageModule.DisposeAsync();
+        }
+
+        _dotNetReference?.Dispose();
     }
 
     private sealed record TasksPagePreferences(

@@ -6,6 +6,7 @@ namespace Habitica.Application.Tests.Tasks;
 public sealed class TaskListViewModelFactoryTests
 {
     private readonly TaskListViewModelFactory _factory = new();
+    private readonly TaskOrderPlanner _orderPlanner = new();
 
     [Fact]
     public void Create_groups_tasks_by_type_and_hides_completed_items_when_requested()
@@ -69,5 +70,33 @@ public sealed class TaskListViewModelFactoryTests
         var group = Assert.Single(viewModel.Groups);
         Assert.Equal(TaskType.Habit, group.Type);
         Assert.Equal(new[] { "High habit", "Low habit" }, group.Items.Select(item => item.Text).ToArray());
+    }
+
+    [Fact]
+    public void Reorder_visible_subset_preserves_hidden_items_in_place()
+    {
+        var nextOrder = _orderPlanner.ReorderVisibleSubset(
+            new[] { "todo-1", "todo-hidden", "todo-2", "todo-3" },
+            new[] { "todo-1", "todo-2", "todo-3" },
+            "todo-3",
+            "todo-1",
+            TaskDropPlacement.Before);
+
+        Assert.Equal(new[] { "todo-3", "todo-hidden", "todo-1", "todo-2" }, nextOrder);
+    }
+
+    [Fact]
+    public void Reorder_visible_subset_ignores_invalid_cross_subset_drop()
+    {
+        var currentOrder = new[] { "todo-1", "todo-hidden", "todo-2" };
+
+        var nextOrder = _orderPlanner.ReorderVisibleSubset(
+            currentOrder,
+            new[] { "todo-1", "todo-2" },
+            "todo-1",
+            "todo-hidden",
+            TaskDropPlacement.After);
+
+        Assert.Equal(currentOrder, nextOrder);
     }
 }

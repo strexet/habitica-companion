@@ -2338,7 +2338,7 @@ sort control
 inline task scoring/checkoff controls
 habit multi-score progress
 task detail panel
-row-local reorder controls
+drag-handle task reordering
 empty-state messaging
 ```
 
@@ -2381,7 +2381,9 @@ Current view-model rules:
 11. Render task actions inline on each card when authentication and freshness allow mutation.
 12. For Habit scoring, clamp multi-score count to 1-20 and show determinate progress while requests execute sequentially.
 13. Apply saved per-type task order after filtering/sorting; unknown saved IDs are ignored and new task IDs append after ordered known IDs.
-14. Reorder buttons move items within the currently visible list and persist the resulting per-type ID order for export/import and cloud sync.
+14. Drag handles move items within the currently visible list and persist the resulting per-type ID order for export/import and cloud sync.
+15. Drag reordering is scoped to the current task type group and preserves hidden or completed items that are filtered out of the visible subset.
+16. Focused drag handles support arrow-key reordering through the same local ordering path for keyboard precision.
 ```
 
 ### Validation
@@ -2415,7 +2417,7 @@ Test:
 - numeric task value rendering;
 - type filtering;
 - explicit sort modes;
-- row-local reorder controls;
+- drag-handle task reordering;
 - persisted per-type task order;
 - task scoring/checkoff action rendering;
 - habit multi-score request and progress wiring;
@@ -2434,7 +2436,7 @@ Current implementation:
 - continuous value-based open-task card tinting;
 - muted completed-task styling;
 - type filters and explicit sort modes;
-- row-local task reordering with per-type order persistence;
+- drag-handle task reordering with per-type order persistence;
 - inline Complete/Uncomplete controls for Dailies and To-Dos;
 - inline positive/negative Habit scoring with count and determinate progress;
 - compact cached task detail panel;
