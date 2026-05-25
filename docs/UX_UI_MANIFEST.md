@@ -1,6 +1,6 @@
 # UX/UI Manifest
 
-Last reviewed: 2026-05-21
+Last reviewed: 2026-05-26
 
 This manifest records the current UI implementation, what is working, where readability or responsiveness has drifted, and which outside patterns are worth copying. Treat it as product guidance for future UI work, not as a pixel spec.
 
@@ -16,6 +16,7 @@ Core principles:
 - Use cards for repeated records and bounded tools, not for every page section.
 - Use responsive grids with `minmax(0, 1fr)` or `minmax(min(100%, ...), 1fr)` where content can contain long task names, gear names, quest names, or translated text.
 - Never let a fixed-width action row own the layout when user data is variable.
+- When official Habitica UI presents a game entity as artwork, the companion UI should reserve a real image/icon slot for that entity instead of substituting generic decoration.
 
 ## Agent Usage Rules
 
@@ -51,6 +52,50 @@ UI change completion checklist:
 - Touch targets and form controls are usable on phone widths.
 - The page still works with long user-generated strings.
 - The color palette does not rely on color alone to communicate state.
+- Game images have reserved dimensions, alt text, readable fallbacks, and do not cause layout shift or overlap while loading.
+
+## Habitica Image Asset Placement
+
+Current audit:
+
+- The app currently uses local PWA/favicon files, Gryphy artwork on sign-in, and a MudBlazor menu icon in the shell.
+- Habitica gameplay surfaces are mostly text-only today: dashboard companion summaries, inventory gear and item counts, party quests, spell cards, and diagnostics all describe game entities without official art.
+- This is acceptable for data accuracy, but it diverges from Habitica's visual language where quests, gear, pets, mounts, consumables, spells, and achievements are image-backed in the official experience.
+
+Asset parity rule:
+
+- Use dedicated Habitica artwork when the official app presents the same entity visually: gear, quests, quest bosses or collection items, eggs, hatching potions, food, pets, mounts, spells, achievements, and reward items.
+- Do not add generic fantasy icons as stand-ins for missing Habitica assets. Missing assets should render a fixed-size fallback with the item name or key and be tracked as follow-up work.
+- Keep text labels beside or below images. Images improve recognition, but they must not replace names, costs, status, disabled reasons, or action labels.
+- Resolve artwork through one app-level image asset resolver. Components should pass stable Habitica keys and receive source path, alt text, fallback label, image kind, and preferred size.
+- Follow `HABITICA_API.md` for content key lookup and static asset sourcing. Do not guess image URLs inside Razor pages.
+
+Layout rules:
+
+- Use fixed image boxes for repeated records: 32px for dense inline chips, 40px for compact list rows, 48px for inventory and spell cards, and 64px only for prominent quest or companion panels.
+- Set `object-fit: contain` and preserve pixel art with a shared image class. Avoid cropping item art to fill a decorative frame.
+- Reserve image space before the file loads and keep the same dimensions for fallback state, loading state, and error state.
+- In cards, place the image in a fixed first column and put text in a `min-width: 0` content column so long names wrap instead of pushing actions off-screen.
+- In action-heavy cards, keep images in the header or identity zone. Never put thumbnails inside the primary action row when that row also contains buttons, counters, selects, or progress.
+- Use `loading="lazy"` for below-the-fold repeated images once implemented. Critical current-state images, such as an active quest or current pet/mount, can load eagerly.
+- At 360px width, images should shrink to the compact size or stack above text before labels, buttons, or stat pills overlap.
+
+Surface plan:
+
+- Dashboard: add compact artwork only where it clarifies current game state. Companion summary should show current pet and mount thumbnails when available. Inventory summary can use small icons for eggs, food, hatching potions, and quest scroll counts. Pending quest damage can show a quest or boss thumbnail only if it stays separate from the Start New Day and stat allocation action rows.
+- Tasks: keep task cards primarily text and control driven. Use Habitica art only for explicit reward/item/quest targets added by a future feature. Task type/status affordances may use simple UI icons, not game art.
+- Inventory: add gear thumbnails to battle loadout slots, best-in-category entries, and gear cards. Use a fixed image column so slot labels, class text, stat pills, and equip actions remain aligned. Consumable and quest-scroll groups should use small item icons with readable counts.
+- Party: active quest cards can use the quest, boss, or collection artwork near the quest title. Queue, pool, and recent quest records should use smaller quest scroll thumbnails and keep owner, vote, invite, and cancel controls in their own rows. Member cards should not invent avatar art unless the member payload and asset resolver can represent it accurately.
+- Spells: spell cards should show class skill icons in the header beside spell name, mana cost, and availability. Equipment recommendation rows can show gear thumbnails only when they do not lengthen the cast controls or compete with mana previews.
+- Diagnostics and Live Tests: avoid gameplay thumbnails in raw payload/debug views. If endpoint lists need icons, use small technical UI icons only, and never let images hide JSON or response metadata.
+- Sign In and App Shell: keep existing local Gryphy/app icons. Do not add remote Habitica gameplay art to authentication or navigation unless it represents a specific game entity.
+
+Responsive verification for image work:
+
+- Check 360px, 390-430px, 768px, 1024px, and 1200px widths.
+- Verify long gear names, translated quest names, unknown item keys, missing image files, and disabled action states.
+- Confirm no image causes horizontal page overflow except where an existing intentional table scroll already exists.
+- Confirm fallback text remains readable and does not overlap adjacent labels, pills, meters, or buttons.
 
 ## Current Implementation
 

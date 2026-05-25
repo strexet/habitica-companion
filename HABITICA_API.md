@@ -670,6 +670,41 @@ Client recommendations:
 - Refresh content on app startup, app version change, or when server content version changes if exposed by the response.
 - Do not hardcode item keys unless a feature is intentionally pinned to a known item.
 
+### 11.1 Image and icon metadata
+
+Habitica item images are static game assets, while the API content payload provides the stable keys and metadata needed to resolve those assets. Do not request one image per item from the API, and do not guess remote image URLs inside page components.
+
+Reference sources:
+
+- Official API docs: https://habitica.com/apidoc/
+- API usage guidelines: https://github.com/HabitRPG/habitica/wiki/API-Usage-Guidelines
+- Content catalog endpoint: `GET https://habitica.com/api/v3/content?language=en`
+- Official image asset source to verify before implementation: https://github.com/HabitRPG/habitica-images
+
+Content requests still need the normal `x-client` header, even when no user credentials are required for the catalog:
+
+```http
+GET /content?language=en
+x-client: <tool-author-user-id>-<application-name>
+Accept: application/json
+```
+
+Use the content catalog to resolve source keys and display text before choosing an image:
+
+- Gear: use `gear.flat[*].key` as the stable equipment image key; keep `type`, `klass`, `index`, `text`, and `notes` for labels and filtering.
+- Quests: use the quest key and quest metadata for quest scroll, boss, collection, and reward artwork. Do not derive art from localized quest text.
+- Achievements: use the `icon` field when present.
+- Eggs, hatching potions, food, pets, mounts, and other inventory entities: resolve from stable item keys and the image asset catalog, not from display names.
+- Spells and class skills: map from the known class/skill key used by the app model, then pair the icon with the localized skill name and mana cost.
+
+Implementation recommendations:
+
+- Add a single image asset resolver that maps Habitica keys to local/static asset paths plus alt text, image kind, fallback label, and preferred display size.
+- Prefer self-hosted or bundled static assets once the official image source and file naming are confirmed. Do not hotlink guessed CDN paths from Razor components.
+- Cache the content catalog and asset resolution results. The content response is large and should not be fetched for each card, row, or image.
+- Static image requests must not include Habitica user ID or API token headers.
+- Image load failures should preserve layout dimensions and render a readable fallback label so cards and tables do not shift or overlap.
+
 ## 12. Members API
 
 ### 12.1 Get member by ID
