@@ -1369,6 +1369,8 @@ Test:
 Current implementation:
 
 - login form with User ID and API Token fields;
+- `/`, `/sign-in`, and `/signin` sign-in entry routes for unauthenticated sessions;
+- authenticated visits to `/sign-in` or `/signin` redirect to Dashboard before rendering the sign-in form;
 - visible guidance for finding credentials in Habitica Settings/API paths on web, Android, and iOS;
 - visible token safety copy explaining local/session storage and non-sharing boundaries;
 - compact feature overview for dashboard, party, inventory, spells, task helpers, and local snapshots;
@@ -1629,6 +1631,8 @@ Test:
 Current implementation:
 
 - `Sign In`, `Dashboard`, `Tasks`, `Inventory`, `Party`, `Spells`, `Settings`, and `Diagnostics` routes;
+- `/` resolves after session initialization, sending authenticated sessions to Dashboard and unauthenticated sessions to Sign In;
+- saved local credentials are checked before the route body renders, avoiding a sign-in flash for returning authenticated users;
 - authenticated drawer order is `Dashboard`, `Tasks`, `Inventory`, `Party`, `Spells`, `Settings`, `Diagnostics`;
 - top app bar with refresh action;
 - responsive drawer navigation shown only after authentication;
@@ -1831,7 +1835,7 @@ Rate-limit sensitivity: medium for preset equip because each changed slot is a s
 
 ### Goal
 
-Provide an equipment management page for currently equipped battle gear, local per-user battle presets, and obtained gear. The page resolves gear keys to real names when the cached content catalog is available, shows current-class-adjusted stat totals, and lets users change battle gear through guarded Habitica API mutations. Battle gear is the primary actionable surface; costume gear, accessories, back-slot items, and no-stat items are separated from the actionable equipment list so empty-slot markers and cosmetic-only items are not sent as equip requests.
+Provide an equipment management page for currently equipped battle gear, local per-user battle presets, and obtained gear. The page resolves gear keys to real names when the cached content catalog is available, shows current-class-adjusted stat totals, and lets users change battle gear through guarded Habitica API mutations. Stat-bearing battle gear, including accessory slots such as Head Accessory, Eyewear, Body, and Back, is the primary actionable surface. Costume gear and no-stat cosmetic items are separated from the individual-item action list, while saved battle presets capture equipped accessory slots so complete loadouts can be restored.
 
 ### Inputs
 
@@ -1854,7 +1858,7 @@ battle gear preset list
 visible preset ids for future macro references
 preset rename controls
 slot-grouped obtained gear panels
-folded accessory/no-stat item panels grouped by item type
+folded cosmetic/no-stat item panels grouped by item type
 human-readable gear names with raw-key fallback
 gear stat totals
 owned gear counts
@@ -1900,11 +1904,11 @@ Current view-model rules:
 4. Resolve display name, slot, class, notes, and base stats from the catalog when present.
 5. Fall back to the raw key when catalog metadata is missing.
 6. Apply the current-class 50% gear stat bonus when item class matches user class.
-7. Put stat-bearing head, armor, one-handed weapon, shield, and two-handed weapon items into the main actionable battle gear groups.
-8. Put back-slot items, no-stat items, and other accessory/cosmetic items into bottom accessory groups by item type.
+7. Put stat-bearing head, head accessory, eyewear, armor, body, one-handed weapon, shield, two-handed weapon, and back items into the main actionable battle gear groups.
+8. Put no-stat items and other cosmetic items into bottom accessory groups by item type.
 9. Use catalog `twoHanded` metadata to move two-handed weapons into a separate `Two-Handed Weapons` group after one-handed weapons and shields.
 10. Sort groups in slot order and sort keys within each group deterministically.
-11. Exclude Back from the equipped battle display and from battle preset item views/execution.
+11. Include stat-bearing accessory slots in the equipped battle display and battle preset item views/execution.
 12. For each actionable gear group, compute a `Best in Category` subset by removing items dominated by another item in every stat.
 13. A stat value of zero is worse than a positive modifier when another item has equal-or-better values for the remaining stats; exact stat ties remain visible.
 14. Show `Best in Category` by default and keep the full per-category item list folded until the user expands it.
@@ -1929,7 +1933,7 @@ Equip action rules:
 8. Write diagnostics log entries for success and failure.
 9. Show non-blocking snackbar feedback and update equipped badges from the refreshed snapshot.
 10. Reject `*_base_0` empty-slot markers before any Habitica API request.
-11. Ignore Back slots in battle preset save and equip flows.
+11. Include accessory slots such as Head Accessory, Eyewear, Body, and Back in battle preset save and equip flows.
 ```
 
 Battle preset removal and rename are local-only. Removal requires a confirmation prompt because future Macros may reference preset ids. Rename preserves the preset id so existing future macro references can remain stable.
@@ -1972,12 +1976,12 @@ Test:
 - stable preset ids and preset rename;
 - preset removal;
 - base-slot marker normalization;
-- battle preset Back-slot removal;
+- battle preset accessory-slot persistence;
 - best-in-category gear selection by non-dominated stat comparison;
 - best-in-category equipped button state;
 - two-handed weapon parsing and separate group ordering;
-- accessory/no-stat grouping;
-- folded non-battle equipment rendering;
+- cosmetic/no-stat grouping;
+- folded other-equipment rendering;
 - item equip and preset equip controller dispatch;
 - full-width vertical battle preset layout;
 - highest-stat highlighting, including tied highest stats;
@@ -1994,7 +1998,7 @@ Current implementation:
 - local battle gear preset list;
 - preset save, rename, full-preset equip, individual preset-item equip, and confirmed remove actions;
 - slot-grouped obtained gear explorer with folded full item lists;
-- bottom accessory/no-stat item explorer grouped by item type and folded by default;
+- bottom cosmetic/no-stat item explorer grouped by item type and folded by default;
 - full-width vertical battle preset layout;
 - highest-stat highlighting across battle gear, best-in-category items, normal equipment cards, and saved preset item cards;
 - gear content catalog name/stat resolution;

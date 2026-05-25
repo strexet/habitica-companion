@@ -265,7 +265,7 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
-    public async Task SaveEquipmentPresetAsync_removes_battle_back_slot_from_preset()
+    public async Task SaveEquipmentPresetAsync_keeps_battle_accessory_slots_in_preset()
     {
         var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()));
         await controller.SignInAsync(new SignInRequest
@@ -278,7 +278,36 @@ public sealed class AppSessionControllerTests
         await controller.SaveEquipmentPresetAsync(EquipmentSetKind.Battle, "Casting");
 
         var preset = Assert.Single(controller.State.Presets);
-        Assert.Null(preset.Slots.Back);
+        Assert.Equal("back_wizard_1", preset.Slots.Back);
+    }
+
+    [Fact]
+    public async Task EquipGearSlotsAsync_equips_accessory_slots()
+    {
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Inventory = new InventorySnapshot(1, 5, 1, 1, 1, 1, new[] { "weapon_wizard_5", "weapon_warrior_6", "eyewear_special_1" })
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.EquipGearSlotsAsync(
+            EquipmentSetKind.Battle,
+            new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_wizard_1", Eyewear: "eyewear_special_1"),
+            "inventory:accessory",
+            "Equipping accessory");
+
+        Assert.True(result.Succeeded);
+        Assert.Contains((EquipmentSetKind.Battle, "eyewear_special_1"), syncClient.EquipCalls);
     }
 
     [Fact]

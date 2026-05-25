@@ -1,7 +1,11 @@
 using Bunit;
+using Habitica.Application.Dashboard;
 using Habitica.Domain.Sync;
+using Habitica.Rules.Stats;
+using Habitica.WebApp;
 using Habitica.WebApp.Components.Navigation;
 using Habitica.WebApp.State;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 
@@ -56,6 +60,88 @@ public sealed class AppNavMenuTests : BunitContext
         Assert.DoesNotContain("Sign In", cut.Markup);
         Assert.DoesNotContain("Dashboard", cut.Markup);
         Assert.DoesNotContain("Diagnostics", cut.Markup);
+    }
+
+    [Fact]
+    public void Root_route_sends_authenticated_sessions_to_dashboard()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: null,
+                TaskFreshness: SnapshotFreshnessState.Missing,
+                TaskSnapshot: null)));
+
+        var navigation = Services.GetRequiredService<NavigationManager>();
+        var cut = Render<App>();
+
+        cut.WaitForAssertion(() => Assert.EndsWith("/dashboard", navigation.Uri, StringComparison.Ordinal));
+        Assert.DoesNotContain("Sign in with Habitica", cut.Markup);
+    }
+
+    [Fact]
+    public void Root_route_sends_unauthenticated_sessions_to_sign_in()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: false,
+                DisplayName: null,
+                ErrorMessage: null,
+                LastSyncedAtUtc: null,
+                TaskFreshness: SnapshotFreshnessState.Missing,
+                TaskSnapshot: null)));
+
+        var navigation = Services.GetRequiredService<NavigationManager>();
+        var cut = Render<App>();
+
+        cut.WaitForAssertion(() => Assert.EndsWith("/sign-in", navigation.Uri, StringComparison.Ordinal));
+        Assert.Contains("Sign in with Habitica", cut.Markup);
+    }
+
+    [Fact]
+    public void Saved_credentials_are_initialized_before_root_route_renders_sign_in()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: false,
+                DisplayName: null,
+                ErrorMessage: null,
+                LastSyncedAtUtc: null,
+                TaskFreshness: SnapshotFreshnessState.Missing,
+                TaskSnapshot: null))
+        {
+            StateAfterInitialize = new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: null,
+                TaskFreshness: SnapshotFreshnessState.Missing,
+                TaskSnapshot: null)
+        };
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var navigation = Services.GetRequiredService<NavigationManager>();
+        var cut = Render<App>();
+
+        cut.WaitForAssertion(() => Assert.EndsWith("/dashboard", navigation.Uri, StringComparison.Ordinal));
+        Assert.Equal(1, controller.InitializeCalls);
+        Assert.DoesNotContain("Sign in with Habitica", cut.Markup);
     }
 
     private static void AssertNavOrder(string markup, params string[] labels)

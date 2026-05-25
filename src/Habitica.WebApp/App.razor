@@ -1,24 +1,42 @@
+@implements IDisposable
+@inject IAppSessionController SessionController
+@inject NavigationManager NavigationManager
+
 <MudThemeProvider Theme="@Theme" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <MudAlert Dense="true" Severity="Severity.Error" Variant="Variant.Filled">
-                This route does not exist in the current MVP.
-            </MudAlert>
-        </LayoutView>
-    </NotFound>
-</Router>
+@if (_isInitialized)
+{
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <RouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <MudAlert Dense="true" Severity="Severity.Error" Variant="Variant.Filled">
+                    This route does not exist in the current MVP.
+                </MudAlert>
+            </LayoutView>
+        </NotFound>
+    </Router>
+}
+else
+{
+    <PageTitle>Loading</PageTitle>
+    <div class="shell-content">
+        <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
+            Opening Habitica Tool...
+        </MudAlert>
+    </div>
+}
 
 @code {
+    private bool _isInitialized;
+
     private static readonly MudTheme Theme = new()
     {
         PaletteLight = new PaletteLight
@@ -51,4 +69,76 @@
             }
         }
     };
+
+    protected override async Task OnInitializedAsync()
+    {
+        SessionController.Changed += HandleSessionChanged;
+        NavigationManager.LocationChanged += HandleLocationChanged;
+
+        await SessionController.InitializeAsync();
+
+        _isInitialized = true;
+        RedirectDefaultRoutes();
+    }
+
+    private void HandleSessionChanged()
+    {
+        _ = InvokeAsync(() =>
+        {
+            RedirectDefaultRoutes();
+            StateHasChanged();
+        });
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs args)
+    {
+        _ = InvokeAsync(() =>
+        {
+            RedirectDefaultRoutes();
+            StateHasChanged();
+        });
+    }
+
+    private void RedirectDefaultRoutes()
+    {
+        if (!_isInitialized)
+        {
+            return;
+        }
+
+        var relativePath = GetRelativePath();
+        if (SessionController.State.IsAuthenticated)
+        {
+            if (relativePath is "" or "sign-in" or "signin")
+            {
+                NavigationManager.NavigateTo("/dashboard", replace: true);
+            }
+
+            return;
+        }
+
+        if (relativePath.Length == 0)
+        {
+            NavigationManager.NavigateTo("/sign-in", replace: true);
+        }
+    }
+
+    private string GetRelativePath()
+    {
+        var relativePath = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        var separatorIndex = relativePath.IndexOfAny(new[] { '?', '#' });
+
+        if (separatorIndex >= 0)
+        {
+            relativePath = relativePath[..separatorIndex];
+        }
+
+        return relativePath.Trim('/').ToLowerInvariant();
+    }
+
+    public void Dispose()
+    {
+        SessionController.Changed -= HandleSessionChanged;
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
 }

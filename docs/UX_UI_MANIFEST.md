@@ -225,7 +225,7 @@ Files: `src/Habitica.WebApp/Pages/InventoryPage.razor`
 
 Current pattern:
 
-- Summary cards, battle loadout, preset save/restore, best-in-category strip, collapsible other items, accessory groups.
+- Summary cards, battle loadout, preset save/restore, best-in-category strip, collapsible other items, stat-bearing accessory groups, and folded cosmetic/no-stat groups.
 - Responsive `auto-fit` grids and `overflow-wrap` for long gear names.
 
 What works:

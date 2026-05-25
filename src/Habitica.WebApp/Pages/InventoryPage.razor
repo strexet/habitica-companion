@@ -196,15 +196,15 @@
             <section class="accessory-section">
                 <div class="task-group-header">
                     <div>
-                        <p class="section-label">Accessories and no-stat items</p>
-                        <h2>Non-battle equipment</h2>
+                        <p class="section-label">Cosmetic and no-stat items</p>
+                        <h2>Other equipment</h2>
                     </div>
                     <span class="ui-pill count-pill">@viewModel.AccessoryGroups.Sum(group => group.Items.Count)</span>
                 </div>
 
                 <div class="other-items-toggle-row">
                     <MudButton HtmlTag="button" data-testid="toggle-non-battle-equipment" OnClick="ToggleNonBattleEquipment" Variant="Variant.Text">
-                        @(_nonBattleEquipmentExpanded ? "Hide non-battle equipment" : $"Show non-battle equipment ({viewModel.AccessoryGroups.Sum(group => group.Items.Count)})")
+                        @(_nonBattleEquipmentExpanded ? "Hide other equipment" : $"Show other equipment ({viewModel.AccessoryGroups.Sum(group => group.Items.Count)})")
                     </MudButton>
                 </div>
 

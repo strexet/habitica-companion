@@ -697,7 +697,10 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             Armor: GetOptionalString(slots, "armor"),
             Weapon: GetOptionalString(slots, "weapon"),
             Shield: GetOptionalString(slots, "shield"),
-            Back: GetOptionalString(slots, "back"));
+            Back: GetOptionalString(slots, "back"),
+            HeadAccessory: GetOptionalString(slots, "headAccessory"),
+            Eyewear: GetOptionalString(slots, "eyewear"),
+            Body: GetOptionalString(slots, "body"));
     }
 
     private static CharacterStatsSnapshot MapCharacterStats(JsonElement stats)
@@ -1318,6 +1321,15 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
     private static string ParseSlotTitle(string value)
     {
+        var normalized = value.Replace("_", string.Empty, StringComparison.Ordinal)
+            .Replace("-", string.Empty, StringComparison.Ordinal)
+            .ToLowerInvariant();
+
+        if (normalized.StartsWith("headaccessory", StringComparison.Ordinal))
+        {
+            return "Head Accessory";
+        }
+
         return value.Split('_', 2, StringSplitOptions.RemoveEmptyEntries)[0].ToLowerInvariant() switch
         {
             "head" => "Head",
@@ -1325,6 +1337,8 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             "weapon" => "Weapon",
             "shield" => "Shield",
             "back" => "Back",
+            "eyewear" => "Eyewear",
+            "body" => "Body",
             _ => "Other"
         };
     }

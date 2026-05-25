@@ -2,6 +2,7 @@ using Bunit;
 using Habitica.Domain.Sync;
 using Habitica.WebApp.Pages;
 using Habitica.WebApp.State;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 
@@ -66,5 +67,30 @@ public sealed class SignInPageTests : BunitContext
         Assert.Equal("user-id", controller.LastSignInRequest!.UserId);
         Assert.Equal("api-token", controller.LastSignInRequest.ApiToken);
         Assert.True(controller.LastSignInRequest.PersistLocally);
+    }
+
+    [Fact]
+    public void Redirects_authenticated_sessions_to_dashboard_without_rendering_form()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: null,
+                TaskFreshness: SnapshotFreshnessState.Missing,
+                TaskSnapshot: null)));
+
+        var navigation = Services.GetRequiredService<NavigationManager>();
+        navigation.NavigateTo("/signin");
+
+        var cut = Render<SignIn>();
+
+        Assert.EndsWith("/dashboard", navigation.Uri, StringComparison.Ordinal);
+        Assert.DoesNotContain("Sign in with Habitica", cut.Markup);
+        Assert.DoesNotContain("Habitica User ID", cut.Markup);
     }
 }

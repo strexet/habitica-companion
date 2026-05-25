@@ -3022,15 +3022,15 @@ public sealed class AppSessionController : IAppSessionController
             NormalizeGearKey(slots.Armor),
             NormalizeGearKey(slots.Weapon),
             NormalizeGearKey(slots.Shield),
-            NormalizeGearKey(slots.Back));
+            NormalizeGearKey(slots.Back),
+            NormalizeGearKey(slots.HeadAccessory),
+            NormalizeGearKey(slots.Eyewear),
+            NormalizeGearKey(slots.Body));
     }
 
     private static GearSlotsSnapshot NormalizePresetSlots(EquipmentSetKind kind, GearSlotsSnapshot slots)
     {
-        var normalized = NormalizeBaseSlots(slots);
-        return kind == EquipmentSetKind.Battle
-            ? normalized with { Back = null }
-            : normalized;
+        return NormalizeBaseSlots(slots);
     }
 
     private static string? NormalizeGearKey(string? key)
@@ -3150,7 +3150,10 @@ public sealed class AppSessionController : IAppSessionController
     private static IEnumerable<(string SlotTitle, string? Key)> EnumerateSlots(GearSlotsSnapshot slots)
     {
         yield return ("Head", slots.Head);
+        yield return ("Head Accessory", slots.HeadAccessory);
+        yield return ("Eyewear", slots.Eyewear);
         yield return ("Armor", slots.Armor);
+        yield return ("Body", slots.Body);
         yield return ("Weapon", slots.Weapon);
         yield return ("Shield", slots.Shield);
         yield return ("Back", slots.Back);
@@ -3161,7 +3164,10 @@ public sealed class AppSessionController : IAppSessionController
         return slotTitle switch
         {
             "Head" => slots.Head,
+            "Head Accessory" => slots.HeadAccessory,
+            "Eyewear" => slots.Eyewear,
             "Armor" => slots.Armor,
+            "Body" => slots.Body,
             "Weapon" => slots.Weapon,
             "Shield" => slots.Shield,
             "Back" => slots.Back,

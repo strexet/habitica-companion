@@ -155,7 +155,10 @@ public sealed class HabiticaApiClientTests
                       "armor": "armor_wizard_4",
                       "weapon": "weapon_wizard_5",
                       "shield": "shield_wizard_2",
-                      "back": "back_wizard_1"
+                      "back": "back_wizard_1",
+                      "headAccessory": "headAccessory_special_1",
+                      "eyewear": "eyewear_special_1",
+                      "body": "body_special_1"
                     },
                     "costume": {
                       "head": "head_special_2",
@@ -166,6 +169,7 @@ public sealed class HabiticaApiClientTests
                     },
                     "owned": {
                       "head_wizard_3": true,
+                      "eyewear_special_1": true,
                       "armor_wizard_4": true,
                       "weapon_wizard_5": true,
                       "shield_wizard_2": true,
@@ -220,8 +224,11 @@ public sealed class HabiticaApiClientTests
         Assert.Equal("party-123", snapshot.PartyId);
         Assert.Equal("Wolf-Base", snapshot.CurrentPetKey);
         Assert.Equal("head_wizard_3", snapshot.Equipment.Battle.Head);
+        Assert.Equal("headAccessory_special_1", snapshot.Equipment.Battle.HeadAccessory);
+        Assert.Equal("eyewear_special_1", snapshot.Equipment.Battle.Eyewear);
+        Assert.Equal("body_special_1", snapshot.Equipment.Battle.Body);
         Assert.Equal("weapon_special_2", snapshot.Equipment.Costume.Weapon);
-        Assert.Equal(new[] { "armor_wizard_4", "head_wizard_3", "shield_wizard_2", "weapon_wizard_5" }, snapshot.Inventory.OwnedGearKeys);
+        Assert.Equal(new[] { "armor_wizard_4", "eyewear_special_1", "head_wizard_3", "shield_wizard_2", "weapon_wizard_5" }, snapshot.Inventory.OwnedGearKeys);
         Assert.Equal(1, snapshot.Inventory.EggCount);
         Assert.Equal(1, snapshot.Inventory.HatchingPotionCount);
         Assert.Equal(1, snapshot.Inventory.OwnedPetCount);
@@ -914,6 +921,16 @@ public sealed class HabiticaApiClientTests
                       "int": 12,
                       "con": 0,
                       "per": 2
+                    },
+                    "eyewear_special_1": {
+                      "key": "eyewear_special_1",
+                      "text": "Scholar Spectacles",
+                      "type": "eyewear",
+                      "klass": "special",
+                      "str": 0,
+                      "int": 3,
+                      "con": 0,
+                      "per": 0
                     }
                   }
                 },
@@ -945,7 +962,8 @@ public sealed class HabiticaApiClientTests
 
         var catalog = await client.GetContentCatalogAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
 
-        var item = Assert.Single(catalog.Items.Values);
+        Assert.Equal(2, catalog.Items.Count);
+        var item = catalog.Items["weapon_wizard_5"];
         Assert.Equal("weapon_wizard_5", item.Key);
         Assert.Equal("Wizard Wand", item.Text);
         Assert.Equal("Weapon", item.SlotTitle);
@@ -953,6 +971,7 @@ public sealed class HabiticaApiClientTests
         Assert.Equal("A focused casting weapon.", item.Notes);
         Assert.Equal(new GearStatBlock(0m, 12m, 0m, 2m), item.Stats);
         Assert.True(item.TwoHanded);
+        Assert.Equal("Eyewear", catalog.Items["eyewear_special_1"].SlotTitle);
         var quest = Assert.Single(catalog.QuestItems.Values);
         Assert.Equal("seaserpent", quest.Key);
         Assert.Equal(new[] { "20 Gold", "250 XP", "Sea Serpent Egg", "Shade Hatching Potion", "Sea Serpent Questline" }, quest.RewardSummary);

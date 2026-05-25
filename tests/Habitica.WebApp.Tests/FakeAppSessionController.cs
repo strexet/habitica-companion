@@ -11,6 +11,8 @@ namespace Habitica.WebApp.Tests;
 
 internal sealed class FakeAppSessionController : IAppSessionController
 {
+    private bool _initialized;
+
     public FakeAppSessionController(SessionViewModel state)
     {
         State = state;
@@ -61,6 +63,10 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public List<(EquipmentSetKind Kind, string Name)> SavePresetCalls { get; } = new();
 
     public SessionViewModel State { get; private set; }
+
+    public SessionViewModel? StateAfterInitialize { get; set; }
+
+    public int InitializeCalls { get; private set; }
 
     public LocalDataActionResult LocalDataResult { get; set; } =
         LocalDataActionResult.Success("Local data operation completed.", "{}");
@@ -151,6 +157,20 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public Task InitializeAsync(CancellationToken cancellationToken = default)
     {
+        if (_initialized)
+        {
+            return Task.CompletedTask;
+        }
+
+        _initialized = true;
+        InitializeCalls++;
+
+        if (StateAfterInitialize is not null)
+        {
+            State = StateAfterInitialize;
+            Changed?.Invoke();
+        }
+
         return Task.CompletedTask;
     }
 

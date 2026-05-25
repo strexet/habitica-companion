@@ -6,7 +6,7 @@ namespace Habitica.Application.Tests.Inventory;
 public sealed class InventoryViewModelFactoryTests
 {
     [Fact]
-    public void Create_groups_owned_battle_gear_by_slot_and_moves_accessories_to_bottom_groups()
+    public void Create_groups_owned_battle_gear_by_slot_and_moves_no_stat_items_to_bottom_groups()
     {
         var factory = new InventoryViewModelFactory();
         var snapshot = new UserSnapshot(
@@ -38,11 +38,15 @@ public sealed class InventoryViewModelFactoryTests
                 {
                     "head_wizard_3",
                     "head_special_2",
+                    "headAccessory_special_1",
+                    "eyewear_special_1",
                     "armor_wizard_4",
+                    "body_special_1",
                     "weapon_wizard_5",
                     "weapon_warrior_6",
                     "shield_wizard_2",
                     "back_base_0",
+                    "back_wizard_1",
                     "back_special_1"
                 }));
         var catalog = new GearCatalogSnapshot(
@@ -51,22 +55,34 @@ public sealed class InventoryViewModelFactoryTests
             {
                 ["head_wizard_3"] = new("head_wizard_3", "Wizard Hat", "Head", "wizard", null, new GearStatBlock(0m, 2m, 0m, 0m)),
                 ["head_special_2"] = new("head_special_2", "Festival Mask", "Head", "special", null, GearStatBlock.Zero),
+                ["headAccessory_special_1"] = new("headAccessory_special_1", "Moon Pin", "Head Accessory", "special", null, new GearStatBlock(0m, 0m, 0m, 4m)),
+                ["eyewear_special_1"] = new("eyewear_special_1", "Scholar Spectacles", "Eyewear", "special", null, new GearStatBlock(0m, 5m, 0m, 0m)),
                 ["armor_wizard_4"] = new("armor_wizard_4", "Wizard Robe", "Armor", "wizard", null, new GearStatBlock(0m, 3m, 0m, 0m)),
+                ["body_special_1"] = new("body_special_1", "Utility Belt", "Body", "special", null, new GearStatBlock(1m, 0m, 0m, 1m)),
                 ["weapon_wizard_5"] = new("weapon_wizard_5", "Wizard Wand", "Weapon", "wizard", null, new GearStatBlock(0m, 12m, 0m, 2m)),
                 ["weapon_warrior_6"] = new("weapon_warrior_6", "Warrior Sword", "Weapon", "warrior", null, new GearStatBlock(10m, 0m, 1m, 0m)),
                 ["shield_wizard_2"] = new("shield_wizard_2", "Wizard Shield", "Shield", "wizard", null, new GearStatBlock(0m, 1m, 2m, 0m)),
+                ["back_wizard_1"] = new("back_wizard_1", "Wizard Cape", "Back", "wizard", null, new GearStatBlock(0m, 0m, 0m, 6m)),
                 ["back_special_1"] = new("back_special_1", "Cape", "Back", "special", null, GearStatBlock.Zero)
             });
 
         var viewModel = factory.Create(snapshot, catalog);
 
         var headGroup = Assert.Single(viewModel.Groups, group => group.SlotTitle == "Head");
+        var headAccessoryGroup = Assert.Single(viewModel.Groups, group => group.SlotTitle == "Head Accessory");
+        var eyewearGroup = Assert.Single(viewModel.Groups, group => group.SlotTitle == "Eyewear");
+        var bodyGroup = Assert.Single(viewModel.Groups, group => group.SlotTitle == "Body");
         var weaponGroup = Assert.Single(viewModel.Groups, group => group.SlotTitle == "Weapon");
+        var backGroup = Assert.Single(viewModel.Groups, group => group.SlotTitle == "Back");
         var headAccessories = Assert.Single(viewModel.AccessoryGroups, group => group.SlotTitle == "Head");
         var backAccessories = Assert.Single(viewModel.AccessoryGroups, group => group.SlotTitle == "Back");
 
         Assert.Contains(headGroup.Items, item => item.Key == "head_wizard_3" && item.IsBattleEquipped);
         Assert.DoesNotContain(headGroup.Items, item => item.Key == "head_special_2");
+        Assert.Equal("headAccessory_special_1", Assert.Single(headAccessoryGroup.Items).Key);
+        Assert.Equal("eyewear_special_1", Assert.Single(eyewearGroup.Items).Key);
+        Assert.Equal("body_special_1", Assert.Single(bodyGroup.Items).Key);
+        Assert.Equal("back_wizard_1", Assert.Single(backGroup.Items).Key);
         Assert.Contains(headAccessories.Items, item => item.Key == "head_special_2" && item.IsCostumeEquipped);
         Assert.Contains(backAccessories.Items, item => item.Key == "back_special_1");
         Assert.DoesNotContain(backAccessories.Items, item => item.Key == "back_base_0");
@@ -221,6 +237,7 @@ public sealed class InventoryViewModelFactoryTests
                 ["head_wizard_3"] = new("head_wizard_3", "Wizard Hat", "Head", "wizard", null, new GearStatBlock(0m, 2m, 0m, 0m)),
                 ["weapon_wizard_5"] = new("weapon_wizard_5", "Wizard Wand", "Weapon", "wizard", null, new GearStatBlock(0m, 12m, 0m, 2m)),
                 ["back_wizard_1"] = new("back_wizard_1", "Wizard Cape", "Back", "wizard", null, new GearStatBlock(0m, 0m, 0m, 10m)),
+                ["eyewear_special_1"] = new("eyewear_special_1", "Scholar Spectacles", "Eyewear", "special", null, new GearStatBlock(0m, 3m, 0m, 0m)),
                 ["head_special_2"] = new("head_special_2", "Festival Mask", "Head", "special", null, new GearStatBlock(1m, 0m, 0m, 0m))
             });
         var presets = new[]
@@ -231,7 +248,7 @@ public sealed class InventoryViewModelFactoryTests
                 EquipmentSetKind.Battle,
                 "Casting",
                 DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
-                new GearSlotsSnapshot("head_wizard_3", null, "weapon_wizard_5", null, "back_wizard_1")),
+                new GearSlotsSnapshot("head_wizard_3", null, "weapon_wizard_5", null, "back_wizard_1", Eyewear: "eyewear_special_1")),
             new EquipmentPreset(
                 "preset-costume",
                 "user-id",
@@ -248,9 +265,10 @@ public sealed class InventoryViewModelFactoryTests
 
         Assert.Equal("Casting", battlePreset.Name);
         Assert.Equal("preset-battle", battlePreset.Id);
-        Assert.Equal(new[] { "Wizard Hat", "Wizard Wand" }, battlePreset.Items.Select(item => item.DisplayName));
-        Assert.Equal(new GearStatBlock(0m, 21m, 0m, 3m), battlePreset.TotalStats);
-        Assert.DoesNotContain(battlePreset.Items, item => item.SlotTitle == "Back");
+        Assert.Equal(new[] { "Wizard Hat", "Scholar Spectacles", "Wizard Wand", "Wizard Cape" }, battlePreset.Items.Select(item => item.DisplayName));
+        Assert.Equal(new GearStatBlock(0m, 24m, 0m, 18m), battlePreset.TotalStats);
+        Assert.Contains(battlePreset.Items, item => item.SlotTitle == "Back");
+        Assert.Contains(battlePreset.Items, item => item.SlotTitle == "Eyewear");
         Assert.Equal("Party Look", costumePreset.Name);
         Assert.Equal(GearStatBlock.Zero, costumePreset.TotalStats);
     }

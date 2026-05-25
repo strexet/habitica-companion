@@ -45,14 +45,7 @@ public static class CharacterStatsCalculator
         }
 
         var total = CharacterStatsSnapshot.Zero;
-        foreach (var key in new[]
-        {
-            snapshot.Equipment.Battle.Head,
-            snapshot.Equipment.Battle.Armor,
-            snapshot.Equipment.Battle.Weapon,
-            snapshot.Equipment.Battle.Shield,
-            snapshot.Equipment.Battle.Back
-        })
+        foreach (var key in EnumerateGearKeys(snapshot.Equipment.Battle))
         {
             if (!string.IsNullOrWhiteSpace(key) && catalog.Items.TryGetValue(key, out var item))
             {
@@ -69,7 +62,7 @@ public static class CharacterStatsCalculator
         GearSlotsSnapshot slots)
     {
         var total = CharacterStatsSnapshot.Zero;
-        foreach (var key in new[] { slots.Head, slots.Armor, slots.Weapon, slots.Shield, slots.Back })
+        foreach (var key in EnumerateGearKeys(slots))
         {
             if (!string.IsNullOrWhiteSpace(key) && catalog.Items.TryGetValue(key, out var item))
             {
@@ -102,6 +95,18 @@ public static class CharacterStatsCalculator
             left.Intelligence + right.Intelligence,
             left.Constitution + right.Constitution,
             left.Perception + right.Perception);
+    }
+
+    private static IEnumerable<string?> EnumerateGearKeys(GearSlotsSnapshot slots)
+    {
+        yield return slots.Head;
+        yield return slots.HeadAccessory;
+        yield return slots.Eyewear;
+        yield return slots.Armor;
+        yield return slots.Body;
+        yield return slots.Weapon;
+        yield return slots.Shield;
+        yield return slots.Back;
     }
 }
 

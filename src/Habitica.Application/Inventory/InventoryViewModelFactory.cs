@@ -6,13 +6,30 @@ namespace Habitica.Application.Inventory;
 public sealed class InventoryViewModelFactory
 {
     private const string TwoHandedWeaponsSlotTitle = "Two-Handed Weapons";
-    private static readonly string[] SlotOrder = { "Head", "Armor", "Weapon", "Shield", TwoHandedWeaponsSlotTitle, "Back", "Other" };
+    private static readonly string[] SlotOrder =
+    {
+        "Head",
+        "Head Accessory",
+        "Eyewear",
+        "Armor",
+        "Body",
+        "Weapon",
+        "Shield",
+        TwoHandedWeaponsSlotTitle,
+        "Back",
+        "Other"
+    };
+
     private static readonly HashSet<string> MainBattleSlots = new(StringComparer.Ordinal)
     {
         "Head",
+        "Head Accessory",
+        "Eyewear",
         "Armor",
+        "Body",
         "Weapon",
-        "Shield"
+        "Shield",
+        "Back"
     };
 
     public InventoryViewModel Create(
@@ -76,6 +93,15 @@ public sealed class InventoryViewModelFactory
 
     private static string ParseSlotTitle(string key)
     {
+        var normalized = key.Replace("_", string.Empty, StringComparison.Ordinal)
+            .Replace("-", string.Empty, StringComparison.Ordinal)
+            .ToLowerInvariant();
+
+        if (normalized.StartsWith("headaccessory", StringComparison.Ordinal))
+        {
+            return "Head Accessory";
+        }
+
         return key.Split('_', 2, StringSplitOptions.RemoveEmptyEntries)[0].ToLowerInvariant() switch
         {
             "head" => "Head",
@@ -83,6 +109,8 @@ public sealed class InventoryViewModelFactory
             "weapon" => "Weapon",
             "shield" => "Shield",
             "back" => "Back",
+            "eyewear" => "Eyewear",
+            "body" => "Body",
             _ => "Other"
         };
     }
@@ -92,8 +120,11 @@ public sealed class InventoryViewModelFactory
         return slotTitle switch
         {
             "Head" => slots.Head,
+            "Head Accessory" => slots.HeadAccessory,
+            "Eyewear" => slots.Eyewear,
             "Armor" => slots.Armor,
-            "Weapon" => slots.Weapon,
+            "Body" => slots.Body,
+            "Weapon" or TwoHandedWeaponsSlotTitle => slots.Weapon,
             "Shield" => slots.Shield,
             "Back" => slots.Back,
             _ => null
@@ -272,7 +303,10 @@ public sealed class InventoryViewModelFactory
     private static IEnumerable<(string SlotTitle, string? Key)> EnumerateSlots(GearSlotsSnapshot slots)
     {
         yield return ("Head", slots.Head);
+        yield return ("Head Accessory", slots.HeadAccessory);
+        yield return ("Eyewear", slots.Eyewear);
         yield return ("Armor", slots.Armor);
+        yield return ("Body", slots.Body);
         yield return ("Weapon", slots.Weapon);
         yield return ("Shield", slots.Shield);
         yield return ("Back", slots.Back);

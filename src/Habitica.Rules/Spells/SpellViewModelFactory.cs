@@ -150,7 +150,10 @@ public sealed class SpellViewModelFactory
             Armor: SelectBestForSlot(snapshot, catalog, "Armor", stats),
             Weapon: SelectBestForSlot(snapshot, catalog, "Weapon", stats),
             Shield: SelectBestForSlot(snapshot, catalog, "Shield", stats),
-            Back: null);
+            Back: SelectBestForSlot(snapshot, catalog, "Back", stats),
+            HeadAccessory: SelectBestForSlot(snapshot, catalog, "Head Accessory", stats),
+            Eyewear: SelectBestForSlot(snapshot, catalog, "Eyewear", stats),
+            Body: SelectBestForSlot(snapshot, catalog, "Body", stats));
         var total = ToGearStatBlock(CharacterStatsCalculator.CalculateRecommendedGearStats(snapshot, catalog, slots));
 
         return new SpellEquipmentRecommendation(
@@ -300,7 +303,10 @@ public sealed class SpellViewModelFactory
     private static bool GearSlotsContainRecommendedKeys(GearSlotsSnapshot recommendation, GearSlotsSnapshot current)
     {
         return SlotMatches(recommendation.Head, current.Head)
+            && SlotMatches(recommendation.HeadAccessory, current.HeadAccessory)
+            && SlotMatches(recommendation.Eyewear, current.Eyewear)
             && SlotMatches(recommendation.Armor, current.Armor)
+            && SlotMatches(recommendation.Body, current.Body)
             && SlotMatches(recommendation.Weapon, current.Weapon)
             && SlotMatches(recommendation.Shield, current.Shield)
             && SlotMatches(recommendation.Back, current.Back);

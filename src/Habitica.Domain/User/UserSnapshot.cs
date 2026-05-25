@@ -111,7 +111,10 @@ public sealed record GearSlotsSnapshot(
     string? Armor,
     string? Weapon,
     string? Shield,
-    string? Back);
+    string? Back,
+    string? HeadAccessory = null,
+    string? Eyewear = null,
+    string? Body = null);
 
 public sealed record InventorySnapshot(
     int EggCount,

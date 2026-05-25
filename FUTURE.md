@@ -55,28 +55,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Authenticated Default Route And Sign-In Redirect
-
-Goal: make Dashboard the default page for authenticated users and keep Sign In visible only for unauthenticated users.
-
-Touch:
-- `src/Habitica.WebApp/App.razor`
-- `src/Habitica.WebApp/Pages/SignIn.razor`
-- `src/Habitica.WebApp/State`
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/SignInPageTests.cs`, `tests/Habitica.WebApp.Tests/AppNavMenuTests.cs`, and `tests/Habitica.WebApp.Tests/State/`
-- `FEATURES.md`
-
-Out of scope:
-- redesigning sign-in fields or credential storage;
-- changing post-login refresh scope beyond routing needed for this task.
-
-Acceptance:
-- Opening `/` routes authenticated users to Dashboard and unauthenticated users to Sign In.
-- Opening `/signin` while authenticated redirects to Dashboard without rendering the sign-in form.
-- Returning users with saved local credentials do not see a sign-in flash before the dashboard route is chosen.
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` sign-in and navigation sections.
-
 ### Spells Summary Field Cleanup
 
 Goal: remove irrelevant top-of-page spell summary fields and move conditional context into spell cards where it helps the action.

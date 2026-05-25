@@ -1,112 +1,116 @@
 @page "/"
 @page "/sign-in"
+@page "/signin"
 @implements IDisposable
 @inject IAppSessionController SessionController
 @inject NavigationManager NavigationManager
 
 <PageTitle>Sign In</PageTitle>
 
-<div class="landing-shell">
-    <section class="hero-panel card-surface">
-        <p class="section-label">Habitica companion</p>
-        <h1>Plan Habitica with clearer data.</h1>
-        <p class="hero-copy">
-            Review account health, party timing, quest options, gear choices, spells, and tasks from one focused app.
-        </p>
+@if (!SessionController.State.IsAuthenticated)
+{
+    <div class="landing-shell">
+        <section class="hero-panel card-surface">
+            <p class="section-label">Habitica companion</p>
+            <h1>Plan Habitica with clearer data.</h1>
+            <p class="hero-copy">
+                Review account health, party timing, quest options, gear choices, spells, and tasks from one focused app.
+            </p>
 
-        <div class="feature-grid feature-card-grid compact-feature-grid">
-            <div class="feature-chip">Account health and stat points</div>
-            <div class="feature-chip">Party quest queue and CRON timing</div>
-            <div class="feature-chip">Gear comparison and presets</div>
-            <div class="feature-chip">Spell and task-value helpers</div>
-        </div>
-    </section>
+            <div class="feature-grid feature-card-grid compact-feature-grid">
+                <div class="feature-chip">Account health and stat points</div>
+                <div class="feature-chip">Party quest queue and CRON timing</div>
+                <div class="feature-chip">Gear comparison and presets</div>
+                <div class="feature-chip">Spell and task-value helpers</div>
+            </div>
+        </section>
 
-    <MudPaper Class="card-surface sign-in-card" Elevation="0">
-        <p class="section-label">Connect this browser</p>
-        <h2>Sign in with Habitica</h2>
-        <p class="panel-copy">
-            Use the User ID and API Token from Habitica settings. Your token works like a password, so it stays private and is used only to talk to Habitica.
-        </p>
+        <MudPaper Class="card-surface sign-in-card" Elevation="0">
+            <p class="section-label">Connect this browser</p>
+            <h2>Sign in with Habitica</h2>
+            <p class="panel-copy">
+                Use the User ID and API Token from Habitica settings. Your token works like a password, so it stays private and is used only to talk to Habitica.
+            </p>
 
-        <div class="trust-strip">
-            <span>Session-only by default</span>
-            <span>No export includes credentials</span>
-            <span>Saved credentials are optional</span>
-        </div>
-
-        <EditForm Model="_request" OnSubmit="HandleSubmitAsync">
-            <div class="field-grid sign-in-field-grid">
-                <label class="field-row">
-                    <span>Habitica User ID</span>
-                    <input class="app-input" name="user-id" @bind="_request.UserId" />
-                    <span class="field-hint">Shown on Habitica Settings -> API.</span>
-                </label>
-
-                <label class="field-row">
-                    <span>Habitica API Token</span>
-                    <input class="app-input" name="api-token" type="password" @bind="_request.ApiToken" />
-                    <span class="field-hint">Treat this like a password. It is sent only to Habitica for sign-in.</span>
-                </label>
+            <div class="trust-strip">
+                <span>Session-only by default</span>
+                <span>No export includes credentials</span>
+                <span>Saved credentials are optional</span>
             </div>
 
-            <label class="checkbox-row sign-in-remember-row">
-                <input name="persist-locally" type="checkbox" @bind="_request.PersistLocally" />
-                <span>Remember credentials on this device. Leave unchecked for this tab only.</span>
-            </label>
+            <EditForm Model="_request" OnSubmit="HandleSubmitAsync">
+                <div class="field-grid sign-in-field-grid">
+                    <label class="field-row">
+                        <span>Habitica User ID</span>
+                        <input class="app-input" name="user-id" @bind="_request.UserId" />
+                        <span class="field-hint">Shown on Habitica Settings -> API.</span>
+                    </label>
 
-            <div class="action-row">
-                <MudButton ButtonType="ButtonType.Submit" Class="action-button" Color="Color.Primary" Disabled="@SessionController.State.IsBusy" Variant="Variant.Filled">
-                    @(SessionController.State.IsBusy ? "Signing In..." : "Sign In")
-                </MudButton>
+                    <label class="field-row">
+                        <span>Habitica API Token</span>
+                        <input class="app-input" name="api-token" type="password" @bind="_request.ApiToken" />
+                        <span class="field-hint">Treat this like a password. It is sent only to Habitica for sign-in.</span>
+                    </label>
+                </div>
 
-                @if (SessionController.State.HasCachedTasks || SessionController.State.HasCachedUserSnapshot)
-                {
-                    <MudButton Class="action-button" Href="/dashboard" Variant="Variant.Outlined">
-                        Open Saved Data
+                <label class="checkbox-row sign-in-remember-row">
+                    <input name="persist-locally" type="checkbox" @bind="_request.PersistLocally" />
+                    <span>Remember credentials on this device. Leave unchecked for this tab only.</span>
+                </label>
+
+                <div class="action-row">
+                    <MudButton ButtonType="ButtonType.Submit" Class="action-button" Color="Color.Primary" Disabled="@SessionController.State.IsBusy" Variant="Variant.Filled">
+                        @(SessionController.State.IsBusy ? "Signing In..." : "Sign In")
                     </MudButton>
-                }
+
+                    @if (SessionController.State.HasCachedTasks || SessionController.State.HasCachedUserSnapshot)
+                    {
+                        <MudButton Class="action-button" Href="/dashboard" Variant="Variant.Outlined">
+                            Open Saved Data
+                        </MudButton>
+                    }
+                </div>
+            </EditForm>
+
+            <div class="sign-in-help-grid">
+                <section class="sign-in-help-card">
+                    <span class="dashboard-stat-label">Where to find them</span>
+                    <ol>
+                        <li>Website: User icon menu -> Settings -> API.</li>
+                        <li>Android: Settings -> API.</li>
+                        <li>iOS: Settings -> Account Details.</li>
+                        <li>Copy User ID and API Token into this form.</li>
+                    </ol>
+                    <a class="inline-link" href="https://habitica.com/user/settings/api" target="_blank" rel="noopener noreferrer">Open Habitica API settings</a>
+                </section>
+
+                <section class="sign-in-help-card safe-card">
+                    <span class="dashboard-stat-label">Safety model</span>
+                    <ul>
+                        <li>Your API Token is a password. Keep it private.</li>
+                        <li>Sign in sends credentials only to Habitica for account data.</li>
+                        <li>Sign in and refresh read data; Habitica-changing actions are explicit.</li>
+                        <li>Session-only sign-in is the default.</li>
+                        <li>Remembering credentials is optional and stored only in this browser.</li>
+                        <li>Credentials are never saved in exports, app messages, or device sync.</li>
+                    </ul>
+                </section>
             </div>
-        </EditForm>
 
-        <div class="sign-in-help-grid">
-            <section class="sign-in-help-card">
-                <span class="dashboard-stat-label">Where to find them</span>
-                <ol>
-                    <li>Website: User icon menu -> Settings -> API.</li>
-                    <li>Android: Settings -> API.</li>
-                    <li>iOS: Settings -> Account Details.</li>
-                    <li>Copy User ID and API Token into this form.</li>
-                </ol>
-                <a class="inline-link" href="https://habitica.com/user/settings/api" target="_blank" rel="noopener noreferrer">Open Habitica API settings</a>
-            </section>
+            <p class="panel-copy compact-copy">
+                Sign out ends the current tab session. Clear local data removes saved credentials and saved app data.
+                <a href="/privacy">Privacy and data handling</a>
+            </p>
 
-            <section class="sign-in-help-card safe-card">
-                <span class="dashboard-stat-label">Safety model</span>
-                <ul>
-                    <li>Your API Token is a password. Keep it private.</li>
-                    <li>Sign in sends credentials only to Habitica for account data.</li>
-                    <li>Sign in and refresh read data; Habitica-changing actions are explicit.</li>
-                    <li>Session-only sign-in is the default.</li>
-                    <li>Remembering credentials is optional and stored only in this browser.</li>
-                    <li>Credentials are never saved in exports, app messages, or device sync.</li>
-                </ul>
-            </section>
-        </div>
-
-        <p class="panel-copy compact-copy">
-            Sign out ends the current tab session. Clear local data removes saved credentials and saved app data.
-            <a href="/privacy">Privacy and data handling</a>
-        </p>
-
-        @if ((SessionController.State.HasCachedTasks || SessionController.State.HasCachedUserSnapshot) && !SessionController.State.IsAuthenticated)
-        {
-            <MudAlert Class="inline-banner" Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-                Saved Habitica data is already available on this device. You can browse it now or sign in to refresh it.
-            </MudAlert>
-        }
-    </MudPaper>
-</div>
+            @if (SessionController.State.HasCachedTasks || SessionController.State.HasCachedUserSnapshot)
+            {
+                <MudAlert Class="inline-banner" Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
+                    Saved Habitica data is already available on this device. You can browse it now or sign in to refresh it.
+                </MudAlert>
+            }
+        </MudPaper>
+    </div>
+}
 
 @code {
     private readonly SignInRequest _request = new();
@@ -114,6 +118,7 @@
     protected override void OnInitialized()
     {
         SessionController.Changed += HandleStateChanged;
+        RedirectIfAuthenticated();
     }
 
     private async Task HandleSubmitAsync()
@@ -128,7 +133,19 @@
 
     private void HandleStateChanged()
     {
-        _ = InvokeAsync(StateHasChanged);
+        _ = InvokeAsync(() =>
+        {
+            RedirectIfAuthenticated();
+            StateHasChanged();
+        });
+    }
+
+    private void RedirectIfAuthenticated()
+    {
+        if (SessionController.State.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/dashboard", replace: true);
+        }
     }
 
     public void Dispose()
