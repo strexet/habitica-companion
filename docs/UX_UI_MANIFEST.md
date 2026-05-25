@@ -169,6 +169,10 @@ Improvement:
 - Add status, due-window, and value-polarity filters once the type/sort row proves stable.
 - Add exact due timestamps as secondary detail only where precision matters.
 - Add task history charts in expanded details without making each card visually heavy by default.
+- For drag-and-drop task ordering, make reordering available only where manual order is the active ordering model, or clearly explain why a visible sorted/filtered view cannot accept a drop at that position.
+- Use an explicit drag handle, lift state, insertion marker, and invalid-drop feedback so task cards do not feel like they can be accidentally dragged while selecting text, expanding details, or pressing score controls.
+- Keep keyboard and single-pointer reorder alternatives available after drag-and-drop ships; replacing arrow buttons with drag only would fail accessibility and make precise mobile reordering harder.
+- Preserve hidden/completed items when reordering the visible subset, and keep the dropped task in view with a brief inline confirmation.
 
 ### Inventory
 
@@ -359,6 +363,31 @@ Application rule:
 - For tasks, inventory, and party queues, improve filtering before adding more visual decoration.
 - Expose only the metadata that helps the current decision; move secondary metadata into details, toggles, or collapsed sections.
 - Prefer saved view state for power-user workflows, as Tasks already does with folded/completed preferences.
+
+### Drag And Drop Reordering
+
+Best-in-class productivity apps treat drag-and-drop reordering as a manual-order affordance, not a replacement for sorting rules. Todoist allows manual drag order in projects, but sorted Today/filter views constrain reordering by due time, priority, and manual-sort mode. Linear separates display options from manual ordering, and makes manual order a deliberate view setting that updates shared order. Material list guidance supports manual tile reordering within lists, but keeps primary actions on the tile and supplemental actions consistently placed. Apple HIG recommends clear destination feedback, drop placeholders, auto-scroll in long containers, undo when possible, and visible failure feedback for invalid drops. Accessible implementations such as WAI-ARIA APG and React Aria show that drag-and-drop needs keyboard, screen reader, and single-pointer alternatives.
+
+Application rule:
+
+- Make manual order explicit: if a list is sorted by name, value, due date, status, or another computed field, a drag should either be disabled with clear copy or limited to positions that preserve the active ordering rule.
+- Prefer a small drag handle over whole-card dragging when cards contain buttons, expandable details, selectable text, links, or score controls.
+- During drag, show a lifted card preview, reserve original space or show a placeholder, and show a full-width insertion marker between valid targets.
+- Invalid destinations should show "not allowed" feedback and leave order unchanged; failed drops should restore the item and show a concise inline error.
+- Long task lists need edge auto-scroll during drag and must keep the focused/dropped item visible after reorder.
+- Pointer/touch drag is not enough. Provide keyboard and single-pointer alternatives such as focusable reorder handles, Move up/down commands, or a compact reorder mode. Announce moved item position through a live region where practical.
+- Preserve filtered-out and collapsed items when reordering a visible subset. Reorder only within the current task group unless the UI explicitly supports cross-group moves and explains the property change.
+- Do not persist every hover position. Persist only on committed drop; debounce storage/cloud writes if a future implementation syncs order remotely.
+
+References:
+
+- Todoist manual and constrained task ordering: https://www.todoist.com/help/articles/default-sorting-order-in-todoist-mqmgerY7
+- Linear display options and manual ordering: https://linear.app/docs/display-options
+- Linear drag between groups: https://linear.app/changelog/2023-04-27-improved-drag-and-drop
+- Material list gestures and reordering: https://m1.material.io/components/lists.html
+- Apple drag-and-drop feedback: https://developer.apple.com/design/human-interface-guidelines/drag-and-drop
+- WAI-ARIA rearrangeable listbox keyboard pattern: https://www.w3.org/WAI/ARIA/apg/patterns/listbox/examples/listbox-rearrangeable/
+- React Aria accessible drag-and-drop model: https://react-aria.adobe.com/dnd
 
 ## Review Findings
 
