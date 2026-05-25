@@ -55,28 +55,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Quest Invite Availability
-
-Goal: verify and fix party quest invite availability so quest owners can invite when no party quest is active.
-
-Touch:
-- `src/Habitica.Api`
-- `src/Habitica.WebApp/State`
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs` and `tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs`
-- `FEATURES.md`
-
-Out of scope:
-- changing queue voting or owner/admin permissions beyond invite availability;
-- mobile app deep links.
-
-Acceptance:
-- Quest owner sees an enabled invite action for an owned queued or selected quest when party has no active quest.
-- Invite action remains disabled with clear copy when another party quest is active, selected quest is not owned, or data is stale enough to block mutation.
-- Tests cover enabled and disabled invite states.
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` party quest planning sections.
-
 ### Stat Point Unlock Guard
 
 Goal: hide or reframe unspent stat-point prompts until Habitica stat allocation is unlocked for the user.

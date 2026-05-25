@@ -449,12 +449,19 @@
                                 @RenderVoters(entry.Votes)
 
                                 <div class="party-quest-card-actions">
+                                    @{
+                                        var inviteDisabledReason = GetInvitePartyDisabledReason(entry);
+                                    }
                                     <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => ToggleVoteAsync(entry.QueueItemId))" Variant="Variant.Outlined">
                                         @(HasCurrentUserVote(entry) ? "Remove vote" : "Vote")
                                     </MudButton>
-                                    <MudButton Color="Color.Secondary" Disabled="@(!CanInviteParty(entry) || SessionController.State.IsBusy)" OnClick="@(() => InvitePartyAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Outlined">
+                                    <MudButton Color="Color.Secondary" Disabled="@(inviteDisabledReason is not null || SessionController.State.IsBusy)" OnClick="@(() => InvitePartyAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Outlined">
                                         Invite party
                                     </MudButton>
+                                    @if (inviteDisabledReason is not null)
+                                    {
+                                        <span class="dashboard-stat-note">@inviteDisabledReason</span>
+                                    }
                                     @if (CanManageQueueEntry(entry))
                                     {
                                         <MudButton Color="Color.Error" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RemoveQueueItemAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Text">
@@ -1594,16 +1601,34 @@
         return CanManageQueueEntry(entry);
     }
 
-    private bool CanInviteParty(PartyQuestQueueEntry entry)
+    private string? GetInvitePartyDisabledReason(PartyQuestQueueEntry entry)
     {
-        return IsCurrentUser(entry.OwnerUserId)
-            && entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected
-            && !HasCurrentPartyQuest();
+        if (SessionController.State.PartyFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return "Refresh party data before inviting.";
+        }
+
+        if (!IsCurrentUser(entry.OwnerUserId))
+        {
+            return "Only the quest owner can invite.";
+        }
+
+        if (entry.Status is not (PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected))
+        {
+            return "Only queued or selected quests can invite.";
+        }
+
+        if (HasActivePartyQuest())
+        {
+            return "Finish the active party quest before inviting another.";
+        }
+
+        return null;
     }
 
-    private bool HasCurrentPartyQuest()
+    private bool HasActivePartyQuest()
     {
-        return !string.IsNullOrWhiteSpace(SessionController.State.PartySnapshot?.Quest?.Key);
+        return SessionController.State.PartySnapshot?.Quest?.IsActive == true;
     }
 
     private bool CanForceStartSelectedQuest(PartyQuestQueueEntry entry)

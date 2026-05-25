@@ -857,7 +857,7 @@ public sealed class PartyPageTests : BunitContext
     }
 
     [Fact]
-    public void Quest_invite_action_is_disabled_when_party_already_has_quest()
+    public void Selected_quest_owner_can_invite_when_no_party_quest_is_active()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
@@ -867,10 +867,66 @@ public sealed class PartyPageTests : BunitContext
 
         var cut = Render<PartyPage>();
 
+        cut.FindAll("button")
+            .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal)
+                && !button.HasAttribute("disabled"))
+            .Click();
+
+        Assert.Equal(("queue-1", 1), Assert.Single(sessionController.InvitePartyQuestCalls));
+    }
+
+    [Fact]
+    public void Quest_invite_action_is_disabled_when_party_already_has_active_quest()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id", isActive: true));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<PartyPage>();
+
         var inviteButton = cut.FindAll("button")
             .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal));
 
         Assert.True(inviteButton.HasAttribute("disabled"));
+        Assert.Contains("Finish the active party quest before inviting another.", cut.Markup);
+    }
+
+    [Fact]
+    public void Quest_invite_action_is_disabled_with_copy_for_non_owner()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("other-user")));
+
+        var nonOwnerCut = Render<PartyPage>();
+
+        var nonOwnerInviteButton = nonOwnerCut.FindAll("button")
+            .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal));
+        Assert.True(nonOwnerInviteButton.HasAttribute("disabled"));
+        Assert.Contains("Only the quest owner can invite.", nonOwnerCut.Markup);
+    }
+
+    [Fact]
+    public void Quest_invite_action_is_disabled_with_copy_for_stale_party_data()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            CreateSelectedQuestState("user-id") with
+            {
+                PartyFreshness = SnapshotFreshnessState.Stale
+            }));
+
+        var staleCut = Render<PartyPage>();
+
+        var staleInviteButton = staleCut.FindAll("button")
+            .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal));
+        Assert.True(staleInviteButton.HasAttribute("disabled"));
+        Assert.Contains("Refresh party data before inviting.", staleCut.Markup);
     }
 
     [Fact]

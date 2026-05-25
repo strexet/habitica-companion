@@ -617,6 +617,7 @@ public sealed class AppSessionControllerTests
             CreateTaskSnapshot(),
             CreatePartySnapshot() with
             {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
                 Quest = null
             });
         var remotePartySync = new FakeRemotePartyDataSyncProvider
@@ -666,7 +667,7 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
-    public async Task InvitePartyToQuestAsync_rejects_when_party_already_has_quest()
+    public async Task InvitePartyToQuestAsync_invites_owned_selected_quest_when_cached_quest_is_inactive()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
         var syncClient = new FakeHabiticaSyncClient(
@@ -674,7 +675,62 @@ public sealed class AppSessionControllerTests
             CreateTaskSnapshot(),
             CreatePartySnapshot() with
             {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
                 Quest = new PartyQuestSnapshot("dragon", false, 0m, 0m, 2)
+            });
+        var remotePartySync = new FakeRemotePartyDataSyncProvider
+        {
+            Snapshot = new RemotePartyDataSnapshot(
+                null,
+                null,
+                DateTimeOffset.UtcNow,
+                QuestQueue: new[]
+                {
+                    new PartyQuestQueueEntry(
+                        "queue-1",
+                        "party-123",
+                        "dragon",
+                        "Dragon",
+                        "user-id",
+                        "Mage Tester",
+                        PartyQuestQueueStatus.Selected,
+                        DateTimeOffset.UtcNow,
+                        DateTimeOffset.UtcNow,
+                        1,
+                        null,
+                        true,
+                        1,
+                        Array.Empty<PartyQuestVote>())
+                })
+        };
+        var controller = CreateController(logStore, syncClient, remotePartyDataSyncProvider: remotePartySync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        await controller.RefreshForPageAsync("/party");
+        await controller.RefreshPartyQuestStateAsync();
+
+        var result = await controller.InvitePartyToQuestAsync("queue-1", 1);
+
+        Assert.True(result.Succeeded);
+        Assert.Equal("dragon", Assert.Single(syncClient.InvitePartyQuestCalls));
+        Assert.Equal("queue-1", Assert.Single(remotePartySync.InvitePartyCalls).QueueItemId);
+    }
+
+    [Fact]
+    public async Task InvitePartyToQuestAsync_rejects_when_party_already_has_active_quest()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot(),
+            CreateTaskSnapshot(),
+            CreatePartySnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Quest = new PartyQuestSnapshot("dragon", true, 0m, 0m, 2)
             });
         var remotePartySync = new FakeRemotePartyDataSyncProvider
         {
@@ -714,7 +770,62 @@ public sealed class AppSessionControllerTests
         var result = await controller.InvitePartyToQuestAsync("queue-1", 1);
 
         Assert.False(result.Succeeded);
-        Assert.Equal("The party already has an active or pending quest.", result.Message);
+        Assert.Equal("The party already has an active quest.", result.Message);
+        Assert.Empty(syncClient.InvitePartyQuestCalls);
+        Assert.Empty(remotePartySync.InvitePartyCalls);
+    }
+
+    [Fact]
+    public async Task InvitePartyToQuestAsync_rejects_when_party_data_is_stale()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot(),
+            CreateTaskSnapshot(),
+            CreatePartySnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow.AddMinutes(-10),
+                Quest = null
+            });
+        var remotePartySync = new FakeRemotePartyDataSyncProvider
+        {
+            Snapshot = new RemotePartyDataSnapshot(
+                null,
+                null,
+                DateTimeOffset.UtcNow,
+                QuestQueue: new[]
+                {
+                    new PartyQuestQueueEntry(
+                        "queue-1",
+                        "party-123",
+                        "dragon",
+                        "Dragon",
+                        "user-id",
+                        "Mage Tester",
+                        PartyQuestQueueStatus.Queued,
+                        DateTimeOffset.UtcNow,
+                        DateTimeOffset.UtcNow,
+                        1,
+                        null,
+                        false,
+                        1,
+                        Array.Empty<PartyQuestVote>())
+                })
+        };
+        var controller = CreateController(logStore, syncClient, remotePartyDataSyncProvider: remotePartySync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        await controller.RefreshForPageAsync("/party");
+        await controller.RefreshPartyQuestStateAsync();
+
+        var result = await controller.InvitePartyToQuestAsync("queue-1", 1);
+
+        Assert.False(result.Succeeded);
+        Assert.Equal("Refresh party data before inviting.", result.Message);
         Assert.Empty(syncClient.InvitePartyQuestCalls);
         Assert.Empty(remotePartySync.InvitePartyCalls);
     }

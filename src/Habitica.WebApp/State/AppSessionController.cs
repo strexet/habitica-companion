@@ -416,9 +416,15 @@ public sealed class AppSessionController : IAppSessionController
         {
             return PartyQuestActionResult.Failure("Only queued or selected quests can invite the party.");
         }
-        if (!string.IsNullOrWhiteSpace(State.PartySnapshot?.Quest?.Key))
+
+        if (State.PartyFreshness != SnapshotFreshnessState.Fresh)
         {
-            return PartyQuestActionResult.Failure("The party already has an active or pending quest.");
+            return PartyQuestActionResult.Failure("Refresh party data before inviting.");
+        }
+
+        if (State.PartySnapshot?.Quest?.IsActive == true)
+        {
+            return PartyQuestActionResult.Failure("The party already has an active quest.");
         }
 
         SetState(State with { ErrorMessage = null, IsBusy = true });
