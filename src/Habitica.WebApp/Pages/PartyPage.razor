@@ -230,11 +230,14 @@
 
                     <article class="party-quest-card active-quest-card">
                         <div class="party-quest-card-head">
-                            <div>
-                                <span class="dashboard-stat-label">@GetQuestTypeLabel(quest)</span>
-                                <strong>@GetQuestName(quest)</strong>
-                                <div class="dashboard-stat-note party-summary-markdown party-quest-description">
-                                    @SafeMarkdownRenderer.Render(quest.Description, "Quest description is not available yet.")
+                            <div class="habitica-quest-identity">
+                                <HabiticaImage Asset="@HabiticaImageAssetResolver.Quest(quest.Key, GetQuestName(quest), HabiticaImageSize.Large)" Loading="eager" />
+                                <div>
+                                    <span class="dashboard-stat-label">@GetQuestTypeLabel(quest)</span>
+                                    <strong>@GetQuestName(quest)</strong>
+                                    <div class="dashboard-stat-note party-summary-markdown party-quest-description">
+                                        @SafeMarkdownRenderer.Render(quest.Description, "Quest description is not available yet.")
+                                    </div>
                                 </div>
                             </div>
                             <div class="party-quest-card-actions">
@@ -426,10 +429,13 @@
                         {
                             <article class="@GetQueueCardClass(entry)">
                                 <div class="party-quest-card-head">
-                                    <div>
-                                        <span class="dashboard-stat-label">@entry.Status • Position @GetQueuePosition(queueEntries, entry)</span>
-                                        <strong>@entry.QuestName</strong>
-                                        <span class="dashboard-stat-note">Owner: @entry.OwnerDisplayName</span>
+                                    <div class="habitica-quest-identity compact">
+                                        <HabiticaImage Asset="@HabiticaImageAssetResolver.Quest(entry.QuestKey, entry.QuestName, HabiticaImageSize.Small)" />
+                                        <div>
+                                            <span class="dashboard-stat-label">@entry.Status • Position @GetQueuePosition(queueEntries, entry)</span>
+                                            <strong>@entry.QuestName</strong>
+                                            <span class="dashboard-stat-note">Owner: @entry.OwnerDisplayName</span>
+                                        </div>
                                     </div>
                                     <span class="ui-pill count-pill">@entry.VoteCount votes</span>
                                 </div>
@@ -510,10 +516,13 @@
                         {
                             <article class="@GetPoolCardClass(poolEntry)">
                                 <div class="party-quest-card-head">
-                                    <div>
-                                        <span class="dashboard-stat-label">@poolEntry.QuestType</span>
-                                        <strong>@poolEntry.QuestName</strong>
-                                        <span class="dashboard-stat-note">Available from @poolEntry.OwnerNames</span>
+                                    <div class="habitica-quest-identity compact">
+                                        <HabiticaImage Asset="@HabiticaImageAssetResolver.Quest(poolEntry.QuestKey, poolEntry.QuestName, HabiticaImageSize.Small)" />
+                                        <div>
+                                            <span class="dashboard-stat-label">@poolEntry.QuestType</span>
+                                            <strong>@poolEntry.QuestName</strong>
+                                            <span class="dashboard-stat-note">Available from @poolEntry.OwnerNames</span>
+                                        </div>
                                     </div>
                                     <span class="ui-pill count-pill">@FormatOwnedScrollCount(poolEntry.TotalAvailableCount)</span>
                                 </div>
@@ -548,11 +557,14 @@
                         {
                             <article class="party-quest-card neutral-quest-card">
                                 <div class="party-quest-card-head">
-                                    <div>
-                                        <span class="dashboard-stat-label">Completed @FormatDateTime(recent.CompletedAtUtc)</span>
-                                        <strong>@recent.QuestName</strong>
-                                        <span class="dashboard-stat-note">@GetOwnerLabel(recent.OwnerDisplayName)</span>
-                                        <span class="dashboard-stat-note">@GetCompletionSourceLabel(recent)</span>
+                                    <div class="habitica-quest-identity compact">
+                                        <HabiticaImage Asset="@HabiticaImageAssetResolver.Quest(recent.QuestKey, recent.QuestName, HabiticaImageSize.Small)" />
+                                        <div>
+                                            <span class="dashboard-stat-label">Completed @FormatDateTime(recent.CompletedAtUtc)</span>
+                                            <strong>@recent.QuestName</strong>
+                                            <span class="dashboard-stat-note">@GetOwnerLabel(recent.OwnerDisplayName)</span>
+                                            <span class="dashboard-stat-note">@GetCompletionSourceLabel(recent)</span>
+                                        </div>
                                     </div>
                                     @if (recent.ParticipantsCount is not null)
                                     {

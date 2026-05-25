@@ -1,0 +1,39 @@
+@using Habitica.WebApp.Assets
+
+<span class="@FrameClass" title="@Asset.AltText">
+    @if (!string.IsNullOrWhiteSpace(Asset.SourceUrl))
+    {
+        <img alt="@Asset.AltText"
+             class="habitica-image"
+             loading="@Loading"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
+             src="@Asset.SourceUrl" />
+        <span aria-label="@Asset.AltText" class="habitica-image-fallback hidden">@Asset.FallbackText</span>
+    }
+    else
+    {
+        <span aria-label="@Asset.AltText" class="habitica-image-fallback">@Asset.FallbackText</span>
+    }
+</span>
+
+@code {
+    [Parameter]
+    public HabiticaImageAsset Asset { get; set; } =
+        HabiticaImageAssetResolver.Missing(HabiticaImageKind.Unknown, "unknown", "Habitica item");
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string Loading { get; set; } = "lazy";
+
+    private string FrameClass => string.Join(
+        ' ',
+        new[]
+        {
+            "habitica-image-frame",
+            $"habitica-image-frame--{Asset.Size.ToString().ToLowerInvariant()}",
+            $"habitica-image-frame--{Asset.Kind.ToString().ToLowerInvariant()}",
+            Class
+        }.Where(static value => !string.IsNullOrWhiteSpace(value)));
+}

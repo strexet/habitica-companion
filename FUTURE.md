@@ -233,40 +233,6 @@ Research findings for implementation:
 
 UX-UI reference: `docs/UX_UI_MANIFEST.md` app-wide interaction rules.
 
-### Habitica Image Asset Parity Rule
-
-Goal: implement a shared Habitica image asset resolver and apply dedicated artwork in every UI surface where the official Habitica app represents the same game entity visually.
-
-Touch:
-- `HABITICA_API.md`
-- `docs/UX_UI_MANIFEST.md`
-- `src/Habitica.Api`
-- `src/Habitica.Domain`
-- `src/Habitica.Application`
-- `src/Habitica.WebApp`
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- component tests for affected pages and resolver tests
-
-Out of scope:
-- changing mutation behavior, item ownership rules, quest queue logic, or scoring/casting flows;
-- using generic fantasy art where official Habitica artwork is missing;
-- replacing required readable labels, costs, disabled reasons, or action text with image-only controls.
-
-Acceptance:
-- API documentation records how to request content keys for icons properly: use `GET /content?language=en` with `x-client`, cache the large response, and resolve static artwork from official image assets rather than guessing URLs inside components.
-- A single image asset resolver maps stable Habitica keys to local/static image paths, alt text, fallback labels, entity kind, and preferred display size.
-- Static image requests never include Habitica user ID or API token headers.
-- Missing or failed images preserve reserved dimensions and display readable fallback text without card, row, or table layout shift.
-- Dashboard companion and inventory summaries use compact images only for image-backed game entities, with action rows and stat allocation controls remaining text-readable.
-- Inventory battle loadout, best-in-category entries, gear cards, consumables, and quest-scroll groups use fixed image columns or compact icon/count chips that remain aligned at 360px width.
-- Party active quest, quest queue, pool, and recent quest records show quest or boss/collection artwork without crowding owner, vote, invite, cancel, or refresh controls.
-- Spell cards show class skill icons in the header while preserving mana preview, target selection, count controls, cast progress, and equipment recommendation readability.
-- Tasks, Diagnostics, Live Tests, Sign In, and App Shell avoid decorative game art unless the image represents a specific Habitica entity in that surface.
-- Shared CSS provides stable image sizes, pixel-art rendering, `object-fit: contain`, responsive stacking, and long-text wrapping with `min-width: 0`.
-- Component tests cover at least one image-backed record and one missing-image fallback for Dashboard, Inventory, Party, and Spells; resolver tests cover gear, quest, spell, achievement, pet, mount, consumable, and unknown-key mappings.
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` Habitica image asset placement section.
-
 ## Backlog
 
 These entries are lower priority but already merged from the historical plans. Before coding, split a broad bullet into the same `Goal / Touch / Out of scope / Acceptance / UX-UI reference` shape used above.

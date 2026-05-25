@@ -31,6 +31,7 @@ public sealed class SpellsPageTests : BunitContext
         Assert.Contains("Available mana", cut.Markup);
         Assert.Contains("Max 40 MP", cut.Markup);
         Assert.Contains("Burst of Flames", cut.Markup);
+        Assert.Contains("shop_fireball.png", cut.Markup);
         Assert.Contains("Ethereal Surge", cut.Markup);
         Assert.Contains("Bluest todo", cut.Markup);
         Assert.Contains("Checked daily", cut.Markup);
@@ -39,6 +40,7 @@ public sealed class SpellsPageTests : BunitContext
         Assert.Contains("Equipment recommendations", cut.Markup);
         Assert.Contains("Auto equip", cut.Markup);
         Assert.Contains("Maximize INT", cut.Markup);
+        Assert.Contains("shop_weapon_int.png", cut.Markup);
         Assert.Contains("Equipped", cut.Markup);
     }
 

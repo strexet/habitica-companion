@@ -123,10 +123,13 @@
 
                     <article class="spell-card spell-block">
                         <div class="spell-card-section spell-card-summary">
-                            <div>
-                                <p class="section-label">@spell.TargetKind</p>
-                                <h2>@spell.Name</h2>
-                                <p>@GetSpellDescription(spell, selectedTarget)</p>
+                            <div class="habitica-spell-identity">
+                                <HabiticaImage Asset="@HabiticaImageAssetResolver.Skill(spell.Id, spell.Name)" Loading="eager" />
+                                <div>
+                                    <p class="section-label">@spell.TargetKind</p>
+                                    <h2>@spell.Name</h2>
+                                    <p>@GetSpellDescription(spell, selectedTarget)</p>
+                                </div>
                             </div>
                             <div class="spell-cost-stack">
                                 <span class="ui-pill">@spell.ManaCost MP</span>
@@ -283,6 +286,12 @@
                                     <div class="spell-recommendation">
                                         <div>
                                             <strong>@recommendation.Name</strong>
+                                            <div class="habitica-recommendation-gear-row" aria-label="@($"{recommendation.Name} gear")">
+                                                @foreach (var gearKey in GetRecommendationGearKeys(recommendation))
+                                                {
+                                                    <HabiticaImage Asset="@HabiticaImageAssetResolver.Gear(gearKey, GetGearDisplayName(gearKey))" />
+                                                }
+                                            </div>
                                             <p>@recommendation.Rationale @FormatGearStats(recommendation.TotalStats)</p>
                                         </div>
                                         <MudButton Color="Color.Secondary"
@@ -501,6 +510,41 @@
             $"spell:{spell.Id}:{recommendation.Name}",
             $"Equipping {recommendation.Name}");
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private static IEnumerable<string> GetRecommendationGearKeys(SpellEquipmentRecommendation recommendation)
+    {
+        if (!string.IsNullOrWhiteSpace(recommendation.Slots.Head))
+        {
+            yield return recommendation.Slots.Head;
+        }
+
+        if (!string.IsNullOrWhiteSpace(recommendation.Slots.Armor))
+        {
+            yield return recommendation.Slots.Armor;
+        }
+
+        if (!string.IsNullOrWhiteSpace(recommendation.Slots.Weapon))
+        {
+            yield return recommendation.Slots.Weapon;
+        }
+
+        if (!string.IsNullOrWhiteSpace(recommendation.Slots.Shield))
+        {
+            yield return recommendation.Slots.Shield;
+        }
+
+        if (!string.IsNullOrWhiteSpace(recommendation.Slots.Back))
+        {
+            yield return recommendation.Slots.Back;
+        }
+    }
+
+    private string GetGearDisplayName(string key)
+    {
+        return SessionController.State.GearCatalogSnapshot?.Items.TryGetValue(key, out var item) == true
+            ? item.Text
+            : FormatReadableName(key);
     }
 
     private static string FormatGearStats(GearStatBlock stats)

@@ -175,6 +175,7 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Night Owls", cut.Markup);
         Assert.Contains("Quest-focused party", cut.Markup);
         Assert.Contains("seaserpent", cut.Markup);
+        Assert.Contains("inventory_quest_scroll.png", cut.Markup);
         Assert.Contains("Pending party progress", cut.Markup);
         Assert.Contains("42.75 damage", cut.Markup);
         Assert.Contains("Current boss HP", cut.Markup);

@@ -49,8 +49,22 @@
 
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">Current companion</span>
+                <div class="habitica-image-row">
+                    <HabiticaImage Asset="@HabiticaImageAssetResolver.Pet(snapshot.CurrentPetKey, FormatReadableName(snapshot.CurrentPetKey, "No pet"))" Loading="eager" />
+                    <HabiticaImage Asset="@HabiticaImageAssetResolver.Mount(snapshot.CurrentMountKey, FormatReadableName(snapshot.CurrentMountKey, "No mount"))" Loading="eager" />
+                </div>
                 <strong>@FormatReadableName(snapshot.CurrentPetKey, "None")</strong>
                 <span class="dashboard-stat-note">Mount: @FormatReadableName(snapshot.CurrentMountKey, "None")</span>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Item counts</span>
+                <div class="habitica-icon-chip-grid">
+                    @RenderImageCountChip(HabiticaImageAssetResolver.EggSummary(), snapshot.Inventory.EggCount)
+                    @RenderImageCountChip(HabiticaImageAssetResolver.FoodSummary(), snapshot.Inventory.FoodCount)
+                    @RenderImageCountChip(HabiticaImageAssetResolver.HatchingPotionSummary(), snapshot.Inventory.HatchingPotionCount)
+                    @RenderImageCountChip(HabiticaImageAssetResolver.QuestScrollSummary(), snapshot.Inventory.QuestCount)
+                </div>
             </article>
         </section>
 
@@ -118,9 +132,14 @@
                                     @foreach (var item in group.BestItems)
                                     {
                                         <article class="preset-mini-item">
-                                            <strong>@item.DisplayName</strong>
-                                            <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
-                                            @RenderStats(item.TotalStats)
+                                            <div class="habitica-item-identity">
+                                                <HabiticaImage Asset="@HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName)" />
+                                                <div>
+                                                    <strong>@item.DisplayName</strong>
+                                                    <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
+                                                    @RenderStats(item.TotalStats)
+                                                </div>
+                                            </div>
                                             <MudButton HtmlTag="button" data-testid="@($"equip-best-{item.Key}")" Color="Color.Primary" Disabled="@(!canMutate || item.IsBattleEquipped)" OnClick="@(() => EquipItemAsync(EquipmentSetKind.Battle, item.Key))" Size="Size.Small" Variant="Variant.Outlined">
                                                 @(item.IsBattleEquipped ? "Equipped battle" : "Equip item")
                                             </MudButton>
@@ -143,13 +162,17 @@
                                 {
                                     <article class="inventory-item-card">
                                         <div class="task-group-header">
-                                            <div>
-                                                <strong>@item.DisplayName</strong>
-                                                <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
+                                            <div class="habitica-item-identity">
+                                                <HabiticaImage Asset="@HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName)" />
+                                                <div>
+                                                    <strong>@item.DisplayName</strong>
+                                                    <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
+                                                </div>
                                             </div>
-                                            @RenderStats(item.TotalStats)
+                                            <div>
+                                                @RenderStats(item.TotalStats)
+                                            </div>
                                         </div>
-                                        <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
                                         @if (!string.IsNullOrWhiteSpace(item.Notes))
                                         {
                                             <p class="panel-copy">@item.Notes</p>
@@ -200,8 +223,13 @@
                                     @foreach (var item in group.Items)
                                     {
                                         <article class="inventory-item-card accessory-item-card">
-                                            <strong>@item.DisplayName</strong>
-                                            <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
+                                            <div class="habitica-item-identity">
+                                                <HabiticaImage Asset="@HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName)" />
+                                                <div>
+                                                    <strong>@item.DisplayName</strong>
+                                                    <span class="dashboard-stat-note">@FormatGearInfo(item.SlotTitle, item.ClassName)</span>
+                                                </div>
+                                            </div>
                                             @if (!string.IsNullOrWhiteSpace(item.Notes))
                                             {
                                                 <p class="panel-copy">@item.Notes</p>
@@ -348,6 +376,28 @@
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 
+    private static RenderFragment RenderImageCountChip(HabiticaImageAsset asset, int count) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "habitica-icon-count-chip");
+        RenderHabiticaImage(asset)(builder);
+        builder.OpenElement(sequence++, "strong");
+        builder.AddContent(sequence++, count);
+        builder.CloseElement();
+        builder.OpenElement(sequence++, "span");
+        builder.AddContent(sequence++, asset.AltText);
+        builder.CloseElement();
+        builder.CloseElement();
+    };
+
+    private static RenderFragment RenderHabiticaImage(HabiticaImageAsset asset) => builder =>
+    {
+        builder.OpenComponent<HabiticaImage>(0);
+        builder.AddAttribute(1, "Asset", asset);
+        builder.CloseComponent();
+    };
+
     private RenderFragment RenderEquippedSet(InventoryEquippedSetViewModel set) => builder =>
     {
         if (set.Items.Count == 0)
@@ -366,6 +416,10 @@
         {
             builder.OpenElement(sequence++, "article");
             builder.AddAttribute(sequence++, "class", "inventory-item-card compact");
+            builder.OpenElement(sequence++, "div");
+            builder.AddAttribute(sequence++, "class", "habitica-item-identity");
+            RenderHabiticaImage(HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName))(builder);
+            builder.OpenElement(sequence++, "div");
             builder.OpenElement(sequence++, "strong");
             builder.AddContent(sequence++, item.DisplayName);
             builder.CloseElement();
@@ -377,6 +431,8 @@
             {
                 RenderStats(item.TotalStats)(builder);
             }
+            builder.CloseElement();
+            builder.CloseElement();
             builder.CloseElement();
         }
 
@@ -430,6 +486,10 @@
                 {
                     builder.OpenElement(sequence++, "div");
                     builder.AddAttribute(sequence++, "class", "preset-mini-item");
+                    builder.OpenElement(sequence++, "div");
+                    builder.AddAttribute(sequence++, "class", "habitica-item-identity");
+                    RenderHabiticaImage(HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName))(builder);
+                    builder.OpenElement(sequence++, "div");
                     builder.OpenElement(sequence++, "strong");
                     builder.AddContent(sequence++, item.DisplayName);
                     builder.CloseElement();
@@ -441,6 +501,8 @@
                     {
                         RenderStats(item.TotalStats)(builder);
                     }
+                    builder.CloseElement();
+                    builder.CloseElement();
 
                     builder.OpenComponent<MudButton>(sequence++);
                     builder.AddAttribute(sequence++, "HtmlTag", "button");

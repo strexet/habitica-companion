@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-05-25
+Last updated: 2026-05-26
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -97,6 +97,28 @@ Rules:
 - read-only recommendations may use `stale` snapshots only with visible warnings and downgraded confidence;
 - `expired` or `missing` data must block destructive actions and high-confidence dry-run plans;
 - feature-specific thresholds may be stricter than `TECHNICAL.md`, but not looser for mutating actions.
+
+### 3.6 Habitica image asset parity
+
+Status: implemented
+Owner module: `Habitica.WebApp.Assets`, `Habitica.WebApp.Components.HabiticaImage`
+Application entry point: Dashboard, Inventory, Party, and Spells pages
+Primary Habitica data: stable content keys from user, inventory, party quest, gear catalog, and spell view models
+Mutates Habitica state: no
+Requires confirmation: no
+Offline behavior: labels and fixed-size fallbacks remain available when remote images cannot load
+Rate-limit sensitivity: low; images are static assets and do not use authenticated API requests
+
+Habitica game entities that official Habitica represents visually now flow through `HabiticaImageAssetResolver` instead of ad hoc page markup. The resolver maps stable keys to official static image URLs, alt text, fallback initials, entity kind, and preferred size. The shared `HabiticaImage` component renders a reserved-size image frame, hides broken images with an inline fallback, and never sends Habitica user id or API token headers.
+
+Current placements:
+
+- Dashboard companion panel shows current pet and mount image slots, and the inventory panel shows compact official category icons for eggs, food, hatching potions, and quest scroll counts.
+- Inventory shows official gear thumbnails in battle loadout, best-in-category cards, expanded gear cards, accessory cards, and saved battle preset items. Inventory summary also shows companion and item-count icon chips.
+- Party shows a quest image slot in the active quest card and compact quest scroll slots in queue, pool, and recently completed quest records.
+- Spells shows official skill icons in spell card headers and gear thumbnails for equipment recommendations.
+
+Layout rules are enforced in `app.css`: image frames have stable small/medium/large dimensions, `object-fit: contain`, pixel-art rendering, responsive wrapping, `min-width: 0` text columns, and fixed fallback boxes to prevent overlap or layout shift.
 
 ## 4. Party buff timing optimizer
 

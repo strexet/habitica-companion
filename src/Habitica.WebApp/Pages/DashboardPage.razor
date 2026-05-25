@@ -364,6 +364,11 @@
                 <p class="section-label">Companion state</p>
                 <h2>Current pet, mount, and party</h2>
 
+                <div class="habitica-image-row companion-image-row">
+                    <HabiticaImage Asset="@HabiticaImageAssetResolver.Pet(snapshot.CurrentPetKey, FormatReadableName(snapshot.CurrentPetKey, "No pet equipped"))" Loading="eager" />
+                    <HabiticaImage Asset="@HabiticaImageAssetResolver.Mount(snapshot.CurrentMountKey, FormatReadableName(snapshot.CurrentMountKey, "No mount equipped"))" Loading="eager" />
+                </div>
+
                 <dl class="dashboard-definition-list">
                     <div>
                         <dt>Pet</dt>
@@ -385,6 +390,13 @@
             <article class="card-surface dashboard-panel">
                 <p class="section-label">Inventory</p>
                 <h2>Saved inventory counts</h2>
+
+                <div class="habitica-icon-chip-grid inventory-count-icon-grid">
+                    @RenderImageCountChip(HabiticaImageAssetResolver.EggSummary(), snapshot.Inventory.EggCount)
+                    @RenderImageCountChip(HabiticaImageAssetResolver.FoodSummary(), snapshot.Inventory.FoodCount)
+                    @RenderImageCountChip(HabiticaImageAssetResolver.HatchingPotionSummary(), snapshot.Inventory.HatchingPotionCount)
+                    @RenderImageCountChip(HabiticaImageAssetResolver.QuestScrollSummary(), snapshot.Inventory.QuestCount)
+                </div>
 
                 <dl class="dashboard-definition-list">
                     <div>
@@ -570,6 +582,23 @@
     {
         _showHealthPotionConfirmation = false;
     }
+
+    private static RenderFragment RenderImageCountChip(HabiticaImageAsset asset, int count) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "habitica-icon-count-chip");
+        builder.OpenComponent<HabiticaImage>(sequence++);
+        builder.AddAttribute(sequence++, "Asset", asset);
+        builder.CloseComponent();
+        builder.OpenElement(sequence++, "strong");
+        builder.AddContent(sequence++, count);
+        builder.CloseElement();
+        builder.OpenElement(sequence++, "span");
+        builder.AddContent(sequence++, asset.AltText);
+        builder.CloseElement();
+        builder.CloseElement();
+    };
 
     private async Task BuyHealthPotionAsync()
     {

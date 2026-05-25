@@ -78,6 +78,10 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("Level 15", cut.Markup);
         Assert.Contains("HP", cut.Markup);
         Assert.Contains("Wolf Base", cut.Markup);
+        Assert.Contains("Pet-Wolf-Base.png", cut.Markup);
+        Assert.Contains("Mount_Icon_Wolf-Base.png", cut.Markup);
+        Assert.Contains("Pet_Egg_Wolf.png", cut.Markup);
+        Assert.Contains("inventory_quest_scroll.png", cut.Markup);
         Assert.Contains("Open tasks", cut.Markup);
         Assert.Contains("Pending damage estimate", cut.Markup);
         Assert.Contains("Incomplete Dailies", cut.Markup);

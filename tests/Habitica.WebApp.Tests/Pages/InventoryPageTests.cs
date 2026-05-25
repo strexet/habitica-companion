@@ -88,6 +88,10 @@ public sealed class InventoryPageTests : BunitContext
         Assert.Contains("preset-1", cut.Markup);
         Assert.Contains("Wizard Hat", cut.Markup);
         Assert.Contains("Wizard Wand", cut.Markup);
+        Assert.Contains("shop_weapon_wizard_5.png", cut.Markup);
+        Assert.Contains("Pet-Wolf-Base.png", cut.Markup);
+        Assert.Contains("Mount_Icon_Wolf-Base.png", cut.Markup);
+        Assert.Contains("Pet_HatchingPotion_Base.png", cut.Markup);
         Assert.Contains("Best in Category", cut.Markup);
         Assert.Contains("Warrior Sword", cut.Markup);
         Assert.Contains("Head", cut.Markup);

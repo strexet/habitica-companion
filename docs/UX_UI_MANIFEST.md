@@ -59,8 +59,8 @@ UI change completion checklist:
 Current audit:
 
 - The app currently uses local PWA/favicon files, Gryphy artwork on sign-in, and a MudBlazor menu icon in the shell.
-- Habitica gameplay surfaces are mostly text-only today: dashboard companion summaries, inventory gear and item counts, party quests, spell cards, and diagnostics all describe game entities without official art.
-- This is acceptable for data accuracy, but it diverges from Habitica's visual language where quests, gear, pets, mounts, consumables, spells, and achievements are image-backed in the official experience.
+- Dashboard, Inventory, Party, and Spells now render image-backed Habitica entities through `HabiticaImageAssetResolver` and the shared `HabiticaImage` component.
+- Diagnostics, Live Tests, Tasks, Sign In, and App Shell remain intentionally text/control driven unless a specific Habitica game entity is being represented.
 
 Asset parity rule:
 
@@ -77,16 +77,16 @@ Layout rules:
 - Reserve image space before the file loads and keep the same dimensions for fallback state, loading state, and error state.
 - In cards, place the image in a fixed first column and put text in a `min-width: 0` content column so long names wrap instead of pushing actions off-screen.
 - In action-heavy cards, keep images in the header or identity zone. Never put thumbnails inside the primary action row when that row also contains buttons, counters, selects, or progress.
-- Use `loading="lazy"` for below-the-fold repeated images once implemented. Critical current-state images, such as an active quest or current pet/mount, can load eagerly.
+- Use `loading="lazy"` for below-the-fold repeated images. Critical current-state images, such as an active quest or current pet/mount, can load eagerly.
 - At 360px width, images should shrink to the compact size or stack above text before labels, buttons, or stat pills overlap.
 
-Surface plan:
+Current placement:
 
-- Dashboard: add compact artwork only where it clarifies current game state. Companion summary should show current pet and mount thumbnails when available. Inventory summary can use small icons for eggs, food, hatching potions, and quest scroll counts. Pending quest damage can show a quest or boss thumbnail only if it stays separate from the Start New Day and stat allocation action rows.
+- Dashboard: companion summary shows current pet and mount thumbnails when available. Inventory summary uses small official category icons for eggs, food, hatching potions, and quest scroll counts. Pending quest damage remains text-only so it does not crowd Start New Day and stat allocation action rows.
 - Tasks: keep task cards primarily text and control driven. Use Habitica art only for explicit reward/item/quest targets added by a future feature. Task type/status affordances may use simple UI icons, not game art.
-- Inventory: add gear thumbnails to battle loadout slots, best-in-category entries, and gear cards. Use a fixed image column so slot labels, class text, stat pills, and equip actions remain aligned. Consumable and quest-scroll groups should use small item icons with readable counts.
-- Party: active quest cards can use the quest, boss, or collection artwork near the quest title. Queue, pool, and recent quest records should use smaller quest scroll thumbnails and keep owner, vote, invite, and cancel controls in their own rows. Member cards should not invent avatar art unless the member payload and asset resolver can represent it accurately.
-- Spells: spell cards should show class skill icons in the header beside spell name, mana cost, and availability. Equipment recommendation rows can show gear thumbnails only when they do not lengthen the cast controls or compete with mana previews.
+- Inventory: gear thumbnails appear in battle loadout slots, best-in-category entries, expanded gear cards, accessory cards, and saved preset items. Fixed identity columns keep slot labels, class text, stat pills, and equip actions aligned. Summary cards use compact item icons with readable counts.
+- Party: active quest cards use a prominent quest art slot near the quest title. Queue, pool, and recent quest records use smaller quest scroll thumbnails while owner, vote, invite, and cancel controls stay in their own rows. Member cards do not invent avatar art.
+- Spells: spell cards show class skill icons in the header beside spell name, mana cost, and availability. Equipment recommendation rows show gear thumbnails without moving cast controls or competing with mana previews.
 - Diagnostics and Live Tests: avoid gameplay thumbnails in raw payload/debug views. If endpoint lists need icons, use small technical UI icons only, and never let images hide JSON or response metadata.
 - Sign In and App Shell: keep existing local Gryphy/app icons. Do not add remote Habitica gameplay art to authentication or navigation unless it represents a specific game entity.
 

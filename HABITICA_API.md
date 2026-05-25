@@ -679,7 +679,8 @@ Reference sources:
 - Official API docs: https://habitica.com/apidoc/
 - API usage guidelines: https://github.com/HabitRPG/habitica/wiki/API-Usage-Guidelines
 - Content catalog endpoint: `GET https://habitica.com/api/v3/content?language=en`
-- Official image asset source to verify before implementation: https://github.com/HabitRPG/habitica-images
+- Official image asset source: https://github.com/HabitRPG/habitica-images
+- Official mobile/static image base currently used by the companion resolver: `https://habitica-assets.s3.amazonaws.com/mobileApp/images/`
 
 Content requests still need the normal `x-client` header, even when no user credentials are required for the catalog:
 
@@ -700,7 +701,7 @@ Use the content catalog to resolve source keys and display text before choosing 
 Implementation recommendations:
 
 - Add a single image asset resolver that maps Habitica keys to local/static asset paths plus alt text, image kind, fallback label, and preferred display size.
-- Prefer self-hosted or bundled static assets once the official image source and file naming are confirmed. Do not hotlink guessed CDN paths from Razor components.
+- Prefer self-hosted or bundled static assets once the official image source and file naming are confirmed. If remote official static assets are used, keep URL construction inside the resolver rather than page components.
 - Cache the content catalog and asset resolution results. The content response is large and should not be fetched for each card, row, or image.
 - Static image requests must not include Habitica user ID or API token headers.
 - Image load failures should preserve layout dimensions and render a readable fallback label so cards and tables do not shift or overlap.
