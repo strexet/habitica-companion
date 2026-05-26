@@ -171,6 +171,115 @@ public sealed class SpellViewModelFactoryTests
         Assert.Contains("Adds approximately 7 CON", healer.Spells.Single(spell => spell.Id == "protectAura").EstimatedEffect, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void Create_picks_two_handed_weapon_and_clears_shield_when_combined_stats_outweigh_one_handed_plus_shield()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "wizard",
+            level: 15,
+            equipped: new GearSlotsSnapshot(null, null, null, null, null),
+            ownedGearKeys: new[] { "weapon_int_5", "weapon_int_2h_20", "shield_int_6" });
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["weapon_int_5"] = new("weapon_int_5", "Apprentice Wand", "Weapon", null, null, new GearStatBlock(0m, 5m, 0m, 0m)),
+                ["weapon_int_2h_20"] = new("weapon_int_2h_20", "Greatstaff", "Weapon", null, null, new GearStatBlock(0m, 20m, 0m, 0m), true),
+                ["shield_int_6"] = new("shield_int_6", "Crest Shield", "Shield", null, null, new GearStatBlock(0m, 6m, 0m, 0m))
+            });
+        var factory = new SpellViewModelFactory();
+
+        var viewModel = factory.Create(snapshot, null, catalog);
+        var recommendation = viewModel.Spells
+            .Single(spell => spell.Id == "fireball")
+            .EquipmentRecommendations
+            .Single(item => item.Name == "Maximize INT");
+
+        Assert.Equal("weapon_int_2h_20", recommendation.Slots.Weapon);
+        Assert.Null(recommendation.Slots.Shield);
+    }
+
+    [Fact]
+    public void Create_keeps_one_handed_weapon_and_shield_when_combined_stats_outweigh_two_handed()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "wizard",
+            level: 15,
+            equipped: new GearSlotsSnapshot(null, null, null, null, null),
+            ownedGearKeys: new[] { "weapon_int_15", "weapon_int_2h_20", "shield_int_10" });
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["weapon_int_15"] = new("weapon_int_15", "Sage Wand", "Weapon", null, null, new GearStatBlock(0m, 15m, 0m, 0m)),
+                ["weapon_int_2h_20"] = new("weapon_int_2h_20", "Greatstaff", "Weapon", null, null, new GearStatBlock(0m, 20m, 0m, 0m), true),
+                ["shield_int_10"] = new("shield_int_10", "Aegis", "Shield", null, null, new GearStatBlock(0m, 10m, 0m, 0m))
+            });
+        var factory = new SpellViewModelFactory();
+
+        var viewModel = factory.Create(snapshot, null, catalog);
+        var recommendation = viewModel.Spells
+            .Single(spell => spell.Id == "fireball")
+            .EquipmentRecommendations
+            .Single(item => item.Name == "Maximize INT");
+
+        Assert.Equal("weapon_int_15", recommendation.Slots.Weapon);
+        Assert.Equal("shield_int_10", recommendation.Slots.Shield);
+    }
+
+    [Fact]
+    public void Create_picks_two_handed_weapon_with_no_shield_when_only_two_handed_weapon_is_owned()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "wizard",
+            level: 15,
+            equipped: new GearSlotsSnapshot(null, null, null, null, null),
+            ownedGearKeys: new[] { "weapon_int_2h_20" });
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["weapon_int_2h_20"] = new("weapon_int_2h_20", "Greatstaff", "Weapon", null, null, new GearStatBlock(0m, 20m, 0m, 0m), true)
+            });
+        var factory = new SpellViewModelFactory();
+
+        var viewModel = factory.Create(snapshot, null, catalog);
+        var recommendation = viewModel.Spells
+            .Single(spell => spell.Id == "fireball")
+            .EquipmentRecommendations
+            .Single(item => item.Name == "Maximize INT");
+
+        Assert.Equal("weapon_int_2h_20", recommendation.Slots.Weapon);
+        Assert.Null(recommendation.Slots.Shield);
+    }
+
+    [Fact]
+    public void Create_keeps_one_handed_weapon_and_shield_when_only_one_handed_weapon_is_owned()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "wizard",
+            level: 15,
+            equipped: new GearSlotsSnapshot(null, null, null, null, null),
+            ownedGearKeys: new[] { "weapon_int_10", "shield_int_4" });
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["weapon_int_10"] = new("weapon_int_10", "Apprentice Wand", "Weapon", null, null, new GearStatBlock(0m, 10m, 0m, 0m)),
+                ["shield_int_4"] = new("shield_int_4", "Buckler", "Shield", null, null, new GearStatBlock(0m, 4m, 0m, 0m))
+            });
+        var factory = new SpellViewModelFactory();
+
+        var viewModel = factory.Create(snapshot, null, catalog);
+        var recommendation = viewModel.Spells
+            .Single(spell => spell.Id == "fireball")
+            .EquipmentRecommendations
+            .Single(item => item.Name == "Maximize INT");
+
+        Assert.Equal("weapon_int_10", recommendation.Slots.Weapon);
+        Assert.Equal("shield_int_4", recommendation.Slots.Shield);
+    }
+
     private static UserSnapshot CreateUserSnapshot(
         string className,
         int level,

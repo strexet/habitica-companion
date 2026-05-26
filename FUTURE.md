@@ -37,8 +37,11 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Split-key encrypted Cloudflare app-data sync, legacy single-blob restore fallback, per-section payload guard, partial-success sync behavior, and refresh coordinator deduplication.
 - Refresh-domain invalidation basics after implemented mutations.
 - Staged sign-in refresh UX, scoped refresh indicators, per-section cloud sync status, sync exclusions, and explicit cloud-sync conflict choices.
+- Two-handed weapon awareness in spell equipment recommendations: weapon/shield selected as a `twoHanded`-aware pair; shield omitted when the two-handed weapon outscores the best one-handed + shield combination.
 
-## Pending to be added to `Prioritized Next Changes`
+## Pending Queue
+
+### Queued items to be added to `Prioritized Next Changes`
 
 Work top to bottom. This is an intake list for rough notes that must become self-contained `Prioritized Next Changes` entries before implementation. Preserve the `Priority Instructions` and `Entries` structure.
 
@@ -50,7 +53,7 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- None.
+(empty)
 
 ## Prioritized Next Changes
 

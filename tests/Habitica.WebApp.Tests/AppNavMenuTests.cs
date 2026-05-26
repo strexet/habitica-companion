@@ -13,6 +13,17 @@ namespace Habitica.WebApp.Tests;
 
 public sealed class AppNavMenuTests : BunitContext
 {
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            DisposeAsync().AsTask().GetAwaiter().GetResult();
+            return;
+        }
+
+        base.Dispose(disposing);
+    }
+
     [Fact]
     public void Renders_diagnostics_link_instead_of_live_tests_for_authenticated_sessions()
     {

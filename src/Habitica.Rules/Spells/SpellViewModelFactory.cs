@@ -145,11 +145,12 @@ public sealed class SpellViewModelFactory
         string name,
         IReadOnlyList<SpellStat> stats)
     {
+        var (weapon, shield) = SelectBestWeaponShieldPair(snapshot, catalog, stats);
         var slots = new GearSlotsSnapshot(
             Head: SelectBestForSlot(snapshot, catalog, "Head", stats),
             Armor: SelectBestForSlot(snapshot, catalog, "Armor", stats),
-            Weapon: SelectBestForSlot(snapshot, catalog, "Weapon", stats),
-            Shield: SelectBestForSlot(snapshot, catalog, "Shield", stats),
+            Weapon: weapon,
+            Shield: shield,
             Back: SelectBestForSlot(snapshot, catalog, "Back", stats),
             HeadAccessory: SelectBestForSlot(snapshot, catalog, "Head Accessory", stats),
             Eyewear: SelectBestForSlot(snapshot, catalog, "Eyewear", stats),
@@ -191,10 +192,13 @@ public sealed class SpellViewModelFactory
         UserSnapshot snapshot,
         GearCatalogSnapshot catalog,
         string slot,
-        IReadOnlyList<SpellStat> stats)
+        IReadOnlyList<SpellStat> stats,
+        bool? twoHanded = null)
     {
         return snapshot.Inventory.OwnedGearKeys
-            .Where(key => catalog.Items.TryGetValue(key, out var item) && string.Equals(item.SlotTitle, slot, StringComparison.Ordinal))
+            .Where(key => catalog.Items.TryGetValue(key, out var item)
+                && string.Equals(item.SlotTitle, slot, StringComparison.Ordinal)
+                && (twoHanded is null || item.TwoHanded == twoHanded.Value))
             .Select(key => new
             {
                 Key = key,
@@ -209,6 +213,38 @@ public sealed class SpellViewModelFactory
             .OrderByDescending(candidate => candidate.Score)
             .ThenBy(candidate => candidate.Key, StringComparer.Ordinal)
             .FirstOrDefault()?.Key;
+    }
+
+    private static (string? Weapon, string? Shield) SelectBestWeaponShieldPair(
+        UserSnapshot snapshot,
+        GearCatalogSnapshot catalog,
+        IReadOnlyList<SpellStat> stats)
+    {
+        var oneHandedWeapon = SelectBestForSlot(snapshot, catalog, "Weapon", stats, twoHanded: false);
+        var twoHandedWeapon = SelectBestForSlot(snapshot, catalog, "Weapon", stats, twoHanded: true);
+        var shield = SelectBestForSlot(snapshot, catalog, "Shield", stats);
+
+        var oneHandedScore = ScoreKey(snapshot, catalog, oneHandedWeapon, stats);
+        var twoHandedScore = ScoreKey(snapshot, catalog, twoHandedWeapon, stats);
+        var shieldScore = ScoreKey(snapshot, catalog, shield, stats);
+
+        return twoHandedScore > oneHandedScore + shieldScore
+            ? (twoHandedWeapon, null)
+            : (oneHandedWeapon, shield);
+    }
+
+    private static decimal ScoreKey(
+        UserSnapshot snapshot,
+        GearCatalogSnapshot catalog,
+        string? key,
+        IReadOnlyList<SpellStat> stats)
+    {
+        if (string.IsNullOrWhiteSpace(key) || !catalog.Items.TryGetValue(key, out var item))
+        {
+            return 0m;
+        }
+
+        return Score(ToGearStatBlock(CharacterStatsCalculator.CalculateItemStats(snapshot, item)), stats);
     }
 
     private static decimal Score(GearStatBlock stats, IReadOnlyList<SpellStat> prioritizedStats)
