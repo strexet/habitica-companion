@@ -2388,6 +2388,7 @@ inline task scoring/checkoff controls
 habit multi-score progress
 task detail panel
 drag-handle task reordering
+task-card move to top/up/down/bottom controls
 empty-state messaging
 ```
 
@@ -2433,6 +2434,7 @@ Current view-model rules:
 14. Drag handles move items within the currently visible list and persist the resulting per-type ID order for export/import and cloud sync.
 15. Drag reordering is scoped to the current task type group and preserves hidden or completed items that are filtered out of the visible subset.
 16. Focused drag handles support arrow-key reordering through the same local ordering path for keyboard precision.
+17. Each task card also renders move to top, move up, move down, and move to bottom buttons that use the same local ordering path and disable edge moves that would not change the visible order.
 ```
 
 ### Validation

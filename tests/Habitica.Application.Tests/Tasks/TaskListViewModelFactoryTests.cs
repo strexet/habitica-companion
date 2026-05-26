@@ -99,4 +99,16 @@ public sealed class TaskListViewModelFactoryTests
 
         Assert.Equal(currentOrder, nextOrder);
     }
+
+    [Fact]
+    public void Move_visible_item_to_index_preserves_hidden_items_in_place()
+    {
+        var nextOrder = _orderPlanner.MoveVisibleItemToIndex(
+            new[] { "todo-1", "todo-hidden", "todo-2", "todo-3" },
+            new[] { "todo-1", "todo-2", "todo-3" },
+            "todo-3",
+            0);
+
+        Assert.Equal(new[] { "todo-3", "todo-hidden", "todo-1", "todo-2" }, nextOrder);
+    }
 }

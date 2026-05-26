@@ -127,6 +127,44 @@
                                                     @onkeydown="eventArgs => HandleTaskReorderKeyAsync(group, item.Id, eventArgs)">
                                                 <span aria-hidden="true">::</span>
                                             </button>
+                                            <div class="task-reorder-controls" role="group" aria-label="@($"Move {item.Text}")">
+                                                <button class="task-reorder-button"
+                                                        type="button"
+                                                        disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Top))"
+                                                        aria-label="@($"Move {item.Text} to top")"
+                                                        title="@($"Move {item.Text} to top")"
+                                                        data-testid="@($"move-task-top-{item.Id}")"
+                                                        @onclick="@(() => MoveTaskToVisibleIndexAsync(group, item.Id, 0))">
+                                                    <MudIcon Icon="@Icons.Material.Filled.VerticalAlignTop" Size="Size.Small" />
+                                                </button>
+                                                <button class="task-reorder-button"
+                                                        type="button"
+                                                        disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Up))"
+                                                        aria-label="@($"Move {item.Text} up")"
+                                                        title="@($"Move {item.Text} up")"
+                                                        data-testid="@($"move-task-up-{item.Id}")"
+                                                        @onclick="@(() => MoveTaskAsync(group, item.Id, -1))">
+                                                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowUp" Size="Size.Small" />
+                                                </button>
+                                                <button class="task-reorder-button"
+                                                        type="button"
+                                                        disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Down))"
+                                                        aria-label="@($"Move {item.Text} down")"
+                                                        title="@($"Move {item.Text} down")"
+                                                        data-testid="@($"move-task-down-{item.Id}")"
+                                                        @onclick="@(() => MoveTaskAsync(group, item.Id, 1))">
+                                                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
+                                                </button>
+                                                <button class="task-reorder-button"
+                                                        type="button"
+                                                        disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Bottom))"
+                                                        aria-label="@($"Move {item.Text} to bottom")"
+                                                        title="@($"Move {item.Text} to bottom")"
+                                                        data-testid="@($"move-task-bottom-{item.Id}")"
+                                                        @onclick="@(() => MoveTaskToVisibleIndexAsync(group, item.Id, visibleItems.Length - 1))">
+                                                    <MudIcon Icon="@Icons.Material.Filled.VerticalAlignBottom" Size="Size.Small" />
+                                                </button>
+                                            </div>
                                             <span class="task-title">@item.Text</span>
 
                                             @if (item.IsCompleted)
@@ -278,6 +316,14 @@
     private string? _reorderAnnouncement;
     private TaskListSortMode _sortMode = TaskListSortMode.Name;
 
+    private enum TaskReorderTarget
+    {
+        Top,
+        Up,
+        Down,
+        Bottom
+    }
+
     private TaskListViewModel CurrentViewModel => SessionController.State.TaskSnapshot is null
         ? new TaskListViewModel(Array.Empty<TaskGroupViewModel>(), 0)
         : TaskListViewModelFactory.Create(
@@ -389,6 +435,18 @@
         await PersistTaskOrderAsync(group.Type, allItems.Select(static item => item.Id).ToArray(), nextOrder, taskId, visibleItems.Length);
     }
 
+    private async Task MoveTaskToVisibleIndexAsync(TaskGroupViewModel group, string taskId, int targetIndex)
+    {
+        var visibleItems = GetVisibleItems(group).ToArray();
+        var allItems = ApplyTaskOrder(group.Type, group.Items).ToArray();
+        var nextOrder = TaskOrderPlanner.MoveVisibleItemToIndex(
+            allItems.Select(static item => item.Id),
+            visibleItems.Select(static item => item.Id),
+            taskId,
+            targetIndex);
+        await PersistTaskOrderAsync(group.Type, allItems.Select(static item => item.Id).ToArray(), nextOrder, taskId, visibleItems.Length);
+    }
+
     [JSInvokable]
     public async Task HandleTaskDropped(string taskTypeName, string draggedTaskId, string targetTaskId, bool insertAfter)
     {
@@ -424,6 +482,26 @@
         {
             await MoveTaskAsync(group, taskId, 1);
         }
+    }
+
+    private static bool CanMoveTask(IReadOnlyList<TaskListItemViewModel> visibleItems, string taskId, TaskReorderTarget target)
+    {
+        var index = -1;
+        for (var candidateIndex = 0; candidateIndex < visibleItems.Count; candidateIndex++)
+        {
+            if (string.Equals(visibleItems[candidateIndex].Id, taskId, StringComparison.Ordinal))
+            {
+                index = candidateIndex;
+                break;
+            }
+        }
+
+        return target switch
+        {
+            TaskReorderTarget.Top or TaskReorderTarget.Up => index > 0,
+            TaskReorderTarget.Down or TaskReorderTarget.Bottom => index >= 0 && index < visibleItems.Count - 1,
+            _ => false
+        };
     }
 
     private async Task PersistTaskOrderAsync(

@@ -221,7 +221,7 @@ public sealed class TasksPageTests : BunitContext
 
         var cut = Render<TasksPage>();
         AssertMarkupOrder(cut.Markup, "Alpha", "Beta", "Gamma");
-        Assert.Empty(cut.FindAll("[data-testid^='move-task-']"));
+        Assert.NotEmpty(cut.FindAll("[data-testid^='move-task-']"));
         Assert.NotNull(cut.Find("[data-testid='drag-task-todo-1']"));
 
         await cut.InvokeAsync(() => cut.Instance.HandleTaskDropped("Todo", "todo-1", "todo-2", insertAfter: true));
@@ -269,6 +269,48 @@ public sealed class TasksPageTests : BunitContext
         var preferences = await storage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
         Assert.NotNull(preferences);
         Assert.Equal(new[] { "todo-2", "todo-1", "todo-3" }, preferences!.OrdersByType["Todo"]);
+    }
+
+    [Fact]
+    public async Task Task_reorder_buttons_use_same_local_order_path()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new TaskListViewModelFactory());
+        Services.AddSingleton(new TaskOrderPlanner());
+        var storage = new FakeKeyValueStorage();
+        Services.AddSingleton<IKeyValueStorage>(storage);
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: false,
+                DisplayName: null,
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(
+                    DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
+                    new[]
+                    {
+                        new TaskSnapshot("todo-1", "Alpha", TaskType.Todo, false, 1m, null, null, 1m),
+                        new TaskSnapshot("todo-2", "Beta", TaskType.Todo, false, 1m, null, null, 2m),
+                        new TaskSnapshot("todo-3", "Gamma", TaskType.Todo, false, 1m, null, null, 3m)
+                    }))));
+
+        var cut = Render<TasksPage>();
+
+        cut.Find("[data-testid='move-task-down-todo-1']").Click();
+        AssertMarkupOrder(cut.Markup, "Beta", "Alpha", "Gamma");
+
+        cut.Find("[data-testid='move-task-bottom-todo-1']").Click();
+        AssertMarkupOrder(cut.Markup, "Beta", "Gamma", "Alpha");
+
+        cut.Find("[data-testid='move-task-top-todo-1']").Click();
+        AssertMarkupOrder(cut.Markup, "Alpha", "Beta", "Gamma");
+
+        var preferences = await storage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
+        Assert.NotNull(preferences);
+        Assert.Equal(new[] { "todo-1", "todo-2", "todo-3" }, preferences!.OrdersByType["Todo"]);
     }
 
     [Fact]

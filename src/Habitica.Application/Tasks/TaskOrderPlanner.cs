@@ -57,6 +57,31 @@ public sealed class TaskOrderPlanner
         return MergeVisibleOrder(allOrderedIds, visibleIds);
     }
 
+    public IReadOnlyList<string> MoveVisibleItemToIndex(
+        IEnumerable<string> allOrderedTaskIds,
+        IEnumerable<string> visibleTaskIds,
+        string taskId,
+        int targetIndex)
+    {
+        var allOrderedIds = Normalize(allOrderedTaskIds).ToArray();
+        var visibleIds = Normalize(visibleTaskIds).ToList();
+        var index = visibleIds.FindIndex(id => string.Equals(id, taskId, StringComparison.Ordinal));
+        if (index < 0 || visibleIds.Count == 0)
+        {
+            return allOrderedIds;
+        }
+
+        targetIndex = Math.Clamp(targetIndex, 0, visibleIds.Count - 1);
+        if (index == targetIndex)
+        {
+            return allOrderedIds;
+        }
+
+        visibleIds.RemoveAt(index);
+        visibleIds.Insert(Math.Min(targetIndex, visibleIds.Count), taskId);
+        return MergeVisibleOrder(allOrderedIds, visibleIds);
+    }
+
     private static IReadOnlyList<string> MergeVisibleOrder(IEnumerable<string> allOrderedTaskIds, IReadOnlyCollection<string> reorderedVisibleIds)
     {
         var visibleQueue = new Queue<string>(reorderedVisibleIds);

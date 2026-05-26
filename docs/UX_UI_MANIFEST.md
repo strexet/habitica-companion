@@ -216,7 +216,7 @@ Improvement:
 - Add task history charts in expanded details without making each card visually heavy by default.
 - For drag-and-drop task ordering, make reordering available only where manual order is the active ordering model, or clearly explain why a visible sorted/filtered view cannot accept a drop at that position.
 - Use an explicit drag handle, lift state, insertion marker, and invalid-drop feedback so task cards do not feel like they can be accidentally dragged while selecting text, expanding details, or pressing score controls.
-- Keep keyboard and single-pointer reorder alternatives available; the current Tasks page drag handle also supports arrow-key reordering for precise moves without separate task-card arrow buttons.
+- Keep keyboard and single-pointer reorder alternatives available; the current Tasks page drag handle supports arrow-key reordering, and each task card exposes compact move-to-top, move-up, move-down, and move-to-bottom buttons.
 - Preserve hidden/completed items when reordering the visible subset, and keep the dropped task in view with a brief inline confirmation.
 
 ### Inventory

@@ -2041,6 +2041,7 @@ a {
 
 .task-card-head {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: 1rem;
     align-items: start;
@@ -2068,6 +2069,44 @@ a {
 .task-drag-handle:focus-visible {
     outline: 3px solid rgba(45, 116, 110, 0.32);
     outline-offset: 2px;
+}
+
+.task-reorder-controls {
+    display: grid;
+    flex: 0 0 auto;
+    gap: 0.25rem;
+    grid-template-columns: repeat(2, 2rem);
+}
+
+.task-reorder-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    min-height: 2rem;
+    padding: 0;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(45, 116, 110, 0.18);
+    background: rgba(255, 255, 255, 0.58);
+    color: var(--teal);
+    cursor: pointer;
+}
+
+.task-reorder-button:hover:not(:disabled),
+.task-reorder-button:focus-visible {
+    border-color: rgba(45, 116, 110, 0.36);
+    background: rgba(255, 255, 255, 0.82);
+}
+
+.task-reorder-button:focus-visible {
+    outline: 3px solid rgba(45, 116, 110, 0.26);
+    outline-offset: 2px;
+}
+
+.task-reorder-button:disabled {
+    color: rgba(95, 109, 103, 0.38);
+    cursor: not-allowed;
+    opacity: 0.58;
 }
 
 .task-title {
