@@ -550,7 +550,7 @@ GET /user
 GET /tasks/user
 ```
 
-After successful spell casts, refresh `/user` and `/tasks/user` because mana, HP, XP, GP, buffs, quest contribution, and task values can change. If the user chooses `Start New Day and Cast` from the buff timing warning, run `/cron` first, refresh account/tasks/party state, and only cast after Cron succeeds. After stat allocation from Dashboard, refresh `/user`. Dynamic gear recommendation Equip buttons reuse the existing inventory equip flow and refresh `/user`, which causes spell estimates and `Equipped` button states to be recalculated.
+After successful spell casts, refresh `/user` and `/tasks/user` because mana, HP, XP, GP, buffs, quest contribution, and task values can change. If the user chooses `Start New Day and Cast` from the buff timing warning, run `/cron` first, refresh account/tasks/party state, and only cast after Cron succeeds. After stat allocation from Dashboard, refresh `/user`. Dynamic gear recommendation Equip buttons reuse the existing inventory equip flow and refresh `/user`, which causes spell estimates and `Equipped` button states to be recalculated. User-initiated multi-request spell flows execute sequentially with the configured `Features:HabiticaRequestDelayMilliseconds` pause between Habitica API calls; the default is a conservative 1000 ms UI pacing value, not a documented Habitica limit. `HabiticaApiClient` parses `Retry-After`, `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. A `429` response is surfaced as a wait message without raw `429 Too Many Requests` copy, and failed non-idempotent mutations are not replayed automatically. If successful responses report zero remaining requests with a reset time, the client waits before the next request.
 
 ### Algorithm / rules
 
@@ -569,7 +569,7 @@ Task-targeting spells default to the eligible non-reward, non-challenge task wit
 
 Effect estimates are approximation-based. Initial formulas are based on Habitica source spell definitions and cross-checked against the stable Habitica User Data Display Tool's Skills and Buffs behavior. Task spell estimates use the selected task's cached `value`, not task priority. Current spell estimates use base stats plus current battle gear plus the Habitica level bonus plus buffs; unbuffed buff spells use base stats plus current battle gear plus the Habitica level bonus. When Auto equip is enabled, the preview uses the selected dynamic recommendation's battle gear slots as though they were already equipped. Estimates must remain labeled approximate until verified directly against live Habitica behavior for the current source version.
 
-Each spell card owns its dynamic equipment recommendations. Recommendations are transient and not saved as user presets. For spells with one relevant stat, show a primary-stat recommendation. For spells with multiple relevant stats, show primary/secondary stat recommendations and a balanced recommendation. If every non-empty recommended gear slot is already equipped in battle gear, its button is disabled and labeled `Equipped`.
+Each spell card owns its dynamic equipment recommendations. Recommendations are transient and not saved as user presets. For spells with one relevant stat, show a primary-stat recommendation. For spells with multiple relevant stats, show primary/secondary stat recommendations and a balanced recommendation. Recommendations include stat-bearing battle accessories such as Head Accessory, Eyewear, Body, and Back. If every non-empty recommended gear slot is already equipped in battle gear, its button is disabled and labeled `Equipped`.
 
 Dashboard stats are displayed as a single table with base/API stats, equipment-derived stats, active buffs, and effective values. Allocation uses per-stat `+` buttons with an Apply action instead of full-width numeric inputs. Stat allocation is treated as locked before level 10; below that level the Dashboard shows unlock copy instead of an unspent-points prompt, the allocation controls are disabled, and Spells hides stat-point context.
 
@@ -1927,7 +1927,7 @@ Equip action rules:
 2. Require a fresh user snapshot.
 3. Validate target keys against cached owned gear or currently equipped gear.
 4. Execute item equip/unequip immediately through the matching Habitica equip endpoint.
-5. Execute preset equip one changed slot at a time in deterministic slot order.
+5. Execute preset equip one changed slot at a time in deterministic slot order with the configured `Features:HabiticaRequestDelayMilliseconds` pause between Habitica API calls.
 6. Skip unchanged preset slots.
 7. Refresh `/user` after changed equip actions.
 8. Write diagnostics log entries for success and failure.
@@ -1936,7 +1936,7 @@ Equip action rules:
 11. Include accessory slots such as Head Accessory, Eyewear, Body, and Back in battle preset save and equip flows.
 ```
 
-Battle preset removal and rename are local-only. Removal requires a confirmation prompt because future Macros may reference preset ids. Rename preserves the preset id so existing future macro references can remain stable.
+Battle preset removal and rename are local-only. Removal requires a confirmation prompt because future Macros may reference preset ids. Rename preserves the preset id so existing future macro references can remain stable. After save, rename, or removal, encrypted cloud sync uploads the local saved-presets section as the source of truth without first merging the remote saved-presets section, so deleted presets are not resurrected from stale cloud data.
 
 ### Validation
 

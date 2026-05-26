@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Habitica.Domain.Auth;
@@ -12,6 +13,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 {
     private readonly HttpClient _httpClient;
     private readonly HabiticaApiClientOptions _options;
+    private DateTimeOffset? _rateLimitPauseUntilUtc;
 
     public HabiticaApiClient(HttpClient httpClient, HabiticaApiClientOptions options)
     {
@@ -401,12 +403,15 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
     private async Task<JsonDocument> SendForDocumentAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        await DelayForKnownRateLimitAsync(cancellationToken);
         using var response = await _httpClient.SendAsync(request, cancellationToken);
         var content = await response.Content.ReadAsStringAsync(cancellationToken);
+        var rateLimit = ExtractRateLimitInfo(response);
+        RememberRateLimitPause(rateLimit);
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new HabiticaApiException(response.StatusCode, ExtractErrorMessage(content, response.ReasonPhrase));
+            throw CreateApiException(response, content, rateLimit);
         }
 
         return JsonDocument.Parse(content, new JsonDocumentOptions
@@ -1203,6 +1208,143 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         return string.IsNullOrWhiteSpace(fallbackReasonPhrase)
             ? "Habitica API request failed."
             : fallbackReasonPhrase;
+    }
+
+    private static HabiticaApiException CreateApiException(
+        HttpResponseMessage response,
+        string responseBody,
+        HabiticaRateLimitInfo? rateLimit)
+    {
+        if (response.StatusCode == HttpStatusCode.TooManyRequests)
+        {
+            return new HabiticaApiException(
+                response.StatusCode,
+                BuildRateLimitMessage(rateLimit),
+                rateLimit);
+        }
+
+        return new HabiticaApiException(
+            response.StatusCode,
+            ExtractErrorMessage(responseBody, response.ReasonPhrase),
+            rateLimit);
+    }
+
+    private static HabiticaRateLimitInfo? ExtractRateLimitInfo(HttpResponseMessage response)
+    {
+        var retryAfter = response.Headers.RetryAfter?.Delta
+            ?? (response.Headers.RetryAfter?.Date is { } retryAfterDate
+                ? retryAfterDate - DateTimeOffset.UtcNow
+                : null);
+        if (retryAfter is { } retryAfterValue && retryAfterValue < TimeSpan.Zero)
+        {
+            retryAfter = TimeSpan.Zero;
+        }
+
+        var limit = TryGetHeaderInt32(response, "X-RateLimit-Limit");
+        var remaining = TryGetHeaderInt32(response, "X-RateLimit-Remaining");
+        var resetAtUtc = TryGetHeaderDateTimeOffset(response, "X-RateLimit-Reset");
+
+        return retryAfter is null && limit is null && remaining is null && resetAtUtc is null
+            ? null
+            : new HabiticaRateLimitInfo(retryAfter, limit, remaining, resetAtUtc);
+    }
+
+    private async Task DelayForKnownRateLimitAsync(CancellationToken cancellationToken)
+    {
+        if (_rateLimitPauseUntilUtc is not { } pauseUntilUtc)
+        {
+            return;
+        }
+
+        var delay = pauseUntilUtc - DateTimeOffset.UtcNow;
+        if (delay <= TimeSpan.Zero)
+        {
+            _rateLimitPauseUntilUtc = null;
+            return;
+        }
+
+        await Task.Delay(delay, cancellationToken);
+    }
+
+    private void RememberRateLimitPause(HabiticaRateLimitInfo? rateLimit)
+    {
+        DateTimeOffset? pauseUntilUtc = null;
+        if (rateLimit?.RetryAfter is { } retryAfter)
+        {
+            pauseUntilUtc = DateTimeOffset.UtcNow + retryAfter;
+        }
+        else if (rateLimit?.Remaining == 0 && rateLimit.ResetAtUtc is { } resetAtUtc)
+        {
+            pauseUntilUtc = resetAtUtc;
+        }
+
+        if (pauseUntilUtc is null)
+        {
+            return;
+        }
+
+        _rateLimitPauseUntilUtc = _rateLimitPauseUntilUtc is { } existing && existing > pauseUntilUtc
+            ? existing
+            : pauseUntilUtc;
+    }
+
+    private static string BuildRateLimitMessage(HabiticaRateLimitInfo? rateLimit)
+    {
+        if (rateLimit?.RetryAfter is { } retryAfter)
+        {
+            var seconds = Math.Max(1, (int)Math.Ceiling(retryAfter.TotalSeconds));
+            return $"Habitica is rate limiting requests. Wait {FormatDuration(seconds)} before trying again.";
+        }
+
+        if (rateLimit?.ResetAtUtc is { } resetAtUtc)
+        {
+            var wait = resetAtUtc - DateTimeOffset.UtcNow;
+            if (wait > TimeSpan.Zero)
+            {
+                var seconds = Math.Max(1, (int)Math.Ceiling(wait.TotalSeconds));
+                return $"Habitica is rate limiting requests. Wait {FormatDuration(seconds)} before trying again.";
+            }
+        }
+
+        return "Habitica is rate limiting requests. Wait before trying again.";
+    }
+
+    private static string FormatDuration(int seconds)
+    {
+        return seconds < 60
+            ? $"{seconds} second{(seconds == 1 ? string.Empty : "s")}"
+            : $"{(int)Math.Ceiling(seconds / 60d)} minute{(seconds <= 60 ? string.Empty : "s")}";
+    }
+
+    private static int? TryGetHeaderInt32(HttpResponseMessage response, string headerName)
+    {
+        return response.Headers.TryGetValues(headerName, out var values)
+            && int.TryParse(values.FirstOrDefault(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var value)
+            ? value
+            : null;
+    }
+
+    private static DateTimeOffset? TryGetHeaderDateTimeOffset(HttpResponseMessage response, string headerName)
+    {
+        if (!response.Headers.TryGetValues(headerName, out var values))
+        {
+            return null;
+        }
+
+        var value = values.FirstOrDefault();
+        if (long.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var numericValue))
+        {
+            return numericValue < 1_000_000_000
+                ? DateTimeOffset.UtcNow.AddSeconds(Math.Max(0, numericValue))
+                : DateTimeOffset.FromUnixTimeSeconds(numericValue);
+        }
+
+        if (DateTimeOffset.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var parsed))
+        {
+            return parsed.ToUniversalTime();
+        }
+
+        return null;
     }
 
     private static DateTimeOffset? ParseNullableDate(JsonElement task)

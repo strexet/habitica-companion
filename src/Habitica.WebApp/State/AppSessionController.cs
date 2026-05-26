@@ -843,7 +843,7 @@ public sealed class AppSessionController : IAppSessionController
                 },
                 cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
-            _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            await TryUploadCloudSyncSectionAsync(credentials, CloudSyncSection.SavedPresets, cancellationToken);
             return InventoryActionResult.Success($"Saved preset {preset.Name}.");
         }
         catch (Exception exception)
@@ -885,7 +885,7 @@ public sealed class AppSessionController : IAppSessionController
             },
             cancellationToken);
         await LoadCachedStateAsync(cancellationToken);
-        await TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+        await TryUploadCloudSyncSectionAsync(credentials, CloudSyncSection.SavedPresets, cancellationToken);
         await LoadCachedStateAsync(cancellationToken);
         return InventoryActionResult.Success(preset is null ? "Removed preset." : $"Removed preset {preset.Name}.");
     }
@@ -945,7 +945,7 @@ public sealed class AppSessionController : IAppSessionController
                 },
                 cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
-            await TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            await TryUploadCloudSyncSectionAsync(credentials, CloudSyncSection.SavedPresets, cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
             return InventoryActionResult.Success($"Renamed preset {renamedPreset.Name}.");
         }
@@ -1008,6 +1008,7 @@ public sealed class AppSessionController : IAppSessionController
         try
         {
             await _habiticaSyncClient.EquipGearAsync(validation.Credentials!, kind, key, cancellationToken);
+            await DelayBetweenHabiticaRequestsAsync(cancellationToken);
             var refreshedSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(validation.Credentials!, cancellationToken);
             await _userSnapshotStore.SaveAsync(refreshedSnapshot, cancellationToken);
             await _diagnosticsLogWriter.WriteAsync(
@@ -1161,6 +1162,7 @@ public sealed class AppSessionController : IAppSessionController
 
                 await _habiticaSyncClient.EquipGearAsync(credentials, kind, keyToToggle, cancellationToken);
                 requestCount++;
+                await DelayBetweenHabiticaRequestsAsync(cancellationToken);
                 SetState(State with
                 {
                     ActiveEquipmentProgress = new EquipmentProgress(operationId, label, requestCount, changedSlots.Length)
@@ -1282,6 +1284,7 @@ public sealed class AppSessionController : IAppSessionController
             {
                 await _habiticaSyncClient.CastSpellAsync(credentials, request.SpellId, request.TargetTaskId, cancellationToken);
                 completed++;
+                await DelayBetweenHabiticaRequestsAsync(cancellationToken);
                 SetState(State with
                 {
                     ActiveSpellCastProgress = new SpellCastProgress(request.SpellId, completed, count)
@@ -1301,6 +1304,7 @@ public sealed class AppSessionController : IAppSessionController
             }
 
             var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            await DelayBetweenHabiticaRequestsAsync(cancellationToken);
             var taskSnapshot = await _habiticaSyncClient.GetTasksAsync(credentials, cancellationToken);
             await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
             await _taskSnapshotStore.SaveAsync(taskSnapshot, cancellationToken);
@@ -1406,10 +1410,12 @@ public sealed class AppSessionController : IAppSessionController
         {
             await _habiticaSyncClient.RunCronAsync(credentials, cancellationToken);
             requestCount++;
+            await DelayBetweenHabiticaRequestsAsync(cancellationToken);
 
             var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
             requestCount++;
             await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
+            await DelayBetweenHabiticaRequestsAsync(cancellationToken);
 
             var taskSnapshot = await _habiticaSyncClient.GetTasksAsync(credentials, cancellationToken);
             requestCount++;
@@ -1419,6 +1425,7 @@ public sealed class AppSessionController : IAppSessionController
             {
                 try
                 {
+                    await DelayBetweenHabiticaRequestsAsync(cancellationToken);
                     var partySnapshot = await _habiticaSyncClient.GetPartySnapshotAsync(credentials, cancellationToken);
                     requestCount++;
                     await _partySnapshotStore.SaveAsync(partySnapshot, cancellationToken);
@@ -1526,6 +1533,7 @@ public sealed class AppSessionController : IAppSessionController
             {
                 await _habiticaSyncClient.ScoreTaskAsync(credentials, request.TaskId, request.Direction, cancellationToken);
                 completed++;
+                await DelayBetweenHabiticaRequestsAsync(cancellationToken);
                 SetState(State with
                 {
                     ActiveTaskMutationProgress = new TaskMutationProgress(request.TaskId, request.Direction, completed, count)
@@ -1533,6 +1541,7 @@ public sealed class AppSessionController : IAppSessionController
             }
 
             var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            await DelayBetweenHabiticaRequestsAsync(cancellationToken);
             var taskSnapshot = await _habiticaSyncClient.GetTasksAsync(credentials, cancellationToken);
             await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
             await _taskSnapshotStore.SaveAsync(taskSnapshot, cancellationToken);
@@ -1617,6 +1626,7 @@ public sealed class AppSessionController : IAppSessionController
         try
         {
             await _habiticaSyncClient.AllocateStatsAsync(credentials, allocation, cancellationToken);
+            await DelayBetweenHabiticaRequestsAsync(cancellationToken);
             var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
             await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
             await _diagnosticsLogWriter.WriteAsync(
@@ -1708,6 +1718,7 @@ public sealed class AppSessionController : IAppSessionController
             for (var i = 0; i < safeCount; i++)
             {
                 drops.Add(await _habiticaSyncClient.BuyArmoireAsync(credentials, cancellationToken));
+                await DelayBetweenHabiticaRequestsAsync(cancellationToken);
             }
 
             var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
@@ -1769,6 +1780,7 @@ public sealed class AppSessionController : IAppSessionController
         try
         {
             await _habiticaSyncClient.BuyHealthPotionAsync(credentials, cancellationToken);
+            await DelayBetweenHabiticaRequestsAsync(cancellationToken);
             var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
             await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
             await _diagnosticsLogWriter.WriteAsync(
@@ -2123,6 +2135,42 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    private async Task<CloudSyncUploadReport?> TryUploadCloudSyncSectionAsync(
+        HabiticaCredentials credentials,
+        CloudSyncSection section,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await UploadCloudSyncSectionsAsync(
+                credentials,
+                new[] { section },
+                mergedRemoteData: false,
+                cancellationToken);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception exception)
+        {
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Auth,
+                "cloud-sync",
+                DiagnosticsSeverity.Warning,
+                DiagnosticsMode.Local,
+                $"Encrypted cloud sync section was skipped: {exception.Message}",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["provider"] = "cloudflare",
+                    ["automatic"] = "true",
+                    ["section"] = CloudSyncSectionMapping.KvSuffix(section)
+                },
+                cancellationToken);
+            return null;
+        }
+    }
+
     private async Task<CloudSyncUploadReport> MergeAndUploadCloudSyncSectionsAsync(
         HabiticaCredentials credentials,
         CancellationToken cancellationToken)
@@ -2139,8 +2187,21 @@ public sealed class AppSessionController : IAppSessionController
             mergedRemoteData = await MergeRemoteSectionsAsync(credentials, remoteSections, cancellationToken);
         }
 
+        return await UploadCloudSyncSectionsAsync(
+            credentials,
+            CloudSyncSectionMapping.AllSections,
+            mergedRemoteData,
+            cancellationToken);
+    }
+
+    private async Task<CloudSyncUploadReport> UploadCloudSyncSectionsAsync(
+        HabiticaCredentials credentials,
+        IReadOnlyList<CloudSyncSection> sections,
+        bool mergedRemoteData,
+        CancellationToken cancellationToken)
+    {
         var sectionResults = new List<CloudSyncSectionResult>();
-        foreach (var section in CloudSyncSectionMapping.AllSections)
+        foreach (var section in sections)
         {
             if (section == CloudSyncSection.SyncMetadata)
             {
@@ -3138,6 +3199,7 @@ public sealed class AppSessionController : IAppSessionController
 
             await _habiticaSyncClient.EquipGearAsync(credentials, kind, keyToToggle, cancellationToken);
             completed++;
+            await DelayBetweenHabiticaRequestsAsync(cancellationToken);
             SetState(State with
             {
                 ActiveEquipmentProgress = new EquipmentProgress(operationId, label, completed, changedSlots.Length)
@@ -3145,6 +3207,14 @@ public sealed class AppSessionController : IAppSessionController
         }
 
         return completed;
+    }
+
+    private Task DelayBetweenHabiticaRequestsAsync(CancellationToken cancellationToken)
+    {
+        var delay = TimeSpan.FromMilliseconds(Math.Max(0, _featureOptions.HabiticaRequestDelayMilliseconds));
+        return delay <= TimeSpan.Zero
+            ? Task.CompletedTask
+            : Task.Delay(delay, _timeProvider, cancellationToken);
     }
 
     private static IEnumerable<(string SlotTitle, string? Key)> EnumerateSlots(GearSlotsSnapshot slots)

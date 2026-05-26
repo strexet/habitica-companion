@@ -265,9 +265,58 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task RemoveEquipmentPresetAsync_uploads_local_preset_list_without_resurrecting_remote_deleted_presets()
+    {
+        var remoteSync = new FakeRemoteUserDataSyncProvider();
+        var controller = CreateController(
+            new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()),
+            remoteUserDataSyncProvider: remoteSync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        await controller.SaveEquipmentPresetAsync(EquipmentSetKind.Battle, "First");
+        await controller.SaveEquipmentPresetAsync(EquipmentSetKind.Battle, "Second");
+        var savedPresetsKey = CloudSyncSectionMapping.KvSuffix(CloudSyncSection.SavedPresets);
+        var originalPresets = controller.State.Presets.OrderBy(preset => preset.Name).ToArray();
+        var firstPreset = originalPresets[0];
+        var secondPreset = originalPresets[1];
+        remoteSync.SectionKeys = new[] { savedPresetsKey };
+        remoteSync.SectionSnapshots[savedPresetsKey] = new RemoteUserDataSnapshot(
+            JsonSerializer.Serialize(originalPresets, new JsonSerializerOptions(JsonSerializerDefaults.Web)),
+            DateTimeOffset.Parse("2026-05-13T03:00:00Z"));
+
+        var result = await controller.RemoveEquipmentPresetAsync(firstPreset.Id);
+
+        Assert.True(result.Succeeded);
+        Assert.DoesNotContain(controller.State.Presets, preset => preset.Id == firstPreset.Id);
+        Assert.Contains(controller.State.Presets, preset => preset.Id == secondPreset.Id);
+        Assert.True(remoteSync.UploadedSections.TryGetValue(savedPresetsKey, out var uploadedJson));
+        Assert.DoesNotContain(firstPreset.Id, uploadedJson);
+        Assert.Contains(secondPreset.Id, uploadedJson);
+    }
+
+    [Fact]
     public async Task SaveEquipmentPresetAsync_keeps_battle_accessory_slots_in_preset()
     {
-        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()));
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                Equipment = CreateUserSnapshot().Equipment with
+                {
+                    Battle = CreateUserSnapshot().Equipment.Battle with
+                    {
+                        HeadAccessory = "headAccessory_special_1",
+                        Eyewear = "eyewear_special_1",
+                        Body = "body_special_1"
+                    }
+                }
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), syncClient);
         await controller.SignInAsync(new SignInRequest
         {
             ApiToken = "api-token",
@@ -279,6 +328,9 @@ public sealed class AppSessionControllerTests
 
         var preset = Assert.Single(controller.State.Presets);
         Assert.Equal("back_wizard_1", preset.Slots.Back);
+        Assert.Equal("headAccessory_special_1", preset.Slots.HeadAccessory);
+        Assert.Equal("eyewear_special_1", preset.Slots.Eyewear);
+        Assert.Equal("body_special_1", preset.Slots.Body);
     }
 
     [Fact]
@@ -348,9 +400,34 @@ public sealed class AppSessionControllerTests
             {
                 RetrievedAtUtc = DateTimeOffset.UtcNow,
                 Equipment = new EquipmentSnapshot(
-                    new GearSlotsSnapshot("head_old", "armor_old", "weapon_old", "shield_old", null),
+                    new GearSlotsSnapshot(
+                        "head_old",
+                        "armor_old",
+                        "weapon_old",
+                        "shield_old",
+                        "back_old",
+                        HeadAccessory: "headAccessory_old",
+                        Eyewear: "eyewear_old",
+                        Body: "body_old"),
                     new GearSlotsSnapshot(null, null, null, null, null)),
-                Inventory = new InventorySnapshot(0, 0, 0, 0, 0, 0, new[] { "head_new", "armor_new", "weapon_new", "shield_new" })
+                Inventory = new InventorySnapshot(
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    new[]
+                    {
+                        "head_new",
+                        "headAccessory_new",
+                        "eyewear_new",
+                        "armor_new",
+                        "body_new",
+                        "weapon_new",
+                        "shield_new",
+                        "back_new"
+                    })
             },
             CreateTaskSnapshot(),
             CreatePartySnapshot());
@@ -367,20 +444,36 @@ public sealed class AppSessionControllerTests
             "todo-1",
             1,
             AutoEquipRecommendedGear: true,
-            AutoEquipGearSlots: new GearSlotsSnapshot("head_new", "armor_new", "weapon_new", "shield_new", null)));
+            AutoEquipGearSlots: new GearSlotsSnapshot(
+                "head_new",
+                "armor_new",
+                "weapon_new",
+                "shield_new",
+                "back_new",
+                HeadAccessory: "headAccessory_new",
+                Eyewear: "eyewear_new",
+                Body: "body_new")));
 
         Assert.True(result.Succeeded);
         Assert.Equal(
             new[]
             {
                 (EquipmentSetKind.Battle, "head_new"),
+                (EquipmentSetKind.Battle, "headAccessory_new"),
+                (EquipmentSetKind.Battle, "eyewear_new"),
                 (EquipmentSetKind.Battle, "armor_new"),
+                (EquipmentSetKind.Battle, "body_new"),
                 (EquipmentSetKind.Battle, "weapon_new"),
                 (EquipmentSetKind.Battle, "shield_new"),
+                (EquipmentSetKind.Battle, "back_new"),
                 (EquipmentSetKind.Battle, "head_old"),
+                (EquipmentSetKind.Battle, "headAccessory_old"),
+                (EquipmentSetKind.Battle, "eyewear_old"),
                 (EquipmentSetKind.Battle, "armor_old"),
+                (EquipmentSetKind.Battle, "body_old"),
                 (EquipmentSetKind.Battle, "weapon_old"),
-                (EquipmentSetKind.Battle, "shield_old")
+                (EquipmentSetKind.Battle, "shield_old"),
+                (EquipmentSetKind.Battle, "back_old")
             },
             syncClient.EquipCalls);
         Assert.Single(syncClient.CastCalls);
@@ -1135,7 +1228,7 @@ public sealed class AppSessionControllerTests
             diagnosticsLogStore: logStore,
             diagnosticsLogWriter: logWriter,
             snapshotFreshnessPolicy: freshnessPolicy,
-            featureOptions: new AppFeatureOptions(),
+            featureOptions: new AppFeatureOptions { HabiticaRequestDelayMilliseconds = 0 },
             timeProvider: TimeProvider.System);
     }
 
@@ -1187,6 +1280,12 @@ public sealed class AppSessionControllerTests
 
         public string? UploadedJson { get; private set; }
 
+        public IReadOnlyList<string> SectionKeys { get; set; } = Array.Empty<string>();
+
+        public Dictionary<string, RemoteUserDataSnapshot?> SectionSnapshots { get; } = new(StringComparer.Ordinal);
+
+        public Dictionary<string, string> UploadedSections { get; } = new(StringComparer.Ordinal);
+
         public List<string> UploadedSectionKeys { get; } = new();
 
         public Task<RemoteUserDataSnapshot?> DownloadAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -1204,24 +1303,26 @@ public sealed class AppSessionControllerTests
 
         public Task<RemoteUserDataSnapshot?> DownloadSectionAsync(HabiticaCredentials credentials, string sectionKey, CancellationToken cancellationToken)
         {
-            return Task.FromResult<RemoteUserDataSnapshot?>(null);
+            return Task.FromResult(SectionSnapshots.GetValueOrDefault(sectionKey));
         }
 
         public Task<SectionUploadResult> UploadSectionAsync(HabiticaCredentials credentials, string sectionKey, string plainTextJson, CancellationToken cancellationToken)
         {
             SectionUploadCount++;
             UploadedSectionKeys.Add(sectionKey);
+            UploadedSections[sectionKey] = plainTextJson;
             return Task.FromResult(new SectionUploadResult(true));
         }
 
         public Task<IReadOnlyList<RemoteUserDataSnapshot?>> DownloadAllSectionsAsync(HabiticaCredentials credentials, IReadOnlyList<string> sectionKeys, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IReadOnlyList<RemoteUserDataSnapshot?>>(Array.Empty<RemoteUserDataSnapshot?>());
+            return Task.FromResult<IReadOnlyList<RemoteUserDataSnapshot?>>(
+                sectionKeys.Select(key => SectionSnapshots.GetValueOrDefault(key)).ToArray());
         }
 
         public Task<IReadOnlyList<string>> ListSectionsAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+            return Task.FromResult(SectionKeys);
         }
     }
 

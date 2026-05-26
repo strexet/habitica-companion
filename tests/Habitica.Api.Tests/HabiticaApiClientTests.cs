@@ -873,6 +873,47 @@ public sealed class HabiticaApiClientTests
     }
 
     [Fact]
+    public async Task GetUserAsync_sanitizes_rate_limit_response_and_exposes_retry_headers()
+    {
+        var response = new HttpResponseMessage(HttpStatusCode.TooManyRequests)
+        {
+            Content = JsonContent("""
+            {
+              "success": false,
+              "error": "RateLimited",
+              "message": "This User ID or IP address has been rate limited due to an excess amount of requests to the Habitica API v3."
+            }
+            """)
+        };
+        response.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromSeconds(12));
+        response.Headers.TryAddWithoutValidation("X-RateLimit-Limit", "30");
+        response.Headers.TryAddWithoutValidation("X-RateLimit-Remaining", "0");
+        response.Headers.TryAddWithoutValidation("X-RateLimit-Reset", "2026-05-26T12:30:00Z");
+        var requestCount = 0;
+        var handler = new StubHttpMessageHandler(_ =>
+        {
+            requestCount++;
+            return response;
+        });
+        var client = CreateClient(handler);
+
+        var exception = await Assert.ThrowsAsync<HabiticaApiException>(
+            () => client.GetUserAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None));
+
+        Assert.True(exception.IsRateLimited);
+        Assert.Equal(HttpStatusCode.TooManyRequests, exception.StatusCode);
+        Assert.Equal(TimeSpan.FromSeconds(12), exception.RateLimit!.RetryAfter);
+        Assert.Equal(30, exception.RateLimit.Limit);
+        Assert.Equal(0, exception.RateLimit.Remaining);
+        Assert.Equal(DateTimeOffset.Parse("2026-05-26T12:30:00Z"), exception.RateLimit.ResetAtUtc);
+        Assert.Contains("Wait 12 seconds", exception.Message, StringComparison.Ordinal);
+        Assert.DoesNotContain("429", exception.Message, StringComparison.Ordinal);
+        Assert.DoesNotContain("Too Many Requests", exception.Message, StringComparison.Ordinal);
+        Assert.DoesNotContain("excess amount of requests", exception.Message, StringComparison.Ordinal);
+        Assert.Equal(1, requestCount);
+    }
+
+    [Fact]
     public async Task EquipGearAsync_sends_battle_or_costume_equip_request()
     {
         var requestedUris = new List<string>();
