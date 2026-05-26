@@ -5,6 +5,7 @@
 @using Habitica.Application.Sync
 @using Habitica.Domain.Auth
 @using Habitica.Domain.Dashboard
+@using Habitica.Domain.Party
 @using Habitica.Rules.Stats
 @inject IAppSessionController SessionController
 @inject CharacterStatsViewModelFactory StatsViewModelFactory
@@ -57,6 +58,22 @@
         {
             <MudAlert Class="inline-banner" Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined">
                 <a href="#stats">@statAllocation.UnallocatedPoints unspent stat points</a> are available for allocation.
+            </MudAlert>
+        }
+
+        @if (HasPendingQuestInvitation())
+        {
+            <MudAlert Class="inline-banner" Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined">
+                You have not responded to the current party quest invitation.
+                <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RespondToQuestInvitationAsync(true))" Variant="Variant.Filled">
+                    Accept
+                </MudButton>
+                <MudButton Color="Color.Secondary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RespondToQuestInvitationAsync(false))" Variant="Variant.Outlined">
+                    Reject
+                </MudButton>
+                <MudButton Href="/party" Variant="Variant.Text">
+                    Open Party
+                </MudButton>
             </MudAlert>
         }
 
@@ -628,6 +645,28 @@
     {
         var result = await SessionController.BuyHealthPotionAsync();
         _showHealthPotionConfirmation = false;
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private bool HasPendingQuestInvitation()
+    {
+        var partySnapshot = SessionController.State.PartySnapshot;
+        var quest = partySnapshot?.Quest;
+        if (quest is null || quest.IsActive || string.IsNullOrWhiteSpace(SessionController.State.UserId))
+        {
+            return false;
+        }
+
+        return partySnapshot.Members.Any(member =>
+            string.Equals(member.MemberId, SessionController.State.UserId, StringComparison.Ordinal)
+            && member.ParticipationStatus == PartyQuestParticipationStatus.Pending);
+    }
+
+    private async Task RespondToQuestInvitationAsync(bool accept)
+    {
+        var result = accept
+            ? await SessionController.AcceptPartyQuestInvitationAsync()
+            : await SessionController.RejectPartyQuestInvitationAsync();
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 

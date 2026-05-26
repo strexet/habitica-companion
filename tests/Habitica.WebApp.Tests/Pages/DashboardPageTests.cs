@@ -1,6 +1,7 @@
 using Bunit;
 using Habitica.Application.Dashboard;
 using Habitica.Application.Sync;
+using Habitica.Domain.Party;
 using Habitica.Domain.Sync;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
@@ -365,5 +366,70 @@ public sealed class DashboardPageTests : BunitContext
         cut.Find("[data-testid='confirm-buy-health-potion']").Click();
 
         Assert.Equal(1, controller.BuyHealthPotionCalls);
+    }
+
+    [Fact]
+    public void Pending_quest_invitation_warning_allows_dashboard_response()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(DateTimeOffset.Parse("2026-04-25T08:00:00Z"), Array.Empty<TaskSnapshot>()),
+                UserId: "user-id",
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: new UserSnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    "Mage Tester",
+                    "wizard",
+                    15,
+                    42.5m,
+                    50m,
+                    33.5m,
+                    40m,
+                    125.1m,
+                    74.9m,
+                    88.25m,
+                    "party-123",
+                    null,
+                    null,
+                    new EquipmentSnapshot(
+                        new GearSlotsSnapshot(null, null, null, null, null),
+                        new GearSlotsSnapshot(null, null, null, null, null)),
+                    new InventorySnapshot(0, 0, 0, 0, 0, 0, Array.Empty<string>())),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                PartySnapshot: new PartySnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    "party-123",
+                    "Night Owls",
+                    "Quest party",
+                    2,
+                    new PartyQuestSnapshot("dragon", false, 0m, 0m, 1, Name: "Dragon"),
+                    new[]
+                    {
+                        new PartyMemberSnapshot("user-id", "Mage Tester", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ParticipationStatus: PartyQuestParticipationStatus.Pending),
+                        new PartyMemberSnapshot("other-user", "Alpha", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ParticipationStatus: PartyQuestParticipationStatus.Accepted)
+                    }),
+                PartyFreshness: SnapshotFreshnessState.Fresh));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<DashboardPage>();
+
+        Assert.Contains("You have not responded to the current party quest invitation.", cut.Markup);
+
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Accept", StringComparison.Ordinal)).Click();
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Reject", StringComparison.Ordinal)).Click();
+
+        Assert.Equal(1, controller.AcceptPartyQuestInvitationCalls);
+        Assert.Equal(1, controller.RejectPartyQuestInvitationCalls);
     }
 }

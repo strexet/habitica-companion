@@ -48,7 +48,23 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<(string QueueItemId, int Version)> InvitePartyQuestCalls { get; } = new();
 
+    public List<(string QueueItemId, int Version, bool Pinned)> PinPartyQuestQueueCalls { get; } = new();
+
+    public List<(string QueueItemId, int Version)> SelectPartyQuestQueueCalls { get; } = new();
+
+    public List<(string QueueItemId, int Version)> SkipPartyQuestQueueCalls { get; } = new();
+
+    public List<(string QueueItemId, int Version)> ExpirePartyQuestQueueCalls { get; } = new();
+
+    public List<(string QueueItemId, int Version)> RequeuePartyQuestQueueCalls { get; } = new();
+
     public List<string> StartSelectedPartyQuestCalls { get; } = new();
+
+    public int AcceptPartyQuestInvitationCalls { get; private set; }
+
+    public int RejectPartyQuestInvitationCalls { get; private set; }
+
+    public List<(string QuestKey, DateTimeOffset CompletedAtUtc)> RemoveRecentlyCompletedQuestCalls { get; } = new();
 
     public int StartNewDayCalls { get; private set; }
 
@@ -304,6 +320,36 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.FromResult(PartyQuestActionResult.Success("Queue item removed."));
     }
 
+    public Task<PartyQuestActionResult> PinPartyQuestQueueItemAsync(string queueItemId, int version, bool pinned, CancellationToken cancellationToken = default)
+    {
+        PinPartyQuestQueueCalls.Add((queueItemId, version, pinned));
+        return Task.FromResult(PartyQuestActionResult.Success(pinned ? "Quest pinned." : "Quest unpinned."));
+    }
+
+    public Task<PartyQuestActionResult> SelectPartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        SelectPartyQuestQueueCalls.Add((queueItemId, version));
+        return Task.FromResult(PartyQuestActionResult.Success("Next quest selected."));
+    }
+
+    public Task<PartyQuestActionResult> SkipPartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        SkipPartyQuestQueueCalls.Add((queueItemId, version));
+        return Task.FromResult(PartyQuestActionResult.Success("Quest skipped."));
+    }
+
+    public Task<PartyQuestActionResult> ExpirePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        ExpirePartyQuestQueueCalls.Add((queueItemId, version));
+        return Task.FromResult(PartyQuestActionResult.Success("Quest expired."));
+    }
+
+    public Task<PartyQuestActionResult> RequeuePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        RequeuePartyQuestQueueCalls.Add((queueItemId, version));
+        return Task.FromResult(PartyQuestActionResult.Success("Quest returned to queue."));
+    }
+
     public Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(PartyQuestActionResult.Success("Quest marked completed."));
@@ -319,6 +365,18 @@ internal sealed class FakeAppSessionController : IAppSessionController
     {
         StartSelectedPartyQuestCalls.Add(queueItemId);
         return Task.FromResult(StartSelectedPartyQuestResult);
+    }
+
+    public Task<PartyQuestActionResult> AcceptPartyQuestInvitationAsync(CancellationToken cancellationToken = default)
+    {
+        AcceptPartyQuestInvitationCalls++;
+        return Task.FromResult(PartyQuestActionResult.Success("Quest invitation accepted."));
+    }
+
+    public Task<PartyQuestActionResult> RejectPartyQuestInvitationAsync(CancellationToken cancellationToken = default)
+    {
+        RejectPartyQuestInvitationCalls++;
+        return Task.FromResult(PartyQuestActionResult.Success("Quest invitation rejected."));
     }
 
     public Task<PartyQuestActionResult> AssignPartySyncOfficerAsync(string userId, string displayName, CancellationToken cancellationToken = default)
@@ -350,6 +408,12 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task<PartyQuestActionResult> UpdatePartySyncSettingsAsync(PartySyncSettings settings, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(PartyQuestActionResult.Success("Party sync settings updated."));
+    }
+
+    public Task<PartyQuestActionResult> RemovePartyRecentlyCompletedQuestAsync(string questKey, DateTimeOffset completedAtUtc, CancellationToken cancellationToken = default)
+    {
+        RemoveRecentlyCompletedQuestCalls.Add((questKey, completedAtUtc));
+        return Task.FromResult(PartyQuestActionResult.Success("Completed quest removed."));
     }
 
     public Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default)

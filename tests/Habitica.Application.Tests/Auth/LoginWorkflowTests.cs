@@ -128,6 +128,16 @@ public sealed class LoginWorkflowTests
             return Task.CompletedTask;
         }
 
+        public Task AcceptPartyQuestAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task RejectPartyQuestAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
         public Task<ArmoirePurchaseSnapshot> BuyArmoireAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             return Task.FromResult(new ArmoirePurchaseSnapshot("food", "Fish", "Fish", null, "Found Fish."));

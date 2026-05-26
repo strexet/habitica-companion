@@ -227,6 +227,7 @@
                     var estimatedPostCronProgress = GetEstimatedPostCronProgress(quest);
                     var startableQuestEntry = GetStartableSelectedQuestEntry(quest);
                     var isAwaitingResponses = IsQuestAwaitingResponses(quest);
+                    var currentQuestResponse = GetCurrentUserQuestParticipationStatus(members);
 
                     <article class="party-quest-card active-quest-card">
                         <div class="party-quest-card-head">
@@ -271,6 +272,19 @@
 
                     @if (isAwaitingResponses)
                     {
+                        @if (currentQuestResponse == PartyQuestParticipationStatus.Pending)
+                        {
+                            <MudAlert Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined">
+                                You have not responded to this quest invitation.
+                                <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RespondToQuestInvitationAsync(true))" Variant="Variant.Filled">
+                                    Accept
+                                </MudButton>
+                                <MudButton Color="Color.Secondary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RespondToQuestInvitationAsync(false))" Variant="Variant.Outlined">
+                                    Reject
+                                </MudButton>
+                            </MudAlert>
+                        }
+
                         <div class="party-quest-response-grid">
                             @RenderQuestResponseGroup("Accepted", members, PartyQuestParticipationStatus.Accepted)
                             @RenderQuestResponseGroup("Pending", members, PartyQuestParticipationStatus.Pending)
@@ -406,10 +420,91 @@
 
             @{
                 var questState = SessionController.State.PartyQuestQueue;
-                var queueEntries = FilterVisibleQueueEntries(GetOrderedQueueEntries(questState)).ToArray();
+                var visibleQueueEntries = FilterVisibleQueueEntries(GetOrderedQueueEntries(questState)).ToArray();
+                var nextQuestEntry = visibleQueueEntries.FirstOrDefault(IsNextQuestEntry);
+                var queueEntries = visibleQueueEntries.Where(entry => !IsNextQuestEntry(entry)).ToArray();
                 var poolEntries = FilterVisiblePoolEntries(questState?.QuestPool ?? Array.Empty<PartyQuestPoolEntry>()).ToArray();
                 var groupedPoolEntries = GetGroupedPoolEntries(poolEntries).ToArray();
                 var recentEntries = questState?.RecentlyCompleted ?? Array.Empty<PartyRecentlyCompletedQuest>();
+            }
+
+            @if (nextQuestEntry is not null)
+            {
+                <div class="party-quest-section">
+                    <div class="party-section-head compact-head">
+                        <h3>Next Quest</h3>
+                        <span class="ui-pill count-pill">@GetNextQuestStatusLabel(nextQuestEntry)</span>
+                    </div>
+                    <div class="party-quest-card-list">
+                        <article class="@GetQueueCardClass(nextQuestEntry)">
+                            <div class="party-quest-card-head">
+                                <div class="habitica-quest-identity compact">
+                                    <HabiticaImage Asset="@HabiticaImageAssetResolver.Quest(nextQuestEntry.QuestKey, nextQuestEntry.QuestName, HabiticaImageSize.Small)" />
+                                    <div>
+                                        <span class="dashboard-stat-label">@GetQueueStatusLabel(nextQuestEntry)</span>
+                                        <strong>@nextQuestEntry.QuestName</strong>
+                                        <span class="dashboard-stat-note">Owner: @nextQuestEntry.OwnerDisplayName</span>
+                                    </div>
+                                </div>
+                                <span class="ui-pill count-pill">@nextQuestEntry.VoteCount votes</span>
+                            </div>
+
+                            <dl class="dashboard-definition-list compact-definition-list">
+                                <div>
+                                    <dt>Type</dt>
+                                    <dd>@ResolveQuestType(nextQuestEntry.QuestKey)</dd>
+                                </div>
+                                <div>
+                                    <dt>Recently completed</dt>
+                                    <dd>@GetRecentlyCompletedLabel(nextQuestEntry.QuestKey, recentEntries)</dd>
+                                </div>
+                            </dl>
+
+                            @RenderRewards(nextQuestEntry.Rewards)
+                            @RenderVoters(nextQuestEntry.Votes)
+
+                            <div class="party-quest-card-actions">
+                                @{
+                                    var nextInviteDisabledReason = GetInvitePartyDisabledReason(nextQuestEntry);
+                                }
+                                <MudButton Color="Color.Secondary" Disabled="@(nextInviteDisabledReason is not null || SessionController.State.IsBusy)" OnClick="@(() => InvitePartyAsync(nextQuestEntry.QueueItemId, nextQuestEntry.Version))" Variant="Variant.Outlined">
+                                    Invite party
+                                </MudButton>
+                                @if (nextInviteDisabledReason is not null)
+                                {
+                                    <span class="dashboard-stat-note">@nextInviteDisabledReason</span>
+                                }
+                                @if (CanManageQueueEntry(nextQuestEntry))
+                                {
+                                    @if (nextQuestEntry.Status == PartyQuestQueueStatus.Selected)
+                                    {
+                                        <MudButton Color="Color.Secondary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RequeueItemAsync(nextQuestEntry.QueueItemId, nextQuestEntry.Version))" Variant="Variant.Text">
+                                            Return to queue
+                                        </MudButton>
+                                    }
+                                    @if (nextQuestEntry.Status == PartyQuestQueueStatus.Selected)
+                                    {
+                                        <MudButton Color="Color.Warning" Disabled="@SessionController.State.IsBusy" OnClick="@(() => SkipQueueItemAsync(nextQuestEntry.QueueItemId, nextQuestEntry.Version))" Variant="Variant.Text">
+                                            Skip
+                                        </MudButton>
+                                    }
+                                    <MudButton Color="Color.Warning" Disabled="@SessionController.State.IsBusy" OnClick="@(() => ExpireQueueItemAsync(nextQuestEntry.QueueItemId, nextQuestEntry.Version))" Variant="Variant.Text">
+                                        Expire
+                                    </MudButton>
+                                    <MudButton Color="Color.Error" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RemoveQueueItemAsync(nextQuestEntry.QueueItemId, nextQuestEntry.Version))" Variant="Variant.Text">
+                                        Remove
+                                    </MudButton>
+                                }
+                                @if (CanMarkCompleted(nextQuestEntry))
+                                {
+                                    <MudButton Color="Color.Success" Disabled="@SessionController.State.IsBusy" OnClick="@(() => MarkCompletedAsync(nextQuestEntry.QueueItemId, nextQuestEntry.Version))" Variant="Variant.Text">
+                                        Mark completed
+                                    </MudButton>
+                                }
+                            </div>
+                        </article>
+                    </div>
+                </div>
             }
 
             <div class="party-quest-section">
@@ -446,6 +541,10 @@
                                         <dd>@ResolveQuestType(entry.QuestKey)</dd>
                                     </div>
                                     <div>
+                                        <dt>Queue state</dt>
+                                        <dd>@GetQueueStatusLabel(entry)</dd>
+                                    </div>
+                                    <div>
                                         <dt>Recently completed</dt>
                                         <dd>@GetRecentlyCompletedLabel(entry.QuestKey, recentEntries)</dd>
                                     </div>
@@ -455,21 +554,32 @@
                                 @RenderVoters(entry.Votes)
 
                                 <div class="party-quest-card-actions">
-                                    @{
-                                        var inviteDisabledReason = GetInvitePartyDisabledReason(entry);
-                                    }
                                     <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => ToggleVoteAsync(entry.QueueItemId))" Variant="Variant.Outlined">
                                         @(HasCurrentUserVote(entry) ? "Remove vote" : "Vote")
                                     </MudButton>
-                                    <MudButton Color="Color.Secondary" Disabled="@(inviteDisabledReason is not null || SessionController.State.IsBusy)" OnClick="@(() => InvitePartyAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Outlined">
-                                        Invite party
-                                    </MudButton>
-                                    @if (inviteDisabledReason is not null)
-                                    {
-                                        <span class="dashboard-stat-note">@inviteDisabledReason</span>
-                                    }
                                     @if (CanManageQueueEntry(entry))
                                     {
+                                        <MudButton Color="Color.Secondary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => PinQueueItemAsync(entry.QueueItemId, entry.Version, entry.ManualPinRank is null))" Variant="Variant.Text">
+                                            @(entry.ManualPinRank is null ? "Pin" : "Unpin")
+                                        </MudButton>
+                                        @if (entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Skipped or PartyQuestQueueStatus.Expired)
+                                        {
+                                            <MudButton Color="Color.Secondary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => SelectQueueItemAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Text">
+                                                Select
+                                            </MudButton>
+                                        }
+                                        @if (entry.Status is PartyQuestQueueStatus.Skipped or PartyQuestQueueStatus.Expired)
+                                        {
+                                            <MudButton Color="Color.Secondary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RequeueItemAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Text">
+                                                Return to queue
+                                            </MudButton>
+                                        }
+                                        @if (entry.Status is not (PartyQuestQueueStatus.Active or PartyQuestQueueStatus.Expired))
+                                        {
+                                            <MudButton Color="Color.Warning" Disabled="@SessionController.State.IsBusy" OnClick="@(() => ExpireQueueItemAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Text">
+                                                Expire
+                                            </MudButton>
+                                        }
                                         <MudButton Color="Color.Error" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RemoveQueueItemAsync(entry.QueueItemId, entry.Version))" Variant="Variant.Text">
                                             Remove
                                         </MudButton>
@@ -572,6 +682,14 @@
                                     }
                                 </div>
                                 @RenderRewards(recent.Rewards)
+                                @if (CanManageRecentlyCompleted())
+                                {
+                                    <div class="party-quest-card-actions">
+                                        <MudButton Color="Color.Error" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RemoveRecentlyCompletedQuestAsync(recent.QuestKey, recent.CompletedAtUtc))" Variant="Variant.Text">
+                                            Remove
+                                        </MudButton>
+                                    </div>
+                                }
                             </article>
                         }
                     </div>
@@ -1371,9 +1489,24 @@
         }
 
         return questState.Queue
-            .Where(static entry => entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.InviteSent or PartyQuestQueueStatus.Active)
-            .OrderByDescending(entry => CalculateQueuePriority(entry, questState.RecentlyCompleted))
+            .Where(static entry => entry.Status is PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.Active or PartyQuestQueueStatus.Skipped or PartyQuestQueueStatus.Expired)
+            .OrderBy(entry => GetQueueStatusSortOrder(entry.Status))
+            .ThenBy(entry => entry.ManualPinRank ?? int.MaxValue)
+            .ThenByDescending(entry => CalculateQueuePriority(entry, questState.RecentlyCompleted))
             .ThenBy(entry => entry.CreatedAtUtc);
+    }
+
+    private static int GetQueueStatusSortOrder(PartyQuestQueueStatus status)
+    {
+        return status switch
+        {
+            PartyQuestQueueStatus.Active => 0,
+            PartyQuestQueueStatus.Selected => 1,
+            PartyQuestQueueStatus.Queued => 2,
+            PartyQuestQueueStatus.Skipped => 3,
+            PartyQuestQueueStatus.Expired => 4,
+            _ => 9
+        };
     }
 
     private IEnumerable<PartyQuestQueueEntry> FilterVisibleQueueEntries(IEnumerable<PartyQuestQueueEntry> entries)
@@ -1427,6 +1560,29 @@
         }
 
         return entry.SortOrder;
+    }
+
+    private static bool IsNextQuestEntry(PartyQuestQueueEntry entry)
+    {
+        return entry.Status is PartyQuestQueueStatus.Selected;
+    }
+
+    private static string GetQueueStatusLabel(PartyQuestQueueEntry entry)
+    {
+        return entry.Status switch
+        {
+            PartyQuestQueueStatus.Selected when entry.ExpiresAtUtc is not null => $"Next quest until {FormatDateTime(entry.ExpiresAtUtc.Value)}",
+            PartyQuestQueueStatus.Selected => "Next quest",
+            PartyQuestQueueStatus.Skipped => "Skipped; can return to queue",
+            PartyQuestQueueStatus.Expired => "Expired; can return to queue",
+            PartyQuestQueueStatus.Active => "Active in Habitica",
+            _ => "Queued"
+        };
+    }
+
+    private static string GetNextQuestStatusLabel(PartyQuestQueueEntry entry)
+    {
+        return "Selected next";
     }
 
     private string GetQueueCardClass(PartyQuestQueueEntry entry)
@@ -1502,6 +1658,18 @@
     private bool IsCurrentUserPartyLeader()
     {
         return IsCurrentUser(SessionController.State.PartySnapshot?.LeaderId);
+    }
+
+    private PartyQuestParticipationStatus GetCurrentUserQuestParticipationStatus(IReadOnlyList<PartyMemberSnapshot> members)
+    {
+        if (string.IsNullOrWhiteSpace(SessionController.State.UserId))
+        {
+            return PartyQuestParticipationStatus.Unknown;
+        }
+
+        return members.FirstOrDefault(member =>
+            string.Equals(member.MemberId, SessionController.State.UserId, StringComparison.Ordinal))?.ParticipationStatus
+            ?? PartyQuestParticipationStatus.Unknown;
     }
 
     private string ResolveDisplayName(string? userId, string? fallback = null)
@@ -1613,6 +1781,16 @@
         return CanManageQueueEntry(entry);
     }
 
+    private bool CanManageRecentlyCompleted()
+    {
+        var management = SessionController.State.PartyQuestQueue?.Management;
+        return management?.CurrentUserIsOwner == true
+            || management?.CurrentUserIsAdmin == true
+            || management?.CurrentUserIsOfficer == true
+            || IsCurrentUserPartyLeader()
+            || SessionController.State.IsAdmin;
+    }
+
     private string? GetInvitePartyDisabledReason(PartyQuestQueueEntry entry)
     {
         if (SessionController.State.PartyFreshness != SnapshotFreshnessState.Fresh)
@@ -1625,22 +1803,22 @@
             return "Only the quest owner can invite.";
         }
 
-        if (entry.Status is not (PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected))
+        if (entry.Status is not PartyQuestQueueStatus.Selected)
         {
-            return "Only queued or selected quests can invite.";
+            return "Select the quest as Next Quest before inviting.";
         }
 
-        if (HasActivePartyQuest())
+        if (HasPartyQuestInHabitica())
         {
-            return "Finish the active party quest before inviting another.";
+            return "Resolve the current Habitica quest before inviting another.";
         }
 
         return null;
     }
 
-    private bool HasActivePartyQuest()
+    private bool HasPartyQuestInHabitica()
     {
-        return SessionController.State.PartySnapshot?.Quest?.IsActive == true;
+        return SessionController.State.PartySnapshot?.Quest is not null;
     }
 
     private bool CanForceStartSelectedQuest(PartyQuestQueueEntry entry)
@@ -1787,6 +1965,36 @@
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 
+    private async Task PinQueueItemAsync(string queueItemId, int version, bool pinned)
+    {
+        var result = await SessionController.PinPartyQuestQueueItemAsync(queueItemId, version, pinned);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task SelectQueueItemAsync(string queueItemId, int version)
+    {
+        var result = await SessionController.SelectPartyQuestQueueItemAsync(queueItemId, version);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task SkipQueueItemAsync(string queueItemId, int version)
+    {
+        var result = await SessionController.SkipPartyQuestQueueItemAsync(queueItemId, version);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task ExpireQueueItemAsync(string queueItemId, int version)
+    {
+        var result = await SessionController.ExpirePartyQuestQueueItemAsync(queueItemId, version);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task RequeueItemAsync(string queueItemId, int version)
+    {
+        var result = await SessionController.RequeuePartyQuestQueueItemAsync(queueItemId, version);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
     private async Task MarkCompletedAsync(string queueItemId, int version)
     {
         var result = await SessionController.MarkPartyQuestCompletedAsync(queueItemId, version);
@@ -1796,6 +2004,20 @@
     private async Task InvitePartyAsync(string queueItemId, int version)
     {
         var result = await SessionController.InvitePartyToQuestAsync(queueItemId, version);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task RespondToQuestInvitationAsync(bool accept)
+    {
+        var result = accept
+            ? await SessionController.AcceptPartyQuestInvitationAsync()
+            : await SessionController.RejectPartyQuestInvitationAsync();
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task RemoveRecentlyCompletedQuestAsync(string questKey, DateTimeOffset completedAtUtc)
+    {
+        var result = await SessionController.RemovePartyRecentlyCompletedQuestAsync(questKey, completedAtUtc);
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 

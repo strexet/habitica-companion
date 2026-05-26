@@ -468,7 +468,6 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Moonstone Chain", cut.Markup);
         Assert.Contains("Alpha Quest", cut.Markup);
         Assert.Contains("1 vote", cut.Markup);
-        Assert.Contains("Invite party", cut.Markup);
         Assert.Contains("Mark completed", cut.Markup);
         Assert.Contains("Alpha", cut.Markup);
         Assert.Contains("Quest pool is folded by default", cut.Markup);
@@ -489,12 +488,6 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Phoenix Quest", cut.Markup);
         Assert.Contains("Auto-detected by Mage Tester", cut.Markup);
 
-        cut.FindAll("button")
-            .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal)
-                && !button.HasAttribute("disabled"))
-            .Click();
-        Assert.Equal(("queue-1", 1), Assert.Single(sessionController.InvitePartyQuestCalls));
-
         cut.Find("[data-testid='hide-not-owned-quests']").Change(true);
 
         Assert.Contains("Moonstone Chain", cut.Markup);
@@ -502,6 +495,105 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("Sunstone Chain", cut.Markup);
         Assert.Contains("Available from Mage Tester", cut.Markup);
         Assert.DoesNotContain("Available from Alpha, Mage Tester", cut.Markup);
+    }
+
+    [Fact]
+    public void Next_quest_renders_above_queue_without_blocking_pool_changes()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateQueueControlState(
+            new[]
+            {
+                CreateQueueEntry("queue-selected", PartyQuestQueueStatus.Selected, expiresAtUtc: DateTimeOffset.Parse("2026-04-29T09:30:00Z")),
+                CreateQueueEntry("queue-skipped", PartyQuestQueueStatus.Skipped),
+                CreateQueueEntry("queue-expired", PartyQuestQueueStatus.Expired)
+            })));
+
+        var cut = Render<PartyPage>();
+
+        Assert.Contains("Next Quest", cut.Markup);
+        Assert.Contains("Selected next", cut.Markup);
+        Assert.Contains("Next quest until", cut.Markup);
+        Assert.Contains("Skipped; can return to queue", cut.Markup);
+        Assert.Contains("Expired; can return to queue", cut.Markup);
+        Assert.Contains("Skip", cut.Markup);
+        Assert.Contains("Return to queue", cut.Markup);
+        Assert.Contains("Select", cut.Markup);
+        Assert.DoesNotContain("Replace next", cut.Markup);
+        Assert.DoesNotContain("Queue changes are locked while a quest is selected.", cut.Markup);
+
+        cut.Find("[data-testid='toggle-quest-pool']").Click();
+
+        var addButton = cut.FindAll("button").Single(button => button.TextContent.Contains("Add to queue", StringComparison.Ordinal));
+        Assert.False(addButton.HasAttribute("disabled"));
+        Assert.DoesNotContain("Queue is locked while a quest is selected.", cut.Markup);
+    }
+
+    [Fact]
+    public void Invite_sent_queue_item_is_hidden_from_next_quest_and_queue()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateQueueControlState(
+            new[]
+            {
+                CreateQueueEntry("queue-invite", PartyQuestQueueStatus.InviteSent, questName: "Invited Quest"),
+                CreateQueueEntry("queue-queued", PartyQuestQueueStatus.Queued, questName: "Visible Quest")
+            })));
+
+        var cut = Render<PartyPage>();
+
+        Assert.DoesNotContain("Next Quest", cut.Markup);
+        Assert.DoesNotContain("Invited Quest", cut.Markup);
+        Assert.Contains("Visible Quest", cut.Markup);
+    }
+
+    [Fact]
+    public void Queue_management_actions_call_session_controller()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        var sessionController = new FakeAppSessionController(CreateQueueControlState(
+            new[]
+            {
+                CreateQueueEntry("queue-selected", PartyQuestQueueStatus.Selected),
+                CreateQueueEntry("queue-queued", PartyQuestQueueStatus.Queued)
+            }));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<PartyPage>();
+
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Pin", StringComparison.Ordinal)).Click();
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Select", StringComparison.Ordinal)).Click();
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Skip", StringComparison.Ordinal)).Click();
+        cut.FindAll("button").First(button => button.TextContent.Contains("Return to queue", StringComparison.Ordinal)).Click();
+
+        Assert.Equal(("queue-queued", 1, true), Assert.Single(sessionController.PinPartyQuestQueueCalls));
+        Assert.Contains(sessionController.SelectPartyQuestQueueCalls, call => call == ("queue-queued", 1));
+        Assert.Equal(("queue-selected", 1), Assert.Single(sessionController.SkipPartyQuestQueueCalls));
+        Assert.Equal(("queue-selected", 1), Assert.Single(sessionController.RequeuePartyQuestQueueCalls));
+    }
+
+    [Fact]
+    public void Queue_return_and_expire_actions_call_session_controller()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        var sessionController = new FakeAppSessionController(CreateQueueControlState(
+            new[]
+            {
+                CreateQueueEntry("queue-skipped", PartyQuestQueueStatus.Skipped)
+            }));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<PartyPage>();
+
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Return to queue", StringComparison.Ordinal)).Click();
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Expire", StringComparison.Ordinal)).Click();
+
+        Assert.Equal(("queue-skipped", 1), Assert.Single(sessionController.RequeuePartyQuestQueueCalls));
+        Assert.Equal(("queue-skipped", 1), Assert.Single(sessionController.ExpirePartyQuestQueueCalls));
     }
 
     [Fact]
@@ -863,7 +955,7 @@ public sealed class PartyPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
         Services.AddMudServices();
-        var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id"));
+        var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id", hasPartyQuest: false));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
         var cut = Render<PartyPage>();
@@ -891,7 +983,7 @@ public sealed class PartyPageTests : BunitContext
             .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal));
 
         Assert.True(inviteButton.HasAttribute("disabled"));
-        Assert.Contains("Finish the active party quest before inviting another.", cut.Markup);
+        Assert.Contains("Resolve the current Habitica quest before inviting another.", cut.Markup);
     }
 
     [Fact]
@@ -900,7 +992,7 @@ public sealed class PartyPageTests : BunitContext
         JSInterop.Mode = JSRuntimeMode.Loose;
         JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
         Services.AddMudServices();
-        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("other-user")));
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("other-user", hasPartyQuest: false)));
 
         var nonOwnerCut = Render<PartyPage>();
 
@@ -917,7 +1009,7 @@ public sealed class PartyPageTests : BunitContext
         JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
-            CreateSelectedQuestState("user-id") with
+            CreateSelectedQuestState("user-id", hasPartyQuest: false) with
             {
                 PartyFreshness = SnapshotFreshnessState.Stale
             }));
@@ -971,6 +1063,56 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("Estimated post-CRON", cut.Markup);
         Assert.DoesNotContain("Expected finish", cut.Markup);
         Assert.All(cut.FindAll(".party-quest-response-list .inline-link-button"), button => Assert.Equal("button", button.GetAttribute("type")));
+    }
+
+    [Fact]
+    public void Pending_quest_invitation_can_be_accepted_or_rejected_from_party_page()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        var sessionController = new FakeAppSessionController(CreateSelectedQuestState("other-user"));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<PartyPage>();
+
+        Assert.Contains("You have not responded to this quest invitation.", cut.Markup);
+
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Accept", StringComparison.Ordinal)).Click();
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Reject", StringComparison.Ordinal)).Click();
+
+        Assert.Equal(1, sessionController.AcceptPartyQuestInvitationCalls);
+        Assert.Equal(1, sessionController.RejectPartyQuestInvitationCalls);
+    }
+
+    [Fact]
+    public void Manager_can_remove_recently_completed_quest()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        var completedAtUtc = DateTimeOffset.Parse("2026-04-25T09:00:00Z");
+        var sessionController = new FakeAppSessionController(CreateQueueControlState(
+            Array.Empty<PartyQuestQueueEntry>(),
+            new[]
+            {
+                new PartyRecentlyCompletedQuest(
+                    "party-123",
+                    "gryphon",
+                    "Gryphon Quest",
+                    completedAtUtc,
+                    null,
+                    "user-id",
+                    "Quest Owner",
+                    3,
+                    new[] { "300 XP" })
+            }));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<PartyPage>();
+
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Remove", StringComparison.Ordinal)).Click();
+
+        Assert.Equal(("gryphon", completedAtUtc), Assert.Single(sessionController.RemoveRecentlyCompletedQuestCalls));
     }
 
     [Fact]
@@ -1034,7 +1176,8 @@ public sealed class PartyPageTests : BunitContext
         string currentUserId,
         bool isActive = false,
         string ownerUserId = "user-id",
-        string leaderId = "user-id")
+        string leaderId = "user-id",
+        bool hasPartyQuest = true)
     {
         return new SessionViewModel(
             IsBusy: false,
@@ -1053,24 +1196,26 @@ public sealed class PartyPageTests : BunitContext
                 "Night Owls",
                 "Quest-focused party",
                 3,
-                new PartyQuestSnapshot(
-                    "dragon",
-                    isActive,
-                    0m,
-                    0m,
-                    1,
-                    AppliedProgress: new PartyQuestMetricSnapshot("Current boss HP", 50m, 100m, "hp"),
-                    EstimatedPostCronProgress: new PartyQuestMetricSnapshot("Estimated boss HP after CRON", 25m, 100m, "hp"),
-                    ParticipationSummary: new PartyQuestParticipationSummary(1, 1, 1, 0, 0),
-                    CompletionEstimate: new PartyQuestCompletionEstimate(
-                        true,
-                        DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
-                        DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
-                        PartyQuestEstimateConfidence.High,
-                        "Expected to finish when Mage Tester checks in around Apr 26, 10:15.",
-                        "Mage Tester",
-                        "user-id"),
-                    Name: "Dragon"),
+                hasPartyQuest
+                    ? new PartyQuestSnapshot(
+                        "dragon",
+                        isActive,
+                        0m,
+                        0m,
+                        1,
+                        AppliedProgress: new PartyQuestMetricSnapshot("Current boss HP", 50m, 100m, "hp"),
+                        EstimatedPostCronProgress: new PartyQuestMetricSnapshot("Estimated boss HP after CRON", 25m, 100m, "hp"),
+                        ParticipationSummary: new PartyQuestParticipationSummary(1, 1, 1, 0, 0),
+                        CompletionEstimate: new PartyQuestCompletionEstimate(
+                            true,
+                            DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
+                            DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
+                            PartyQuestEstimateConfidence.High,
+                            "Expected to finish when Mage Tester checks in around Apr 26, 10:15.",
+                            "Mage Tester",
+                            "user-id"),
+                        Name: "Dragon")
+                    : null,
                 new[]
                 {
                     new PartyMemberSnapshot("user-id", "Mage Tester", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ParticipationStatus: PartyQuestParticipationStatus.Accepted),
@@ -1101,6 +1246,95 @@ public sealed class PartyPageTests : BunitContext
                         Array.Empty<PartyQuestVote>())
                 },
                 Array.Empty<PartyRecentlyCompletedQuest>()));
+    }
+
+    private static SessionViewModel CreateQueueControlState(
+        IReadOnlyList<PartyQuestQueueEntry> queueEntries,
+        IReadOnlyList<PartyRecentlyCompletedQuest>? recentlyCompleted = null)
+    {
+        return new SessionViewModel(
+            IsBusy: false,
+            IsAuthenticated: true,
+            DisplayName: "Mage Tester",
+            ErrorMessage: null,
+            LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+            TaskFreshness: SnapshotFreshnessState.Fresh,
+            TaskSnapshot: null,
+            UserId: "admin-id",
+            UserSnapshot: CreateSnapshot(),
+            UserFreshness: SnapshotFreshnessState.Fresh,
+            PartySnapshot: new PartySnapshot(
+                DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                "party-123",
+                "Night Owls",
+                "Quest-focused party",
+                2,
+                null,
+                new[]
+                {
+                    new PartyMemberSnapshot("admin-id", "Mage Tester", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
+                    new PartyMemberSnapshot("user-id", "Quest Owner", null, null, null, PartyCronState.Unknown, "Unknown.", null, null)
+                },
+                leaderId: "owner-id"),
+            PartyFreshness: SnapshotFreshnessState.Fresh,
+            PartyQuestQueue: new PartyQuestQueueSnapshot(
+                DateTimeOffset.Parse("2026-04-26T09:30:00Z"),
+                new[]
+                {
+                    new PartyQuestPoolEntry(
+                        "party-123",
+                        "moonstone",
+                        "Moonstone Chain",
+                        "admin-id",
+                        "Mage Tester",
+                        1,
+                        DateTimeOffset.Parse("2026-04-26T09:30:00Z"),
+                        "Collection",
+                        new[] { "450 Gold" })
+                },
+                queueEntries,
+                recentlyCompleted ?? Array.Empty<PartyRecentlyCompletedQuest>(),
+                new PartySyncManagementState(
+                    "owner-id",
+                    "Owner",
+                    new[] { new PartySyncParticipant("admin-id", "Mage Tester") },
+                    Array.Empty<PartySyncOfficer>(),
+                    Array.Empty<PartySyncKick>(),
+                    PartySyncSettings.Default,
+                    CurrentUserIsOwner: false,
+                    CurrentUserIsAdmin: true,
+                    CurrentUserIsOfficer: false,
+                    CurrentUserCanManageSettings: true,
+                    CurrentUserCanManageOfficers: true,
+                    CurrentUserCanManageQueue: true,
+                    CurrentUserCanModerateMembers: true,
+                    CurrentUserIsKicked: false)));
+    }
+
+    private static PartyQuestQueueEntry CreateQueueEntry(
+        string queueItemId,
+        PartyQuestQueueStatus status,
+        DateTimeOffset? expiresAtUtc = null,
+        string questName = "Moonstone Chain")
+    {
+        return new PartyQuestQueueEntry(
+            queueItemId,
+            "party-123",
+            "moonstone",
+            questName,
+            "user-id",
+            "Quest Owner",
+            status,
+            DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+            DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+            1,
+            null,
+            false,
+            1,
+            Array.Empty<PartyQuestVote>(),
+            new[] { "450 Gold" },
+            SelectedAtUtc: status is PartyQuestQueueStatus.Selected or PartyQuestQueueStatus.InviteSent ? DateTimeOffset.Parse("2026-04-26T09:00:00Z") : null,
+            ExpiresAtUtc: expiresAtUtc);
     }
 
     private static UserSnapshot CreateSnapshot()

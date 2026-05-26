@@ -393,6 +393,54 @@ public sealed class HabiticaApiClientTests
     }
 
     [Fact]
+    public async Task AcceptPartyQuestAsync_sends_accept_request()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.AcceptPartyQuestAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/groups/party/quests/accept", capturedRequest.RequestUri!.ToString());
+        Assert.Null(capturedRequest.Content);
+    }
+
+    [Fact]
+    public async Task RejectPartyQuestAsync_sends_reject_request()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.RejectPartyQuestAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/groups/party/quests/reject", capturedRequest.RequestUri!.ToString());
+        Assert.Null(capturedRequest.Content);
+    }
+
+    [Fact]
     public async Task AllocateStatsAsync_sends_bulk_allocation_request()
     {
         HttpRequestMessage? capturedRequest = null;
