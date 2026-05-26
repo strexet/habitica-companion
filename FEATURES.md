@@ -264,7 +264,7 @@ Rate-limit sensitivity: medium; performs one mutation and one party refresh
 
 ### Goal
 
-The Party page Active Quest card exposes `Start quest` only when the cached Habitica party quest is inactive, matches a `Selected` or `InviteSent` shared queue entry, and the current user owns that queue entry or is the current Habitica party leader.
+The Party page Active Quest card exposes `Start quest` only when the cached Habitica party quest is inactive, matches the invited shared queue entry, and the current user owns that queue entry or is the current Habitica party leader.
 
 ### API interaction
 
@@ -2070,6 +2070,7 @@ recent party chat finish signals when no quest is active
 party-sync owner/admin/Officer roles
 party-sync settings
 party-sync kick list
+party-sync selected quest expiry metadata
 ```
 
 ### Outputs
@@ -2085,9 +2086,13 @@ compact party member CRON list with HP/MP, sortable low-HP/low-MP modes, and fol
 viewer-local CRON statistics graph
 active quest card with real quest metadata and rewards when cached
 quest invitation card with accepted, pending, and rejected response lists before the quest starts
+Party and Dashboard warnings with Accept/Reject actions when the current user has not answered a quest invitation
 shared quest queue cards with vote counts and voter names
+separate Next Quest card for the selected shared queue item
+skipped and expired queue-state labels
+owner/admin/Officer pin, select, skip, expire, and return-to-queue controls
 quest pool cards with owner availability
-recently completed quest cards with manual vs automatic source labels
+recently completed quest cards with manual vs automatic source labels and management removal controls
 owner/admin/Officer strip after party notes and before active quest state
 owner/admin settings controls
 member-detail Officer and kick controls for management roles
@@ -2123,7 +2128,7 @@ Current display rules:
 11. Publish the current user's owned quest scrolls to the shared party quest pool after party sync when inventory and content metadata are available.
 12. Allow only the current quest owner to add that user's quest scroll to the shared queue.
 13. Allow one vote per party member per queued quest; clicking again removes the vote.
-14. Sort visible queue cards by vote count, queue age, and recently completed penalty.
+14. Sort visible queue cards by lifecycle state, manual pin rank, vote count, queue age, and recently completed penalty. Selected entries render above the queue as the separate Next Quest card instead of occupying a normal queue position.
 15. Let the quest owner remove their own queue item unless owner/admin settings restrict queue edits to management roles.
 16. Let app admins assign the explicit companion-app party owner from expanded member details; when no explicit owner exists, the Habitica party leader remains the automatic party-sync owner.
 17. Let owner/app admins assign and remove Officers from expanded member details.
@@ -2133,11 +2138,16 @@ Current display rules:
 21. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
 22. Let role-strip and kick-list member names focus the same expanded member details UI used by the Active Quest finishing-member link.
 23. When Habitica has a quest invitation that is not active yet, hide progress and finish estimates and show accepted, pending, and rejected member response lists instead; names focus the same expanded member details UI.
-24. Show an `Invite party` button on every shared queue card. The button is enabled only when fresh party data shows no active Habitica quest and the current user owns a `Queued` or `Selected` item; disabled buttons explain active-quest, ownership, queue-state, or refresh requirements. Success sends `POST /groups/party/quests/invite/:questKey`, refreshes party state, and marks the shared queue item `InviteSent`.
+24. Show `Invite party` on the Next Quest card. The button is enabled only when fresh party data shows no Habitica quest or invitation and the current user owns the selected item; disabled buttons explain Habitica quest, ownership, queue-state, or refresh requirements. Success sends `POST /groups/party/quests/invite/:questKey`, refreshes party state, and marks the shared queue item `InviteSent`; invite-sent items leave the Next Quest and normal queue views because Habitica now owns the invitation flow.
 25. Let users toggle an owned-only queue filter that hides not-owned queue entries and not-owned quest-pool scrolls without mutating shared party-sync data.
 26. When a previously active companion-app quest disappears and recent party chat contains a reliable structured completion signal, mark the active shared queue item completed automatically and store an idempotent detection key.
 27. When a previously active collection quest disappears and recent party chat contains `info.type = "all_items_found"`, record it as an automatic recently completed quest even if it was never in the shared queue. Boss completions require `info.type = "boss_defeated"` and a matching `info.quest`.
-28. Label recently completed entries as `Marked manually` or `Auto-detected`, including the local detecting user when available.
+28. Label recently completed entries as `Marked manually` or `Auto-detected`, including the local detecting user when available. Party-sync owner, app admins, and Officers can remove completed entries from this history.
+29. Let party-sync owner/admin/authorized Officers pin and unpin queue entries; pinned entries sort ahead of unpinned entries inside the same queue state.
+30. Let party-sync owner/admin/authorized Officers select a queued, skipped, or expired entry as Next Quest. If another entry is already selected, selecting a different entry first returns the previous Next Quest to the top of the normal queue, then shows the newly selected entry in the Next Quest card.
+31. Keep queue additions, votes, and removals available while Next Quest is selected. The selected item is removed from the normal queue list and shown in its own card above the queue.
+32. Show Next Quest entries with their expiry time when available. The Next Quest card can return the item to the top of the queue. Show skipped and expired entries as readable states with `Return to queue`; selected entries can be skipped, and non-active entries can be expired manually.
+33. Expire selected entries deterministically after 72 hours. Expire queued or skipped entries when the matching owner/quest scroll has not appeared in the party quest pool for 30 days. Expiry runs during party-sync reads and queue mutations.
 ```
 
 ### Validation
@@ -2173,6 +2183,7 @@ Test:
 - navigation rendering for the `Party` route.
 - shared quest queue/pool rendering;
 - party-sync queue and vote mutations.
+- party-sync queue selection, pinning, skip, expiry, and requeue actions.
 - safe markdown and supported inline HTML rendering for party and quest descriptions.
 - local party-sync claims that do not pass API tokens to Cloudflare.
 - Officer/settings/kick visibility and management actions.
@@ -2192,14 +2203,14 @@ Current implementation:
 - party-sync settings labels and helper descriptions for non-technical party members;
 - shared quest pool from published member quest-scroll availability;
 - shared quest queue with owner-only add/remove and one-vote-per-member voting;
-- shared queue invite action and owned-only queue/pool filter;
-- recently completed shared quest history table and UI;
+- shared queue invite action, management pin/select/skip/expire/requeue controls, separate Next Quest card, and owned-only queue/pool filter;
+- Party/Dashboard quest-invitation warnings and Accept/Reject actions;
+- recently completed shared quest history table, UI, and management removal;
 - automatic recent-completion detection from structured Habitica party chat signals.
 
 Next:
 
 - add party-member explorer with throttled pagination and cancellation;
-- add leader pin/force-select controls;
 - replace party-sync credential verification with a tokenless party membership proof.
 
 ## 17. Diagnostics workspace and live integration tests

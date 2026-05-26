@@ -59,31 +59,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Party Queue Control Completion
-
-Goal: finish the remaining shared quest queue controls now that the base pool, queue, voting, recent-completion, and quest-start path exist.
-
-Touch:
-- `functions/api/party-sync/[partyId].js`
-- `migrations/`
-- `src/Habitica.Domain/Party`
-- `src/Habitica.WebApp/State`
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- direct tests under `tests/`
-- `docs/DEPLOY_CLOUDFLARE_PAGES.md`
-- `FEATURES.md`
-
-Out of scope:
-- optional vote budgets;
-- historical analytics beyond the existing recent-completion list.
-
-Acceptance:
-- Party owner/admin/Officer controls can pin, force-select, resolve conflicts, and lock queue changes during selection.
-- `Selected`, `Skipped`, and `Expired` states have user-facing actions and clear read states beyond the implemented invite/start flow.
-- Queue expiration and stale-owner cleanup are deterministic and migration-safe.
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` party quest planning sections.
-
 ### Party Access Proof Hardening
 
 Goal: replace trust-only local party-sync claims with tokenized manager-invite proofs if local claims are too easy to abuse in real parties.
@@ -124,28 +99,6 @@ Acceptance:
 - Active quest card shows owner or starter, started date, details view, participants view, and rewards/details affordances when cached data exists.
 - Missing fields render concise unavailable states.
 - Participant names use the same member-detail focus behavior as the party member list.
-
-### Dashboard Pending Quest Response Warning
-
-Goal: show a dashboard warning when the party has an active quest invitation and the current user has not accepted or rejected it.
-
-Touch:
-- `src/Habitica.Domain/Party`
-- `src/Habitica.Application/Dashboard`
-- `src/Habitica.WebApp/Pages/DashboardPage.razor`
-- direct tests under `tests/Habitica.Application.Tests/Dashboard/` and `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs`
-- `FEATURES.md`
-
-Out of scope:
-- accepting or rejecting the quest from Dashboard;
-- changing Party page quest response actions.
-
-Acceptance:
-- Dashboard shows a concise warning with a link to Party when the current user has not responded to the active quest invitation.
-- Warning does not show after the user accepts, rejects, or when no active quest invitation exists.
-- Link lands on the Party page where the response action is available.
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` dashboard and party quest planning sections.
 
 ## Backlog
 

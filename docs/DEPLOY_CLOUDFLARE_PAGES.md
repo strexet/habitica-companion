@@ -59,7 +59,7 @@ Shared party sync requires a D1 database bound to the Pages project.
 1. In Cloudflare, open `Workers & Pages`.
 2. Open `D1 SQL Database`.
 3. Create a database, for example `habitica-companion-party-sync`.
-4. Apply all migrations in order: `migrations/0001_party_sync.sql`, `migrations/0002_party_quest_queue.sql`, `migrations/0003_quest_lifecycle.sql`, `migrations/0004_party_sync_management.sql`, `migrations/0005_app_admins.sql`, `migrations/0006_detected_quest_completion.sql`.
+4. Apply all migrations in order: `migrations/0001_party_sync.sql`, `migrations/0002_party_quest_queue.sql`, `migrations/0003_quest_lifecycle.sql`, `migrations/0004_party_sync_management.sql`, `migrations/0005_app_admins.sql`, `migrations/0006_detected_quest_completion.sql`, `migrations/0007_queue_selection_controls.sql`.
 5. Open the Pages project settings.
 6. Open `Bindings`.
 7. Add a D1 database binding:
@@ -71,7 +71,7 @@ Shared party sync requires a D1 database bound to the Pages project.
 
 8. Grant app-admin permissions (separate from party owner; grants management access across all parties) by copying `migrations/seed_app_admins.example.sql` to `migrations/seed_app_admins.sql` (gitignored), filling in Habitica user IDs, and running `wrangler d1 execute habitica-companion-party-sync --file migrations/seed_app_admins.sql`. Revoke by setting `revoked_at_utc` on the row.
 
-The party sync Function receives a local party claim from the browser and must not receive Habitica API tokens. Local claims are token-private but trust-based; party IDs alone are not enough for authorization. The Worker routes all access through `readAccessProof()` and `resolvePartySyncAccess()` so a future tokenized manager-invite proof can replace local claims without rewriting queue and moderation actions.
+The party sync Function receives a local party claim from the browser and must not receive Habitica API tokens. Local claims are token-private but trust-based; party IDs alone are not enough for authorization. The Worker routes all access through `readAccessProof()` and `resolvePartySyncAccess()` so a future tokenized manager-invite proof can replace local claims without rewriting queue and moderation actions. Migration `0007` adds queue selection expiry metadata; apply it before deploying Function code that reads `selected_expires_at_utc` and `expired_at_utc`.
 
 ## First deployment
 
