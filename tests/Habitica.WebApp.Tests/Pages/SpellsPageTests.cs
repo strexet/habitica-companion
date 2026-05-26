@@ -99,7 +99,7 @@ public sealed class SpellsPageTests : BunitContext
                     TotalPendingDamage: 42.75m,
                     QuestType: PartyQuestType.Boss,
                     Name: "Dragon Quest"),
-                Array.Empty<PartyMemberSnapshot>())
+                Array.Empty<PartyMemberSnapshot>()),
         };
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(state));
 
