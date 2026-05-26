@@ -580,6 +580,19 @@ a {
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
 }
 
+.dashboard-link-grid,
+.inventory-planning-grid,
+.optimizer-stat-grid,
+.task-stat-grid,
+.task-chart-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.dashboard-link-grid {
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
 .inventory-summary-grid {
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
 }
@@ -617,6 +630,19 @@ a {
 
 .inventory-management-grid {
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+}
+
+.inventory-planning-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+}
+
+.optimizer-stat-grid,
+.task-stat-grid {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+
+.task-chart-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
 }
 
 .inventory-group-grid {
@@ -1862,6 +1888,52 @@ a {
     grid-template-columns: 1fr;
 }
 
+.dashboard-link-card,
+.bulk-sell-item {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0.85rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(245, 239, 226, 0.58);
+}
+
+.dashboard-link-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.optimizer-card,
+.bulk-sell-card,
+.task-statistics-panel {
+    display: grid;
+    gap: 1rem;
+}
+
+.optimizer-item-strip {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+}
+
+.bulk-sell-list {
+    display: grid;
+    gap: 0.65rem;
+    max-height: 24rem;
+    overflow: auto;
+}
+
+.bulk-sell-item {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.safe-sell-item {
+    border-color: rgba(45, 116, 110, 0.22);
+}
+
+.unsafe-sell-item {
+    opacity: 0.72;
+}
+
 .preset-mini-item {
     display: grid;
     gap: 0.25rem;
@@ -1891,6 +1963,24 @@ a {
     background: rgba(45, 116, 110, 0.12);
     color: var(--teal);
     font-weight: 700;
+}
+
+.inventory-stat-value.delta-up {
+    color: var(--teal);
+    font-weight: 700;
+}
+
+.inventory-stat-value.delta-down {
+    color: var(--danger);
+    font-weight: 700;
+}
+
+.stat-delta-positive {
+    border-color: rgba(45, 116, 110, 0.22);
+}
+
+.stat-delta-negative {
+    border-color: rgba(161, 63, 53, 0.22);
 }
 
 .inventory-stat-separator {
@@ -2169,6 +2259,70 @@ a {
     border-radius: 0.75rem;
     border: 1px solid rgba(22, 36, 35, 0.08);
     background: rgba(255, 255, 255, 0.42);
+}
+
+.task-detail-charts {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    margin-top: 0.85rem;
+}
+
+.task-chart-card {
+    display: grid;
+    gap: 0.75rem;
+    min-width: 0;
+    padding: 0.85rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(245, 239, 226, 0.5);
+}
+
+.task-chart-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.task-history-bars,
+.task-month-activity-grid {
+    display: grid;
+    align-items: end;
+    gap: 0.35rem;
+    min-height: 6rem;
+}
+
+.task-history-bars {
+    grid-template-columns: repeat(auto-fit, minmax(1.2rem, 1fr));
+}
+
+.task-month-activity-grid {
+    grid-template-columns: repeat(6, minmax(1.4rem, 1fr));
+}
+
+.task-history-bar {
+    display: grid;
+    align-items: end;
+    gap: 0.25rem;
+    min-width: 0;
+    min-height: 6rem;
+    color: var(--muted);
+    font-size: 0.72rem;
+    text-align: center;
+}
+
+.task-history-bar i {
+    display: block;
+    width: 100%;
+    min-height: 0.2rem;
+    border-radius: 0.35rem 0.35rem 0 0;
+    background: var(--teal);
+}
+
+.task-history-bar small {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .task-action-note {

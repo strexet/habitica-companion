@@ -568,6 +568,52 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task SellInventoryItemAsync_sells_requested_count_refreshes_snapshot_and_writes_log()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Inventory = new InventorySnapshot(
+                    4,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    Array.Empty<string>(),
+                    OwnedEggs: new Dictionary<string, int>(StringComparer.Ordinal)
+                    {
+                        ["Wolf"] = 4
+                    })
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        var userRefreshCountBeforeSell = syncClient.GetUserSnapshotCalls;
+
+        var result = await controller.SellInventoryItemAsync(InventorySellItemType.Egg, "Wolf", 3);
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(3, syncClient.SellInventoryItemCalls.Count);
+        Assert.Equal(userRefreshCountBeforeSell + 1, syncClient.GetUserSnapshotCalls);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Inventory
+            && entry.Operation == "inventory-bulk-sell"
+            && entry.Metadata["itemType"] == "Egg"
+            && entry.Metadata["itemKey"] == "Wolf"
+            && entry.Metadata["completed"] == "3"
+            && entry.Metadata["requestCount"] == "4");
+    }
+
+    [Fact]
     public async Task ScoreTaskAsync_scores_sequentially_refreshes_snapshots_and_writes_log()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
@@ -1801,6 +1847,8 @@ public sealed class AppSessionControllerTests
 
         public int BuyHealthPotionCalls { get; private set; }
 
+        public List<(InventorySellItemType Type, string Key)> SellInventoryItemCalls { get; } = new();
+
         public Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
         {
             EquipCalls.Add((EquipmentSetKind.Battle, key));
@@ -1871,6 +1919,16 @@ public sealed class AppSessionControllerTests
         public Task BuyHealthPotionAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             BuyHealthPotionCalls++;
+            return Task.CompletedTask;
+        }
+
+        public Task SellInventoryItemAsync(
+            HabiticaCredentials credentials,
+            InventorySellItemType type,
+            string key,
+            CancellationToken cancellationToken)
+        {
+            SellInventoryItemCalls.Add((type, key));
             return Task.CompletedTask;
         }
 

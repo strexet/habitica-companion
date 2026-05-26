@@ -32,6 +32,12 @@
             snapshot,
             SessionController.State.GearCatalogSnapshot,
             SessionController.State.Presets);
+        var recommendation = InventoryViewModelFactory.CreateRecommendation(
+            snapshot,
+            SessionController.State.GearCatalogSnapshot,
+            _optimizationGoal);
+        var bulkSellPlan = GetBulkSellPlan(snapshot.Inventory).ToArray();
+        var safeBulkSellPlan = bulkSellPlan.Where(static item => item.IsSafe).ToArray();
         var canMutate = SessionController.State.IsAuthenticated
             && !SessionController.State.IsBusy
             && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
@@ -86,6 +92,144 @@
                         Save battle gear preset
                     </MudButton>
                 </div>
+            </article>
+        </section>
+
+        <section class="inventory-planning-grid">
+            <article class="card-surface inventory-group-card optimizer-card">
+                <div class="task-group-header">
+                    <div>
+                        <p class="section-label">Gear planning</p>
+                        <h2>Equipment optimizer</h2>
+                    </div>
+                    <label class="field-row compact">
+                        <span>Goal</span>
+                        <select class="app-input" value="@_optimizationGoal.ToString()" @onchange="eventArgs => SetOptimizationGoal(eventArgs.Value?.ToString())" data-testid="equipment-optimizer-goal">
+                            @foreach (var goal in Enum.GetValues<EquipmentOptimizationGoal>())
+                            {
+                                <option value="@goal.ToString()">@FormatOptimizationGoal(goal)</option>
+                            }
+                        </select>
+                    </label>
+                </div>
+
+                <div class="optimizer-stat-grid">
+                    <article class="dashboard-stat-card">
+                        <span class="dashboard-stat-label">Current</span>
+                        @RenderStats(recommendation.CurrentStats)
+                    </article>
+                    <article class="dashboard-stat-card">
+                        <span class="dashboard-stat-label">Recommended</span>
+                        @RenderStats(recommendation.RecommendedStats)
+                    </article>
+                    <article class="dashboard-stat-card">
+                        <span class="dashboard-stat-label">Delta</span>
+                        @RenderStatDelta(recommendation.Delta)
+                    </article>
+                </div>
+
+                @if (recommendation.Items.Count == 0)
+                {
+                    <p class="panel-copy">No stat-bearing owned gear is available for this recommendation.</p>
+                }
+                else
+                {
+                    <div class="preset-item-strip optimizer-item-strip">
+                        @foreach (var item in recommendation.Items)
+                        {
+                            <article class="preset-mini-item">
+                                <span class="dashboard-stat-label">@item.SlotTitle</span>
+                                <div class="habitica-item-identity">
+                                    <HabiticaImage Asset="@HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName)" />
+                                    <div>
+                                        <strong>@item.DisplayName</strong>
+                                        @RenderStats(item.TotalStats)
+                                    </div>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                }
+
+                <div class="preset-save-row">
+                    <input class="app-input" placeholder="Recommendation preset name" @bind="_optimizerPresetName" @bind:event="oninput" data-testid="optimizer-preset-name" />
+                    <div class="action-row inventory-actions">
+                        <MudButton Color="Color.Primary"
+                                   Disabled="@(!canMutate || !recommendation.HasRecommendation)"
+                                   OnClick="@(() => EquipRecommendationAsync(recommendation))"
+                                   Variant="Variant.Filled"
+                                   data-testid="equip-optimizer-recommendation">
+                            Equip recommendation
+                        </MudButton>
+                        <MudButton Color="Color.Secondary"
+                                   Disabled="@(!canMutate || !recommendation.HasRecommendation || string.IsNullOrWhiteSpace(_optimizerPresetName))"
+                                   OnClick="@(() => SaveRecommendationPresetAsync(recommendation))"
+                                   Variant="Variant.Outlined"
+                                   data-testid="save-optimizer-recommendation">
+                            Save recommendation
+                        </MudButton>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card-surface inventory-group-card bulk-sell-card">
+                <div class="task-group-header">
+                    <div>
+                        <p class="section-label">Bulk sell planner</p>
+                        <h2>Safe item sell preview</h2>
+                    </div>
+                    <label class="field-row compact">
+                        <span>Keep count</span>
+                        <input class="app-input" min="0" max="99" type="number" value="@_bulkSellKeepCount" @onchange="eventArgs => SetBulkSellKeepCount(eventArgs.Value?.ToString())" data-testid="bulk-sell-keep-count" />
+                    </label>
+                </div>
+
+                @if (bulkSellPlan.Length == 0)
+                {
+                    <p class="panel-copy">No eggs, food, or hatching potions are available in the cached inventory snapshot.</p>
+                }
+                else
+                {
+                    <div class="bulk-sell-list">
+                        @foreach (var item in bulkSellPlan)
+                        {
+                            <article class="@GetBulkSellItemClass(item)">
+                                <div>
+                                    <strong>@FormatReadableName(item.Key, item.Key)</strong>
+                                    <span class="dashboard-stat-note">@FormatSellType(item.Type) • owned @item.OwnedCount • sell @item.SellCount</span>
+                                </div>
+                                <span class="dashboard-stat-note">@item.Explanation</span>
+                            </article>
+                        }
+                    </div>
+                }
+
+                @if (_showBulkSellConfirmation)
+                {
+                    <div class="preset-remove-confirm">
+                        <span>Sell @safeBulkSellPlan.Sum(static item => item.SellCount) planned item(s)?</span>
+                        <MudButton Color="Color.Error"
+                                   Disabled="@(!canMutate || safeBulkSellPlan.Length == 0)"
+                                   OnClick="@(() => SellBulkPlanAsync(safeBulkSellPlan))"
+                                   Variant="Variant.Filled"
+                                   data-testid="execute-bulk-sell">
+                            Sell planned items
+                        </MudButton>
+                        <MudButton OnClick="@(() => _showBulkSellConfirmation = false)" Variant="Variant.Text">
+                            Cancel
+                        </MudButton>
+                    </div>
+                }
+                else
+                {
+                    <MudButton Color="Color.Error"
+                               Disabled="@(!canMutate || safeBulkSellPlan.Length == 0)"
+                               OnClick="@(() => _showBulkSellConfirmation = true)"
+                               Variant="Variant.Outlined"
+                               data-testid="confirm-bulk-sell">
+                        Confirm bulk sell plan
+                    </MudButton>
+                }
             </article>
         </section>
 
@@ -171,6 +315,7 @@
                                             </div>
                                             <div>
                                                 @RenderStats(item.TotalStats)
+                                                @RenderStatDelta(item.BattleStatDelta)
                                             </div>
                                         </div>
                                         @if (!string.IsNullOrWhiteSpace(item.Notes))
@@ -251,6 +396,10 @@
     private string? _pendingRemovePresetId;
     private string? _renamingPresetId;
     private string _renamePresetName = string.Empty;
+    private string _optimizerPresetName = string.Empty;
+    private EquipmentOptimizationGoal _optimizationGoal = EquipmentOptimizationGoal.Balanced;
+    private int _bulkSellKeepCount = 1;
+    private bool _showBulkSellConfirmation;
     private bool _nonBattleEquipmentExpanded;
     private readonly HashSet<string> _expandedOtherItemGroups = new(StringComparer.Ordinal);
 
@@ -293,6 +442,43 @@
                 _battlePresetName = string.Empty;
             }
         }
+    }
+
+    private async Task SaveRecommendationPresetAsync(EquipmentRecommendationViewModel recommendation)
+    {
+        var result = await SessionController.SaveEquipmentPresetAsync(
+            EquipmentSetKind.Battle,
+            _optimizerPresetName,
+            recommendation.Slots);
+        ShowFeedback(result);
+
+        if (result.Succeeded)
+        {
+            _optimizerPresetName = string.Empty;
+        }
+    }
+
+    private async Task EquipRecommendationAsync(EquipmentRecommendationViewModel recommendation)
+    {
+        var result = await SessionController.EquipGearSlotsAsync(
+            EquipmentSetKind.Battle,
+            recommendation.Slots,
+            $"optimizer:{recommendation.Goal}",
+            $"Equipping {recommendation.GoalLabel} recommendation");
+        ShowFeedback(result);
+    }
+
+    private void SetOptimizationGoal(string? rawValue)
+    {
+        _optimizationGoal = Enum.TryParse<EquipmentOptimizationGoal>(rawValue, out var goal)
+            ? goal
+            : EquipmentOptimizationGoal.Balanced;
+    }
+
+    private void SetBulkSellKeepCount(string? rawValue)
+    {
+        _bulkSellKeepCount = int.TryParse(rawValue, out var parsed) ? Math.Clamp(parsed, 0, 99) : 1;
+        _showBulkSellConfirmation = false;
     }
 
     private async Task EquipItemAsync(EquipmentSetKind kind, string key)
@@ -374,6 +560,67 @@
     private void ShowFeedback(InventoryActionResult result)
     {
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task SellBulkPlanAsync(IReadOnlyList<BulkSellPlanItem> plan)
+    {
+        var soldCount = 0;
+        foreach (var item in plan.Where(static item => item.IsSafe && item.SellCount > 0))
+        {
+            var result = await SessionController.SellInventoryItemAsync(item.Type, item.Key, item.SellCount);
+            ShowFeedback(result);
+            if (!result.Succeeded)
+            {
+                _showBulkSellConfirmation = false;
+                return;
+            }
+
+            soldCount += item.SellCount;
+        }
+
+        _showBulkSellConfirmation = false;
+        if (soldCount > 0)
+        {
+            Snackbar.Add($"Sold {soldCount} planned item(s).", Severity.Success);
+        }
+    }
+
+    private IEnumerable<BulkSellPlanItem> GetBulkSellPlan(InventorySnapshot inventory)
+    {
+        foreach (var item in BuildBulkSellItems(InventorySellItemType.Egg, inventory.Eggs))
+        {
+            yield return item;
+        }
+
+        foreach (var item in BuildBulkSellItems(InventorySellItemType.Food, inventory.Food))
+        {
+            yield return item;
+        }
+
+        foreach (var item in BuildBulkSellItems(InventorySellItemType.HatchingPotion, inventory.HatchingPotions))
+        {
+            yield return item;
+        }
+    }
+
+    private IEnumerable<BulkSellPlanItem> BuildBulkSellItems(
+        InventorySellItemType type,
+        IReadOnlyDictionary<string, int> items)
+    {
+        foreach (var item in items.OrderBy(static item => item.Key, StringComparer.OrdinalIgnoreCase))
+        {
+            var sellCount = Math.Max(0, item.Value - _bulkSellKeepCount);
+            var isSafe = sellCount > 0;
+            yield return new BulkSellPlanItem(
+                type,
+                item.Key,
+                item.Value,
+                sellCount,
+                isSafe,
+                isSafe
+                    ? $"Safe by local rule: keep {_bulkSellKeepCount} cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+                    : $"Unsafe by local rule: cached count is at or below the keep threshold.");
+        }
     }
 
     private static RenderFragment RenderImageCountChip(HabiticaImageAsset asset, int count) => builder =>
@@ -666,6 +913,80 @@
         builder.CloseElement();
     }
 
+    private static RenderFragment RenderStatDelta(GearStatBlock delta) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", GetDeltaClass(delta));
+        RenderDeltaValue(builder, ref sequence, "STR", delta.Strength);
+        RenderSeparator(builder, ref sequence);
+        RenderDeltaValue(builder, ref sequence, "INT", delta.Intelligence);
+        RenderSeparator(builder, ref sequence);
+        RenderDeltaValue(builder, ref sequence, "CON", delta.Constitution);
+        RenderSeparator(builder, ref sequence);
+        RenderDeltaValue(builder, ref sequence, "PER", delta.Perception);
+        builder.CloseElement();
+    };
+
+    private static string GetDeltaClass(GearStatBlock delta)
+    {
+        var total = delta.Strength + delta.Intelligence + delta.Constitution + delta.Perception;
+        return total switch
+        {
+            > 0m => "ui-pill count-pill stat-pill-group stat-delta-positive",
+            < 0m => "ui-pill count-pill stat-pill-group stat-delta-negative",
+            _ => "ui-pill count-pill stat-pill-group"
+        };
+    }
+
+    private static void RenderDeltaValue(RenderTreeBuilder builder, ref int sequence, string label, decimal value)
+    {
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", value switch
+        {
+            > 0m => "inventory-stat-value delta-up",
+            < 0m => "inventory-stat-value delta-down",
+            _ => "inventory-stat-value"
+        });
+        builder.AddContent(sequence++, $"{label}\u00a0{FormatSignedDecimal(value)}");
+        builder.CloseElement();
+    }
+
+    private static string FormatSignedDecimal(decimal value)
+    {
+        return value > 0m ? $"+{value:0.#}" : value.ToString("0.#", CultureInfo.InvariantCulture);
+    }
+
+    private static string FormatOptimizationGoal(EquipmentOptimizationGoal goal)
+    {
+        return goal switch
+        {
+            EquipmentOptimizationGoal.Strength => "Strength",
+            EquipmentOptimizationGoal.Intelligence => "Intelligence",
+            EquipmentOptimizationGoal.Constitution => "Constitution",
+            EquipmentOptimizationGoal.Perception => "Perception",
+            EquipmentOptimizationGoal.BossDamage => "Boss damage",
+            EquipmentOptimizationGoal.Survival => "Survival",
+            _ => "Balanced"
+        };
+    }
+
+    private static string FormatSellType(InventorySellItemType type)
+    {
+        return type switch
+        {
+            InventorySellItemType.Egg => "Egg",
+            InventorySellItemType.Food => "Food",
+            InventorySellItemType.HatchingPotion => "Hatching potion",
+            _ => "Inventory"
+        };
+    }
+
+    private static string GetBulkSellItemClass(BulkSellPlanItem item)
+    {
+        return item.IsSafe ? "bulk-sell-item safe-sell-item" : "bulk-sell-item unsafe-sell-item";
+    }
+
     private EquipmentProgress? GetPresetProgress(string presetId)
     {
         var progress = SessionController.State.ActiveEquipmentProgress;
@@ -683,4 +1004,12 @@
     {
         SessionController.Changed -= HandleStateChanged;
     }
+
+    private sealed record BulkSellPlanItem(
+        InventorySellItemType Type,
+        string Key,
+        int OwnedCount,
+        int SellCount,
+        bool IsSafe,
+        string Explanation);
 }

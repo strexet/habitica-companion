@@ -174,6 +174,25 @@
             </article>
         </section>
 
+        <section class="card-surface dashboard-panel dashboard-navigation-panel" data-testid="dashboard-navigation-panel">
+            <div class="task-group-header">
+                <div>
+                    <p class="section-label">Navigation</p>
+                    <h2>Companion and Habitica links</h2>
+                </div>
+                <a class="secondary-action-button compact" href="https://habitica.com" target="_blank" rel="noopener noreferrer">
+                    Open Habitica
+                </a>
+            </div>
+
+            <div class="dashboard-link-grid">
+                @RenderDashboardLink("Tasks", "/tasks", "https://habitica.com/tasks", "Score and inspect cached tasks.")
+                @RenderDashboardLink("Inventory", "/inventory", "https://habitica.com/inventory/equipment", "Plan gear and inspect inventory.")
+                @RenderDashboardLink("Party", "/party", "https://habitica.com/party", "Manage party quest planning.")
+                @RenderDashboardLink("Spells", "/spells", "https://habitica.com/tasks", "Cast class skills against task targets.")
+            </div>
+        </section>
+
         var damageEstimate = PendingDamageEstimateFactory.Create(
             snapshot,
             SessionController.State.TaskSnapshot,
@@ -641,6 +660,38 @@
         builder.CloseElement();
     };
 
+    private static RenderFragment RenderDashboardLink(string label, string localHref, string habiticaHref, string note) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "article");
+        builder.AddAttribute(sequence++, "class", "dashboard-link-card");
+        builder.OpenElement(sequence++, "div");
+        builder.OpenElement(sequence++, "strong");
+        builder.AddContent(sequence++, label);
+        builder.CloseElement();
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
+        builder.AddContent(sequence++, note);
+        builder.CloseElement();
+        builder.CloseElement();
+        builder.OpenElement(sequence++, "div");
+        builder.AddAttribute(sequence++, "class", "dashboard-link-actions");
+        builder.OpenElement(sequence++, "a");
+        builder.AddAttribute(sequence++, "class", "secondary-action-button compact");
+        builder.AddAttribute(sequence++, "href", localHref);
+        builder.AddContent(sequence++, $"Open {label}");
+        builder.CloseElement();
+        builder.OpenElement(sequence++, "a");
+        builder.AddAttribute(sequence++, "class", "secondary-action-button compact");
+        builder.AddAttribute(sequence++, "href", habiticaHref);
+        builder.AddAttribute(sequence++, "target", "_blank");
+        builder.AddAttribute(sequence++, "rel", "noopener noreferrer");
+        builder.AddContent(sequence++, "Habitica");
+        builder.CloseElement();
+        builder.CloseElement();
+        builder.CloseElement();
+    };
+
     private async Task BuyHealthPotionAsync()
     {
         var result = await SessionController.BuyHealthPotionAsync();
@@ -652,14 +703,14 @@
     {
         var partySnapshot = SessionController.State.PartySnapshot;
         var quest = partySnapshot?.Quest;
-        if (quest is null || quest.IsActive || string.IsNullOrWhiteSpace(SessionController.State.UserId))
+        if (partySnapshot is null || quest is null || quest.IsActive || string.IsNullOrWhiteSpace(SessionController.State.UserId))
         {
             return false;
         }
 
-        return partySnapshot.Members.Any(member =>
+        return partySnapshot.Members?.Any(member =>
             string.Equals(member.MemberId, SessionController.State.UserId, StringComparison.Ordinal)
-            && member.ParticipationStatus == PartyQuestParticipationStatus.Pending);
+            && member.ParticipationStatus == PartyQuestParticipationStatus.Pending) ?? false;
     }
 
     private async Task RespondToQuestInvitationAsync(bool accept)

@@ -905,15 +905,40 @@ public sealed class AppSessionController : IAppSessionController
         string name,
         CancellationToken cancellationToken = default)
     {
-        var credentials = await ResolveCredentialsAsync(cancellationToken);
-        if (credentials is null || State.UserSnapshot is null)
+        if (State.UserSnapshot is null)
         {
             return await FailInventoryActionAsync("inventory-save-preset", "Sign in and refresh account data before saving equipment presets.", cancellationToken);
         }
 
+        var slots = kind == EquipmentSetKind.Battle ? State.UserSnapshot.Equipment.Battle : State.UserSnapshot.Equipment.Costume;
+        return await SaveEquipmentPresetCoreAsync(kind, name, slots, "inventory-save-preset", cancellationToken);
+    }
+
+    public async Task<InventoryActionResult> SaveEquipmentPresetAsync(
+        EquipmentSetKind kind,
+        string name,
+        GearSlotsSnapshot slots,
+        CancellationToken cancellationToken = default)
+    {
+        return await SaveEquipmentPresetCoreAsync(kind, name, slots, "inventory-save-recommendation", cancellationToken);
+    }
+
+    private async Task<InventoryActionResult> SaveEquipmentPresetCoreAsync(
+        EquipmentSetKind kind,
+        string name,
+        GearSlotsSnapshot slots,
+        string diagnosticsOperation,
+        CancellationToken cancellationToken)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null || State.UserSnapshot is null)
+        {
+            return await FailInventoryActionAsync(diagnosticsOperation, "Sign in and refresh account data before saving equipment presets.", cancellationToken);
+        }
+
         if (string.IsNullOrWhiteSpace(name))
         {
-            return await FailInventoryActionAsync("inventory-save-preset", "Preset name is required.", cancellationToken);
+            return await FailInventoryActionAsync(diagnosticsOperation, "Preset name is required.", cancellationToken);
         }
 
         var preset = new EquipmentPreset(
@@ -922,14 +947,14 @@ public sealed class AppSessionController : IAppSessionController
             kind,
             name.Trim(),
             _timeProvider.GetUtcNow(),
-            NormalizePresetSlots(kind, kind == EquipmentSetKind.Battle ? State.UserSnapshot.Equipment.Battle : State.UserSnapshot.Equipment.Costume));
+            NormalizePresetSlots(kind, slots));
 
         try
         {
             await _equipmentPresetStore.SaveAsync(preset, cancellationToken);
             await _diagnosticsLogWriter.WriteAsync(
                 DiagnosticsFeatureArea.Inventory,
-                "inventory-save-preset",
+                diagnosticsOperation,
                 DiagnosticsSeverity.Success,
                 DiagnosticsMode.Local,
                 $"Saved {kind.ToString().ToLowerInvariant()} preset '{preset.Name}'.",
@@ -948,7 +973,7 @@ public sealed class AppSessionController : IAppSessionController
         {
             await LoadCachedStateAsync(cancellationToken);
             return await FailInventoryActionAsync(
-                "inventory-save-preset",
+                diagnosticsOperation,
                 exception.Message,
                 cancellationToken,
                 new Dictionary<string, string>(StringComparer.Ordinal)
@@ -1783,6 +1808,30 @@ public sealed class AppSessionController : IAppSessionController
             : "Task uncompleted.";
     }
 
+    private static int GetOwnedSellItemCount(InventorySnapshot inventory, InventorySellItemType type, string key)
+    {
+        var items = type switch
+        {
+            InventorySellItemType.Egg => inventory.Eggs,
+            InventorySellItemType.Food => inventory.Food,
+            InventorySellItemType.HatchingPotion => inventory.HatchingPotions,
+            _ => new Dictionary<string, int>(StringComparer.Ordinal)
+        };
+
+        return items.TryGetValue(key, out var count) ? count : 0;
+    }
+
+    private static string FormatSellItemType(InventorySellItemType type)
+    {
+        return type switch
+        {
+            InventorySellItemType.Egg => "egg",
+            InventorySellItemType.Food => "food",
+            InventorySellItemType.HatchingPotion => "hatching potion",
+            _ => "inventory"
+        };
+    }
+
     public async Task<InventoryActionResult> BuyArmoireAsync(int count, CancellationToken cancellationToken = default)
     {
         var credentials = await ResolveCredentialsAsync(cancellationToken);
@@ -1919,6 +1968,98 @@ public sealed class AppSessionController : IAppSessionController
                 },
                 cancellationToken);
             return InventoryActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<InventoryActionResult> SellInventoryItemAsync(
+        InventorySellItemType type,
+        string key,
+        int count,
+        CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return InventoryActionResult.Failure("Sign in before selling inventory items.");
+        }
+
+        if (State.UserSnapshot is null || State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return InventoryActionResult.Failure("Refresh your account before selling inventory items.");
+        }
+
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return InventoryActionResult.Failure("Inventory item key is required.");
+        }
+
+        var safeCount = Math.Clamp(count, 1, 99);
+        var ownedCount = GetOwnedSellItemCount(State.UserSnapshot.Inventory, type, key);
+        if (ownedCount <= 0)
+        {
+            return InventoryActionResult.Failure("This item is not available in the cached inventory snapshot.");
+        }
+
+        if (safeCount > ownedCount)
+        {
+            return InventoryActionResult.Failure($"Cached inventory only has {ownedCount} item(s) available.");
+        }
+
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        var completed = 0;
+        try
+        {
+            for (var index = 0; index < safeCount; index++)
+            {
+                await _habiticaSyncClient.SellInventoryItemAsync(credentials, type, key, cancellationToken);
+                completed++;
+                await DelayBetweenHabiticaRequestsAsync(cancellationToken);
+            }
+
+            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "inventory-bulk-sell",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                $"Sold {completed} inventory item(s).",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["itemType"] = type.ToString(),
+                    ["itemKey"] = key,
+                    ["completed"] = completed.ToString(CultureInfo.InvariantCulture),
+                    ["requested"] = safeCount.ToString(CultureInfo.InvariantCulture),
+                    ["requestCount"] = (completed + 1).ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+            return InventoryActionResult.Success($"Sold {completed} {FormatSellItemType(type)} item(s).");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "inventory-bulk-sell",
+                DiagnosticsSeverity.Error,
+                DiagnosticsMode.LiveMutation,
+                exception.Message,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["itemType"] = type.ToString(),
+                    ["itemKey"] = key,
+                    ["completed"] = completed.ToString(CultureInfo.InvariantCulture),
+                    ["requested"] = safeCount.ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
+            return InventoryActionResult.Failure(completed > 0
+                ? $"{exception.Message} Sold {completed} of {safeCount} item(s)."
+                : exception.Message);
         }
     }
 

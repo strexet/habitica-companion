@@ -124,12 +124,31 @@ public sealed record InventorySnapshot(
     int OwnedPetCount,
     int OwnedMountCount,
     string[] OwnedGearKeys,
-    IReadOnlyDictionary<string, int>? OwnedQuestScrolls = null)
+    IReadOnlyDictionary<string, int>? OwnedQuestScrolls = null,
+    IReadOnlyDictionary<string, int>? OwnedEggs = null,
+    IReadOnlyDictionary<string, int>? OwnedFood = null,
+    IReadOnlyDictionary<string, int>? OwnedHatchingPotions = null)
 {
     public IReadOnlyDictionary<string, int> QuestScrolls => OwnedQuestScrolls ?? EmptyQuestScrolls;
 
+    public IReadOnlyDictionary<string, int> Eggs => OwnedEggs ?? EmptyInventoryItems;
+
+    public IReadOnlyDictionary<string, int> Food => OwnedFood ?? EmptyInventoryItems;
+
+    public IReadOnlyDictionary<string, int> HatchingPotions => OwnedHatchingPotions ?? EmptyInventoryItems;
+
     private static readonly IReadOnlyDictionary<string, int> EmptyQuestScrolls =
         new Dictionary<string, int>(StringComparer.Ordinal);
+
+    private static readonly IReadOnlyDictionary<string, int> EmptyInventoryItems =
+        new Dictionary<string, int>(StringComparer.Ordinal);
+}
+
+public enum InventorySellItemType
+{
+    Egg,
+    Food,
+    HatchingPotion
 }
 
 public enum EquipmentSetKind
@@ -153,6 +172,15 @@ public sealed record GearStatBlock(
             Intelligence + other.Intelligence,
             Constitution + other.Constitution,
             Perception + other.Perception);
+    }
+
+    public GearStatBlock Subtract(GearStatBlock other)
+    {
+        return new GearStatBlock(
+            Strength - other.Strength,
+            Intelligence - other.Intelligence,
+            Constitution - other.Constitution,
+            Perception - other.Perception);
     }
 
     public GearStatBlock Scale(decimal multiplier)

@@ -93,6 +93,13 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("Pet_Egg_Wolf.png", cut.Markup);
         Assert.Contains("inventory_quest_scroll.png", cut.Markup);
         Assert.Contains("Open tasks", cut.Markup);
+        Assert.Contains("Companion and Habitica links", cut.Markup);
+        Assert.Contains("href=\"/tasks\"", cut.Markup);
+        Assert.Contains("https://habitica.com/tasks", cut.Markup);
+        Assert.Contains("href=\"/inventory\"", cut.Markup);
+        Assert.Contains("https://habitica.com/inventory/equipment", cut.Markup);
+        Assert.Contains("href=\"/party\"", cut.Markup);
+        Assert.Contains("https://habitica.com/party", cut.Markup);
         Assert.Contains("Pending damage estimate", cut.Markup);
         Assert.Contains("Incomplete Dailies", cut.Markup);
         Assert.Contains("2 HP", cut.Markup);

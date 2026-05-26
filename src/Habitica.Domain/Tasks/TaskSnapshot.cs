@@ -11,7 +11,15 @@ public sealed record TaskSnapshot(
     decimal? Value = null,
     bool IsChallengeTask = false,
     bool? SupportsPositiveScore = null,
-    bool? SupportsNegativeScore = null);
+    bool? SupportsNegativeScore = null,
+    IReadOnlyList<TaskHistoryPoint>? History = null)
+{
+    public IReadOnlyList<TaskHistoryPoint> HistoryPoints => History ?? Array.Empty<TaskHistoryPoint>();
+}
+
+public sealed record TaskHistoryPoint(
+    DateTimeOffset Date,
+    decimal Value);
 
 public enum TaskScoreDirection
 {

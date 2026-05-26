@@ -30,6 +30,12 @@ public interface IAppSessionController
 
     Task<InventoryActionResult> SaveEquipmentPresetAsync(EquipmentSetKind kind, string name, CancellationToken cancellationToken = default);
 
+    Task<InventoryActionResult> SaveEquipmentPresetAsync(
+        EquipmentSetKind kind,
+        string name,
+        GearSlotsSnapshot slots,
+        CancellationToken cancellationToken = default);
+
     Task<InventoryActionResult> RemoveEquipmentPresetAsync(string presetId, CancellationToken cancellationToken = default);
 
     Task<InventoryActionResult> RenameEquipmentPresetAsync(string presetId, string name, CancellationToken cancellationToken = default);
@@ -56,6 +62,12 @@ public interface IAppSessionController
     Task<InventoryActionResult> BuyArmoireAsync(int count, CancellationToken cancellationToken = default);
 
     Task<InventoryActionResult> BuyHealthPotionAsync(CancellationToken cancellationToken = default);
+
+    Task<InventoryActionResult> SellInventoryItemAsync(
+        InventorySellItemType type,
+        string key,
+        int count,
+        CancellationToken cancellationToken = default);
 
     Task LogoutAsync(CancellationToken cancellationToken = default);
 

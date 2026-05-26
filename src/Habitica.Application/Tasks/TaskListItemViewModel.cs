@@ -13,4 +13,8 @@ public sealed record TaskListItemViewModel(
     decimal? Value,
     bool IsChallengeTask,
     bool? SupportsPositiveScore,
-    bool? SupportsNegativeScore);
+    bool? SupportsNegativeScore,
+    IReadOnlyList<TaskHistoryPoint>? History = null)
+{
+    public IReadOnlyList<TaskHistoryPoint> HistoryPoints => History ?? Array.Empty<TaskHistoryPoint>();
+}

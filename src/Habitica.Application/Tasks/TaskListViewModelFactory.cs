@@ -38,7 +38,8 @@ public sealed class TaskListViewModelFactory
                         task.Value,
                         task.IsChallengeTask,
                         task.SupportsPositiveScore,
-                        task.SupportsNegativeScore))
+                        task.SupportsNegativeScore,
+                        task.HistoryPoints))
                     .ToArray()))
             .ToArray();
 

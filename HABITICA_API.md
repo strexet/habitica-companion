@@ -273,6 +273,8 @@ Common endpoints:
 | POST | `/user/sell/:type/:key` | Sell eggs, hatching potions, or food. |
 | POST | `/user/release-pets` | Release pets. |
 | POST | `/user/release-mounts` | Release mounts. |
+
+For this app's bulk sell planner, `:type` is limited to the inventory object names Habitica exposes for supported sellable categories: `eggs`, `food`, and `hatchingPotions`. Do not send gear or quest scrolls through the bulk sell flow unless the API contract is verified separately.
 | POST | `/user/release-both` | Release pets and mounts. |
 | POST | `/user/revive` | Revive from death. |
 | POST | `/user/rebirth` | Use Orb of Rebirth. |

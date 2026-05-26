@@ -311,6 +311,102 @@ public sealed class InventoryPageTests : BunitContext
     }
 
     [Fact]
+    public void Optimizer_can_equip_and_save_recommendations()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new InventoryViewModelFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                UserId: "user-id",
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: CreateSnapshot() with
+                {
+                    Inventory = new InventorySnapshot(1, 5, 1, 1, 1, 1, new[] { "weapon_str_10", "weapon_int_12" })
+                },
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                GearCatalogSnapshot: new GearCatalogSnapshot(
+                    DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                    new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+                    {
+                        ["weapon_str_10"] = new("weapon_str_10", "Might Wand", "Weapon", "special", null, new GearStatBlock(10m, 0m, 0m, 0m)),
+                        ["weapon_int_12"] = new("weapon_int_12", "Scholar Wand", "Weapon", "special", null, new GearStatBlock(0m, 12m, 0m, 0m))
+                    })));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<InventoryPage>();
+
+        cut.Find("[data-testid='equipment-optimizer-goal']").Change("Strength");
+        Assert.Contains("Might Wand", cut.Markup);
+
+        cut.Find("[data-testid='equip-optimizer-recommendation']").Click();
+        cut.Find("[data-testid='optimizer-preset-name']").Input("Boss strength");
+        cut.Find("[data-testid='save-optimizer-recommendation']").Click();
+
+        var equipCall = Assert.Single(controller.EquipGearSlotsCalls);
+        Assert.Equal("weapon_str_10", equipCall.Slots.Weapon);
+        var saveCall = Assert.Single(controller.SavePresetWithSlotsCalls);
+        Assert.Equal("Boss strength", saveCall.Name);
+        Assert.Equal("weapon_str_10", saveCall.Slots.Weapon);
+    }
+
+    [Fact]
+    public void Bulk_sell_planner_requires_confirmation_and_calls_sell_action()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new InventoryViewModelFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                UserId: "user-id",
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: CreateSnapshot() with
+                {
+                    Inventory = new InventorySnapshot(
+                        4,
+                        5,
+                        1,
+                        1,
+                        1,
+                        1,
+                        Array.Empty<string>(),
+                        OwnedEggs: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf"] = 4 },
+                        OwnedFood: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 2 },
+                        OwnedHatchingPotions: new Dictionary<string, int>(StringComparer.Ordinal) { ["Base"] = 1 })
+                },
+                UserFreshness: SnapshotFreshnessState.Fresh));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<InventoryPage>();
+
+        Assert.Contains("Safe item sell preview", cut.Markup);
+        Assert.Contains("owned 4", cut.Markup);
+
+        cut.Find("[data-testid='confirm-bulk-sell']").Click();
+        cut.Find("[data-testid='execute-bulk-sell']").Click();
+
+        Assert.Contains((InventorySellItemType.Egg, "Wolf", 3), controller.SellInventoryItemCalls);
+        Assert.Contains((InventorySellItemType.Food, "Meat", 1), controller.SellInventoryItemCalls);
+        Assert.DoesNotContain(controller.SellInventoryItemCalls, call => call.Type == InventorySellItemType.HatchingPotion);
+    }
+
+    [Fact]
     public void Active_preset_equip_progress_renders_for_matching_preset()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

@@ -4,6 +4,7 @@
 @using System.Globalization
 @using Habitica.Domain.Tasks
 @using Habitica.Storage
+@using Microsoft.AspNetCore.Components.Rendering
 @inject IAppSessionController SessionController
 @inject TaskListViewModelFactory TaskListViewModelFactory
 @inject TaskOrderPlanner TaskOrderPlanner
@@ -39,6 +40,15 @@
                 </select>
             </label>
 
+            <label class="field-row compact">
+                <span>Stats period</span>
+                <select class="app-input" value="@_analysisPeriod.ToString()" @onchange="eventArgs => SetAnalysisPeriod(eventArgs.Value?.ToString())" data-testid="task-analysis-period">
+                    <option value="Week">Week</option>
+                    <option value="Month">Month</option>
+                    <option value="Year">Year</option>
+                </select>
+            </label>
+
             <div class="task-type-filter" aria-label="Task type filters">
                 @foreach (var taskType in TaskTypeFilters)
                 {
@@ -65,6 +75,43 @@
         <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.TaskFreshness)" Variant="Variant.Filled">
             @GetFreshnessLabel(SessionController.State.TaskFreshness)
         </MudAlert>
+        <section class="card-surface task-statistics-panel" data-testid="task-statistics-panel">
+            <div class="task-group-header">
+                <div>
+                    <p class="section-label">Task statistics</p>
+                    <h2>@FormatAnalysisPeriod(_analysisPeriod)</h2>
+                </div>
+                <span class="ui-pill count-pill">@CurrentViewModel.TotalVisibleTasks visible</span>
+            </div>
+
+            <div class="task-stat-grid">
+                <article class="dashboard-stat-card">
+                    <span class="dashboard-stat-label">Open</span>
+                    <strong>@GetVisibleTaskItems().Count(static task => !task.IsCompleted)</strong>
+                    <span class="dashboard-stat-note">Visible tasks not completed.</span>
+                </article>
+                <article class="dashboard-stat-card">
+                    <span class="dashboard-stat-label">Due pressure</span>
+                    <strong>@GetDuePressureLabel()</strong>
+                    <span class="dashboard-stat-note">Overdue / due today.</span>
+                </article>
+                <article class="dashboard-stat-card">
+                    <span class="dashboard-stat-label">History points</span>
+                    <strong>@GetVisibleHistoryPoints().Count</strong>
+                    <span class="dashboard-stat-note">Cached Habitica history entries.</span>
+                </article>
+                <article class="dashboard-stat-card">
+                    <span class="dashboard-stat-label">Net value</span>
+                    <strong>@FormatSignedDecimal(GetVisibleHistoryDelta())</strong>
+                    <span class="dashboard-stat-note">First-to-last value movement.</span>
+                </article>
+            </div>
+
+            <div class="task-chart-grid">
+                @RenderTaskHistoryHistogram(GetAggregateHistoryBuckets(), "Task-history histogram")
+                @RenderMonthActivityChart(GetAggregateMonthBuckets(), "Month activity")
+            </div>
+        </section>
         <span class="sr-only" aria-live="polite">@_reorderAnnouncement</span>
 
         @if (CurrentViewModel.Groups.Count == 0)
@@ -222,7 +269,11 @@
                                                         <dt>Source</dt>
                                                         <dd>Cached snapshot</dd>
                                                     </div>
-                                                </dl>
+                                            </dl>
+                                                <div class="task-detail-charts">
+                                                    @RenderTaskHistoryHistogram(GetTaskHistoryBuckets(item), "Task value history")
+                                                    @RenderMonthActivityChart(GetTaskMonthBuckets(item), "Task month activity")
+                                                </div>
                                             </div>
                                         }
 
@@ -315,6 +366,7 @@
     private string? _loadedPreferenceUserId;
     private string? _reorderAnnouncement;
     private TaskListSortMode _sortMode = TaskListSortMode.Name;
+    private TaskAnalysisPeriod _analysisPeriod = TaskAnalysisPeriod.Week;
 
     private enum TaskReorderTarget
     {
@@ -322,6 +374,13 @@
         Up,
         Down,
         Bottom
+    }
+
+    private enum TaskAnalysisPeriod
+    {
+        Week,
+        Month,
+        Year
     }
 
     private TaskListViewModel CurrentViewModel => SessionController.State.TaskSnapshot is null
@@ -393,6 +452,132 @@
         _sortMode = Enum.TryParse<TaskListSortMode>(rawValue, out var sortMode)
             ? sortMode
             : TaskListSortMode.Name;
+    }
+
+    private void SetAnalysisPeriod(string? rawValue)
+    {
+        _analysisPeriod = Enum.TryParse<TaskAnalysisPeriod>(rawValue, out var period)
+            ? period
+            : TaskAnalysisPeriod.Week;
+    }
+
+    private IReadOnlyList<TaskListItemViewModel> GetVisibleTaskItems()
+    {
+        return CurrentViewModel.Groups
+            .SelectMany(group => GetVisibleItems(group))
+            .ToArray();
+    }
+
+    private IReadOnlyList<TaskHistoryPoint> GetVisibleHistoryPoints()
+    {
+        var periodStart = GetAnalysisPeriodStart();
+        return GetVisibleTaskItems()
+            .SelectMany(static task => task.HistoryPoints)
+            .Where(point => point.Date >= periodStart)
+            .OrderBy(static point => point.Date)
+            .ToArray();
+    }
+
+    private decimal GetVisibleHistoryDelta()
+    {
+        var points = GetVisibleHistoryPoints();
+        return points.Count < 2 ? 0m : points[^1].Value - points[0].Value;
+    }
+
+    private string GetDuePressureLabel()
+    {
+        var today = DateTimeOffset.Now.Date;
+        var visibleItems = GetVisibleTaskItems();
+        var overdue = visibleItems.Count(task => !task.IsCompleted && task.DueDate?.ToLocalTime().Date < today);
+        var todayCount = visibleItems.Count(task => !task.IsCompleted && task.DueDate?.ToLocalTime().Date == today);
+        return $"{overdue} / {todayCount}";
+    }
+
+    private DateTimeOffset GetAnalysisPeriodStart()
+    {
+        var now = DateTimeOffset.Now;
+        return _analysisPeriod switch
+        {
+            TaskAnalysisPeriod.Month => now.AddDays(-30),
+            TaskAnalysisPeriod.Year => now.AddYears(-1),
+            _ => now.AddDays(-7)
+        };
+    }
+
+    private IReadOnlyList<TaskChartBucket> GetAggregateHistoryBuckets()
+    {
+        return BuildHistoryBuckets(GetVisibleHistoryPoints());
+    }
+
+    private IReadOnlyList<TaskChartBucket> GetTaskHistoryBuckets(TaskListItemViewModel item)
+    {
+        var periodStart = GetAnalysisPeriodStart();
+        return BuildHistoryBuckets(item.HistoryPoints.Where(point => point.Date >= periodStart).OrderBy(static point => point.Date).ToArray());
+    }
+
+    private IReadOnlyList<TaskChartBucket> GetAggregateMonthBuckets()
+    {
+        return BuildMonthBuckets(GetVisibleTaskItems().SelectMany(static task => task.HistoryPoints));
+    }
+
+    private IReadOnlyList<TaskChartBucket> GetTaskMonthBuckets(TaskListItemViewModel item)
+    {
+        return BuildMonthBuckets(item.HistoryPoints);
+    }
+
+    private IReadOnlyList<TaskChartBucket> BuildHistoryBuckets(IReadOnlyList<TaskHistoryPoint> points)
+    {
+        var bucketCount = _analysisPeriod switch
+        {
+            TaskAnalysisPeriod.Year => 12,
+            TaskAnalysisPeriod.Month => 10,
+            _ => 7
+        };
+        var start = GetAnalysisPeriodStart();
+        var now = DateTimeOffset.Now;
+        var totalTicks = Math.Max(1L, now.UtcDateTime.Ticks - start.UtcDateTime.Ticks);
+        var buckets = Enumerable.Range(0, bucketCount)
+            .Select(index => new MutableTaskChartBucket(GetPeriodBucketLabel(index, bucketCount), 0m))
+            .ToArray();
+
+        foreach (var point in points)
+        {
+            var offsetTicks = Math.Clamp(point.Date.UtcDateTime.Ticks - start.UtcDateTime.Ticks, 0L, totalTicks);
+            var index = Math.Clamp((int)(offsetTicks * bucketCount / totalTicks), 0, bucketCount - 1);
+            buckets[index].Value++;
+        }
+
+        return buckets.Select(static bucket => new TaskChartBucket(bucket.Label, bucket.Value)).ToArray();
+    }
+
+    private static IReadOnlyList<TaskChartBucket> BuildMonthBuckets(IEnumerable<TaskHistoryPoint> points)
+    {
+        var now = DateTimeOffset.Now;
+        var monthStarts = Enumerable.Range(0, 6)
+            .Select(offset => new DateTime(now.Year, now.Month, 1).AddMonths(offset - 5))
+            .ToArray();
+        var buckets = monthStarts
+            .Select(month => new MutableTaskChartBucket(month.ToString("MMM", CultureInfo.CurrentCulture), 0m))
+            .ToArray();
+
+        foreach (var point in points)
+        {
+            var month = new DateTime(point.Date.ToLocalTime().Year, point.Date.ToLocalTime().Month, 1);
+            var index = Array.FindIndex(monthStarts, candidate => candidate == month);
+            if (index >= 0)
+            {
+                buckets[index].Value++;
+            }
+        }
+
+        return buckets.Select(static bucket => new TaskChartBucket(bucket.Label, bucket.Value)).ToArray();
+    }
+
+    private static string GetPeriodBucketLabel(int index, int count)
+    {
+        return count == 12
+            ? DateTimeOffset.Now.AddMonths(index - count + 1).ToString("MMM", CultureInfo.CurrentCulture)
+            : $"{index + 1}";
     }
 
     private bool IsTaskExpanded(string taskId)
@@ -708,6 +893,60 @@
         }
     }
 
+    private static RenderFragment RenderTaskHistoryHistogram(IReadOnlyList<TaskChartBucket> buckets, string title) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "article");
+        builder.AddAttribute(sequence++, "class", "task-chart-card");
+        builder.OpenElement(sequence++, "div");
+        builder.AddAttribute(sequence++, "class", "task-chart-head");
+        builder.OpenElement(sequence++, "strong");
+        builder.AddContent(sequence++, title);
+        builder.CloseElement();
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "dashboard-stat-note");
+        builder.AddContent(sequence++, $"{buckets.Sum(static bucket => bucket.Value):0} event(s)");
+        builder.CloseElement();
+        builder.CloseElement();
+        RenderBars(builder, ref sequence, buckets, "task-history-bars");
+        builder.CloseElement();
+    };
+
+    private static RenderFragment RenderMonthActivityChart(IReadOnlyList<TaskChartBucket> buckets, string title) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "article");
+        builder.AddAttribute(sequence++, "class", "task-chart-card compact-chart-card");
+        builder.OpenElement(sequence++, "strong");
+        builder.AddContent(sequence++, title);
+        builder.CloseElement();
+        RenderBars(builder, ref sequence, buckets, "task-month-activity-grid");
+        builder.CloseElement();
+    };
+
+    private static void RenderBars(RenderTreeBuilder builder, ref int sequence, IReadOnlyList<TaskChartBucket> buckets, string className)
+    {
+        var max = Math.Max(1m, buckets.Count == 0 ? 0m : buckets.Max(static bucket => bucket.Value));
+        builder.OpenElement(sequence++, "div");
+        builder.AddAttribute(sequence++, "class", className);
+        foreach (var bucket in buckets)
+        {
+            var percent = Math.Clamp(bucket.Value / max * 100m, 0m, 100m);
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "task-history-bar");
+            builder.AddAttribute(sequence++, "title", $"{bucket.Label}: {bucket.Value:0}");
+            builder.OpenElement(sequence++, "i");
+            builder.AddAttribute(sequence++, "style", $"height: {percent.ToString("0.##", CultureInfo.InvariantCulture)}%;");
+            builder.CloseElement();
+            builder.OpenElement(sequence++, "small");
+            builder.AddContent(sequence++, bucket.Label);
+            builder.CloseElement();
+            builder.CloseElement();
+        }
+
+        builder.CloseElement();
+    }
+
     private static string FormatGroupCount(int visibleCount, int totalCount)
     {
         return visibleCount == totalCount ? visibleCount.ToString(CultureInfo.InvariantCulture) : $"{visibleCount}/{totalCount}";
@@ -716,6 +955,21 @@
     private static string FormatTaskValue(decimal? value)
     {
         return value?.ToString("0.#", CultureInfo.InvariantCulture) ?? "Unknown";
+    }
+
+    private static string FormatSignedDecimal(decimal value)
+    {
+        return value > 0m ? $"+{value:0.#}" : value.ToString("0.#", CultureInfo.InvariantCulture);
+    }
+
+    private static string FormatAnalysisPeriod(TaskAnalysisPeriod period)
+    {
+        return period switch
+        {
+            TaskAnalysisPeriod.Month => "Last 30 days",
+            TaskAnalysisPeriod.Year => "Last year",
+            _ => "Last 7 days"
+        };
     }
 
     private static string FormatTaskType(TaskType taskType)
@@ -888,4 +1142,19 @@
     private sealed record TasksPagePreferences(
         Dictionary<string, bool> FoldedCategories,
         Dictionary<string, bool> ShowCompletedCategories);
+
+    private sealed record TaskChartBucket(string Label, decimal Value);
+
+    private sealed class MutableTaskChartBucket
+    {
+        public MutableTaskChartBucket(string label, decimal value)
+        {
+            Label = label;
+            Value = value;
+        }
+
+        public string Label { get; }
+
+        public decimal Value { get; set; }
+    }
 }

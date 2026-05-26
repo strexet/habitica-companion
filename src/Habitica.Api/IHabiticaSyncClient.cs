@@ -27,6 +27,12 @@ public interface IHabiticaSyncClient
 
     Task BuyHealthPotionAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 
+    Task SellInventoryItemAsync(
+        HabiticaCredentials credentials,
+        InventorySellItemType type,
+        string key,
+        CancellationToken cancellationToken);
+
     Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 
     Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);

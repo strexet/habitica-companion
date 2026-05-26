@@ -194,6 +194,56 @@ public sealed class TasksPageTests : BunitContext
     }
 
     [Fact]
+    public void Task_statistics_render_history_charts_for_selected_period()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new TaskListViewModelFactory());
+        Services.AddSingleton(new TaskOrderPlanner());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: false,
+                DisplayName: null,
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.UtcNow,
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(
+                    DateTimeOffset.UtcNow,
+                    new[]
+                    {
+                        new TaskSnapshot(
+                            "todo-history",
+                            "History task",
+                            TaskType.Todo,
+                            false,
+                            1m,
+                            null,
+                            DateTimeOffset.Now.Date,
+                            4m,
+                            History: new[]
+                            {
+                                new TaskHistoryPoint(DateTimeOffset.Now.AddDays(-2), 2m),
+                                new TaskHistoryPoint(DateTimeOffset.Now.AddDays(-1), 4m)
+                            })
+                    }))));
+
+        var cut = Render<TasksPage>();
+
+        Assert.Contains("Task statistics", cut.Markup);
+        Assert.Contains("Task-history histogram", cut.Markup);
+        Assert.Contains("Month activity", cut.Markup);
+
+        cut.Find("[data-testid='task-analysis-period']").Change("Month");
+        Assert.Contains("Last 30 days", cut.Markup);
+
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Details", StringComparison.Ordinal)).Click();
+        Assert.Contains("Task value history", cut.Markup);
+        Assert.Contains("Task month activity", cut.Markup);
+    }
+
+    [Fact]
     public async Task Task_drag_drop_persists_order_for_current_list()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

@@ -68,6 +68,10 @@ public sealed class HabiticaApiClientTests
                     "id": "challenge-1",
                     "taskId": "challenge-task-1"
                   },
+                  "history": [
+                    { "date": 1777046400000, "value": 12.5 },
+                    { "date": "2026-04-25T12:00:00.000Z", "value": 18.25 }
+                  ],
                   "date": "2026-04-24T12:00:00.000Z"
                 },
                 {
@@ -96,6 +100,9 @@ public sealed class HabiticaApiClientTests
         Assert.True(snapshot.Items[0].IsChallengeTask);
         Assert.True(snapshot.Items[0].SupportsPositiveScore.GetValueOrDefault());
         Assert.False(snapshot.Items[0].SupportsNegativeScore.GetValueOrDefault());
+        Assert.Equal(2, snapshot.Items[0].HistoryPoints.Count);
+        Assert.Equal(12.5m, snapshot.Items[0].HistoryPoints[0].Value);
+        Assert.Equal(DateTimeOffset.Parse("2026-04-25T12:00:00.000Z"), snapshot.Items[0].HistoryPoints[1].Date);
         Assert.Equal(TaskType.Daily, snapshot.Items[1].Type);
         Assert.True(snapshot.Items[1].IsCompleted);
         Assert.False(snapshot.Items[1].IsChallengeTask);
@@ -231,6 +238,9 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(new[] { "armor_wizard_4", "eyewear_special_1", "head_wizard_3", "shield_wizard_2", "weapon_wizard_5" }, snapshot.Inventory.OwnedGearKeys);
         Assert.Equal(1, snapshot.Inventory.EggCount);
         Assert.Equal(1, snapshot.Inventory.HatchingPotionCount);
+        Assert.Equal(2, snapshot.Inventory.Eggs["Wolf"]);
+        Assert.Equal(5, snapshot.Inventory.Food["Meat"]);
+        Assert.Equal(3, snapshot.Inventory.HatchingPotions["Base"]);
         Assert.Equal(1, snapshot.Inventory.OwnedPetCount);
         Assert.Equal(1, snapshot.Inventory.OwnedMountCount);
         Assert.Equal(DateTimeOffset.Parse("2026-04-24T08:00:00.000Z"), snapshot.LastCronUtc);
@@ -340,6 +350,32 @@ public sealed class HabiticaApiClientTests
         Assert.NotNull(capturedRequest);
         Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
         Assert.Equal("https://habitica.com/api/v3/tasks/task-123/score/down", capturedRequest.RequestUri!.ToString());
+        Assert.Null(capturedRequest.Content);
+    }
+
+    [Fact]
+    public async Task SellInventoryItemAsync_sends_supported_inventory_sell_request()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.SellInventoryItemAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            InventorySellItemType.Food,
+            "Saddle",
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/user/sell/food/Saddle", capturedRequest.RequestUri!.ToString());
         Assert.Null(capturedRequest.Content);
     }
 

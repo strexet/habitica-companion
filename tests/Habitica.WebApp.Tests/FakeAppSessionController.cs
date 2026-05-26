@@ -40,6 +40,10 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<(EquipmentSetKind Kind, GearSlotsSnapshot Slots, string OperationId, string Label)> EquipGearSlotsCalls { get; } = new();
 
+    public List<(EquipmentSetKind Kind, string Name, GearSlotsSnapshot Slots)> SavePresetWithSlotsCalls { get; } = new();
+
+    public List<(InventorySellItemType Type, string Key, int Count)> SellInventoryItemCalls { get; } = new();
+
     public List<SpellCastRequest> CastSpellCalls { get; } = new();
 
     public List<TaskScoreRequest> ScoreTaskCalls { get; } = new();
@@ -169,6 +173,16 @@ internal sealed class FakeAppSessionController : IAppSessionController
     {
         BuyHealthPotionCalls++;
         return Task.FromResult(InventoryActionResult.Success("Health potion bought."));
+    }
+
+    public Task<InventoryActionResult> SellInventoryItemAsync(
+        InventorySellItemType type,
+        string key,
+        int count,
+        CancellationToken cancellationToken = default)
+    {
+        SellInventoryItemCalls.Add((type, key, count));
+        return Task.FromResult(InventoryActionResult.Success("Inventory items sold."));
     }
 
     public Task InitializeAsync(CancellationToken cancellationToken = default)
@@ -426,6 +440,16 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task<InventoryActionResult> SaveEquipmentPresetAsync(EquipmentSetKind kind, string name, CancellationToken cancellationToken = default)
     {
         SavePresetCalls.Add((kind, name));
+        return Task.FromResult(InventoryActionResult.Success("Preset saved."));
+    }
+
+    public Task<InventoryActionResult> SaveEquipmentPresetAsync(
+        EquipmentSetKind kind,
+        string name,
+        GearSlotsSnapshot slots,
+        CancellationToken cancellationToken = default)
+    {
+        SavePresetWithSlotsCalls.Add((kind, name, slots));
         return Task.FromResult(InventoryActionResult.Success("Preset saved."));
     }
 

@@ -205,8 +205,76 @@ public sealed class InventoryViewModelFactory
             ClassName: ResolveClassName(key, catalog),
             Notes: ResolveNotes(key, catalog),
             TotalStats: CalculateStats(key, userClass, catalog),
+            BattleStatDelta: CalculateBattleDelta(key, slotTitle, userClass, battle, catalog),
             IsBattleEquipped: string.Equals(key, GetEquippedKey(slotTitle, battle), StringComparison.Ordinal),
             IsCostumeEquipped: string.Equals(key, GetEquippedKey(slotTitle, costume), StringComparison.Ordinal));
+    }
+
+    public EquipmentRecommendationViewModel CreateRecommendation(
+        UserSnapshot snapshot,
+        GearCatalogSnapshot? catalog,
+        EquipmentOptimizationGoal goal)
+    {
+        var ownedItems = snapshot.Inventory.OwnedGearKeys
+            .Where(key => !IsUnequippedBaseKey(key))
+            .Select(key => BuildGearItem(key, snapshot.ClassName, snapshot.Equipment.Battle, snapshot.Equipment.Costume, catalog))
+            .Where(IsMainGearItem)
+            .ToArray();
+
+        var recommendedSlots = new GearSlotsSnapshot(
+            PickBestSlot(ownedItems, "Head", goal)?.Key,
+            PickBestSlot(ownedItems, "Armor", goal)?.Key,
+            null,
+            null,
+            PickBestSlot(ownedItems, "Back", goal)?.Key,
+            PickBestSlot(ownedItems, "Head Accessory", goal)?.Key,
+            PickBestSlot(ownedItems, "Eyewear", goal)?.Key,
+            PickBestSlot(ownedItems, "Body", goal)?.Key);
+
+        var oneHandedWeapon = PickBestSlot(ownedItems, "Weapon", goal);
+        var shield = PickBestSlot(ownedItems, "Shield", goal);
+        var twoHandedWeapon = PickBestSlot(ownedItems, TwoHandedWeaponsSlotTitle, goal);
+        var oneHandedScore = ScoreStats(oneHandedWeapon?.TotalStats ?? GearStatBlock.Zero, goal)
+            + ScoreStats(shield?.TotalStats ?? GearStatBlock.Zero, goal);
+        var twoHandedScore = ScoreStats(twoHandedWeapon?.TotalStats ?? GearStatBlock.Zero, goal);
+
+        recommendedSlots = twoHandedWeapon is not null && twoHandedScore > oneHandedScore
+            ? recommendedSlots with { Weapon = twoHandedWeapon.Key, Shield = null }
+            : recommendedSlots with { Weapon = oneHandedWeapon?.Key, Shield = shield?.Key };
+
+        var recommendationItems = EnumerateSlots(recommendedSlots)
+            .Where(slot => !string.IsNullOrWhiteSpace(slot.Key))
+            .Select(slot => new EquipmentRecommendationItemViewModel(
+                SlotTitle: slot.SlotTitle,
+                Key: slot.Key!,
+                DisplayName: ResolveDisplayName(slot.Key!, catalog),
+                TotalStats: CalculateStats(slot.Key!, snapshot.ClassName, catalog)))
+            .ToArray();
+        var currentStats = BuildEquippedSet(EquipmentSetKind.Battle, snapshot.Equipment.Battle, snapshot.ClassName, catalog).TotalStats;
+        var recommendedStats = recommendationItems.Aggregate(GearStatBlock.Zero, (total, item) => total.Add(item.TotalStats));
+
+        return new EquipmentRecommendationViewModel(
+            goal,
+            GetGoalLabel(goal),
+            recommendedSlots,
+            recommendationItems,
+            currentStats,
+            recommendedStats,
+            recommendedStats.Subtract(currentStats),
+            recommendationItems.Count() > 0);
+    }
+
+    private static InventoryGearItemViewModel? PickBestSlot(
+        IReadOnlyList<InventoryGearItemViewModel> candidates,
+        string slotTitle,
+        EquipmentOptimizationGoal goal)
+    {
+        return candidates
+            .Where(item => string.Equals(item.SlotTitle, slotTitle, StringComparison.Ordinal))
+            .OrderByDescending(item => ScoreStats(item.TotalStats, goal))
+            .ThenByDescending(item => item.TotalStats.Strength + item.TotalStats.Intelligence + item.TotalStats.Constitution + item.TotalStats.Perception)
+            .ThenBy(item => item.DisplayName, StringComparer.OrdinalIgnoreCase)
+            .FirstOrDefault(item => ScoreStats(item.TotalStats, goal) > 0m);
     }
 
     private static bool IsMainGearItem(InventoryGearItemViewModel item)
@@ -244,6 +312,84 @@ public sealed class InventoryViewModelFactory
     private static bool IsUnequippedBaseKey(string key)
     {
         return key.EndsWith("_base_0", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static GearStatBlock CalculateBattleDelta(
+        string key,
+        string slotTitle,
+        string? userClass,
+        GearSlotsSnapshot battle,
+        GearCatalogSnapshot? catalog)
+    {
+        var currentStats = EnumerateSlots(battle)
+            .Where(slot => !string.IsNullOrWhiteSpace(slot.Key))
+            .Where(slot => !IsUnequippedBaseKey(slot.Key!))
+            .Aggregate(GearStatBlock.Zero, (total, slot) => total.Add(CalculateStats(slot.Key!, userClass, catalog)));
+        var nextSlots = ApplyBattleGearKey(battle, key, slotTitle, catalog);
+        var nextStats = EnumerateSlots(nextSlots)
+            .Where(slot => !string.IsNullOrWhiteSpace(slot.Key))
+            .Where(slot => !IsUnequippedBaseKey(slot.Key!))
+            .Aggregate(GearStatBlock.Zero, (total, slot) => total.Add(CalculateStats(slot.Key!, userClass, catalog)));
+
+        return nextStats.Subtract(currentStats);
+    }
+
+    private static GearSlotsSnapshot ApplyBattleGearKey(
+        GearSlotsSnapshot slots,
+        string key,
+        string slotTitle,
+        GearCatalogSnapshot? catalog)
+    {
+        return slotTitle switch
+        {
+            "Head" => slots with { Head = key },
+            "Head Accessory" => slots with { HeadAccessory = key },
+            "Eyewear" => slots with { Eyewear = key },
+            "Armor" => slots with { Armor = key },
+            "Body" => slots with { Body = key },
+            "Weapon" => slots with { Weapon = key },
+            "Shield" => IsTwoHanded(slots.Weapon, catalog)
+                ? slots with { Weapon = null, Shield = key }
+                : slots with { Shield = key },
+            TwoHandedWeaponsSlotTitle => slots with { Weapon = key, Shield = null },
+            "Back" => slots with { Back = key },
+            _ => slots
+        };
+    }
+
+    private static bool IsTwoHanded(string? key, GearCatalogSnapshot? catalog)
+    {
+        return !string.IsNullOrWhiteSpace(key)
+            && catalog?.Items.TryGetValue(key, out var item) == true
+            && item.TwoHanded;
+    }
+
+    private static decimal ScoreStats(GearStatBlock stats, EquipmentOptimizationGoal goal)
+    {
+        return goal switch
+        {
+            EquipmentOptimizationGoal.Strength => stats.Strength * 3m + stats.Constitution * 0.5m,
+            EquipmentOptimizationGoal.Intelligence => stats.Intelligence * 3m + stats.Perception * 0.5m,
+            EquipmentOptimizationGoal.Constitution => stats.Constitution * 3m + stats.Strength * 0.5m,
+            EquipmentOptimizationGoal.Perception => stats.Perception * 3m + stats.Intelligence * 0.5m,
+            EquipmentOptimizationGoal.BossDamage => stats.Strength * 2.5m + stats.Perception * 1.1m + stats.Constitution * 0.4m,
+            EquipmentOptimizationGoal.Survival => stats.Constitution * 2.4m + stats.Intelligence * 0.8m + stats.Strength * 0.6m,
+            _ => stats.Strength + stats.Intelligence + stats.Constitution + stats.Perception
+        };
+    }
+
+    private static string GetGoalLabel(EquipmentOptimizationGoal goal)
+    {
+        return goal switch
+        {
+            EquipmentOptimizationGoal.Strength => "Strength",
+            EquipmentOptimizationGoal.Intelligence => "Intelligence",
+            EquipmentOptimizationGoal.Constitution => "Constitution",
+            EquipmentOptimizationGoal.Perception => "Perception",
+            EquipmentOptimizationGoal.BossDamage => "Boss damage",
+            EquipmentOptimizationGoal.Survival => "Survival",
+            _ => "Balanced"
+        };
     }
 
     private static GearStatBlock CalculateStats(string key, string? userClass, GearCatalogSnapshot? catalog)
@@ -335,6 +481,7 @@ public sealed record InventoryGearItemViewModel(
     string? ClassName,
     string? Notes,
     GearStatBlock TotalStats,
+    GearStatBlock BattleStatDelta,
     bool IsBattleEquipped,
     bool IsCostumeEquipped);
 
@@ -358,6 +505,33 @@ public sealed record InventoryPresetViewModel(
     GearStatBlock TotalStats);
 
 public sealed record InventoryPresetItemViewModel(
+    string SlotTitle,
+    string Key,
+    string DisplayName,
+    GearStatBlock TotalStats);
+
+public enum EquipmentOptimizationGoal
+{
+    Balanced,
+    Strength,
+    Intelligence,
+    Constitution,
+    Perception,
+    BossDamage,
+    Survival
+}
+
+public sealed record EquipmentRecommendationViewModel(
+    EquipmentOptimizationGoal Goal,
+    string GoalLabel,
+    GearSlotsSnapshot Slots,
+    IReadOnlyList<EquipmentRecommendationItemViewModel> Items,
+    GearStatBlock CurrentStats,
+    GearStatBlock RecommendedStats,
+    GearStatBlock Delta,
+    bool HasRecommendation);
+
+public sealed record EquipmentRecommendationItemViewModel(
     string SlotTitle,
     string Key,
     string DisplayName,

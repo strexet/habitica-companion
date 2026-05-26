@@ -363,6 +363,19 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         using var _ = await SendForDocumentAsync(request, cancellationToken);
     }
 
+    public async Task SellInventoryItemAsync(
+        HabiticaCredentials credentials,
+        InventorySellItemType type,
+        string key,
+        CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(
+            HttpMethod.Post,
+            $"user/sell/{GetSellItemTypePath(type)}/{Uri.EscapeDataString(key)}",
+            credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
     public async Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
     {
         using var request = CreateRequest(HttpMethod.Get, "content?language=en", credentials);
@@ -499,7 +512,8 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             TryGetDecimal(task, "value", out var value) ? value : null,
             IsChallengeTask(task),
             GetOptionalNullableBoolean(task, "up"),
-            GetOptionalNullableBoolean(task, "down"));
+            GetOptionalNullableBoolean(task, "down"),
+            ParseTaskHistory(task));
     }
 
     private static bool IsChallengeTask(JsonElement task)
@@ -507,6 +521,60 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         var challenge = TryGetObject(task, "challenge");
         return challenge.ValueKind == JsonValueKind.Object
             && !string.IsNullOrWhiteSpace(GetOptionalString(challenge, "id"));
+    }
+
+    private static IReadOnlyList<TaskHistoryPoint> ParseTaskHistory(JsonElement task)
+    {
+        if (!task.TryGetProperty("history", out var history) || history.ValueKind != JsonValueKind.Array)
+        {
+            return Array.Empty<TaskHistoryPoint>();
+        }
+
+        var points = new List<TaskHistoryPoint>();
+        foreach (var item in history.EnumerateArray())
+        {
+            if (item.ValueKind != JsonValueKind.Object
+                || !TryParseTaskHistoryDate(item, out var date)
+                || !TryGetDecimal(item, "value", out var value))
+            {
+                continue;
+            }
+
+            points.Add(new TaskHistoryPoint(date, value));
+        }
+
+        return points
+            .OrderBy(static point => point.Date)
+            .ToArray();
+    }
+
+    private static bool TryParseTaskHistoryDate(JsonElement item, out DateTimeOffset date)
+    {
+        if (!item.TryGetProperty("date", out var property) || property.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined)
+        {
+            date = default;
+            return false;
+        }
+
+        if (property.ValueKind == JsonValueKind.Number && property.TryGetInt64(out var milliseconds))
+        {
+            date = DateTimeOffset.FromUnixTimeMilliseconds(milliseconds);
+            return true;
+        }
+
+        if (property.ValueKind == JsonValueKind.String
+            && DateTimeOffset.TryParse(
+                property.GetString(),
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
+                out var parsed))
+        {
+            date = parsed;
+            return true;
+        }
+
+        date = default;
+        return false;
     }
 
     private static InventorySnapshot MapInventory(JsonElement gear, JsonElement items)
@@ -527,7 +595,10 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             OwnedPetCount: CountPositiveEntries(TryGetObject(items, "pets")),
             OwnedMountCount: CountTrueEntries(TryGetObject(items, "mounts")),
             OwnedGearKeys: ownedGearKeys,
-            OwnedQuestScrolls: CountEntries(TryGetObject(items, "quests")));
+            OwnedQuestScrolls: CountEntries(TryGetObject(items, "quests")),
+            OwnedEggs: CountEntries(TryGetObject(items, "eggs")),
+            OwnedFood: CountEntries(TryGetObject(items, "food")),
+            OwnedHatchingPotions: CountEntries(TryGetObject(items, "hatchingPotions")));
     }
 
     private static PartyMemberSnapshot MapPartyMember(JsonElement member, DateTimeOffset retrievedAtUtc)
@@ -1376,6 +1447,17 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         }
 
         return null;
+    }
+
+    private static string GetSellItemTypePath(InventorySellItemType type)
+    {
+        return type switch
+        {
+            InventorySellItemType.Egg => "eggs",
+            InventorySellItemType.Food => "food",
+            InventorySellItemType.HatchingPotion => "hatchingPotions",
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, "Unsupported sell item type.")
+        };
     }
 
     private static int GetOptionalInt32(JsonElement element, string propertyName)

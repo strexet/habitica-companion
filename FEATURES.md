@@ -1655,6 +1655,8 @@ Current implementation:
 - authenticated drawer order is `Dashboard`, `Tasks`, `Inventory`, `Party`, `Spells`, `Settings`, `Diagnostics`;
 - top app bar with refresh action, active refresh count, cloud sync state, and latest sync timestamp fallback;
 - responsive drawer navigation shown only after authentication;
+- dashboard navigation cards for Tasks, Inventory, Party, and Spells;
+- stable Habitica web links for known web routes with no mobile deep links or custom schemes;
 - shared error banner;
 - cached identity summary in the app shell;
 - diagnostics route included in the authenticated drawer.
@@ -1881,7 +1883,12 @@ slot-grouped obtained gear panels
 folded cosmetic/no-stat item panels grouped by item type
 human-readable gear names with raw-key fallback
 gear stat totals
+before/after battle stat deltas for equip candidates
+equipment optimizer goal selector and recommendation preview
+optimizer recommendation preset save controls
 owned gear counts
+bulk sell planner for eggs, food, and hatching potions
+bulk sell safe/unsafe explanation rows
 companion summary
 freshness banner
 empty-state messaging
@@ -1908,10 +1915,11 @@ Current requests:
 ```text
 GET /content?language=en
 POST /user/equip/equipped/:key
+POST /user/sell/:type/:key
 GET /user
 ```
 
-After every successful equip mutation, refresh `/user` and save the refreshed snapshot before updating visible equipped state.
+After every successful equip or sell mutation, refresh `/user` and save the refreshed snapshot before updating visible equipped or inventory state.
 
 ### Algorithm / rules
 
@@ -1938,6 +1946,16 @@ Current view-model rules:
 18. Render each battle preset with its id, compact saved item views, small battle equip buttons for individual preset items, and total battle stats.
 19. Stack battle preset cards vertically at full content width.
 20. Highlight the highest positive visible stat values on battle gear, best-in-category items, normal equipment cards, and saved preset item cards; tied highest stats are highlighted together.
+21. For individual battle equip candidates, show the stat delta compared with the current battle loadout after applying that item. Two-handed weapons clear the shield slot for the comparison.
+22. Build optimizer recommendations from owned stat-bearing battle gear using the selected goal: Balanced, Strength, Intelligence, Constitution, Perception, Boss damage, or Survival.
+23. Score one-handed weapon plus shield against two-handed weapon as a pair and clear the shield when the two-handed recommendation wins.
+24. Let users equip optimizer recommendations through the same sequential slot equip flow used by presets.
+25. Let users save optimizer recommendations as local battle presets with explicit names.
+26. Snapshot eggs, food, and hatching potion counts by key in addition to aggregate counts.
+27. The bulk sell planner only plans Habitica-supported sell categories: eggs, food, and hatching potions.
+28. Bulk sell planning keeps the configured keep count, marks surplus as safe, marks at-or-below-threshold items unsafe, and explains every row.
+29. Bulk sell execution requires an explicit confirmation after preview and sells only safe surplus items.
+30. Each sell action validates cached ownership, executes the configured count sequentially with request pacing, refreshes `/user`, writes diagnostics, and leaves cached data visible on failure.
 ```
 
 Equip action rules:
@@ -1972,16 +1990,18 @@ Show explicit states for:
 - missing owned gear for equip targets;
 - unequipped-slot marker keys such as `back_base_0`;
 - missing authenticated credentials for mutating actions.
+- bulk sell count greater than the cached owned count;
+- unsupported inventory categories for sell planning.
 
 ### Error handling
 
 Show cached inventory/equipment data even when a previous refresh attempt failed.
 
-Equip failures leave cached state visible, write an `Inventory` diagnostics log entry, and show snackbar feedback.
+Equip and bulk sell failures leave cached state visible, write an `Inventory` diagnostics log entry, and show snackbar feedback. Partial bulk sell failures report completed/requested counts.
 
 ### Security / privacy
 
-Do not expose raw credentials or request headers. Diagnostics metadata may include preset ids, preset names, previous preset names, item keys, equipment kind, changed slot counts, skipped slot counts, request counts, and failed slot names, but never API tokens.
+Do not expose raw credentials or request headers. Diagnostics metadata may include preset ids, preset names, previous preset names, item keys, equipment kind, sell item type, changed slot counts, skipped slot counts, completed/requested counts, request counts, and failed slot names, but never API tokens.
 
 ### Tests
 
@@ -1992,6 +2012,11 @@ Test:
 - catalog name resolution and raw-key fallback;
 - current-class stat totals;
 - battle preset stat totals;
+- before/after battle stat deltas;
+- optimizer goal recommendation and two-handed handling;
+- optimizer equip/save actions;
+- bulk sell preview and confirmation;
+- bulk sell session refresh/logging;
 - local per-user preset storage and duplicate-name validation;
 - stable preset ids and preset rename;
 - preset removal;
@@ -2380,6 +2405,7 @@ task freshness state
 search text
 selected task types
 sort mode
+task statistics period
 per-category folded preferences
 per-category completed visibility preferences
 per-task-type display order preferences
@@ -2403,6 +2429,10 @@ sort control
 inline task scoring/checkoff controls
 habit multi-score progress
 task detail panel
+task statistics summary
+task-history histogram
+month activity chart
+expanded task compact activity charts
 drag-handle task reordering
 task-card move to top/up/down/bottom controls
 empty-state messaging
@@ -2451,6 +2481,10 @@ Current view-model rules:
 15. Drag reordering is scoped to the current task type group and preserves hidden or completed items that are filtered out of the visible subset.
 16. Focused drag handles support arrow-key reordering through the same local ordering path for keyboard precision.
 17. Each task card also renders move to top, move up, move down, and move to bottom buttons that use the same local ordering path and disable edge moves that would not change the visible order.
+18. Parse cached task history points when Habitica returns them and keep them attached to task snapshots.
+19. Let users switch task statistics between week, month, and year periods.
+20. Render aggregate task-history and month-activity charts from cached history without requiring a live refresh.
+21. Render smaller history and month-activity charts inside expanded task details only, so task cards remain scannable by default.
 ```
 
 ### Validation
@@ -2483,6 +2517,8 @@ Test:
 - persisted user task-page preferences;
 - numeric task value rendering;
 - type filtering;
+- week/month/year task statistics;
+- task-history and month activity chart rendering;
 - explicit sort modes;
 - drag-handle task reordering;
 - persisted per-type task order;

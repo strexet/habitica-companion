@@ -273,6 +273,39 @@ public sealed class InventoryViewModelFactoryTests
         Assert.Equal(GearStatBlock.Zero, costumePreset.TotalStats);
     }
 
+    [Fact]
+    public void CreateRecommendation_scores_goal_and_respects_two_handed_weapon_tradeoff()
+    {
+        var factory = new InventoryViewModelFactory();
+        var snapshot = CreateSnapshot("warrior") with
+        {
+            Inventory = new InventorySnapshot(
+                1,
+                5,
+                1,
+                1,
+                1,
+                1,
+                new[] { "weapon_one_handed", "weapon_two_handed", "shield_con", "head_str" })
+        };
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["weapon_one_handed"] = new("weapon_one_handed", "Sword", "Weapon", "warrior", null, new GearStatBlock(8m, 0m, 0m, 0m)),
+                ["weapon_two_handed"] = new("weapon_two_handed", "Greatsword", "Weapon", "warrior", null, new GearStatBlock(18m, 0m, 0m, 0m), true),
+                ["shield_con"] = new("shield_con", "Tower Shield", "Shield", "special", null, new GearStatBlock(0m, 0m, 10m, 0m)),
+                ["head_str"] = new("head_str", "Horned Helm", "Head", "warrior", null, new GearStatBlock(4m, 0m, 0m, 0m))
+            });
+
+        var recommendation = factory.CreateRecommendation(snapshot, catalog, EquipmentOptimizationGoal.Strength);
+
+        Assert.Equal("weapon_two_handed", recommendation.Slots.Weapon);
+        Assert.Null(recommendation.Slots.Shield);
+        Assert.Contains(recommendation.Items, item => item.Key == "head_str");
+        Assert.True(recommendation.Delta.Strength > 0m);
+    }
+
     private static UserSnapshot CreateSnapshot(string className)
     {
         return new UserSnapshot(

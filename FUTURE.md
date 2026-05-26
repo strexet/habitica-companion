@@ -104,40 +104,17 @@ Acceptance:
 
 These entries are lower priority but already merged from the historical plans. Before coding, split a broad bullet into the same `Goal / Touch / Out of scope / Acceptance / UX-UI reference` shape used above.
 
-### Tasks Page Enhancements
-
-- Add week/month/year period selector for task statistics.
-- Add task-history histogram and month activity chart on the Tasks page.
-- Add a smaller activity chart inside expanded task details.
-
-### Dashboard Navigation And Habitica Links
-
-- Add dashboard section cards with direct navigation.
-- Add an Open Habitica button and context-sensitive Habitica web links where stable URLs are known; follow `docs/HABITICA_DEEPLINKS.md` and do not add mobile app deep links or custom-scheme fallbacks.
-
 ### Advanced Party Quest Features
 
 - Add optional limited vote budgets only if requested as an advanced voting mode.
 - Add historical quest analytics beyond the recent-completion list and soft queue penalty.
 - Split current party quest state and queue planning into clearer modes, such as tabs or a segmented switch.
 
-### Gear And Equipment Planning
-
-- Add inventory before/after stat deltas for equip actions.
-- Add equipment optimization for goals such as Perception, Strength, balanced stats, boss damage, and survival.
-- Allow saving optimizer recommendations as named gear sets or presets.
-
 ### Skill Macros
 
 - Add a macro collection for predefined skill/equipment sequences.
 - Add dry-run previews with planned equipment changes, target selection, mana cost, expected requests, warnings, and stop conditions.
 - Keep macro execution sequential and stop on validation failures or unexpected state changes.
-
-### Bulk Sell Planner
-
-- Add a bulk sell helper that identifies items likely safe to sell.
-- Include explanation for why each item is considered safe or unsafe.
-- Require preview and explicit confirmation before any sell action.
 
 ### Action Result Estimates
 

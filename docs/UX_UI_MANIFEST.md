@@ -83,6 +83,7 @@ Layout rules:
 Current placement:
 
 - Dashboard: companion summary shows current pet and mount thumbnails when available. Inventory summary uses small official category icons for eggs, food, hatching potions, and quest scroll counts. Pending quest damage remains text-only so it does not crowd Start New Day and stat allocation action rows.
+- Dashboard navigation cards use stable local routes plus stable Habitica web URLs only; do not add mobile app deep links or custom schemes.
 - Tasks: keep task cards primarily text and control driven. Use Habitica art only for explicit reward/item/quest targets added by a future feature. Task type/status affordances may use simple UI icons, not game art.
 - Inventory: gear thumbnails appear in battle loadout slots, best-in-category entries, expanded gear cards, accessory cards, and saved preset items. Fixed identity columns keep slot labels, class text, stat pills, and equip actions aligned. Summary cards use compact item icons with readable counts.
 - Party: active quest cards use a prominent quest art slot near the quest title. Queue, pool, and recent quest records use smaller quest scroll thumbnails while owner, vote, invite, and cancel controls stay in their own rows. Member cards do not invent avatar art.
@@ -181,6 +182,7 @@ Files: `src/Habitica.WebApp/Pages/TasksPage.razor`
 Current pattern:
 
 - Cached task groups with search, type filters, sort control, collapse controls, completed toggle, task cards, state pills, and metadata.
+- Week/month/year task statistics with aggregate history and month-activity charts.
 - Due dates render as readable local date labels such as Today, Tomorrow, Yesterday, or a local calendar date instead of UTC-style timestamps.
 - Task mutation controls stay inline with the affected task, show disabled reasons from freshness/auth state, and use visible progress for repeated Habit scoring.
 - Task details expand inside the card and show cached metadata without navigating away from the current scan position.
@@ -197,7 +199,7 @@ What works:
 Drift:
 
 - Completed/open state is clear, but task type and Habitica color/value meaning rely on surrounding group context.
-- The task history/statistics surface is still shallow; details currently expose cached metadata rather than week/month/year behavior charts.
+- Task history now has aggregate and expanded-card charts, but advanced filters such as due-window and value-polarity filters are still future work.
 
 Comparable apps:
 
@@ -213,7 +215,7 @@ Improvement:
 
 - Add status, due-window, and value-polarity filters once the type/sort row proves stable.
 - Add exact due timestamps as secondary detail only where precision matters.
-- Add task history charts in expanded details without making each card visually heavy by default.
+- Keep task history charts compact, aggregate by default, and render per-task charts only inside expanded details.
 - For drag-and-drop task ordering, make reordering available only where manual order is the active ordering model, or clearly explain why a visible sorted/filtered view cannot accept a drop at that position.
 - Use an explicit drag handle, lift state, insertion marker, and invalid-drop feedback so task cards do not feel like they can be accidentally dragged while selecting text, expanding details, or pressing score controls.
 - Keep keyboard and single-pointer reorder alternatives available; the current Tasks page drag handle supports arrow-key reordering, and each task card exposes compact move-to-top, move-up, move-down, and move-to-bottom buttons.
@@ -226,6 +228,7 @@ Files: `src/Habitica.WebApp/Pages/InventoryPage.razor`
 Current pattern:
 
 - Summary cards, battle loadout, preset save/restore, best-in-category strip, collapsible other items, stat-bearing accessory groups, and folded cosmetic/no-stat groups.
+- Equipment optimizer with goal selector, before/after stat deltas, recommendation equip/save actions, and a bulk sell planner for supported item categories.
 - Responsive `auto-fit` grids and `overflow-wrap` for long gear names.
 
 What works:
@@ -242,7 +245,8 @@ Drift:
 
 Improvement:
 
-- Add before/after stat deltas to equip actions when possible.
+- Keep before/after stat deltas close to equip actions and optimizer recommendations.
+- Keep bulk sell as a preview-and-confirm workflow with safe/unsafe explanations; do not hide the stale/fresh account data requirement.
 - Avoid duplicated slot/class text inside the same gear card.
 - Consider a compact comparison drawer for selected gear rather than expanding every item.
 

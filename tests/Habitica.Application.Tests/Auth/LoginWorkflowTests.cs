@@ -148,6 +148,15 @@ public sealed class LoginWorkflowTests
             return Task.CompletedTask;
         }
 
+        public Task SellInventoryItemAsync(
+            HabiticaCredentials credentials,
+            InventorySellItemType type,
+            string key,
+            CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
         public Task<GearCatalogSnapshot> GetContentCatalogAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             return Task.FromResult(new GearCatalogSnapshot(DateTimeOffset.UtcNow, new Dictionary<string, GearCatalogItem>()));
