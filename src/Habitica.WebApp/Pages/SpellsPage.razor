@@ -38,64 +38,6 @@
             @GetFreshnessLabel(SessionController.State.UserFreshness)
         </MudAlert>
 
-        <section class="spell-mana-bar" aria-label="Available mana">
-            <div>
-                <span class="dashboard-stat-label">Available mana</span>
-                <strong>@FormatDecimal(viewModel.Mana) MP</strong>
-            </div>
-            <div class="spell-mana-bar-meter" aria-hidden="true">
-                <span style="@GetManaWidthStyle(viewModel.Mana, viewModel.MaxMana)"></span>
-            </div>
-            <span class="dashboard-stat-note">Max @FormatDecimal(viewModel.MaxMana) MP</span>
-        </section>
-
-        @if (SessionController.State.PartySnapshot?.Quest is { } quest)
-        {
-            <section class="spells-summary-grid compact-summary-grid">
-                <article class="dashboard-stat-card">
-                    <span class="dashboard-stat-label">Quest</span>
-                    <strong>@GetQuestTitle(quest)</strong>
-                    <span class="dashboard-stat-note">@(quest.IsActive ? "Active" : "Inactive")</span>
-                </article>
-                <article class="dashboard-stat-card">
-                    <span class="dashboard-stat-label">Current progress</span>
-                    <strong>@FormatQuestMetric(quest.AppliedProgress)</strong>
-                    <span class="dashboard-stat-note">@quest.AppliedProgress?.Label</span>
-                </article>
-                <article class="dashboard-stat-card">
-                    <span class="dashboard-stat-label">Your pending</span>
-                    <strong>@FormatQuestMetric(quest.PendingUserProgress)</strong>
-                    <span class="dashboard-stat-note">@quest.PendingUserProgress?.Label</span>
-                </article>
-                <article class="dashboard-stat-card">
-                    <span class="dashboard-stat-label">Party pending</span>
-                    <strong>@FormatQuestMetric(quest.PendingPartyProgress)</strong>
-                    <span class="dashboard-stat-note">@quest.PendingPartyProgress?.Label</span>
-                </article>
-            </section>
-        }
-
-        <section class="spells-summary-grid compact-summary-grid">
-            <article class="dashboard-stat-card">
-                <span class="dashboard-stat-label">Class</span>
-                <strong>@FormatReadableName(viewModel.ClassName)</strong>
-                <span class="dashboard-stat-note">Level @viewModel.Level</span>
-            </article>
-            <article class="dashboard-stat-card">
-                <span class="dashboard-stat-label">MP</span>
-                <strong>@FormatDecimal(viewModel.Mana) / @FormatDecimal(viewModel.MaxMana)</strong>
-                <span class="dashboard-stat-note">Available mana</span>
-            </article>
-            @if (viewModel.IsStatAllocationUnlocked && viewModel.UnallocatedStatPoints > 0)
-            {
-                <article class="dashboard-stat-card warning-card">
-                    <span class="dashboard-stat-label">Stat points</span>
-                    <strong>@viewModel.UnallocatedStatPoints</strong>
-                    <a class="dashboard-stat-note" href="/dashboard#stats">Allocate on Dashboard</a>
-                </article>
-            }
-        </section>
-
         @if (viewModel.Spells.Count == 0)
         {
             <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
@@ -116,6 +58,10 @@
                     var totalMana = spell.ManaCost * count;
                     var hasEnoughMana = totalMana <= viewModel.Mana;
                     var manaAfterCast = viewModel.Mana - totalMana;
+                    var bossQuestContext = GetBossQuestContext(SessionController.State.PartySnapshot?.Quest, spell);
+                    var showStatPointContext = viewModel.IsStatAllocationUnlocked
+                        && viewModel.UnallocatedStatPoints > 0
+                        && spell.HasStatPointContext;
                     var castDisabled = !canMutate
                         || !spell.IsUnlocked
                         || !hasEnoughMana
@@ -136,6 +82,27 @@
                                 <span class="ui-pill @(spell.IsUnlocked ? "success-pill" : "warning-pill")">@spell.AvailabilityLabel</span>
                             </div>
                         </div>
+
+                        @if (bossQuestContext is not null)
+                        {
+                            <div class="spell-card-section spell-effect-preview" data-testid="@($"spell-boss-context-{spell.Id}")">
+                                <p class="section-label">Boss quest</p>
+                                <p>
+                                    @GetQuestTitle(bossQuestContext.Quest): @FormatQuestMetric(bossQuestContext.BossProgress).
+                                    Party pending: @FormatQuestMetric(bossQuestContext.PendingPartyDamage).
+                                </p>
+                            </div>
+                        }
+
+                        @if (showStatPointContext)
+                        {
+                            <div class="spell-card-section spell-effect-preview" data-testid="@($"spell-stat-context-{spell.Id}")">
+                                <p class="section-label">Stat points</p>
+                                <p>
+                                    @viewModel.UnallocatedStatPoints unspent. <a href="/dashboard#stats">Allocate on Dashboard</a> before casting if you want this estimate to include them.
+                                </p>
+                            </div>
+                        }
 
                         <div class="spell-card-section spell-cast-section">
                             <div class="spell-cast-controls">
@@ -586,6 +553,80 @@
             : $"{value}/{FormatDecimal(metric.Total.Value)} {metric.Unit}";
     }
 
+    private static SpellBossQuestContext? GetBossQuestContext(PartyQuestSnapshot? quest, SpellCardViewModel spell)
+    {
+        if (quest is null
+            || !quest.IsActive
+            || !IsBossQuest(quest)
+            || !CanDamageBoss(spell))
+        {
+            return null;
+        }
+
+        var bossProgress = GetBossProgress(quest);
+        var pendingPartyDamage = GetPendingPartyDamage(quest);
+        return bossProgress is null || pendingPartyDamage is null
+            ? null
+            : new SpellBossQuestContext(quest, bossProgress, pendingPartyDamage);
+    }
+
+    private static bool IsBossQuest(PartyQuestSnapshot quest)
+    {
+        return quest.QuestType == PartyQuestType.Boss
+            || quest.BossHealthRemaining is not null
+            || string.Equals(quest.AppliedProgress?.Unit, "hp", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool CanDamageBoss(SpellCardViewModel spell)
+    {
+        return spell.EstimatedEffectValues.Any(static value => string.Equals(value.Unit, "boss damage", StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static PartyQuestMetricSnapshot? GetBossProgress(PartyQuestSnapshot quest)
+    {
+        if (quest.AppliedProgress is not null)
+        {
+            return quest.AppliedProgress;
+        }
+
+        if (quest.BossHealthRemaining is not null)
+        {
+            return new PartyQuestMetricSnapshot(
+                "Current boss HP",
+                quest.BossHealthRemaining.Value,
+                quest.BossHealthTotal,
+                "hp");
+        }
+
+        return null;
+    }
+
+    private static PartyQuestMetricSnapshot? GetPendingPartyDamage(PartyQuestSnapshot quest)
+    {
+        if (quest.PendingPartyProgress is not null
+            && string.Equals(quest.PendingPartyProgress.Unit, "damage", StringComparison.OrdinalIgnoreCase))
+        {
+            return quest.PendingPartyProgress;
+        }
+
+        if (quest.TotalPendingDamage is not null)
+        {
+            return new PartyQuestMetricSnapshot("Pending party damage", quest.TotalPendingDamage.Value, null, "damage");
+        }
+
+        if (quest.PendingPartyDamage is not null)
+        {
+            return new PartyQuestMetricSnapshot("Pending party damage", quest.PendingPartyDamage.Value, null, "damage");
+        }
+
+        if (quest.PendingDamage is not null)
+        {
+            return new PartyQuestMetricSnapshot("Pending party damage", quest.PendingDamage.Value, null, "damage");
+        }
+
+        return null;
+    }
+
     private static string GetQuestTitle(PartyQuestSnapshot quest)
     {
         return string.IsNullOrWhiteSpace(quest.Name) ? "Current quest" : quest.Name;
@@ -653,6 +694,11 @@
     private sealed record PendingSpellCast(
         string SpellId,
         SpellCastRequest Request);
+
+    private sealed record SpellBossQuestContext(
+        PartyQuestSnapshot Quest,
+        PartyQuestMetricSnapshot BossProgress,
+        PartyQuestMetricSnapshot PendingPartyDamage);
 
     private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)
     {

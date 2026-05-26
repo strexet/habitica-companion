@@ -520,6 +520,7 @@ current battle gear
 user class and level
 current mana and stat points
 current buffs
+current active boss quest progress and party pending damage
 ```
 
 ### Outputs
@@ -529,6 +530,8 @@ class spell cards
 spell availability and mana costs
 default target task for task-targeted spells
 approximate spell result
+card-local boss quest context for boss-damage spells
+card-local unspent stat context for stat-sensitive spells
 dynamic equipment recommendations
 cast progress state
 Dashboard stat table with base, equipment, buffs, and effective values
@@ -568,6 +571,8 @@ Unlock levels are 11, 12, 13, and 14 within each class. Locked spells render wit
 Task-targeting spells default to the eligible non-reward, non-challenge task with the highest Habitica task `value`/cached task value, displayed as the selected target in the spell description. The user can choose another eligible habit, daily, or to-do from a selector ordered by descending task value with the value printed next to each task. Checked-off Dailies remain eligible because they can still receive task-targeted skills for the day. Completed To-Dos are excluded to avoid surfacing finished one-time work. Reward tasks are not valid skill targets, and challenge tasks are excluded because Habitica does not allow casting skills on challenge tasks. Spells that target self, party, or all tasks do not show a target selector.
 
 Effect estimates are approximation-based. Initial formulas are based on Habitica source spell definitions and cross-checked against the stable Habitica User Data Display Tool's Skills and Buffs behavior. Task spell estimates use the selected task's cached `value`, not task priority. Current spell estimates use base stats plus current battle gear plus the Habitica level bonus plus buffs; unbuffed buff spells use base stats plus current battle gear plus the Habitica level bonus. When Auto equip is enabled, the preview uses the selected dynamic recommendation's battle gear slots as though they were already equipped. Estimates must remain labeled approximate until verified directly against live Habitica behavior for the current source version.
+
+The page does not render top summary cards for class, MP, stat points, or quest state. Mana is shown inside each spell's cast preview. Active boss quest progress and party pending damage render only inside spell cards whose estimate includes boss damage, such as Burst of Flames and Brutal Smash. Unspent stat points render only inside spell cards with stat-sensitive estimates and only when stat allocation is unlocked.
 
 Each spell card owns its dynamic equipment recommendations. Recommendations are transient and not saved as user presets. For spells with one relevant stat, show a primary-stat recommendation. For spells with multiple relevant stats, show primary/secondary stat recommendations and a balanced recommendation. Recommendations include stat-bearing battle accessories such as Head Accessory, Eyewear, Body, and Back. If every non-empty recommended gear slot is already equipped in battle gear, its button is disabled and labeled `Equipped`. Weapon and shield are selected as a pair that honors the catalog `twoHanded` flag: a two-handed weapon is recommended only when its score exceeds the combined score of the best one-handed weapon and the best shield for the same stat priority, and the shield slot is left empty when the two-handed weapon wins. Ties keep the one-handed weapon plus shield.
 

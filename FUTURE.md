@@ -59,29 +59,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Spells Summary Field Cleanup
-
-Goal: remove irrelevant top-of-page spell summary fields and move conditional context into spell cards where it helps the action.
-
-Touch:
-- `src/Habitica.Rules/Spells`
-- `src/Habitica.WebApp/Pages/SpellsPage.razor`
-- direct tests under `tests/Habitica.Rules.Tests/Spells/SpellViewModelFactoryTests.cs` and `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs`
-- `docs/UX_UI_MANIFEST.md`
-- `FEATURES.md`
-
-Out of scope:
-- changing spell target recommendation formulas;
-- compact spell-card redesign beyond fields needed for this cleanup.
-
-Acceptance:
-- Top spell summary no longer shows duplicated or irrelevant fields: available mana, quest, current progress, your pending, party pending, class, MP, and stat points.
-- Boss progress and party pending damage appear only on damaging spell cards when an active boss quest makes them relevant, merged into one concise info block.
-- Stat-point context appears only on spell cards that can grant XP or otherwise make unspent points actionable, and only when stat allocation is unlocked.
-- Existing spell casting warnings and resource checks still render in their current action flow.
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` spells sections.
-
 ### Party Queue Control Completion
 
 Goal: finish the remaining shared quest queue controls now that the base pool, queue, voting, recent-completion, and quest-start path exist.

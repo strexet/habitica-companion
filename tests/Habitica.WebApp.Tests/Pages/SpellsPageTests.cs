@@ -1,4 +1,5 @@
 using Bunit;
+using Habitica.Domain.Party;
 using Habitica.Domain.Sync;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
@@ -27,9 +28,9 @@ public sealed class SpellsPageTests : BunitContext
 
         Assert.Contains("Spells", cut.Markup);
         Assert.Contains("MP", cut.Markup);
-        Assert.Contains("33.5 / 40", cut.Markup);
-        Assert.Contains("Available mana", cut.Markup);
-        Assert.Contains("Max 40 MP", cut.Markup);
+        Assert.DoesNotContain("33.5 / 40", cut.Markup);
+        Assert.DoesNotContain("Available mana", cut.Markup);
+        Assert.DoesNotContain("Max 40 MP", cut.Markup);
         Assert.Contains("Burst of Flames", cut.Markup);
         Assert.Contains("shop_fireball.png", cut.Markup);
         Assert.Contains("Ethereal Surge", cut.Markup);
@@ -42,6 +43,10 @@ public sealed class SpellsPageTests : BunitContext
         Assert.Contains("Maximize INT", cut.Markup);
         Assert.Contains("shop_weapon_int.png", cut.Markup);
         Assert.Contains("Equipped", cut.Markup);
+        Assert.NotNull(cut.Find("[data-testid='spell-stat-context-fireball']"));
+        Assert.NotNull(cut.Find("[data-testid='spell-stat-context-mpheal']"));
+        Assert.NotNull(cut.Find("[data-testid='spell-stat-context-earth']"));
+        Assert.Empty(cut.FindAll("[data-testid='spell-stat-context-frost']"));
     }
 
     [Fact]
@@ -66,6 +71,47 @@ public sealed class SpellsPageTests : BunitContext
 
         Assert.DoesNotContain("Stat points", cut.Markup);
         Assert.DoesNotContain("Allocate on Dashboard", cut.Markup);
+    }
+
+    [Fact]
+    public void Boss_quest_context_renders_only_on_damaging_spell_cards()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var state = CreateState() with
+        {
+            PartySnapshot = new PartySnapshot(
+                DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+                "party-1",
+                "Night Owls",
+                null,
+                2,
+                new PartyQuestSnapshot(
+                    "dragon",
+                    true,
+                    0m,
+                    0m,
+                    2,
+                    BossHealthRemaining: 875m,
+                    BossHealthTotal: 1000m,
+                    TotalPendingDamage: 42.75m,
+                    QuestType: PartyQuestType.Boss,
+                    Name: "Dragon Quest"),
+                Array.Empty<PartyMemberSnapshot>())
+        };
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(state));
+
+        var cut = Render<SpellsPage>();
+
+        Assert.NotNull(cut.Find("[data-testid='spell-boss-context-fireball']"));
+        Assert.Empty(cut.FindAll("[data-testid='spell-boss-context-mpheal']"));
+        Assert.Empty(cut.FindAll("[data-testid='spell-boss-context-earth']"));
+        Assert.Empty(cut.FindAll("[data-testid='spell-boss-context-frost']"));
+        Assert.Contains("Dragon Quest: 875/1000 hp", cut.Markup);
+        Assert.Contains("Party pending: 42.75 damage", cut.Markup);
+        Assert.DoesNotContain("Your pending", cut.Markup);
     }
 
     [Fact]

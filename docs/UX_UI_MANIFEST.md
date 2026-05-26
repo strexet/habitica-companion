@@ -286,15 +286,16 @@ Files: `src/Habitica.WebApp/Pages/SpellsPage.razor`, `src/Habitica.WebApp/wwwroo
 
 Current pattern after the latest UI pass:
 
-- Sticky available mana bar with current/max MP and a meter.
-- Spell cards with stable summary, cost/availability pills, count/target input zone, mana spent/available/after-cast preview, auto-equip toggle, cast button, progress bars, effect preview, and equipment recommendations.
+- Spell cards with stable summary, cost/availability pills, count/target input zone, mana spent/available/after-cast preview, auto-equip toggle, cast button, progress bars, card-local quest/stat context, effect preview, and equipment recommendations.
 - Cron-sensitive stat buffs show an inline warning inside the spell card when the user has not started the current Habitica day. The warning offers Cancel, Cast anyway, and Start New Day and Cast, plus local per-day suppression.
 - Responsive two-zone layout: variable user inputs on the left, mana/action status on the right; stacks at narrower widths.
 
 What works:
 
-- Available mana is always visible while evaluating spells.
+- Available mana is visible on each spell card while evaluating a cast.
 - Mana spent and after-cast value provide before/after feedback before the user commits.
+- Boss quest progress and party pending damage stay inside spell cards that can affect boss damage instead of a top-page quest summary.
+- Unspent stat points appear only on stat-sensitive spell cards when allocation is unlocked.
 - Unaffordable spell counts show a local reason in the mana preview instead of relying only on a disabled Cast button.
 - Determinate progress bars match the known cast/equip counts.
 - Auto-equip remains close to Cast without stealing space from target selection.

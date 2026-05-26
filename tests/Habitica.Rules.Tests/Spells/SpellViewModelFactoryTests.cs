@@ -20,6 +20,8 @@ public sealed class SpellViewModelFactoryTests
         Assert.True(viewModel.Spells.Single(spell => spell.Id == "mpheal").IsUnlocked);
         Assert.False(viewModel.Spells.Single(spell => spell.Id == "earth").IsUnlocked);
         Assert.Equal("Unlocks at level 13", viewModel.Spells.Single(spell => spell.Id == "earth").AvailabilityLabel);
+        Assert.True(viewModel.Spells.Single(spell => spell.Id == "fireball").HasStatPointContext);
+        Assert.False(viewModel.Spells.Single(spell => spell.Id == "frost").HasStatPointContext);
     }
 
     [Fact]
