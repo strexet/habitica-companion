@@ -36,11 +36,48 @@ public interface IRemotePartyDataSyncProvider
         int version,
         CancellationToken cancellationToken);
 
+    Task<RemotePartyQuestState> PinQuestQueueItemAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        bool pinned,
+        CancellationToken cancellationToken);
+
+    Task<RemotePartyQuestState> SelectQuestQueueItemAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        CancellationToken cancellationToken);
+
+    Task<RemotePartyQuestState> SkipQuestQueueItemAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        CancellationToken cancellationToken);
+
+    Task<RemotePartyQuestState> ExpireQuestQueueItemAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        CancellationToken cancellationToken);
+
+    Task<RemotePartyQuestState> RequeueQuestQueueItemAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        CancellationToken cancellationToken);
+
     Task<RemotePartyQuestState> MarkQuestCompletedAsync(
         PartySyncClaim claim,
         string queueItemId,
         int version,
         int? participantsCount,
+        CancellationToken cancellationToken);
+
+    Task<RemotePartyQuestState> RemoveRecentlyCompletedQuestAsync(
+        PartySyncClaim claim,
+        string questKey,
+        DateTimeOffset completedAtUtc,
         CancellationToken cancellationToken);
 
     Task<RemotePartyQuestState> InvitePartyAsync(

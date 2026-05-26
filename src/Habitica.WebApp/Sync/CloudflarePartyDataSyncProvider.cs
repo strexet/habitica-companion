@@ -97,6 +97,83 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
             version);
     }
 
+    public async Task<RemotePartyQuestState> PinQuestQueueItemAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        bool pinned,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "pinQuestQueueItem",
+            cancellationToken,
+            claim,
+            queueItemId,
+            version,
+            pinned);
+    }
+
+    public async Task<RemotePartyQuestState> SelectQuestQueueItemAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "selectQuestQueueItem",
+            cancellationToken,
+            claim,
+            queueItemId,
+            version);
+    }
+
+    public async Task<RemotePartyQuestState> SkipQuestQueueItemAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "skipQuestQueueItem",
+            cancellationToken,
+            claim,
+            queueItemId,
+            version);
+    }
+
+    public async Task<RemotePartyQuestState> ExpireQuestQueueItemAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "expireQuestQueueItem",
+            cancellationToken,
+            claim,
+            queueItemId,
+            version);
+    }
+
+    public async Task<RemotePartyQuestState> RequeueQuestQueueItemAsync(
+        PartySyncClaim claim,
+        string queueItemId,
+        int version,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "requeueQuestQueueItem",
+            cancellationToken,
+            claim,
+            queueItemId,
+            version);
+    }
+
     public async Task<RemotePartyQuestState> MarkQuestCompletedAsync(
         PartySyncClaim claim,
         string queueItemId,
@@ -112,6 +189,21 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
             queueItemId,
             version,
             participantsCount);
+    }
+
+    public async Task<RemotePartyQuestState> RemoveRecentlyCompletedQuestAsync(
+        PartySyncClaim claim,
+        string questKey,
+        DateTimeOffset completedAtUtc,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyQuestState>(
+            "removeRecentlyCompletedQuest",
+            cancellationToken,
+            claim,
+            questKey,
+            completedAtUtc);
     }
 
     public async Task<RemotePartyQuestState> InvitePartyAsync(

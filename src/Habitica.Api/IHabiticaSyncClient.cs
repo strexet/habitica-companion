@@ -35,5 +35,9 @@ public interface IHabiticaSyncClient
 
     Task InvitePartyToQuestAsync(HabiticaCredentials credentials, string questKey, CancellationToken cancellationToken);
 
+    Task AcceptPartyQuestAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
+
+    Task RejectPartyQuestAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
+
     Task StartPartyQuestAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 }

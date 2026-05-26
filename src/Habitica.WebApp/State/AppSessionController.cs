@@ -378,6 +378,51 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    public async Task<PartyQuestActionResult> PinPartyQuestQueueItemAsync(string queueItemId, int version, bool pinned, CancellationToken cancellationToken = default)
+    {
+        return await RunPartyQueueActionAsync(
+            claim => _remotePartyDataSyncProvider.PinQuestQueueItemAsync(claim, queueItemId, version, pinned, cancellationToken),
+            pinned ? "Quest pinned." : "Quest unpinned.",
+            "Sign in with an active party before pinning queue items.",
+            cancellationToken);
+    }
+
+    public async Task<PartyQuestActionResult> SelectPartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        return await RunPartyQueueActionAsync(
+            claim => _remotePartyDataSyncProvider.SelectQuestQueueItemAsync(claim, queueItemId, version, cancellationToken),
+            "Next quest selected.",
+            "Sign in with an active party before selecting queue items.",
+            cancellationToken);
+    }
+
+    public async Task<PartyQuestActionResult> SkipPartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        return await RunPartyQueueActionAsync(
+            claim => _remotePartyDataSyncProvider.SkipQuestQueueItemAsync(claim, queueItemId, version, cancellationToken),
+            "Quest skipped.",
+            "Sign in with an active party before skipping queue items.",
+            cancellationToken);
+    }
+
+    public async Task<PartyQuestActionResult> ExpirePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        return await RunPartyQueueActionAsync(
+            claim => _remotePartyDataSyncProvider.ExpireQuestQueueItemAsync(claim, queueItemId, version, cancellationToken),
+            "Quest expired.",
+            "Sign in with an active party before expiring queue items.",
+            cancellationToken);
+    }
+
+    public async Task<PartyQuestActionResult> RequeuePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
+    {
+        return await RunPartyQueueActionAsync(
+            claim => _remotePartyDataSyncProvider.RequeueQuestQueueItemAsync(claim, queueItemId, version, cancellationToken),
+            "Quest returned to queue.",
+            "Sign in with an active party before requeueing quests.",
+            cancellationToken);
+    }
+
     public async Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
     {
         if (!_featureOptions.PartySyncEnabled)
@@ -415,6 +460,18 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    public async Task<PartyQuestActionResult> RemovePartyRecentlyCompletedQuestAsync(
+        string questKey,
+        DateTimeOffset completedAtUtc,
+        CancellationToken cancellationToken = default)
+    {
+        return await RunPartyQueueActionAsync(
+            claim => _remotePartyDataSyncProvider.RemoveRecentlyCompletedQuestAsync(claim, questKey, completedAtUtc, cancellationToken),
+            "Completed quest removed.",
+            "Sign in with an active party before removing completed quest history.",
+            cancellationToken);
+    }
+
     public async Task<PartyQuestActionResult> InvitePartyToQuestAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
     {
         var credentials = await ResolveCredentialsAsync(cancellationToken);
@@ -435,9 +492,9 @@ public sealed class AppSessionController : IAppSessionController
             return PartyQuestActionResult.Failure("Only the quest owner can invite the party.");
         }
 
-        if (entry.Status is not (PartyQuestQueueStatus.Queued or PartyQuestQueueStatus.Selected))
+        if (entry.Status is not PartyQuestQueueStatus.Selected)
         {
-            return PartyQuestActionResult.Failure("Only queued or selected quests can invite the party.");
+            return PartyQuestActionResult.Failure("Select the quest as Next Quest before inviting the party.");
         }
 
         if (State.PartyFreshness != SnapshotFreshnessState.Fresh)
@@ -445,9 +502,9 @@ public sealed class AppSessionController : IAppSessionController
             return PartyQuestActionResult.Failure("Refresh party data before inviting.");
         }
 
-        if (State.PartySnapshot?.Quest?.IsActive == true)
+        if (State.PartySnapshot?.Quest is not null)
         {
-            return PartyQuestActionResult.Failure("The party already has an active quest.");
+            return PartyQuestActionResult.Failure("The party already has a quest invitation or active quest.");
         }
 
         SetState(State with { ErrorMessage = null, IsBusy = true });
@@ -512,6 +569,24 @@ public sealed class AppSessionController : IAppSessionController
             SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
             return PartyQuestActionResult.Failure(exception.Message);
         }
+    }
+
+    public async Task<PartyQuestActionResult> AcceptPartyQuestInvitationAsync(CancellationToken cancellationToken = default)
+    {
+        return await RespondToPartyQuestInvitationAsync(
+            accept: true,
+            operation: "party-quest-accept",
+            successMessage: "Quest invitation accepted.",
+            cancellationToken);
+    }
+
+    public async Task<PartyQuestActionResult> RejectPartyQuestInvitationAsync(CancellationToken cancellationToken = default)
+    {
+        return await RespondToPartyQuestInvitationAsync(
+            accept: false,
+            operation: "party-quest-reject",
+            successMessage: "Quest invitation rejected.",
+            cancellationToken);
     }
 
     public async Task<PartyQuestActionResult> StartSelectedPartyQuestAsync(string queueItemId, CancellationToken cancellationToken = default)
@@ -2846,6 +2921,106 @@ public sealed class AppSessionController : IAppSessionController
             SetState(State with { ErrorMessage = exception.Message });
             return PartyQuestActionResult.Failure(exception.Message);
         }
+    }
+
+    private async Task<PartyQuestActionResult> RunPartyQueueActionAsync(
+        Func<PartySyncClaim, Task<RemotePartyQuestState>> action,
+        string successMessage,
+        string missingClaimMessage,
+        CancellationToken cancellationToken)
+    {
+        if (!_featureOptions.PartySyncEnabled)
+        {
+            return PartyQuestActionResult.Failure("Shared party sync is disabled.");
+        }
+
+        var claim = await ResolvePartySyncClaimAsync(cancellationToken);
+        if (claim is null)
+        {
+            return PartyQuestActionResult.Failure(missingClaimMessage);
+        }
+
+        try
+        {
+            var state = await action(claim);
+            ApplyPartyQuestState(claim.PartyId, state);
+            return PartyQuestActionResult.Success(successMessage);
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message });
+            return PartyQuestActionResult.Failure(exception.Message);
+        }
+    }
+
+    private async Task<PartyQuestActionResult> RespondToPartyQuestInvitationAsync(
+        bool accept,
+        string operation,
+        string successMessage,
+        CancellationToken cancellationToken)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return PartyQuestActionResult.Failure("Sign in before responding to quest invitations.");
+        }
+
+        var quest = State.PartySnapshot?.Quest;
+        if (quest is null || quest.IsActive)
+        {
+            return PartyQuestActionResult.Failure("No pending quest invitation is available.");
+        }
+
+        var currentStatus = GetCurrentUserQuestParticipationStatus(credentials.UserId);
+        if (currentStatus != PartyQuestParticipationStatus.Pending)
+        {
+            return PartyQuestActionResult.Failure("This account has already responded to the quest invitation.");
+        }
+
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        try
+        {
+            if (accept)
+            {
+                await _habiticaSyncClient.AcceptPartyQuestAsync(credentials, cancellationToken);
+            }
+            else
+            {
+                await _habiticaSyncClient.RejectPartyQuestAsync(credentials, cancellationToken);
+            }
+
+            var partySnapshot = await _habiticaSyncClient.GetPartySnapshotAsync(credentials, cancellationToken);
+            await _partySnapshotStore.SaveAsync(partySnapshot, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Party,
+                operation,
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                successMessage,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["questKey"] = quest.Key ?? string.Empty,
+                    ["requestCount"] = "2"
+                },
+                cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+            return PartyQuestActionResult.Success(successMessage);
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return PartyQuestActionResult.Failure(exception.Message);
+        }
+    }
+
+    private PartyQuestParticipationStatus GetCurrentUserQuestParticipationStatus(string userId)
+    {
+        return State.PartySnapshot?.Members.FirstOrDefault(member =>
+            string.Equals(member.MemberId, userId, StringComparison.Ordinal))?.ParticipationStatus
+            ?? PartyQuestParticipationStatus.Unknown;
     }
 
     private async Task<PartySyncClaim?> ResolvePartySyncClaimAsync(CancellationToken cancellationToken)

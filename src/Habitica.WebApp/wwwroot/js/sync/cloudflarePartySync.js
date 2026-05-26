@@ -71,12 +71,61 @@ export async function removeQuestQueueItem(claim, queueItemId, version) {
   });
 }
 
+export async function pinQuestQueueItem(claim, queueItemId, version, pinned) {
+  return await postPartyAction(claim, {
+    action: "pinQueueItem",
+    queueItemId,
+    version,
+    pinned: pinned === true,
+  });
+}
+
+export async function selectQuestQueueItem(claim, queueItemId, version) {
+  return await postPartyAction(claim, {
+    action: "selectQueueItem",
+    queueItemId,
+    version,
+  });
+}
+
+export async function skipQuestQueueItem(claim, queueItemId, version) {
+  return await postPartyAction(claim, {
+    action: "skipQueueItem",
+    queueItemId,
+    version,
+  });
+}
+
+export async function expireQuestQueueItem(claim, queueItemId, version) {
+  return await postPartyAction(claim, {
+    action: "expireQueueItem",
+    queueItemId,
+    version,
+  });
+}
+
+export async function requeueQuestQueueItem(claim, queueItemId, version) {
+  return await postPartyAction(claim, {
+    action: "requeueQueueItem",
+    queueItemId,
+    version,
+  });
+}
+
 export async function markQuestCompleted(claim, queueItemId, version, participantsCount) {
   return await postPartyAction(claim, {
     action: "markCompleted",
     queueItemId,
     version,
     participantsCount: participantsCount ?? null,
+  });
+}
+
+export async function removeRecentlyCompletedQuest(claim, questKey, completedAtUtc) {
+  return await postPartyAction(claim, {
+    action: "removeRecentlyCompletedQuest",
+    questKey,
+    completedAtUtc,
   });
 }
 

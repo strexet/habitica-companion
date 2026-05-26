@@ -194,7 +194,8 @@ public sealed record PartyQuestQueueEntry(
     IReadOnlyList<string>? RewardSummary = null,
     DateTimeOffset? SelectedAtUtc = null,
     DateTimeOffset? StartedAtUtc = null,
-    DateTimeOffset? CompletedAtUtc = null)
+    DateTimeOffset? CompletedAtUtc = null,
+    DateTimeOffset? ExpiresAtUtc = null)
 {
     public int VoteCount => Votes.Count;
 

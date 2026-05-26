@@ -2,6 +2,8 @@ const maxBodyBytes = 2 * 1024 * 1024;
 const partyIdPattern = /^[A-Za-z0-9_-]{8,128}$/;
 const userIdPattern = /^[A-Za-z0-9_-]{3,128}$/;
 const eventRetentionDays = 120;
+const selectionExpirationHours = 72;
+const staleQuestOwnerDays = 30;
 const defaultSettings = Object.freeze({
   officerCanManageQueue: true,
   officerCanModerateMembers: true,
@@ -44,6 +46,7 @@ export async function onRequestGet(context) {
     observedAtUtc: eventEntry.observed_at_utc,
     confidence: Number(eventEntry.confidence ?? 0),
   }));
+  await cleanupQueueState(db, partyId, new Date().toISOString());
   const questQueue = await readQuestQueue(db, partyId);
   const questPool = await readQuestPool(db, partyId);
   const recentlyCompleted = await readRecentlyCompleted(db, partyId);
@@ -177,12 +180,24 @@ export async function onRequestPost(context) {
       return await toggleVote(db, env, partyId, access, payload, nowIso);
     case "removeQueueItem":
       return await removeQueueItem(db, env, partyId, access, payload, nowIso);
+    case "pinQueueItem":
+      return await pinQueueItem(db, env, partyId, access, payload, nowIso);
+    case "selectQueueItem":
+      return await selectQueueItem(db, env, partyId, access, payload, nowIso);
+    case "skipQueueItem":
+      return await setQueueLifecycleStatus(db, env, partyId, access, payload, "Skipped", nowIso);
+    case "expireQueueItem":
+      return await setQueueLifecycleStatus(db, env, partyId, access, payload, "Expired", nowIso);
+    case "requeueQueueItem":
+      return await setQueueLifecycleStatus(db, env, partyId, access, payload, "Queued", nowIso);
     case "markActive":
       return await updateQueueStatus(db, env, partyId, access, payload, "Active", nowIso);
     case "inviteParty":
       return await updateQueueStatus(db, env, partyId, access, payload, "InviteSent", nowIso);
     case "markCompleted":
       return await markCompleted(db, env, partyId, access, payload, nowIso);
+    case "removeRecentlyCompletedQuest":
+      return await removeRecentlyCompletedQuest(db, env, partyId, access, payload, nowIso);
     case "autoReconcileQuest":
       return await autoReconcileQuest(db, env, partyId, access, payload, nowIso);
     case "recordDetectedCompletion":
@@ -229,13 +244,14 @@ async function readQuestQueue(db, partyId) {
         selected_at_utc,
         started_at_utc,
         completed_at_utc,
+        selected_expires_at_utc,
         sort_order,
         manual_pin_rank,
         owner_ready,
         version,
         reward_summary_json
       FROM party_quest_queue
-      WHERE party_id = ? AND status NOT IN ('Removed', 'Completed', 'Expired')
+      WHERE party_id = ? AND status NOT IN ('Removed', 'Completed')
       ORDER BY COALESCE(manual_pin_rank, 999999) ASC, sort_order ASC, created_at_utc ASC
     `)
     .bind(partyId)
@@ -275,6 +291,7 @@ async function readQuestQueue(db, partyId) {
     selectedAtUtc: row.selected_at_utc,
     startedAtUtc: row.started_at_utc,
     completedAtUtc: row.completed_at_utc,
+    expiresAtUtc: row.selected_expires_at_utc,
     sortOrder: Number(row.sort_order ?? 0),
     manualPinRank: row.manual_pin_rank,
     ownerReady: Number(row.owner_ready ?? 0) === 1,
@@ -282,6 +299,49 @@ async function readQuestQueue(db, partyId) {
     votes: votesByQueueItem.get(row.queue_item_id) ?? [],
     rewardSummary: parseStringArray(row.reward_summary_json),
   }));
+}
+
+async function cleanupQueueState(db, partyId, nowIso) {
+  const selectedExpiryIso = new Date(Date.parse(nowIso) - selectionExpirationHours * 60 * 60 * 1000).toISOString();
+  await db
+    .prepare(`
+      UPDATE party_quest_queue
+      SET status = 'Expired',
+          expired_at_utc = ?,
+          updated_at_utc = ?,
+          version = COALESCE(version, 1) + 1
+      WHERE party_id = ?
+        AND status = 'Selected'
+        AND (
+          (selected_expires_at_utc IS NOT NULL AND selected_expires_at_utc <= ?)
+          OR (selected_expires_at_utc IS NULL AND selected_at_utc IS NOT NULL AND selected_at_utc <= ?)
+        )
+    `)
+    .bind(nowIso, nowIso, partyId, nowIso, selectedExpiryIso)
+    .run();
+
+  const staleOwnerIso = new Date(Date.parse(nowIso) - staleQuestOwnerDays * 24 * 60 * 60 * 1000).toISOString();
+  await db
+    .prepare(`
+      UPDATE party_quest_queue
+      SET status = 'Expired',
+          expired_at_utc = ?,
+          updated_at_utc = ?,
+          version = COALESCE(version, 1) + 1
+      WHERE party_id = ?
+        AND status IN ('Queued', 'Skipped')
+        AND NOT EXISTS (
+          SELECT 1
+          FROM party_quest_pool_entries pool
+          WHERE pool.party_id = party_quest_queue.party_id
+            AND pool.quest_key = party_quest_queue.quest_key
+            AND pool.owner_user_id = party_quest_queue.owner_user_id
+            AND pool.available_count > 0
+            AND pool.last_seen_at_utc >= ?
+        )
+    `)
+    .bind(nowIso, nowIso, partyId, staleOwnerIso)
+    .run();
 }
 
 async function readQuestPool(db, partyId) {
@@ -376,6 +436,7 @@ async function publishQuestPool(db, env, partyId, access, payload, nowIso) {
     )));
   }
 
+  await cleanupQueueState(db, partyId, nowIso);
   return jsonResponse({
     ok: true,
     updatedAtUtc: nowIso,
@@ -387,6 +448,7 @@ async function publishQuestPool(db, env, partyId, access, payload, nowIso) {
 }
 
 async function addQueueItem(db, env, partyId, access, payload, nowIso) {
+  await cleanupQueueState(db, partyId, nowIso);
   if (!access.canEditQueue) {
     return textResponse("Only party sync management can edit the quest queue right now.", 403);
   }
@@ -448,6 +510,7 @@ async function addQueueItem(db, env, partyId, access, payload, nowIso) {
 }
 
 async function toggleVote(db, env, partyId, access, payload, nowIso) {
+  await cleanupQueueState(db, partyId, nowIso);
   if (!payload?.queueItemId) {
     return textResponse("Queue item id is required.", 400);
   }
@@ -482,8 +545,9 @@ async function toggleVote(db, env, partyId, access, payload, nowIso) {
 }
 
 async function removeQueueItem(db, env, partyId, access, payload, nowIso) {
+  await cleanupQueueState(db, partyId, nowIso);
   const item = await db
-    .prepare("SELECT owner_user_id, created_by_user_id, version FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
+    .prepare("SELECT owner_user_id, created_by_user_id, status, version FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
     .bind(partyId, payload?.queueItemId)
     .first();
   if (!item) {
@@ -521,9 +585,179 @@ async function removeQueueItem(db, env, partyId, access, payload, nowIso) {
   });
 }
 
-async function updateQueueStatus(db, env, partyId, access, payload, status, nowIso) {
+async function pinQueueItem(db, env, partyId, access, payload, nowIso) {
+  await cleanupQueueState(db, partyId, nowIso);
+  if (!access.canManageQueue) {
+    return textResponse("Only party sync management can pin queue items.", 403);
+  }
+
+  const item = await readMutableQueueItem(db, partyId, payload);
+  if (item.response) {
+    return item.response;
+  }
+
+  const pinned = payload.pinned === true;
+  let pinRank = null;
+  if (pinned) {
+    const rankRow = await db
+      .prepare("SELECT COALESCE(MIN(manual_pin_rank), 0) - 1 AS next_pin_rank FROM party_quest_queue WHERE party_id = ? AND manual_pin_rank IS NOT NULL")
+      .bind(partyId)
+      .first();
+    pinRank = Number(rankRow?.next_pin_rank ?? -1);
+  }
+
+  await db
+    .prepare(`
+      UPDATE party_quest_queue
+      SET manual_pin_rank = ?, updated_at_utc = ?, version = COALESCE(version, 1) + 1
+      WHERE party_id = ? AND queue_item_id = ?
+    `)
+    .bind(pinRank, nowIso, partyId, payload.queueItemId)
+    .run();
+
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function selectQueueItem(db, env, partyId, access, payload, nowIso) {
+  await cleanupQueueState(db, partyId, nowIso);
+  if (!access.canManageQueue) {
+    return textResponse("Only party sync management can select queue items.", 403);
+  }
+
+  const item = await readMutableQueueItem(db, partyId, payload);
+  if (item.response) {
+    return item.response;
+  }
+  if (item.status !== "Queued" && item.status !== "Skipped" && item.status !== "Expired" && item.status !== "Selected") {
+    return textResponse(`Cannot select quest in '${item.status}' state.`, 409);
+  }
+
+  const selected = await db
+    .prepare("SELECT queue_item_id FROM party_quest_queue WHERE party_id = ? AND status = 'Selected' AND queue_item_id <> ? LIMIT 1")
+    .bind(partyId, payload.queueItemId)
+    .first();
+
+  if (selected) {
+    const rankRow = await db
+      .prepare("SELECT COALESCE(MIN(manual_pin_rank), 0) - 1 AS next_pin_rank FROM party_quest_queue WHERE party_id = ? AND manual_pin_rank IS NOT NULL")
+      .bind(partyId)
+      .first();
+    const returnPinRank = Number(rankRow?.next_pin_rank ?? -1);
+    await db
+      .prepare(`
+        UPDATE party_quest_queue
+        SET status = 'Queued',
+            selected_at_utc = NULL,
+            selected_expires_at_utc = NULL,
+            manual_pin_rank = ?,
+            updated_at_utc = ?,
+            version = COALESCE(version, 1) + 1
+        WHERE party_id = ? AND status = 'Selected' AND queue_item_id <> ?
+      `)
+      .bind(returnPinRank, nowIso, partyId, payload.queueItemId)
+      .run();
+  }
+
+  const expiresAtIso = new Date(Date.parse(nowIso) + selectionExpirationHours * 60 * 60 * 1000).toISOString();
+  await db
+    .prepare(`
+      UPDATE party_quest_queue
+      SET status = 'Selected',
+          selected_at_utc = COALESCE(selected_at_utc, ?),
+          selected_expires_at_utc = ?,
+          expired_at_utc = NULL,
+          updated_at_utc = ?,
+          version = COALESCE(version, 1) + 1
+      WHERE party_id = ? AND queue_item_id = ?
+    `)
+    .bind(nowIso, expiresAtIso, nowIso, partyId, payload.queueItemId)
+    .run();
+
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function setQueueLifecycleStatus(db, env, partyId, access, payload, status, nowIso) {
+  await cleanupQueueState(db, partyId, nowIso);
+  const item = await readMutableQueueItem(db, partyId, payload);
+  if (item.response) {
+    return item.response;
+  }
+
+  const ownsQuest = (item.owner_user_id ?? item.created_by_user_id) === access.userId;
+  if (!access.canManageQueue && !ownsQuest) {
+    return textResponse("Only the quest owner or party sync management can update this queue item.", 403);
+  }
+
+  if (status === "Skipped" && item.status !== "Selected") {
+    return textResponse("Only selected quests can be skipped.", 409);
+  }
+  if (status === "Expired" && item.status === "Active") {
+    return textResponse("Active quests cannot be expired manually.", 409);
+  }
+  if (status === "Queued" && item.status !== "Selected" && item.status !== "Skipped" && item.status !== "Expired") {
+    return textResponse("Only next, skipped, or expired quests can return to queue.", 409);
+  }
+
+  const selectedAtSql = status === "Queued" ? "NULL" : "selected_at_utc";
+  const expiresAtSql = status === "Queued" || status === "Skipped" || status === "Expired" ? "NULL" : "selected_expires_at_utc";
+  const expiredAtSql = status === "Expired" ? "?" : "NULL";
+  const pinRankSql = status === "Queued" ? "?" : "manual_pin_rank";
+  let returnPinRank = null;
+  if (status === "Queued") {
+    const rankRow = await db
+      .prepare("SELECT COALESCE(MIN(manual_pin_rank), 0) - 1 AS next_pin_rank FROM party_quest_queue WHERE party_id = ? AND manual_pin_rank IS NOT NULL")
+      .bind(partyId)
+      .first();
+    returnPinRank = Number(rankRow?.next_pin_rank ?? -1);
+  }
+  const bindings = status === "Expired"
+    ? [status, nowIso, nowIso, partyId, payload.queueItemId]
+    : status === "Queued"
+      ? [status, returnPinRank, nowIso, partyId, payload.queueItemId]
+    : [status, nowIso, partyId, payload.queueItemId];
+
+  await db
+    .prepare(`
+      UPDATE party_quest_queue
+      SET status = ?,
+          selected_at_utc = ${selectedAtSql},
+          selected_expires_at_utc = ${expiresAtSql},
+          expired_at_utc = ${expiredAtSql},
+          manual_pin_rank = ${pinRankSql},
+          updated_at_utc = ?,
+          version = COALESCE(version, 1) + 1
+      WHERE party_id = ? AND queue_item_id = ?
+    `)
+    .bind(...bindings)
+    .run();
+
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function readMutableQueueItem(db, partyId, payload) {
+  if (!payload?.queueItemId) {
+    return { response: textResponse("Queue item id is required.", 400) };
+  }
+
   const item = await db
-    .prepare("SELECT owner_user_id, created_by_user_id, version FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
+    .prepare("SELECT queue_item_id, owner_user_id, created_by_user_id, status, version FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
+    .bind(partyId, payload.queueItemId)
+    .first();
+  if (!item) {
+    return { response: textResponse("Queue item was not found.", 404) };
+  }
+
+  if (payload.version && Number(payload.version) !== Number(item.version ?? 1)) {
+    return { response: textResponse("Queue item changed before this request. Refresh and try again.", 409) };
+  }
+
+  return item;
+}
+
+async function updateQueueStatus(db, env, partyId, access, payload, status, nowIso) {
+  await cleanupQueueState(db, partyId, nowIso);
+  const item = await db
+    .prepare("SELECT owner_user_id, created_by_user_id, status, version FROM party_quest_queue WHERE party_id = ? AND queue_item_id = ?")
     .bind(partyId, payload?.queueItemId)
     .first();
   if (!item) {
@@ -540,6 +774,38 @@ async function updateQueueStatus(db, env, partyId, access, payload, status, nowI
 
   if (payload.version && Number(payload.version) !== Number(item.version ?? 1)) {
     return textResponse("Queue item changed before this request. Refresh and try again.", 409);
+  }
+
+  if (status === "InviteSent") {
+    if (item.status !== "Selected") {
+      return textResponse("Select the quest as Next Quest before inviting.", 409);
+    }
+
+    const selected = await db
+      .prepare("SELECT queue_item_id, status FROM party_quest_queue WHERE party_id = ? AND status IN ('Selected', 'InviteSent') AND queue_item_id <> ? LIMIT 1")
+      .bind(partyId, payload.queueItemId)
+      .first();
+    if (selected) {
+      return selected.status === "InviteSent"
+        ? textResponse("Another quest invitation is already pending in Habitica.", 409)
+        : textResponse("Another quest is already selected. Select this quest before inviting.", 409);
+    }
+
+    const expiresAtIso = new Date(Date.parse(nowIso) + selectionExpirationHours * 60 * 60 * 1000).toISOString();
+    await db
+      .prepare(`
+        UPDATE party_quest_queue
+        SET status = ?,
+            selected_at_utc = COALESCE(selected_at_utc, ?),
+            selected_expires_at_utc = COALESCE(selected_expires_at_utc, ?),
+            updated_at_utc = ?,
+            version = COALESCE(version, 1) + 1
+        WHERE party_id = ? AND queue_item_id = ?
+      `)
+      .bind(status, nowIso, expiresAtIso, nowIso, partyId, payload.queueItemId)
+      .run();
+
+    return await partyQuestStateResponse(db, env, partyId, access, nowIso);
   }
 
   const timestampColumn = status === "Active" ? "started_at_utc" : "updated_at_utc";
@@ -615,6 +881,25 @@ async function markCompleted(db, env, partyId, access, payload, nowIso) {
     recentlyCompleted: await readRecentlyCompleted(db, partyId),
     management: await buildManagementState(db, env, partyId, access),
   });
+}
+
+async function removeRecentlyCompletedQuest(db, env, partyId, access, payload, nowIso) {
+  if (!access.isOwner && !access.isAdmin && !access.isOfficer) {
+    return textResponse("Only party sync owner, app admins, or Officers can remove completed quest history.", 403);
+  }
+  if (!payload?.questKey || !payload.completedAtUtc) {
+    return textResponse("Quest key and completed timestamp are required.", 400);
+  }
+
+  await db
+    .prepare(`
+      DELETE FROM party_recently_completed_quests
+      WHERE party_id = ? AND quest_key = ? AND completed_at_utc = ?
+    `)
+    .bind(partyId, payload.questKey, payload.completedAtUtc)
+    .run();
+
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
 }
 
 async function autoReconcileQuest(db, env, partyId, access, payload, nowIso) {
@@ -1021,6 +1306,7 @@ async function updateSettings(db, env, partyId, access, payload, nowIso) {
 }
 
 async function partyQuestStateResponse(db, env, partyId, access, nowIso) {
+  await cleanupQueueState(db, partyId, nowIso);
   return jsonResponse({
     ok: true,
     updatedAtUtc: nowIso,
