@@ -1,4 +1,5 @@
 using Bunit;
+using Habitica.Application.Sync;
 using Habitica.Domain.Sync;
 using Habitica.WebApp.Pages;
 using Habitica.WebApp.State;
@@ -22,7 +23,19 @@ public sealed class SettingsPageTests : BunitContext
                 ErrorMessage: null,
                 LastSyncedAtUtc: DateTimeOffset.Parse("2026-05-13T02:00:00Z"),
                 TaskFreshness: SnapshotFreshnessState.Fresh,
-                TaskSnapshot: null)));
+                TaskSnapshot: null,
+                CloudSyncSectionStatuses: new[]
+                {
+                    new CloudSyncSectionStatus(
+                        CloudSyncSection.UserProfile,
+                        "user-profile",
+                        CloudSyncDirection.Upload,
+                        CloudSyncSectionStatusKind.Succeeded,
+                        DateTimeOffset.Parse("2026-05-13T02:00:00Z"),
+                        128,
+                        "Uploaded")
+                },
+                CloudSyncExcludedSections: new[] { CloudSyncSection.Diagnostics })));
 
         var cut = Render<SettingsPage>();
 
@@ -33,5 +46,9 @@ public sealed class SettingsPageTests : BunitContext
         Assert.NotNull(cut.Find("[data-testid='import-local-data']"));
         Assert.NotNull(cut.Find("[data-testid='push-cloud-sync']"));
         Assert.NotNull(cut.Find("[data-testid='download-cloud-sync']"));
+        Assert.Contains("Cloud sync sections", cut.Markup);
+        Assert.Contains("User profile", cut.Markup);
+        Assert.Contains("Diagnostics", cut.Markup);
+        Assert.Contains("Excluded", cut.Markup);
     }
 }

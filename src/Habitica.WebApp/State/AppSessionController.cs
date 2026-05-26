@@ -42,6 +42,7 @@ public sealed class AppSessionController : IAppSessionController
     private readonly TimeProvider _timeProvider;
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
     private HabiticaCredentials? _currentCredentials;
+    private readonly HashSet<CloudSyncSection> _cloudSyncExcludedSections;
     private bool _includeStalePartyMembersInQuestForecasts;
     private bool _initialized;
     private bool _persistLocally;
@@ -88,6 +89,7 @@ public sealed class AppSessionController : IAppSessionController
         _snapshotFreshnessPolicy = snapshotFreshnessPolicy;
         _featureOptions = featureOptions;
         _timeProvider = timeProvider;
+        _cloudSyncExcludedSections = ParseCloudSyncExcludedSections(featureOptions.CloudSyncExcludedSections);
     }
 
     public event Action? Changed;
@@ -161,8 +163,6 @@ public sealed class AppSessionController : IAppSessionController
             return;
         }
 
-        SetState(State with { IsBusy = true });
-
         var pageDomains = ResolvePageDomains(pageRoute);
         var allDomains = new[] { RefreshDomain.UserProfile, RefreshDomain.Tasks, RefreshDomain.Party, RefreshDomain.GearCatalog };
         var requests = new List<(RefreshDomain Domain, RefreshPriority Priority)>();
@@ -177,7 +177,8 @@ public sealed class AppSessionController : IAppSessionController
             requests.Add((domain, RefreshPriority.Background));
         }
 
-        var domainStates = new Dictionary<RefreshDomain, DomainRefreshState>();
+        var domainStates = MarkDomainsFetching(requests, RefreshReason.ManualRefresh);
+        SetState(State with { ErrorMessage = null, DomainStates = domainStates });
 
         await _refreshCoordinator.RefreshDomainsAsync(
             credentials,
@@ -187,13 +188,13 @@ public sealed class AppSessionController : IAppSessionController
                 domainStates[state.Domain] = state;
                 LoadCachedStateAndNotify(domainStates, cancellationToken);
             },
-            cancellationToken);
+            cancellationToken,
+            RefreshReason.ManualRefresh);
 
         await LoadCachedStateAsync(cancellationToken);
-        _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+        SetState(State with { DomainStates = domainStates });
+        _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken, RefreshReason.ManualRefresh);
         _ = TryMergeAndUploadPartySyncAsync(credentials, cancellationToken);
-
-        SetState(State with { IsBusy = false, DomainStates = domainStates });
     }
 
     private void LoadCachedStateAndNotify(
@@ -203,8 +204,30 @@ public sealed class AppSessionController : IAppSessionController
         _ = Task.Run(async () =>
         {
             await LoadCachedStateAsync(cancellationToken);
+            PreserveSyncDomainStates(domainStates);
             SetState(State with { DomainStates = new Dictionary<RefreshDomain, DomainRefreshState>(domainStates) });
         }, cancellationToken);
+    }
+
+    private Dictionary<RefreshDomain, DomainRefreshState> MarkDomainsFetching(
+        IReadOnlyList<(RefreshDomain Domain, RefreshPriority Priority)> requests,
+        RefreshReason reason)
+    {
+        var domainStates = State.DomainStates is null
+            ? new Dictionary<RefreshDomain, DomainRefreshState>()
+            : new Dictionary<RefreshDomain, DomainRefreshState>(State.DomainStates);
+        foreach (var request in requests)
+        {
+            domainStates[request.Domain] = new DomainRefreshState(
+                request.Domain,
+                true,
+                domainStates.TryGetValue(request.Domain, out var existing) ? existing.LastRefreshedAtUtc : null,
+                null,
+                reason,
+                request.Priority);
+        }
+
+        return domainStates;
     }
 
     private static IReadOnlyList<RefreshDomain> ResolvePageDomains(string pageRoute)
@@ -1931,6 +1954,76 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    public async Task<LocalDataActionResult> ImportCloudSyncSectionsAsync(
+        string jsonText,
+        IReadOnlyDictionary<string, CloudSyncSectionImportDecision> sectionDecisions,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            SetState(State with { ErrorMessage = null, IsBusy = true });
+            var bundle = _localUserDataPortabilityService.Deserialize(jsonText);
+            var imported = 0;
+            foreach (var record in bundle.Records)
+            {
+                var section = CloudSyncSectionMapping.SectionForStorageKey(record.Key);
+                var sectionKey = section is null ? record.Key : CloudSyncSectionMapping.KvSuffix(section.Value);
+                var decision = sectionDecisions.GetValueOrDefault(sectionKey, CloudSyncSectionImportDecision.Merge);
+                if (decision == CloudSyncSectionImportDecision.KeepLocal)
+                {
+                    continue;
+                }
+
+                var mode = decision == CloudSyncSectionImportDecision.UseRemote
+                    ? LocalDataImportMode.Override
+                    : LocalDataImportMode.Merge;
+                await _localUserDataPortabilityService.ImportSectionAsync(record, mode, cancellationToken);
+                imported++;
+            }
+
+            await RebuildDerivedLocalStateAsync(
+                State.UserId ?? _currentCredentials?.UserId ?? bundle.UserId,
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            var syncMessage = await TryUploadLocalDataAfterImportAsync(cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+            return LocalDataActionResult.Success(
+                string.IsNullOrWhiteSpace(syncMessage)
+                    ? $"Imported {imported} selected cloud sync sections."
+                    : $"Imported {imported} selected cloud sync sections. {syncMessage}");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            return LocalDataActionResult.Failure(exception.Message);
+        }
+    }
+
+    public Task SetCloudSyncSectionExcludedAsync(
+        CloudSyncSection section,
+        bool isExcluded,
+        CancellationToken cancellationToken = default)
+    {
+        if (section is CloudSyncSection.SyncMetadata || CloudSyncSectionMapping.IsCritical(section))
+        {
+            return Task.CompletedTask;
+        }
+
+        if (isExcluded)
+        {
+            _cloudSyncExcludedSections.Add(section);
+        }
+        else
+        {
+            _cloudSyncExcludedSections.Remove(section);
+        }
+
+        SetState(State with { CloudSyncExcludedSections = _cloudSyncExcludedSections.ToArray() });
+        return Task.CompletedTask;
+    }
+
     public async Task<LocalDataActionResult> PushCloudSyncAsync(CancellationToken cancellationToken = default)
     {
         var credentials = await ResolveCredentialsAsync(cancellationToken);
@@ -1941,12 +2034,12 @@ public sealed class AppSessionController : IAppSessionController
 
         try
         {
-            SetState(State with { ErrorMessage = null, IsBusy = true });
+            SetCloudSyncFetching(true, RefreshReason.ManualRefresh);
             var result = await MergeAndUploadCloudSyncSectionsAsync(credentials, cancellationToken);
             var partyResult = await TryMergeAndUploadPartySyncAsync(credentials, cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
 
-            SetState(State with { ErrorMessage = null, IsBusy = false });
+            SetCloudSyncFetching(false, RefreshReason.ManualRefresh);
             var message = result.IsPartial
                 ? $"Cloud sync partially completed. {result.SucceededCount} sections uploaded, {result.FailedCount} skipped."
                 : $"Uploaded {result.SucceededCount} encrypted sections to Cloudflare sync.";
@@ -1962,7 +2055,8 @@ public sealed class AppSessionController : IAppSessionController
         }
         catch (Exception exception)
         {
-            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            SetCloudSyncFetching(false, RefreshReason.ManualRefresh, exception.Message);
+            SetState(State with { ErrorMessage = exception.Message });
             return LocalDataActionResult.Failure(exception.Message);
         }
     }
@@ -1977,7 +2071,7 @@ public sealed class AppSessionController : IAppSessionController
 
         try
         {
-            SetState(State with { ErrorMessage = null, IsBusy = true });
+            SetCloudSyncFetching(true, RefreshReason.ManualRefresh);
 
             var remoteSections = await _remoteUserDataSyncProvider.ListSectionsAsync(credentials, cancellationToken);
             if (remoteSections.Count > 0)
@@ -1989,7 +2083,8 @@ public sealed class AppSessionController : IAppSessionController
         }
         catch (Exception exception)
         {
-            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            SetCloudSyncFetching(false, RefreshReason.ManualRefresh, exception.Message);
+            SetState(State with { ErrorMessage = exception.Message });
             return LocalDataActionResult.Failure(exception.Message);
         }
     }
@@ -2005,7 +2100,7 @@ public sealed class AppSessionController : IAppSessionController
 
         if (dataSectionKeys.Length == 0)
         {
-            SetState(State with { ErrorMessage = null, IsBusy = false });
+            SetCloudSyncFetching(false, RefreshReason.ManualRefresh, "No cloud sync data exists.");
             return LocalDataActionResult.Failure("No cloud sync data exists for these Habitica credentials.");
         }
 
@@ -2015,11 +2110,28 @@ public sealed class AppSessionController : IAppSessionController
             cancellationToken);
 
         var records = new List<LocalUserDataRecord>();
+        var sectionResults = new List<CloudSyncSectionResult>();
         for (var i = 0; i < dataSectionKeys.Length; i++)
         {
             var snapshot = i < remoteSnapshots.Count ? remoteSnapshots[i] : null;
             if (snapshot is null || string.IsNullOrWhiteSpace(snapshot.PlainTextJson))
             {
+                var missingSection = ResolveCloudSyncSection(dataSectionKeys[i]);
+                if (missingSection is not null)
+                {
+                    sectionResults.Add(new CloudSyncSectionResult(
+                        missingSection.Value,
+                        dataSectionKeys[i],
+                        false,
+                        "No remote data",
+                        Status: CloudSyncSectionStatusKind.Skipped));
+                    UpdateCloudSyncSectionStatus(
+                        missingSection.Value,
+                        CloudSyncDirection.Download,
+                        CloudSyncSectionStatusKind.Skipped,
+                        null,
+                        "No remote data");
+                }
                 continue;
             }
 
@@ -2031,12 +2143,25 @@ public sealed class AppSessionController : IAppSessionController
                 continue;
             }
 
+            var payloadBytes = System.Text.Encoding.UTF8.GetByteCount(snapshot.PlainTextJson);
+            sectionResults.Add(new CloudSyncSectionResult(
+                section,
+                dataSectionKeys[i],
+                true,
+                PayloadBytes: payloadBytes,
+                Status: CloudSyncSectionStatusKind.Succeeded));
+            UpdateCloudSyncSectionStatus(
+                section,
+                CloudSyncDirection.Download,
+                CloudSyncSectionStatusKind.Succeeded,
+                payloadBytes,
+                "Downloaded");
             records.Add(new LocalUserDataRecord(storageKey, snapshot.PlainTextJson));
         }
 
         if (records.Count == 0)
         {
-            SetState(State with { ErrorMessage = null, IsBusy = false });
+            SetCloudSyncFetching(false, RefreshReason.ManualRefresh, "No cloud sync data exists.");
             return LocalDataActionResult.Failure("No cloud sync data exists for these Habitica credentials.");
         }
 
@@ -2047,7 +2172,16 @@ public sealed class AppSessionController : IAppSessionController
             Records: records);
 
         var preview = await _localUserDataPortabilityService.PreviewImportAsync(bundle, cancellationToken);
-        SetState(State with { ErrorMessage = null, IsBusy = false });
+        MarkCloudSyncConflicts(preview.ConflictingKeys);
+        await WriteCloudSyncSectionDiagnosticsAsync(
+            CloudSyncDirection.Download,
+            sectionResults,
+            preview.ConflictingKeys,
+            null,
+            null,
+            mergedRemoteData: false,
+            cancellationToken);
+        SetCloudSyncFetching(false, RefreshReason.ManualRefresh);
 
         var serialized = _localUserDataPortabilityService.Serialize(bundle);
         return LocalDataActionResult.Success(
@@ -2063,13 +2197,22 @@ public sealed class AppSessionController : IAppSessionController
         var snapshot = await _remoteUserDataSyncProvider.DownloadAsync(credentials, cancellationToken);
         if (snapshot is null)
         {
-            SetState(State with { ErrorMessage = null, IsBusy = false });
+            SetCloudSyncFetching(false, RefreshReason.ManualRefresh, "No cloud sync data exists.");
             return LocalDataActionResult.Failure("No cloud sync data exists for these Habitica credentials.");
         }
 
         var bundle = _localUserDataPortabilityService.Deserialize(snapshot.PlainTextJson);
         var preview = await _localUserDataPortabilityService.PreviewImportAsync(bundle, cancellationToken);
-        SetState(State with { ErrorMessage = null, IsBusy = false });
+        MarkCloudSyncConflicts(preview.ConflictingKeys);
+        await WriteCloudSyncSectionDiagnosticsAsync(
+            CloudSyncDirection.Download,
+            BuildSectionResultsForBundle(bundle),
+            preview.ConflictingKeys,
+            null,
+            null,
+            mergedRemoteData: false,
+            cancellationToken);
+        SetCloudSyncFetching(false, RefreshReason.ManualRefresh);
         return LocalDataActionResult.Success(
             snapshot.UpdatedAtUtc is null
                 ? $"Downloaded cloud sync data with {preview.IncomingRecordCount} records."
@@ -2086,7 +2229,17 @@ public sealed class AppSessionController : IAppSessionController
             return "Sign in to upload the imported data to encrypted cloud sync.";
         }
 
-        var result = await MergeAndUploadCloudSyncSectionsAsync(credentials, cancellationToken);
+        SetCloudSyncFetching(true, RefreshReason.ManualRefresh);
+        CloudSyncUploadReport result;
+        try
+        {
+            result = await MergeAndUploadCloudSyncSectionsAsync(credentials, cancellationToken);
+        }
+        finally
+        {
+            SetCloudSyncFetching(false, RefreshReason.ManualRefresh);
+        }
+
         var messages = new List<string>
         {
             result.MergedRemoteData
@@ -2107,11 +2260,15 @@ public sealed class AppSessionController : IAppSessionController
 
     private async Task<CloudSyncUploadReport?> TryMergeAndUploadCloudSyncAsync(
         HabiticaCredentials credentials,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        RefreshReason reason = RefreshReason.MutationCompleted)
     {
         try
         {
-            return await MergeAndUploadCloudSyncSectionsAsync(credentials, cancellationToken);
+            SetCloudSyncFetching(true, reason);
+            var report = await MergeAndUploadCloudSyncSectionsAsync(credentials, cancellationToken);
+            SetCloudSyncFetching(false, reason);
+            return report;
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -2131,6 +2288,7 @@ public sealed class AppSessionController : IAppSessionController
                     ["automatic"] = "true"
                 },
                 cancellationToken);
+            SetCloudSyncFetching(false, reason, exception.Message);
             return null;
         }
     }
@@ -2138,15 +2296,19 @@ public sealed class AppSessionController : IAppSessionController
     private async Task<CloudSyncUploadReport?> TryUploadCloudSyncSectionAsync(
         HabiticaCredentials credentials,
         CloudSyncSection section,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        RefreshReason reason = RefreshReason.MutationCompleted)
     {
         try
         {
-            return await UploadCloudSyncSectionsAsync(
+            SetCloudSyncFetching(true, reason);
+            var report = await UploadCloudSyncSectionsAsync(
                 credentials,
                 new[] { section },
                 mergedRemoteData: false,
                 cancellationToken);
+            SetCloudSyncFetching(false, reason);
+            return report;
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -2167,6 +2329,7 @@ public sealed class AppSessionController : IAppSessionController
                     ["section"] = CloudSyncSectionMapping.KvSuffix(section)
                 },
                 cancellationToken);
+            SetCloudSyncFetching(false, reason, exception.Message);
             return null;
         }
     }
@@ -2215,10 +2378,38 @@ public sealed class AppSessionController : IAppSessionController
             }
 
             var kvSuffix = CloudSyncSectionMapping.KvSuffix(section);
+            if (_cloudSyncExcludedSections.Contains(section))
+            {
+                sectionResults.Add(new CloudSyncSectionResult(
+                    section,
+                    kvSuffix,
+                    false,
+                    "Excluded by sync settings",
+                    Status: CloudSyncSectionStatusKind.Excluded));
+                UpdateCloudSyncSectionStatus(
+                    section,
+                    CloudSyncDirection.Upload,
+                    CloudSyncSectionStatusKind.Excluded,
+                    null,
+                    "Excluded by sync settings");
+                continue;
+            }
+
             var record = await _localUserDataPortabilityService.ExportSectionAsync(storageKey, cancellationToken);
             if (record is null)
             {
-                sectionResults.Add(new CloudSyncSectionResult(section, kvSuffix, true, "No local data"));
+                sectionResults.Add(new CloudSyncSectionResult(
+                    section,
+                    kvSuffix,
+                    false,
+                    "No local data",
+                    Status: CloudSyncSectionStatusKind.Skipped));
+                UpdateCloudSyncSectionStatus(
+                    section,
+                    CloudSyncDirection.Upload,
+                    CloudSyncSectionStatusKind.Skipped,
+                    null,
+                    "No local data");
                 continue;
             }
 
@@ -2238,7 +2429,19 @@ public sealed class AppSessionController : IAppSessionController
                         ["maxBytes"] = CloudSyncSectionMapping.MaxSectionPayloadBytes.ToString(CultureInfo.InvariantCulture)
                     },
                     cancellationToken);
-                sectionResults.Add(new CloudSyncSectionResult(section, kvSuffix, false, "Payload too large", payloadBytes));
+                sectionResults.Add(new CloudSyncSectionResult(
+                    section,
+                    kvSuffix,
+                    false,
+                    "Payload too large",
+                    payloadBytes,
+                    CloudSyncSectionStatusKind.Skipped));
+                UpdateCloudSyncSectionStatus(
+                    section,
+                    CloudSyncDirection.Upload,
+                    CloudSyncSectionStatusKind.Skipped,
+                    payloadBytes,
+                    "Payload too large");
                 continue;
             }
 
@@ -2253,43 +2456,265 @@ public sealed class AppSessionController : IAppSessionController
                 kvSuffix,
                 uploadResult.Succeeded,
                 uploadResult.ErrorMessage,
-                payloadBytes));
+                payloadBytes,
+                uploadResult.Succeeded ? CloudSyncSectionStatusKind.Succeeded : CloudSyncSectionStatusKind.Failed));
+            UpdateCloudSyncSectionStatus(
+                section,
+                CloudSyncDirection.Upload,
+                uploadResult.Succeeded ? CloudSyncSectionStatusKind.Succeeded : CloudSyncSectionStatusKind.Failed,
+                payloadBytes,
+                uploadResult.Succeeded ? "Uploaded" : uploadResult.ErrorMessage);
         }
 
-        var succeededSections = sectionResults.Where(static r => r.Succeeded).Select(static r => r.SectionKey).ToArray();
-        var failedSections = sectionResults.Where(static r => !r.Succeeded).Select(static r => r.SectionKey).ToArray();
+        var succeededSections = sectionResults.Where(static r => r.Status == CloudSyncSectionStatusKind.Succeeded).Select(static r => r.SectionKey).ToArray();
+        var failedSections = sectionResults.Where(static r => r.Status == CloudSyncSectionStatusKind.Failed).Select(static r => r.SectionKey).ToArray();
         var metadata = new CloudSyncMetadata(2, _timeProvider.GetUtcNow(), succeededSections, failedSections);
         var metadataJson = JsonSerializer.Serialize(metadata, JsonOptions);
-        await _remoteUserDataSyncProvider.UploadSectionAsync(
+        var metadataUpload = await _remoteUserDataSyncProvider.UploadSectionAsync(
             credentials,
             CloudSyncSectionMapping.KvSuffix(CloudSyncSection.SyncMetadata),
             metadataJson,
             cancellationToken);
+        UpdateCloudSyncSectionStatus(
+            CloudSyncSection.SyncMetadata,
+            CloudSyncDirection.Metadata,
+            metadataUpload.Succeeded ? CloudSyncSectionStatusKind.Succeeded : CloudSyncSectionStatusKind.Failed,
+            System.Text.Encoding.UTF8.GetByteCount(metadataJson),
+            metadataUpload.Succeeded ? "Metadata uploaded" : metadataUpload.ErrorMessage);
 
-        var succeeded = sectionResults.Count(static r => r.Succeeded);
-        var failed = sectionResults.Count(static r => !r.Succeeded);
+        var succeeded = sectionResults.Count(static r => r.Status == CloudSyncSectionStatusKind.Succeeded);
+        var failed = sectionResults.Count(static r => r.Status == CloudSyncSectionStatusKind.Failed);
 
-        if (failed > 0)
-        {
-            var severity = sectionResults.Any(r => !r.Succeeded && CloudSyncSectionMapping.IsCritical(r.Section))
-                ? DiagnosticsSeverity.Error
-                : DiagnosticsSeverity.Warning;
-            await _diagnosticsLogWriter.WriteAsync(
-                DiagnosticsFeatureArea.Auth,
-                "cloud-sync",
-                severity,
-                DiagnosticsMode.Local,
-                $"Cloud sync partially completed. {succeeded} sections uploaded, {failed} skipped.",
-                new Dictionary<string, string>(StringComparer.Ordinal)
-                {
-                    ["succeeded"] = succeeded.ToString(CultureInfo.InvariantCulture),
-                    ["failed"] = failed.ToString(CultureInfo.InvariantCulture),
-                    ["failedSections"] = string.Join(", ", failedSections)
-                },
-                cancellationToken);
-        }
+        await WriteCloudSyncSectionDiagnosticsAsync(
+            CloudSyncDirection.Upload,
+            sectionResults,
+            Array.Empty<string>(),
+            metadataUpload.Succeeded ? CloudSyncSectionStatusKind.Succeeded : CloudSyncSectionStatusKind.Failed,
+            System.Text.Encoding.UTF8.GetByteCount(metadataJson),
+            mergedRemoteData,
+            cancellationToken);
 
         return new CloudSyncUploadReport(sectionResults, mergedRemoteData, succeeded, failed);
+    }
+
+    private Task WriteCloudSyncSectionDiagnosticsAsync(
+        CloudSyncDirection direction,
+        IReadOnlyList<CloudSyncSectionResult> sectionResults,
+        IReadOnlyList<string> conflictingStorageKeys,
+        CloudSyncSectionStatusKind? metadataStatus,
+        int? metadataPayloadBytes,
+        bool mergedRemoteData,
+        CancellationToken cancellationToken)
+    {
+        var failedSections = sectionResults
+            .Where(static result => result.Status == CloudSyncSectionStatusKind.Failed)
+            .Select(static result => result.SectionKey)
+            .ToArray();
+        var skippedSections = sectionResults
+            .Where(static result => result.Status == CloudSyncSectionStatusKind.Skipped)
+            .Select(static result => result.SectionKey)
+            .ToArray();
+        var excludedSections = sectionResults
+            .Where(static result => result.Status == CloudSyncSectionStatusKind.Excluded)
+            .Select(static result => result.SectionKey)
+            .ToArray();
+        var succeededSections = sectionResults
+            .Where(static result => result.Status == CloudSyncSectionStatusKind.Succeeded)
+            .Select(static result => result.SectionKey)
+            .ToArray();
+        var conflictSections = new List<string>();
+        foreach (var storageKey in conflictingStorageKeys)
+        {
+            var section = CloudSyncSectionMapping.SectionForStorageKey(storageKey);
+            if (section is not null)
+            {
+                conflictSections.Add(CloudSyncSectionMapping.KvSuffix(section.Value));
+            }
+        }
+        var metadata = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["provider"] = "cloudflare",
+            ["direction"] = direction.ToString(),
+            ["mergedRemoteData"] = mergedRemoteData.ToString(CultureInfo.InvariantCulture),
+            ["sectionStatuses"] = string.Join(", ", sectionResults.Select(static result => $"{result.SectionKey}:{result.Status}")),
+            ["sectionPayloadBytes"] = string.Join(", ", sectionResults
+                .Where(static result => result.PayloadBytes is not null)
+                .Select(static result => $"{result.SectionKey}:{result.PayloadBytes!.Value.ToString(CultureInfo.InvariantCulture)}")),
+            ["succeededSections"] = string.Join(", ", succeededSections),
+            ["failedSections"] = string.Join(", ", failedSections),
+            ["skippedSections"] = string.Join(", ", skippedSections),
+            ["excludedSections"] = string.Join(", ", excludedSections),
+            ["conflictSections"] = string.Join(", ", conflictSections)
+        };
+
+        if (metadataStatus is not null)
+        {
+            metadata["metadataStatus"] = metadataStatus.Value.ToString();
+        }
+
+        if (metadataPayloadBytes is not null)
+        {
+            metadata["metadataPayloadBytes"] = metadataPayloadBytes.Value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        var severity = sectionResults.Any(static result => result.Status == CloudSyncSectionStatusKind.Failed && CloudSyncSectionMapping.IsCritical(result.Section))
+            || metadataStatus == CloudSyncSectionStatusKind.Failed
+            ? DiagnosticsSeverity.Error
+            : failedSections.Length > 0 || skippedSections.Length > 0 || excludedSections.Length > 0 || conflictSections.Count > 0
+                ? DiagnosticsSeverity.Warning
+                : DiagnosticsSeverity.Success;
+        var statusText = direction == CloudSyncDirection.Download
+            ? $"{succeededSections.Length} downloaded, {conflictSections.Count} conflict(s)"
+            : $"{succeededSections.Length} uploaded, {failedSections.Length} failed, {skippedSections.Length + excludedSections.Length} skipped";
+
+        return _diagnosticsLogWriter.WriteAsync(
+            DiagnosticsFeatureArea.Sync,
+            $"cloud-sync-{direction.ToString().ToLowerInvariant()}",
+            severity,
+            DiagnosticsMode.Local,
+            $"Cloud sync {direction.ToString().ToLowerInvariant()} status: {statusText}.",
+            metadata,
+            cancellationToken);
+    }
+
+    private static IReadOnlyList<CloudSyncSectionResult> BuildSectionResultsForBundle(LocalUserDataBundle bundle)
+    {
+        var results = new List<CloudSyncSectionResult>();
+        foreach (var record in bundle.Records)
+        {
+            var section = CloudSyncSectionMapping.SectionForStorageKey(record.Key);
+            if (section is null)
+            {
+                continue;
+            }
+
+            results.Add(new CloudSyncSectionResult(
+                section.Value,
+                CloudSyncSectionMapping.KvSuffix(section.Value),
+                true,
+                PayloadBytes: System.Text.Encoding.UTF8.GetByteCount(record.JsonText),
+                Status: CloudSyncSectionStatusKind.Succeeded));
+        }
+
+        return results;
+    }
+
+    private void SetCloudSyncFetching(bool isFetching, RefreshReason reason, string? error = null)
+    {
+        var domainStates = State.DomainStates is null
+            ? new Dictionary<RefreshDomain, DomainRefreshState>()
+            : new Dictionary<RefreshDomain, DomainRefreshState>(State.DomainStates);
+        domainStates[RefreshDomain.CloudSync] = new DomainRefreshState(
+            RefreshDomain.CloudSync,
+            isFetching,
+            isFetching ? domainStates.GetValueOrDefault(RefreshDomain.CloudSync)?.LastRefreshedAtUtc : _timeProvider.GetUtcNow(),
+            error,
+            reason,
+            RefreshPriority.Background);
+        SetState(State with { DomainStates = domainStates });
+    }
+
+    private void UpdateCloudSyncSectionStatus(
+        CloudSyncSection section,
+        CloudSyncDirection direction,
+        CloudSyncSectionStatusKind status,
+        int? payloadBytes,
+        string? message)
+    {
+        var sectionKey = CloudSyncSectionMapping.KvSuffix(section);
+        var statuses = (State.CloudSyncSectionStatuses ?? Array.Empty<CloudSyncSectionStatus>())
+            .Where(item => !string.Equals(item.SectionKey, sectionKey, StringComparison.Ordinal))
+            .ToList();
+        statuses.Add(new CloudSyncSectionStatus(
+            section,
+            sectionKey,
+            direction,
+            status,
+            _timeProvider.GetUtcNow(),
+            payloadBytes,
+            message));
+        SetState(State with
+        {
+            CloudSyncSectionStatuses = OrderCloudSyncStatuses(statuses),
+            CloudSyncExcludedSections = _cloudSyncExcludedSections.ToArray()
+        });
+    }
+
+    private void MarkCloudSyncConflicts(IReadOnlyList<string> conflictingStorageKeys)
+    {
+        foreach (var storageKey in conflictingStorageKeys)
+        {
+            var section = CloudSyncSectionMapping.SectionForStorageKey(storageKey);
+            if (section is null)
+            {
+                continue;
+            }
+
+            UpdateCloudSyncSectionStatus(
+                section.Value,
+                CloudSyncDirection.Download,
+                CloudSyncSectionStatusKind.Conflict,
+                null,
+                "Local and remote data both exist");
+        }
+    }
+
+    private static IReadOnlyList<CloudSyncSectionStatus> OrderCloudSyncStatuses(IReadOnlyList<CloudSyncSectionStatus> statuses)
+    {
+        return statuses
+            .OrderBy(item => GetCloudSyncSectionOrder(item.Section))
+            .ThenBy(item => item.SectionKey, StringComparer.Ordinal)
+            .ToArray();
+    }
+
+    private static int GetCloudSyncSectionOrder(CloudSyncSection section)
+    {
+        for (var i = 0; i < CloudSyncSectionMapping.AllSections.Count; i++)
+        {
+            if (CloudSyncSectionMapping.AllSections[i] == section)
+            {
+                return i;
+            }
+        }
+
+        return int.MaxValue;
+    }
+
+    private static CloudSyncSection? ResolveCloudSyncSection(string sectionKey)
+    {
+        foreach (var section in CloudSyncSectionMapping.AllSections)
+        {
+            if (string.Equals(CloudSyncSectionMapping.KvSuffix(section), sectionKey, StringComparison.Ordinal))
+            {
+                return section;
+            }
+        }
+
+        return null;
+    }
+
+    private static HashSet<CloudSyncSection> ParseCloudSyncExcludedSections(IReadOnlyList<string>? sectionKeys)
+    {
+        var excluded = new HashSet<CloudSyncSection>();
+        if (sectionKeys is null)
+        {
+            return excluded;
+        }
+
+        foreach (var sectionKey in sectionKeys)
+        {
+            var section = CloudSyncSectionMapping.AllSections.FirstOrDefault(candidate =>
+                string.Equals(candidate.ToString(), sectionKey, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(CloudSyncSectionMapping.KvSuffix(candidate), sectionKey, StringComparison.OrdinalIgnoreCase));
+            if (section == default || section == CloudSyncSection.SyncMetadata || CloudSyncSectionMapping.IsCritical(section))
+            {
+                continue;
+            }
+
+            excluded.Add(section);
+        }
+
+        return excluded;
     }
 
     private async Task<bool> TryMigrateLegacySingleBlobAsync(
@@ -2862,6 +3287,8 @@ public sealed class AppSessionController : IAppSessionController
             GearCatalogSnapshot = gearCatalog,
             EquipmentPresets = equipmentPresets,
             IncludeStalePartyMembersInQuestForecasts = _includeStalePartyMembersInQuestForecasts,
+            CloudSyncSectionStatuses = State.CloudSyncSectionStatuses,
+            CloudSyncExcludedSections = _cloudSyncExcludedSections.ToArray(),
             UserId = userId,
             UserFreshness = ClassifyFreshness(userSnapshot),
             UserSnapshot = userSnapshot
@@ -2897,9 +3324,15 @@ public sealed class AppSessionController : IAppSessionController
 
             var userSnapshot = await _userSnapshotStore.GetLatestAsync(cancellationToken);
             var equipmentPresets = await _equipmentPresetStore.GetForUserAsync(credentials.UserId, cancellationToken);
+            var domainRequests = new (RefreshDomain Domain, RefreshPriority Priority)[]
+            {
+                (RefreshDomain.Tasks, RefreshPriority.Background),
+                (RefreshDomain.Party, RefreshPriority.Background),
+                (RefreshDomain.GearCatalog, RefreshPriority.Background)
+            };
 
             SetState(new SessionViewModel(
-                IsBusy: true,
+                IsBusy: false,
                 IsAuthenticated: true,
                 DisplayName: loginResult.DisplayName,
                 ErrorMessage: null,
@@ -2916,37 +3349,11 @@ public sealed class AppSessionController : IAppSessionController
                 PartyFreshness: ClassifyFreshness(State.PartySnapshot),
                 GearCatalogSnapshot: State.GearCatalogSnapshot,
                 DiagnosticsLogEntries: await _diagnosticsLogStore.GetRecentAsync(cancellationToken),
-                IncludeStalePartyMembersInQuestForecasts: _includeStalePartyMembersInQuestForecasts));
-
-            var domainStates = new Dictionary<RefreshDomain, DomainRefreshState>();
-            var domainRequests = new (RefreshDomain Domain, RefreshPriority Priority)[]
-            {
-                (RefreshDomain.Tasks, RefreshPriority.Visible),
-                (RefreshDomain.Party, RefreshPriority.Visible),
-                (RefreshDomain.GearCatalog, RefreshPriority.Visible)
-            };
-
-            await _refreshCoordinator.RefreshDomainsAsync(
-                credentials,
-                domainRequests,
-                state =>
-                {
-                    domainStates[state.Domain] = state;
-                    LoadCachedStateAndNotify(domainStates, cancellationToken);
-                },
-                cancellationToken);
-
-            await LoadCachedStateAsync(cancellationToken);
-            await TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
-            await TryMergeAndUploadPartySyncAsync(credentials, cancellationToken);
-            await LoadCachedStateAsync(cancellationToken);
-
-            SetState(State with
-            {
-                ErrorMessage = null,
-                IsBusy = false,
-                DomainStates = domainStates
-            });
+                IncludeStalePartyMembersInQuestForecasts: _includeStalePartyMembersInQuestForecasts,
+                DomainStates: MarkDomainsFetching(domainRequests, RefreshReason.AppBoot),
+                CloudSyncSectionStatuses: State.CloudSyncSectionStatuses,
+                CloudSyncExcludedSections: _cloudSyncExcludedSections.ToArray()));
+            _ = CompleteSignInRefreshAsync(credentials);
         }
         catch (Exception exception)
         {
@@ -2966,6 +3373,78 @@ public sealed class AppSessionController : IAppSessionController
                 UserFreshness = ClassifyFreshness(userSnapshot ?? State.UserSnapshot),
                 UserSnapshot = userSnapshot ?? State.UserSnapshot
             });
+        }
+    }
+
+    private async Task CompleteSignInRefreshAsync(HabiticaCredentials credentials)
+    {
+        var cancellationToken = CancellationToken.None;
+        var domainStates = State.DomainStates is null
+            ? new Dictionary<RefreshDomain, DomainRefreshState>()
+            : new Dictionary<RefreshDomain, DomainRefreshState>(State.DomainStates);
+        var domainRequests = new (RefreshDomain Domain, RefreshPriority Priority)[]
+        {
+            (RefreshDomain.Tasks, RefreshPriority.Background),
+            (RefreshDomain.Party, RefreshPriority.Background),
+            (RefreshDomain.GearCatalog, RefreshPriority.Background)
+        };
+
+        try
+        {
+            await _refreshCoordinator.RefreshDomainsAsync(
+                credentials,
+                domainRequests,
+                state =>
+                {
+                    domainStates[state.Domain] = state;
+                    LoadCachedStateAndNotify(domainStates, cancellationToken);
+                },
+                cancellationToken,
+                RefreshReason.AppBoot);
+
+            await LoadCachedStateAsync(cancellationToken);
+            await TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken, RefreshReason.AppBoot);
+            await TryMergeAndUploadPartySyncAsync(credentials, cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            PreserveSyncDomainStates(domainStates);
+
+            SetState(State with
+            {
+                DomainStates = domainStates
+            });
+        }
+        catch (Exception exception)
+        {
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Sync,
+                "sign-in-background-refresh",
+                DiagnosticsSeverity.Warning,
+                DiagnosticsMode.LiveRead,
+                exception.Message,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["reason"] = RefreshReason.AppBoot.ToString()
+                },
+                cancellationToken);
+
+            SetState(State with
+            {
+                ErrorMessage = exception.Message,
+                DomainStates = domainStates
+            });
+        }
+    }
+
+    private void PreserveSyncDomainStates(Dictionary<RefreshDomain, DomainRefreshState> domainStates)
+    {
+        if (State.DomainStates?.TryGetValue(RefreshDomain.CloudSync, out var cloudSyncState) == true)
+        {
+            domainStates[RefreshDomain.CloudSync] = cloudSyncState;
+        }
+
+        if (State.DomainStates?.TryGetValue(RefreshDomain.PartySync, out var partySyncState) == true)
+        {
+            domainStates[RefreshDomain.PartySync] = partySyncState;
         }
     }
 

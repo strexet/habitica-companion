@@ -182,6 +182,14 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.FromResult(LocalDataResult with { JsonText = jsonText });
     }
 
+    public Task<LocalDataActionResult> ImportCloudSyncSectionsAsync(
+        string jsonText,
+        IReadOnlyDictionary<string, CloudSyncSectionImportDecision> sectionDecisions,
+        CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(LocalDataResult with { JsonText = jsonText });
+    }
+
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
@@ -252,6 +260,18 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task<LocalDataActionResult> DownloadCloudSyncAsync(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(LocalDataResult);
+    }
+
+    public Task SetCloudSyncSectionExcludedAsync(CloudSyncSection section, bool isExcluded, CancellationToken cancellationToken = default)
+    {
+        State = State with
+        {
+            CloudSyncExcludedSections = isExcluded
+                ? State.ExcludedCloudSyncSections.Concat(new[] { section }).Distinct().ToArray()
+                : State.ExcludedCloudSyncSections.Where(item => item != section).ToArray()
+        };
+        Changed?.Invoke();
+        return Task.CompletedTask;
     }
 
     public Task SetIncludeStalePartyMembersAsync(bool include, CancellationToken cancellationToken = default)

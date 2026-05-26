@@ -70,9 +70,16 @@ public interface IAppSessionController
         LocalDataImportMode mode,
         CancellationToken cancellationToken = default);
 
+    Task<LocalDataActionResult> ImportCloudSyncSectionsAsync(
+        string jsonText,
+        IReadOnlyDictionary<string, CloudSyncSectionImportDecision> sectionDecisions,
+        CancellationToken cancellationToken = default);
+
     Task<LocalDataActionResult> PushCloudSyncAsync(CancellationToken cancellationToken = default);
 
     Task<LocalDataActionResult> DownloadCloudSyncAsync(CancellationToken cancellationToken = default);
+
+    Task SetCloudSyncSectionExcludedAsync(CloudSyncSection section, bool isExcluded, CancellationToken cancellationToken = default);
 
     Task SetIncludeStalePartyMembersAsync(bool include, CancellationToken cancellationToken = default);
 

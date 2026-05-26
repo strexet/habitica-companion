@@ -32,7 +32,9 @@ public sealed record SessionViewModel(
     bool IncludeStalePartyMembersInQuestForecasts = false,
     IReadOnlyDictionary<Habitica.Application.Sync.RefreshDomain, Habitica.Application.Sync.DomainRefreshState>? DomainStates = null,
     bool IsAdmin = false,
-    bool IsPartySyncEnabled = true)
+    bool IsPartySyncEnabled = true,
+    IReadOnlyList<CloudSyncSectionStatus>? CloudSyncSectionStatuses = null,
+    IReadOnlyList<CloudSyncSection>? CloudSyncExcludedSections = null)
 {
     public static SessionViewModel Empty { get; } = new(
         IsBusy: false,
@@ -56,6 +58,15 @@ public sealed record SessionViewModel(
 
     public int DiagnosticsWarningCount =>
         DiagnosticsLogEntries?.Count(entry => entry.Severity is DiagnosticsSeverity.Warning or DiagnosticsSeverity.Error) ?? 0;
+
+    public IReadOnlyList<CloudSyncSectionStatus> CloudSyncStatuses => CloudSyncSectionStatuses ?? Array.Empty<CloudSyncSectionStatus>();
+
+    public IReadOnlyList<CloudSyncSection> ExcludedCloudSyncSections => CloudSyncExcludedSections ?? Array.Empty<CloudSyncSection>();
+
+    public bool IsRefreshing => DomainStates?.Values.Any(static state =>
+        state.IsFetching && state.Domain is not RefreshDomain.CloudSync and not RefreshDomain.PartySync) == true;
+
+    public bool IsCloudSyncing => DomainStates?.TryGetValue(RefreshDomain.CloudSync, out var state) == true && state.IsFetching;
 }
 
 public sealed record SpellCastRequest(

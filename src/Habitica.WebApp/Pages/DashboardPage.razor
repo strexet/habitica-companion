@@ -2,6 +2,7 @@
 @implements IDisposable
 @using System.Globalization
 @using Habitica.Application.Dashboard
+@using Habitica.Application.Sync
 @using Habitica.Domain.Auth
 @using Habitica.Domain.Dashboard
 @using Habitica.Rules.Stats
@@ -38,6 +39,12 @@
         <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
             @GetFreshnessLabel(SessionController.State.UserFreshness)
         </MudAlert>
+
+        <div class="dashboard-refresh-strip" data-testid="dashboard-refresh-status">
+            @RenderDomainStatus(RefreshDomain.UserProfile, "Account")
+            @RenderDomainStatus(RefreshDomain.Tasks, "Tasks")
+            @RenderDomainStatus(RefreshDomain.GearCatalog, "Gear")
+        </div>
 
         @if (!string.IsNullOrWhiteSpace(_startNewDayResultMessage))
         {
@@ -163,6 +170,10 @@
                     <p class="panel-copy">
                         This estimate uses saved task and party data. Habitica's final Cron result can differ if tasks, buffs, party state, or server formulas changed after the last refresh.
                     </p>
+                    @if (IsDomainFetching(RefreshDomain.Tasks) || IsDomainFetching(RefreshDomain.Party))
+                    {
+                        <span class="dashboard-stat-note">Refreshing task or party data in the background.</span>
+                    }
                 </div>
                 <div class="pending-damage-total">
                     <strong>@FormatDecimal(damageEstimate.TotalDamage) HP</strong>
@@ -600,6 +611,19 @@
         builder.CloseElement();
     };
 
+    private RenderFragment RenderDomainStatus(RefreshDomain domain, string label) => builder =>
+    {
+        var sequence = 0;
+        var state = GetDomainState(domain);
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", GetDomainStatusClass(state));
+        builder.OpenElement(sequence++, "strong");
+        builder.AddContent(sequence++, label);
+        builder.CloseElement();
+        builder.AddContent(sequence++, $" {GetDomainStatusText(state)}");
+        builder.CloseElement();
+    };
+
     private async Task BuyHealthPotionAsync()
     {
         var result = await SessionController.BuyHealthPotionAsync();
@@ -713,6 +737,50 @@
             SnapshotFreshnessState.Expired => Severity.Error,
             _ => Severity.Info
         };
+    }
+
+    private DomainRefreshState? GetDomainState(RefreshDomain domain)
+    {
+        return SessionController.State.DomainStates?.TryGetValue(domain, out var state) == true
+            ? state
+            : null;
+    }
+
+    private bool IsDomainFetching(RefreshDomain domain)
+    {
+        return GetDomainState(domain)?.IsFetching == true;
+    }
+
+    private static string GetDomainStatusText(DomainRefreshState? state)
+    {
+        if (state?.IsFetching == true)
+        {
+            return "refreshing";
+        }
+
+        if (!string.IsNullOrWhiteSpace(state?.LastError))
+        {
+            return "failed";
+        }
+
+        return state?.LastRefreshedAtUtc is null
+            ? "not refreshed"
+            : $"updated {state.LastRefreshedAtUtc.Value.ToLocalTime():g}";
+    }
+
+    private static string GetDomainStatusClass(DomainRefreshState? state)
+    {
+        if (state?.IsFetching == true)
+        {
+            return "ui-pill refresh-status-pill";
+        }
+
+        if (!string.IsNullOrWhiteSpace(state?.LastError))
+        {
+            return "ui-pill refresh-status-pill danger-pill";
+        }
+
+        return "ui-pill refresh-status-pill success-pill";
     }
 
     private void HandleStateChanged()

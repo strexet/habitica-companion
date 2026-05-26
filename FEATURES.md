@@ -122,7 +122,7 @@ Layout rules are enforced in `app.css`: image frames have stable small/medium/la
 
 ## 4. Party buff timing optimizer
 
-Status: partial
+Status: implemented
 Owner module: `Habitica.Domain.Party`, `Habitica.Application.Auth`, `Habitica.Storage`
 Application entry point: `Habitica.WebApp.Pages.PartyPage`
 Primary Habitica data: party group, party members, member `lastCron`, member HP/MP, member public quest progress, member preferences day start and timezone offset
@@ -1423,6 +1423,7 @@ local import preview with conflicts
 merged local records
 encrypted Cloudflare sync payload
 status messages for export, import, upload, and download
+per-section cloud sync status records
 ```
 
 ### Local storage
@@ -1471,15 +1472,19 @@ When existing local data is present, Settings must show explicit options:
 
 ```text
 Merge
-Cancel
+Keep local
+Use remote
+Apply section choices
 ```
 
-Settings always imports through merge mode. The lower-level portability service retains override support for future admin/recovery tooling, but the user-facing app must not expose it by default. Merge keeps local records and merges known append-only collections:
+Merge keeps local records and merges known append-only collections:
 
 - equipment presets by `id`;
 - diagnostics log entries by `id`;
 - party CRON history events by `partyId`, `memberId`, and `lastCronUtc`;
 - latest snapshots by newer `retrievedAtUtc`.
+
+Use remote imports incoming records with override behavior for the chosen import scope. Keep local skips the incoming record. Apply section choices lets conflicting sections choose merge, keep local, or use remote independently.
 
 Cloud sync derives both the sync identifier and AES-GCM key locally from the active Habitica User ID and API Token. The Cloudflare Pages Function stores only encrypted payloads.
 
@@ -1489,6 +1494,7 @@ Cloud sync uses per-section encrypted records in Cloudflare KV. Each section map
 Section             StorageKey                   KV suffix
 UserProfile         user/latestSnapshot          user-profile
 TasksCurrent        tasks/latestSnapshot         tasks-current
+TaskOrderPreferences preferences/taskOrder       task-order-preferences
 InventoryCatalog    inventory/gearCatalog        inventory-catalog
 SavedPresets        inventory/equipmentPresets   saved-presets
 PartyCurrent        party/latestSnapshot         party-current
@@ -1500,6 +1506,10 @@ SyncMetadata        (metadata only)              sync-metadata
 The `SyncMetadata` section stores `schemaVersion: 2`, upload timestamp, succeeded/failed section keys.
 
 After successful refreshes and app data mutations, the WebApp attempts automatic encrypted sync when Habitica credentials are available. Automatic sync lists remote sections, downloads and merges each into local data, then uploads each local section back to Cloudflare. If no remote sections exist, the system falls back to downloading the legacy single-blob format, imports it via merge, and re-uploads as individual sections (one-time migration). Sections that exceed the 2MB per-section limit are skipped with a diagnostic warning; critical sections (UserProfile, SavedPresets, SyncMetadata) produce error-level diagnostics on failure. Cloud sync failures are logged as warnings and must not fail the original Habitica refresh or equipment/stat/spell action.
+
+Cloud sync section status is kept in session state with section key, direction, status, update time, payload size, and message. Settings shows each syncable section, including skipped, failed, excluded, and conflict states. `Features:CloudSyncExcludedSections` configures sections that should not upload; diagnostics is excluded by default so app logs do not inflate encrypted sync payloads unless explicitly enabled.
+
+Cloud sync work updates the `CloudSync` refresh domain and records the reason (`AppBoot`, `ManualRefresh`, or `MutationCompleted`). These sync states do not use the global busy flag and should surface in Settings or the app bar rather than blanking cached pages.
 
 ### Validation
 
@@ -1530,6 +1540,7 @@ Test:
 - merge behavior for equipment presets and party CRON history;
 - automatic cloud sync after refresh and equipment preset changes;
 - Settings controls for export, import, and cloud sync;
+- per-section cloud sync statuses and exclusions;
 - WebApp build after adding Pages Function assets.
 
 ### Open questions
@@ -1537,7 +1548,6 @@ Test:
 - Token rotation breaks access to data encrypted with the previous API token unless a future migration/export path is added.
 - A future provider can replace Cloudflare by implementing the remote sync provider boundary.
 - Legacy single-blob data (`sync:{syncId}`) is not automatically cleaned up after section-based migration. It remains readable but is no longer updated. A future cleanup step could delete it once section-based sync is stable.
-- Per-section sync status is not yet surfaced in the Settings UI; future work should show which sections succeeded/failed/were skipped due to size.
 
 ## 13. App shell and navigation
 
@@ -1563,6 +1573,8 @@ cached user snapshot presence
 task freshness state
 user freshness state
 latest sync timestamp
+active refresh count
+cloud sync activity state
 diagnostics history presence
 diagnostics warning count
 global workflow error state
@@ -1596,7 +1608,8 @@ Navigation rules:
 1. Hide the foldable feature drawer entirely when no authenticated session is active.
 2. Show `Dashboard`, `Tasks`, `Inventory`, `Party`, `Spells`, `Settings`, and `Diagnostics` in the drawer once an authenticated session exists.
 3. Keep refresh disabled unless authenticated credentials are available for the current session.
-4. Surface the latest workflow error above route content.
+4. Surface active refresh or cloud sync state in the top bar without hiding cached page content.
+5. Surface the latest workflow error above route content.
 ```
 
 ### Validation
@@ -1624,7 +1637,8 @@ Test:
 - authenticated navigation links;
 - unauthenticated drawer suppression;
 - shell error banner rendering;
-- sync timestamp rendering when available.
+- sync timestamp rendering when available;
+- active refresh and cloud-sync status rendering.
 
 ### Open questions
 
@@ -1634,7 +1648,7 @@ Current implementation:
 - `/` resolves after session initialization, sending authenticated sessions to Dashboard and unauthenticated sessions to Sign In;
 - saved local credentials are checked before the route body renders, avoiding a sign-in flash for returning authenticated users;
 - authenticated drawer order is `Dashboard`, `Tasks`, `Inventory`, `Party`, `Spells`, `Settings`, `Diagnostics`;
-- top app bar with refresh action;
+- top app bar with refresh action, active refresh count, cloud sync state, and latest sync timestamp fallback;
 - responsive drawer navigation shown only after authentication;
 - shared error banner;
 - cached identity summary in the app shell;
@@ -1643,7 +1657,7 @@ Current implementation:
 Next:
 
 - route-aware breadcrumbs and active-workspace context;
-- connection-state badge and richer sync-status details.
+- connection-state badge.
 
 Waiting:
 
@@ -1658,7 +1672,7 @@ Primary Habitica data: authenticated user profile and user task list
 Mutates Habitica state: no
 Requires confirmation: no
 Offline behavior: cached snapshot remains readable offline; refresh requires API access
-Rate-limit sensitivity: low because sync is user-initiated only in MVP
+Rate-limit sensitivity: low-to-medium; sign-in stages reads, manual refresh is page-prioritized, and mutating workflows use configured request pacing
 
 ### Goal
 
@@ -1687,6 +1701,7 @@ snapshot timestamps
 account freshness state
 party freshness state
 task freshness state
+per-domain refresh state
 sign-in or refresh error state
 ```
 
@@ -1759,6 +1774,7 @@ RefreshCoordinator provides:
 - Priority scheduling: Visible domains execute before Background domains.
 - Per-domain dispatch: each domain maps to specific API fetch + store save.
 - Per-domain callbacks: UI updates incrementally as each domain finishes.
+- Diagnostics: domain, reason, priority, duration, error, and deduplication state are logged.
 ```
 
 Keep cached local data when refresh fails.
@@ -1803,8 +1819,9 @@ Current implementation:
 - initial sync on sign-in via staged `AuthenticateMinimalAsync` (user snapshot only) followed by `RefreshCoordinator` for remaining domains;
 - manual refresh action via `RefreshForPageAsync` with page-aware domain priorities;
 - `RefreshCoordinator` provides domain-level deduplication, priority scheduling (Visible/Background), and per-domain completion callbacks;
-- `DomainRefreshState` per domain tracks fetching status, last refresh timestamp, and errors;
+- `DomainRefreshState` per domain tracks fetching status, last refresh timestamp, errors, reason, priority, duration, and deduplication state;
 - `SessionViewModel.DomainStates` exposes per-domain status to UI;
+- Dashboard shows a compact refresh strip for account, tasks, and gear, plus card-level background refresh notes where a calculation depends on refreshing data;
 - mutation methods fire-and-forget cloud sync instead of blocking on it;
 - persisted-credential restore on app startup;
 - freshness classification for cached tasks, user, and party snapshots;
@@ -1814,9 +1831,7 @@ Current implementation:
 
 Next:
 
-- add explicit `429` / `Retry-After` UI handling;
-- add stale-while-revalidate UI indicators per domain (loading spinners, skeleton states);
-- add per-domain error banners instead of single global error.
+- add per-domain error banners beyond the compact status chips.
 
 Waiting:
 

@@ -36,6 +36,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Dashboard pending damage estimate, knockout warning, and manual health-potion purchase action.
 - Split-key encrypted Cloudflare app-data sync, legacy single-blob restore fallback, per-section payload guard, partial-success sync behavior, and refresh coordinator deduplication.
 - Refresh-domain invalidation basics after implemented mutations.
+- Staged sign-in refresh UX, scoped refresh indicators, per-section cloud sync status, sync exclusions, and explicit cloud-sync conflict choices.
 
 ## Pending to be added to `Prioritized Next Changes`
 
@@ -165,51 +166,6 @@ Acceptance:
 - Link lands on the Party page where the response action is available.
 
 UX-UI reference: `docs/UX_UI_MANIFEST.md` dashboard and party quest planning sections.
-
-### Refresh UX And Cloud Sync Status
-
-Goal: make refresh, background sync, and cloud sync state visible at the right scope while keeping cached data usable and moving sign-in quickly to Dashboard.
-
-Touch:
-- `docs/UX_UI_MANIFEST.md`
-- `src/Habitica.Application/Sync`
-- `src/Habitica.WebApp/State`
-- `src/Habitica.WebApp/Pages/SettingsPage.razor`
-- `src/Habitica.WebApp/Pages/DashboardPage.razor`
-- pages/cards with manual refresh or domain freshness indicators
-- diagnostics surfaces under `src/Habitica.WebApp/Pages/LiveTestsPage.razor` or existing diagnostics UI
-- direct tests under `tests/Habitica.Application.Tests/Sync/` and `tests/Habitica.WebApp.Tests/`
-- `TECHNICAL.md`
-- `FEATURES.md`
-
-Out of scope:
-- changing Cloudflare encryption or key derivation;
-- sending Habitica API tokens to Cloudflare sync endpoints;
-- automatic destructive conflict resolution without explicit user choice;
-- replacing local-first cached rendering with server-blocked page loads.
-
-Acceptance:
-- UI/UX manifest defines page-level, card-level, and field-level refresh status rules before implementation work starts.
-- After sign-in, the app returns to Dashboard after the minimal successful user fetch and defers non-critical domain refreshes behind usable cached/current data.
-- Visible page data remains interactive while background-only refresh or cloud sync work runs; global busy states are reserved for blocking mutations or first-load surfaces that have no usable cached data.
-- Manual refresh, background refresh, mutation invalidation, and Cloudflare sync progress surface next to the affected page, card, field, or Settings section instead of only at page level.
-- Cloud sync metadata uses per-section status records with section key, updated time, payload size, upload/download direction, and status.
-- Settings shows which sections succeeded, failed, skipped, or were excluded, and supports configurable section-level sync exclusions such as diagnostics.
-- Cloud sync conflict UI appears when remote and local sections diverge and requires an explicit keep-local, use-remote, or section-by-section choice.
-- Diagnostics includes sync section key, payload size, upload/download status, partial skipped sections, refresh domain, refresh reason, refresh duration, deduplication hit/miss, and mutation invalidation result.
-- Background updates can use subtle changed-value animation when a visible value changes, respecting reduced-motion preferences.
-- Loading skeletons are used only where delayed content has a stable final structure; fast or background refreshes avoid skeleton flashes.
-
-Research findings for implementation:
-- Apple HIG feedback guidance supports passive status for routine state, stronger feedback for success/failure/warnings, and matching feedback weight to consequence: https://developer.apple.com/design/human-interface-guidelines/feedback
-- Material progress guidance says use one indicator style per operation type, determinate progress when completion is knowable, indeterminate progress when duration is unknown, and whole-operation progress for sequences: https://m1.material.io/components/progress-activity.html
-- Todoist treats offline mode as automatic and syncs offline changes after reconnect, which supports keeping task data interactive instead of blanking surfaces during connectivity loss: https://get.todoist.help/hc/en-us/articles/205144561-Use-Todoist-while-offline
-- Notion exposes offline/download progress, an Offline settings tab, unavailable actions while offline, automatic resync, and a sync indicator confirming saved state; this maps well to Settings-level per-section visibility: https://www.notion.com/help/guides/working-offline-in-notion-everything-you-need-to-know
-- Linear shows `Syncing` near the workspace when local changes are queued, includes a pending-change count, retries after restart, and documents overwrite risk in offline failsafe mode; use this pattern for concise persistent sync state and conflict warnings: https://linear.app/docs/get-the-app
-- Dropbox avoids data loss in conflicting edits by preserving both versions instead of silently merging; cloud sync conflict UI should preserve local and remote sections until the user chooses: https://learn.dropbox.com/self-guided-learning/help-desk-course/common-team-member-challenges
-- Expo local-first guidance frames fast UI as direct local reads/writes with background sync, but warns that sync/permissions/conflict handling remain product responsibilities; this matches Habitica Tool's local-first cache plus explicit cloud sync model: https://docs.expo.dev/guides/local-first/
-
-UX-UI reference: `docs/UX_UI_MANIFEST.md` app-wide interaction rules.
 
 ## Backlog
 

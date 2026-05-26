@@ -139,6 +139,7 @@ public sealed class AppSessionControllerTests
         });
 
         await controller.RefreshAsync();
+        await WaitForConditionAsync(() => remoteSync.DownloadCount >= 2 && remoteSync.SectionUploadCount >= 2);
 
         Assert.True(remoteSync.DownloadCount >= 2);
         Assert.True(remoteSync.SectionUploadCount >= 2);
@@ -193,6 +194,7 @@ public sealed class AppSessionControllerTests
             PersistLocally = false,
             UserId = "user-id"
         });
+        await WaitForConditionAsync(() => controller.State.Presets.Any(preset => preset.Id == "remote-preset"));
 
         Assert.Contains(controller.State.Presets, preset => preset.Id == "remote-preset" && preset.Name == "Remote Casting");
         Assert.True(remoteSync.DownloadCount >= 1);
@@ -233,6 +235,7 @@ public sealed class AppSessionControllerTests
             PersistLocally = false,
             UserId = "user-id"
         });
+        await WaitForConditionAsync(() => controller.State.PartySnapshot?.CronDashboard?.HistoryDayCount == 2);
 
         Assert.Equal(2, controller.State.PartySnapshot!.CronDashboard!.HistoryDayCount);
     }
@@ -1230,6 +1233,19 @@ public sealed class AppSessionControllerTests
             snapshotFreshnessPolicy: freshnessPolicy,
             featureOptions: new AppFeatureOptions { HabiticaRequestDelayMilliseconds = 0 },
             timeProvider: TimeProvider.System);
+    }
+
+    private static async Task WaitForConditionAsync(Func<bool> condition)
+    {
+        for (var attempt = 0; attempt < 50; attempt++)
+        {
+            if (condition())
+            {
+                return;
+            }
+
+            await Task.Delay(10);
+        }
     }
 
     private sealed class FakeKeyValueStorage : IKeyValueStorage

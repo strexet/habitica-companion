@@ -1,4 +1,6 @@
 @page "/settings"
+@using System.Text.Json
+@using Habitica.Application.Sync
 @inject IAppSessionController SessionController
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
@@ -65,17 +67,18 @@
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Private device sync</h2>
                 <p>Your browser encrypts the upload before it leaves this device. The sync server stores only encrypted data.</p>
+                <span class="dashboard-stat-note">@GetCloudSyncSummary()</span>
                 <div class="action-row">
                     <MudButton Color="Color.Primary"
                                data-testid="push-cloud-sync"
-                               Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy)"
+                               Disabled="@(!SessionController.State.IsAuthenticated || IsCloudSyncBusy)"
                                OnClick="HandleCloudUploadAsync"
                                Variant="Variant.Filled">
                         Upload
                     </MudButton>
                     <MudButton Color="Color.Secondary"
                                data-testid="download-cloud-sync"
-                               Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy)"
+                               Disabled="@(!SessionController.State.IsAuthenticated || IsCloudSyncBusy)"
                                OnClick="HandleCloudDownloadAsync"
                                Variant="Variant.Filled">
                         Download
@@ -102,6 +105,42 @@
             </div>
         }
 
+        <div class="sync-status-panel" data-testid="cloud-sync-status">
+            <div>
+                <h3>Cloud sync sections</h3>
+                <p class="panel-copy">Each section uploads independently. Excluded sections stay only in this browser.</p>
+            </div>
+            <div class="sync-section-list">
+                @foreach (var section in GetVisibleCloudSyncSections())
+                {
+                    var status = GetSectionStatus(section);
+                    var excluded = SessionController.State.ExcludedCloudSyncSections.Contains(section);
+                    <div class="sync-section-row">
+                        <div>
+                            <strong>@GetSectionLabel(section)</strong>
+                            <span>@(status?.Message ?? "No sync activity yet")</span>
+                            @if (status?.PayloadBytes is not null)
+                            {
+                                <small>@FormatBytes(status.PayloadBytes.Value) at @status.UpdatedAtUtc.ToLocalTime():g</small>
+                            }
+                        </div>
+                        <span class="@GetSectionStatusClass(status, excluded)">
+                            @(excluded ? "Excluded" : GetSectionStatusLabel(status))
+                        </span>
+                        @if (CanToggleSection(section))
+                        {
+                            <label class="checkbox-row compact-checkbox-row">
+                                <input checked="@excluded"
+                                       type="checkbox"
+                                       @onchange="eventArgs => ToggleCloudSyncSectionAsync(section, eventArgs)" />
+                                <span>Exclude</span>
+                            </label>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
         @if (_pendingImportPreview is not null)
         {
             <div class="import-warning" data-testid="import-conflict-warning">
@@ -110,12 +149,39 @@
                     The incoming data has @_pendingImportPreview.IncomingRecordCount records. This browser has @_pendingImportPreview.LocalRecordCount records,
                     with @_pendingImportPreview.ConflictingKeys.Count matching saved sections.
                 </p>
+                @if (_pendingImportPreview.ConflictingKeys.Count > 0)
+                {
+                    <div class="conflict-choice-list">
+                        @foreach (var key in _pendingImportPreview.ConflictingKeys)
+                        {
+                            <label class="field-row">
+                                <span>@GetStorageKeyLabel(key)</span>
+                                <select class="app-input"
+                                        value="@GetConflictDecisionValue(key)"
+                                        @onchange="eventArgs => SetConflictDecision(key, eventArgs.Value?.ToString())">
+                                    <option value="@CloudSyncSectionImportDecision.Merge">Merge</option>
+                                    <option value="@CloudSyncSectionImportDecision.KeepLocal">Keep local</option>
+                                    <option value="@CloudSyncSectionImportDecision.UseRemote">Use remote</option>
+                                </select>
+                            </label>
+                        }
+                    </div>
+                }
                 <div class="action-row">
-                    <MudButton Color="Color.Secondary" OnClick="@(() => CompleteImportAsync(LocalDataImportMode.Merge))" Variant="Variant.Filled">
+                    <MudButton Color="Color.Secondary" OnClick="MergePendingImportAsync" Variant="Variant.Filled">
                         Merge
                     </MudButton>
+                    <MudButton Color="Color.Primary" OnClick="UseRemotePendingImportAsync" Variant="Variant.Outlined">
+                        Use remote
+                    </MudButton>
+                    @if (_pendingImportPreview.ConflictingKeys.Count > 0)
+                    {
+                        <MudButton Color="Color.Secondary" OnClick="ApplySectionChoicesAsync" Variant="Variant.Outlined">
+                            Apply choices
+                        </MudButton>
+                    }
                     <MudButton Color="Color.Default" OnClick="CancelPendingImport" Variant="Variant.Outlined">
-                        Cancel
+                        Keep local
                     </MudButton>
                 </div>
             </div>
@@ -130,6 +196,9 @@
     private LocalUserDataImportPreview? _pendingImportPreview;
     private string? _dataMessage;
     private bool _dataSucceeded = true;
+    private readonly Dictionary<string, CloudSyncSectionImportDecision> _sectionDecisions = new(StringComparer.Ordinal);
+
+    private bool IsCloudSyncBusy => SessionController.State.IsBusy || SessionController.State.IsCloudSyncing;
 
     private async Task HandleLogoutAsync()
     {
@@ -192,6 +261,11 @@
         {
             _pendingImportJson = result.JsonText;
             _pendingImportPreview = result.ImportPreview;
+            _sectionDecisions.Clear();
+            foreach (var key in result.ImportPreview.ConflictingKeys)
+            {
+                _sectionDecisions[key] = CloudSyncSectionImportDecision.Merge;
+            }
             return;
         }
 
@@ -213,10 +287,37 @@
         SetDataMessage(importResult);
     }
 
+    private Task MergePendingImportAsync()
+    {
+        return CompleteImportAsync(LocalDataImportMode.Merge);
+    }
+
+    private Task UseRemotePendingImportAsync()
+    {
+        return CompleteImportAsync(LocalDataImportMode.Override);
+    }
+
+    private async Task ApplySectionChoicesAsync()
+    {
+        if (string.IsNullOrWhiteSpace(_pendingImportJson))
+        {
+            CancelPendingImport();
+            return;
+        }
+
+        var decisions = BuildSectionDecisions(_pendingImportJson);
+        var importResult = await SessionController.ImportCloudSyncSectionsAsync(_pendingImportJson, decisions);
+        _pendingImportJson = null;
+        _pendingImportPreview = null;
+        _sectionDecisions.Clear();
+        SetDataMessage(importResult);
+    }
+
     private void CancelPendingImport()
     {
         _pendingImportJson = null;
         _pendingImportPreview = null;
+        _sectionDecisions.Clear();
         _dataSucceeded = true;
         _dataMessage = "Import cancelled.";
     }
@@ -231,5 +332,148 @@
     {
         _exportModule ??= await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/diagnosticsExport.js");
         return _exportModule;
+    }
+
+    private IReadOnlyDictionary<string, CloudSyncSectionImportDecision> BuildSectionDecisions(string jsonText)
+    {
+        var decisions = new Dictionary<string, CloudSyncSectionImportDecision>(StringComparer.Ordinal);
+        using var document = JsonDocument.Parse(jsonText);
+        if (!document.RootElement.TryGetProperty("records", out var records) || records.ValueKind != JsonValueKind.Array)
+        {
+            return decisions;
+        }
+
+        foreach (var record in records.EnumerateArray())
+        {
+            var storageKey = record.TryGetProperty("key", out var keyProperty)
+                ? keyProperty.GetString()
+                : null;
+            if (string.IsNullOrWhiteSpace(storageKey))
+            {
+                continue;
+            }
+
+            var sectionKey = GetSectionKeyForStorageKey(storageKey);
+            decisions[sectionKey] = _sectionDecisions.GetValueOrDefault(storageKey, CloudSyncSectionImportDecision.Merge);
+        }
+
+        return decisions;
+    }
+
+    private void SetConflictDecision(string storageKey, string? value)
+    {
+        if (Enum.TryParse<CloudSyncSectionImportDecision>(value, out var decision))
+        {
+            _sectionDecisions[storageKey] = decision;
+        }
+    }
+
+    private string GetConflictDecisionValue(string storageKey)
+    {
+        return _sectionDecisions.GetValueOrDefault(storageKey, CloudSyncSectionImportDecision.Merge).ToString();
+    }
+
+    private async Task ToggleCloudSyncSectionAsync(CloudSyncSection section, ChangeEventArgs eventArgs)
+    {
+        await SessionController.SetCloudSyncSectionExcludedAsync(section, eventArgs.Value is true);
+    }
+
+    private static IReadOnlyList<CloudSyncSection> GetVisibleCloudSyncSections()
+    {
+        return CloudSyncSectionMapping.AllSections
+            .Where(static section => section != CloudSyncSection.SyncMetadata)
+            .ToArray();
+    }
+
+    private CloudSyncSectionStatus? GetSectionStatus(CloudSyncSection section)
+    {
+        var sectionKey = CloudSyncSectionMapping.KvSuffix(section);
+        return SessionController.State.CloudSyncStatuses
+            .FirstOrDefault(status => string.Equals(status.SectionKey, sectionKey, StringComparison.Ordinal));
+    }
+
+    private static bool CanToggleSection(CloudSyncSection section)
+    {
+        return section != CloudSyncSection.SyncMetadata && !CloudSyncSectionMapping.IsCritical(section);
+    }
+
+    private static string GetSectionLabel(CloudSyncSection section)
+    {
+        return section switch
+        {
+            CloudSyncSection.UserProfile => "User profile",
+            CloudSyncSection.TasksCurrent => "Tasks",
+            CloudSyncSection.TaskOrderPreferences => "Task order",
+            CloudSyncSection.InventoryCatalog => "Inventory catalog",
+            CloudSyncSection.SavedPresets => "Saved presets",
+            CloudSyncSection.PartyCurrent => "Party",
+            CloudSyncSection.PartyCronHistory => "Party CRON history",
+            CloudSyncSection.Diagnostics => "Diagnostics",
+            _ => section.ToString()
+        };
+    }
+
+    private static string GetStorageKeyLabel(string storageKey)
+    {
+        var section = CloudSyncSectionMapping.SectionForStorageKey(storageKey);
+        return section is null ? storageKey : GetSectionLabel(section.Value);
+    }
+
+    private static string GetSectionKeyForStorageKey(string storageKey)
+    {
+        var section = CloudSyncSectionMapping.SectionForStorageKey(storageKey);
+        return section is null ? storageKey : CloudSyncSectionMapping.KvSuffix(section.Value);
+    }
+
+    private string GetCloudSyncSummary()
+    {
+        if (SessionController.State.IsCloudSyncing)
+        {
+            return "Syncing encrypted sections...";
+        }
+
+        var latest = SessionController.State.CloudSyncStatuses
+            .Where(static status => status.Section != CloudSyncSection.SyncMetadata)
+            .OrderByDescending(static status => status.UpdatedAtUtc)
+            .FirstOrDefault();
+        return latest is null
+            ? "No cloud sync activity in this session."
+            : $"{GetSectionStatusLabel(latest)} {GetSectionLabel(latest.Section).ToLowerInvariant()} at {latest.UpdatedAtUtc.ToLocalTime():g}.";
+    }
+
+    private static string GetSectionStatusLabel(CloudSyncSectionStatus? status)
+    {
+        return status?.Status switch
+        {
+            CloudSyncSectionStatusKind.Pending => "Pending",
+            CloudSyncSectionStatusKind.Succeeded => status.Direction == CloudSyncDirection.Download ? "Downloaded" : "Uploaded",
+            CloudSyncSectionStatusKind.Failed => "Failed",
+            CloudSyncSectionStatusKind.Skipped => "Skipped",
+            CloudSyncSectionStatusKind.Excluded => "Excluded",
+            CloudSyncSectionStatusKind.Conflict => "Conflict",
+            _ => "Idle"
+        };
+    }
+
+    private static string GetSectionStatusClass(CloudSyncSectionStatus? status, bool excluded)
+    {
+        if (excluded || status?.Status is CloudSyncSectionStatusKind.Excluded or CloudSyncSectionStatusKind.Skipped)
+        {
+            return "sync-status-pill warning-pill";
+        }
+
+        return status?.Status switch
+        {
+            CloudSyncSectionStatusKind.Succeeded => "sync-status-pill success-pill",
+            CloudSyncSectionStatusKind.Failed or CloudSyncSectionStatusKind.Conflict => "sync-status-pill danger-pill",
+            _ => "sync-status-pill ui-pill"
+        };
+    }
+
+    private static string FormatBytes(int bytes)
+    {
+        return bytes < 1024
+            ? $"{bytes} B"
+            : $"{Math.Round(bytes / 1024d, 1):0.#} KB";
     }
 }

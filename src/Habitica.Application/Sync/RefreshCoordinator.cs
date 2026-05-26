@@ -48,7 +48,8 @@ public sealed class RefreshCoordinator
         HabiticaCredentials credentials,
         IReadOnlyList<(RefreshDomain Domain, RefreshPriority Priority)> requests,
         Action<DomainRefreshState> onDomainCompleted,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        RefreshReason reason = RefreshReason.ManualRefresh)
     {
         var grouped = requests
             .GroupBy(static r => r.Priority)
@@ -72,7 +73,7 @@ public sealed class RefreshCoordinator
                     continue;
                 }
 
-                var task = GetOrStartDomainRefreshAsync(domain, credentials, cancellationToken);
+                var task = GetOrStartDomainRefreshAsync(domain, credentials, reason, priorityGroup.Key, cancellationToken);
                 tasks.Add((domain, task));
             }
 
@@ -92,20 +93,22 @@ public sealed class RefreshCoordinator
         HabiticaCredentials credentials,
         CancellationToken cancellationToken)
     {
-        return await GetOrStartDomainRefreshAsync(domain, credentials, cancellationToken);
+        return await GetOrStartDomainRefreshAsync(domain, credentials, RefreshReason.ManualRefresh, RefreshPriority.Visible, cancellationToken);
     }
 
     private Task<DomainRefreshState> GetOrStartDomainRefreshAsync(
         RefreshDomain domain,
         HabiticaCredentials credentials,
+        RefreshReason reason,
+        RefreshPriority priority,
         CancellationToken cancellationToken)
     {
         if (_inflight.TryGetValue(domain, out var existing) && !existing.IsCompleted)
         {
-            return existing;
+            return MarkDeduplicatedAsync(existing, cancellationToken);
         }
 
-        var task = DispatchDomainAsync(domain, credentials, cancellationToken);
+        var task = DispatchDomainAsync(domain, credentials, reason, priority, cancellationToken);
         _inflight[domain] = task;
         return task;
     }
@@ -113,11 +116,14 @@ public sealed class RefreshCoordinator
     private async Task<DomainRefreshState> DispatchDomainAsync(
         RefreshDomain domain,
         HabiticaCredentials credentials,
+        RefreshReason reason,
+        RefreshPriority priority,
         CancellationToken cancellationToken)
     {
+        var startedAtUtc = _timeProvider.GetUtcNow();
         try
         {
-            return domain switch
+            var result = domain switch
             {
                 RefreshDomain.UserProfile => await RefreshUserProfileAsync(credentials, cancellationToken),
                 RefreshDomain.Tasks => await RefreshTasksAsync(credentials, cancellationToken),
@@ -125,6 +131,15 @@ public sealed class RefreshCoordinator
                 RefreshDomain.GearCatalog => await RefreshGearCatalogAsync(credentials, cancellationToken),
                 _ => new DomainRefreshState(domain, false, null, $"Unsupported domain: {domain}")
             };
+
+            var completed = result with
+            {
+                Reason = reason,
+                Priority = priority,
+                Duration = _timeProvider.GetUtcNow() - startedAtUtc
+            };
+            await WriteRefreshDiagnosticsAsync(completed, cancellationToken);
+            return completed;
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -132,24 +147,60 @@ public sealed class RefreshCoordinator
         }
         catch (Exception exception)
         {
-            await _diagnosticsLogWriter.WriteAsync(
-                DiagnosticsFeatureArea.Auth,
-                $"refresh-{domain.ToString().ToLowerInvariant()}",
-                DiagnosticsSeverity.Warning,
-                DiagnosticsMode.Local,
-                $"Domain refresh failed for {domain}: {exception.Message}",
-                new Dictionary<string, string>(StringComparer.Ordinal)
-                {
-                    ["domain"] = domain.ToString()
-                },
-                cancellationToken);
-
-            return new DomainRefreshState(domain, false, null, exception.Message);
+            var failed = new DomainRefreshState(
+                domain,
+                false,
+                LastError: exception.Message,
+                Reason: reason,
+                Priority: priority,
+                Duration: _timeProvider.GetUtcNow() - startedAtUtc);
+            await WriteRefreshDiagnosticsAsync(failed, cancellationToken);
+            return failed;
         }
         finally
         {
             _inflight.Remove(domain);
         }
+    }
+
+    private async Task<DomainRefreshState> MarkDeduplicatedAsync(
+        Task<DomainRefreshState> existing,
+        CancellationToken cancellationToken)
+    {
+        var result = await existing;
+        var deduplicated = result with { Deduplicated = true };
+        await WriteRefreshDiagnosticsAsync(deduplicated, cancellationToken);
+        return deduplicated;
+    }
+
+    private Task WriteRefreshDiagnosticsAsync(
+        DomainRefreshState state,
+        CancellationToken cancellationToken)
+    {
+        var metadata = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["domain"] = state.Domain.ToString(),
+            ["reason"] = state.Reason?.ToString() ?? string.Empty,
+            ["priority"] = state.Priority?.ToString() ?? string.Empty,
+            ["durationMs"] = Math.Round(state.Duration?.TotalMilliseconds ?? 0d).ToString(CultureInfo.InvariantCulture),
+            ["deduplicated"] = state.Deduplicated.ToString(CultureInfo.InvariantCulture)
+        };
+
+        if (!string.IsNullOrWhiteSpace(state.LastError))
+        {
+            metadata["error"] = state.LastError;
+        }
+
+        return _diagnosticsLogWriter.WriteAsync(
+            DiagnosticsFeatureArea.Sync,
+            $"refresh-{state.Domain.ToString().ToLowerInvariant()}",
+            string.IsNullOrWhiteSpace(state.LastError) ? DiagnosticsSeverity.Success : DiagnosticsSeverity.Warning,
+            string.IsNullOrWhiteSpace(state.LastError) ? DiagnosticsMode.LiveRead : DiagnosticsMode.Local,
+            string.IsNullOrWhiteSpace(state.LastError)
+                ? $"Refreshed {state.Domain}."
+                : $"Refresh failed for {state.Domain}: {state.LastError}",
+            metadata,
+            cancellationToken);
     }
 
     private async Task<DomainRefreshState> RefreshUserProfileAsync(

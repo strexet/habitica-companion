@@ -356,13 +356,15 @@ Files: `src/Habitica.WebApp/Pages/SettingsPage.razor`
 Current pattern:
 
 - Action cards for sign out, checks, backup, restore, private sync, and clear local data.
-- Import conflict warning and merge/cancel path.
+- Import conflict warning with merge, keep-local, use-remote, and section-by-section choices.
+- Per-section cloud sync status rows for succeeded, failed, skipped, excluded, and conflicting sections.
 
 What works:
 
 - Sensitive actions are grouped under local data and sync.
 - Backup copy explains that credentials are excluded.
 - Import conflict flow prevents silent overwrite.
+- Section-level sync status keeps encrypted sync feedback next to Upload and Download instead of relying on a global page banner.
 
 Drift:
 
@@ -372,7 +374,6 @@ Drift:
 Improvement:
 
 - Give destructive actions a second confirmation step or separate danger zone.
-- Add a compact sync status line showing last push/download and whether local/remote data diverged.
 
 ## Cross-App Reference Patterns
 
@@ -387,6 +388,13 @@ Application rule:
 - Use determinate progress when the app knows `completed` and `total`, as it does for spell casting, equipment slot changes, and multi-step diagnostics.
 - Use passive inline status for freshness, sync, mana, and cached data.
 - Reserve interrupting warnings for destructive local data actions, credential handling, and irreversible Habitica mutations.
+- Keep cached data interactive during background refresh and cloud sync. Disable only the action that would conflict with the active operation.
+- Page-level refresh indicators belong in the app bar and the page's refresh strip. Use them for manual refresh, sign-in background refresh, and visible-domain loading.
+- Card-level refresh indicators belong inside the card whose data is stale or being refreshed, such as Dashboard pending damage when tasks or party data are refreshing.
+- Field-level status belongs beside the specific value or control when a mutation affects one item, such as equipment slot progress, spell count progress, cloud sync section status, or import-conflict choices.
+- Global busy states are reserved for blocking mutations and first-load surfaces with no usable cached data.
+- Use loading skeletons only when delayed content has a stable final structure and no cached data to show. Background refreshes should use compact status chips rather than skeleton flashes.
+- If a visible value changes after a background update, a subtle changed-value animation may be used only with a reduced-motion fallback.
 
 ### Resource-Spending Actions
 

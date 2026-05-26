@@ -1,5 +1,6 @@
 using Bunit;
 using Habitica.Application.Dashboard;
+using Habitica.Application.Sync;
 using Habitica.Domain.Sync;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
@@ -60,6 +61,11 @@ public sealed class DashboardPageTests : BunitContext
                     Stats: new CharacterStatsSnapshot(12m, 34m, 18m, 21m),
                     Buffs: new CharacterStatsSnapshot(1m, 2m, 3m, 4m)),
                 UserFreshness: SnapshotFreshnessState.Fresh,
+                DomainStates: new Dictionary<RefreshDomain, DomainRefreshState>
+                {
+                    [RefreshDomain.Tasks] = new(RefreshDomain.Tasks, true, DateTimeOffset.Parse("2026-04-25T08:00:00Z"), Reason: RefreshReason.AppBoot, Priority: RefreshPriority.Background),
+                    [RefreshDomain.UserProfile] = new(RefreshDomain.UserProfile, false, DateTimeOffset.Parse("2026-04-25T08:00:00Z"))
+                },
                 GearCatalogSnapshot: new GearCatalogSnapshot(
                     DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
                     new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
@@ -72,8 +78,11 @@ public sealed class DashboardPageTests : BunitContext
                     }))));
 
         var cut = Render<DashboardPage>();
+        var refreshStatusText = cut.Find("[data-testid='dashboard-refresh-status']").TextContent;
 
         Assert.Contains("Account data is up to date", cut.Markup);
+        Assert.Contains("Tasks refreshing", refreshStatusText);
+        Assert.Contains("Account updated", refreshStatusText);
         Assert.Contains("Mage Tester", cut.Markup);
         Assert.Contains("Level 15", cut.Markup);
         Assert.Contains("HP", cut.Markup);

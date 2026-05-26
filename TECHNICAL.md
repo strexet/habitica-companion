@@ -284,7 +284,7 @@ Browser PWA -> Cloudflare Pages Function -> Cloudflare D1
 
 The KV backend is only for encrypted app-data sync. Habitica API credentials must never be sent to the encrypted app-data sync endpoint. The browser derives a sync id and AES-GCM key from the active Habitica User ID and API Token, encrypts each section payload independently, and uploads only encrypted JSON.
 
-Cloud sync uses per-section KV records (`sync:{syncId}:section:{sectionKey}`) instead of a single blob. Each section corresponds to one portable data key and has its own 2MB KV limit. A `sync-metadata` section tracks schema version 2, upload timestamp, and succeeded/failed sections. Legacy single-blob records (`sync:{syncId}`) are still readable for backward-compatible migration but are no longer written.
+Cloud sync uses per-section KV records (`sync:{syncId}:section:{sectionKey}`) instead of a single blob. Each section corresponds to one portable data key and has its own 2MB KV limit. A `sync-metadata` section tracks schema version 2, upload timestamp, and succeeded/failed sections. Legacy single-blob records (`sync:{syncId}`) are still readable for backward-compatible migration but are no longer written. The WebApp keeps per-section status records in session state with section key, direction, status, update time, payload size, and message; diagnostics is excluded from upload by default through `Features:CloudSyncExcludedSections`.
 
 The D1 backend stores shared party data for CRON history and party quest planning under `functions/api/party-sync/[partyId].js`. It stores party snapshots, CRON events, quest pool availability, quest queue entries, quest votes, recently completed quest history, automatic completion detection keys, companion-app Owner and Officer roles, party-sync settings, and active kick records. Party-sync uses a tokenless local claim (`local-claim-v1`) derived from the browser's local Habitica snapshots; the Cloudflare party-sync Function must not receive the Habitica API token. This claim is token-private but trust-based, so the Worker keeps access checks behind `readAccessProof()` and `resolvePartySyncAccess()` to allow a future tokenized manager-invite proof if malicious clients become a real problem.
 
@@ -547,7 +547,9 @@ Current implementation:
 - sign-in validates credentials with a minimal `/user` fetch, stores the account snapshot, and makes the authenticated UI usable before loading non-critical domains;
 - `RefreshCoordinator` runs independent refresh domains with visible/background priority and deduplicates concurrent same-domain requests;
 - `RefreshForPageAsync` prioritizes domains needed by the current route, then refreshes other domains in the background priority group;
-- successful refreshes and mutations attempt encrypted cloud sync and shared party sync without making the original Habitica action depend on remote-sync success.
+- successful refreshes and mutations attempt encrypted cloud sync and shared party sync without making the original Habitica action depend on remote-sync success;
+- refresh diagnostics include domain, reason, priority, duration, deduplication, and error metadata;
+- cloud sync diagnostics include direction, section status map, payload sizes, skipped/excluded/failed/conflicting sections, metadata upload status, and merge state.
 
 Background sync may be added only if:
 
@@ -567,11 +569,11 @@ Recommended sync session steps:
 5. Normalize data.
 6. Persist immutable snapshots.
 7. Rebuild derived read models.
-8. Update sync metadata.
-9. Surface warnings and partial failures.
+8. Update sync metadata and per-section sync status.
+9. Surface warnings and partial failures at the closest affected scope.
 ```
 
-All sync and refresh results should report which freshness state each updated data category ended in.
+All sync and refresh results should report which freshness state each updated data category ended in. Cached data should remain visible and interactive during non-blocking background refresh or cloud sync; global busy state should be reserved for blocking mutations and first-load surfaces without usable cached data.
 
 ## 11. Mutating operations
 

@@ -6,6 +6,8 @@ public sealed record AppFeatureOptions
 
     public int HabiticaRequestDelayMilliseconds { get; init; } = 1000;
 
+    public IReadOnlyList<string> CloudSyncExcludedSections { get; init; } = new[] { "diagnostics" };
+
     public IReadOnlyList<string> AdminUserIds { get; init; } = Array.Empty<string>();
 
     public bool IsAdmin(string? userId)
