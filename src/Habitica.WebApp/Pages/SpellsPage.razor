@@ -38,6 +38,20 @@
             @GetFreshnessLabel(SessionController.State.UserFreshness)
         </MudAlert>
 
+        <section aria-label="Current mana" class="spell-mana-bar" data-testid="spells-mana-bar">
+            <div>
+                <span class="dashboard-stat-label">Available mana</span>
+                <strong>@FormatDecimal(viewModel.Mana) / @FormatDecimal(viewModel.MaxMana) MP</strong>
+            </div>
+            <div class="spell-mana-bar-meter" aria-hidden="true">
+                <span style="@GetManaWidthStyle(viewModel.Mana, viewModel.MaxMana)"></span>
+            </div>
+            <div class="spell-mana-bar-meta">
+                <span class="ui-pill">@FormatReadableName(viewModel.ClassName)</span>
+                <span class="dashboard-stat-note">Max @FormatDecimal(viewModel.MaxMana) MP</span>
+            </div>
+        </section>
+
         @if (viewModel.Spells.Count == 0)
         {
             <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">

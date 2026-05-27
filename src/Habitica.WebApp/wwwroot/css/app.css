@@ -624,6 +624,14 @@ a {
     line-height: 1;
 }
 
+.spell-mana-bar-meta {
+    display: flex;
+    gap: 0.55rem;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
 .spells-grid {
     grid-template-columns: 1fr;
 }
@@ -2583,6 +2591,7 @@ code {
     }
 
     .spell-card-summary,
+    .spell-mana-bar,
     .spell-cast-controls,
     .spell-cast-inputs,
     .spell-action-row,
@@ -2599,6 +2608,10 @@ code {
     .cron-action-row {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .spell-mana-bar-meta {
+        justify-content: flex-start;
     }
 
     .spell-cron-warning-actions > *,

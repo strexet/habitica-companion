@@ -28,9 +28,10 @@ public sealed class SpellsPageTests : BunitContext
 
         Assert.Contains("Spells", cut.Markup);
         Assert.Contains("MP", cut.Markup);
-        Assert.DoesNotContain("33.5 / 40", cut.Markup);
-        Assert.DoesNotContain("Available mana", cut.Markup);
-        Assert.DoesNotContain("Max 40 MP", cut.Markup);
+        Assert.NotNull(cut.Find("[data-testid='spells-mana-bar']"));
+        Assert.Contains("33.5 / 40 MP", cut.Markup);
+        Assert.Contains("Available mana", cut.Markup);
+        Assert.Contains("Max 40 MP", cut.Markup);
         Assert.Contains("Burst of Flames", cut.Markup);
         Assert.Contains("shop_fireball.png", cut.Markup);
         Assert.Contains("Ethereal Surge", cut.Markup);
