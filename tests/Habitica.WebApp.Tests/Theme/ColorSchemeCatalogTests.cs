@@ -9,22 +9,26 @@ public sealed class ColorSchemeCatalogTests
     {
         var names = ColorSchemeCatalog.BuiltInSchemes.Select(scheme => scheme.Name).ToArray();
 
-        Assert.Equal(15, names.Length);
-        Assert.Contains("Alpha", names);
-        Assert.Contains("Habitica", names);
-        Assert.Contains("Gryphy Light", names);
-        Assert.Contains("Gryphy Dark", names);
-        Assert.Contains("Midnight Tavern", names);
-        Assert.Contains("Dragonfire Keep", names);
-        Assert.Contains("Neon Rogue", names);
-        Assert.Contains("Frost Healer", names);
-        Assert.Contains("Sunlit Stable", names);
-        Assert.Contains("Mosswood Quest", names);
-        Assert.Contains("Potion Shop", names);
-        Assert.Contains("Boss Battle", names);
-        Assert.Contains("Quiet Ledger", names);
-        Assert.Contains("Celestial Inn", names);
-        Assert.Contains("Mana Mirage", names);
+        Assert.Equal(19, names.Length);
+        Assert.Contains("Alpha (Light)", names);
+        Assert.Contains("Habitica (Light)", names);
+        Assert.Contains("Gryphy (Light)", names);
+        Assert.Contains("Gryphy (Dark)", names);
+        Assert.Contains("Midnight Tavern (Dark)", names);
+        Assert.Contains("Dragonfire Keep (Dark)", names);
+        Assert.Contains("Neon Rogue (Dark)", names);
+        Assert.Contains("Frost Healer (Light)", names);
+        Assert.Contains("Sunlit Stable (Light)", names);
+        Assert.Contains("Mosswood Quest (Light)", names);
+        Assert.Contains("Potion Shop (Light)", names);
+        Assert.Contains("Boss Battle (Dark)", names);
+        Assert.Contains("Quiet Ledger (Light)", names);
+        Assert.Contains("Celestial Inn (Dark)", names);
+        Assert.Contains("Mana Mirage (Dark)", names);
+        Assert.Contains("Mushroom Meadow (Light)", names);
+        Assert.Contains("Mushroom Trip (Dark)", names);
+        Assert.Contains("Frosted Cake (Light)", names);
+        Assert.Contains("Sugar Crash (Dark)", names);
     }
 
     [Fact]

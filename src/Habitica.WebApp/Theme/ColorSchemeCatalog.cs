@@ -10,7 +10,7 @@ public static partial class ColorSchemeCatalog
     {
         new ColorSchemeDefinition(
             AlphaId,
-            "Alpha",
+            "Alpha (Light)",
             true,
             new ColorSchemeTokens(
                 "#f5efe2",
@@ -43,7 +43,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(22, 36, 35, 0.12)")),
         new ColorSchemeDefinition(
             "habitica",
-            "Habitica",
+            "Habitica (Light)",
             true,
             new ColorSchemeTokens(
                 "#f7f4ff",
@@ -76,7 +76,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(79, 42, 147, 0.16)")),
         new ColorSchemeDefinition(
             "gryphy-light",
-            "Gryphy Light",
+            "Gryphy (Light)",
             true,
             new ColorSchemeTokens(
                 "#f7f1ff",
@@ -109,7 +109,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(103, 49, 184, 0.16)")),
         new ColorSchemeDefinition(
             "gryphy-dark",
-            "Gryphy Dark",
+            "Gryphy (Dark)",
             true,
             new ColorSchemeTokens(
                 "#12081f",
@@ -142,7 +142,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(202, 140, 255, 0.3)")),
         new ColorSchemeDefinition(
             "midnight-tavern",
-            "Midnight Tavern",
+            "Midnight Tavern (Dark)",
             true,
             new ColorSchemeTokens(
                 "#0d1117",
@@ -175,7 +175,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(107, 211, 210, 0.32)")),
         new ColorSchemeDefinition(
             "dragonfire-keep",
-            "Dragonfire Keep",
+            "Dragonfire Keep (Dark)",
             true,
             new ColorSchemeTokens(
                 "#160b08",
@@ -208,7 +208,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(255, 126, 53, 0.34)")),
         new ColorSchemeDefinition(
             "neon-rogue",
-            "Neon Rogue",
+            "Neon Rogue (Dark)",
             true,
             new ColorSchemeTokens(
                 "#09071a",
@@ -241,7 +241,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(0, 231, 255, 0.34)")),
         new ColorSchemeDefinition(
             "frost-healer",
-            "Frost Healer",
+            "Frost Healer (Light)",
             true,
             new ColorSchemeTokens(
                 "#eef9ff",
@@ -274,7 +274,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(34, 124, 157, 0.16)")),
         new ColorSchemeDefinition(
             "sunlit-stable",
-            "Sunlit Stable",
+            "Sunlit Stable (Light)",
             true,
             new ColorSchemeTokens(
                 "#fff6dc",
@@ -307,7 +307,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(151, 91, 38, 0.16)")),
         new ColorSchemeDefinition(
             "mosswood-quest",
-            "Mosswood Quest",
+            "Mosswood Quest (Light)",
             true,
             new ColorSchemeTokens(
                 "#edf2df",
@@ -340,7 +340,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(72, 106, 58, 0.16)")),
         new ColorSchemeDefinition(
             "potion-shop",
-            "Potion Shop",
+            "Potion Shop (Light)",
             true,
             new ColorSchemeTokens(
                 "#f6edff",
@@ -373,7 +373,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(136, 78, 191, 0.18)")),
         new ColorSchemeDefinition(
             "boss-battle",
-            "Boss Battle",
+            "Boss Battle (Dark)",
             true,
             new ColorSchemeTokens(
                 "#171414",
@@ -406,7 +406,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(235, 78, 85, 0.32)")),
         new ColorSchemeDefinition(
             "quiet-ledger",
-            "Quiet Ledger",
+            "Quiet Ledger (Light)",
             true,
             new ColorSchemeTokens(
                 "#eef0ea",
@@ -439,7 +439,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(85, 96, 91, 0.16)")),
         new ColorSchemeDefinition(
             "celestial-inn",
-            "Celestial Inn",
+            "Celestial Inn (Dark)",
             true,
             new ColorSchemeTokens(
                 "#121c33",
@@ -472,7 +472,7 @@ public static partial class ColorSchemeCatalog
                 "rgba(116, 161, 255, 0.32)")),
         new ColorSchemeDefinition(
             "mana-mirage",
-            "Mana Mirage",
+            "Mana Mirage (Dark)",
             true,
             new ColorSchemeTokens(
                 "#14001f",
@@ -502,7 +502,139 @@ public static partial class ColorSchemeCatalog
                 "rgba(229, 184, 255, 0.56)",
                 "rgba(255, 52, 246, 0.3)",
                 "#26003f",
-                "rgba(0, 255, 204, 0.34)"))
+                "rgba(0, 255, 204, 0.34)")),
+        new ColorSchemeDefinition(
+            "mushroom-meadow",
+            "Mushroom Meadow (Light)",
+            true,
+            new ColorSchemeTokens(
+                "#fdf0ff",
+                "rgba(255, 248, 255, 0.92)",
+                "rgba(200, 0, 200, 0.18)",
+                "#2a0a3d",
+                "#7a5a8a",
+                "#c800c8",
+                "#00d97e",
+                "#ff2e63",
+                "#2faf72",
+                "#ff8a00",
+                "0 24px 60px rgba(120, 0, 120, 0.18)",
+                "rgba(255, 255, 255, 0.74)",
+                "rgba(255, 248, 255, 0.96)",
+                "#c800c8",
+                "#00d97e",
+                "#e9b3f5",
+                "#f3d6fb",
+                "#fbf0ff",
+                "#6a0080",
+                "#fff0ff",
+                "#2a0a3d",
+                "#fff0ff",
+                "#ffffff",
+                "rgba(120, 0, 120, 0.08)",
+                "rgba(122, 90, 138, 0.58)",
+                "rgba(200, 0, 200, 0.26)",
+                "rgba(255, 255, 255, 0.92)",
+                "rgba(200, 0, 200, 0.18)")),
+        new ColorSchemeDefinition(
+            "mushroom-trip",
+            "Mushroom Trip (Dark)",
+            true,
+            new ColorSchemeTokens(
+                "#0a0014",
+                "rgba(30, 0, 50, 0.94)",
+                "rgba(255, 0, 200, 0.28)",
+                "#f5e8ff",
+                "#c89aff",
+                "#ff00cc",
+                "#00ffaa",
+                "#ff2e63",
+                "#7bff3d",
+                "#ffe600",
+                "0 24px 60px rgba(0, 0, 0, 0.52)",
+                "rgba(40, 0, 65, 0.82)",
+                "rgba(52, 0, 85, 0.96)",
+                "#ff00cc",
+                "#00ffaa",
+                "#2a0040",
+                "#3d005c",
+                "#56007e",
+                "#1a0028",
+                "#f5e8ff",
+                "#12001f",
+                "#f5e8ff",
+                "#0a0014",
+                "rgba(245, 232, 255, 0.1)",
+                "rgba(200, 154, 255, 0.56)",
+                "rgba(255, 0, 200, 0.3)",
+                "#20002f",
+                "rgba(255, 0, 200, 0.34)")),
+        new ColorSchemeDefinition(
+            "frosted-cake",
+            "Frosted Cake (Light)",
+            true,
+            new ColorSchemeTokens(
+                "#fff0f6",
+                "rgba(255, 250, 253, 0.92)",
+                "rgba(255, 20, 147, 0.2)",
+                "#3d0a2a",
+                "#9a6a82",
+                "#ff1493",
+                "#00cfff",
+                "#ff3b3b",
+                "#19c37d",
+                "#ffb300",
+                "0 24px 60px rgba(180, 0, 90, 0.16)",
+                "rgba(255, 255, 255, 0.74)",
+                "rgba(255, 250, 253, 0.96)",
+                "#ff1493",
+                "#00cfff",
+                "#ffc1dd",
+                "#ffd9e8",
+                "#fff0f6",
+                "#ff1493",
+                "#fff0f6",
+                "#3d0a2a",
+                "#fff0f6",
+                "#ffffff",
+                "rgba(180, 0, 90, 0.08)",
+                "rgba(154, 106, 130, 0.58)",
+                "rgba(255, 20, 147, 0.26)",
+                "rgba(255, 255, 255, 0.92)",
+                "rgba(255, 20, 147, 0.2)")),
+        new ColorSchemeDefinition(
+            "sugar-crash",
+            "Sugar Crash (Dark)",
+            true,
+            new ColorSchemeTokens(
+                "#0c0010",
+                "rgba(28, 0, 36, 0.94)",
+                "rgba(255, 222, 0, 0.26)",
+                "#fff6e8",
+                "#ffb3d9",
+                "#ffde00",
+                "#ff3df2",
+                "#ff2e4f",
+                "#39ff88",
+                "#00e7ff",
+                "0 24px 60px rgba(0, 0, 0, 0.55)",
+                "rgba(40, 0, 52, 0.82)",
+                "rgba(54, 0, 70, 0.96)",
+                "#ffde00",
+                "#ff3df2",
+                "#2a0036",
+                "#3d004f",
+                "#56006e",
+                "#1a0022",
+                "#fff6e8",
+                "#12001a",
+                "#fff6e8",
+                "#0c0010",
+                "rgba(255, 246, 232, 0.1)",
+                "rgba(255, 179, 217, 0.56)",
+                "rgba(255, 222, 0, 0.3)",
+                "#1e0026",
+                "rgba(255, 222, 0, 0.34)"))
     };
 
     public static IReadOnlyList<ColorSchemeTokenDescriptor> EditableTokens { get; } = new[]

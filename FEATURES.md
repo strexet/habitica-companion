@@ -1614,24 +1614,28 @@ localStorage habitica-tool/colorScheme/preferences
 Built-in developer-editable schemes live in `ColorSchemeCatalog`. Current built-ins are:
 
 ```text
-Alpha
-Habitica
-Gryphy Light
-Gryphy Dark
-Midnight Tavern
-Dragonfire Keep
-Neon Rogue
-Frost Healer
-Sunlit Stable
-Mosswood Quest
-Potion Shop
-Boss Battle
-Quiet Ledger
-Celestial Inn
-Mana Mirage
+Alpha (Light)
+Habitica (Light)
+Gryphy (Light)
+Gryphy (Dark)
+Midnight Tavern (Dark)
+Dragonfire Keep (Dark)
+Neon Rogue (Dark)
+Frost Healer (Light)
+Sunlit Stable (Light)
+Mosswood Quest (Light)
+Potion Shop (Light)
+Boss Battle (Dark)
+Quiet Ledger (Light)
+Celestial Inn (Dark)
+Mana Mirage (Dark)
+Mushroom Meadow (Light)
+Mushroom Trip (Dark)
+Frosted Cake (Light)
+Sugar Crash (Dark)
 ```
 
-`Alpha` mirrors the original root palette. `Habitica` is inspired by Habitica's public brand/game palette. `Gryphy Light` and `Gryphy Dark` are derived from `gryphy/Gryphy.png` with adjusted contrast. The remaining presets cover dark, bright, colorful, dull, and psychedelic moods with app-themed names.
+Every built-in name carries a `(Light)`/`(Dark)` suffix so users know what to expect before applying. `Alpha (Light)` mirrors the original root palette. `Habitica (Light)` is inspired by Habitica's public brand/game palette. `Gryphy (Light)` and `Gryphy (Dark)` are derived from `gryphy/Gryphy.png` with adjusted contrast. The remaining presets cover dark, bright, colorful, dull, and psychedelic moods with app-themed names. `Mushroom Meadow`/`Mushroom Trip` are the high-saturation psychedelic light/dark pair; `Frosted Cake`/`Sugar Crash` are the candy-bright "insane" light/dark pair.
 
 Schemes expose semantic tokens rather than page-specific colors: background, card background, card border, text, muted text, primary, accent, danger, success, focus, shadow, surface, strong surface, chart colors, task-value min/base/max colors, app header, navigation drawer, input, filled-button text, and disabled-state colors.
 
@@ -1662,7 +1666,7 @@ Color must not be the only state cue. Danger, warning, success, stale, conflict,
 
 Test:
 
-- built-in schemes include Alpha, Habitica, Gryphy Light, and Gryphy Dark;
+- built-in schemes include Alpha (Light), Habitica (Light), Gryphy (Light), and Gryphy (Dark);
 - Alpha preserves the original root palette values;
 - built-in schemes define app shell, button, disabled, and input tokens;
 - missing legacy custom tokens are backfilled before validation or application;
