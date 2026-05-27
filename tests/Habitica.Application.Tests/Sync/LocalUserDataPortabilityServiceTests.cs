@@ -10,12 +10,16 @@ namespace Habitica.Application.Tests.Sync;
 public sealed class LocalUserDataPortabilityServiceTests
 {
     [Fact]
-    public void CloudSyncSectionMapping_includes_task_order_preferences_section()
+    public void CloudSyncSectionMapping_includes_preference_sections()
     {
         Assert.Contains(CloudSyncSection.TaskOrderPreferences, CloudSyncSectionMapping.AllSections);
         Assert.Equal(StorageKeys.TaskOrderPreferences, CloudSyncSectionMapping.StorageKeyFor(CloudSyncSection.TaskOrderPreferences));
         Assert.Equal(CloudSyncSection.TaskOrderPreferences, CloudSyncSectionMapping.SectionForStorageKey(StorageKeys.TaskOrderPreferences));
         Assert.Equal("task-order-preferences", CloudSyncSectionMapping.KvSuffix(CloudSyncSection.TaskOrderPreferences));
+        Assert.Contains(CloudSyncSection.ColorSchemes, CloudSyncSectionMapping.AllSections);
+        Assert.Equal(StorageKeys.ColorSchemePreferences, CloudSyncSectionMapping.StorageKeyFor(CloudSyncSection.ColorSchemes));
+        Assert.Equal(CloudSyncSection.ColorSchemes, CloudSyncSectionMapping.SectionForStorageKey(StorageKeys.ColorSchemePreferences));
+        Assert.Equal("color-schemes", CloudSyncSectionMapping.KvSuffix(CloudSyncSection.ColorSchemes));
     }
 
     [Fact]
@@ -38,12 +42,14 @@ public sealed class LocalUserDataPortabilityServiceTests
                 ["Todo"] = new[] { "todo-2", "todo-1" }
             }),
             CancellationToken.None);
+        await storage.SetRawJsonAsync(StorageKeys.ColorSchemePreferences, """{"selectedSchemeId":"alpha","customSchemes":[]}""", CancellationToken.None);
 
         var bundle = await service.ExportAsync("user-id", CancellationToken.None);
 
         Assert.Equal("user-id", bundle.UserId);
         Assert.Contains(bundle.Records, record => record.Key == StorageKeys.EquipmentPresets);
         Assert.Contains(bundle.Records, record => record.Key == StorageKeys.TaskOrderPreferences);
+        Assert.Contains(bundle.Records, record => record.Key == StorageKeys.ColorSchemePreferences);
         Assert.DoesNotContain(bundle.Records, record => record.Key == StorageKeys.PersistentCredentials);
         Assert.DoesNotContain(service.Serialize(bundle), "api-token", StringComparison.Ordinal);
     }

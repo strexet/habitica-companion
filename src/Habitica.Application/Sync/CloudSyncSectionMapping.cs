@@ -13,6 +13,7 @@ public static class CloudSyncSectionMapping
         CloudSyncSection.InventoryCatalog,
         CloudSyncSection.PartyCurrent,
         CloudSyncSection.PartyCronHistory,
+        CloudSyncSection.ColorSchemes,
         CloudSyncSection.Diagnostics,
         CloudSyncSection.SyncMetadata
     };
@@ -37,6 +38,7 @@ public static class CloudSyncSectionMapping
             CloudSyncSection.SavedPresets => StorageKeys.EquipmentPresets,
             CloudSyncSection.PartyCurrent => StorageKeys.LatestPartySnapshot,
             CloudSyncSection.PartyCronHistory => StorageKeys.PartyCronHistory,
+            CloudSyncSection.ColorSchemes => StorageKeys.ColorSchemePreferences,
             CloudSyncSection.Diagnostics => StorageKeys.DiagnosticsLogEntries,
             CloudSyncSection.SyncMetadata => null,
             _ => null
@@ -54,6 +56,7 @@ public static class CloudSyncSectionMapping
             StorageKeys.EquipmentPresets => CloudSyncSection.SavedPresets,
             StorageKeys.LatestPartySnapshot => CloudSyncSection.PartyCurrent,
             StorageKeys.PartyCronHistory => CloudSyncSection.PartyCronHistory,
+            StorageKeys.ColorSchemePreferences => CloudSyncSection.ColorSchemes,
             StorageKeys.DiagnosticsLogEntries => CloudSyncSection.Diagnostics,
             _ => null
         };
@@ -70,6 +73,7 @@ public static class CloudSyncSectionMapping
             CloudSyncSection.SavedPresets => "saved-presets",
             CloudSyncSection.PartyCurrent => "party-current",
             CloudSyncSection.PartyCronHistory => "party-cron-history",
+            CloudSyncSection.ColorSchemes => "color-schemes",
             CloudSyncSection.Diagnostics => "diagnostics",
             CloudSyncSection.SyncMetadata => "sync-metadata",
             _ => section.ToString().ToLowerInvariant()

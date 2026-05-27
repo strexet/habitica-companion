@@ -1036,50 +1036,23 @@
     {
         if (item.IsCompleted)
         {
-            return "rgba(236, 239, 236, 0.78)";
+            return "var(--surface)";
         }
 
         if (item.Value is null)
         {
-            return "rgba(255, 255, 255, 0.75)";
+            return "var(--surface)";
         }
 
         var normalized = Math.Clamp(((double)item.Value.Value + 20d) / 40d, 0d, 1d);
-        var color = InterpolateTaskColor(normalized);
-        return $"rgb({color.Red}, {color.Green}, {color.Blue})";
-    }
-
-    private static (int Red, int Green, int Blue) InterpolateTaskColor(double normalized)
-    {
-        var stops = new[]
+        if (normalized < 0.5d)
         {
-            (Position: 0d, Red: 252, Green: 235, Blue: 231),
-            (Position: 0.35d, Red: 249, Green: 239, Blue: 219),
-            (Position: 0.5d, Red: 248, Green: 244, Blue: 226),
-            (Position: 0.75d, Red: 229, Green: 242, Blue: 235),
-            (Position: 1d, Red: 226, Green: 237, Blue: 249)
-        };
-
-        for (var index = 1; index < stops.Length; index++)
-        {
-            if (normalized <= stops[index].Position)
-            {
-                var start = stops[index - 1];
-                var end = stops[index];
-                var progress = (normalized - start.Position) / (end.Position - start.Position);
-                return (
-                    InterpolateChannel(start.Red, end.Red, progress),
-                    InterpolateChannel(start.Green, end.Green, progress),
-                    InterpolateChannel(start.Blue, end.Blue, progress));
-            }
+            var negativeWeight = Math.Round((0.5d - normalized) * 160d, 2);
+            return $"color-mix(in srgb, var(--task-negative) {negativeWeight:0.##}%, var(--task-neutral))";
         }
 
-        return (stops[^1].Red, stops[^1].Green, stops[^1].Blue);
-    }
-
-    private static int InterpolateChannel(int start, int end, double progress)
-    {
-        return (int)Math.Round(start + (end - start) * progress, MidpointRounding.AwayFromZero);
+        var positiveWeight = Math.Round((normalized - 0.5d) * 160d, 2);
+        return $"color-mix(in srgb, var(--task-positive) {positiveWeight:0.##}%, var(--task-neutral))";
     }
 
     private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)

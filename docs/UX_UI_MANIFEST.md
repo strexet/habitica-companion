@@ -54,6 +54,28 @@ UI change completion checklist:
 - The color palette does not rely on color alone to communicate state.
 - Game images have reserved dimensions, alt text, readable fallbacks, and do not cause layout shift or overlap while loading.
 
+## Color Schemes
+
+Current pattern:
+
+- Built-in schemes live in `ColorSchemeCatalog`: `Alpha`, `Habitica`, `Gryphy Light`, and `Gryphy Dark`.
+- `Alpha` preserves the original app palette. `Habitica` follows Habitica-like purple, blue, green, gold, and danger colors. Gryphy schemes are derived from `gryphy/Gryphy.png` and tuned for readable light/dark app surfaces.
+- The app applies semantic CSS variables such as background, surface, text, muted text, primary, accent, danger, success, focus, chart, and task-value tokens.
+- Settings exposes a scheme picker and custom scheme editor. Custom schemes are user data, not developer config.
+
+Rules:
+
+- Add new app colors as semantic tokens first; avoid hard-coded one-off colors in Razor or CSS.
+- Preserve meaning across schemes: danger remains danger, success remains success, stale/conflict states keep text labels, and task-value colors must retain negative/neutral/positive context.
+- Do not rely on color alone. Pair important state colors with copy, labels, icons, layout, or disabled reasons.
+- Built-in scheme changes belong in `ColorSchemeCatalog`; user-created schemes belong in `preferences/colorSchemes`.
+- Keep custom token names stable because saved user schemes and cloud sync depend on them.
+
+Inspiration:
+
+- Material dynamic color guidance favors semantic design tokens over assigning raw values directly to UI elements.
+- Modern palette systems keep semantic colors adjusted per palette so the visual tone changes without changing what each role means.
+
 ## Habitica Image Asset Placement
 
 Current audit:

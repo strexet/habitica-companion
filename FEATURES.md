@@ -1446,6 +1446,7 @@ inventory/equipmentPresets
 party/latestSnapshot
 party/cronHistory
 diagnostics/logEntries
+preferences/colorSchemes
 ```
 
 Excluded records:
@@ -1503,6 +1504,7 @@ Section             StorageKey                   KV suffix
 UserProfile         user/latestSnapshot          user-profile
 TasksCurrent        tasks/latestSnapshot         tasks-current
 TaskOrderPreferences preferences/taskOrder       task-order-preferences
+ColorSchemes       preferences/colorSchemes     color-schemes
 InventoryCatalog    inventory/gearCatalog        inventory-catalog
 SavedPresets        inventory/equipmentPresets   saved-presets
 PartyCurrent        party/latestSnapshot         party-current
@@ -1556,6 +1558,100 @@ Test:
 - Token rotation breaks access to data encrypted with the previous API token unless a future migration/export path is added.
 - A future provider can replace Cloudflare by implementing the remote sync provider boundary.
 - Legacy single-blob data (`sync:{syncId}`) is not automatically cleaned up after section-based migration. It remains readable but is no longer updated. A future cleanup step could delete it once section-based sync is stable.
+
+## 12.2 Color scheme system
+
+Status: implemented
+Owner module: `Habitica.WebApp.Theme`, `Habitica.WebApp.Pages.SettingsPage`, and `Habitica.Storage`
+Application entry point: `Habitica.WebApp.Theme.ColorSchemeService`
+Primary Habitica data: none
+Mutates Habitica state: no
+Requires confirmation: no
+Offline behavior: fully local; selected scheme applies without network
+Rate-limit sensitivity: none
+
+### Goal
+
+Centralize app color choices behind semantic color-scheme tokens and let users choose or edit palettes without changing code.
+
+### Inputs
+
+```text
+developer built-in color schemes
+saved color-scheme preferences
+user-created custom schemes
+browser-local active scheme cache
+```
+
+### Outputs
+
+```text
+semantic CSS variables on document root
+Settings color-scheme picker
+custom scheme editor
+portable color-scheme preferences
+cloud-sync color-schemes section
+```
+
+### Local storage
+
+Portable user data:
+
+```text
+preferences/colorSchemes
+```
+
+Fast reload cache:
+
+```text
+localStorage habitica-tool/colorScheme/selectedId
+localStorage habitica-tool/colorScheme/activeScheme
+```
+
+### Algorithm / rules
+
+Built-in developer-editable schemes live in `ColorSchemeCatalog`. Required built-ins are:
+
+```text
+Alpha
+Habitica
+Gryphy Light
+Gryphy Dark
+```
+
+`Alpha` mirrors the original root palette. `Habitica` is inspired by Habitica's public brand/game palette. `Gryphy Light` and `Gryphy Dark` are derived from `gryphy/Gryphy.png` with adjusted contrast.
+
+Schemes expose semantic tokens rather than page-specific colors: background, card background, card border, text, muted text, primary, accent, danger, success, focus, shadow, surface, strong surface, chart colors, and task-value colors.
+
+`ColorSchemeService` reads `preferences/colorSchemes`, resolves the active built-in or custom scheme, applies it through `HabiticaColorScheme.applyAndStore`, and persists the full active scheme in browser `localStorage`. `wwwroot/js/colorSchemes.js` runs before Blazor starts and reapplies the cached active scheme to avoid a visible wrong-theme flash after reload.
+
+Settings lets users:
+
+- choose a built-in scheme;
+- create a custom copy of the active scheme;
+- edit custom token values;
+- rename custom schemes;
+- delete custom schemes;
+- reset by choosing any built-in scheme.
+
+User-created custom schemes are stored only in user data. Built-in schemes are not stored as editable records and cannot be deleted.
+
+### Validation
+
+Custom scheme names are trimmed and bounded. Custom token values must be supported CSS color/shadow values. Invalid values are rejected before saving and the broken scheme is not applied.
+
+Color must not be the only state cue. Danger, warning, success, stale, conflict, and task-value states still need text labels, icons, copy, or layout context.
+
+### Tests
+
+Test:
+
+- built-in schemes include Alpha, Habitica, Gryphy Light, and Gryphy Dark;
+- Alpha preserves the original root palette values;
+- invalid custom token values are rejected;
+- color-scheme preferences are portable user data;
+- cloud sync maps `ColorSchemes` to `preferences/colorSchemes`;
+- Settings renders scheme controls and saves custom scheme preferences.
 
 ## 13. App shell and navigation
 

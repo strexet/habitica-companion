@@ -43,6 +43,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Bulk sell planner for eggs, food, and hatching potions with safe surplus preview, explicit confirmation, sequential sell execution, diagnostics, and post-sell refresh.
 - Dashboard Start New Day optional gear optimization: INT for post-CRON mana, CON/survival for lower damage risk, previewed stat deltas, already-equipped state, and sequential equip-before-CRON execution.
 - Spells sticky current-mana bar with available MP, max MP, class, and persistent scroll visibility above spell cards.
+- App color scheme system with centralized semantic tokens, Alpha/Habitica/Gryphy built-in schemes, Settings picker, custom editable schemes, fast local reload persistence, and portable sync storage.
 
 ## Pending Queue
 
@@ -58,60 +59,12 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-(empty)
+- Top. In Dashboard: NAVIGATION - Companion and Habitica links -- its 'header' (example, "Tasks") and body (example, "Score and inspect cached tasks.") are got stuck together in every navigation menu: example, "TasksScore and inspect cached tasks."
+- Top. In Tasks: leave only task's header and description in its card beside the move card buttons (these buttons positions should be adjusted for the new UI) and Details button (that will hide all the currently available additional information about the task).The goal is to make task cards as small as possible, so it is eadier to work with the task list. Don't forget to use and reference UI/UX manifest that is present here: /Users/petr/Projects/habitica-tool/docs/UX_UI_MANIFEST.md. 
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### App Color Scheme System
-
-Goal: centralize app color tokens and add selectable color schemes, including editable user custom schemes, so the app can switch palettes consistently without scattering raw colors across CSS and page code.
-
-Touch:
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- `src/Habitica.WebApp/Pages/SettingsPage.razor`
-- `src/Habitica.WebApp`
-- `src/Habitica.Storage`
-- `src/Habitica.Application/Sync`
-- direct tests under `tests/Habitica.WebApp.Tests/`, `tests/Habitica.Storage.Tests/`, and `tests/Habitica.Application.Tests/`
-- `FEATURES.md`
-- `docs/UX_UI_MANIFEST.md`
-- `README.md` only if setup or user-facing feature summary changes
-
-Required inputs:
-- Current app palette from existing `:root` CSS variables and remaining hard-coded app colors. This built-in scheme is named `Alpha`.
-- Habitica-inspired built-in palette named `Habitica`. Use current Habitica web/app colors as reference; verify from public/current sources before implementing.
-- `/Users/petr/Projects/habitica-tool/gryphy/Gryphy.png`. Sample the image and create two readable built-in Gryphy-derived schemes named `Gryphy Light` and `Gryphy Dark`; adjust sampled colors as needed for contrast and usability.
-- Review current color-scheme patterns in other popular apps before implementation. Record only durable product/design guidance in `docs/UX_UI_MANIFEST.md`; do not cite transient marketing pages unless needed.
-
-Implementation shape:
-- Define built-in developer-editable schemes in one code/config location, not as duplicated page-specific constants. The schema should cover semantic tokens used by the app, such as background, surface, border, text, muted text, primary/accent, warning/gold, danger, success, focus, shadows, and chart/task-value colors.
-- Convert app styling to consume semantic CSS variables from the active scheme. Keep domain/status meaning clear and do not rely on color alone.
-- Add a small theme runtime that applies the selected scheme early enough to avoid a visible wrong-theme flash on normal app startup.
-- Add Settings controls for selecting a built-in scheme, selecting saved custom schemes, creating/renaming/deleting a custom scheme, and editing custom scheme token values.
-- Persist the selected scheme locally for fast reload and in portable user data so backup/import/cloud sync can preserve it. Persist user-created custom schemes as user data, separate from built-in developer schemes.
-- Custom scheme editing should validate color values, prevent deleting built-in schemes, and provide a reset path back to a built-in scheme.
-- Preserve accessibility: text/background combinations must meet readable contrast targets for normal app text, controls, warnings, and danger states.
-
-Out of scope:
-- changing layout, information architecture, or page content beyond Settings controls needed for scheme management;
-- user-uploaded images for palette extraction;
-- per-page themes;
-- sending theme preferences or custom colors to Habitica;
-- redesigning MudBlazor component internals beyond setting supported theme/css variables.
-
-Acceptance:
-- All current root palette values are represented by the `Alpha` built-in scheme and the app looks materially the same when `Alpha` is selected.
-- Built-in schemes exist for `Alpha`, `Habitica`, `Gryphy Light`, and `Gryphy Dark`.
-- A developer can add or adjust built-in schemes from one obvious config/code location.
-- Settings lets the user choose a scheme, create a named custom scheme, edit custom colors, rename it, delete it, and reset back to a built-in scheme.
-- The selected scheme survives browser reload through local storage and is included in portable user data backup/import/cloud sync.
-- User-created schemes are not mixed with built-in scheme definitions and do not require code changes.
-- Invalid custom color input is rejected with concise feedback and does not partially apply a broken scheme.
-- Existing status, danger, warning, success, task-value, and chart states remain distinguishable in every built-in scheme without relying only on color.
-- Tests cover built-in scheme config, storage keys/portable sync mapping, Settings selection/custom edit behavior, reload persistence hook, and rejection of invalid custom colors.
-- `docs/UX_UI_MANIFEST.md` documents scheme token rules, contrast expectations, and when future UI should add new semantic tokens instead of hard-coded colors.
 
 ### Party Sync Tokenized Invite Proofs
 

@@ -10,10 +10,12 @@ namespace Habitica.Storage.Tests;
 public sealed class StorageStoreTests
 {
     [Fact]
-    public void StorageKeys_include_task_order_preferences_as_portable_data()
+    public void StorageKeys_include_preferences_as_portable_data()
     {
         Assert.Equal("preferences/taskOrder", StorageKeys.TaskOrderPreferences);
         Assert.Contains(StorageKeys.TaskOrderPreferences, StorageKeys.PortableDataKeys);
+        Assert.Equal("preferences/colorSchemes", StorageKeys.ColorSchemePreferences);
+        Assert.Contains(StorageKeys.ColorSchemePreferences, StorageKeys.PortableDataKeys);
     }
 
     [Fact]

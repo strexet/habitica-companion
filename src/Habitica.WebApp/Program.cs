@@ -13,6 +13,7 @@ using Habitica.Storage;
 using Habitica.WebApp;
 using Habitica.WebApp.Sync;
 using Habitica.WebApp.State;
+using Habitica.WebApp.Theme;
 using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -43,6 +44,7 @@ builder.Services.AddScoped<TaskListViewModelFactory>();
 builder.Services.AddScoped<TaskOrderPlanner>();
 builder.Services.AddScoped<LoginWorkflow>();
 builder.Services.AddScoped<RefreshCoordinator>();
+builder.Services.AddScoped<ColorSchemeService>();
 builder.Services.AddScoped<IRemoteUserDataSyncProvider, CloudflareUserDataSyncProvider>();
 builder.Services.AddScoped<IRemotePartyDataSyncProvider, CloudflarePartyDataSyncProvider>();
 builder.Services.AddSingleton(builder.Configuration.GetSection("Features").Get<AppFeatureOptions>() ?? new AppFeatureOptions());

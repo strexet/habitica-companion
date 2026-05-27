@@ -4,10 +4,21 @@
     --card-border: rgba(23, 63, 59, 0.12);
     --ink: #162423;
     --muted: #5f6d67;
-    --teal: #2d746e;
-    --gold: #c5772b;
+    --primary: #2d746e;
+    --accent: #c5772b;
+    --teal: var(--primary);
+    --gold: var(--accent);
     --danger: #a13f35;
+    --success: #2d746e;
+    --focus: #43a397;
     --shadow: 0 24px 60px rgba(22, 36, 35, 0.12);
+    --surface: rgba(255, 255, 255, 0.72);
+    --surface-strong: rgba(255, 250, 241, 0.94);
+    --chart-primary: #2d746e;
+    --chart-secondary: #c5772b;
+    --task-negative: #f4b6a6;
+    --task-neutral: #f7ead1;
+    --task-positive: #8ccfbd;
 }
 
 html,
@@ -15,8 +26,8 @@ body {
     margin: 0;
     min-height: 100%;
     background:
-        radial-gradient(circle at top left, rgba(45, 116, 110, 0.18), transparent 28rem),
-        radial-gradient(circle at bottom right, rgba(197, 119, 43, 0.18), transparent 24rem),
+        radial-gradient(circle at top left, color-mix(in srgb, var(--teal) 18%, transparent), transparent 28rem),
+        radial-gradient(circle at bottom right, color-mix(in srgb, var(--gold) 18%, transparent), transparent 24rem),
         var(--bg);
     color: var(--ink);
     font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
@@ -91,8 +102,8 @@ a {
     border-radius: 999px;
     font-size: 0.82rem;
     font-weight: 700;
-    border: 1px solid rgba(22, 36, 35, 0.12);
-    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid var(--card-border);
+    background: var(--surface);
 }
 
 .habitica-image-frame {
@@ -610,10 +621,10 @@ a {
     gap: 0.8rem;
     align-items: center;
     padding: 0.85rem 1rem;
-    border: 1px solid rgba(45, 116, 110, 0.18);
+    border: 1px solid color-mix(in srgb, var(--teal) 18%, transparent);
     border-radius: 1rem;
-    background: rgba(255, 250, 241, 0.94);
-    box-shadow: 0 0.85rem 2rem rgba(22, 36, 35, 0.1);
+    background: var(--surface-strong);
+    box-shadow: 0 0.85rem 2rem color-mix(in srgb, var(--ink) 10%, transparent);
     backdrop-filter: blur(12px);
 }
 
@@ -2093,9 +2104,30 @@ a {
     display: grid;
     gap: 0.85rem;
     padding: 1.15rem;
-    background: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: var(--surface);
+    border: 1px solid var(--card-border);
     border-radius: 1.25rem;
+}
+
+.color-scheme-preview {
+    display: flex;
+    gap: 0.45rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.color-scheme-preview span {
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--card-border);
+    border-radius: 0.4rem;
+    box-shadow: 0 0.35rem 0.85rem color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.color-token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 0.75rem;
 }
 
 .task-card {
@@ -2265,8 +2297,8 @@ a {
 .task-detail-panel {
     padding: 0.85rem;
     border-radius: 0.75rem;
-    border: 1px solid rgba(22, 36, 35, 0.08);
-    background: rgba(255, 255, 255, 0.42);
+    border: 1px solid var(--card-border);
+    background: var(--surface);
 }
 
 .task-detail-charts {
@@ -2282,8 +2314,8 @@ a {
     min-width: 0;
     padding: 0.85rem;
     border-radius: 0.5rem;
-    border: 1px solid rgba(22, 36, 35, 0.08);
-    background: rgba(245, 239, 226, 0.5);
+    border: 1px solid var(--card-border);
+    background: var(--surface);
 }
 
 .task-chart-head {
@@ -2325,7 +2357,7 @@ a {
     width: 100%;
     min-height: 0.2rem;
     border-radius: 0.35rem 0.35rem 0 0;
-    background: var(--teal);
+    background: linear-gradient(180deg, var(--chart-secondary), var(--chart-primary));
 }
 
 .task-history-bar small {
@@ -2354,7 +2386,7 @@ a {
 }
 
 .danger-card {
-    border-color: rgba(161, 63, 53, 0.18);
+    border-color: color-mix(in srgb, var(--danger) 18%, transparent);
 }
 
 .import-status,
