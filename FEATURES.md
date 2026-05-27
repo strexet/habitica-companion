@@ -1562,7 +1562,7 @@ Test:
 ## 12.2 Color scheme system
 
 Status: implemented
-Owner module: `Habitica.WebApp.Theme`, `Habitica.WebApp.Components.ColorSchemePanel`, `Habitica.WebApp.Pages.SettingsPage`, `Habitica.WebApp.Pages.DashboardPage`, and `Habitica.Storage`
+Owner module: `Habitica.WebApp.Theme`, `Habitica.WebApp.Components.ColorSchemePanel`, `Habitica.WebApp.Pages.SettingsPage`, `Habitica.WebApp.Pages.DashboardPage`, `Habitica.WebApp.Pages.SignIn`, and `Habitica.Storage`
 Application entry point: `Habitica.WebApp.Theme.ColorSchemeService`
 Primary Habitica data: none
 Mutates Habitica state: no
@@ -1646,21 +1646,21 @@ The app overrides MudBlazor app bar, drawer, button, progress, and disabled-stat
 
 Task value backgrounds use a logarithmic intensity curve across the scheme's task min/base/max tokens. The three task tokens should be same-hue shades: small absolute values use the base shade, negative values move toward min, and positive values move toward max without introducing unrelated red/orange/green/blue card colors.
 
-The color-scheme controls live in a shared `ColorSchemePanel` component embedded on both the Settings page and the Dashboard page, so users can recolor the app without leaving the dashboard. The Dashboard uses the panel's `Compact` mode: a single dense bar (scheme select, small swatch strip, Random Preset, Random Theme) with advanced controls (create/delete custom, editor, random-theme save) collapsed behind a "Customize" disclosure toggle that auto-expands when a random-save or custom-edit flow is active. Settings renders the full panel with advanced controls always visible. The panel lets users:
+The color-scheme controls live in a shared `ColorSchemePanel` component embedded on the Settings page, the Dashboard page, and the Sign-in page, so users can recolor the app without leaving the dashboard and can try themes before signing in. The Dashboard uses the panel's `Compact` mode: a single dense bar (scheme select, small swatch strip, Random Preset, Random Theme) with advanced controls (create/copy custom, copy/paste preset editor, random-theme save) collapsed behind a "Customize" disclosure toggle that auto-expands when a random-save or custom-edit flow is active. The Dashboard appearance section sits near the top of the page (just under the hero), collapsed by default behind a "Customize theme"/"Hide" fold toggle so it is visible without dominating the page. Settings and Sign-in render the full panel with advanced controls always visible. The panel lets users:
 
 - choose a built-in scheme;
 - create a custom copy of the active scheme;
-- edit custom token values;
+- build a fully custom palette by copying the active preset to the clipboard (as portable JSON), editing the colors in any text editor, and pasting it back — surfaced to users as "Copy preset"/"Paste preset" with no per-token color fields;
 - rename custom schemes;
 - delete custom schemes;
 - reset by choosing any built-in scheme;
 - roll a random preset (a random pick from built-in plus custom schemes), which is selected and persisted like any other scheme;
 - roll a random theme (generated random colors), which is held in memory for the app session and applied without persisting;
-- roll a "Go Crazy!" random theme: a chaotic, high-saturation, multi-hue variant (still valid and with legible text tokens);
+- drag a chaos slider (Calm to Madness) before rerolling to scale hue and saturation divergence, from a calm single-hue palette up to a chaotic, high-saturation, multi-hue one (still valid and with legible text tokens);
 - switch to other schemes and return to the last random theme through a "Generated" entry in the scheme dropdown;
 - name and save the last random theme into the custom schemes list.
 
-The random theme is generated as a palette around a random base hue with light/dark base, contrasting text tokens, and valid CSS color/shadow values for every token; "Go Crazy!" relaxes the hue/saturation constraints for a wild palette while keeping text/muted tokens contrast-derived from the background so the app stays usable. A random theme is never written to `preferences/colorSchemes` until the user explicitly saves it with a name, so the persisted selection never points at the transient `random-theme` id. Because `ColorSchemeService` is a scoped (per-app) service, the pending random theme survives navigation between the Dashboard and Settings within a session.
+The random theme is generated as a palette around a random base hue with light/dark base, contrasting text tokens, and valid CSS color/shadow values for every token; the chaos level (0..1, surfaced as the slider) scales how far each token's hue and saturation diverge, from a calm palette at 0 to maximum madness at 1, while text/muted tokens stay contrast-derived from the background so the app stays usable. A random theme is never written to `preferences/colorSchemes` until the user explicitly saves it with a name, so the persisted selection never points at the transient `random-theme` id. Because `ColorSchemeService` is a scoped (per-app) service, the pending random theme survives navigation between pages within a session.
 
 User-created custom schemes are stored only in user data. Built-in schemes are not stored as editable records and cannot be deleted.
 
@@ -1684,10 +1684,10 @@ Test:
 - color-scheme preferences are portable user data;
 - cloud sync maps `ColorSchemes` to `preferences/colorSchemes`;
 - Settings renders scheme controls and saves custom scheme preferences;
-- a generated random theme passes token validation across many seeds in both calm and "Go Crazy!" modes;
+- a generated random theme passes token validation across many seeds at both low and maximum chaos;
 - random preset selection excludes the active scheme and the transient random id;
 - the panel exposes random preset and random theme controls, generating a random theme does not persist the `random-theme` id, and saving a named random theme stores it as a custom scheme;
-- compact mode hides advanced controls behind a disclosure toggle but auto-reveals random-save controls, and a "Go Crazy!" theme remains saveable as a valid custom scheme.
+- compact mode hides advanced controls behind a disclosure toggle but auto-reveals random-save controls, and a high-chaos theme remains saveable as a valid custom scheme.
 
 ## 13. App shell and navigation
 

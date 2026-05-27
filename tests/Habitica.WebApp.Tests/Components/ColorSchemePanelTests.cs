@@ -115,6 +115,48 @@ public sealed class ColorSchemePanelTests : BunitContext
         Assert.Empty(ColorSchemeCatalog.Validate(custom));
     }
 
+    [Fact]
+    public async Task Selecting_a_scheme_clears_random_active_but_keeps_pending_random()
+    {
+        // Regression: after rolling a random theme then picking another scheme, re-mounting the
+        // panel (e.g. folding/reopening the Dashboard appearance section) must not snap back to the
+        // random theme. The service's RandomActive flag gates that reapply.
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
+        var service = Services.GetRequiredService<ColorSchemeService>();
+
+        await service.ApplyRandomThemeAsync(0.5);
+        Assert.True(service.RandomActive);
+
+        await service.SelectAsync(ColorSchemeCatalog.AlphaId);
+
+        Assert.False(service.RandomActive);
+        // The pending random is still remembered so the "Generated" dropdown entry stays available.
+        Assert.NotNull(service.PendingRandomScheme);
+    }
+
+    [Fact]
+    public void Saved_custom_scheme_offers_delete_in_editor()
+    {
+        // A saved custom scheme must be deletable from the editor card, which is the only custom
+        // card reachable on the compact Dashboard panel once a custom scheme is active.
+        var storage = new FakeKeyValueStorage();
+        var cut = RenderPanel(storage);
+
+        cut.Find("[data-testid='random-theme-scheme']").Click();
+        cut.Find("[data-testid='random-scheme-name']").Change("Mine");
+        cut.Find("[data-testid='save-random-scheme']").Click();
+
+        Assert.NotNull(cut.Find("[data-testid='delete-custom-scheme']"));
+
+        cut.Find("[data-testid='delete-custom-scheme']").Click();
+
+        var preferences = storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences);
+        Assert.True(preferences is null || preferences.CustomSchemes.Count == 0);
+    }
+
     private IRenderedComponent<ColorSchemePanel> RenderPanel(FakeKeyValueStorage storage, bool compact = false)
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

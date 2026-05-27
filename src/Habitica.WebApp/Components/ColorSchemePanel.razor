@@ -50,9 +50,9 @@
                            Size="Size.Small"
                            Variant="Variant.Text"
                            data-testid="color-scheme-advanced-toggle"
-                           OnClick="ToggleAdvanced"
-                           EndIcon="@(ShowAdvanced ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)">
-                    @(ShowAdvanced ? "Less" : "Customize")
+                           OnClick="ToggleAdvancedAsync"
+                           EndIcon="@ToggleIcon">
+                    @ToggleLabel
                 </MudButton>
             }
         </div>
@@ -63,27 +63,23 @@
         <div class="color-scheme-advanced">
             @if (_randomActive)
             {
-                <MudPaper Class="card-surface action-card color-scheme-card" Elevation="0">
-                    <h2>Save random theme</h2>
-                    <p class="panel-copy">Drag chaos up for wilder rerolls. Name it to keep it in your custom schemes.</p>
-                    <label class="field-row compact">
-                        <span>Name</span>
+                <MudPaper Class="card-surface action-card color-scheme-card color-scheme-card--random" Elevation="0">
+                    <div class="color-scheme-chaos-row" data-testid="chaos-slider">
+                        <MudSlider T="double" Min="0" Max="1" Step="0.05" @bind-Value="_chaos" Color="Color.Secondary" Class="color-scheme-chaos" />
+                        <span class="color-scheme-chaos-value">@ChaosLabel</span>
+                        <MudButton Color="Color.Secondary" Size="Size.Small" data-testid="reroll-random-scheme" OnClick="RerollAsync" Variant="Variant.Filled">
+                            Reroll
+                        </MudButton>
+                    </div>
+                    <div class="color-scheme-save-row">
                         <input class="app-input"
+                               placeholder="Name this theme"
+                               aria-label="Theme name"
                                data-testid="random-scheme-name"
                                value="@_randomSaveName"
                                @onchange="eventArgs => _randomSaveName = eventArgs.Value?.ToString()?.Trim() ?? string.Empty" />
-                    </label>
-                    <div class="field-row compact color-scheme-chaos-row" data-testid="chaos-slider">
-                        <span>Chaos</span>
-                        <MudSlider T="double" Min="0" Max="1" Step="0.05" @bind-Value="_chaos" Color="Color.Secondary" Class="color-scheme-chaos" />
-                        <span class="color-scheme-chaos-value">@ChaosLabel</span>
-                    </div>
-                    <div class="action-row">
-                        <MudButton Color="Color.Primary" Size="@ControlSize" data-testid="save-random-scheme" OnClick="SaveRandomSchemeAsync" Variant="Variant.Filled">
-                            Save To Custom
-                        </MudButton>
-                        <MudButton Color="Color.Secondary" Size="@ControlSize" data-testid="reroll-random-scheme" OnClick="RerollAsync" Variant="Variant.Outlined">
-                            Reroll
+                        <MudButton Color="Color.Primary" Size="Size.Small" data-testid="save-random-scheme" OnClick="SaveRandomSchemeAsync" Variant="Variant.Filled">
+                            Save
                         </MudButton>
                     </div>
                 </MudPaper>
@@ -91,10 +87,9 @@
             else if (_colorSchemeEditor is not null)
             {
                 <MudPaper Class="card-surface action-card color-scheme-card" Elevation="0">
-                    <h2>Custom scheme JSON</h2>
+                    <h2>Custom scheme</h2>
                     <p class="panel-copy">
-                        Copy this scheme's JSON, edit the colors in any text editor, then paste it back and save.
-                        This is how you build a fully custom palette.
+                        Copy the preset, tweak the colors, then paste it back and save to build your own palette.
                     </p>
                     <label class="field-row compact">
                         <span>Name</span>
@@ -105,10 +100,10 @@
                     </label>
                     <div class="action-row">
                         <MudButton Color="Color.Secondary" Size="@ControlSize" StartIcon="@Icons.Material.Filled.ContentCopy" data-testid="copy-custom-scheme" OnClick="CopyCustomSchemeAsync" Variant="Variant.Filled">
-                            Copy JSON
+                            Copy preset
                         </MudButton>
                         <MudButton Color="Color.Secondary" Size="@ControlSize" StartIcon="@Icons.Material.Filled.ContentPaste" data-testid="paste-custom-scheme" OnClick="PasteCustomSchemeAsync" Variant="Variant.Outlined">
-                            Paste JSON
+                            Paste preset
                         </MudButton>
                     </div>
                     <div class="action-row">
@@ -118,6 +113,12 @@
                         <MudButton Color="Color.Secondary" Size="@ControlSize" OnClick="CancelCustomSchemeEdit" Variant="Variant.Outlined">
                             Cancel
                         </MudButton>
+                        @if (IsActiveSchemeSaved)
+                        {
+                            <MudButton Color="Color.Error" Size="@ControlSize" data-testid="delete-custom-scheme" OnClick="DeleteActiveCustomSchemeAsync" Variant="Variant.Outlined">
+                                Delete
+                            </MudButton>
+                        }
                     </div>
                 </MudPaper>
             }
@@ -125,7 +126,7 @@
             {
                 <MudPaper Class="card-surface action-card color-scheme-card" Elevation="0">
                     <h2>Custom schemes</h2>
-                    <p class="panel-copy">Copy the active scheme, then edit and paste its JSON to make your own.</p>
+                    <p class="panel-copy">Copy the active preset, tweak it, and paste it back to make your own.</p>
                     <div class="action-row">
                         <MudButton Color="Color.Secondary" Size="@ControlSize" data-testid="create-custom-scheme" OnClick="CreateCustomScheme" Variant="Variant.Filled">
                             Create Custom Copy
@@ -168,22 +169,74 @@
     private string _randomSaveName = string.Empty;
     private double _chaos;
 
+    // Each label reads on its own (no "Chaos" prefix) as an escalating intensity from calm to mad.
     private string ChaosLabel => _chaos switch
     {
-        <= 0.01 => "Calm",
-        < 0.35 => "Mild",
-        < 0.7 => "Wild",
-        < 0.99 => "Chaotic",
-        _ => "Madness"
+        <= 0.01 => "CALM",
+        < 0.12 => "MELLOW",
+        < 0.24 => "BREEZY",
+        < 0.36 => "LIVELY",
+        < 0.5 => "WILD",
+        < 0.62 => "FERAL",
+        < 0.74 => "FRENZIED",
+        < 0.86 => "CHAOTIC",
+        < 0.99 => "UNHINGED",
+        _ => "MADNESS"
     };
 
-    // In full mode advanced controls are always shown; in compact mode they stay collapsed
-    // unless the user opens them or an active flow (random save / custom edit) needs them.
-    private bool ShowAdvanced => !Compact || _showAdvanced || _randomActive || _colorSchemeEditor is not null;
+    // In full mode advanced controls are always shown; in compact mode they follow the disclosure
+    // toggle. Starting a flow (random save / custom edit) opens the disclosure so its card is visible.
+    private bool ShowAdvanced => !Compact || _showAdvanced;
+
+    private bool InFlow => _randomActive || _colorSchemeEditor is not null;
+
+    // True only when the editor points at an already-saved custom scheme, so a fresh unsaved copy
+    // does not offer a Delete button.
+    private bool IsActiveSchemeSaved => _colorSchemeEditor is not null
+        && _colorSchemeState.CustomSchemes.Any(scheme =>
+            string.Equals(scheme.Id, _colorSchemeEditor.Id, StringComparison.Ordinal));
+
+    private string ToggleLabel => _showAdvanced ? (InFlow ? "Cancel" : "Less") : "Customize";
+
+    private string ToggleIcon => _showAdvanced
+        ? (InFlow ? Icons.Material.Filled.Close : Icons.Material.Filled.ExpandLess)
+        : Icons.Material.Filled.ExpandMore;
 
     private Size ControlSize => Compact ? Size.Small : Size.Medium;
 
-    private void ToggleAdvanced() => _showAdvanced = !_showAdvanced;
+    // Collapsing while a flow is open abandons it and reverts to the persisted scheme so reopening
+    // the panel starts clean rather than snapping back to the transient random theme.
+    private async Task ToggleAdvancedAsync()
+    {
+        if (_showAdvanced)
+        {
+            if (InFlow)
+            {
+                await CancelFlowAsync();
+            }
+
+            _showAdvanced = false;
+        }
+        else
+        {
+            _showAdvanced = true;
+        }
+    }
+
+    private async Task CancelFlowAsync()
+    {
+        if (_randomActive)
+        {
+            // Reapply the persisted active scheme so the visible theme matches the dropdown again.
+            _colorSchemeState = await ColorSchemeService.SelectAsync(_colorSchemeState.ActiveScheme.Id);
+            _randomActive = false;
+        }
+
+        _colorSchemeEditor = _colorSchemeState.ActiveScheme.IsBuiltIn
+            ? null
+            : ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme);
+        SetColorSchemeMessage($"Using {_colorSchemeState.ActiveScheme.Name}.", true);
+    }
 
     private string ActiveDisplaySchemeId => _randomActive
         ? ColorSchemeCatalog.RandomSchemeId
@@ -197,10 +250,13 @@
     {
         _colorSchemeState = await ColorSchemeService.LoadAsync();
         _randomScheme = ColorSchemeService.PendingRandomScheme;
-        if (_randomScheme is not null)
+        if (_randomScheme is not null && ColorSchemeService.RandomActive)
         {
-            // Re-apply the session's pending random theme so it survives navigation between pages.
+            // Re-apply the session's pending random theme so it survives navigation between pages,
+            // but only when it is still the active selection. If the user has since picked another
+            // scheme, RandomActive is false and we leave their choice intact.
             _randomActive = await ColorSchemeService.ReapplyPendingRandomAsync();
+            _showAdvanced = _randomActive;
         }
     }
 
@@ -268,6 +324,7 @@
         _randomActive = true;
         _colorSchemeEditor = null;
         _randomSaveName = string.Empty;
+        _showAdvanced = true;
     }
 
     private async Task ActivateRandomAsync()
@@ -311,6 +368,7 @@
             ColorSchemeCatalog.CreateCustomCopy(
                 _colorSchemeState.ActiveScheme,
                 $"{_colorSchemeState.ActiveScheme.Name} custom"));
+        _showAdvanced = true;
         SetColorSchemeMessage("Edit and save the custom scheme.", true);
     }
 
@@ -384,7 +442,7 @@
         try
         {
             await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", json);
-            SetColorSchemeMessage("Copied scheme JSON to clipboard.", true);
+            SetColorSchemeMessage("Copied preset to clipboard.", true);
         }
         catch (Exception)
         {
@@ -418,7 +476,7 @@
 
         if (!TryParseSchemeJson(clipboard, out var name, out var tokens))
         {
-            SetColorSchemeMessage("Clipboard does not contain a valid color scheme JSON.", false);
+            SetColorSchemeMessage("Clipboard does not contain a valid color preset.", false);
             return;
         }
 
@@ -435,7 +493,7 @@
             }
         }
 
-        SetColorSchemeMessage("Pasted scheme from clipboard. Review the values and save.", true);
+        SetColorSchemeMessage("Pasted preset from clipboard. Review the colors and save.", true);
     }
 
     private static bool TryParseSchemeJson(string json, out string? name, out Dictionary<string, string> tokens)

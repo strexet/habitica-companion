@@ -19,7 +19,7 @@ Current status: web-app MVP implemented and expanding into guarded actions. The 
 - encrypted per-section Cloudflare sync for portable app data, with legacy single-blob restore fallback
 - responsive app shell with sign-in, dashboard, inventory, party, diagnostics, tasks, and settings routes
 - task workspace with search, filters, completed toggles, detail panels, history charts, manual ordering controls, freshness indicators, inline scoring/checkoff, and Habit multi-score controls
-- Settings color schemes with 15 built-in presets, shell/control theming, task min/base/max shade ramps, and editable custom schemes saved as portable user data
+- color schemes (on Settings, Dashboard, and Sign-in) with 20 built-in presets, shell/control theming, task min/base/max shade ramps, random themes with a chaos slider, and copy/paste custom presets saved as portable user data
 - sign-out for the current tab session and clear-local-data controls
 
 ## Planned feature areas

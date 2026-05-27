@@ -2231,20 +2231,44 @@ a {
     max-width: 32rem;
 }
 
+/* The random-save card is kept as small as it can be while staying tappable: one slider row and
+   one name+save row, no heading or body copy. */
+.color-scheme-card--random {
+    max-width: 26rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+}
+
 .color-scheme-chaos-row {
+    display: flex;
     align-items: center;
+    gap: 0.5rem;
 }
 
 .color-scheme-chaos {
-    flex: 1 1 8rem;
-    margin: 0 0.25rem;
+    flex: 1 1 auto;
+    margin: 0;
 }
 
 .color-scheme-chaos-value {
-    min-width: 4.5rem;
-    text-align: right;
+    min-width: 4.75rem;
+    text-align: center;
     color: var(--muted);
-    font-variant: small-caps;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.color-scheme-save-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.color-scheme-save-row .app-input {
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 /* Compact mode: a single dense row, smaller swatches, advanced controls hidden by default. */

@@ -44,7 +44,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Dashboard Start New Day optional gear optimization: INT for post-CRON mana, CON/survival for lower damage risk, previewed stat deltas, already-equipped state, and sequential equip-before-CRON execution.
 - Spells sticky current-mana bar with available MP, max MP, class, and persistent scroll visibility above spell cards.
 - App color scheme system with centralized semantic tokens, Alpha/Habitica/Gryphy built-in schemes, Settings picker, custom editable schemes, shell/button/disabled/input theming, mobile localStorage fallback, fast local reload persistence, and portable sync storage.
-- Random color scheme controls: shared color-scheme panel on Settings and Dashboard, random-preset pick from built-in plus custom schemes, fully-random theme generation held as a session-only pending theme (selectable via a "Generated" dropdown entry, applied without persisting), and naming/saving the last random theme into custom schemes.
+- Random color scheme controls: shared color-scheme panel on Settings, Dashboard, and Sign-in, random-preset pick from built-in plus custom schemes, fully-random theme generation with a chaos slider (Calm to Madness) scaling hue/saturation divergence, held as a session-only pending theme (selectable via a "Generated" dropdown entry, applied without persisting), naming/saving the last random theme into custom schemes, and copy/paste of presets for building fully custom palettes.
 
 ## Pending Queue
 

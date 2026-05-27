@@ -28,11 +28,19 @@ public sealed class ColorSchemeService
     /// </summary>
     public ColorSchemeDefinition? PendingRandomScheme { get; private set; }
 
+    /// <summary>
+    /// True while the transient random theme is the active selection. Cleared whenever the user
+    /// selects, saves, or deletes a persisted scheme, so re-mounting the panel (e.g. after folding
+    /// and reopening the Dashboard appearance section) does not snap back to the random theme.
+    /// </summary>
+    public bool RandomActive { get; private set; }
+
     /// <summary>Generate a random theme, hold it as the pending random, and apply it without persisting.</summary>
     /// <param name="chaos">0..1 chaos level: 0 is a calm palette, 1 is maximum hue/saturation madness.</param>
     public async Task<ColorSchemeDefinition> ApplyRandomThemeAsync(double chaos = 0.0, CancellationToken cancellationToken = default)
     {
         PendingRandomScheme = ColorSchemeCatalog.GenerateRandomTheme(chaos: chaos);
+        RandomActive = true;
         await ApplyTransientAsync(PendingRandomScheme);
         return PendingRandomScheme;
     }
@@ -45,6 +53,7 @@ public sealed class ColorSchemeService
             return false;
         }
 
+        RandomActive = true;
         await ApplyTransientAsync(PendingRandomScheme);
         return true;
     }
@@ -56,6 +65,7 @@ public sealed class ColorSchemeService
 
     public async Task<ColorSchemeState> SelectAsync(string schemeId, CancellationToken cancellationToken = default)
     {
+        RandomActive = false;
         var preferences = await LoadPreferencesAsync(cancellationToken);
         var activeScheme = ColorSchemeCatalog.Resolve(schemeId, preferences.CustomSchemes);
         var updated = preferences with { SelectedSchemeId = activeScheme.Id };
@@ -79,6 +89,11 @@ public sealed class ColorSchemeService
             return (await LoadAsync(cancellationToken), errors);
         }
 
+        if (select)
+        {
+            RandomActive = false;
+        }
+
         var preferences = await LoadPreferencesAsync(cancellationToken);
         var customSchemes = preferences.CustomSchemes
             .Where(existing => !string.Equals(existing.Id, customScheme.Id, StringComparison.Ordinal))
@@ -94,6 +109,7 @@ public sealed class ColorSchemeService
 
     public async Task<ColorSchemeState> DeleteCustomAsync(string schemeId, CancellationToken cancellationToken = default)
     {
+        RandomActive = false;
         var preferences = await LoadPreferencesAsync(cancellationToken);
         var customSchemes = preferences.CustomSchemes
             .Where(scheme => !string.Equals(scheme.Id, schemeId, StringComparison.Ordinal))

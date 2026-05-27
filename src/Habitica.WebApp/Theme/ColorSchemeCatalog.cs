@@ -755,14 +755,20 @@ public static partial class ColorSchemeCatalog
 
         // At chaos 0 every token sits on the base/accent hue; as chaos rises each draw is jittered
         // up to +/-180 degrees, reaching the full hue circle at chaos 1.
-        double Jitter(double center) => center + Range(random, -1.0, 1.0) * 180.0 * chaos;
+        // Above ~0.85 chaos the jitter can wrap more than a full circle so even the "base" hue stops
+        // being a stable anchor, pushing the top of the slider into genuinely unhinged territory.
+        var jitterSpan = 180.0 * chaos + 360.0 * Math.Max(0.0, chaos - 0.85);
+        double Jitter(double center) => center + Range(random, -1.0, 1.0) * jitterSpan;
         double Hue() => Jitter(baseHue);
         double AccentHueValue() => Jitter(accentHue);
-        var bgSatMax = Lerp(0.32, 0.92, chaos);
-        var colorSatMin = Lerp(0.58, 0.85, chaos);
+        var bgSatMax = Lerp(0.32, 1.0, chaos);
+        var colorSatMin = Lerp(0.58, 0.92, chaos);
         var colorSatMax = Lerp(0.88, 1.0, chaos);
 
-        var background = Hsl(Hue(), Range(random, 0.08 + 0.22 * chaos, bgSatMax), dark ? Range(random, 0.06, 0.16) : Range(random, 0.90, 0.97));
+        // At high chaos the background lightness range widens so backgrounds can be jarringly bright
+        // or near-black regardless of the light/dark base; ink stays contrast-derived for legibility.
+        var bgLightSpread = 0.06 * chaos;
+        var background = Hsl(Hue(), Range(random, 0.08 + 0.22 * chaos, bgSatMax), dark ? Range(random, 0.06, 0.16 + bgLightSpread) : Range(random, 0.90 - bgLightSpread * 3.0, 0.97));
         var cardBackground = Hsl(Hue(), Range(random, 0.10, Lerp(0.34, 0.80, chaos)), dark ? Range(random, 0.12, 0.22) : Range(random, 0.95, 0.99));
         var surface = Hsl(Hue(), Range(random, 0.10, Lerp(0.30, 0.80, chaos)), dark ? Range(random, 0.16, 0.26) : Range(random, 0.86, 0.94));
         var surfaceStrong = Hsl(Hue(), Range(random, 0.12, Lerp(0.34, 0.85, chaos)), dark ? Range(random, 0.22, 0.32) : Range(random, 0.80, 0.90));
@@ -770,9 +776,11 @@ public static partial class ColorSchemeCatalog
         var ink = ReadableInk(background);
         var muted = ReadableMuted(background, chaos > 0.5);
 
-        var primary = Hsl(Hue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.42, 0.60));
-        var accent = Hsl(AccentHueValue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.44, 0.62));
-        var focus = Hsl(AccentHueValue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.48, 0.64));
+        // Lightness spread for the loud tokens widens with chaos so primaries roam from deep to neon.
+        var lightSpread = 0.12 * chaos;
+        var primary = Hsl(Hue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.42 - lightSpread, 0.60 + lightSpread));
+        var accent = Hsl(AccentHueValue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.44 - lightSpread, 0.62 + lightSpread));
+        var focus = Hsl(AccentHueValue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.48 - lightSpread, 0.64 + lightSpread));
         // Danger/success start semantic (red/green) and drift off-hue as chaos rises.
         var danger = Hsl(Jitter(0.0), Range(random, Lerp(0.62, 0.85, chaos), Lerp(0.82, 1.0, chaos)), Range(random, 0.42, 0.56));
         var success = Hsl(Jitter(140.0), Range(random, Lerp(0.50, 0.85, chaos), Lerp(0.74, 1.0, chaos)), Range(random, 0.38, 0.54));
