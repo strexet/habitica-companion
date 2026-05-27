@@ -1633,6 +1633,7 @@ Mushroom Meadow (Light)
 Mushroom Trip (Dark)
 Frosted Cake (Light)
 Sugar Crash (Dark)
+Neon Abyss Carnival (Dark)
 ```
 
 Every built-in name carries a `(Light)`/`(Dark)` suffix so users know what to expect before applying. `Alpha (Light)` mirrors the original root palette. `Habitica (Light)` is inspired by Habitica's public brand/game palette. `Gryphy (Light)` and `Gryphy (Dark)` are derived from `gryphy/Gryphy.png` with adjusted contrast. The remaining presets cover dark, bright, colorful, dull, and psychedelic moods with app-themed names. `Mushroom Meadow`/`Mushroom Trip` are the high-saturation psychedelic light/dark pair; `Frosted Cake`/`Sugar Crash` are the candy-bright "insane" light/dark pair.

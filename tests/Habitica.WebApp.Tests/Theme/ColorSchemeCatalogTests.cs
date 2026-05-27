@@ -9,7 +9,7 @@ public sealed class ColorSchemeCatalogTests
     {
         var names = ColorSchemeCatalog.BuiltInSchemes.Select(scheme => scheme.Name).ToArray();
 
-        Assert.Equal(19, names.Length);
+        Assert.Equal(20, names.Length);
         Assert.Contains("Alpha (Light)", names);
         Assert.Contains("Habitica (Light)", names);
         Assert.Contains("Gryphy (Light)", names);
@@ -29,6 +29,7 @@ public sealed class ColorSchemeCatalogTests
         Assert.Contains("Mushroom Trip (Dark)", names);
         Assert.Contains("Frosted Cake (Light)", names);
         Assert.Contains("Sugar Crash (Dark)", names);
+        Assert.Contains("Neon Abyss Carnival (Dark)", names);
     }
 
     [Fact]

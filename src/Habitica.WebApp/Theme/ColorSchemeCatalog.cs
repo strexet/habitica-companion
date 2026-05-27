@@ -634,7 +634,40 @@ public static partial class ColorSchemeCatalog
                 "rgba(255, 179, 217, 0.56)",
                 "rgba(255, 222, 0, 0.3)",
                 "#1e0026",
-                "rgba(255, 222, 0, 0.34)"))
+                "rgba(255, 222, 0, 0.34)")),
+        new ColorSchemeDefinition(
+            "neon-abyss-carnival",
+            "Neon Abyss Carnival (Dark)",
+            true,
+            new ColorSchemeTokens(
+                "#09051f",
+                "rgba(24, 10, 55, 0.94)",
+                "rgba(255, 74, 216, 0.34)",
+                "#fff7ff",
+                "#c8b8e8",
+                "#00f0ff",
+                "#ffea00",
+                "#ff2f6d",
+                "#47ff9c",
+                "#b000ff",
+                "0 24px 70px rgba(255, 47, 109, 0.22)",
+                "rgba(38, 16, 85, 0.82)",
+                "rgba(55, 20, 120, 0.96)",
+                "#00f0ff",
+                "#ffea00",
+                "#31113f",
+                "#1d3f73",
+                "#0b6f5a",
+                "#17002f",
+                "#fff7ff",
+                "#070316",
+                "#fff7ff",
+                "#09051f",
+                "rgba(255, 247, 255, 0.1)",
+                "rgba(200, 184, 232, 0.56)",
+                "rgba(255, 74, 216, 0.28)",
+                "#160b38",
+                "rgba(0, 240, 255, 0.38)"))
     };
 
     public static IReadOnlyList<ColorSchemeTokenDescriptor> EditableTokens { get; } = new[]
