@@ -4,7 +4,12 @@ public sealed record AppFeatureOptions
 {
     public bool PartySyncEnabled { get; init; } = true;
 
-    public int HabiticaRequestDelayMilliseconds { get; init; } = 1000;
+    // Extra fixed delay added by the controller between Habitica calls. Now that
+    // HabiticaApiClient does adaptive token-bucket throttling (burst when budget is
+    // healthy, ramp down as the 30 req/60s window drains, honor Retry-After), this
+    // blunt per-call delay is redundant and defaults to 0. Set > 0 only to force an
+    // additional floor on top of the client's own pacing.
+    public int HabiticaRequestDelayMilliseconds { get; init; }
 
     public IReadOnlyList<string> CloudSyncExcludedSections { get; init; } = new[] { "diagnostics" };
 

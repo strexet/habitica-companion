@@ -11,14 +11,39 @@ namespace Habitica.Api;
 
 public sealed class HabiticaApiClient : IHabiticaSyncClient
 {
+    // Habitica's documented contract: 30 requests / 60s per user, regenerating
+    // per second. These are fallbacks until the server's X-RateLimit-* headers
+    // tell us the live numbers, after which we trust the headers.
+    private const double DefaultRateLimit = 30d;
+    private const double RateLimitWindowSeconds = 60d;
+
+    // Token-bucket tuning. While the estimated budget stays above
+    // BurstHeadroomFraction of the limit, requests fire with only the base
+    // spacing (a free burst). Below it, the delay ramps up smoothly toward the
+    // steady refill cadence. ReserveTokens keeps a safety margin so estimate
+    // lag never drives us into an actual 429.
+    private const double BurstHeadroomFraction = 0.5d;
+    private const double RampSteepness = 3.0d;
+    private const double ReserveTokens = 2.0d;
+
     private readonly HttpClient _httpClient;
     private readonly HabiticaApiClientOptions _options;
+    private readonly TimeSpan _minRequestSpacing;
+
+    // Adaptive throttle state. This client is used sequentially within a user
+    // session (each request is awaited before the next), matching the existing
+    // lock-free handling of _rateLimitPauseUntilUtc.
+    private double _rateLimit = DefaultRateLimit;
+    private double _estimatedTokens = DefaultRateLimit; // optimistic: assume a full bucket
+    private DateTimeOffset _tokensUpdatedUtc = DateTimeOffset.UtcNow;
+    private DateTimeOffset _lastRequestUtc = DateTimeOffset.MinValue;
     private DateTimeOffset? _rateLimitPauseUntilUtc;
 
     public HabiticaApiClient(HttpClient httpClient, HabiticaApiClientOptions options)
     {
         _httpClient = httpClient;
         _options = options;
+        _minRequestSpacing = TimeSpan.FromMilliseconds(Math.Max(0, options.MinRequestSpacingMilliseconds));
     }
 
     public async Task<UserSummary> GetUserAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -428,11 +453,11 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
     private async Task<JsonDocument> SendForDocumentAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        await DelayForKnownRateLimitAsync(cancellationToken);
+        await ThrottleAsync(cancellationToken);
         using var response = await _httpClient.SendAsync(request, cancellationToken);
         var content = await response.Content.ReadAsStringAsync(cancellationToken);
         var rateLimit = ExtractRateLimitInfo(response);
-        RememberRateLimitPause(rateLimit);
+        ReconcileRateLimit(rateLimit);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -1332,31 +1357,107 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             : new HabiticaRateLimitInfo(retryAfter, limit, remaining, resetAtUtc);
     }
 
-    private async Task DelayForKnownRateLimitAsync(CancellationToken cancellationToken)
+    // Adaptive throttle run before every request. Combines a polite base-spacing
+    // floor with a token-bucket estimate so callers can burst while budget is
+    // healthy and slow down smoothly as the rate-limit window drains, instead of
+    // sleeping a flat amount on every call or slamming into a full-window wall.
+    private async Task ThrottleAsync(CancellationToken cancellationToken)
     {
-        if (_rateLimitPauseUntilUtc is not { } pauseUntilUtc)
-        {
-            return;
-        }
+        var now = DateTimeOffset.UtcNow;
 
-        var delay = pauseUntilUtc - DateTimeOffset.UtcNow;
-        if (delay <= TimeSpan.Zero)
+        // A prior 429 (or a window we drained to zero) wins over everything else.
+        if (_rateLimitPauseUntilUtc is { } pauseUntilUtc)
         {
+            if (pauseUntilUtc > now)
+            {
+                await Task.Delay(pauseUntilUtc - now, cancellationToken);
+                now = DateTimeOffset.UtcNow;
+            }
+
             _rateLimitPauseUntilUtc = null;
-            return;
         }
 
-        await Task.Delay(delay, cancellationToken);
+        var refillPerSecond = _rateLimit / RateLimitWindowSeconds;
+        RefillTokens(now, refillPerSecond);
+
+        var delay = ComputeAdaptiveDelay(now, refillPerSecond);
+        if (delay > TimeSpan.Zero)
+        {
+            await Task.Delay(delay, cancellationToken);
+            now = DateTimeOffset.UtcNow;
+            RefillTokens(now, refillPerSecond); // credit the refill that happened while waiting
+        }
+
+        // Spend the token for the request we are about to send.
+        _estimatedTokens = Math.Max(0d, _estimatedTokens - 1d);
+        _lastRequestUtc = now;
     }
 
-    private void RememberRateLimitPause(HabiticaRateLimitInfo? rateLimit)
+    private void RefillTokens(DateTimeOffset now, double refillPerSecond)
     {
+        var elapsedSeconds = (now - _tokensUpdatedUtc).TotalSeconds;
+        if (elapsedSeconds <= 0d)
+        {
+            return;
+        }
+
+        _estimatedTokens = Math.Min(_rateLimit, _estimatedTokens + elapsedSeconds * refillPerSecond);
+        _tokensUpdatedUtc = now;
+    }
+
+    private TimeSpan ComputeAdaptiveDelay(DateTimeOffset now, double refillPerSecond)
+    {
+        // Base floor: never fire faster than the configured minimum spacing.
+        var floorWait = _minRequestSpacing - (now - _lastRequestUtc);
+        if (floorWait < TimeSpan.Zero)
+        {
+            floorWait = TimeSpan.Zero;
+        }
+
+        // Adaptive ramp: zero while we still have burst headroom, then a smooth
+        // exponential climb toward the steady refill cadence as the bucket nears
+        // the reserve. f(x) = (e^(k·x) − 1) / (e^k − 1) maps x∈[0,1] to [0,1],
+        // staying near zero until x (depletion) is large, then rising sharply.
+        var bucketWait = TimeSpan.Zero;
+        if (_estimatedTokens - ReserveTokens < 1d && refillPerSecond > 0d && _rateLimit > 0d)
+        {
+            var secondsPerToken = 1d / refillPerSecond; // ~2s at 30 req / 60s
+            var fraction = _estimatedTokens / _rateLimit;
+            var depletion = Math.Clamp((BurstHeadroomFraction - fraction) / BurstHeadroomFraction, 0d, 1d);
+            var ramp = (Math.Exp(RampSteepness * depletion) - 1d) / (Math.Exp(RampSteepness) - 1d);
+            bucketWait = TimeSpan.FromSeconds(secondsPerToken * ramp);
+        }
+
+        return floorWait > bucketWait ? floorWait : bucketWait;
+    }
+
+    // Reconcile the local token estimate with the server's authoritative headers
+    // and remember any hard pause the server asked for (429 Retry-After, or a
+    // fully drained window).
+    private void ReconcileRateLimit(HabiticaRateLimitInfo? rateLimit)
+    {
+        if (rateLimit is null)
+        {
+            return;
+        }
+
+        if (rateLimit.Limit is { } limit && limit > 0)
+        {
+            _rateLimit = limit;
+        }
+
+        if (rateLimit.Remaining is { } remaining)
+        {
+            _estimatedTokens = Math.Clamp(remaining, 0d, _rateLimit);
+            _tokensUpdatedUtc = DateTimeOffset.UtcNow;
+        }
+
         DateTimeOffset? pauseUntilUtc = null;
-        if (rateLimit?.RetryAfter is { } retryAfter)
+        if (rateLimit.RetryAfter is { } retryAfter)
         {
             pauseUntilUtc = DateTimeOffset.UtcNow + retryAfter;
         }
-        else if (rateLimit?.Remaining == 0 && rateLimit.ResetAtUtc is { } resetAtUtc)
+        else if (rateLimit.Remaining == 0 && rateLimit.ResetAtUtc is { } resetAtUtc)
         {
             pauseUntilUtc = resetAtUtc;
         }
