@@ -35,11 +35,33 @@ public sealed class ColorSchemeService
     /// </summary>
     public bool RandomActive { get; private set; }
 
-    /// <summary>Generate a random theme, hold it as the pending random, and apply it without persisting.</summary>
+    // Seed of the current pending random theme. Reused by AdjustRandomChaosAsync so dragging the
+    // chaos slider morphs the same palette continuously instead of rolling an unrelated one.
+    private int _randomSeed;
+
+    /// <summary>Roll a new random theme, hold it as the pending random, and apply it without persisting.</summary>
     /// <param name="chaos">0..1 chaos level: 0 is a calm palette, 1 is maximum hue/saturation madness.</param>
     public async Task<ColorSchemeDefinition> ApplyRandomThemeAsync(double chaos = 0.0, CancellationToken cancellationToken = default)
     {
-        PendingRandomScheme = ColorSchemeCatalog.GenerateRandomTheme(chaos: chaos);
+        _randomSeed = Random.Shared.Next();
+        PendingRandomScheme = ColorSchemeCatalog.GenerateRandomTheme(new Random(_randomSeed), chaos);
+        RandomActive = true;
+        await ApplyTransientAsync(PendingRandomScheme);
+        return PendingRandomScheme;
+    }
+
+    /// <summary>
+    /// Re-render the current pending random at a new chaos using the same seed, so the palette
+    /// morphs smoothly as the user drags the chaos slider rather than jumping to a new theme.
+    /// </summary>
+    public async Task<ColorSchemeDefinition?> AdjustRandomChaosAsync(double chaos, CancellationToken cancellationToken = default)
+    {
+        if (PendingRandomScheme is null)
+        {
+            return null;
+        }
+
+        PendingRandomScheme = ColorSchemeCatalog.GenerateRandomTheme(new Random(_randomSeed), chaos);
         RandomActive = true;
         await ApplyTransientAsync(PendingRandomScheme);
         return PendingRandomScheme;

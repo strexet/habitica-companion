@@ -35,14 +35,28 @@
         </div>
     </section>
 
-    <section class="card-surface settings-card">
-        <p class="section-label">Appearance</p>
-        <h2>Color scheme</h2>
-        <p class="panel-copy">
-            Choose a built-in palette or save a custom scheme. The active scheme is stored locally for fast reload and included in portable app data.
-        </p>
-
-        <ColorSchemePanel />
+    <section class="card-surface settings-card dashboard-appearance">
+        <div class="dashboard-appearance-head">
+            <div>
+                <p class="section-label">Appearance</p>
+                <h2>Color scheme</h2>
+            </div>
+            <MudButton Size="Size.Small"
+                       Variant="Variant.Text"
+                       Color="Color.Default"
+                       data-testid="settings-appearance-toggle"
+                       OnClick="@(() => _appearanceCollapsed = !_appearanceCollapsed)"
+                       EndIcon="@(_appearanceCollapsed ? Icons.Material.Filled.ExpandMore : Icons.Material.Filled.Close)">
+                @(_appearanceCollapsed ? "Customize theme" : "Cancel")
+            </MudButton>
+        </div>
+        @if (!_appearanceCollapsed)
+        {
+            <p class="panel-copy">
+                Choose a built-in palette or save a custom scheme. The active scheme is stored locally for fast reload and included in portable app data.
+            </p>
+            <ColorSchemePanel />
+        }
     </section>
 
     <section class="card-surface settings-card">
@@ -200,6 +214,7 @@
 </div>
 
 @code {
+    private bool _appearanceCollapsed = true;
     private const long ImportFileLimitBytes = 4 * 1024 * 1024;
     private IJSObjectReference? _exportModule;
     private string? _pendingImportJson;

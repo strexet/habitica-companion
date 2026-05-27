@@ -65,7 +65,7 @@
             {
                 <MudPaper Class="card-surface action-card color-scheme-card color-scheme-card--random" Elevation="0">
                     <div class="color-scheme-chaos-row" data-testid="chaos-slider">
-                        <MudSlider T="double" Min="0" Max="1" Step="0.05" @bind-Value="_chaos" Color="Color.Secondary" Class="color-scheme-chaos" />
+                        <MudSlider T="double" Min="0" Max="1" Step="0.01" Immediate="true" Value="_chaos" ValueChanged="OnChaosChangedAsync" Color="Color.Secondary" Class="color-scheme-chaos" />
                         <span class="color-scheme-chaos-value">@ChaosLabel</span>
                         <MudButton Color="Color.Secondary" Size="Size.Small" data-testid="reroll-random-scheme" OnClick="RerollAsync" Variant="Variant.Filled">
                             Reroll
@@ -310,6 +310,21 @@
     {
         await GenerateRandomAsync();
         SetColorSchemeMessage("Generated a random theme. Adjust chaos, reroll, or save it.", true);
+    }
+
+    // Dragging the slider re-renders the current random theme at the new chaos using its fixed seed,
+    // so the visible palette morphs smoothly between calm and madness without rolling a new one.
+    private async Task OnChaosChangedAsync(double value)
+    {
+        _chaos = value;
+        if (_randomActive)
+        {
+            var adjusted = await ColorSchemeService.AdjustRandomChaosAsync(value);
+            if (adjusted is not null)
+            {
+                _randomScheme = adjusted;
+            }
+        }
     }
 
     private async Task RerollAsync()

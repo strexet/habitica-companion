@@ -49,6 +49,9 @@ public sealed class SettingsPageTests : BunitContext
         Assert.Contains("Restore backup", cut.Markup);
         Assert.Contains("Private device sync", cut.Markup);
         Assert.Contains("Color scheme", cut.Markup);
+        // Appearance controls are folded by default, matching the Dashboard; expand to reveal them.
+        Assert.Empty(cut.FindAll("[data-testid='color-scheme-select']"));
+        cut.Find("[data-testid='settings-appearance-toggle']").Click();
         Assert.NotNull(cut.Find("[data-testid='color-scheme-select']"));
         Assert.NotNull(cut.Find("[data-testid='export-local-data']"));
         Assert.NotNull(cut.Find("[data-testid='import-local-data']"));
@@ -72,6 +75,7 @@ public sealed class SettingsPageTests : BunitContext
 
         var cut = Render<SettingsPage>();
 
+        cut.Find("[data-testid='settings-appearance-toggle']").Click();
         cut.Find("[data-testid='color-scheme-select']").Change("habitica");
         cut.Find("[data-testid='create-custom-scheme']").Click();
         cut.Find("[data-testid='custom-scheme-name']").Change("Evening");

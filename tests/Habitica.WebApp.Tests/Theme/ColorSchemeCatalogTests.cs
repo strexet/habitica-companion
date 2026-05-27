@@ -102,6 +102,23 @@ public sealed class ColorSchemeCatalogTests
     }
 
     [Fact]
+    public void Same_seed_reproduces_the_same_theme_so_chaos_slider_is_reversible()
+    {
+        // The chaos slider re-renders the pending random with a fixed seed. Re-rendering the same
+        // seed at the same chaos must reproduce the exact palette, so dragging the slider back and
+        // forth is predictable and reversible.
+        const int seed = 4242;
+        var first = ColorSchemeCatalog.GenerateRandomTheme(new Random(seed), 0.7);
+        var afterRoundTrip = ColorSchemeCatalog.GenerateRandomTheme(new Random(seed), 0.7);
+        Assert.Equal(first.Tokens, afterRoundTrip.Tokens);
+
+        // A different chaos on the same seed is a different but still deterministic palette.
+        var calmer = ColorSchemeCatalog.GenerateRandomTheme(new Random(seed), 0.2);
+        Assert.NotEqual(first.Tokens, calmer.Tokens);
+        Assert.Equal(calmer.Tokens, ColorSchemeCatalog.GenerateRandomTheme(new Random(seed), 0.2).Tokens);
+    }
+
+    [Fact]
     public void Pick_random_preset_excludes_active_and_random_ids()
     {
         var random = new Random(7);
