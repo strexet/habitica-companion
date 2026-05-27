@@ -59,19 +59,141 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Top. In Dashboard: NAVIGATION - Companion and Habitica links -- its 'header' (example, "Tasks") and body (example, "Score and inspect cached tasks.") are got stuck together in every navigation menu: example, "TasksScore and inspect cached tasks."
-- Top. In Tasks: leave only task's header and description in its card beside the move card buttons (these buttons positions should be adjusted for the new UI) and Details button (that will hide all the currently available additional information about the task). The goal is to make task cards as small as possible, so it is eadier to work with the task list. Remember to use and reference UI/UX manifest that is present here: /Users/petr/Projects/habitica-tool/docs/UX_UI_MANIFEST.md. 
-- Top. In Spells: when there are multiple equipment options for the spell auto-equip feature, the most profitable option should be selected by default, and other options should be available via a dropdown menu and sorted there from the most profitable to the least profitable.
-- Middle. Party page: It feels like the Party page got to much information on it right now and there are a lot of quests related blocks. 
-  - Let's separate those blocks into different pages: 
-    - `Party` page should have description and info for the Party, PARTY SYNC ROLES, PARTY SYNC SETTINGS, small quest card (that should be linked to the Quests page), members list, buff info, CRON graph.
-    - `Quests` page should have all quest and quest-queue-related info. Remember to update links that are present in quest related cards.
-  - Make sure the current logic stays untouched – I think we don't need extra data base fields, etc.
-  - Don't forger to update related documents.
+_(empty — all pending notes promoted into `Prioritized Next Changes`.)_
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
+
+### Color Scheme Theming Coverage Fixes
+
+Goal: make the active color scheme actually drive every surface. Many controls ignore the scheme's semantic tokens and keep hardcoded/MudBlazor-default colors, producing unreadable or off (light-gray, over-bright, dark-on-dark) elements.
+
+Touch:
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.WebApp/wwwroot/js/colorSchemes.js`
+- `src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs`
+- `src/Habitica.WebApp/Theme/ColorSchemeService.cs`
+- `src/Habitica.WebApp/Layout/MainLayout.razor`
+- `src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor`
+- affected pages: `DashboardPage.razor`, `TasksPage.razor`, `InventoryPage.razor`, `PartyPage.razor`, `SpellsPage.razor`, `SettingsPage.razor`, `LiveTestsPage.razor` (Diagnostics)
+- direct tests under `tests/Habitica.WebApp.Tests/`
+- `docs/UX_UI_MANIFEST.md` if token/usage guidance changes
+
+Reported defects to resolve:
+- Shell: top header (`MudAppBar`) and side menu backgrounds and text do not change with the scheme.
+- Dashboard: navigation cards show light-gray backgrounds under Gryphy Dark; "Spend gold – Bulk armoire" input matches that off gray; companion state icons and saved inventory count icons/item-card backgrounds use the same off gray.
+- Tasks: Show/Hide completed buttons flip from a good dark color to light gray on click; task move buttons should track card background (slight delta). Preferred: task-value color is one scheme-derived gradient, not fixed red/orange/green/blue shades.
+- Inventory: Item Counts / Current companion / item cards gray backgrounds; equipment optimizer Goal dropdown over-bright background; "Show other equipment" button dark-on-dark unreadable; preset name inputs over-bright background + white text when filled.
+- Party: select-owner dropdown over-bright + white text; quest cards gray backgrounds; member sorting block gray background; member-card party-sync management buttons dark-border/dark-text/dark-background unreadable; Details button gray background; CRON statistics graph gray background.
+- Spells: spell + equipment-recommendation icons gray backgrounds; inputs/selectors over-bright + white text.
+- Settings: color scheme picker over-bright + white text; restore-backup file selector over-bright + white text; choose-file button gray background.
+- Diagnostics: guarded "run reversible gear test" too dark; Quick account reads buttons too dark to read; App messages buttons dark/invisible, selectors over-bright + white text, console message blocks gray flipping to whitish on press.
+
+Out of scope:
+- changing scheme storage/sync format or adding new built-in schemes;
+- changing any non-color behavior (sync, scoring, quest logic);
+- adding new pages or controls.
+
+Acceptance:
+- Applying any built-in scheme (incl. Gryphy Dark) recolors shell header + side menu background and text.
+- All listed surfaces read from semantic tokens; no hardcoded light-gray/over-bright/dark-on-dark control remains in the reported areas.
+- Interactive state changes (button hover/active, Show/Hide completed toggle, console message press) stay within scheme tokens — no flip to off-gray/whitish.
+- Inputs and dropdowns (Goal, select-owner, preset name, file selectors, color scheme picker) keep readable contrast when empty and filled.
+- Task-value coloring derives from the active scheme (single gradient option implemented or fixed shades replaced by token-derived values).
+- Tests assert token-driven classes/variables on representative controls per page.
+
+### Dashboard Navigation Card Title/Description Spacing
+
+Goal: fix navigation link cards (Companion and Habitica link sections) rendering title and body with no separation — e.g. "TasksScore and inspect cached tasks." should read as a title line plus a description line.
+
+Touch:
+- `src/Habitica.WebApp/Pages/DashboardPage.razor` (`RenderDashboardLink`, ~line 852 and link cards ~268-271)
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/`
+
+Out of scope:
+- changing nav targets, labels, or descriptions;
+- redesigning the cards beyond title/body separation.
+
+Acceptance:
+- Every navigation link card renders title and description as distinct lines/elements with visible spacing.
+- Applies to all affected nav menus (Companion and Habitica link cards).
+- Test asserts title and description are separate nodes (not concatenated text).
+
+### Compact Task Cards
+
+Goal: shrink task cards to ease working through the task list. Collapsed card shows only task title and description plus move buttons and a Details toggle; all other current task info hides behind Details.
+
+Touch:
+- `src/Habitica.WebApp/Pages/TasksPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/`
+- `FEATURES.md`
+- reference `docs/UX_UI_MANIFEST.md` (do not violate its density/affordance rules)
+
+Out of scope:
+- removing any existing task detail data — only hide it behind Details;
+- changing scoring/checkoff/reorder logic or freshness gates;
+- changing task filters.
+
+Acceptance:
+- Collapsed task card shows title, description, move-card buttons (repositioned for the smaller card), and a Details toggle only.
+- Details reveals all previously-visible per-task information; nothing is lost.
+- Move buttons and keyboard reordering still function with the new layout.
+- Layout follows `docs/UX_UI_MANIFEST.md`.
+- Tests cover collapsed vs expanded rendering and move buttons still present.
+
+### Spells Auto-Equip Best Option Default With Dropdown
+
+Goal: when a spell's auto-equip feature has multiple equipment options, default-select the most profitable option and offer the rest via a dropdown sorted most→least profitable.
+
+Touch:
+- `src/Habitica.WebApp/Pages/SpellsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- spell equipment-recommendation logic under `src/Habitica.Rules` / `src/Habitica.Application` (only the selection/ordering surface; do not change scoring formulas)
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs` and rule tests under `tests/`
+- `FEATURES.md`
+
+Out of scope:
+- changing how profitability/stat deltas are computed;
+- changing cast execution order or CRON-warning semantics;
+- changing two-handed weapon pairing logic.
+
+Acceptance:
+- With multiple options, the most profitable option is preselected.
+- A dropdown lists remaining options sorted most→least profitable.
+- Selecting a non-default option updates the equip plan; single-option case shows no dropdown.
+- Tests cover default selection, dropdown ordering, and selection change.
+
+### Split Party Page Into Party And Quests Pages
+
+Goal: relieve Party-page overload by separating quest-heavy blocks onto a dedicated Quests page, reusing existing data/logic.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- new `src/Habitica.WebApp/Pages/QuestsPage.razor`
+- `src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor` and Dashboard nav cards in `DashboardPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/`
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md` if navigation guidance changes
+
+Layout split:
+- `Party` page keeps: party description/info, PARTY SYNC ROLES, PARTY SYNC SETTINGS, a small quest card linking to the Quests page, members list, buff info, CRON graph.
+- `Quests` page holds: all quest and quest-queue-related blocks (active quest, shared pool, queue, voting, recent completions, quest controls). Update intra-quest-card links to point at the Quests page.
+
+Out of scope:
+- new database fields or party-sync data-contract changes;
+- changing quest/queue/sync logic, permissions, or stale-data guards;
+- changing Habitica party/quest links.
+
+Acceptance:
+- Quest blocks move to a new Quests page; Party page retains the listed sections plus a quest summary card linking to Quests.
+- All existing actions keep current authorization and freshness guards; no schema change.
+- Quest-related links updated to the Quests page.
+- Navigation exposes the Quests page; related docs updated.
+- Tests cover both pages rendering their sections and at least one guarded quest action still working on the Quests page.
 
 ### Party Sync Tokenized Invite Proofs
 
