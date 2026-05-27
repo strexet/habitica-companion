@@ -9,10 +9,22 @@ public sealed class ColorSchemeCatalogTests
     {
         var names = ColorSchemeCatalog.BuiltInSchemes.Select(scheme => scheme.Name).ToArray();
 
+        Assert.Equal(15, names.Length);
         Assert.Contains("Alpha", names);
         Assert.Contains("Habitica", names);
         Assert.Contains("Gryphy Light", names);
         Assert.Contains("Gryphy Dark", names);
+        Assert.Contains("Midnight Tavern", names);
+        Assert.Contains("Dragonfire Keep", names);
+        Assert.Contains("Neon Rogue", names);
+        Assert.Contains("Frost Healer", names);
+        Assert.Contains("Sunlit Stable", names);
+        Assert.Contains("Mosswood Quest", names);
+        Assert.Contains("Potion Shop", names);
+        Assert.Contains("Boss Battle", names);
+        Assert.Contains("Quiet Ledger", names);
+        Assert.Contains("Celestial Inn", names);
+        Assert.Contains("Mana Mirage", names);
     }
 
     [Fact]
@@ -41,6 +53,9 @@ public sealed class ColorSchemeCatalogTests
             Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.DisabledBackground), scheme.Name);
             Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.DisabledText), scheme.Name);
             Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.InputBackground), scheme.Name);
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.TaskNegative), scheme.Name);
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.TaskNeutral), scheme.Name);
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.TaskPositive), scheme.Name);
         }
     }
 

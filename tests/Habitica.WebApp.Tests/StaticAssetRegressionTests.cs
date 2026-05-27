@@ -123,7 +123,6 @@ public sealed class StaticAssetRegressionTests
         Assert.Contains("--drawer-readable-muted", moduleContents);
         Assert.Contains("--native-control-scheme", moduleContents);
         Assert.Contains("contrastRatio", moduleContents);
-        Assert.Contains("--task-value-base", moduleContents);
     }
 
     [Fact]

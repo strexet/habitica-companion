@@ -119,7 +119,6 @@
     root.style.setProperty("--drawer-readable-text", readableDrawerText);
     root.style.setProperty("--drawer-readable-muted", `color-mix(in srgb, ${readableDrawerText} 82%, transparent)`);
     root.style.setProperty("--native-control-scheme", inputBackground && luminance(inputBackground) < 0.46 ? "dark" : "light");
-    root.style.setProperty("--task-value-base", readToken(tokens, "primary") || "var(--primary)");
     root.style.setProperty("--progress-track", `color-mix(in srgb, ${readToken(tokens, "primary") || "var(--primary)"} 14%, transparent)`);
   }
 

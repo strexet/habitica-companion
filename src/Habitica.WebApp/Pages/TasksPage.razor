@@ -1047,15 +1047,15 @@
         var value = Math.Abs((double)item.Value.Value);
         if (value < 0.05d)
         {
-            return "linear-gradient(135deg, var(--surface), var(--surface-strong))";
+            return "var(--task-neutral)";
         }
 
         var intensity = Math.Clamp(Math.Log(value + 1d) / Math.Log(21d), 0d, 1d);
-        var startWeight = 8d + intensity * 24d;
-        var endWeight = 18d + intensity * 46d;
+        var weight = 12d + intensity * 68d;
+        var target = item.Value.Value < 0m ? "var(--task-negative)" : "var(--task-positive)";
         return string.Create(
             CultureInfo.InvariantCulture,
-            $"linear-gradient(135deg, color-mix(in srgb, var(--task-value-base) {startWeight:0.##}%, var(--surface)) 0%, color-mix(in srgb, var(--task-value-base) {endWeight:0.##}%, var(--surface-strong)) 100%)");
+            $"color-mix(in srgb, {target} {weight:0.##}%, var(--task-neutral))");
     }
 
     private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)

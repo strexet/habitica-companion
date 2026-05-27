@@ -1611,24 +1611,35 @@ localStorage habitica-tool/colorScheme/preferences
 
 ### Algorithm / rules
 
-Built-in developer-editable schemes live in `ColorSchemeCatalog`. Required built-ins are:
+Built-in developer-editable schemes live in `ColorSchemeCatalog`. Current built-ins are:
 
 ```text
 Alpha
 Habitica
 Gryphy Light
 Gryphy Dark
+Midnight Tavern
+Dragonfire Keep
+Neon Rogue
+Frost Healer
+Sunlit Stable
+Mosswood Quest
+Potion Shop
+Boss Battle
+Quiet Ledger
+Celestial Inn
+Mana Mirage
 ```
 
-`Alpha` mirrors the original root palette. `Habitica` is inspired by Habitica's public brand/game palette. `Gryphy Light` and `Gryphy Dark` are derived from `gryphy/Gryphy.png` with adjusted contrast.
+`Alpha` mirrors the original root palette. `Habitica` is inspired by Habitica's public brand/game palette. `Gryphy Light` and `Gryphy Dark` are derived from `gryphy/Gryphy.png` with adjusted contrast. The remaining presets cover dark, bright, colorful, dull, and psychedelic moods with app-themed names.
 
-Schemes expose semantic tokens rather than page-specific colors: background, card background, card border, text, muted text, primary, accent, danger, success, focus, shadow, surface, strong surface, chart colors, task-value colors, app header, navigation drawer, input, filled-button text, and disabled-state colors.
+Schemes expose semantic tokens rather than page-specific colors: background, card background, card border, text, muted text, primary, accent, danger, success, focus, shadow, surface, strong surface, chart colors, task-value min/base/max colors, app header, navigation drawer, input, filled-button text, and disabled-state colors.
 
 `ColorSchemeService` reads `preferences/colorSchemes`, resolves the active built-in or custom scheme, applies it through `HabiticaColorScheme.applyAndStore`, and persists the full active scheme in browser `localStorage`. The fast cache also stores the normalized preferences as a fallback for mobile browsers where IndexedDB can be delayed or unavailable during navigation. `wwwroot/js/colorSchemes.js` runs before Blazor starts and reapplies the cached active scheme to avoid a visible wrong-theme flash after reload.
 
 The app overrides MudBlazor app bar, drawer, button, progress, and disabled-state colors from the same semantic CSS variables. `wwwroot/js/colorSchemes.js` also derives readable drawer text and native form-control `color-scheme` values from active tokens so drawer links and number-input steppers remain readable across light and dark schemes. New built-in or custom schemes must keep those shell/control tokens readable, not only page-card colors.
 
-Task value backgrounds use a logarithmic intensity curve against one scheme-derived base color. Small absolute values stay subtle and larger absolute values increase gradient intensity without reintroducing fixed red/orange/green/blue task-card shades.
+Task value backgrounds use a logarithmic intensity curve across the scheme's task min/base/max tokens. The three task tokens should be same-hue shades: small absolute values use the base shade, negative values move toward min, and positive values move toward max without introducing unrelated red/orange/green/blue card colors.
 
 Settings lets users:
 

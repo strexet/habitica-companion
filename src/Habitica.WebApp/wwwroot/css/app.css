@@ -16,9 +16,9 @@
     --surface-strong: rgba(255, 250, 241, 0.94);
     --chart-primary: #2d746e;
     --chart-secondary: #c5772b;
-    --task-negative: #f4b6a6;
-    --task-neutral: #f7ead1;
-    --task-positive: #8ccfbd;
+    --task-negative: #d6e7e1;
+    --task-neutral: #eaf3ee;
+    --task-positive: #f8fcfa;
     --appbar-bg: #173f3b;
     --appbar-text: #f5efe2;
     --drawer-bg: #163431;
@@ -32,7 +32,6 @@
     --input-bg: rgba(255, 255, 255, 0.9);
     --input-border: rgba(22, 36, 35, 0.12);
     --native-control-scheme: light;
-    --task-value-base: var(--primary);
     --progress-track: color-mix(in srgb, var(--primary) 14%, transparent);
 }
 
