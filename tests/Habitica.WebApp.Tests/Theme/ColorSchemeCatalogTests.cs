@@ -86,6 +86,52 @@ public sealed class ColorSchemeCatalogTests
     }
 
     [Fact]
+    public void Generated_random_theme_passes_validation_across_seeds()
+    {
+        for (var seed = 0; seed < 200; seed++)
+        {
+            var scheme = ColorSchemeCatalog.GenerateRandomTheme(new Random(seed));
+
+            Assert.Equal(ColorSchemeCatalog.RandomSchemeId, scheme.Id);
+            Assert.False(scheme.IsBuiltIn);
+            var errors = ColorSchemeCatalog.Validate(scheme);
+            Assert.True(errors.Count == 0, $"seed {seed}: {string.Join(", ", errors)}");
+        }
+    }
+
+    [Fact]
+    public void Pick_random_preset_excludes_active_and_random_ids()
+    {
+        var random = new Random(7);
+        var customs = new[]
+        {
+            ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.Alpha, "Mine")
+        };
+
+        for (var i = 0; i < 50; i++)
+        {
+            var active = ColorSchemeCatalog.Alpha.Id;
+            var picked = ColorSchemeCatalog.PickRandomPreset(customs, active, random);
+
+            Assert.NotEqual(active, picked.Id);
+            Assert.NotEqual(ColorSchemeCatalog.RandomSchemeId, picked.Id);
+        }
+    }
+
+    [Fact]
+    public void Pick_random_preset_includes_custom_schemes_in_pool()
+    {
+        var custom = ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.Alpha, "Mine");
+        var allowed = ColorSchemeCatalog.BuiltInSchemes.Select(s => s.Id).Append(custom.Id).ToHashSet();
+
+        for (var seed = 0; seed < 50; seed++)
+        {
+            var picked = ColorSchemeCatalog.PickRandomPreset(new[] { custom }, excludeId: null, new Random(seed));
+            Assert.Contains(picked.Id, allowed);
+        }
+    }
+
+    [Fact]
     public void Validation_rejects_invalid_custom_color_values()
     {
         var scheme = ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.Alpha, "Bad")

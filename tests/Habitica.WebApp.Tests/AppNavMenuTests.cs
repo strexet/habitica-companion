@@ -2,7 +2,9 @@ using Bunit;
 using Habitica.Application.Dashboard;
 using Habitica.Domain.Sync;
 using Habitica.Rules.Stats;
+using Habitica.Storage;
 using Habitica.WebApp;
+using Habitica.WebApp.Theme;
 using Habitica.WebApp.Components.Navigation;
 using Habitica.WebApp.State;
 using Microsoft.AspNetCore.Components;
@@ -90,6 +92,8 @@ public sealed class AppNavMenuTests : BunitContext
                 TaskFreshness: SnapshotFreshnessState.Missing,
                 TaskSnapshot: null)));
 
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var navigation = Services.GetRequiredService<NavigationManager>();
         var cut = Render<App>();
 
@@ -112,6 +116,8 @@ public sealed class AppNavMenuTests : BunitContext
                 TaskFreshness: SnapshotFreshnessState.Missing,
                 TaskSnapshot: null)));
 
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var navigation = Services.GetRequiredService<NavigationManager>();
         var cut = Render<App>();
 
@@ -147,6 +153,8 @@ public sealed class AppNavMenuTests : BunitContext
         };
         Services.AddSingleton<IAppSessionController>(controller);
 
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var navigation = Services.GetRequiredService<NavigationManager>();
         var cut = Render<App>();
 

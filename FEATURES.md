@@ -1562,7 +1562,7 @@ Test:
 ## 12.2 Color scheme system
 
 Status: implemented
-Owner module: `Habitica.WebApp.Theme`, `Habitica.WebApp.Pages.SettingsPage`, and `Habitica.Storage`
+Owner module: `Habitica.WebApp.Theme`, `Habitica.WebApp.Components.ColorSchemePanel`, `Habitica.WebApp.Pages.SettingsPage`, `Habitica.WebApp.Pages.DashboardPage`, and `Habitica.Storage`
 Application entry point: `Habitica.WebApp.Theme.ColorSchemeService`
 Primary Habitica data: none
 Mutates Habitica state: no
@@ -1646,14 +1646,20 @@ The app overrides MudBlazor app bar, drawer, button, progress, and disabled-stat
 
 Task value backgrounds use a logarithmic intensity curve across the scheme's task min/base/max tokens. The three task tokens should be same-hue shades: small absolute values use the base shade, negative values move toward min, and positive values move toward max without introducing unrelated red/orange/green/blue card colors.
 
-Settings lets users:
+The color-scheme controls live in a shared `ColorSchemePanel` component embedded on both the Settings page and the Dashboard page, so users can recolor the app without leaving the dashboard. The panel lets users:
 
 - choose a built-in scheme;
 - create a custom copy of the active scheme;
 - edit custom token values;
 - rename custom schemes;
 - delete custom schemes;
-- reset by choosing any built-in scheme.
+- reset by choosing any built-in scheme;
+- roll a random preset (a random pick from built-in plus custom schemes), which is selected and persisted like any other scheme;
+- roll a random theme (fully generated random colors), which is held in memory for the app session and applied without persisting;
+- switch to other schemes and return to the last random theme through a "Generated" entry in the scheme dropdown;
+- name and save the last random theme into the custom schemes list.
+
+The random theme is generated as a coherent palette: a random base hue, light/dark base, contrasting text tokens, and valid CSS color/shadow values for every token. It is never written to `preferences/colorSchemes` until the user explicitly saves it with a name, so the persisted selection never points at the transient `random-theme` id. Because `ColorSchemeService` is a scoped (per-app) service, the pending random theme survives navigation between the Dashboard and Settings within a session.
 
 User-created custom schemes are stored only in user data. Built-in schemes are not stored as editable records and cannot be deleted.
 
@@ -1676,7 +1682,10 @@ Test:
 - CSS/JS keep drawer links, number counters, determinate progress bars, quest estimate alerts, task-value card backgrounds, and diagnostics warning panels routed through active scheme tokens;
 - color-scheme preferences are portable user data;
 - cloud sync maps `ColorSchemes` to `preferences/colorSchemes`;
-- Settings renders scheme controls and saves custom scheme preferences.
+- Settings renders scheme controls and saves custom scheme preferences;
+- a generated random theme passes token validation across many seeds;
+- random preset selection excludes the active scheme and the transient random id;
+- the panel exposes random preset and random theme controls, generating a random theme does not persist the `random-theme` id, and saving a named random theme stores it as a custom scheme.
 
 ## 13. App shell and navigation
 

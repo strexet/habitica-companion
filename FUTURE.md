@@ -44,6 +44,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Dashboard Start New Day optional gear optimization: INT for post-CRON mana, CON/survival for lower damage risk, previewed stat deltas, already-equipped state, and sequential equip-before-CRON execution.
 - Spells sticky current-mana bar with available MP, max MP, class, and persistent scroll visibility above spell cards.
 - App color scheme system with centralized semantic tokens, Alpha/Habitica/Gryphy built-in schemes, Settings picker, custom editable schemes, shell/button/disabled/input theming, mobile localStorage fallback, fast local reload persistence, and portable sync storage.
+- Random color scheme controls: shared color-scheme panel on Settings and Dashboard, random-preset pick from built-in plus custom schemes, fully-random theme generation held as a session-only pending theme (selectable via a "Generated" dropdown entry, applied without persisting), and naming/saving the last random theme into custom schemes.
 
 ## Pending Queue
 
@@ -59,7 +60,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Top. We should add 2 buttons to color scheme options: Random preset (chosen random preset from available, also from custom) and Random theme (absolutely random colors). Random theme is temporarily saved to the process list, user should be able to select other things and then return to the last generated random, and user should be able to save the last generated random to their customs list (give this random person, a name and save it with this name). Color scheme setting box should be available on the dashboard page.
 - Add Pets & Mounts page where you can feed pets with multiple food, the best food is automatically recommended and sorted in the dropdown. You can fast equip pets/mounts. Easily search for specific options. Find what is missong from your collection. Check current market status for recommended items to buy, so your collection becomes fuller. Different pets are sepparated in groups and hatching potions groups are also exist. You can fold groups if you are not interested. Folded groups are remembered (synced). Don't need to sync all pets data, but could be saved to local browser storage. Move BULK SELL PLANNER to this page from the Inventory page.
 - Add gems buy menu to the SPEND GOLD section on the Dashboard page. It should be visible only if user has subscription (if user if able to buy gems for gold).
 

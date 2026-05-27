@@ -6,7 +6,9 @@ using Habitica.Domain.Sync;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 using Habitica.Rules.Stats;
+using Habitica.Storage;
 using Habitica.WebApp.Pages;
+using Habitica.WebApp.Theme;
 using Habitica.WebApp.State;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
@@ -78,6 +80,8 @@ public sealed class DashboardPageTests : BunitContext
                         ["back_wizard_1"] = new("back_wizard_1", "Cape", "Back", null, null, new GearStatBlock(1m, 1m, 1m, 1m))
                     }))));
 
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var cut = Render<DashboardPage>();
         var refreshStatusText = cut.Find("[data-testid='dashboard-refresh-status']").TextContent;
 
@@ -152,6 +156,8 @@ public sealed class DashboardPageTests : BunitContext
                     new InventorySnapshot(1, 1, 1, 1, 1, 1, Array.Empty<string>())),
                 UserFreshness: SnapshotFreshnessState.Fresh)));
 
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var cut = Render<DashboardPage>();
 
         Assert.DoesNotContain("50 / 0", cut.Markup);
@@ -205,6 +211,8 @@ public sealed class DashboardPageTests : BunitContext
                 UserFreshness: SnapshotFreshnessState.Fresh));
         Services.AddSingleton<IAppSessionController>(controller);
 
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var cut = Render<DashboardPage>();
 
         Assert.DoesNotContain("3 unspent stat points", cut.Markup);
@@ -257,6 +265,8 @@ public sealed class DashboardPageTests : BunitContext
                 UserFreshness: SnapshotFreshnessState.Fresh));
         Services.AddSingleton<IAppSessionController>(controller);
 
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var cut = Render<DashboardPage>();
 
         cut.Find("[data-testid='allocate-int-plus']").Click();
@@ -309,6 +319,8 @@ public sealed class DashboardPageTests : BunitContext
                 UserFreshness: SnapshotFreshnessState.Fresh));
         Services.AddSingleton<IAppSessionController>(controller);
 
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var cut = Render<DashboardPage>();
 
         cut.Find("[data-testid='start-new-day']").Click();
@@ -378,6 +390,8 @@ public sealed class DashboardPageTests : BunitContext
                     })));
         Services.AddSingleton<IAppSessionController>(controller);
 
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var cut = Render<DashboardPage>();
 
         Assert.Contains("INT for mana", cut.Markup);
@@ -439,6 +453,8 @@ public sealed class DashboardPageTests : BunitContext
                 UserFreshness: SnapshotFreshnessState.Fresh));
         Services.AddSingleton<IAppSessionController>(controller);
 
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var cut = Render<DashboardPage>();
 
         cut.Find("[data-testid='buy-health-potion']").Click();
@@ -503,6 +519,8 @@ public sealed class DashboardPageTests : BunitContext
                 PartyFreshness: SnapshotFreshnessState.Fresh));
         Services.AddSingleton<IAppSessionController>(controller);
 
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var cut = Render<DashboardPage>();
 
         Assert.Contains("You have not responded to the current party quest invitation.", cut.Markup);

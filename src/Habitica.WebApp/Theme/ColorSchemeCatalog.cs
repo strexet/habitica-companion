@@ -721,6 +721,145 @@ public static partial class ColorSchemeCatalog
             source.Tokens);
     }
 
+    public const string RandomSchemeId = "random-theme";
+
+    public static ColorSchemeDefinition PickRandomPreset(
+        IReadOnlyList<ColorSchemeDefinition>? customSchemes,
+        string? excludeId = null,
+        Random? random = null)
+    {
+        random ??= Random.Shared;
+        var pool = BuiltInSchemes
+            .Concat(customSchemes ?? Array.Empty<ColorSchemeDefinition>())
+            .Where(scheme => !string.Equals(scheme.Id, RandomSchemeId, StringComparison.Ordinal))
+            .Where(scheme => excludeId is null || !string.Equals(scheme.Id, excludeId, StringComparison.Ordinal))
+            .ToArray();
+        if (pool.Length == 0)
+        {
+            return Alpha;
+        }
+
+        return Complete(pool[random.Next(pool.Length)]);
+    }
+
+    public static ColorSchemeDefinition GenerateRandomTheme(Random? random = null)
+    {
+        random ??= Random.Shared;
+        var dark = random.Next(2) == 0;
+        var baseHue = random.NextDouble() * 360.0;
+        var accentHue = (baseHue + 90.0 + random.NextDouble() * 180.0) % 360.0;
+
+        var background = Hsl(baseHue, Range(random, 0.08, 0.32), dark ? Range(random, 0.07, 0.14) : Range(random, 0.92, 0.97));
+        var cardBackground = Hsl(baseHue, Range(random, 0.10, 0.34), dark ? Range(random, 0.13, 0.20) : Range(random, 0.96, 0.99));
+        var surface = Hsl(baseHue, Range(random, 0.10, 0.30), dark ? Range(random, 0.16, 0.24) : Range(random, 0.88, 0.94));
+        var surfaceStrong = Hsl(baseHue, Range(random, 0.12, 0.34), dark ? Range(random, 0.22, 0.30) : Range(random, 0.82, 0.90));
+        var cardBorder = Hsl(baseHue, Range(random, 0.12, 0.36), dark ? Range(random, 0.26, 0.34) : Range(random, 0.72, 0.82));
+        var ink = ReadableInk(background);
+        var muted = Hsl(baseHue, Range(random, 0.10, 0.30), dark ? Range(random, 0.58, 0.70) : Range(random, 0.34, 0.46));
+
+        var primary = Hsl(baseHue, Range(random, 0.58, 0.86), Range(random, 0.42, 0.58));
+        var accent = Hsl(accentHue, Range(random, 0.58, 0.88), Range(random, 0.44, 0.60));
+        var focus = Hsl(accentHue, Range(random, 0.62, 0.90), Range(random, 0.48, 0.62));
+        var danger = Hsl(Range(random, 354.0, 372.0) % 360.0, Range(random, 0.62, 0.82), Range(random, 0.44, 0.54));
+        var success = Hsl(Range(random, 120.0, 160.0), Range(random, 0.50, 0.74), Range(random, 0.38, 0.50));
+
+        var appBarBackground = Hsl(baseHue, Range(random, 0.30, 0.55), Range(random, 0.16, 0.28));
+        var drawerBackground = Hsl(baseHue, Range(random, 0.30, 0.55), Range(random, 0.13, 0.24));
+        var disabledBackground = Hsl(baseHue, Range(random, 0.06, 0.18), dark ? Range(random, 0.24, 0.32) : Range(random, 0.84, 0.90));
+        var inputBackground = Hsl(baseHue, Range(random, 0.08, 0.22), dark ? Range(random, 0.16, 0.24) : Range(random, 0.95, 0.99));
+
+        var tokens = new ColorSchemeTokens(
+            background,
+            cardBackground,
+            cardBorder,
+            ink,
+            muted,
+            primary,
+            accent,
+            danger,
+            success,
+            focus,
+            $"0 18px 40px rgba(8, 12, 16, {Range(random, 0.20, 0.42):0.00})",
+            surface,
+            surfaceStrong,
+            primary,
+            accent,
+            danger,
+            muted,
+            success,
+            appBarBackground,
+            ReadableInk(appBarBackground),
+            drawerBackground,
+            ReadableInk(drawerBackground),
+            ReadableInk(primary),
+            disabledBackground,
+            muted,
+            cardBorder,
+            inputBackground,
+            cardBorder);
+
+        return new ColorSchemeDefinition(RandomSchemeId, "Random theme", false, tokens);
+    }
+
+    private static double Range(Random random, double min, double max)
+    {
+        return min + random.NextDouble() * (max - min);
+    }
+
+    private static string Hsl(double hue, double saturation, double lightness)
+    {
+        hue = ((hue % 360.0) + 360.0) % 360.0;
+        var chroma = (1.0 - Math.Abs(2.0 * lightness - 1.0)) * saturation;
+        var huePrime = hue / 60.0;
+        var secondary = chroma * (1.0 - Math.Abs(huePrime % 2.0 - 1.0));
+        var (red, green, blue) = huePrime switch
+        {
+            < 1.0 => (chroma, secondary, 0.0),
+            < 2.0 => (secondary, chroma, 0.0),
+            < 3.0 => (0.0, chroma, secondary),
+            < 4.0 => (0.0, secondary, chroma),
+            < 5.0 => (secondary, 0.0, chroma),
+            _ => (chroma, 0.0, secondary)
+        };
+        var match = lightness - chroma / 2.0;
+        return $"#{ToByte(red + match):x2}{ToByte(green + match):x2}{ToByte(blue + match):x2}";
+    }
+
+    private static int ToByte(double channel)
+    {
+        return Math.Clamp((int)Math.Round(channel * 255.0), 0, 255);
+    }
+
+    private static string ReadableInk(string colorValue)
+    {
+        return RelativeLuminance(colorValue) > 0.42 ? "#162423" : "#f5efe2";
+    }
+
+    private static double RelativeLuminance(string colorValue)
+    {
+        var hex = colorValue.Trim().TrimStart('#');
+        if (hex.Length is 3 or 4)
+        {
+            hex = string.Concat(hex.Select(c => $"{c}{c}"));
+        }
+
+        if (hex.Length < 6
+            || !int.TryParse(hex.AsSpan(0, 2), System.Globalization.NumberStyles.HexNumber, null, out var red)
+            || !int.TryParse(hex.AsSpan(2, 2), System.Globalization.NumberStyles.HexNumber, null, out var green)
+            || !int.TryParse(hex.AsSpan(4, 2), System.Globalization.NumberStyles.HexNumber, null, out var blue))
+        {
+            return 0.5;
+        }
+
+        return (0.2126 * Channel(red) + 0.7152 * Channel(green) + 0.0722 * Channel(blue));
+
+        static double Channel(int value)
+        {
+            var normalized = value / 255.0;
+            return normalized <= 0.03928 ? normalized / 12.92 : Math.Pow((normalized + 0.055) / 1.055, 2.4);
+        }
+    }
+
     public static string NormalizeName(string? name, string fallback)
     {
         var trimmed = name?.Trim();

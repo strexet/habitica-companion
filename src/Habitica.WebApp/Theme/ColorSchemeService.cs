@@ -22,6 +22,37 @@ public sealed class ColorSchemeService
         return new ColorSchemeState(activeScheme, ColorSchemeCatalog.BuiltInSchemes, preferences.CustomSchemes);
     }
 
+    /// <summary>
+    /// Last generated random theme. Held in memory only (never persisted) so the user can switch
+    /// to other schemes and return to it within the app session.
+    /// </summary>
+    public ColorSchemeDefinition? PendingRandomScheme { get; private set; }
+
+    /// <summary>Generate a fully random theme, hold it as the pending random, and apply it without persisting.</summary>
+    public async Task<ColorSchemeDefinition> ApplyRandomThemeAsync(CancellationToken cancellationToken = default)
+    {
+        PendingRandomScheme = ColorSchemeCatalog.GenerateRandomTheme();
+        await ApplyTransientAsync(PendingRandomScheme);
+        return PendingRandomScheme;
+    }
+
+    /// <summary>Re-apply the pending random theme (e.g. after navigating between pages) if one exists.</summary>
+    public async Task<bool> ReapplyPendingRandomAsync(CancellationToken cancellationToken = default)
+    {
+        if (PendingRandomScheme is null)
+        {
+            return false;
+        }
+
+        await ApplyTransientAsync(PendingRandomScheme);
+        return true;
+    }
+
+    private async Task ApplyTransientAsync(ColorSchemeDefinition scheme)
+    {
+        await _jsRuntime.InvokeVoidAsync("HabiticaColorScheme.applyColorScheme", scheme);
+    }
+
     public async Task<ColorSchemeState> SelectAsync(string schemeId, CancellationToken cancellationToken = default)
     {
         var preferences = await LoadPreferencesAsync(cancellationToken);
