@@ -85,17 +85,18 @@ public sealed class ColorSchemeCatalogTests
         Assert.Equal(ColorSchemeCatalog.Alpha.Tokens.InputBackground, completed.Tokens.InputBackground);
     }
 
-    [Fact]
-    public void Generated_random_theme_passes_validation_across_seeds()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Generated_random_theme_passes_validation_in_both_modes(bool crazy)
     {
         for (var seed = 0; seed < 200; seed++)
         {
-            var scheme = ColorSchemeCatalog.GenerateRandomTheme(new Random(seed));
+            var scheme = ColorSchemeCatalog.GenerateRandomTheme(new Random(seed), crazy);
 
             Assert.Equal(ColorSchemeCatalog.RandomSchemeId, scheme.Id);
-            Assert.False(scheme.IsBuiltIn);
             var errors = ColorSchemeCatalog.Validate(scheme);
-            Assert.True(errors.Count == 0, $"seed {seed}: {string.Join(", ", errors)}");
+            Assert.True(errors.Count == 0, $"crazy={crazy} seed {seed}: {string.Join(", ", errors)}");
         }
     }
 

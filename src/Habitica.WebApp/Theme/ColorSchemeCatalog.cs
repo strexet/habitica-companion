@@ -742,31 +742,43 @@ public static partial class ColorSchemeCatalog
         return Complete(pool[random.Next(pool.Length)]);
     }
 
-    public static ColorSchemeDefinition GenerateRandomTheme(Random? random = null)
+    public static ColorSchemeDefinition GenerateRandomTheme(Random? random = null, bool crazy = false)
     {
         random ??= Random.Shared;
         var dark = random.Next(2) == 0;
         var baseHue = random.NextDouble() * 360.0;
         var accentHue = (baseHue + 90.0 + random.NextDouble() * 180.0) % 360.0;
 
-        var background = Hsl(baseHue, Range(random, 0.08, 0.32), dark ? Range(random, 0.07, 0.14) : Range(random, 0.92, 0.97));
-        var cardBackground = Hsl(baseHue, Range(random, 0.10, 0.34), dark ? Range(random, 0.13, 0.20) : Range(random, 0.96, 0.99));
-        var surface = Hsl(baseHue, Range(random, 0.10, 0.30), dark ? Range(random, 0.16, 0.24) : Range(random, 0.88, 0.94));
-        var surfaceStrong = Hsl(baseHue, Range(random, 0.12, 0.34), dark ? Range(random, 0.22, 0.30) : Range(random, 0.82, 0.90));
-        var cardBorder = Hsl(baseHue, Range(random, 0.12, 0.36), dark ? Range(random, 0.26, 0.34) : Range(random, 0.72, 0.82));
+        // "Crazy" mode lets every token roam its own hue with high saturation for a chaotic,
+        // psychedelic palette. Calm mode keeps tones tied to one base hue for a coherent theme.
+        double Hue() => crazy ? random.NextDouble() * 360.0 : baseHue;
+        double AccentHueValue() => crazy ? random.NextDouble() * 360.0 : accentHue;
+        var bgSatMax = crazy ? 0.85 : 0.32;
+        var colorSatMin = crazy ? 0.80 : 0.58;
+        var colorSatMax = crazy ? 1.0 : 0.88;
+
+        var background = Hsl(Hue(), Range(random, crazy ? 0.30 : 0.08, bgSatMax), dark ? Range(random, 0.06, 0.16) : Range(random, 0.90, 0.97));
+        var cardBackground = Hsl(Hue(), Range(random, 0.10, crazy ? 0.80 : 0.34), dark ? Range(random, 0.12, 0.22) : Range(random, 0.95, 0.99));
+        var surface = Hsl(Hue(), Range(random, 0.10, crazy ? 0.80 : 0.30), dark ? Range(random, 0.16, 0.26) : Range(random, 0.86, 0.94));
+        var surfaceStrong = Hsl(Hue(), Range(random, 0.12, crazy ? 0.85 : 0.34), dark ? Range(random, 0.22, 0.32) : Range(random, 0.80, 0.90));
+        var cardBorder = Hsl(Hue(), Range(random, 0.12, crazy ? 0.95 : 0.36), dark ? Range(random, 0.26, 0.40) : Range(random, 0.62, 0.82));
         var ink = ReadableInk(background);
-        var muted = Hsl(baseHue, Range(random, 0.10, 0.30), dark ? Range(random, 0.58, 0.70) : Range(random, 0.34, 0.46));
+        var muted = ReadableMuted(background, crazy);
 
-        var primary = Hsl(baseHue, Range(random, 0.58, 0.86), Range(random, 0.42, 0.58));
-        var accent = Hsl(accentHue, Range(random, 0.58, 0.88), Range(random, 0.44, 0.60));
-        var focus = Hsl(accentHue, Range(random, 0.62, 0.90), Range(random, 0.48, 0.62));
-        var danger = Hsl(Range(random, 354.0, 372.0) % 360.0, Range(random, 0.62, 0.82), Range(random, 0.44, 0.54));
-        var success = Hsl(Range(random, 120.0, 160.0), Range(random, 0.50, 0.74), Range(random, 0.38, 0.50));
+        var primary = Hsl(Hue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.42, 0.60));
+        var accent = Hsl(AccentHueValue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.44, 0.62));
+        var focus = Hsl(AccentHueValue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.48, 0.64));
+        var danger = crazy
+            ? Hsl(Hue(), Range(random, 0.85, 1.0), Range(random, 0.40, 0.58))
+            : Hsl(Range(random, 354.0, 372.0) % 360.0, Range(random, 0.62, 0.82), Range(random, 0.44, 0.54));
+        var success = crazy
+            ? Hsl(Hue(), Range(random, 0.85, 1.0), Range(random, 0.38, 0.56))
+            : Hsl(Range(random, 120.0, 160.0), Range(random, 0.50, 0.74), Range(random, 0.38, 0.50));
 
-        var appBarBackground = Hsl(baseHue, Range(random, 0.30, 0.55), Range(random, 0.16, 0.28));
-        var drawerBackground = Hsl(baseHue, Range(random, 0.30, 0.55), Range(random, 0.13, 0.24));
-        var disabledBackground = Hsl(baseHue, Range(random, 0.06, 0.18), dark ? Range(random, 0.24, 0.32) : Range(random, 0.84, 0.90));
-        var inputBackground = Hsl(baseHue, Range(random, 0.08, 0.22), dark ? Range(random, 0.16, 0.24) : Range(random, 0.95, 0.99));
+        var appBarBackground = Hsl(Hue(), Range(random, 0.30, crazy ? 1.0 : 0.55), Range(random, crazy ? 0.18 : 0.16, crazy ? 0.42 : 0.28));
+        var drawerBackground = Hsl(Hue(), Range(random, 0.30, crazy ? 1.0 : 0.55), Range(random, 0.13, crazy ? 0.40 : 0.24));
+        var disabledBackground = Hsl(Hue(), Range(random, 0.06, crazy ? 0.60 : 0.18), dark ? Range(random, 0.24, 0.34) : Range(random, 0.82, 0.90));
+        var inputBackground = Hsl(Hue(), Range(random, 0.08, crazy ? 0.70 : 0.22), dark ? Range(random, 0.16, 0.26) : Range(random, 0.94, 0.99));
 
         var tokens = new ColorSchemeTokens(
             background,
@@ -833,6 +845,13 @@ public static partial class ColorSchemeCatalog
     private static string ReadableInk(string colorValue)
     {
         return RelativeLuminance(colorValue) > 0.42 ? "#162423" : "#f5efe2";
+    }
+
+    private static string ReadableMuted(string backgroundValue, bool crazy)
+    {
+        // Muted text must stay legible on any background, including crazy palettes,
+        // so derive it from background luminance rather than a random hue.
+        return RelativeLuminance(backgroundValue) > 0.42 ? "#3a4443" : (crazy ? "#d6dcdb" : "#c7cfce");
     }
 
     private static double RelativeLuminance(string colorValue)

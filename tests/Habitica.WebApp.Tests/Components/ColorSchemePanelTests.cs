@@ -70,13 +70,57 @@ public sealed class ColorSchemePanelTests : BunitContext
         Assert.Contains("Saved Lucky Roll.", cut.Markup);
     }
 
-    private IRenderedComponent<ColorSchemePanel> RenderPanel(FakeKeyValueStorage storage)
+    [Fact]
+    public void Compact_mode_hides_advanced_controls_until_toggled()
+    {
+        var cut = RenderPanel(new FakeKeyValueStorage(), compact: true);
+
+        // Bar controls are present, but Create Custom Copy stays hidden until expanded.
+        Assert.NotNull(cut.Find("[data-testid='random-preset-scheme']"));
+        Assert.NotNull(cut.Find("[data-testid='color-scheme-advanced-toggle']"));
+        Assert.Empty(cut.FindAll("[data-testid='create-custom-scheme']"));
+
+        cut.Find("[data-testid='color-scheme-advanced-toggle']").Click();
+
+        Assert.NotNull(cut.Find("[data-testid='create-custom-scheme']"));
+    }
+
+    [Fact]
+    public void Compact_mode_auto_reveals_random_save_controls()
+    {
+        var cut = RenderPanel(new FakeKeyValueStorage(), compact: true);
+
+        cut.Find("[data-testid='random-theme-scheme']").Click();
+
+        // Generating a random theme reveals the save + Go Crazy controls without an explicit expand.
+        Assert.NotNull(cut.Find("[data-testid='save-random-scheme']"));
+        Assert.NotNull(cut.Find("[data-testid='go-crazy-scheme']"));
+    }
+
+    [Fact]
+    public void Go_crazy_keeps_a_saveable_random_theme()
+    {
+        var storage = new FakeKeyValueStorage();
+        var cut = RenderPanel(storage);
+
+        cut.Find("[data-testid='random-theme-scheme']").Click();
+        cut.Find("[data-testid='go-crazy-scheme']").Click();
+        cut.Find("[data-testid='random-scheme-name']").Change("Wild One");
+        cut.Find("[data-testid='save-random-scheme']").Click();
+
+        var preferences = storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences);
+        var custom = Assert.Single(preferences!.CustomSchemes);
+        Assert.Equal("Wild One", custom.Name);
+        Assert.Empty(ColorSchemeCatalog.Validate(custom));
+    }
+
+    private IRenderedComponent<ColorSchemePanel> RenderPanel(FakeKeyValueStorage storage, bool compact = false)
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton<IKeyValueStorage>(storage);
         Services.AddScoped<ColorSchemeService>();
-        return Render<ColorSchemePanel>();
+        return Render<ColorSchemePanel>(parameters => parameters.Add(p => p.Compact, compact));
     }
 
     private sealed class FakeKeyValueStorage : IKeyValueStorage

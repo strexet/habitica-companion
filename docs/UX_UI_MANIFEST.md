@@ -1,6 +1,6 @@
 # UX/UI Manifest
 
-Last reviewed: 2026-05-27
+Last reviewed: 2026-05-28
 
 This manifest records the current UI implementation, what is working, where readability or responsiveness has drifted, and which outside patterns are worth copying. Treat it as product guidance for future UI work, not as a pixel spec.
 
@@ -62,6 +62,8 @@ Current pattern:
 - `Alpha` preserves the original app palette. `Habitica` follows Habitica-like purple, blue, green, gold, and danger colors. Gryphy schemes are derived from `gryphy/Gryphy.png` and tuned for readable light/dark app surfaces. The other presets cover dark, bright, colorful, dull, and psychedelic moods with names that fit the Habitica companion context.
 - The app applies semantic CSS variables such as background, card, surface, text, muted text, primary, accent, danger, success, focus, chart, task-value min/base/max, app header, navigation drawer, input, button text, and disabled-state tokens.
 - Settings exposes a scheme picker and custom scheme editor. Custom schemes are user data, not developer config.
+- The picker is a shared `ColorSchemePanel` component reused by Settings (full) and the Dashboard (`Compact`). Compact mode is a single dense bar — select, small swatch strip, Random Preset, Random Theme — with create/delete/editor/random-save controls collapsed behind a "Customize" disclosure that auto-expands when a save or edit flow is active. This follows the collapsible-disclosure and compact-swatch-row patterns and keeps the Dashboard section a small operational band rather than a second settings page.
+- Random controls: Random Preset selects an existing scheme; Random Theme and "Go Crazy!" generate a transient in-memory theme applied without persisting, saveable into custom schemes with a name. Keep text and muted tokens contrast-derived from the background even for chaotic palettes so the app stays legible.
 - `colorSchemes.js` keeps a localStorage active-scheme and preference fallback so mobile browsers can apply the scheme before Blazor and recover if IndexedDB is delayed during navigation.
 
 Rules:

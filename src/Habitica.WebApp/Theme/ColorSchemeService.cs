@@ -28,10 +28,11 @@ public sealed class ColorSchemeService
     /// </summary>
     public ColorSchemeDefinition? PendingRandomScheme { get; private set; }
 
-    /// <summary>Generate a fully random theme, hold it as the pending random, and apply it without persisting.</summary>
-    public async Task<ColorSchemeDefinition> ApplyRandomThemeAsync(CancellationToken cancellationToken = default)
+    /// <summary>Generate a random theme, hold it as the pending random, and apply it without persisting.</summary>
+    /// <param name="crazy">When true, generate a chaotic high-saturation, multi-hue palette.</param>
+    public async Task<ColorSchemeDefinition> ApplyRandomThemeAsync(bool crazy = false, CancellationToken cancellationToken = default)
     {
-        PendingRandomScheme = ColorSchemeCatalog.GenerateRandomTheme();
+        PendingRandomScheme = ColorSchemeCatalog.GenerateRandomTheme(crazy: crazy);
         await ApplyTransientAsync(PendingRandomScheme);
         return PendingRandomScheme;
     }
