@@ -470,7 +470,9 @@
                 <div class="armoire-controls">
                     <label>
                         <span>Open count</span>
-                        <input min="1"
+                        <input class="app-input"
+                               data-testid="armoire-open-count"
+                               min="1"
                                max="@GetMaxArmoirePurchases(snapshot)"
                                type="number"
                                @bind="_armoirePurchaseCount"

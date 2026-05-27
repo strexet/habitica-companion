@@ -337,7 +337,7 @@
                                         {
                                             <div class="task-progress">
                                                 <span>@FormatTaskProgress(progress)</span>
-                                                <MudProgressLinear Color="Color.Primary" Max="@progress.Total" Value="@progress.Completed" />
+                                                <MudProgressLinear Class="scheme-progress-primary" Color="Color.Primary" Max="@progress.Total" Value="@progress.Completed" />
                                             </div>
                                         }
                                     </article>
@@ -1044,16 +1044,18 @@
             return "var(--surface)";
         }
 
-        var value = (double)item.Value.Value;
-        if (Math.Abs(value) < 0.05d)
+        var value = Math.Abs((double)item.Value.Value);
+        if (value < 0.05d)
         {
-            return "var(--task-neutral)";
+            return "linear-gradient(135deg, var(--surface), var(--surface-strong))";
         }
 
-        var intensity = Math.Clamp(Math.Log(Math.Abs(value) + 1d) / Math.Log(21d), 0d, 1d);
-        var weight = 16d + intensity * 64d;
-        var token = value < 0d ? "var(--task-negative)" : "var(--task-positive)";
-        return $"color-mix(in srgb, {token} {weight.ToString("0.##", CultureInfo.InvariantCulture)}%, var(--task-neutral))";
+        var intensity = Math.Clamp(Math.Log(value + 1d) / Math.Log(21d), 0d, 1d);
+        var startWeight = 8d + intensity * 24d;
+        var endWeight = 18d + intensity * 46d;
+        return string.Create(
+            CultureInfo.InvariantCulture,
+            $"linear-gradient(135deg, color-mix(in srgb, var(--task-value-base) {startWeight:0.##}%, var(--surface)) 0%, color-mix(in srgb, var(--task-value-base) {endWeight:0.##}%, var(--surface-strong)) 100%)");
     }
 
     private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)

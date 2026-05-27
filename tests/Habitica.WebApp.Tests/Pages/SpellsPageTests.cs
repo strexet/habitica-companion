@@ -138,6 +138,7 @@ public sealed class SpellsPageTests : BunitContext
         Assert.Contains("3.5 MP", cut.Markup);
         Assert.Contains("Casting 2 of 5", cut.Markup);
         Assert.Contains("mud-progress-linear", cut.Markup);
+        Assert.Contains("scheme-progress-primary", cut.Markup);
     }
 
     [Fact]

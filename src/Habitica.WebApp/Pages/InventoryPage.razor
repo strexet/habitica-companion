@@ -828,6 +828,7 @@
                 builder.AddContent(sequence++, $"{progress.Label}: {progress.Completed} of {progress.Total}");
                 builder.CloseElement();
                 builder.OpenComponent<MudProgressLinear>(sequence++);
+                builder.AddAttribute(sequence++, "Class", "scheme-progress-primary");
                 builder.AddAttribute(sequence++, "Color", Color.Primary);
                 builder.AddAttribute(sequence++, "Max", (double)progress.Total);
                 builder.AddAttribute(sequence++, "Value", (double)progress.Completed);

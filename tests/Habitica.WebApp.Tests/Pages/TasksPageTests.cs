@@ -45,6 +45,11 @@ public sealed class TasksPageTests : BunitContext
         Assert.Contains("Buy milk", cut.Markup);
         Assert.Contains("Value", cut.Markup);
         Assert.Contains("-4.2", cut.Markup);
+        var taskCardStyle = cut.Find("[data-task-id='todo-1']").GetAttribute("style");
+        Assert.Contains("linear-gradient", taskCardStyle);
+        Assert.Contains("var(--task-value-base)", taskCardStyle);
+        Assert.DoesNotContain("var(--task-negative)", taskCardStyle);
+        Assert.DoesNotContain("var(--task-positive)", taskCardStyle);
         Assert.Contains("To-Dos", cut.Markup);
         Assert.DoesNotContain("Archive notes", cut.Markup);
 

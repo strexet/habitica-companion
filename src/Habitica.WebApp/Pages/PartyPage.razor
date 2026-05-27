@@ -381,7 +381,7 @@
 
                         @if (quest.CompletionEstimate is not null)
                         {
-                            <MudAlert Dense="true" Severity="@GetEstimateSeverity(quest.CompletionEstimate)" Variant="Variant.Outlined">
+                            <MudAlert Class="quest-estimate-alert" Dense="true" Severity="@GetEstimateSeverity(quest.CompletionEstimate)" Variant="Variant.Outlined">
                                 @FormatEstimateSummary(quest.CompletionEstimate)
                             </MudAlert>
                         }

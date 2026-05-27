@@ -88,8 +88,15 @@ public sealed class StaticAssetRegressionTests
         Assert.Contains("--disabled-bg", stylesheet);
         Assert.Contains(".topbar", stylesheet);
         Assert.Contains(".app-drawer", stylesheet);
+        Assert.Contains(".mud-drawer.app-drawer", stylesheet);
+        Assert.Contains("--drawer-readable-text", stylesheet);
         Assert.Contains(".mud-button:disabled", stylesheet);
         Assert.Contains("input[type=\"file\"].app-input::file-selector-button", stylesheet);
+        Assert.Contains("color-scheme: var(--native-control-scheme)", stylesheet);
+        Assert.Contains(".mud-progress-linear .mud-progress-linear-bar-primary", stylesheet);
+        Assert.Contains("background-color: var(--progress-track)", stylesheet);
+        Assert.Contains(".quest-estimate-alert", stylesheet);
+        Assert.Contains(".warning-card", stylesheet);
         Assert.Contains(".dashboard-link-card", stylesheet);
         Assert.Contains(".party-cron-chart", stylesheet);
         Assert.Contains(".diagnostics-log-item:active", stylesheet);
@@ -97,6 +104,26 @@ public sealed class StaticAssetRegressionTests
         Assert.Contains("var(--surface)", stylesheet);
         Assert.Contains("var(--input-bg)", stylesheet);
         Assert.Contains("var(--disabled-text)", stylesheet);
+    }
+
+    [Fact]
+    public void Color_scheme_script_derives_readable_drawer_and_native_counter_chrome()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var modulePath = Path.Combine(
+            repositoryRoot,
+            "src",
+            "Habitica.WebApp",
+            "wwwroot",
+            "js",
+            "colorSchemes.js");
+        var moduleContents = File.ReadAllText(modulePath);
+
+        Assert.Contains("--drawer-readable-text", moduleContents);
+        Assert.Contains("--drawer-readable-muted", moduleContents);
+        Assert.Contains("--native-control-scheme", moduleContents);
+        Assert.Contains("contrastRatio", moduleContents);
+        Assert.Contains("--task-value-base", moduleContents);
     }
 
     [Fact]

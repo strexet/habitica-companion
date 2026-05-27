@@ -229,7 +229,7 @@
                             var progress = SessionController.State.ActiveSpellCastProgress!;
                             <div class="spell-card-section spell-progress">
                                 <span>Casting @progress.Completed of @progress.Total</span>
-                                <MudProgressLinear Color="Color.Primary" Max="@progress.Total" Value="@progress.Completed" />
+                                <MudProgressLinear Class="scheme-progress-primary" Color="Color.Primary" Max="@progress.Total" Value="@progress.Completed" />
                             </div>
                         }
 
@@ -237,7 +237,7 @@
                         {
                             <div class="spell-card-section spell-progress">
                                 <span>@equipmentProgress.Label: @equipmentProgress.Completed of @equipmentProgress.Total</span>
-                                <MudProgressLinear Color="Color.Secondary" Max="@equipmentProgress.Total" Value="@equipmentProgress.Completed" />
+                                <MudProgressLinear Class="scheme-progress-secondary" Color="Color.Secondary" Max="@equipmentProgress.Total" Value="@equipmentProgress.Completed" />
                             </div>
                         }
 

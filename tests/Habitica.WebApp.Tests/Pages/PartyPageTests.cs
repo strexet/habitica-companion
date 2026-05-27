@@ -183,6 +183,7 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Estimated boss HP after CRON", cut.Markup);
         Assert.Contains("832.5/1000 hp", cut.Markup);
         Assert.Contains("Expected finish", cut.Markup);
+        Assert.Contains("quest-estimate-alert", cut.Markup);
         Assert.Contains("Finishing member", cut.Markup);
         Assert.Contains("Alpha", cut.Find(".inline-link-button").TextContent);
         Assert.DoesNotContain("Estimate range", cut.Markup);

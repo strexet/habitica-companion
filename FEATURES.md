@@ -1626,9 +1626,9 @@ Schemes expose semantic tokens rather than page-specific colors: background, car
 
 `ColorSchemeService` reads `preferences/colorSchemes`, resolves the active built-in or custom scheme, applies it through `HabiticaColorScheme.applyAndStore`, and persists the full active scheme in browser `localStorage`. The fast cache also stores the normalized preferences as a fallback for mobile browsers where IndexedDB can be delayed or unavailable during navigation. `wwwroot/js/colorSchemes.js` runs before Blazor starts and reapplies the cached active scheme to avoid a visible wrong-theme flash after reload.
 
-The app overrides MudBlazor app bar, drawer, button, progress, and disabled-state colors from the same semantic CSS variables. New built-in or custom schemes must keep those shell/control tokens readable, not only page-card colors.
+The app overrides MudBlazor app bar, drawer, button, progress, and disabled-state colors from the same semantic CSS variables. `wwwroot/js/colorSchemes.js` also derives readable drawer text and native form-control `color-scheme` values from active tokens so drawer links and number-input steppers remain readable across light and dark schemes. New built-in or custom schemes must keep those shell/control tokens readable, not only page-card colors.
 
-Task value backgrounds use a logarithmic intensity curve around neutral so small positive/negative values stay subtle and larger absolute values become more visibly positive or negative without washing out card text.
+Task value backgrounds use a logarithmic intensity curve against one scheme-derived base color. Small absolute values stay subtle and larger absolute values increase gradient intensity without reintroducing fixed red/orange/green/blue task-card shades.
 
 Settings lets users:
 
@@ -1657,6 +1657,7 @@ Test:
 - missing legacy custom tokens are backfilled before validation or application;
 - invalid custom token values are rejected;
 - CSS keeps shell, inputs, buttons, disabled controls, and reported nested surfaces routed through scheme tokens;
+- CSS/JS keep drawer links, number counters, determinate progress bars, quest estimate alerts, task-value card backgrounds, and diagnostics warning panels routed through active scheme tokens;
 - color-scheme preferences are portable user data;
 - cloud sync maps `ColorSchemes` to `preferences/colorSchemes`;
 - Settings renders scheme controls and saves custom scheme preferences.

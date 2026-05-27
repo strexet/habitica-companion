@@ -43,6 +43,7 @@ public sealed class LiveTestsPageTests : BunitContext
         Assert.Contains("Diagnostics", cut.Markup);
         Assert.Contains("Safe checks", cut.Markup);
         Assert.Contains("Guarded tests", cut.Markup);
+        Assert.NotNull(cut.Find(".warning-card"));
         Assert.Contains("Quick account reads", cut.Markup);
         Assert.Contains("App messages", cut.Markup);
         Assert.Contains("Copy all messages", cut.Markup);

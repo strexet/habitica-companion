@@ -444,6 +444,7 @@ public sealed class InventoryPageTests : BunitContext
         Assert.Contains("Equipping Casting", cut.Markup);
         Assert.Contains("2 of 4", cut.Markup);
         Assert.Contains("mud-progress-linear", cut.Markup);
+        Assert.Contains("scheme-progress-primary", cut.Markup);
     }
 
     private static UserSnapshot CreateSnapshot()

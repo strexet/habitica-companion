@@ -33,6 +33,96 @@
     inputBorder: "--input-border"
   };
 
+  function parseHexColor(value) {
+    const hex = value.trim().replace(/^#/, "");
+    if (![3, 4, 6, 8].includes(hex.length)) {
+      return null;
+    }
+
+    const expanded = hex.length <= 4
+      ? hex.split("").map((part) => part + part).join("")
+      : hex;
+    const red = Number.parseInt(expanded.slice(0, 2), 16);
+    const green = Number.parseInt(expanded.slice(2, 4), 16);
+    const blue = Number.parseInt(expanded.slice(4, 6), 16);
+    if ([red, green, blue].some((part) => Number.isNaN(part))) {
+      return null;
+    }
+
+    return { red, green, blue };
+  }
+
+  function parseRgbColor(value) {
+    const match = value.trim().match(/^rgba?\(([^)]+)\)$/i);
+    if (!match) {
+      return null;
+    }
+
+    const parts = match[1].split(",").map((part) => Number.parseFloat(part.trim()));
+    if (parts.length < 3 || parts.slice(0, 3).some((part) => Number.isNaN(part))) {
+      return null;
+    }
+
+    return {
+      red: Math.min(255, Math.max(0, parts[0])),
+      green: Math.min(255, Math.max(0, parts[1])),
+      blue: Math.min(255, Math.max(0, parts[2]))
+    };
+  }
+
+  function parseColor(value) {
+    if (!value) {
+      return null;
+    }
+
+    return value.trim().startsWith("#") ? parseHexColor(value) : parseRgbColor(value);
+  }
+
+  function luminance(color) {
+    const channels = [color.red, color.green, color.blue].map((channel) => {
+      const normalized = channel / 255;
+      return normalized <= 0.03928
+        ? normalized / 12.92
+        : Math.pow((normalized + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+  }
+
+  function contrastRatio(first, second) {
+    const firstLuminance = luminance(first);
+    const secondLuminance = luminance(second);
+    const lighter = Math.max(firstLuminance, secondLuminance);
+    const darker = Math.min(firstLuminance, secondLuminance);
+    return (lighter + 0.05) / (darker + 0.05);
+  }
+
+  function readableTextFor(backgroundValue, preferredTextValue) {
+    const background = parseColor(backgroundValue);
+    const preferredText = parseColor(preferredTextValue);
+    if (!background) {
+      return preferredTextValue;
+    }
+
+    if (preferredText && contrastRatio(background, preferredText) >= 4.5) {
+      return preferredTextValue;
+    }
+
+    return luminance(background) > 0.46 ? "#162423" : "#f5efe2";
+  }
+
+  function applyDerivedVariables(root, tokens) {
+    const drawerBackground = readToken(tokens, "drawerBackground");
+    const drawerText = readToken(tokens, "drawerText");
+    const inputBackground = parseColor(readToken(tokens, "inputBackground"));
+    const readableDrawerText = readableTextFor(drawerBackground, drawerText);
+
+    root.style.setProperty("--drawer-readable-text", readableDrawerText);
+    root.style.setProperty("--drawer-readable-muted", `color-mix(in srgb, ${readableDrawerText} 82%, transparent)`);
+    root.style.setProperty("--native-control-scheme", inputBackground && luminance(inputBackground) < 0.46 ? "dark" : "light");
+    root.style.setProperty("--task-value-base", readToken(tokens, "primary") || "var(--primary)");
+    root.style.setProperty("--progress-track", `color-mix(in srgb, ${readToken(tokens, "primary") || "var(--primary)"} 14%, transparent)`);
+  }
+
   function normalizeScheme(scheme) {
     if (!scheme) {
       return null;
@@ -70,6 +160,7 @@
         }
       }
     }
+    applyDerivedVariables(root, normalized.tokens);
 
     root.dataset.colorScheme = normalized.id;
     const themeColor = readToken(normalized.tokens, "primary") || readToken(normalized.tokens, "background");
