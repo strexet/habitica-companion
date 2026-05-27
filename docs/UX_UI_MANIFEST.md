@@ -58,9 +58,9 @@ UI change completion checklist:
 
 Current pattern:
 
-- Built-in schemes live in `ColorSchemeCatalog`: `Alpha`, `Habitica`, `Gryphy Light`, and `Gryphy Dark`.
-- `Alpha` preserves the original app palette. `Habitica` follows Habitica-like purple, blue, green, gold, and danger colors. Gryphy schemes are derived from `gryphy/Gryphy.png` and tuned for readable light/dark app surfaces.
-- The app applies semantic CSS variables such as background, card, surface, text, muted text, primary, accent, danger, success, focus, chart, task-value, app header, navigation drawer, input, button text, and disabled-state tokens.
+- Built-in schemes live in `ColorSchemeCatalog`: `Alpha`, `Habitica`, `Gryphy Light`, `Gryphy Dark`, `Midnight Tavern`, `Dragonfire Keep`, `Neon Rogue`, `Frost Healer`, `Sunlit Stable`, `Mosswood Quest`, `Potion Shop`, `Boss Battle`, `Quiet Ledger`, `Celestial Inn`, and `Mana Mirage`.
+- `Alpha` preserves the original app palette. `Habitica` follows Habitica-like purple, blue, green, gold, and danger colors. Gryphy schemes are derived from `gryphy/Gryphy.png` and tuned for readable light/dark app surfaces. The other presets cover dark, bright, colorful, dull, and psychedelic moods with names that fit the Habitica companion context.
+- The app applies semantic CSS variables such as background, card, surface, text, muted text, primary, accent, danger, success, focus, chart, task-value min/base/max, app header, navigation drawer, input, button text, and disabled-state tokens.
 - Settings exposes a scheme picker and custom scheme editor. Custom schemes are user data, not developer config.
 - `colorSchemes.js` keeps a localStorage active-scheme and preference fallback so mobile browsers can apply the scheme before Blazor and recover if IndexedDB is delayed during navigation.
 
@@ -69,8 +69,8 @@ Rules:
 - Add new app colors as semantic tokens first; avoid hard-coded one-off colors in Razor or CSS.
 - Header, drawer, MudBlazor button variants, inputs, progress bars, disabled buttons, and nested panels must consume scheme variables. A palette is not done if only `body` and top-level cards change.
 - Keep enough contrast between `background`, `card background`, `surface`, `strong surface`, `text`, and `muted text` in every built-in scheme. Dark schemes must not use pale surfaces with pale text.
-- Preserve meaning across schemes: danger remains danger, success remains success, stale/conflict states keep text labels, and task-value colors must retain negative/neutral/positive context.
-- Task value backgrounds should use a non-linear intensity curve so values near zero remain close to neutral and high absolute values become clearly positive or negative without making the card unreadable.
+- Preserve meaning across schemes: danger remains danger, success remains success, stale/conflict states keep text labels, and task-value colors must retain min/base/max progression without switching to unrelated semantic state colors.
+- Task value backgrounds use `Task min`, `Task base`, and `Task max` as one same-hue ramp. Values near zero stay close to base; negative values move toward min; positive values move toward max. Do not implement this as a visible CSS gradient background or as separate red/green/orange status colors.
 - Do not rely on color alone. Pair important state colors with copy, labels, icons, layout, or disabled reasons.
 - Disabled controls must keep visible text and borders after a scheme switch; do not express disabled state only through opacity.
 - Built-in scheme changes belong in `ColorSchemeCatalog`; user-created schemes belong in `preferences/colorSchemes`.
