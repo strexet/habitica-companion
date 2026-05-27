@@ -60,7 +60,14 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ### Entries:
 
 - Top. In Dashboard: NAVIGATION - Companion and Habitica links -- its 'header' (example, "Tasks") and body (example, "Score and inspect cached tasks.") are got stuck together in every navigation menu: example, "TasksScore and inspect cached tasks."
-- Top. In Tasks: leave only task's header and description in its card beside the move card buttons (these buttons positions should be adjusted for the new UI) and Details button (that will hide all the currently available additional information about the task).The goal is to make task cards as small as possible, so it is eadier to work with the task list. Don't forget to use and reference UI/UX manifest that is present here: /Users/petr/Projects/habitica-tool/docs/UX_UI_MANIFEST.md. 
+- Top. In Tasks: leave only task's header and description in its card beside the move card buttons (these buttons positions should be adjusted for the new UI) and Details button (that will hide all the currently available additional information about the task). The goal is to make task cards as small as possible, so it is eadier to work with the task list. Remember to use and reference UI/UX manifest that is present here: /Users/petr/Projects/habitica-tool/docs/UX_UI_MANIFEST.md. 
+- Top. In Spells: when there are multiple equipment options for the spell auto-equip feature, the most profitable option should be selected by default, and other options should be available via a dropdown menu and sorted there from the most profitable to the least profitable.
+- Middle. Party page: It feels like the Party page got to much information on it right now and there are a lot of quests related blocks. 
+  - Let's separate those blocks into different pages: 
+    - `Party` page should have description and info for the Party, PARTY SYNC ROLES, PARTY SYNC SETTINGS, small quest card (that should be linked to the Quests page), members list, buff info, CRON graph.
+    - `Quests` page should have all quest and quest-queue-related info. Remember to update links that are present in quest related cards.
+  - Make sure the current logic stays untouched – I think we don't need extra data base fields, etc.
+  - Don't forger to update related documents.
 
 ## Prioritized Next Changes
 
