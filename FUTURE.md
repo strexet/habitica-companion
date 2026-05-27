@@ -64,9 +64,58 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Party Sync Invite Proofs
+### App Color Scheme System
 
-Goal: add manager-issued, tokenized party-sync access proofs so shared party queue permissions no longer rely only on browser-supplied `local-claim-v1` headers.
+Goal: centralize app color tokens and add selectable color schemes, including editable user custom schemes, so the app can switch palettes consistently without scattering raw colors across CSS and page code.
+
+Touch:
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.WebApp/Pages/SettingsPage.razor`
+- `src/Habitica.WebApp`
+- `src/Habitica.Storage`
+- `src/Habitica.Application/Sync`
+- direct tests under `tests/Habitica.WebApp.Tests/`, `tests/Habitica.Storage.Tests/`, and `tests/Habitica.Application.Tests/`
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md`
+- `README.md` only if setup or user-facing feature summary changes
+
+Required inputs:
+- Current app palette from existing `:root` CSS variables and remaining hard-coded app colors. This built-in scheme is named `Alpha`.
+- Habitica-inspired built-in palette named `Habitica`. Use current Habitica web/app colors as reference; verify from public/current sources before implementing.
+- `/Users/petr/Projects/habitica-tool/gryphy/Gryphy.png`. Sample the image and create two readable built-in Gryphy-derived schemes named `Gryphy Light` and `Gryphy Dark`; adjust sampled colors as needed for contrast and usability.
+- Review current color-scheme patterns in other popular apps before implementation. Record only durable product/design guidance in `docs/UX_UI_MANIFEST.md`; do not cite transient marketing pages unless needed.
+
+Implementation shape:
+- Define built-in developer-editable schemes in one code/config location, not as duplicated page-specific constants. The schema should cover semantic tokens used by the app, such as background, surface, border, text, muted text, primary/accent, warning/gold, danger, success, focus, shadows, and chart/task-value colors.
+- Convert app styling to consume semantic CSS variables from the active scheme. Keep domain/status meaning clear and do not rely on color alone.
+- Add a small theme runtime that applies the selected scheme early enough to avoid a visible wrong-theme flash on normal app startup.
+- Add Settings controls for selecting a built-in scheme, selecting saved custom schemes, creating/renaming/deleting a custom scheme, and editing custom scheme token values.
+- Persist the selected scheme locally for fast reload and in portable user data so backup/import/cloud sync can preserve it. Persist user-created custom schemes as user data, separate from built-in developer schemes.
+- Custom scheme editing should validate color values, prevent deleting built-in schemes, and provide a reset path back to a built-in scheme.
+- Preserve accessibility: text/background combinations must meet readable contrast targets for normal app text, controls, warnings, and danger states.
+
+Out of scope:
+- changing layout, information architecture, or page content beyond Settings controls needed for scheme management;
+- user-uploaded images for palette extraction;
+- per-page themes;
+- sending theme preferences or custom colors to Habitica;
+- redesigning MudBlazor component internals beyond setting supported theme/css variables.
+
+Acceptance:
+- All current root palette values are represented by the `Alpha` built-in scheme and the app looks materially the same when `Alpha` is selected.
+- Built-in schemes exist for `Alpha`, `Habitica`, `Gryphy Light`, and `Gryphy Dark`.
+- A developer can add or adjust built-in schemes from one obvious config/code location.
+- Settings lets the user choose a scheme, create a named custom scheme, edit custom colors, rename it, delete it, and reset back to a built-in scheme.
+- The selected scheme survives browser reload through local storage and is included in portable user data backup/import/cloud sync.
+- User-created schemes are not mixed with built-in scheme definitions and do not require code changes.
+- Invalid custom color input is rejected with concise feedback and does not partially apply a broken scheme.
+- Existing status, danger, warning, success, task-value, and chart states remain distinguishable in every built-in scheme without relying only on color.
+- Tests cover built-in scheme config, storage keys/portable sync mapping, Settings selection/custom edit behavior, reload persistence hook, and rejection of invalid custom colors.
+- `docs/UX_UI_MANIFEST.md` documents scheme token rules, contrast expectations, and when future UI should add new semantic tokens instead of hard-coded colors.
+
+### Party Sync Tokenized Invite Proofs
+
+Goal: add an optional manager-issued party-sync proof mode. Parties continue to work with browser-only `local-claim-v1` by default, but an owner/app admin can enable tokenized invite proofs so shared party queue access no longer depends only on client-supplied local claim headers.
 
 Touch:
 - `functions/api/party-sync/[partyId].js`
@@ -78,17 +127,31 @@ Touch:
 - `FEATURES.md`
 - `docs/DEPLOY_CLOUDFLARE_PAGES.md`
 
+Implementation shape:
+- Add a D1 migration for invite-proof state. Store party id, proof id or token hash, display label, issued/revoked/expires timestamps, issuer metadata, and an enabled/disabled party setting. Do not store raw reusable proof tokens if a hash is enough.
+- Keep `local-claim-v1` as the default and as the recovery path. If tokenized proof mode is disabled or no active proof exists, existing party-sync behavior must remain unchanged.
+- Add owner/app-admin management actions to create, list, revoke, rotate, remove, enable, and disable tokenized proofs. Existing Officer permissions should not automatically grant proof-management powers unless the code explicitly already treats the caller as owner/app admin.
+- Extend `readAccessProof()` to parse both `local-claim-v1` and the new proof version. Extend `resolvePartySyncAccess()` so tokenized proof identity still passes through the same owner/admin/Officer/kick checks used by local claims.
+- Update the browser sync bridge to send the new proof headers only when local state has an active tokenized proof. Do not send Habitica API tokens, raw credentials, or authorization headers to Cloudflare.
+- Surface concise UI/state feedback for proof mode: disabled, enabled, active proof, revoked/expired proof, and fallback to local claim.
+
 Out of scope:
 - sending Habitica API tokens to Cloudflare;
 - changing role names (`app admin`, `party owner`, `Officer`);
-- removing the existing `local-claim-v1` reader before a migration path exists.
+- removing the existing `local-claim-v1` reader;
+- replacing party-sync roles, queue permissions, or kick semantics;
+- requiring tokenized proofs for existing parties by default.
 
 Acceptance:
-- Managers can create, view, revoke, and rotate invite proofs without exposing Habitica credentials.
-- `readAccessProof()` / `resolvePartySyncAccess()` accept the new proof and keep `local-claim-v1` working for legacy local claims.
-- Proof checks reject malformed, expired, revoked, wrong-party, and kicked-user access.
-- Owner/admin recovery remains possible even when invite proofs are missing or stale.
-- Worker tests cover valid proof, malformed proof, expired proof, revoked proof, wrong-party proof, kicked-user rejection, and owner/admin bypass cases.
+- With no invite proof created, and with tokenized mode disabled, all existing party-sync reads/writes still work through `local-claim-v1`.
+- Owner/app admin can enable and disable tokenized proof mode.
+- Owner/app admin can create, list, revoke, rotate, and remove invite proofs without exposing Habitica credentials. Removing the active proof invalidates the old proof; the party can issue a new proof later and falls back to browser-only `local-claim-v1` while no active proof exists.
+- `readAccessProof()` accepts both the new proof version and `local-claim-v1`; unsupported proof versions still fail with a clear 401.
+- `resolvePartySyncAccess()` rejects malformed, expired, revoked, wrong-party, and kicked-user tokenized proofs.
+- Owner/app-admin recovery remains possible when tokenized proofs are missing, expired, revoked, or misconfigured.
+- Frontend bridge sends tokenized proof headers only when an active proof is available, and otherwise keeps the existing local-claim headers.
+- Worker tests cover: local-claim fallback, valid proof, malformed proof, expired proof, revoked proof, removed proof, wrong-party proof, kicked-user rejection, owner/admin bypass/recovery, enable/disable mode behavior, and rotate invalidating the old proof.
+- WebApp tests cover proof-mode state mapping and header selection without sending Habitica API tokens to Cloudflare.
 
 ### Active Quest Metadata And Detail Affordances
 
