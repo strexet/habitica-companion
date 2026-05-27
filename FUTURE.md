@@ -61,6 +61,8 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 _(empty — pending note promoted into `Prioritized Next Changes`.)_
 
+ping-ping
+
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
