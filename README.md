@@ -9,8 +9,8 @@ Current status: web-app MVP implemented and expanding into guarded actions. The 
 - credential sign-in with session-only default and persistent local opt-in
 - manual and page-prioritized refresh against Habitica API v3
 - cached account dashboard with class, stat, companion, inventory, pending-damage, and health-potion helper cards
-- Dashboard `Start New Day` action when the current user needs Cron
-- inventory and equipment explorer with slot-grouped owned gear keys, battle presets, highest-stat highlights, and guarded equip actions
+- Dashboard `Start New Day` action with optional gear optimization when the current user needs Cron
+- inventory and equipment explorer with slot-grouped owned gear keys, battle presets, highest-stat highlights, equipment optimizer recommendations, bulk sell planning, and guarded equip/sell actions
 - party overview with cached quest progress, member CRON timing, shared quest pool, shared queue voting, recently completed quest history, tokenless party-sync claims, Officers, settings, and kick management
 - spells workspace with target selection, approximate effect previews, dynamic gear recommendations, sequential casting, and Cron-sensitive buff warning
 - diagnostics workspace with safe checks, guarded reversible tests, curated API presets, and a shared redacted log console
@@ -18,18 +18,14 @@ Current status: web-app MVP implemented and expanding into guarded actions. The 
 - local-first account snapshot storage for offline dashboard access
 - encrypted per-section Cloudflare sync for portable app data, with legacy single-blob restore fallback
 - responsive app shell with sign-in, dashboard, inventory, party, diagnostics, tasks, and settings routes
-- task workspace with search, filters, completed toggles, detail panels, freshness indicators, inline scoring/checkoff, and Habit multi-score controls
+- task workspace with search, filters, completed toggles, detail panels, history charts, manual ordering controls, freshness indicators, inline scoring/checkoff, and Habit multi-score controls
 - sign-out for the current tab session and clear-local-data controls
 
 ## Planned feature areas
 
 - richer quest explorer and party member views
-- task history statistics and charts
-- gear optimization
 - skill macros with dry-run previews
-- bulk sell planning
-- skill and action result estimates
-- per-section cloud sync status and conflict UI
+- task mutation dry-run summaries and remaining guarded-action estimate coverage
 
 ## Technical baseline
 

@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-05-26
+Last updated: 2026-05-27
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -572,7 +572,7 @@ Task-targeting spells default to the eligible non-reward, non-challenge task wit
 
 Effect estimates are approximation-based. Initial formulas are based on Habitica source spell definitions and cross-checked against the stable Habitica User Data Display Tool's Skills and Buffs behavior. Task spell estimates use the selected task's cached `value`, not task priority. Current spell estimates use base stats plus current battle gear plus the Habitica level bonus plus buffs; unbuffed buff spells use base stats plus current battle gear plus the Habitica level bonus. When Auto equip is enabled, the preview uses the selected dynamic recommendation's battle gear slots as though they were already equipped. Estimates must remain labeled approximate until verified directly against live Habitica behavior for the current source version.
 
-The page does not render top summary cards for class, MP, stat points, or quest state. Mana is shown inside each spell's cast preview. Active boss quest progress and party pending damage render only inside spell cards whose estimate includes boss damage, such as Burst of Flames and Brutal Smash. Unspent stat points render only inside spell cards with stat-sensitive estimates and only when stat allocation is unlocked.
+The page renders a sticky current-mana bar above the spell cards, showing available MP, max MP, and current class while the user scrolls. Per-card mana previews still show the selected cast count's total cost and after-cast MP. Active boss quest progress and party pending damage render only inside spell cards whose estimate includes boss damage, such as Burst of Flames and Brutal Smash. Unspent stat points render only inside spell cards with stat-sensitive estimates and only when stat allocation is unlocked.
 
 Each spell card owns its dynamic equipment recommendations. Recommendations are transient and not saved as user presets. For spells with one relevant stat, show a primary-stat recommendation. For spells with multiple relevant stats, show primary/secondary stat recommendations and a balanced recommendation. Recommendations include stat-bearing battle accessories such as Head Accessory, Eyewear, Body, and Back. If every non-empty recommended gear slot is already equipped in battle gear, its button is disabled and labeled `Equipped`. Weapon and shield are selected as a pair that honors the catalog `twoHanded` flag: a two-handed weapon is recommended only when its score exceeds the combined score of the best one-handed weapon and the best shield for the same stat priority, and the shield slot is left empty when the two-handed weapon wins. Ties keep the one-handed weapon plus shield.
 
@@ -630,7 +630,7 @@ Test:
 - dynamic equipment recommendation generation and `Equipped` state;
 - session sequential cast orchestration and diagnostics logging;
 - stat allocation orchestration and diagnostics logging;
-- Spells page rendering, count totals, progress bar, target selection/value ordering, Cast button, Cron-sensitive buff warning, and dynamic equipment recommendations;
+- Spells page rendering, sticky current-mana bar, count totals, progress bar, target selection/value ordering, Cast button, Cron-sensitive buff warning, and dynamic equipment recommendations;
 - Dashboard stats table, plus-button stat allocation controls, stat unlock guard, and unspent stat warning;
 - authenticated navigation link.
 
@@ -1190,6 +1190,7 @@ Reads from existing snapshot and derived read-model stores.
 Only through explicit refresh actions and the confirmed Start New Day action.
 
 ```text
+POST /user/equip/equipped/:key
 POST /cron
 POST /user/buy/potion
 GET /user
@@ -1199,9 +1200,11 @@ GET /groups/party
 
 ### Algorithm / rules
 
-Dashboard must not contain business logic. It displays already computed state and invokes use-case services.
+Dashboard must not contain business formulas. It displays state computed by rules/application factories and invokes use-case services.
 
 Render `Start New Day` only when the current account snapshot says `NeedsCron == true`. The confirmation copy must explain that Habitica will process missed Dailies, active quest progress, current-user temporary buff expiry, and party buffs per member's next CRON. After confirmed CRON, refresh account/tasks/party state through the session controller and show an inline success or error result in addition to the snackbar.
+
+Start New Day can optionally equip recommended battle gear before CRON. `Habitica.Rules.Equipment.EquipmentRecommendationFactory` builds the preview from cached owned gear and the gear catalog. Goals are `INT for mana`, `CON for less damage`, and `Survival`; all are marked assumption-based because the final CRON mana and damage calculations are server-side. The preview shows current stats, recommended stats, deltas, recommended items, and whether the recommended gear is already equipped. When enabled, `AppSessionController.StartNewDayAsync(StartNewDayRequest)` validates recommended gear ownership, equips changed battle slots sequentially without an intermediate user refresh, runs CRON only after successful gear steps, then refreshes account/tasks/party state. Failure messages distinguish skipped-before-CRON, failed-while-CRON-running, and completed-but-refresh-failed states.
 
 The pending damage panel uses `PendingDamageEstimateFactory` to combine incomplete Daily estimates and saved active boss quest pending damage. It must show included sources and unavailable sources separately, and must label the result as an estimate based on synced data.
 
@@ -1239,7 +1242,7 @@ Test:
 - empty state;
 - partial sync failure state;
 - redacted diagnostics.
-- Start New Day confirmation, result feedback, and session-controller refresh contract.
+- Start New Day confirmation, optional gear optimization preview/request, result feedback, and session-controller refresh contract.
 - pending damage estimate sources and risk state.
 - health-potion confirmation and session-controller call.
 
@@ -2547,7 +2550,7 @@ Current implementation:
 
 Next:
 
-- richer expandable task details and history/stat surfaces;
+- richer expandable task details beyond the current compact details and chart surfaces;
 - larger-data optimizations such as virtualization.
 
 ## 19. Task mutation controls

@@ -1,6 +1,6 @@
 # UX/UI Manifest
 
-Last reviewed: 2026-05-26
+Last reviewed: 2026-05-27
 
 This manifest records the current UI implementation, what is working, where readability or responsiveness has drifted, and which outside patterns are worth copying. Treat it as product guidance for future UI work, not as a pixel spec.
 
@@ -154,7 +154,7 @@ Current pattern:
 
 - Summary stat cards for account, HP, MP, XP, gold, and open tasks.
 - HP, MP, and XP cards include compact meters so the current ratio has a readable shape, not only text.
-- Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action uses inline confirmation instead of an immediate mutation.
+- Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action includes an optional gear recommendation preview and uses inline confirmation instead of an immediate mutation.
 - Stats allocation table with horizontal overflow.
 - Explicit armoire action and companion/inventory summary panels.
 
@@ -162,7 +162,7 @@ What works:
 
 - Stat cards are scannable and stable.
 - Resource/progress meters make HP, MP, and XP easier to compare at a glance.
-- Start New Day explains missed Dailies, quest progress, and buff expiry before calling Habitica Cron, matching the app's explicit-mutation posture.
+- Start New Day explains missed Dailies, quest progress, buff expiry, and optional gear auto-equip before calling Habitica Cron, matching the app's explicit-mutation posture.
 - The stats allocation table preserves comparison columns, which is better than collapsing stat math into disconnected mobile cards.
 - Pending stat allocation has clear apply/clear actions.
 
@@ -174,6 +174,7 @@ Improvement:
 
 - For mobile stats, keep horizontal scroll but add a sticky first column or repeated stat label so context does not disappear.
 - Keep Start New Day as a small operational panel, not a hero or persistent global warning, because it is important only when Cron is due.
+- Keep CRON gear optimization inside the Start New Day panel, with compact current/recommended/delta stat chips and recommended item rows rather than a separate inventory-style workspace.
 
 ### Tasks
 
@@ -290,6 +291,7 @@ Files: `src/Habitica.WebApp/Pages/SpellsPage.razor`, `src/Habitica.WebApp/wwwroo
 
 Current pattern after the latest UI pass:
 
+- Sticky current-mana bar above the spell cards, showing available MP, max MP, and class while scrolling.
 - Spell cards with stable summary, cost/availability pills, count/target input zone, mana spent/available/after-cast preview, auto-equip toggle, cast button, progress bars, card-local quest/stat context, effect preview, and equipment recommendations.
 - Cron-sensitive stat buffs show an inline warning inside the spell card when the user has not started the current Habitica day. The warning offers Cancel, Cast anyway, and Start New Day and Cast, plus local per-day suppression.
 - Responsive two-zone layout: variable user inputs on the left, mana/action status on the right; stacks at narrower widths.
@@ -297,6 +299,7 @@ Current pattern after the latest UI pass:
 What works:
 
 - Available mana is visible on each spell card while evaluating a cast.
+- The sticky mana bar keeps current MP visible while comparing far-apart spell cards.
 - Mana spent and after-cast value provide before/after feedback before the user commits.
 - Boss quest progress and party pending damage stay inside spell cards that can affect boss damage instead of a top-page quest summary.
 - Unspent stat points appear only on stat-sensitive spell cards when allocation is unlocked.

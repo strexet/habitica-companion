@@ -1,6 +1,6 @@
 # Future Work
 
-Last validated: 2026-05-22.
+Last validated: 2026-05-27.
 
 This is the single implementation queue. Historical source plans were merged here and removed after implemented items were filtered out. Entries higher in the file are higher priority; finish them first.
 
@@ -38,6 +38,11 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Refresh-domain invalidation basics after implemented mutations.
 - Staged sign-in refresh UX, scoped refresh indicators, per-section cloud sync status, sync exclusions, and explicit cloud-sync conflict choices.
 - Two-handed weapon awareness in spell equipment recommendations: weapon/shield selected as a `twoHanded`-aware pair; shield omitted when the two-handed weapon outscores the best one-handed + shield combination.
+- Task history statistics, aggregate history charts, expanded-card per-task charts, manual task ordering, drag handles, keyboard reordering, and move buttons.
+- Inventory equipment optimizer with goal selector, before/after stat deltas, recommendation equip/save actions, and two-handed weapon handling.
+- Bulk sell planner for eggs, food, and hatching potions with safe surplus preview, explicit confirmation, sequential sell execution, diagnostics, and post-sell refresh.
+- Dashboard Start New Day optional gear optimization: INT for post-CRON mana, CON/survival for lower damage risk, previewed stat deltas, already-equipped state, and sequential equip-before-CRON execution.
+- Spells sticky current-mana bar with available MP, max MP, class, and persistent scroll visibility above spell cards.
 
 ## Pending Queue
 
@@ -59,30 +64,35 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Party Access Proof Hardening
+### Party Sync Invite Proofs
 
-Goal: replace trust-only local party-sync claims with tokenized manager-invite proofs if local claims are too easy to abuse in real parties.
+Goal: add manager-issued, tokenized party-sync access proofs so shared party queue permissions no longer rely only on browser-supplied `local-claim-v1` headers.
 
 Touch:
 - `functions/api/party-sync/[partyId].js`
 - `src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js`
 - `src/Habitica.WebApp/State`
+- `migrations/`
 - direct tests under `tests/Functions/` and `tests/Habitica.WebApp.Tests/`
 - `TECHNICAL.md`
 - `FEATURES.md`
+- `docs/DEPLOY_CLOUDFLARE_PAGES.md`
 
 Out of scope:
 - sending Habitica API tokens to Cloudflare;
-- changing role names (`app admin`, `party owner`, `Officer`).
+- changing role names (`app admin`, `party owner`, `Officer`);
+- removing the existing `local-claim-v1` reader before a migration path exists.
 
 Acceptance:
-- `readAccessProof()` / `resolvePartySyncAccess()` can accept the new proof without breaking existing local-claim migration.
-- Owner/admin recovery remains possible.
-- Worker tests cover invalid, expired, wrong-party, kicked-user, and owner/admin bypass cases.
+- Managers can create, view, revoke, and rotate invite proofs without exposing Habitica credentials.
+- `readAccessProof()` / `resolvePartySyncAccess()` accept the new proof and keep `local-claim-v1` working for legacy local claims.
+- Proof checks reject malformed, expired, revoked, wrong-party, and kicked-user access.
+- Owner/admin recovery remains possible even when invite proofs are missing or stale.
+- Worker tests cover valid proof, malformed proof, expired proof, revoked proof, wrong-party proof, kicked-user rejection, and owner/admin bypass cases.
 
 ### Active Quest Metadata And Detail Affordances
 
-Goal: fill remaining active quest card metadata and drill-ins when data is available.
+Goal: fill remaining active quest card metadata and drill-ins when Habitica or cached shared state exposes the data.
 
 Touch:
 - `src/Habitica.Api`
@@ -96,34 +106,182 @@ Out of scope:
 - fake values when Habitica data is missing.
 
 Acceptance:
+- Active quest snapshot preserves nullable owner/starter and started-at fields when the API or shared queue state exposes them.
 - Active quest card shows owner or starter, started date, details view, participants view, and rewards/details affordances when cached data exists.
-- Missing fields render concise unavailable states.
+- Missing owner/starter/started-at fields render concise unavailable states without inventing values.
 - Participant names use the same member-detail focus behavior as the party member list.
 
 ## Backlog
 
-These entries are lower priority but already merged from the historical plans. Before coding, split a broad bullet into the same `Goal / Touch / Out of scope / Acceptance / UX-UI reference` shape used above.
+These entries are lower priority. Each entry is self-contained and should be promoted into `Prioritized Next Changes` before implementation.
 
-### Advanced Party Quest Features
+### Party Quest Workspace Modes
 
-- Add optional limited vote budgets only if requested as an advanced voting mode.
-- Add historical quest analytics beyond the recent-completion list and soft queue penalty.
-- Split current party quest state and queue planning into clearer modes, such as tabs or a segmented switch.
+Goal: separate the Party page's current quest, shared queue planning, quest pool, recent completions, and member/CRON sections into clearer scan modes.
 
-### Skill Macros
+Touch:
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md` if shared navigation or mode guidance changes
 
-- Add a macro collection for predefined skill/equipment sequences.
-- Add dry-run previews with planned equipment changes, target selection, mana cost, expected requests, warnings, and stop conditions.
-- Keep macro execution sequential and stop on validation failures or unexpected state changes.
+Out of scope:
+- changing party-sync data contracts;
+- adding new quest analytics;
+- changing Habitica party or quest links.
 
-### Action Result Estimates
+Acceptance:
+- Party page provides a tab or segmented mode switch for current quest, planning, history, and members/CRON.
+- Existing actions keep their current authorization and stale-data guards.
+- Empty and offline cached states remain visible in the relevant mode.
+- Component tests cover mode switching and at least one guarded action still rendering in its mode.
 
-- Add estimates for selected actions, including expected damage, gold, skill effects, boss progress, and player damage risk.
-- Clearly distinguish exact API-returned values from local estimates and assumption-based formulas.
+### Party Quest History Analytics
 
-### UX Cleanup
+Goal: summarize stored shared quest completion history beyond the current recent-completion cards and queue penalty labels.
 
-- Add confirmation to Settings destructive actions such as clearing local browser data.
-- Reduce repeated hero/help copy for returning authenticated users.
-- Add sticky first-column or label context for mobile stat tables.
-- Consider compact spell cards after the current spell card layout has been tested with real use.
+Touch:
+- `src/Habitica.Domain/Party`
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- `functions/api/party-sync/[partyId].js` only if the existing recent-completion payload is not enough
+- direct tests under `tests/`
+- `FEATURES.md`
+
+Out of scope:
+- collecting Habitica data that is not already available through current snapshots, chat completion signals, or shared queue records;
+- optional vote budgets;
+- changing quest queue ordering.
+
+Acceptance:
+- History view shows aggregate completions by quest and by owner from available shared history.
+- Analytics clearly state the covered time window and when data is unavailable or sparse.
+- Existing recent-completion removal permissions remain unchanged.
+- Tests cover aggregate calculations and sparse/no-history rendering.
+
+### Skill Macro Collection MVP
+
+Goal: implement the planned local macro collection for predefined equipment and skill sequences.
+
+Touch:
+- `src/Habitica.Rules/Skills`
+- `src/Habitica.Application`
+- `src/Habitica.WebApp`
+- direct tests under `tests/`
+- `FEATURES.md`
+- `TECHNICAL.md` if storage or execution architecture changes
+
+Out of scope:
+- arbitrary user code execution;
+- loops or unbounded repeat-until macros;
+- storing credentials in exported macros;
+- server-side macro execution.
+
+Acceptance:
+- Users can create, edit, delete, and run local declarative macros using initial step types from `FEATURES.md`.
+- Dry-run preview shows planned equipment changes, selected targets, mana cost, expected requests, warnings, and stop conditions.
+- Execution runs sequentially, persists progress, refreshes or updates local state after mutating steps, and stops on validation failures, API errors, stale state, or unexpected state changes.
+- Macro steps can reference existing inventory preset ids and dynamic gear strategies without copying transient recommendation data.
+- Tests cover parsing/validation, missing gear, insufficient mana, stale data, restore-original-gear behavior, and partial execution failure.
+
+### Task Mutation Dry-Run Summaries
+
+Goal: add stronger pre-action summaries for existing task scoring/checkoff controls where local data can make the mutation clearer.
+
+Touch:
+- `src/Habitica.Api`
+- `src/Habitica.Application`
+- `src/Habitica.WebApp/Pages/TasksPage.razor`
+- direct tests under `tests/`
+- `HABITICA_API.md` if endpoint response assumptions are added or corrected
+- `FEATURES.md`
+
+Out of scope:
+- duplicating spell estimates, Dashboard pending-damage/health-potion helpers, Inventory equip deltas, or bulk-sell previews;
+- adding undocumented Habitica mutation endpoints;
+- claiming exact GP/XP/HP deltas unless the value comes from a live API response or a documented formula.
+
+Acceptance:
+- Task cards show a concise dry-run summary for supported scoring/checkoff actions before multi-score or ambiguous mutations execute.
+- Summaries distinguish exact API-returned values, local estimates, and unavailable values.
+- Multi-score habit actions still run sequentially and stop on failure.
+- Tests cover summary rendering, stale-data blocking, and unavailable-estimate copy.
+
+### Settings Danger Zone Confirmation
+
+Goal: require an explicit confirmation step before clearing local browser data from Settings.
+
+Touch:
+- `src/Habitica.WebApp/Pages/SettingsPage.razor`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/`
+- `FEATURES.md`
+
+Out of scope:
+- changing the data actually cleared by `ClearLocalDataAsync()`;
+- adding new import/export behavior.
+
+Acceptance:
+- Clear Local Data opens or reveals a confirmation that names credentials, cached Habitica data, party history, diagnostics, and setup data.
+- The destructive action does not call `ClearLocalDataAsync()` until the confirmation control is activated.
+- Cancel/close keeps local data untouched.
+- Tests cover initial click, cancellation, and confirmed clearing.
+
+### Returning User Copy Compression
+
+Goal: reduce repeated hero/help copy for authenticated returning users while keeping first-run empty states understandable.
+
+Touch:
+- `src/Habitica.WebApp/Pages`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- direct page tests under `tests/Habitica.WebApp.Tests/Pages/`
+- `docs/UX_UI_MANIFEST.md` if shared copy rules change
+
+Out of scope:
+- redesigning navigation;
+- removing first-run or unauthenticated guidance;
+- changing data loading behavior.
+
+Acceptance:
+- Returning authenticated users see denser top sections on Dashboard, Tasks, Party, Inventory, and Spells.
+- First-run, signed-out, stale-data, and empty-cache states still explain the next action.
+- Tests cover at least one authenticated returning state and one unauthenticated/empty state.
+
+### Mobile Stat Table Context
+
+Goal: keep row labels visible or repeated when wide stat tables scroll horizontally on small screens.
+
+Touch:
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- pages using `.stats-table`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/` if markup changes
+- `docs/UX_UI_MANIFEST.md` if table guidance changes
+
+Out of scope:
+- replacing table data with cards across desktop;
+- changing stat calculations.
+
+Acceptance:
+- Mobile-width stat tables keep row identity visible through a sticky first column or repeated row-label context.
+- Horizontal scrolling remains available for dense table values.
+- Desktop table layout remains unchanged except for harmless label-context support.
+
+### Compact Spell Card Density Pass
+
+Goal: make spell cards easier to scan after the current full-card layout, recommendations, and CRON warning flow have been exercised.
+
+Touch:
+- `src/Habitica.WebApp/Pages/SpellsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs`
+- `FEATURES.md`
+
+Out of scope:
+- changing spell estimate formulas;
+- changing dynamic gear recommendation selection;
+- changing cast execution order or CRON-warning semantics.
+
+Acceptance:
+- Spell cards keep target selection, count, mana preview, cast action, estimate text, CRON warning, and equipment recommendations available.
+- Repeated low-priority explanatory copy is collapsed, summarized, or moved behind local detail affordances.
+- Active casting progress and errors remain prominent.
+- Tests cover key controls still rendering after the density change.
