@@ -59,7 +59,7 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-_(empty — pending note promoted into `Prioritized Next Changes`.)_
+- Add Pets & Mounts page where you can feed pets with multiple food, the best food is automatically recommended and sorted in the dropdown. You can fast equip pets/mounts. Easily search for specific options. Find what is missong from your collection. Check current market status for recommended items to buy, so your collection becomes fuller. Different pets are sepparated in groups and hatching potions groups are also exist. You can fold groups if you are not interested. Folded groups are remembered (synced). Don't need to sync all pets data, but could be saved to local browser storage. Move BULK SELL PLANNER to this page from the Inventory page.
 
 ## Prioritized Next Changes
 
