@@ -28,6 +28,24 @@
         </div>
     </section>
 
+    <section class="card-surface dashboard-panel dashboard-appearance">
+        <div class="dashboard-appearance-head">
+            <p class="section-label">Appearance</p>
+            <MudButton Size="Size.Small"
+                       Variant="Variant.Text"
+                       Color="Color.Default"
+                       data-testid="dashboard-appearance-toggle"
+                       OnClick="@(() => _appearanceCollapsed = !_appearanceCollapsed)"
+                       EndIcon="@(_appearanceCollapsed ? Icons.Material.Filled.ExpandMore : Icons.Material.Filled.ExpandLess)">
+                @(_appearanceCollapsed ? "Customize theme" : "Hide")
+            </MudButton>
+        </div>
+        @if (!_appearanceCollapsed)
+        {
+            <ColorSchemePanel Compact="true" />
+        }
+    </section>
+
     @if (SessionController.State.UserSnapshot is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
@@ -561,13 +579,10 @@
         </section>
     }
 
-    <section class="card-surface dashboard-panel dashboard-appearance">
-        <p class="section-label">Appearance</p>
-        <ColorSchemePanel Compact="true" />
-    </section>
 </div>
 
 @code {
+    private bool _appearanceCollapsed = true;
     private readonly Dictionary<string, int> _pendingAllocation = new(StringComparer.Ordinal);
     private const decimal HealthPotionGoldCost = 25m;
     private int _armoirePurchaseCount = 1;

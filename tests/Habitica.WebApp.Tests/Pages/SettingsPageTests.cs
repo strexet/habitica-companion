@@ -75,35 +75,16 @@ public sealed class SettingsPageTests : BunitContext
         cut.Find("[data-testid='color-scheme-select']").Change("habitica");
         cut.Find("[data-testid='create-custom-scheme']").Click();
         cut.Find("[data-testid='custom-scheme-name']").Change("Evening");
-        cut.Find("[data-testid='color-token-Primary']").Change("#7354d6");
         cut.Find("[data-testid='save-custom-scheme']").Click();
 
         var preferences = await storage.GetAsync<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences, CancellationToken.None);
         Assert.NotNull(preferences);
         var custom = Assert.Single(preferences!.CustomSchemes);
         Assert.Equal("Evening", custom.Name);
-        Assert.Equal("#7354d6", custom.Tokens.Primary);
+        // The custom copy keeps the source scheme's tokens; they are edited via the JSON copy/paste flow.
+        Assert.Equal(ColorSchemeCatalog.Resolve("habitica", Array.Empty<ColorSchemeDefinition>()).Tokens.Primary, custom.Tokens.Primary);
         Assert.Equal(custom.Id, preferences.SelectedSchemeId);
         Assert.Contains("Saved Evening.", cut.Markup);
-    }
-
-    [Fact]
-    public void Color_scheme_controls_reject_invalid_custom_colors()
-    {
-        JSInterop.Mode = JSRuntimeMode.Loose;
-        var storage = new FakeKeyValueStorage();
-        Services.AddMudServices();
-        Services.AddSingleton<IKeyValueStorage>(storage);
-        Services.AddScoped<ColorSchemeService>();
-        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty));
-
-        var cut = Render<SettingsPage>();
-
-        cut.Find("[data-testid='create-custom-scheme']").Click();
-        cut.Find("[data-testid='color-token-Primary']").Change("not a color?");
-        cut.Find("[data-testid='save-custom-scheme']").Click();
-
-        Assert.Contains("Primary is not a supported color value.", cut.Markup);
     }
 
     private sealed class FakeKeyValueStorage : IKeyValueStorage

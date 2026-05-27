@@ -1,6 +1,8 @@
 using Bunit;
 using Habitica.Domain.Sync;
+using Habitica.Storage;
 using Habitica.WebApp.Pages;
+using Habitica.WebApp.Theme;
 using Habitica.WebApp.State;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +17,8 @@ public sealed class SignInPageTests : BunitContext
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -38,6 +42,10 @@ public sealed class SignInPageTests : BunitContext
         Assert.Contains("Session-only sign-in is the default.", cut.Markup);
         Assert.Contains("Credentials are never saved in exports, app messages, or device sync.", cut.Markup);
         Assert.Contains("Treat this like a password", cut.Markup);
+        // Color scheme demo panel is available before signing in.
+        Assert.Contains("Pick a color scheme", cut.Markup);
+        Assert.NotNull(cut.Find("[data-testid='color-scheme-select']"));
+        Assert.NotNull(cut.Find("[data-testid='random-theme-scheme']"));
     }
 
     [Fact]
@@ -45,6 +53,8 @@ public sealed class SignInPageTests : BunitContext
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -74,6 +84,8 @@ public sealed class SignInPageTests : BunitContext
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,

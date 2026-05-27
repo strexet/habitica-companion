@@ -92,19 +92,20 @@ public sealed class ColorSchemePanelTests : BunitContext
 
         cut.Find("[data-testid='random-theme-scheme']").Click();
 
-        // Generating a random theme reveals the save + Go Crazy controls without an explicit expand.
+        // Generating a random theme reveals the save + chaos controls without an explicit expand.
         Assert.NotNull(cut.Find("[data-testid='save-random-scheme']"));
-        Assert.NotNull(cut.Find("[data-testid='go-crazy-scheme']"));
+        Assert.NotNull(cut.Find("[data-testid='reroll-random-scheme']"));
+        Assert.NotNull(cut.Find("[data-testid='chaos-slider']"));
     }
 
     [Fact]
-    public void Go_crazy_keeps_a_saveable_random_theme()
+    public void Rerolled_random_theme_is_saveable()
     {
         var storage = new FakeKeyValueStorage();
         var cut = RenderPanel(storage);
 
         cut.Find("[data-testid='random-theme-scheme']").Click();
-        cut.Find("[data-testid='go-crazy-scheme']").Click();
+        cut.Find("[data-testid='reroll-random-scheme']").Click();
         cut.Find("[data-testid='random-scheme-name']").Change("Wild One");
         cut.Find("[data-testid='save-random-scheme']").Click();
 

@@ -531,4 +531,26 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Equal(1, controller.AcceptPartyQuestInvitationCalls);
         Assert.Equal(1, controller.RejectPartyQuestInvitationCalls);
     }
+
+    [Fact]
+    public void Appearance_panel_is_folded_until_toggled()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty));
+
+        var cut = Render<DashboardPage>();
+
+        // Collapsed by default: the toggle shows but the color-scheme controls are hidden.
+        Assert.NotNull(cut.Find("[data-testid='dashboard-appearance-toggle']"));
+        Assert.Empty(cut.FindAll("[data-testid='color-scheme-select']"));
+
+        cut.Find("[data-testid='dashboard-appearance-toggle']").Click();
+
+        Assert.NotNull(cut.Find("[data-testid='color-scheme-select']"));
+    }
 }

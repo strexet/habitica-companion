@@ -742,43 +742,45 @@ public static partial class ColorSchemeCatalog
         return Complete(pool[random.Next(pool.Length)]);
     }
 
-    public static ColorSchemeDefinition GenerateRandomTheme(Random? random = null, bool crazy = false)
+    /// <summary>Generate a random theme. <paramref name="chaos"/> in [0,1] scales hue divergence and
+    /// saturation: 0 is a calm single-hue palette, 1 is absolute madness with every token roaming its
+    /// own hue at maximum saturation. Text and muted tokens stay contrast-derived so the app stays legible.</summary>
+    public static ColorSchemeDefinition GenerateRandomTheme(Random? random = null, double chaos = 0.0)
     {
         random ??= Random.Shared;
+        chaos = Math.Clamp(chaos, 0.0, 1.0);
         var dark = random.Next(2) == 0;
         var baseHue = random.NextDouble() * 360.0;
         var accentHue = (baseHue + 90.0 + random.NextDouble() * 180.0) % 360.0;
 
-        // "Crazy" mode lets every token roam its own hue with high saturation for a chaotic,
-        // psychedelic palette. Calm mode keeps tones tied to one base hue for a coherent theme.
-        double Hue() => crazy ? random.NextDouble() * 360.0 : baseHue;
-        double AccentHueValue() => crazy ? random.NextDouble() * 360.0 : accentHue;
-        var bgSatMax = crazy ? 0.85 : 0.32;
-        var colorSatMin = crazy ? 0.80 : 0.58;
-        var colorSatMax = crazy ? 1.0 : 0.88;
+        // At chaos 0 every token sits on the base/accent hue; as chaos rises each draw is jittered
+        // up to +/-180 degrees, reaching the full hue circle at chaos 1.
+        double Jitter(double center) => center + Range(random, -1.0, 1.0) * 180.0 * chaos;
+        double Hue() => Jitter(baseHue);
+        double AccentHueValue() => Jitter(accentHue);
+        var bgSatMax = Lerp(0.32, 0.92, chaos);
+        var colorSatMin = Lerp(0.58, 0.85, chaos);
+        var colorSatMax = Lerp(0.88, 1.0, chaos);
 
-        var background = Hsl(Hue(), Range(random, crazy ? 0.30 : 0.08, bgSatMax), dark ? Range(random, 0.06, 0.16) : Range(random, 0.90, 0.97));
-        var cardBackground = Hsl(Hue(), Range(random, 0.10, crazy ? 0.80 : 0.34), dark ? Range(random, 0.12, 0.22) : Range(random, 0.95, 0.99));
-        var surface = Hsl(Hue(), Range(random, 0.10, crazy ? 0.80 : 0.30), dark ? Range(random, 0.16, 0.26) : Range(random, 0.86, 0.94));
-        var surfaceStrong = Hsl(Hue(), Range(random, 0.12, crazy ? 0.85 : 0.34), dark ? Range(random, 0.22, 0.32) : Range(random, 0.80, 0.90));
-        var cardBorder = Hsl(Hue(), Range(random, 0.12, crazy ? 0.95 : 0.36), dark ? Range(random, 0.26, 0.40) : Range(random, 0.62, 0.82));
+        var background = Hsl(Hue(), Range(random, 0.08 + 0.22 * chaos, bgSatMax), dark ? Range(random, 0.06, 0.16) : Range(random, 0.90, 0.97));
+        var cardBackground = Hsl(Hue(), Range(random, 0.10, Lerp(0.34, 0.80, chaos)), dark ? Range(random, 0.12, 0.22) : Range(random, 0.95, 0.99));
+        var surface = Hsl(Hue(), Range(random, 0.10, Lerp(0.30, 0.80, chaos)), dark ? Range(random, 0.16, 0.26) : Range(random, 0.86, 0.94));
+        var surfaceStrong = Hsl(Hue(), Range(random, 0.12, Lerp(0.34, 0.85, chaos)), dark ? Range(random, 0.22, 0.32) : Range(random, 0.80, 0.90));
+        var cardBorder = Hsl(Hue(), Range(random, 0.12, Lerp(0.36, 0.95, chaos)), dark ? Range(random, 0.26, 0.40) : Range(random, 0.62, 0.82));
         var ink = ReadableInk(background);
-        var muted = ReadableMuted(background, crazy);
+        var muted = ReadableMuted(background, chaos > 0.5);
 
         var primary = Hsl(Hue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.42, 0.60));
         var accent = Hsl(AccentHueValue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.44, 0.62));
         var focus = Hsl(AccentHueValue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.48, 0.64));
-        var danger = crazy
-            ? Hsl(Hue(), Range(random, 0.85, 1.0), Range(random, 0.40, 0.58))
-            : Hsl(Range(random, 354.0, 372.0) % 360.0, Range(random, 0.62, 0.82), Range(random, 0.44, 0.54));
-        var success = crazy
-            ? Hsl(Hue(), Range(random, 0.85, 1.0), Range(random, 0.38, 0.56))
-            : Hsl(Range(random, 120.0, 160.0), Range(random, 0.50, 0.74), Range(random, 0.38, 0.50));
+        // Danger/success start semantic (red/green) and drift off-hue as chaos rises.
+        var danger = Hsl(Jitter(0.0), Range(random, Lerp(0.62, 0.85, chaos), Lerp(0.82, 1.0, chaos)), Range(random, 0.42, 0.56));
+        var success = Hsl(Jitter(140.0), Range(random, Lerp(0.50, 0.85, chaos), Lerp(0.74, 1.0, chaos)), Range(random, 0.38, 0.54));
 
-        var appBarBackground = Hsl(Hue(), Range(random, 0.30, crazy ? 1.0 : 0.55), Range(random, crazy ? 0.18 : 0.16, crazy ? 0.42 : 0.28));
-        var drawerBackground = Hsl(Hue(), Range(random, 0.30, crazy ? 1.0 : 0.55), Range(random, 0.13, crazy ? 0.40 : 0.24));
-        var disabledBackground = Hsl(Hue(), Range(random, 0.06, crazy ? 0.60 : 0.18), dark ? Range(random, 0.24, 0.34) : Range(random, 0.82, 0.90));
-        var inputBackground = Hsl(Hue(), Range(random, 0.08, crazy ? 0.70 : 0.22), dark ? Range(random, 0.16, 0.26) : Range(random, 0.94, 0.99));
+        var appBarBackground = Hsl(Hue(), Range(random, 0.30, Lerp(0.55, 1.0, chaos)), Range(random, Lerp(0.16, 0.18, chaos), Lerp(0.28, 0.42, chaos)));
+        var drawerBackground = Hsl(Hue(), Range(random, 0.30, Lerp(0.55, 1.0, chaos)), Range(random, 0.13, Lerp(0.24, 0.40, chaos)));
+        var disabledBackground = Hsl(Hue(), Range(random, 0.06, Lerp(0.18, 0.60, chaos)), dark ? Range(random, 0.24, 0.34) : Range(random, 0.82, 0.90));
+        var inputBackground = Hsl(Hue(), Range(random, 0.08, Lerp(0.22, 0.70, chaos)), dark ? Range(random, 0.16, 0.26) : Range(random, 0.94, 0.99));
 
         var tokens = new ColorSchemeTokens(
             background,
@@ -816,6 +818,11 @@ public static partial class ColorSchemeCatalog
     private static double Range(Random random, double min, double max)
     {
         return min + random.NextDouble() * (max - min);
+    }
+
+    private static double Lerp(double from, double to, double amount)
+    {
+        return from + (to - from) * amount;
     }
 
     private static string Hsl(double hue, double saturation, double lightness)
