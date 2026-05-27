@@ -2163,6 +2163,23 @@ a {
     border-radius: 1.25rem;
 }
 
+.action-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.action-card-header h2 {
+    margin: 0;
+}
+
+.action-card-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+}
+
 .color-scheme-preview {
     display: flex;
     gap: 0.45rem;

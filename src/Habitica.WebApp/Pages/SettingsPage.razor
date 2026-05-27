@@ -89,7 +89,25 @@
             @if (_colorSchemeEditor is not null)
             {
                 <MudPaper Class="card-surface action-card" Elevation="0">
-                    <h2>Edit custom scheme</h2>
+                    <div class="action-card-header">
+                        <h2>Edit custom scheme</h2>
+                        <div class="action-card-icons">
+                            <MudIconButton Icon="@Icons.Material.Filled.ContentCopy"
+                                           Size="Size.Small"
+                                           Color="Color.Secondary"
+                                           title="Copy this scheme as JSON to your clipboard"
+                                           aria-label="Copy scheme JSON"
+                                           data-testid="copy-custom-scheme"
+                                           OnClick="CopyCustomSchemeAsync" />
+                            <MudIconButton Icon="@Icons.Material.Filled.ContentPaste"
+                                           Size="Size.Small"
+                                           Color="Color.Secondary"
+                                           title="Paste scheme JSON from your clipboard to fill these fields"
+                                           aria-label="Paste scheme JSON"
+                                           data-testid="paste-custom-scheme"
+                                           OnClick="PasteCustomSchemeAsync" />
+                        </div>
+                    </div>
                     <label class="field-row compact">
                         <span>Name</span>
                         <input class="app-input"
@@ -683,6 +701,140 @@
         _colorSchemeMessage = message;
         _colorSchemeSucceeded = succeeded;
     }
+
+    private async Task CopyCustomSchemeAsync()
+    {
+        if (_colorSchemeEditor is null)
+        {
+            return;
+        }
+
+        var payload = new ColorSchemeClipboardModel(
+            _colorSchemeEditor.Name,
+            new Dictionary<string, string>(_colorSchemeEditor.Tokens, StringComparer.Ordinal));
+        var json = JsonSerializer.Serialize(payload, ClipboardJsonOptions);
+
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", json);
+            SetColorSchemeMessage("Copied scheme JSON to clipboard.", true);
+        }
+        catch (Exception)
+        {
+            SetColorSchemeMessage("Could not copy to clipboard.", false);
+        }
+    }
+
+    private async Task PasteCustomSchemeAsync()
+    {
+        if (_colorSchemeEditor is null)
+        {
+            return;
+        }
+
+        string clipboard;
+        try
+        {
+            clipboard = await JsRuntime.InvokeAsync<string>("navigator.clipboard.readText");
+        }
+        catch (Exception)
+        {
+            SetColorSchemeMessage("Could not read the clipboard.", false);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(clipboard))
+        {
+            SetColorSchemeMessage("Clipboard is empty.", false);
+            return;
+        }
+
+        if (!TryParseSchemeJson(clipboard, out var name, out var tokens))
+        {
+            SetColorSchemeMessage("Clipboard does not contain a valid color scheme JSON.", false);
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            _colorSchemeEditor.Name = name!.Trim();
+        }
+
+        foreach (var token in ColorSchemeCatalog.EditableTokens)
+        {
+            if (tokens.TryGetValue(token.Name, out var value) && !string.IsNullOrWhiteSpace(value))
+            {
+                _colorSchemeEditor.Tokens[token.Name] = value.Trim();
+            }
+        }
+
+        SetColorSchemeMessage("Pasted scheme from clipboard. Review the values and save.", true);
+    }
+
+    private static bool TryParseSchemeJson(string json, out string? name, out Dictionary<string, string> tokens)
+    {
+        name = null;
+        tokens = new Dictionary<string, string>(StringComparer.Ordinal);
+
+        try
+        {
+            using var document = JsonDocument.Parse(json);
+            var root = document.RootElement;
+            if (root.ValueKind != JsonValueKind.Object)
+            {
+                return false;
+            }
+
+            if (TryGetPropertyIgnoreCase(root, "name", out var nameElement) && nameElement.ValueKind == JsonValueKind.String)
+            {
+                name = nameElement.GetString();
+            }
+
+            // Accept either { "tokens": { ... } } or a bare token map at the root.
+            var tokensElement = TryGetPropertyIgnoreCase(root, "tokens", out var nested) ? nested : root;
+            if (tokensElement.ValueKind != JsonValueKind.Object)
+            {
+                return false;
+            }
+
+            foreach (var token in ColorSchemeCatalog.EditableTokens)
+            {
+                if (TryGetPropertyIgnoreCase(tokensElement, token.Name, out var value) && value.ValueKind == JsonValueKind.String)
+                {
+                    var text = value.GetString();
+                    if (!string.IsNullOrWhiteSpace(text))
+                    {
+                        tokens[token.Name] = text!;
+                    }
+                }
+            }
+
+            return tokens.Count > 0;
+        }
+        catch (JsonException)
+        {
+            return false;
+        }
+    }
+
+    private static bool TryGetPropertyIgnoreCase(JsonElement element, string propertyName, out JsonElement value)
+    {
+        foreach (var property in element.EnumerateObject())
+        {
+            if (string.Equals(property.Name, propertyName, StringComparison.OrdinalIgnoreCase))
+            {
+                value = property.Value;
+                return true;
+            }
+        }
+
+        value = default;
+        return false;
+    }
+
+    private static readonly JsonSerializerOptions ClipboardJsonOptions = new() { WriteIndented = true };
+
+    private sealed record ColorSchemeClipboardModel(string Name, Dictionary<string, string> Tokens);
 
     private sealed class ColorSchemeEditorModel
     {
