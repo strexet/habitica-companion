@@ -321,6 +321,79 @@ public sealed class DashboardPageTests : BunitContext
     }
 
     [Fact]
+    public void Start_new_day_can_auto_equip_recommended_cron_gear()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(DateTimeOffset.Parse("2026-04-25T08:00:00Z"), Array.Empty<TaskSnapshot>()),
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: new UserSnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    "Mage Tester",
+                    "wizard",
+                    15,
+                    42.5m,
+                    50m,
+                    33.5m,
+                    40m,
+                    125.1m,
+                    74.9m,
+                    88.25m,
+                    "party-123",
+                    null,
+                    null,
+                    new EquipmentSnapshot(
+                        new GearSlotsSnapshot("head_int", null, null, null, null),
+                        new GearSlotsSnapshot(null, null, null, null, null)),
+                    new InventorySnapshot(
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        new[] { "head_int", "head_con", "armor_con" }),
+                    CurrentHabiticaDayKey: "2026-04-25",
+                    NeedsCron: true),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                GearCatalogSnapshot: new GearCatalogSnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+                    {
+                        ["head_int"] = new("head_int", "INT Hood", "Head", "wizard", null, new GearStatBlock(0m, 8m, 0m, 0m)),
+                        ["head_con"] = new("head_con", "CON Helm", "Head", "warrior", null, new GearStatBlock(0m, 0m, 12m, 0m)),
+                        ["armor_con"] = new("armor_con", "CON Armor", "Armor", null, null, new GearStatBlock(0m, 0m, 9m, 0m))
+                    })));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<DashboardPage>();
+
+        Assert.Contains("INT for mana", cut.Markup);
+
+        cut.Find("[data-testid='start-new-day-gear-goal']").Change("Constitution");
+        cut.Find("[data-testid='start-new-day-auto-equip']").Change(true);
+        cut.Find("[data-testid='start-new-day']").Click();
+        cut.Find("[data-testid='confirm-start-new-day']").Click();
+
+        var request = Assert.Single(controller.StartNewDayRequests);
+        Assert.True(request.AutoEquipRecommendedGear);
+        Assert.Equal("CON for less damage", request.GearOptimizationGoalLabel);
+        Assert.Equal("head_con", request.AutoEquipGearSlots!.Head);
+        Assert.Equal("armor_con", request.AutoEquipGearSlots.Armor);
+    }
+
+    [Fact]
     public void Health_potion_action_requires_confirmation_and_calls_session_controller()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

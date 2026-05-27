@@ -46,6 +46,8 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<SpellCastRequest> CastSpellCalls { get; } = new();
 
+    public List<StartNewDayRequest> StartNewDayRequests { get; } = new();
+
     public List<TaskScoreRequest> ScoreTaskCalls { get; } = new();
 
     public List<(string UserId, string DisplayName)> AssignPartyOwnerCalls { get; } = new();
@@ -156,6 +158,15 @@ internal sealed class FakeAppSessionController : IAppSessionController
     {
         StartNewDayCalls++;
         return Task.FromResult(SpellActionResult.Success("Started a new Habitica day."));
+    }
+
+    public Task<SpellActionResult> StartNewDayAsync(StartNewDayRequest request, CancellationToken cancellationToken = default)
+    {
+        StartNewDayCalls++;
+        StartNewDayRequests.Add(request);
+        return Task.FromResult(request.AutoEquipRecommendedGear
+            ? SpellActionResult.Success("Equipped recommended gear and started a new Habitica day.")
+            : SpellActionResult.Success("Started a new Habitica day."));
     }
 
     public Task<SpellActionResult> AllocateStatsAsync(StatAllocation allocation, CancellationToken cancellationToken = default)

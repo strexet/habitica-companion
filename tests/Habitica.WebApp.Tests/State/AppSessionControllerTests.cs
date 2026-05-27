@@ -689,6 +689,55 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task StartNewDayAsync_auto_equips_recommended_gear_before_cron()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                CurrentHabiticaDayKey = "2026-04-27",
+                NeedsCron = true,
+                Equipment = new EquipmentSnapshot(
+                    new GearSlotsSnapshot("head_old", null, null, null, null),
+                    new GearSlotsSnapshot(null, null, null, null, null)),
+                Inventory = new InventorySnapshot(0, 0, 0, 0, 0, 0, new[] { "head_new", "armor_new" })
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.StartNewDayAsync(new StartNewDayRequest(
+            true,
+            new GearSlotsSnapshot("head_new", "armor_new", null, null, null),
+            "INT for mana"));
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(
+            new[]
+            {
+                "equip:head_new",
+                "equip:armor_new",
+                "cron"
+            },
+            syncClient.OperationLog.Take(3));
+        Assert.Equal(1, syncClient.RunCronCalls);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Sync
+            && entry.Operation == "cron-start-new-day"
+            && entry.Severity == DiagnosticsSeverity.Success
+            && entry.Metadata["autoEquip"] == "True"
+            && entry.Metadata["gearGoal"] == "INT for mana"
+            && entry.Metadata["gearRequestCount"] == "2");
+    }
+
+    [Fact]
     public async Task StartSelectedPartyQuestAsync_force_starts_selected_owned_quest_and_refreshes_party()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
@@ -1831,6 +1880,8 @@ public sealed class AppSessionControllerTests
 
         public List<(EquipmentSetKind Kind, string Key)> EquipCalls { get; } = new();
 
+        public List<string> OperationLog { get; } = new();
+
         public UserSnapshot UserSnapshot => _userSnapshot;
 
         public List<StatAllocation> StatAllocationCalls { get; } = new();
@@ -1852,12 +1903,14 @@ public sealed class AppSessionControllerTests
         public Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
         {
             EquipCalls.Add((EquipmentSetKind.Battle, key));
+            OperationLog.Add($"equip:{key}");
             return Task.CompletedTask;
         }
 
         public Task EquipGearAsync(HabiticaCredentials credentials, EquipmentSetKind kind, string key, CancellationToken cancellationToken)
         {
             EquipCalls.Add((kind, key));
+            OperationLog.Add($"equip:{key}");
             return Task.CompletedTask;
         }
 
@@ -1872,6 +1925,7 @@ public sealed class AppSessionControllerTests
         public Task RunCronAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             RunCronCalls++;
+            OperationLog.Add("cron");
             return Task.CompletedTask;
         }
 

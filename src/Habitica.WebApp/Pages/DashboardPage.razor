@@ -1,11 +1,13 @@
 @page "/dashboard"
 @implements IDisposable
 @using System.Globalization
+@using Microsoft.AspNetCore.Components.Rendering
 @using Habitica.Application.Dashboard
 @using Habitica.Application.Sync
 @using Habitica.Domain.Auth
 @using Habitica.Domain.Dashboard
 @using Habitica.Domain.Party
+@using Habitica.Rules.Equipment
 @using Habitica.Rules.Stats
 @inject IAppSessionController SessionController
 @inject CharacterStatsViewModelFactory StatsViewModelFactory
@@ -79,9 +81,15 @@
 
         @if (snapshot.NeedsCron == true)
         {
+            var cronGearRecommendation = new EquipmentRecommendationFactory().Create(
+                snapshot,
+                SessionController.State.GearCatalogSnapshot,
+                _startNewDayGearGoal);
+            var autoEquipBlocked = _startNewDayAutoEquip && !cronGearRecommendation.HasRecommendation;
             var canStartNewDay = SessionController.State.IsAuthenticated
                 && !SessionController.State.IsBusy
-                && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
+                && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh
+                && !autoEquipBlocked;
 
             <section class="card-surface dashboard-panel cron-action-panel">
                 <div>
@@ -92,6 +100,73 @@
                     </p>
                 </div>
 
+                <div class="cron-gear-optimizer">
+                    <div class="task-group-header">
+                        <div>
+                            <span class="dashboard-stat-label">Gear before CRON</span>
+                            <strong>@cronGearRecommendation.GoalLabel</strong>
+                            <span class="dashboard-stat-note">@cronGearRecommendation.Description</span>
+                        </div>
+                        <label class="checkbox-row compact">
+                            <input checked="@_startNewDayAutoEquip"
+                                   data-testid="start-new-day-auto-equip"
+                                   type="checkbox"
+                                   @onchange="ToggleStartNewDayAutoEquip" />
+                            <span>Auto equip</span>
+                        </label>
+                    </div>
+
+                    <label class="field-row compact">
+                        <span>Optimize</span>
+                        <select class="app-input" value="@_startNewDayGearGoal.ToString()" @onchange="eventArgs => SetStartNewDayGearGoal(eventArgs.Value?.ToString())" data-testid="start-new-day-gear-goal">
+                            <option value="@EquipmentRecommendationGoal.Intelligence.ToString()">INT for mana</option>
+                            <option value="@EquipmentRecommendationGoal.Constitution.ToString()">CON for less damage</option>
+                            <option value="@EquipmentRecommendationGoal.Survival.ToString()">Survival</option>
+                        </select>
+                    </label>
+
+                    <div class="optimizer-stat-grid">
+                        <article class="dashboard-stat-card">
+                            <span class="dashboard-stat-label">Current</span>
+                            @RenderGearStats(cronGearRecommendation.CurrentStats)
+                        </article>
+                        <article class="dashboard-stat-card">
+                            <span class="dashboard-stat-label">Recommended</span>
+                            @RenderGearStats(cronGearRecommendation.RecommendedStats)
+                        </article>
+                        <article class="dashboard-stat-card">
+                            <span class="dashboard-stat-label">Delta</span>
+                            @RenderGearStatDelta(cronGearRecommendation.Delta)
+                        </article>
+                    </div>
+
+                    @if (!cronGearRecommendation.HasRecommendation)
+                    {
+                        <p class="panel-copy">No stat-bearing owned battle gear is available for this recommendation.</p>
+                    }
+                    else
+                    {
+                        <div class="preset-item-strip optimizer-item-strip">
+                            @foreach (var item in cronGearRecommendation.Items)
+                            {
+                                <article class="preset-mini-item">
+                                    <span class="dashboard-stat-label">@item.SlotTitle</span>
+                                    <div class="habitica-item-identity">
+                                        <HabiticaImage Asset="@HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName)" />
+                                        <div>
+                                            <strong>@item.DisplayName</strong>
+                                            @RenderGearStats(item.TotalStats)
+                                        </div>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                        <span class="dashboard-stat-note">
+                            @(cronGearRecommendation.IsEquipped ? "Recommended gear is already equipped." : "Changed slots will be equipped before CRON after confirmation.")
+                        </span>
+                    }
+                </div>
+
                 @if (_showCronConfirmation)
                 {
                     <div class="confirmation-panel">
@@ -99,6 +174,10 @@
                             Start new Habitica day? This will run Habitica's daily reset for your account.
                             Missed Dailies may be processed, active quest progress may update, and your temporary buffs may expire.
                             Party buffs expire separately for each member on that member's next CRON.
+                            @if (_startNewDayAutoEquip && cronGearRecommendation.HasRecommendation)
+                            {
+                                <span> Recommended gear will be equipped first.</span>
+                            }
                         </p>
                         <div class="confirmation-actions">
                             <MudButton Color="Color.Default" Disabled="@SessionController.State.IsBusy" OnClick="CancelStartNewDay" Variant="Variant.Text">
@@ -486,6 +565,8 @@
     private const decimal HealthPotionGoldCost = 25m;
     private int _armoirePurchaseCount = 1;
     private bool _showCronConfirmation;
+    private bool _startNewDayAutoEquip;
+    private EquipmentRecommendationGoal _startNewDayGearGoal = EquipmentRecommendationGoal.Intelligence;
     private bool _startNewDayResultSucceeded;
     private string? _startNewDayResultMessage;
     private bool _showHealthPotionConfirmation;
@@ -526,6 +607,93 @@
         return value > 0m ? $"+{value:0.##}" : value.ToString("0.##");
     }
 
+    private static RenderFragment RenderGearStats(GearStatBlock stats) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "ui-pill count-pill stat-pill-group");
+
+        if (stats == GearStatBlock.Zero)
+        {
+            builder.AddContent(sequence++, "No stats");
+            builder.CloseElement();
+            return;
+        }
+
+        var highest = GetHighestPositiveStat(stats);
+        RenderGearStatValue(builder, ref sequence, "STR", stats.Strength, highest);
+        RenderGearStatSeparator(builder, ref sequence);
+        RenderGearStatValue(builder, ref sequence, "INT", stats.Intelligence, highest);
+        RenderGearStatSeparator(builder, ref sequence);
+        RenderGearStatValue(builder, ref sequence, "CON", stats.Constitution, highest);
+        RenderGearStatSeparator(builder, ref sequence);
+        RenderGearStatValue(builder, ref sequence, "PER", stats.Perception, highest);
+        builder.CloseElement();
+    };
+
+    private static RenderFragment RenderGearStatDelta(GearStatBlock delta) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", GetGearDeltaClass(delta));
+        RenderGearDeltaValue(builder, ref sequence, "STR", delta.Strength);
+        RenderGearStatSeparator(builder, ref sequence);
+        RenderGearDeltaValue(builder, ref sequence, "INT", delta.Intelligence);
+        RenderGearStatSeparator(builder, ref sequence);
+        RenderGearDeltaValue(builder, ref sequence, "CON", delta.Constitution);
+        RenderGearStatSeparator(builder, ref sequence);
+        RenderGearDeltaValue(builder, ref sequence, "PER", delta.Perception);
+        builder.CloseElement();
+    };
+
+    private static decimal? GetHighestPositiveStat(GearStatBlock stats)
+    {
+        var highest = new[] { stats.Strength, stats.Intelligence, stats.Constitution, stats.Perception }.Max();
+        return highest > 0m ? highest : null;
+    }
+
+    private static void RenderGearStatValue(RenderTreeBuilder builder, ref int sequence, string label, decimal value, decimal? highest)
+    {
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", highest is not null && value == highest.Value
+            ? "inventory-stat-value highest-stat"
+            : "inventory-stat-value");
+        builder.AddContent(sequence++, $"{label} {value:0.#}");
+        builder.CloseElement();
+    }
+
+    private static void RenderGearDeltaValue(RenderTreeBuilder builder, ref int sequence, string label, decimal value)
+    {
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", value switch
+        {
+            > 0m => "inventory-stat-value delta-up",
+            < 0m => "inventory-stat-value delta-down",
+            _ => "inventory-stat-value"
+        });
+        builder.AddContent(sequence++, $"{label} {FormatSignedDecimal(value)}");
+        builder.CloseElement();
+    }
+
+    private static void RenderGearStatSeparator(RenderTreeBuilder builder, ref int sequence)
+    {
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "inventory-stat-separator");
+        builder.AddContent(sequence++, "/");
+        builder.CloseElement();
+    }
+
+    private static string GetGearDeltaClass(GearStatBlock delta)
+    {
+        var total = delta.Strength + delta.Intelligence + delta.Constitution + delta.Perception;
+        return total switch
+        {
+            > 0m => "ui-pill count-pill stat-pill-group stat-delta-positive",
+            < 0m => "ui-pill count-pill stat-pill-group stat-delta-negative",
+            _ => "ui-pill count-pill stat-pill-group"
+        };
+    }
+
     private static string FormatReadableName(string? value, string emptyLabel)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -556,11 +724,32 @@
 
     private async Task StartNewDayAsync()
     {
-        var result = await SessionController.StartNewDayAsync();
+        var recommendation = new EquipmentRecommendationFactory().Create(
+            SessionController.State.UserSnapshot!,
+            SessionController.State.GearCatalogSnapshot,
+            _startNewDayGearGoal);
+        var request = _startNewDayAutoEquip && recommendation.HasRecommendation
+            ? new StartNewDayRequest(true, recommendation.Slots, recommendation.GoalLabel)
+            : new StartNewDayRequest();
+        var result = await SessionController.StartNewDayAsync(request);
         _showCronConfirmation = false;
         _startNewDayResultSucceeded = result.Succeeded;
         _startNewDayResultMessage = result.Message;
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private void ToggleStartNewDayAutoEquip(ChangeEventArgs eventArgs)
+    {
+        _startNewDayAutoEquip = eventArgs.Value as bool? == true;
+        _showCronConfirmation = false;
+    }
+
+    private void SetStartNewDayGearGoal(string? rawValue)
+    {
+        _startNewDayGearGoal = Enum.TryParse<EquipmentRecommendationGoal>(rawValue, out var goal)
+            ? goal
+            : EquipmentRecommendationGoal.Intelligence;
+        _showCronConfirmation = false;
     }
 
     private static Severity GetPendingDamageSeverity(PendingDamageRisk risk)

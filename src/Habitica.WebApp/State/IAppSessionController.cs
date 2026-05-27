@@ -55,6 +55,8 @@ public interface IAppSessionController
 
     Task<SpellActionResult> StartNewDayAsync(CancellationToken cancellationToken = default);
 
+    Task<SpellActionResult> StartNewDayAsync(StartNewDayRequest request, CancellationToken cancellationToken = default);
+
     Task<TaskActionResult> ScoreTaskAsync(TaskScoreRequest request, CancellationToken cancellationToken = default);
 
     Task<SpellActionResult> AllocateStatsAsync(StatAllocation allocation, CancellationToken cancellationToken = default);
@@ -137,3 +139,8 @@ public interface IAppSessionController
 
     Task<PartyQuestActionResult> RemovePartyRecentlyCompletedQuestAsync(string questKey, DateTimeOffset completedAtUtc, CancellationToken cancellationToken = default);
 }
+
+public sealed record StartNewDayRequest(
+    bool AutoEquipRecommendedGear = false,
+    GearSlotsSnapshot? AutoEquipGearSlots = null,
+    string? GearOptimizationGoalLabel = null);

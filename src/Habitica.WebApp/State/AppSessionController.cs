@@ -1509,6 +1509,11 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<SpellActionResult> StartNewDayAsync(CancellationToken cancellationToken = default)
     {
+        return await StartNewDayAsync(new StartNewDayRequest(), cancellationToken);
+    }
+
+    public async Task<SpellActionResult> StartNewDayAsync(StartNewDayRequest request, CancellationToken cancellationToken = default)
+    {
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         if (credentials is null)
         {
@@ -1525,13 +1530,44 @@ public sealed class AppSessionController : IAppSessionController
             return SpellActionResult.Success("Habitica day is already started.");
         }
 
-        SetState(State with { ErrorMessage = null, IsBusy = true });
+        var autoEquipSlots = request.AutoEquipRecommendedGear && request.AutoEquipGearSlots is not null
+            ? NormalizePresetSlots(EquipmentSetKind.Battle, request.AutoEquipGearSlots)
+            : null;
+        if (autoEquipSlots is not null)
+        {
+            foreach (var slot in EnumerateSlots(autoEquipSlots).Where(slot => !string.IsNullOrWhiteSpace(slot.Key)))
+            {
+                if (!CanUseGearKey(State.UserSnapshot, EquipmentSetKind.Battle, slot.Key!))
+                {
+                    return SpellActionResult.Failure($"Start New Day skipped before CRON: Cannot equip recommended gear because {slot.Key} is not owned.");
+                }
+            }
+        }
 
         var requestCount = 0;
+        var gearRequestCount = 0;
+        var cronStarted = false;
+        var cronCompleted = false;
         string? partyRefreshError = null;
         try
         {
+            if (autoEquipSlots is not null)
+            {
+                gearRequestCount = await EquipSlotsWithoutRefreshAsync(
+                    credentials,
+                    EquipmentSetKind.Battle,
+                    State.UserSnapshot.Equipment.Battle,
+                    autoEquipSlots,
+                    "cron:auto-equip",
+                    $"Equipping {request.GearOptimizationGoalLabel ?? "CRON"} gear",
+                    cancellationToken);
+                requestCount += gearRequestCount;
+            }
+
+            SetState(State with { ActiveEquipmentProgress = null, ErrorMessage = null, IsBusy = true });
+            cronStarted = true;
             await _habiticaSyncClient.RunCronAsync(credentials, cancellationToken);
+            cronCompleted = true;
             requestCount++;
             await DelayBetweenHabiticaRequestsAsync(cancellationToken);
 
@@ -1580,6 +1616,9 @@ public sealed class AppSessionController : IAppSessionController
                 {
                     ["previousHabiticaDayKey"] = State.UserSnapshot.CurrentHabiticaDayKey ?? string.Empty,
                     ["currentHabiticaDayKey"] = userSnapshot.CurrentHabiticaDayKey ?? string.Empty,
+                    ["autoEquip"] = (autoEquipSlots is not null).ToString(CultureInfo.InvariantCulture),
+                    ["gearGoal"] = request.GearOptimizationGoalLabel ?? string.Empty,
+                    ["gearRequestCount"] = gearRequestCount.ToString(CultureInfo.InvariantCulture),
                     ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
                 },
                 cancellationToken);
@@ -1590,26 +1629,46 @@ public sealed class AppSessionController : IAppSessionController
             SetState(State with { ErrorMessage = null, IsBusy = false });
 
             return SpellActionResult.Success(partyRefreshError is null
-                ? "Started a new Habitica day."
+                ? autoEquipSlots is null
+                    ? "Started a new Habitica day."
+                    : "Equipped recommended gear and started a new Habitica day."
                 : $"Started a new Habitica day. Party refresh needs retry: {partyRefreshError}");
         }
         catch (Exception exception)
         {
             await LoadCachedStateAsync(cancellationToken);
-            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            var message = GetStartNewDayFailureMessage(exception.Message, cronStarted, cronCompleted);
+            SetState(State with { ActiveEquipmentProgress = null, ErrorMessage = message, IsBusy = false });
             await _diagnosticsLogWriter.WriteAsync(
                 DiagnosticsFeatureArea.Sync,
                 "cron-start-new-day",
                 DiagnosticsSeverity.Error,
                 DiagnosticsMode.LiveMutation,
-                exception.Message,
+                message,
                 new Dictionary<string, string>(StringComparer.Ordinal)
                 {
+                    ["autoEquip"] = (autoEquipSlots is not null).ToString(CultureInfo.InvariantCulture),
+                    ["gearGoal"] = request.GearOptimizationGoalLabel ?? string.Empty,
+                    ["gearRequestCount"] = gearRequestCount.ToString(CultureInfo.InvariantCulture),
+                    ["cronStarted"] = cronStarted.ToString(CultureInfo.InvariantCulture),
+                    ["cronCompleted"] = cronCompleted.ToString(CultureInfo.InvariantCulture),
                     ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
                 },
                 cancellationToken);
-            return SpellActionResult.Failure(exception.Message);
+            return SpellActionResult.Failure(message);
         }
+    }
+
+    private static string GetStartNewDayFailureMessage(string message, bool cronStarted, bool cronCompleted)
+    {
+        if (!cronStarted)
+        {
+            return $"Start New Day skipped before CRON: {message}";
+        }
+
+        return cronCompleted
+            ? $"Start New Day completed, but refresh failed: {message}"
+            : $"Start New Day failed while CRON was running: {message}";
     }
 
     public async Task<TaskActionResult> ScoreTaskAsync(TaskScoreRequest request, CancellationToken cancellationToken = default)
