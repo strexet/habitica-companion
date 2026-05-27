@@ -1606,6 +1606,7 @@ Fast reload cache:
 ```text
 localStorage habitica-tool/colorScheme/selectedId
 localStorage habitica-tool/colorScheme/activeScheme
+localStorage habitica-tool/colorScheme/preferences
 ```
 
 ### Algorithm / rules
@@ -1621,9 +1622,13 @@ Gryphy Dark
 
 `Alpha` mirrors the original root palette. `Habitica` is inspired by Habitica's public brand/game palette. `Gryphy Light` and `Gryphy Dark` are derived from `gryphy/Gryphy.png` with adjusted contrast.
 
-Schemes expose semantic tokens rather than page-specific colors: background, card background, card border, text, muted text, primary, accent, danger, success, focus, shadow, surface, strong surface, chart colors, and task-value colors.
+Schemes expose semantic tokens rather than page-specific colors: background, card background, card border, text, muted text, primary, accent, danger, success, focus, shadow, surface, strong surface, chart colors, task-value colors, app header, navigation drawer, input, filled-button text, and disabled-state colors.
 
-`ColorSchemeService` reads `preferences/colorSchemes`, resolves the active built-in or custom scheme, applies it through `HabiticaColorScheme.applyAndStore`, and persists the full active scheme in browser `localStorage`. `wwwroot/js/colorSchemes.js` runs before Blazor starts and reapplies the cached active scheme to avoid a visible wrong-theme flash after reload.
+`ColorSchemeService` reads `preferences/colorSchemes`, resolves the active built-in or custom scheme, applies it through `HabiticaColorScheme.applyAndStore`, and persists the full active scheme in browser `localStorage`. The fast cache also stores the normalized preferences as a fallback for mobile browsers where IndexedDB can be delayed or unavailable during navigation. `wwwroot/js/colorSchemes.js` runs before Blazor starts and reapplies the cached active scheme to avoid a visible wrong-theme flash after reload.
+
+The app overrides MudBlazor app bar, drawer, button, progress, and disabled-state colors from the same semantic CSS variables. New built-in or custom schemes must keep those shell/control tokens readable, not only page-card colors.
+
+Task value backgrounds use a logarithmic intensity curve around neutral so small positive/negative values stay subtle and larger absolute values become more visibly positive or negative without washing out card text.
 
 Settings lets users:
 
@@ -1648,6 +1653,8 @@ Test:
 
 - built-in schemes include Alpha, Habitica, Gryphy Light, and Gryphy Dark;
 - Alpha preserves the original root palette values;
+- built-in schemes define app shell, button, disabled, and input tokens;
+- missing legacy custom tokens are backfilled before validation or application;
 - invalid custom token values are rejected;
 - color-scheme preferences are portable user data;
 - cloud sync maps `ColorSchemes` to `preferences/colorSchemes`;

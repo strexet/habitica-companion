@@ -18,7 +18,7 @@ public sealed class ColorSchemeService
     {
         var preferences = await LoadPreferencesAsync(cancellationToken);
         var activeScheme = ColorSchemeCatalog.Resolve(preferences.SelectedSchemeId, preferences.CustomSchemes);
-        await PersistFastSchemeAsync(activeScheme);
+        await PersistFastSchemeAsync(activeScheme, preferences);
         return new ColorSchemeState(activeScheme, ColorSchemeCatalog.BuiltInSchemes, preferences.CustomSchemes);
     }
 
@@ -36,7 +36,7 @@ public sealed class ColorSchemeService
         bool select,
         CancellationToken cancellationToken = default)
     {
-        var customScheme = scheme with
+        var customScheme = ColorSchemeCatalog.Complete(scheme) with
         {
             Name = ColorSchemeCatalog.NormalizeName(scheme.Name, "Custom scheme"),
             IsBuiltIn = false
@@ -77,8 +77,10 @@ public sealed class ColorSchemeService
 
     private async Task<ColorSchemePreferences> LoadPreferencesAsync(CancellationToken cancellationToken)
     {
-        return await _keyValueStorage.GetAsync<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences, cancellationToken)
+        var preferences = await _keyValueStorage.GetAsync<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences, cancellationToken)
+            ?? await LoadFastPreferencesAsync()
             ?? new ColorSchemePreferences(ColorSchemeCatalog.AlphaId, Array.Empty<ColorSchemeDefinition>());
+        return NormalizePreferences(preferences);
     }
 
     private async Task SavePreferencesAsync(
@@ -86,12 +88,42 @@ public sealed class ColorSchemeService
         ColorSchemeDefinition activeScheme,
         CancellationToken cancellationToken)
     {
-        await _keyValueStorage.SetAsync(StorageKeys.ColorSchemePreferences, preferences, cancellationToken);
-        await PersistFastSchemeAsync(activeScheme);
+        var normalized = NormalizePreferences(preferences);
+        await PersistFastSchemeAsync(activeScheme, normalized);
+        await _keyValueStorage.SetAsync(StorageKeys.ColorSchemePreferences, normalized, cancellationToken);
     }
 
-    private async Task PersistFastSchemeAsync(ColorSchemeDefinition activeScheme)
+    private async Task PersistFastSchemeAsync(ColorSchemeDefinition activeScheme, ColorSchemePreferences preferences)
     {
-        await _jsRuntime.InvokeVoidAsync("HabiticaColorScheme.applyAndStore", activeScheme);
+        await _jsRuntime.InvokeVoidAsync("HabiticaColorScheme.applyAndStore", activeScheme, preferences);
+    }
+
+    private async Task<ColorSchemePreferences?> LoadFastPreferencesAsync()
+    {
+        try
+        {
+            var preferences = await _jsRuntime.InvokeAsync<ColorSchemePreferences?>("HabiticaColorScheme.getPreferences");
+            return preferences is null ? null : NormalizePreferences(preferences);
+        }
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+        catch (JSException)
+        {
+            return null;
+        }
+    }
+
+    private static ColorSchemePreferences NormalizePreferences(ColorSchemePreferences preferences)
+    {
+        var customSchemes = preferences.CustomSchemes?
+            .Where(static scheme => scheme is not null)
+            .Select(ColorSchemeCatalog.Complete)
+            .Where(static scheme => !scheme.IsBuiltIn)
+            .OrderBy(static scheme => scheme.Name, StringComparer.OrdinalIgnoreCase)
+            .ToArray() ?? Array.Empty<ColorSchemeDefinition>();
+        var activeScheme = ColorSchemeCatalog.Resolve(preferences.SelectedSchemeId, customSchemes);
+        return new ColorSchemePreferences(activeScheme.Id, customSchemes);
     }
 }

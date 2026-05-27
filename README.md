@@ -19,7 +19,7 @@ Current status: web-app MVP implemented and expanding into guarded actions. The 
 - encrypted per-section Cloudflare sync for portable app data, with legacy single-blob restore fallback
 - responsive app shell with sign-in, dashboard, inventory, party, diagnostics, tasks, and settings routes
 - task workspace with search, filters, completed toggles, detail panels, history charts, manual ordering controls, freshness indicators, inline scoring/checkoff, and Habit multi-score controls
-- Settings color schemes with built-in Alpha, Habitica, Gryphy Light, Gryphy Dark, and editable custom schemes saved as portable user data
+- Settings color schemes with built-in Alpha, Habitica, Gryphy Light, Gryphy Dark, shell/control theming, and editable custom schemes saved as portable user data
 - sign-out for the current tab session and clear-local-data controls
 
 ## Planned feature areas

@@ -26,6 +26,43 @@ public sealed class ColorSchemeCatalogTests
         Assert.Equal("#2d746e", alpha.Tokens.Primary);
         Assert.Equal("#c5772b", alpha.Tokens.Accent);
         Assert.Equal("#a13f35", alpha.Tokens.Danger);
+        Assert.Equal("#173f3b", alpha.Tokens.AppBarBackground);
+        Assert.Equal("#163431", alpha.Tokens.DrawerBackground);
+    }
+
+    [Fact]
+    public void Built_in_schemes_define_shell_and_disabled_tokens()
+    {
+        foreach (var scheme in ColorSchemeCatalog.BuiltInSchemes)
+        {
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.AppBarBackground), scheme.Name);
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.DrawerBackground), scheme.Name);
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.ButtonText), scheme.Name);
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.DisabledBackground), scheme.Name);
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.DisabledText), scheme.Name);
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.InputBackground), scheme.Name);
+        }
+    }
+
+    [Fact]
+    public void Complete_backfills_missing_custom_scheme_tokens()
+    {
+        var scheme = ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.Alpha, "Legacy")
+            with
+            {
+                Tokens = ColorSchemeCatalog.Alpha.Tokens with
+                {
+                    AppBarBackground = "",
+                    DisabledText = "",
+                    InputBackground = ""
+                }
+            };
+
+        var completed = ColorSchemeCatalog.Complete(scheme);
+
+        Assert.Equal(ColorSchemeCatalog.Alpha.Tokens.AppBarBackground, completed.Tokens.AppBarBackground);
+        Assert.Equal(ColorSchemeCatalog.Alpha.Tokens.DisabledText, completed.Tokens.DisabledText);
+        Assert.Equal(ColorSchemeCatalog.Alpha.Tokens.InputBackground, completed.Tokens.InputBackground);
     }
 
     [Fact]

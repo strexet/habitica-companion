@@ -19,6 +19,16 @@
     --task-negative: #f4b6a6;
     --task-neutral: #f7ead1;
     --task-positive: #8ccfbd;
+    --appbar-bg: #173f3b;
+    --appbar-text: #f5efe2;
+    --drawer-bg: #163431;
+    --drawer-text: #f5efe2;
+    --button-text: #ffffff;
+    --disabled-bg: rgba(22, 36, 35, 0.08);
+    --disabled-text: rgba(95, 109, 103, 0.58);
+    --disabled-border: rgba(95, 109, 103, 0.28);
+    --input-bg: rgba(255, 255, 255, 0.9);
+    --input-border: rgba(22, 36, 35, 0.12);
 }
 
 html,
@@ -70,8 +80,10 @@ a {
 }
 
 .topbar {
+    background: var(--appbar-bg) !important;
+    color: var(--appbar-text) !important;
     backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid color-mix(in srgb, var(--appbar-text) 14%, transparent);
 }
 
 .topbar-copy {
@@ -104,6 +116,13 @@ a {
     font-weight: 700;
     border: 1px solid var(--card-border);
     background: var(--surface);
+    color: var(--ink);
+}
+
+.topbar .ui-pill {
+    border-color: color-mix(in srgb, var(--appbar-text) 18%, transparent);
+    background: color-mix(in srgb, var(--appbar-bg) 74%, var(--primary));
+    color: var(--appbar-text);
 }
 
 .habitica-image-frame {
@@ -232,12 +251,14 @@ a {
 }
 
 .app-drawer {
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--drawer-bg) !important;
+    color: var(--drawer-text) !important;
+    border-right: 1px solid color-mix(in srgb, var(--drawer-text) 12%, transparent);
 }
 
 .drawer-hero {
     padding: 1.5rem 1.25rem 1rem;
-    color: #f5efe2;
+    color: var(--drawer-text);
 }
 
 .drawer-hero h2 {
@@ -246,13 +267,28 @@ a {
 }
 
 .drawer-hero p {
-    color: rgba(245, 239, 226, 0.82);
+    color: color-mix(in srgb, var(--drawer-text) 82%, transparent);
     font-size: 0.94rem;
     line-height: 1.55;
 }
 
 .app-nav-menu {
     padding: 0 0.75rem 1rem;
+}
+
+.app-nav-menu .mud-nav-link {
+    color: color-mix(in srgb, var(--drawer-text) 86%, transparent) !important;
+}
+
+.app-nav-menu .mud-nav-link .mud-nav-link-text,
+.app-nav-menu .mud-nav-link .mud-nav-link-icon {
+    color: inherit !important;
+}
+
+.app-nav-menu .mud-nav-link.active,
+.app-nav-menu .mud-nav-link:hover {
+    background: color-mix(in srgb, var(--drawer-text) 8%, transparent) !important;
+    color: var(--drawer-text) !important;
 }
 
 .shell-content {
@@ -281,6 +317,7 @@ a {
     border: 1px solid var(--card-border);
     border-radius: 1.5rem;
     box-shadow: var(--shadow);
+    color: var(--ink);
 }
 
 .landing-shell,
@@ -516,16 +553,16 @@ a {
     width: 100%;
     padding: 0.95rem 1rem;
     border-radius: 1rem;
-    border: 1px solid rgba(22, 36, 35, 0.12);
-    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
     color: var(--ink);
     font: inherit;
     box-sizing: border-box;
 }
 
 .app-input:focus {
-    outline: 2px solid rgba(45, 116, 110, 0.28);
-    border-color: rgba(45, 116, 110, 0.38);
+    outline: 2px solid color-mix(in srgb, var(--focus) 38%, transparent);
+    border-color: color-mix(in srgb, var(--focus) 58%, var(--input-border));
 }
 
 .action-row {
@@ -2161,12 +2198,12 @@ a {
 }
 
 .task-card.completed-task {
-    border-color: rgba(95, 109, 103, 0.14);
-    color: rgba(22, 36, 35, 0.72);
+    border-color: var(--disabled-border);
+    color: var(--disabled-text);
 }
 
 .task-card.completed-task .task-title {
-    color: rgba(22, 36, 35, 0.62);
+    color: var(--disabled-text);
 }
 
 .task-card-head {
@@ -2182,9 +2219,9 @@ a {
     width: 2.25rem;
     min-height: 2.25rem;
     border-radius: 0.5rem;
-    border: 1px solid rgba(45, 116, 110, 0.22);
-    background: rgba(255, 255, 255, 0.64);
-    color: var(--teal);
+    border: 1px solid color-mix(in srgb, var(--primary) 28%, transparent);
+    background: var(--surface-strong);
+    color: var(--primary);
     font: inherit;
     font-size: 0.92rem;
     font-weight: 800;
@@ -2216,9 +2253,9 @@ a {
     min-height: 2rem;
     padding: 0;
     border-radius: 0.5rem;
-    border: 1px solid rgba(45, 116, 110, 0.18);
-    background: rgba(255, 255, 255, 0.58);
-    color: var(--teal);
+    border: 1px solid color-mix(in srgb, var(--primary) 24%, transparent);
+    background: var(--surface-strong);
+    color: var(--primary);
     cursor: pointer;
 }
 
@@ -2234,9 +2271,7 @@ a {
 }
 
 .task-reorder-button:disabled {
-    color: rgba(95, 109, 103, 0.38);
     cursor: not-allowed;
-    opacity: 0.58;
 }
 
 .task-title {
@@ -2511,6 +2546,134 @@ a {
     background: rgba(161, 63, 53, 0.14);
     border-color: rgba(161, 63, 53, 0.2);
     color: #8f332b;
+}
+
+.mud-button-filled-primary {
+    background-color: var(--primary) !important;
+    color: var(--button-text) !important;
+}
+
+.mud-button-filled-secondary {
+    background-color: var(--accent) !important;
+    color: var(--button-text) !important;
+}
+
+.mud-button-filled-error {
+    background-color: var(--danger) !important;
+    color: var(--button-text) !important;
+}
+
+.mud-button-filled-success {
+    background-color: var(--success) !important;
+    color: var(--button-text) !important;
+}
+
+.mud-button-outlined-primary,
+.mud-button-text-primary {
+    border-color: color-mix(in srgb, var(--primary) 52%, transparent) !important;
+    color: var(--primary) !important;
+}
+
+.mud-button-outlined-secondary,
+.mud-button-text-secondary {
+    border-color: color-mix(in srgb, var(--accent) 52%, transparent) !important;
+    color: var(--accent) !important;
+}
+
+.mud-button-outlined-error,
+.mud-button-text-error {
+    border-color: color-mix(in srgb, var(--danger) 52%, transparent) !important;
+    color: var(--danger) !important;
+}
+
+.mud-button-outlined-success,
+.mud-button-text-success {
+    border-color: color-mix(in srgb, var(--success) 52%, transparent) !important;
+    color: var(--success) !important;
+}
+
+.mud-button:disabled,
+.mud-button.mud-disabled,
+.secondary-action-button:disabled,
+.task-reorder-button:disabled,
+.task-drag-handle:disabled {
+    border-color: var(--disabled-border) !important;
+    background: var(--disabled-bg) !important;
+    color: var(--disabled-text) !important;
+    opacity: 1 !important;
+    cursor: not-allowed;
+}
+
+.mud-progress-linear .mud-progress-linear-bar-primary {
+    background-color: var(--primary) !important;
+}
+
+.mud-progress-linear .mud-progress-linear-bar-secondary {
+    background-color: var(--accent) !important;
+}
+
+.dashboard-stat-card,
+.dashboard-panel,
+.diagnostics-panel,
+.inventory-group-card,
+.spell-card,
+.live-test-card,
+.live-results-card,
+.party-quest-card,
+.party-quest-response-card,
+.party-management-role-group,
+.party-member-management,
+.party-kick-list-item,
+.party-member-card,
+.party-member-row,
+.party-login-rhythm,
+.pending-damage-source-card,
+.spell-recommendation,
+.inventory-item-card,
+.dashboard-link-card,
+.bulk-sell-item,
+.preset-mini-item,
+.live-result-item,
+.sync-section-row {
+    border-color: var(--card-border);
+    background: var(--surface);
+    color: var(--ink);
+}
+
+.active-quest-card,
+.owned-quest-card,
+.safe-sell-item,
+.stat-delta-positive {
+    border-color: color-mix(in srgb, var(--success) 34%, var(--card-border));
+}
+
+.neutral-quest-card {
+    background: var(--surface);
+}
+
+.dashboard-panel,
+.task-statistics-panel,
+.sync-status-panel,
+.diagnostics-console {
+    background: var(--card-bg);
+}
+
+.success-pill {
+    background: color-mix(in srgb, var(--success) 16%, transparent);
+    border-color: color-mix(in srgb, var(--success) 32%, transparent);
+    color: var(--success);
+}
+
+.warning-pill {
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 32%, transparent);
+    color: var(--accent);
+}
+
+.danger-pill {
+    background: color-mix(in srgb, var(--danger) 16%, transparent);
+    border-color: color-mix(in srgb, var(--danger) 32%, transparent);
+    color: var(--danger);
 }
 
 #blazor-error-ui {

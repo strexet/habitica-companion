@@ -1044,15 +1044,16 @@
             return "var(--surface)";
         }
 
-        var normalized = Math.Clamp(((double)item.Value.Value + 20d) / 40d, 0d, 1d);
-        if (normalized < 0.5d)
+        var value = (double)item.Value.Value;
+        if (Math.Abs(value) < 0.05d)
         {
-            var negativeWeight = Math.Round((0.5d - normalized) * 160d, 2);
-            return $"color-mix(in srgb, var(--task-negative) {negativeWeight:0.##}%, var(--task-neutral))";
+            return "var(--task-neutral)";
         }
 
-        var positiveWeight = Math.Round((normalized - 0.5d) * 160d, 2);
-        return $"color-mix(in srgb, var(--task-positive) {positiveWeight:0.##}%, var(--task-neutral))";
+        var intensity = Math.Clamp(Math.Log(Math.Abs(value) + 1d) / Math.Log(21d), 0d, 1d);
+        var weight = 16d + intensity * 64d;
+        var token = value < 0d ? "var(--task-negative)" : "var(--task-positive)";
+        return $"color-mix(in srgb, {token} {weight.ToString("0.##", CultureInfo.InvariantCulture)}%, var(--task-neutral))";
     }
 
     private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)

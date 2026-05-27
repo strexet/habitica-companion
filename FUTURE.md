@@ -43,7 +43,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Bulk sell planner for eggs, food, and hatching potions with safe surplus preview, explicit confirmation, sequential sell execution, diagnostics, and post-sell refresh.
 - Dashboard Start New Day optional gear optimization: INT for post-CRON mana, CON/survival for lower damage risk, previewed stat deltas, already-equipped state, and sequential equip-before-CRON execution.
 - Spells sticky current-mana bar with available MP, max MP, class, and persistent scroll visibility above spell cards.
-- App color scheme system with centralized semantic tokens, Alpha/Habitica/Gryphy built-in schemes, Settings picker, custom editable schemes, fast local reload persistence, and portable sync storage.
+- App color scheme system with centralized semantic tokens, Alpha/Habitica/Gryphy built-in schemes, Settings picker, custom editable schemes, shell/button/disabled/input theming, mobile localStorage fallback, fast local reload persistence, and portable sync storage.
 
 ## Pending Queue
 

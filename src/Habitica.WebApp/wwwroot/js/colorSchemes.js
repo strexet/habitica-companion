@@ -1,6 +1,7 @@
 (function () {
   const selectedKey = "habitica-tool/colorScheme/selectedId";
   const activeKey = "habitica-tool/colorScheme/activeScheme";
+  const preferencesKey = "habitica-tool/colorScheme/preferences";
   const tokenMap = {
     background: "--bg",
     cardBackground: "--card-bg",
@@ -19,7 +20,17 @@
     chartSecondary: "--chart-secondary",
     taskNegative: "--task-negative",
     taskNeutral: "--task-neutral",
-    taskPositive: "--task-positive"
+    taskPositive: "--task-positive",
+    appBarBackground: "--appbar-bg",
+    appBarText: "--appbar-text",
+    drawerBackground: "--drawer-bg",
+    drawerText: "--drawer-text",
+    buttonText: "--button-text",
+    disabledBackground: "--disabled-bg",
+    disabledText: "--disabled-text",
+    disabledBorder: "--disabled-border",
+    inputBackground: "--input-bg",
+    inputBorder: "--input-border"
   };
 
   function normalizeScheme(scheme) {
@@ -79,7 +90,31 @@
     }
   }
 
-  function applyAndStore(scheme) {
+  function getPreferences() {
+    try {
+      const stored = window.localStorage.getItem(preferencesKey);
+      if (stored) {
+        return JSON.parse(stored);
+      }
+
+      const active = normalizeScheme(JSON.parse(window.localStorage.getItem(activeKey) || "null"));
+      if (!active) {
+        return null;
+      }
+
+      return {
+        selectedSchemeId: active.id,
+        customSchemes: active.id.startsWith("custom-")
+          ? [{ id: active.id, name: active.name, isBuiltIn: false, tokens: active.tokens }]
+          : []
+      };
+    } catch {
+      window.localStorage.removeItem(preferencesKey);
+      return null;
+    }
+  }
+
+  function applyAndStore(scheme, preferences) {
     const normalized = normalizeScheme(scheme);
     if (!normalized) {
       return;
@@ -89,6 +124,9 @@
     try {
       window.localStorage.setItem(selectedKey, normalized.id);
       window.localStorage.setItem(activeKey, JSON.stringify(normalized));
+      if (preferences) {
+        window.localStorage.setItem(preferencesKey, JSON.stringify(preferences));
+      }
     } catch {
       // Applying the scheme matters more than preserving the fast reload cache.
     }
@@ -97,6 +135,7 @@
   window.HabiticaColorScheme = {
     applyColorScheme,
     applyStoredColorScheme,
+    getPreferences,
     applyAndStore
   };
 
