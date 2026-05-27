@@ -96,8 +96,10 @@ public sealed class EquipmentRecommendationFactory
     {
         return goal switch
         {
-            EquipmentRecommendationGoal.Intelligence => stats.Intelligence * 3m + stats.Perception * 0.5m,
-            EquipmentRecommendationGoal.Constitution => stats.Constitution * 3m + stats.Strength * 0.5m,
+            // Single-stat goals strictly maximize the prioritized stat; other stats
+            // only break ties (via PickBestSlot) when the prioritized value is equal.
+            EquipmentRecommendationGoal.Intelligence => stats.Intelligence,
+            EquipmentRecommendationGoal.Constitution => stats.Constitution,
             EquipmentRecommendationGoal.Survival => stats.Constitution * 2.4m + stats.Intelligence * 0.8m + stats.Strength * 0.6m,
             _ => stats.Strength + stats.Intelligence + stats.Constitution + stats.Perception
         };

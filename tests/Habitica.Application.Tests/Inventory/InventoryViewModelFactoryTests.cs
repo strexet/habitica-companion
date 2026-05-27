@@ -306,6 +306,38 @@ public sealed class InventoryViewModelFactoryTests
         Assert.True(recommendation.Delta.Strength > 0m);
     }
 
+    [Fact]
+    public void CreateRecommendation_strictly_prefers_highest_prioritized_stat()
+    {
+        var factory = new InventoryViewModelFactory();
+        var snapshot = CreateSnapshot("warrior") with
+        {
+            Inventory = new InventorySnapshot(
+                1,
+                5,
+                1,
+                1,
+                1,
+                1,
+                new[] { "head_pure_str", "head_mixed" })
+        };
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                // Higher Strength, no secondary stats.
+                ["head_pure_str"] = new("head_pure_str", "Pure Helm", "Head", "special", null, new GearStatBlock(5m, 0m, 0m, 0m)),
+                // Lower Strength but high Constitution. Under the old blended score
+                // (STR*3 + CON*0.5 = 16) this beat the pure helm (15); it must not now.
+                ["head_mixed"] = new("head_mixed", "Mixed Helm", "Head", "special", null, new GearStatBlock(4m, 0m, 8m, 0m))
+            });
+
+        var recommendation = factory.CreateRecommendation(snapshot, catalog, EquipmentOptimizationGoal.Strength);
+
+        Assert.Equal("head_pure_str", recommendation.Slots.Head);
+        Assert.Contains(recommendation.Items, item => item.Key == "head_pure_str");
+    }
+
     private static UserSnapshot CreateSnapshot(string className)
     {
         return new UserSnapshot(

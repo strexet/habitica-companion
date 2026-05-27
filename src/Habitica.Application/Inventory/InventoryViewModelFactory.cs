@@ -368,10 +368,13 @@ public sealed class InventoryViewModelFactory
     {
         return goal switch
         {
-            EquipmentOptimizationGoal.Strength => stats.Strength * 3m + stats.Constitution * 0.5m,
-            EquipmentOptimizationGoal.Intelligence => stats.Intelligence * 3m + stats.Perception * 0.5m,
-            EquipmentOptimizationGoal.Constitution => stats.Constitution * 3m + stats.Strength * 0.5m,
-            EquipmentOptimizationGoal.Perception => stats.Perception * 3m + stats.Intelligence * 0.5m,
+            // Single-stat goals strictly maximize the prioritized stat. Other stats
+            // never override a higher prioritized value; they only act as a
+            // tie-breaker (handled by PickBestSlot) when the prioritized stat is equal.
+            EquipmentOptimizationGoal.Strength => stats.Strength,
+            EquipmentOptimizationGoal.Intelligence => stats.Intelligence,
+            EquipmentOptimizationGoal.Constitution => stats.Constitution,
+            EquipmentOptimizationGoal.Perception => stats.Perception,
             EquipmentOptimizationGoal.BossDamage => stats.Strength * 2.5m + stats.Perception * 1.1m + stats.Constitution * 0.4m,
             EquipmentOptimizationGoal.Survival => stats.Constitution * 2.4m + stats.Intelligence * 0.8m + stats.Strength * 0.6m,
             _ => stats.Strength + stats.Intelligence + stats.Constitution + stats.Perception
