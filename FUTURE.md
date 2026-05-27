@@ -59,11 +59,79 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-_(empty — all pending notes promoted into `Prioritized Next Changes`.)_
+_(empty — pending note promoted into `Prioritized Next Changes`.)_
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
+
+### Color Scheme Second-Pass Fixes (Light Contrast, Counters, Progress Bars)
+
+Goal: close the remaining color-scheme defects from the prior theming pass. Two classes of bug: (a) light schemes regressed — light drawer background with light/whitish drawer text is unreadable; (b) several dark-scheme controls still bypass tokens (native counter arrows, drifted backgrounds, an uncolored prediction label, progress bars). Root cause across most defects: hardcoded `rgba(...)` values and browser-native input chrome instead of semantic tokens. Fix all without re-breaking either light or dark schemes.
+
+Touch:
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.WebApp/wwwroot/js/colorSchemes.js`
+- `src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs`
+- `src/Habitica.WebApp/Theme/ColorSchemeService.cs`
+- `src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor`
+- `src/Habitica.WebApp/Pages/DashboardPage.razor`
+- `src/Habitica.WebApp/Pages/TasksPage.razor`
+- `src/Habitica.WebApp/Pages/InventoryPage.razor`
+- `src/Habitica.WebApp/Pages/SpellsPage.razor`
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- `src/Habitica.WebApp/Pages/LiveTestsPage.razor`
+- direct tests under `tests/Habitica.WebApp.Tests/`
+- `docs/UX_UI_MANIFEST.md` if progress-bar / token-usage guidance changes
+
+Reported defects + located targets:
+
+1. Light-scheme drawer contrast (regression — Alpha must not have changed):
+   - Side menu unreadable: light drawer background + whitish text. Alpha tokens at `ColorSchemeCatalog.cs:15` (`DrawerText` `#f5efe2` line ~24, `DrawerBackground` `#163431` line ~36). Nav color rules: `app.css:279` (`.app-nav-menu .mud-nav-link` mixes `--drawer-text` 86%), `app.css:288` (`.active` mixes `--drawer-text` 8%).
+   - Fix so every light scheme keeps readable drawer text/background contrast; confirm Alpha renders exactly as before the prior pass. Check all built-in schemes (`BuiltInSchemes` `ColorSchemeCatalog.cs:9` — Alpha, Habitica, Gryphy Light/Dark).
+
+2. Native number-counter arrows black/invisible on dark backgrounds:
+   - Dashboard "Spend gold – Bulk armoire": input `DashboardPage.razor:473`, css `.armoire-controls input` `app.css:1710` (hardcoded `background: rgba(255,255,255,0.82)` — replace with token).
+   - Inventory "Bulk sell planner": input `InventoryPage.razor:183`.
+   - Spells card counters: input `SpellsPage.razor:126`.
+   - Shared input base `.app-input` `app.css:552`. Style the spinner/stepper arrows from tokens (or replace native spinners with token-styled controls) so arrows are visible in dark and light schemes.
+
+3. Tasks card backgrounds — remove multi-color shades:
+   - Task-value background must derive from one scheme-driven main color, computed as a gradient (not multiple fixed red/orange/green/blue shades). Targets in `TasksPage.razor` task card markup + `app.css` task-card value classes. (Same intent as the earlier task-value gradient request — implement the single-gradient model here.)
+
+4. Party ACTIVE QUEST prediction label not themed:
+   - "Expected to finish when XXX checks in today around YY:ZZ" — `PartyPage.razor:385` (inside `MudAlert` line 384), text from `FormatEstimateSummary()` `PartyPage.razor:2265`. Ensure label color comes from scheme tokens.
+
+5. Spells header mana bar sizing:
+   - `.spell-mana-bar` `SpellsPage.razor:41`, css `app.css:652`. Bar should fill the full space between the AVAILABLE MANA value and the class MAX-mana value labels.
+
+6. Progress bars must follow the active scheme (docs reference per line 76 request):
+   - Spell casting: `SpellsPage.razor:232` (`MudProgressLinear` Color.Primary).
+   - Spell equipment-change: `SpellsPage.razor:240` (Color.Secondary).
+   - Task mutation: `TasksPage.razor:340`.
+   - Inventory preset execution: `InventoryPage.razor:830`.
+   - CSS: `.spell-progress` `app.css:1479`, `.task-progress` `app.css:2409`, MudBlazor bar overrides `app.css:2607` (`--primary`) and `app.css:2611` (`--accent`).
+   - Docs: `docs/UX_UI_MANIFEST.md:423` documents determinate progress for spell casting, equipment slot changes, and multi-step diagnostics — confirm all listed bars are token-driven; update manifest if a bar location is added/changed.
+
+7. Diagnostics "GUARDED TESTS – Optional gear check" drifted background:
+   - Panel `LiveTestsPage.razor:47` (`warning-card`), heading line 49, button "Run reversible gear test" `LiveTestsPage.razor:57`. CSS `.warning-card` `app.css:1721` (hardcoded `background: rgba(255,246,226,0.88)`) and any duplicate `app.css:2855`. Tone the drifted background to scheme tokens and keep the button readable after the fix.
+
+Out of scope:
+- changing scheme storage/sync format, scheme persistence, or adding/removing built-in schemes (Alpha must stay as originally defined);
+- changing any non-color behavior (sync, scoring, quest/cast logic, diagnostics actions);
+- adding new pages or controls.
+
+Acceptance:
+- Alpha and all light schemes render readable drawer background + text; no whitish-on-light or bright-on-bright blocks anywhere after the change.
+- Number-counter arrows (armoire, bulk sell, spell cards) are clearly visible in both dark and light schemes.
+- Task-value card backgrounds use a single scheme-derived gradient — no fixed red/orange/green/blue shades remain.
+- Party ACTIVE QUEST completion-estimate label color tracks the active scheme.
+- Spells header mana bar spans the full width between the AVAILABLE MANA and MAX-mana labels.
+- All four progress bars (spell cast, spell equip-change, task mutation, preset execution) recolor with the scheme via tokens.
+- Diagnostics Optional gear check panel background no longer drifts; its button stays readable.
+- No hardcoded `rgba(...)` background remains in the listed `app.css` rules — replaced with semantic tokens.
+- Switching across Alpha / Habitica / Gryphy Light / Gryphy Dark leaves every listed surface readable.
+- Tests assert token-driven classes/variables on representative controls (drawer link, a counter input, a progress bar, the quest estimate label, the diagnostics panel).
 
 ### Dashboard Navigation Card Title/Description Spacing
 
