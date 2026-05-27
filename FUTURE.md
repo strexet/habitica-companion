@@ -65,44 +65,6 @@ _(empty — all pending notes promoted into `Prioritized Next Changes`.)_
 
 Work top to bottom. Each entry is self-contained.
 
-### Color Scheme Theming Coverage Fixes
-
-Goal: make the active color scheme actually drive every surface. Many controls ignore the scheme's semantic tokens and keep hardcoded/MudBlazor-default colors, producing unreadable or off (light-gray, over-bright, dark-on-dark) elements.
-
-Touch:
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- `src/Habitica.WebApp/wwwroot/js/colorSchemes.js`
-- `src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs`
-- `src/Habitica.WebApp/Theme/ColorSchemeService.cs`
-- `src/Habitica.WebApp/Layout/MainLayout.razor`
-- `src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor`
-- affected pages: `DashboardPage.razor`, `TasksPage.razor`, `InventoryPage.razor`, `PartyPage.razor`, `SpellsPage.razor`, `SettingsPage.razor`, `LiveTestsPage.razor` (Diagnostics)
-- direct tests under `tests/Habitica.WebApp.Tests/`
-- `docs/UX_UI_MANIFEST.md` if token/usage guidance changes
-
-Reported defects to resolve:
-- Shell: top header (`MudAppBar`) and side menu backgrounds and text do not change with the scheme.
-- Dashboard: navigation cards show light-gray backgrounds under Gryphy Dark; "Spend gold – Bulk armoire" input matches that off gray; companion state icons and saved inventory count icons/item-card backgrounds use the same off gray.
-- Tasks: Show/Hide completed buttons flip from a good dark color to light gray on click; task move buttons should track card background (slight delta). Preferred: task-value color is one scheme-derived gradient, not fixed red/orange/green/blue shades.
-- Inventory: Item Counts / Current companion / item cards gray backgrounds; equipment optimizer Goal dropdown over-bright background; "Show other equipment" button dark-on-dark unreadable; preset name inputs over-bright background + white text when filled.
-- Party: select-owner dropdown over-bright + white text; quest cards gray backgrounds; member sorting block gray background; member-card party-sync management buttons dark-border/dark-text/dark-background unreadable; Details button gray background; CRON statistics graph gray background.
-- Spells: spell + equipment-recommendation icons gray backgrounds; inputs/selectors over-bright + white text.
-- Settings: color scheme picker over-bright + white text; restore-backup file selector over-bright + white text; choose-file button gray background.
-- Diagnostics: guarded "run reversible gear test" too dark; Quick account reads buttons too dark to read; App messages buttons dark/invisible, selectors over-bright + white text, console message blocks gray flipping to whitish on press.
-
-Out of scope:
-- changing scheme storage/sync format or adding new built-in schemes;
-- changing any non-color behavior (sync, scoring, quest logic);
-- adding new pages or controls.
-
-Acceptance:
-- Applying any built-in scheme (incl. Gryphy Dark) recolors shell header + side menu background and text.
-- All listed surfaces read from semantic tokens; no hardcoded light-gray/over-bright/dark-on-dark control remains in the reported areas.
-- Interactive state changes (button hover/active, Show/Hide completed toggle, console message press) stay within scheme tokens — no flip to off-gray/whitish.
-- Inputs and dropdowns (Goal, select-owner, preset name, file selectors, color scheme picker) keep readable contrast when empty and filled.
-- Task-value coloring derives from the active scheme (single gradient option implemented or fixed shades replaced by token-derived values).
-- Tests assert token-driven classes/variables on representative controls per page.
-
 ### Dashboard Navigation Card Title/Description Spacing
 
 Goal: fix navigation link cards (Companion and Habitica link sections) rendering title and body with no separation — e.g. "TasksScore and inspect cached tasks." should read as a title line plus a description line.

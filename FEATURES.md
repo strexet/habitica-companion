@@ -1656,6 +1656,7 @@ Test:
 - built-in schemes define app shell, button, disabled, and input tokens;
 - missing legacy custom tokens are backfilled before validation or application;
 - invalid custom token values are rejected;
+- CSS keeps shell, inputs, buttons, disabled controls, and reported nested surfaces routed through scheme tokens;
 - color-scheme preferences are portable user data;
 - cloud sync maps `ColorSchemes` to `preferences/colorSchemes`;
 - Settings renders scheme controls and saves custom scheme preferences.

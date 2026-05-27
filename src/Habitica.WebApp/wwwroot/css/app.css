@@ -2676,6 +2676,273 @@ a {
     color: var(--danger);
 }
 
+/* Color scheme coverage layer: keep MudBlazor/native controls and nested panels on semantic tokens. */
+.mud-main-content,
+.mud-layout,
+.mud-drawer,
+.mud-drawer-content {
+    background: transparent !important;
+    color: var(--ink) !important;
+}
+
+.mud-paper,
+.mud-card,
+.mud-popover,
+.mud-menu,
+.mud-list,
+.mud-table,
+.mud-tabs-toolbar {
+    background-color: var(--surface-strong) !important;
+    color: var(--ink) !important;
+}
+
+.mud-input-control,
+.mud-input,
+.mud-input-root,
+.mud-input-slot,
+.mud-select,
+.mud-select-input,
+.mud-picker,
+.mud-picker-paper,
+.mud-input > input,
+.mud-input > textarea,
+.app-input,
+select.app-input,
+input.app-input,
+textarea.app-input,
+.armoire-controls input {
+    background: var(--input-bg) !important;
+    color: var(--ink) !important;
+    -webkit-text-fill-color: var(--ink);
+}
+
+.mud-input-outlined-border,
+.mud-input-control .mud-input-outlined-border,
+.app-input,
+.armoire-controls input {
+    border-color: var(--input-border) !important;
+}
+
+.app-input::placeholder,
+.mud-input > input::placeholder,
+.mud-input > textarea::placeholder {
+    color: var(--muted) !important;
+    opacity: 1;
+}
+
+.app-input:focus,
+.mud-input:focus-within,
+.mud-input-control:focus-within {
+    outline: 2px solid color-mix(in srgb, var(--focus) 36%, transparent);
+    outline-offset: 1px;
+}
+
+input[type="file"].app-input::file-selector-button {
+    min-height: 2.25rem;
+    margin-right: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--primary) 42%, transparent);
+    border-radius: 0.65rem;
+    background: var(--surface-strong);
+    color: var(--primary);
+    font: inherit;
+    font-weight: 700;
+}
+
+.mud-button-text-default,
+.mud-button-outlined-default {
+    border-color: color-mix(in srgb, var(--primary) 36%, transparent) !important;
+    color: var(--primary) !important;
+}
+
+.mud-button:hover:not(:disabled),
+.mud-button:focus-visible:not(:disabled),
+.secondary-action-button:hover:not(:disabled),
+.secondary-action-button:focus-visible:not(:disabled),
+.task-reorder-button:hover:not(:disabled),
+.task-reorder-button:focus-visible:not(:disabled),
+.task-drag-handle:hover:not(:disabled),
+.task-drag-handle:focus-visible:not(:disabled) {
+    border-color: color-mix(in srgb, var(--focus) 50%, var(--card-border)) !important;
+    background: color-mix(in srgb, var(--surface-strong) 86%, var(--focus)) !important;
+    color: var(--primary) !important;
+}
+
+.mud-button:active:not(:disabled),
+.secondary-action-button:active:not(:disabled),
+.task-reorder-button:active:not(:disabled),
+.task-drag-handle:active:not(:disabled),
+.diagnostics-log-item:active {
+    background: color-mix(in srgb, var(--surface-strong) 76%, var(--primary)) !important;
+    color: var(--ink) !important;
+}
+
+.secondary-action-button,
+.task-drag-handle,
+.task-reorder-button {
+    border-color: color-mix(in srgb, var(--primary) 32%, var(--card-border));
+    background: var(--surface-strong);
+    color: var(--primary);
+}
+
+.habitica-image-frame,
+.habitica-icon-count-chip,
+.dashboard-link-card,
+.dashboard-stat-card,
+.dashboard-panel,
+.diagnostics-panel,
+.diagnostics-console,
+.diagnostics-log-item,
+.diagnostics-preview,
+.inventory-group-card,
+.inventory-item-card,
+.bulk-sell-item,
+.preset-mini-item,
+.live-test-card,
+.live-results-card,
+.live-result-item,
+.party-quest-card,
+.party-quest-response-card,
+.party-management-role-group,
+.party-member-management,
+.party-kick-list-item,
+.party-member-card,
+.party-member-row,
+.party-resource-chip,
+.party-login-rhythm,
+.party-cron-chart,
+.spell-card,
+.spell-block,
+.spell-card-section,
+.spell-recommendation,
+.pending-damage-source-card,
+.sync-status-panel,
+.sync-section-row,
+.segmented-control,
+.task-detail-panel,
+.task-chart-card {
+    border-color: var(--card-border) !important;
+    background: var(--surface) !important;
+    color: var(--ink) !important;
+}
+
+.dashboard-panel,
+.diagnostics-console,
+.sync-status-panel,
+.task-statistics-panel,
+.spell-mana-bar {
+    background: var(--card-bg) !important;
+}
+
+.spell-card-section,
+.party-quest-section,
+.party-member-details,
+.health-potion-panel,
+.stats-table th,
+.stats-table td,
+.best-category-block {
+    border-color: var(--card-border) !important;
+}
+
+.active-quest-card,
+.owned-quest-card,
+.safe-sell-item,
+.stat-delta-positive,
+.spell-mana-preview {
+    border-color: color-mix(in srgb, var(--success) 34%, var(--card-border)) !important;
+    background: color-mix(in srgb, var(--surface) 88%, var(--success)) !important;
+}
+
+.warning-card,
+.spell-cron-warning,
+.confirmation-panel,
+.import-warning {
+    border-color: color-mix(in srgb, var(--accent) 36%, var(--card-border)) !important;
+    background: color-mix(in srgb, var(--surface) 86%, var(--accent)) !important;
+}
+
+.danger-mana,
+.danger-card,
+.stat-delta-negative,
+.preset-remove-confirm {
+    border-color: color-mix(in srgb, var(--danger) 36%, var(--card-border)) !important;
+    background: color-mix(in srgb, var(--surface) 88%, var(--danger)) !important;
+}
+
+.segmented-control button {
+    color: var(--muted);
+}
+
+.segmented-control button.active {
+    background: var(--primary);
+    color: var(--button-text);
+}
+
+.party-login-band,
+.party-cron-chart {
+    background-color: var(--surface) !important;
+}
+
+.party-login-band {
+    background-image: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--muted) 20%, transparent),
+        color-mix(in srgb, var(--primary) 46%, transparent),
+        color-mix(in srgb, var(--accent) 42%, transparent),
+        color-mix(in srgb, var(--muted) 20%, transparent)
+    ) !important;
+}
+
+.party-cron-chart {
+    background-image:
+        linear-gradient(color-mix(in srgb, var(--muted) 12%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--muted) 12%, transparent) 1px, transparent 1px) !important;
+}
+
+.reward-pill,
+.count-pill,
+.inventory-stat-value.highest-stat,
+.inventory-stat-value.delta-up,
+.stat-delta-positive {
+    color: var(--success) !important;
+}
+
+.inventory-stat-value.delta-down,
+.stat-delta-negative,
+.spell-disabled-note {
+    color: var(--danger) !important;
+}
+
+.task-card-drop-before::before,
+.task-card-drop-after::after {
+    background: var(--focus);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 22%, transparent);
+}
+
+.task-card.completed-task {
+    border-color: var(--disabled-border) !important;
+    color: var(--disabled-text) !important;
+}
+
+.task-card.completed-task .task-title {
+    color: var(--disabled-text) !important;
+}
+
+.mud-alert-filled-info,
+.mud-alert-filled-success,
+.mud-alert-filled-warning,
+.mud-alert-outlined-info,
+.mud-alert-outlined-warning {
+    border-color: color-mix(in srgb, var(--focus) 34%, var(--card-border)) !important;
+    background: color-mix(in srgb, var(--surface) 82%, var(--focus)) !important;
+    color: var(--ink) !important;
+}
+
+.mud-alert-filled-warning,
+.mud-alert-outlined-warning {
+    border-color: color-mix(in srgb, var(--accent) 42%, var(--card-border)) !important;
+    background: color-mix(in srgb, var(--surface) 82%, var(--accent)) !important;
+}
+
 #blazor-error-ui {
     background: #fff2d8;
     bottom: 0;

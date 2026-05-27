@@ -70,6 +70,36 @@ public sealed class StaticAssetRegressionTests
     }
 
     [Fact]
+    public void App_css_routes_reported_theming_surfaces_through_color_scheme_tokens()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var stylesheetPath = Path.Combine(
+            repositoryRoot,
+            "src",
+            "Habitica.WebApp",
+            "wwwroot",
+            "css",
+            "app.css");
+        var stylesheet = File.ReadAllText(stylesheetPath);
+
+        Assert.Contains("--appbar-bg", stylesheet);
+        Assert.Contains("--drawer-bg", stylesheet);
+        Assert.Contains("--input-bg", stylesheet);
+        Assert.Contains("--disabled-bg", stylesheet);
+        Assert.Contains(".topbar", stylesheet);
+        Assert.Contains(".app-drawer", stylesheet);
+        Assert.Contains(".mud-button:disabled", stylesheet);
+        Assert.Contains("input[type=\"file\"].app-input::file-selector-button", stylesheet);
+        Assert.Contains(".dashboard-link-card", stylesheet);
+        Assert.Contains(".party-cron-chart", stylesheet);
+        Assert.Contains(".diagnostics-log-item:active", stylesheet);
+        Assert.Contains(".segmented-control button.active", stylesheet);
+        Assert.Contains("var(--surface)", stylesheet);
+        Assert.Contains("var(--input-bg)", stylesheet);
+        Assert.Contains("var(--disabled-text)", stylesheet);
+    }
+
+    [Fact]
     public void Party_sync_module_does_not_send_habitica_api_token()
     {
         var repositoryRoot = FindRepositoryRoot();
