@@ -60,7 +60,7 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-(empty)
+- Add super-small and lightweight versions of unfinished dailies to CRON related block on Dashboard page, so user when is asked to CRON can fill those in. On Spell page when user is asked to CRON we should provide those dailies too: maybe redirect to Dashboard (but that is not very goo in UX way), maybe add those tasks to CRON related spell card part (but I am afraid that can lead to unreadable UI - to much stuff). Think on this hard.
 
 ## Prioritized Next Changes
 
