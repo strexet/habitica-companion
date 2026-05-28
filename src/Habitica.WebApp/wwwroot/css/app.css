@@ -2329,6 +2329,7 @@ a {
 
 .color-scheme-panel--presets-only .color-scheme-select-row {
     flex: 0 1 auto;
+    flex-direction: row;
     gap: 0.4rem;
     align-items: center;
 }
