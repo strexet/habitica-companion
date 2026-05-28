@@ -60,72 +60,7 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Top. Add one more pair of themes: {
-  "Name": "Blessed Skyhaven",
-  "Tokens": {
-  "Background": "#edf8ff",
-  "CardBackground": "rgba(255, 255, 255, 0.97)",
-  "CardBorder": "rgba(255, 213, 92, 0.62)",
-  "Ink": "#1b3148",
-  "Muted": "#6f879d",
-  "Primary": "#6fbfff",
-  "Accent": "#f0bd3f",
-  "Danger": "#d75d75",
-  "Success": "#56b8f0",
-  "Focus": "#9bdcff",
-  "Shadow": "0 24px 78px rgba(255, 224, 128, 0.38)",
-  "Surface": "rgba(245, 252, 255, 0.92)",
-  "SurfaceStrong": "rgba(255, 255, 255, 0.99)",
-  "ChartPrimary": "#6fbfff",
-  "ChartSecondary": "#f0bd3f",
-  "TaskNegative": "#ffe4ec",
-  "TaskNeutral": "#f5fcff",
-  "TaskPositive": "#e2f5ff",
-  "AppBarBackground": "#fff4c5",
-  "AppBarText": "#1b3148",
-  "DrawerBackground": "#fafdff",
-  "DrawerText": "#1b3148",
-  "ButtonText": "#10283d",
-  "DisabledBackground": "rgba(27, 49, 72, 0.08)",
-  "DisabledText": "rgba(111, 135, 157, 0.62)",
-  "DisabledBorder": "rgba(255, 213, 92, 0.36)",
-  "InputBackground": "#fbfeff",
-  "InputBorder": "rgba(111, 191, 255, 0.52)"
-  }
-  } and {
-  "Name": "Infernal Covenant",
-  "Tokens": {
-  "Background": "#030000",
-  "CardBackground": "rgba(9, 1, 1, 0.99)",
-  "CardBorder": "rgba(255, 34, 54, 0.54)",
-  "Ink": "#e8caca",
-  "Muted": "#a46d70",
-  "Primary": "#ff1f36",
-  "Accent": "#9b0c18",
-  "Danger": "#ff3048",
-  "Success": "#9a4a34",
-  "Focus": "#ff4058",
-  "Shadow": "0 30px 90px rgba(255, 20, 45, 0.32)",
-  "Surface": "rgba(10, 2, 2, 0.97)",
-  "SurfaceStrong": "rgba(18, 3, 4, 0.99)",
-  "ChartPrimary": "#ff1f36",
-  "ChartSecondary": "#9b0c18",
-  "TaskNegative": "#210305",
-  "TaskNeutral": "#140203",
-  "TaskPositive": "#1a0704",
-  "AppBarBackground": "#070000",
-  "AppBarText": "#e8caca",
-  "DrawerBackground": "#010000",
-  "DrawerText": "#e8caca",
-  "ButtonText": "#030000",
-  "DisabledBackground": "rgba(232, 202, 202, 0.06)",
-  "DisabledText": "rgba(164, 109, 112, 0.62)",
-  "DisabledBorder": "rgba(255, 34, 54, 0.28)",
-  "InputBackground": "#090101",
-  "InputBorder": "rgba(255, 31, 54, 0.48)"
-  }
-  }. Merge it with Color Scheme Catalog Overhaul And Light/Dark Default Restore task.
-- Top. Add more color fields to color themes. All big objects like main background, panels should have gradient coloring with 9 points: bottom-left, bottom, bottom-right, center-left, center, center-right, top-left, top, top-right - small buttons and icons don't need that and panels with content will be good without "center" (think what to add to app header and side menu too). Think what other color options can be added to improve visuals (maybe some text shadows, for example for headers). Also, I've mentioned that ticks always have blue color (example: PARTY SYNC SETTINGS - Shared queue controls). Merge it with Color Scheme Catalog Overhaul And Light/Dark Default Restore task. 
+(empty)
 
 ## Prioritized Next Changes
 
@@ -138,9 +73,11 @@ Goal: rebuild the built-in color-scheme catalog with explicit light/dark categor
 Touch:
 - `src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs`
 - `src/Habitica.WebApp/Theme/ColorSchemeService.cs`
+- new `src/Habitica.WebApp/Theme/ReadableSchemeClipboardModel.cs` and `src/Habitica.WebApp/Theme/ReadableSchemeParser.cs` (v2 readable copy/paste shape + bidirectional parser; v1 legacy parser stays for backwards-compatible paste)
 - `src/Habitica.WebApp/Components/ColorSchemePanel.razor`
-- `src/Habitica.WebApp/wwwroot/js/colorSchemes.js` (only if the delete-persistence bug originates in the JS fast-cache path)
-- `src/Habitica.Storage/StorageKeys.cs` (no key changes unless a preferences schema bump is required to carry the variant flag)
+- `src/Habitica.WebApp/wwwroot/js/colorSchemes.js` (CSS variable emission for new gradient/text-shadow tokens; also the delete-persistence bug if it originates here)
+- `src/Habitica.WebApp/wwwroot/css/app.css` (consume new gradient/text-shadow CSS variables; global `accent-color` rule for native checkboxes/radios)
+- `src/Habitica.Storage/StorageKeys.cs` (no key changes unless a preferences schema bump is required to carry the variant flag and gradient fields)
 - direct tests in `tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs` and `tests/Habitica.WebApp.Tests/Components/ColorSchemePanelTests.cs`
 - `FEATURES.md`
 
@@ -162,7 +99,7 @@ Built-in catalog rewrite (ordering matters — first two are defaults):
 4. Keep `frosted-cake`.
 5. Replace `neon-rogue` with new id `arcane-wraith` "Arcane Wraith" — Dark. Tokens below.
 6. Replace `neon-abyss-carnival` with new id `phantom-fair` "Phantom Fair" — Dark. Tokens below.
-7. Add new built-ins (tokens below): `toxic-swamp` "Toxic Swamp" (Dark), `green-menace` "Green Menace" (Dark), `abyssal-blackwater` "Abyssal Blackwater" (Dark), `obsidian-glow` "Obsidian Glow" (Dark).
+7. Add new built-ins (tokens below): `toxic-swamp` "Toxic Swamp" (Dark), `green-menace` "Green Menace" (Dark), `abyssal-blackwater` "Abyssal Blackwater" (Dark), `obsidian-glow` "Obsidian Glow" (Dark), `blessed-skyhaven` "Blessed Skyhaven" (Light), `infernal-covenant` "Infernal Covenant" (Dark).
 8. Remove built-ins: `habitica`, `mana-mirage`, `mushroom-meadow`, `mushroom-trip`, `sugar-crash`.
 9. Retain existing other built-ins (`midnight-tavern`, `dragonfire-keep`, `frost-healer`, `sunlit-stable`, `mosswood-quest`, `potion-shop`, `boss-battle`, `quiet-ledger`, `celestial-inn`) — verify each is tagged with the correct light/dark variant.
 10. Author additional Habitica-flavored low-contrast built-ins until light count == dark count. Suggested concepts (name to taste, the implementor picks final names within the spirit): a gold/treasure light theme, an arcane/mana light or dark theme, a stone/brute-force dark theme. Playful shadow tints are encouraged; avoid hard high-contrast palettes.
@@ -226,23 +163,392 @@ Built-in token JSON (verbatim — copy into `ColorSchemeCatalog.cs` without modi
 { "Background": "#05060a", "CardBackground": "rgba(12, 14, 22, 0.96)", "CardBorder": "rgba(155, 190, 255, 0.20)", "Ink": "#e7ecf6", "Muted": "#98a2b8", "Primary": "#7fa8ff", "Accent": "#b78cff", "Danger": "#d85f78", "Success": "#58c99b", "Focus": "#9fc0ff", "Shadow": "0 24px 72px rgba(150, 185, 255, 0.22)", "Surface": "rgba(15, 18, 30, 0.82)", "SurfaceStrong": "rgba(20, 24, 40, 0.96)", "ChartPrimary": "#7fa8ff", "ChartSecondary": "#b78cff", "TaskNegative": "#21151f", "TaskNeutral": "#171d2d", "TaskPositive": "#13251f", "AppBarBackground": "#080a12", "AppBarText": "#e7ecf6", "DrawerBackground": "#07080f", "DrawerText": "#e7ecf6", "ButtonText": "#05060a", "DisabledBackground": "rgba(231, 236, 246, 0.07)", "DisabledText": "rgba(152, 162, 184, 0.54)", "DisabledBorder": "rgba(155, 190, 255, 0.16)", "InputBackground": "#0e111c", "InputBorder": "rgba(155, 190, 255, 0.24)" }
 ```
 
+```json
+// id: blessed-skyhaven  name: "Blessed Skyhaven"  variant: Light
+{ "Background": "#edf8ff", "CardBackground": "rgba(255, 255, 255, 0.97)", "CardBorder": "rgba(255, 213, 92, 0.62)", "Ink": "#1b3148", "Muted": "#6f879d", "Primary": "#6fbfff", "Accent": "#f0bd3f", "Danger": "#d75d75", "Success": "#56b8f0", "Focus": "#9bdcff", "Shadow": "0 24px 78px rgba(255, 224, 128, 0.38)", "Surface": "rgba(245, 252, 255, 0.92)", "SurfaceStrong": "rgba(255, 255, 255, 0.99)", "ChartPrimary": "#6fbfff", "ChartSecondary": "#f0bd3f", "TaskNegative": "#ffe4ec", "TaskNeutral": "#f5fcff", "TaskPositive": "#e2f5ff", "AppBarBackground": "#fff4c5", "AppBarText": "#1b3148", "DrawerBackground": "#fafdff", "DrawerText": "#1b3148", "ButtonText": "#10283d", "DisabledBackground": "rgba(27, 49, 72, 0.08)", "DisabledText": "rgba(111, 135, 157, 0.62)", "DisabledBorder": "rgba(255, 213, 92, 0.36)", "InputBackground": "#fbfeff", "InputBorder": "rgba(111, 191, 255, 0.52)" }
+```
+
+```json
+// id: infernal-covenant  name: "Infernal Covenant"  variant: Dark
+{ "Background": "#030000", "CardBackground": "rgba(9, 1, 1, 0.99)", "CardBorder": "rgba(255, 34, 54, 0.54)", "Ink": "#e8caca", "Muted": "#a46d70", "Primary": "#ff1f36", "Accent": "#9b0c18", "Danger": "#ff3048", "Success": "#9a4a34", "Focus": "#ff4058", "Shadow": "0 30px 90px rgba(255, 20, 45, 0.32)", "Surface": "rgba(10, 2, 2, 0.97)", "SurfaceStrong": "rgba(18, 3, 4, 0.99)", "ChartPrimary": "#ff1f36", "ChartSecondary": "#9b0c18", "TaskNegative": "#210305", "TaskNeutral": "#140203", "TaskPositive": "#1a0704", "AppBarBackground": "#070000", "AppBarText": "#e8caca", "DrawerBackground": "#010000", "DrawerText": "#e8caca", "ButtonText": "#030000", "DisabledBackground": "rgba(232, 202, 202, 0.06)", "DisabledText": "rgba(164, 109, 112, 0.62)", "DisabledBorder": "rgba(255, 34, 54, 0.28)", "InputBackground": "#090101", "InputBorder": "rgba(255, 31, 54, 0.48)" }
+```
+
+Token model expansion — gradients and text shadows:
+
+Big surfaces gain optional multi-stop gradient definitions. All new fields are nullable on `ColorSchemeTokens`; when null, the renderer falls back to the existing solid token. Backwards compatibility: every retained built-in (the 11 not rewritten) must keep working with all gradient fields null.
+
+- Add nullable token records (one per gradient-capable surface). Reuse a shared shape:
+
+```csharp
+public sealed record GradientStops9(
+    string TopLeft, string Top, string TopRight,
+    string MiddleLeft, string Middle, string MiddleRight,
+    string BottomLeft, string Bottom, string BottomRight);
+
+public sealed record GradientStops8(
+    string TopLeft, string Top, string TopRight,
+    string MiddleLeft, string MiddleRight,
+    string BottomLeft, string Bottom, string BottomRight);
+
+public sealed record GradientStops6(
+    string TopLeft, string Top, string TopRight,
+    string BottomLeft, string Bottom, string BottomRight);
+
+public sealed record GradientStops4(
+    string TopLeft, string TopRight,
+    string BottomLeft, string BottomRight);
+
+public sealed record GradientStops2(
+    string Start, string End);
+```
+
+- Extend `ColorSchemeTokens` with nullable fields (all default `null`):
+  - `GradientStops9? BackgroundGradient` — full-page main background. 9 stops because the surface fills the viewport; the center stop is meaningful.
+  - `GradientStops8? CardGradient` — content-bearing panels (`CardBackground`/`Surface`/`SurfaceStrong`). Center stop omitted because text rendered atop the card would compete with a center color flare; mid-edges preserve directional shading without distracting the content.
+  - `GradientStops6? AppBarGradient` — top app header. Six stops: TL/T/TR + BL/B/BR. App-bar height is small, no need for mid-row stops.
+  - `GradientStops6? DrawerGradient` — side menu. Six stops as above; the drawer is narrow and tall so the horizontal triplets read as gradient bands rather than a square grid (acceptable, vertical gradient still dominates visually).
+  - `GradientStops4? PrimaryButtonGradient` — filled primary buttons (Cast, Start New Day, Confirm). 4 corner stops; small surface, 2 may suffice but 4 lets the implementor produce a subtle diagonal sheen if desired.
+  - `GradientStops2? SecondaryButtonGradient` — outlined/text-secondary buttons. 2 stops only (start → end, vertical by default). Cheap and unobtrusive.
+  - `GradientStops2? AccentChipGradient` — accent/badge surfaces (e.g. quest reward chips, status pills). 2 stops.
+- Buttons opt in: when the gradient field is null, the button keeps its solid background (today's behavior). When set, the rendered button uses the gradient. Same null-fallback rule applies to chips.
+- Icons (raw SVG/inline) stay solid — they are filled with `currentColor` and a gradient would require `<linearGradient>` defs out of scope here.
+- Disabled-state guard: when a button is `:disabled`, force `background: var(--disabled-bg)` regardless of gradient — keep contrast with `--disabled-text` and avoid the gradient making disabled buttons look active.
+- Focus ring: ensure `:focus-visible` outline (`var(--focus)`) renders above the gradient.
+- Add nullable text-shadow tokens (per surface):
+  - `string? HeadingTextShadow` — applied to `h1`/`h2`/`h3` and `.section-label` rendered on cards/panels.
+  - `string? AppBarTextShadow` — applied to `AppBarText`.
+  - `string? DrawerTextShadow` — applied to `DrawerText`.
+  Each is a raw CSS `text-shadow` value (e.g. `"0 1px 2px rgba(0,0,0,0.35)"`). Null = no shadow.
+
+Gradient render recipe (frozen — do NOT pick a different approach without raising it):
+
+- Multi-corner stops (9/8/6/4) are NOT rendered as stacked CSS `radial-gradient` overlays. Stacking eight radials blooms, miscolors the midpoints, and burns GPU at full viewport. Conic gradients rotate, do not interpolate bilinearly. Houdini Paint Worklets lack Safari/Firefox-stable support.
+- Instead: in `colorSchemes.js`, paint a tiny `<canvas>` once per gradient surface per scheme load. One pixel per stop. Export as a data URL via `canvas.toDataURL("image/png")`. CSS scales the image up via `background-size: 100% 100%`; the browser's native bilinear interpolation produces a smooth multi-corner gradient that genuinely honors every stop.
+- Canvas sizes per surface:
+  - 9-stop `PageBackground`: 3×3 px (rows top/middle/bottom; columns left/center/right).
+  - 8-stop `Card`: 3×3 px. The middle pixel is computed as the average of the eight stops (so the user-perceived "center" still blends smoothly without requiring an explicit input field).
+  - 6-stop `AppBar`, `Drawer`: 3×2 px (top row TL/T/TR, bottom row BL/B/BR).
+  - 4-stop `PrimaryButton`: 2×2 px.
+  - 2-stop `SecondaryButton`, `AccentChip`: NO canvas — use plain `linear-gradient(180deg, var(--start), var(--end))`. 2-stop is degenerate and CSS handles it well.
+- Painter pseudocode (lives in `colorSchemes.js`):
+
+```javascript
+function paintStopsToDataUrl(width, height, stops) {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      ctx.fillStyle = stops[y * width + x];
+      ctx.fillRect(x, y, 1, 1);
+    }
+  }
+  return canvas.toDataURL("image/png");
+}
+
+// 9-stop background:
+const bgUrl = paintStopsToDataUrl(3, 3, [
+  g.topLeft,    g.top,    g.topRight,
+  g.middleLeft, g.middle, g.middleRight,
+  g.bottomLeft, g.bottom, g.bottomRight,
+]);
+root.style.setProperty("--bg-gradient", `url("${bgUrl}") center/100% 100% no-repeat, var(--bg)`);
+```
+
+- Stops accept any CSS color string `ctx.fillStyle` accepts: `#rgb`, `#rrggbb`, `rgba(...)`, `hsl(...)`, `color-mix(...)` (where supported). Translucent stops (rgba) honor alpha; the `var(--bg)` fallback layer underneath the image keeps the composition valid.
+- Composed variable shape: `url("data:image/png;base64,...") center/100% 100% no-repeat, <solid-fallback>`. The trailing solid fallback is the matching solid token (`var(--bg)`, `var(--card-bg)`, etc.) so any opacity in stops resolves against the right base.
+- `background-size: 100% 100%` is implicit in the shorthand. Do NOT use `background-repeat` other than `no-repeat`. Bilinear scaling is the browser default for raster images via `image-rendering: auto` — do NOT set `image-rendering: pixelated` on these surfaces.
+- Performance: each gradient repaint is one canvas + one `toDataURL` call. The canvases are tiny (max 9 pixels), conversion is sub-millisecond. Data URLs total to a few hundred bytes across all surfaces. Painting happens once per scheme switch, not per frame. No further runtime cost.
+- Memory budget: store the generated data URLs on the active scheme's applied state; clear them when the scheme changes. No need to cache across schemes.
+- Accessibility: the data-URL image is purely decorative; do NOT add `role="img"` or `alt` text. Reduced-motion preference is irrelevant (static).
+- Print stylesheets: skip the data URL on `@media print` — fall back to the solid token. The image-URL CSS variable still works in print but adds ink cost.
+
+Feasibility sanity check:
+- 9/8/6/4-stop gradients via tiny rasterized images render reliably in Chrome, Edge, Safari (incl. iOS), Firefox.
+- 2-stop CSS linear gradients are universally supported.
+- Text shadows are universally supported.
+- Native `accent-color` is supported in all evergreen browsers; older Safari falls back to default tick. Acceptable.
+- Per-corner button gradients on `:hover` / `:active` keep working because we override `background:` and let `transform`/`box-shadow` handle the interaction states.
+
+JS interop and CSS variables:
+- `colorSchemes.js` emits per-stop variables under predictable names. For the 9-stop background:
+  `--bg-grad-tl`, `--bg-grad-t`, `--bg-grad-tr`, `--bg-grad-ml`, `--bg-grad-m`, `--bg-grad-mr`, `--bg-grad-bl`, `--bg-grad-b`, `--bg-grad-br`.
+  Similar pattern for `--card-grad-*` (8 stops, no `-m`), `--appbar-grad-*` (6), `--drawer-grad-*` (6).
+- In addition, emit a precomposed `--bg-gradient` (composed `radial-gradient(...)` or layered `conic-gradient` — implementer chooses the recipe that best approximates a 3×3 corner-mapped surface) and similar `--card-gradient`, `--appbar-gradient`, `--drawer-gradient`, `--primary-btn-gradient`, `--secondary-btn-gradient`, `--accent-chip-gradient`. CSS rules in `app.css` reference the composed variables; the per-stop variables are exposed for ad-hoc consumers (e.g. badge or chart code).
+- When a scheme has no gradient for a surface, emit `--<surface>-gradient: <solid-token-fallback>` (so `background: var(--bg-gradient)` still works), and clear the per-stop `--*-grad-*` variables to `initial`. Solid fallbacks per surface: `--bg`, `--card-bg`, `--appbar-bg`, `--drawer-bg`, `--primary`, transparent/`--card-bg`, `--accent`.
+- Emit text-shadow variables: `--heading-text-shadow`, `--appbar-text-shadow`, `--drawer-text-shadow`. Default `none` when null.
+
+CSS in `app.css`:
+- `body` / main app shell background: `background: var(--bg-gradient);` instead of `background: var(--bg);`.
+- `.card-surface`, `.dashboard-panel`: `background: var(--card-gradient);`.
+- App bar / drawer: `background: var(--appbar-gradient);` / `background: var(--drawer-gradient);`.
+- MudButton primary (`Variant.Filled` + `Color.Primary`): `background: var(--primary-btn-gradient);`. Secondary/outlined buttons: `background: var(--secondary-btn-gradient);`. Accent chips/badges: `background: var(--accent-chip-gradient);`. `:disabled` overrides to `var(--disabled-bg)`. `:focus-visible` outline uses `var(--focus)`.
+- Headings receive `text-shadow: var(--heading-text-shadow, none);`. AppBar/Drawer text use their respective shadow variables.
+- Native control accent fix (see below): a single global rule for `input[type="checkbox"], input[type="radio"] { accent-color: var(--primary); }` placed where it cannot be overridden by browser defaults. The existing scoped `.app-input { accent-color: var(--primary); }` does not cover bare checkboxes (e.g. PARTY SYNC SETTINGS `Shared queue controls` checkboxes), which is why those render as system blue today.
+
+Custom-scheme editor:
+- When the user saves a custom scheme, expose collapsible "Advanced" panels per gradient-capable surface. Default state: collapsed and disabled (solid token used). On expand + enable, render the 9/8/6 swatch pickers prefilled from the current solid token so the user can tweak. On save, only persist gradient fields that are populated; otherwise persist null.
+- Add a "Text shadows" subgroup with three optional inputs (heading/appbar/drawer). Empty value = null.
+
+Native control accent fix (also addresses PARTY SYNC SETTINGS — Shared queue controls):
+- Today `src/Habitica.WebApp/wwwroot/css/app.css:566` and `:1735` and `:2902` set `accent-color: var(--primary)` only on `.app-input` and a couple of scoped contexts. Bare `<input type="checkbox">` inside `.checkbox-row` (PartyPage.razor lines 160–195) inherits the browser's system color (Windows/Chrome blue, Safari blue, etc.).
+- Add a global rule `input[type="checkbox"], input[type="radio"] { accent-color: var(--primary); }` near the top of `app.css` and verify no scoped overrides exist downstream. Verify the resulting tick color updates across all themes including the dark ones.
+
+Preferences schema:
+- Bump the persisted `ColorSchemePreferences` schema version. Old payloads load with all new fields null. New payloads round-trip through localStorage and portable `IKeyValueStorage` without loss.
+
+Token JSON for new gradients/text-shadows on rewritten built-ins:
+- Not required. Existing token JSON for Gryphy/Forest Legacy/Arcane Wraith/etc. keeps gradient fields null and looks identical to today.
+- Blessed Skyhaven and Infernal Covenant ship without gradient definitions in this entry; the implementor may optionally author tasteful gradient stops for these two if the resulting render reads well.
+
+Readable Copy/Paste Preset JSON schema:
+
+Goal: the JSON emitted by the **Copy preset** button must be self-explanatory enough that a user can read it, hand-edit it, and produce a working custom theme without diving into source. **Paste preset** must consume that same readable schema and also still accept the legacy flat-tokens shape so old shared snippets keep working.
+
+Top-level shape (every field except `Name` and `Colors` is optional — paste tolerates omissions):
+
+```json
+{
+  "$schema": "habitica-tool.color-scheme.v2",
+  "Name": "My Theme",
+  "Variant": "Light",
+  "Description": "Optional free-text note about this theme.",
+  "Colors": {
+    "PageBackground":       "#f7f1ff",
+    "CardBackground":       "rgba(255, 252, 255, 0.94)",
+    "CardBorder":           "rgba(103, 49, 184, 0.13)",
+    "BodyText":             "#2d2040",
+    "SecondaryText":        "#756881",
+    "Primary":              "#7334bd",
+    "Accent":               "#d99416",
+    "Danger":               "#c84a67",
+    "Success":              "#2a9277",
+    "FocusOutline":         "#438fd0",
+    "CardShadow":           "0 18px 44px rgba(32, 17, 54, 0.09)",
+    "SurfaceTint":          "rgba(255, 255, 255, 0.72)",
+    "SurfaceStrongTint":    "rgba(255, 252, 255, 0.92)",
+    "ChartPrimary":         "#7334bd",
+    "ChartSecondary":       "#438fd0",
+    "TaskNegativeTint":     "#e4d8f6",
+    "TaskNeutralTint":      "#f0e9fb",
+    "TaskPositiveTint":     "#faf7ff",
+    "AppBarBackground":     "#684095",
+    "AppBarText":           "#fff8ff",
+    "DrawerBackground":     "#3b2356",
+    "DrawerText":           "#f8f0ff",
+    "ButtonText":           "#ffffff",
+    "DisabledBackground":   "rgba(103, 49, 184, 0.06)",
+    "DisabledText":         "rgba(117, 104, 129, 0.58)",
+    "DisabledBorder":       "rgba(117, 104, 129, 0.22)",
+    "InputBackground":      "rgba(255, 252, 255, 0.92)",
+    "InputBorder":          "rgba(103, 49, 184, 0.13)"
+  },
+  "Gradients": {
+    "PageBackground": {
+      "TopLeft":     "#f7f1ff", "Top":         "#f4ecff", "TopRight":    "#efe4ff",
+      "MiddleLeft":  "#f6efff", "Middle":      "#f3eaff", "MiddleRight": "#eee2ff",
+      "BottomLeft":  "#f5edff", "Bottom":      "#f1e6ff", "BottomRight": "#ebdcff"
+    },
+    "Card": {
+      "TopLeft":     "...", "Top":         "...", "TopRight":    "...",
+      "MiddleLeft":  "...",                       "MiddleRight": "...",
+      "BottomLeft":  "...", "Bottom":      "...", "BottomRight": "..."
+    },
+    "AppBar": {
+      "TopLeft":    "...", "Top":    "...", "TopRight":    "...",
+      "BottomLeft": "...", "Bottom": "...", "BottomRight": "..."
+    },
+    "Drawer": {
+      "TopLeft":    "...", "Top":    "...", "TopRight":    "...",
+      "BottomLeft": "...", "Bottom": "...", "BottomRight": "..."
+    },
+    "PrimaryButton": {
+      "TopLeft":    "...", "TopRight":    "...",
+      "BottomLeft": "...", "BottomRight": "..."
+    },
+    "SecondaryButton": { "Start": "...", "End": "..." },
+    "AccentChip":      { "Start": "...", "End": "..." }
+  },
+  "TextShadows": {
+    "Headings": "0 1px 2px rgba(0,0,0,0.35)",
+    "AppBar":   null,
+    "Drawer":   null
+  }
+}
+```
+
+Field-name principles:
+- Self-describing where the role isn't obvious. `Background` → `PageBackground` (clarifies "page, not card"). `Ink` → `BodyText`. `Muted` → `SecondaryText`. `Focus` → `FocusOutline`. `Shadow` → `CardShadow`. `Surface`/`SurfaceStrong` → `SurfaceTint`/`SurfaceStrongTint` (signals they're translucent overlays). `TaskNegative`/`TaskNeutral`/`TaskPositive` → `TaskNegativeTint`/`TaskNeutralTint`/`TaskPositiveTint`.
+- Names that are already clear stay: `CardBackground`, `CardBorder`, `Primary`, `Accent`, `Danger`, `Success`, `ChartPrimary`, `ChartSecondary`, `AppBarBackground`, `AppBarText`, `DrawerBackground`, `DrawerText`, `ButtonText`, `DisabledBackground`/`Text`/`Border`, `InputBackground`/`Border`.
+- Gradient stop names match cardinal positions used in the C# records (`TopLeft`, `Top`, `TopRight`, `MiddleLeft`, `Middle`, `MiddleRight`, `BottomLeft`, `Bottom`, `BottomRight` for 9-stop; subsets per surface). 2-stop uses `Start`/`End`.
+- `Variant` is `"Light"` or `"Dark"` — lower-case acceptable on paste; emit Pascal-case on copy.
+- `$schema` is a constant `"habitica-tool.color-scheme.v2"` — the parser uses it to choose the v2 (readable) decoder path; absence means try v1 (legacy flat-tokens) fallback. Do NOT fetch the URL.
+
+Copy preset output:
+- Emit pretty-printed (indented) JSON, 2-space indent, ordered exactly as above so a user scanning top-to-bottom learns the layout.
+- Include every populated field. Null-valued gradient surfaces and null text-shadows are omitted from the output (cleaner), but the parser must accept explicit nulls on paste.
+- `Name` is the editor's current name; `Variant` matches the editor's dark-theme toggle; `Description` defaults to an empty string when the editor has no description field (a description input may be added in a follow-up; for now the field is reserved and ignored on paste).
+
+Paste preset parsing rules:
+- v2 detection: `$schema == "habitica-tool.color-scheme.v2"` OR a top-level `Colors` object is present → v2 decoder.
+- v1 fallback: when neither marker is present, treat the top-level object as the legacy flat tokens (matches the existing `ColorSchemeClipboardModel` payload and lets old shared JSON snippets keep working).
+- Aliases on paste: each readable name accepts the legacy short name too. `PageBackground` ↔ `Background`, `BodyText` ↔ `Ink`, `SecondaryText` ↔ `Muted`, `FocusOutline` ↔ `Focus`, `CardShadow` ↔ `Shadow`, `SurfaceTint` ↔ `Surface`, `SurfaceStrongTint` ↔ `SurfaceStrong`, `TaskNegativeTint`/etc. ↔ `TaskNegative`/etc. Either-or — both present and disagreeing → reject with a clear error.
+- Required minimum for paste: `Name` + at least one recognised color in `Colors` (or, for v1 fallback, in the root object). Missing optional groups (`Gradients`, `TextShadows`, `Variant`, `Description`) are treated as null/defaults.
+- Partial gradients: a `Gradients.<Surface>` object must contain ALL stops for its surface count, or be omitted entirely. A half-filled gradient is rejected with a specific error naming the surface and the missing stops.
+- Unknown fields are ignored silently so future-version JSON pasted into an older build does not hard-fail (the unknown fields are dropped; recognized fields apply).
+- Invalid color values surface a precise error pointing at the field path (e.g. `Colors.Primary is not a valid CSS color`).
+
+Help affordance:
+- Above the Copy/Paste buttons, add a small `What is this?` disclosure (link or info icon) that, when expanded, shows a 1-screen explainer with:
+  - "Each color controls one part of the app — page background, cards, buttons, text."
+  - A labelled mini-mock of the app with each field name pointing to where it applies (text + lightweight schematic; no need for pixel-perfect screenshots).
+  - A "Tips" line: "Hex (`#aabbcc`), `rgba(...)`, or `color-mix(...)` all work. `CardShadow` is a full CSS `box-shadow` value. `TextShadows.*` is a CSS `text-shadow` value or null."
+- Place the explainer above the existing "Copy the preset, tweak the colors, then paste it back…" copy at `ColorSchemePanel.razor:92`.
+
+Implementation notes:
+- New types in `Habitica.WebApp/Theme/`:
+  - `ReadableSchemeClipboardModel` (v2) with the shape above.
+  - `ReadableSchemeParser` — bidirectional: serialize a `ColorSchemeDefinition` → v2 JSON, and parse v2 JSON → `ColorSchemeDefinition`. Wraps the existing legacy parser as the v1 fallback.
+- Existing `ColorSchemeClipboardModel` (the v1 record at `ColorSchemePanel.razor:672`) stays for legacy paste only — the Copy button switches to emit v2.
+- Extend the existing `SchemeParseResult` enum with `PartialGradient` and `ConflictingAliases` cases; extend the user-facing message map in `DescribeParseFailure`.
+- All gradient and text-shadow nulls are preserved exactly through copy → paste → save → reload → copy.
+
+Acceptance (added to the existing Acceptance block — see below):
+- Copy preset emits indented JSON with `$schema`, `Name`, `Variant`, optional `Description`, `Colors`, optional `Gradients`, optional `TextShadows` exactly as documented.
+- Field names in the emitted JSON match the readable schema (e.g. `PageBackground`, `BodyText`, `SecondaryText`, `FocusOutline`, `CardShadow`, `SurfaceTint`).
+- Paste accepts the v2 readable schema, the v1 legacy flat-tokens shape, and the readable schema with legacy aliases mixed in (when not conflicting).
+- Paste rejects partial gradients with a message naming the surface and missing stops.
+- Paste rejects conflicting alias pairs (e.g. both `PageBackground` and `Background` set to different values) with a clear error.
+- Round-trip: copy → paste yields a byte-identical `ColorSchemeDefinition` (including all gradient and text-shadow fields).
+- The `What is this?` explainer renders above Copy/Paste and references every field in the schema by its readable name.
+
+Random theme generator + chaos slider — gradient extension:
+
+The existing generator emits solid tokens only. After this entry ships, random themes would look flat next to gradient-rich built-ins — visually inconsistent in the catalog UX. Extend the generator so random themes ship with gradient stops too. **Calm should feel premium and subtle; Madness should genuinely look chaotic and clashy.** Do not flatten Madness in the name of safety; the user opts into chaos by dragging the slider.
+
+- `GenerateRandomTheme(seed, chaos)` derives each gradient stop deterministically from the seed and chaos value. Per-corner offsets perturb hue and lightness around the matching solid token. Seed determinism preserved: same `(seed, chaos)` reproduces every stop exactly.
+- Generator emits gradient definitions for `PageBackground` (9 stops), `Card` (8 stops), `AppBar` (6 stops), `Drawer` (6 stops), `PrimaryButton` (4 stops), `SecondaryButton` (2 stops), `AccentChip` (2 stops). All seven gradient-capable surfaces.
+- Generator does NOT emit text-shadow tokens. Random text shadows hurt readability too easily; leave `HeadingTextShadow`/`AppBarTextShadow`/`DrawerTextShadow` null. Authors can add shadows by hand in the custom editor.
+
+Per-surface chaos scaling (chaos `c` ∈ [0, 1], piecewise — gentle Calm side, unhinged Madness side):
+
+| Surface | Calm (c ≤ 0.6) | Madness ramp (0.6 < c ≤ 1.0) | Rationale |
+|---|---|---|---|
+| `PageBackground` | `c` (full) | `c * 1.4` at top | Decorative. Goes nuclear at Madness. |
+| `Card` | `c * 0.5` (tame) | linear ramp to `c * 1.2` at c=1.0 | Calm side stays readable for daily use; Madness side becomes deliberately wild — text may swim. The feature, not a bug. |
+| `AppBar`, `Drawer` | `c` | `c * 1.3` at top | Chrome bands lean into clash at high end. |
+| `PrimaryButton` | `c * 0.8` | `c * 1.2` at top | Calm preserves ButtonText contrast; Madness lets buttons scream. |
+| `SecondaryButton`, `AccentChip` | `c` | `c * 1.5` at top | Small surfaces. Pure carnival at Madness. |
+
+Easing curve on the base chaos value BEFORE per-surface scaling: `c_eff = c^0.55`. Aggressive top-end push so the last quarter of the slider feels like falling off a cliff. Calm-side movement stays subtle for premium-looking low-chaos themes.
+
+High-chaos hue divergence (no joke):
+- At `c > 0.6`, target a minimum hue gap of 90° between `Primary` and `Accent`.
+- At `c > 0.85`, push the gap to 150°–180° (deliberate clash). `Danger` and `Success` similarly allowed to abandon the red/green convention — Danger may go cyan, Success may go magenta if the seed says so.
+- At `c > 0.9`, saturation boost: solid token saturations driven to 0.85–1.0 in HSL space. Themes look neon, not pastel.
+- At `c > 0.95`, allow `BodyText` and `AppBarText`/`DrawerText` to drift toward saturated colors instead of safe near-neutral. Combined with wild backgrounds this is genuinely hard to read — intentional.
+
+Per-corner gradient hue range:
+- Calm (`c ≤ 0.5`): per-corner hue rotation capped at ±25°. Subtle directional shading.
+- Mid (`0.5 < c ≤ 0.85`): cap at ±90°. Visible color variation per corner.
+- Madness (`c > 0.85`): cap at ±180°. Opposite-hue corners ARE allowed. Bilinear midpoints may interpolate through grey, and that grey wash IS part of the Madness look. Embrace the mud.
+
+High-chaos text shadows (NEW exception to "generator emits no text shadows"):
+- At `c > 0.85` ONLY, the generator emits randomized `HeadingTextShadow` with a strong colored blur (e.g. `0 0 18px rgba(<saturated-hue>, 0.85)`). Makes headings glow / smear at Madness. Below 0.85, shadows stay null.
+- `AppBarTextShadow` / `DrawerTextShadow` stay null even at Madness — those bars are small and shadows there break too obviously.
+
+Contrast guard — tiered, with Madness usability floor:
+
+- For `c ≤ 0.6` (Calm/Lively): enforce on Card stop average vs `BodyText` ≥ WCAG 3.0. Nudge uniformly toward `CardBackground` if the average fails.
+- For `0.6 < c ≤ 0.85` (Wild): relaxed minimum (WCAG 2.0 large-text contrast). Stops can drift further.
+- For `c > 0.85` (Madness): the per-surface chaos guards drop, BUT the **Madness usability floor** below stays on. The point is "visually chaotic, still usable" — not "broken."
+
+Madness usability floor — "usable enough, not pretty" (always on, even at `c = 1.0`):
+
+The point: at Madness the app looks insane but the user can still find the Settings page to pick a sane theme. Not a full WCAG guarantee — just enough handholds to navigate out.
+
+1. **AppBarText vs the average AppBar gradient** — minimum contrast 3.0:1. Top nav stays readable. (AppBar is small enough that even the worst stop usually averages OK; we only floor the mean.)
+2. **DrawerText vs the average Drawer gradient** — minimum contrast 3.0:1. Side menu stays navigable so users can reach Settings.
+3. **ButtonText vs PrimaryButton gradient average** — minimum contrast 3.0:1. Primary actions findable. SecondaryButton not floored — secondary actions may be invisible at Madness; that is fine.
+4. **FocusOutline vs both PageBackground average AND CardBackground** — minimum contrast 2.5:1. Keyboard nav never fully invisible.
+5. **Danger distinguishable from Primary** — either hue separation ≥ 30° OR luminance separation ≥ 0.15. Destructive actions identifiable. Loose floor; lets Danger go cyan if Primary is red.
+
+What breaks loose at Madness (by design):
+- PageBackground per-corner stops including opposite-hue corners. Mud midpoints OK.
+- Card gradient AND Card text legibility — Card surface IS allowed to swim. Per-corner stops can clash hard. BodyText may be hard to read on cards. User will scroll, squint, and laugh; the app is still navigable via top bar and drawer.
+- Solid token saturation (0.85–1.0 HSL).
+- Heading text shadow color and blur (cap blur ≤ 22px so glyph outlines survive somewhere on the page).
+- Hue identity of Primary/Accent/Danger/Success — convention abandoned.
+- Input borders, disabled-state distinction, card shadows, surface tints — all free to clash.
+
+Enforcement:
+1. Roll all stops from `(seed, c)` with the per-surface chaos curves.
+2. Check the 5 usability floors. For each failing floor, nudge ONLY that single token (e.g. just `AppBarText`) along the minimum perceptual path until it passes. Do not cascade nudges; chaos on every other channel survives untouched.
+3. No re-rolls. The seed must remain deterministic, and the nudges above are bounded — they always succeed in one pass for the 5 listed floors.
+
+Net result: at Madness the dashboard background pulses, cards clash, buttons scream, headings glow — but the app bar stays readable, the drawer is navigable, primary buttons are findable, focus rings are visible, and Danger never blurs into Primary. Five handholds. Everything else is chaos.
+
+Slider label thresholds — keep the existing 10-bucket ladder at `ColorSchemePanel.razor:177-189`. Do NOT collapse to 4. The ladder reads as escalating intensity:
+
+| Threshold | Label | Vibe |
+|---|---|---|
+| `c ≤ 0.01` | CALM | Solid-only feel; gradients barely perceivable |
+| `c < 0.12` | MELLOW | Subtle directional shading |
+| `c < 0.24` | BREEZY | Visible but tasteful |
+| `c < 0.36` | LIVELY | Premium-magazine palette |
+| `c < 0.50` | WILD | Bold corners, still readable |
+| `c < 0.62` | FERAL | Saturation climbing, hues drift |
+| `c < 0.74` | FRENZIED | Convention loosening, Card stops clash |
+| `c < 0.86` | CHAOTIC | Heading shadows arrive, hues clash hard |
+| `c < 0.99` | UNHINGED | Saturation maxed, hue identity abandoned |
+| else | MADNESS | Floors only — handholds + chaos |
+
+Chaos-tier breakpoints used in this entry map onto the existing ladder, not new bands:
+- "Calm" chaos curve range = CALM through LIVELY (`c ≤ 0.36`).
+- "Wild" range = WILD through FRENZIED (`0.36 < c ≤ 0.74`).
+- "Madness" floor activates at CHAOTIC and above (`c > 0.85`), matching where heading text-shadows turn on.
+- The 5-handhold usability floor is enforced at MADNESS specifically (`c > 0.99`); UNHINGED and CHAOTIC still apply the tiered guards. Adjust the spec phrasing to read against these ladder bucket names, not the 4-tier shorthand.
+
+Existing test `Same_seed_reproduces_the_same_theme_so_chaos_slider_is_reversible` must still pass. Add tests: gradient stops emitted at every chaos level; two seeds produce distinct gradient sets; piecewise per-surface chaos curve respected (snapshot specific multipliers at c=0.3, 0.6, 0.85, 1.0); high-chaos hue divergence between Primary/Accent at c=0.95 ≥ 150°; text-shadow emitted only at c > 0.85; contrast guard fires at c=0.5, relaxes at c=0.7, skipped at c=0.95; saturation boost at c > 0.9 measurable in HSL.
+
+Live chaos slider performance:
+- `AdjustRandomChaosAsync` re-runs the generator on every slider tick, then `applyColorScheme` re-paints the canvases. Cost per tick: 5 × (canvas paint + `toDataURL`) ≈ 2.5 ms desktop, ~8 ms low-end mobile. Comfortably under one 60 Hz frame (16.67 ms).
+- No throttling/debouncing on the slider — the cost is small enough that live-morph stays smooth.
+- If profiling on low-end mobile shows dropped frames, fall back to `requestAnimationFrame` coalescing in the slider handler. Do NOT add `setTimeout` debouncing — that makes the slider feel laggy.
+
 Out of scope:
-- adding or renaming token fields in `ColorSchemeTokens`;
-- changing the random-theme generator, chaos slider, or seed-replay behavior;
-- changing portable-sync storage keys (only the value schema is bumped to carry the variant flag);
-- changing DI registration or the JS interop API.
+- renaming or removing existing token fields in `ColorSchemeTokens` (additive only);
+- gradients on inline icons (SVG `currentColor` fill);
+- random-generator emission of text-shadow tokens (left null; user can author in editor);
+- changing the chaos slider's seed-replay semantics or its Calm-to-Madness labels;
+- changing portable-sync storage keys (only the value schema is bumped to carry the variant flag and the new optional fields);
+- changing DI registration or the JS interop function signature.
 
 Acceptance:
 - Built-in catalog matches the new list and order. Light and dark count are equal.
 - Gryphy Light/Dark tokens match the provided JSON exactly.
 - `alpha` is renamed to `forest-legacy` and stored preferences referencing `alpha` continue to resolve through the migration.
 - `habitica`, `mana-mirage`, `mushroom-meadow`, `mushroom-trip`, `sugar-crash`, `neon-rogue`, `neon-abyss-carnival` are absent from `BuiltInSchemes`.
-- New schemes `arcane-wraith`, `phantom-fair`, `toxic-swamp`, `green-menace`, `abyssal-blackwater`, `obsidian-glow` are present with the provided tokens.
+- New schemes `arcane-wraith`, `phantom-fair`, `toxic-swamp`, `green-menace`, `abyssal-blackwater`, `obsidian-glow`, `blessed-skyhaven`, `infernal-covenant` are present with the provided tokens.
 - Deleting a custom preset persists across page reload; the deleted scheme does not reappear.
 - Deleting the active scheme falls back to `gryphy-light` if the deleted scheme was Light, `gryphy-dark` if Dark.
 - Custom-scheme editor exposes a Dark-theme toggle; saved variant survives reload and portable sync.
 - `ColorSchemePanel` renders sections in order Default → Built-in Light → Built-in Dark → Custom → Generated. Empty Custom and Generated sections are hidden; Default and Built-in Light/Dark are always shown.
-- Tests cover built-in membership, ordering, removed-schemes absence, light/dark count parity, custom variant persistence (including portable sync round-trip), delete-persistence regression, deletion-fallback per variant, and legacy-id migration on load.
+- `ColorSchemeTokens` exposes the new nullable gradient fields (`BackgroundGradient`, `CardGradient`, `AppBarGradient`, `DrawerGradient`, `PrimaryButtonGradient`, `SecondaryButtonGradient`, `AccentChipGradient`) and text-shadow fields (`HeadingTextShadow`, `AppBarTextShadow`, `DrawerTextShadow`). All retained built-ins still load with these fields null and render identically to before.
+- `colorSchemes.js` emits per-stop CSS variables AND composed `--bg-gradient` / `--card-gradient` / `--appbar-gradient` / `--drawer-gradient` / `--primary-btn-gradient` / `--secondary-btn-gradient` / `--accent-chip-gradient` variables. Multi-corner surfaces (9/8/6/4) compose as `url("data:image/png;base64,...") center/100% 100% no-repeat, <solid-fallback>` using the canvas-painted data-URL recipe. 2-stop surfaces compose as `linear-gradient(180deg, <start>, <end>)`. When a scheme defines no gradient for a surface, the composed variable resolves to the solid token fallback so existing CSS keeps working.
+- Canvas-painted data URLs are recomputed only on scheme switch, not per frame. Total data-URL footprint stays under 2 KB across all surfaces.
+- `app.css` consumes the composed gradient variables on body, `.card-surface`/`.dashboard-panel`, app bar, drawer, primary/secondary MudButton backgrounds, and accent chips. Disabled buttons keep `var(--disabled-bg)`; `:focus-visible` outline remains visible above any gradient. Headings, app-bar text, and drawer text consume their respective text-shadow variables.
+- Custom-scheme editor exposes collapsible advanced sub-panels for each gradient-capable surface (background, card, app bar, drawer, primary button, secondary button, accent chip) and a text-shadow input subgroup. Stop count matches the surface type (9/8/6/4/2). Disabled/empty inputs persist as null and the composed variables fall back to the solid token.
+- Native checkboxes and radios use `accent-color: var(--primary)` globally. Verify in PARTY SYNC SETTINGS → Shared queue controls, Spells "Do not warn again", and Dashboard "Auto equip" — all four/all visible checkboxes pick up the theme primary color instead of system blue.
+- Persisted preferences schema bump; old payloads load with nullable fields null; new payloads round-trip through localStorage and portable `IKeyValueStorage` without loss.
+- Tests cover built-in membership, ordering, removed-schemes absence, light/dark count parity, custom variant persistence (including portable sync round-trip), delete-persistence regression, deletion-fallback per variant, legacy-id migration on load, gradient/text-shadow nullability (load with all-null and reject malformed partial gradients), JS interop emission of composed variables with and without gradient stops, and a CSS regression test that bare `<input type="checkbox">` resolves `accent-color` to the active scheme's primary.
+- Copy preset emits the v2 readable JSON (`$schema`, `Name`, `Variant`, optional `Description`, `Colors`, optional `Gradients`, optional `TextShadows`) with readable field names (`PageBackground`, `BodyText`, `SecondaryText`, `FocusOutline`, `CardShadow`, `SurfaceTint`, etc.). All token fields exposed by the post-overhaul model — including the new gradient and text-shadow fields — appear in the readable schema.
+- Paste preset accepts both v2 readable JSON and the v1 legacy flat-tokens shape. Legacy aliases (`Background`, `Ink`, `Muted`, `Focus`, `Shadow`, `Surface`, `SurfaceStrong`, `TaskNegative`, `TaskNeutral`, `TaskPositive`) are accepted on paste only.
+- Paste rejects partial gradients (missing stops) with a message naming the surface and missing stop list; rejects conflicting alias pairs (both modern and legacy name set to different values) with a clear error.
+- Round-trip copy → paste yields a byte-identical `ColorSchemeDefinition`, including all gradient and text-shadow fields. Nulls survive the round-trip.
+- The `What is this?` explainer renders above Copy/Paste and references every field in the readable schema by its readable name.
+- Tests cover Copy emission shape, v2 paste, v1 legacy paste, alias paste, conflicting-alias rejection, partial-gradient rejection, unknown-field tolerance, and round-trip equivalence.
 
 ### Dashboard Navigation Card Title/Description Spacing
 
