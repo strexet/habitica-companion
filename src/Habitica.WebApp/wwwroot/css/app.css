@@ -2271,6 +2271,23 @@ a {
     min-width: 0;
 }
 
+/* Manual paste fallback shown when the Clipboard API is blocked (iOS Safari, http origins). */
+.color-scheme-paste-fallback {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.color-scheme-paste-box {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    resize: vertical;
+    font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+    font-size: 0.85rem;
+}
+
 /* Compact mode: a single dense row, smaller swatches, advanced controls hidden by default. */
 .color-scheme-panel--compact {
     gap: 0.6rem;

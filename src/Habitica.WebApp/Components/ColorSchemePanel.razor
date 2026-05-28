@@ -106,6 +106,26 @@
                             Paste preset
                         </MudButton>
                     </div>
+                    @if (_showPasteFallback)
+                    {
+                        <div class="color-scheme-paste-fallback" data-testid="paste-fallback">
+                            <textarea class="app-input color-scheme-paste-box"
+                                      rows="5"
+                                      placeholder="Paste preset JSON here"
+                                      aria-label="Preset JSON"
+                                      data-testid="paste-fallback-input"
+                                      @bind="_pasteFallbackText"
+                                      @bind:event="oninput"></textarea>
+                            <div class="action-row">
+                                <MudButton Color="Color.Primary" Size="@ControlSize" data-testid="apply-pasted-scheme" OnClick="ApplyPastedSchemeFromBox" Variant="Variant.Filled">
+                                    Apply
+                                </MudButton>
+                                <MudButton Color="Color.Secondary" Size="@ControlSize" data-testid="cancel-paste-fallback" OnClick="CancelPasteFallback" Variant="Variant.Outlined">
+                                    Cancel
+                                </MudButton>
+                            </div>
+                        </div>
+                    }
                     <div class="action-row">
                         <MudButton Color="Color.Primary" Size="@ControlSize" data-testid="save-custom-scheme" OnClick="SaveCustomSchemeAsync" Variant="Variant.Filled">
                             Save Scheme
@@ -164,6 +184,8 @@
         ColorSchemeCatalog.BuiltInSchemes,
         Array.Empty<ColorSchemeDefinition>());
     private ColorSchemeEditorModel? _colorSchemeEditor;
+    private bool _showPasteFallback;
+    private string _pasteFallbackText = string.Empty;
     private ColorSchemeDefinition? _randomScheme;
     private bool _randomActive;
     private string _randomSaveName = string.Empty;
@@ -379,6 +401,7 @@
     private void CreateCustomScheme()
     {
         _randomActive = false;
+        CancelPasteFallback();
         _colorSchemeEditor = ColorSchemeEditorModel.FromScheme(
             ColorSchemeCatalog.CreateCustomCopy(
                 _colorSchemeState.ActiveScheme,
@@ -389,6 +412,7 @@
 
     private void CancelCustomSchemeEdit()
     {
+        CancelPasteFallback();
         _colorSchemeEditor = _colorSchemeState.ActiveScheme.IsBuiltIn
             ? null
             : ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme);
@@ -472,26 +496,66 @@
             return;
         }
 
-        string clipboard;
+        // Try the async Clipboard API first. It is unavailable on iOS Safari and any
+        // non-secure (http) origin, where readText throws — fall back to a manual paste box.
+        string? clipboard = null;
         try
         {
             clipboard = await JsRuntime.InvokeAsync<string>("navigator.clipboard.readText");
         }
         catch (Exception)
         {
-            SetColorSchemeMessage("Could not read the clipboard.", false);
-            return;
+            clipboard = null;
         }
 
         if (string.IsNullOrWhiteSpace(clipboard))
         {
-            SetColorSchemeMessage("Clipboard is empty.", false);
+            // Either the browser blocked clipboard reads or it was empty. Reveal the manual
+            // paste box so the user can paste the JSON themselves (the only path on iOS).
+            _showPasteFallback = true;
+            _pasteFallbackText = string.Empty;
+            SetColorSchemeMessage("Can't read the clipboard automatically on this device. Paste the preset JSON in the box below, then tap Apply.", false);
             return;
         }
 
-        if (!TryParseSchemeJson(clipboard, out var name, out var tokens))
+        ApplyPastedScheme(clipboard!, "clipboard");
+    }
+
+    private void ApplyPastedSchemeFromBox()
+    {
+        if (_colorSchemeEditor is null)
         {
-            SetColorSchemeMessage("Clipboard does not contain a valid color preset.", false);
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_pasteFallbackText))
+        {
+            SetColorSchemeMessage("Paste the preset JSON into the box first.", false);
+            return;
+        }
+
+        ApplyPastedScheme(_pasteFallbackText, "box");
+    }
+
+    private void CancelPasteFallback()
+    {
+        _showPasteFallback = false;
+        _pasteFallbackText = string.Empty;
+    }
+
+    // Parses and applies a pasted scheme, reporting a specific reason on failure. Shared by the
+    // automatic clipboard read and the manual paste box (source distinguishes the success copy).
+    private void ApplyPastedScheme(string json, string source)
+    {
+        if (_colorSchemeEditor is null)
+        {
+            return;
+        }
+
+        var result = TryParseSchemeJson(json, out var name, out var tokens);
+        if (result != SchemeParseResult.Success)
+        {
+            SetColorSchemeMessage(DescribeParseFailure(result), false);
             return;
         }
 
@@ -508,21 +572,56 @@
             }
         }
 
-        SetColorSchemeMessage("Pasted preset from clipboard. Review the colors and save.", true);
+        _showPasteFallback = false;
+        _pasteFallbackText = string.Empty;
+        var from = source == "box" ? "Applied pasted preset." : "Pasted preset from clipboard.";
+        SetColorSchemeMessage($"{from} Review the colors and save.", true);
     }
 
-    private static bool TryParseSchemeJson(string json, out string? name, out Dictionary<string, string> tokens)
+    private static string DescribeParseFailure(SchemeParseResult result) => result switch
+    {
+        SchemeParseResult.Empty => "Nothing to paste — the text was empty.",
+        SchemeParseResult.InvalidJson => "That isn't valid JSON. Copy a preset with the Copy button, then paste the whole thing.",
+        SchemeParseResult.NotAnObject => "Expected a JSON object holding color tokens, not a list or value.",
+        SchemeParseResult.NoTokens => "No recognized color tokens found. Make sure you copied a preset from this app.",
+        _ => "Could not read a valid color preset from that text."
+    };
+
+    private enum SchemeParseResult
+    {
+        Success,
+        Empty,
+        InvalidJson,
+        NotAnObject,
+        NoTokens
+    }
+
+    private static SchemeParseResult TryParseSchemeJson(string json, out string? name, out Dictionary<string, string> tokens)
     {
         name = null;
         tokens = new Dictionary<string, string>(StringComparer.Ordinal);
 
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            return SchemeParseResult.Empty;
+        }
+
+        JsonDocument document;
         try
         {
-            using var document = JsonDocument.Parse(json);
+            document = JsonDocument.Parse(json);
+        }
+        catch (JsonException)
+        {
+            return SchemeParseResult.InvalidJson;
+        }
+
+        using (document)
+        {
             var root = document.RootElement;
             if (root.ValueKind != JsonValueKind.Object)
             {
-                return false;
+                return SchemeParseResult.NotAnObject;
             }
 
             if (TryGetPropertyIgnoreCase(root, "name", out var nameElement) && nameElement.ValueKind == JsonValueKind.String)
@@ -534,7 +633,7 @@
             var tokensElement = TryGetPropertyIgnoreCase(root, "tokens", out var nested) ? nested : root;
             if (tokensElement.ValueKind != JsonValueKind.Object)
             {
-                return false;
+                return SchemeParseResult.NotAnObject;
             }
 
             foreach (var token in ColorSchemeCatalog.EditableTokens)
@@ -549,11 +648,7 @@
                 }
             }
 
-            return tokens.Count > 0;
-        }
-        catch (JsonException)
-        {
-            return false;
+            return tokens.Count > 0 ? SchemeParseResult.Success : SchemeParseResult.NoTokens;
         }
     }
 
