@@ -60,301 +60,124 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Top. When interacting with color change setting and removing custom presets, they return back after refresh. Also, when I delete preset, schema jumps to the default - I feel like we should distinct light and dark themes (user should be able to tick it when saving: something like "Is Dark Theme" - come up with good wording here) and when deleted theme should reset to default preset of the same type: dark -> to deafeult dark, light -> to default light. We should make Gryphy themes to be default and move them to the top of the list. Gryphy light should be: {
-  "Name": "Gryphy (Light)",
-  "Tokens": {
-  "Background": "#f7f1ff",
-  "CardBackground": "rgba(255, 252, 255, 0.94)",
-  "CardBorder": "rgba(103, 49, 184, 0.13)",
-  "Ink": "#2d2040",
-  "Muted": "#756881",
-  "Primary": "#7334bd",
-  "Accent": "#d99416",
-  "Danger": "#c84a67",
-  "Success": "#2a9277",
-  "Focus": "#438fd0",
-  "Shadow": "0 18px 44px rgba(32, 17, 54, 0.09)",
-  "Surface": "rgba(255, 255, 255, 0.72)",
-  "SurfaceStrong": "rgba(255, 252, 255, 0.92)",
-  "ChartPrimary": "#7334bd",
-  "ChartSecondary": "#438fd0",
-  "TaskNegative": "#e4d8f6",
-  "TaskNeutral": "#f0e9fb",
-  "TaskPositive": "#faf7ff",
-  "AppBarBackground": "#684095",
-  "AppBarText": "#fff8ff",
-  "DrawerBackground": "#3b2356",
-  "DrawerText": "#f8f0ff",
-  "ButtonText": "#ffffff",
-  "DisabledBackground": "rgba(103, 49, 184, 0.06)",
-  "DisabledText": "rgba(117, 104, 129, 0.58)",
-  "DisabledBorder": "rgba(117, 104, 129, 0.22)",
-  "InputBackground": "rgba(255, 252, 255, 0.92)",
-  "InputBorder": "rgba(103, 49, 184, 0.13)"
-  }
-  }; and Gryphy dark: {
-  "Name": "Gryphy (Dark)",
-  "Tokens": {
-  "Background": "#12091e",
-  "CardBackground": "rgba(30, 16, 47, 0.94)",
-  "CardBorder": "rgba(178, 93, 255, 0.18)",
-  "Ink": "#f3eaf6",
-  "Muted": "#b5a6c5",
-  "Primary": "#a765e2",
-  "Accent": "#d9b33a",
-  "Danger": "#e46380",
-  "Success": "#58bfa9",
-  "Focus": "#5aa9df",
-  "Shadow": "0 22px 52px rgba(0, 0, 0, 0.34)",
-  "Surface": "rgba(45, 24, 70, 0.76)",
-  "SurfaceStrong": "rgba(38, 21, 61, 0.94)",
-  "ChartPrimary": "#a765e2",
-  "ChartSecondary": "#5aa9df",
-  "TaskNegative": "#21172d",
-  "TaskNeutral": "#2d2040",
-  "TaskPositive": "#3c2a55",
-  "AppBarBackground": "#241436",
-  "AppBarText": "#f3eaf6",
-  "DrawerBackground": "#211331",
-  "DrawerText": "#f3eaf6",
-  "ButtonText": "#140a20",
-  "DisabledBackground": "rgba(190, 140, 230, 0.085)",
-  "DisabledText": "rgba(181, 166, 197, 0.52)",
-  "DisabledBorder": "rgba(190, 140, 230, 0.22)",
-  "InputBackground": "#21142e",
-  "InputBorder": "rgba(190, 140, 230, 0.24)"
-  }
-  }. Alpha should be renamed to something like Forest Legacy. And moved after Gryphy themes. Should remove Habitica theme, Mana Mirage, trippy Mushroom and Sugar related (Mushroom Meadow, Mushroom Trip, Sugar Crash), but can leave Frosted Cake. We should group themes in a such way that there Default section, Built-in Light section, Built-in Dark section, Custom section (and Generated when present). We should add Buit-in themes: {
-  "Name": "Toxic Swamp",
-  "Tokens": {
-  "Background": "#10190f",
-  "CardBackground": "#1d2b1b",
-  "CardBorder": "#496a35",
-  "Ink": "#e8edd6",
-  "Muted": "#99aa83",
-  "Primary": "#9bdc2f",
-  "Accent": "#5b4fd6",
-  "Danger": "#c83a32",
-  "Success": "#5fc94a",
-  "Focus": "#b6ef42",
-  "Shadow": "0 22px 56px rgba(100, 180, 38, 0.16)",
-  "Surface": "#22331f",
-  "SurfaceStrong": "#2c4725",
-  "ChartPrimary": "#9bdc2f",
-  "ChartSecondary": "#5b4fd6",
-  "TaskNegative": "#3a1715",
-  "TaskNeutral": "#2b3827",
-  "TaskPositive": "#173717",
-  "AppBarBackground": "#213f19",
-  "AppBarText": "#e8edd6",
-  "DrawerBackground": "#172814",
-  "DrawerText": "#e8edd6",
-  "ButtonText": "#10190f",
-  "DisabledBackground": "#2e3c2b",
-  "DisabledText": "#7f8d71",
-  "DisabledBorder": "#405234",
-  "InputBackground": "#1a2519",
-  "InputBorder": "#58723c"
-  }
-  }; {
-  "Name": "Green Menace",
-  "Tokens": {
-  "Background": "#120f12",
-  "CardBackground": "#332031",
-  "CardBorder": "#654461",
-  "Ink": "#e8dfd2",
-  "Muted": "#aeb9b4",
-  "Primary": "#c72ab7",
-  "Accent": "#55c964",
-  "Danger": "#b92828",
-  "Success": "#3bae5d",
-  "Focus": "#5ac568",
-  "Shadow": "0 18px 40px rgba(8, 12, 16, 0.31)",
-  "Surface": "#3a2a38",
-  "SurfaceStrong": "#4a3848",
-  "ChartPrimary": "#c72ab7",
-  "ChartSecondary": "#55c964",
-  "TaskNegative": "#b92828",
-  "TaskNeutral": "#aeb9b4",
-  "TaskPositive": "#3bae5d",
-  "AppBarBackground": "#3d1839",
-  "AppBarText": "#e8dfd2",
-  "DrawerBackground": "#351f33",
-  "DrawerText": "#e8dfd2",
-  "ButtonText": "#f0e8dc",
-  "DisabledBackground": "#3d313c",
-  "DisabledText": "#8d9993",
-  "DisabledBorder": "#5a4057",
-  "InputBackground": "#2f2630",
-  "InputBorder": "#654461"
-  }
-  }; {
-  "Name": "Abyssal Blackwater",
-  "Tokens": {
-  "Background": "#000405",
-  "CardBackground": "rgba(1, 6, 7, 0.99)",
-  "CardBorder": "rgba(38, 150, 156, 0.38)",
-  "Ink": "#c9e4e2",
-  "Muted": "#7f9f9e",
-  "Primary": "#35b8be",
-  "Accent": "#2d8289",
-  "Danger": "#aa3b4e",
-  "Success": "#339f87",
-  "Focus": "#43c7cd",
-  "Shadow": "0 34px 104px rgba(8, 68, 74, 0.16)",
-  "Surface": "rgba(1, 7, 8, 0.97)",
-  "SurfaceStrong": "rgba(2, 10, 12, 0.99)",
-  "ChartPrimary": "#35b8be",
-  "ChartSecondary": "#2d8289",
-  "TaskNegative": "#100305",
-  "TaskNeutral": "#031113",
-  "TaskPositive": "#031310",
-  "AppBarBackground": "#000607",
-  "AppBarText": "#c9e4e2",
-  "DrawerBackground": "#000202",
-  "DrawerText": "#c9e4e2",
-  "ButtonText": "#000405",
-  "DisabledBackground": "rgba(201, 228, 226, 0.055)",
-  "DisabledText": "rgba(127, 159, 158, 0.58)",
-  "DisabledBorder": "rgba(38, 150, 156, 0.24)",
-  "InputBackground": "#010809",
-  "InputBorder": "rgba(53, 184, 190, 0.36)"
-  }
-  }. We should replace Neon Rogue with: {
-  "Name": "Arcane Wraith",
-  "Tokens": {
-  "Background": "#0b0920",
-  "CardBackground": "rgba(20, 17, 44, 0.94)",
-  "CardBorder": "rgba(68, 190, 210, 0.20)",
-  "Ink": "#ececf7",
-  "Muted": "#aaa7cb",
-  "Primary": "#42bfd2",
-  "Accent": "#d75ad2",
-  "Danger": "#df5d7d",
-  "Success": "#55c894",
-  "Focus": "#907ee0",
-  "Shadow": "0 22px 54px rgba(0, 0, 0, 0.42)",
-  "Surface": "rgba(25, 22, 56, 0.78)",
-  "SurfaceStrong": "rgba(31, 27, 70, 0.92)",
-  "ChartPrimary": "#42bfd2",
-  "ChartSecondary": "#d75ad2",
-  "TaskNegative": "#102631",
-  "TaskNeutral": "#183745",
-  "TaskPositive": "#1b4c59",
-  "AppBarBackground": "#151037",
-  "AppBarText": "#ececf7",
-  "DrawerBackground": "#100d2b",
-  "DrawerText": "#ececf7",
-  "ButtonText": "#0b0920",
-  "DisabledBackground": "rgba(236, 236, 247, 0.08)",
-  "DisabledText": "rgba(170, 167, 203, 0.52)",
-  "DisabledBorder": "rgba(68, 190, 210, 0.22)",
-  "InputBackground": "#19163a",
-  "InputBorder": "rgba(68, 190, 210, 0.26)"
-  }
-  }. Should replace Neon Abyss Carnival with this: {
-  "Name": "Phantom Fair",
-  "Tokens": {
-  "Background": "#0b0820",
-  "CardBackground": "rgba(23, 13, 51, 0.94)",
-  "CardBorder": "rgba(220, 86, 200, 0.28)",
-  "Ink": "#eee8f2",
-  "Muted": "#aea2ce",
-  "Primary": "#43bfd2",
-  "Accent": "#d6bd42",
-  "Danger": "#df5578",
-  "Success": "#5fc991",
-  "Focus": "#9b61d6",
-  "Shadow": "0 24px 70px rgba(220, 55, 95, 0.20)",
-  "Surface": "rgba(34, 21, 75, 0.78)",
-  "SurfaceStrong": "rgba(43, 27, 95, 0.92)",
-  "ChartPrimary": "#43bfd2",
-  "ChartSecondary": "#d6bd42",
-  "TaskNegative": "#2a1738",
-  "TaskNeutral": "#24385f",
-  "TaskPositive": "#17584a",
-  "AppBarBackground": "#1a1038",
-  "AppBarText": "#eee8f2",
-  "DrawerBackground": "#0d0924",
-  "DrawerText": "#eee8f2",
-  "ButtonText": "#0b0820",
-  "DisabledBackground": "rgba(238, 232, 242, 0.08)",
-  "DisabledText": "rgba(174, 162, 206, 0.52)",
-  "DisabledBorder": "rgba(220, 86, 200, 0.22)",
-  "InputBackground": "#18113a",
-  "InputBorder": "rgba(67, 191, 210, 0.28)"
-  }
-  }. And Toxic Swamp with this: {
-  "Name": "Toxic Swamp",
-  "Tokens": {
-  "Background": "#10190f",
-  "CardBackground": "#1d2b1b",
-  "CardBorder": "#496a35",
-  "Ink": "#e8edd6",
-  "Muted": "#99aa83",
-  "Primary": "#9bdc2f",
-  "Accent": "#5b4fd6",
-  "Danger": "#c83a32",
-  "Success": "#5fc94a",
-  "Focus": "#b6ef42",
-  "Shadow": "0 22px 56px rgba(100, 180, 38, 0.16)",
-  "Surface": "#22331f",
-  "SurfaceStrong": "#2c4725",
-  "ChartPrimary": "#9bdc2f",
-  "ChartSecondary": "#5b4fd6",
-  "TaskNegative": "#3a1715",
-  "TaskNeutral": "#2b3827",
-  "TaskPositive": "#173717",
-  "AppBarBackground": "#213f19",
-  "AppBarText": "#e8edd6",
-  "DrawerBackground": "#172814",
-  "DrawerText": "#e8edd6",
-  "ButtonText": "#10190f",
-  "DisabledBackground": "#2e3c2b",
-  "DisabledText": "#7f8d71",
-  "DisabledBorder": "#405234",
-  "InputBackground": "#1a2519",
-  "InputBorder": "#58723c"
-  }
-  }. Also, there should be equal number of dark and light build-in themes - come up with some cool looking themes (don't make them too contrast, and can play with a shadow colors): we should have something gold related, mana and light related, brutal smash or stone related - come up with some relatable names that are fantastic sounding and Habitica related. [Can create themes that should be added on processing of that task]. Also, add this theme: {
-  "Name": "Obsidian Glow",
-  "Tokens": {
-  "Background": "#05060a",
-  "CardBackground": "rgba(12, 14, 22, 0.96)",
-  "CardBorder": "rgba(155, 190, 255, 0.20)",
-  "Ink": "#e7ecf6",
-  "Muted": "#98a2b8",
-  "Primary": "#7fa8ff",
-  "Accent": "#b78cff",
-  "Danger": "#d85f78",
-  "Success": "#58c99b",
-  "Focus": "#9fc0ff",
-  "Shadow": "0 24px 72px rgba(150, 185, 255, 0.22)",
-  "Surface": "rgba(15, 18, 30, 0.82)",
-  "SurfaceStrong": "rgba(20, 24, 40, 0.96)",
-  "ChartPrimary": "#7fa8ff",
-  "ChartSecondary": "#b78cff",
-  "TaskNegative": "#21151f",
-  "TaskNeutral": "#171d2d",
-  "TaskPositive": "#13251f",
-  "AppBarBackground": "#080a12",
-  "AppBarText": "#e7ecf6",
-  "DrawerBackground": "#07080f",
-  "DrawerText": "#e7ecf6",
-  "ButtonText": "#05060a",
-  "DisabledBackground": "rgba(231, 236, 246, 0.07)",
-  "DisabledText": "rgba(152, 162, 184, 0.54)",
-  "DisabledBorder": "rgba(155, 190, 255, 0.16)",
-  "InputBackground": "#0e111c",
-  "InputBorder": "rgba(155, 190, 255, 0.24)"
-  }
-  }.
-- Add Pets & Mounts page where you can feed pets with multiple food, the best food is automatically recommended and sorted in the dropdown. You can fast equip pets/mounts. Easily search for specific options. Find what is missong from your collection. Check current market status for recommended items to buy, so your collection becomes fuller. Different pets are sepparated in groups and hatching potions groups are also exist. You can fold groups if you are not interested. Folded groups are remembered (synced). Don't need to sync all pets data, but could be saved to local browser storage. Move BULK SELL PLANNER to this page from the Inventory page.
-- Add gems buy menu to the SPEND GOLD section on the Dashboard page. It should be visible only if user has subscription (if user if able to buy gems for gold).
+(empty)
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
+
+### Color Scheme Catalog Overhaul And Light/Dark Default Restore
+
+Goal: rebuild the built-in color-scheme catalog with explicit light/dark categorization and grouped UI sections, fix custom-preset deletion not persisting across reload, and make scheme deletion fall back to the default of the matching light/dark variant instead of jumping to Alpha.
+
+Touch:
+- `src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs`
+- `src/Habitica.WebApp/Theme/ColorSchemeService.cs`
+- `src/Habitica.WebApp/Components/ColorSchemePanel.razor`
+- `src/Habitica.WebApp/wwwroot/js/colorSchemes.js` (only if the delete-persistence bug originates in the JS fast-cache path)
+- `src/Habitica.Storage/StorageKeys.cs` (no key changes unless a preferences schema bump is required to carry the variant flag)
+- direct tests in `tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs` and `tests/Habitica.WebApp.Tests/Components/ColorSchemePanelTests.cs`
+- `FEATURES.md`
+
+Bug fix — delete persistence:
+- Reproduce: delete a custom preset, refresh, the preset comes back. Trace the round-trip across `DeleteCustomAsync`, `SavePreferencesAsync`, the localStorage fast cache (`HabiticaColorScheme.applyAndStore`) and the portable `IKeyValueStorage` value. Make sure the delete writes the reduced custom-list to both stores so neither path can resurrect the deleted scheme on next `LoadPreferencesAsync`.
+
+Variant model:
+- Add an `IsDark` boolean (or `SchemeVariant { Light, Dark }` enum) to `ColorSchemeDefinition` covering both built-in and custom schemes.
+- For custom schemes, the editor exposes a labeled toggle ("Dark theme") next to the Save action. Default to a luminance-derived guess from the Background token; user can override. The variant must survive reload and portable sync.
+- Add `DefaultLightSchemeId = "gryphy-light"` and `DefaultDarkSchemeId = "gryphy-dark"` constants. Remove or retain `AlphaId` only as a legacy migration target.
+
+Deletion fallback:
+- When the active scheme is deleted, `ColorSchemeService.DeleteCustomAsync` selects `DefaultLightSchemeId` or `DefaultDarkSchemeId` based on the deleted scheme's variant. No silent revert to Alpha.
+
+Built-in catalog rewrite (ordering matters — first two are defaults):
+1. `gryphy-light` "Gryphy (Light)" — Light. Replace tokens with the JSON below.
+2. `gryphy-dark` "Gryphy (Dark)" — Dark. Replace tokens with the JSON below.
+3. `forest-legacy` "Forest Legacy" — Light. Rename from `alpha` ("Alpha (Light)"); keep its current tokens. Add a stored-preferences migration `alpha` → `forest-legacy`.
+4. Keep `frosted-cake`.
+5. Replace `neon-rogue` with new id `arcane-wraith` "Arcane Wraith" — Dark. Tokens below.
+6. Replace `neon-abyss-carnival` with new id `phantom-fair` "Phantom Fair" — Dark. Tokens below.
+7. Add new built-ins (tokens below): `toxic-swamp` "Toxic Swamp" (Dark), `green-menace` "Green Menace" (Dark), `abyssal-blackwater` "Abyssal Blackwater" (Dark), `obsidian-glow` "Obsidian Glow" (Dark).
+8. Remove built-ins: `habitica`, `mana-mirage`, `mushroom-meadow`, `mushroom-trip`, `sugar-crash`.
+9. Retain existing other built-ins (`midnight-tavern`, `dragonfire-keep`, `frost-healer`, `sunlit-stable`, `mosswood-quest`, `potion-shop`, `boss-battle`, `quiet-ledger`, `celestial-inn`) — verify each is tagged with the correct light/dark variant.
+10. Author additional Habitica-flavored low-contrast built-ins until light count == dark count. Suggested concepts (name to taste, the implementor picks final names within the spirit): a gold/treasure light theme, an arcane/mana light or dark theme, a stone/brute-force dark theme. Playful shadow tints are encouraged; avoid hard high-contrast palettes.
+
+Panel grouping:
+- `ColorSchemePanel.razor` renders sections in this exact order:
+  1. Default — Gryphy Light, Gryphy Dark
+  2. Built-in Light
+  3. Built-in Dark
+  4. Custom (hidden when no custom schemes exist)
+  5. Generated (hidden unless a pending random theme exists)
+- Sections render as `<optgroup>` labels in the dropdown and as visible group labels in expanded UI. The order is invariant.
+
+Stored-preferences migration:
+- On `LoadPreferencesAsync`, remap legacy ids:
+  - `alpha` → `forest-legacy`
+  - `neon-rogue` → `arcane-wraith`
+  - `neon-abyss-carnival` → `phantom-fair`
+  - `habitica`, `mana-mirage`, `mushroom-meadow`, `mushroom-trip`, `sugar-crash` → `DefaultLightSchemeId` for known-light originals; `DefaultDarkSchemeId` for known-dark originals.
+- Migration runs once and persists the remapped selection back to storage.
+
+Built-in token JSON (verbatim — copy into `ColorSchemeCatalog.cs` without modification; field order in `ColorSchemeTokens` is positional, map carefully):
+
+```json
+// id: gryphy-light  name: "Gryphy (Light)"  variant: Light
+{ "Background": "#f7f1ff", "CardBackground": "rgba(255, 252, 255, 0.94)", "CardBorder": "rgba(103, 49, 184, 0.13)", "Ink": "#2d2040", "Muted": "#756881", "Primary": "#7334bd", "Accent": "#d99416", "Danger": "#c84a67", "Success": "#2a9277", "Focus": "#438fd0", "Shadow": "0 18px 44px rgba(32, 17, 54, 0.09)", "Surface": "rgba(255, 255, 255, 0.72)", "SurfaceStrong": "rgba(255, 252, 255, 0.92)", "ChartPrimary": "#7334bd", "ChartSecondary": "#438fd0", "TaskNegative": "#e4d8f6", "TaskNeutral": "#f0e9fb", "TaskPositive": "#faf7ff", "AppBarBackground": "#684095", "AppBarText": "#fff8ff", "DrawerBackground": "#3b2356", "DrawerText": "#f8f0ff", "ButtonText": "#ffffff", "DisabledBackground": "rgba(103, 49, 184, 0.06)", "DisabledText": "rgba(117, 104, 129, 0.58)", "DisabledBorder": "rgba(117, 104, 129, 0.22)", "InputBackground": "rgba(255, 252, 255, 0.92)", "InputBorder": "rgba(103, 49, 184, 0.13)" }
+```
+
+```json
+// id: gryphy-dark  name: "Gryphy (Dark)"  variant: Dark
+{ "Background": "#12091e", "CardBackground": "rgba(30, 16, 47, 0.94)", "CardBorder": "rgba(178, 93, 255, 0.18)", "Ink": "#f3eaf6", "Muted": "#b5a6c5", "Primary": "#a765e2", "Accent": "#d9b33a", "Danger": "#e46380", "Success": "#58bfa9", "Focus": "#5aa9df", "Shadow": "0 22px 52px rgba(0, 0, 0, 0.34)", "Surface": "rgba(45, 24, 70, 0.76)", "SurfaceStrong": "rgba(38, 21, 61, 0.94)", "ChartPrimary": "#a765e2", "ChartSecondary": "#5aa9df", "TaskNegative": "#21172d", "TaskNeutral": "#2d2040", "TaskPositive": "#3c2a55", "AppBarBackground": "#241436", "AppBarText": "#f3eaf6", "DrawerBackground": "#211331", "DrawerText": "#f3eaf6", "ButtonText": "#140a20", "DisabledBackground": "rgba(190, 140, 230, 0.085)", "DisabledText": "rgba(181, 166, 197, 0.52)", "DisabledBorder": "rgba(190, 140, 230, 0.22)", "InputBackground": "#21142e", "InputBorder": "rgba(190, 140, 230, 0.24)" }
+```
+
+```json
+// id: arcane-wraith  name: "Arcane Wraith"  variant: Dark  (replaces neon-rogue)
+{ "Background": "#0b0920", "CardBackground": "rgba(20, 17, 44, 0.94)", "CardBorder": "rgba(68, 190, 210, 0.20)", "Ink": "#ececf7", "Muted": "#aaa7cb", "Primary": "#42bfd2", "Accent": "#d75ad2", "Danger": "#df5d7d", "Success": "#55c894", "Focus": "#907ee0", "Shadow": "0 22px 54px rgba(0, 0, 0, 0.42)", "Surface": "rgba(25, 22, 56, 0.78)", "SurfaceStrong": "rgba(31, 27, 70, 0.92)", "ChartPrimary": "#42bfd2", "ChartSecondary": "#d75ad2", "TaskNegative": "#102631", "TaskNeutral": "#183745", "TaskPositive": "#1b4c59", "AppBarBackground": "#151037", "AppBarText": "#ececf7", "DrawerBackground": "#100d2b", "DrawerText": "#ececf7", "ButtonText": "#0b0920", "DisabledBackground": "rgba(236, 236, 247, 0.08)", "DisabledText": "rgba(170, 167, 203, 0.52)", "DisabledBorder": "rgba(68, 190, 210, 0.22)", "InputBackground": "#19163a", "InputBorder": "rgba(68, 190, 210, 0.26)" }
+```
+
+```json
+// id: phantom-fair  name: "Phantom Fair"  variant: Dark  (replaces neon-abyss-carnival)
+{ "Background": "#0b0820", "CardBackground": "rgba(23, 13, 51, 0.94)", "CardBorder": "rgba(220, 86, 200, 0.28)", "Ink": "#eee8f2", "Muted": "#aea2ce", "Primary": "#43bfd2", "Accent": "#d6bd42", "Danger": "#df5578", "Success": "#5fc991", "Focus": "#9b61d6", "Shadow": "0 24px 70px rgba(220, 55, 95, 0.20)", "Surface": "rgba(34, 21, 75, 0.78)", "SurfaceStrong": "rgba(43, 27, 95, 0.92)", "ChartPrimary": "#43bfd2", "ChartSecondary": "#d6bd42", "TaskNegative": "#2a1738", "TaskNeutral": "#24385f", "TaskPositive": "#17584a", "AppBarBackground": "#1a1038", "AppBarText": "#eee8f2", "DrawerBackground": "#0d0924", "DrawerText": "#eee8f2", "ButtonText": "#0b0820", "DisabledBackground": "rgba(238, 232, 242, 0.08)", "DisabledText": "rgba(174, 162, 206, 0.52)", "DisabledBorder": "rgba(220, 86, 200, 0.22)", "InputBackground": "#18113a", "InputBorder": "rgba(67, 191, 210, 0.28)" }
+```
+
+```json
+// id: toxic-swamp  name: "Toxic Swamp"  variant: Dark
+{ "Background": "#10190f", "CardBackground": "#1d2b1b", "CardBorder": "#496a35", "Ink": "#e8edd6", "Muted": "#99aa83", "Primary": "#9bdc2f", "Accent": "#5b4fd6", "Danger": "#c83a32", "Success": "#5fc94a", "Focus": "#b6ef42", "Shadow": "0 22px 56px rgba(100, 180, 38, 0.16)", "Surface": "#22331f", "SurfaceStrong": "#2c4725", "ChartPrimary": "#9bdc2f", "ChartSecondary": "#5b4fd6", "TaskNegative": "#3a1715", "TaskNeutral": "#2b3827", "TaskPositive": "#173717", "AppBarBackground": "#213f19", "AppBarText": "#e8edd6", "DrawerBackground": "#172814", "DrawerText": "#e8edd6", "ButtonText": "#10190f", "DisabledBackground": "#2e3c2b", "DisabledText": "#7f8d71", "DisabledBorder": "#405234", "InputBackground": "#1a2519", "InputBorder": "#58723c" }
+```
+
+```json
+// id: green-menace  name: "Green Menace"  variant: Dark
+{ "Background": "#120f12", "CardBackground": "#332031", "CardBorder": "#654461", "Ink": "#e8dfd2", "Muted": "#aeb9b4", "Primary": "#c72ab7", "Accent": "#55c964", "Danger": "#b92828", "Success": "#3bae5d", "Focus": "#5ac568", "Shadow": "0 18px 40px rgba(8, 12, 16, 0.31)", "Surface": "#3a2a38", "SurfaceStrong": "#4a3848", "ChartPrimary": "#c72ab7", "ChartSecondary": "#55c964", "TaskNegative": "#b92828", "TaskNeutral": "#aeb9b4", "TaskPositive": "#3bae5d", "AppBarBackground": "#3d1839", "AppBarText": "#e8dfd2", "DrawerBackground": "#351f33", "DrawerText": "#e8dfd2", "ButtonText": "#f0e8dc", "DisabledBackground": "#3d313c", "DisabledText": "#8d9993", "DisabledBorder": "#5a4057", "InputBackground": "#2f2630", "InputBorder": "#654461" }
+```
+
+```json
+// id: abyssal-blackwater  name: "Abyssal Blackwater"  variant: Dark
+{ "Background": "#000405", "CardBackground": "rgba(1, 6, 7, 0.99)", "CardBorder": "rgba(38, 150, 156, 0.38)", "Ink": "#c9e4e2", "Muted": "#7f9f9e", "Primary": "#35b8be", "Accent": "#2d8289", "Danger": "#aa3b4e", "Success": "#339f87", "Focus": "#43c7cd", "Shadow": "0 34px 104px rgba(8, 68, 74, 0.16)", "Surface": "rgba(1, 7, 8, 0.97)", "SurfaceStrong": "rgba(2, 10, 12, 0.99)", "ChartPrimary": "#35b8be", "ChartSecondary": "#2d8289", "TaskNegative": "#100305", "TaskNeutral": "#031113", "TaskPositive": "#031310", "AppBarBackground": "#000607", "AppBarText": "#c9e4e2", "DrawerBackground": "#000202", "DrawerText": "#c9e4e2", "ButtonText": "#000405", "DisabledBackground": "rgba(201, 228, 226, 0.055)", "DisabledText": "rgba(127, 159, 158, 0.58)", "DisabledBorder": "rgba(38, 150, 156, 0.24)", "InputBackground": "#010809", "InputBorder": "rgba(53, 184, 190, 0.36)" }
+```
+
+```json
+// id: obsidian-glow  name: "Obsidian Glow"  variant: Dark
+{ "Background": "#05060a", "CardBackground": "rgba(12, 14, 22, 0.96)", "CardBorder": "rgba(155, 190, 255, 0.20)", "Ink": "#e7ecf6", "Muted": "#98a2b8", "Primary": "#7fa8ff", "Accent": "#b78cff", "Danger": "#d85f78", "Success": "#58c99b", "Focus": "#9fc0ff", "Shadow": "0 24px 72px rgba(150, 185, 255, 0.22)", "Surface": "rgba(15, 18, 30, 0.82)", "SurfaceStrong": "rgba(20, 24, 40, 0.96)", "ChartPrimary": "#7fa8ff", "ChartSecondary": "#b78cff", "TaskNegative": "#21151f", "TaskNeutral": "#171d2d", "TaskPositive": "#13251f", "AppBarBackground": "#080a12", "AppBarText": "#e7ecf6", "DrawerBackground": "#07080f", "DrawerText": "#e7ecf6", "ButtonText": "#05060a", "DisabledBackground": "rgba(231, 236, 246, 0.07)", "DisabledText": "rgba(152, 162, 184, 0.54)", "DisabledBorder": "rgba(155, 190, 255, 0.16)", "InputBackground": "#0e111c", "InputBorder": "rgba(155, 190, 255, 0.24)" }
+```
+
+Out of scope:
+- adding or renaming token fields in `ColorSchemeTokens`;
+- changing the random-theme generator, chaos slider, or seed-replay behavior;
+- changing portable-sync storage keys (only the value schema is bumped to carry the variant flag);
+- changing DI registration or the JS interop API.
+
+Acceptance:
+- Built-in catalog matches the new list and order. Light and dark count are equal.
+- Gryphy Light/Dark tokens match the provided JSON exactly.
+- `alpha` is renamed to `forest-legacy` and stored preferences referencing `alpha` continue to resolve through the migration.
+- `habitica`, `mana-mirage`, `mushroom-meadow`, `mushroom-trip`, `sugar-crash`, `neon-rogue`, `neon-abyss-carnival` are absent from `BuiltInSchemes`.
+- New schemes `arcane-wraith`, `phantom-fair`, `toxic-swamp`, `green-menace`, `abyssal-blackwater`, `obsidian-glow` are present with the provided tokens.
+- Deleting a custom preset persists across page reload; the deleted scheme does not reappear.
+- Deleting the active scheme falls back to `gryphy-light` if the deleted scheme was Light, `gryphy-dark` if Dark.
+- Custom-scheme editor exposes a Dark-theme toggle; saved variant survives reload and portable sync.
+- `ColorSchemePanel` renders sections in order Default → Built-in Light → Built-in Dark → Custom → Generated. Empty Custom and Generated sections are hidden; Default and Built-in Light/Dark are always shown.
+- Tests cover built-in membership, ordering, removed-schemes absence, light/dark count parity, custom variant persistence (including portable sync round-trip), delete-persistence regression, deletion-fallback per variant, and legacy-id migration on load.
 
 ### Dashboard Navigation Card Title/Description Spacing
 
@@ -508,6 +331,101 @@ Acceptance:
 - Active quest card shows owner or starter, started date, details view, participants view, and rewards/details affordances when cached data exists.
 - Missing owner/starter/started-at fields render concise unavailable states without inventing values.
 - Participant names use the same member-detail focus behavior as the party member list.
+
+### Pets And Mounts Page With Bulk Sell Planner Relocation
+
+Goal: build a dedicated Pets & Mounts page that surfaces per-pet/per-mount ownership, fast equip, search, missing-collection gaps, market-status hints, and feed-with-best-food. Move the BULK SELL PLANNER from the Inventory page onto this new page.
+
+Touch:
+- new `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+- `src/Habitica.WebApp/Pages/InventoryPage.razor` (remove bulk-sell UI block and its helpers; preserve all other inventory behavior)
+- `src/Habitica.WebApp/Pages/DashboardPage.razor` (add a `RenderDashboardLink("Pets & Mounts", ...)` nav card around line 286-289)
+- `src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor` (add Pets & Mounts entry between Inventory and Party)
+- `src/Habitica.Api/HabiticaApiClient.cs` and `src/Habitica.Api/IHabiticaSyncClient.cs` (add `FeedPetAsync`, `EquipPetAsync`, `EquipMountAsync`, `HatchPetAsync`; surface per-key pet/mount ownership maps and food/hatching-potion ownership in the user snapshot mapper)
+- `src/Habitica.Domain/User/UserSnapshot.cs` (extend `InventorySnapshot` with `OwnedPets`, `OwnedMounts`, food/egg/hatching-potion per-key maps if not already present; small additive change, additive nullable defaults to preserve existing call sites)
+- `src/Habitica.Domain` catalog: pets/mounts/food catalog records (egg group, potion group, favorite-food mapping). Static data, derive from a checked-in catalog file rather than a live API call.
+- `src/Habitica.WebApp/State/AppSessionController.cs` (`FeedPetAsync`, `EquipPetAsync`, `EquipMountAsync` orchestration mirroring `BuyHealthPotionAsync` — fresh-state guard, sequential execution with stop-on-failure, post-action `GetUserSnapshotAsync` refresh, diagnostics logging)
+- `src/Habitica.Storage/StorageKeys.cs` (new local-only key `PetsMountsViewPreferences`; NOT added to `PortableDataKeys`)
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs`, `tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs` (assert bulk-sell removal), rule tests for feed-recommendation ordering
+- `HABITICA_API.md` if new contract details are pinned down during implementation
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md` if a new page-level guidance is added
+
+Habitica endpoints (already documented in `HABITICA_API.md:270-275`):
+- `POST /user/feed/:pet/:food` — supports `?amount=<n>`
+- `POST /user/equip/pet/:key` and `POST /user/equip/mount/:key` (via `/user/equip/:type/:key`)
+- `POST /user/hatch/:egg/:hatchingPotion`
+- Pets/mounts/food/eggs/hatchingPotions data already flows through the user snapshot endpoint; the API mapper currently keeps only counts. Extend it to capture per-key ownership maps. If a needed endpoint is not documented, stop and add a follow-up entry rather than guessing.
+
+Feature shape:
+- Groups: pets and mounts grouped by egg family (e.g. base, magic-potion, quest, premium) plus a separate hatching-potion section. Group names come from a static catalog. Empty groups still render with an empty-state hint.
+- Each group is foldable. Folded state persists to local browser storage via `PetsMountsViewPreferences` (NOT portable sync). Survives reload; not synced across devices.
+- Search box filters across all pets/mounts/potions by key and display name.
+- Missing-collection view per group: list not-yet-owned pets/mounts and indicate hatching ingredients still needed (egg + potion missing from inventory). Display "ready to hatch" when both ingredients are owned.
+- Market-status hints derived only from current inventory + catalog: "can hatch X with current inventory", "need egg Y" or "need potion Z to complete this group". Do NOT scrape live prices or invent gem costs.
+- Feed UI: select a pet → food dropdown pre-sorted by recommendation (favorite food for the pet's egg group first, then generic food, then non-matching). Allow a multi-food queue with pre-feed preview. Execute sequentially with stop-on-failure. Refresh user snapshot after the queue finishes.
+- Fast equip buttons on every owned pet/mount card; refresh snapshot after equip.
+- Bulk sell planner is moved verbatim — same plan computation, sell execution, diagnostics, and refresh hooks. Inventory page must no longer render it. Diagnostics area stays `Inventory` (renaming the area is out of scope; a follow-up entry may rename it).
+
+Out of scope:
+- syncing per-pet/per-mount ownership maps to Cloudflare app-data sync;
+- release-pets / release-mounts actions;
+- gem-currency purchases (covered by the Dashboard buy-gems entry);
+- changing existing sell execution, confirmation copy, or sell-result UX;
+- redesigning the Inventory page beyond removing the bulk-sell block and any helpers that become dead code.
+
+Acceptance:
+- Pets & Mounts page is reachable from the Dashboard nav card and the side nav.
+- Pet, mount, and hatching-potion groupings render with foldable state. Folded state survives reload from local storage; the value does NOT appear in any portable-sync payload.
+- Search filter narrows visible entries across all groups by display name and key.
+- Missing-collection view enumerates not-owned pets/mounts and the hatching ingredients still needed.
+- Market-status hints only reference items derivable from current inventory + catalog.
+- Feed action shows a pre-feed preview, supports a multi-food queue, runs sequentially with stop-on-failure, and refreshes the snapshot afterwards.
+- Fast-equip changes the current pet/mount and refreshes the snapshot.
+- Bulk sell planner appears on Pets & Mounts with identical behavior; Inventory page no longer renders it.
+- No Habitica API tokens are forwarded to Cloudflare. No portable-sync entry is added for folded-group state.
+- Tests cover: empty pets/mounts rendering, group rendering, fold persistence (with mocked storage), search filter, missing-collection enumeration, feed dry-run preview, multi-food queue failure handling, fast-equip success, bulk-sell relocation rendering, and Inventory-page bulk-sell removal.
+
+### Dashboard Spend Gold Buy Gems Action
+
+Goal: add a "Buy gems with gold" action inside the Dashboard SPEND GOLD section. Visible only when the Habitica user is eligible to convert gold to gems (subscription-gated and respecting Habitica's monthly cap).
+
+Touch:
+- `src/Habitica.Api/HabiticaApiClient.cs` and `src/Habitica.Api/IHabiticaSyncClient.cs` (add `PurchaseGemsForGoldAsync(int quantity)` and extend the user snapshot mapper to expose subscription status and remaining gem-for-gold cap when the API provides them)
+- `src/Habitica.Domain/User/UserSnapshot.cs` (add nullable `bool? CanBuyGemsForGold` and `int? RemainingGemPurchases`, OR a small `SubscriptionSnapshot` record referenced from `UserSnapshot`; additive nullable fields to preserve existing call sites)
+- `src/Habitica.WebApp/Pages/DashboardPage.razor` (SPEND GOLD section around line 483-507; add the gems card and `BuyGemsForGoldAsync` UI handler with `CanBuyGems()` validation, mirroring `BuyArmoireAsync`/`CanBuyArmoire`)
+- `src/Habitica.WebApp/State/AppSessionController.cs` (`BuyGemsForGoldAsync` orchestration mirroring `BuyHealthPotionAsync` and `BuyArmoireAsync`: fresh-state guard, sequential per-gem execution if multi, refresh snapshot, diagnostics)
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs` and `tests/` for the controller orchestration
+- `HABITICA_API.md` (pin endpoint shape and quantity behavior if the implementation confirms the bulk-quantity body parameter works)
+- `FEATURES.md`
+
+Habitica endpoint:
+- `POST /user/purchase/gems/gem` with optional `quantity` body parameter — already documented at `HABITICA_API.md:269` and `:282-288`.
+- Cost: 20 GP per gem (Habitica default). Monthly cap depends on subscription tier; if the cap is not present on the user snapshot, rely on Habitica's error response and degrade gracefully.
+
+UI shape:
+- New card titled "Buy gems with gold" inside the Spend Gold block. Hidden entirely when `Snapshot.CanBuyGemsForGold != true`.
+- Quantity input clamped to `min(floor(Gold / 20), RemainingGemPurchases ?? floor(Gold / 20))`.
+- Explicit confirmation modal/inline confirm required before purchase (per `HABITICA_API.md:290`: "Do not expose destructive or premium-currency actions without explicit confirmation").
+- If the bulk `quantity` body parameter is verified to work in one call, send a single request. Otherwise loop sequentially per gem with stop-on-failure. Document the chosen path in `HABITICA_API.md` during implementation.
+- Snackbar result + refresh of user snapshot on success; surface remaining cap and updated gem balance.
+- Diagnostics logging under `DiagnosticsFeatureArea.Inventory` (rename to `Currency` is out of scope; follow-up acceptable).
+
+Out of scope:
+- selling gems back for gold;
+- mystery hourglass purchase;
+- subscription management UI beyond the gem-for-gold eligibility gate;
+- exposing other subscription perks anywhere else in the UI;
+- adding a dedicated currency page.
+
+Acceptance:
+- Buy-gems card appears only when the user is eligible to buy gems for gold; otherwise the SPEND GOLD section renders unchanged.
+- Quantity input clamps to the affordable maximum and the remaining monthly cap when the cap is known.
+- Action requires explicit confirmation. Cancel keeps state untouched.
+- Successful purchase refreshes the user snapshot and updates the displayed gold and gem totals.
+- Failed purchase (e.g. cap reached, API error) surfaces a concise error and stops further per-gem requests when looping.
+- No Habitica credentials are forwarded to Cloudflare.
+- Tests cover: card hidden when ineligible, visible when eligible, quantity clamp, confirmation gate, success refresh, partial failure during multi-gem sequence, and snapshot mapping for the new subscription fields.
 
 ## Backlog
 
