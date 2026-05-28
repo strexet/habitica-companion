@@ -6,7 +6,7 @@
 <div class="color-scheme-panel @(Compact ? "color-scheme-panel--compact" : null) @(PresetsOnly ? "color-scheme-panel--presets-only" : null)">
     <div class="color-scheme-bar">
         <label class="field-row compact color-scheme-select-row">
-            <span>Scheme</span>
+            <span>Color scheme</span>
             <select class="app-input" data-testid="color-scheme-select" value="@ActiveDisplaySchemeId" @onchange="eventArgs => SelectColorSchemeAsync(eventArgs.Value?.ToString())">
                 <optgroup label="Built in">
                     @foreach (var scheme in _colorSchemeState.BuiltInSchemes)

@@ -2361,8 +2361,50 @@ a {
 
 .sign-in-theme-strip {
     display: flex;
-    justify-content: flex-end;
-    padding: 0.25rem 0 0;
+    justify-content: flex-start;
+    margin: 0.75rem 0 0.25rem;
+}
+
+.sign-in-jump-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 1rem 0 0;
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--appbar-text) 35%, transparent);
+    background: color-mix(in srgb, var(--appbar-text) 14%, transparent);
+    color: var(--appbar-text);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.sign-in-jump-button:hover,
+.sign-in-jump-button:focus-visible {
+    background: color-mix(in srgb, var(--appbar-text) 24%, transparent);
+    transform: translateY(-1px);
+}
+
+.sign-in-jump-button--hidden {
+    display: none;
+}
+
+.hero-panel .sign-in-theme-strip .color-scheme-select-row > span {
+    color: color-mix(in srgb, var(--appbar-text) 70%, transparent);
+}
+
+.hero-panel .sign-in-theme-strip .app-input {
+    background: color-mix(in srgb, var(--appbar-text) 10%, transparent);
+    border-color: color-mix(in srgb, var(--appbar-text) 25%, transparent);
+    color: var(--appbar-text);
+}
+
+.hero-panel .sign-in-theme-strip .color-scheme-preview span {
+    border-color: color-mix(in srgb, var(--appbar-text) 25%, transparent);
 }
 
 .dashboard-appearance {

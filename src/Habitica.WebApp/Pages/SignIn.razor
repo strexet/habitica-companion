@@ -1,9 +1,10 @@
 @page "/"
 @page "/sign-in"
 @page "/signin"
-@implements IDisposable
+@implements IAsyncDisposable
 @inject IAppSessionController SessionController
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
 
 <PageTitle>Sign In</PageTitle>
 
@@ -13,6 +14,16 @@
         <section class="hero-panel card-surface">
             <p class="section-label">Habitica companion</p>
             <h1>Plan Habitica with clearer data.</h1>
+            <a id="@SignInJumpButtonId"
+               class="sign-in-jump-button sign-in-jump-button--hidden"
+               href="#@SignInFormId"
+               data-testid="sign-in-jump">
+                Sign in
+                <span aria-hidden="true">↓</span>
+            </a>
+            <div class="sign-in-theme-strip">
+                <ColorSchemePanel PresetsOnly="true" Compact="true" />
+            </div>
             <p class="hero-copy">
                 Review account health, party timing, quest options, gear choices, spells, and tasks from one focused app.
             </p>
@@ -25,7 +36,7 @@
             </div>
         </section>
 
-        <MudPaper Class="card-surface sign-in-card" Elevation="0">
+        <MudPaper id="@SignInFormId" Class="card-surface sign-in-card" Elevation="0">
             <p class="section-label">Connect this browser</p>
             <h2>Sign in with Habitica</h2>
             <p class="panel-copy">
@@ -109,20 +120,43 @@
                 </MudAlert>
             }
         </MudPaper>
-
-        <div class="sign-in-theme-strip">
-            <ColorSchemePanel PresetsOnly="true" Compact="true" />
-        </div>
     </div>
 }
 
 @code {
+    private const string SignInJumpButtonId = "sign-in-jump-button";
+    private const string SignInFormId = "sign-in-form-card";
+
     private readonly SignInRequest _request = new();
+    private IJSObjectReference? _signInJumpModule;
+    private IJSObjectReference? _signInJumpHandle;
 
     protected override void OnInitialized()
     {
         SessionController.Changed += HandleStateChanged;
         RedirectIfAuthenticated();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || SessionController.State.IsAuthenticated)
+        {
+            return;
+        }
+
+        try
+        {
+            _signInJumpModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/signInJump.js");
+            _signInJumpHandle = await _signInJumpModule.InvokeAsync<IJSObjectReference>("setup", SignInJumpButtonId, SignInFormId);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit closed before module loaded — nothing to dispose.
+        }
+        catch (Exception)
+        {
+            // Module failed to load — the button stays hidden by default class, which is the safe fallback.
+        }
     }
 
     private async Task HandleSubmitAsync()
@@ -152,8 +186,26 @@
         }
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
         SessionController.Changed -= HandleStateChanged;
+
+        try
+        {
+            if (_signInJumpHandle is not null)
+            {
+                await _signInJumpHandle.InvokeVoidAsync("dispose");
+                await _signInJumpHandle.DisposeAsync();
+            }
+
+            if (_signInJumpModule is not null)
+            {
+                await _signInJumpModule.DisposeAsync();
+            }
+        }
+        catch (JSDisconnectedException)
+        {
+            // Circuit closed — JS resources gone with it.
+        }
     }
 }
