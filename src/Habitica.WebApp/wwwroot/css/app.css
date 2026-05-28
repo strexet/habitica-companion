@@ -2362,7 +2362,17 @@ a {
 .sign-in-theme-strip {
     display: flex;
     justify-content: flex-start;
-    margin: 0.75rem 0 0.25rem;
+    margin-top: 1.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--appbar-text) 18%, transparent);
+}
+
+.hero-panel .sign-in-theme-strip .color-scheme-bar {
+    align-items: center;
+}
+
+.hero-panel .sign-in-theme-strip .color-scheme-preview {
+    align-self: center;
 }
 
 .sign-in-jump-button {
