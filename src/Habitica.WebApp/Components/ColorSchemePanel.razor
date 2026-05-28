@@ -142,24 +142,6 @@
                     </div>
                 </MudPaper>
             }
-            else
-            {
-                <MudPaper Class="card-surface action-card color-scheme-card" Elevation="0">
-                    <h2>Custom schemes</h2>
-                    <p class="panel-copy">Copy the active preset, tweak it, and paste it back to make your own.</p>
-                    <div class="action-row">
-                        <MudButton Color="Color.Secondary" Size="@ControlSize" data-testid="create-custom-scheme" OnClick="CreateCustomScheme" Variant="Variant.Filled">
-                            Create Custom Copy
-                        </MudButton>
-                        @if (!_colorSchemeState.ActiveScheme.IsBuiltIn)
-                        {
-                            <MudButton Color="Color.Error" Size="@ControlSize" data-testid="delete-custom-scheme" OnClick="DeleteActiveCustomSchemeAsync" Variant="Variant.Outlined">
-                                Delete Custom
-                            </MudButton>
-                        }
-                    </div>
-                </MudPaper>
-            }
         </div>
     }
 
@@ -242,6 +224,7 @@
         else
         {
             _showAdvanced = true;
+            EnsureEditor();
         }
     }
 
@@ -254,9 +237,7 @@
             _randomActive = false;
         }
 
-        _colorSchemeEditor = _colorSchemeState.ActiveScheme.IsBuiltIn
-            ? null
-            : ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme);
+        _colorSchemeEditor = CreateEditorForActive();
         SetColorSchemeMessage($"Using {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
@@ -279,6 +260,12 @@
             // scheme, RandomActive is false and we leave their choice intact.
             _randomActive = await ColorSchemeService.ReapplyPendingRandomAsync();
             _showAdvanced = _randomActive;
+        }
+
+        // In full mode the advanced editor is always visible, so populate it up front.
+        if (ShowAdvanced)
+        {
+            EnsureEditor();
         }
     }
 
@@ -311,9 +298,7 @@
 
         _colorSchemeState = await ColorSchemeService.SelectAsync(schemeId);
         _randomActive = false;
-        _colorSchemeEditor = _colorSchemeState.ActiveScheme.IsBuiltIn
-            ? null
-            : ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme);
+        _colorSchemeEditor = CreateEditorForActive();
         SetColorSchemeMessage($"Using {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
@@ -322,9 +307,7 @@
         var preset = ColorSchemeCatalog.PickRandomPreset(_colorSchemeState.CustomSchemes, _colorSchemeState.ActiveScheme.Id);
         _colorSchemeState = await ColorSchemeService.SelectAsync(preset.Id);
         _randomActive = false;
-        _colorSchemeEditor = _colorSchemeState.ActiveScheme.IsBuiltIn
-            ? null
-            : ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme);
+        _colorSchemeEditor = CreateEditorForActive();
         SetColorSchemeMessage($"Random preset: {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
@@ -398,24 +381,28 @@
         SetColorSchemeMessage($"Saved {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
-    private void CreateCustomScheme()
+    // The editor is always present while the advanced panel is open (outside a random flow): a saved
+    // custom scheme edits in place, while a built-in opens as a fresh unsaved copy ready to tweak.
+    private ColorSchemeEditorModel CreateEditorForActive()
+        => _colorSchemeState.ActiveScheme.IsBuiltIn
+            ? ColorSchemeEditorModel.FromScheme(
+                ColorSchemeCatalog.CreateCustomCopy(
+                    _colorSchemeState.ActiveScheme,
+                    $"{_colorSchemeState.ActiveScheme.Name} custom"))
+            : ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme);
+
+    private void EnsureEditor()
     {
-        _randomActive = false;
-        CancelPasteFallback();
-        _colorSchemeEditor = ColorSchemeEditorModel.FromScheme(
-            ColorSchemeCatalog.CreateCustomCopy(
-                _colorSchemeState.ActiveScheme,
-                $"{_colorSchemeState.ActiveScheme.Name} custom"));
-        _showAdvanced = true;
-        SetColorSchemeMessage("Edit and save the custom scheme.", true);
+        if (!_randomActive)
+        {
+            _colorSchemeEditor ??= CreateEditorForActive();
+        }
     }
 
     private void CancelCustomSchemeEdit()
     {
         CancelPasteFallback();
-        _colorSchemeEditor = _colorSchemeState.ActiveScheme.IsBuiltIn
-            ? null
-            : ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme);
+        _colorSchemeEditor = CreateEditorForActive();
         SetColorSchemeMessage("Custom scheme edit cancelled.", true);
     }
 
@@ -518,10 +505,10 @@
             return;
         }
 
-        ApplyPastedScheme(clipboard!, "clipboard");
+        await ApplyPastedSchemeAsync(clipboard!, "clipboard");
     }
 
-    private void ApplyPastedSchemeFromBox()
+    private async Task ApplyPastedSchemeFromBox()
     {
         if (_colorSchemeEditor is null)
         {
@@ -534,7 +521,7 @@
             return;
         }
 
-        ApplyPastedScheme(_pasteFallbackText, "box");
+        await ApplyPastedSchemeAsync(_pasteFallbackText, "box");
     }
 
     private void CancelPasteFallback()
@@ -543,9 +530,10 @@
         _pasteFallbackText = string.Empty;
     }
 
-    // Parses and applies a pasted scheme, reporting a specific reason on failure. Shared by the
-    // automatic clipboard read and the manual paste box (source distinguishes the success copy).
-    private void ApplyPastedScheme(string json, string source)
+    // Parses a pasted scheme, applies it as a live preview, and reports a specific reason on failure.
+    // Shared by the automatic clipboard read and the manual paste box (source picks the success copy).
+    // The preview is transient — nothing is persisted until the user taps Save Scheme.
+    private async Task ApplyPastedSchemeAsync(string json, string source)
     {
         if (_colorSchemeEditor is null)
         {
@@ -572,10 +560,13 @@
             }
         }
 
+        // Apply the pasted colors to the live theme right away so the user sees them without saving.
+        await ColorSchemeService.PreviewAsync(_colorSchemeEditor.ToScheme());
+
         _showPasteFallback = false;
         _pasteFallbackText = string.Empty;
         var from = source == "box" ? "Applied pasted preset." : "Pasted preset from clipboard.";
-        SetColorSchemeMessage($"{from} Review the colors and save.", true);
+        SetColorSchemeMessage($"{from} Review the live colors and save to keep them.", true);
     }
 
     private static string DescribeParseFailure(SchemeParseResult result) => result switch

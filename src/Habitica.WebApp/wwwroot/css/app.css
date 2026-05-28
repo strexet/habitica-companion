@@ -2271,6 +2271,12 @@ a {
     min-width: 0;
 }
 
+/* Keep the scheme buttons sized to their content. Without this the flex items shrink to
+   min-content on re-render (iOS Safari halves the pressed button's width mid-interaction). */
+.color-scheme-card .action-row .mud-button {
+    flex: 0 0 auto;
+}
+
 /* Manual paste fallback shown when the Clipboard API is blocked (iOS Safari, http origins). */
 .color-scheme-paste-fallback {
     display: flex;

@@ -75,14 +75,16 @@ public sealed class ColorSchemePanelTests : BunitContext
     {
         var cut = RenderPanel(new FakeKeyValueStorage(), compact: true);
 
-        // Bar controls are present, but Create Custom Copy stays hidden until expanded.
+        // Bar controls are present, but the custom-scheme editor stays hidden until expanded.
         Assert.NotNull(cut.Find("[data-testid='random-preset-scheme']"));
         Assert.NotNull(cut.Find("[data-testid='color-scheme-advanced-toggle']"));
-        Assert.Empty(cut.FindAll("[data-testid='create-custom-scheme']"));
+        Assert.Empty(cut.FindAll("[data-testid='save-custom-scheme']"));
 
         cut.Find("[data-testid='color-scheme-advanced-toggle']").Click();
 
-        Assert.NotNull(cut.Find("[data-testid='create-custom-scheme']"));
+        // Expanding reveals the editor directly — no intermediate "Create Custom Copy" step.
+        Assert.NotNull(cut.Find("[data-testid='save-custom-scheme']"));
+        Assert.NotNull(cut.Find("[data-testid='paste-custom-scheme']"));
     }
 
     [Fact]

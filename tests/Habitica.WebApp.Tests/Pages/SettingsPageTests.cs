@@ -77,7 +77,7 @@ public sealed class SettingsPageTests : BunitContext
 
         cut.Find("[data-testid='settings-appearance-toggle']").Click();
         cut.Find("[data-testid='color-scheme-select']").Change("habitica");
-        cut.Find("[data-testid='create-custom-scheme']").Click();
+        // Selecting a built-in scheme opens the editor directly as an unsaved custom copy.
         cut.Find("[data-testid='custom-scheme-name']").Change("Evening");
         cut.Find("[data-testid='save-custom-scheme']").Click();
 

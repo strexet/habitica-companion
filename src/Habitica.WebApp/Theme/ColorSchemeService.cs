@@ -80,6 +80,13 @@ public sealed class ColorSchemeService
         return true;
     }
 
+    /// <summary>
+    /// Apply a scheme to the live theme without persisting it, e.g. to preview a pasted or edited
+    /// draft. The stored preferences and selected scheme are left untouched until the user saves.
+    /// </summary>
+    public Task PreviewAsync(ColorSchemeDefinition scheme, CancellationToken cancellationToken = default)
+        => ApplyTransientAsync(scheme);
+
     private async Task ApplyTransientAsync(ColorSchemeDefinition scheme)
     {
         await _jsRuntime.InvokeVoidAsync("HabiticaColorScheme.applyColorScheme", scheme);
