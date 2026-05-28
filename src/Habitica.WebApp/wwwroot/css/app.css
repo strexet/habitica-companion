@@ -352,9 +352,11 @@ a {
 
 .hero-panel {
     background:
-        linear-gradient(145deg, rgba(23, 63, 59, 0.92), rgba(45, 116, 110, 0.92)),
-        #173f3b;
-    color: #fff9f0;
+        linear-gradient(145deg,
+            color-mix(in srgb, var(--appbar-bg) 92%, transparent),
+            color-mix(in srgb, var(--primary) 92%, transparent)),
+        var(--appbar-bg);
+    color: var(--appbar-text);
 }
 
 .hero-panel h1 {
@@ -386,13 +388,13 @@ a {
     gap: 0.6rem;
     padding: 0.9rem 1rem;
     border-radius: 0.8rem;
-    border: 1px solid rgba(22, 36, 35, 0.08);
-    background: rgba(245, 239, 226, 0.55);
+    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+    background: color-mix(in srgb, var(--bg) 55%, transparent);
 }
 
 .sign-in-help-card.safe-card {
-    border-color: rgba(45, 116, 110, 0.16);
-    background: rgba(45, 116, 110, 0.08);
+    border-color: color-mix(in srgb, var(--primary) 16%, transparent);
+    background: color-mix(in srgb, var(--primary) 8%, transparent);
 }
 
 .sign-in-help-card ol,
@@ -467,8 +469,8 @@ a {
 .feature-chip {
     padding: 0.8rem 1rem;
     border-radius: 999px;
-    border: 1px solid rgba(255, 249, 240, 0.18);
-    background: rgba(255, 249, 240, 0.1);
+    border: 1px solid color-mix(in srgb, var(--appbar-text) 18%, transparent);
+    background: color-mix(in srgb, var(--appbar-text) 10%, transparent);
     font-size: 0.92rem;
 }
 
@@ -2312,6 +2314,55 @@ a {
     height: 1.25rem;
     border-radius: 0.3rem;
     box-shadow: none;
+}
+
+.color-scheme-panel--presets-only {
+    gap: 0;
+    font-size: 0.85rem;
+}
+
+.color-scheme-panel--presets-only .color-scheme-bar {
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.color-scheme-panel--presets-only .color-scheme-select-row {
+    flex: 0 1 auto;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+.color-scheme-panel--presets-only .color-scheme-select-row > span {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+}
+
+.color-scheme-panel--presets-only .color-scheme-select-row .app-input {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.85rem;
+    min-width: 9rem;
+    width: auto;
+}
+
+.color-scheme-panel--presets-only .color-scheme-preview {
+    gap: 0.2rem;
+}
+
+.color-scheme-panel--presets-only .color-scheme-preview span {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 0.2rem;
+    box-shadow: none;
+}
+
+.sign-in-theme-strip {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.25rem 0 0;
 }
 
 .dashboard-appearance {

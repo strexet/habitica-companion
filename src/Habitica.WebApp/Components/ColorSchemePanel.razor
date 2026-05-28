@@ -3,7 +3,7 @@
 @inject ColorSchemeService ColorSchemeService
 @inject IJSRuntime JsRuntime
 
-<div class="color-scheme-panel @(Compact ? "color-scheme-panel--compact" : null)">
+<div class="color-scheme-panel @(Compact ? "color-scheme-panel--compact" : null) @(PresetsOnly ? "color-scheme-panel--presets-only" : null)">
     <div class="color-scheme-bar">
         <label class="field-row compact color-scheme-select-row">
             <span>Scheme</span>
@@ -14,7 +14,13 @@
                         <option value="@scheme.Id">@scheme.Name</option>
                     }
                 </optgroup>
-                @if (_colorSchemeState.CustomSchemes.Count > 0)
+                @if (PresetsOnly && !_colorSchemeState.ActiveScheme.IsBuiltIn && !_randomActive)
+                {
+                    <optgroup label="Current">
+                        <option value="@_colorSchemeState.ActiveScheme.Id">@_colorSchemeState.ActiveScheme.Name</option>
+                    </optgroup>
+                }
+                @if (!PresetsOnly && _colorSchemeState.CustomSchemes.Count > 0)
                 {
                     <optgroup label="Custom">
                         @foreach (var scheme in _colorSchemeState.CustomSchemes)
@@ -23,7 +29,7 @@
                         }
                     </optgroup>
                 }
-                @if (_randomScheme is not null)
+                @if (!PresetsOnly && _randomScheme is not null)
                 {
                     <optgroup label="Generated">
                         <option value="@ColorSchemeCatalog.RandomSchemeId">@_randomScheme.Name</option>
@@ -37,28 +43,31 @@
                 <span style="@($"background: {swatch};")"></span>
             }
         </div>
-        <div class="action-row color-scheme-random-row">
-            <MudButton Color="Color.Secondary" Size="@ControlSize" data-testid="random-preset-scheme" OnClick="RandomPresetAsync" Variant="Variant.Filled">
-                Random Preset
-            </MudButton>
-            <MudButton Color="Color.Secondary" Size="@ControlSize" data-testid="random-theme-scheme" OnClick="RandomThemeAsync" Variant="Variant.Filled">
-                Random Theme
-            </MudButton>
-            @if (Compact)
-            {
-                <MudButton Color="Color.Default"
-                           Size="Size.Small"
-                           Variant="Variant.Text"
-                           data-testid="color-scheme-advanced-toggle"
-                           OnClick="ToggleAdvancedAsync"
-                           EndIcon="@ToggleIcon">
-                    @ToggleLabel
+        @if (!PresetsOnly)
+        {
+            <div class="action-row color-scheme-random-row">
+                <MudButton Color="Color.Secondary" Size="@ControlSize" data-testid="random-preset-scheme" OnClick="RandomPresetAsync" Variant="Variant.Filled">
+                    Random Preset
                 </MudButton>
-            }
-        </div>
+                <MudButton Color="Color.Secondary" Size="@ControlSize" data-testid="random-theme-scheme" OnClick="RandomThemeAsync" Variant="Variant.Filled">
+                    Random Theme
+                </MudButton>
+                @if (Compact)
+                {
+                    <MudButton Color="Color.Default"
+                               Size="Size.Small"
+                               Variant="Variant.Text"
+                               data-testid="color-scheme-advanced-toggle"
+                               OnClick="ToggleAdvancedAsync"
+                               EndIcon="@ToggleIcon">
+                        @ToggleLabel
+                    </MudButton>
+                }
+            </div>
+        }
     </div>
 
-    @if (ShowAdvanced)
+    @if (!PresetsOnly && ShowAdvanced)
     {
         <div class="color-scheme-advanced">
             @if (_randomActive)
@@ -145,7 +154,7 @@
         </div>
     }
 
-    @if (!string.IsNullOrWhiteSpace(_colorSchemeMessage))
+    @if (!PresetsOnly && !string.IsNullOrWhiteSpace(_colorSchemeMessage))
     {
         <div class="@($"import-status {(_colorSchemeSucceeded ? "success-pill" : "danger-pill")}")" data-testid="color-scheme-message">
             @_colorSchemeMessage
@@ -157,6 +166,10 @@
     /// <summary>When true, render a condensed bar with advanced controls hidden behind a disclosure toggle.</summary>
     [Parameter]
     public bool Compact { get; set; }
+
+    /// <summary>When true, only the built-in preset selector and swatches are shown. No random buttons, no custom editor, no advanced controls.</summary>
+    [Parameter]
+    public bool PresetsOnly { get; set; }
 
     private string? _colorSchemeMessage;
     private bool _colorSchemeSucceeded = true;
