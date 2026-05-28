@@ -60,7 +60,7 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Add super-small and lightweight versions of unfinished dailies to CRON related block on Dashboard page, so user when is asked to CRON can fill those in. On Spell page when user is asked to CRON we should provide those dailies too: maybe redirect to Dashboard (but that is not very goo in UX way), maybe add those tasks to CRON related spell card part (but I am afraid that can lead to unreadable UI - to much stuff). Think on this hard.
+(empty)
 
 ## Prioritized Next Changes
 
@@ -427,6 +427,61 @@ Acceptance:
 - No Habitica credentials are forwarded to Cloudflare.
 - Tests cover: card hidden when ineligible, visible when eligible, quantity clamp, confirmation gate, success refresh, partial failure during multi-gem sequence, and snapshot mapping for the new subscription fields.
 
+### Inline Unfinished Dailies Mini List In CRON Blocks
+
+Goal: surface unfinished dailies inside the CRON-action panel on the Dashboard and the CRON buff-warning card on Spells, so the user can knock dailies out in place before CRON without leaving context.
+
+Touch:
+- `src/Habitica.WebApp/Components/` — new `CronUnfinishedDailiesMiniList.razor` shared component
+- `src/Habitica.WebApp/Pages/DashboardPage.razor` (`cron-action-panel` at line ~112; insert mini list before the confirmation panel at ~188)
+- `src/Habitica.WebApp/Pages/SpellsPage.razor` (`spell-cron-warning` at line ~198; insert collapsed disclosure with mini list)
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.WebApp/State/AppSessionController.cs` (reuse `ScoreTaskAsync` at line ~1674; no new orchestration method unless a multi-tick helper is required)
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs`, `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs`, and `tests/Habitica.WebApp.Tests/Components/CronUnfinishedDailiesMiniListTests.cs`
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md` if a new shared compact-task pattern is documented
+
+UX decision (the "think on this hard" call):
+- Dashboard: render the mini list inline inside `cron-action-panel`, expanded by default. The Start-New-Day flow already invites the user to act before CRON; an inline list reinforces "finish what you can before CRON" and is reachable without scrolling away from the gear optimizer.
+- Spells: keep the CRON warning card visually compact. Render the mini list inside the warning, but collapsed behind a disclosure labeled `"N dailies due — show"` (singular `"1 daily due — show"`). Expand reveals the same compact list. Reasoning: the spell card flow's primary action is "Start New Day and Cast"; cluttering it with full daily controls every time risks pushing the cast actions below the fold. Disclosure preserves option without overwhelming the default state.
+- Do NOT redirect the Spells flow to the Dashboard. The redirect breaks the cast intent and forces re-context.
+- Hide the mini list (do not render the disclosure at all) when there are zero unfinished dailies due today.
+
+Shared component shape (`CronUnfinishedDailiesMiniList.razor`):
+- Parameter: `IReadOnlyList<TaskSnapshot> Dailies` (already-filtered to due-and-unfinished today by the parent).
+- Parameter: `EventCallback<TaskSnapshot> OnComplete` — parent wires it to `SessionController.ScoreTaskAsync(task, TaskScoreDirection.Up)`.
+- Parameter: `bool StartCollapsed` — default false on Dashboard, true on Spells.
+- Renders: section label `"Unfinished dailies"`, a count badge, and a compact row per daily with:
+  - daily title (truncated with title attribute)
+  - difficulty indicator (small)
+  - check button (`✓` icon) that calls `OnComplete`
+- Row layout: single line, no notes, no checklist sub-items, no history chart — strictly lightweight. The full Tasks-page card remains the place for detail.
+- Busy/disabled state: while `SessionController.State.IsBusy`, disable check buttons. After a successful score, the row visually crosses out or removes itself; final list reflects the live snapshot on next refresh.
+- Stale-data guard: if `SessionController.State.TaskFreshness != SnapshotFreshnessState.Fresh`, replace the check buttons with a small "Refresh tasks to check off" hint linking to the existing refresh control. Do not silently submit against stale tasks.
+
+Filtering logic:
+- "Unfinished daily due today" = `TaskSnapshot.Type == TaskType.Daily && !IsCompleted && due-today`. Reuse the existing `incompleteDailies` selection from `src/Habitica.Application/Dashboard/PendingDamageEstimateFactory.cs:44` if it already encodes the "due today" rule; otherwise extend that selection in the factory and have both the damage estimate and the mini list source from it. Do NOT invent a parallel "due today" filter that could drift from the damage estimate.
+
+Out of scope:
+- Habits and To-Dos (only Dailies);
+- checklist sub-item handling (a daily with a checklist still ticks as a single score-up);
+- bulk "check all" action;
+- changing the Start-New-Day confirmation copy beyond the mini-list addition;
+- changing the buff-timing warning copy beyond adding the disclosure;
+- changing `ScoreTaskAsync` semantics or freshness guards;
+- adding the mini list to any other page (Party, Inventory, Settings, etc.).
+
+Acceptance:
+- When `snapshot.NeedsCron == true` and at least one due daily is incomplete, the Dashboard `cron-action-panel` renders the mini list expanded between the gear optimizer and the confirmation panel.
+- When `snapshot.NeedsCron == true` triggers a `spell-cron-warning` and at least one due daily is incomplete, the warning card renders a collapsed disclosure showing `"N daily/dailies due — show"`. Expanding reveals the same compact list.
+- Mini list is hidden entirely when zero due dailies are incomplete.
+- Each row's check button calls `ScoreTaskAsync(task, TaskScoreDirection.Up)`; on success, the row disappears or visibly resolves and the count badge decrements.
+- Stale task freshness disables the per-row check buttons and surfaces a refresh hint instead of submitting against stale state.
+- No bulk-check button. No checklist sub-item UI.
+- No redirect from Spells to Dashboard introduced by this entry.
+- The same data source feeds both the Dashboard mini list and `PendingDamageEstimateFactory.incompleteDailies`. Tests assert they cannot drift.
+- Tests cover: Dashboard renders mini list when needs-CRON+unfinished, hidden when zero unfinished, single-row check calls the controller, stale state disables checks, Spells disclosure is collapsed by default and expands on click, both mini lists hidden when not needing CRON, and the count badge updates after a successful score.
+
 ## Backlog
 
 These entries are lower priority. Each entry is self-contained and should be promoted into `Prioritized Next Changes` before implementation.
@@ -601,3 +656,16 @@ Acceptance:
 - Repeated low-priority explanatory copy is collapsed, summarized, or moved behind local detail affordances.
 - Active casting progress and errors remain prominent.
 - Tests cover key controls still rendering after the density change.
+
+
+
+## [6.1.0] — 2026-05-27
+
+### Добавлено
+
+- Добавлен метод `GDPRWindowController.Close()` для закрытия GDPR-окна из кода.
+- Добавлен метод `UserConsentManager.CloseGdprUnityUI()` для закрытия активного GDPR-окна из меню настроек игры напрямую (без необходимости иметь ссылку на `GDPRWindowController`).
+
+### Исправлено
+
+- При уничтожении GDPR-окна через `Destroy` теперь корректно завершается `Task`, возвращаемый из `ShowGdprUnityUI`.
