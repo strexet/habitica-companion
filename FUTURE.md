@@ -60,7 +60,72 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-(empty)
+- Top. Add one more pair of themes: {
+  "Name": "Blessed Skyhaven",
+  "Tokens": {
+  "Background": "#edf8ff",
+  "CardBackground": "rgba(255, 255, 255, 0.97)",
+  "CardBorder": "rgba(255, 213, 92, 0.62)",
+  "Ink": "#1b3148",
+  "Muted": "#6f879d",
+  "Primary": "#6fbfff",
+  "Accent": "#f0bd3f",
+  "Danger": "#d75d75",
+  "Success": "#56b8f0",
+  "Focus": "#9bdcff",
+  "Shadow": "0 24px 78px rgba(255, 224, 128, 0.38)",
+  "Surface": "rgba(245, 252, 255, 0.92)",
+  "SurfaceStrong": "rgba(255, 255, 255, 0.99)",
+  "ChartPrimary": "#6fbfff",
+  "ChartSecondary": "#f0bd3f",
+  "TaskNegative": "#ffe4ec",
+  "TaskNeutral": "#f5fcff",
+  "TaskPositive": "#e2f5ff",
+  "AppBarBackground": "#fff4c5",
+  "AppBarText": "#1b3148",
+  "DrawerBackground": "#fafdff",
+  "DrawerText": "#1b3148",
+  "ButtonText": "#10283d",
+  "DisabledBackground": "rgba(27, 49, 72, 0.08)",
+  "DisabledText": "rgba(111, 135, 157, 0.62)",
+  "DisabledBorder": "rgba(255, 213, 92, 0.36)",
+  "InputBackground": "#fbfeff",
+  "InputBorder": "rgba(111, 191, 255, 0.52)"
+  }
+  } and {
+  "Name": "Infernal Covenant",
+  "Tokens": {
+  "Background": "#030000",
+  "CardBackground": "rgba(9, 1, 1, 0.99)",
+  "CardBorder": "rgba(255, 34, 54, 0.54)",
+  "Ink": "#e8caca",
+  "Muted": "#a46d70",
+  "Primary": "#ff1f36",
+  "Accent": "#9b0c18",
+  "Danger": "#ff3048",
+  "Success": "#9a4a34",
+  "Focus": "#ff4058",
+  "Shadow": "0 30px 90px rgba(255, 20, 45, 0.32)",
+  "Surface": "rgba(10, 2, 2, 0.97)",
+  "SurfaceStrong": "rgba(18, 3, 4, 0.99)",
+  "ChartPrimary": "#ff1f36",
+  "ChartSecondary": "#9b0c18",
+  "TaskNegative": "#210305",
+  "TaskNeutral": "#140203",
+  "TaskPositive": "#1a0704",
+  "AppBarBackground": "#070000",
+  "AppBarText": "#e8caca",
+  "DrawerBackground": "#010000",
+  "DrawerText": "#e8caca",
+  "ButtonText": "#030000",
+  "DisabledBackground": "rgba(232, 202, 202, 0.06)",
+  "DisabledText": "rgba(164, 109, 112, 0.62)",
+  "DisabledBorder": "rgba(255, 34, 54, 0.28)",
+  "InputBackground": "#090101",
+  "InputBorder": "rgba(255, 31, 54, 0.48)"
+  }
+  }. Merge it with Color Scheme Catalog Overhaul And Light/Dark Default Restore task.
+- Top. Add more color fields to color themes. All big objects like main background, panels should have gradient coloring with 9 points: bottom-left, bottom, bottom-right, center-left, center, center-right, top-left, top, top-right - small buttons and icons don't need that and panels with content will be good without "center" (think what to add to app header and side menu too). Think what other color options can be added to improve visuals (maybe some text shadows, for example for headers). Also, I've mentioned that ticks always have blue color (example: PARTY SYNC SETTINGS - Shared queue controls). Merge it with Color Scheme Catalog Overhaul And Light/Dark Default Restore task. 
 
 ## Prioritized Next Changes
 
