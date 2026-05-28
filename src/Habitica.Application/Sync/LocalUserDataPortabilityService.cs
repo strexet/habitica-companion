@@ -191,12 +191,96 @@ public sealed class LocalUserDataPortabilityService
             StorageKeys.DiagnosticsLogEntries => MergeArrayByProperty(localJson, incomingJson, "id"),
             StorageKeys.PartyCronHistory => MergePartyCronHistory(localJson, incomingJson),
             StorageKeys.TaskOrderPreferences => MergeTaskOrderPreferences(localJson, incomingJson),
+            StorageKeys.ColorSchemePreferences => MergeColorSchemes(localJson, incomingJson),
             StorageKeys.LatestTaskSnapshot => PickNewerSnapshot(localJson, incomingJson, "retrievedAtUtc"),
             StorageKeys.LatestUserSnapshot => PickNewerSnapshot(localJson, incomingJson, "retrievedAtUtc"),
             StorageKeys.LatestPartySnapshot => PickNewerSnapshot(localJson, incomingJson, "retrievedAtUtc"),
             StorageKeys.LatestGearCatalog => PickNewerSnapshot(localJson, incomingJson, "retrievedAtUtc"),
             _ => localJson
         };
+    }
+
+    // Sync logic mirrors the data shape: a built-in active scheme is just an id (selectedSchemeId
+    // is small) while custom schemes ship their full token bundles. Custom schemes union by id,
+    // newer updatedAtUtc wins. The selected scheme follows the device whose selectedAtUtc is newer,
+    // falling back to local if neither side stamped one. Matches the snapshot/array merge style
+    // used by other sections so all sync uses the same shape: LWW per item with id-based union.
+    private static string MergeColorSchemes(string localJson, string incomingJson)
+    {
+        var local = JsonNode.Parse(localJson)?.AsObject() ?? new JsonObject();
+        var incoming = JsonNode.Parse(incomingJson)?.AsObject() ?? new JsonObject();
+
+        var merged = new Dictionary<string, JsonNode?>(StringComparer.Ordinal);
+        foreach (var item in ParseObjectArray(local, "customSchemes").Concat(ParseObjectArray(incoming, "customSchemes")))
+        {
+            var id = TryGetString(item, "id");
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                continue;
+            }
+
+            if (!merged.TryGetValue(id, out var existing))
+            {
+                merged[id] = item;
+                continue;
+            }
+
+            var existingTimestamp = ReadOptionalTimestamp(existing, "updatedAtUtc");
+            var candidateTimestamp = ReadOptionalTimestamp(item, "updatedAtUtc");
+            // Strict `>`: ties keep whichever side was inserted first (the local pass above). This
+            // is stable and avoids flipping on missing-timestamp legacy data, matching how
+            // MergeArrayByProperty deterministically prefers later insertions.
+            if (candidateTimestamp > existingTimestamp)
+            {
+                merged[id] = item;
+            }
+        }
+
+        var localSelectedTimestamp = ReadOptionalTimestamp(local, "selectedAtUtc");
+        var incomingSelectedTimestamp = ReadOptionalTimestamp(incoming, "selectedAtUtc");
+        // Tie or neither stamped → keep local selection (consistent with `_ => localJson` default).
+        var preferIncomingSelection = incomingSelectedTimestamp > localSelectedTimestamp;
+        var selectedSchemeId = TryGetString(preferIncomingSelection ? incoming : local, "selectedSchemeId")
+            ?? TryGetString(local, "selectedSchemeId");
+        var selectedAtNode = (preferIncomingSelection ? incoming : local)["selectedAtUtc"]?.DeepClone();
+
+        var result = new JsonObject
+        {
+            ["selectedSchemeId"] = selectedSchemeId,
+            ["customSchemes"] = new JsonArray(merged.Values.Select(static value => value?.DeepClone()).ToArray()),
+            ["selectedAtUtc"] = selectedAtNode
+        };
+        return SerializeNode(result);
+    }
+
+    private static string? TryGetString(JsonNode? node, string propertyName)
+    {
+        var property = node?[propertyName];
+        if (property is null)
+        {
+            return null;
+        }
+
+        try
+        {
+            return property.GetValue<string>();
+        }
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+        catch (FormatException)
+        {
+            return null;
+        }
+    }
+
+    private static DateTimeOffset ReadOptionalTimestamp(JsonNode? node, string propertyName)
+    {
+        var raw = TryGetString(node, propertyName);
+        return DateTimeOffset.TryParse(raw, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var timestamp)
+            ? timestamp.ToUniversalTime()
+            : DateTimeOffset.MinValue;
     }
 
     private static string MergeArrayByProperty(string localJson, string incomingJson, string propertyName)

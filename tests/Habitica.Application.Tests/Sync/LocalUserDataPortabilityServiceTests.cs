@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Habitica.Application.Sync;
 using Habitica.Domain.Auth;
 using Habitica.Domain.Party;
@@ -167,6 +168,79 @@ public sealed class LocalUserDataPortabilityServiceTests
         Assert.Equal(new[] { "shared-2", "shared-1", "local-only", "incoming-only" }, merged!.OrdersByType["Todo"]);
         Assert.Equal(new[] { "habit-local" }, merged.OrdersByType["Habit"]);
         Assert.Equal(new[] { "daily-incoming" }, merged.OrdersByType["Daily"]);
+    }
+
+    [Fact]
+    public async Task ImportAsync_merges_color_schemes_by_timestamp_per_id_and_selection()
+    {
+        // Cross-device merge: custom schemes union by id with newer updatedAtUtc winning, and
+        // the selectedSchemeId follows whichever side has the newer selectedAtUtc. A built-in
+        // selection rides as just its id; custom schemes ship their full token bundles.
+        var storage = new InMemoryKeyValueStorage();
+        var service = new LocalUserDataPortabilityService(storage, TimeProvider.System);
+
+        const string localJson = """
+            {
+              "selectedSchemeId":"alpha",
+              "selectedAtUtc":"2026-05-13T01:00:00Z",
+              "customSchemes":[
+                {"id":"c1","name":"Local Old","isBuiltIn":false,"updatedAtUtc":"2026-05-13T01:00:00Z","tokens":{}}
+              ]
+            }
+            """;
+        const string incomingJson = """
+            {
+              "selectedSchemeId":"c2",
+              "selectedAtUtc":"2026-05-13T02:00:00Z",
+              "customSchemes":[
+                {"id":"c1","name":"Local Updated","isBuiltIn":false,"updatedAtUtc":"2026-05-13T03:00:00Z","tokens":{}},
+                {"id":"c2","name":"Remote","isBuiltIn":false,"updatedAtUtc":"2026-05-13T02:00:00Z","tokens":{}}
+              ]
+            }
+            """;
+        await storage.SetRawJsonAsync(StorageKeys.ColorSchemePreferences, localJson, CancellationToken.None);
+
+        var bundle = new LocalUserDataBundle(
+            1,
+            DateTimeOffset.Parse("2026-05-13T04:00:00Z"),
+            "user-id",
+            new[] { new LocalUserDataRecord(StorageKeys.ColorSchemePreferences, incomingJson) });
+
+        await service.ImportAsync(bundle, LocalDataImportMode.Merge, CancellationToken.None);
+
+        var mergedJson = await storage.GetRawJsonAsync(StorageKeys.ColorSchemePreferences, CancellationToken.None);
+        Assert.NotNull(mergedJson);
+        var merged = JsonNode.Parse(mergedJson!)!.AsObject();
+
+        Assert.Equal("c2", merged["selectedSchemeId"]!.GetValue<string>());
+        var customs = merged["customSchemes"]!.AsArray();
+        var byId = customs.ToDictionary(node => node!["id"]!.GetValue<string>(), node => node!["name"]!.GetValue<string>());
+        Assert.Equal(2, byId.Count);
+        Assert.Equal("Local Updated", byId["c1"]);
+        Assert.Equal("Remote", byId["c2"]);
+    }
+
+    [Fact]
+    public async Task ImportAsync_keeps_local_selection_when_neither_side_stamped_selected_at()
+    {
+        var storage = new InMemoryKeyValueStorage();
+        var service = new LocalUserDataPortabilityService(storage, TimeProvider.System);
+
+        const string localJson = """{"selectedSchemeId":"habitica","customSchemes":[]}""";
+        const string incomingJson = """{"selectedSchemeId":"gryphy-dark","customSchemes":[]}""";
+        await storage.SetRawJsonAsync(StorageKeys.ColorSchemePreferences, localJson, CancellationToken.None);
+
+        var bundle = new LocalUserDataBundle(
+            1,
+            DateTimeOffset.Parse("2026-05-13T04:00:00Z"),
+            "user-id",
+            new[] { new LocalUserDataRecord(StorageKeys.ColorSchemePreferences, incomingJson) });
+
+        await service.ImportAsync(bundle, LocalDataImportMode.Merge, CancellationToken.None);
+
+        var mergedJson = await storage.GetRawJsonAsync(StorageKeys.ColorSchemePreferences, CancellationToken.None);
+        var merged = JsonNode.Parse(mergedJson!)!.AsObject();
+        Assert.Equal("habitica", merged["selectedSchemeId"]!.GetValue<string>());
     }
 
     [Fact]

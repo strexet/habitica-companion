@@ -1060,7 +1060,10 @@ public sealed record ColorSchemeDefinition(
     string Id,
     string Name,
     bool IsBuiltIn,
-    ColorSchemeTokens Tokens);
+    ColorSchemeTokens Tokens,
+    // Stamp of the last edit to this custom scheme. Used to merge custom schemes across devices
+    // (newer timestamp wins per id). Built-ins leave this null and are never merged by id.
+    DateTimeOffset? UpdatedAtUtc = null);
 
 public sealed record ColorSchemeTokens(
     string Background,
@@ -1096,7 +1099,10 @@ public sealed record ColorSchemeTokenDescriptor(string Name, string Label);
 
 public sealed record ColorSchemePreferences(
     string SelectedSchemeId,
-    IReadOnlyList<ColorSchemeDefinition> CustomSchemes);
+    IReadOnlyList<ColorSchemeDefinition> CustomSchemes,
+    // Stamp of the last selection change. Used to pick the newer selection during cross-device
+    // merge. A built-in active scheme syncs as just its id, custom schemes ship their full data.
+    DateTimeOffset? SelectedAtUtc = null);
 
 public sealed record ColorSchemeState(
     ColorSchemeDefinition ActiveScheme,

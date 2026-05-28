@@ -1491,7 +1491,8 @@ Merge keeps local records and merges known append-only collections:
 - equipment presets by `id`;
 - diagnostics log entries by `id`;
 - party CRON history events by `partyId`, `memberId`, and `lastCronUtc`;
-- latest snapshots by newer `retrievedAtUtc`.
+- latest snapshots by newer `retrievedAtUtc`;
+- color-scheme preferences: custom schemes union by `id` with newer `updatedAtUtc` winning, and `selectedSchemeId` follows the side with the newer `selectedAtUtc` (a built-in selection is just the id; custom schemes ship their full token bundles).
 
 Use remote imports incoming records with override behavior for the chosen import scope. Keep local skips the incoming record. Apply section choices lets conflicting sections choose merge, keep local, or use remote independently.
 
@@ -1646,11 +1647,11 @@ The app overrides MudBlazor app bar, drawer, button, progress, and disabled-stat
 
 Task value backgrounds use a logarithmic intensity curve across the scheme's task min/base/max tokens. The three task tokens should be same-hue shades: small absolute values use the base shade, negative values move toward min, and positive values move toward max without introducing unrelated red/orange/green/blue card colors.
 
-The color-scheme controls live in a shared `ColorSchemePanel` component embedded on the Settings page, the Dashboard page, and the Sign-in page, so users can recolor the app without leaving the dashboard and can try themes before signing in. The Dashboard uses the panel's `Compact` mode: a single dense bar (scheme select, small swatch strip, Random Preset, Random Theme) with advanced controls (create/copy custom, copy/paste preset editor, random-theme save) collapsed behind a "Customize" disclosure toggle that auto-expands when a random-save or custom-edit flow is active. The Dashboard appearance section sits near the top of the page (just under the hero), collapsed by default behind a "Customize theme"/"Cancel" fold toggle so it is visible without dominating the page. The Settings appearance section uses the same collapsed-by-default fold toggle, but reveals the full (non-compact) panel with advanced controls always visible. Sign-in renders the full panel directly. The panel lets users:
+The color-scheme controls live in a shared `ColorSchemePanel` component embedded on the Settings page, the Dashboard page, and the Sign-in page, so users can recolor the app without leaving the dashboard and can try themes before signing in. The Dashboard uses the panel's `Compact` mode: a single dense bar (scheme select, small swatch strip, Random Preset, Random Theme) with advanced controls (copy/paste preset editor, random-theme save) collapsed behind a "Customize" disclosure toggle that auto-expands when a random-save flow is active. The Dashboard appearance section sits near the top of the page (just under the hero), collapsed by default behind a "Customize theme"/"Cancel" fold toggle so it is visible without dominating the page. The Settings appearance section uses the same collapsed-by-default fold toggle, but reveals the full (non-compact) panel with advanced controls always visible. Sign-in renders the full panel directly. Opening the advanced panel always reveals the custom-scheme editor directly: a saved custom scheme edits in place, and a built-in active scheme opens as an unsaved draft copy ready to tweak (no intermediate "Create Custom Copy" step). The panel lets users:
 
 - choose a built-in scheme;
-- create a custom copy of the active scheme;
-- build a fully custom palette by copying the active preset to the clipboard (as portable JSON), editing the colors in any text editor, and pasting it back — surfaced to users as "Copy preset"/"Paste preset" with no per-token color fields;
+- build a fully custom palette by copying the active preset to the clipboard (as portable JSON), editing the colors in any text editor, and pasting it back — surfaced to users as "Copy preset"/"Paste preset" with no per-token color fields. Pasting applies the colors to the live theme immediately as a transient preview; Save Scheme persists them and Cancel reverts the preview to the previously applied scheme;
+- paste manually into an inline text box when the browser blocks `navigator.clipboard.readText` (iOS Safari and non-secure origins) — the panel reveals a JSON textarea with Apply/Cancel buttons and shows a specific error reason when the pasted text is empty, not valid JSON, not a JSON object, or carries no recognized color tokens;
 - rename custom schemes;
 - delete custom schemes;
 - reset by choosing any built-in scheme;
@@ -1683,6 +1684,8 @@ Test:
 - CSS/JS keep drawer links, number counters, determinate progress bars, quest estimate alerts, task-value card backgrounds, and diagnostics warning panels routed through active scheme tokens;
 - color-scheme preferences are portable user data;
 - cloud sync maps `ColorSchemes` to `preferences/colorSchemes`;
+- color-scheme cross-device merge unions custom schemes by `id` with newer `updatedAtUtc` winning, and `selectedSchemeId` follows the side with the newer `selectedAtUtc`;
+- the editor card is shown directly when the advanced panel is open (no "Create Custom Copy" intermediate), a built-in active scheme opens as an unsaved draft, and pasting applies a live preview that Cancel reverts to the previously applied scheme;
 - Settings renders scheme controls and saves custom scheme preferences;
 - a generated random theme passes token validation across many seeds at both low and maximum chaos;
 - random preset selection excludes the active scheme and the transient random id;

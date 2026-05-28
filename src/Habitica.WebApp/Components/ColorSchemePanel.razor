@@ -236,6 +236,12 @@
             _colorSchemeState = await ColorSchemeService.SelectAsync(_colorSchemeState.ActiveScheme.Id);
             _randomActive = false;
         }
+        else
+        {
+            // A pasted preview leaves the live theme out of sync with the persisted active scheme.
+            // Re-apply it transiently so collapsing the panel always returns to the saved colors.
+            await ColorSchemeService.PreviewAsync(_colorSchemeState.ActiveScheme);
+        }
 
         _colorSchemeEditor = CreateEditorForActive();
         SetColorSchemeMessage($"Using {_colorSchemeState.ActiveScheme.Name}.", true);
@@ -399,9 +405,12 @@
         }
     }
 
-    private void CancelCustomSchemeEdit()
+    private async Task CancelCustomSchemeEdit()
     {
         CancelPasteFallback();
+        // Restore the previously applied scheme so a live-pasted preview is rolled back when the
+        // user cancels without saving. PreviewAsync is transient — no preferences are written.
+        await ColorSchemeService.PreviewAsync(_colorSchemeState.ActiveScheme);
         _colorSchemeEditor = CreateEditorForActive();
         SetColorSchemeMessage("Custom scheme edit cancelled.", true);
     }

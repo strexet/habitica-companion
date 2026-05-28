@@ -97,7 +97,12 @@ public sealed class ColorSchemeService
         RandomActive = false;
         var preferences = await LoadPreferencesAsync(cancellationToken);
         var activeScheme = ColorSchemeCatalog.Resolve(schemeId, preferences.CustomSchemes);
-        var updated = preferences with { SelectedSchemeId = activeScheme.Id };
+        // Stamp the selection change so cross-device merge knows which device chose more recently.
+        var updated = preferences with
+        {
+            SelectedSchemeId = activeScheme.Id,
+            SelectedAtUtc = DateTimeOffset.UtcNow
+        };
         await SavePreferencesAsync(updated, activeScheme, cancellationToken);
         return new ColorSchemeState(activeScheme, ColorSchemeCatalog.BuiltInSchemes, updated.CustomSchemes);
     }
@@ -107,10 +112,13 @@ public sealed class ColorSchemeService
         bool select,
         CancellationToken cancellationToken = default)
     {
+        var now = DateTimeOffset.UtcNow;
         var customScheme = ColorSchemeCatalog.Complete(scheme) with
         {
             Name = ColorSchemeCatalog.NormalizeName(scheme.Name, "Custom scheme"),
-            IsBuiltIn = false
+            IsBuiltIn = false,
+            // Stamp every save so cross-device merge picks the newer edit per scheme id.
+            UpdatedAtUtc = now
         };
         var errors = ColorSchemeCatalog.Validate(customScheme);
         if (errors.Count > 0)
@@ -131,7 +139,8 @@ public sealed class ColorSchemeService
             .ToArray();
         var selectedSchemeId = select ? customScheme.Id : preferences.SelectedSchemeId;
         var activeScheme = ColorSchemeCatalog.Resolve(selectedSchemeId, customSchemes);
-        var updated = new ColorSchemePreferences(activeScheme.Id, customSchemes);
+        var selectedAtUtc = select ? now : preferences.SelectedAtUtc;
+        var updated = new ColorSchemePreferences(activeScheme.Id, customSchemes, selectedAtUtc);
         await SavePreferencesAsync(updated, activeScheme, cancellationToken);
         return (new ColorSchemeState(activeScheme, ColorSchemeCatalog.BuiltInSchemes, customSchemes), Array.Empty<string>());
     }
@@ -143,11 +152,13 @@ public sealed class ColorSchemeService
         var customSchemes = preferences.CustomSchemes
             .Where(scheme => !string.Equals(scheme.Id, schemeId, StringComparison.Ordinal))
             .ToArray();
-        var selectedSchemeId = string.Equals(preferences.SelectedSchemeId, schemeId, StringComparison.Ordinal)
-            ? ColorSchemeCatalog.AlphaId
-            : preferences.SelectedSchemeId;
+        var deletedActive = string.Equals(preferences.SelectedSchemeId, schemeId, StringComparison.Ordinal);
+        var selectedSchemeId = deletedActive ? ColorSchemeCatalog.AlphaId : preferences.SelectedSchemeId;
         var activeScheme = ColorSchemeCatalog.Resolve(selectedSchemeId, customSchemes);
-        var updated = new ColorSchemePreferences(activeScheme.Id, customSchemes);
+        // Falling back to Alpha because the active scheme was deleted is itself a selection change,
+        // so bump the timestamp; otherwise leave the prior selection stamp intact.
+        var selectedAtUtc = deletedActive ? DateTimeOffset.UtcNow : preferences.SelectedAtUtc;
+        var updated = new ColorSchemePreferences(activeScheme.Id, customSchemes, selectedAtUtc);
         await SavePreferencesAsync(updated, activeScheme, cancellationToken);
         return new ColorSchemeState(activeScheme, ColorSchemeCatalog.BuiltInSchemes, customSchemes);
     }
@@ -201,6 +212,6 @@ public sealed class ColorSchemeService
             .OrderBy(static scheme => scheme.Name, StringComparer.OrdinalIgnoreCase)
             .ToArray() ?? Array.Empty<ColorSchemeDefinition>();
         var activeScheme = ColorSchemeCatalog.Resolve(preferences.SelectedSchemeId, customSchemes);
-        return new ColorSchemePreferences(activeScheme.Id, customSchemes);
+        return new ColorSchemePreferences(activeScheme.Id, customSchemes, preferences.SelectedAtUtc);
     }
 }
