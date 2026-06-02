@@ -49,205 +49,12 @@
 
         @if (!QuestWorkspaceOnly)
         {
-        <section class="party-card-grid">
-            <article class="dashboard-stat-card">
-                <span class="dashboard-stat-label">Party</span>
-                <strong>@snapshot.Name</strong>
-            </article>
-
-            <article class="dashboard-stat-card">
-                <span class="dashboard-stat-label">Members</span>
-                <strong>@snapshot.MemberCount</strong>
-                <span class="dashboard-stat-note">Visible party size</span>
-            </article>
-
-            <article class="dashboard-stat-card">
-                <span class="dashboard-stat-label">Quest</span>
-                <strong>@(quest is null ? "No active quest" : GetQuestName(quest))</strong>
-                <span class="dashboard-stat-note">@GetQuestStateLabel(quest)</span>
-            </article>
-        </section>
-
         <section class="party-detail-grid">
             <article class="card-surface dashboard-panel">
                 <p class="section-label">Summary</p>
-                <h2>Party notes</h2>
+                <h2>@snapshot.Name</h2>
                 <div class="panel-copy party-summary-markdown">@SafeMarkdownRenderer.Render(snapshot.Summary)</div>
             </article>
-
-            @if (SessionController.State.IsPartySyncEnabled)
-            {
-                <section class="card-surface dashboard-panel party-management-summary">
-                    <div class="party-section-head">
-                        <div>
-                            <p class="section-label">Party sync roles</p>
-                            <h2>Owner, admins, and Officers</h2>
-                        </div>
-                        <span class="ui-pill count-pill">@FormatManagementRoleCount(management)</span>
-                    </div>
-
-                    <div class="party-management-role-grid">
-                        <article class="party-management-role-group">
-                            <span class="dashboard-stat-label">Owner</span>
-                            @{
-                                var ownerUserId = management?.OwnerUserId ?? snapshot.LeaderId;
-                            }
-                            <strong>
-                                @if (!string.IsNullOrWhiteSpace(ownerUserId))
-                                {
-                                    <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(ownerUserId!))">
-                                        @ResolveDisplayName(ownerUserId, management?.OwnerDisplayName)
-                                    </button>
-                                }
-                                else
-                                {
-                                    @ResolveDisplayName(ownerUserId, management?.OwnerDisplayName)
-                                }
-                            </strong>
-                            @if (management?.CurrentUserIsAdmin == true)
-                            {
-                                <select aria-label="Assign party owner" class="app-input" disabled="@SessionController.State.IsBusy" @onchange="AssignPartyOwnerFromSelectAsync">
-                                    <option value="">Assign party owner</option>
-                                    @foreach (var member in GetAssignablePartyOwnerMembers(management))
-                                    {
-                                        <option value="@member.MemberId">@member.DisplayName</option>
-                                    }
-                                </select>
-                            }
-                        </article>
-                        <article class="party-management-role-group">
-                            <span class="dashboard-stat-label">App admins</span>
-                            <div class="party-management-chip-row">
-                                @foreach (var admin in management?.AppAdmins ?? Array.Empty<PartySyncParticipant>())
-                                {
-                                    <span class="ui-pill state-pill">
-                                        <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(admin.UserId))">
-                                            @ResolveDisplayName(admin.UserId, admin.DisplayName)
-                                        </button>
-                                    </span>
-                                }
-                                @if (management?.AppAdmins.Count is null or 0)
-                                {
-                                    <span class="dashboard-stat-note">No app admins reported by party sync.</span>
-                                }
-                            </div>
-                        </article>
-                        <article class="party-management-role-group">
-                            <span class="dashboard-stat-label">Officers</span>
-                            <div class="party-management-chip-row">
-                                @foreach (var officer in management?.Officers ?? Array.Empty<PartySyncOfficer>())
-                                {
-                                    <span class="ui-pill state-pill">
-                                        <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(officer.UserId))">
-                                            @ResolveDisplayName(officer.UserId, officer.DisplayName)
-                                        </button>
-                                    </span>
-                                }
-                                @if (management?.Officers.Count is null or 0)
-                                {
-                                    <span class="dashboard-stat-note">No Officers assigned.</span>
-                                }
-                            </div>
-                        </article>
-                    </div>
-                </section>
-
-                @if (management?.CurrentUserCanManageSettings == true)
-                {
-                    <section class="card-surface dashboard-panel party-sync-settings-panel">
-                        <div class="party-section-head">
-                            <div>
-                                <p class="section-label">Party sync settings</p>
-                                <h2>Shared queue controls</h2>
-                            </div>
-                        </div>
-                        <div class="party-sync-settings-grid">
-                            <label class="checkbox-row">
-                                <input checked="@management.Settings.OfficerCanManageQueue"
-                                       type="checkbox"
-                                       @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanManageQueue = IsChecked(eventArgs) }))" />
-                                <span class="checkbox-copy">
-                                    <span class="checkbox-label">Officer queue changes</span>
-                                    <span class="checkbox-help">Lets Officers add, remove, and update shared quest queue entries; enable when trusted Officers help plan quests.</span>
-                                </span>
-                            </label>
-                            <label class="checkbox-row">
-                                <input checked="@management.Settings.OfficerCanModerateMembers"
-                                       type="checkbox"
-                                       @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanModerateMembers = IsChecked(eventArgs) }))" />
-                                <span class="checkbox-copy">
-                                    <span class="checkbox-label">Officer moderation</span>
-                                    <span class="checkbox-help">Lets Officers remove or restore members in the companion app; enable when trusted Officers help keep the shared queue clean.</span>
-                                </span>
-                            </label>
-                            <label class="checkbox-row">
-                                <input checked="@management.Settings.OfficerOnlyQueueEdits"
-                                       type="checkbox"
-                                       @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerOnlyQueueEdits = IsChecked(eventArgs) }))" />
-                                <span class="checkbox-copy">
-                                    <span class="checkbox-label">Limit queue editing</span>
-                                    <span class="checkbox-help">Only Officers and the party owner can change the quest queue; enable when regular members should vote but not edit entries.</span>
-                                </span>
-                            </label>
-                            <label class="checkbox-row">
-                                <input checked="@management.Settings.MemberAutoReconcileEnabled"
-                                       type="checkbox"
-                                       @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { MemberAutoReconcileEnabled = IsChecked(eventArgs) }))" />
-                                <span class="checkbox-copy">
-                                    <span class="checkbox-label">Member auto updates</span>
-                                    <span class="checkbox-help">Lets members publish start and completion updates for their own queued quests; enable when quest owners should keep shared status current.</span>
-                                </span>
-                            </label>
-                        </div>
-                        @if (management.CurrentUserCanManageProofs)
-                        {
-                        <div class="party-sync-proof-panel">
-                            <span class="dashboard-stat-label">Invite proofs</span>
-                            <strong>@FormatInviteProofModeStatus(management.ProofMode)</strong>
-                            <p class="dashboard-stat-note">Optional browser-local proof tokens protect shared queue access without sending Habitica credentials to Cloudflare.</p>
-                            <label class="checkbox-row">
-                                <input checked="@management.ProofMode.Enabled"
-                                       type="checkbox"
-                                       @onchange="@(eventArgs => SetInviteProofModeAsync(IsChecked(eventArgs)))" />
-                                <span class="checkbox-copy">
-                                    <span class="checkbox-label">Tokenized invite proofs</span>
-                                    <span class="checkbox-help">Keep local claims as the owner/admin recovery path. Members fall back to local claims while no active proof exists.</span>
-                                </span>
-                            </label>
-                            <div class="party-quest-card-actions">
-                                <input aria-label="Invite proof label" class="app-input" @bind="_inviteProofLabel" placeholder="Proof label" />
-                                <MudButton Disabled="@SessionController.State.IsBusy" OnClick="CreateInviteProofAsync" Variant="Variant.Outlined">Issue proof</MudButton>
-                                <MudButton Disabled="@SessionController.State.IsBusy" OnClick="ClearInviteProofAsync" Variant="Variant.Text">Use local fallback</MudButton>
-                            </div>
-                            @if (!string.IsNullOrWhiteSpace(_issuedInviteProofToken))
-                            {
-                                <p class="dashboard-stat-note">Share this proof id and token once, then clear the token from view:</p>
-                                <code>@_issuedInviteProofId</code>
-                                <code>@_issuedInviteProofToken</code>
-                                <MudButton OnClick="@(() => _issuedInviteProofToken = null)" Variant="Variant.Text">Hide token</MudButton>
-                            }
-                            <div class="party-quest-card-actions">
-                                <input aria-label="Invite proof id" class="app-input" @bind="_inviteProofId" placeholder="Proof id" />
-                                <input aria-label="Invite proof token" class="app-input" @bind="_inviteProofToken" placeholder="Proof token" />
-                                <MudButton Disabled="@SessionController.State.IsBusy" OnClick="ActivateInviteProofAsync" Variant="Variant.Outlined">Activate proof</MudButton>
-                            </div>
-                            @foreach (var proof in management.ProofMode.Proofs)
-                            {
-                                <article class="party-management-role-group">
-                                    <strong>@proof.Label</strong>
-                                    <span class="dashboard-stat-note">@proof.Status - @proof.ProofId</span>
-                                    <div class="party-quest-card-actions">
-                                        <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => RotateInviteProofAsync(proof.ProofId))" Variant="Variant.Text">Rotate</MudButton>
-                                        <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => RevokeInviteProofAsync(proof.ProofId))" Variant="Variant.Text">Revoke</MudButton>
-                                        <MudButton Color="Color.Warning" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RemoveInviteProofAsync(proof.ProofId))" Variant="Variant.Text">Remove</MudButton>
-                                    </div>
-                                </article>
-                            }
-                        </div>
-                        }
-                    </section>
-                }
-            }
 
             <article class="card-surface dashboard-panel party-quest-summary-panel">
                 <p class="section-label">Quests</p>
@@ -324,8 +131,8 @@
 
                         <dl class="dashboard-definition-list party-quest-definition-list compact-definition-list">
                             <div>
-                                <dt>Participant status</dt>
-                                <dd>@GetParticipationSummaryLabel(quest)</dd>
+                                <dt>@(isAwaitingResponses ? "Participant status" : "Participants")</dt>
+                                <dd>@(isAwaitingResponses ? GetParticipationSummaryLabel(quest) : quest.ParticipantCount)</dd>
                             </div>
                         </dl>
 
@@ -389,26 +196,6 @@
                         </div>
 
                         <dl class="dashboard-definition-list party-quest-definition-list">
-                            <div>
-                                <dt>Accepted</dt>
-                                <dd>@quest.ParticipationSummary?.AcceptedCount</dd>
-                            </div>
-                            <div>
-                                <dt>Pending</dt>
-                                <dd>@quest.ParticipationSummary?.PendingCount</dd>
-                            </div>
-                            <div>
-                                <dt>Rejected</dt>
-                                <dd>@quest.ParticipationSummary?.RejectedCount</dd>
-                            </div>
-                            <div>
-                                <dt>Unknown</dt>
-                                <dd>@quest.ParticipationSummary?.UnknownCount</dd>
-                            </div>
-                            <div>
-                                <dt>In Inn</dt>
-                                <dd>@quest.ParticipationSummary?.InnCount</dd>
-                            </div>
                             @if (quest.PendingPartyDamage is not null)
                             {
                                 <div>
@@ -420,31 +207,38 @@
                                 <dt>Expected finish</dt>
                                 <dd>@FormatExpectedFinish(quest.CompletionEstimate)</dd>
                             </div>
-                            <div>
-                                <dt>Finishing member</dt>
-                                <dd>
-                                    @if (quest.CompletionEstimate?.FinishingMemberId is { } finishingMemberId && !string.IsNullOrWhiteSpace(quest.CompletionEstimate.FinishingMemberDisplayName))
-                                    {
-                                        <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(finishingMemberId))">
-                                            @quest.CompletionEstimate.FinishingMemberDisplayName
-                                        </button>
-                                    }
-                                    else
-                                    {
-                                        @FormatFinishingMember(quest.CompletionEstimate)
-                                    }
-                                </dd>
-                            </div>
-                            <div>
-                                <dt>Timing confidence</dt>
-                                <dd>@FormatEstimateConfidence(quest.CompletionEstimate)</dd>
-                            </div>
+                            @if (HasMeaningfulCompletionTiming(quest.CompletionEstimate)
+                                && !string.IsNullOrWhiteSpace(quest.CompletionEstimate?.FinishingMemberDisplayName))
+                            {
+                                <div>
+                                    <dt>Finishing member</dt>
+                                    <dd>
+                                        @if (quest.CompletionEstimate?.FinishingMemberId is { } finishingMemberId)
+                                        {
+                                            <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(finishingMemberId))">
+                                                @quest.CompletionEstimate!.FinishingMemberDisplayName
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            @quest.CompletionEstimate?.FinishingMemberDisplayName
+                                        }
+                                    </dd>
+                                </div>
+                            }
+                            @if (HasMeaningfulTimingConfidence(quest.CompletionEstimate))
+                            {
+                                <div>
+                                    <dt>Timing confidence</dt>
+                                    <dd>@FormatEstimateConfidence(quest.CompletionEstimate)</dd>
+                                </div>
+                            }
                         </dl>
 
-                        @if (quest.CompletionEstimate is not null)
+                        @if (HasMeaningfulCompletionTiming(quest.CompletionEstimate))
                         {
-                            <MudAlert Class="quest-estimate-alert" Dense="true" Severity="@GetEstimateSeverity(quest.CompletionEstimate)" Variant="Variant.Outlined">
-                                @FormatEstimateSummary(quest.CompletionEstimate)
+                            <MudAlert Class="quest-estimate-alert" Dense="true" Severity="@GetEstimateSeverity(quest.CompletionEstimate!)" Variant="Variant.Outlined">
+                                @FormatEstimateSummary(quest.CompletionEstimate!)
                             </MudAlert>
                         }
                     }
@@ -1141,6 +935,180 @@
                 <p class="panel-copy">The graph will appear after the first party member CRON timestamp is stored.</p>
             }
         </section>
+
+        @if (SessionController.State.IsPartySyncEnabled)
+        {
+            <section class="card-surface dashboard-panel party-management-summary">
+                <div class="party-section-head">
+                    <div>
+                        <p class="section-label">Party sync roles</p>
+                        <h2>Owner, admins, and Officers</h2>
+                    </div>
+                    <span class="ui-pill count-pill">@FormatManagementRoleCount(management)</span>
+                </div>
+
+                <div class="party-management-role-grid">
+                    <article class="party-management-role-group">
+                        <span class="dashboard-stat-label">Owner</span>
+                        @{
+                            var ownerUserId = management?.OwnerUserId ?? snapshot.LeaderId;
+                        }
+                        <strong>
+                            @if (!string.IsNullOrWhiteSpace(ownerUserId))
+                            {
+                                <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(ownerUserId!))">
+                                    @ResolveDisplayName(ownerUserId, management?.OwnerDisplayName)
+                                </button>
+                            }
+                            else
+                            {
+                                @ResolveDisplayName(ownerUserId, management?.OwnerDisplayName)
+                            }
+                        </strong>
+                        @if (management?.CurrentUserIsAdmin == true)
+                        {
+                            <select aria-label="Assign party owner" class="app-input" disabled="@SessionController.State.IsBusy" @onchange="AssignPartyOwnerFromSelectAsync">
+                                <option value="">Assign party owner</option>
+                                @foreach (var member in GetAssignablePartyOwnerMembers(management))
+                                {
+                                    <option value="@member.MemberId">@member.DisplayName</option>
+                                }
+                            </select>
+                        }
+                    </article>
+                    <article class="party-management-role-group">
+                        <span class="dashboard-stat-label">App admins</span>
+                        <div class="party-management-chip-row">
+                            @foreach (var admin in management?.AppAdmins ?? Array.Empty<PartySyncParticipant>())
+                            {
+                                <span class="ui-pill state-pill">
+                                    <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(admin.UserId))">
+                                        @ResolveDisplayName(admin.UserId, admin.DisplayName)
+                                    </button>
+                                </span>
+                            }
+                            @if (management?.AppAdmins.Count is null or 0)
+                            {
+                                <span class="dashboard-stat-note">No app admins reported by party sync.</span>
+                            }
+                        </div>
+                    </article>
+                    <article class="party-management-role-group">
+                        <span class="dashboard-stat-label">Officers</span>
+                        <div class="party-management-chip-row">
+                            @foreach (var officer in management?.Officers ?? Array.Empty<PartySyncOfficer>())
+                            {
+                                <span class="ui-pill state-pill">
+                                    <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(officer.UserId))">
+                                        @ResolveDisplayName(officer.UserId, officer.DisplayName)
+                                    </button>
+                                </span>
+                            }
+                            @if (management?.Officers.Count is null or 0)
+                            {
+                                <span class="dashboard-stat-note">No Officers assigned.</span>
+                            }
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            @if (management?.CurrentUserCanManageSettings == true)
+            {
+                <section class="card-surface dashboard-panel party-sync-settings-panel">
+                    <div class="party-section-head">
+                        <div>
+                            <p class="section-label">Party sync settings</p>
+                            <h2>Shared queue controls</h2>
+                        </div>
+                    </div>
+                    <div class="party-sync-settings-grid">
+                        <label class="checkbox-row">
+                            <input checked="@management.Settings.OfficerCanManageQueue"
+                                   type="checkbox"
+                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanManageQueue = IsChecked(eventArgs) }))" />
+                            <span class="checkbox-copy">
+                                <span class="checkbox-label">Officer queue changes</span>
+                                <span class="checkbox-help">Lets Officers add, remove, and update shared quest queue entries; enable when trusted Officers help plan quests.</span>
+                            </span>
+                        </label>
+                        <label class="checkbox-row">
+                            <input checked="@management.Settings.OfficerCanModerateMembers"
+                                   type="checkbox"
+                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerCanModerateMembers = IsChecked(eventArgs) }))" />
+                            <span class="checkbox-copy">
+                                <span class="checkbox-label">Officer moderation</span>
+                                <span class="checkbox-help">Lets Officers remove or restore members in the companion app; enable when trusted Officers help keep the shared queue clean.</span>
+                            </span>
+                        </label>
+                        <label class="checkbox-row">
+                            <input checked="@management.Settings.OfficerOnlyQueueEdits"
+                                   type="checkbox"
+                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { OfficerOnlyQueueEdits = IsChecked(eventArgs) }))" />
+                            <span class="checkbox-copy">
+                                <span class="checkbox-label">Limit queue editing</span>
+                                <span class="checkbox-help">Only Officers and the party owner can change the quest queue; enable when regular members should vote but not edit entries.</span>
+                            </span>
+                        </label>
+                        <label class="checkbox-row">
+                            <input checked="@management.Settings.MemberAutoReconcileEnabled"
+                                   type="checkbox"
+                                   @onchange="@(eventArgs => UpdatePartySyncSettingAsync(settings => settings with { MemberAutoReconcileEnabled = IsChecked(eventArgs) }))" />
+                            <span class="checkbox-copy">
+                                <span class="checkbox-label">Member auto updates</span>
+                                <span class="checkbox-help">Lets members publish start and completion updates for their own queued quests; enable when quest owners should keep shared status current.</span>
+                            </span>
+                        </label>
+                    </div>
+                    @if (management.CurrentUserCanManageProofs)
+                    {
+                    <div class="party-sync-proof-panel">
+                        <span class="dashboard-stat-label">Invite proofs</span>
+                        <strong>@FormatInviteProofModeStatus(management.ProofMode)</strong>
+                        <p class="dashboard-stat-note">Optional browser-local proof tokens protect shared queue access without sending Habitica credentials to Cloudflare.</p>
+                        <label class="checkbox-row">
+                            <input checked="@management.ProofMode.Enabled"
+                                   type="checkbox"
+                                   @onchange="@(eventArgs => SetInviteProofModeAsync(IsChecked(eventArgs)))" />
+                            <span class="checkbox-copy">
+                                <span class="checkbox-label">Tokenized invite proofs</span>
+                                <span class="checkbox-help">Keep local claims as the owner/admin recovery path. Members fall back to local claims while no active proof exists.</span>
+                            </span>
+                        </label>
+                        <div class="party-quest-card-actions">
+                            <input aria-label="Invite proof label" class="app-input" @bind="_inviteProofLabel" placeholder="Proof label" />
+                            <MudButton Disabled="@SessionController.State.IsBusy" OnClick="CreateInviteProofAsync" Variant="Variant.Outlined">Issue proof</MudButton>
+                            <MudButton Disabled="@SessionController.State.IsBusy" OnClick="ClearInviteProofAsync" Variant="Variant.Text">Use local fallback</MudButton>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(_issuedInviteProofToken))
+                        {
+                            <p class="dashboard-stat-note">Share this proof id and token once, then clear the token from view:</p>
+                            <code>@_issuedInviteProofId</code>
+                            <code>@_issuedInviteProofToken</code>
+                            <MudButton OnClick="@(() => _issuedInviteProofToken = null)" Variant="Variant.Text">Hide token</MudButton>
+                        }
+                        <div class="party-quest-card-actions">
+                            <input aria-label="Invite proof id" class="app-input" @bind="_inviteProofId" placeholder="Proof id" />
+                            <input aria-label="Invite proof token" class="app-input" @bind="_inviteProofToken" placeholder="Proof token" />
+                            <MudButton Disabled="@SessionController.State.IsBusy" OnClick="ActivateInviteProofAsync" Variant="Variant.Outlined">Activate proof</MudButton>
+                        </div>
+                        @foreach (var proof in management.ProofMode.Proofs)
+                        {
+                            <article class="party-management-role-group">
+                                <strong>@proof.Label</strong>
+                                <span class="dashboard-stat-note">@proof.Status - @proof.ProofId</span>
+                                <div class="party-quest-card-actions">
+                                    <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => RotateInviteProofAsync(proof.ProofId))" Variant="Variant.Text">Rotate</MudButton>
+                                    <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => RevokeInviteProofAsync(proof.ProofId))" Variant="Variant.Text">Revoke</MudButton>
+                                    <MudButton Color="Color.Warning" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RemoveInviteProofAsync(proof.ProofId))" Variant="Variant.Text">Remove</MudButton>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                    }
+                </section>
+            }
+        }
 
         @if (management?.CurrentUserCanViewManagement == true)
         {
@@ -2478,6 +2446,17 @@
         return estimate?.Confidence.ToString() ?? "Unknown";
     }
 
+    private static bool HasMeaningfulCompletionTiming(PartyQuestCompletionEstimate? estimate)
+    {
+        return estimate?.EarliestCompletionUtc is not null || estimate?.LatestCompletionUtc is not null;
+    }
+
+    private static bool HasMeaningfulTimingConfidence(PartyQuestCompletionEstimate? estimate)
+    {
+        return HasMeaningfulCompletionTiming(estimate)
+            && estimate?.Confidence is not PartyQuestEstimateConfidence.Unknown;
+    }
+
     private static string FormatExpectedFinish(PartyQuestCompletionEstimate? estimate)
     {
         if (estimate?.EarliestCompletionUtc is null)
@@ -2486,13 +2465,6 @@
         }
 
         return FormatFriendlyDateTime(estimate.EarliestCompletionUtc.Value);
-    }
-
-    private static string FormatFinishingMember(PartyQuestCompletionEstimate? estimate)
-    {
-        return string.IsNullOrWhiteSpace(estimate?.FinishingMemberDisplayName)
-            ? "Unknown"
-            : estimate.FinishingMemberDisplayName;
     }
 
     private static string FormatEstimateSummary(PartyQuestCompletionEstimate estimate)

@@ -218,6 +218,8 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Party overview", cut.Markup);
         Assert.Contains("Night Owls", cut.Markup);
         Assert.Contains("Quest-focused party", cut.Markup);
+        Assert.Empty(cut.FindAll(".party-card-grid"));
+        Assert.Single(cut.FindAll(".party-quest-summary-panel"));
         Assert.Contains("seaserpent", cut.Markup);
         Assert.Contains("href=\"/quests\"", cut.Markup);
         Assert.DoesNotContain("inventory_quest_scroll.png", cut.Markup);
@@ -228,9 +230,17 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("875.25/1000 hp", questsCut.Markup);
         Assert.Contains("Estimated boss HP after CRON", questsCut.Markup);
         Assert.Contains("832.5/1000 hp", questsCut.Markup);
+        Assert.Contains("Participants", questsCut.Markup);
+        Assert.Contains(">2</dd>", questsCut.Markup);
+        Assert.DoesNotContain("<dt>Accepted</dt>", questsCut.Markup);
+        Assert.DoesNotContain("<dt>Pending</dt>", questsCut.Markup);
+        Assert.DoesNotContain("<dt>Rejected</dt>", questsCut.Markup);
+        Assert.DoesNotContain("<dt>Unknown</dt>", questsCut.Markup);
+        Assert.DoesNotContain("<dt>In Inn</dt>", questsCut.Markup);
         Assert.Contains("Expected finish", questsCut.Markup);
         Assert.Contains("quest-estimate-alert", questsCut.Markup);
         Assert.Contains("Finishing member", questsCut.Markup);
+        Assert.Contains("Timing confidence", questsCut.Markup);
         Assert.Contains("Alpha", questsCut.Find(".inline-link-button").TextContent);
         Assert.DoesNotContain("Estimate range", questsCut.Markup);
         Assert.DoesNotContain("Damage taken", questsCut.Markup);
@@ -981,7 +991,7 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("active - proof-12345678", cut.Markup);
         Assert.DoesNotContain("officer-only queue edits", cut.Markup, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("Assign party owner", cut.Markup);
-        AssertMarkupOrder(cut.Markup, "Summary", "Party sync roles", "Party sync settings", "Quests");
+        AssertMarkupOrder(cut.Markup, "Summary", "Quests", "Members", "CRON statistics", "Party sync roles", "Party sync settings", "Party sync moderation");
         Assert.DoesNotContain("Shared quest planning", cut.Markup);
         Assert.Contains("Kicked users", cut.Markup);
         Assert.Contains("Beta", cut.Markup);
@@ -1303,6 +1313,33 @@ public sealed class PartyPageTests : BunitContext
     }
 
     [Fact]
+    public void Active_quest_without_completion_timing_hides_optional_estimate_fields()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState(
+            "user-id",
+            isActive: true,
+            hasMeaningfulCompletionTiming: false)));
+
+        var cut = RenderQuestsWorkspace();
+
+        Assert.Contains("Participants", cut.Markup);
+        Assert.Contains(">1</dd>", cut.Markup);
+        Assert.Contains("Expected finish", cut.Markup);
+        Assert.Contains(">Unknown</dd>", cut.Markup);
+        Assert.DoesNotContain("Finishing member", cut.Markup);
+        Assert.DoesNotContain("Timing confidence", cut.Markup);
+        Assert.DoesNotContain("quest-estimate-alert", cut.Markup);
+        Assert.DoesNotContain("<dt>Accepted</dt>", cut.Markup);
+        Assert.DoesNotContain("<dt>Pending</dt>", cut.Markup);
+        Assert.DoesNotContain("<dt>Rejected</dt>", cut.Markup);
+        Assert.DoesNotContain("<dt>Unknown</dt>", cut.Markup);
+        Assert.DoesNotContain("<dt>In Inn</dt>", cut.Markup);
+    }
+
+    [Fact]
     public void Selected_quest_start_failure_renders_inline_error()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -1338,7 +1375,8 @@ public sealed class PartyPageTests : BunitContext
         bool isActive = false,
         string ownerUserId = "user-id",
         string leaderId = "user-id",
-        bool hasPartyQuest = true)
+        bool hasPartyQuest = true,
+        bool hasMeaningfulCompletionTiming = true)
     {
         return new SessionViewModel(
             IsBusy: false,
@@ -1367,14 +1405,21 @@ public sealed class PartyPageTests : BunitContext
                         AppliedProgress: new PartyQuestMetricSnapshot("Current boss HP", 50m, 100m, "hp"),
                         EstimatedPostCronProgress: new PartyQuestMetricSnapshot("Estimated boss HP after CRON", 25m, 100m, "hp"),
                         ParticipationSummary: new PartyQuestParticipationSummary(1, 1, 1, 0, 0),
-                        CompletionEstimate: new PartyQuestCompletionEstimate(
-                            true,
-                            DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
-                            DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
-                            PartyQuestEstimateConfidence.High,
-                            "Expected to finish when Mage Tester checks in around Apr 26, 10:15.",
-                            "Mage Tester",
-                            "user-id"),
+                        CompletionEstimate: hasMeaningfulCompletionTiming
+                            ? new PartyQuestCompletionEstimate(
+                                true,
+                                DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
+                                DateTimeOffset.Parse("2026-04-26T10:15:00Z"),
+                                PartyQuestEstimateConfidence.High,
+                                "Expected to finish when Mage Tester checks in around Apr 26, 10:15.",
+                                "Mage Tester",
+                                "user-id")
+                            : new PartyQuestCompletionEstimate(
+                                false,
+                                null,
+                                null,
+                                PartyQuestEstimateConfidence.Medium,
+                                "Completion timing is unavailable."),
                         Name: "Dragon")
                     : null,
                 new[]

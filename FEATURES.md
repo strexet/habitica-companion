@@ -2251,8 +2251,7 @@ party-sync tokenized invite-proof mode and proof lifecycle metadata
 ### Outputs
 
 ```text
-party summary cards
-member count
+combined party-name-and-notes summary
 compact Party-page quest summary linking to the Quests workspace
 quest progress snapshot
 party pending boss damage/items, boss HP remaining, total boss HP when available, and pending damage to party
@@ -2269,7 +2268,7 @@ skipped and expired queue-state labels
 owner/admin/Officer pin, select, skip, expire, and return-to-queue controls
 quest pool cards open by default on Quests, with manual collapse, owner availability, and local name/reward/type/owner search
 recently completed quest cards with manual vs automatic source labels and management removal controls
-owner/admin/Officer strip after party notes and before member details
+owner/admin/Officer strip grouped near bottom-page party-sync moderation
 owner/admin settings controls
 member-detail Officer and kick controls for management roles
 bottom-page kick list for management roles
@@ -2293,8 +2292,8 @@ Current display rules:
 ```text
 1. If the cached user snapshot has no party id, render a no-party state.
 2. If a party id exists but no party snapshot exists, render a refresh-required state.
-3. Show the latest cached party name, summary, and member count.
-4. Show quest key, active state, party pending boss damage or collection items when member progress is available, boss HP remaining, total boss HP when content data is available, pending damage to party, and participant count when a quest snapshot exists.
+3. Show the latest cached party name and summary together. Keep member-count context in the member-list visible-count pill and keep one compact Party-page Quests summary link.
+4. Show quest key, active state, party pending boss damage or collection items when member progress is available, boss HP remaining, total boss HP when content data is available, pending damage to party, and participant count when a quest snapshot exists. Active quests show one compact participant count instead of invitation-response totals.
 5. Show a dedicated CRON summary when member CRON data exists.
 6. Show compact per-member cards with display name, class, subtle HP/MP values, CRON state, last CRON, average CRON time, and active-quest pending damage/items when available.
 7. Keep member id, level, CRON reason, and stat breakdowns behind a collapsed in-memory details toggle on each member card.
@@ -2313,7 +2312,7 @@ Current display rules:
 20. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
 21. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
 22. Let role-strip and kick-list member names focus the same expanded member details UI used by the Active Quest finishing-member link.
-23. When Habitica has a quest invitation that is not active yet, hide progress and finish estimates and show accepted, pending, and rejected member response lists instead; names focus the same expanded member details UI.
+23. When Habitica has a quest invitation that is not active yet, hide progress and finish estimates and show accepted, pending, and rejected member response lists instead; names focus the same expanded member details UI. For active quests, always show expected finish, show finishing member only when known, and show timing confidence plus the estimate alert only when completion timing exists.
 24. Show `Invite party` on the Next Quest card. The button is enabled only when fresh party data shows no Habitica quest or invitation and the current user owns the selected item; disabled buttons explain Habitica quest, ownership, queue-state, or refresh requirements. Success sends `POST /groups/party/quests/invite/:questKey`, refreshes party state, and marks the shared queue item `InviteSent`; invite-sent items leave the Next Quest and normal queue views because Habitica now owns the invitation flow.
 25. Let users toggle an owned-only queue filter that hides not-owned queue entries and not-owned quest-pool scrolls without mutating shared party-sync data.
 26. When a previously active companion-app quest disappears and recent party chat contains a reliable structured completion signal, mark the active shared queue item completed automatically and store an idempotent detection key.
@@ -2375,14 +2374,14 @@ Current implementation:
 - dedicated `Party` route in the app shell;
 - dedicated `Quests` route in the app shell for active quest details and shared planning;
 - compact Party-page quest summary linking to the Quests workspace;
-- cached party summary cards;
+- combined cached party-name-and-notes summary with one compact Quests link;
 - cached quest progress snapshot.
 - compact party member cards with foldable extra info and stats;
 - class filtering for compact party member cards, with unknown classes kept in the unfiltered list;
 - subtle HP/MP values and low-HP/low-MP member sorting;
 - active quest card with real cached quest metadata and compact rewards;
 - inactive quest invitation response lists before quest progress exists;
-- party detail section order of summary, party-sync roles, party-sync settings, then compact Quests link;
+- party detail section order of summary, compact Quests link, member and CRON sections, then party-sync roles, settings, and moderation;
 - party-sync settings labels and helper descriptions for non-technical party members;
 - shared quest pool from published member quest-scroll availability;
 - quest pool expanded by default on `/quests`, with an in-memory manual collapse control;

@@ -47,6 +47,8 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - App color scheme system with centralized semantic tokens, Alpha/Habitica/Gryphy built-in schemes, Settings picker, custom editable schemes, shell/button/disabled/input theming, mobile localStorage fallback, fast local reload persistence, and portable sync storage.
 - Random color scheme controls: shared color-scheme panel on Settings, Dashboard, and Sign-in, random-preset pick from built-in plus custom schemes, fully-random theme generation with a chaos slider (Calm to Madness) scaling hue/saturation divergence, held as a session-only pending theme (selectable via a "Generated" dropdown entry, applied without persisting), naming/saving the last random theme into custom schemes, and copy/paste of presets for building fully custom palettes.
 - Quests-page quest pool expanded by default with an in-memory manual collapse control.
+- Party-page combined summary and bottom-grouped sync administration; active quests compact participant and unavailable-finish-estimate rendering.
+- Quest-pool search by public reward display name, including partial case-insensitive matches.
 
 ## Pending Queue
 
@@ -66,63 +68,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Party And Quests Page Layout Cleanup
-
-Goal: remove duplicated Party-page summaries, group party-sync administration near moderation, and keep active-quest status concise when invitation or finish-prediction details are no longer useful.
-
-Touch:
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css` only if the simplified structure requires a small layout adjustment
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
-- `FEATURES.md`
-- `docs/UX_UI_MANIFEST.md`
-
-Party-page feature shape:
-- Replace the separate top-level `Party` name card and `Summary` / `Party notes` panel with one combined party-summary section containing the party name and safely rendered party notes.
-- Remove the small standalone `Members` count card. The members section and its visible-count pill remain the source of member-count context.
-- Remove the duplicate top-level `Quest` status card. Keep the compact `Quests` summary panel with its `/quests` link as the single Party-page quest affordance.
-- Move `Party sync roles` and authorized `Party sync settings` out of the upper summary area.
-- Render `Party sync roles`, authorized `Party sync settings`, and `Party sync moderation` together at the bottom of the Party page in that order. `Party sync moderation` remains visible only to management roles.
-- Preserve the existing role-name member-focus behavior, settings mutations, invite-proof controls, Officer controls, kick-list controls, member list, and CRON sections.
-
-Quests-page feature shape:
-- While a quest invitation is waiting for responses, keep the detailed accepted, pending, rejected, and optional unknown response groups with member-focus actions.
-- Once the quest is active, replace accepted/pending/rejected/unknown/in-inn count rows with one compact `Participants` row sourced from the active quest participant count.
-- Always render `Expected finish`, including `Unknown` when no estimate is available.
-- Render `Finishing member` only when a non-empty finishing-member display name is available. Preserve the member-focus action when the matching member id is available.
-- Render `Timing confidence` only when completion prediction data is meaningful. Treat an estimate without an earliest or latest completion timestamp as unavailable timing data.
-- Render the completion-estimate alert only when it carries meaningful prediction data; do not show a confidence-colored alert for an unavailable prediction.
-
-Out of scope:
-- changing Party or Quests routes;
-- changing party-sync storage, Cloudflare contracts, Habitica API mapping, quest calculations, or completion-estimate formulas;
-- adding participant drill-ins or active-quest metadata beyond the existing cached snapshot;
-- redesigning member cards, CRON statistics, queue cards, pool cards, or recent-completion cards.
-
-Acceptance:
-- Party shows one combined party-name-and-notes summary, no standalone members count card, and one compact Quests summary link.
-- Party-sync roles and settings render near the bottom directly before moderation, with existing visibility and mutation rules unchanged.
-- Existing role-strip and moderation member links still focus the matching member details.
-- A pending quest invitation still renders detailed response groups and does not render active progress estimates.
-- An active quest renders `Participants: N` and does not render accepted, pending, rejected, unknown, or in-inn count rows.
-- An active quest without meaningful completion timing renders only `Expected finish: Unknown` from the finish-estimate fields.
-- An active quest with meaningful completion timing still renders expected finish, optional known finishing member, timing confidence, and the estimate alert.
-- Razor tests cover Party section order and duplicate removal, pending-invitation response groups, active participant-count compaction, unavailable-estimate compaction, and known-estimate rendering.
-
-### Quest Search By Public Reward Name
-
-Goal: let quest-pool search find quests by visible reward display names, including partial case-insensitive matches.
-
-Touch:
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
-- `FEATURES.md`
-
-Acceptance:
-- Typing `cuttle` into the Quests-page pool search includes The Kraken of Inkomplete when its visible rewards include `Cuttlefish (Egg)`.
-- Search matches public reward display names rather than relying only on internal reward ids.
-- Existing quest name, type, and visible owner matching remains available.
 
 ### Active Quest Metadata And Detail Affordances
 
