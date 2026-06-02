@@ -1,3 +1,4 @@
+using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 using Habitica.Rules.Spells;
@@ -174,6 +175,133 @@ public sealed class SpellViewModelFactoryTests
     }
 
     [Fact]
+    public void Create_orders_equipment_recommendations_by_estimated_spell_value()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            ownedGearKeys: new[] { "head_con", "head_int", "head_balanced" });
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["head_con"] = new("head_con", "Con Hood", "Head", "healer", null, new GearStatBlock(0m, 0m, 10m, 0m)),
+                ["head_int"] = new("head_int", "Int Hood", "Head", "healer", null, new GearStatBlock(0m, 9m, 0m, 0m)),
+                ["head_balanced"] = new("head_balanced", "Balanced Hood", "Head", "healer", null, new GearStatBlock(0m, 6m, 6m, 0m))
+            });
+        var factory = new SpellViewModelFactory();
+
+        var blessing = factory.Create(snapshot, null, catalog).Spells.Single(spell => spell.Id == "healAll");
+
+        Assert.Equal(
+            new[] { "Balanced CON/INT", "Maximize CON", "Maximize INT" },
+            blessing.EquipmentRecommendations.Select(static recommendation => recommendation.Name));
+        Assert.True(blessing.EquipmentRecommendations[0].EstimatedEffectScore > blessing.EquipmentRecommendations[1].EstimatedEffectScore);
+        Assert.True(blessing.EquipmentRecommendations[1].EstimatedEffectScore > blessing.EquipmentRecommendations[2].EstimatedEffectScore);
+    }
+
+    [Fact]
+    public void Create_uses_identical_blessing_text_for_recommendations_with_equal_effective_stats()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            ownedGearKeys: new[] { "head_con", "head_int" });
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["head_con"] = new("head_con", "Con Hood", "Head", "healer", null, new GearStatBlock(0m, 0m, 10m, 0m)),
+                ["head_int"] = new("head_int", "Int Hood", "Head", "healer", null, new GearStatBlock(0m, 10m, 0m, 0m))
+            });
+        var factory = new SpellViewModelFactory();
+
+        var blessing = factory.Create(snapshot, null, catalog).Spells.Single(spell => spell.Id == "healAll");
+
+        Assert.Equal(3, blessing.EquipmentRecommendations.Count);
+        Assert.Single(blessing.EquipmentRecommendations.Select(static recommendation => recommendation.EstimatedEffect).Distinct(StringComparer.Ordinal));
+    }
+
+    [Fact]
+    public void Create_caps_blessing_effective_heal_by_fresh_party_member_hp()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m));
+        var partySnapshot = CreatePartySnapshot(
+            CreatePartyMember("near-full", health: 49m, maxHealth: 50m));
+        var factory = new SpellViewModelFactory();
+
+        var blessing = factory.Create(snapshot, null, null, partySnapshot, hasFreshPartyHealth: true)
+            .Spells
+            .Single(spell => spell.Id == "healAll");
+
+        Assert.Contains("Restores approximately 1 HP to each of 1 party member with fresh HP", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.Contains("2.56 HP maximum per member before overheal", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.Equal(1m, Assert.Single(blessing.EstimatedEffectValues).Value);
+    }
+
+    [Fact]
+    public void Create_reports_unavailable_party_member_hp_without_inventing_heal()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m));
+        var partySnapshot = CreatePartySnapshot(
+            CreatePartyMember("near-full", health: 49m, maxHealth: 50m),
+            CreatePartyMember("unknown", health: null, maxHealth: null));
+        var factory = new SpellViewModelFactory();
+
+        var blessing = factory.Create(snapshot, null, null, partySnapshot, hasFreshPartyHealth: true)
+            .Spells
+            .Single(spell => spell.Id == "healAll");
+
+        Assert.Contains("HP is unavailable for 1 party member.", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.Equal(1m, Assert.Single(blessing.EstimatedEffectValues).Value);
+    }
+
+    [Fact]
+    public void Create_labels_blessing_theoretical_maximum_when_party_member_hp_is_unavailable()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m));
+        var factory = new SpellViewModelFactory();
+
+        var blessing = factory.Create(snapshot, null, null).Spells.Single(spell => spell.Id == "healAll");
+
+        Assert.Contains("Restores up to approximately 2.56 HP to each party member", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.Contains("theoretical maximum; fresh party-member HP is unavailable", blessing.EstimatedEffect, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Create_caps_self_heal_with_fresh_hp_and_labels_theoretical_fallback_without_it()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m),
+            health: 49m,
+            maxHealth: 50m);
+        var factory = new SpellViewModelFactory();
+
+        var freshHealingLight = factory.Create(snapshot, null, null, hasFreshUserHealth: true)
+            .Spells
+            .Single(spell => spell.Id == "heal");
+        var fallbackHealingLight = factory.Create(snapshot, null, null)
+            .Spells
+            .Single(spell => spell.Id == "heal");
+
+        Assert.Contains("Restores approximately 1 HP to you based on fresh HP", freshHealingLight.EstimatedEffect, StringComparison.Ordinal);
+        Assert.Contains("4.8 HP theoretical maximum before overheal", freshHealingLight.EstimatedEffect, StringComparison.Ordinal);
+        Assert.Contains("Restores up to approximately 4.8 HP to you", fallbackHealingLight.EstimatedEffect, StringComparison.Ordinal);
+        Assert.Contains("theoretical maximum; fresh HP is unavailable", fallbackHealingLight.EstimatedEffect, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void Create_picks_two_handed_weapon_and_clears_shield_when_combined_stats_outweigh_one_handed_plus_shield()
     {
         var snapshot = CreateUserSnapshot(
@@ -288,15 +416,17 @@ public sealed class SpellViewModelFactoryTests
         CharacterStatsSnapshot? stats = null,
         CharacterStatsSnapshot? buffs = null,
         GearSlotsSnapshot? equipped = null,
-        IReadOnlyList<string>? ownedGearKeys = null)
+        IReadOnlyList<string>? ownedGearKeys = null,
+        decimal health = 50m,
+        decimal maxHealth = 50m)
     {
         return new UserSnapshot(
             DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
             "Tester",
             className,
             level,
-            50m,
-            50m,
+            health,
+            maxHealth,
             40m,
             50m,
             0m,
@@ -312,5 +442,33 @@ public sealed class SpellViewModelFactoryTests
             Stats: stats ?? CharacterStatsSnapshot.Zero,
             Buffs: buffs ?? CharacterStatsSnapshot.Zero,
             BuffFlags: BuffFlagsSnapshot.Empty);
+    }
+
+    private static PartySnapshot CreatePartySnapshot(params PartyMemberSnapshot[] members)
+    {
+        return new PartySnapshot(
+            DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+            "party-1",
+            "Night Owls",
+            null,
+            members.Length,
+            null,
+            members);
+    }
+
+    private static PartyMemberSnapshot CreatePartyMember(string memberId, decimal? health, decimal? maxHealth)
+    {
+        return new PartyMemberSnapshot(
+            memberId,
+            memberId,
+            null,
+            null,
+            null,
+            PartyCronState.Unknown,
+            "Unknown.",
+            null,
+            null,
+            Health: health,
+            MaxHealth: maxHealth);
     }
 }

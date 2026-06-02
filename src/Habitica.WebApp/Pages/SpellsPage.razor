@@ -257,7 +257,7 @@
                                 {
                                     <label class="field-row compact spell-recommendation-selector">
                                         <span>Auto equip preset</span>
-                                        <select class="app-input" value="@selectedRecommendation?.Name" @onchange="eventArgs => SetSelectedRecommendation(spell.Id, eventArgs.Value?.ToString())">
+                                        <select class="app-input" data-testid="@($"spell-recommendation-selector-{spell.Id}")" value="@selectedRecommendation?.Name" @onchange="eventArgs => SetSelectedRecommendation(spell.Id, eventArgs.Value?.ToString())">
                                             @foreach (var recommendation in spell.EquipmentRecommendations)
                                             {
                                                 <option value="@recommendation.Name">@recommendation.Name</option>
@@ -310,7 +310,10 @@
         : SpellViewModelFactory.Create(
             SessionController.State.UserSnapshot,
             SessionController.State.TaskSnapshot,
-            SessionController.State.GearCatalogSnapshot);
+            SessionController.State.GearCatalogSnapshot,
+            SessionController.State.PartySnapshot,
+            SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh,
+            SessionController.State.PartyFreshness == SnapshotFreshnessState.Fresh);
 
     protected override void OnInitialized()
     {

@@ -1,4 +1,5 @@
 using Habitica.Domain.Auth;
+using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 using Habitica.Rules.Stats;
@@ -30,7 +31,10 @@ public sealed class SpellViewModelFactory
     public SpellsPageViewModel Create(
         UserSnapshot snapshot,
         TaskCollectionSnapshot? tasks,
-        GearCatalogSnapshot? catalog)
+        GearCatalogSnapshot? catalog,
+        PartySnapshot? partySnapshot = null,
+        bool hasFreshUserHealth = false,
+        bool hasFreshPartyHealth = false)
     {
         var className = string.IsNullOrWhiteSpace(snapshot.ClassName) ? "unknown" : snapshot.ClassName;
         var validTasks = tasks?.Items
@@ -51,7 +55,7 @@ public sealed class SpellViewModelFactory
 
         var spells = Definitions
             .Where(definition => string.Equals(definition.ClassName, className, StringComparison.OrdinalIgnoreCase))
-            .Select(definition => BuildSpell(snapshot, definition, targetTasks, catalog))
+            .Select(definition => BuildSpell(snapshot, definition, targetTasks, catalog, partySnapshot, hasFreshUserHealth, hasFreshPartyHealth))
             .ToArray();
 
         return new SpellsPageViewModel(
@@ -71,7 +75,10 @@ public sealed class SpellViewModelFactory
         UserSnapshot snapshot,
         SpellDefinition definition,
         IReadOnlyList<SpellTargetTaskViewModel> validTasks,
-        GearCatalogSnapshot? catalog)
+        GearCatalogSnapshot? catalog,
+        PartySnapshot? partySnapshot,
+        bool hasFreshUserHealth,
+        bool hasFreshPartyHealth)
     {
         var selectedTask = definition.TargetKind == SpellTargetKind.Task ? validTasks.FirstOrDefault() : null;
         var description = BuildDescription(definition, selectedTask);
@@ -83,11 +90,13 @@ public sealed class SpellViewModelFactory
             StringComparer.Ordinal);
         var targetEstimates = validTasks.ToDictionary(
             static task => task.Id,
-            task => EstimateEffect(snapshot, catalog, definition, task),
+            task => EstimateEffect(snapshot, catalog, definition, task, partySnapshot, hasFreshUserHealth, hasFreshPartyHealth),
             StringComparer.Ordinal);
-        var defaultEstimate = EstimateEffect(snapshot, catalog, definition, selectedTask);
+        var defaultEstimate = EstimateEffect(snapshot, catalog, definition, selectedTask, partySnapshot, hasFreshUserHealth, hasFreshPartyHealth);
         var recommendationsWithEstimates = recommendations
-            .Select(recommendation => AddEstimateToRecommendation(snapshot, catalog, definition, selectedTask, validTasks, recommendation))
+            .Select(recommendation => AddEstimateToRecommendation(snapshot, catalog, definition, selectedTask, validTasks, recommendation, partySnapshot, hasFreshUserHealth, hasFreshPartyHealth))
+            .OrderByDescending(static recommendation => recommendation.EstimatedEffectScore)
+            .ThenBy(static recommendation => recommendation.Name, StringComparer.Ordinal)
             .ToArray();
 
         return new SpellCardViewModel(
@@ -172,18 +181,22 @@ public sealed class SpellViewModelFactory
         SpellDefinition definition,
         SpellTargetTaskViewModel? selectedTask,
         IReadOnlyList<SpellTargetTaskViewModel> validTasks,
-        SpellEquipmentRecommendation recommendation)
+        SpellEquipmentRecommendation recommendation,
+        PartySnapshot? partySnapshot,
+        bool hasFreshUserHealth,
+        bool hasFreshPartyHealth)
     {
-        var defaultEstimate = EstimateEffect(snapshot, catalog, definition, selectedTask, recommendation.Slots);
+        var defaultEstimate = EstimateEffect(snapshot, catalog, definition, selectedTask, partySnapshot, hasFreshUserHealth, hasFreshPartyHealth, recommendation.Slots);
         var targetEstimates = validTasks.ToDictionary(
             static task => task.Id,
-            task => EstimateEffect(snapshot, catalog, definition, task, recommendation.Slots),
+            task => EstimateEffect(snapshot, catalog, definition, task, partySnapshot, hasFreshUserHealth, hasFreshPartyHealth, recommendation.Slots),
             StringComparer.Ordinal);
 
         return recommendation with
         {
             EstimatedEffect = defaultEstimate.Text,
             EstimatedEffectValues = defaultEstimate.Values,
+            EstimatedEffectScore = defaultEstimate.Score,
             TargetEstimates = targetEstimates.ToDictionary(pair => pair.Key, pair => pair.Value.Text, StringComparer.Ordinal),
             TargetEffectValues = targetEstimates.ToDictionary(pair => pair.Key, pair => pair.Value.Values, StringComparer.Ordinal)
         };
@@ -272,6 +285,9 @@ public sealed class SpellViewModelFactory
         GearCatalogSnapshot? catalog,
         SpellDefinition definition,
         SpellTargetTaskViewModel? selectedTask,
+        PartySnapshot? partySnapshot,
+        bool hasFreshUserHealth,
+        bool hasFreshPartyHealth,
         GearSlotsSnapshot? battleGearOverride = null)
     {
         var baseStats = snapshot.Stats ?? CharacterStatsSnapshot.Zero;
@@ -298,17 +314,74 @@ public sealed class SpellViewModelFactory
             "intimidate" => BuildEstimate($"Adds approximately {RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 24m, 200m)):0.##} CON to each party member.", new SpellEffectValue(RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 24m, 200m)), "CON to each party member")),
             "toolsOfTrade" => BuildEstimate($"Adds approximately {RoundSpellIncrement(DiminishingReturns(unbuffedStats.Perception, 100m, 50m)):0.##} PER to each party member.", new SpellEffectValue(RoundSpellIncrement(DiminishingReturns(unbuffedStats.Perception, 100m, 50m)), "PER to each party member")),
             "stealth" => BuildEstimate($"Prevents approximately {Math.Max(1m, Math.Ceiling(stats.Perception / 100m)):0.##} unfinished Dailies from causing cron damage.", new SpellEffectValue(Math.Max(1m, Math.Ceiling(stats.Perception / 100m)), "protected Dailies")),
-            "heal" => BuildEstimate($"Restores approximately {((stats.Constitution + stats.Intelligence + 5m) * 0.075m):0.##} HP to you.", new SpellEffectValue((stats.Constitution + stats.Intelligence + 5m) * 0.075m, "HP to you")),
-            "healAll" => BuildEstimate($"Restores approximately {((stats.Constitution + stats.Intelligence + 5m) * 0.04m):0.##} HP to each party member.", new SpellEffectValue((stats.Constitution + stats.Intelligence + 5m) * 0.04m, "HP to each party member")),
+            "heal" => BuildSelfHealEstimate(snapshot, (stats.Constitution + stats.Intelligence + 5m) * 0.075m, hasFreshUserHealth),
+            "healAll" => BuildPartyHealEstimate(partySnapshot, (stats.Constitution + stats.Intelligence + 5m) * 0.04m, hasFreshPartyHealth),
             "brightness" => BuildEstimate($"Adds approximately {4m * (stats.Intelligence / (stats.Intelligence + 40m)):0.##} task value to each non-reward task.", new SpellEffectValue(4m * (stats.Intelligence / (stats.Intelligence + 40m)), "task value to each non-reward task")),
             "protectAura" => BuildEstimate($"Adds approximately {RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 200m, 200m)):0.##} CON to each party member.", new SpellEffectValue(RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 200m, 200m)), "CON to each party member")),
-            _ => new SpellEffectEstimate("Approximate effect depends on current stats and Habitica server state.", Array.Empty<SpellEffectValue>())
+            _ => new SpellEffectEstimate("Approximate effect depends on current stats and Habitica server state.", Array.Empty<SpellEffectValue>(), 0m)
         };
     }
 
     private static SpellEffectEstimate BuildEstimate(string text, params SpellEffectValue[] values)
     {
-        return new SpellEffectEstimate(text, values);
+        return new SpellEffectEstimate(text, values, values.Sum(static value => value.Value));
+    }
+
+    private static SpellEffectEstimate BuildSelfHealEstimate(UserSnapshot snapshot, decimal maximumHeal, bool hasFreshUserHealth)
+    {
+        if (!hasFreshUserHealth || snapshot.MaxHealth <= 0m)
+        {
+            return BuildEstimate(
+                $"Restores up to approximately {maximumHeal:0.##} HP to you (theoretical maximum; fresh HP is unavailable).",
+                new SpellEffectValue(maximumHeal, "maximum HP to you"));
+        }
+
+        var effectiveHeal = Math.Min(maximumHeal, Math.Max(0m, snapshot.MaxHealth - snapshot.Health));
+        return BuildEstimate(
+            $"Restores approximately {effectiveHeal:0.##} HP to you based on fresh HP ({maximumHeal:0.##} HP theoretical maximum before overheal).",
+            new SpellEffectValue(effectiveHeal, "effective HP to you"));
+    }
+
+    private static SpellEffectEstimate BuildPartyHealEstimate(PartySnapshot? partySnapshot, decimal maximumHeal, bool hasFreshPartyHealth)
+    {
+        var members = hasFreshPartyHealth
+            ? partySnapshot?.Members
+                .Where(static member => member.Health is not null && member.MaxHealth is > 0m)
+                .ToArray()
+                ?? Array.Empty<PartyMemberSnapshot>()
+            : Array.Empty<PartyMemberSnapshot>();
+        if (members.Length == 0)
+        {
+            return BuildEstimate(
+                $"Restores up to approximately {maximumHeal:0.##} HP to each party member (theoretical maximum; fresh party-member HP is unavailable).",
+                new SpellEffectValue(maximumHeal, "maximum HP to each party member"));
+        }
+
+        var effectiveHeals = members
+            .Select(member => Math.Min(maximumHeal, Math.Max(0m, member.MaxHealth!.Value - member.Health!.Value)))
+            .ToArray();
+        var totalHeal = effectiveHeals.Sum();
+        var minimumHeal = effectiveHeals.Min();
+        var maximumEffectiveHeal = effectiveHeals.Max();
+        var partyMemberCount = Math.Max(
+            partySnapshot?.MemberCount ?? members.Length,
+            partySnapshot?.Members.Count ?? members.Length);
+        var unavailableCount = Math.Max(0, partyMemberCount - members.Length);
+        var coverage = unavailableCount == 0
+            ? string.Empty
+            : $" HP is unavailable for {FormatCount(unavailableCount, "party member")}.";
+        var estimate = minimumHeal == maximumEffectiveHeal
+            ? $"Restores approximately {minimumHeal:0.##} HP to each of {FormatCount(members.Length, "party member")} with fresh HP ({maximumHeal:0.##} HP maximum per member before overheal)."
+            : $"Restores approximately {minimumHeal:0.##}-{maximumEffectiveHeal:0.##} HP per party member across {FormatCount(members.Length, "party member")} with fresh HP ({totalHeal:0.##} HP total; {maximumHeal:0.##} HP maximum per member before overheal).";
+
+        return BuildEstimate(
+            estimate + coverage,
+            new SpellEffectValue(totalHeal, "effective party HP restored"));
+    }
+
+    private static string FormatCount(int count, string unit)
+    {
+        return $"{count} {unit}{(count == 1 ? string.Empty : "s")}";
     }
 
     private static decimal CalculateTaskBonus(decimal value, decimal stat)
@@ -412,7 +485,8 @@ public sealed record SpellCardViewModel(
 
 public sealed record SpellEffectEstimate(
     string Text,
-    IReadOnlyList<SpellEffectValue> Values);
+    IReadOnlyList<SpellEffectValue> Values,
+    decimal Score);
 
 public sealed record SpellEffectValue(
     decimal Value,
@@ -435,6 +509,8 @@ public sealed record SpellEquipmentRecommendation(
     public string EstimatedEffect { get; init; } = string.Empty;
 
     public IReadOnlyList<SpellEffectValue> EstimatedEffectValues { get; init; } = Array.Empty<SpellEffectValue>();
+
+    public decimal EstimatedEffectScore { get; init; }
 
     public IReadOnlyDictionary<string, string> TargetEstimates { get; init; } =
         new Dictionary<string, string>(StringComparer.Ordinal);

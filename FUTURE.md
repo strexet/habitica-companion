@@ -67,40 +67,6 @@ _None. All pending items have been promoted into `Prioritized Next Changes`._
 
 Work top to bottom. Each entry is self-contained.
 
-### Audit Spell Auto-Equip Profitability Ordering And Blessing Overheal Estimate
-
-Goal: fix two correctness problems. (1) The auto-equip default is not always the most profitable option, and the option list may not be ordered by gained spell value. (2) Blessing (party heal) shows inconsistent values that the user perceives as unchanged equipment/stats, and the per-member value ignores how much HP each member can actually receive (overheal): if members are missing 1 HP each but the spell would restore 2 HP, the card shows 2 instead of the effective 1.
-
-Context (verified):
-- Recommendations are built in `src/Habitica.Rules/Spells/SpellViewModelFactory.cs`: `BuildRecommendations` then `AddEstimateToRecommendation` per option. Candidate gear is ranked by `.OrderByDescending(candidate => candidate.Score)` (around line 214), but the recommendation list returned to the UI is filtered/`DistinctBy(Name)` without an explicit sort by gained spell value (around lines 137-140).
-- The Blessing estimate is the `"healAll"` branch (around line 302): `(stats.Constitution + stats.Intelligence + 5m) * 0.04m` HP per member, from buffed `stats` (which include the per-recommendation gear override). It does not cap by each member's missing HP. Self-heal `"heal"` (line 301) has the same uncapped shape for the caster.
-
-Touch:
-- `src/Habitica.Rules/Spells/SpellViewModelFactory.cs`
-- `src/Habitica.WebApp/Pages/SpellsPage.razor` only if value/label presentation must change
-- rule tests under `tests/Habitica.Rules.Tests/` and page tests under `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs`
-- `FEATURES.md`
-- `HABITICA_API.md` only if a heal/overheal formula assumption is pinned down
-
-Investigation (do first; record findings in the commit body):
-- Reproduce the "different values with the same equipment/stats" report for Blessing. Determine whether the variance comes from per-recommendation gear overrides, buffed-vs-unbuffed stat selection, or default-vs-recommendation estimate paths, and fix the source so equal effective stats yield equal displayed values.
-- Confirm whether the options surfaced to the UI are ordered by gained spell value (the metric the user cares about) rather than raw gear `Score` or insertion order. If not, order most→least gained spell value and make the default the top entry.
-
-Decision point (resolve before changing the estimate):
-- The pending note is ambiguous about whether the per-member value should stay the raw theoretical heal or become the effective (missing-HP-capped) heal. Default direction unless the user says otherwise: when fresh party member HP is available, show effective restored HP (capped per member by missing HP) and keep the raw per-member heal as secondary text; when member HP is unavailable, show the raw theoretical value clearly labeled as a maximum. Do not invent member HP values.
-
-Out of scope:
-- changing the underlying stat/gear scoring math beyond ordering and overheal-capping (diminishing-returns coefficients stay);
-- the dropdown UI wiring itself (covered by `Spells Auto-Equip Best Option Default With Dropdown`); this entry fixes only the values and ordering that entry depends on;
-- changing cast execution order or CRON-warning semantics;
-- changing two-handed weapon pairing logic.
-
-Acceptance:
-- Recommendation options are ordered by gained spell value, most→least, and the default selection is the highest-value option.
-- Equal effective stats produce identical displayed Blessing values; the reported inconsistency no longer reproduces.
-- Blessing (and self-heal) values reflect effective restored HP capped by missing HP when fresh member/self HP is available, and fall back to a clearly labeled theoretical maximum otherwise, without inventing HP values.
-- Tests cover: option ordering by gained spell value, default = top option, Blessing overheal cap when members are near full HP, and the labeled-maximum fallback when member HP is unavailable.
-
 ### Quest Pool Search Bar
 
 Goal: add a search/filter box to the shared Quest Pool so members can find a quest scroll by name, type, or owner instead of scrolling the full grouped list.

@@ -186,6 +186,32 @@ public sealed class SpellsPageTests : BunitContext
     }
 
     [Fact]
+    public void Auto_equip_defaults_to_highest_value_recommendation()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var controller = new FakeAppSessionController(CreateHealerStateForRecommendationOrdering());
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<SpellsPage>();
+
+        var options = cut.FindAll("[data-testid='spell-recommendation-selector-healAll'] option")
+            .Select(static option => option.TextContent.Trim())
+            .ToArray();
+        Assert.Equal(
+            new[] { "Balanced CON/INT", "Maximize CON", "Maximize INT" },
+            options);
+
+        cut.Find("[data-testid='cast-spell-healAll']").Click();
+
+        var request = Assert.Single(controller.CastSpellCalls);
+        Assert.True(request.AutoEquipRecommendedGear);
+        Assert.Equal("head_balanced", request.AutoEquipGearSlots?.Head);
+    }
+
+    [Fact]
     public void Effect_preview_uses_selected_auto_equip_recommendation_when_enabled()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -369,6 +395,51 @@ public sealed class SpellsPageTests : BunitContext
                 new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
                 {
                     ["head_per"] = new("head_per", "Per Hood", "Head", "rogue", null, new GearStatBlock(0m, 0m, 0m, 8m))
+                }));
+    }
+
+    private static SessionViewModel CreateHealerStateForRecommendationOrdering()
+    {
+        return new SessionViewModel(
+            IsBusy: false,
+            IsAuthenticated: true,
+            DisplayName: "Healer Tester",
+            ErrorMessage: null,
+            LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+            TaskFreshness: SnapshotFreshnessState.Fresh,
+            TaskSnapshot: null,
+            ClassName: "healer",
+            Level: 15,
+            UserSnapshot: new UserSnapshot(
+                DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+                "Healer Tester",
+                "healer",
+                15,
+                50m,
+                50m,
+                40m,
+                50m,
+                0m,
+                100m,
+                10m,
+                "party-1",
+                null,
+                null,
+                new EquipmentSnapshot(
+                    new GearSlotsSnapshot(null, null, null, null, null),
+                    new GearSlotsSnapshot(null, null, null, null, null)),
+                new InventorySnapshot(0, 0, 0, 0, 0, 0, new[] { "head_con", "head_int", "head_balanced" }),
+                Stats: CharacterStatsSnapshot.Zero,
+                Buffs: CharacterStatsSnapshot.Zero,
+                BuffFlags: BuffFlagsSnapshot.Empty),
+            UserFreshness: SnapshotFreshnessState.Fresh,
+            GearCatalogSnapshot: new GearCatalogSnapshot(
+                DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+                new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+                {
+                    ["head_con"] = new("head_con", "Con Hood", "Head", "healer", null, new GearStatBlock(0m, 0m, 10m, 0m)),
+                    ["head_int"] = new("head_int", "Int Hood", "Head", "healer", null, new GearStatBlock(0m, 9m, 0m, 0m)),
+                    ["head_balanced"] = new("head_balanced", "Balanced Hood", "Head", "healer", null, new GearStatBlock(0m, 6m, 6m, 0m))
                 }));
     }
 
