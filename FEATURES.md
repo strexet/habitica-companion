@@ -551,9 +551,10 @@ POST /user/allocate-bulk
 POST /user/equip/equipped/:key
 GET /user
 GET /tasks/user
+GET /groups/party
 ```
 
-After successful spell casts, refresh `/user` and `/tasks/user` because mana, HP, XP, GP, buffs, quest contribution, and task values can change. If the user chooses `Start New Day and Cast` from the buff timing warning, run `/cron` first, refresh account/tasks/party state, and only cast after Cron succeeds. After stat allocation from Dashboard, refresh `/user`. Dynamic gear recommendation Equip buttons reuse the existing inventory equip flow and refresh `/user`, which causes spell estimates and `Equipped` button states to be recalculated. User-initiated multi-request spell flows execute sequentially with the configured `Features:HabiticaRequestDelayMilliseconds` pause between Habitica API calls; the default is a conservative 1000 ms UI pacing value, not a documented Habitica limit. `HabiticaApiClient` parses `Retry-After`, `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. A `429` response is surfaced as a wait message without raw `429 Too Many Requests` copy, and failed non-idempotent mutations are not replayed automatically. If successful responses report zero remaining requests with a reset time, the client waits before the next request.
+After successful spell casts, refresh `/user` and `/tasks/user` because mana, HP, XP, GP, buffs, quest contribution, and task values can change. After a party-targeted spell, also refresh `/groups/party` so cached party-member HP, MP, and buff rows reflect the cast. A failed post-cast party refresh keeps the successful cast result and previous cached party snapshot, writes a warning diagnostic, and tells the user that party refresh needs retry. Self- and task-targeted spells do not add that party request. If the user chooses `Start New Day and Cast` from the buff timing warning, run `/cron` first, refresh account/tasks/party state, and only cast after Cron succeeds. After stat allocation from Dashboard, refresh `/user`. Dynamic gear recommendation Equip buttons reuse the existing inventory equip flow and refresh `/user`, which causes spell estimates and `Equipped` button states to be recalculated. User-initiated multi-request spell flows execute sequentially with the configured `Features:HabiticaRequestDelayMilliseconds` pause between Habitica API calls; the default is a conservative 1000 ms UI pacing value, not a documented Habitica limit. `HabiticaApiClient` parses `Retry-After`, `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. A `429` response is surfaced as a wait message without raw `429 Too Many Requests` copy, and failed non-idempotent mutations are not replayed automatically. If successful responses report zero remaining requests with a reset time, the client waits before the next request.
 
 ### Algorithm / rules
 
@@ -629,6 +630,7 @@ Test:
 - approximate estimate text;
 - dynamic equipment recommendation generation and `Equipped` state;
 - session sequential cast orchestration and diagnostics logging;
+- party-targeted cast refresh persistence, non-party cast request counts, and preserved cast success when the post-cast party refresh fails;
 - stat allocation orchestration and diagnostics logging;
 - Spells page rendering, sticky current-mana bar, count totals, progress bar, target selection/value ordering, Cast button, Cron-sensitive buff warning, and dynamic equipment recommendations;
 - Dashboard stats table, plus-button stat allocation controls, stat unlock guard, and unspent stat warning;

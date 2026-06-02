@@ -377,11 +377,13 @@ public sealed class AppSessionControllerTests
             PersistLocally = false,
             UserId = "user-id"
         });
+        var partySnapshotCallsBeforeCast = syncClient.GetPartySnapshotCalls;
 
         var result = await controller.CastSpellAsync(new SpellCastRequest("fireball", "todo-1", 2));
 
         Assert.True(result.Succeeded);
         Assert.Equal(2, syncClient.CastCalls.Count);
+        Assert.Equal(partySnapshotCallsBeforeCast, syncClient.GetPartySnapshotCalls);
         Assert.All(syncClient.CastCalls, call =>
         {
             Assert.Equal("fireball", call.SpellId);
@@ -391,7 +393,100 @@ public sealed class AppSessionControllerTests
         Assert.Contains(logStore.Entries, entry =>
             entry.FeatureArea == DiagnosticsFeatureArea.Skills
             && entry.Operation == "spell-cast"
-            && entry.Metadata["completed"] == "2");
+            && entry.Metadata["completed"] == "2"
+            && entry.Metadata["requestCount"] == "4");
+    }
+
+    [Fact]
+    public async Task CastSpellAsync_refreshes_party_snapshot_after_party_targeted_spell()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot() with { RetrievedAtUtc = DateTimeOffset.UtcNow }, CreateTaskSnapshot(), CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        var refreshedPartySnapshot = CreatePartySnapshotWithMember() with
+        {
+            RetrievedAtUtc = DateTimeOffset.Parse("2026-04-28T12:00:00Z")
+        };
+        syncClient.PartySnapshot = refreshedPartySnapshot;
+        var partySnapshotCallsBeforeCast = syncClient.GetPartySnapshotCalls;
+
+        var result = await controller.CastSpellAsync(new SpellCastRequest("mpheal", null, 1));
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(partySnapshotCallsBeforeCast + 1, syncClient.GetPartySnapshotCalls);
+        Assert.Equal(refreshedPartySnapshot.RetrievedAtUtc, controller.State.PartySnapshot?.RetrievedAtUtc);
+        Assert.Single(controller.State.PartySnapshot?.Members ?? Array.Empty<PartyMemberSnapshot>());
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Skills
+            && entry.Operation == "spell-cast"
+            && entry.Metadata["requestCount"] == "4");
+    }
+
+    [Fact]
+    public async Task CastSpellAsync_does_not_refresh_party_snapshot_after_self_targeted_spell()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                ClassName = "warrior",
+                RetrievedAtUtc = DateTimeOffset.UtcNow
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        var partySnapshotCallsBeforeCast = syncClient.GetPartySnapshotCalls;
+
+        var result = await controller.CastSpellAsync(new SpellCastRequest("defensiveStance", null, 1));
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(partySnapshotCallsBeforeCast, syncClient.GetPartySnapshotCalls);
+    }
+
+    [Fact]
+    public async Task CastSpellAsync_preserves_success_and_cached_party_snapshot_when_party_refresh_fails()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var originalPartySnapshot = CreatePartySnapshotWithMember();
+        var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot() with { RetrievedAtUtc = DateTimeOffset.UtcNow }, CreateTaskSnapshot(), originalPartySnapshot);
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        syncClient.GetPartySnapshotFailureMessage = "Party refresh unavailable.";
+        var partySnapshotCallsBeforeCast = syncClient.GetPartySnapshotCalls;
+
+        var result = await controller.CastSpellAsync(new SpellCastRequest("mpheal", null, 1));
+
+        Assert.True(result.Succeeded);
+        Assert.Contains("Party refresh needs retry", result.Message);
+        Assert.Equal(partySnapshotCallsBeforeCast + 1, syncClient.GetPartySnapshotCalls);
+        Assert.Equal(originalPartySnapshot.RetrievedAtUtc, controller.State.PartySnapshot?.RetrievedAtUtc);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Sync
+            && entry.Operation == "spell-cast-party-refresh"
+            && entry.Severity == DiagnosticsSeverity.Warning
+            && entry.Metadata["requestCount"] == "4");
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Skills
+            && entry.Operation == "spell-cast"
+            && entry.Severity == DiagnosticsSeverity.Success
+            && entry.Metadata["requestCount"] == "4");
     }
 
     [Fact]
@@ -2145,9 +2240,16 @@ public sealed class AppSessionControllerTests
 
         public int GetPartySnapshotCalls { get; private set; }
 
+        public string? GetPartySnapshotFailureMessage { get; set; }
+
         public Task<PartySnapshot> GetPartySnapshotAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             GetPartySnapshotCalls++;
+            if (!string.IsNullOrWhiteSpace(GetPartySnapshotFailureMessage))
+            {
+                throw new InvalidOperationException(GetPartySnapshotFailureMessage);
+            }
+
             return Task.FromResult(PartySnapshot);
         }
 

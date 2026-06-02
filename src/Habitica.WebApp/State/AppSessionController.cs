@@ -1402,12 +1402,15 @@ public sealed class AppSessionController : IAppSessionController
         });
 
         var completed = 0;
+        var requestCount = 0;
+        string? partyRefreshError = null;
         try
         {
             for (var index = 0; index < count; index++)
             {
                 await _habiticaSyncClient.CastSpellAsync(credentials, request.SpellId, request.TargetTaskId, cancellationToken);
                 completed++;
+                requestCount++;
                 await DelayBetweenHabiticaRequestsAsync(cancellationToken);
                 SetState(State with
                 {
@@ -1428,10 +1431,40 @@ public sealed class AppSessionController : IAppSessionController
             }
 
             var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            requestCount++;
             await DelayBetweenHabiticaRequestsAsync(cancellationToken);
             var taskSnapshot = await _habiticaSyncClient.GetTasksAsync(credentials, cancellationToken);
+            requestCount++;
             await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
             await _taskSnapshotStore.SaveAsync(taskSnapshot, cancellationToken);
+
+            if (spell.TargetKind == SpellTargetKind.Party)
+            {
+                try
+                {
+                    await DelayBetweenHabiticaRequestsAsync(cancellationToken);
+                    requestCount++;
+                    var partySnapshot = await _habiticaSyncClient.GetPartySnapshotAsync(credentials, cancellationToken);
+                    await _partySnapshotStore.SaveAsync(partySnapshot, cancellationToken);
+                }
+                catch (Exception exception)
+                {
+                    partyRefreshError = exception.Message;
+                    await _diagnosticsLogWriter.WriteAsync(
+                        DiagnosticsFeatureArea.Sync,
+                        "spell-cast-party-refresh",
+                        DiagnosticsSeverity.Warning,
+                        DiagnosticsMode.LiveRead,
+                        exception.Message,
+                        new Dictionary<string, string>(StringComparer.Ordinal)
+                        {
+                            ["spellId"] = request.SpellId,
+                            ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
+                        },
+                        cancellationToken);
+                }
+            }
+
             await _diagnosticsLogWriter.WriteAsync(
                 DiagnosticsFeatureArea.Skills,
                 "spell-cast",
@@ -1445,7 +1478,7 @@ public sealed class AppSessionController : IAppSessionController
                     ["completed"] = completed.ToString(CultureInfo.InvariantCulture),
                     ["requested"] = count.ToString(CultureInfo.InvariantCulture),
                     ["autoEquip"] = (autoEquipSlots is not null).ToString(CultureInfo.InvariantCulture),
-                    ["requestCount"] = (completed + 2).ToString(CultureInfo.InvariantCulture)
+                    ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
                 },
                 cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
@@ -1458,7 +1491,9 @@ public sealed class AppSessionController : IAppSessionController
                 IsBusy = false
             });
 
-            return SpellActionResult.Success($"Cast {request.SpellId} {completed} time(s).");
+            return SpellActionResult.Success(partyRefreshError is null
+                ? $"Cast {request.SpellId} {completed} time(s)."
+                : $"Cast {request.SpellId} {completed} time(s). Party refresh needs retry: {partyRefreshError}");
         }
         catch (Exception exception)
         {

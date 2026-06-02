@@ -67,38 +67,6 @@ _None. All pending items have been promoted into `Prioritized Next Changes`._
 
 Work top to bottom. Each entry is self-contained.
 
-### Refresh Party Member Stats After Party-Targeted Spell Cast
-
-Goal: after a party-targeted buff or heal cast succeeds, refresh the cached party snapshot so the party members list shows the updated members' HP/MP/buff stats. Today `CastSpellAsync` refreshes only the user and task snapshots, so party member rows stay stale after casting Blessing, Protective Aura, Ethereal Surge, Earthquake, Valorous Presence, Intimidating Gaze, Tools of the Trade, etc.
-
-Context (verified):
-- `src/Habitica.WebApp/State/AppSessionController.cs` `CastSpellAsync` (around lines 1330-1460) calls `GetUserSnapshotAsync` and `GetTasksAsync` after the cast loop but never `GetPartySnapshotAsync`, and never refreshes `RefreshDomain.Party`.
-- Party-targeted spells are those with `SpellTargetKind.Party` in `src/Habitica.Rules/Spells/SpellViewModelFactory.cs` (`mpheal`, `earth`, `valorousPresence`, `intimidate`, `toolsOfTrade`, `protectAura`, `healAll`). Self/Task-targeted spells do not change other members' stats.
-- Party member stats live in `PartySnapshot.Members` (`PartyMemberSnapshot`) via `IHabiticaSyncClient.GetPartySnapshotAsync`, persisted through `_partySnapshotStore`.
-
-Touch:
-- `src/Habitica.WebApp/State/AppSessionController.cs` (`CastSpellAsync` post-cast refresh; reuse the existing `_partySnapshotStore` save path)
-- direct controller/page tests under `tests/Habitica.WebApp.Tests/`
-- `FEATURES.md`
-
-Implementation shape:
-- After a successful party-targeted cast, fetch a fresh party snapshot and persist it to `_partySnapshotStore` before the final `LoadCachedStateAsync`, mirroring the user/task snapshot fetch-and-save.
-- Trigger the extra party fetch only when the cast spell's `TargetKind == SpellTargetKind.Party`; do not add a party round-trip for self/task spells.
-- Respect the existing `DelayBetweenHabiticaRequestsAsync` pacing. A party-refresh failure must not discard the already-successful cast result, and must leave prior cached party data intact.
-- Keep diagnostics request-count bookkeeping consistent if the extra fetch changes the logged `requestCount`.
-
-Out of scope:
-- changing spell cast execution order, mana checks, or auto-equip/restore-gear behavior;
-- refreshing party snapshot after non-party spells;
-- changing party-sync (Cloudflare) upload behavior or member stat calculations;
-- adding new Habitica endpoints.
-
-Acceptance:
-- Casting a party-targeted buff/heal refreshes and persists the party snapshot so member HP/MP/buff rows reflect post-cast values without a manual party refresh.
-- Self-targeted and task-targeted casts add no party API round-trip.
-- A failed party refresh after a successful cast still reports cast success and preserves prior cached party data.
-- Tests cover: party snapshot refreshed after a party-targeted cast, no party refresh after a self/task cast, and cast success preserved when the post-cast party fetch fails.
-
 ### Audit Spell Auto-Equip Profitability Ordering And Blessing Overheal Estimate
 
 Goal: fix two correctness problems. (1) The auto-equip default is not always the most profitable option, and the option list may not be ordered by gained spell value. (2) Blessing (party heal) shows inconsistent values that the user perceives as unchanged equipment/stats, and the per-member value ignores how much HP each member can actually receive (overheal): if members are missing 1 HP each but the spell would restore 2 HP, the card shows 2 instead of the effective 1.
