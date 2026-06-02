@@ -435,6 +435,41 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.FromResult(PartyQuestActionResult.Success("Party sync settings updated."));
     }
 
+    public Task<PartySyncInviteProofActionResult> CreatePartySyncInviteProofAsync(string label, DateTimeOffset? expiresAtUtc = null, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartySyncInviteProofActionResult.Success("Invite proof issued."));
+    }
+
+    public Task<PartySyncInviteProofActionResult> RevokePartySyncInviteProofAsync(string proofId, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartySyncInviteProofActionResult.Success("Invite proof revoked."));
+    }
+
+    public Task<PartySyncInviteProofActionResult> RotatePartySyncInviteProofAsync(string proofId, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartySyncInviteProofActionResult.Success("Invite proof rotated."));
+    }
+
+    public Task<PartySyncInviteProofActionResult> RemovePartySyncInviteProofAsync(string proofId, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartySyncInviteProofActionResult.Success("Invite proof removed."));
+    }
+
+    public Task<PartySyncInviteProofActionResult> SetPartySyncInviteProofModeAsync(bool enabled, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartySyncInviteProofActionResult.Success("Invite proof mode updated."));
+    }
+
+    public Task<PartySyncInviteProofActionResult> ActivatePartySyncInviteProofAsync(string proofId, string token, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartySyncInviteProofActionResult.Success("Invite proof activated."));
+    }
+
+    public Task<PartySyncInviteProofActionResult> ClearPartySyncInviteProofAsync(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(PartySyncInviteProofActionResult.Success("Invite proof cleared."));
+    }
+
     public Task<PartyQuestActionResult> RemovePartyRecentlyCompletedQuestAsync(string questKey, DateTimeOffset completedAtUtc, CancellationToken cancellationToken = default)
     {
         RemoveRecentlyCompletedQuestCalls.Add((questKey, completedAtUtc));

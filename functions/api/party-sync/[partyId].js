@@ -1,6 +1,8 @@
 const maxBodyBytes = 2 * 1024 * 1024;
 const partyIdPattern = /^[A-Za-z0-9_-]{8,128}$/;
 const userIdPattern = /^[A-Za-z0-9_-]{3,128}$/;
+const proofIdPattern = /^[A-Za-z0-9_-]{8,128}$/;
+const tokenizedInviteProofVersion = "tokenized-invite-v1";
 const eventRetentionDays = 120;
 const selectionExpirationHours = 72;
 const staleQuestOwnerDays = 30;
@@ -9,6 +11,7 @@ const defaultSettings = Object.freeze({
   officerCanModerateMembers: true,
   officerOnlyQueueEdits: false,
   memberAutoReconcileEnabled: true,
+  tokenizedInviteProofModeEnabled: false,
 });
 
 export async function onRequestGet(context) {
@@ -214,6 +217,18 @@ export async function onRequestPost(context) {
       return await unkickMember(db, env, partyId, access, payload, nowIso);
     case "updateSettings":
       return await updateSettings(db, env, partyId, access, payload, nowIso);
+    case "listInviteProofs":
+      return await listInviteProofs(db, env, partyId, access, nowIso);
+    case "createInviteProof":
+      return await createInviteProof(db, env, partyId, access, payload, nowIso);
+    case "revokeInviteProof":
+      return await revokeInviteProof(db, env, partyId, access, payload, nowIso);
+    case "rotateInviteProof":
+      return await rotateInviteProof(db, env, partyId, access, payload, nowIso);
+    case "removeInviteProof":
+      return await removeInviteProof(db, env, partyId, access, payload, nowIso);
+    case "setInviteProofMode":
+      return await setInviteProofMode(db, env, partyId, access, payload, nowIso);
     default:
       return textResponse("Unsupported party quest action.", 400);
   }
@@ -1156,6 +1171,7 @@ async function assignPartyOwner(db, env, partyId, access, payload, nowIso) {
     isOwner: isAssignedOwner,
     canManageSettings: isAssignedOwner || access.isAdmin,
     canManageOfficers: isAssignedOwner || access.isAdmin,
+    canManageProofs: isAssignedOwner || access.isAdmin,
     canManageQueue: isAssignedOwner || access.isAdmin || (access.isOfficer && access.settings.officerCanManageQueue),
     canModerateMembers: isAssignedOwner || access.isAdmin || (access.isOfficer && access.settings.officerCanModerateMembers),
     canEditQueue: isAssignedOwner || access.isAdmin || (access.isOfficer && access.settings.officerCanManageQueue) || !access.settings.officerOnlyQueueEdits,
@@ -1298,14 +1314,221 @@ async function updateSettings(db, env, partyId, access, payload, nowIso) {
     )
     .run();
 
-  access.settings = settings;
+  access.settings = {
+    ...access.settings,
+    ...settings,
+  };
   access.canManageQueue = access.isOwner || access.isAdmin || (access.isOfficer && settings.officerCanManageQueue);
   access.canModerateMembers = access.isOwner || access.isAdmin || (access.isOfficer && settings.officerCanModerateMembers);
   access.canEditQueue = access.canManageQueue || !settings.officerOnlyQueueEdits;
   return await partyQuestStateResponse(db, env, partyId, access, nowIso);
 }
 
-async function partyQuestStateResponse(db, env, partyId, access, nowIso) {
+async function listInviteProofs(db, env, partyId, access, nowIso) {
+  if (!access.canManageProofs) {
+    return textResponse("Only the party owner or app admins can list invite proofs.", 403);
+  }
+
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function createInviteProof(db, env, partyId, access, payload, nowIso) {
+  if (!access.canManageProofs) {
+    return textResponse("Only the party owner or app admins can issue invite proofs.", 403);
+  }
+
+  const label = normalizeInviteProofLabel(payload?.label);
+  if (!label) {
+    return textResponse("Invite proof label is required.", 400);
+  }
+
+  const expiresAtUtc = normalizeFutureTimestamp(payload?.expiresAtUtc, nowIso);
+  if (expiresAtUtc.response) {
+    return expiresAtUtc.response;
+  }
+
+  const issuedInviteProof = await insertInviteProof(
+    db,
+    partyId,
+    label,
+    expiresAtUtc.value,
+    access,
+    nowIso);
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso, {
+    issuedInviteProof,
+  });
+}
+
+async function revokeInviteProof(db, env, partyId, access, payload, nowIso) {
+  if (!access.canManageProofs) {
+    return textResponse("Only the party owner or app admins can revoke invite proofs.", 403);
+  }
+
+  const proofId = normalizeProofId(payload?.proofId);
+  if (!proofId) {
+    return textResponse("Invite proof id is required.", 400);
+  }
+
+  await db
+    .prepare(`
+      UPDATE party_sync_invite_proofs
+      SET revoked_by_user_id = ?,
+          revoked_by_display_name = ?,
+          revoked_at_utc = ?
+      WHERE party_id = ?
+        AND proof_id = ?
+        AND revoked_at_utc IS NULL
+        AND removed_at_utc IS NULL
+    `)
+    .bind(access.userId, access.displayName, nowIso, partyId, proofId)
+    .run();
+
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function rotateInviteProof(db, env, partyId, access, payload, nowIso) {
+  if (!access.canManageProofs) {
+    return textResponse("Only the party owner or app admins can rotate invite proofs.", 403);
+  }
+
+  const proofId = normalizeProofId(payload?.proofId);
+  if (!proofId) {
+    return textResponse("Invite proof id is required.", 400);
+  }
+
+  const existing = await db
+    .prepare(`
+      SELECT display_label, expires_at_utc
+      FROM party_sync_invite_proofs
+      WHERE party_id = ? AND proof_id = ? AND removed_at_utc IS NULL
+      LIMIT 1
+    `)
+    .bind(partyId, proofId)
+    .first();
+  if (!existing) {
+    return textResponse("Invite proof was not found.", 404);
+  }
+
+  const expiresAtUtc = normalizeFutureTimestamp(payload?.expiresAtUtc ?? existing.expires_at_utc, nowIso);
+  if (expiresAtUtc.response) {
+    return expiresAtUtc.response;
+  }
+
+  await db
+    .prepare(`
+      UPDATE party_sync_invite_proofs
+      SET revoked_by_user_id = ?,
+          revoked_by_display_name = ?,
+          revoked_at_utc = ?
+      WHERE party_id = ? AND proof_id = ? AND revoked_at_utc IS NULL
+    `)
+    .bind(access.userId, access.displayName, nowIso, partyId, proofId)
+    .run();
+
+  const issuedInviteProof = await insertInviteProof(
+    db,
+    partyId,
+    normalizeInviteProofLabel(payload?.label) ?? existing.display_label,
+    expiresAtUtc.value,
+    access,
+    nowIso);
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso, {
+    issuedInviteProof,
+  });
+}
+
+async function removeInviteProof(db, env, partyId, access, payload, nowIso) {
+  if (!access.canManageProofs) {
+    return textResponse("Only the party owner or app admins can remove invite proofs.", 403);
+  }
+
+  const proofId = normalizeProofId(payload?.proofId);
+  if (!proofId) {
+    return textResponse("Invite proof id is required.", 400);
+  }
+
+  await db
+    .prepare(`
+      UPDATE party_sync_invite_proofs
+      SET revoked_by_user_id = COALESCE(revoked_by_user_id, ?),
+          revoked_by_display_name = COALESCE(revoked_by_display_name, ?),
+          revoked_at_utc = COALESCE(revoked_at_utc, ?),
+          removed_by_user_id = ?,
+          removed_by_display_name = ?,
+          removed_at_utc = ?
+      WHERE party_id = ? AND proof_id = ? AND removed_at_utc IS NULL
+    `)
+    .bind(access.userId, access.displayName, nowIso, access.userId, access.displayName, nowIso, partyId, proofId)
+    .run();
+
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function setInviteProofMode(db, env, partyId, access, payload, nowIso) {
+  if (!access.canManageProofs) {
+    return textResponse("Only the party owner or app admins can change invite proof mode.", 403);
+  }
+
+  const enabled = payload?.enabled === true;
+  await db
+    .prepare(`
+      INSERT INTO party_sync_settings (
+        party_id,
+        officer_can_manage_queue,
+        officer_can_moderate_members,
+        officer_only_queue_edits,
+        member_auto_reconcile_enabled,
+        tokenized_invite_proof_mode_enabled,
+        updated_by_user_id,
+        updated_by_display_name,
+        updated_at_utc
+      ) VALUES (?, 1, 1, 0, 1, ?, ?, ?, ?)
+      ON CONFLICT(party_id) DO UPDATE SET
+        tokenized_invite_proof_mode_enabled = excluded.tokenized_invite_proof_mode_enabled,
+        updated_by_user_id = excluded.updated_by_user_id,
+        updated_by_display_name = excluded.updated_by_display_name,
+        updated_at_utc = excluded.updated_at_utc
+    `)
+    .bind(partyId, enabled ? 1 : 0, access.userId, access.displayName, nowIso)
+    .run();
+
+  access.settings = {
+    ...access.settings,
+    tokenizedInviteProofModeEnabled: enabled,
+  };
+  return await partyQuestStateResponse(db, env, partyId, access, nowIso);
+}
+
+async function insertInviteProof(db, partyId, label, expiresAtUtc, access, nowIso) {
+  const proofId = crypto.randomUUID();
+  const token = `${crypto.randomUUID()}${crypto.randomUUID()}`.replaceAll("-", "");
+  const tokenHash = await hashInviteProofToken(token);
+  await db
+    .prepare(`
+      INSERT INTO party_sync_invite_proofs (
+        party_id,
+        proof_id,
+        token_hash,
+        display_label,
+        issued_by_user_id,
+        issued_by_display_name,
+        issued_at_utc,
+        expires_at_utc
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `)
+    .bind(partyId, proofId, tokenHash, label, access.userId, access.displayName, nowIso, expiresAtUtc)
+    .run();
+
+  return {
+    proofId,
+    token,
+    label,
+    issuedAtUtc: nowIso,
+    expiresAtUtc,
+  };
+}
+
+async function partyQuestStateResponse(db, env, partyId, access, nowIso, additionalState = {}) {
   await cleanupQueueState(db, partyId, nowIso);
   return jsonResponse({
     ok: true,
@@ -1314,6 +1537,7 @@ async function partyQuestStateResponse(db, env, partyId, access, nowIso) {
     questPool: await readQuestPool(db, partyId),
     recentlyCompleted: await readRecentlyCompleted(db, partyId),
     management: await buildManagementState(db, env, partyId, access),
+    ...additionalState,
   });
 }
 
@@ -1337,6 +1561,37 @@ function normalizeSettings(value) {
     officerOnlyQueueEdits: value?.officerOnlyQueueEdits === true,
     memberAutoReconcileEnabled: value?.memberAutoReconcileEnabled !== false,
   };
+}
+
+function normalizeInviteProofLabel(value) {
+  return typeof value === "string" && value.trim()
+    ? value.trim().slice(0, 120)
+    : null;
+}
+
+function normalizeProofId(value) {
+  return typeof value === "string" && proofIdPattern.test(value.trim())
+    ? value.trim()
+    : null;
+}
+
+function normalizeFutureTimestamp(value, nowIso) {
+  if (value === null || value === undefined || value === "") {
+    return { value: null };
+  }
+
+  const timestamp = typeof value === "string" ? Date.parse(value) : NaN;
+  if (!Number.isFinite(timestamp) || timestamp <= Date.parse(nowIso)) {
+    return { response: textResponse("Invite proof expiry must be a future timestamp.", 400) };
+  }
+
+  return { value: new Date(timestamp).toISOString() };
+}
+
+async function hashInviteProofToken(token) {
+  const bytes = new TextEncoder().encode(token);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest), value => value.toString(16).padStart(2, "0")).join("");
 }
 
 function normalizeDetectionKey(value) {
@@ -1390,8 +1645,19 @@ async function resolvePartySyncAccess(request, env, db, expectedPartyId) {
     return { response: textResponse("This user was removed from party sync by party management.", 403) };
   }
 
+  const hasActiveInviteProof = await hasAnyActiveInviteProof(db, expectedPartyId);
+  if (proof.proofVersion === tokenizedInviteProofVersion) {
+    const validation = await validateTokenizedInviteProof(db, expectedPartyId, proof);
+    if (validation.response) {
+      return validation;
+    }
+  } else if (settings.tokenizedInviteProofModeEnabled && hasActiveInviteProof && !isOwner && !isAdmin) {
+    return { response: textResponse("An active tokenized party-sync invite proof is required.", 401) };
+  }
+
   const canManageSettings = isOwner || isAdmin;
   const canManageOfficers = isOwner || isAdmin;
+  const canManageProofs = isOwner || isAdmin;
   const canManageQueue = isOwner || isAdmin || (isOfficer && settings.officerCanManageQueue);
   const canModerateMembers = isOwner || isAdmin || (isOfficer && settings.officerCanModerateMembers);
   const canEditQueue = canManageQueue || !settings.officerOnlyQueueEdits;
@@ -1405,6 +1671,7 @@ async function resolvePartySyncAccess(request, env, db, expectedPartyId) {
     settings,
     canManageSettings,
     canManageOfficers,
+    canManageProofs,
     canManageQueue,
     canModerateMembers,
     canEditQueue,
@@ -1413,7 +1680,7 @@ async function resolvePartySyncAccess(request, env, db, expectedPartyId) {
 
 function readAccessProof(request, expectedPartyId) {
   const proofVersion = request.headers.get("x-party-sync-proof-version")?.trim() || "local-claim-v1";
-  if (proofVersion !== "local-claim-v1") {
+  if (proofVersion !== "local-claim-v1" && proofVersion !== tokenizedInviteProofVersion) {
     return { response: textResponse("Unsupported party-sync access proof.", 401) };
   }
 
@@ -1431,6 +1698,24 @@ function readAccessProof(request, expectedPartyId) {
     return { response: textResponse("Invalid local party-sync leader claim.", 401) };
   }
 
+  if (proofVersion === tokenizedInviteProofVersion) {
+    const proofId = request.headers.get("x-party-sync-proof-id")?.trim();
+    const token = request.headers.get("x-party-sync-proof-token")?.trim();
+    if (!proofIdPattern.test(proofId ?? "") || !token || token.length < 32 || token.length > 512) {
+      return { response: textResponse("Invalid tokenized party-sync invite proof.", 401) };
+    }
+
+    return {
+      proofVersion,
+      partyId,
+      userId,
+      displayName,
+      leaderId,
+      proofId,
+      token,
+    };
+  }
+
   return {
     proofVersion,
     partyId,
@@ -1443,7 +1728,7 @@ function readAccessProof(request, expectedPartyId) {
 async function readPartySyncSettings(db, partyId) {
   const row = await db
     .prepare(`
-      SELECT officer_can_manage_queue, officer_can_moderate_members, officer_only_queue_edits, member_auto_reconcile_enabled
+      SELECT officer_can_manage_queue, officer_can_moderate_members, officer_only_queue_edits, member_auto_reconcile_enabled, tokenized_invite_proof_mode_enabled
       FROM party_sync_settings
       WHERE party_id = ?
     `)
@@ -1458,7 +1743,53 @@ async function readPartySyncSettings(db, partyId) {
     officerCanModerateMembers: Number(row.officer_can_moderate_members ?? 1) === 1,
     officerOnlyQueueEdits: Number(row.officer_only_queue_edits ?? 0) === 1,
     memberAutoReconcileEnabled: Number(row.member_auto_reconcile_enabled ?? 1) === 1,
+    tokenizedInviteProofModeEnabled: Number(row.tokenized_invite_proof_mode_enabled ?? 0) === 1,
   };
+}
+
+async function validateTokenizedInviteProof(db, partyId, proof) {
+  const row = await db
+    .prepare(`
+      SELECT token_hash, expires_at_utc, revoked_at_utc, removed_at_utc
+      FROM party_sync_invite_proofs
+      WHERE party_id = ? AND proof_id = ?
+      LIMIT 1
+    `)
+    .bind(partyId, proof.proofId)
+    .first();
+  if (!row) {
+    return { response: textResponse("Tokenized party-sync invite proof was not found.", 401) };
+  }
+  if (row.removed_at_utc) {
+    return { response: textResponse("Tokenized party-sync invite proof was removed.", 401) };
+  }
+  if (row.revoked_at_utc) {
+    return { response: textResponse("Tokenized party-sync invite proof was revoked.", 401) };
+  }
+  if (row.expires_at_utc && Date.parse(row.expires_at_utc) <= Date.now()) {
+    return { response: textResponse("Tokenized party-sync invite proof expired.", 401) };
+  }
+  if (await hashInviteProofToken(proof.token) !== row.token_hash) {
+    return { response: textResponse("Tokenized party-sync invite proof is invalid.", 401) };
+  }
+
+  return { proofId: proof.proofId };
+}
+
+async function hasAnyActiveInviteProof(db, partyId) {
+  const row = await db
+    .prepare(`
+      SELECT proof_id
+      FROM party_sync_invite_proofs
+      WHERE party_id = ?
+        AND revoked_at_utc IS NULL
+        AND removed_at_utc IS NULL
+        AND (expires_at_utc IS NULL OR expires_at_utc > ?)
+      LIMIT 1
+    `)
+    .bind(partyId, new Date().toISOString())
+    .first();
+  return !!row;
 }
 
 async function hasActiveOfficerRole(db, partyId, userId) {
@@ -1537,6 +1868,13 @@ async function buildManagementState(db, env, partyId, access) {
   }));
   const currentUserCanViewManagement = access.isOwner || access.isAdmin || access.isOfficer;
   const kicks = currentUserCanViewManagement ? await readActiveKicks(db, partyId) : [];
+  const currentUserCanManageProofs = !!access.canManageProofs;
+  const inviteProofs = currentUserCanManageProofs ? await readInviteProofs(db, partyId) : [];
+  const hasActiveInviteProof = inviteProofs.some(proof => proof.status === "active")
+    || await hasAnyActiveInviteProof(db, partyId);
+  const inviteProofAccessStatus = settings.tokenizedInviteProofModeEnabled
+    ? (access.proofVersion === tokenizedInviteProofVersion ? "active-proof" : "fallback-local-claim")
+    : "disabled";
 
   return {
     ownerUserId: activeOwner?.userId ?? access.leaderId ?? null,
@@ -1550,10 +1888,49 @@ async function buildManagementState(db, env, partyId, access) {
     currentUserIsOfficer: !!access.isOfficer,
     currentUserCanManageSettings: !!access.canManageSettings,
     currentUserCanManageOfficers: !!access.canManageOfficers,
+    currentUserCanManageProofs,
     currentUserCanManageQueue: !!access.canManageQueue,
     currentUserCanModerateMembers: !!access.canModerateMembers,
     currentUserIsKicked: !!access.isKicked,
+    inviteProofMode: {
+      enabled: settings.tokenizedInviteProofModeEnabled,
+      accessStatus: inviteProofAccessStatus,
+      hasActiveProof: hasActiveInviteProof,
+      activeProofId: access.proofVersion === tokenizedInviteProofVersion ? access.proofId : null,
+      inviteProofs,
+    },
   };
+}
+
+async function readInviteProofs(db, partyId) {
+  const result = await db
+    .prepare(`
+      SELECT proof_id, display_label, issued_by_user_id, issued_by_display_name, issued_at_utc,
+             expires_at_utc, revoked_at_utc, removed_at_utc
+      FROM party_sync_invite_proofs
+      WHERE party_id = ?
+      ORDER BY issued_at_utc DESC, proof_id ASC
+    `)
+    .bind(partyId)
+    .all();
+  const now = Date.now();
+  return (result.results ?? []).map(row => ({
+    proofId: row.proof_id,
+    label: row.display_label,
+    issuedByUserId: row.issued_by_user_id,
+    issuedByDisplayName: row.issued_by_display_name,
+    issuedAtUtc: row.issued_at_utc,
+    expiresAtUtc: row.expires_at_utc,
+    revokedAtUtc: row.revoked_at_utc,
+    removedAtUtc: row.removed_at_utc,
+    status: row.removed_at_utc
+      ? "removed"
+      : row.revoked_at_utc
+        ? "revoked"
+        : row.expires_at_utc && Date.parse(row.expires_at_utc) <= now
+          ? "expired"
+          : "active",
+  }));
 }
 
 async function isCurrentPartyMember(db, partyId, userId) {
@@ -1684,7 +2061,10 @@ function textResponse(message, status) {
 }
 
 export const partySyncAccessTestHooks = {
+  hashInviteProofToken,
   normalizeDetectionKey,
   normalizeSettings,
   readAccessProof,
+  resolvePartySyncAccess,
+  validateTokenizedInviteProof,
 };

@@ -343,6 +343,101 @@ public sealed class CloudflarePartyDataSyncProvider : IRemotePartyDataSyncProvid
             settings);
     }
 
+    public async Task<RemotePartyInviteProofActionResult> CreateInviteProofAsync(
+        PartySyncClaim claim,
+        string label,
+        DateTimeOffset? expiresAtUtc,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyInviteProofActionResult>(
+            "createPartySyncInviteProof",
+            cancellationToken,
+            claim,
+            label,
+            expiresAtUtc);
+    }
+
+    public async Task<RemotePartyInviteProofActionResult> RevokeInviteProofAsync(
+        PartySyncClaim claim,
+        string proofId,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyInviteProofActionResult>(
+            "revokePartySyncInviteProof",
+            cancellationToken,
+            claim,
+            proofId);
+    }
+
+    public async Task<RemotePartyInviteProofActionResult> RotateInviteProofAsync(
+        PartySyncClaim claim,
+        string proofId,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyInviteProofActionResult>(
+            "rotatePartySyncInviteProof",
+            cancellationToken,
+            claim,
+            proofId);
+    }
+
+    public async Task<RemotePartyInviteProofActionResult> RemoveInviteProofAsync(
+        PartySyncClaim claim,
+        string proofId,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyInviteProofActionResult>(
+            "removePartySyncInviteProof",
+            cancellationToken,
+            claim,
+            proofId);
+    }
+
+    public async Task<RemotePartyInviteProofActionResult> SetInviteProofModeAsync(
+        PartySyncClaim claim,
+        bool enabled,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        return await module.InvokeAsync<RemotePartyInviteProofActionResult>(
+            "setPartySyncInviteProofMode",
+            cancellationToken,
+            claim,
+            enabled);
+    }
+
+    public async Task ActivateInviteProofAsync(
+        string partyId,
+        string proofId,
+        string token,
+        string? label,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync(
+            "activatePartySyncInviteProof",
+            cancellationToken,
+            partyId,
+            proofId,
+            token,
+            label);
+    }
+
+    public async Task ClearInviteProofAsync(
+        string partyId,
+        CancellationToken cancellationToken)
+    {
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync(
+            "clearPartySyncInviteProof",
+            cancellationToken,
+            partyId);
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_moduleTask.IsValueCreated)

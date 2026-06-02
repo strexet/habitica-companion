@@ -134,6 +134,43 @@ public interface IRemotePartyDataSyncProvider
         PartySyncClaim claim,
         PartySyncSettings settings,
         CancellationToken cancellationToken);
+
+    Task<RemotePartyInviteProofActionResult> CreateInviteProofAsync(
+        PartySyncClaim claim,
+        string label,
+        DateTimeOffset? expiresAtUtc,
+        CancellationToken cancellationToken);
+
+    Task<RemotePartyInviteProofActionResult> RevokeInviteProofAsync(
+        PartySyncClaim claim,
+        string proofId,
+        CancellationToken cancellationToken);
+
+    Task<RemotePartyInviteProofActionResult> RotateInviteProofAsync(
+        PartySyncClaim claim,
+        string proofId,
+        CancellationToken cancellationToken);
+
+    Task<RemotePartyInviteProofActionResult> RemoveInviteProofAsync(
+        PartySyncClaim claim,
+        string proofId,
+        CancellationToken cancellationToken);
+
+    Task<RemotePartyInviteProofActionResult> SetInviteProofModeAsync(
+        PartySyncClaim claim,
+        bool enabled,
+        CancellationToken cancellationToken);
+
+    Task ActivateInviteProofAsync(
+        string partyId,
+        string proofId,
+        string token,
+        string? label,
+        CancellationToken cancellationToken);
+
+    Task ClearInviteProofAsync(
+        string partyId,
+        CancellationToken cancellationToken);
 }
 
 public sealed record PartySyncClaim(
@@ -158,6 +195,21 @@ public sealed record RemotePartyQuestState(
     IReadOnlyList<PartyQuestPoolEntry>? QuestPool = null,
     IReadOnlyList<PartyRecentlyCompletedQuest>? RecentlyCompleted = null,
     PartySyncManagementState? Management = null);
+
+public sealed record RemotePartyInviteProofActionResult(
+    DateTimeOffset? UpdatedAtUtc,
+    IReadOnlyList<PartyQuestQueueEntry>? QuestQueue = null,
+    IReadOnlyList<PartyQuestPoolEntry>? QuestPool = null,
+    IReadOnlyList<PartyRecentlyCompletedQuest>? RecentlyCompleted = null,
+    PartySyncManagementState? Management = null,
+    PartySyncIssuedInviteProof? IssuedInviteProof = null);
+
+public sealed record PartySyncIssuedInviteProof(
+    string ProofId,
+    string Token,
+    string Label,
+    DateTimeOffset IssuedAtUtc,
+    DateTimeOffset? ExpiresAtUtc);
 
 public sealed record PartyDetectedQuestCompletion(
     string QuestKey,

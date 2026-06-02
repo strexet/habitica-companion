@@ -199,6 +199,52 @@
                                 </span>
                             </label>
                         </div>
+                        @if (management.CurrentUserCanManageProofs)
+                        {
+                        <div class="party-sync-proof-panel">
+                            <span class="dashboard-stat-label">Invite proofs</span>
+                            <strong>@FormatInviteProofModeStatus(management.ProofMode)</strong>
+                            <p class="dashboard-stat-note">Optional browser-local proof tokens protect shared queue access without sending Habitica credentials to Cloudflare.</p>
+                            <label class="checkbox-row">
+                                <input checked="@management.ProofMode.Enabled"
+                                       type="checkbox"
+                                       @onchange="@(eventArgs => SetInviteProofModeAsync(IsChecked(eventArgs)))" />
+                                <span class="checkbox-copy">
+                                    <span class="checkbox-label">Tokenized invite proofs</span>
+                                    <span class="checkbox-help">Keep local claims as the owner/admin recovery path. Members fall back to local claims while no active proof exists.</span>
+                                </span>
+                            </label>
+                            <div class="party-quest-card-actions">
+                                <input aria-label="Invite proof label" class="app-input" @bind="_inviteProofLabel" placeholder="Proof label" />
+                                <MudButton Disabled="@SessionController.State.IsBusy" OnClick="CreateInviteProofAsync" Variant="Variant.Outlined">Issue proof</MudButton>
+                                <MudButton Disabled="@SessionController.State.IsBusy" OnClick="ClearInviteProofAsync" Variant="Variant.Text">Use local fallback</MudButton>
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(_issuedInviteProofToken))
+                            {
+                                <p class="dashboard-stat-note">Share this proof id and token once, then clear the token from view:</p>
+                                <code>@_issuedInviteProofId</code>
+                                <code>@_issuedInviteProofToken</code>
+                                <MudButton OnClick="@(() => _issuedInviteProofToken = null)" Variant="Variant.Text">Hide token</MudButton>
+                            }
+                            <div class="party-quest-card-actions">
+                                <input aria-label="Invite proof id" class="app-input" @bind="_inviteProofId" placeholder="Proof id" />
+                                <input aria-label="Invite proof token" class="app-input" @bind="_inviteProofToken" placeholder="Proof token" />
+                                <MudButton Disabled="@SessionController.State.IsBusy" OnClick="ActivateInviteProofAsync" Variant="Variant.Outlined">Activate proof</MudButton>
+                            </div>
+                            @foreach (var proof in management.ProofMode.Proofs)
+                            {
+                                <article class="party-management-role-group">
+                                    <strong>@proof.Label</strong>
+                                    <span class="dashboard-stat-note">@proof.Status - @proof.ProofId</span>
+                                    <div class="party-quest-card-actions">
+                                        <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => RotateInviteProofAsync(proof.ProofId))" Variant="Variant.Text">Rotate</MudButton>
+                                        <MudButton Disabled="@SessionController.State.IsBusy" OnClick="@(() => RevokeInviteProofAsync(proof.ProofId))" Variant="Variant.Text">Revoke</MudButton>
+                                        <MudButton Color="Color.Warning" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RemoveInviteProofAsync(proof.ProofId))" Variant="Variant.Text">Remove</MudButton>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                        }
                     </section>
                 }
             }
@@ -1161,6 +1207,11 @@
     private bool _hideNotOwnedQuests;
     private string? _questPoolSearchText;
     private string? _startQuestError;
+    private string _inviteProofLabel = string.Empty;
+    private string _inviteProofId = string.Empty;
+    private string _inviteProofToken = string.Empty;
+    private string? _issuedInviteProofId;
+    private string? _issuedInviteProofToken;
     private PartyMemberSortMode _memberSortMode = PartyMemberSortMode.Name;
     private string? _memberClassFilter;
     private string? _appliedFocusedMemberId;
@@ -2207,6 +2258,74 @@
         var current = SessionController.State.PartyQuestQueue?.Management?.Settings ?? PartySyncSettings.Default;
         var result = await SessionController.UpdatePartySyncSettingsAsync(update(current));
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task CreateInviteProofAsync()
+    {
+        var result = await SessionController.CreatePartySyncInviteProofAsync(_inviteProofLabel);
+        _issuedInviteProofId = result.IssuedInviteProof?.ProofId;
+        _issuedInviteProofToken = result.IssuedInviteProof?.Token;
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task RotateInviteProofAsync(string proofId)
+    {
+        var result = await SessionController.RotatePartySyncInviteProofAsync(proofId);
+        _issuedInviteProofId = result.IssuedInviteProof?.ProofId;
+        _issuedInviteProofToken = result.IssuedInviteProof?.Token;
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task RevokeInviteProofAsync(string proofId)
+    {
+        var result = await SessionController.RevokePartySyncInviteProofAsync(proofId);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task RemoveInviteProofAsync(string proofId)
+    {
+        var result = await SessionController.RemovePartySyncInviteProofAsync(proofId);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task SetInviteProofModeAsync(bool enabled)
+    {
+        var result = await SessionController.SetPartySyncInviteProofModeAsync(enabled);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task ActivateInviteProofAsync()
+    {
+        var result = await SessionController.ActivatePartySyncInviteProofAsync(_inviteProofId, _inviteProofToken);
+        if (result.Succeeded)
+        {
+            _inviteProofToken = string.Empty;
+        }
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private async Task ClearInviteProofAsync()
+    {
+        var result = await SessionController.ClearPartySyncInviteProofAsync();
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private static string FormatInviteProofModeStatus(PartySyncInviteProofModeState mode)
+    {
+        if (!mode.Enabled)
+        {
+            return "Disabled";
+        }
+
+        return mode.AccessStatus switch
+        {
+            "active-proof" => "Enabled - active proof",
+            "fallback-local-claim" when mode.HasActiveProof => "Enabled - local claim recovery",
+            "fallback-local-claim" => "Enabled - local claim fallback",
+            "revoked-proof" => "Enabled - revoked proof",
+            "expired-proof" => "Enabled - expired proof",
+            _ => "Enabled"
+        };
     }
 
     private static bool IsChecked(ChangeEventArgs eventArgs)

@@ -61,51 +61,93 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-_None. All pending items have been promoted into `Prioritized Next Changes`._
+- Quest search should support searching by public reward names
+   - Description
+      - Quest search currently appears to search quests by quest-related data, but it does not reliably find quests by their visible reward names.
+      - Example: the quest The Kraken of Inkomplete has a publicly visible reward named Cuttlefish (Egg).
+      - When the user types cuttle into the quest search bar, this quest should be included in the search results.
+      - The search should use public/display names, not rely only on internal quest or reward IDs.
+   - Expected behavior
+      - Typing cuttle should find The Kraken of Inkomplete because it rewards Cuttlefish (Egg).
+      - Quest search should match against visible reward names, including partial matches.
+   - Actual behavior
+      - Searching by the reward name or a partial reward name does not find the quest.
+   - Suggested fix
+      - Extend quest search indexing/filtering to include public reward display names.
+      - Include reward names in normalized searchable text together with quest title and other visible quest metadata.
+      - Ensure partial, case-insensitive matching works for reward names.
+- Quest pool should be open by default on the Quests page
+    - Description
+        - The quest pool is now located on a dedicated Quests page.
+        - Since this page is specifically focused on quests, the quest pool should be expanded/open by default.
+        - Users should not need to manually open the quest pool every time they navigate to the Quests page.
+    - Expected behavior
+        - When the user opens the Quests page, the quest pool is already visible/open.
+    - Actual behavior
+        - The quest pool is collapsed/closed by default.
+    - Suggested fix
+        - Change the default state of the quest pool on the Quests page to open/expanded.
+        - Keep any manual expand/collapse behavior available after the page loads.
+- Party and Quests page layout cleanup
+    - Description
+        - Several Party page and Quests page sections contain duplicated or overly verbose information.
+        - Now that quests have a separate page, the layout should be simplified and reorganized to avoid repeated blocks and unnecessary details.
+    - Party page updates
+        - Move PARTY SYNC ROLES and PARTY SYNC SETTINGS to the bottom of the Party page.
+        - Place them near the PARTY SYNC MODERATION section, directly before it.
+        - Remove the duplicate quest badge.
+            - There are currently 2 quest badges.
+            - Only one quest badge should be displayed.
+        - Remove the extra MEMBERS info block.
+            - Member information is already available in the members list.
+            - The separate small MEMBERS summary block is redundant.
+        - Merge the PARTY block that contains the party name with the SUMMARY / Party notes block.
+            - The party name and party description/notes should be presented as one combined party summary section.
+    - Quests page updates
+        - Simplify active quest participant status display.
+            - When a quest is already active/started and is no longer waiting for party members to accept, do not show the full invite-response breakdown:
+                - ACCEPTED
+                - PENDING
+                - REJECTED
+                - UNKNOWN
+                - IN INN
+            - For an active quest, show a single participant count instead.
+            - Suggested label:
+                - Participants: 26
+            - Alternative labels:
+                - Active Participants: 26
+                - Quest Participants: 26
+        - Simplify quest finish estimate when prediction data is unavailable.
+            - If finish prediction has no meaningful data, do not show multiple Unknown fields.
+            - Current unnecessary output:
+                - EXPECTED FINISH: Unknown
+                - FINISHING MEMBER: Unknown
+                - TIMING CONFIDENCE: Medium
+            - Expected simplified output:
+                - EXPECTED FINISH: Unknown
+            - Hide FINISHING MEMBER when it is Unknown.
+            - Hide TIMING CONFIDENCE when there is no actual prediction.
+    - Expected behavior
+        - Party page has less duplicated information.
+        - Party sync controls are grouped together near moderation controls.
+        - Quests page shows detailed invite-response status only when it is useful.
+        - Active quests show a compact participant count instead of obsolete acceptance breakdown.
+        - Unknown finish prediction fields are hidden unless they provide useful information.
+    - Suggested fix
+        - Reorganize Party page section ordering.
+        - Remove duplicated quest/member summary UI blocks.
+        - Merge party name and party notes/description into one summary section.
+        - Add conditional rendering for quest acceptance breakdown:
+            - Show detailed accepted/pending/rejected/unknown/in-inn values only while the quest is pending invitation/acceptance.
+            - Show only participant count after the quest has started.
+        - Add conditional rendering for finish estimate fields:
+            - Always show EXPECTED FINISH.
+            - Show FINISHING MEMBER only when known.
+            - Show TIMING CONFIDENCE only when prediction data exists and confidence is meaningful.
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Party Sync Tokenized Invite Proofs
-
-Goal: add an optional manager-issued party-sync proof mode. Parties continue to work with browser-only `local-claim-v1` by default, but an owner/app admin can enable tokenized invite proofs so shared party queue access no longer depends only on client-supplied local claim headers.
-
-Touch:
-- `functions/api/party-sync/[partyId].js`
-- `src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js`
-- `src/Habitica.WebApp/State`
-- `migrations/`
-- direct tests under `tests/Functions/` and `tests/Habitica.WebApp.Tests/`
-- `TECHNICAL.md`
-- `FEATURES.md`
-- `docs/DEPLOY_CLOUDFLARE_PAGES.md`
-
-Implementation shape:
-- Add a D1 migration for invite-proof state. Store party id, proof id or token hash, display label, issued/revoked/expires timestamps, issuer metadata, and an enabled/disabled party setting. Do not store raw reusable proof tokens if a hash is enough.
-- Keep `local-claim-v1` as the default and as the recovery path. If tokenized proof mode is disabled or no active proof exists, existing party-sync behavior must remain unchanged.
-- Add owner/app-admin management actions to create, list, revoke, rotate, remove, enable, and disable tokenized proofs. Existing Officer permissions should not automatically grant proof-management powers unless the code explicitly already treats the caller as owner/app admin.
-- Extend `readAccessProof()` to parse both `local-claim-v1` and the new proof version. Extend `resolvePartySyncAccess()` so tokenized proof identity still passes through the same owner/admin/Officer/kick checks used by local claims.
-- Update the browser sync bridge to send the new proof headers only when local state has an active tokenized proof. Do not send Habitica API tokens, raw credentials, or authorization headers to Cloudflare.
-- Surface concise UI/state feedback for proof mode: disabled, enabled, active proof, revoked/expired proof, and fallback to local claim.
-
-Out of scope:
-- sending Habitica API tokens to Cloudflare;
-- changing role names (`app admin`, `party owner`, `Officer`);
-- removing the existing `local-claim-v1` reader;
-- replacing party-sync roles, queue permissions, or kick semantics;
-- requiring tokenized proofs for existing parties by default.
-
-Acceptance:
-- With no invite proof created, and with tokenized mode disabled, all existing party-sync reads/writes still work through `local-claim-v1`.
-- Owner/app admin can enable and disable tokenized proof mode.
-- Owner/app admin can create, list, revoke, rotate, and remove invite proofs without exposing Habitica credentials. Removing the active proof invalidates the old proof; the party can issue a new proof later and falls back to browser-only `local-claim-v1` while no active proof exists.
-- `readAccessProof()` accepts both the new proof version and `local-claim-v1`; unsupported proof versions still fail with a clear 401.
-- `resolvePartySyncAccess()` rejects malformed, expired, revoked, wrong-party, and kicked-user tokenized proofs.
-- Owner/app-admin recovery remains possible when tokenized proofs are missing, expired, revoked, or misconfigured.
-- Frontend bridge sends tokenized proof headers only when an active proof is available, and otherwise keeps the existing local-claim headers.
-- Worker tests cover: local-claim fallback, valid proof, malformed proof, expired proof, revoked proof, removed proof, wrong-party proof, kicked-user rejection, owner/admin bypass/recovery, enable/disable mode behavior, and rotate invalidating the old proof.
-- WebApp tests cover proof-mode state mapping and header selection without sending Habitica API tokens to Cloudflare.
 
 ### Active Quest Metadata And Detail Affordances
 

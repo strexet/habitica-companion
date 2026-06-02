@@ -742,6 +742,90 @@ public sealed class AppSessionController : IAppSessionController
             cancellationToken);
     }
 
+    public async Task<PartySyncInviteProofActionResult> CreatePartySyncInviteProofAsync(string label, DateTimeOffset? expiresAtUtc = null, CancellationToken cancellationToken = default)
+    {
+        return await RunPartySyncInviteProofActionAsync(
+            claim => _remotePartyDataSyncProvider.CreateInviteProofAsync(claim, label, expiresAtUtc, cancellationToken),
+            "Invite proof issued and activated in this browser.",
+            cancellationToken);
+    }
+
+    public async Task<PartySyncInviteProofActionResult> RevokePartySyncInviteProofAsync(string proofId, CancellationToken cancellationToken = default)
+    {
+        return await RunPartySyncInviteProofActionAsync(
+            claim => _remotePartyDataSyncProvider.RevokeInviteProofAsync(claim, proofId, cancellationToken),
+            "Invite proof revoked.",
+            cancellationToken);
+    }
+
+    public async Task<PartySyncInviteProofActionResult> RotatePartySyncInviteProofAsync(string proofId, CancellationToken cancellationToken = default)
+    {
+        return await RunPartySyncInviteProofActionAsync(
+            claim => _remotePartyDataSyncProvider.RotateInviteProofAsync(claim, proofId, cancellationToken),
+            "Invite proof rotated and activated in this browser.",
+            cancellationToken);
+    }
+
+    public async Task<PartySyncInviteProofActionResult> RemovePartySyncInviteProofAsync(string proofId, CancellationToken cancellationToken = default)
+    {
+        return await RunPartySyncInviteProofActionAsync(
+            claim => _remotePartyDataSyncProvider.RemoveInviteProofAsync(claim, proofId, cancellationToken),
+            "Invite proof removed.",
+            cancellationToken);
+    }
+
+    public async Task<PartySyncInviteProofActionResult> SetPartySyncInviteProofModeAsync(bool enabled, CancellationToken cancellationToken = default)
+    {
+        return await RunPartySyncInviteProofActionAsync(
+            claim => _remotePartyDataSyncProvider.SetInviteProofModeAsync(claim, enabled, cancellationToken),
+            enabled ? "Tokenized invite proofs enabled." : "Tokenized invite proofs disabled.",
+            cancellationToken);
+    }
+
+    public async Task<PartySyncInviteProofActionResult> ActivatePartySyncInviteProofAsync(string proofId, string token, CancellationToken cancellationToken = default)
+    {
+        var claim = await ResolvePartySyncClaimAsync(cancellationToken);
+        if (claim is null)
+        {
+            return PartySyncInviteProofActionResult.Failure("Sign in with an active party before activating an invite proof.");
+        }
+
+        try
+        {
+            await _remotePartyDataSyncProvider.ActivateInviteProofAsync(claim.PartyId, proofId, token, null, cancellationToken);
+            var state = await _remotePartyDataSyncProvider.DownloadAsync(claim, cancellationToken);
+            ApplyPartyQuestState(claim.PartyId, state);
+            return PartySyncInviteProofActionResult.Success("Invite proof activated in this browser.");
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message });
+            return PartySyncInviteProofActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<PartySyncInviteProofActionResult> ClearPartySyncInviteProofAsync(CancellationToken cancellationToken = default)
+    {
+        var claim = await ResolvePartySyncClaimAsync(cancellationToken);
+        if (claim is null)
+        {
+            return PartySyncInviteProofActionResult.Failure("Sign in with an active party before clearing an invite proof.");
+        }
+
+        try
+        {
+            await _remotePartyDataSyncProvider.ClearInviteProofAsync(claim.PartyId, cancellationToken);
+            var state = await _remotePartyDataSyncProvider.DownloadAsync(claim, cancellationToken);
+            ApplyPartyQuestState(claim.PartyId, state);
+            return PartySyncInviteProofActionResult.Success("This browser now uses the local party claim fallback.");
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message });
+            return PartySyncInviteProofActionResult.Failure(exception.Message);
+        }
+    }
+
     public async Task<LiveTestSuiteResult> RunSafeLiveTestsAsync(CancellationToken cancellationToken = default)
     {
         var credentials = await ResolveCredentialsAsync(cancellationToken);
@@ -3246,6 +3330,35 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    private async Task<PartySyncInviteProofActionResult> RunPartySyncInviteProofActionAsync(
+        Func<PartySyncClaim, Task<RemotePartyInviteProofActionResult>> action,
+        string successMessage,
+        CancellationToken cancellationToken)
+    {
+        if (!_featureOptions.PartySyncEnabled)
+        {
+            return PartySyncInviteProofActionResult.Failure("Shared party sync is disabled.");
+        }
+
+        var claim = await ResolvePartySyncClaimAsync(cancellationToken);
+        if (claim is null)
+        {
+            return PartySyncInviteProofActionResult.Failure("Sign in with an active party before changing invite proofs.");
+        }
+
+        try
+        {
+            var state = await action(claim);
+            ApplyPartyQuestState(claim.PartyId, state);
+            return PartySyncInviteProofActionResult.Success(successMessage, state.IssuedInviteProof);
+        }
+        catch (Exception exception)
+        {
+            SetState(State with { ErrorMessage = exception.Message });
+            return PartySyncInviteProofActionResult.Failure(exception.Message);
+        }
+    }
+
     private async Task<PartyQuestActionResult> RunPartyQueueActionAsync(
         Func<PartySyncClaim, Task<RemotePartyQuestState>> action,
         string successMessage,
@@ -3718,6 +3831,19 @@ public sealed class AppSessionController : IAppSessionController
     }
 
     private void ApplyPartyQuestState(string partyId, RemotePartyQuestState state)
+    {
+        SetState(State with
+        {
+            PartyQuestQueue = new PartyQuestQueueSnapshot(
+                state.UpdatedAtUtc,
+                state.QuestPool ?? Array.Empty<PartyQuestPoolEntry>(),
+                state.QuestQueue ?? Array.Empty<PartyQuestQueueEntry>(),
+                state.RecentlyCompleted ?? Array.Empty<PartyRecentlyCompletedQuest>(),
+                state.Management ?? State.PartyQuestQueue?.Management)
+        });
+    }
+
+    private void ApplyPartyQuestState(string partyId, RemotePartyInviteProofActionResult state)
     {
         SetState(State with
         {

@@ -153,6 +153,9 @@ public sealed class StaticAssetRegressionTests
         Assert.DoesNotContain("apiToken", moduleContents);
         Assert.DoesNotContain("x-api-key", moduleContents);
         Assert.DoesNotContain("x-api-user", moduleContents);
+        Assert.DoesNotContain("authorization", moduleContents, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("\"x-party-sync-proof-token\"", moduleContents);
+        Assert.Contains("forceLocalClaim", moduleContents);
     }
 
     private static string FindRepositoryRoot()

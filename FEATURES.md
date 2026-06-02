@@ -2219,7 +2219,7 @@ Primary Habitica data: cached party group summary, quest state, party members, m
 Mutates Habitica state: no; mutates shared Cloudflare party quest queue state
 Requires confirmation: no
 Offline behavior: party overview is available from cached snapshots; shared queue/pool/history requires the Cloudflare party-sync endpoint
-Rate-limit sensitivity: low for Habitica reads; shared queue actions use tokenless local party claims through party-sync
+Rate-limit sensitivity: low for Habitica reads; shared queue actions use browser-local claims or optional tokenized invite proofs through party-sync
 
 ### Goal
 
@@ -2245,6 +2245,7 @@ party-sync owner/admin/Officer roles
 party-sync settings
 party-sync kick list
 party-sync selected quest expiry metadata
+party-sync tokenized invite-proof mode and proof lifecycle metadata
 ```
 
 ### Outputs
@@ -2325,6 +2326,7 @@ Current display rules:
 33. Expire selected entries deterministically after 72 hours. Expire queued or skipped entries when the matching owner/quest scroll has not appeared in the party quest pool for 30 days. Expiry runs during party-sync reads and queue mutations.
 34. Let members search the expanded quest pool by quest name, type, or visible owner. Compose the in-memory search with the owned-only filter and show a distinct no-match state.
 35. Keep Party focused on summary, roles, settings, members, buff timing, and CRON statistics. Render active quest details, queue, pool, votes, controls, and recent completions on the dedicated `/quests` route.
+36. Keep browser-only `local-claim-v1` as the default and owner/app-admin recovery path. Let owner/app admins optionally enable hashed `tokenized-invite-v1` proofs, issue labeled proof tokens, rotate/revoke/remove them, activate a shared proof in the current browser, and return that browser to local-claim fallback. Do not send Habitica credentials to Cloudflare.
 ```
 
 ### Validation
@@ -2346,7 +2348,7 @@ Show cached party data even when a previous refresh attempt failed. Shared party
 
 ### Security / privacy
 
-Display only the locally cached group summary fields required for the explorer. Do not expose credentials or raw request headers. Shared party-sync sends a tokenless local claim to Cloudflare instead of Habitica API tokens. The local claim is token-private but trust-based; the Worker keeps access proof parsing separate from role/action checks so a future tokenized manager-invite proof can replace local claims if needed.
+Display only the locally cached group summary fields required for the explorer. Do not expose credentials or raw request headers. Shared party-sync sends a browser-local claim or an optional tokenized invite proof to Cloudflare instead of Habitica API tokens. Tokenized proof rows keep SHA-256 token hashes, labels, issuer metadata, and lifecycle timestamps; raw reusable tokens remain browser-local and are shown only once when issued or rotated.
 
 ### Tests
 
@@ -2363,6 +2365,7 @@ Test:
 - party-sync queue selection, pinning, skip, expiry, and requeue actions.
 - safe markdown and supported inline HTML rendering for party and quest descriptions.
 - local party-sync claims that do not pass API tokens to Cloudflare.
+- optional tokenized party-sync proof header selection, local fallback, lifecycle rejection, and owner/admin recovery without Habitica API tokens.
 - Officer/settings/kick visibility and management actions.
 
 ### Open questions
@@ -2388,11 +2391,12 @@ Current implementation:
 - Quests/Dashboard quest-invitation warnings and Accept/Reject actions;
 - recently completed shared quest history table, UI, and management removal;
 - automatic recent-completion detection from structured Habitica party chat signals.
+- optional tokenized invite-proof management with browser-local activation and local-claim recovery.
 
 Next:
 
 - add party-member explorer with throttled pagination and cancellation;
-- replace party-sync credential verification with a tokenless party membership proof.
+- add a stronger party-membership proof only if official Habitica support becomes available without sending Habitica credentials to Cloudflare.
 
 ## 17. Diagnostics workspace and live integration tests
 

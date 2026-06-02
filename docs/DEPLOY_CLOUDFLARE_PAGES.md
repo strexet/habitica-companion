@@ -9,7 +9,7 @@ This app is a Blazor WebAssembly app with Cloudflare Pages Functions for persona
 - `functions/api/sync/[syncId].js` - Cloudflare Pages Function for legacy single-blob encrypted sync (read-only fallback during migration).
 - `functions/api/sync/[syncId]/section/[sectionKey].js` - Cloudflare Pages Function for per-section encrypted sync uploads and downloads (active path).
 - `functions/api/sync/[syncId]/sections.js` - Cloudflare Pages Function listing all section keys for a sync id.
-- `functions/api/party-sync/[partyId].js` - Cloudflare Pages Function for shared party CRON data, quest planning, and party-sync management, protected by tokenless local party claims.
+- `functions/api/party-sync/[partyId].js` - Cloudflare Pages Function for shared party CRON data, quest planning, and party-sync management, protected by local claims with optional tokenized invite proofs.
 - `migrations/0001_party_sync.sql` and later numbered migrations - D1 schema for party state, CRON events, quest queue/vote tables, management roles, and automatic quest completion detection.
 - `wrangler.toml` - local/dev binding declarations for KV and D1.
 
@@ -59,7 +59,7 @@ Shared party sync requires a D1 database bound to the Pages project.
 1. In Cloudflare, open `Workers & Pages`.
 2. Open `D1 SQL Database`.
 3. Create a database, for example `habitica-companion-party-sync`.
-4. Apply all migrations in order: `migrations/0001_party_sync.sql`, `migrations/0002_party_quest_queue.sql`, `migrations/0003_quest_lifecycle.sql`, `migrations/0004_party_sync_management.sql`, `migrations/0005_app_admins.sql`, `migrations/0006_detected_quest_completion.sql`, `migrations/0007_queue_selection_controls.sql`.
+4. Apply all migrations in order: `migrations/0001_party_sync.sql`, `migrations/0002_party_quest_queue.sql`, `migrations/0003_quest_lifecycle.sql`, `migrations/0004_party_sync_management.sql`, `migrations/0005_app_admins.sql`, `migrations/0006_detected_quest_completion.sql`, `migrations/0007_queue_selection_controls.sql`, `migrations/0008_party_sync_invite_proofs.sql`.
 5. Open the Pages project settings.
 6. Open `Bindings`.
 7. Add a D1 database binding:
@@ -71,7 +71,7 @@ Shared party sync requires a D1 database bound to the Pages project.
 
 8. Grant app-admin permissions (separate from party owner; grants management access across all parties) by copying `migrations/seed_app_admins.example.sql` to `migrations/seed_app_admins.sql` (gitignored), filling in Habitica user IDs, and running `wrangler d1 execute habitica-companion-party-sync --file migrations/seed_app_admins.sql`. Revoke by setting `revoked_at_utc` on the row.
 
-The party sync Function receives a local party claim from the browser and must not receive Habitica API tokens. Local claims are token-private but trust-based; party IDs alone are not enough for authorization. The Worker routes all access through `readAccessProof()` and `resolvePartySyncAccess()` so a future tokenized manager-invite proof can replace local claims without rewriting queue and moderation actions. Migration `0007` adds queue selection expiry metadata; apply it before deploying Function code that reads `selected_expires_at_utc` and `expired_at_utc`.
+The party sync Function must not receive Habitica API tokens. Browser-only `local-claim-v1` remains the default and owner/app-admin recovery path. Migration `0008` adds optional hashed `tokenized-invite-v1` proofs: owner/app admins can issue, rotate, revoke, remove, enable, and disable proofs from Party settings. D1 stores SHA-256 token hashes, labels, issuer metadata, and lifecycle timestamps, never raw reusable proof tokens. Apply migrations through `0008` before deploying Function code that reads invite-proof settings or tables.
 
 ## First deployment
 
@@ -115,5 +115,5 @@ Push to the production branch and Cloudflare Pages will rebuild automatically.
 - A custom domain is optional. The generated `*.pages.dev` domain works for HTTPS testing.
 - The app must be served from the site root with `base href="/"`. Subpath hosting is not the baseline deployment target.
 - Personal sync keeps Habitica credentials in the browser and stores only encrypted KV blobs.
-- Shared party sync sends tokenless local party claims to the Pages Function and stores shared party data, roles, settings, and kick records in D1.
+- Shared party sync sends browser-local claims or optional tokenized invite proofs to the Pages Function and stores shared party data, roles, settings, kick records, and hashed proof metadata in D1.
 - `service-worker*.js` files may remain in the repo, but `index.html` does not register them.

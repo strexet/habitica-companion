@@ -900,7 +900,26 @@ public sealed class PartyPageTests : BunitContext
                         CurrentUserCanManageOfficers: true,
                         CurrentUserCanManageQueue: true,
                         CurrentUserCanModerateMembers: true,
-                        CurrentUserIsKicked: false)))));
+                        CurrentUserIsKicked: false,
+                        CurrentUserCanManageProofs: true,
+                        InviteProofMode: new PartySyncInviteProofModeState(
+                            Enabled: true,
+                            AccessStatus: "active-proof",
+                            HasActiveProof: true,
+                            ActiveProofId: "proof-12345678",
+                            InviteProofs: new[]
+                            {
+                                new PartySyncInviteProofSummary(
+                                    "proof-12345678",
+                                    "Family devices",
+                                    "owner-id",
+                                    "Mage Tester",
+                                    DateTimeOffset.Parse("2026-04-26T09:25:00Z"),
+                                    null,
+                                    null,
+                                    null,
+                                    "active")
+                            }))))));
 
         var cut = Render<PartyPage>();
 
@@ -914,6 +933,10 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Only Officers and the party owner can change the quest queue; enable when regular members should vote but not edit entries.", cut.Markup);
         Assert.Contains("Member auto updates", cut.Markup);
         Assert.Contains("Lets members publish start and completion updates for their own queued quests; enable when quest owners should keep shared status current.", cut.Markup);
+        Assert.Contains("Invite proofs", cut.Markup);
+        Assert.Contains("Enabled - active proof", cut.Markup);
+        Assert.Contains("Family devices", cut.Markup);
+        Assert.Contains("active - proof-12345678", cut.Markup);
         Assert.DoesNotContain("officer-only queue edits", cut.Markup, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("Assign party owner", cut.Markup);
         AssertMarkupOrder(cut.Markup, "Summary", "Party sync roles", "Party sync settings", "Quests");

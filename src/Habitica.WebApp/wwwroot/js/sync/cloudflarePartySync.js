@@ -1,9 +1,8 @@
 export async function uploadPartyData(claim, partySnapshotJson, cronHistoryJson) {
   validateClaim(claim);
 
-  const response = await fetch(buildPartySyncUrl(claim), {
+  const response = await fetchWithInviteProofFallback(claim, {
     method: "PUT",
-    headers: buildJsonHeaders(claim),
     body: JSON.stringify({
       partySnapshotJson,
       cronHistoryJson,
@@ -18,9 +17,7 @@ export async function uploadPartyData(claim, partySnapshotJson, cronHistoryJson)
 export async function downloadPartyData(claim) {
   validateClaim(claim);
 
-  const response = await fetch(buildPartySyncUrl(claim), {
-    headers: buildClaimHeaders(claim),
-  });
+  const response = await fetchWithInviteProofFallback(claim);
 
   if (response.status === 404) {
     return null;
@@ -208,14 +205,85 @@ export async function updatePartySyncSettings(claim, settings) {
   });
 }
 
-async function postPartyAction(claim, body) {
+export async function listPartySyncInviteProofs(claim) {
+  return await postPartyAction(claim, {
+    action: "listInviteProofs",
+  }, { forceLocalClaim: true });
+}
+
+export async function createPartySyncInviteProof(claim, label, expiresAtUtc) {
+  const result = await postPartyAction(claim, {
+    action: "createInviteProof",
+    label,
+    expiresAtUtc: expiresAtUtc ?? null,
+  }, { forceLocalClaim: true });
+  storeIssuedInviteProof(claim.partyId, result.issuedInviteProof);
+  return result;
+}
+
+export async function revokePartySyncInviteProof(claim, proofId) {
+  const result = await postPartyAction(claim, {
+    action: "revokeInviteProof",
+    proofId,
+  }, { forceLocalClaim: true });
+  clearStoredInviteProofIfMatching(claim.partyId, proofId);
+  return result;
+}
+
+export async function rotatePartySyncInviteProof(claim, proofId) {
+  const result = await postPartyAction(claim, {
+    action: "rotateInviteProof",
+    proofId,
+  }, { forceLocalClaim: true });
+  storeIssuedInviteProof(claim.partyId, result.issuedInviteProof);
+  return result;
+}
+
+export async function removePartySyncInviteProof(claim, proofId) {
+  const result = await postPartyAction(claim, {
+    action: "removeInviteProof",
+    proofId,
+  }, { forceLocalClaim: true });
+  clearStoredInviteProofIfMatching(claim.partyId, proofId);
+  return result;
+}
+
+export async function setPartySyncInviteProofMode(claim, enabled) {
+  const result = await postPartyAction(claim, {
+    action: "setInviteProofMode",
+    enabled: enabled === true,
+  }, { forceLocalClaim: true });
+  if (!enabled) {
+    clearPartySyncInviteProof(claim.partyId);
+  }
+  return result;
+}
+
+export function activatePartySyncInviteProof(partyId, proofId, token, label) {
+  validatePartyId(partyId);
+  if (!proofId?.trim() || !token?.trim()) {
+    throw new Error("Invite proof id and token are required.");
+  }
+
+  writeStoredInviteProof(partyId, {
+    proofId: proofId.trim(),
+    token: token.trim(),
+    label: label?.trim() ?? "",
+  });
+}
+
+export function clearPartySyncInviteProof(partyId) {
+  validatePartyId(partyId);
+  window.localStorage.removeItem(buildInviteProofStorageKey(partyId));
+}
+
+async function postPartyAction(claim, body, options = {}) {
   validateClaim(claim);
 
-  const response = await fetch(buildPartySyncUrl(claim), {
+  const response = await fetchWithInviteProofFallback(claim, {
     method: "POST",
-    headers: buildJsonHeaders(claim),
     body: JSON.stringify(body),
-  });
+  }, options);
 
   if (!response.ok) {
     throw new Error(await readError(response, "Party quest action failed."));
@@ -231,22 +299,49 @@ function buildPartySyncUrl(claim) {
   return `/api/party-sync/${encodeURIComponent(claim.partyId.trim())}`;
 }
 
-function buildJsonHeaders(claim) {
+async function fetchWithInviteProofFallback(claim, init = {}, options = {}) {
+  const usesJsonBody = typeof init.body === "string";
+  let response = await fetch(buildPartySyncUrl(claim), {
+    ...init,
+    headers: usesJsonBody ? buildJsonHeaders(claim, options) : buildClaimHeaders(claim, options),
+  });
+  if (response.status !== 401 || options.forceLocalClaim || !readStoredInviteProof(claim.partyId)) {
+    return response;
+  }
+
+  clearPartySyncInviteProof(claim.partyId);
+  response = await fetch(buildPartySyncUrl(claim), {
+    ...init,
+    headers: usesJsonBody ? buildJsonHeaders(claim, { forceLocalClaim: true }) : buildClaimHeaders(claim, { forceLocalClaim: true }),
+  });
+  return response;
+}
+
+function buildJsonHeaders(claim, options = {}) {
   return {
-    ...buildClaimHeaders(claim),
+    ...buildClaimHeaders(claim, options),
     "content-type": "application/json",
   };
 }
 
-function buildClaimHeaders(claim) {
-  return {
+function buildClaimHeaders(claim, options = {}) {
+  const localClaimHeaders = {
     "accept": "application/json",
-    "x-party-sync-proof-version": normalizeProofVersion(claim.proofVersion),
+    "x-party-sync-proof-version": "local-claim-v1",
     "x-party-sync-party-id": claim.partyId.trim(),
     "x-party-sync-user-id": claim.userId.trim(),
     "x-party-sync-display-name": claim.displayName.trim(),
     "x-party-sync-leader-id": claim.leaderId?.trim() ?? "",
   };
+  const inviteProof = options.forceLocalClaim ? null : readStoredInviteProof(claim.partyId);
+  return inviteProof
+    ? {
+        ...localClaimHeaders,
+        "x-party-sync-proof-version": tokenizedInviteProofVersion,
+        "x-party-sync-proof-id": inviteProof.proofId,
+        "x-party-sync-proof-token": inviteProof.token,
+      }
+    : localClaimHeaders;
 }
 
 function validateClaim(claim) {
@@ -257,8 +352,44 @@ function validateClaim(claim) {
   validatePartyId(claim.partyId);
 }
 
-function normalizeProofVersion(proofVersion) {
-  return proofVersion?.trim() || "local-claim-v1";
+function storeIssuedInviteProof(partyId, issuedInviteProof) {
+  if (issuedInviteProof?.proofId && issuedInviteProof?.token) {
+    writeStoredInviteProof(partyId, issuedInviteProof);
+  }
+}
+
+function writeStoredInviteProof(partyId, inviteProof) {
+  window.localStorage.setItem(buildInviteProofStorageKey(partyId), JSON.stringify({
+    proofId: inviteProof.proofId,
+    token: inviteProof.token,
+    label: inviteProof.label ?? "",
+  }));
+}
+
+function readStoredInviteProof(partyId) {
+  try {
+    const stored = window.localStorage.getItem(buildInviteProofStorageKey(partyId));
+    if (!stored) {
+      return null;
+    }
+
+    const inviteProof = JSON.parse(stored);
+    return inviteProof?.proofId?.trim() && inviteProof?.token?.trim()
+      ? inviteProof
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function clearStoredInviteProofIfMatching(partyId, proofId) {
+  if (readStoredInviteProof(partyId)?.proofId === proofId) {
+    clearPartySyncInviteProof(partyId);
+  }
+}
+
+function buildInviteProofStorageKey(partyId) {
+  return `${inviteProofStoragePrefix}${partyId.trim()}`;
 }
 
 function validatePartyId(partyId) {
@@ -307,3 +438,11 @@ function buildHtmlEndpointMessage() {
     ? "Party sync endpoint is not available from the local app host. Use the deployed Cloudflare Pages site or run the app through Cloudflare Pages Functions locally."
     : "Party sync endpoint returned HTML instead of JSON. Check that the Cloudflare Pages Function is deployed and the route is not falling back to the app shell.";
 }
+
+export const partySyncBridgeTestHooks = {
+  buildClaimHeaders,
+  clearPartySyncInviteProof,
+  readStoredInviteProof,
+};
+const tokenizedInviteProofVersion = "tokenized-invite-v1";
+const inviteProofStoragePrefix = "habitica-tool:party-sync-invite-proof:";

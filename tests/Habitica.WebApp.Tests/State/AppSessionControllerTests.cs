@@ -1323,6 +1323,30 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task CreatePartySyncInviteProofAsync_returns_issued_browser_token()
+    {
+        var remotePartySync = new FakeRemotePartyDataSyncProvider();
+        var controller = CreateController(
+            new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()),
+            new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot()),
+            remotePartyDataSyncProvider: remotePartySync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        await controller.RefreshForPageAsync("/party");
+
+        var result = await controller.CreatePartySyncInviteProofAsync("Family devices");
+
+        Assert.True(result.Succeeded);
+        Assert.Equal("proof-id", result.IssuedInviteProof?.ProofId);
+        Assert.Equal("proof-token", result.IssuedInviteProof?.Token);
+        Assert.Equal("Family devices", result.IssuedInviteProof?.Label);
+    }
+
+    [Fact]
     public async Task Quest_invitation_response_calls_habitica_and_refreshes_party()
     {
         var pendingParty = CreatePartySnapshot() with
@@ -2068,6 +2092,71 @@ public sealed class AppSessionControllerTests
         {
             LastClaim = claim;
             return Task.FromResult(new RemotePartyQuestState(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyInviteProofActionResult> CreateInviteProofAsync(
+            PartySyncClaim claim,
+            string label,
+            DateTimeOffset? expiresAtUtc,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            return Task.FromResult(new RemotePartyInviteProofActionResult(
+                DateTimeOffset.UtcNow,
+                IssuedInviteProof: new PartySyncIssuedInviteProof("proof-id", "proof-token", label, DateTimeOffset.UtcNow, expiresAtUtc)));
+        }
+
+        public Task<RemotePartyInviteProofActionResult> RevokeInviteProofAsync(
+            PartySyncClaim claim,
+            string proofId,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            return Task.FromResult(new RemotePartyInviteProofActionResult(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyInviteProofActionResult> RotateInviteProofAsync(
+            PartySyncClaim claim,
+            string proofId,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            return Task.FromResult(new RemotePartyInviteProofActionResult(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyInviteProofActionResult> RemoveInviteProofAsync(
+            PartySyncClaim claim,
+            string proofId,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            return Task.FromResult(new RemotePartyInviteProofActionResult(DateTimeOffset.UtcNow));
+        }
+
+        public Task<RemotePartyInviteProofActionResult> SetInviteProofModeAsync(
+            PartySyncClaim claim,
+            bool enabled,
+            CancellationToken cancellationToken)
+        {
+            LastClaim = claim;
+            return Task.FromResult(new RemotePartyInviteProofActionResult(DateTimeOffset.UtcNow));
+        }
+
+        public Task ActivateInviteProofAsync(
+            string partyId,
+            string proofId,
+            string token,
+            string? label,
+            CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task ClearInviteProofAsync(
+            string partyId,
+            CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
     }
 

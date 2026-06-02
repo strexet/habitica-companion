@@ -3,6 +3,7 @@ using Habitica.Application.Inventory;
 using Habitica.Application.Sync;
 using Habitica.Domain.Party;
 using Habitica.Domain.User;
+using Habitica.WebApp.Sync;
 
 namespace Habitica.WebApp.State;
 
@@ -137,6 +138,20 @@ public interface IAppSessionController
 
     Task<PartyQuestActionResult> UpdatePartySyncSettingsAsync(PartySyncSettings settings, CancellationToken cancellationToken = default);
 
+    Task<PartySyncInviteProofActionResult> CreatePartySyncInviteProofAsync(string label, DateTimeOffset? expiresAtUtc = null, CancellationToken cancellationToken = default);
+
+    Task<PartySyncInviteProofActionResult> RevokePartySyncInviteProofAsync(string proofId, CancellationToken cancellationToken = default);
+
+    Task<PartySyncInviteProofActionResult> RotatePartySyncInviteProofAsync(string proofId, CancellationToken cancellationToken = default);
+
+    Task<PartySyncInviteProofActionResult> RemovePartySyncInviteProofAsync(string proofId, CancellationToken cancellationToken = default);
+
+    Task<PartySyncInviteProofActionResult> SetPartySyncInviteProofModeAsync(bool enabled, CancellationToken cancellationToken = default);
+
+    Task<PartySyncInviteProofActionResult> ActivatePartySyncInviteProofAsync(string proofId, string token, CancellationToken cancellationToken = default);
+
+    Task<PartySyncInviteProofActionResult> ClearPartySyncInviteProofAsync(CancellationToken cancellationToken = default);
+
     Task<PartyQuestActionResult> RemovePartyRecentlyCompletedQuestAsync(string questKey, DateTimeOffset completedAtUtc, CancellationToken cancellationToken = default);
 }
 
@@ -144,3 +159,15 @@ public sealed record StartNewDayRequest(
     bool AutoEquipRecommendedGear = false,
     GearSlotsSnapshot? AutoEquipGearSlots = null,
     string? GearOptimizationGoalLabel = null);
+
+public sealed record PartySyncInviteProofActionResult(
+    bool Succeeded,
+    string Message,
+    PartySyncIssuedInviteProof? IssuedInviteProof = null)
+{
+    public static PartySyncInviteProofActionResult Success(string message, PartySyncIssuedInviteProof? issuedInviteProof = null)
+        => new(true, message, issuedInviteProof);
+
+    public static PartySyncInviteProofActionResult Failure(string message)
+        => new(false, message);
+}

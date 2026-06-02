@@ -109,9 +109,12 @@ public sealed record PartySyncManagementState(
     bool CurrentUserCanManageOfficers,
     bool CurrentUserCanManageQueue,
     bool CurrentUserCanModerateMembers,
-    bool CurrentUserIsKicked)
+    bool CurrentUserIsKicked,
+    bool CurrentUserCanManageProofs = false,
+    PartySyncInviteProofModeState? InviteProofMode = null)
 {
     public bool CurrentUserCanViewManagement => CurrentUserIsOwner || CurrentUserIsAdmin || CurrentUserIsOfficer;
+    public PartySyncInviteProofModeState ProofMode => InviteProofMode ?? PartySyncInviteProofModeState.Disabled;
 
     public static PartySyncManagementState Empty { get; } = new(
         null,
@@ -127,8 +130,37 @@ public sealed record PartySyncManagementState(
         false,
         false,
         false,
-        false);
+        false,
+        false,
+        PartySyncInviteProofModeState.Disabled);
 }
+
+public sealed record PartySyncInviteProofModeState(
+    bool Enabled,
+    string AccessStatus,
+    bool HasActiveProof,
+    string? ActiveProofId,
+    IReadOnlyList<PartySyncInviteProofSummary>? InviteProofs = null)
+{
+    public IReadOnlyList<PartySyncInviteProofSummary> Proofs => InviteProofs ?? Array.Empty<PartySyncInviteProofSummary>();
+
+    public static PartySyncInviteProofModeState Disabled { get; } = new(
+        Enabled: false,
+        AccessStatus: "disabled",
+        HasActiveProof: false,
+        ActiveProofId: null);
+}
+
+public sealed record PartySyncInviteProofSummary(
+    string ProofId,
+    string Label,
+    string IssuedByUserId,
+    string? IssuedByDisplayName,
+    DateTimeOffset IssuedAtUtc,
+    DateTimeOffset? ExpiresAtUtc,
+    DateTimeOffset? RevokedAtUtc,
+    DateTimeOffset? RemovedAtUtc,
+    string Status);
 
 public sealed record PartySyncParticipant(
     string UserId,
