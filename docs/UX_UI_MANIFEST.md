@@ -299,7 +299,7 @@ What works:
 
 - The Quests page keeps quest progress, queue decisions, and scroll availability together without crowding Party member review.
 - Quest progress distinguishes current, user pending, party pending, and estimated post-CRON state.
-- Active quests show one participant count; detailed accepted/pending/rejected response groups remain limited to invitations. Finish estimates hide unknown finishing-member and timing-confidence fields when timing data is unavailable.
+- Active quests show one participant count and keep participant names behind a compact in-memory drill-in; detailed accepted/pending/rejected response groups remain limited to invitations. Owner or starter and started date render when cached, with concise unavailable states otherwise. Description and rewards stay behind a compact details control. Finish estimates hide unknown finishing-member and timing-confidence fields when timing data is unavailable.
 - The CRON rhythm visualization is a good domain-specific UI and should be preserved.
 - Member rows use responsive grid fallback and word breaking for long names.
 - HP/MP chips add useful party context without turning the member list into a stats table.

@@ -83,7 +83,12 @@ public sealed record PartyQuestSnapshot(
     PartyQuestCompletionEstimate? CompletionEstimate = null,
     string? Name = null,
     string? Description = null,
-    IReadOnlyList<string>? RewardSummary = null)
+    IReadOnlyList<string>? RewardSummary = null,
+    string? OwnerUserId = null,
+    string? OwnerDisplayName = null,
+    string? StarterUserId = null,
+    string? StarterDisplayName = null,
+    DateTimeOffset? StartedAtUtc = null)
 {
     public IReadOnlyList<string> Rewards => RewardSummary ?? Array.Empty<string>();
 }

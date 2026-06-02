@@ -117,7 +117,11 @@ public sealed class PartyPageTests : BunitContext
                             "Expected to finish when Alpha checks in around Apr 26, 10:15.",
                             "Alpha",
                             "user-1"),
-                        RewardSummary: new[] { "10 Gold", "100 XP", "Sea Serpent Egg" }),
+                        Description: "A cached sea-serpent quest description.",
+                        RewardSummary: new[] { "10 Gold", "100 XP", "Sea Serpent Egg" },
+                        StarterUserId: "user-1",
+                        StarterDisplayName: "Alpha",
+                        StartedAtUtc: DateTimeOffset.Parse("2026-04-26T08:00:00Z")),
                     new[]
                     {
                         new PartyMemberSnapshot(
@@ -232,6 +236,9 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("832.5/1000 hp", questsCut.Markup);
         Assert.Contains("Participants", questsCut.Markup);
         Assert.Contains(">2</dd>", questsCut.Markup);
+        Assert.Contains("<dt>Starter</dt>", questsCut.Markup);
+        Assert.Contains("<dt>Started</dt>", questsCut.Markup);
+        Assert.DoesNotContain("<dt>Started</dt><dd>Unavailable</dd>", questsCut.Markup);
         Assert.DoesNotContain("<dt>Accepted</dt>", questsCut.Markup);
         Assert.DoesNotContain("<dt>Pending</dt>", questsCut.Markup);
         Assert.DoesNotContain("<dt>Rejected</dt>", questsCut.Markup);
@@ -264,8 +271,17 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Avg 08:15", cut.Markup);
         Assert.DoesNotContain("Avg 08:15 (1 day)", cut.Markup);
         Assert.Contains("Not enough history", cut.Markup);
+        Assert.DoesNotContain("Sea Serpent Egg", questsCut.Markup);
+        Assert.DoesNotContain("A cached sea-serpent quest description.", questsCut.Markup);
+        questsCut.Find("[data-testid='toggle-active-quest-details']").Click();
+        Assert.Contains("A cached sea-serpent quest description.", questsCut.Markup);
         Assert.Contains("Sea Serpent Egg", questsCut.Markup);
         Assert.DoesNotContain("Reward details are not available yet.", questsCut.Markup);
+        Assert.Empty(questsCut.FindAll("[data-testid='active-quest-participants']"));
+        questsCut.Find("[data-testid='toggle-active-quest-participants']").Click();
+        Assert.Contains("Alpha", questsCut.Find("[data-testid='active-quest-participants']").TextContent);
+        questsCut.Find("[data-testid='active-quest-participants'] .inline-link-button").Click();
+        Assert.EndsWith("/party?member=user-1", Services.GetRequiredService<NavigationManager>().Uri, StringComparison.Ordinal);
         Assert.Contains("CRON statistics", cut.Markup);
         Assert.Contains("Historical average", cut.Markup);
         Assert.Contains("1 stored observation day", cut.Markup);
@@ -376,6 +392,8 @@ public sealed class PartyPageTests : BunitContext
         Services.AddSingleton<IAppSessionController>(sessionController);
 
         var cut = RenderQuestsWorkspace();
+
+        cut.Find("[data-testid='toggle-active-quest-details']").Click();
 
         Assert.Contains("Magical Axolotl", cut.Markup);
         Assert.Contains("<strong>fire</strong>", cut.Markup);
@@ -1345,6 +1363,28 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("<dt>Rejected</dt>", cut.Markup);
         Assert.DoesNotContain("<dt>Unknown</dt>", cut.Markup);
         Assert.DoesNotContain("<dt>In Inn</dt>", cut.Markup);
+        Assert.Contains("<dt>Owner</dt><dd><span>Unavailable</span></dd>", cut.Markup);
+        Assert.Contains("<dt>Started</dt><dd>Unavailable</dd>", cut.Markup);
+    }
+
+    [Fact]
+    public void Active_quest_uses_shared_queue_owner_and_start_time_when_cached()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState(
+            "user-id",
+            isActive: true,
+            queueStatus: PartyQuestQueueStatus.Active,
+            startedAtUtc: DateTimeOffset.Parse("2026-04-26T08:00:00Z"))));
+
+        var cut = RenderQuestsWorkspace();
+
+        Assert.Contains("<dt>Owner</dt>", cut.Markup);
+        Assert.Contains("Mage Tester", cut.Markup);
+        Assert.Contains("<dt>Started</dt>", cut.Markup);
+        Assert.DoesNotContain("<dt>Started</dt><dd>Unavailable</dd>", cut.Markup);
     }
 
     [Fact]
@@ -1384,7 +1424,9 @@ public sealed class PartyPageTests : BunitContext
         string ownerUserId = "user-id",
         string leaderId = "user-id",
         bool hasPartyQuest = true,
-        bool hasMeaningfulCompletionTiming = true)
+        bool hasMeaningfulCompletionTiming = true,
+        PartyQuestQueueStatus queueStatus = PartyQuestQueueStatus.Selected,
+        DateTimeOffset? startedAtUtc = null)
     {
         return new SessionViewModel(
             IsBusy: false,
@@ -1450,14 +1492,15 @@ public sealed class PartyPageTests : BunitContext
                         "Dragon",
                         ownerUserId,
                         "Mage Tester",
-                        PartyQuestQueueStatus.Selected,
+                        queueStatus,
                         DateTimeOffset.Parse("2026-04-26T08:00:00Z"),
                         DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
                         1,
                         null,
                         true,
                         1,
-                        Array.Empty<PartyQuestVote>())
+                        Array.Empty<PartyQuestVote>(),
+                        StartedAtUtc: startedAtUtc)
                 },
                 Array.Empty<PartyRecentlyCompletedQuest>()));
     }

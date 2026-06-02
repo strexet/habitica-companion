@@ -97,6 +97,8 @@
                     var startableQuestEntry = GetStartableSelectedQuestEntry(quest);
                     var isAwaitingResponses = IsQuestAwaitingResponses(quest);
                     var currentQuestResponse = GetCurrentUserQuestParticipationStatus(members);
+                    var activeQuestMetadata = ResolveActiveQuestMetadata(quest);
+                    var activeQuestParticipants = GetQuestResponseMembers(members, PartyQuestParticipationStatus.Accepted);
 
                     <article class="party-quest-card active-quest-card">
                         <div class="party-quest-card-head">
@@ -105,9 +107,12 @@
                                 <div>
                                     <span class="dashboard-stat-label">@GetQuestTypeLabel(quest)</span>
                                     <strong>@GetQuestName(quest)</strong>
-                                    <div class="dashboard-stat-note party-summary-markdown party-quest-description">
-                                        @SafeMarkdownRenderer.Render(quest.Description, "Quest description is not available yet.")
-                                    </div>
+                                    @if (isAwaitingResponses)
+                                    {
+                                        <div class="dashboard-stat-note party-summary-markdown party-quest-description">
+                                            @SafeMarkdownRenderer.Render(quest.Description, "Quest description is not available yet.")
+                                        </div>
+                                    }
                                 </div>
                             </div>
                             <div class="party-quest-card-actions">
@@ -130,13 +135,89 @@
                         }
 
                         <dl class="dashboard-definition-list party-quest-definition-list compact-definition-list">
+                            @if (!isAwaitingResponses)
+                            {
+                                <div>
+                                    <dt>@activeQuestMetadata.ActorLabel</dt>
+                                    <dd>
+                                        @if (!string.IsNullOrWhiteSpace(activeQuestMetadata.ActorDisplayName))
+                                        {
+                                            @if (!string.IsNullOrWhiteSpace(activeQuestMetadata.ActorUserId))
+                                            {
+                                                <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(activeQuestMetadata.ActorUserId!))">
+                                                    @activeQuestMetadata.ActorDisplayName
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                @activeQuestMetadata.ActorDisplayName
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span>Unavailable</span>
+                                        }
+                                    </dd>
+                                </div>
+                                <div>
+                                    <dt>Started</dt>
+                                    <dd>@FormatQuestStartedAt(activeQuestMetadata.StartedAtUtc)</dd>
+                                </div>
+                            }
                             <div>
                                 <dt>@(isAwaitingResponses ? "Participant status" : "Participants")</dt>
                                 <dd>@(isAwaitingResponses ? GetParticipationSummaryLabel(quest) : quest.ParticipantCount)</dd>
                             </div>
                         </dl>
 
-                        @RenderRewards(quest.Rewards)
+                        @if (isAwaitingResponses)
+                        {
+                            @RenderRewards(quest.Rewards)
+                        }
+                        else
+                        {
+                            <div class="party-quest-card-actions">
+                                <button class="secondary-action-button compact" type="button" data-testid="toggle-active-quest-details" @onclick="ToggleActiveQuestDetails">
+                                    @(_activeQuestDetailsExpanded ? "Hide details" : quest.Rewards.Count > 0 ? "Show details and rewards" : "Show details")
+                                </button>
+                                <button class="secondary-action-button compact" type="button" data-testid="toggle-active-quest-participants" @onclick="ToggleActiveQuestParticipants">
+                                    @(_activeQuestParticipantsExpanded ? "Hide participants" : "Show participants")
+                                </button>
+                            </div>
+
+                            @if (_activeQuestDetailsExpanded)
+                            {
+                                <div data-testid="active-quest-details">
+                                    <div class="dashboard-stat-note party-summary-markdown party-quest-description">
+                                        @SafeMarkdownRenderer.Render(quest.Description, "Quest description is not available yet.")
+                                    </div>
+                                    @RenderRewards(quest.Rewards)
+                                </div>
+                            }
+
+                            @if (_activeQuestParticipantsExpanded)
+                            {
+                                <div data-testid="active-quest-participants">
+                                    @if (activeQuestParticipants.Count == 0)
+                                    {
+                                        <p class="dashboard-stat-note">Participant details are unavailable.</p>
+                                    }
+                                    else
+                                    {
+                                        <ul class="party-quest-response-list">
+                                            @foreach (var member in activeQuestParticipants)
+                                            {
+                                                <li>
+                                                    <button class="inline-link-button" type="button" @onclick="@(() => FocusMemberDetailsAsync(member.MemberId))">
+                                                        @member.DisplayName
+                                                    </button>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </div>
+                            }
+                        }
                     </article>
 
                     @if (isAwaitingResponses)
@@ -1173,6 +1254,8 @@
     private bool _requestedSharedQuestState;
     private bool _questPoolExpanded;
     private bool _hideNotOwnedQuests;
+    private bool _activeQuestDetailsExpanded;
+    private bool _activeQuestParticipantsExpanded;
     private string? _questPoolSearchText;
     private string? _startQuestError;
     private string _inviteProofLabel = string.Empty;
@@ -1392,6 +1475,16 @@
         _questPoolExpanded = !_questPoolExpanded;
     }
 
+    private void ToggleActiveQuestDetails()
+    {
+        _activeQuestDetailsExpanded = !_activeQuestDetailsExpanded;
+    }
+
+    private void ToggleActiveQuestParticipants()
+    {
+        _activeQuestParticipantsExpanded = !_activeQuestParticipantsExpanded;
+    }
+
     private static string BuildMemberElementId(string memberId)
     {
         return $"party-member-{Uri.EscapeDataString(memberId)}";
@@ -1548,6 +1641,42 @@
         return quest.ParticipationSummary is null
             ? $"{quest.ParticipantCount} accepted participants"
             : $"{quest.ParticipationSummary.AcceptedCount} accepted, {quest.ParticipationSummary.PendingCount} pending, {quest.ParticipationSummary.RejectedCount} rejected";
+    }
+
+    private ActiveQuestMetadata ResolveActiveQuestMetadata(PartyQuestSnapshot quest)
+    {
+        var queueEntry = SessionController.State.PartyQuestQueue?.Queue.FirstOrDefault(entry =>
+            entry.Status == PartyQuestQueueStatus.Active
+            && string.Equals(entry.QuestKey, quest.Key, StringComparison.Ordinal));
+        var hasStarter = !string.IsNullOrWhiteSpace(quest.StarterUserId)
+            || !string.IsNullOrWhiteSpace(quest.StarterDisplayName);
+        var actorUserId = hasStarter
+            ? FirstNotBlank(quest.StarterUserId)
+            : FirstNotBlank(quest.OwnerUserId, queueEntry?.OwnerUserId);
+        var actorDisplayName = hasStarter
+            ? FirstNotBlank(quest.StarterDisplayName)
+            : FirstNotBlank(quest.OwnerDisplayName, queueEntry?.OwnerDisplayName);
+
+        if (string.IsNullOrWhiteSpace(actorDisplayName) && !string.IsNullOrWhiteSpace(actorUserId))
+        {
+            actorDisplayName = ResolveDisplayName(actorUserId);
+        }
+
+        return new ActiveQuestMetadata(
+            hasStarter ? "Starter" : "Owner",
+            actorUserId,
+            actorDisplayName,
+            quest.StartedAtUtc ?? queueEntry?.StartedAtUtc);
+    }
+
+    private static string? FirstNotBlank(params string?[] values)
+    {
+        return values.FirstOrDefault(static value => !string.IsNullOrWhiteSpace(value));
+    }
+
+    private static string FormatQuestStartedAt(DateTimeOffset? startedAtUtc)
+    {
+        return startedAtUtc is null ? "Unavailable" : FormatDateTime(startedAtUtc.Value);
     }
 
     private static IReadOnlyList<PartyMemberSnapshot> GetQuestResponseMembers(
@@ -2674,6 +2803,12 @@
         bool CurrentUserCanQueue,
         int OwnerEntryCount,
         IReadOnlyList<string> Rewards);
+
+    private sealed record ActiveQuestMetadata(
+        string ActorLabel,
+        string? ActorUserId,
+        string? ActorDisplayName,
+        DateTimeOffset? StartedAtUtc);
 
     private static decimal ChartX(int hour)
     {

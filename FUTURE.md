@@ -49,6 +49,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Quests-page quest pool expanded by default with an in-memory manual collapse control.
 - Party-page combined summary and bottom-grouped sync administration; active quests compact participant and unavailable-finish-estimate rendering.
 - Quest-pool search by public reward display name, including partial case-insensitive matches.
+- Active-quest owner/starter and started-at metadata with shared-queue fallback, unavailable states, and foldable details/rewards and participant-name drill-ins.
 
 ## Pending Queue
 
@@ -68,27 +69,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Active Quest Metadata And Detail Affordances
-
-Goal: fill remaining active quest card metadata and drill-ins when Habitica or cached shared state exposes the data.
-
-Touch:
-- `src/Habitica.Api`
-- `src/Habitica.Domain/Party`
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- direct tests under `tests/`
-- `FEATURES.md`
-
-Out of scope:
-- mobile app deep links; keep web fallback from `docs/HABITICA_DEEPLINKS.md`;
-- fake values when Habitica data is missing.
-
-Acceptance:
-- Active quest snapshot preserves nullable owner/starter and started-at fields when the API or shared queue state exposes them.
-- Active quest card shows owner or starter, started date, details view, participants view, and rewards/details affordances when cached data exists.
-- Missing owner/starter/started-at fields render concise unavailable states without inventing values.
-- Participant names use the same member-detail focus behavior as the party member list.
 
 ### Pets And Mounts Page With Bulk Sell Planner Relocation
 

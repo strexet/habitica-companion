@@ -2260,6 +2260,8 @@ buff timing recommendations
 compact party member CRON list with HP/MP, class filtering, sortable low-HP/low-MP modes, and foldable details
 viewer-local CRON statistics graph
 active quest card with real quest metadata and rewards when cached
+active quest owner or starter and started-at metadata when cached directly or available from the matching active shared queue entry
+foldable active quest details/rewards and participant-name drill-ins
 quest invitation card with accepted, pending, and rejected response lists before the quest starts
 Quests and Dashboard warnings with Accept/Reject actions when the current user has not answered a quest invitation
 shared quest queue cards with vote counts and voter names
@@ -2293,7 +2295,7 @@ Current display rules:
 1. If the cached user snapshot has no party id, render a no-party state.
 2. If a party id exists but no party snapshot exists, render a refresh-required state.
 3. Show the latest cached party name and summary together. Keep member-count context in the member-list visible-count pill and keep one compact Party-page Quests summary link.
-4. Show quest key, active state, party pending boss damage or collection items when member progress is available, boss HP remaining, total boss HP when content data is available, pending damage to party, and participant count when a quest snapshot exists. Active quests show one compact participant count instead of invitation-response totals.
+4. Show quest key, active state, party pending boss damage or collection items when member progress is available, boss HP remaining, total boss HP when content data is available, pending damage to party, and participant count when a quest snapshot exists. Active quests show one compact participant count instead of invitation-response totals. Show owner or starter and started-at metadata when the quest snapshot or matching active shared queue entry preserves it; otherwise render concise unavailable states. Keep description/rewards and participant names behind in-memory details and participants controls. Participant names use the same Party member-detail focus behavior as other member links.
 5. Show a dedicated CRON summary when member CRON data exists.
 6. Show compact per-member cards with display name, class, subtle HP/MP values, CRON state, last CRON, average CRON time, and active-quest pending damage/items when available.
 7. Keep member id, level, CRON reason, and stat breakdowns behind a collapsed in-memory details toggle on each member card.
@@ -2380,6 +2382,7 @@ Current implementation:
 - class filtering for compact party member cards, with unknown classes kept in the unfiltered list;
 - subtle HP/MP values and low-HP/low-MP member sorting;
 - active quest card with real cached quest metadata and compact rewards;
+- active quest owner/starter and started-at metadata with matching shared-queue fallback, concise unavailable states, and foldable details/rewards and participant-name drill-ins;
 - inactive quest invitation response lists before quest progress exists;
 - party detail section order of summary, compact Quests link, member and CRON sections, then party-sync roles, settings, and moderation;
 - party-sync settings labels and helper descriptions for non-technical party members;
