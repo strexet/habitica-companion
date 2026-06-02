@@ -991,7 +991,15 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("active - proof-12345678", cut.Markup);
         Assert.DoesNotContain("officer-only queue edits", cut.Markup, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("Assign party owner", cut.Markup);
-        AssertMarkupOrder(cut.Markup, "Summary", "Quests", "Members", "CRON statistics", "Party sync roles", "Party sync settings", "Party sync moderation");
+        AssertMarkupOrder(
+            cut.Markup,
+            "<p class=\"section-label\">Summary</p>",
+            "<p class=\"section-label\">Quests</p>",
+            "<p class=\"section-label\">Members</p>",
+            "<p class=\"section-label\">CRON statistics</p>",
+            "<p class=\"section-label\">Party sync roles</p>",
+            "<p class=\"section-label\">Party sync settings</p>",
+            "<p class=\"section-label\">Party sync moderation</p>");
         Assert.DoesNotContain("Shared quest planning", cut.Markup);
         Assert.Contains("Kicked users", cut.Markup);
         Assert.Contains("Beta", cut.Markup);
