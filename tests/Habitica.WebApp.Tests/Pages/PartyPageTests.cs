@@ -549,7 +549,7 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("Available from Alpha, Mage Tester", cut.Markup);
         Assert.Empty(cut.FindAll("[data-testid='quest-pool-search']"));
 
-        cut.SetParametersAndRender(parameters => parameters.Add(component => component.QuestWorkspaceOnly, true));
+        cut.Render(parameters => parameters.Add(component => component.QuestWorkspaceOnly, true));
 
         Assert.Contains("Quest pool is hidden", cut.Markup);
         Assert.DoesNotContain("Available from Alpha, Mage Tester", cut.Markup);
