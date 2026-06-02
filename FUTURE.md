@@ -67,6 +67,42 @@ _None. All pending items have been promoted into `Prioritized Next Changes`._
 
 Work top to bottom. Each entry is self-contained.
 
+### Keep Task Card Action Buttons Within Card Bounds
+
+Goal: fix task-card action rows so scoring/checkoff buttons and the Details toggle remain fully contained inside each card instead of appearing oversized or extending beyond the card border. The visible report is strongest for the Todo/Daily `Complete` and `Details` buttons, but the responsive fix must also preserve Habit cards with their score-count input and two scoring buttons.
+
+Context (verified):
+- `src/Habitica.WebApp/Pages/TasksPage.razor` renders every card action inside `.task-card-actions` (around lines 234-283). Todo/Daily cards render a MudBlazor `Complete` / `Uncomplete` button plus `.task-details-toggle`; Habit cards render `.habit-score-count`, `Score +N`, `Score -N`, and the same Details toggle.
+- `src/Habitica.WebApp/wwwroot/css/app.css` defines `.task-card-actions` as a wrapping flex row and raises direct child control height to `2.5rem` (around lines 2854-2866). At `max-width: 640px`, the row stacks and stretches controls to `width: 100%` (around lines 3739-3748). The overflow must be corrected without clipping labels or removing usable touch targets.
+- The shared `.secondary-action-button` primitive is used outside task cards. Prefer a task-card-scoped fix unless inspection proves the shared primitive is the source of the defect.
+- `docs/UX_UI_MANIFEST.md` requires responsive cards to tolerate long user data, prohibits fixed-width action rows from owning variable-content layouts, and names `360px`, `390-430px`, `768px`, `1024px`, and `1200px+` as review widths.
+
+Touch:
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.WebApp/Pages/TasksPage.razor` only if a task-scoped wrapper/class adjustment is needed
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs`
+- `docs/UX_UI_MANIFEST.md` only if the fix changes the documented reusable Tasks-page pattern
+- `FEATURES.md` only if user-facing behavior documentation needs clarification
+
+Implementation shape:
+- Keep the mutation controls inline with their task card and preserve the existing explicit labels, disabled reasons, progress rendering, and Details expand/collapse behavior.
+- Adjust the task-card-scoped action layout, flex sizing, padding, or responsive breakpoint behavior so children can wrap or stack within the available card width. Do not hide the defect with `overflow: hidden`, truncate button labels, or reduce controls below usable touch-target sizing.
+- Verify the expanded-details state, completed-task `Uncomplete` label, stale/disabled state, and Habit score-count row. Keep the rearrangement affordances and task-card value background behavior unchanged.
+- Treat browser-width inspection as required verification because Razor component tests can assert markup/classes but do not calculate CSS layout.
+
+Out of scope:
+- changing task scoring/checkoff behavior, mutation freshness gates, progress bookkeeping, or local task preferences;
+- redesigning shared app buttons or unrelated action rows;
+- changing card colors, task-value shading, expanded detail content, charts, or task reordering;
+- adding new task actions or changing button copy.
+
+Acceptance:
+- Todo and Daily cards keep `Complete` / `Uncomplete` and `Details` fully inside the card border at `360px`, `390-430px`, `768px`, `1024px`, and `1200px+` viewport widths.
+- Habit cards keep score count, `Score +N`, `Score -N`, and `Details` fully inside the card border at the same widths.
+- Labels remain readable, controls retain usable touch targets, and no card gains horizontal page overflow or clipped content.
+- Expanded details, stale/disabled explanations, repeated Habit scoring progress, and task rearrangement controls continue to render and behave as before.
+- Direct component tests cover the Todo/Daily and Habit action-row structure after the layout change; manual responsive browser verification covers actual containment.
+
 ### Refresh Party Member Stats After Party-Targeted Spell Cast
 
 Goal: after a party-targeted buff or heal cast succeeds, refresh the cached party snapshot so the party members list shows the updated members' HP/MP/buff stats. Today `CastSpellAsync` refreshes only the user and task snapshots, so party member rows stay stale after casting Blessing, Protective Aura, Ethereal Surge, Earthquake, Valorous Presence, Intimidating Gaze, Tools of the Trade, etc.
