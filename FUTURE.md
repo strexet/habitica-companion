@@ -65,27 +65,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Party Member Class Filter
-
-Goal: add a class filter to the Party page member list so users can focus the existing member cards by Habitica class.
-
-Touch:
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
-- `FEATURES.md`
-
-Out of scope:
-- changing party-member sorting, card contents, or CRON calculations;
-- changing party sync behavior;
-- adding new Habitica API fields.
-
-Acceptance:
-- The Party members section offers an `All classes` option plus available member classes from the cached party snapshot.
-- Selecting a class shows only matching member cards without changing the current sort behavior.
-- Members with an unavailable class remain visible under `All classes` and do not appear under a named class filter.
-- Tests cover the default unfiltered list and filtering to one available class.
-
 ### Dashboard Navigation Card Title/Description Spacing
 
 Goal: fix navigation link cards (Companion and Habitica link sections) rendering title and body with no separation — e.g. "TasksScore and inspect cached tasks." should read as a title line plus a description line.

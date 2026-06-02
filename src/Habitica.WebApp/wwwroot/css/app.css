@@ -981,6 +981,10 @@ input[type="radio"] {
     flex-wrap: wrap;
 }
 
+.party-member-class-filter {
+    min-width: 9rem;
+}
+
 .segmented-control {
     display: flex;
     flex-wrap: wrap;

@@ -752,12 +752,23 @@
         </section>
 
         <section class="card-surface dashboard-panel party-members-panel">
+            @{
+                var availableMemberClasses = GetAvailableMemberClasses(members);
+                var visibleMembers = FilterMembersByClass(members);
+            }
             <div class="party-section-head">
                 <div>
                     <p class="section-label">Members</p>
                     <h2>Party member status</h2>
                 </div>
                 <div class="party-member-toolbar">
+                    <select aria-label="Filter party members by class" class="app-input party-member-class-filter" data-testid="party-member-class-filter" @bind="_memberClassFilter">
+                        <option value="">All classes</option>
+                        @foreach (var className in availableMemberClasses)
+                        {
+                            <option value="@className">@FormatClass(className)</option>
+                        }
+                    </select>
                     <div class="segmented-control" aria-label="Sort party members">
                         @foreach (var sortMode in Enum.GetValues<PartyMemberSortMode>())
                         {
@@ -766,18 +777,18 @@
                             </button>
                         }
                     </div>
-                    <span class="ui-pill count-pill">@members.Count visible</span>
+                    <span class="ui-pill count-pill">@visibleMembers.Count visible</span>
                 </div>
             </div>
 
-            @if (members.Count == 0)
+            @if (visibleMembers.Count == 0)
             {
-                <p class="panel-copy">No party member data is saved yet.</p>
+                <p class="panel-copy">@(members.Count == 0 ? "No party member data is saved yet." : "No party members match this class filter.")</p>
             }
             else
             {
                 <div class="party-member-list party-member-card-grid">
-                    @foreach (var member in members)
+                    @foreach (var member in visibleMembers)
                     {
                         var detailsExpanded = IsMemberDetailsExpanded(member.MemberId);
                         <article class="party-member-card" id="@BuildMemberElementId(member.MemberId)">
@@ -1107,6 +1118,7 @@
     private bool _hideNotOwnedQuests;
     private string? _startQuestError;
     private PartyMemberSortMode _memberSortMode = PartyMemberSortMode.Name;
+    private string? _memberClassFilter;
 
     protected override void OnInitialized()
     {
@@ -1214,6 +1226,29 @@
                 .OrderBy(static member => member.DisplayName, StringComparer.CurrentCultureIgnoreCase)
                 .ToArray()
         };
+    }
+
+    private static IReadOnlyList<string> GetAvailableMemberClasses(IReadOnlyList<PartyMemberSnapshot> members)
+    {
+        return members
+            .Select(static member => member.ClassName?.Trim())
+            .Where(static className => !string.IsNullOrWhiteSpace(className))
+            .Select(static className => className!)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(FormatClass, StringComparer.CurrentCultureIgnoreCase)
+            .ToArray();
+    }
+
+    private IReadOnlyList<PartyMemberSnapshot> FilterMembersByClass(IReadOnlyList<PartyMemberSnapshot> members)
+    {
+        if (string.IsNullOrWhiteSpace(_memberClassFilter))
+        {
+            return members;
+        }
+
+        return members
+            .Where(member => string.Equals(member.ClassName?.Trim(), _memberClassFilter, StringComparison.OrdinalIgnoreCase))
+            .ToArray();
     }
 
     private static decimal GetPendingQuestSortValue(PartyMemberSnapshot member)

@@ -12,6 +12,48 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class PartyPageTests : BunitContext
 {
     [Fact]
+    public void Filters_member_cards_by_available_class()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                UserSnapshot: CreateSnapshot(),
+                UserFreshness: SnapshotFreshnessState.Fresh,
+                PartySnapshot: new PartySnapshot(
+                    DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                    "party-123",
+                    "Night Owls",
+                    "Quest-focused party",
+                    3,
+                    null,
+                    new[]
+                    {
+                        new PartyMemberSnapshot("user-1", "Alpha", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ClassName: "wizard"),
+                        new PartyMemberSnapshot("user-2", "Beta", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ClassName: "healer"),
+                        new PartyMemberSnapshot("user-3", "Gamma", null, null, null, PartyCronState.Unknown, "Unknown.", null, null)
+                    }),
+                PartyFreshness: SnapshotFreshnessState.Fresh)));
+
+        var cut = Render<PartyPage>();
+        var filter = cut.Find("[data-testid='party-member-class-filter']");
+
+        Assert.Equal(new[] { "All classes", "Healer", "Wizard" }, filter.Children.Select(option => option.TextContent.Trim()));
+        Assert.Equal(new[] { "Alpha", "Beta", "Gamma" }, GetRenderedMemberNames(cut));
+
+        filter.Change("wizard");
+
+        Assert.Equal(new[] { "Alpha" }, GetRenderedMemberNames(cut));
+    }
+
+    [Fact]
     public void Renders_cached_party_summary_and_quest_state()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -1359,5 +1401,12 @@ public sealed class PartyPageTests : BunitContext
                 new GearSlotsSnapshot("head_wizard_3", "armor_wizard_4", "weapon_wizard_5", "shield_wizard_2", "back_wizard_1"),
                 new GearSlotsSnapshot("head_special_2", "armor_special_2", "weapon_special_2", "shield_special_2", "back_special_2")),
             new InventorySnapshot(1, 5, 1, 1, 1, 1, Array.Empty<string>()));
+    }
+
+    private static string[] GetRenderedMemberNames(IRenderedComponent<PartyPage> cut)
+    {
+        return cut.FindAll(".party-member-card .party-member-identity strong")
+            .Select(element => element.TextContent)
+            .ToArray();
     }
 }
