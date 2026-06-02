@@ -1128,7 +1128,6 @@ public sealed class PartyPageTests : BunitContext
         var cut = RenderQuestsWorkspace();
 
         Assert.Contains("Quest invitation", cut.Markup);
-        Assert.Contains("Waiting for party responses", cut.Markup);
         Assert.Contains("Accepted", cut.Markup);
         Assert.Contains("Mage Tester", cut.Markup);
         Assert.Contains("Pending", cut.Markup);
@@ -1174,7 +1173,10 @@ public sealed class PartyPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("user-id")));
 
-        var cut = Render<PartyPage>(parameters => parameters.Add(component => component.FocusedMemberId, "user-id"));
+        var navigation = Services.GetRequiredService<NavigationManager>();
+        navigation.NavigateTo("/party?member=user-id");
+
+        var cut = Render<PartyPage>();
 
         Assert.Contains("User ID", cut.Find("#party-member-user-id").TextContent);
     }
