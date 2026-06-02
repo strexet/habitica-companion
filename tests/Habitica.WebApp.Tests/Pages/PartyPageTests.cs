@@ -531,6 +531,22 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Phoenix Quest", cut.Markup);
         Assert.Contains("Auto-detected by Mage Tester", cut.Markup);
 
+        SetQuestPoolSearch(cut, "  SUNSTONE  ");
+
+        Assert.Equal(new[] { "Sunstone Chain" }, GetRenderedQuestPoolNames(cut));
+
+        SetQuestPoolSearch(cut, "collection");
+
+        Assert.Equal(new[] { "Moonstone Chain", "Sunstone Chain" }, GetRenderedQuestPoolNames(cut));
+
+        SetQuestPoolSearch(cut, "Mage Tester");
+
+        Assert.Equal(new[] { "Moonstone Chain" }, GetRenderedQuestPoolNames(cut));
+
+        SetQuestPoolSearch(cut, "");
+
+        Assert.Equal(new[] { "Moonstone Chain", "Sunstone Chain" }, GetRenderedQuestPoolNames(cut));
+
         cut.Find("[data-testid='hide-not-owned-quests']").Change(true);
 
         Assert.Contains("Moonstone Chain", cut.Markup);
@@ -538,6 +554,15 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("Sunstone Chain", cut.Markup);
         Assert.Contains("Available from Mage Tester", cut.Markup);
         Assert.DoesNotContain("Available from Alpha, Mage Tester", cut.Markup);
+
+        SetQuestPoolSearch(cut, "Alpha");
+
+        Assert.Empty(GetRenderedQuestPoolNames(cut));
+        Assert.Contains("No quests match this search.", cut.Markup);
+
+        SetQuestPoolSearch(cut, "");
+
+        Assert.Equal(new[] { "Moonstone Chain" }, GetRenderedQuestPoolNames(cut));
     }
 
     [Fact]
@@ -1408,5 +1433,17 @@ public sealed class PartyPageTests : BunitContext
         return cut.FindAll(".party-member-card .party-member-identity strong")
             .Select(element => element.TextContent)
             .ToArray();
+    }
+
+    private static string[] GetRenderedQuestPoolNames(IRenderedComponent<PartyPage> cut)
+    {
+        return cut.FindAll("[data-testid='quest-pool-grid'] .habitica-quest-identity strong")
+            .Select(element => element.TextContent)
+            .ToArray();
+    }
+
+    private static void SetQuestPoolSearch(IRenderedComponent<PartyPage> cut, string searchText)
+    {
+        cut.Find("[data-testid='quest-pool-search']").Input(searchText);
     }
 }

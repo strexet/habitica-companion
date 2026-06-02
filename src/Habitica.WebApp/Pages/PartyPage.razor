@@ -424,7 +424,7 @@
                 var nextQuestEntry = visibleQueueEntries.FirstOrDefault(IsNextQuestEntry);
                 var queueEntries = visibleQueueEntries.Where(entry => !IsNextQuestEntry(entry)).ToArray();
                 var poolEntries = FilterVisiblePoolEntries(questState?.QuestPool ?? Array.Empty<PartyQuestPoolEntry>()).ToArray();
-                var groupedPoolEntries = GetGroupedPoolEntries(poolEntries).ToArray();
+                var groupedPoolEntries = FilterPoolGroupsBySearch(GetGroupedPoolEntries(poolEntries)).ToArray();
                 var recentEntries = questState?.RecentlyCompleted ?? Array.Empty<PartyRecentlyCompletedQuest>();
             }
 
@@ -601,7 +601,7 @@
                 <div class="party-section-head compact-head">
                     <h3>Quest Pool</h3>
                     <div class="party-member-actions">
-                        <span class="ui-pill count-pill">@FormatQuestPoolCount(groupedPoolEntries, poolEntries.Length)</span>
+                        <span class="ui-pill count-pill">@FormatQuestPoolCount(groupedPoolEntries, groupedPoolEntries.Sum(static entry => entry.OwnerEntryCount))</span>
                         <button class="secondary-action-button compact" type="button" data-testid="toggle-quest-pool" @onclick="ToggleQuestPool">
                             @(_questPoolExpanded ? "Hide quest pool" : "Show quest pool")
                         </button>
@@ -611,17 +611,30 @@
                     Quest pool is folded by default to keep shared planning focused. Expand it when you want to add a scroll to the queue.
                 </p>
 
+                @if (_questPoolExpanded)
+                {
+                    <label class="field-row compact">
+                        <span>Search quest pool</span>
+                        <input aria-label="Search quest pool"
+                               class="app-input"
+                               data-testid="quest-pool-search"
+                               placeholder="Name, type, or owner"
+                               @bind="_questPoolSearchText"
+                               @bind:event="oninput" />
+                    </label>
+                }
+
                 @if (!_questPoolExpanded)
                 {
                     <p class="panel-copy">Quest pool is hidden. Use Show quest pool to browse available scrolls.</p>
                 }
                 else if (groupedPoolEntries.Length == 0)
                 {
-                    <p class="panel-copy">@(_hideNotOwnedQuests ? "No owned quest scrolls are visible. Clear the owned-only filter to see other party scrolls." : "No shared quest scroll availability has been published yet. Refresh after syncing inventory to publish your owned quest scrolls.")</p>
+                    <p class="panel-copy">@(HasQuestPoolSearch() ? "No quests match this search." : _hideNotOwnedQuests ? "No owned quest scrolls are visible. Clear the owned-only filter to see other party scrolls." : "No shared quest scroll availability has been published yet. Refresh after syncing inventory to publish your owned quest scrolls.")</p>
                 }
                 else
                 {
-                    <div class="party-quest-card-grid">
+                    <div class="party-quest-card-grid" data-testid="quest-pool-grid">
                         @foreach (var poolEntry in groupedPoolEntries)
                         {
                             <article class="@GetPoolCardClass(poolEntry)">
@@ -1116,6 +1129,7 @@
     private bool _requestedSharedQuestState;
     private bool _questPoolExpanded;
     private bool _hideNotOwnedQuests;
+    private string? _questPoolSearchText;
     private string? _startQuestError;
     private PartyMemberSortMode _memberSortMode = PartyMemberSortMode.Name;
     private string? _memberClassFilter;
@@ -1667,9 +1681,29 @@
                     string.Join(", ", ownerNames),
                     orderedEntries.Sum(static entry => entry.AvailableCount),
                     orderedEntries.Any(entry => IsCurrentUser(entry.OwnerUserId)),
+                    orderedEntries.Length,
                     rewards);
             })
             .OrderBy(static entry => entry.QuestName, StringComparer.OrdinalIgnoreCase);
+    }
+
+    private IEnumerable<QuestPoolGroup> FilterPoolGroupsBySearch(IEnumerable<QuestPoolGroup> entries)
+    {
+        var searchText = _questPoolSearchText?.Trim();
+        if (string.IsNullOrWhiteSpace(searchText))
+        {
+            return entries;
+        }
+
+        return entries.Where(entry =>
+            entry.QuestName.Contains(searchText, StringComparison.OrdinalIgnoreCase)
+            || entry.QuestType.Contains(searchText, StringComparison.OrdinalIgnoreCase)
+            || entry.OwnerNames.Contains(searchText, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private bool HasQuestPoolSearch()
+    {
+        return !string.IsNullOrWhiteSpace(_questPoolSearchText);
     }
 
     private static string FormatQuestPoolCount(IReadOnlyList<QuestPoolGroup> groups, int ownerEntryCount)
@@ -2492,6 +2526,7 @@
         string OwnerNames,
         int TotalAvailableCount,
         bool CurrentUserCanQueue,
+        int OwnerEntryCount,
         IReadOnlyList<string> Rewards);
 
     private static decimal ChartX(int hour)

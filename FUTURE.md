@@ -67,39 +67,6 @@ _None. All pending items have been promoted into `Prioritized Next Changes`._
 
 Work top to bottom. Each entry is self-contained.
 
-### Quest Pool Search Bar
-
-Goal: add a search/filter box to the shared Quest Pool so members can find a quest scroll by name, type, or owner instead of scrolling the full grouped list.
-
-Context (verified):
-- The Quest Pool block lives in `src/Habitica.WebApp/Pages/PartyPage.razor` (around lines 600-645). Visible entries are produced by `FilterVisiblePoolEntries(...)` and `GetGroupedPoolEntries(...)` (around lines 426-427) and rendered via `groupedPoolEntries`. Pool entries expose `QuestName`, `QuestType`, and `OwnerNames`.
-- Existing filters: owned-only (`_hideNotOwnedQuests`) and expand/collapse (`_questPoolExpanded`).
-- Dependency note: `Split Party Page Into Party And Quests Pages` plans to move the Quest Pool to a new Quests page. Implement the search on whichever page currently owns the Quest Pool; if the split has already shipped, add it there.
-
-Touch:
-- `src/Habitica.WebApp/Pages/PartyPage.razor` (or `QuestsPage.razor` if the split has shipped)
-- `src/Habitica.WebApp/wwwroot/css/app.css` if a new input needs styling (reuse existing `.app-input` / search patterns where possible)
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs` (or `QuestsPageTests.cs`)
-- `FEATURES.md`
-
-Implementation shape:
-- Add a text input above the pool grid that filters grouped pool entries case-insensitively across `QuestName`, `QuestType`, and `OwnerNames`. Compose with the existing owned-only filter rather than replacing it.
-- Trim/normalize the query; empty query shows the unfiltered (existing) list.
-- When the query matches nothing, show a concise empty-state distinct from the existing "no entries" copy (e.g. "No quests match this search.").
-- Keep the search local UI state; do not persist it to portable sync. Persisting to local browser storage is optional and out of scope unless trivial.
-
-Out of scope:
-- changing pool grouping, availability counts, queue-add permissions, or stale-data guards;
-- searching the active quest, queue, or recent-completion blocks;
-- changing party-sync data contracts or Habitica quest links;
-- server-side or cross-device persistence of the search query.
-
-Acceptance:
-- A search box filters the Quest Pool by quest name, type, and owner, combined with the owned-only filter.
-- Empty query restores the full pool; a non-matching query shows a clear no-match empty state.
-- Queue-add actions and existing permission/freshness guards are unchanged for visible entries.
-- Tests cover: filtering by name, combining search with the owned-only filter, and the no-match empty state.
-
 ### Spells Auto-Equip Best Option Default With Dropdown
 
 Goal: when a spell's auto-equip feature has multiple equipment options, default-select the most profitable option and offer the rest via a dropdown sorted most→least profitable.

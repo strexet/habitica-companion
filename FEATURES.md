@@ -2265,7 +2265,7 @@ shared quest queue cards with vote counts and voter names
 separate Next Quest card for the selected shared queue item
 skipped and expired queue-state labels
 owner/admin/Officer pin, select, skip, expire, and return-to-queue controls
-quest pool cards with owner availability
+quest pool cards with owner availability and local name/type/owner search
 recently completed quest cards with manual vs automatic source labels and management removal controls
 owner/admin/Officer strip after party notes and before active quest state
 owner/admin settings controls
@@ -2322,6 +2322,7 @@ Current display rules:
 31. Keep queue additions, votes, and removals available while Next Quest is selected. The selected item is removed from the normal queue list and shown in its own card above the queue.
 32. Show Next Quest entries with their expiry time when available. The Next Quest card can return the item to the top of the queue. Show skipped and expired entries as readable states with `Return to queue`; selected entries can be skipped, and non-active entries can be expired manually.
 33. Expire selected entries deterministically after 72 hours. Expire queued or skipped entries when the matching owner/quest scroll has not appeared in the party quest pool for 30 days. Expiry runs during party-sync reads and queue mutations.
+34. Let members search the expanded quest pool by quest name, type, or visible owner. Compose the in-memory search with the owned-only filter and show a distinct no-match state.
 ```
 
 ### Validation
@@ -2377,6 +2378,7 @@ Current implementation:
 - party detail section order of summary, party-sync roles, party-sync settings, then active quest state;
 - party-sync settings labels and helper descriptions for non-technical party members;
 - shared quest pool from published member quest-scroll availability;
+- expanded quest-pool search by quest name, type, or visible owner, composed with the owned-only filter;
 - shared quest queue with owner-only add/remove and one-vote-per-member voting;
 - shared queue invite action, management pin/select/skip/expire/requeue controls, separate Next Quest card, and owned-only queue/pool filter;
 - Party/Dashboard quest-invitation warnings and Accept/Reject actions;
