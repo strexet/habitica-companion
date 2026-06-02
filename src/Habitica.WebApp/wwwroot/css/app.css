@@ -2076,6 +2076,11 @@ input[type="radio"] {
     gap: 0.5rem;
 }
 
+.dashboard-link-copy {
+    display: grid;
+    gap: 0.25rem;
+}
+
 .optimizer-card,
 .bulk-sell-card,
 .task-statistics-panel {

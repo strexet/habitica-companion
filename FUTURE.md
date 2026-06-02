@@ -65,24 +65,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Dashboard Navigation Card Title/Description Spacing
-
-Goal: fix navigation link cards (Companion and Habitica link sections) rendering title and body with no separation — e.g. "TasksScore and inspect cached tasks." should read as a title line plus a description line.
-
-Touch:
-- `src/Habitica.WebApp/Pages/DashboardPage.razor` (`RenderDashboardLink`, ~line 852 and link cards ~268-271)
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/`
-
-Out of scope:
-- changing nav targets, labels, or descriptions;
-- redesigning the cards beyond title/body separation.
-
-Acceptance:
-- Every navigation link card renders title and description as distinct lines/elements with visible spacing.
-- Applies to all affected nav menus (Companion and Habitica link cards).
-- Test asserts title and description are separate nodes (not concatenated text).
-
 ### Compact Task Cards
 
 Goal: shrink task cards to ease working through the task list. Collapsed card shows only task title and description plus move buttons and a Details toggle; all other current task info hides behind Details.

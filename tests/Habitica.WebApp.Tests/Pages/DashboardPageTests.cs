@@ -105,6 +105,14 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("https://habitica.com/inventory/equipment", cut.Markup);
         Assert.Contains("href=\"/party\"", cut.Markup);
         Assert.Contains("https://habitica.com/party", cut.Markup);
+        var dashboardLinkCopies = cut.FindAll(".dashboard-link-copy");
+        Assert.Equal(4, dashboardLinkCopies.Count);
+        Assert.All(dashboardLinkCopies, copy =>
+        {
+            Assert.Equal(2, copy.Children.Length);
+            Assert.Equal("STRONG", copy.Children[0].TagName);
+            Assert.Contains("dashboard-stat-note", copy.Children[1].ClassList);
+        });
         Assert.Contains("Pending damage estimate", cut.Markup);
         Assert.Contains("Incomplete Dailies", cut.Markup);
         Assert.Contains("2 HP", cut.Markup);
