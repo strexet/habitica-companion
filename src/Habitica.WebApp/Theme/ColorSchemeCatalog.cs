@@ -1436,7 +1436,12 @@ public static partial class ColorSchemeCatalog
 
         foreach (var token in EditableTokens)
         {
-            if (!IsValidTokenValue(GetTokenValue(scheme.Tokens, token.Name)))
+            var value = GetTokenValue(scheme.Tokens, token.Name);
+            // Shadow holds a box-shadow value (multi-layer / inset / none), not a plain color.
+            var valid = token.Name == nameof(ColorSchemeTokens.Shadow)
+                ? IsValidShadowValue(value)
+                : IsValidTokenValue(value);
+            if (!valid)
             {
                 errors.Add($"{token.Label} is not a supported color value.");
             }
@@ -1473,7 +1478,7 @@ public static partial class ColorSchemeCatalog
 
     private static void ValidateOptionalToken(List<string> errors, string label, string? value)
     {
-        if (value is not null && !IsValidTokenValue(value))
+        if (value is not null && !IsValidShadowValue(value))
         {
             errors.Add($"{label} is not a supported CSS value.");
         }
