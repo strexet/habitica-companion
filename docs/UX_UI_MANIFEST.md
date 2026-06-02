@@ -211,10 +211,10 @@ Files: `src/Habitica.WebApp/Pages/TasksPage.razor`
 
 Current pattern:
 
-- Cached task groups with search, type filters, sort control, collapse controls, completed toggle, task cards, state pills, and metadata.
+- Cached task groups with search, type filters, sort control, collapse controls, completed toggle, and compact task cards. Collapsed cards keep title, description, reorder affordances, and a Details toggle visible; status, metadata, scoring controls, disabled reasons, progress, and charts expand in place.
 - Week/month/year task statistics with aggregate history and month-activity charts.
 - Due dates render as readable local date labels such as Today, Tomorrow, Yesterday, or a local calendar date instead of UTC-style timestamps.
-- Task mutation controls stay inline with the affected task, show disabled reasons from freshness/auth state, and use visible progress for repeated Habit scoring.
+- Expanded task mutation controls stay inline with the affected task, show disabled reasons from freshness/auth state, and use visible progress for repeated Habit scoring.
 - Task details expand inside the card and show cached metadata without navigating away from the current scan position.
 
 What works:

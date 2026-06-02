@@ -2562,7 +2562,7 @@ per-task-type display order preferences
 task groups by type
 foldable task group sections
 per-category Show completed / Hide completed controls
-task cards
+compact task cards with title, notes, reorder controls, and a Details toggle
 task notes
 numeric task value
 subtle value-based card background for open tasks
@@ -2571,7 +2571,7 @@ priority and due-date metadata
 freshness banner
 type filters
 sort control
-inline task scoring/checkoff controls
+expanded inline task scoring/checkoff controls
 habit multi-score progress
 task detail panel
 task statistics summary
@@ -2619,7 +2619,7 @@ Current view-model rules:
 8. Show the numeric task value when available.
 9. Tint open task cards with a continuous low-saturation value gradient from warm negative values to cool positive values.
 10. Render completed tasks with neutral muted styling when the category is set to show completed.
-11. Render task actions inline on each card when authentication and freshness allow mutation.
+11. Keep collapsed task cards compact with title, notes, reorder controls, and a Details toggle. Reveal status, value/priority/due metadata, task detail metadata, scoring controls, disabled reasons, progress, and charts inside the expanded card.
 12. For Habit scoring, clamp multi-score count to 1-20 and show determinate progress while requests execute sequentially.
 13. Apply saved per-type task order after filtering/sorting; unknown saved IDs are ignored and new task IDs append after ordered known IDs.
 14. Drag handles move items within the currently visible list and persist the resulting per-type ID order for export/import and cloud sync.
@@ -2677,6 +2677,7 @@ Test:
 Current implementation:
 
 - grouped task cards;
+- compact collapsed task cards with expanded metadata, mutation controls, and charts;
 - search field;
 - per-category completed-task controls;
 - persisted per-user folded category and completed visibility preferences;

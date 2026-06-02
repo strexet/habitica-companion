@@ -165,179 +165,187 @@
                                              data-task-id="@item.Id"
                                              data-task-type="@group.Type">
                                         <div class="task-card-head">
-                                            <button class="task-drag-handle"
-                                                    type="button"
-                                                    aria-label="@($"Reorder {item.Text}")"
-                                                    aria-keyshortcuts="ArrowUp ArrowDown"
-                                                    title="@($"Drag to reorder {item.Text}; use arrow keys while focused for precise moves.")"
-                                                    data-testid="@($"drag-task-{item.Id}")"
-                                                    @onkeydown="eventArgs => HandleTaskReorderKeyAsync(group, item.Id, eventArgs)">
-                                                <span aria-hidden="true">::</span>
+                                            <div class="task-reorder-affordances">
+                                                <button class="task-drag-handle"
+                                                        type="button"
+                                                        aria-label="@($"Reorder {item.Text}")"
+                                                        aria-keyshortcuts="ArrowUp ArrowDown"
+                                                        title="@($"Drag to reorder {item.Text}; use arrow keys while focused for precise moves.")"
+                                                        data-testid="@($"drag-task-{item.Id}")"
+                                                        @onkeydown="eventArgs => HandleTaskReorderKeyAsync(group, item.Id, eventArgs)">
+                                                    <span aria-hidden="true">::</span>
+                                                </button>
+                                                <div class="task-reorder-controls" role="group" aria-label="@($"Move {item.Text}")">
+                                                    <button class="task-reorder-button"
+                                                            type="button"
+                                                            disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Top))"
+                                                            aria-label="@($"Move {item.Text} to top")"
+                                                            title="@($"Move {item.Text} to top")"
+                                                            data-testid="@($"move-task-top-{item.Id}")"
+                                                            @onclick="@(() => MoveTaskToVisibleIndexAsync(group, item.Id, 0))">
+                                                        <MudIcon Icon="@Icons.Material.Filled.VerticalAlignTop" Size="Size.Small" />
+                                                    </button>
+                                                    <button class="task-reorder-button"
+                                                            type="button"
+                                                            disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Up))"
+                                                            aria-label="@($"Move {item.Text} up")"
+                                                            title="@($"Move {item.Text} up")"
+                                                            data-testid="@($"move-task-up-{item.Id}")"
+                                                            @onclick="@(() => MoveTaskAsync(group, item.Id, -1))">
+                                                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowUp" Size="Size.Small" />
+                                                    </button>
+                                                    <button class="task-reorder-button"
+                                                            type="button"
+                                                            disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Down))"
+                                                            aria-label="@($"Move {item.Text} down")"
+                                                            title="@($"Move {item.Text} down")"
+                                                            data-testid="@($"move-task-down-{item.Id}")"
+                                                            @onclick="@(() => MoveTaskAsync(group, item.Id, 1))">
+                                                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
+                                                    </button>
+                                                    <button class="task-reorder-button"
+                                                            type="button"
+                                                            disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Bottom))"
+                                                            aria-label="@($"Move {item.Text} to bottom")"
+                                                            title="@($"Move {item.Text} to bottom")"
+                                                            data-testid="@($"move-task-bottom-{item.Id}")"
+                                                            @onclick="@(() => MoveTaskToVisibleIndexAsync(group, item.Id, visibleItems.Length - 1))">
+                                                        <MudIcon Icon="@Icons.Material.Filled.VerticalAlignBottom" Size="Size.Small" />
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="task-card-copy">
+                                                <span class="task-title">@item.Text</span>
+                                                @if (!string.IsNullOrWhiteSpace(item.Notes))
+                                                {
+                                                    <p class="task-notes">@item.Notes</p>
+                                                }
+                                            </div>
+
+                                            <button class="secondary-action-button compact task-details-toggle" type="button" @onclick="@(() => ToggleTaskExpanded(item.Id))">
+                                                @(IsTaskExpanded(item.Id) ? "Hide details" : "Details")
                                             </button>
-                                            <div class="task-reorder-controls" role="group" aria-label="@($"Move {item.Text}")">
-                                                <button class="task-reorder-button"
-                                                        type="button"
-                                                        disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Top))"
-                                                        aria-label="@($"Move {item.Text} to top")"
-                                                        title="@($"Move {item.Text} to top")"
-                                                        data-testid="@($"move-task-top-{item.Id}")"
-                                                        @onclick="@(() => MoveTaskToVisibleIndexAsync(group, item.Id, 0))">
-                                                    <MudIcon Icon="@Icons.Material.Filled.VerticalAlignTop" Size="Size.Small" />
-                                                </button>
-                                                <button class="task-reorder-button"
-                                                        type="button"
-                                                        disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Up))"
-                                                        aria-label="@($"Move {item.Text} up")"
-                                                        title="@($"Move {item.Text} up")"
-                                                        data-testid="@($"move-task-up-{item.Id}")"
-                                                        @onclick="@(() => MoveTaskAsync(group, item.Id, -1))">
-                                                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowUp" Size="Size.Small" />
-                                                </button>
-                                                <button class="task-reorder-button"
-                                                        type="button"
-                                                        disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Down))"
-                                                        aria-label="@($"Move {item.Text} down")"
-                                                        title="@($"Move {item.Text} down")"
-                                                        data-testid="@($"move-task-down-{item.Id}")"
-                                                        @onclick="@(() => MoveTaskAsync(group, item.Id, 1))">
-                                                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
-                                                </button>
-                                                <button class="task-reorder-button"
-                                                        type="button"
-                                                        disabled="@(!CanMoveTask(visibleItems, item.Id, TaskReorderTarget.Bottom))"
-                                                        aria-label="@($"Move {item.Text} to bottom")"
-                                                        title="@($"Move {item.Text} to bottom")"
-                                                        data-testid="@($"move-task-bottom-{item.Id}")"
-                                                        @onclick="@(() => MoveTaskToVisibleIndexAsync(group, item.Id, visibleItems.Length - 1))">
-                                                    <MudIcon Icon="@Icons.Material.Filled.VerticalAlignBottom" Size="Size.Small" />
-                                                </button>
-                                            </div>
-                                            <span class="task-title">@item.Text</span>
-
-                                            @if (item.IsCompleted)
-                                            {
-                                                <span class="ui-pill state-pill success-pill">Done</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="ui-pill state-pill warning-pill">Open</span>
-                                            }
                                         </div>
-
-                                        @if (!string.IsNullOrWhiteSpace(item.Notes))
-                                        {
-                                            <p class="task-notes">@item.Notes</p>
-                                        }
-
-                                        <dl class="task-meta">
-                                            <div>
-                                                <dt>Value</dt>
-                                                <dd>@FormatTaskValue(item.Value)</dd>
-                                            </div>
-
-                                            <div>
-                                                <dt>Priority</dt>
-                                                <dd>@item.Difficulty</dd>
-                                            </div>
-
-                                            <div>
-                                                <dt>Due</dt>
-                                                <dd>@FormatDueDate(item.DueDate)</dd>
-                                            </div>
-                                        </dl>
 
                                         @if (IsTaskExpanded(item.Id))
                                         {
-                                            <div class="task-detail-panel">
-                                                <dl class="task-meta expanded">
-                                                    <div>
-                                                        <dt>Task type</dt>
-                                                        <dd>@FormatTaskType(item.Type)</dd>
-                                                    </div>
-
-                                                    <div>
-                                                        <dt>Challenge</dt>
-                                                        <dd>@(item.IsChallengeTask ? "Yes" : "No")</dd>
-                                                    </div>
-
-                                                    <div>
-                                                        <dt>Status</dt>
-                                                        <dd>@(item.IsCompleted ? "Completed" : "Open")</dd>
-                                                    </div>
-
-                                                    <div>
-                                                        <dt>Source</dt>
-                                                        <dd>Cached snapshot</dd>
-                                                    </div>
-                                            </dl>
-                                                <div class="task-detail-charts">
-                                                    @RenderTaskHistoryHistogram(GetTaskHistoryBuckets(item), "Task value history")
-                                                    @RenderMonthActivityChart(GetTaskMonthBuckets(item), "Task month activity")
+                                            <div class="task-expanded-content">
+                                                <div class="task-detail-status">
+                                                    @if (item.IsCompleted)
+                                                    {
+                                                        <span class="ui-pill state-pill success-pill">Done</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="ui-pill state-pill warning-pill">Open</span>
+                                                    }
                                                 </div>
-                                            </div>
-                                        }
 
-                                        <div class="task-card-actions">
-                                            <button class="secondary-action-button compact" type="button" @onclick="@(() => ToggleTaskExpanded(item.Id))">
-                                                @(IsTaskExpanded(item.Id) ? "Hide details" : "Details")
-                                            </button>
+                                                <dl class="task-meta">
+                                                    <div>
+                                                        <dt>Value</dt>
+                                                        <dd>@FormatTaskValue(item.Value)</dd>
+                                                    </div>
 
-                                            @if (item.Type == TaskType.Habit)
-                                            {
-                                                <label class="field-row compact habit-score-count">
-                                                    <span>Score count</span>
-                                                    <input class="app-input"
-                                                           data-testid="@($"task-score-count-{item.Id}")"
-                                                           disabled="@isMutating"
-                                                           min="1"
-                                                           max="20"
-                                                           type="number"
-                                                           value="@GetHabitScoreCount(item.Id)"
-                                                           @onchange="eventArgs => SetHabitScoreCount(item.Id, eventArgs.Value?.ToString())" />
-                                                </label>
+                                                    <div>
+                                                        <dt>Priority</dt>
+                                                        <dd>@item.Difficulty</dd>
+                                                    </div>
 
-                                                <MudButton Color="Color.Primary"
-                                                           Disabled="@(!CanScoreTask(item, TaskScoreDirection.Up, mutationDisabledReason) || isMutating)"
-                                                           OnClick="() => ScoreTaskAsync(item, TaskScoreDirection.Up)"
-                                                           Size="Size.Small"
-                                                           Variant="Variant.Filled"
-                                                           data-testid="@($"score-task-up-{item.Id}")">
-                                                    Score +@GetHabitScoreCount(item.Id)
-                                                </MudButton>
+                                                    <div>
+                                                        <dt>Due</dt>
+                                                        <dd>@FormatDueDate(item.DueDate)</dd>
+                                                    </div>
+                                                </dl>
 
-                                                <MudButton Color="Color.Secondary"
-                                                           Disabled="@(!CanScoreTask(item, TaskScoreDirection.Down, mutationDisabledReason) || isMutating)"
-                                                           OnClick="() => ScoreTaskAsync(item, TaskScoreDirection.Down)"
-                                                           Size="Size.Small"
-                                                           Variant="Variant.Outlined"
-                                                           data-testid="@($"score-task-down-{item.Id}")">
-                                                    Score -@GetHabitScoreCount(item.Id)
-                                                </MudButton>
-                                            }
-                                            else if (item.Type is TaskType.Daily or TaskType.Todo)
-                                            {
-                                                var direction = item.IsCompleted ? TaskScoreDirection.Down : TaskScoreDirection.Up;
-                                                <MudButton Color="Color.Primary"
-                                                           Disabled="@(!CanScoreTask(item, direction, mutationDisabledReason) || isMutating)"
-                                                           OnClick="() => ScoreTaskAsync(item, direction)"
-                                                           Size="Size.Small"
-                                                           Variant="Variant.Filled"
-                                                           data-testid="@($"score-task-{item.Id}")">
-                                                    @(item.IsCompleted ? "Uncomplete" : "Complete")
-                                                </MudButton>
-                                            }
-                                        </div>
+                                                <div class="task-detail-panel">
+                                                    <dl class="task-meta expanded">
+                                                        <div>
+                                                            <dt>Task type</dt>
+                                                            <dd>@FormatTaskType(item.Type)</dd>
+                                                        </div>
 
-                                        @if (mutationDisabledReason is not null)
-                                        {
-                                            <span class="task-action-note">@mutationDisabledReason</span>
-                                        }
+                                                        <div>
+                                                            <dt>Challenge</dt>
+                                                            <dd>@(item.IsChallengeTask ? "Yes" : "No")</dd>
+                                                        </div>
 
-                                        @if (progress is not null)
-                                        {
-                                            <div class="task-progress">
-                                                <span>@FormatTaskProgress(progress)</span>
-                                                <MudProgressLinear Class="scheme-progress-primary" Color="Color.Primary" Max="@progress.Total" Value="@progress.Completed" />
+                                                        <div>
+                                                            <dt>Status</dt>
+                                                            <dd>@(item.IsCompleted ? "Completed" : "Open")</dd>
+                                                        </div>
+
+                                                        <div>
+                                                            <dt>Source</dt>
+                                                            <dd>Cached snapshot</dd>
+                                                        </div>
+                                                    </dl>
+                                                    <div class="task-detail-charts">
+                                                        @RenderTaskHistoryHistogram(GetTaskHistoryBuckets(item), "Task value history")
+                                                        @RenderMonthActivityChart(GetTaskMonthBuckets(item), "Task month activity")
+                                                    </div>
+                                                </div>
+
+                                                <div class="task-card-actions">
+                                                    @if (item.Type == TaskType.Habit)
+                                                    {
+                                                        <label class="field-row compact habit-score-count">
+                                                            <span>Score count</span>
+                                                            <input class="app-input"
+                                                                   data-testid="@($"task-score-count-{item.Id}")"
+                                                                   disabled="@isMutating"
+                                                                   min="1"
+                                                                   max="20"
+                                                                   type="number"
+                                                                   value="@GetHabitScoreCount(item.Id)"
+                                                                   @onchange="eventArgs => SetHabitScoreCount(item.Id, eventArgs.Value?.ToString())" />
+                                                        </label>
+
+                                                        <MudButton Color="Color.Primary"
+                                                                   Disabled="@(!CanScoreTask(item, TaskScoreDirection.Up, mutationDisabledReason) || isMutating)"
+                                                                   OnClick="() => ScoreTaskAsync(item, TaskScoreDirection.Up)"
+                                                                   Size="Size.Small"
+                                                                   Variant="Variant.Filled"
+                                                                   data-testid="@($"score-task-up-{item.Id}")">
+                                                            Score +@GetHabitScoreCount(item.Id)
+                                                        </MudButton>
+
+                                                        <MudButton Color="Color.Secondary"
+                                                                   Disabled="@(!CanScoreTask(item, TaskScoreDirection.Down, mutationDisabledReason) || isMutating)"
+                                                                   OnClick="() => ScoreTaskAsync(item, TaskScoreDirection.Down)"
+                                                                   Size="Size.Small"
+                                                                   Variant="Variant.Outlined"
+                                                                   data-testid="@($"score-task-down-{item.Id}")">
+                                                            Score -@GetHabitScoreCount(item.Id)
+                                                        </MudButton>
+                                                    }
+                                                    else if (item.Type is TaskType.Daily or TaskType.Todo)
+                                                    {
+                                                        var direction = item.IsCompleted ? TaskScoreDirection.Down : TaskScoreDirection.Up;
+                                                        <MudButton Color="Color.Primary"
+                                                                   Disabled="@(!CanScoreTask(item, direction, mutationDisabledReason) || isMutating)"
+                                                                   OnClick="() => ScoreTaskAsync(item, direction)"
+                                                                   Size="Size.Small"
+                                                                   Variant="Variant.Filled"
+                                                                   data-testid="@($"score-task-{item.Id}")">
+                                                            @(item.IsCompleted ? "Uncomplete" : "Complete")
+                                                        </MudButton>
+                                                    }
+                                                </div>
+
+                                                @if (mutationDisabledReason is not null)
+                                                {
+                                                    <span class="task-action-note">@mutationDisabledReason</span>
+                                                }
+
+                                                @if (progress is not null)
+                                                {
+                                                    <div class="task-progress">
+                                                        <span>@FormatTaskProgress(progress)</span>
+                                                        <MudProgressLinear Class="scheme-progress-primary" Color="Color.Primary" Max="@progress.Total" Value="@progress.Completed" />
+                                                    </div>
+                                                }
                                             </div>
                                         }
                                     </article>

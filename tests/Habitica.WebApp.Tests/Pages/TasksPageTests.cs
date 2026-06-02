@@ -43,15 +43,30 @@ public sealed class TasksPageTests : BunitContext
 
         Assert.Contains("Tasks may need refresh", cut.Markup);
         Assert.Contains("Buy milk", cut.Markup);
-        Assert.Contains("Value", cut.Markup);
-        Assert.Contains("-4.2", cut.Markup);
-        var taskCardStyle = cut.Find("[data-task-id='todo-1']").GetAttribute("style");
+        var taskCard = cut.Find("[data-task-id='todo-1']");
+        Assert.Contains("2 liters", taskCard.TextContent);
+        Assert.DoesNotContain("Priority", taskCard.TextContent);
+        Assert.DoesNotContain("-4.2", taskCard.TextContent);
+        Assert.NotNull(taskCard.QuerySelector("[data-testid='move-task-top-todo-1']"));
+        Assert.NotNull(taskCard.QuerySelector("[data-testid='move-task-bottom-todo-1']"));
+        Assert.NotNull(taskCard.QuerySelector(".task-details-toggle"));
+        Assert.Null(taskCard.QuerySelector("[data-testid='score-task-todo-1']"));
+        var taskCardStyle = taskCard.GetAttribute("style");
         Assert.Contains("color-mix", taskCardStyle);
         Assert.Contains("var(--task-neutral)", taskCardStyle);
         Assert.Contains("var(--task-negative)", taskCardStyle);
         Assert.DoesNotContain("var(--task-positive)", taskCardStyle);
         Assert.Contains("To-Dos", cut.Markup);
         Assert.DoesNotContain("Archive notes", cut.Markup);
+
+        cut.Find("[data-task-id='todo-1'] .task-details-toggle").Click();
+        taskCard = cut.Find("[data-task-id='todo-1']");
+        Assert.Contains("Value", taskCard.TextContent);
+        Assert.Contains("-4.2", taskCard.TextContent);
+        Assert.Contains("Priority", taskCard.TextContent);
+        Assert.Contains("Due", taskCard.TextContent);
+        Assert.Contains("Open", taskCard.TextContent);
+        Assert.NotNull(taskCard.QuerySelector("[data-testid='score-task-todo-1']"));
 
         cut.FindAll("button").Single(button => button.TextContent.Contains("Show completed", StringComparison.Ordinal)).Click();
 
@@ -157,6 +172,8 @@ public sealed class TasksPageTests : BunitContext
 
         var cut = Render<TasksPage>();
 
+        Assert.Empty(cut.FindAll("[data-testid='task-score-count-habit-1']"));
+        cut.Find(".task-details-toggle").Click();
         cut.Find("[data-testid='task-score-count-habit-1']").Change("3");
         cut.Find("[data-testid='score-task-up-habit-1']").Click();
 

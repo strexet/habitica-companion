@@ -65,29 +65,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
-### Compact Task Cards
-
-Goal: shrink task cards to ease working through the task list. Collapsed card shows only task title and description plus move buttons and a Details toggle; all other current task info hides behind Details.
-
-Touch:
-- `src/Habitica.WebApp/Pages/TasksPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/`
-- `FEATURES.md`
-- reference `docs/UX_UI_MANIFEST.md` (do not violate its density/affordance rules)
-
-Out of scope:
-- removing any existing task detail data — only hide it behind Details;
-- changing scoring/checkoff/reorder logic or freshness gates;
-- changing task filters.
-
-Acceptance:
-- Collapsed task card shows title, description, move-card buttons (repositioned for the smaller card), and a Details toggle only.
-- Details reveals all previously-visible per-task information; nothing is lost.
-- Move buttons and keyboard reordering still function with the new layout.
-- Layout follows `docs/UX_UI_MANIFEST.md`.
-- Tests cover collapsed vs expanded rendering and move buttons still present.
-
 ### Spells Auto-Equip Best Option Default With Dropdown
 
 Goal: when a spell's auto-equip feature has multiple equipment options, default-select the most profitable option and offer the rest via a dropdown sorted most→least profitable.
