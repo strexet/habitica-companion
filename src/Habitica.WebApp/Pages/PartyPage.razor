@@ -673,7 +673,7 @@
                     </div>
                 </div>
                 <p class="panel-copy compact-copy">
-                    Quest pool is folded by default to keep shared planning focused. Expand it when you want to add a scroll to the queue.
+                    Quest pool is open by default on this workspace. Hide it when you want to focus on the queue.
                 </p>
 
                 @if (_questPoolExpanded)
@@ -1218,6 +1218,7 @@
 
     protected override void OnInitialized()
     {
+        _questPoolExpanded = QuestWorkspaceOnly;
         SessionController.Changed += HandleStateChanged;
     }
 

@@ -527,10 +527,22 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("1 vote", cut.Markup);
         Assert.Contains("Mark completed", cut.Markup);
         Assert.Contains("Alpha", cut.Markup);
-        Assert.Contains("Quest pool is folded by default", cut.Markup);
+        Assert.Contains("Quest pool is open by default", cut.Markup);
+        Assert.DoesNotContain("Quest pool is hidden", cut.Markup);
+        Assert.Contains("Available from Alpha, Mage Tester", cut.Markup);
+        Assert.Contains("5 scrolls owned", cut.Markup);
+        Assert.NotNull(cut.Find("[data-testid='quest-pool-search']"));
+
+        cut.Find("[data-testid='toggle-quest-pool']").Click();
+
         Assert.Contains("Quest pool is hidden", cut.Markup);
         Assert.DoesNotContain("Available from Alpha, Mage Tester", cut.Markup);
-        Assert.DoesNotContain("5 scrolls owned", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='quest-pool-search']"));
+
+        cut.SetParametersAndRender(parameters => parameters.Add(component => component.QuestWorkspaceOnly, true));
+
+        Assert.Contains("Quest pool is hidden", cut.Markup);
+        Assert.DoesNotContain("Available from Alpha, Mage Tester", cut.Markup);
 
         cut.Find("[data-testid='toggle-quest-pool']").Click();
 
@@ -609,11 +621,27 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("Replace next", cut.Markup);
         Assert.DoesNotContain("Queue changes are locked while a quest is selected.", cut.Markup);
 
-        cut.Find("[data-testid='toggle-quest-pool']").Click();
-
         var addButton = cut.FindAll("button").Single(button => button.TextContent.Contains("Add to queue", StringComparison.Ordinal));
         Assert.False(addButton.HasAttribute("disabled"));
         Assert.DoesNotContain("Queue is locked while a quest is selected.", cut.Markup);
+    }
+
+    [Fact]
+    public void Quests_workspace_renders_empty_pool_state_without_expanding_disclosure()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("user-id")));
+
+        var partyCut = Render<PartyPage>();
+
+        Assert.Empty(partyCut.FindAll("[data-testid='toggle-quest-pool']"));
+
+        var questsCut = RenderQuestsWorkspace();
+
+        Assert.Equal("Hide quest pool", questsCut.Find("[data-testid='toggle-quest-pool']").TextContent.Trim());
+        Assert.NotNull(questsCut.Find("[data-testid='quest-pool-search']"));
+        Assert.Contains("No shared quest scroll availability has been published yet.", questsCut.Markup);
     }
 
     [Fact]

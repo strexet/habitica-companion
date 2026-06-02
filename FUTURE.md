@@ -46,6 +46,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Spells sticky current-mana bar with available MP, max MP, class, and persistent scroll visibility above spell cards.
 - App color scheme system with centralized semantic tokens, Alpha/Habitica/Gryphy built-in schemes, Settings picker, custom editable schemes, shell/button/disabled/input theming, mobile localStorage fallback, fast local reload persistence, and portable sync storage.
 - Random color scheme controls: shared color-scheme panel on Settings, Dashboard, and Sign-in, random-preset pick from built-in plus custom schemes, fully-random theme generation with a chaos slider (Calm to Madness) scaling hue/saturation divergence, held as a session-only pending theme (selectable via a "Generated" dropdown entry, applied without persisting), naming/saving the last random theme into custom schemes, and copy/paste of presets for building fully custom palettes.
+- Quests-page quest pool expanded by default with an in-memory manual collapse control.
 
 ## Pending Queue
 
@@ -65,37 +66,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Quests Page Quest Pool Open By Default
-
-Goal: show the quest pool immediately when users navigate to the dedicated Quests page while preserving the existing manual expand/collapse control.
-
-Touch:
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
-- `FEATURES.md`
-- `docs/UX_UI_MANIFEST.md`
-
-Feature shape:
-- Initialize the quest-pool disclosure as expanded when `PartyPage` renders with `QuestWorkspaceOnly="true"`.
-- Apply the default only during initial component setup. A later render must not reopen the pool after the user manually collapses it.
-- Keep `Show quest pool` / `Hide quest pool` available so the user can collapse and reopen the section during the current page visit.
-- Render the existing search field, pool cards, empty state, owned-only filter composition, and queue controls unchanged once the pool is visible.
-
-Out of scope:
-- persisting quest-pool disclosure state across reloads or devices;
-- changing quest-pool search, grouping, ownership rules, queue behavior, or shared party-sync payloads;
-- changing Party-page content outside the dedicated Quests workspace.
-
-Acceptance:
-- Opening `/quests` renders the quest pool contents immediately without requiring a `Show quest pool` click.
-- Opening `/quests` with an empty pool renders the existing expanded empty-state message immediately.
-- The initial expanded state exposes the existing search input.
-- Clicking `Hide quest pool` hides the contents and changes the toggle to `Show quest pool`.
-- Subsequent component rerenders do not reopen a pool the user manually hid.
-- Clicking `Show quest pool` restores the contents.
-- Direct `PartyPage` rendering without `QuestWorkspaceOnly="true"` does not gain new quest-pool UI.
-- Razor tests cover initial expanded rendering, manual collapse, manual reopen, and no forced reopen after rerender.
 
 ### Party And Quests Page Layout Cleanup
 

@@ -288,7 +288,7 @@ Files: `src/Habitica.WebApp/Pages/PartyPage.razor`, `src/Habitica.WebApp/Pages/Q
 Current pattern:
 
 - Party owns overview cards, party notes, a compact quest-summary link, member summaries, CRON rhythm/timeline visualization, roles, settings, and moderation.
-- Quests owns active quest details, progress metrics, queue, pool search, voting, recent completions, and quest refresh actions.
+- Quests owns active quest details, progress metrics, queue, pool search, voting, recent completions, and quest refresh actions. The quest pool starts expanded on this dedicated workspace and keeps an in-memory hide/show control for queue-focused scanning.
 - Party-sync role strip appears near the party notes, with owner/app-admin/Officer visibility before member and moderation decisions.
 - Owner/app-admin party-sync settings are a compact operational panel, and kick records stay at the bottom so moderation history does not interrupt member review.
 - Officer assignment and kick/unkick controls live in expanded member details, close to the affected member identity.
