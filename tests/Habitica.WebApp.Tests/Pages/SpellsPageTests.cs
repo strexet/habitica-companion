@@ -212,6 +212,40 @@ public sealed class SpellsPageTests : BunitContext
     }
 
     [Fact]
+    public void Auto_equip_selection_change_updates_equip_plan()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var controller = new FakeAppSessionController(CreateHealerStateForRecommendationOrdering());
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<SpellsPage>();
+
+        cut.Find("[data-testid='spell-recommendation-selector-healAll']").Change("Maximize CON");
+        cut.Find("[data-testid='cast-spell-healAll']").Click();
+
+        var request = Assert.Single(controller.CastSpellCalls);
+        Assert.True(request.AutoEquipRecommendedGear);
+        Assert.Equal("head_con", request.AutoEquipGearSlots?.Head);
+    }
+
+    [Fact]
+    public void Single_auto_equip_option_does_not_render_selector()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateRogueStateForToolsOfTrade()));
+
+        var cut = Render<SpellsPage>();
+
+        Assert.Empty(cut.FindAll("[data-testid='spell-recommendation-selector-toolsOfTrade']"));
+    }
+
+    [Fact]
     public void Effect_preview_uses_selected_auto_equip_recommendation_when_enabled()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

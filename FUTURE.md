@@ -67,28 +67,6 @@ _None. All pending items have been promoted into `Prioritized Next Changes`._
 
 Work top to bottom. Each entry is self-contained.
 
-### Spells Auto-Equip Best Option Default With Dropdown
-
-Goal: when a spell's auto-equip feature has multiple equipment options, default-select the most profitable option and offer the rest via a dropdown sorted most→least profitable.
-
-Touch:
-- `src/Habitica.WebApp/Pages/SpellsPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- spell equipment-recommendation logic under `src/Habitica.Rules` / `src/Habitica.Application` (only the selection/ordering surface; do not change scoring formulas)
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs` and rule tests under `tests/`
-- `FEATURES.md`
-
-Out of scope:
-- changing how profitability/stat deltas are computed;
-- changing cast execution order or CRON-warning semantics;
-- changing two-handed weapon pairing logic.
-
-Acceptance:
-- With multiple options, the most profitable option is preselected.
-- A dropdown lists remaining options sorted most→least profitable.
-- Selecting a non-default option updates the equip plan; single-option case shows no dropdown.
-- Tests cover default selection, dropdown ordering, and selection change.
-
 ### Split Party Page Into Party And Quests Pages
 
 Goal: relieve Party-page overload by separating quest-heavy blocks onto a dedicated Quests page, reusing existing data/logic.
