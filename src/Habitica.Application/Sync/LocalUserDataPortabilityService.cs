@@ -248,7 +248,8 @@ public sealed class LocalUserDataPortabilityService
         {
             ["selectedSchemeId"] = selectedSchemeId,
             ["customSchemes"] = new JsonArray(merged.Values.Select(static value => value?.DeepClone()).ToArray()),
-            ["selectedAtUtc"] = selectedAtNode
+            ["selectedAtUtc"] = selectedAtNode,
+            ["schemaVersion"] = Math.Max(ReadOptionalInt(local, "schemaVersion"), ReadOptionalInt(incoming, "schemaVersion"))
         };
         return SerializeNode(result);
     }
@@ -281,6 +282,22 @@ public sealed class LocalUserDataPortabilityService
         return DateTimeOffset.TryParse(raw, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var timestamp)
             ? timestamp.ToUniversalTime()
             : DateTimeOffset.MinValue;
+    }
+
+    private static int ReadOptionalInt(JsonNode? node, string propertyName)
+    {
+        try
+        {
+            return node?[propertyName]?.GetValue<int>() ?? 0;
+        }
+        catch (InvalidOperationException)
+        {
+            return 0;
+        }
+        catch (FormatException)
+        {
+            return 0;
+        }
     }
 
     private static string MergeArrayByProperty(string localJson, string incomingJson, string propertyName)

@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-05-27
+Last updated: 2026-06-02
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -1615,44 +1615,48 @@ localStorage habitica-tool/colorScheme/preferences
 Built-in developer-editable schemes live in `ColorSchemeCatalog`. Current built-ins are:
 
 ```text
-Alpha (Light)
-Habitica (Light)
 Gryphy (Light)
 Gryphy (Dark)
-Midnight Tavern (Dark)
-Dragonfire Keep (Dark)
-Neon Rogue (Dark)
-Frost Healer (Light)
-Sunlit Stable (Light)
-Mosswood Quest (Light)
-Potion Shop (Light)
-Boss Battle (Dark)
-Quiet Ledger (Light)
-Celestial Inn (Dark)
-Mana Mirage (Dark)
-Mushroom Meadow (Light)
-Mushroom Trip (Dark)
-Frosted Cake (Light)
-Sugar Crash (Dark)
-Neon Abyss Carnival (Dark)
+Forest Legacy
+Frosted Cake
+Arcane Wraith
+Phantom Fair
+Toxic Swamp
+Green Menace
+Abyssal Blackwater
+Obsidian Glow
+Blessed Skyhaven
+Infernal Covenant
+Midnight Tavern
+Dragonfire Keep
+Frost Healer
+Sunlit Stable
+Mosswood Quest
+Potion Shop
+Boss Battle
+Quiet Ledger
+Celestial Inn
+Treasure Vault
+Mana Spring
+Stonewatch Sanctuary
 ```
 
-Every built-in name carries a `(Light)`/`(Dark)` suffix so users know what to expect before applying. `Alpha (Light)` mirrors the original root palette. `Habitica (Light)` is inspired by Habitica's public brand/game palette. `Gryphy (Light)` and `Gryphy (Dark)` are derived from `gryphy/Gryphy.png` with adjusted contrast. The remaining presets cover dark, bright, colorful, dull, and psychedelic moods with app-themed names. `Mushroom Meadow`/`Mushroom Trip` are the high-saturation psychedelic light/dark pair; `Frosted Cake`/`Sugar Crash` are the candy-bright "insane" light/dark pair.
+`Gryphy (Light)` and `Gryphy (Dark)` are the light/dark defaults. Every scheme carries explicit light/dark variant metadata, and the picker groups defaults, built-in light schemes, built-in dark schemes, custom schemes, and the session-only generated scheme in that order. `Forest Legacy` preserves the former `alpha` palette. Stored selections migrate removed built-in IDs to their replacement or the matching Gryphy default.
 
-Schemes expose semantic tokens rather than page-specific colors: background, card background, card border, text, muted text, primary, accent, danger, success, focus, shadow, surface, strong surface, chart colors, task-value min/base/max colors, app header, navigation drawer, input, filled-button text, and disabled-state colors.
+Schemes expose semantic tokens rather than page-specific colors: background, card background, card border, text, muted text, primary, accent, danger, success, focus, shadow, surface, strong surface, chart colors, task-value min/base/max colors, app header, navigation drawer, input, filled-button text, and disabled-state colors. Optional gradient tokens cover page, card, app bar, drawer, primary button, secondary button, and accent chip surfaces. Optional heading, app-bar, and drawer text shadows remain null unless a scheme opts in.
 
 `ColorSchemeService` reads `preferences/colorSchemes`, resolves the active built-in or custom scheme, applies it through `HabiticaColorScheme.applyAndStore`, and persists the full active scheme in browser `localStorage`. The fast cache also stores the normalized preferences as a fallback for mobile browsers where IndexedDB can be delayed or unavailable during navigation. `wwwroot/js/colorSchemes.js` runs before Blazor starts and reapplies the cached active scheme to avoid a visible wrong-theme flash after reload.
 
-The app overrides MudBlazor app bar, drawer, button, progress, and disabled-state colors from the same semantic CSS variables. `wwwroot/js/colorSchemes.js` also derives readable drawer text and native form-control `color-scheme` values from active tokens so drawer links and number-input steppers remain readable across light and dark schemes. New built-in or custom schemes must keep those shell/control tokens readable, not only page-card colors.
+The app overrides MudBlazor app bar, drawer, button, progress, and disabled-state colors from the same semantic CSS variables. `wwwroot/js/colorSchemes.js` also derives readable drawer text and native form-control `color-scheme` values from active tokens so drawer links and number-input steppers remain readable across light and dark schemes. Native checkboxes and radios use the scheme primary via a global `accent-color` rule. Multi-corner gradients are painted into tiny canvas images once per scheme application and exposed as composed CSS variables; two-stop gradients use CSS `linear-gradient`. New built-in or custom schemes must keep shell/control tokens readable, not only page-card colors.
 
 Task value backgrounds use a logarithmic intensity curve across the scheme's task min/base/max tokens. The three task tokens should be same-hue shades: small absolute values use the base shade, negative values move toward min, and positive values move toward max without introducing unrelated red/orange/green/blue card colors.
 
 The color-scheme controls live in a shared `ColorSchemePanel` component embedded on the Settings page, the Dashboard page, and the Sign-in page, so users can recolor the app without leaving the dashboard and can try themes before signing in. The Dashboard uses the panel's `Compact` mode: a single dense bar (scheme select, small swatch strip, Random Preset, Random Theme) with advanced controls (copy/paste preset editor, random-theme save) collapsed behind a "Customize" disclosure toggle that auto-expands when a random-save flow is active. The Dashboard appearance section sits near the top of the page (just under the hero), collapsed by default behind a "Customize theme"/"Cancel" fold toggle so it is visible without dominating the page. The Settings appearance section uses the same collapsed-by-default fold toggle, but reveals the full (non-compact) panel with advanced controls always visible. Sign-in renders the full panel directly. Opening the advanced panel always reveals the custom-scheme editor directly: a saved custom scheme edits in place, and a built-in active scheme opens as an unsaved draft copy ready to tweak (no intermediate "Create Custom Copy" step). The panel lets users:
 
 - choose a built-in scheme;
-- build a fully custom palette by copying the active preset to the clipboard (as portable JSON), editing the colors in any text editor, and pasting it back — surfaced to users as "Copy preset"/"Paste preset" with no per-token color fields. Pasting applies the colors to the live theme immediately as a transient preview; Save Scheme persists them and Cancel reverts the preview to the previously applied scheme;
+- build a fully custom palette by copying the active preset to the clipboard as readable v2 JSON, editing colors, optional gradients, text shadows, and the light/dark variant in any text editor, and pasting it back. Paste also accepts the legacy flat token shape. Pasting applies the colors to the live theme immediately as a transient preview; Save Scheme persists them and Cancel reverts the preview to the previously applied scheme;
 - paste manually into an inline text box when the browser blocks `navigator.clipboard.readText` (iOS Safari and non-secure origins) — the panel reveals a JSON textarea with Apply/Cancel buttons and shows a specific error reason when the pasted text is empty, not valid JSON, not a JSON object, or carries no recognized color tokens;
-- rename custom schemes;
+- rename custom schemes and set their light/dark variant;
 - delete custom schemes;
 - reset by choosing any built-in scheme;
 - roll a random preset (a random pick from built-in plus custom schemes), which is selected and persisted like any other scheme;
@@ -1661,7 +1665,7 @@ The color-scheme controls live in a shared `ColorSchemePanel` component embedded
 - switch to other schemes and return to the last random theme through a "Generated" entry in the scheme dropdown;
 - name and save the last random theme into the custom schemes list.
 
-The random theme is generated as a palette around a random base hue with light/dark base, contrasting text tokens, and valid CSS color/shadow values for every token; the chaos level (0..1, surfaced as the slider) scales how far each token's hue and saturation diverge, from a calm palette at 0 to maximum madness at 1, while text/muted tokens stay contrast-derived from the background so the app stays usable. A random theme is never written to `preferences/colorSchemes` until the user explicitly saves it with a name, so the persisted selection never points at the transient `random-theme` id. Because `ColorSchemeService` is a scoped (per-app) service, the pending random theme survives navigation between pages within a session.
+The random theme is generated as a palette around a random base hue with light/dark base, contrasting text tokens, valid CSS color/shadow values, and deterministic gradients for every gradient-capable surface. The chaos level (0..1, surfaced as the slider) scales solid and per-corner hue/saturation divergence, from subtle directional shading at 0 to deliberately clashing gradients and a heading glow at high chaos. A random theme is never written to `preferences/colorSchemes` until the user explicitly saves it with a name, so the persisted selection never points at the transient `random-theme` id. Because `ColorSchemeService` is a scoped (per-app) service, the pending random theme survives navigation between pages within a session.
 
 User-created custom schemes are stored only in user data. Built-in schemes are not stored as editable records and cannot be deleted.
 
@@ -1675,11 +1679,13 @@ Color must not be the only state cue. Danger, warning, success, stale, conflict,
 
 Test:
 
-- built-in schemes include Alpha (Light), Habitica (Light), Gryphy (Light), and Gryphy (Dark);
-- Alpha preserves the original root palette values;
+- built-in schemes start with Gryphy Light/Dark defaults, carry balanced light/dark variants, and exclude removed legacy IDs;
+- legacy built-in IDs migrate to supported replacements and persist the migrated selection;
 - built-in schemes define app shell, button, disabled, and input tokens;
 - missing legacy custom tokens are backfilled before validation or application;
 - invalid custom token values are rejected;
+- custom variant, gradient, and text-shadow fields survive save/reload and readable copy/paste round trips;
+- readable v2 paste accepts legacy aliases and legacy flat-token payloads while rejecting conflicting aliases and partial gradients;
 - CSS keeps shell, inputs, buttons, disabled controls, and reported nested surfaces routed through scheme tokens;
 - CSS/JS keep drawer links, number counters, determinate progress bars, quest estimate alerts, task-value card backgrounds, and diagnostics warning panels routed through active scheme tokens;
 - color-scheme preferences are portable user data;

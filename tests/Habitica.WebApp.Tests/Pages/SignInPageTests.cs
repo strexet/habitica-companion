@@ -43,9 +43,9 @@ public sealed class SignInPageTests : BunitContext
         Assert.Contains("Credentials are never saved in exports, app messages, or device sync.", cut.Markup);
         Assert.Contains("Treat this like a password", cut.Markup);
         // Color scheme demo panel is available before signing in.
-        Assert.Contains("Pick a color scheme", cut.Markup);
+        Assert.Contains("Color scheme", cut.Markup);
         Assert.NotNull(cut.Find("[data-testid='color-scheme-select']"));
-        Assert.NotNull(cut.Find("[data-testid='random-theme-scheme']"));
+        Assert.Empty(cut.FindAll("[data-testid='random-theme-scheme']"));
     }
 
     [Fact]

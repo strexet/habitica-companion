@@ -84,6 +84,10 @@ public sealed class StaticAssetRegressionTests
 
         Assert.Contains("--appbar-bg", stylesheet);
         Assert.Contains("--drawer-bg", stylesheet);
+        Assert.Contains("--bg-gradient", stylesheet);
+        Assert.Contains("--card-gradient", stylesheet);
+        Assert.Contains("--primary-btn-gradient", stylesheet);
+        Assert.Contains("--heading-text-shadow", stylesheet);
         Assert.Contains("--input-bg", stylesheet);
         Assert.Contains("--disabled-bg", stylesheet);
         Assert.Contains(".topbar", stylesheet);
@@ -93,6 +97,9 @@ public sealed class StaticAssetRegressionTests
         Assert.Contains(".mud-button:disabled", stylesheet);
         Assert.Contains("input[type=\"file\"].app-input::file-selector-button", stylesheet);
         Assert.Contains("color-scheme: var(--native-control-scheme)", stylesheet);
+        Assert.Contains("input[type=\"checkbox\"]", stylesheet);
+        Assert.Contains("input[type=\"radio\"]", stylesheet);
+        Assert.Contains("accent-color: var(--primary)", stylesheet);
         Assert.Contains(".mud-progress-linear .mud-progress-linear-bar-primary", stylesheet);
         Assert.Contains("background-color: var(--progress-track)", stylesheet);
         Assert.Contains(".quest-estimate-alert", stylesheet);
@@ -123,6 +130,10 @@ public sealed class StaticAssetRegressionTests
         Assert.Contains("--drawer-readable-muted", moduleContents);
         Assert.Contains("--native-control-scheme", moduleContents);
         Assert.Contains("contrastRatio", moduleContents);
+        Assert.Contains("paintStopsToDataUrl", moduleContents);
+        Assert.Contains("canvas.toDataURL(\"image/png\")", moduleContents);
+        Assert.Contains("--bg-gradient", moduleContents);
+        Assert.Contains("--accent-chip-gradient", moduleContents);
     }
 
     [Fact]

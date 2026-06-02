@@ -140,7 +140,11 @@ public sealed class ColorSchemeService
         var selectedSchemeId = select ? customScheme.Id : preferences.SelectedSchemeId;
         var activeScheme = ColorSchemeCatalog.Resolve(selectedSchemeId, customSchemes);
         var selectedAtUtc = select ? now : preferences.SelectedAtUtc;
-        var updated = new ColorSchemePreferences(activeScheme.Id, customSchemes, selectedAtUtc);
+        var updated = new ColorSchemePreferences(
+            activeScheme.Id,
+            customSchemes,
+            selectedAtUtc,
+            ColorSchemePreferences.CurrentSchemaVersion);
         await SavePreferencesAsync(updated, activeScheme, cancellationToken);
         return (new ColorSchemeState(activeScheme, ColorSchemeCatalog.BuiltInSchemes, customSchemes), Array.Empty<string>());
     }
@@ -149,16 +153,26 @@ public sealed class ColorSchemeService
     {
         RandomActive = false;
         var preferences = await LoadPreferencesAsync(cancellationToken);
+        var deletedScheme = preferences.CustomSchemes.FirstOrDefault(
+            scheme => string.Equals(scheme.Id, schemeId, StringComparison.Ordinal));
         var customSchemes = preferences.CustomSchemes
             .Where(scheme => !string.Equals(scheme.Id, schemeId, StringComparison.Ordinal))
             .ToArray();
         var deletedActive = string.Equals(preferences.SelectedSchemeId, schemeId, StringComparison.Ordinal);
-        var selectedSchemeId = deletedActive ? ColorSchemeCatalog.AlphaId : preferences.SelectedSchemeId;
+        var selectedSchemeId = deletedActive
+            ? deletedScheme?.IsDark == true
+                ? ColorSchemeCatalog.DefaultDarkSchemeId
+                : ColorSchemeCatalog.DefaultLightSchemeId
+            : preferences.SelectedSchemeId;
         var activeScheme = ColorSchemeCatalog.Resolve(selectedSchemeId, customSchemes);
-        // Falling back to Alpha because the active scheme was deleted is itself a selection change,
+        // Falling back to the matching light/dark default because the active scheme was deleted is itself a selection change,
         // so bump the timestamp; otherwise leave the prior selection stamp intact.
         var selectedAtUtc = deletedActive ? DateTimeOffset.UtcNow : preferences.SelectedAtUtc;
-        var updated = new ColorSchemePreferences(activeScheme.Id, customSchemes, selectedAtUtc);
+        var updated = new ColorSchemePreferences(
+            activeScheme.Id,
+            customSchemes,
+            selectedAtUtc,
+            ColorSchemePreferences.CurrentSchemaVersion);
         await SavePreferencesAsync(updated, activeScheme, cancellationToken);
         return new ColorSchemeState(activeScheme, ColorSchemeCatalog.BuiltInSchemes, customSchemes);
     }
@@ -167,8 +181,19 @@ public sealed class ColorSchemeService
     {
         var preferences = await _keyValueStorage.GetAsync<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences, cancellationToken)
             ?? await LoadFastPreferencesAsync()
-            ?? new ColorSchemePreferences(ColorSchemeCatalog.AlphaId, Array.Empty<ColorSchemeDefinition>());
-        return NormalizePreferences(preferences);
+            ?? new ColorSchemePreferences(
+                ColorSchemeCatalog.DefaultLightSchemeId,
+                Array.Empty<ColorSchemeDefinition>(),
+                SchemaVersion: ColorSchemePreferences.CurrentSchemaVersion);
+        var normalized = NormalizePreferences(preferences);
+        if (NeedsMigrationPersistence(preferences, normalized))
+        {
+            var activeScheme = ColorSchemeCatalog.Resolve(normalized.SelectedSchemeId, normalized.CustomSchemes);
+            await PersistFastSchemeAsync(activeScheme, normalized);
+            await _keyValueStorage.SetAsync(StorageKeys.ColorSchemePreferences, normalized, cancellationToken);
+        }
+
+        return normalized;
     }
 
     private async Task SavePreferencesAsync(
@@ -191,7 +216,7 @@ public sealed class ColorSchemeService
         try
         {
             var preferences = await _jsRuntime.InvokeAsync<ColorSchemePreferences?>("HabiticaColorScheme.getPreferences");
-            return preferences is null ? null : NormalizePreferences(preferences);
+            return preferences;
         }
         catch (InvalidOperationException)
         {
@@ -205,13 +230,29 @@ public sealed class ColorSchemeService
 
     private static ColorSchemePreferences NormalizePreferences(ColorSchemePreferences preferences)
     {
+        var isLegacySchema = preferences.SchemaVersion < ColorSchemePreferences.CurrentSchemaVersion;
         var customSchemes = preferences.CustomSchemes?
             .Where(static scheme => scheme is not null)
             .Select(ColorSchemeCatalog.Complete)
+            .Select(scheme => isLegacySchema
+                ? scheme with { IsDark = ColorSchemeCatalog.GuessIsDark(scheme.Tokens.Background) }
+                : scheme)
             .Where(static scheme => !scheme.IsBuiltIn)
             .OrderBy(static scheme => scheme.Name, StringComparer.OrdinalIgnoreCase)
             .ToArray() ?? Array.Empty<ColorSchemeDefinition>();
-        var activeScheme = ColorSchemeCatalog.Resolve(preferences.SelectedSchemeId, customSchemes);
-        return new ColorSchemePreferences(activeScheme.Id, customSchemes, preferences.SelectedAtUtc);
+        var activeScheme = ColorSchemeCatalog.Resolve(
+            ColorSchemeCatalog.MigrateLegacySchemeId(preferences.SelectedSchemeId),
+            customSchemes);
+        return new ColorSchemePreferences(
+            activeScheme.Id,
+            customSchemes,
+            preferences.SelectedAtUtc,
+            ColorSchemePreferences.CurrentSchemaVersion);
+    }
+
+    private static bool NeedsMigrationPersistence(ColorSchemePreferences source, ColorSchemePreferences normalized)
+    {
+        return source.SchemaVersion != ColorSchemePreferences.CurrentSchemaVersion
+            || !string.Equals(source.SelectedSchemeId, normalized.SelectedSchemeId, StringComparison.Ordinal);
     }
 }

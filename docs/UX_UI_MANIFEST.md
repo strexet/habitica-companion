@@ -1,6 +1,6 @@
 # UX/UI Manifest
 
-Last reviewed: 2026-05-28
+Last reviewed: 2026-06-02
 
 This manifest records the current UI implementation, what is working, where readability or responsiveness has drifted, and which outside patterns are worth copying. Treat it as product guidance for future UI work, not as a pixel spec.
 
@@ -58,13 +58,13 @@ UI change completion checklist:
 
 Current pattern:
 
-- Built-in schemes live in `ColorSchemeCatalog`: `Alpha`, `Habitica`, `Gryphy Light`, `Gryphy Dark`, `Midnight Tavern`, `Dragonfire Keep`, `Neon Rogue`, `Frost Healer`, `Sunlit Stable`, `Mosswood Quest`, `Potion Shop`, `Boss Battle`, `Quiet Ledger`, `Celestial Inn`, and `Mana Mirage`.
-- `Alpha` preserves the original app palette. `Habitica` follows Habitica-like purple, blue, green, gold, and danger colors. Gryphy schemes are derived from `gryphy/Gryphy.png` and tuned for readable light/dark app surfaces. The other presets cover dark, bright, colorful, dull, and psychedelic moods with names that fit the Habitica companion context.
+- Built-in schemes live in `ColorSchemeCatalog`, carry explicit light/dark metadata, and render as grouped picker sections: Default, Built-in Light, Built-in Dark, Custom, Generated.
+- `Gryphy Light` and `Gryphy Dark` are the defaults. `Forest Legacy` preserves the original app palette. The other presets cover low-contrast, dark, bright, colorful, and intentionally chaotic moods with names that fit the Habitica companion context.
 - The app applies semantic CSS variables such as background, card, surface, text, muted text, primary, accent, danger, success, focus, chart, task-value min/base/max, app header, navigation drawer, input, button text, and disabled-state tokens.
-- Settings exposes a scheme picker and a custom scheme builder. Fully custom palettes are built with "Copy preset"/"Paste preset" — copy the active preset, edit the colors in any text editor, paste it back — not via a wall of per-token color fields. Avoid "JSON" in user-facing copy even though the clipboard format is JSON. Custom schemes are user data, not developer config.
+- Settings exposes a scheme picker and a custom scheme builder. Fully custom palettes are built with "Copy preset"/"Paste preset" — copy the readable preset, edit colors, optional gradients, text shadows, and the dark-theme flag in any text editor, paste it back — plus collapsible advanced gradient controls for direct edits. Avoid "JSON" in user-facing copy even though the clipboard format is JSON. Custom schemes are user data, not developer config.
 - The picker is a shared `ColorSchemePanel` component reused by Settings and Sign-in (full) and the Dashboard (`Compact`). Compact mode is a single dense bar — select, small swatch strip, Random Preset, Random Theme — with create/copy/preset-editor/random-save controls collapsed behind a "Customize" disclosure that auto-expands when a save or edit flow is active; the disclosure toggle reads "Cancel" while a save/edit flow is open so it both abandons the flow and collapses. The Dashboard appearance section sits near the top of the page, collapsed by default behind a "Customize theme"/"Cancel" fold toggle. The Settings appearance section uses the same collapsed-by-default fold toggle but reveals the full panel. This follows the collapsible-disclosure and compact-swatch-row patterns and keeps the Dashboard section a small operational band rather than a second settings page.
 - Random controls: Random Preset selects an existing scheme; Random Theme generates a transient in-memory theme applied without persisting, saveable into custom schemes with a name. A chaos slider (Calm to Madness) scales hue/saturation divergence before each reroll. Keep text and muted tokens contrast-derived from the background even for chaotic palettes so the app stays legible.
-- `colorSchemes.js` keeps a localStorage active-scheme and preference fallback so mobile browsers can apply the scheme before Blazor and recover if IndexedDB is delayed during navigation.
+- `colorSchemes.js` keeps a localStorage active-scheme and preference fallback so mobile browsers can apply the scheme before Blazor and recover if IndexedDB is delayed during navigation. Optional multi-corner gradients are painted into tiny canvas images once per scheme switch; solid schemes keep the normal token fallback.
 
 Rules:
 

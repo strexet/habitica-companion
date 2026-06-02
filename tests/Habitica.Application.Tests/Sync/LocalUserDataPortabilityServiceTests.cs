@@ -182,19 +182,21 @@ public sealed class LocalUserDataPortabilityServiceTests
         const string localJson = """
             {
               "selectedSchemeId":"alpha",
+              "schemaVersion":2,
               "selectedAtUtc":"2026-05-13T01:00:00Z",
               "customSchemes":[
-                {"id":"c1","name":"Local Old","isBuiltIn":false,"updatedAtUtc":"2026-05-13T01:00:00Z","tokens":{}}
+                {"id":"c1","name":"Local Old","isBuiltIn":false,"isDark":false,"updatedAtUtc":"2026-05-13T01:00:00Z","tokens":{}}
               ]
             }
             """;
         const string incomingJson = """
             {
               "selectedSchemeId":"c2",
+              "schemaVersion":2,
               "selectedAtUtc":"2026-05-13T02:00:00Z",
               "customSchemes":[
                 {"id":"c1","name":"Local Updated","isBuiltIn":false,"updatedAtUtc":"2026-05-13T03:00:00Z","tokens":{}},
-                {"id":"c2","name":"Remote","isBuiltIn":false,"updatedAtUtc":"2026-05-13T02:00:00Z","tokens":{}}
+                {"id":"c2","name":"Remote","isBuiltIn":false,"isDark":true,"updatedAtUtc":"2026-05-13T02:00:00Z","tokens":{}}
               ]
             }
             """;
@@ -213,11 +215,13 @@ public sealed class LocalUserDataPortabilityServiceTests
         var merged = JsonNode.Parse(mergedJson!)!.AsObject();
 
         Assert.Equal("c2", merged["selectedSchemeId"]!.GetValue<string>());
+        Assert.Equal(2, merged["schemaVersion"]!.GetValue<int>());
         var customs = merged["customSchemes"]!.AsArray();
         var byId = customs.ToDictionary(node => node!["id"]!.GetValue<string>(), node => node!["name"]!.GetValue<string>());
         Assert.Equal(2, byId.Count);
         Assert.Equal("Local Updated", byId["c1"]);
         Assert.Equal("Remote", byId["c2"]);
+        Assert.True(customs.Single(node => node!["id"]!.GetValue<string>() == "c2")!["isDark"]!.GetValue<bool>());
     }
 
     [Fact]

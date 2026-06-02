@@ -1,4 +1,3 @@
-@using System.Text.Json
 @using Habitica.WebApp.Theme
 @inject ColorSchemeService ColorSchemeService
 @inject IJSRuntime JsRuntime
@@ -8,8 +7,20 @@
         <label class="field-row compact color-scheme-select-row">
             <span>Color scheme</span>
             <select class="app-input" data-testid="color-scheme-select" value="@ActiveDisplaySchemeId" @onchange="eventArgs => SelectColorSchemeAsync(eventArgs.Value?.ToString())">
-                <optgroup label="Built in">
-                    @foreach (var scheme in _colorSchemeState.BuiltInSchemes)
+                <optgroup label="Default">
+                    @foreach (var scheme in DefaultSchemes)
+                    {
+                        <option value="@scheme.Id">@scheme.Name</option>
+                    }
+                </optgroup>
+                <optgroup label="Built-in Light">
+                    @foreach (var scheme in BuiltInLightSchemes)
+                    {
+                        <option value="@scheme.Id">@scheme.Name</option>
+                    }
+                </optgroup>
+                <optgroup label="Built-in Dark">
+                    @foreach (var scheme in BuiltInDarkSchemes)
                     {
                         <option value="@scheme.Id">@scheme.Name</option>
                     }
@@ -70,6 +81,19 @@
     @if (!PresetsOnly && ShowAdvanced)
     {
         <div class="color-scheme-advanced">
+            <div class="color-scheme-group-labels" aria-label="Color scheme groups">
+                <span>Default</span>
+                <span>Built-in Light</span>
+                <span>Built-in Dark</span>
+                @if (_colorSchemeState.CustomSchemes.Count > 0)
+                {
+                    <span>Custom</span>
+                }
+                @if (_randomScheme is not null)
+                {
+                    <span>Generated</span>
+                }
+            </div>
             @if (_randomActive)
             {
                 <MudPaper Class="card-surface action-card color-scheme-card color-scheme-card--random" Elevation="0">
@@ -97,6 +121,22 @@
             {
                 <MudPaper Class="card-surface action-card color-scheme-card" Elevation="0">
                     <h2>Custom scheme</h2>
+                    <details class="color-scheme-help">
+                        <summary>What is this?</summary>
+                        <p>Each color controls one part of the app — page background, cards, buttons, text.</p>
+                        <div class="color-scheme-mini-mock" aria-label="Color scheme field guide">
+                            <span>PageBackground</span><strong>AppBarBackground · AppBarText</strong>
+                            <span>DrawerBackground · DrawerText</span><span>CardBackground · CardBorder · CardShadow</span>
+                            <span>BodyText · SecondaryText</span><span>Primary · Accent · Danger · Success · FocusOutline</span>
+                            <span>SurfaceTint · SurfaceStrongTint</span><span>ChartPrimary · ChartSecondary</span>
+                            <span>TaskNegativeTint · TaskNeutralTint · TaskPositiveTint</span>
+                            <span>ButtonText · DisabledBackground · DisabledText · DisabledBorder</span>
+                            <span>InputBackground · InputBorder</span>
+                            <span>Gradients.PageBackground · Card · AppBar · Drawer · PrimaryButton · SecondaryButton · AccentChip</span>
+                            <span>TextShadows.Headings · AppBar · Drawer</span>
+                        </div>
+                        <p><strong>Tips:</strong> Hex (<code>#aabbcc</code>), <code>rgba(...)</code>, or <code>color-mix(...)</code> all work. <code>CardShadow</code> is a full CSS <code>box-shadow</code> value. <code>TextShadows.*</code> is a CSS <code>text-shadow</code> value or null.</p>
+                    </details>
                     <p class="panel-copy">
                         Copy the preset, tweak the colors, then paste it back and save to build your own palette.
                     </p>
@@ -107,6 +147,44 @@
                                value="@_colorSchemeEditor.Name"
                                @onchange="eventArgs => SetCustomSchemeName(eventArgs.Value?.ToString())" />
                     </label>
+                    <label class="checkbox-row compact">
+                        <input type="checkbox"
+                               data-testid="custom-scheme-dark"
+                               checked="@_colorSchemeEditor.IsDark"
+                               @onchange="eventArgs => SetCustomSchemeDark(eventArgs.Value)" />
+                        <span>Dark theme</span>
+                    </label>
+                    <details class="color-scheme-gradient-editor">
+                        <summary>Advanced</summary>
+                        @foreach (var gradient in _colorSchemeEditor.Gradients.Values)
+                        {
+                            <details class="color-scheme-gradient-surface">
+                                <summary>@gradient.Label</summary>
+                                <label class="checkbox-row compact">
+                                    <input type="checkbox"
+                                           checked="@gradient.Enabled"
+                                           @onchange="eventArgs => SetGradientEnabled(gradient.Name, eventArgs.Value)" />
+                                    <span>Use gradient</span>
+                                </label>
+                                @foreach (var stop in gradient.Stops)
+                                {
+                                    <label class="field-row compact">
+                                        <span>@stop.Key</span>
+                                        <input class="app-input"
+                                               value="@stop.Value"
+                                               disabled="@(!gradient.Enabled)"
+                                               @onchange="eventArgs => SetGradientStop(gradient.Name, stop.Key, eventArgs.Value?.ToString())" />
+                                    </label>
+                                }
+                            </details>
+                        }
+                        <div class="color-scheme-shadow-editor">
+                            <h3>Text shadows</h3>
+                            <label class="field-row compact"><span>Headings</span><input class="app-input" value="@_colorSchemeEditor.HeadingTextShadow" @onchange="eventArgs => _colorSchemeEditor.HeadingTextShadow = EmptyToNull(eventArgs.Value?.ToString())" /></label>
+                            <label class="field-row compact"><span>App bar</span><input class="app-input" value="@_colorSchemeEditor.AppBarTextShadow" @onchange="eventArgs => _colorSchemeEditor.AppBarTextShadow = EmptyToNull(eventArgs.Value?.ToString())" /></label>
+                            <label class="field-row compact"><span>Drawer</span><input class="app-input" value="@_colorSchemeEditor.DrawerTextShadow" @onchange="eventArgs => _colorSchemeEditor.DrawerTextShadow = EmptyToNull(eventArgs.Value?.ToString())" /></label>
+                        </div>
+                    </details>
                     <div class="action-row">
                         <MudButton Color="Color.Secondary" Size="@ControlSize" StartIcon="@Icons.Material.Filled.ContentCopy" data-testid="copy-custom-scheme" OnClick="CopyCustomSchemeAsync" Variant="Variant.Filled">
                             Copy preset
@@ -220,6 +298,15 @@
         : Icons.Material.Filled.ExpandMore;
 
     private Size ControlSize => Compact ? Size.Small : Size.Medium;
+
+    private IEnumerable<ColorSchemeDefinition> DefaultSchemes => _colorSchemeState.BuiltInSchemes
+        .Where(scheme => scheme.Id is ColorSchemeCatalog.DefaultLightSchemeId or ColorSchemeCatalog.DefaultDarkSchemeId);
+
+    private IEnumerable<ColorSchemeDefinition> BuiltInLightSchemes => _colorSchemeState.BuiltInSchemes
+        .Where(scheme => !scheme.IsDark && scheme.Id != ColorSchemeCatalog.DefaultLightSchemeId);
+
+    private IEnumerable<ColorSchemeDefinition> BuiltInDarkSchemes => _colorSchemeState.BuiltInSchemes
+        .Where(scheme => scheme.IsDark && scheme.Id != ColorSchemeCatalog.DefaultDarkSchemeId);
 
     // Collapsing while a flow is open abandons it and reverts to the persisted scheme so reopening
     // the panel starts clean rather than snapping back to the transient random theme.
@@ -436,6 +523,33 @@
         }
     }
 
+    private void SetCustomSchemeDark(object? value)
+    {
+        if (_colorSchemeEditor is not null)
+        {
+            _colorSchemeEditor.IsDark = value is bool enabled && enabled;
+        }
+    }
+
+    private void SetGradientEnabled(string name, object? value)
+    {
+        if (_colorSchemeEditor?.Gradients.TryGetValue(name, out var gradient) == true)
+        {
+            gradient.Enabled = value is bool enabled && enabled;
+        }
+    }
+
+    private void SetGradientStop(string gradientName, string stopName, string? value)
+    {
+        if (_colorSchemeEditor?.Gradients.TryGetValue(gradientName, out var gradient) == true)
+        {
+            gradient.Stops[stopName] = value?.Trim() ?? string.Empty;
+        }
+    }
+
+    private static string? EmptyToNull(string? value)
+        => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+
     private async Task SaveCustomSchemeAsync()
     {
         if (_colorSchemeEditor is null)
@@ -482,10 +596,7 @@
             return;
         }
 
-        var payload = new ColorSchemeClipboardModel(
-            _colorSchemeEditor.Name,
-            new Dictionary<string, string>(_colorSchemeEditor.Tokens, StringComparer.Ordinal));
-        var json = JsonSerializer.Serialize(payload, ClipboardJsonOptions);
+        var json = ReadableSchemeParser.Serialize(_colorSchemeEditor.ToScheme());
 
         try
         {
@@ -562,25 +673,14 @@
             return;
         }
 
-        var result = TryParseSchemeJson(json, out var name, out var tokens);
-        if (result != SchemeParseResult.Success)
+        var outcome = ReadableSchemeParser.Parse(json, _colorSchemeEditor.ToScheme());
+        if (outcome.Result != SchemeParseResult.Success || outcome.Scheme is null)
         {
-            SetColorSchemeMessage(DescribeParseFailure(result), false);
+            SetColorSchemeMessage(DescribeParseFailure(outcome), false);
             return;
         }
 
-        if (!string.IsNullOrWhiteSpace(name))
-        {
-            _colorSchemeEditor.Name = name!.Trim();
-        }
-
-        foreach (var token in ColorSchemeCatalog.EditableTokens)
-        {
-            if (tokens.TryGetValue(token.Name, out var value) && !string.IsNullOrWhiteSpace(value))
-            {
-                _colorSchemeEditor.Tokens[token.Name] = value.Trim();
-            }
-        }
+        _colorSchemeEditor = ColorSchemeEditorModel.FromScheme(outcome.Scheme);
 
         // Apply the pasted colors to the live theme right away so the user sees them without saving.
         await ColorSchemeService.PreviewAsync(_colorSchemeEditor.ToScheme());
@@ -591,98 +691,18 @@
         SetColorSchemeMessage($"{from} Review the live colors and save to keep them.", true);
     }
 
-    private static string DescribeParseFailure(SchemeParseResult result) => result switch
+    private static string DescribeParseFailure(ReadableSchemeParseOutcome outcome) => outcome.Result switch
     {
         SchemeParseResult.Empty => "Nothing to paste — the text was empty.",
         SchemeParseResult.InvalidJson => "That isn't valid JSON. Copy a preset with the Copy button, then paste the whole thing.",
         SchemeParseResult.NotAnObject => "Expected a JSON object holding color tokens, not a list or value.",
+        SchemeParseResult.MissingName => "Preset Name is required.",
         SchemeParseResult.NoTokens => "No recognized color tokens found. Make sure you copied a preset from this app.",
+        SchemeParseResult.PartialGradient => outcome.Detail ?? "A gradient is missing required stops.",
+        SchemeParseResult.ConflictingAliases => outcome.Detail ?? "Two names for the same color conflict.",
+        SchemeParseResult.InvalidValue => outcome.Detail ?? "A preset value is not valid CSS.",
         _ => "Could not read a valid color preset from that text."
     };
-
-    private enum SchemeParseResult
-    {
-        Success,
-        Empty,
-        InvalidJson,
-        NotAnObject,
-        NoTokens
-    }
-
-    private static SchemeParseResult TryParseSchemeJson(string json, out string? name, out Dictionary<string, string> tokens)
-    {
-        name = null;
-        tokens = new Dictionary<string, string>(StringComparer.Ordinal);
-
-        if (string.IsNullOrWhiteSpace(json))
-        {
-            return SchemeParseResult.Empty;
-        }
-
-        JsonDocument document;
-        try
-        {
-            document = JsonDocument.Parse(json);
-        }
-        catch (JsonException)
-        {
-            return SchemeParseResult.InvalidJson;
-        }
-
-        using (document)
-        {
-            var root = document.RootElement;
-            if (root.ValueKind != JsonValueKind.Object)
-            {
-                return SchemeParseResult.NotAnObject;
-            }
-
-            if (TryGetPropertyIgnoreCase(root, "name", out var nameElement) && nameElement.ValueKind == JsonValueKind.String)
-            {
-                name = nameElement.GetString();
-            }
-
-            // Accept either { "tokens": { ... } } or a bare token map at the root.
-            var tokensElement = TryGetPropertyIgnoreCase(root, "tokens", out var nested) ? nested : root;
-            if (tokensElement.ValueKind != JsonValueKind.Object)
-            {
-                return SchemeParseResult.NotAnObject;
-            }
-
-            foreach (var token in ColorSchemeCatalog.EditableTokens)
-            {
-                if (TryGetPropertyIgnoreCase(tokensElement, token.Name, out var value) && value.ValueKind == JsonValueKind.String)
-                {
-                    var text = value.GetString();
-                    if (!string.IsNullOrWhiteSpace(text))
-                    {
-                        tokens[token.Name] = text!;
-                    }
-                }
-            }
-
-            return tokens.Count > 0 ? SchemeParseResult.Success : SchemeParseResult.NoTokens;
-        }
-    }
-
-    private static bool TryGetPropertyIgnoreCase(JsonElement element, string propertyName, out JsonElement value)
-    {
-        foreach (var property in element.EnumerateObject())
-        {
-            if (string.Equals(property.Name, propertyName, StringComparison.OrdinalIgnoreCase))
-            {
-                value = property.Value;
-                return true;
-            }
-        }
-
-        value = default;
-        return false;
-    }
-
-    private static readonly JsonSerializerOptions ClipboardJsonOptions = new() { WriteIndented = true };
-
-    private sealed record ColorSchemeClipboardModel(string Name, Dictionary<string, string> Tokens);
 
     private sealed class ColorSchemeEditorModel
     {
@@ -690,20 +710,41 @@
 
         public string Name { get; set; } = string.Empty;
 
+        public bool IsDark { get; set; }
+
         public Dictionary<string, string> Tokens { get; } = new(StringComparer.Ordinal);
+
+        public Dictionary<string, GradientEditorModel> Gradients { get; } = new(StringComparer.Ordinal);
+
+        public string? HeadingTextShadow { get; set; }
+
+        public string? AppBarTextShadow { get; set; }
+
+        public string? DrawerTextShadow { get; set; }
 
         public static ColorSchemeEditorModel FromScheme(ColorSchemeDefinition scheme)
         {
             var editor = new ColorSchemeEditorModel
             {
                 Id = scheme.Id,
-                Name = scheme.Name
+                Name = scheme.Name,
+                IsDark = scheme.IsDark,
+                HeadingTextShadow = scheme.Tokens.HeadingTextShadow,
+                AppBarTextShadow = scheme.Tokens.AppBarTextShadow,
+                DrawerTextShadow = scheme.Tokens.DrawerTextShadow
             };
             foreach (var token in ColorSchemeCatalog.EditableTokens)
             {
                 editor.Tokens[token.Name] = ColorSchemeCatalog.GetTokenValue(scheme.Tokens, token.Name);
             }
 
+            editor.Gradients["PageBackground"] = GradientEditorModel.Create("PageBackground", "Page background", scheme.Tokens.Background, scheme.Tokens.BackgroundGradient);
+            editor.Gradients["Card"] = GradientEditorModel.Create("Card", "Card", scheme.Tokens.CardBackground, scheme.Tokens.CardGradient);
+            editor.Gradients["AppBar"] = GradientEditorModel.Create("AppBar", "App bar", scheme.Tokens.AppBarBackground, scheme.Tokens.AppBarGradient);
+            editor.Gradients["Drawer"] = GradientEditorModel.Create("Drawer", "Drawer", scheme.Tokens.DrawerBackground, scheme.Tokens.DrawerGradient);
+            editor.Gradients["PrimaryButton"] = GradientEditorModel.Create("PrimaryButton", "Primary button", scheme.Tokens.Primary, scheme.Tokens.PrimaryButtonGradient);
+            editor.Gradients["SecondaryButton"] = GradientEditorModel.Create("SecondaryButton", "Secondary button", scheme.Tokens.CardBackground, scheme.Tokens.SecondaryButtonGradient);
+            editor.Gradients["AccentChip"] = GradientEditorModel.Create("AccentChip", "Accent chip", scheme.Tokens.Accent, scheme.Tokens.AccentChipGradient);
             return editor;
         }
 
@@ -712,11 +753,73 @@
             var tokens = ColorSchemeCatalog.EditableTokens
                 .Aggregate(ColorSchemeCatalog.Alpha.Tokens, (current, token) =>
                     ColorSchemeCatalog.WithTokenValue(current, token.Name, Tokens.GetValueOrDefault(token.Name, string.Empty)));
+            tokens = tokens with
+            {
+                BackgroundGradient = Gradients["PageBackground"].ToStops9(),
+                CardGradient = Gradients["Card"].ToStops8(),
+                AppBarGradient = Gradients["AppBar"].ToStops6(),
+                DrawerGradient = Gradients["Drawer"].ToStops6(),
+                PrimaryButtonGradient = Gradients["PrimaryButton"].ToStops4(),
+                SecondaryButtonGradient = Gradients["SecondaryButton"].ToStops2(),
+                AccentChipGradient = Gradients["AccentChip"].ToStops2(),
+                HeadingTextShadow = HeadingTextShadow,
+                AppBarTextShadow = AppBarTextShadow,
+                DrawerTextShadow = DrawerTextShadow
+            };
             return new ColorSchemeDefinition(
                 Id,
                 ColorSchemeCatalog.NormalizeName(Name, "Custom scheme"),
                 false,
-                tokens);
+                tokens,
+                IsDark: IsDark);
         }
+    }
+
+    private sealed class GradientEditorModel
+    {
+        public required string Name { get; init; }
+
+        public required string Label { get; init; }
+
+        public bool Enabled { get; set; }
+
+        public Dictionary<string, string> Stops { get; } = new(StringComparer.Ordinal);
+
+        public static GradientEditorModel Create(string name, string label, string fallback, object? gradient)
+        {
+            var editor = new GradientEditorModel { Name = name, Label = label, Enabled = gradient is not null };
+            var stopNames = name switch
+            {
+                "PageBackground" => new[] { "TopLeft", "Top", "TopRight", "MiddleLeft", "Middle", "MiddleRight", "BottomLeft", "Bottom", "BottomRight" },
+                "Card" => new[] { "TopLeft", "Top", "TopRight", "MiddleLeft", "MiddleRight", "BottomLeft", "Bottom", "BottomRight" },
+                "AppBar" or "Drawer" => new[] { "TopLeft", "Top", "TopRight", "BottomLeft", "Bottom", "BottomRight" },
+                "PrimaryButton" => new[] { "TopLeft", "TopRight", "BottomLeft", "BottomRight" },
+                _ => new[] { "Start", "End" }
+            };
+            foreach (var stopName in stopNames)
+            {
+                editor.Stops[stopName] = gradient?.GetType().GetProperty(stopName)?.GetValue(gradient) as string ?? fallback;
+            }
+
+            return editor;
+        }
+
+        public GradientStops9? ToStops9() => Enabled
+            ? new(Stops["TopLeft"], Stops["Top"], Stops["TopRight"], Stops["MiddleLeft"], Stops["Middle"], Stops["MiddleRight"], Stops["BottomLeft"], Stops["Bottom"], Stops["BottomRight"])
+            : null;
+
+        public GradientStops8? ToStops8() => Enabled
+            ? new(Stops["TopLeft"], Stops["Top"], Stops["TopRight"], Stops["MiddleLeft"], Stops["MiddleRight"], Stops["BottomLeft"], Stops["Bottom"], Stops["BottomRight"])
+            : null;
+
+        public GradientStops6? ToStops6() => Enabled
+            ? new(Stops["TopLeft"], Stops["Top"], Stops["TopRight"], Stops["BottomLeft"], Stops["Bottom"], Stops["BottomRight"])
+            : null;
+
+        public GradientStops4? ToStops4() => Enabled
+            ? new(Stops["TopLeft"], Stops["TopRight"], Stops["BottomLeft"], Stops["BottomRight"])
+            : null;
+
+        public GradientStops2? ToStops2() => Enabled ? new(Stops["Start"], Stops["End"]) : null;
     }
 }

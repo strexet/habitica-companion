@@ -5,8 +5,11 @@ namespace Habitica.WebApp.Theme;
 public static partial class ColorSchemeCatalog
 {
     public const string AlphaId = "alpha";
+    public const string DefaultLightSchemeId = "gryphy-light";
+    public const string DefaultDarkSchemeId = "gryphy-dark";
+    public const string ForestLegacyId = "forest-legacy";
 
-    public static IReadOnlyList<ColorSchemeDefinition> BuiltInSchemes { get; } = new[]
+    private static IReadOnlyList<ColorSchemeDefinition> LegacySchemes { get; } = new[]
     {
         new ColorSchemeDefinition(
             AlphaId,
@@ -670,6 +673,112 @@ public static partial class ColorSchemeCatalog
                 "rgba(0, 240, 255, 0.38)"))
     };
 
+    public static IReadOnlyList<ColorSchemeDefinition> BuiltInSchemes { get; } = BuildBuiltInSchemes();
+
+    private static IReadOnlyList<ColorSchemeDefinition> BuildBuiltInSchemes()
+    {
+        var sunlit = LegacyAs("sunlit-stable", "Sunlit Stable", isDark: false);
+        var potion = LegacyAs("potion-shop", "Potion Shop", isDark: false);
+        var ledger = LegacyAs("quiet-ledger", "Quiet Ledger", isDark: false);
+        return new[]
+        {
+            BuiltIn(DefaultLightSchemeId, "Gryphy (Light)", isDark: false, Tokens(
+                "#f7f1ff", "rgba(255, 252, 255, 0.94)", "rgba(103, 49, 184, 0.13)", "#2d2040", "#756881", "#7334bd", "#d99416",
+                "#c84a67", "#2a9277", "#438fd0", "0 18px 44px rgba(32, 17, 54, 0.09)", "rgba(255, 255, 255, 0.72)", "rgba(255, 252, 255, 0.92)",
+                "#7334bd", "#438fd0", "#e4d8f6", "#f0e9fb", "#faf7ff", "#684095", "#fff8ff", "#3b2356", "#f8f0ff", "#ffffff",
+                "rgba(103, 49, 184, 0.06)", "rgba(117, 104, 129, 0.58)", "rgba(117, 104, 129, 0.22)", "rgba(255, 252, 255, 0.92)", "rgba(103, 49, 184, 0.13)")),
+            BuiltIn(DefaultDarkSchemeId, "Gryphy (Dark)", isDark: true, Tokens(
+                "#12091e", "rgba(30, 16, 47, 0.94)", "rgba(178, 93, 255, 0.18)", "#f3eaf6", "#b5a6c5", "#a765e2", "#d9b33a",
+                "#e46380", "#58bfa9", "#5aa9df", "0 22px 52px rgba(0, 0, 0, 0.34)", "rgba(45, 24, 70, 0.76)", "rgba(38, 21, 61, 0.94)",
+                "#a765e2", "#5aa9df", "#21172d", "#2d2040", "#3c2a55", "#241436", "#f3eaf6", "#211331", "#f3eaf6", "#140a20",
+                "rgba(190, 140, 230, 0.085)", "rgba(181, 166, 197, 0.52)", "rgba(190, 140, 230, 0.22)", "#21142e", "rgba(190, 140, 230, 0.24)")),
+            LegacyAs(AlphaId, "Forest Legacy", isDark: false, ForestLegacyId),
+            LegacyAs("frosted-cake", "Frosted Cake", isDark: false),
+            BuiltIn("arcane-wraith", "Arcane Wraith", isDark: true, Tokens(
+                "#0b0920", "rgba(20, 17, 44, 0.94)", "rgba(68, 190, 210, 0.20)", "#ececf7", "#aaa7cb", "#42bfd2", "#d75ad2",
+                "#df5d7d", "#55c894", "#907ee0", "0 22px 54px rgba(0, 0, 0, 0.42)", "rgba(25, 22, 56, 0.78)", "rgba(31, 27, 70, 0.92)",
+                "#42bfd2", "#d75ad2", "#102631", "#183745", "#1b4c59", "#151037", "#ececf7", "#100d2b", "#ececf7", "#0b0920",
+                "rgba(236, 236, 247, 0.08)", "rgba(170, 167, 203, 0.52)", "rgba(68, 190, 210, 0.22)", "#19163a", "rgba(68, 190, 210, 0.26)")),
+            BuiltIn("phantom-fair", "Phantom Fair", isDark: true, Tokens(
+                "#0b0820", "rgba(23, 13, 51, 0.94)", "rgba(220, 86, 200, 0.28)", "#eee8f2", "#aea2ce", "#43bfd2", "#d6bd42",
+                "#df5578", "#5fc991", "#9b61d6", "0 24px 70px rgba(220, 55, 95, 0.20)", "rgba(34, 21, 75, 0.78)", "rgba(43, 27, 95, 0.92)",
+                "#43bfd2", "#d6bd42", "#2a1738", "#24385f", "#17584a", "#1a1038", "#eee8f2", "#0d0924", "#eee8f2", "#0b0820",
+                "rgba(238, 232, 242, 0.08)", "rgba(174, 162, 206, 0.52)", "rgba(220, 86, 200, 0.22)", "#18113a", "rgba(67, 191, 210, 0.28)")),
+            BuiltIn("toxic-swamp", "Toxic Swamp", isDark: true, Tokens(
+                "#10190f", "#1d2b1b", "#496a35", "#e8edd6", "#99aa83", "#9bdc2f", "#5b4fd6", "#c83a32", "#5fc94a", "#b6ef42",
+                "0 22px 56px rgba(100, 180, 38, 0.16)", "#22331f", "#2c4725", "#9bdc2f", "#5b4fd6", "#3a1715", "#2b3827", "#173717",
+                "#213f19", "#e8edd6", "#172814", "#e8edd6", "#10190f", "#2e3c2b", "#7f8d71", "#405234", "#1a2519", "#58723c")),
+            BuiltIn("green-menace", "Green Menace", isDark: true, Tokens(
+                "#120f12", "#332031", "#654461", "#e8dfd2", "#aeb9b4", "#c72ab7", "#55c964", "#b92828", "#3bae5d", "#5ac568",
+                "0 18px 40px rgba(8, 12, 16, 0.31)", "#3a2a38", "#4a3848", "#c72ab7", "#55c964", "#b92828", "#aeb9b4", "#3bae5d",
+                "#3d1839", "#e8dfd2", "#351f33", "#e8dfd2", "#f0e8dc", "#3d313c", "#8d9993", "#5a4057", "#2f2630", "#654461")),
+            BuiltIn("abyssal-blackwater", "Abyssal Blackwater", isDark: true, Tokens(
+                "#000405", "rgba(1, 6, 7, 0.99)", "rgba(38, 150, 156, 0.38)", "#c9e4e2", "#7f9f9e", "#35b8be", "#2d8289",
+                "#aa3b4e", "#339f87", "#43c7cd", "0 34px 104px rgba(8, 68, 74, 0.16)", "rgba(1, 7, 8, 0.97)", "rgba(2, 10, 12, 0.99)",
+                "#35b8be", "#2d8289", "#100305", "#031113", "#031310", "#000607", "#c9e4e2", "#000202", "#c9e4e2", "#000405",
+                "rgba(201, 228, 226, 0.055)", "rgba(127, 159, 158, 0.58)", "rgba(38, 150, 156, 0.24)", "#010809", "rgba(53, 184, 190, 0.36)")),
+            BuiltIn("obsidian-glow", "Obsidian Glow", isDark: true, Tokens(
+                "#05060a", "rgba(12, 14, 22, 0.96)", "rgba(155, 190, 255, 0.20)", "#e7ecf6", "#98a2b8", "#7fa8ff", "#b78cff",
+                "#d85f78", "#58c99b", "#9fc0ff", "0 24px 72px rgba(150, 185, 255, 0.22)", "rgba(15, 18, 30, 0.82)", "rgba(20, 24, 40, 0.96)",
+                "#7fa8ff", "#b78cff", "#21151f", "#171d2d", "#13251f", "#080a12", "#e7ecf6", "#07080f", "#e7ecf6", "#05060a",
+                "rgba(231, 236, 246, 0.07)", "rgba(152, 162, 184, 0.54)", "rgba(155, 190, 255, 0.16)", "#0e111c", "rgba(155, 190, 255, 0.24)")),
+            BuiltIn("blessed-skyhaven", "Blessed Skyhaven", isDark: false, Tokens(
+                "#edf8ff", "rgba(255, 255, 255, 0.97)", "rgba(255, 213, 92, 0.62)", "#1b3148", "#6f879d", "#6fbfff", "#f0bd3f",
+                "#d75d75", "#56b8f0", "#9bdcff", "0 24px 78px rgba(255, 224, 128, 0.38)", "rgba(245, 252, 255, 0.92)", "rgba(255, 255, 255, 0.99)",
+                "#6fbfff", "#f0bd3f", "#ffe4ec", "#f5fcff", "#e2f5ff", "#fff4c5", "#1b3148", "#fafdff", "#1b3148", "#10283d",
+                "rgba(27, 49, 72, 0.08)", "rgba(111, 135, 157, 0.62)", "rgba(255, 213, 92, 0.36)", "#fbfeff", "rgba(111, 191, 255, 0.52)")),
+            BuiltIn("infernal-covenant", "Infernal Covenant", isDark: true, Tokens(
+                "#030000", "rgba(9, 1, 1, 0.99)", "rgba(255, 34, 54, 0.54)", "#e8caca", "#a46d70", "#ff1f36", "#9b0c18",
+                "#ff3048", "#9a4a34", "#ff4058", "0 30px 90px rgba(255, 20, 45, 0.32)", "rgba(10, 2, 2, 0.97)", "rgba(18, 3, 4, 0.99)",
+                "#ff1f36", "#9b0c18", "#210305", "#140203", "#1a0704", "#070000", "#e8caca", "#010000", "#e8caca", "#030000",
+                "rgba(232, 202, 202, 0.06)", "rgba(164, 109, 112, 0.62)", "rgba(255, 34, 54, 0.28)", "#090101", "rgba(255, 31, 54, 0.48)")),
+            LegacyAs("midnight-tavern", "Midnight Tavern", isDark: true),
+            LegacyAs("dragonfire-keep", "Dragonfire Keep", isDark: true),
+            LegacyAs("frost-healer", "Frost Healer", isDark: false),
+            sunlit,
+            LegacyAs("mosswood-quest", "Mosswood Quest", isDark: false),
+            potion,
+            LegacyAs("boss-battle", "Boss Battle", isDark: true),
+            ledger,
+            LegacyAs("celestial-inn", "Celestial Inn", isDark: true),
+            BuiltIn("treasure-vault", "Treasure Vault", isDark: false, sunlit.Tokens with
+            {
+                Primary = "#9a6b22", Accent = "#d19b35", AppBarBackground = "#72501f", DrawerBackground = "#553b18"
+            }),
+            BuiltIn("mana-spring", "Mana Spring", isDark: false, potion.Tokens with
+            {
+                Primary = "#5b62b8", Accent = "#2b9fa3", AppBarBackground = "#4a4f94", DrawerBackground = "#363b78"
+            }),
+            BuiltIn("stonewatch-sanctuary", "Stonewatch Sanctuary", isDark: false, ledger.Tokens with
+            {
+                Primary = "#68747b", Accent = "#917552", AppBarBackground = "#4b565c", DrawerBackground = "#394348"
+            })
+        };
+    }
+
+    private static ColorSchemeDefinition LegacyAs(string legacyId, string name, bool isDark, string? id = null)
+    {
+        var legacy = LegacySchemes.Single(scheme => string.Equals(scheme.Id, legacyId, StringComparison.Ordinal));
+        return legacy with { Id = id ?? legacy.Id, Name = name, IsDark = isDark };
+    }
+
+    private static ColorSchemeDefinition BuiltIn(string id, string name, bool isDark, ColorSchemeTokens tokens)
+        => new(id, name, true, tokens, IsDark: isDark);
+
+    private static ColorSchemeTokens Tokens(params string[] values)
+    {
+        if (values.Length != 28)
+        {
+            throw new ArgumentException("Color schemes require exactly 28 solid tokens.", nameof(values));
+        }
+
+        return new ColorSchemeTokens(
+            values[0], values[1], values[2], values[3], values[4], values[5], values[6],
+            values[7], values[8], values[9], values[10], values[11], values[12], values[13],
+            values[14], values[15], values[16], values[17], values[18], values[19], values[20],
+            values[21], values[22], values[23], values[24], values[25], values[26], values[27]);
+    }
+
     public static IReadOnlyList<ColorSchemeTokenDescriptor> EditableTokens { get; } = new[]
     {
         new ColorSchemeTokenDescriptor(nameof(ColorSchemeTokens.Background), "Background"),
@@ -704,12 +813,17 @@ public static partial class ColorSchemeCatalog
 
     public static ColorSchemeDefinition Alpha => BuiltInSchemes[0];
 
+    public static ColorSchemeDefinition DefaultLight => Resolve(DefaultLightSchemeId, Array.Empty<ColorSchemeDefinition>());
+
+    public static ColorSchemeDefinition DefaultDark => Resolve(DefaultDarkSchemeId, Array.Empty<ColorSchemeDefinition>());
+
     public static ColorSchemeDefinition Resolve(string? schemeId, IReadOnlyList<ColorSchemeDefinition> customSchemes)
     {
+        schemeId = MigrateLegacySchemeId(schemeId);
         return BuiltInSchemes.Concat(customSchemes)
             .Select(Complete)
             .FirstOrDefault(scheme => string.Equals(scheme.Id, schemeId, StringComparison.Ordinal))
-            ?? Alpha;
+            ?? DefaultLight;
     }
 
     public static ColorSchemeDefinition CreateCustomCopy(ColorSchemeDefinition source, string name)
@@ -718,7 +832,8 @@ public static partial class ColorSchemeCatalog
             $"custom-{Guid.NewGuid():N}",
             NormalizeName(name, "Custom scheme"),
             false,
-            source.Tokens);
+            source.Tokens,
+            IsDark: source.IsDark);
     }
 
     public const string RandomSchemeId = "random-theme";
@@ -736,7 +851,7 @@ public static partial class ColorSchemeCatalog
             .ToArray();
         if (pool.Length == 0)
         {
-            return Alpha;
+            return DefaultLight;
         }
 
         return Complete(pool[random.Next(pool.Length)]);
@@ -778,8 +893,12 @@ public static partial class ColorSchemeCatalog
 
         // Lightness spread for the loud tokens widens with chaos so primaries roam from deep to neon.
         var lightSpread = 0.12 * chaos;
-        var primary = Hsl(Hue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.42 - lightSpread, 0.60 + lightSpread));
-        var accent = Hsl(AccentHueValue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.44 - lightSpread, 0.62 + lightSpread));
+        var primaryHue = Hue();
+        var primary = Hsl(primaryHue, Range(random, colorSatMin, colorSatMax), Range(random, 0.42 - lightSpread, 0.60 + lightSpread));
+        var resolvedAccentHue = chaos > 0.85
+            ? primaryHue + Range(random, 150.0, 180.0)
+            : AccentHueValue();
+        var accent = Hsl(resolvedAccentHue, Range(random, colorSatMin, colorSatMax), Range(random, 0.44 - lightSpread, 0.62 + lightSpread));
         var focus = Hsl(AccentHueValue(), Range(random, colorSatMin, colorSatMax), Range(random, 0.48 - lightSpread, 0.64 + lightSpread));
         // Danger/success start semantic (red/green) and drift off-hue as chaos rises.
         var danger = Hsl(Jitter(0.0), Range(random, Lerp(0.62, 0.85, chaos), Lerp(0.82, 1.0, chaos)), Range(random, 0.42, 0.56));
@@ -818,9 +937,189 @@ public static partial class ColorSchemeCatalog
             muted,
             cardBorder,
             inputBackground,
-            cardBorder);
+            cardBorder,
+            CreateStops9(random, background, SurfaceChaos(chaos, 1.0, 1.4)),
+            CreateStops8(random, cardBackground, SurfaceChaos(chaos, 0.5, 1.2)),
+            CreateStops6(random, appBarBackground, SurfaceChaos(chaos, 1.0, 1.3)),
+            CreateStops6(random, drawerBackground, SurfaceChaos(chaos, 1.0, 1.3)),
+            CreateStops4(random, primary, SurfaceChaos(chaos, 0.8, 1.2)),
+            CreateStops2(random, cardBackground, SurfaceChaos(chaos, 1.0, 1.5)),
+            CreateStops2(random, accent, SurfaceChaos(chaos, 1.0, 1.5)),
+            chaos > 0.85 ? $"0 0 {Range(random, 14.0, 22.0):0}px {Hsl(Range(random, 0.0, 360.0), 0.95, 0.58)}" : null);
 
-        return new ColorSchemeDefinition(RandomSchemeId, "Random theme", false, tokens);
+        return new ColorSchemeDefinition(RandomSchemeId, "Random theme", false, ApplyRandomContrastGuards(tokens, chaos), IsDark: dark);
+    }
+
+    private static ColorSchemeTokens ApplyRandomContrastGuards(ColorSchemeTokens tokens, double chaos)
+    {
+        var cardAverage = Average(tokens.CardGradient!);
+        var minimumCardContrast = chaos <= 0.6 ? 3.0 : chaos <= 0.85 ? 2.0 : 0.0;
+        if (minimumCardContrast > 0.0 && ContrastRatio(tokens.Ink, cardAverage) < minimumCardContrast)
+        {
+            tokens = tokens with { Ink = BestReadableText(cardAverage) };
+        }
+
+        if (chaos > 0.99)
+        {
+            var pageAverage = Average(tokens.BackgroundGradient!);
+            var appBarAverage = Average(tokens.AppBarGradient!);
+            var drawerAverage = Average(tokens.DrawerGradient!);
+            var buttonAverage = Average(tokens.PrimaryButtonGradient!);
+            tokens = tokens with
+            {
+                AppBarText = EnsureContrast(tokens.AppBarText, appBarAverage, 3.0),
+                DrawerText = EnsureContrast(tokens.DrawerText, drawerAverage, 3.0),
+                ButtonText = EnsureContrast(tokens.ButtonText, buttonAverage, 3.0),
+                Focus = EnsureContrastAgainstBoth(tokens.Focus, pageAverage, tokens.CardBackground, 2.5)
+            };
+        }
+
+        var (primaryHue, _, _) = HexToHsl(tokens.Primary);
+        var (dangerHue, dangerSaturation, dangerLightness) = HexToHsl(tokens.Danger);
+        if (HueDistance(primaryHue, dangerHue) < 30.0
+            && Math.Abs(RelativeLuminance(tokens.Primary) - RelativeLuminance(tokens.Danger)) < 0.15)
+        {
+            tokens = tokens with { Danger = Hsl(primaryHue + 120.0, dangerSaturation, dangerLightness) };
+        }
+
+        return tokens;
+    }
+
+    private static string EnsureContrast(string value, string background, double minimum)
+        => ContrastRatio(value, background) >= minimum ? value : BestReadableText(background);
+
+    private static string EnsureContrastAgainstBoth(string value, string first, string second, double minimum)
+    {
+        if (ContrastRatio(value, first) >= minimum && ContrastRatio(value, second) >= minimum)
+        {
+            return value;
+        }
+
+        var dark = "#101010";
+        var light = "#f5f5f5";
+        return Math.Min(ContrastRatio(dark, first), ContrastRatio(dark, second))
+            >= Math.Min(ContrastRatio(light, first), ContrastRatio(light, second))
+                ? dark
+                : light;
+    }
+
+    private static string BestReadableText(string background)
+        => ContrastRatio("#101010", background) >= ContrastRatio("#f5f5f5", background) ? "#101010" : "#f5f5f5";
+
+    private static double ContrastRatio(string first, string second)
+    {
+        var firstLuminance = RelativeLuminance(first);
+        var secondLuminance = RelativeLuminance(second);
+        return (Math.Max(firstLuminance, secondLuminance) + 0.05) / (Math.Min(firstLuminance, secondLuminance) + 0.05);
+    }
+
+    private static double HueDistance(double first, double second)
+    {
+        var distance = Math.Abs(first - second) % 360.0;
+        return Math.Min(distance, 360.0 - distance);
+    }
+
+    private static string Average(GradientStops9 stops)
+        => Average(stops.TopLeft, stops.Top, stops.TopRight, stops.MiddleLeft, stops.Middle, stops.MiddleRight, stops.BottomLeft, stops.Bottom, stops.BottomRight);
+
+    private static string Average(GradientStops8 stops)
+        => Average(stops.TopLeft, stops.Top, stops.TopRight, stops.MiddleLeft, stops.MiddleRight, stops.BottomLeft, stops.Bottom, stops.BottomRight);
+
+    private static string Average(GradientStops6 stops)
+        => Average(stops.TopLeft, stops.Top, stops.TopRight, stops.BottomLeft, stops.Bottom, stops.BottomRight);
+
+    private static string Average(GradientStops4 stops)
+        => Average(stops.TopLeft, stops.TopRight, stops.BottomLeft, stops.BottomRight);
+
+    private static string Average(params string[] values)
+    {
+        var colors = values.Select(HexToRgb).ToArray();
+        return $"#{(int)Math.Round(colors.Average(color => color.Red)):x2}{(int)Math.Round(colors.Average(color => color.Green)):x2}{(int)Math.Round(colors.Average(color => color.Blue)):x2}";
+    }
+
+    private static (double Red, double Green, double Blue) HexToRgb(string color)
+    {
+        var hex = color.Trim().TrimStart('#');
+        return (
+            Convert.ToInt32(hex.AsSpan(0, 2).ToString(), 16),
+            Convert.ToInt32(hex.AsSpan(2, 2).ToString(), 16),
+            Convert.ToInt32(hex.AsSpan(4, 2).ToString(), 16));
+    }
+
+    private static double SurfaceChaos(double chaos, double calmMultiplier, double madnessMultiplier)
+    {
+        var effective = Math.Pow(chaos, 0.55);
+        if (chaos <= 0.6)
+        {
+            return effective * calmMultiplier;
+        }
+
+        var ramp = (chaos - 0.6) / 0.4;
+        return effective * Lerp(calmMultiplier, madnessMultiplier, ramp);
+    }
+
+    private static GradientStops9 CreateStops9(Random random, string color, double chaos)
+        => new(
+            VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos),
+            VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos),
+            VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos));
+
+    private static GradientStops8 CreateStops8(Random random, string color, double chaos)
+        => new(
+            VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos),
+            VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos),
+            VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos));
+
+    private static GradientStops6 CreateStops6(Random random, string color, double chaos)
+        => new(
+            VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos),
+            VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos));
+
+    private static GradientStops4 CreateStops4(Random random, string color, double chaos)
+        => new(
+            VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos),
+            VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos));
+
+    private static GradientStops2 CreateStops2(Random random, string color, double chaos)
+        => new(VaryGradientColor(random, color, chaos), VaryGradientColor(random, color, chaos));
+
+    private static string VaryGradientColor(Random random, string color, double chaos)
+    {
+        var (hue, saturation, lightness) = HexToHsl(color);
+        var hueLimit = chaos switch
+        {
+            <= 0.5 => 25.0,
+            <= 0.85 => 90.0,
+            _ => 180.0
+        };
+        return Hsl(
+            hue + Range(random, -hueLimit, hueLimit) * chaos,
+            Math.Clamp(saturation + Range(random, -0.12, 0.18) * chaos, 0.0, 1.0),
+            Math.Clamp(lightness + Range(random, -0.12, 0.12) * chaos, 0.02, 0.98));
+    }
+
+    private static (double Hue, double Saturation, double Lightness) HexToHsl(string color)
+    {
+        var hex = color.Trim().TrimStart('#');
+        var red = Convert.ToInt32(hex.AsSpan(0, 2).ToString(), 16) / 255.0;
+        var green = Convert.ToInt32(hex.AsSpan(2, 2).ToString(), 16) / 255.0;
+        var blue = Convert.ToInt32(hex.AsSpan(4, 2).ToString(), 16) / 255.0;
+        var max = Math.Max(red, Math.Max(green, blue));
+        var min = Math.Min(red, Math.Min(green, blue));
+        var delta = max - min;
+        var lightness = (max + min) / 2.0;
+        if (delta == 0)
+        {
+            return (0.0, 0.0, lightness);
+        }
+
+        var saturation = delta / (1.0 - Math.Abs(2.0 * lightness - 1.0));
+        var hue = max == red
+            ? 60.0 * (((green - blue) / delta) % 6.0)
+            : max == green
+                ? 60.0 * ((blue - red) / delta + 2.0)
+                : 60.0 * ((red - green) / delta + 4.0);
+        return (hue < 0 ? hue + 360.0 : hue, saturation, lightness);
     }
 
     private static double Range(Random random, double min, double max)
@@ -905,6 +1204,24 @@ public static partial class ColorSchemeCatalog
         return BuiltInSchemes.Any(scheme => string.Equals(scheme.Id, schemeId, StringComparison.Ordinal));
     }
 
+    public static string MigrateLegacySchemeId(string? schemeId)
+    {
+        return schemeId switch
+        {
+            AlphaId => ForestLegacyId,
+            "neon-rogue" => "arcane-wraith",
+            "neon-abyss-carnival" => "phantom-fair",
+            "habitica" or "mushroom-meadow" => DefaultLightSchemeId,
+            "mana-mirage" or "mushroom-trip" or "sugar-crash" => DefaultDarkSchemeId,
+            _ => string.IsNullOrWhiteSpace(schemeId) ? DefaultLightSchemeId : schemeId
+        };
+    }
+
+    public static bool GuessIsDark(string colorValue)
+    {
+        return RelativeLuminance(colorValue) < 0.42;
+    }
+
     public static bool IsValidTokenValue(string? value)
     {
         if (string.IsNullOrWhiteSpace(value) || value.Length > 120)
@@ -951,13 +1268,28 @@ public static partial class ColorSchemeCatalog
                 NormalizeToken(tokens.DisabledText, fallback.DisabledText),
                 NormalizeToken(tokens.DisabledBorder, fallback.DisabledBorder),
                 NormalizeToken(tokens.InputBackground, fallback.InputBackground),
-                NormalizeToken(tokens.InputBorder, fallback.InputBorder))
+                NormalizeToken(tokens.InputBorder, fallback.InputBorder),
+                tokens.BackgroundGradient,
+                tokens.CardGradient,
+                tokens.AppBarGradient,
+                tokens.DrawerGradient,
+                tokens.PrimaryButtonGradient,
+                tokens.SecondaryButtonGradient,
+                tokens.AccentChipGradient,
+                NormalizeOptionalToken(tokens.HeadingTextShadow),
+                NormalizeOptionalToken(tokens.AppBarTextShadow),
+                NormalizeOptionalToken(tokens.DrawerTextShadow))
         };
     }
 
     private static string NormalizeToken(string? value, string fallback)
     {
         return string.IsNullOrWhiteSpace(value) ? fallback : value.Trim();
+    }
+
+    private static string? NormalizeOptionalToken(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
     }
 
     public static string GetTokenValue(ColorSchemeTokens tokens, string tokenName)
@@ -1049,7 +1381,41 @@ public static partial class ColorSchemeCatalog
             }
         }
 
+        ValidateGradient(errors, "Page background gradient", scheme.Tokens.BackgroundGradient);
+        ValidateGradient(errors, "Card gradient", scheme.Tokens.CardGradient);
+        ValidateGradient(errors, "Header gradient", scheme.Tokens.AppBarGradient);
+        ValidateGradient(errors, "Navigation gradient", scheme.Tokens.DrawerGradient);
+        ValidateGradient(errors, "Primary button gradient", scheme.Tokens.PrimaryButtonGradient);
+        ValidateGradient(errors, "Secondary button gradient", scheme.Tokens.SecondaryButtonGradient);
+        ValidateGradient(errors, "Accent chip gradient", scheme.Tokens.AccentChipGradient);
+        ValidateOptionalToken(errors, "Heading text shadow", scheme.Tokens.HeadingTextShadow);
+        ValidateOptionalToken(errors, "Header text shadow", scheme.Tokens.AppBarTextShadow);
+        ValidateOptionalToken(errors, "Navigation text shadow", scheme.Tokens.DrawerTextShadow);
         return errors;
+    }
+
+    private static void ValidateGradient(List<string> errors, string label, object? gradient)
+    {
+        if (gradient is null)
+        {
+            return;
+        }
+
+        foreach (var property in gradient.GetType().GetProperties())
+        {
+            if (!IsValidTokenValue(property.GetValue(gradient) as string))
+            {
+                errors.Add($"{label} {property.Name} is not a supported color value.");
+            }
+        }
+    }
+
+    private static void ValidateOptionalToken(List<string> errors, string label, string? value)
+    {
+        if (value is not null && !IsValidTokenValue(value))
+        {
+            errors.Add($"{label} is not a supported CSS value.");
+        }
     }
 
     [GeneratedRegex("""^(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)|hsla?\([^)]+\)|color-mix\([^)]+\)|[a-zA-Z]+|(?:-?\d+(?:\.\d+)?(?:px|rem|em)?\s+){2,6}(?:#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)|[a-zA-Z]+))$""", RegexOptions.CultureInvariant)]
@@ -1063,7 +1429,8 @@ public sealed record ColorSchemeDefinition(
     ColorSchemeTokens Tokens,
     // Stamp of the last edit to this custom scheme. Used to merge custom schemes across devices
     // (newer timestamp wins per id). Built-ins leave this null and are never merged by id.
-    DateTimeOffset? UpdatedAtUtc = null);
+    DateTimeOffset? UpdatedAtUtc = null,
+    bool IsDark = false);
 
 public sealed record ColorSchemeTokens(
     string Background,
@@ -1093,7 +1460,37 @@ public sealed record ColorSchemeTokens(
     string DisabledText,
     string DisabledBorder,
     string InputBackground,
-    string InputBorder);
+    string InputBorder,
+    GradientStops9? BackgroundGradient = null,
+    GradientStops8? CardGradient = null,
+    GradientStops6? AppBarGradient = null,
+    GradientStops6? DrawerGradient = null,
+    GradientStops4? PrimaryButtonGradient = null,
+    GradientStops2? SecondaryButtonGradient = null,
+    GradientStops2? AccentChipGradient = null,
+    string? HeadingTextShadow = null,
+    string? AppBarTextShadow = null,
+    string? DrawerTextShadow = null);
+
+public sealed record GradientStops9(
+    string TopLeft, string Top, string TopRight,
+    string MiddleLeft, string Middle, string MiddleRight,
+    string BottomLeft, string Bottom, string BottomRight);
+
+public sealed record GradientStops8(
+    string TopLeft, string Top, string TopRight,
+    string MiddleLeft, string MiddleRight,
+    string BottomLeft, string Bottom, string BottomRight);
+
+public sealed record GradientStops6(
+    string TopLeft, string Top, string TopRight,
+    string BottomLeft, string Bottom, string BottomRight);
+
+public sealed record GradientStops4(
+    string TopLeft, string TopRight,
+    string BottomLeft, string BottomRight);
+
+public sealed record GradientStops2(string Start, string End);
 
 public sealed record ColorSchemeTokenDescriptor(string Name, string Label);
 
@@ -1102,7 +1499,11 @@ public sealed record ColorSchemePreferences(
     IReadOnlyList<ColorSchemeDefinition> CustomSchemes,
     // Stamp of the last selection change. Used to pick the newer selection during cross-device
     // merge. A built-in active scheme syncs as just its id, custom schemes ship their full data.
-    DateTimeOffset? SelectedAtUtc = null);
+    DateTimeOffset? SelectedAtUtc = null,
+    int SchemaVersion = 0)
+{
+    public const int CurrentSchemaVersion = 2;
+}
 
 public sealed record ColorSchemeState(
     ColorSchemeDefinition ActiveScheme,

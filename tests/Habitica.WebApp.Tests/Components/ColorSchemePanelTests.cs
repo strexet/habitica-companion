@@ -20,6 +20,27 @@ public sealed class ColorSchemePanelTests : BunitContext
     }
 
     [Fact]
+    public void Renders_grouped_scheme_sections_in_fixed_order()
+    {
+        var cut = RenderPanel(new FakeKeyValueStorage());
+        var labels = cut.FindAll("optgroup").Select(group => group.GetAttribute("label")).ToArray();
+
+        Assert.Equal(new[] { "Default", "Built-in Light", "Built-in Dark" }, labels);
+    }
+
+    [Fact]
+    public void Renders_readable_preset_help_variant_toggle_and_advanced_gradient_surfaces()
+    {
+        var cut = RenderPanel(new FakeKeyValueStorage());
+
+        Assert.Contains("What is this?", cut.Markup);
+        Assert.Contains("PageBackground", cut.Markup);
+        Assert.Contains("TextShadows.Headings", cut.Markup);
+        Assert.NotNull(cut.Find("[data-testid='custom-scheme-dark']"));
+        Assert.Equal(7, cut.FindAll(".color-scheme-gradient-surface").Count);
+    }
+
+    [Fact]
     public void Random_preset_selects_a_scheme_and_persists_selection()
     {
         var storage = new FakeKeyValueStorage();
@@ -157,6 +178,67 @@ public sealed class ColorSchemePanelTests : BunitContext
 
         var preferences = storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences);
         Assert.True(preferences is null || preferences.CustomSchemes.Count == 0);
+    }
+
+    [Fact]
+    public void Custom_dark_toggle_survives_save()
+    {
+        var storage = new FakeKeyValueStorage();
+        var cut = RenderPanel(storage);
+
+        cut.Find("[data-testid='custom-scheme-dark']").Change(true);
+        cut.Find("[data-testid='custom-scheme-name']").Change("Night custom");
+        cut.Find("[data-testid='save-custom-scheme']").Click();
+
+        var custom = Assert.Single(storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.CustomSchemes);
+        Assert.True(custom.IsDark);
+    }
+
+    [Fact]
+    public async Task Deleting_active_custom_scheme_uses_matching_variant_default_and_persists_reduced_list()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        var storage = new FakeKeyValueStorage();
+        var custom = ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.DefaultDark, "Night custom") with { IsDark = true };
+        await storage.SetAsync(
+            StorageKeys.ColorSchemePreferences,
+            new ColorSchemePreferences(custom.Id, new[] { custom }),
+            CancellationToken.None);
+        Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(storage);
+        Services.AddScoped<ColorSchemeService>();
+
+        var service = Services.GetRequiredService<ColorSchemeService>();
+        var state = await service.DeleteCustomAsync(custom.Id);
+
+        Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, state.ActiveScheme.Id);
+        Assert.Empty(state.CustomSchemes);
+        var stored = storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences);
+        Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, stored!.SelectedSchemeId);
+        Assert.Empty(stored.CustomSchemes);
+    }
+
+    [Fact]
+    public async Task Loading_legacy_preferences_migrates_selection_schema_and_custom_variant()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        var storage = new FakeKeyValueStorage();
+        var legacyCustom = ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.DefaultDark, "Legacy") with { IsDark = false };
+        await storage.SetAsync(
+            StorageKeys.ColorSchemePreferences,
+            new ColorSchemePreferences(ColorSchemeCatalog.AlphaId, new[] { legacyCustom }, SchemaVersion: 1),
+            CancellationToken.None);
+        Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(storage);
+        Services.AddScoped<ColorSchemeService>();
+
+        var service = Services.GetRequiredService<ColorSchemeService>();
+        var state = await service.LoadAsync();
+
+        Assert.Equal(ColorSchemeCatalog.ForestLegacyId, state.ActiveScheme.Id);
+        var stored = storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences);
+        Assert.Equal(ColorSchemePreferences.CurrentSchemaVersion, stored!.SchemaVersion);
+        Assert.True(Assert.Single(stored.CustomSchemes).IsDark);
     }
 
     private IRenderedComponent<ColorSchemePanel> RenderPanel(FakeKeyValueStorage storage, bool compact = false)

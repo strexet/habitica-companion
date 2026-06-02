@@ -7,44 +7,50 @@ public sealed class ColorSchemeCatalogTests
     [Fact]
     public void Built_in_schemes_include_required_palettes()
     {
-        var names = ColorSchemeCatalog.BuiltInSchemes.Select(scheme => scheme.Name).ToArray();
+        var schemes = ColorSchemeCatalog.BuiltInSchemes;
+        var ids = schemes.Select(scheme => scheme.Id).ToArray();
 
-        Assert.Equal(20, names.Length);
-        Assert.Contains("Alpha (Light)", names);
-        Assert.Contains("Habitica (Light)", names);
-        Assert.Contains("Gryphy (Light)", names);
-        Assert.Contains("Gryphy (Dark)", names);
-        Assert.Contains("Midnight Tavern (Dark)", names);
-        Assert.Contains("Dragonfire Keep (Dark)", names);
-        Assert.Contains("Neon Rogue (Dark)", names);
-        Assert.Contains("Frost Healer (Light)", names);
-        Assert.Contains("Sunlit Stable (Light)", names);
-        Assert.Contains("Mosswood Quest (Light)", names);
-        Assert.Contains("Potion Shop (Light)", names);
-        Assert.Contains("Boss Battle (Dark)", names);
-        Assert.Contains("Quiet Ledger (Light)", names);
-        Assert.Contains("Celestial Inn (Dark)", names);
-        Assert.Contains("Mana Mirage (Dark)", names);
-        Assert.Contains("Mushroom Meadow (Light)", names);
-        Assert.Contains("Mushroom Trip (Dark)", names);
-        Assert.Contains("Frosted Cake (Light)", names);
-        Assert.Contains("Sugar Crash (Dark)", names);
-        Assert.Contains("Neon Abyss Carnival (Dark)", names);
+        Assert.Equal(ColorSchemeCatalog.DefaultLightSchemeId, ids[0]);
+        Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, ids[1]);
+        Assert.Equal(ColorSchemeCatalog.ForestLegacyId, ids[2]);
+        Assert.Equal("frosted-cake", ids[3]);
+        Assert.Contains("arcane-wraith", ids);
+        Assert.Contains("phantom-fair", ids);
+        Assert.Contains("toxic-swamp", ids);
+        Assert.Contains("green-menace", ids);
+        Assert.Contains("abyssal-blackwater", ids);
+        Assert.Contains("obsidian-glow", ids);
+        Assert.Contains("blessed-skyhaven", ids);
+        Assert.Contains("infernal-covenant", ids);
+        Assert.Equal(schemes.Count(scheme => !scheme.IsDark), schemes.Count(scheme => scheme.IsDark));
+        Assert.DoesNotContain(ids, id => id is "habitica" or "mana-mirage" or "mushroom-meadow" or "mushroom-trip" or "sugar-crash" or "neon-rogue" or "neon-abyss-carnival");
     }
 
     [Fact]
-    public void Alpha_scheme_preserves_current_root_palette()
+    public void Gryphy_light_scheme_matches_restored_default_palette()
     {
         var alpha = ColorSchemeCatalog.Alpha;
 
-        Assert.Equal("#f5efe2", alpha.Tokens.Background);
-        Assert.Equal("rgba(255, 250, 241, 0.92)", alpha.Tokens.CardBackground);
-        Assert.Equal("#162423", alpha.Tokens.Ink);
-        Assert.Equal("#2d746e", alpha.Tokens.Primary);
-        Assert.Equal("#c5772b", alpha.Tokens.Accent);
-        Assert.Equal("#a13f35", alpha.Tokens.Danger);
-        Assert.Equal("#173f3b", alpha.Tokens.AppBarBackground);
-        Assert.Equal("#163431", alpha.Tokens.DrawerBackground);
+        Assert.Equal(ColorSchemeCatalog.DefaultLightSchemeId, alpha.Id);
+        Assert.Equal("#f7f1ff", alpha.Tokens.Background);
+        Assert.Equal("rgba(255, 252, 255, 0.94)", alpha.Tokens.CardBackground);
+        Assert.Equal("#2d2040", alpha.Tokens.Ink);
+        Assert.Equal("#7334bd", alpha.Tokens.Primary);
+        Assert.Equal("#d99416", alpha.Tokens.Accent);
+        Assert.Equal("#684095", alpha.Tokens.AppBarBackground);
+        Assert.Equal("#3b2356", alpha.Tokens.DrawerBackground);
+    }
+
+    [Theory]
+    [InlineData("alpha", "forest-legacy")]
+    [InlineData("neon-rogue", "arcane-wraith")]
+    [InlineData("neon-abyss-carnival", "phantom-fair")]
+    [InlineData("habitica", "gryphy-light")]
+    [InlineData("sugar-crash", "gryphy-dark")]
+    public void Legacy_scheme_ids_map_to_supported_palettes(string legacyId, string expectedId)
+    {
+        Assert.Equal(expectedId, ColorSchemeCatalog.MigrateLegacySchemeId(legacyId));
+        Assert.Equal(expectedId, ColorSchemeCatalog.Resolve(legacyId, Array.Empty<ColorSchemeDefinition>()).Id);
     }
 
     [Fact]
@@ -116,6 +122,69 @@ public sealed class ColorSchemeCatalogTests
         var calmer = ColorSchemeCatalog.GenerateRandomTheme(new Random(seed), 0.2);
         Assert.NotEqual(first.Tokens, calmer.Tokens);
         Assert.Equal(calmer.Tokens, ColorSchemeCatalog.GenerateRandomTheme(new Random(seed), 0.2).Tokens);
+    }
+
+    [Theory]
+    [InlineData(0.0)]
+    [InlineData(0.5)]
+    [InlineData(1.0)]
+    public void Generated_random_theme_defines_every_gradient_surface(double chaos)
+    {
+        var tokens = ColorSchemeCatalog.GenerateRandomTheme(new Random(42), chaos).Tokens;
+
+        Assert.NotNull(tokens.BackgroundGradient);
+        Assert.NotNull(tokens.CardGradient);
+        Assert.NotNull(tokens.AppBarGradient);
+        Assert.NotNull(tokens.DrawerGradient);
+        Assert.NotNull(tokens.PrimaryButtonGradient);
+        Assert.NotNull(tokens.SecondaryButtonGradient);
+        Assert.NotNull(tokens.AccentChipGradient);
+    }
+
+    [Fact]
+    public void Readable_clipboard_round_trip_preserves_gradients_variant_and_text_shadows()
+    {
+        var source = ColorSchemeCatalog.GenerateRandomTheme(new Random(42), 0.9) with { Name = "Shared theme" };
+
+        var outcome = ReadableSchemeParser.Parse(ReadableSchemeParser.Serialize(source), ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.Alpha, "Draft"));
+
+        Assert.Equal(SchemeParseResult.Success, outcome.Result);
+        Assert.NotNull(outcome.Scheme);
+        Assert.Equal(source.Name, outcome.Scheme!.Name);
+        Assert.Equal(source.IsDark, outcome.Scheme.IsDark);
+        Assert.Equal(source.Tokens, outcome.Scheme.Tokens);
+    }
+
+    [Fact]
+    public void Readable_clipboard_copy_uses_v2_names_and_omits_empty_optional_groups()
+    {
+        var json = ReadableSchemeParser.Serialize(ColorSchemeCatalog.DefaultLight);
+        var baseline = ColorSchemeCatalog.GenerateRandomTheme(new Random(42), 0.9);
+
+        Assert.Contains("\"$schema\": \"habitica-tool.color-scheme.v2\"", json);
+        Assert.Contains("\"PageBackground\"", json);
+        Assert.Contains("\"BodyText\"", json);
+        Assert.Contains("\"FocusOutline\"", json);
+        Assert.DoesNotContain("\"Gradients\"", json);
+        Assert.DoesNotContain("\"TextShadows\"", json);
+        Assert.Equal(ColorSchemeCatalog.DefaultLight.Tokens, ReadableSchemeParser.Parse(json, baseline).Scheme!.Tokens);
+    }
+
+    [Fact]
+    public void Readable_clipboard_parser_accepts_v1_and_rejects_partial_or_conflicting_v2_values()
+    {
+        var baseline = ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.Alpha, "Draft");
+
+        var legacy = ReadableSchemeParser.Parse("""{"Name":"Old","Tokens":{"Primary":"#112233"}}""", baseline);
+        var partial = ReadableSchemeParser.Parse("""{"Name":"Bad","Colors":{"Primary":"#112233"},"Gradients":{"Card":{"TopLeft":"#fff"}}}""", baseline);
+        var conflicting = ReadableSchemeParser.Parse("""{"Name":"Bad","Colors":{"PageBackground":"#fff","Background":"#000"}}""", baseline);
+
+        Assert.Equal(SchemeParseResult.Success, legacy.Result);
+        Assert.Equal("#112233", legacy.Scheme!.Tokens.Primary);
+        Assert.Equal(SchemeParseResult.PartialGradient, partial.Result);
+        Assert.Contains("Card", partial.Detail);
+        Assert.Equal(SchemeParseResult.ConflictingAliases, conflicting.Result);
+        Assert.Contains("PageBackground", conflicting.Detail);
     }
 
     [Fact]

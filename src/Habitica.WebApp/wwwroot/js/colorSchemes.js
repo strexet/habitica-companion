@@ -133,14 +133,101 @@
     }
 
     return {
-      id: scheme.id || scheme.Id || "alpha",
-      name: scheme.name || scheme.Name || "Alpha",
+      id: scheme.id || scheme.Id || "gryphy-light",
+      name: scheme.name || scheme.Name || "Gryphy (Light)",
+      isDark: scheme.isDark ?? scheme.IsDark ?? false,
       tokens
     };
   }
 
   function readToken(tokens, key) {
     return tokens[key] || tokens[key[0].toUpperCase() + key.slice(1)];
+  }
+
+  function paintStopsToDataUrl(width, height, stops) {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        ctx.fillStyle = stops[y * width + x];
+        ctx.fillRect(x, y, 1, 1);
+      }
+    }
+
+    return canvas.toDataURL("image/png");
+  }
+
+  function averageStops(stops, fallback) {
+    const colors = stops.map(parseColor);
+    if (colors.some((color) => !color)) {
+      return fallback;
+    }
+
+    const average = (key) => Math.round(colors.reduce((total, color) => total + color[key], 0) / colors.length);
+    return `rgb(${average("red")}, ${average("green")}, ${average("blue")})`;
+  }
+
+  function readStop(gradient, name) {
+    const camel = name[0].toLowerCase() + name.slice(1);
+    return gradient[camel] || gradient[name];
+  }
+
+  function setStops(root, prefix, gradient, names) {
+    const suffixes = {
+      topLeft: "tl", top: "t", topRight: "tr",
+      middleLeft: "ml", middle: "m", middleRight: "mr",
+      bottomLeft: "bl", bottom: "b", bottomRight: "br"
+    };
+    for (const name of names) {
+      root.style.setProperty(`--${prefix}-grad-${suffixes[name] || name}`, gradient ? readStop(gradient, name) : "initial");
+    }
+  }
+
+  function applyRasterGradient(root, tokens, tokenName, cssName, prefix, width, height, names, fallback) {
+    const gradient = readToken(tokens, tokenName);
+    setStops(root, prefix, gradient, names);
+    if (!gradient) {
+      root.style.setProperty(cssName, fallback);
+      return;
+    }
+
+    let stops = names.map((name) => readStop(gradient, name));
+    if (tokenName === "cardGradient") {
+      stops = [...stops.slice(0, 4), averageStops(stops, readToken(tokens, "cardBackground")), ...stops.slice(4)];
+    }
+
+    const url = paintStopsToDataUrl(width, height, stops);
+    root.style.setProperty(cssName, `url("${url}") center/100% 100% no-repeat, ${fallback}`);
+  }
+
+  function applyLinearGradient(root, tokens, tokenName, cssName, prefix, fallback) {
+    const gradient = readToken(tokens, tokenName);
+    setStops(root, prefix, gradient, ["start", "end"]);
+    root.style.setProperty(cssName, gradient
+      ? `linear-gradient(180deg, ${readStop(gradient, "start")}, ${readStop(gradient, "end")})`
+      : fallback);
+  }
+
+  function applyGradientVariables(root, tokens) {
+    applyRasterGradient(root, tokens, "backgroundGradient", "--bg-gradient", "bg", 3, 3,
+      ["tl", "t", "tr", "ml", "m", "mr", "bl", "b", "br"].map((part) => ({
+        tl: "topLeft", t: "top", tr: "topRight", ml: "middleLeft", m: "middle", mr: "middleRight", bl: "bottomLeft", b: "bottom", br: "bottomRight"
+      })[part]), "var(--bg)");
+    applyRasterGradient(root, tokens, "cardGradient", "--card-gradient", "card", 3, 3,
+      ["topLeft", "top", "topRight", "middleLeft", "middleRight", "bottomLeft", "bottom", "bottomRight"], "var(--card-bg)");
+    applyRasterGradient(root, tokens, "appBarGradient", "--appbar-gradient", "appbar", 3, 2,
+      ["topLeft", "top", "topRight", "bottomLeft", "bottom", "bottomRight"], "var(--appbar-bg)");
+    applyRasterGradient(root, tokens, "drawerGradient", "--drawer-gradient", "drawer", 3, 2,
+      ["topLeft", "top", "topRight", "bottomLeft", "bottom", "bottomRight"], "var(--drawer-bg)");
+    applyRasterGradient(root, tokens, "primaryButtonGradient", "--primary-btn-gradient", "primary-btn", 2, 2,
+      ["topLeft", "topRight", "bottomLeft", "bottomRight"], "var(--primary)");
+    applyLinearGradient(root, tokens, "secondaryButtonGradient", "--secondary-btn-gradient", "secondary-btn", "transparent");
+    applyLinearGradient(root, tokens, "accentChipGradient", "--accent-chip-gradient", "accent-chip", "var(--accent)");
+    root.style.setProperty("--heading-text-shadow", readToken(tokens, "headingTextShadow") || "none");
+    root.style.setProperty("--appbar-text-shadow", readToken(tokens, "appBarTextShadow") || "none");
+    root.style.setProperty("--drawer-text-shadow", readToken(tokens, "drawerTextShadow") || "none");
   }
 
   function applyColorScheme(scheme) {
@@ -159,6 +246,7 @@
         }
       }
     }
+    applyGradientVariables(root, normalized.tokens);
     applyDerivedVariables(root, normalized.tokens);
 
     root.dataset.colorScheme = normalized.id;
@@ -194,8 +282,9 @@
 
       return {
         selectedSchemeId: active.id,
+        schemaVersion: 2,
         customSchemes: active.id.startsWith("custom-")
-          ? [{ id: active.id, name: active.name, isBuiltIn: false, tokens: active.tokens }]
+          ? [{ id: active.id, name: active.name, isBuiltIn: false, isDark: active.isDark, tokens: active.tokens }]
           : []
       };
     } catch {
