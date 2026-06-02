@@ -1610,11 +1610,6 @@ input[type="radio"] {
     white-space: nowrap;
 }
 
-.cron-daily-difficulty {
-    flex: 0 0 auto;
-    font-size: 0.72rem;
-}
-
 .cron-dailies-disclosure,
 .cron-daily-check-button {
     border: 1px solid color-mix(in srgb, var(--primary) 28%, var(--card-border));
