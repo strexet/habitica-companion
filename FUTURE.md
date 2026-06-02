@@ -61,22 +61,7 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Quest search should support searching by public reward names
-   - Description
-      - Quest search currently appears to search quests by quest-related data, but it does not reliably find quests by their visible reward names.
-      - Example: the quest The Kraken of Inkomplete has a publicly visible reward named Cuttlefish (Egg).
-      - When the user types cuttle into the quest search bar, this quest should be included in the search results.
-      - The search should use public/display names, not rely only on internal quest or reward IDs.
-   - Expected behavior
-      - Typing cuttle should find The Kraken of Inkomplete because it rewards Cuttlefish (Egg).
-      - Quest search should match against visible reward names, including partial matches.
-   - Actual behavior
-      - Searching by the reward name or a partial reward name does not find the quest.
-   - Suggested fix
-      - Extend quest search indexing/filtering to include public reward display names.
-      - Include reward names in normalized searchable text together with quest title and other visible quest metadata.
-      - Ensure partial, case-insensitive matching works for reward names.
-- Quest pool should be open by default on the Quests page
+- Top. Quest pool should be open by default on the Quests page
     - Description
         - The quest pool is now located on a dedicated Quests page.
         - Since this page is specifically focused on quests, the quest pool should be expanded/open by default.
@@ -88,7 +73,7 @@ Work top to bottom. This is an intake list for rough notes that must become self
     - Suggested fix
         - Change the default state of the quest pool on the Quests page to open/expanded.
         - Keep any manual expand/collapse behavior available after the page loads.
-- Party and Quests page layout cleanup
+- Top. Party and Quests page layout cleanup
     - Description
         - Several Party page and Quests page sections contain duplicated or overly verbose information.
         - Now that quests have a separate page, the layout should be simplified and reorganized to avoid repeated blocks and unnecessary details.
@@ -148,6 +133,20 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
+
+### Quest Search By Public Reward Name
+
+Goal: let quest-pool search find quests by visible reward display names, including partial case-insensitive matches.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
+- `FEATURES.md`
+
+Acceptance:
+- Typing `cuttle` into the Quests-page pool search includes The Kraken of Inkomplete when its visible rewards include `Cuttlefish (Egg)`.
+- Search matches public reward display names rather than relying only on internal reward ids.
+- Existing quest name, type, and visible owner matching remains available.
 
 ### Active Quest Metadata And Detail Affordances
 
@@ -439,16 +438,3 @@ Acceptance:
 - Repeated low-priority explanatory copy is collapsed, summarized, or moved behind local detail affordances.
 - Active casting progress and errors remain prominent.
 - Tests cover key controls still rendering after the density change.
-
-
-
-## [6.1.0] — 2026-05-27
-
-### Добавлено
-
-- Добавлен метод `GDPRWindowController.Close()` для закрытия GDPR-окна из кода.
-- Добавлен метод `UserConsentManager.CloseGdprUnityUI()` для закрытия активного GDPR-окна из меню настроек игры напрямую (без необходимости иметь ссылку на `GDPRWindowController`).
-
-### Исправлено
-
-- При уничтожении GDPR-окна через `Destroy` теперь корректно завершается `Task`, возвращаемый из `ShowGdprUnityUI`.

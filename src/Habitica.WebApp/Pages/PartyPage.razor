@@ -683,7 +683,7 @@
                         <input aria-label="Search quest pool"
                                class="app-input"
                                data-testid="quest-pool-search"
-                               placeholder="Name, type, or owner"
+                               placeholder="Name, reward, type, or owner"
                                @bind="_questPoolSearchText"
                                @bind:event="oninput" />
                     </label>
@@ -1801,6 +1801,7 @@
 
         return entries.Where(entry =>
             entry.QuestName.Contains(searchText, StringComparison.OrdinalIgnoreCase)
+            || entry.Rewards.Any(reward => reward.Contains(searchText, StringComparison.OrdinalIgnoreCase))
             || entry.QuestType.Contains(searchText, StringComparison.OrdinalIgnoreCase)
             || entry.OwnerNames.Contains(searchText, StringComparison.OrdinalIgnoreCase));
     }

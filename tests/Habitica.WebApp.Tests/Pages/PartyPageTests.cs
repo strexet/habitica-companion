@@ -439,7 +439,17 @@ public sealed class PartyPageTests : BunitContext
                             1,
                             DateTimeOffset.Parse("2026-04-26T09:32:00Z"),
                             "Collection",
-                            new[] { "450 Gold", "Wolf Cub" })
+                            new[] { "450 Gold", "Wolf Cub" }),
+                        new PartyQuestPoolEntry(
+                            "party-123",
+                            "kraken",
+                            "The Kraken of Inkomplete",
+                            "user-2",
+                            "Alpha",
+                            1,
+                            DateTimeOffset.Parse("2026-04-26T09:33:00Z"),
+                            "Boss",
+                            new[] { "Cuttlefish (Egg)" })
                     },
                     new[]
                     {
@@ -547,9 +557,13 @@ public sealed class PartyPageTests : BunitContext
 
         Assert.Equal(new[] { "Moonstone Chain" }, GetRenderedQuestPoolNames(cut));
 
+        SetQuestPoolSearch(cut, "cuttle");
+
+        Assert.Equal(new[] { "The Kraken of Inkomplete" }, GetRenderedQuestPoolNames(cut));
+
         SetQuestPoolSearch(cut, "");
 
-        Assert.Equal(new[] { "Moonstone Chain", "Sunstone Chain" }, GetRenderedQuestPoolNames(cut));
+        Assert.Equal(new[] { "Moonstone Chain", "Sunstone Chain", "The Kraken of Inkomplete" }, GetRenderedQuestPoolNames(cut));
 
         cut.Find("[data-testid='hide-not-owned-quests']").Change(true);
 
