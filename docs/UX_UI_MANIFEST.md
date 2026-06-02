@@ -214,7 +214,7 @@ Current pattern:
 - Cached task groups with search, type filters, sort control, collapse controls, completed toggle, and compact task cards. Cards keep title, description, scoring/checkoff controls, disabled reasons, progress, and a Details toggle visible; status, metadata, and charts expand in place.
 - Week/month/year task statistics with aggregate history and month-activity charts.
 - Due dates render as readable local date labels such as Today, Tomorrow, Yesterday, or a local calendar date instead of UTC-style timestamps.
-- Task mutation controls stay inline with the affected card without requiring detail expansion, show disabled reasons from freshness/auth state, and use visible progress for repeated Habit scoring.
+- Task mutation controls stay inline with the affected card without requiring detail expansion, show disabled reasons from freshness/auth state, and use visible progress for repeated Habit scoring. Their task-scoped action row wraps compact controls within the card at phone widths instead of stretching each button across the full card.
 - Task details expand inside the card and show cached metadata without navigating away from the current scan position.
 
 What works:

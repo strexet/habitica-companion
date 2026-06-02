@@ -2622,7 +2622,7 @@ Current view-model rules:
 8. Show the numeric task value when available.
 9. Tint open task cards with a continuous low-saturation value gradient from warm negative values to cool positive values.
 10. Render completed tasks with neutral muted styling when the category is set to show completed.
-11. Keep task cards compact with title, notes, immediate scoring/checkoff controls, disabled reasons, progress, and a Details toggle. Reveal status, value/priority/due metadata, task detail metadata, and charts inside the expanded card.
+11. Keep task cards compact with title, notes, immediate scoring/checkoff controls, disabled reasons, progress, and a Details toggle. Keep the task-scoped action row wrapping within the card at narrow widths instead of stretching each button to the full card width. Reveal status, value/priority/due metadata, task detail metadata, and charts inside the expanded card.
 12. For Habit scoring, clamp multi-score count to 1-20 and show determinate progress while requests execute sequentially.
 13. Apply saved per-type task order after filtering/sorting; unknown saved IDs are ignored and new task IDs append after ordered known IDs.
 14. Drag handles move items within the currently visible list and persist the resulting per-type ID order for export/import and cloud sync.

@@ -51,6 +51,10 @@ public sealed class TasksPageTests : BunitContext
         Assert.Null(taskCard.QuerySelector("[data-testid='move-task-bottom-todo-1']"));
         Assert.NotNull(taskCard.QuerySelector(".task-details-toggle"));
         Assert.NotNull(taskCard.QuerySelector("[data-testid='score-task-todo-1']"));
+        var taskActions = taskCard.QuerySelector(".task-card-actions");
+        Assert.NotNull(taskActions);
+        Assert.NotNull(taskActions!.QuerySelector("[data-testid='score-task-todo-1']"));
+        Assert.NotNull(taskActions.QuerySelector(".task-details-toggle"));
         Assert.Contains("Refresh tasks before scoring.", taskCard.TextContent);
         var taskCardStyle = taskCard.GetAttribute("style");
         Assert.Contains("color-mix", taskCardStyle);
@@ -172,6 +176,12 @@ public sealed class TasksPageTests : BunitContext
         Services.AddSingleton<IAppSessionController>(controller);
 
         var cut = Render<TasksPage>();
+
+        var taskActions = cut.Find("[data-task-id='habit-1'] .task-card-actions");
+        Assert.NotNull(taskActions.QuerySelector("[data-testid='task-score-count-habit-1']"));
+        Assert.NotNull(taskActions.QuerySelector("[data-testid='score-task-up-habit-1']"));
+        Assert.NotNull(taskActions.QuerySelector("[data-testid='score-task-down-habit-1']"));
+        Assert.NotNull(taskActions.QuerySelector(".task-details-toggle"));
 
         cut.Find("[data-testid='task-score-count-habit-1']").Change("3");
         cut.Find("[data-testid='score-task-up-habit-1']").Click();

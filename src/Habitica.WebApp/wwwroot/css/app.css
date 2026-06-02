@@ -2856,17 +2856,24 @@ input[type="radio"] {
     flex-wrap: wrap;
     gap: 0.65rem;
     align-items: stretch;
+    min-width: 0;
+}
+
+.task-card-actions > * {
+    min-width: 0;
+    max-width: 100%;
 }
 
 .task-card-actions > .mud-button-root,
 .task-card-actions > .secondary-action-button,
 .task-card-actions > .habit-score-count .app-input {
+    box-sizing: border-box;
+    max-width: 100%;
     min-height: 2.5rem;
-    height: 100%;
 }
 
 .habit-score-count {
-    min-width: 7.5rem;
+    flex: 0 1 7.5rem;
     margin: 0;
 }
 
@@ -3737,14 +3744,7 @@ code {
     }
 
     .task-card-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .task-card-actions > .mud-button-root,
-    .task-card-actions > .secondary-action-button,
-    .task-card-actions .habit-score-count {
-        width: 100%;
+        align-items: flex-start;
     }
 
     .action-button {
