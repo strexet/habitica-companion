@@ -1,0 +1,94 @@
+@inject IAppSessionController SessionController
+
+@if (Dailies.Count > 0)
+{
+    <section class="cron-dailies-mini-list" data-testid="cron-unfinished-dailies">
+        @if (_isCollapsed)
+        {
+            <button class="cron-dailies-disclosure"
+                    type="button"
+                    data-testid="cron-dailies-disclosure"
+                    @onclick="ToggleCollapsed">
+                @FormatDisclosureLabel() <span aria-hidden="true">&mdash; show</span>
+            </button>
+        }
+        else
+        {
+            <div class="cron-dailies-mini-list-head">
+                <p class="section-label">Unfinished dailies</p>
+                <span class="ui-pill count-pill" data-testid="cron-dailies-count">@Dailies.Count</span>
+                @if (StartCollapsed)
+                {
+                    <button class="cron-dailies-disclosure compact"
+                            type="button"
+                            data-testid="cron-dailies-disclosure"
+                            @onclick="ToggleCollapsed">
+                        Hide
+                    </button>
+                }
+            </div>
+
+            @if (SessionController.State.TaskFreshness != SnapshotFreshnessState.Fresh)
+            {
+                <a class="task-action-note" href="#app-refresh">Refresh tasks to check off.</a>
+            }
+
+            <div class="cron-dailies-mini-list-rows">
+                @foreach (var daily in Dailies)
+                {
+                    <div class="cron-daily-mini-row" data-task-id="@daily.Id">
+                        <span class="cron-daily-mini-title" title="@daily.Text">@daily.Text</span>
+                        <span class="ui-pill cron-daily-difficulty" title="Difficulty">x@daily.Difficulty.ToString("0.#")</span>
+                        @if (SessionController.State.TaskFreshness == SnapshotFreshnessState.Fresh)
+                        {
+                            <button class="cron-daily-check-button"
+                                    type="button"
+                                    disabled="@SessionController.State.IsBusy"
+                                    aria-label="@($"Complete {daily.Text}")"
+                                    title="@($"Complete {daily.Text}")"
+                                    data-testid="@($"complete-cron-daily-{daily.Id}")"
+                                    @onclick="@(() => CompleteAsync(daily))">
+                                <span aria-hidden="true">✓</span>
+                            </button>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </section>
+}
+
+@code {
+    [Parameter]
+    public IReadOnlyList<TaskSnapshot> Dailies { get; set; } = Array.Empty<TaskSnapshot>();
+
+    [Parameter]
+    public EventCallback<TaskSnapshot> OnComplete { get; set; }
+
+    [Parameter]
+    public bool StartCollapsed { get; set; }
+
+    private bool _isCollapsed;
+
+    protected override void OnInitialized()
+    {
+        _isCollapsed = StartCollapsed;
+    }
+
+    private string FormatDisclosureLabel()
+    {
+        return Dailies.Count == 1
+            ? "1 daily due"
+            : $"{Dailies.Count} dailies due";
+    }
+
+    private void ToggleCollapsed()
+    {
+        _isCollapsed = !_isCollapsed;
+    }
+
+    private Task CompleteAsync(TaskSnapshot daily)
+    {
+        return OnComplete.InvokeAsync(daily);
+    }
+}

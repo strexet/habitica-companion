@@ -1,6 +1,7 @@
 @page "/spells"
 @implements IDisposable
 @using System.Globalization
+@using Habitica.Application.Dashboard
 @using Habitica.Domain.Party
 @using Habitica.Storage
 @inject SpellViewModelFactory SpellViewModelFactory
@@ -197,6 +198,7 @@
 
                         @if (IsPendingCronWarning(spell.Id))
                         {
+                            var unfinishedDailies = GetCronUnfinishedDailies();
                             <div class="spell-card-section spell-cron-warning">
                                 <div>
                                     <p class="section-label">Buff timing</p>
@@ -204,6 +206,7 @@
                                         You haven't started your Habitica day yet. Buffs last until CRON. If you cast this buff before starting your new day, it may expire sooner than you expect. Party buffs expire separately for each member on that member's next CRON.
                                     </p>
                                 </div>
+                                <CronUnfinishedDailiesMiniList Dailies="@unfinishedDailies" OnComplete="CompleteCronDailyAsync" StartCollapsed="true" />
                                 <label class="checkbox-row compact">
                                     <input type="checkbox"
                                            checked="@_suppressCronWarningForDay"
@@ -298,6 +301,7 @@
     private readonly Dictionary<string, string?> _selectedTargets = new(StringComparer.Ordinal);
     private readonly Dictionary<string, bool> _autoEquip = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string?> _selectedRecommendations = new(StringComparer.Ordinal);
+    private readonly HashSet<string> _completedCronDailyIds = new(StringComparer.Ordinal);
     private PendingSpellCast? _pendingCronWarning;
     private bool _suppressCronWarningForDay;
 
@@ -402,6 +406,24 @@
     private async Task CastSpellAsync(SpellCastRequest request)
     {
         var result = await SessionController.CastSpellAsync(request);
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private IReadOnlyList<TaskSnapshot> GetCronUnfinishedDailies()
+    {
+        return PendingDamageEstimateFactory.GetIncompleteDailies(SessionController.State.TaskSnapshot)
+            .Where(task => !_completedCronDailyIds.Contains(task.Id))
+            .ToArray();
+    }
+
+    private async Task CompleteCronDailyAsync(TaskSnapshot daily)
+    {
+        var result = await SessionController.ScoreTaskAsync(new TaskScoreRequest(daily.Id, TaskScoreDirection.Up));
+        if (result.Succeeded)
+        {
+            _completedCronDailyIds.Add(daily.Id);
+        }
+
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 

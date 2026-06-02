@@ -35,7 +35,7 @@
             </span>
         }
 
-        <MudButton Class="refresh-button" Color="Color.Secondary" Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy || SessionController.State.IsRefreshing)" OnClick="RefreshAsync" Variant="Variant.Filled">
+        <MudButton Class="refresh-button" Color="Color.Secondary" Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy || SessionController.State.IsRefreshing)" id="app-refresh" OnClick="RefreshAsync" Variant="Variant.Filled">
             Refresh
         </MudButton>
     </MudAppBar>

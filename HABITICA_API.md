@@ -489,6 +489,8 @@ GET /tasks/user
 
 By default, returns all active habits, dailies, todos, and rewards. Completed todos are excluded unless explicitly requested.
 
+Daily task payloads can include computed boolean `isDue`. Preserve it as optional cached task state. CRON-facing unfinished-daily views should exclude explicit `isDue: false` values while treating older cached snapshots without the field as unknown-compatible.
+
 Query parameters:
 
 | Parameter | Values | Notes |

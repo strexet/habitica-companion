@@ -538,7 +538,8 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             IsChallengeTask(task),
             GetOptionalNullableBoolean(task, "up"),
             GetOptionalNullableBoolean(task, "down"),
-            ParseTaskHistory(task));
+            ParseTaskHistory(task),
+            GetOptionalNullableBoolean(task, "isDue"));
     }
 
     private static bool IsChallengeTask(JsonElement task)

@@ -1570,6 +1570,86 @@ input[type="radio"] {
     margin: 0;
 }
 
+.cron-dailies-mini-list {
+    display: grid;
+    gap: 0.55rem;
+    padding: 0.7rem;
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--primary) 20%, var(--card-border));
+    background: color-mix(in srgb, var(--surface) 94%, var(--primary));
+}
+
+.cron-dailies-mini-list-head,
+.cron-daily-mini-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.cron-dailies-mini-list-head .section-label {
+    margin: 0;
+}
+
+.cron-dailies-mini-list-rows {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.cron-daily-mini-row {
+    min-width: 0;
+    padding: 0.35rem 0.45rem;
+    border-radius: 0.55rem;
+    background: var(--surface-strong);
+}
+
+.cron-daily-mini-title {
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cron-daily-difficulty {
+    flex: 0 0 auto;
+    font-size: 0.72rem;
+}
+
+.cron-dailies-disclosure,
+.cron-daily-check-button {
+    border: 1px solid color-mix(in srgb, var(--primary) 28%, var(--card-border));
+    border-radius: 0.55rem;
+    background: var(--surface-strong);
+    color: var(--primary);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+.cron-dailies-disclosure {
+    justify-self: start;
+    padding: 0.45rem 0.65rem;
+}
+
+.cron-dailies-disclosure.compact {
+    margin-left: auto;
+    padding: 0.25rem 0.45rem;
+    font-size: 0.78rem;
+}
+
+.cron-daily-check-button {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    min-height: 2rem;
+}
+
+.cron-daily-check-button:disabled {
+    cursor: not-allowed;
+}
+
 .cron-gear-optimizer {
     display: grid;
     gap: 0.55rem;
@@ -2636,16 +2716,18 @@ input[type="radio"] {
 
 .task-card-head {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.75rem;
     align-items: start;
 }
 
 .task-reorder-affordances {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 0.35rem;
-    align-items: flex-start;
+    align-items: center;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
 }
 
 .task-drag-handle {
@@ -2676,7 +2758,7 @@ input[type="radio"] {
     display: grid;
     flex: 0 0 auto;
     gap: 0.25rem;
-    grid-template-columns: repeat(2, 2rem);
+    grid-template-columns: repeat(4, 2rem);
 }
 
 .task-reorder-button {
@@ -2771,7 +2853,7 @@ input[type="radio"] {
     display: flex;
     flex-wrap: wrap;
     gap: 0.65rem;
-    align-items: end;
+    align-items: center;
 }
 
 .habit-score-count {
@@ -3635,8 +3717,7 @@ code {
         align-items: stretch;
     }
 
-    .task-type-filter,
-    .task-card-actions {
+    .task-type-filter {
         align-items: stretch;
         flex-direction: column;
     }
@@ -3647,11 +3728,6 @@ code {
 
     .task-details-toggle {
         justify-self: start;
-    }
-
-    .task-card-actions > *,
-    .habit-score-count {
-        width: 100%;
     }
 
     .action-button {

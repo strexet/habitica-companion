@@ -237,6 +237,13 @@ public sealed class SpellsPageTests : BunitContext
         var controller = new FakeAppSessionController(CreateRogueStateForToolsOfTrade() with
         {
             UserId = "user-id",
+            TaskSnapshot = new TaskCollectionSnapshot(
+                DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+                new[]
+                {
+                    new TaskSnapshot("daily-1", "Exercise", TaskType.Daily, false, 1m, null, null, IsDue: true),
+                    new TaskSnapshot("daily-weekly", "Weekly review", TaskType.Daily, false, 1m, null, null, IsDue: false)
+                }),
             UserSnapshot = CreateRogueStateForToolsOfTrade().UserSnapshot! with
             {
                 NeedsCron = true,
@@ -251,7 +258,14 @@ public sealed class SpellsPageTests : BunitContext
 
         Assert.Contains("Buff timing", cut.Markup);
         Assert.Contains("Party buffs expire separately for each member", cut.Markup);
+        Assert.Contains("1 daily due", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='complete-cron-daily-daily-1']"));
         Assert.Empty(controller.CastSpellCalls);
+
+        cut.Find("[data-testid='cron-dailies-disclosure']").Click();
+        cut.Find("[data-testid='complete-cron-daily-daily-1']").Click();
+        Assert.Equal("daily-1", Assert.Single(controller.ScoreTaskCalls).TaskId);
+        Assert.Empty(cut.FindAll("[data-testid='cron-unfinished-dailies']"));
 
         cut.Find("[data-testid='start-day-and-cast-toolsOfTrade']").Click();
 

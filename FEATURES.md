@@ -589,7 +589,7 @@ rogue: toolsOfTrade
 healer: protectAura
 ```
 
-The warning is rendered inside the affected spell card to keep the decision close to the Cast button. It explains that the current user's buffs can expire on that user's CRON and that party buffs expire separately for each member on that member's next CRON. Actions are `Cancel`, `Cast anyway`, and `Start New Day and Cast`. The optional `Do not warn again for this Habitica day` checkbox stores a local per-user/per-Habitica-day preference under `preferences/spells/cronWarningSuppression`.
+The warning is rendered inside the affected spell card to keep the decision close to the Cast button. It explains that the current user's buffs can expire on that user's CRON and that party buffs expire separately for each member on that member's next CRON. Actions are `Cancel`, `Cast anyway`, and `Start New Day and Cast`. When due unfinished Dailies exist, a collapsed due-count disclosure reveals the shared compact checkoff list without leaving the pending cast context. The optional `Do not warn again for this Habitica day` checkbox stores a local per-user/per-Habitica-day preference under `preferences/spells/cronWarningSuppression`.
 
 ### Validation
 
@@ -1206,7 +1206,9 @@ Render `Start New Day` only when the current account snapshot says `NeedsCron ==
 
 Start New Day offers recommended temporary battle gear before CRON and enables that option by default. `Habitica.Rules.Equipment.EquipmentRecommendationFactory` builds the compact summary-first preview from cached owned gear and the gear catalog. Goals are `INT for mana`, `CON for less damage`, and `Survival`; all are marked assumption-based because the final CRON mana and damage calculations are server-side. The preview shows current stats, recommended stats, deltas, whether the recommended gear is already equipped, and expandable recommended-item rows. When enabled, `AppSessionController.StartNewDayAsync(StartNewDayRequest)` validates recommended gear ownership, captures the current battle slots, equips changed recommended slots sequentially without an intermediate user refresh, runs CRON only after successful gear steps, restores the captured battle slots sequentially, then refreshes account/tasks/party state. If temporary equip or CRON fails after a gear change, the controller attempts to restore the changed slots before reporting the failure. Failure messages distinguish skipped-before-CRON, failed-while-CRON-running, post-CRON restore, and completed-but-refresh-failed states.
 
-The pending damage panel uses `PendingDamageEstimateFactory` to combine incomplete Daily estimates and saved active boss quest pending damage. It must show included sources and unavailable sources separately, and must label the result as an estimate based on synced data.
+The Start New Day panel renders `CronUnfinishedDailiesMiniList` between gear optimization and confirmation when due unfinished Dailies exist. Each compact row scores that Daily up through `AppSessionController.ScoreTaskAsync`; stale task snapshots replace row actions with a link to the shared Refresh control. The Spells CRON warning reuses the same component behind a collapsed due-count disclosure so a pending cast keeps its context.
+
+The pending damage panel uses `PendingDamageEstimateFactory` to combine due incomplete Daily estimates and saved active boss quest pending damage. `PendingDamageEstimateFactory.GetIncompleteDailies` is the shared Daily selector for both the damage estimate and CRON mini lists: Daily, incomplete, and not explicitly `isDue: false`. It must show included sources and unavailable sources separately, and must label the result as an estimate based on synced data.
 
 Risk thresholds:
 
@@ -1256,6 +1258,7 @@ Current implementation:
 - dashboard inventory readiness summary;
 - dashboard stat cards fall back to current-only rendering when the API snapshot lacks non-zero stat targets;
 - dashboard Start New Day confirmation and inline result when current-user Cron is due;
+- dashboard and Spells CRON unfinished-dailies mini lists with guarded inline checkoff;
 - dashboard pending damage estimate with included/excluded source copy and knockout warning;
 - manual health-potion purchase action with confirmation and account refresh;
 - task workspace with cached browsing and planned guarded mutations;
@@ -2562,7 +2565,7 @@ per-task-type display order preferences
 task groups by type
 foldable task group sections
 per-category Show completed / Hide completed controls
-compact task cards with title, notes, reorder controls, and a Details toggle
+compact task cards with title, notes, immediate scoring/checkoff controls, and a Details toggle
 task notes
 numeric task value
 subtle value-based card background for open tasks
@@ -2571,7 +2574,7 @@ priority and due-date metadata
 freshness banner
 type filters
 sort control
-expanded inline task scoring/checkoff controls
+inline task scoring/checkoff controls
 habit multi-score progress
 task detail panel
 task statistics summary
@@ -2579,7 +2582,7 @@ task-history histogram
 month activity chart
 expanded task compact activity charts
 drag-handle task reordering
-task-card move to top/up/down/bottom controls
+per-section rearrange toggle with task-card move to top/up/down/bottom controls
 empty-state messaging
 ```
 
@@ -2619,13 +2622,13 @@ Current view-model rules:
 8. Show the numeric task value when available.
 9. Tint open task cards with a continuous low-saturation value gradient from warm negative values to cool positive values.
 10. Render completed tasks with neutral muted styling when the category is set to show completed.
-11. Keep collapsed task cards compact with title, notes, reorder controls, and a Details toggle. Reveal status, value/priority/due metadata, task detail metadata, scoring controls, disabled reasons, progress, and charts inside the expanded card.
+11. Keep task cards compact with title, notes, immediate scoring/checkoff controls, disabled reasons, progress, and a Details toggle. Reveal status, value/priority/due metadata, task detail metadata, and charts inside the expanded card.
 12. For Habit scoring, clamp multi-score count to 1-20 and show determinate progress while requests execute sequentially.
 13. Apply saved per-type task order after filtering/sorting; unknown saved IDs are ignored and new task IDs append after ordered known IDs.
 14. Drag handles move items within the currently visible list and persist the resulting per-type ID order for export/import and cloud sync.
 15. Drag reordering is scoped to the current task type group and preserves hidden or completed items that are filtered out of the visible subset.
 16. Focused drag handles support arrow-key reordering through the same local ordering path for keyboard precision.
-17. Each task card also renders move to top, move up, move down, and move to bottom buttons that use the same local ordering path and disable edge moves that would not change the visible order.
+17. Keep rearrange controls hidden by default. Each task group exposes an in-memory `Rearrange` toggle that reveals the drag handle plus one horizontal row of move-to-top, move-up, move-down, and move-to-bottom buttons. The buttons use the same local ordering path and disable edge moves that would not change the visible order.
 18. Parse cached task history points when Habitica returns them and keep them attached to task snapshots.
 19. Let users switch task statistics between week, month, and year periods.
 20. Render aggregate task-history and month-activity charts from cached history without requiring a live refresh.

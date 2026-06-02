@@ -30,6 +30,14 @@ public sealed class PendingDamageEstimateFactory
             ResolveRisk(total, user.Health));
     }
 
+    public static IReadOnlyList<TaskSnapshot> GetIncompleteDailies(TaskCollectionSnapshot? tasks)
+    {
+        return tasks?.Items
+            .Where(static task => task.Type == TaskType.Daily && !task.IsCompleted && task.IsDue != false)
+            .ToArray()
+            ?? Array.Empty<TaskSnapshot>();
+    }
+
     private static void AddDailyDamage(
         TaskCollectionSnapshot? tasks,
         List<PendingDamageSource> included,
@@ -41,17 +49,15 @@ public sealed class PendingDamageEstimateFactory
             return;
         }
 
-        var incompleteDailies = tasks.Items
-            .Where(static task => task.Type == TaskType.Daily && !task.IsCompleted)
-            .ToArray();
+        var incompleteDailies = GetIncompleteDailies(tasks);
         var damage = incompleteDailies.Sum(static task => EstimateDailyDamage(task));
 
         included.Add(new PendingDamageSource(
             "Incomplete Dailies",
             damage,
-            incompleteDailies.Length == 0
+            incompleteDailies.Count == 0
                 ? "No incomplete Dailies are present in saved task data."
-                : $"{incompleteDailies.Length} incomplete Daily task{(incompleteDailies.Length == 1 ? string.Empty : "s")} using local difficulty-weight estimate."));
+                : $"{incompleteDailies.Count} incomplete Daily task{(incompleteDailies.Count == 1 ? string.Empty : "s")} using local difficulty-weight estimate."));
     }
 
     private static void AddPartyBossDamage(

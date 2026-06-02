@@ -103,6 +103,7 @@
                 snapshot,
                 SessionController.State.GearCatalogSnapshot,
                 _startNewDayGearGoal);
+            var unfinishedDailies = GetCronUnfinishedDailies();
             var canStartNewDay = SessionController.State.IsAuthenticated
                 && !SessionController.State.IsBusy
                 && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
@@ -190,6 +191,8 @@
                         </details>
                     }
                 </div>
+
+                <CronUnfinishedDailiesMiniList Dailies="@unfinishedDailies" OnComplete="CompleteCronDailyAsync" />
 
                 @if (_showCronConfirmation)
                 {
@@ -592,6 +595,7 @@
 </div>
 
 @code {
+    private readonly HashSet<string> _completedCronDailyIds = new(StringComparer.Ordinal);
     private bool _appearanceCollapsed = true;
     private readonly Dictionary<string, int> _pendingAllocation = new(StringComparer.Ordinal);
     private const decimal HealthPotionGoldCost = 25m;
@@ -767,6 +771,24 @@
         _showCronConfirmation = false;
         _startNewDayResultSucceeded = result.Succeeded;
         _startNewDayResultMessage = result.Message;
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private IReadOnlyList<TaskSnapshot> GetCronUnfinishedDailies()
+    {
+        return Habitica.Application.Dashboard.PendingDamageEstimateFactory.GetIncompleteDailies(SessionController.State.TaskSnapshot)
+            .Where(task => !_completedCronDailyIds.Contains(task.Id))
+            .ToArray();
+    }
+
+    private async Task CompleteCronDailyAsync(TaskSnapshot daily)
+    {
+        var result = await SessionController.ScoreTaskAsync(new TaskScoreRequest(daily.Id, TaskScoreDirection.Up));
+        if (result.Succeeded)
+        {
+            _completedCronDailyIds.Add(daily.Id);
+        }
+
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
     }
 

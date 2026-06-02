@@ -81,6 +81,7 @@ public sealed class HabiticaApiClientTests
                   "notes": null,
                   "completed": true,
                   "priority": 1.0,
+                  "isDue": false,
                   "date": null
                 }
               ]
@@ -106,6 +107,7 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(TaskType.Daily, snapshot.Items[1].Type);
         Assert.True(snapshot.Items[1].IsCompleted);
         Assert.False(snapshot.Items[1].IsChallengeTask);
+        Assert.False(snapshot.Items[1].IsDue);
     }
 
     [Fact]

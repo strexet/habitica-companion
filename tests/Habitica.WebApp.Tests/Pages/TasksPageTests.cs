@@ -26,7 +26,7 @@ public sealed class TasksPageTests : BunitContext
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
-                IsAuthenticated: false,
+                IsAuthenticated: true,
                 DisplayName: null,
                 ErrorMessage: null,
                 LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
@@ -47,10 +47,11 @@ public sealed class TasksPageTests : BunitContext
         Assert.Contains("2 liters", taskCard.TextContent);
         Assert.DoesNotContain("Priority", taskCard.TextContent);
         Assert.DoesNotContain("-4.2", taskCard.TextContent);
-        Assert.NotNull(taskCard.QuerySelector("[data-testid='move-task-top-todo-1']"));
-        Assert.NotNull(taskCard.QuerySelector("[data-testid='move-task-bottom-todo-1']"));
+        Assert.Null(taskCard.QuerySelector("[data-testid='move-task-top-todo-1']"));
+        Assert.Null(taskCard.QuerySelector("[data-testid='move-task-bottom-todo-1']"));
         Assert.NotNull(taskCard.QuerySelector(".task-details-toggle"));
-        Assert.Null(taskCard.QuerySelector("[data-testid='score-task-todo-1']"));
+        Assert.NotNull(taskCard.QuerySelector("[data-testid='score-task-todo-1']"));
+        Assert.Contains("Refresh tasks before scoring.", taskCard.TextContent);
         var taskCardStyle = taskCard.GetAttribute("style");
         Assert.Contains("color-mix", taskCardStyle);
         Assert.Contains("var(--task-neutral)", taskCardStyle);
@@ -172,8 +173,6 @@ public sealed class TasksPageTests : BunitContext
 
         var cut = Render<TasksPage>();
 
-        Assert.Empty(cut.FindAll("[data-testid='task-score-count-habit-1']"));
-        cut.Find(".task-details-toggle").Click();
         cut.Find("[data-testid='task-score-count-habit-1']").Change("3");
         cut.Find("[data-testid='score-task-up-habit-1']").Click();
 
@@ -293,6 +292,10 @@ public sealed class TasksPageTests : BunitContext
 
         var cut = Render<TasksPage>();
         AssertMarkupOrder(cut.Markup, "Alpha", "Beta", "Gamma");
+        Assert.Empty(cut.FindAll("[data-testid^='move-task-']"));
+
+        cut.Find("[data-testid='rearrange-tasks-Todo']").Click();
+
         Assert.NotEmpty(cut.FindAll("[data-testid^='move-task-']"));
         Assert.NotNull(cut.Find("[data-testid='drag-task-todo-1']"));
 
@@ -335,6 +338,7 @@ public sealed class TasksPageTests : BunitContext
 
         var cut = Render<TasksPage>();
 
+        cut.Find("[data-testid='rearrange-tasks-Todo']").Click();
         cut.Find("[data-testid='drag-task-todo-1']").KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
 
         AssertMarkupOrder(cut.Markup, "Beta", "Alpha", "Gamma");
@@ -371,6 +375,7 @@ public sealed class TasksPageTests : BunitContext
 
         var cut = Render<TasksPage>();
 
+        cut.Find("[data-testid='rearrange-tasks-Todo']").Click();
         cut.Find("[data-testid='move-task-down-todo-1']").Click();
         AssertMarkupOrder(cut.Markup, "Beta", "Alpha", "Gamma");
 

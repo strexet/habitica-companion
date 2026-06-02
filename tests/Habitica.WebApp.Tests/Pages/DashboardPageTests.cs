@@ -116,6 +116,7 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("Pending damage estimate", cut.Markup);
         Assert.Contains("Incomplete Dailies", cut.Markup);
         Assert.Contains("2 HP", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='cron-unfinished-dailies']"));
         Assert.Contains("3 unspent stat points", cut.Markup);
         Assert.Contains("#stats", cut.Markup);
         Assert.Contains("Equipment", cut.Markup);
@@ -300,7 +301,13 @@ public sealed class DashboardPageTests : BunitContext
                 ErrorMessage: null,
                 LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
                 TaskFreshness: SnapshotFreshnessState.Fresh,
-                TaskSnapshot: new TaskCollectionSnapshot(DateTimeOffset.Parse("2026-04-25T08:00:00Z"), Array.Empty<TaskSnapshot>()),
+                TaskSnapshot: new TaskCollectionSnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    new[]
+                    {
+                        new TaskSnapshot("daily-1", "Exercise", TaskType.Daily, false, 1m, null, null, IsDue: true),
+                        new TaskSnapshot("daily-2", "Review notes", TaskType.Daily, false, 1m, null, null, IsDue: true)
+                    }),
                 ClassName: "wizard",
                 Level: 15,
                 UserSnapshot: new UserSnapshot(
@@ -330,6 +337,13 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
         Services.AddScoped<ColorSchemeService>();
         var cut = Render<DashboardPage>();
+
+        Assert.Contains("Unfinished dailies", cut.Markup);
+        Assert.Equal("2", cut.Find("[data-testid='cron-dailies-count']").TextContent);
+        cut.Find("[data-testid='complete-cron-daily-daily-1']").Click();
+        Assert.Equal("daily-1", Assert.Single(controller.ScoreTaskCalls).TaskId);
+        Assert.Equal("1", cut.Find("[data-testid='cron-dailies-count']").TextContent);
+        Assert.NotNull(cut.Find("[data-testid='complete-cron-daily-daily-2']"));
 
         cut.Find("[data-testid='start-new-day']").Click();
         Assert.Contains("Missed Dailies may be processed", cut.Markup);
@@ -402,6 +416,7 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddScoped<ColorSchemeService>();
         var cut = Render<DashboardPage>();
 
+        Assert.Empty(cut.FindAll("[data-testid='cron-unfinished-dailies']"));
         Assert.Contains("INT for mana", cut.Markup);
         Assert.True(cut.Find("[data-testid='start-new-day-auto-equip']").HasAttribute("checked"));
         Assert.NotNull(cut.Find("[data-testid='start-new-day-gear-stats']"));

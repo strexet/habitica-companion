@@ -12,7 +12,8 @@ public sealed record TaskSnapshot(
     bool IsChallengeTask = false,
     bool? SupportsPositiveScore = null,
     bool? SupportsNegativeScore = null,
-    IReadOnlyList<TaskHistoryPoint>? History = null)
+    IReadOnlyList<TaskHistoryPoint>? History = null,
+    bool? IsDue = null)
 {
     public IReadOnlyList<TaskHistoryPoint> HistoryPoints => History ?? Array.Empty<TaskHistoryPoint>();
 }

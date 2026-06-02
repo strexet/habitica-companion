@@ -183,7 +183,7 @@ Current pattern:
 
 - Summary stat cards for account, HP, MP, XP, gold, and open tasks.
 - HP, MP, and XP cards include compact meters so the current ratio has a readable shape, not only text.
-- Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action includes an optional gear recommendation preview and uses inline confirmation instead of an immediate mutation.
+- Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action includes an optional gear recommendation preview, an expanded compact list for due unfinished Dailies, and inline confirmation instead of an immediate mutation.
 - Stats allocation table with horizontal overflow.
 - Explicit armoire action and companion/inventory summary panels.
 
@@ -211,10 +211,10 @@ Files: `src/Habitica.WebApp/Pages/TasksPage.razor`
 
 Current pattern:
 
-- Cached task groups with search, type filters, sort control, collapse controls, completed toggle, and compact task cards. Collapsed cards keep title, description, reorder affordances, and a Details toggle visible; status, metadata, scoring controls, disabled reasons, progress, and charts expand in place.
+- Cached task groups with search, type filters, sort control, collapse controls, completed toggle, and compact task cards. Cards keep title, description, scoring/checkoff controls, disabled reasons, progress, and a Details toggle visible; status, metadata, and charts expand in place.
 - Week/month/year task statistics with aggregate history and month-activity charts.
 - Due dates render as readable local date labels such as Today, Tomorrow, Yesterday, or a local calendar date instead of UTC-style timestamps.
-- Expanded task mutation controls stay inline with the affected task, show disabled reasons from freshness/auth state, and use visible progress for repeated Habit scoring.
+- Task mutation controls stay inline with the affected card without requiring detail expansion, show disabled reasons from freshness/auth state, and use visible progress for repeated Habit scoring.
 - Task details expand inside the card and show cached metadata without navigating away from the current scan position.
 
 What works:
@@ -249,6 +249,7 @@ Improvement:
 - For drag-and-drop task ordering, make reordering available only where manual order is the active ordering model, or clearly explain why a visible sorted/filtered view cannot accept a drop at that position.
 - Use an explicit drag handle, lift state, insertion marker, and invalid-drop feedback so task cards do not feel like they can be accidentally dragged while selecting text, expanding details, or pressing score controls.
 - Keep keyboard and single-pointer reorder alternatives available; the current Tasks page drag handle supports arrow-key reordering, and each task card exposes compact move-to-top, move-up, move-down, and move-to-bottom buttons.
+- Keep task-card reorder affordances hidden until the user enables the section-level Rearrange mode. Keep all four move buttons in one horizontal row.
 - Preserve hidden/completed items when reordering the visible subset, and keep the dropped task in view with a brief inline confirmation.
 
 ### Inventory
@@ -322,7 +323,7 @@ Current pattern after the latest UI pass:
 
 - Sticky current-mana bar above the spell cards, showing available MP, max MP, and class while scrolling.
 - Spell cards with stable summary, cost/availability pills, count/target input zone, mana spent/available/after-cast preview, auto-equip toggle, cast button, progress bars, card-local quest/stat context, effect preview, and equipment recommendations.
-- Cron-sensitive stat buffs show an inline warning inside the spell card when the user has not started the current Habitica day. The warning offers Cancel, Cast anyway, and Start New Day and Cast, plus local per-day suppression.
+- Cron-sensitive stat buffs show an inline warning inside the spell card when the user has not started the current Habitica day. The warning offers Cancel, Cast anyway, and Start New Day and Cast, plus local per-day suppression and a collapsed due-Daily mini-list disclosure.
 - Responsive two-zone layout: variable user inputs on the left, mana/action status on the right; stacks at narrower widths.
 
 What works:
