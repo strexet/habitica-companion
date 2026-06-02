@@ -61,78 +61,84 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Top. Quest pool should be open by default on the Quests page
-    - Description
-        - The quest pool is now located on a dedicated Quests page.
-        - Since this page is specifically focused on quests, the quest pool should be expanded/open by default.
-        - Users should not need to manually open the quest pool every time they navigate to the Quests page.
-    - Expected behavior
-        - When the user opens the Quests page, the quest pool is already visible/open.
-    - Actual behavior
-        - The quest pool is collapsed/closed by default.
-    - Suggested fix
-        - Change the default state of the quest pool on the Quests page to open/expanded.
-        - Keep any manual expand/collapse behavior available after the page loads.
-- Top. Party and Quests page layout cleanup
-    - Description
-        - Several Party page and Quests page sections contain duplicated or overly verbose information.
-        - Now that quests have a separate page, the layout should be simplified and reorganized to avoid repeated blocks and unnecessary details.
-    - Party page updates
-        - Move PARTY SYNC ROLES and PARTY SYNC SETTINGS to the bottom of the Party page.
-        - Place them near the PARTY SYNC MODERATION section, directly before it.
-        - Remove the duplicate quest badge.
-            - There are currently 2 quest badges.
-            - Only one quest badge should be displayed.
-        - Remove the extra MEMBERS info block.
-            - Member information is already available in the members list.
-            - The separate small MEMBERS summary block is redundant.
-        - Merge the PARTY block that contains the party name with the SUMMARY / Party notes block.
-            - The party name and party description/notes should be presented as one combined party summary section.
-    - Quests page updates
-        - Simplify active quest participant status display.
-            - When a quest is already active/started and is no longer waiting for party members to accept, do not show the full invite-response breakdown:
-                - ACCEPTED
-                - PENDING
-                - REJECTED
-                - UNKNOWN
-                - IN INN
-            - For an active quest, show a single participant count instead.
-            - Suggested label:
-                - Participants: 26
-            - Alternative labels:
-                - Active Participants: 26
-                - Quest Participants: 26
-        - Simplify quest finish estimate when prediction data is unavailable.
-            - If finish prediction has no meaningful data, do not show multiple Unknown fields.
-            - Current unnecessary output:
-                - EXPECTED FINISH: Unknown
-                - FINISHING MEMBER: Unknown
-                - TIMING CONFIDENCE: Medium
-            - Expected simplified output:
-                - EXPECTED FINISH: Unknown
-            - Hide FINISHING MEMBER when it is Unknown.
-            - Hide TIMING CONFIDENCE when there is no actual prediction.
-    - Expected behavior
-        - Party page has less duplicated information.
-        - Party sync controls are grouped together near moderation controls.
-        - Quests page shows detailed invite-response status only when it is useful.
-        - Active quests show a compact participant count instead of obsolete acceptance breakdown.
-        - Unknown finish prediction fields are hidden unless they provide useful information.
-    - Suggested fix
-        - Reorganize Party page section ordering.
-        - Remove duplicated quest/member summary UI blocks.
-        - Merge party name and party notes/description into one summary section.
-        - Add conditional rendering for quest acceptance breakdown:
-            - Show detailed accepted/pending/rejected/unknown/in-inn values only while the quest is pending invitation/acceptance.
-            - Show only participant count after the quest has started.
-        - Add conditional rendering for finish estimate fields:
-            - Always show EXPECTED FINISH.
-            - Show FINISHING MEMBER only when known.
-            - Show TIMING CONFIDENCE only when prediction data exists and confidence is meaningful.
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
+
+### Quests Page Quest Pool Open By Default
+
+Goal: show the quest pool immediately when users navigate to the dedicated Quests page while preserving the existing manual expand/collapse control.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md`
+
+Feature shape:
+- Initialize the quest-pool disclosure as expanded when `PartyPage` renders with `QuestWorkspaceOnly="true"`.
+- Apply the default only during initial component setup. A later render must not reopen the pool after the user manually collapses it.
+- Keep `Show quest pool` / `Hide quest pool` available so the user can collapse and reopen the section during the current page visit.
+- Render the existing search field, pool cards, empty state, owned-only filter composition, and queue controls unchanged once the pool is visible.
+
+Out of scope:
+- persisting quest-pool disclosure state across reloads or devices;
+- changing quest-pool search, grouping, ownership rules, queue behavior, or shared party-sync payloads;
+- changing Party-page content outside the dedicated Quests workspace.
+
+Acceptance:
+- Opening `/quests` renders the quest pool contents immediately without requiring a `Show quest pool` click.
+- Opening `/quests` with an empty pool renders the existing expanded empty-state message immediately.
+- The initial expanded state exposes the existing search input.
+- Clicking `Hide quest pool` hides the contents and changes the toggle to `Show quest pool`.
+- Subsequent component rerenders do not reopen a pool the user manually hid.
+- Clicking `Show quest pool` restores the contents.
+- Direct `PartyPage` rendering without `QuestWorkspaceOnly="true"` does not gain new quest-pool UI.
+- Razor tests cover initial expanded rendering, manual collapse, manual reopen, and no forced reopen after rerender.
+
+### Party And Quests Page Layout Cleanup
+
+Goal: remove duplicated Party-page summaries, group party-sync administration near moderation, and keep active-quest status concise when invitation or finish-prediction details are no longer useful.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css` only if the simplified structure requires a small layout adjustment
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md`
+
+Party-page feature shape:
+- Replace the separate top-level `Party` name card and `Summary` / `Party notes` panel with one combined party-summary section containing the party name and safely rendered party notes.
+- Remove the small standalone `Members` count card. The members section and its visible-count pill remain the source of member-count context.
+- Remove the duplicate top-level `Quest` status card. Keep the compact `Quests` summary panel with its `/quests` link as the single Party-page quest affordance.
+- Move `Party sync roles` and authorized `Party sync settings` out of the upper summary area.
+- Render `Party sync roles`, authorized `Party sync settings`, and `Party sync moderation` together at the bottom of the Party page in that order. `Party sync moderation` remains visible only to management roles.
+- Preserve the existing role-name member-focus behavior, settings mutations, invite-proof controls, Officer controls, kick-list controls, member list, and CRON sections.
+
+Quests-page feature shape:
+- While a quest invitation is waiting for responses, keep the detailed accepted, pending, rejected, and optional unknown response groups with member-focus actions.
+- Once the quest is active, replace accepted/pending/rejected/unknown/in-inn count rows with one compact `Participants` row sourced from the active quest participant count.
+- Always render `Expected finish`, including `Unknown` when no estimate is available.
+- Render `Finishing member` only when a non-empty finishing-member display name is available. Preserve the member-focus action when the matching member id is available.
+- Render `Timing confidence` only when completion prediction data is meaningful. Treat an estimate without an earliest or latest completion timestamp as unavailable timing data.
+- Render the completion-estimate alert only when it carries meaningful prediction data; do not show a confidence-colored alert for an unavailable prediction.
+
+Out of scope:
+- changing Party or Quests routes;
+- changing party-sync storage, Cloudflare contracts, Habitica API mapping, quest calculations, or completion-estimate formulas;
+- adding participant drill-ins or active-quest metadata beyond the existing cached snapshot;
+- redesigning member cards, CRON statistics, queue cards, pool cards, or recent-completion cards.
+
+Acceptance:
+- Party shows one combined party-name-and-notes summary, no standalone members count card, and one compact Quests summary link.
+- Party-sync roles and settings render near the bottom directly before moderation, with existing visibility and mutation rules unchanged.
+- Existing role-strip and moderation member links still focus the matching member details.
+- A pending quest invitation still renders detailed response groups and does not render active progress estimates.
+- An active quest renders `Participants: N` and does not render accepted, pending, rejected, unknown, or in-inn count rows.
+- An active quest without meaningful completion timing renders only `Expected finish: Unknown` from the finish-estimate fields.
+- An active quest with meaningful completion timing still renders expected finish, optional known finishing member, timing confidence, and the estimate alert.
+- Razor tests cover Party section order and duplicate removal, pending-invitation response groups, active participant-count compaction, unavailable-estimate compaction, and known-estimate rendering.
 
 ### Quest Search By Public Reward Name
 
