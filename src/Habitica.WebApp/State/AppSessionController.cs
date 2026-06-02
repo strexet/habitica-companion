@@ -243,7 +243,7 @@ public sealed class AppSessionController : IAppSessionController
         {
             "" or "/" or "/dashboard" => new[] { RefreshDomain.UserProfile, RefreshDomain.Tasks, RefreshDomain.GearCatalog },
             "/tasks" => new[] { RefreshDomain.Tasks, RefreshDomain.UserProfile },
-            "/party" => new[] { RefreshDomain.Party, RefreshDomain.UserProfile, RefreshDomain.GearCatalog },
+            "/party" or "/quests" => new[] { RefreshDomain.Party, RefreshDomain.UserProfile, RefreshDomain.GearCatalog },
             "/inventory" => new[] { RefreshDomain.UserProfile, RefreshDomain.GearCatalog },
             "/spells" => new[] { RefreshDomain.UserProfile, RefreshDomain.Tasks, RefreshDomain.GearCatalog },
             _ => new[] { RefreshDomain.UserProfile, RefreshDomain.Tasks }

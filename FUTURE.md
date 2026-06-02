@@ -67,35 +67,6 @@ _None. All pending items have been promoted into `Prioritized Next Changes`._
 
 Work top to bottom. Each entry is self-contained.
 
-### Split Party Page Into Party And Quests Pages
-
-Goal: relieve Party-page overload by separating quest-heavy blocks onto a dedicated Quests page, reusing existing data/logic.
-
-Touch:
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- new `src/Habitica.WebApp/Pages/QuestsPage.razor`
-- `src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor` and Dashboard nav cards in `DashboardPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/`
-- `FEATURES.md`
-- `docs/UX_UI_MANIFEST.md` if navigation guidance changes
-
-Layout split:
-- `Party` page keeps: party description/info, PARTY SYNC ROLES, PARTY SYNC SETTINGS, a small quest card linking to the Quests page, members list, buff info, CRON graph.
-- `Quests` page holds: all quest and quest-queue-related blocks (active quest, shared pool, queue, voting, recent completions, quest controls). Update intra-quest-card links to point at the Quests page.
-
-Out of scope:
-- new database fields or party-sync data-contract changes;
-- changing quest/queue/sync logic, permissions, or stale-data guards;
-- changing Habitica party/quest links.
-
-Acceptance:
-- Quest blocks move to a new Quests page; Party page retains the listed sections plus a quest summary card linking to Quests.
-- All existing actions keep current authorization and freshness guards; no schema change.
-- Quest-related links updated to the Quests page.
-- Navigation exposes the Quests page; related docs updated.
-- Tests cover both pages rendering their sections and at least one guarded quest action still working on the Quests page.
-
 ### Party Sync Tokenized Invite Proofs
 
 Goal: add an optional manager-issued party-sync proof mode. Parties continue to work with browser-only `local-claim-v1` by default, but an owner/app admin can enable tokenized invite proofs so shared party queue access no longer depends only on client-supplied local claim headers.

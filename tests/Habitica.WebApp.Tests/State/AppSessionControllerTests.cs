@@ -146,6 +146,25 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task RefreshForPageAsync_prioritizes_party_domains_for_quests_route()
+    {
+        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()));
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        await controller.RefreshForPageAsync("https://localhost/quests");
+
+        Assert.Equal(RefreshPriority.Visible, controller.State.DomainStates![RefreshDomain.Party].Priority);
+        Assert.Equal(RefreshPriority.Visible, controller.State.DomainStates[RefreshDomain.UserProfile].Priority);
+        Assert.Equal(RefreshPriority.Visible, controller.State.DomainStates[RefreshDomain.GearCatalog].Priority);
+        Assert.Equal(RefreshPriority.Background, controller.State.DomainStates[RefreshDomain.Tasks].Priority);
+    }
+
+    [Fact]
     public async Task SaveEquipmentPresetAsync_uploads_encrypted_cloud_sync_bundle_after_local_change()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());

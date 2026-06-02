@@ -115,7 +115,7 @@ Current placement:
 - Dashboard navigation cards use stable local routes plus stable Habitica web URLs only; do not add mobile app deep links or custom schemes.
 - Tasks: keep task cards primarily text and control driven. Use Habitica art only for explicit reward/item/quest targets added by a future feature. Task type/status affordances may use simple UI icons, not game art.
 - Inventory: gear thumbnails appear in battle loadout slots, best-in-category entries, expanded gear cards, accessory cards, and saved preset items. Fixed identity columns keep slot labels, class text, stat pills, and equip actions aligned. Summary cards use compact item icons with readable counts.
-- Party: active quest cards use a prominent quest art slot near the quest title. Queue, pool, and recent quest records use smaller quest scroll thumbnails while owner, vote, invite, and cancel controls stay in their own rows. Member cards do not invent avatar art.
+- Party and Quests: member cards do not invent avatar art. On Quests, active quest cards use a prominent quest art slot near the quest title. Queue, pool, and recent quest records use smaller quest scroll thumbnails while owner, vote, invite, and cancel controls stay in their own rows.
 - Spells: spell cards show class skill icons in the header beside spell name, mana cost, and availability. Equipment recommendation rows show gear thumbnails without moving cast controls or competing with mana previews.
 - Diagnostics and Live Tests: avoid gameplay thumbnails in raw payload/debug views. If endpoint lists need icons, use small technical UI icons only, and never let images hide JSON or response metadata.
 - Sign In and App Shell: keep existing local Gryphy/app icons. Do not add remote Habitica gameplay art to authentication or navigation unless it represents a specific game entity.
@@ -281,21 +281,23 @@ Improvement:
 - Avoid duplicated slot/class text inside the same gear card.
 - Consider a compact comparison drawer for selected gear rather than expanding every item.
 
-### Party
+### Party And Quests
 
-Files: `src/Habitica.WebApp/Pages/PartyPage.razor`
+Files: `src/Habitica.WebApp/Pages/PartyPage.razor`, `src/Habitica.WebApp/Pages/QuestsPage.razor`
 
 Current pattern:
 
-- Party overview cards, quest panel, quest queue workspace, member summaries, progress metrics, CRON rhythm/timeline visualization, and refresh actions.
-- Party-sync role strip appears near the party notes, with owner/app-admin/Officer visibility before queue decisions.
-- Owner/app-admin party-sync settings are a compact operational panel, and kick records stay at the bottom so moderation history does not interrupt quest review.
+- Party owns overview cards, party notes, a compact quest-summary link, member summaries, CRON rhythm/timeline visualization, roles, settings, and moderation.
+- Quests owns active quest details, progress metrics, queue, pool search, voting, recent completions, and quest refresh actions.
+- Party-sync role strip appears near the party notes, with owner/app-admin/Officer visibility before member and moderation decisions.
+- Owner/app-admin party-sync settings are a compact operational panel, and kick records stay at the bottom so moderation history does not interrupt member review.
 - Officer assignment and kick/unkick controls live in expanded member details, close to the affected member identity.
 - Member cards show subtle HP/MP chips near display name/class.
 - Member sorting includes Low HP and Low MP modes; those sort current values ascending so the lowest member appears first, with unknown values last.
 
 What works:
 
+- The Quests page keeps quest progress, queue decisions, and scroll availability together without crowding Party member review.
 - Quest progress distinguishes current, user pending, party pending, and estimated post-CRON state.
 - The CRON rhythm visualization is a good domain-specific UI and should be preserved.
 - Member rows use responsive grid fallback and word breaking for long names.
@@ -304,14 +306,14 @@ What works:
 
 Drift:
 
-- Party pages are the densest part of the app. The number of cards, pills, definition lists, and nested panels can make hierarchy hard to scan.
+- The Quests page remains dense because active state, planning state, and history are intentionally visible together.
 - Quest queue actions and read-only quest state share similar visual weight.
 - Management controls add more density; keep them compact and avoid turning the page into a generic admin console.
 - Some table-style member/stat areas still depend on horizontal scrolling.
 
 Improvement:
 
-- Separate "current quest state" and "planning queue" more strongly with tabs or a segmented switch.
+- Separate "current quest state" and "planning queue" more strongly with tabs or a segmented switch if the dedicated Quests page still becomes difficult to scan.
 - Promote only the next relevant party action; demote secondary refresh/open links.
 - Keep the CRON visualization but add short labels for confidence and uncertainty near the chart.
 

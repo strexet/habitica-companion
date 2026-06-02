@@ -3,20 +3,23 @@
 @implements IAsyncDisposable
 @inject IAppSessionController SessionController
 @inject IJSRuntime JsRuntime
+@inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 @using System.Globalization
 @using Habitica.Domain.Party
 @using Habitica.WebApp.Formatting
 
-<PageTitle>Party</PageTitle>
+<PageTitle>@(QuestWorkspaceOnly ? "Quests" : "Party")</PageTitle>
 
 <div class="party-shell">
     <section class="card-surface dashboard-hero">
         <div>
-            <p class="section-label">Party overview</p>
-            <h1>Party status</h1>
+            <p class="section-label">@(QuestWorkspaceOnly ? "Quest workspace" : "Party overview")</p>
+            <h1>@(QuestWorkspaceOnly ? "Quests" : "Party status")</h1>
             <p class="panel-copy">
-                Review the latest saved party summary, quest progress, CRON timing, and member status without changing party data.
+                @(QuestWorkspaceOnly
+                    ? "Review active quest state, shared scroll availability, queue votes, and recent completions."
+                    : "Review the latest saved party summary, CRON timing, and member status without changing party data.")
             </p>
         </div>
     </section>
@@ -44,6 +47,8 @@
             @GetFreshnessLabel(SessionController.State.PartyFreshness)
         </MudAlert>
 
+        @if (!QuestWorkspaceOnly)
+        {
         <section class="party-card-grid">
             <article class="dashboard-stat-card">
                 <span class="dashboard-stat-label">Party</span>
@@ -198,6 +203,17 @@
                 }
             }
 
+            <article class="card-surface dashboard-panel party-quest-summary-panel">
+                <p class="section-label">Quests</p>
+                <h2>@(quest is null ? "No active quest" : GetQuestName(quest))</h2>
+                <p class="panel-copy">@GetQuestStateLabel(quest). Open the quest workspace for active quest details, scroll availability, queue votes, and recent completions.</p>
+                <a class="secondary-action-button compact" href="/quests">Open quests</a>
+            </article>
+        </section>
+        }
+        else
+        {
+        <section class="party-detail-grid">
             <article class="card-surface dashboard-panel party-quest-panel">
                 <div class="party-section-head">
                     <div>
@@ -389,7 +405,10 @@
                 }
             </article>
         </section>
+        }
 
+        @if (QuestWorkspaceOnly)
+        {
         @if (!SessionController.State.IsPartySyncEnabled)
         {
             <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
@@ -710,7 +729,10 @@
             </div>
         </section>
         }
+        }
 
+        @if (!QuestWorkspaceOnly)
+        {
         <section class="card-surface dashboard-panel party-cron-summary">
             <div class="party-section-head">
                 <div>
@@ -1119,10 +1141,18 @@
                 }
             </section>
         }
+        }
     }
 </div>
 
 @code {
+    [Parameter]
+    public bool QuestWorkspaceOnly { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "member")]
+    public string? FocusedMemberId { get; set; }
+
     private readonly HashSet<string> _expandedMemberDetails = new(StringComparer.Ordinal);
     private IJSObjectReference? _partyPageModule;
     private string? _pendingScrollElementId;
@@ -1133,10 +1163,27 @@
     private string? _startQuestError;
     private PartyMemberSortMode _memberSortMode = PartyMemberSortMode.Name;
     private string? _memberClassFilter;
+    private string? _appliedFocusedMemberId;
 
     protected override void OnInitialized()
     {
         SessionController.Changed += HandleStateChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (QuestWorkspaceOnly || string.IsNullOrWhiteSpace(FocusedMemberId))
+        {
+            _appliedFocusedMemberId = null;
+            return;
+        }
+
+        if (!string.Equals(FocusedMemberId, _appliedFocusedMemberId, StringComparison.Ordinal))
+        {
+            _appliedFocusedMemberId = FocusedMemberId;
+            _expandedMemberDetails.Add(FocusedMemberId);
+            _pendingScrollElementId = BuildMemberElementId(FocusedMemberId);
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -1309,6 +1356,12 @@
 
     private Task FocusMemberDetailsAsync(string memberId)
     {
+        if (QuestWorkspaceOnly)
+        {
+            NavigationManager.NavigateTo($"/party?member={Uri.EscapeDataString(memberId)}");
+            return Task.CompletedTask;
+        }
+
         _expandedMemberDetails.Add(memberId);
         _pendingScrollElementId = BuildMemberElementId(memberId);
         return InvokeAsync(StateHasChanged);

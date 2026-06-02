@@ -4,6 +4,7 @@ using Habitica.Domain.Sync;
 using Habitica.Domain.User;
 using Habitica.WebApp.Pages;
 using Habitica.WebApp.State;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 
@@ -212,24 +213,27 @@ public sealed class PartyPageTests : BunitContext
                 PartyFreshness: SnapshotFreshnessState.Fresh)));
 
         var cut = Render<PartyPage>();
+        var questsCut = RenderQuestsWorkspace();
 
         Assert.Contains("Party overview", cut.Markup);
         Assert.Contains("Night Owls", cut.Markup);
         Assert.Contains("Quest-focused party", cut.Markup);
         Assert.Contains("seaserpent", cut.Markup);
-        Assert.Contains("inventory_quest_scroll.png", cut.Markup);
-        Assert.Contains("Pending party progress", cut.Markup);
-        Assert.Contains("42.75 damage", cut.Markup);
-        Assert.Contains("Current boss HP", cut.Markup);
-        Assert.Contains("875.25/1000 hp", cut.Markup);
-        Assert.Contains("Estimated boss HP after CRON", cut.Markup);
-        Assert.Contains("832.5/1000 hp", cut.Markup);
-        Assert.Contains("Expected finish", cut.Markup);
-        Assert.Contains("quest-estimate-alert", cut.Markup);
-        Assert.Contains("Finishing member", cut.Markup);
-        Assert.Contains("Alpha", cut.Find(".inline-link-button").TextContent);
-        Assert.DoesNotContain("Estimate range", cut.Markup);
-        Assert.DoesNotContain("Damage taken", cut.Markup);
+        Assert.Contains("href=\"/quests\"", cut.Markup);
+        Assert.DoesNotContain("inventory_quest_scroll.png", cut.Markup);
+        Assert.Contains("inventory_quest_scroll.png", questsCut.Markup);
+        Assert.Contains("Pending party progress", questsCut.Markup);
+        Assert.Contains("42.75 damage", questsCut.Markup);
+        Assert.Contains("Current boss HP", questsCut.Markup);
+        Assert.Contains("875.25/1000 hp", questsCut.Markup);
+        Assert.Contains("Estimated boss HP after CRON", questsCut.Markup);
+        Assert.Contains("832.5/1000 hp", questsCut.Markup);
+        Assert.Contains("Expected finish", questsCut.Markup);
+        Assert.Contains("quest-estimate-alert", questsCut.Markup);
+        Assert.Contains("Finishing member", questsCut.Markup);
+        Assert.Contains("Alpha", questsCut.Find(".inline-link-button").TextContent);
+        Assert.DoesNotContain("Estimate range", questsCut.Markup);
+        Assert.DoesNotContain("Damage taken", questsCut.Markup);
         Assert.Contains("CRON summary", cut.Markup);
         Assert.Contains("CRON applied 1/3", cut.Markup);
         Assert.Contains("Data gaps", cut.Markup);
@@ -250,8 +254,8 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Avg 08:15", cut.Markup);
         Assert.DoesNotContain("Avg 08:15 (1 day)", cut.Markup);
         Assert.Contains("Not enough history", cut.Markup);
-        Assert.Contains("Sea Serpent Egg", cut.Markup);
-        Assert.DoesNotContain("Reward details are not available yet.", cut.Markup);
+        Assert.Contains("Sea Serpent Egg", questsCut.Markup);
+        Assert.DoesNotContain("Reward details are not available yet.", questsCut.Markup);
         Assert.Contains("CRON statistics", cut.Markup);
         Assert.Contains("Historical average", cut.Markup);
         Assert.Contains("1 stored observation day", cut.Markup);
@@ -272,7 +276,7 @@ public sealed class PartyPageTests : BunitContext
         cut.FindAll("button").Single(button => button.TextContent.Trim() == "Low MP").Click();
         Assert.Equal("Alpha", cut.FindAll(".party-member-card .party-member-identity strong").First().TextContent);
 
-        cut.Find(".inline-link-button").Click();
+        cut.FindAll("[data-testid='member-details']").First().Click();
 
         Assert.Contains("User ID", cut.Markup);
         Assert.Contains("user-1", cut.Markup);
@@ -361,7 +365,7 @@ public sealed class PartyPageTests : BunitContext
                 PartyFreshness: SnapshotFreshnessState.Fresh));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         Assert.Contains("Magical Axolotl", cut.Markup);
         Assert.Contains("<strong>fire</strong>", cut.Markup);
@@ -505,7 +509,7 @@ public sealed class PartyPageTests : BunitContext
                     })));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         Assert.Contains("Shared quest planning", cut.Markup);
         Assert.Contains("Moonstone Chain", cut.Markup);
@@ -578,7 +582,7 @@ public sealed class PartyPageTests : BunitContext
                 CreateQueueEntry("queue-expired", PartyQuestQueueStatus.Expired)
             })));
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         Assert.Contains("Next Quest", cut.Markup);
         Assert.Contains("Selected next", cut.Markup);
@@ -610,7 +614,7 @@ public sealed class PartyPageTests : BunitContext
                 CreateQueueEntry("queue-queued", PartyQuestQueueStatus.Queued, questName: "Visible Quest")
             })));
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         Assert.DoesNotContain("Next Quest", cut.Markup);
         Assert.DoesNotContain("Invited Quest", cut.Markup);
@@ -630,7 +634,7 @@ public sealed class PartyPageTests : BunitContext
             }));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         cut.FindAll("button").Single(button => button.TextContent.Contains("Pin", StringComparison.Ordinal)).Click();
         cut.FindAll("button").Single(button => button.TextContent.Contains("Select", StringComparison.Ordinal)).Click();
@@ -655,7 +659,7 @@ public sealed class PartyPageTests : BunitContext
             }));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         cut.FindAll("button").Single(button => button.TextContent.Contains("Return to queue", StringComparison.Ordinal)).Click();
         cut.FindAll("button").Single(button => button.TextContent.Contains("Expire", StringComparison.Ordinal)).Click();
@@ -834,13 +838,14 @@ public sealed class PartyPageTests : BunitContext
                 PartyFreshness: SnapshotFreshnessState.Fresh)));
 
         var cut = Render<PartyPage>();
+        var questsCut = RenderQuestsWorkspace();
 
-        Assert.Contains("Pending party items", cut.Markup);
-        Assert.Contains("7 items", cut.Markup);
+        Assert.Contains("Pending party items", questsCut.Markup);
+        Assert.Contains("7 items", questsCut.Markup);
         Assert.Contains("Pending quest", cut.Markup);
         Assert.Contains("3 items", cut.Markup);
         Assert.Contains("4 items", cut.Markup);
-        Assert.DoesNotContain("Pending party damage", cut.Markup);
+        Assert.DoesNotContain("Pending party damage", questsCut.Markup);
     }
 
     [Fact]
@@ -911,7 +916,8 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Lets members publish start and completion updates for their own queued quests; enable when quest owners should keep shared status current.", cut.Markup);
         Assert.DoesNotContain("officer-only queue edits", cut.Markup, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("Assign party owner", cut.Markup);
-        AssertMarkupOrder(cut.Markup, "Summary", "Party sync roles", "Party sync settings", "Active quest");
+        AssertMarkupOrder(cut.Markup, "Summary", "Party sync roles", "Party sync settings", "Quests");
+        Assert.DoesNotContain("Shared quest planning", cut.Markup);
         Assert.Contains("Kicked users", cut.Markup);
         Assert.Contains("Beta", cut.Markup);
 
@@ -1010,8 +1016,10 @@ public sealed class PartyPageTests : BunitContext
         var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id"));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
-        var cut = Render<PartyPage>();
+        var cut = Render<QuestsPage>();
 
+        Assert.Contains("Quest workspace", cut.Markup);
+        Assert.DoesNotContain("Party member status", cut.Markup);
         cut.FindAll("button").Single(button => button.TextContent.Contains("Start quest", StringComparison.Ordinal)).Click();
 
         Assert.Equal("queue-1", Assert.Single(sessionController.StartSelectedPartyQuestCalls));
@@ -1026,7 +1034,7 @@ public sealed class PartyPageTests : BunitContext
         var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id", hasPartyQuest: false));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         cut.FindAll("button")
             .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal)
@@ -1045,7 +1053,7 @@ public sealed class PartyPageTests : BunitContext
         var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id", isActive: true));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         var inviteButton = cut.FindAll("button")
             .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal));
@@ -1062,7 +1070,7 @@ public sealed class PartyPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("other-user", hasPartyQuest: false)));
 
-        var nonOwnerCut = Render<PartyPage>();
+        var nonOwnerCut = RenderQuestsWorkspace();
 
         var nonOwnerInviteButton = nonOwnerCut.FindAll("button")
             .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal));
@@ -1082,7 +1090,7 @@ public sealed class PartyPageTests : BunitContext
                 PartyFreshness = SnapshotFreshnessState.Stale
             }));
 
-        var staleCut = Render<PartyPage>();
+        var staleCut = RenderQuestsWorkspace();
 
         var staleInviteButton = staleCut.FindAll("button")
             .Single(button => button.TextContent.Contains("Invite party", StringComparison.Ordinal));
@@ -1102,7 +1110,7 @@ public sealed class PartyPageTests : BunitContext
             leaderId: "leader-id"));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         cut.FindAll("button").Single(button => button.TextContent.Contains("Start quest", StringComparison.Ordinal)).Click();
 
@@ -1117,7 +1125,7 @@ public sealed class PartyPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("user-id")));
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         Assert.Contains("Quest invitation", cut.Markup);
         Assert.Contains("Waiting for party responses", cut.Markup);
@@ -1131,10 +1139,15 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("Estimated post-CRON", cut.Markup);
         Assert.DoesNotContain("Expected finish", cut.Markup);
         Assert.All(cut.FindAll(".party-quest-response-list .inline-link-button"), button => Assert.Equal("button", button.GetAttribute("type")));
+
+        var navigation = Services.GetRequiredService<NavigationManager>();
+        cut.FindAll(".party-quest-response-list .inline-link-button").First().Click();
+
+        Assert.EndsWith("/party?member=user-id", navigation.Uri, StringComparison.Ordinal);
     }
 
     [Fact]
-    public void Pending_quest_invitation_can_be_accepted_or_rejected_from_party_page()
+    public void Pending_quest_invitation_can_be_accepted_or_rejected_from_quests_page()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
@@ -1142,7 +1155,7 @@ public sealed class PartyPageTests : BunitContext
         var sessionController = new FakeAppSessionController(CreateSelectedQuestState("other-user"));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         Assert.Contains("You have not responded to this quest invitation.", cut.Markup);
 
@@ -1151,6 +1164,19 @@ public sealed class PartyPageTests : BunitContext
 
         Assert.Equal(1, sessionController.AcceptPartyQuestInvitationCalls);
         Assert.Equal(1, sessionController.RejectPartyQuestInvitationCalls);
+    }
+
+    [Fact]
+    public void Party_member_query_expands_member_details()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("user-id")));
+
+        var cut = Render<PartyPage>(parameters => parameters.Add(component => component.FocusedMemberId, "user-id"));
+
+        Assert.Contains("User ID", cut.Find("#party-member-user-id").TextContent);
     }
 
     [Fact]
@@ -1176,7 +1202,7 @@ public sealed class PartyPageTests : BunitContext
             }));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         cut.FindAll("button").Single(button => button.TextContent.Contains("Remove", StringComparison.Ordinal)).Click();
 
@@ -1191,7 +1217,7 @@ public sealed class PartyPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("other-user")));
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         Assert.DoesNotContain("Start quest", cut.Markup);
     }
@@ -1204,7 +1230,7 @@ public sealed class PartyPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("user-id", isActive: true)));
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         Assert.DoesNotContain("Start quest", cut.Markup);
     }
@@ -1221,7 +1247,7 @@ public sealed class PartyPageTests : BunitContext
         };
         Services.AddSingleton<IAppSessionController>(sessionController);
 
-        var cut = Render<PartyPage>();
+        var cut = RenderQuestsWorkspace();
 
         cut.FindAll("button").Single(button => button.TextContent.Contains("Start quest", StringComparison.Ordinal)).Click();
 
@@ -1433,6 +1459,11 @@ public sealed class PartyPageTests : BunitContext
         return cut.FindAll(".party-member-card .party-member-identity strong")
             .Select(element => element.TextContent)
             .ToArray();
+    }
+
+    private IRenderedComponent<PartyPage> RenderQuestsWorkspace()
+    {
+        return Render<PartyPage>(parameters => parameters.Add(component => component.QuestWorkspaceOnly, true));
     }
 
     private static string[] GetRenderedQuestPoolNames(IRenderedComponent<PartyPage> cut)

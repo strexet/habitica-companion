@@ -91,8 +91,8 @@
                 <MudButton Color="Color.Secondary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RespondToQuestInvitationAsync(false))" Variant="Variant.Outlined">
                     Reject
                 </MudButton>
-                <MudButton Href="/party" Variant="Variant.Text">
-                    Open Party
+                <MudButton Href="/quests" Variant="Variant.Text">
+                    Open quests
                 </MudButton>
             </MudAlert>
         }
@@ -298,7 +298,8 @@
             <div class="dashboard-link-grid">
                 @RenderDashboardLink("Tasks", "/tasks", "https://habitica.com/tasks", "Score and inspect cached tasks.")
                 @RenderDashboardLink("Inventory", "/inventory", "https://habitica.com/inventory/equipment", "Plan gear and inspect inventory.")
-                @RenderDashboardLink("Party", "/party", "https://habitica.com/party", "Manage party quest planning.")
+                @RenderDashboardLink("Party", "/party", "https://habitica.com/party", "Review members, roles, and CRON timing.")
+                @RenderDashboardLink("Quests", "/quests", "https://habitica.com/party", "Manage active quests and shared planning.")
                 @RenderDashboardLink("Spells", "/spells", "https://habitica.com/tasks", "Cast class skills against task targets.")
             </div>
         </section>

@@ -115,7 +115,7 @@ Current placements:
 
 - Dashboard companion panel shows current pet and mount image slots, and the inventory panel shows compact official category icons for eggs, food, hatching potions, and quest scroll counts.
 - Inventory shows official gear thumbnails in battle loadout, best-in-category cards, expanded gear cards, accessory cards, and saved battle preset items. Inventory summary also shows companion and item-count icon chips.
-- Party shows a quest image slot in the active quest card and compact quest scroll slots in queue, pool, and recently completed quest records.
+- Quests shows a quest image slot in the active quest card and compact quest scroll slots in queue, pool, and recently completed quest records.
 - Spells shows official skill icons in spell card headers and gear thumbnails for equipment recommendations.
 
 Layout rules are enforced in `app.css`: image frames have stable small/medium/large dimensions, `object-fit: contain`, pixel-art rendering, responsive wrapping, `min-width: 0` text columns, and fixed fallback boxes to prevent overlap or layout shift.
@@ -264,7 +264,7 @@ Rate-limit sensitivity: medium; performs one mutation and one party refresh
 
 ### Goal
 
-The Party page Active Quest card exposes `Start quest` only when the cached Habitica party quest is inactive, matches the invited shared queue entry, and the current user owns that queue entry or is the current Habitica party leader.
+The Quests page Active Quest card exposes `Start quest` only when the cached Habitica party quest is inactive, matches the invited shared queue entry, and the current user owns that queue entry or is the current Habitica party leader.
 
 ### API interaction
 
@@ -272,7 +272,7 @@ The Party page Active Quest card exposes `Start quest` only when the cached Habi
 
 ### Error handling
 
-Validation failures and Habitica API failures return `PartyQuestActionResult.Failure`; the Party page renders start failures inline on the Active Quest card.
+Validation failures and Habitica API failures return `PartyQuestActionResult.Failure`; the Quests page renders start failures inline on the Active Quest card.
 
 ## 5. Gear set management
 
@@ -1760,7 +1760,7 @@ Navigation rules:
 
 ```text
 1. Hide the foldable feature drawer entirely when no authenticated session is active.
-2. Show `Dashboard`, `Tasks`, `Inventory`, `Party`, `Spells`, `Settings`, and `Diagnostics` in the drawer once an authenticated session exists.
+2. Show `Dashboard`, `Tasks`, `Inventory`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` in the drawer once an authenticated session exists.
 3. Keep refresh disabled unless authenticated credentials are available for the current session.
 4. Surface active refresh or cloud sync state in the top bar without hiding cached page content.
 5. Surface the latest workflow error above route content.
@@ -1798,13 +1798,13 @@ Test:
 
 Current implementation:
 
-- `Sign In`, `Dashboard`, `Tasks`, `Inventory`, `Party`, `Spells`, `Settings`, and `Diagnostics` routes;
+- `Sign In`, `Dashboard`, `Tasks`, `Inventory`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` routes;
 - `/` resolves after session initialization, sending authenticated sessions to Dashboard and unauthenticated sessions to Sign In;
 - saved local credentials are checked before the route body renders, avoiding a sign-in flash for returning authenticated users;
-- authenticated drawer order is `Dashboard`, `Tasks`, `Inventory`, `Party`, `Spells`, `Settings`, `Diagnostics`;
+- authenticated drawer order is `Dashboard`, `Tasks`, `Inventory`, `Party`, `Quests`, `Spells`, `Settings`, `Diagnostics`;
 - top app bar with refresh action, active refresh count, cloud sync state, and latest sync timestamp fallback;
 - responsive drawer navigation shown only after authentication;
-- dashboard navigation cards for Tasks, Inventory, Party, and Spells;
+- dashboard navigation cards for Tasks, Inventory, Party, Quests, and Spells;
 - stable Habitica web links for known web routes with no mobile deep links or custom schemes;
 - shared error banner;
 - cached identity summary in the app shell;
@@ -1917,7 +1917,7 @@ Domain mapping for page-first refresh:
 ```text
 /dashboard        -> UserProfile, Tasks, GearCatalog
 /tasks            -> Tasks, UserProfile
-/party            -> Party, UserProfile
+/party, /quests   -> Party, UserProfile, GearCatalog
 /inventory        -> UserProfile, GearCatalog
 /spells           -> UserProfile, Tasks, GearCatalog
 (default)         -> UserProfile, Tasks
@@ -2213,8 +2213,8 @@ Waiting:
 ## 16. Party explorer
 
 Status: implemented
-Owner module: `Habitica.WebApp.Pages.PartyPage`
-Application entry point: `Habitica.WebApp.Pages.PartyPage`
+Owner module: `Habitica.WebApp.Pages.PartyPage`, `Habitica.WebApp.Pages.QuestsPage`
+Application entry point: `Habitica.WebApp.Pages.PartyPage`, `Habitica.WebApp.Pages.QuestsPage`
 Primary Habitica data: cached party group summary, quest state, party members, member CRON fields, user quest-scroll inventory, Habitica content quest metadata
 Mutates Habitica state: no; mutates shared Cloudflare party quest queue state
 Requires confirmation: no
@@ -2223,7 +2223,7 @@ Rate-limit sensitivity: low for Habitica reads; shared queue actions use tokenle
 
 ### Goal
 
-Provide a party overview that surfaces the latest cached party name, summary, member count, quest progress, party-member CRON state, buff timing recommendations, local CRON statistics, and shared party quest planning data without directly mutating Habitica quest state.
+Provide a Party overview for cached party identity, roles, members, and CRON timing plus a dedicated Quests workspace for active quest state and shared planning without directly mutating Habitica quest state.
 
 ### Inputs
 
@@ -2252,6 +2252,7 @@ party-sync selected quest expiry metadata
 ```text
 party summary cards
 member count
+compact Party-page quest summary linking to the Quests workspace
 quest progress snapshot
 party pending boss damage/items, boss HP remaining, total boss HP when available, and pending damage to party
 CRONed X/Y summary
@@ -2260,14 +2261,14 @@ compact party member CRON list with HP/MP, class filtering, sortable low-HP/low-
 viewer-local CRON statistics graph
 active quest card with real quest metadata and rewards when cached
 quest invitation card with accepted, pending, and rejected response lists before the quest starts
-Party and Dashboard warnings with Accept/Reject actions when the current user has not answered a quest invitation
+Quests and Dashboard warnings with Accept/Reject actions when the current user has not answered a quest invitation
 shared quest queue cards with vote counts and voter names
 separate Next Quest card for the selected shared queue item
 skipped and expired queue-state labels
 owner/admin/Officer pin, select, skip, expire, and return-to-queue controls
 quest pool cards with owner availability and local name/type/owner search
 recently completed quest cards with manual vs automatic source labels and management removal controls
-owner/admin/Officer strip after party notes and before active quest state
+owner/admin/Officer strip after party notes and before member details
 owner/admin settings controls
 member-detail Officer and kick controls for management roles
 bottom-page kick list for management roles
@@ -2323,6 +2324,7 @@ Current display rules:
 32. Show Next Quest entries with their expiry time when available. The Next Quest card can return the item to the top of the queue. Show skipped and expired entries as readable states with `Return to queue`; selected entries can be skipped, and non-active entries can be expired manually.
 33. Expire selected entries deterministically after 72 hours. Expire queued or skipped entries when the matching owner/quest scroll has not appeared in the party quest pool for 30 days. Expiry runs during party-sync reads and queue mutations.
 34. Let members search the expanded quest pool by quest name, type, or visible owner. Compose the in-memory search with the owned-only filter and show a distinct no-match state.
+35. Keep Party focused on summary, roles, settings, members, buff timing, and CRON statistics. Render active quest details, queue, pool, votes, controls, and recent completions on the dedicated `/quests` route.
 ```
 
 ### Validation
@@ -2352,10 +2354,10 @@ Test:
 
 - `/groups/party` response mapping;
 - party snapshot persistence;
-- party page rendering;
+- party and quests page rendering;
 - compact member card details toggling;
 - quest reward metadata rendering from cached Habitica content;
-- navigation rendering for the `Party` route.
+- navigation rendering for the `Party` and `Quests` routes.
 - shared quest queue/pool rendering;
 - party-sync queue and vote mutations.
 - party-sync queue selection, pinning, skip, expiry, and requeue actions.
@@ -2368,6 +2370,8 @@ Test:
 Current implementation:
 
 - dedicated `Party` route in the app shell;
+- dedicated `Quests` route in the app shell for active quest details and shared planning;
+- compact Party-page quest summary linking to the Quests workspace;
 - cached party summary cards;
 - cached quest progress snapshot.
 - compact party member cards with foldable extra info and stats;
@@ -2375,13 +2379,13 @@ Current implementation:
 - subtle HP/MP values and low-HP/low-MP member sorting;
 - active quest card with real cached quest metadata and compact rewards;
 - inactive quest invitation response lists before quest progress exists;
-- party detail section order of summary, party-sync roles, party-sync settings, then active quest state;
+- party detail section order of summary, party-sync roles, party-sync settings, then compact Quests link;
 - party-sync settings labels and helper descriptions for non-technical party members;
 - shared quest pool from published member quest-scroll availability;
 - expanded quest-pool search by quest name, type, or visible owner, composed with the owned-only filter;
 - shared quest queue with owner-only add/remove and one-vote-per-member voting;
 - shared queue invite action, management pin/select/skip/expire/requeue controls, separate Next Quest card, and owned-only queue/pool filter;
-- Party/Dashboard quest-invitation warnings and Accept/Reject actions;
+- Quests/Dashboard quest-invitation warnings and Accept/Reject actions;
 - recently completed shared quest history table, UI, and management removal;
 - automatic recent-completion detection from structured Habitica party chat signals.
 
