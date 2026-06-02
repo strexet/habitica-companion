@@ -60,7 +60,9 @@ public sealed class ColorSchemeCatalogTests
         {
             Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.AppBarBackground), scheme.Name);
             Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.DrawerBackground), scheme.Name);
-            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.ButtonText), scheme.Name);
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.PrimaryButtonText), scheme.Name);
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(
+                ColorSchemeCatalog.GetTokenValue(scheme.Tokens, nameof(ColorSchemeTokens.SecondaryButtonText))), scheme.Name);
             Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.DisabledBackground), scheme.Name);
             Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.DisabledText), scheme.Name);
             Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.InputBackground), scheme.Name);

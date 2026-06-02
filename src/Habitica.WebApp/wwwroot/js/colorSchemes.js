@@ -122,13 +122,15 @@
     root.style.setProperty("--progress-track", `color-mix(in srgb, ${readToken(tokens, "primary") || "var(--primary)"} 14%, transparent)`);
 
     // Button and app-bar foregrounds are derived per-background so text stays legible on every
-    // scheme. Each filled button paints over a different color (primary/accent/danger/success), so a
-    // single authored ButtonText token cannot be correct for all of them.
-    const buttonText = readToken(tokens, "buttonText");
-    root.style.setProperty("--button-text", readableTextFor(readToken(tokens, "primary"), buttonText));
-    root.style.setProperty("--button-text-accent", readableTextFor(readToken(tokens, "accent"), buttonText));
-    root.style.setProperty("--button-text-danger", readableTextFor(readToken(tokens, "danger"), buttonText));
-    root.style.setProperty("--button-text-success", readableTextFor(readToken(tokens, "success"), buttonText));
+    // scheme. Each filled button paints over a different color (primary/accent/danger/success).
+    // Primary and secondary buttons get their own authored token; danger/success reuse the primary
+    // button token as the preferred hint (readableTextFor still auto-corrects for contrast).
+    const primaryButtonText = readToken(tokens, "primaryButtonText");
+    const secondaryButtonText = readToken(tokens, "secondaryButtonText") || primaryButtonText;
+    root.style.setProperty("--button-text", readableTextFor(readToken(tokens, "primary"), primaryButtonText));
+    root.style.setProperty("--button-text-accent", readableTextFor(readToken(tokens, "accent"), secondaryButtonText));
+    root.style.setProperty("--button-text-danger", readableTextFor(readToken(tokens, "danger"), primaryButtonText));
+    root.style.setProperty("--button-text-success", readableTextFor(readToken(tokens, "success"), primaryButtonText));
     root.style.setProperty("--appbar-text", readableTextFor(readToken(tokens, "appBarBackground"), readToken(tokens, "appBarText")));
   }
 

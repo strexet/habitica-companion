@@ -36,7 +36,9 @@ public static class ReadableSchemeParser
         ("AppBarText", nameof(ColorSchemeTokens.AppBarText), null),
         ("DrawerBackground", nameof(ColorSchemeTokens.DrawerBackground), null),
         ("DrawerText", nameof(ColorSchemeTokens.DrawerText), null),
-        ("ButtonText", nameof(ColorSchemeTokens.ButtonText), null),
+        // Legacy single "ButtonText" maps to both so older exports still paste cleanly.
+        ("PrimaryButtonText", nameof(ColorSchemeTokens.PrimaryButtonText), "ButtonText"),
+        ("SecondaryButtonText", nameof(ColorSchemeTokens.SecondaryButtonText), "ButtonText"),
         ("DisabledBackground", nameof(ColorSchemeTokens.DisabledBackground), null),
         ("DisabledText", nameof(ColorSchemeTokens.DisabledText), null),
         ("DisabledBorder", nameof(ColorSchemeTokens.DisabledBorder), null),
@@ -211,7 +213,8 @@ public static class ReadableSchemeParser
         var recognized = 0;
         foreach (var field in ColorFields)
         {
-            if (!TryGetString(tokenRoot, field.Token, out var value))
+            if (!TryGetString(tokenRoot, field.Token, out var value)
+                && !(field.Alias is not null && TryGetString(tokenRoot, field.Alias, out value)))
             {
                 continue;
             }

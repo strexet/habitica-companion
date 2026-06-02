@@ -803,7 +803,8 @@ public static partial class ColorSchemeCatalog
         new ColorSchemeTokenDescriptor(nameof(ColorSchemeTokens.AppBarText), "Header text"),
         new ColorSchemeTokenDescriptor(nameof(ColorSchemeTokens.DrawerBackground), "Navigation background"),
         new ColorSchemeTokenDescriptor(nameof(ColorSchemeTokens.DrawerText), "Navigation text"),
-        new ColorSchemeTokenDescriptor(nameof(ColorSchemeTokens.ButtonText), "Filled button text"),
+        new ColorSchemeTokenDescriptor(nameof(ColorSchemeTokens.PrimaryButtonText), "Primary button text"),
+        new ColorSchemeTokenDescriptor(nameof(ColorSchemeTokens.SecondaryButtonText), "Secondary button text"),
         new ColorSchemeTokenDescriptor(nameof(ColorSchemeTokens.DisabledBackground), "Disabled background"),
         new ColorSchemeTokenDescriptor(nameof(ColorSchemeTokens.DisabledText), "Disabled text"),
         new ColorSchemeTokenDescriptor(nameof(ColorSchemeTokens.DisabledBorder), "Disabled border"),
@@ -945,7 +946,8 @@ public static partial class ColorSchemeCatalog
             CreateStops4(random, primary, SurfaceChaos(chaos, 0.8, 1.2)),
             CreateStops2(random, cardBackground, SurfaceChaos(chaos, 1.0, 1.5)),
             CreateStops2(random, accent, SurfaceChaos(chaos, 1.0, 1.5)),
-            chaos > 0.85 ? $"0 0 {Range(random, 14.0, 22.0):0}px {Hsl(Range(random, 0.0, 360.0), 0.95, 0.58)}" : null);
+            chaos > 0.85 ? $"0 0 {Range(random, 14.0, 22.0):0}px {Hsl(Range(random, 0.0, 360.0), 0.95, 0.58)}" : null,
+            SecondaryButtonText: ReadableInk(accent));
 
         return new ColorSchemeDefinition(RandomSchemeId, "Random theme", false, ApplyRandomContrastGuards(tokens, chaos), IsDark: dark);
     }
@@ -965,11 +967,13 @@ public static partial class ColorSchemeCatalog
             var appBarAverage = Average(tokens.AppBarGradient!);
             var drawerAverage = Average(tokens.DrawerGradient!);
             var buttonAverage = Average(tokens.PrimaryButtonGradient!);
+            var secondaryButtonAverage = Average(tokens.SecondaryButtonGradient!.Start, tokens.SecondaryButtonGradient!.End);
             tokens = tokens with
             {
                 AppBarText = EnsureContrast(tokens.AppBarText, appBarAverage, 3.0),
                 DrawerText = EnsureContrast(tokens.DrawerText, drawerAverage, 3.0),
-                ButtonText = EnsureContrast(tokens.ButtonText, buttonAverage, 3.0),
+                PrimaryButtonText = EnsureContrast(tokens.PrimaryButtonText, buttonAverage, 3.0),
+                SecondaryButtonText = EnsureContrast(tokens.SecondaryButtonText ?? tokens.PrimaryButtonText, secondaryButtonAverage, 3.0),
                 Focus = EnsureContrastAgainstBoth(tokens.Focus, pageAverage, tokens.CardBackground, 2.5)
             };
         }
@@ -1324,7 +1328,7 @@ public static partial class ColorSchemeCatalog
                 NormalizeToken(tokens.AppBarText, fallback.AppBarText),
                 NormalizeToken(tokens.DrawerBackground, fallback.DrawerBackground),
                 NormalizeToken(tokens.DrawerText, fallback.DrawerText),
-                NormalizeToken(tokens.ButtonText, fallback.ButtonText),
+                NormalizeToken(tokens.PrimaryButtonText, fallback.PrimaryButtonText),
                 NormalizeToken(tokens.DisabledBackground, fallback.DisabledBackground),
                 NormalizeToken(tokens.DisabledText, fallback.DisabledText),
                 NormalizeToken(tokens.DisabledBorder, fallback.DisabledBorder),
@@ -1339,7 +1343,10 @@ public static partial class ColorSchemeCatalog
                 tokens.AccentChipGradient,
                 NormalizeOptionalToken(tokens.HeadingTextShadow),
                 NormalizeOptionalToken(tokens.AppBarTextShadow),
-                NormalizeOptionalToken(tokens.DrawerTextShadow))
+                NormalizeOptionalToken(tokens.DrawerTextShadow),
+                // Backfill secondary button text from primary so legacy schemes (and presets that
+                // omit it) get a valid, contrast-safe value rather than the global fallback.
+                SecondaryButtonText: NormalizeToken(tokens.SecondaryButtonText, NormalizeToken(tokens.PrimaryButtonText, fallback.PrimaryButtonText)))
         };
     }
 
@@ -1379,7 +1386,8 @@ public static partial class ColorSchemeCatalog
             nameof(ColorSchemeTokens.AppBarText) => tokens.AppBarText,
             nameof(ColorSchemeTokens.DrawerBackground) => tokens.DrawerBackground,
             nameof(ColorSchemeTokens.DrawerText) => tokens.DrawerText,
-            nameof(ColorSchemeTokens.ButtonText) => tokens.ButtonText,
+            nameof(ColorSchemeTokens.PrimaryButtonText) => tokens.PrimaryButtonText,
+            nameof(ColorSchemeTokens.SecondaryButtonText) => tokens.SecondaryButtonText ?? tokens.PrimaryButtonText,
             nameof(ColorSchemeTokens.DisabledBackground) => tokens.DisabledBackground,
             nameof(ColorSchemeTokens.DisabledText) => tokens.DisabledText,
             nameof(ColorSchemeTokens.DisabledBorder) => tokens.DisabledBorder,
@@ -1415,7 +1423,8 @@ public static partial class ColorSchemeCatalog
             nameof(ColorSchemeTokens.AppBarText) => tokens with { AppBarText = value },
             nameof(ColorSchemeTokens.DrawerBackground) => tokens with { DrawerBackground = value },
             nameof(ColorSchemeTokens.DrawerText) => tokens with { DrawerText = value },
-            nameof(ColorSchemeTokens.ButtonText) => tokens with { ButtonText = value },
+            nameof(ColorSchemeTokens.PrimaryButtonText) => tokens with { PrimaryButtonText = value },
+            nameof(ColorSchemeTokens.SecondaryButtonText) => tokens with { SecondaryButtonText = value },
             nameof(ColorSchemeTokens.DisabledBackground) => tokens with { DisabledBackground = value },
             nameof(ColorSchemeTokens.DisabledText) => tokens with { DisabledText = value },
             nameof(ColorSchemeTokens.DisabledBorder) => tokens with { DisabledBorder = value },
@@ -1521,7 +1530,7 @@ public sealed record ColorSchemeTokens(
     string AppBarText,
     string DrawerBackground,
     string DrawerText,
-    string ButtonText,
+    string PrimaryButtonText,
     string DisabledBackground,
     string DisabledText,
     string DisabledBorder,
@@ -1536,7 +1545,11 @@ public sealed record ColorSchemeTokens(
     GradientStops2? AccentChipGradient = null,
     string? HeadingTextShadow = null,
     string? AppBarTextShadow = null,
-    string? DrawerTextShadow = null);
+    string? DrawerTextShadow = null,
+    // Filled-secondary button label color. Optional/trailing so the many positional token
+    // constructors keep compiling; Complete() backfills it from PrimaryButtonText when unset.
+    // Lives here (not next to PrimaryButtonText) only because optional params must follow required ones.
+    string? SecondaryButtonText = null);
 
 public sealed record GradientStops9(
     string TopLeft, string Top, string TopRight,
