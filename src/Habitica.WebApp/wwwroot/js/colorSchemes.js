@@ -120,6 +120,16 @@
     root.style.setProperty("--drawer-readable-muted", `color-mix(in srgb, ${readableDrawerText} 82%, transparent)`);
     root.style.setProperty("--native-control-scheme", inputBackground && luminance(inputBackground) < 0.46 ? "dark" : "light");
     root.style.setProperty("--progress-track", `color-mix(in srgb, ${readToken(tokens, "primary") || "var(--primary)"} 14%, transparent)`);
+
+    // Button and app-bar foregrounds are derived per-background so text stays legible on every
+    // scheme. Each filled button paints over a different color (primary/accent/danger/success), so a
+    // single authored ButtonText token cannot be correct for all of them.
+    const buttonText = readToken(tokens, "buttonText");
+    root.style.setProperty("--button-text", readableTextFor(readToken(tokens, "primary"), buttonText));
+    root.style.setProperty("--button-text-accent", readableTextFor(readToken(tokens, "accent"), buttonText));
+    root.style.setProperty("--button-text-danger", readableTextFor(readToken(tokens, "danger"), buttonText));
+    root.style.setProperty("--button-text-success", readableTextFor(readToken(tokens, "success"), buttonText));
+    root.style.setProperty("--appbar-text", readableTextFor(readToken(tokens, "appBarBackground"), readToken(tokens, "appBarText")));
   }
 
   function normalizeScheme(scheme) {
@@ -223,7 +233,7 @@
       ["topLeft", "top", "topRight", "bottomLeft", "bottom", "bottomRight"], "var(--drawer-bg)");
     applyRasterGradient(root, tokens, "primaryButtonGradient", "--primary-btn-gradient", "primary-btn", 2, 2,
       ["topLeft", "topRight", "bottomLeft", "bottomRight"], "var(--primary)");
-    applyLinearGradient(root, tokens, "secondaryButtonGradient", "--secondary-btn-gradient", "secondary-btn", "transparent");
+    applyLinearGradient(root, tokens, "secondaryButtonGradient", "--secondary-btn-gradient", "secondary-btn", "var(--accent)");
     applyLinearGradient(root, tokens, "accentChipGradient", "--accent-chip-gradient", "accent-chip", "var(--accent)");
     root.style.setProperty("--heading-text-shadow", readToken(tokens, "headingTextShadow") || "none");
     root.style.setProperty("--appbar-text-shadow", readToken(tokens, "appBarTextShadow") || "none");

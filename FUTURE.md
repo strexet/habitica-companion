@@ -61,12 +61,110 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Top. When casting a buff or heal spell, party members list should be updated to show actual members' stats/hp/mp after the spell cast.
-- Top. Spells auto-equip logic need a review, because right now it chooses not the most profitable gear option as default, and I'm not sure that options list is properly ordered by gained spell value. Also, there is some quircky behavior for healer's blessing spell (that one that restores party hp): it shows different values but I feel like I have the same equipment/stats - check this out if there is a problem (it should not take into account the party members' hp that will be really restored - example: party members are missing 1 hp each, but the spell restores 2 hp, and it shows 2 in its spell card, ignoring that only 1 will be restored for each party member)
+_None. All pending items have been promoted into `Prioritized Next Changes`._
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
+
+### Refresh Party Member Stats After Party-Targeted Spell Cast
+
+Goal: after a party-targeted buff or heal cast succeeds, refresh the cached party snapshot so the party members list shows the updated members' HP/MP/buff stats. Today `CastSpellAsync` refreshes only the user and task snapshots, so party member rows stay stale after casting Blessing, Protective Aura, Ethereal Surge, Earthquake, Valorous Presence, Intimidating Gaze, Tools of the Trade, etc.
+
+Context (verified):
+- `src/Habitica.WebApp/State/AppSessionController.cs` `CastSpellAsync` (around lines 1330-1460) calls `GetUserSnapshotAsync` and `GetTasksAsync` after the cast loop but never `GetPartySnapshotAsync`, and never refreshes `RefreshDomain.Party`.
+- Party-targeted spells are those with `SpellTargetKind.Party` in `src/Habitica.Rules/Spells/SpellViewModelFactory.cs` (`mpheal`, `earth`, `valorousPresence`, `intimidate`, `toolsOfTrade`, `protectAura`, `healAll`). Self/Task-targeted spells do not change other members' stats.
+- Party member stats live in `PartySnapshot.Members` (`PartyMemberSnapshot`) via `IHabiticaSyncClient.GetPartySnapshotAsync`, persisted through `_partySnapshotStore`.
+
+Touch:
+- `src/Habitica.WebApp/State/AppSessionController.cs` (`CastSpellAsync` post-cast refresh; reuse the existing `_partySnapshotStore` save path)
+- direct controller/page tests under `tests/Habitica.WebApp.Tests/`
+- `FEATURES.md`
+
+Implementation shape:
+- After a successful party-targeted cast, fetch a fresh party snapshot and persist it to `_partySnapshotStore` before the final `LoadCachedStateAsync`, mirroring the user/task snapshot fetch-and-save.
+- Trigger the extra party fetch only when the cast spell's `TargetKind == SpellTargetKind.Party`; do not add a party round-trip for self/task spells.
+- Respect the existing `DelayBetweenHabiticaRequestsAsync` pacing. A party-refresh failure must not discard the already-successful cast result, and must leave prior cached party data intact.
+- Keep diagnostics request-count bookkeeping consistent if the extra fetch changes the logged `requestCount`.
+
+Out of scope:
+- changing spell cast execution order, mana checks, or auto-equip/restore-gear behavior;
+- refreshing party snapshot after non-party spells;
+- changing party-sync (Cloudflare) upload behavior or member stat calculations;
+- adding new Habitica endpoints.
+
+Acceptance:
+- Casting a party-targeted buff/heal refreshes and persists the party snapshot so member HP/MP/buff rows reflect post-cast values without a manual party refresh.
+- Self-targeted and task-targeted casts add no party API round-trip.
+- A failed party refresh after a successful cast still reports cast success and preserves prior cached party data.
+- Tests cover: party snapshot refreshed after a party-targeted cast, no party refresh after a self/task cast, and cast success preserved when the post-cast party fetch fails.
+
+### Audit Spell Auto-Equip Profitability Ordering And Blessing Overheal Estimate
+
+Goal: fix two correctness problems. (1) The auto-equip default is not always the most profitable option, and the option list may not be ordered by gained spell value. (2) Blessing (party heal) shows inconsistent values that the user perceives as unchanged equipment/stats, and the per-member value ignores how much HP each member can actually receive (overheal): if members are missing 1 HP each but the spell would restore 2 HP, the card shows 2 instead of the effective 1.
+
+Context (verified):
+- Recommendations are built in `src/Habitica.Rules/Spells/SpellViewModelFactory.cs`: `BuildRecommendations` then `AddEstimateToRecommendation` per option. Candidate gear is ranked by `.OrderByDescending(candidate => candidate.Score)` (around line 214), but the recommendation list returned to the UI is filtered/`DistinctBy(Name)` without an explicit sort by gained spell value (around lines 137-140).
+- The Blessing estimate is the `"healAll"` branch (around line 302): `(stats.Constitution + stats.Intelligence + 5m) * 0.04m` HP per member, from buffed `stats` (which include the per-recommendation gear override). It does not cap by each member's missing HP. Self-heal `"heal"` (line 301) has the same uncapped shape for the caster.
+
+Touch:
+- `src/Habitica.Rules/Spells/SpellViewModelFactory.cs`
+- `src/Habitica.WebApp/Pages/SpellsPage.razor` only if value/label presentation must change
+- rule tests under `tests/Habitica.Rules.Tests/` and page tests under `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs`
+- `FEATURES.md`
+- `HABITICA_API.md` only if a heal/overheal formula assumption is pinned down
+
+Investigation (do first; record findings in the commit body):
+- Reproduce the "different values with the same equipment/stats" report for Blessing. Determine whether the variance comes from per-recommendation gear overrides, buffed-vs-unbuffed stat selection, or default-vs-recommendation estimate paths, and fix the source so equal effective stats yield equal displayed values.
+- Confirm whether the options surfaced to the UI are ordered by gained spell value (the metric the user cares about) rather than raw gear `Score` or insertion order. If not, order most→least gained spell value and make the default the top entry.
+
+Decision point (resolve before changing the estimate):
+- The pending note is ambiguous about whether the per-member value should stay the raw theoretical heal or become the effective (missing-HP-capped) heal. Default direction unless the user says otherwise: when fresh party member HP is available, show effective restored HP (capped per member by missing HP) and keep the raw per-member heal as secondary text; when member HP is unavailable, show the raw theoretical value clearly labeled as a maximum. Do not invent member HP values.
+
+Out of scope:
+- changing the underlying stat/gear scoring math beyond ordering and overheal-capping (diminishing-returns coefficients stay);
+- the dropdown UI wiring itself (covered by `Spells Auto-Equip Best Option Default With Dropdown`); this entry fixes only the values and ordering that entry depends on;
+- changing cast execution order or CRON-warning semantics;
+- changing two-handed weapon pairing logic.
+
+Acceptance:
+- Recommendation options are ordered by gained spell value, most→least, and the default selection is the highest-value option.
+- Equal effective stats produce identical displayed Blessing values; the reported inconsistency no longer reproduces.
+- Blessing (and self-heal) values reflect effective restored HP capped by missing HP when fresh member/self HP is available, and fall back to a clearly labeled theoretical maximum otherwise, without inventing HP values.
+- Tests cover: option ordering by gained spell value, default = top option, Blessing overheal cap when members are near full HP, and the labeled-maximum fallback when member HP is unavailable.
+
+### Quest Pool Search Bar
+
+Goal: add a search/filter box to the shared Quest Pool so members can find a quest scroll by name, type, or owner instead of scrolling the full grouped list.
+
+Context (verified):
+- The Quest Pool block lives in `src/Habitica.WebApp/Pages/PartyPage.razor` (around lines 600-645). Visible entries are produced by `FilterVisiblePoolEntries(...)` and `GetGroupedPoolEntries(...)` (around lines 426-427) and rendered via `groupedPoolEntries`. Pool entries expose `QuestName`, `QuestType`, and `OwnerNames`.
+- Existing filters: owned-only (`_hideNotOwnedQuests`) and expand/collapse (`_questPoolExpanded`).
+- Dependency note: `Split Party Page Into Party And Quests Pages` plans to move the Quest Pool to a new Quests page. Implement the search on whichever page currently owns the Quest Pool; if the split has already shipped, add it there.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PartyPage.razor` (or `QuestsPage.razor` if the split has shipped)
+- `src/Habitica.WebApp/wwwroot/css/app.css` if a new input needs styling (reuse existing `.app-input` / search patterns where possible)
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs` (or `QuestsPageTests.cs`)
+- `FEATURES.md`
+
+Implementation shape:
+- Add a text input above the pool grid that filters grouped pool entries case-insensitively across `QuestName`, `QuestType`, and `OwnerNames`. Compose with the existing owned-only filter rather than replacing it.
+- Trim/normalize the query; empty query shows the unfiltered (existing) list.
+- When the query matches nothing, show a concise empty-state distinct from the existing "no entries" copy (e.g. "No quests match this search.").
+- Keep the search local UI state; do not persist it to portable sync. Persisting to local browser storage is optional and out of scope unless trivial.
+
+Out of scope:
+- changing pool grouping, availability counts, queue-add permissions, or stale-data guards;
+- searching the active quest, queue, or recent-completion blocks;
+- changing party-sync data contracts or Habitica quest links;
+- server-side or cross-device persistence of the search query.
+
+Acceptance:
+- A search box filters the Quest Pool by quest name, type, and owner, combined with the owned-only filter.
+- Empty query restores the full pool; a non-matching query shows a clear no-match empty state.
+- Queue-add actions and existing permission/freshness guards are unchanged for visible entries.
+- Tests cover: filtering by name, combining search with the owned-only filter, and the no-match empty state.
 
 ### Spells Auto-Equip Best Option Default With Dropdown
 

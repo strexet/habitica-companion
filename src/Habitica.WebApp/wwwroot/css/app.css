@@ -26,6 +26,9 @@
     --drawer-readable-text: var(--drawer-text);
     --drawer-readable-muted: color-mix(in srgb, var(--drawer-readable-text) 82%, transparent);
     --button-text: #ffffff;
+    --button-text-accent: #ffffff;
+    --button-text-danger: #ffffff;
+    --button-text-success: #ffffff;
     --disabled-bg: rgba(103, 49, 184, 0.06);
     --disabled-text: rgba(117, 104, 129, 0.58);
     --disabled-border: rgba(117, 104, 129, 0.22);
@@ -38,7 +41,7 @@
     --appbar-gradient: var(--appbar-bg);
     --drawer-gradient: var(--drawer-bg);
     --primary-btn-gradient: var(--primary);
-    --secondary-btn-gradient: transparent;
+    --secondary-btn-gradient: var(--accent);
     --accent-chip-gradient: var(--accent);
     --heading-text-shadow: none;
     --appbar-text-shadow: none;
@@ -465,16 +468,16 @@ input[type="radio"] {
     min-height: 2.4rem;
     padding: 0.55rem 0.7rem;
     border-radius: 0.75rem;
-    border: 1px solid rgba(45, 116, 110, 0.14);
-    background: rgba(45, 116, 110, 0.08);
-    color: var(--teal);
+    border: 1px solid color-mix(in srgb, var(--appbar-text) 16%, transparent);
+    background: color-mix(in srgb, var(--appbar-text) 10%, transparent);
+    color: var(--appbar-text);
     font-size: 0.78rem;
     font-weight: 800;
     line-height: 1.25;
 }
 
 .hero-panel .hero-copy {
-    color: rgba(255, 249, 240, 0.86);
+    color: color-mix(in srgb, var(--appbar-text) 86%, transparent);
     margin-top: 1.1rem;
 }
 
@@ -2236,7 +2239,7 @@ input[type="radio"] {
 }
 
 .inventory-stat-separator {
-    color: rgba(95, 109, 103, 0.55);
+    color: var(--muted);
 }
 
 .accessory-section {
@@ -3083,21 +3086,21 @@ input[type="radio"] {
 }
 
 .success-pill {
-    background: rgba(55, 128, 92, 0.14);
-    border-color: rgba(55, 128, 92, 0.2);
-    color: #2e6b4f;
+    background: color-mix(in srgb, var(--success) 16%, transparent);
+    border-color: color-mix(in srgb, var(--success) 30%, transparent);
+    color: color-mix(in srgb, var(--success) 72%, var(--ink));
 }
 
 .warning-pill {
-    background: rgba(197, 119, 43, 0.14);
-    border-color: rgba(197, 119, 43, 0.2);
-    color: #a86121;
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    color: color-mix(in srgb, var(--accent) 72%, var(--ink));
 }
 
 .danger-pill {
-    background: rgba(161, 63, 53, 0.14);
-    border-color: rgba(161, 63, 53, 0.2);
-    color: #8f332b;
+    background: color-mix(in srgb, var(--danger) 16%, transparent);
+    border-color: color-mix(in srgb, var(--danger) 30%, transparent);
+    color: color-mix(in srgb, var(--danger) 72%, var(--ink));
 }
 
 .mud-button-filled-primary {
@@ -3107,17 +3110,17 @@ input[type="radio"] {
 
 .mud-button-filled-secondary {
     background: var(--secondary-btn-gradient) !important;
-    color: var(--button-text) !important;
+    color: var(--button-text-accent) !important;
 }
 
 .mud-button-filled-error {
     background-color: var(--danger) !important;
-    color: var(--button-text) !important;
+    color: var(--button-text-danger) !important;
 }
 
 .mud-button-filled-success {
     background-color: var(--success) !important;
-    color: var(--button-text) !important;
+    color: var(--button-text-success) !important;
 }
 
 .mud-button-outlined-primary,
@@ -3129,7 +3132,7 @@ input[type="radio"] {
 .mud-button-outlined-secondary,
 .mud-button-text-secondary {
     border-color: color-mix(in srgb, var(--accent) 52%, transparent) !important;
-    background: var(--secondary-btn-gradient) !important;
+    background: transparent !important;
     color: var(--accent) !important;
 }
 
@@ -3610,7 +3613,7 @@ input[type="file"].app-input::file-selector-button {
 }
 
 code {
-    color: #7c2d62;
+    color: var(--primary);
 }
 
 @media (max-width: 960px) {
