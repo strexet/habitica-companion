@@ -165,7 +165,7 @@ internal sealed class FakeAppSessionController : IAppSessionController
         StartNewDayCalls++;
         StartNewDayRequests.Add(request);
         return Task.FromResult(request.AutoEquipRecommendedGear
-            ? SpellActionResult.Success("Equipped recommended gear and started a new Habitica day.")
+            ? SpellActionResult.Success("Equipped recommended gear, started a new Habitica day, and restored previous battle gear.")
             : SpellActionResult.Success("Started a new Habitica day."));
     }
 

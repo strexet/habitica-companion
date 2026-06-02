@@ -724,9 +724,11 @@ public sealed class AppSessionControllerTests
             {
                 "equip:head_new",
                 "equip:armor_new",
-                "cron"
+                "cron",
+                "equip:head_old",
+                "equip:armor_new"
             },
-            syncClient.OperationLog.Take(3));
+            syncClient.OperationLog);
         Assert.Equal(1, syncClient.RunCronCalls);
         Assert.Contains(logStore.Entries, entry =>
             entry.FeatureArea == DiagnosticsFeatureArea.Sync
@@ -734,7 +736,138 @@ public sealed class AppSessionControllerTests
             && entry.Severity == DiagnosticsSeverity.Success
             && entry.Metadata["autoEquip"] == "True"
             && entry.Metadata["gearGoal"] == "INT for mana"
-            && entry.Metadata["gearRequestCount"] == "2");
+            && entry.Metadata["gearRequestCount"] == "2"
+            && entry.Metadata["restoreGearRequestCount"] == "2");
+    }
+
+    [Fact]
+    public async Task StartNewDayAsync_skips_cron_when_pre_cron_auto_equip_fails()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                CurrentHabiticaDayKey = "2026-04-27",
+                NeedsCron = true,
+                Equipment = new EquipmentSnapshot(
+                    new GearSlotsSnapshot("head_old", null, null, null, null),
+                    new GearSlotsSnapshot(null, null, null, null, null)),
+                Inventory = new InventorySnapshot(0, 0, 0, 0, 0, 0, new[] { "head_new", "armor_new" })
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot())
+        {
+            EquipGearFailureKey = "armor_new"
+        };
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.StartNewDayAsync(new StartNewDayRequest(
+            true,
+            new GearSlotsSnapshot("head_new", "armor_new", null, null, null),
+            "INT for mana"));
+
+        Assert.False(result.Succeeded);
+        Assert.Contains("Start New Day skipped before CRON", result.Message);
+        Assert.Contains("Previous battle gear was restored.", result.Message);
+        Assert.Equal(0, syncClient.RunCronCalls);
+        Assert.Equal(
+            new[]
+            {
+                "equip:head_new",
+                "equip:head_old"
+            },
+            syncClient.OperationLog);
+    }
+
+    [Fact]
+    public async Task StartNewDayAsync_reports_post_cron_restore_failure()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                CurrentHabiticaDayKey = "2026-04-27",
+                NeedsCron = true,
+                Equipment = new EquipmentSnapshot(
+                    new GearSlotsSnapshot("head_old", null, null, null, null),
+                    new GearSlotsSnapshot(null, null, null, null, null)),
+                Inventory = new InventorySnapshot(0, 0, 0, 0, 0, 0, new[] { "head_new" })
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot())
+        {
+            EquipGearFailureKey = "head_old"
+        };
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.StartNewDayAsync(new StartNewDayRequest(
+            true,
+            new GearSlotsSnapshot("head_new", null, null, null, null),
+            "INT for mana"));
+
+        Assert.False(result.Succeeded);
+        Assert.Contains("Start New Day completed, but restoring previous battle gear failed", result.Message);
+        Assert.Equal(1, syncClient.RunCronCalls);
+    }
+
+    [Fact]
+    public async Task StartNewDayAsync_restores_previous_gear_when_cron_fails()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                CurrentHabiticaDayKey = "2026-04-27",
+                NeedsCron = true,
+                Equipment = new EquipmentSnapshot(
+                    new GearSlotsSnapshot("head_old", null, null, null, null),
+                    new GearSlotsSnapshot(null, null, null, null, null)),
+                Inventory = new InventorySnapshot(0, 0, 0, 0, 0, 0, new[] { "head_new" })
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot())
+        {
+            RunCronFailureMessage = "CRON failed."
+        };
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.StartNewDayAsync(new StartNewDayRequest(
+            true,
+            new GearSlotsSnapshot("head_new", null, null, null, null),
+            "INT for mana"));
+
+        Assert.False(result.Succeeded);
+        Assert.Contains("Start New Day failed while CRON was running", result.Message);
+        Assert.Contains("Previous battle gear was restored.", result.Message);
+        Assert.Equal(
+            new[]
+            {
+                "equip:head_new",
+                "cron",
+                "equip:head_old"
+            },
+            syncClient.OperationLog);
     }
 
     [Fact]
@@ -1900,8 +2033,11 @@ public sealed class AppSessionControllerTests
 
         public List<(InventorySellItemType Type, string Key)> SellInventoryItemCalls { get; } = new();
 
+        public string? EquipGearFailureKey { get; init; }
+
         public Task EquipGearAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
         {
+            ThrowIfEquipGearFails(key);
             EquipCalls.Add((EquipmentSetKind.Battle, key));
             OperationLog.Add($"equip:{key}");
             return Task.CompletedTask;
@@ -1909,9 +2045,18 @@ public sealed class AppSessionControllerTests
 
         public Task EquipGearAsync(HabiticaCredentials credentials, EquipmentSetKind kind, string key, CancellationToken cancellationToken)
         {
+            ThrowIfEquipGearFails(key);
             EquipCalls.Add((kind, key));
             OperationLog.Add($"equip:{key}");
             return Task.CompletedTask;
+        }
+
+        private void ThrowIfEquipGearFails(string key)
+        {
+            if (string.Equals(key, EquipGearFailureKey, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException($"Equip failed for {key}.");
+            }
         }
 
         public Task CastSpellAsync(HabiticaCredentials credentials, string spellId, string? targetId, CancellationToken cancellationToken)
@@ -1922,10 +2067,17 @@ public sealed class AppSessionControllerTests
 
         public int RunCronCalls { get; private set; }
 
+        public string? RunCronFailureMessage { get; init; }
+
         public Task RunCronAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             RunCronCalls++;
             OperationLog.Add("cron");
+            if (!string.IsNullOrWhiteSpace(RunCronFailureMessage))
+            {
+                throw new InvalidOperationException(RunCronFailureMessage);
+            }
+
             return Task.CompletedTask;
         }
 

@@ -1,6 +1,6 @@
 # Future Work
 
-Last validated: 2026-05-27.
+Last validated: 2026-06-02.
 
 This is the single implementation queue. Historical source plans were merged here and removed after implemented items were filtered out. Entries higher in the file are higher priority; finish them first.
 
@@ -41,7 +41,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Task history statistics, aggregate history charts, expanded-card per-task charts, manual task ordering, drag handles, keyboard reordering, and move buttons.
 - Inventory equipment optimizer with goal selector, before/after stat deltas, recommendation equip/save actions, and two-handed weapon handling.
 - Bulk sell planner for eggs, food, and hatching potions with safe surplus preview, explicit confirmation, sequential sell execution, diagnostics, and post-sell refresh.
-- Dashboard Start New Day optional gear optimization: INT for post-CRON mana, CON/survival for lower damage risk, previewed stat deltas, already-equipped state, and sequential equip-before-CRON execution.
+- Dashboard Start New Day default-enabled temporary gear optimization: compact INT-for-mana and CON/survival preview, sequential equip-before-CRON execution, and previous-battle-gear restoration after CRON.
 - Spells sticky current-mana bar with available MP, max MP, class, and persistent scroll visibility above spell cards.
 - App color scheme system with centralized semantic tokens, Alpha/Habitica/Gryphy built-in schemes, Settings picker, custom editable schemes, shell/button/disabled/input theming, mobile localStorage fallback, fast local reload persistence, and portable sync storage.
 - Random color scheme controls: shared color-scheme panel on Settings, Dashboard, and Sign-in, random-preset pick from built-in plus custom schemes, fully-random theme generation with a chaos slider (Calm to Madness) scaling hue/saturation divergence, held as a session-only pending theme (selectable via a "Generated" dropdown entry, applied without persisting), naming/saving the last random theme into custom schemes, and copy/paste of presets for building fully custom palettes.
@@ -60,12 +60,31 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Top. When CRON option appears on the dashboard there should be block with small as possible tasks, but still readable. CRON auto-equip should be fixed - it should work similar to skills auto-equip: equip, process CRON, equip back what was there. Auto-equip for CRON should be active by default.
-- Top. Party page: add filter for classes for party members list.
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
+
+### Party Member Class Filter
+
+Goal: add a class filter to the Party page member list so users can focus the existing member cards by Habitica class.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
+- `FEATURES.md`
+
+Out of scope:
+- changing party-member sorting, card contents, or CRON calculations;
+- changing party sync behavior;
+- adding new Habitica API fields.
+
+Acceptance:
+- The Party members section offers an `All classes` option plus available member classes from the cached party snapshot.
+- Selecting a class shows only matching member cards without changing the current sort behavior.
+- Members with an unavailable class remain visible under `All classes` and do not appear under a named class filter.
+- Tests cover the default unfiltered list and filtering to one available class.
 
 ### Dashboard Navigation Card Title/Description Spacing
 

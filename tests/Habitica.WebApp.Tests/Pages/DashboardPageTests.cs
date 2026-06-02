@@ -395,9 +395,12 @@ public sealed class DashboardPageTests : BunitContext
         var cut = Render<DashboardPage>();
 
         Assert.Contains("INT for mana", cut.Markup);
+        Assert.True(cut.Find("[data-testid='start-new-day-auto-equip']").HasAttribute("checked"));
+        Assert.NotNull(cut.Find("[data-testid='start-new-day-gear-stats']"));
+        Assert.Contains("Recommended gear is already equipped.", cut.Markup);
 
         cut.Find("[data-testid='start-new-day-gear-goal']").Change("Constitution");
-        cut.Find("[data-testid='start-new-day-auto-equip']").Change(true);
+        Assert.Contains("Review temporary gear changes", cut.Markup);
         cut.Find("[data-testid='start-new-day']").Click();
         cut.Find("[data-testid='confirm-start-new-day']").Click();
 

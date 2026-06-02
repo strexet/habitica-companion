@@ -1204,7 +1204,7 @@ Dashboard must not contain business formulas. It displays state computed by rule
 
 Render `Start New Day` only when the current account snapshot says `NeedsCron == true`. The confirmation copy must explain that Habitica will process missed Dailies, active quest progress, current-user temporary buff expiry, and party buffs per member's next CRON. After confirmed CRON, refresh account/tasks/party state through the session controller and show an inline success or error result in addition to the snackbar.
 
-Start New Day can optionally equip recommended battle gear before CRON. `Habitica.Rules.Equipment.EquipmentRecommendationFactory` builds the preview from cached owned gear and the gear catalog. Goals are `INT for mana`, `CON for less damage`, and `Survival`; all are marked assumption-based because the final CRON mana and damage calculations are server-side. The preview shows current stats, recommended stats, deltas, recommended items, and whether the recommended gear is already equipped. When enabled, `AppSessionController.StartNewDayAsync(StartNewDayRequest)` validates recommended gear ownership, equips changed battle slots sequentially without an intermediate user refresh, runs CRON only after successful gear steps, then refreshes account/tasks/party state. Failure messages distinguish skipped-before-CRON, failed-while-CRON-running, and completed-but-refresh-failed states.
+Start New Day offers recommended temporary battle gear before CRON and enables that option by default. `Habitica.Rules.Equipment.EquipmentRecommendationFactory` builds the compact summary-first preview from cached owned gear and the gear catalog. Goals are `INT for mana`, `CON for less damage`, and `Survival`; all are marked assumption-based because the final CRON mana and damage calculations are server-side. The preview shows current stats, recommended stats, deltas, whether the recommended gear is already equipped, and expandable recommended-item rows. When enabled, `AppSessionController.StartNewDayAsync(StartNewDayRequest)` validates recommended gear ownership, captures the current battle slots, equips changed recommended slots sequentially without an intermediate user refresh, runs CRON only after successful gear steps, restores the captured battle slots sequentially, then refreshes account/tasks/party state. If temporary equip or CRON fails after a gear change, the controller attempts to restore the changed slots before reporting the failure. Failure messages distinguish skipped-before-CRON, failed-while-CRON-running, post-CRON restore, and completed-but-refresh-failed states.
 
 The pending damage panel uses `PendingDamageEstimateFactory` to combine incomplete Daily estimates and saved active boss quest pending damage. It must show included sources and unavailable sources separately, and must label the result as an estimate based on synced data.
 
@@ -1242,7 +1242,7 @@ Test:
 - empty state;
 - partial sync failure state;
 - redacted diagnostics.
-- Start New Day confirmation, optional gear optimization preview/request, result feedback, and session-controller refresh contract.
+- Start New Day confirmation, default-enabled temporary gear optimization preview/request, gear restoration, result feedback, and session-controller refresh contract.
 - pending damage estimate sources and risk state.
 - health-potion confirmation and session-controller call.
 

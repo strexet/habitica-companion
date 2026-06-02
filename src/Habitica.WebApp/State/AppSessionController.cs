@@ -43,6 +43,7 @@ public sealed class AppSessionController : IAppSessionController
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
     private HabiticaCredentials? _currentCredentials;
     private readonly HashSet<CloudSyncSection> _cloudSyncExcludedSections;
+    private readonly SemaphoreSlim _partySyncSemaphore = new(1, 1);
     private bool _includeStalePartyMembersInQuestForecasts;
     private bool _initialized;
     private bool _persistLocally;
@@ -1530,6 +1531,8 @@ public sealed class AppSessionController : IAppSessionController
             return SpellActionResult.Success("Habitica day is already started.");
         }
 
+        var originalBattleGear = NormalizePresetSlots(EquipmentSetKind.Battle, State.UserSnapshot.Equipment.Battle);
+        var currentBattleGear = originalBattleGear;
         var autoEquipSlots = request.AutoEquipRecommendedGear && request.AutoEquipGearSlots is not null
             ? NormalizePresetSlots(EquipmentSetKind.Battle, request.AutoEquipGearSlots)
             : null;
@@ -1546,22 +1549,30 @@ public sealed class AppSessionController : IAppSessionController
 
         var requestCount = 0;
         var gearRequestCount = 0;
+        var restoreGearRequestCount = 0;
         var cronStarted = false;
         var cronCompleted = false;
+        var restoreStarted = false;
+        var restoreCompleted = autoEquipSlots is null;
         string? partyRefreshError = null;
         try
         {
             if (autoEquipSlots is not null)
             {
-                gearRequestCount = await EquipSlotsWithoutRefreshAsync(
+                await EquipSlotsWithoutRefreshAsync(
                     credentials,
                     EquipmentSetKind.Battle,
                     State.UserSnapshot.Equipment.Battle,
                     autoEquipSlots,
                     "cron:auto-equip",
                     $"Equipping {request.GearOptimizationGoalLabel ?? "CRON"} gear",
-                    cancellationToken);
-                requestCount += gearRequestCount;
+                    cancellationToken,
+                    (slotTitle, key) =>
+                    {
+                        currentBattleGear = SetSlotValue(currentBattleGear, slotTitle, key);
+                        gearRequestCount++;
+                        requestCount++;
+                    });
             }
 
             SetState(State with { ActiveEquipmentProgress = null, ErrorMessage = null, IsBusy = true });
@@ -1570,6 +1581,26 @@ public sealed class AppSessionController : IAppSessionController
             cronCompleted = true;
             requestCount++;
             await DelayBetweenHabiticaRequestsAsync(cancellationToken);
+
+            if (autoEquipSlots is not null)
+            {
+                restoreStarted = true;
+                await EquipSlotsWithoutRefreshAsync(
+                    credentials,
+                    EquipmentSetKind.Battle,
+                    currentBattleGear,
+                    originalBattleGear,
+                    "cron:restore-gear",
+                    "Restoring battle gear",
+                    cancellationToken,
+                    (slotTitle, key) =>
+                    {
+                        currentBattleGear = SetSlotValue(currentBattleGear, slotTitle, key);
+                        restoreGearRequestCount++;
+                        requestCount++;
+                    });
+                restoreCompleted = true;
+            }
 
             var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
             requestCount++;
@@ -1619,6 +1650,7 @@ public sealed class AppSessionController : IAppSessionController
                     ["autoEquip"] = (autoEquipSlots is not null).ToString(CultureInfo.InvariantCulture),
                     ["gearGoal"] = request.GearOptimizationGoalLabel ?? string.Empty,
                     ["gearRequestCount"] = gearRequestCount.ToString(CultureInfo.InvariantCulture),
+                    ["restoreGearRequestCount"] = restoreGearRequestCount.ToString(CultureInfo.InvariantCulture),
                     ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
                 },
                 cancellationToken);
@@ -1631,13 +1663,49 @@ public sealed class AppSessionController : IAppSessionController
             return SpellActionResult.Success(partyRefreshError is null
                 ? autoEquipSlots is null
                     ? "Started a new Habitica day."
-                    : "Equipped recommended gear and started a new Habitica day."
+                    : gearRequestCount == 0
+                        ? "Started a new Habitica day. Recommended gear was already equipped."
+                        : "Equipped recommended gear, started a new Habitica day, and restored previous battle gear."
                 : $"Started a new Habitica day. Party refresh needs retry: {partyRefreshError}");
         }
         catch (Exception exception)
         {
+            string? restoreError = null;
+            if (autoEquipSlots is not null && !restoreStarted)
+            {
+                restoreStarted = true;
+                try
+                {
+                    await EquipSlotsWithoutRefreshAsync(
+                        credentials,
+                        EquipmentSetKind.Battle,
+                        currentBattleGear,
+                        originalBattleGear,
+                        "cron:restore-gear",
+                        "Restoring battle gear",
+                        cancellationToken,
+                        (slotTitle, key) =>
+                        {
+                            currentBattleGear = SetSlotValue(currentBattleGear, slotTitle, key);
+                            restoreGearRequestCount++;
+                            requestCount++;
+                        });
+                    restoreCompleted = true;
+                }
+                catch (Exception restoreException)
+                {
+                    restoreError = restoreException.Message;
+                }
+            }
+
             await LoadCachedStateAsync(cancellationToken);
-            var message = GetStartNewDayFailureMessage(exception.Message, cronStarted, cronCompleted);
+            var message = GetStartNewDayFailureMessage(
+                exception.Message,
+                cronStarted,
+                cronCompleted,
+                restoreStarted,
+                restoreCompleted,
+                restoreError);
             SetState(State with { ActiveEquipmentProgress = null, ErrorMessage = message, IsBusy = false });
             await _diagnosticsLogWriter.WriteAsync(
                 DiagnosticsFeatureArea.Sync,
@@ -1650,8 +1718,11 @@ public sealed class AppSessionController : IAppSessionController
                     ["autoEquip"] = (autoEquipSlots is not null).ToString(CultureInfo.InvariantCulture),
                     ["gearGoal"] = request.GearOptimizationGoalLabel ?? string.Empty,
                     ["gearRequestCount"] = gearRequestCount.ToString(CultureInfo.InvariantCulture),
+                    ["restoreGearRequestCount"] = restoreGearRequestCount.ToString(CultureInfo.InvariantCulture),
                     ["cronStarted"] = cronStarted.ToString(CultureInfo.InvariantCulture),
                     ["cronCompleted"] = cronCompleted.ToString(CultureInfo.InvariantCulture),
+                    ["restoreStarted"] = restoreStarted.ToString(CultureInfo.InvariantCulture),
+                    ["restoreCompleted"] = restoreCompleted.ToString(CultureInfo.InvariantCulture),
                     ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
                 },
                 cancellationToken);
@@ -1659,16 +1730,33 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
-    private static string GetStartNewDayFailureMessage(string message, bool cronStarted, bool cronCompleted)
+    private static string GetStartNewDayFailureMessage(
+        string message,
+        bool cronStarted,
+        bool cronCompleted,
+        bool restoreStarted,
+        bool restoreCompleted,
+        string? restoreError)
     {
+        if (cronCompleted && restoreStarted && !restoreCompleted)
+        {
+            return $"Start New Day completed, but restoring previous battle gear failed: {message}";
+        }
+
+        var restoreStatus = restoreCompleted && restoreStarted
+            ? " Previous battle gear was restored."
+            : string.IsNullOrWhiteSpace(restoreError)
+                ? string.Empty
+                : $" Restoring previous battle gear also failed: {restoreError}";
+
         if (!cronStarted)
         {
-            return $"Start New Day skipped before CRON: {message}";
+            return $"Start New Day skipped before CRON: {message}{restoreStatus}";
         }
 
         return cronCompleted
-            ? $"Start New Day completed, but refresh failed: {message}"
-            : $"Start New Day failed while CRON was running: {message}";
+            ? $"Start New Day completed, but refresh failed: {message}{restoreStatus}"
+            : $"Start New Day failed while CRON was running: {message}{restoreStatus}";
     }
 
     public async Task<TaskActionResult> ScoreTaskAsync(TaskScoreRequest request, CancellationToken cancellationToken = default)
@@ -3252,6 +3340,21 @@ public sealed class AppSessionController : IAppSessionController
         HabiticaCredentials credentials,
         CancellationToken cancellationToken)
     {
+        await _partySyncSemaphore.WaitAsync(cancellationToken);
+        try
+        {
+            return await MergeAndUploadPartySyncCoreAsync(credentials, cancellationToken);
+        }
+        finally
+        {
+            _partySyncSemaphore.Release();
+        }
+    }
+
+    private async Task<PartySyncUploadResult?> MergeAndUploadPartySyncCoreAsync(
+        HabiticaCredentials credentials,
+        CancellationToken cancellationToken)
+    {
         var partySnapshot = await _partySnapshotStore.GetLatestAsync(cancellationToken);
         if (partySnapshot is null || string.IsNullOrWhiteSpace(partySnapshot.PartyId))
         {
@@ -4024,7 +4127,8 @@ public sealed class AppSessionController : IAppSessionController
         GearSlotsSnapshot desiredSlots,
         string operationId,
         string label,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        Action<string, string?>? gearChanged = null)
     {
         var changedSlots = EnumerateSlots(NormalizePresetSlots(kind, desiredSlots))
             .Where(slot => !string.Equals(NormalizeGearKey(GetSlotValue(currentSlots, slot.SlotTitle)), slot.Key, StringComparison.Ordinal))
@@ -4052,6 +4156,7 @@ public sealed class AppSessionController : IAppSessionController
             }
 
             await _habiticaSyncClient.EquipGearAsync(credentials, kind, keyToToggle, cancellationToken);
+            gearChanged?.Invoke(slot.SlotTitle, slot.Key);
             completed++;
             await DelayBetweenHabiticaRequestsAsync(cancellationToken);
             SetState(State with
@@ -4096,6 +4201,22 @@ public sealed class AppSessionController : IAppSessionController
             "Shield" => slots.Shield,
             "Back" => slots.Back,
             _ => null
+        };
+    }
+
+    private static GearSlotsSnapshot SetSlotValue(GearSlotsSnapshot slots, string slotTitle, string? key)
+    {
+        return slotTitle switch
+        {
+            "Head" => slots with { Head = key },
+            "Head Accessory" => slots with { HeadAccessory = key },
+            "Eyewear" => slots with { Eyewear = key },
+            "Armor" => slots with { Armor = key },
+            "Body" => slots with { Body = key },
+            "Weapon" => slots with { Weapon = key },
+            "Shield" => slots with { Shield = key },
+            "Back" => slots with { Back = key },
+            _ => slots
         };
     }
 

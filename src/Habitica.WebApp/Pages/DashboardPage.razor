@@ -103,11 +103,9 @@
                 snapshot,
                 SessionController.State.GearCatalogSnapshot,
                 _startNewDayGearGoal);
-            var autoEquipBlocked = _startNewDayAutoEquip && !cronGearRecommendation.HasRecommendation;
             var canStartNewDay = SessionController.State.IsAuthenticated
                 && !SessionController.State.IsBusy
-                && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh
-                && !autoEquipBlocked;
+                && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
 
             <section class="card-surface dashboard-panel cron-action-panel">
                 <div>
@@ -119,7 +117,7 @@
                 </div>
 
                 <div class="cron-gear-optimizer">
-                    <div class="task-group-header">
+                    <div class="cron-gear-heading">
                         <div>
                             <span class="dashboard-stat-label">Gear before CRON</span>
                             <strong>@cronGearRecommendation.GoalLabel</strong>
@@ -143,20 +141,20 @@
                         </select>
                     </label>
 
-                    <div class="optimizer-stat-grid">
-                        <article class="dashboard-stat-card">
-                            <span class="dashboard-stat-label">Current</span>
-                            @RenderGearStats(cronGearRecommendation.CurrentStats)
-                        </article>
-                        <article class="dashboard-stat-card">
-                            <span class="dashboard-stat-label">Recommended</span>
-                            @RenderGearStats(cronGearRecommendation.RecommendedStats)
-                        </article>
-                        <article class="dashboard-stat-card">
-                            <span class="dashboard-stat-label">Delta</span>
-                            @RenderGearStatDelta(cronGearRecommendation.Delta)
-                        </article>
-                    </div>
+                    <dl class="cron-gear-stat-list" data-testid="start-new-day-gear-stats">
+                        <div>
+                            <dt>Current</dt>
+                            <dd>@RenderGearStats(cronGearRecommendation.CurrentStats)</dd>
+                        </div>
+                        <div>
+                            <dt>Recommended</dt>
+                            <dd>@RenderGearStats(cronGearRecommendation.RecommendedStats)</dd>
+                        </div>
+                        <div>
+                            <dt>Delta</dt>
+                            <dd>@RenderGearStatDelta(cronGearRecommendation.Delta)</dd>
+                        </div>
+                    </dl>
 
                     @if (!cronGearRecommendation.HasRecommendation)
                     {
@@ -164,24 +162,32 @@
                     }
                     else
                     {
-                        <div class="preset-item-strip optimizer-item-strip">
-                            @foreach (var item in cronGearRecommendation.Items)
-                            {
-                                <article class="preset-mini-item">
-                                    <span class="dashboard-stat-label">@item.SlotTitle</span>
-                                    <div class="habitica-item-identity">
-                                        <HabiticaImage Asset="@HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName)" />
-                                        <div>
-                                            <strong>@item.DisplayName</strong>
-                                            @RenderGearStats(item.TotalStats)
+                        <details class="cron-gear-details">
+                            <summary>
+                                @(cronGearRecommendation.IsEquipped ? "Recommended gear is already equipped." : "Review temporary gear changes")
+                            </summary>
+                            <div class="preset-item-strip optimizer-item-strip cron-gear-item-strip">
+                                @foreach (var item in cronGearRecommendation.Items)
+                                {
+                                    <article class="preset-mini-item">
+                                        <span class="dashboard-stat-label">@item.SlotTitle</span>
+                                        <div class="habitica-item-identity">
+                                            <HabiticaImage Asset="@HabiticaImageAssetResolver.Gear(item.Key, item.DisplayName)" />
+                                            <div>
+                                                <strong>@item.DisplayName</strong>
+                                                @RenderGearStats(item.TotalStats)
+                                            </div>
                                         </div>
-                                    </div>
-                                </article>
+                                    </article>
+                                }
+                            </div>
+                            @if (!cronGearRecommendation.IsEquipped)
+                            {
+                                <span class="dashboard-stat-note">
+                                    Changed slots will be equipped before CRON and your previous battle gear will be restored afterward.
+                                </span>
                             }
-                        </div>
-                        <span class="dashboard-stat-note">
-                            @(cronGearRecommendation.IsEquipped ? "Recommended gear is already equipped." : "Changed slots will be equipped before CRON after confirmation.")
-                        </span>
+                        </details>
                     }
                 </div>
 
@@ -194,7 +200,11 @@
                             Party buffs expire separately for each member on that member's next CRON.
                             @if (_startNewDayAutoEquip && cronGearRecommendation.HasRecommendation)
                             {
-                                <span> Recommended gear will be equipped first.</span>
+                                <span>
+                                    @(cronGearRecommendation.IsEquipped
+                                        ? " Recommended gear is already equipped."
+                                        : " Recommended gear will be equipped first, then your previous battle gear will be restored after CRON.")
+                                </span>
                             }
                         </p>
                         <div class="confirmation-actions">
@@ -587,7 +597,7 @@
     private const decimal HealthPotionGoldCost = 25m;
     private int _armoirePurchaseCount = 1;
     private bool _showCronConfirmation;
-    private bool _startNewDayAutoEquip;
+    private bool _startNewDayAutoEquip = true;
     private EquipmentRecommendationGoal _startNewDayGearGoal = EquipmentRecommendationGoal.Intelligence;
     private bool _startNewDayResultSucceeded;
     private string? _startNewDayResultMessage;
