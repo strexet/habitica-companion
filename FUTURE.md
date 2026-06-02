@@ -61,6 +61,8 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
+- Top. When casting a buff or heal spell, party members list should be updated to show actual members' stats/hp/mp after the spell cast.
+- Top. Spells auto-equip logic need a review, because right now it chooses not the most profitable gear option as default, and I'm not sure that options list is properly ordered by gained spell value. Also, there is some quircky behavior for healer's blessing spell (that one that restores party hp): it shows different values but I feel like I have the same equipment/stats - check this out if there is a problem (it should not take into account the party members' hp that will be really restored - example: party members are missing 1 hp each, but the spell restores 2 hp, and it shows 2 in its spell card, ignoring that only 1 will be restored for each party member)
 
 ## Prioritized Next Changes
 
