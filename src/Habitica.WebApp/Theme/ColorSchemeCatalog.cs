@@ -1232,6 +1232,67 @@ public static partial class ColorSchemeCatalog
         return CssColorOrShadowPattern().IsMatch(value.Trim());
     }
 
+    /// <summary>Validates a CSS box-shadow / text-shadow value. Unlike <see cref="IsValidTokenValue"/>
+    /// this accepts multi-layer comma-separated shadows (each layer optionally prefixed with
+    /// <c>inset</c>) and the keyword <c>none</c>, and allows a longer overall string.</summary>
+    public static bool IsValidShadowValue(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value) || value.Length > 400)
+        {
+            return false;
+        }
+
+        var trimmed = value.Trim();
+        if (string.Equals(trimmed, "none", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        foreach (var layer in SplitTopLevelCommas(trimmed))
+        {
+            var segment = layer.Trim();
+            if (segment.StartsWith("inset ", StringComparison.OrdinalIgnoreCase))
+            {
+                segment = segment["inset ".Length..].Trim();
+            }
+
+            if (segment.Length == 0 || !CssColorOrShadowPattern().IsMatch(segment))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static IEnumerable<string> SplitTopLevelCommas(string value)
+    {
+        var depth = 0;
+        var start = 0;
+        for (var index = 0; index < value.Length; index++)
+        {
+            var character = value[index];
+            if (character == '(')
+            {
+                depth++;
+            }
+            else if (character == ')')
+            {
+                if (depth > 0)
+                {
+                    depth--;
+                }
+            }
+            else if (character == ',' && depth == 0)
+            {
+                yield return value[start..index];
+                start = index + 1;
+            }
+        }
+
+        yield return value[start..];
+    }
+
     public static ColorSchemeDefinition Complete(ColorSchemeDefinition scheme)
     {
         var fallback = Alpha.Tokens;

@@ -188,6 +188,33 @@ public sealed class ColorSchemeCatalogTests
     }
 
     [Fact]
+    public void Readable_clipboard_parser_accepts_multi_layer_card_and_text_shadows()
+    {
+        var baseline = ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.Alpha, "Draft");
+        const string cardShadow = "0 0 0 1px rgba(172, 202, 255, 0.10), 0 22px 76px rgba(127, 168, 255, 0.27), 0 0 68px rgba(203, 161, 255, 0.16), 0 0 28px rgba(145, 183, 255, 0.10)";
+        const string headingShadow = "0 0 18px rgba(145, 183, 255, 0.50), 0 0 40px rgba(203, 161, 255, 0.27), 0 0 64px rgba(145, 183, 255, 0.12)";
+        var json = "{\"Name\":\"Obsidian\",\"Variant\":\"Dark\",\"Colors\":{\"Primary\":\"#91b7ff\",\"CardShadow\":\""
+            + cardShadow + "\"},\"TextShadows\":{\"Headings\":\"" + headingShadow + "\"}}";
+
+        var outcome = ReadableSchemeParser.Parse(json, baseline);
+
+        Assert.Equal(SchemeParseResult.Success, outcome.Result);
+        Assert.Equal(cardShadow, outcome.Scheme!.Tokens.Shadow);
+        Assert.Equal(headingShadow, outcome.Scheme.Tokens.HeadingTextShadow);
+    }
+
+    [Fact]
+    public void Multi_layer_shadow_is_valid_but_not_a_plain_color()
+    {
+        const string multiLayer = "0 0 0 1px rgba(172, 202, 255, 0.10), 0 22px 76px rgba(127, 168, 255, 0.27)";
+
+        Assert.True(ColorSchemeCatalog.IsValidShadowValue(multiLayer));
+        Assert.False(ColorSchemeCatalog.IsValidTokenValue(multiLayer));
+        Assert.True(ColorSchemeCatalog.IsValidShadowValue("none"));
+        Assert.False(ColorSchemeCatalog.IsValidShadowValue("0 0 0 1px not a color, garbage"));
+    }
+
+    [Fact]
     public void Pick_random_preset_excludes_active_and_random_ids()
     {
         var random = new Random(7);

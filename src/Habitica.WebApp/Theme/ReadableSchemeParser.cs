@@ -146,9 +146,10 @@ public static class ReadableSchemeParser
                 continue;
             }
 
-            if (!ColorSchemeCatalog.IsValidTokenValue(value))
+            var isShadow = field.Token == nameof(ColorSchemeTokens.Shadow);
+            if (!(isShadow ? ColorSchemeCatalog.IsValidShadowValue(value) : ColorSchemeCatalog.IsValidTokenValue(value)))
             {
-                return new(SchemeParseResult.InvalidValue, Detail: $"Colors.{field.Readable} is not a valid CSS color.");
+                return new(SchemeParseResult.InvalidValue, Detail: $"Colors.{field.Readable} is not a valid CSS {(isShadow ? "shadow" : "color")} value.");
             }
 
             tokens = ColorSchemeCatalog.WithTokenValue(tokens, field.Token, value);
@@ -215,9 +216,10 @@ public static class ReadableSchemeParser
                 continue;
             }
 
-            if (!ColorSchemeCatalog.IsValidTokenValue(value))
+            var isShadow = field.Token == nameof(ColorSchemeTokens.Shadow);
+            if (!(isShadow ? ColorSchemeCatalog.IsValidShadowValue(value) : ColorSchemeCatalog.IsValidTokenValue(value)))
             {
-                return new(SchemeParseResult.InvalidValue, Detail: $"{field.Token} is not a valid CSS color.");
+                return new(SchemeParseResult.InvalidValue, Detail: $"{field.Token} is not a valid CSS {(isShadow ? "shadow" : "color")} value.");
             }
 
             tokens = ColorSchemeCatalog.WithTokenValue(tokens, field.Token, value);
@@ -343,7 +345,7 @@ public static class ReadableSchemeParser
             return (apply(null), null);
         }
 
-        if (value.ValueKind != JsonValueKind.String || !ColorSchemeCatalog.IsValidTokenValue(value.GetString()))
+        if (value.ValueKind != JsonValueKind.String || !ColorSchemeCatalog.IsValidShadowValue(value.GetString()))
         {
             return (tokens, new(SchemeParseResult.InvalidValue, Detail: $"TextShadows.{name} is not a valid CSS text-shadow value."));
         }
