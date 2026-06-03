@@ -54,6 +54,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Dashboard eligible-only gem-for-gold purchase action with quantity clamp, explicit confirmation, sequential stop-on-failure requests, diagnostics, and post-purchase account refresh.
 - Party page overview no longer shows the dedicated CRON summary or buff-timing recommendation block, while member review and Quests workspace remain intact.
 - Manual task arrangement now persists locally and triggers a narrow encrypted upload of the task-order cloud-sync section without blocking or undoing local reorder changes.
+- Random theme generation now guards calm/moderate card text and primary/secondary filled-button label contrast across generated gradient stops, with readability thresholds intentionally relaxed only toward high-chaos Madness output.
 
 ## Pending Queue
 
@@ -75,41 +76,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Improve Random Theme Readability Guards
-
-Goal: make generated color schemes reliably readable at calm and moderate chaos values, with explicit contrast checks for primary and secondary button text against their generated button backgrounds.
-
-Touch:
-- `src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs` (random theme generation, `ApplyRandomContrastGuards`, contrast helpers, and any needed average-background helpers)
-- direct tests under `tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs`
-- `tests/Habitica.WebApp.Tests/Components/ColorSchemePanelTests.cs` only if UI behavior or random-theme save/display behavior changes
-- `FEATURES.md`
-- `docs/UX_UI_MANIFEST.md` if the documented chaos/readability contract changes
-
-Implementation shape:
-- Add contrast enforcement for `PrimaryButtonText` against the average or worst practical color of `PrimaryButtonGradient`.
-- Add contrast enforcement for `SecondaryButtonText` against the average or worst practical color of `SecondaryButtonGradient`.
-- Review existing generated pairs that affect persistent UI readability: `Ink` on card/background surfaces, app bar text, drawer text, disabled text, input border/background, focus outline, and danger/success/primary separation.
-- Use stricter thresholds for lower chaos and intentionally looser thresholds only near the highest chaos levels:
-  - calm to moderate chaos should prefer readable app-like themes;
-  - high chaos may be wilder, but primary/secondary filled button labels should not collapse into the same luminance as their backgrounds unless the selected chaos level is explicitly in the extreme range.
-- Keep generated token values valid CSS and avoid adding browser-only contrast calculations to tests.
-
-Out of scope:
-- changing built-in preset palettes except where a shared helper requires harmless normalization;
-- changing the custom scheme editor or pasted custom scheme validation beyond preserving new token names;
-- adding a full accessibility audit UI;
-- changing random preset selection behavior.
-
-Acceptance:
-- Deterministic tests over representative random seeds verify generated calm and moderate themes keep readable contrast for:
-  - `PrimaryButtonText` over `PrimaryButtonGradient`;
-  - `SecondaryButtonText` over `SecondaryButtonGradient`;
-  - body/card text over primary card surfaces.
-- Tests include at least one high-chaos/MADNESS case that verifies generated schemes remain valid while allowing looser contrast than calm themes.
-- Existing random-theme behaviors still hold: temporary generated themes are not persisted until saved, saved random themes validate, rerolled themes are saveable, and the `Generated` dropdown entry still works.
-- Documentation explains that chaos controls how aggressively readability guards are relaxed.
 
 ### Sync Appearance Changes And Rename Customization Close Action
 

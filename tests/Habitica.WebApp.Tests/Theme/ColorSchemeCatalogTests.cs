@@ -109,6 +109,57 @@ public sealed class ColorSchemeCatalogTests
         }
     }
 
+    [Theory]
+    [InlineData(0.0)]
+    [InlineData(0.5)]
+    [InlineData(0.6)]
+    public void Generated_calm_and_moderate_random_themes_keep_persistent_surfaces_readable(double chaos)
+    {
+        for (var seed = 0; seed < 200; seed++)
+        {
+            var tokens = ColorSchemeCatalog.GenerateRandomTheme(new Random(seed), chaos).Tokens;
+
+            AssertMinimumContrast(
+                tokens.PrimaryButtonText,
+                4.5,
+                $"primary button chaos={chaos} seed={seed}",
+                ColorsWithAverage(tokens.PrimaryButtonGradient!));
+            AssertMinimumContrast(
+                tokens.SecondaryButtonText ?? tokens.PrimaryButtonText,
+                4.5,
+                $"secondary button chaos={chaos} seed={seed}",
+                ColorsWithAverage(tokens.SecondaryButtonGradient!));
+            AssertMinimumContrast(
+                tokens.Ink,
+                4.5,
+                $"card text chaos={chaos} seed={seed}",
+                ColorsWithAverage(tokens.CardGradient!)
+                    .Prepend(tokens.CardBackground)
+                    .ToArray());
+        }
+    }
+
+    [Fact]
+    public void Generated_madness_random_theme_remains_valid_with_relaxed_readability_guards()
+    {
+        const double chaos = 1.0;
+
+        for (var seed = 0; seed < 200; seed++)
+        {
+            var scheme = ColorSchemeCatalog.GenerateRandomTheme(new Random(seed), chaos);
+
+            Assert.Empty(ColorSchemeCatalog.Validate(scheme));
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.PrimaryButtonText), $"primary text seed={seed}");
+            Assert.True(ColorSchemeCatalog.IsValidTokenValue(scheme.Tokens.SecondaryButtonText), $"secondary text seed={seed}");
+            Assert.True(
+                MinimumContrast(scheme.Tokens.PrimaryButtonText, ColorsWithAverage(scheme.Tokens.PrimaryButtonGradient!)) >= 2.0,
+                $"primary button seed={seed}");
+            Assert.True(
+                MinimumContrast(scheme.Tokens.SecondaryButtonText ?? scheme.Tokens.PrimaryButtonText, ColorsWithAverage(scheme.Tokens.SecondaryButtonGradient!)) >= 2.0,
+                $"secondary button seed={seed}");
+        }
+    }
+
     [Fact]
     public void Same_seed_reproduces_the_same_theme_so_chaos_slider_is_reversible()
     {
@@ -260,5 +311,70 @@ public sealed class ColorSchemeCatalogTests
         var errors = ColorSchemeCatalog.Validate(scheme);
 
         Assert.Contains(errors, error => error.Contains("Primary", StringComparison.Ordinal));
+    }
+
+    private static void AssertMinimumContrast(string text, double minimum, string context, params string[] backgrounds)
+    {
+        var actual = MinimumContrast(text, backgrounds);
+        Assert.True(actual >= minimum, $"{context}: expected >= {minimum:0.00}, actual {actual:0.00}");
+    }
+
+    private static double MinimumContrast(string text, params string[] backgrounds)
+        => backgrounds.Min(background => ContrastRatio(text, background));
+
+    private static double ContrastRatio(string first, string second)
+    {
+        var firstLuminance = RelativeLuminance(first);
+        var secondLuminance = RelativeLuminance(second);
+        return (Math.Max(firstLuminance, secondLuminance) + 0.05) / (Math.Min(firstLuminance, secondLuminance) + 0.05);
+    }
+
+    private static double RelativeLuminance(string color)
+    {
+        var (red, green, blue) = HexToRgb(color);
+        return 0.2126 * Channel(red) + 0.7152 * Channel(green) + 0.0722 * Channel(blue);
+
+        static double Channel(int value)
+        {
+            var normalized = value / 255.0;
+            return normalized <= 0.03928 ? normalized / 12.92 : Math.Pow((normalized + 0.055) / 1.055, 2.4);
+        }
+    }
+
+    private static (int Red, int Green, int Blue) HexToRgb(string color)
+    {
+        var hex = color.Trim().TrimStart('#');
+        if (hex.Length is 3 or 4)
+        {
+            hex = string.Concat(hex.Take(3).Select(character => $"{character}{character}"));
+        }
+
+        return (
+            Convert.ToInt32(hex.AsSpan(0, 2).ToString(), 16),
+            Convert.ToInt32(hex.AsSpan(2, 2).ToString(), 16),
+            Convert.ToInt32(hex.AsSpan(4, 2).ToString(), 16));
+    }
+
+    private static string[] ColorsWithAverage(GradientStops8 stops)
+        => new[]
+        {
+            stops.TopLeft, stops.Top, stops.TopRight, stops.MiddleLeft, stops.MiddleRight, stops.BottomLeft, stops.Bottom, stops.BottomRight,
+            Average(stops.TopLeft, stops.Top, stops.TopRight, stops.MiddleLeft, stops.MiddleRight, stops.BottomLeft, stops.Bottom, stops.BottomRight)
+        };
+
+    private static string[] ColorsWithAverage(GradientStops4 stops)
+        => new[]
+        {
+            stops.TopLeft, stops.TopRight, stops.BottomLeft, stops.BottomRight,
+            Average(stops.TopLeft, stops.TopRight, stops.BottomLeft, stops.BottomRight)
+        };
+
+    private static string[] ColorsWithAverage(GradientStops2 stops)
+        => new[] { stops.Start, stops.End, Average(stops.Start, stops.End) };
+
+    private static string Average(params string[] values)
+    {
+        var colors = values.Select(HexToRgb).ToArray();
+        return $"#{(int)Math.Round(colors.Average(color => color.Red)):x2}{(int)Math.Round(colors.Average(color => color.Green)):x2}{(int)Math.Round(colors.Average(color => color.Blue)):x2}";
     }
 }

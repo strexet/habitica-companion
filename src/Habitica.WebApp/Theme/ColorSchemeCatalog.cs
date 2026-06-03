@@ -954,29 +954,50 @@ public static partial class ColorSchemeCatalog
 
     private static ColorSchemeTokens ApplyRandomContrastGuards(ColorSchemeTokens tokens, double chaos)
     {
-        var cardAverage = Average(tokens.CardGradient!);
-        var minimumCardContrast = chaos <= 0.6 ? 3.0 : chaos <= 0.85 ? 2.0 : 0.0;
-        if (minimumCardContrast > 0.0 && ContrastRatio(tokens.Ink, cardAverage) < minimumCardContrast)
-        {
-            tokens = tokens with { Ink = BestReadableText(cardAverage) };
-        }
+        var bodyTextMinimum = TextContrastMinimum(chaos);
+        var shellTextMinimum = ShellTextContrastMinimum(chaos);
+        var buttonTextMinimum = ButtonTextContrastMinimum(chaos);
+        var primaryButtonText = EnsureContrastAcross(
+            tokens.PrimaryButtonText,
+            buttonTextMinimum,
+            ColorsWithAverage(tokens.PrimaryButtonGradient!));
+        var secondaryButtonText = EnsureContrastAcross(
+            tokens.SecondaryButtonText ?? tokens.PrimaryButtonText,
+            buttonTextMinimum,
+            ColorsWithAverage(tokens.SecondaryButtonGradient!));
+        var primaryButtonGradient = EnsureGradientTextContrast(tokens.PrimaryButtonGradient!, primaryButtonText, buttonTextMinimum);
+        var secondaryButtonGradient = EnsureGradientTextContrast(tokens.SecondaryButtonGradient!, secondaryButtonText, buttonTextMinimum);
 
-        if (chaos > 0.99)
+        tokens = tokens with
         {
-            var pageAverage = Average(tokens.BackgroundGradient!);
-            var appBarAverage = Average(tokens.AppBarGradient!);
-            var drawerAverage = Average(tokens.DrawerGradient!);
-            var buttonAverage = Average(tokens.PrimaryButtonGradient!);
-            var secondaryButtonAverage = Average(tokens.SecondaryButtonGradient!.Start, tokens.SecondaryButtonGradient!.End);
-            tokens = tokens with
-            {
-                AppBarText = EnsureContrast(tokens.AppBarText, appBarAverage, 3.0),
-                DrawerText = EnsureContrast(tokens.DrawerText, drawerAverage, 3.0),
-                PrimaryButtonText = EnsureContrast(tokens.PrimaryButtonText, buttonAverage, 3.0),
-                SecondaryButtonText = EnsureContrast(tokens.SecondaryButtonText ?? tokens.PrimaryButtonText, secondaryButtonAverage, 3.0),
-                Focus = EnsureContrastAgainstBoth(tokens.Focus, pageAverage, tokens.CardBackground, 2.5)
-            };
-        }
+            Ink = EnsureContrastAcross(
+                tokens.Ink,
+                bodyTextMinimum,
+                ColorsWithAverage(tokens.CardGradient!)
+                    .Prepend(tokens.SurfaceStrong)
+                    .Prepend(tokens.Surface)
+                    .Prepend(tokens.CardBackground)
+                    .ToArray()),
+            AppBarText = EnsureContrastAcross(
+                tokens.AppBarText,
+                shellTextMinimum,
+                ColorsWithAverage(tokens.AppBarGradient!)
+                    .Prepend(tokens.AppBarBackground)
+                    .ToArray()),
+            DrawerText = EnsureContrastAcross(
+                tokens.DrawerText,
+                shellTextMinimum,
+                ColorsWithAverage(tokens.DrawerGradient!)
+                    .Prepend(tokens.DrawerBackground)
+                    .ToArray()),
+            PrimaryButtonText = primaryButtonText,
+            SecondaryButtonText = secondaryButtonText,
+            DisabledText = EnsureContrast(tokens.DisabledText, tokens.DisabledBackground, DisabledTextContrastMinimum(chaos)),
+            InputBorder = EnsureContrast(tokens.InputBorder, tokens.InputBackground, InputBorderContrastMinimum(chaos)),
+            Focus = EnsureContrastAgainstBoth(tokens.Focus, Average(tokens.BackgroundGradient!), tokens.CardBackground, FocusContrastMinimum(chaos)),
+            PrimaryButtonGradient = primaryButtonGradient,
+            SecondaryButtonGradient = secondaryButtonGradient
+        };
 
         var (primaryHue, _, _) = HexToHsl(tokens.Primary);
         var (dangerHue, dangerSaturation, dangerLightness) = HexToHsl(tokens.Danger);
@@ -989,8 +1010,36 @@ public static partial class ColorSchemeCatalog
         return tokens;
     }
 
+    private static double TextContrastMinimum(double chaos)
+        => chaos <= 0.6 ? 4.5 : chaos <= 0.85 ? 3.5 : chaos <= 0.99 ? 3.0 : 2.0;
+
+    private static double ShellTextContrastMinimum(double chaos)
+        => chaos <= 0.6 ? 4.5 : chaos <= 0.85 ? 3.5 : chaos <= 0.99 ? 3.0 : 2.0;
+
+    private static double ButtonTextContrastMinimum(double chaos)
+        => chaos <= 0.6 ? 4.5 : chaos <= 0.85 ? 3.8 : chaos <= 0.99 ? 3.0 : 2.0;
+
+    private static double DisabledTextContrastMinimum(double chaos)
+        => chaos <= 0.6 ? 3.0 : chaos <= 0.85 ? 2.5 : 2.0;
+
+    private static double InputBorderContrastMinimum(double chaos)
+        => chaos <= 0.6 ? 2.0 : chaos <= 0.85 ? 1.7 : 1.4;
+
+    private static double FocusContrastMinimum(double chaos)
+        => chaos <= 0.6 ? 3.0 : chaos <= 0.85 ? 2.5 : 2.0;
+
     private static string EnsureContrast(string value, string background, double minimum)
         => ContrastRatio(value, background) >= minimum ? value : BestReadableText(background);
+
+    private static string EnsureContrastAcross(string value, double minimum, params string[] backgrounds)
+    {
+        if (MinimumContrast(value, backgrounds) >= minimum)
+        {
+            return value;
+        }
+
+        return BestReadableText(backgrounds);
+    }
 
     private static string EnsureContrastAgainstBoth(string value, string first, string second, double minimum)
     {
@@ -1009,6 +1058,47 @@ public static partial class ColorSchemeCatalog
 
     private static string BestReadableText(string background)
         => ContrastRatio("#101010", background) >= ContrastRatio("#f5f5f5", background) ? "#101010" : "#f5f5f5";
+
+    private static string BestReadableText(params string[] backgrounds)
+    {
+        var dark = "#101010";
+        var light = "#f5f5f5";
+        return MinimumContrast(dark, backgrounds) >= MinimumContrast(light, backgrounds) ? dark : light;
+    }
+
+    private static double MinimumContrast(string value, params string[] backgrounds)
+        => backgrounds.Min(background => ContrastRatio(value, background));
+
+    private static GradientStops4 EnsureGradientTextContrast(GradientStops4 stops, string text, double minimum)
+        => new(
+            EnsureBackgroundTextContrast(stops.TopLeft, text, minimum),
+            EnsureBackgroundTextContrast(stops.TopRight, text, minimum),
+            EnsureBackgroundTextContrast(stops.BottomLeft, text, minimum),
+            EnsureBackgroundTextContrast(stops.BottomRight, text, minimum));
+
+    private static GradientStops2 EnsureGradientTextContrast(GradientStops2 stops, string text, double minimum)
+        => new(
+            EnsureBackgroundTextContrast(stops.Start, text, minimum),
+            EnsureBackgroundTextContrast(stops.End, text, minimum));
+
+    private static string EnsureBackgroundTextContrast(string background, string text, double minimum)
+    {
+        if (ContrastRatio(text, background) >= minimum)
+        {
+            return background;
+        }
+
+        var (hue, saturation, lightness) = HexToHsl(background);
+        var textIsDark = RelativeLuminance(text) < 0.42;
+        var candidate = background;
+        for (var step = 0; step < 12 && ContrastRatio(text, candidate) < minimum; step++)
+        {
+            lightness = textIsDark ? Math.Min(0.98, lightness + 0.05) : Math.Max(0.02, lightness - 0.05);
+            candidate = Hsl(hue, saturation, lightness);
+        }
+
+        return candidate;
+    }
 
     private static double ContrastRatio(string first, string second)
     {
@@ -1040,6 +1130,30 @@ public static partial class ColorSchemeCatalog
         var colors = values.Select(HexToRgb).ToArray();
         return $"#{(int)Math.Round(colors.Average(color => color.Red)):x2}{(int)Math.Round(colors.Average(color => color.Green)):x2}{(int)Math.Round(colors.Average(color => color.Blue)):x2}";
     }
+
+    private static string[] ColorsWithAverage(GradientStops8 stops)
+        => new[]
+        {
+            stops.TopLeft, stops.Top, stops.TopRight, stops.MiddleLeft, stops.MiddleRight, stops.BottomLeft, stops.Bottom, stops.BottomRight,
+            Average(stops)
+        };
+
+    private static string[] ColorsWithAverage(GradientStops6 stops)
+        => new[]
+        {
+            stops.TopLeft, stops.Top, stops.TopRight, stops.BottomLeft, stops.Bottom, stops.BottomRight,
+            Average(stops)
+        };
+
+    private static string[] ColorsWithAverage(GradientStops4 stops)
+        => new[]
+        {
+            stops.TopLeft, stops.TopRight, stops.BottomLeft, stops.BottomRight,
+            Average(stops)
+        };
+
+    private static string[] ColorsWithAverage(GradientStops2 stops)
+        => new[] { stops.Start, stops.End, Average(stops.Start, stops.End) };
 
     private static (double Red, double Green, double Blue) HexToRgb(string color)
     {

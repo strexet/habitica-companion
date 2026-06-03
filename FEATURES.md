@@ -1649,11 +1649,11 @@ The color-scheme controls live in a shared `ColorSchemePanel` component embedded
 - reset by choosing any built-in scheme;
 - roll a random preset (a random pick from built-in plus custom schemes), which is selected and persisted like any other scheme;
 - roll a random theme (generated random colors), which is held in memory for the app session and applied without persisting;
-- drag a chaos slider (Calm to Madness) before rerolling to scale hue and saturation divergence, from a calm single-hue palette up to a chaotic, high-saturation, multi-hue one (still valid and with legible text tokens);
+- drag a chaos slider (Calm to Madness) before rerolling to scale hue and saturation divergence, from a calm single-hue palette up to a chaotic, high-saturation, multi-hue one (still valid, with readability guards strongest at calm/moderate settings and relaxed only near Madness);
 - switch to other schemes and return to the last random theme through a "Generated" entry in the scheme dropdown;
 - name and save the last random theme into the custom schemes list.
 
-The random theme is generated as a palette around a random base hue with light/dark base, contrasting text tokens, valid CSS color/shadow values, and deterministic gradients for every gradient-capable surface. The chaos level (0..1, surfaced as the slider) scales solid and per-corner hue/saturation divergence, from subtle directional shading at 0 to deliberately clashing gradients and a heading glow at high chaos. A random theme is never written to `preferences/colorSchemes` until the user explicitly saves it with a name, so the persisted selection never points at the transient `random-theme` id. Because `ColorSchemeService` is a scoped (per-app) service, the pending random theme survives navigation between pages within a session.
+The random theme is generated as a palette around a random base hue with light/dark base, contrasting text tokens, valid CSS color/shadow values, and deterministic gradients for every gradient-capable surface. The chaos level (0..1, surfaced as the slider) scales solid and per-corner hue/saturation divergence, from subtle directional shading at 0 to deliberately clashing gradients and a heading glow at high chaos. It also relaxes readability guards: calm and moderate themes enforce stronger contrast for card/body text, shell text, and primary/secondary filled-button labels across generated gradient stops, while high chaos allows wilder combinations without dropping button labels to same-luminance collapse except at the extreme Madness end. A random theme is never written to `preferences/colorSchemes` until the user explicitly saves it with a name, so the persisted selection never points at the transient `random-theme` id. Because `ColorSchemeService` is a scoped (per-app) service, the pending random theme survives navigation between pages within a session.
 
 User-created custom schemes are stored only in user data. Built-in schemes are not stored as editable records and cannot be deleted.
 
@@ -1681,7 +1681,7 @@ Test:
 - color-scheme cross-device merge unions custom schemes by `id` with newer `updatedAtUtc` winning, and `selectedSchemeId` follows the side with the newer `selectedAtUtc`;
 - the editor card is shown directly when the advanced panel is open (no "Create Custom Copy" intermediate), a built-in active scheme opens as an unsaved draft, and pasting applies a live preview that Cancel reverts to the previously applied scheme;
 - Settings renders scheme controls and saves custom scheme preferences;
-- a generated random theme passes token validation across many seeds at both low and maximum chaos;
+- a generated random theme passes token validation across many seeds at low, moderate, and maximum chaos, with direct contrast checks for calm/moderate button labels and card text;
 - random preset selection excludes the active scheme and the transient random id;
 - the panel exposes random preset and random theme controls, generating a random theme does not persist the `random-theme` id, and saving a named random theme stores it as a custom scheme;
 - compact mode hides advanced controls behind a disclosure toggle but auto-reveals random-save controls, and a high-chaos theme remains saveable as a valid custom scheme.
