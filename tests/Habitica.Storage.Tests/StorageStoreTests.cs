@@ -16,6 +16,8 @@ public sealed class StorageStoreTests
         Assert.Contains(StorageKeys.TaskOrderPreferences, StorageKeys.PortableDataKeys);
         Assert.Equal("preferences/colorSchemes", StorageKeys.ColorSchemePreferences);
         Assert.Contains(StorageKeys.ColorSchemePreferences, StorageKeys.PortableDataKeys);
+        Assert.Equal("preferences/petsMountsPage", StorageKeys.PetsMountsViewPreferences);
+        Assert.DoesNotContain(StorageKeys.PetsMountsViewPreferences, StorageKeys.PortableDataKeys);
     }
 
     [Fact]

@@ -1760,7 +1760,7 @@ Navigation rules:
 
 ```text
 1. Hide the foldable feature drawer entirely when no authenticated session is active.
-2. Show `Dashboard`, `Tasks`, `Inventory`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` in the drawer once an authenticated session exists.
+2. Show `Dashboard`, `Tasks`, `Inventory`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` in the drawer once an authenticated session exists.
 3. Keep refresh disabled unless authenticated credentials are available for the current session.
 4. Surface active refresh or cloud sync state in the top bar without hiding cached page content.
 5. Surface the latest workflow error above route content.
@@ -1798,13 +1798,13 @@ Test:
 
 Current implementation:
 
-- `Sign In`, `Dashboard`, `Tasks`, `Inventory`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` routes;
+- `Sign In`, `Dashboard`, `Tasks`, `Inventory`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` routes;
 - `/` resolves after session initialization, sending authenticated sessions to Dashboard and unauthenticated sessions to Sign In;
 - saved local credentials are checked before the route body renders, avoiding a sign-in flash for returning authenticated users;
-- authenticated drawer order is `Dashboard`, `Tasks`, `Inventory`, `Party`, `Quests`, `Spells`, `Settings`, `Diagnostics`;
+- authenticated drawer order is `Dashboard`, `Tasks`, `Inventory`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, `Diagnostics`;
 - top app bar with refresh action, active refresh count, cloud sync state, and latest sync timestamp fallback;
 - responsive drawer navigation shown only after authentication;
-- dashboard navigation cards for Tasks, Inventory, Party, Quests, and Spells;
+- dashboard navigation cards for Tasks, Inventory, Pets & Mounts, Party, Quests, and Spells;
 - stable Habitica web links for known web routes with no mobile deep links or custom schemes;
 - shared error banner;
 - cached identity summary in the app shell;
@@ -2036,8 +2036,6 @@ before/after battle stat deltas for equip candidates
 equipment optimizer goal selector and recommendation preview
 optimizer recommendation preset save controls
 owned gear counts
-bulk sell planner for eggs, food, and hatching potions
-bulk sell safe/unsafe explanation rows
 companion summary
 freshness banner
 empty-state messaging
@@ -2064,11 +2062,10 @@ Current requests:
 ```text
 GET /content?language=en
 POST /user/equip/equipped/:key
-POST /user/sell/:type/:key
 GET /user
 ```
 
-After every successful equip or sell mutation, refresh `/user` and save the refreshed snapshot before updating visible equipped or inventory state.
+After every successful equip mutation, refresh `/user` and save the refreshed snapshot before updating visible equipped state.
 
 ### Algorithm / rules
 
@@ -2100,11 +2097,7 @@ Current view-model rules:
 23. Score one-handed weapon plus shield against two-handed weapon as a pair and clear the shield when the two-handed recommendation wins.
 24. Let users equip optimizer recommendations through the same sequential slot equip flow used by presets.
 25. Let users save optimizer recommendations as local battle presets with explicit names.
-26. Snapshot eggs, food, and hatching potion counts by key in addition to aggregate counts.
-27. The bulk sell planner only plans Habitica-supported sell categories: eggs, food, and hatching potions.
-28. Bulk sell planning keeps the configured keep count, marks surplus as safe, marks at-or-below-threshold items unsafe, and explains every row.
-29. Bulk sell execution requires an explicit confirmation after preview and sells only safe surplus items.
-30. Each sell action validates cached ownership, executes the configured count sequentially with request pacing, refreshes `/user`, writes diagnostics, and leaves cached data visible on failure.
+26. Snapshot eggs, food, hatching potion, pet, and mount ownership by key in addition to aggregate counts.
 ```
 
 Equip action rules:
@@ -2139,14 +2132,12 @@ Show explicit states for:
 - missing owned gear for equip targets;
 - unequipped-slot marker keys such as `back_base_0`;
 - missing authenticated credentials for mutating actions.
-- bulk sell count greater than the cached owned count;
-- unsupported inventory categories for sell planning.
 
 ### Error handling
 
 Show cached inventory/equipment data even when a previous refresh attempt failed.
 
-Equip and bulk sell failures leave cached state visible, write an `Inventory` diagnostics log entry, and show snackbar feedback. Partial bulk sell failures report completed/requested counts.
+Equip failures leave cached state visible, write an `Inventory` diagnostics log entry, and show snackbar feedback.
 
 ### Security / privacy
 
@@ -2164,8 +2155,6 @@ Test:
 - before/after battle stat deltas;
 - optimizer goal recommendation and two-handed handling;
 - optimizer equip/save actions;
-- bulk sell preview and confirmation;
-- bulk sell session refresh/logging;
 - local per-user preset storage and duplicate-name validation;
 - stable preset ids and preset rename;
 - preset removal;
@@ -2209,6 +2198,67 @@ Next:
 Waiting:
 
 - Macro execution remains out of scope; inventory presets are stored with stable ids so future Macros can reference them.
+
+## 15.1 Pets and mounts workspace
+
+Status: implemented
+Owner module: `Habitica.Domain.User`, `Habitica.Rules.Pets`, `Habitica.Api`, `Habitica.Storage`, and `Habitica.WebApp.Pages.PetsMountsPage`
+Application entry point: `Habitica.WebApp.Pages.PetsMountsPage`
+Primary Habitica data: cached eggs, food, hatching potions, pets, mounts, current pet, and current mount
+Mutates Habitica state: yes for hatch, feed, fast equip, and confirmed bulk sell actions
+Requires confirmation: yes for bulk sell; no for hatch, feed, or equip
+Offline behavior: collection browsing, search, missing-companion hints, feed planning, and bulk sell preview remain available from the local snapshot
+Rate-limit sensitivity: medium for feed queues and high for bulk sell
+
+### Goal
+
+Provide a dedicated companion workspace without crowding the equipment explorer. The page uses checked-in Habitica stable catalog keys, groups large collections behind persistent local folds, surfaces missing hatching ingredients from cached inventory only, and moves the existing bulk sell planner out of Inventory.
+
+### Local storage
+
+```text
+preferences/petsMountsPage
+```
+
+Fold preferences are browser-local UI state. They are intentionally excluded from portable exports and Cloudflare app-data sync. Per-pet and per-mount ownership maps stay in the local snapshot but are removed from the Cloudflare user-profile section before upload.
+
+### API interaction
+
+```text
+POST /user/feed/:pet/:food?amount=:amount
+POST /user/equip/pet/:key
+POST /user/equip/mount/:key
+POST /user/hatch/:egg/:hatchingPotion
+POST /user/sell/:type/:key
+GET /user
+```
+
+### Algorithm / rules
+
+```text
+1. Read per-key eggs, food, hatching potions, pets, and mounts from the cached user snapshot.
+2. Group checked-in pet and mount catalog entries into base, magic-potion, quest, premium, and wacky collections; keep unknown owned special entries visible in a fallback group.
+3. Persist fold state locally and expand matching groups while search is active.
+4. Derive ready-to-hatch and missing-ingredient hints only from the cached inventory plus checked-in catalog.
+5. Sort available food for the selected pet as favorite potion-target food, generic food, then non-matching food.
+6. Preview feed queues before sending them. Execute queue requests sequentially and stop on the first failure.
+7. Validate cached ownership before hatch, feed, fast equip, or bulk sell mutations.
+8. Refresh `/user`, save the refreshed snapshot, and write `Inventory` diagnostics after companion mutations.
+9. Keep bulk sell planning limited to eggs, food, and hatching potions. Preserve the keep-count preview and explicit confirmation flow.
+```
+
+### Tests
+
+Test:
+
+- empty and grouped collection rendering;
+- local-only fold persistence;
+- search across companion and potion keys/names;
+- missing ingredient and ready-to-hatch states;
+- favorite/generic/non-matching food ordering;
+- feed preview and sequential failure handling;
+- fast equip and hatch dispatch;
+- bulk sell planner relocation and Inventory removal.
 
 ## 16. Party explorer
 

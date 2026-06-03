@@ -127,7 +127,9 @@ public sealed record InventorySnapshot(
     IReadOnlyDictionary<string, int>? OwnedQuestScrolls = null,
     IReadOnlyDictionary<string, int>? OwnedEggs = null,
     IReadOnlyDictionary<string, int>? OwnedFood = null,
-    IReadOnlyDictionary<string, int>? OwnedHatchingPotions = null)
+    IReadOnlyDictionary<string, int>? OwnedHatchingPotions = null,
+    IReadOnlyDictionary<string, int>? OwnedPets = null,
+    IReadOnlyDictionary<string, bool>? OwnedMounts = null)
 {
     public IReadOnlyDictionary<string, int> QuestScrolls => OwnedQuestScrolls ?? EmptyQuestScrolls;
 
@@ -137,12 +139,21 @@ public sealed record InventorySnapshot(
 
     public IReadOnlyDictionary<string, int> HatchingPotions => OwnedHatchingPotions ?? EmptyInventoryItems;
 
+    public IReadOnlyDictionary<string, int> Pets => OwnedPets ?? EmptyInventoryItems;
+
+    public IReadOnlyDictionary<string, bool> Mounts => OwnedMounts ?? EmptyMounts;
+
     private static readonly IReadOnlyDictionary<string, int> EmptyQuestScrolls =
         new Dictionary<string, int>(StringComparer.Ordinal);
 
     private static readonly IReadOnlyDictionary<string, int> EmptyInventoryItems =
         new Dictionary<string, int>(StringComparer.Ordinal);
+
+    private static readonly IReadOnlyDictionary<string, bool> EmptyMounts =
+        new Dictionary<string, bool>(StringComparer.Ordinal);
 }
+
+public sealed record PetFeedQueueItem(string PetKey, string FoodKey, int Amount);
 
 public enum InventorySellItemType
 {

@@ -245,6 +245,10 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(3, snapshot.Inventory.HatchingPotions["Base"]);
         Assert.Equal(1, snapshot.Inventory.OwnedPetCount);
         Assert.Equal(1, snapshot.Inventory.OwnedMountCount);
+        Assert.Equal(5, snapshot.Inventory.Pets["Wolf-Base"]);
+        Assert.DoesNotContain("TigerCub-Base", snapshot.Inventory.Pets);
+        Assert.True(snapshot.Inventory.Mounts["Wolf-Base"]);
+        Assert.False(snapshot.Inventory.Mounts["TigerCub-Base"]);
         Assert.Equal(DateTimeOffset.Parse("2026-04-24T08:00:00.000Z"), snapshot.LastCronUtc);
         Assert.Equal(4, snapshot.DayStartHour);
         Assert.Equal(-420, snapshot.TimezoneOffsetMinutes);
@@ -379,6 +383,37 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
         Assert.Equal("https://habitica.com/api/v3/user/sell/food/Saddle", capturedRequest.RequestUri!.ToString());
         Assert.Null(capturedRequest.Content);
+    }
+
+    [Fact]
+    public async Task Companion_mutations_send_documented_requests()
+    {
+        var requests = new List<HttpRequestMessage>();
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            requests.Add(request);
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+        var credentials = new HabiticaCredentials("user-id", "api-token");
+
+        await client.FeedPetAsync(credentials, "Wolf-Base", "Meat", 3, CancellationToken.None);
+        await client.EquipPetAsync(credentials, "Wolf-Base", CancellationToken.None);
+        await client.EquipMountAsync(credentials, "Wolf-Base", CancellationToken.None);
+        await client.HatchPetAsync(credentials, "Wolf", "Base", CancellationToken.None);
+
+        Assert.Equal(
+            new[]
+            {
+                "https://habitica.com/api/v3/user/feed/Wolf-Base/Meat?amount=3",
+                "https://habitica.com/api/v3/user/equip/pet/Wolf-Base",
+                "https://habitica.com/api/v3/user/equip/mount/Wolf-Base",
+                "https://habitica.com/api/v3/user/hatch/Wolf/Base"
+            },
+            requests.Select(static request => request.RequestUri!.ToString()));
     }
 
     [Fact]

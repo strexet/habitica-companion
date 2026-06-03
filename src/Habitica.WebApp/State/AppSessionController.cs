@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Habitica.Application.Auth;
 using Habitica.Application.Diagnostics;
 using Habitica.Application.Inventory;
@@ -245,6 +246,7 @@ public sealed class AppSessionController : IAppSessionController
             "/tasks" => new[] { RefreshDomain.Tasks, RefreshDomain.UserProfile },
             "/party" or "/quests" => new[] { RefreshDomain.Party, RefreshDomain.UserProfile, RefreshDomain.GearCatalog },
             "/inventory" => new[] { RefreshDomain.UserProfile, RefreshDomain.GearCatalog },
+            "/pets-mounts" => new[] { RefreshDomain.UserProfile },
             "/spells" => new[] { RefreshDomain.UserProfile, RefreshDomain.Tasks, RefreshDomain.GearCatalog },
             _ => new[] { RefreshDomain.UserProfile, RefreshDomain.Tasks }
         };
@@ -2329,6 +2331,138 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    public async Task<InventoryActionResult> FeedPetAsync(
+        IReadOnlyList<PetFeedQueueItem> queue,
+        CancellationToken cancellationToken = default)
+    {
+        var validation = await ValidatePetsMountsMutationAsync("pets-feed", cancellationToken);
+        if (validation.Result is not null)
+        {
+            return validation.Result;
+        }
+
+        if (queue.Count == 0)
+        {
+            return await FailInventoryActionAsync("pets-feed", "Add at least one food item before feeding.", cancellationToken);
+        }
+
+        var safeQueue = queue
+            .Select(static item => item with { Amount = Math.Clamp(item.Amount, 1, 99) })
+            .ToArray();
+        foreach (var item in safeQueue)
+        {
+            if (!validation.Snapshot!.Inventory.Pets.ContainsKey(item.PetKey))
+            {
+                return await FailInventoryActionAsync("pets-feed", $"Cannot feed {item.PetKey} because it is not an owned pet in the cached snapshot.", cancellationToken);
+            }
+        }
+
+        foreach (var group in safeQueue.GroupBy(static item => item.FoodKey, StringComparer.Ordinal))
+        {
+            var requested = group.Sum(static item => item.Amount);
+            var owned = validation.Snapshot!.Inventory.Food.GetValueOrDefault(group.Key);
+            if (requested > owned)
+            {
+                return await FailInventoryActionAsync("pets-feed", $"Cached inventory only has {owned} {group.Key} food item(s) available.", cancellationToken);
+            }
+        }
+
+        return await RunPetsMountsMutationAsync(
+            "pets-feed",
+            $"Fed {safeQueue.Length} queued food item(s).",
+            validation.Credentials!,
+            safeQueue.Select(item => (Func<Task>)(() => _habiticaSyncClient.FeedPetAsync(
+                validation.Credentials!,
+                item.PetKey,
+                item.FoodKey,
+                item.Amount,
+                cancellationToken))).ToArray(),
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["queueLength"] = safeQueue.Length.ToString(CultureInfo.InvariantCulture),
+                ["foodAmount"] = safeQueue.Sum(static item => item.Amount).ToString(CultureInfo.InvariantCulture)
+            },
+            cancellationToken);
+    }
+
+    public async Task<InventoryActionResult> EquipPetAsync(string key, CancellationToken cancellationToken = default)
+    {
+        var validation = await ValidatePetsMountsMutationAsync("pets-equip", cancellationToken);
+        if (validation.Result is not null)
+        {
+            return validation.Result;
+        }
+
+        if (!validation.Snapshot!.Inventory.Pets.ContainsKey(key))
+        {
+            return await FailInventoryActionAsync("pets-equip", $"Cannot equip {key} because it is not an owned pet in the cached snapshot.", cancellationToken);
+        }
+
+        return await RunPetsMountsMutationAsync(
+            "pets-equip",
+            $"Pet changed to {PetsMountsCatalog.ToReadableName(key)}.",
+            validation.Credentials!,
+            [() => _habiticaSyncClient.EquipPetAsync(validation.Credentials!, key, cancellationToken)],
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["petKey"] = key },
+            cancellationToken);
+    }
+
+    public async Task<InventoryActionResult> EquipMountAsync(string key, CancellationToken cancellationToken = default)
+    {
+        var validation = await ValidatePetsMountsMutationAsync("mounts-equip", cancellationToken);
+        if (validation.Result is not null)
+        {
+            return validation.Result;
+        }
+
+        if (validation.Snapshot!.Inventory.Mounts.GetValueOrDefault(key) != true)
+        {
+            return await FailInventoryActionAsync("mounts-equip", $"Cannot equip {key} because it is not an owned mount in the cached snapshot.", cancellationToken);
+        }
+
+        return await RunPetsMountsMutationAsync(
+            "mounts-equip",
+            $"Mount changed to {PetsMountsCatalog.ToReadableName(key)}.",
+            validation.Credentials!,
+            [() => _habiticaSyncClient.EquipMountAsync(validation.Credentials!, key, cancellationToken)],
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["mountKey"] = key },
+            cancellationToken);
+    }
+
+    public async Task<InventoryActionResult> HatchPetAsync(
+        string eggKey,
+        string hatchingPotionKey,
+        CancellationToken cancellationToken = default)
+    {
+        var validation = await ValidatePetsMountsMutationAsync("pets-hatch", cancellationToken);
+        if (validation.Result is not null)
+        {
+            return validation.Result;
+        }
+
+        if (validation.Snapshot!.Inventory.Eggs.GetValueOrDefault(eggKey) <= 0)
+        {
+            return await FailInventoryActionAsync("pets-hatch", $"You need egg {eggKey} before hatching this pet.", cancellationToken);
+        }
+
+        if (validation.Snapshot.Inventory.HatchingPotions.GetValueOrDefault(hatchingPotionKey) <= 0)
+        {
+            return await FailInventoryActionAsync("pets-hatch", $"You need potion {hatchingPotionKey} before hatching this pet.", cancellationToken);
+        }
+
+        return await RunPetsMountsMutationAsync(
+            "pets-hatch",
+            $"Hatched {PetsMountsCatalog.ToReadableName($"{eggKey}-{hatchingPotionKey}")}.",
+            validation.Credentials!,
+            [() => _habiticaSyncClient.HatchPetAsync(validation.Credentials!, eggKey, hatchingPotionKey, cancellationToken)],
+            new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["eggKey"] = eggKey,
+                ["hatchingPotionKey"] = hatchingPotionKey
+            },
+            cancellationToken);
+    }
+
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         _currentCredentials = null;
@@ -2360,6 +2494,7 @@ public sealed class AppSessionController : IAppSessionController
         await _taskSnapshotStore.ClearAsync(cancellationToken);
         await _userSnapshotStore.ClearAsync(cancellationToken);
         await _localUserDataPortabilityService.ClearSectionAsync(StorageKeys.TaskOrderPreferences, cancellationToken);
+        await _localUserDataPortabilityService.ClearSectionAsync(StorageKeys.PetsMountsViewPreferences, cancellationToken);
 
         SetState(SessionViewModel.Empty);
     }
@@ -2895,7 +3030,8 @@ public sealed class AppSessionController : IAppSessionController
                 continue;
             }
 
-            var payloadBytes = System.Text.Encoding.UTF8.GetByteCount(record.JsonText);
+            var payloadJson = PrepareCloudSyncPayload(section, record.JsonText);
+            var payloadBytes = System.Text.Encoding.UTF8.GetByteCount(payloadJson);
             if (payloadBytes > CloudSyncSectionMapping.MaxSectionPayloadBytes)
             {
                 await _diagnosticsLogWriter.WriteAsync(
@@ -2930,7 +3066,7 @@ public sealed class AppSessionController : IAppSessionController
             var uploadResult = await _remoteUserDataSyncProvider.UploadSectionAsync(
                 credentials,
                 kvSuffix,
-                record.JsonText,
+                payloadJson,
                 cancellationToken);
 
             sectionResults.Add(new CloudSyncSectionResult(
@@ -2977,6 +3113,25 @@ public sealed class AppSessionController : IAppSessionController
             cancellationToken);
 
         return new CloudSyncUploadReport(sectionResults, mergedRemoteData, succeeded, failed);
+    }
+
+    private static string PrepareCloudSyncPayload(CloudSyncSection section, string jsonText)
+    {
+        if (section != CloudSyncSection.UserProfile)
+        {
+            return jsonText;
+        }
+
+        var root = JsonNode.Parse(jsonText)?.AsObject();
+        var inventory = root?["inventory"]?.AsObject();
+        if (inventory is null)
+        {
+            return jsonText;
+        }
+
+        inventory.Remove("ownedPets");
+        inventory.Remove("ownedMounts");
+        return root!.ToJsonString(JsonOptions);
     }
 
     private Task WriteCloudSyncSectionDiagnosticsAsync(
@@ -4147,6 +4302,82 @@ public sealed class AppSessionController : IAppSessionController
         }
 
         return new InventoryMutationValidation(credentials, State.UserSnapshot, null);
+    }
+
+    private async Task<InventoryMutationValidation> ValidatePetsMountsMutationAsync(
+        string operation,
+        CancellationToken cancellationToken)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return new InventoryMutationValidation(null, null, await FailInventoryActionAsync(operation, "Sign in before changing pets or mounts.", cancellationToken));
+        }
+
+        if (State.UserSnapshot is null || State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return new InventoryMutationValidation(credentials, State.UserSnapshot, await FailInventoryActionAsync(operation, "Refresh account data before changing pets or mounts.", cancellationToken));
+        }
+
+        return new InventoryMutationValidation(credentials, State.UserSnapshot, null);
+    }
+
+    private async Task<InventoryActionResult> RunPetsMountsMutationAsync(
+        string operation,
+        string successMessage,
+        HabiticaCredentials credentials,
+        IReadOnlyList<Func<Task>> actions,
+        Dictionary<string, string> metadata,
+        CancellationToken cancellationToken)
+    {
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        var completed = 0;
+        try
+        {
+            foreach (var action in actions)
+            {
+                await action();
+                completed++;
+                await DelayBetweenHabiticaRequestsAsync(cancellationToken);
+            }
+
+            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
+            metadata["completed"] = completed.ToString(CultureInfo.InvariantCulture);
+            metadata["requested"] = actions.Count.ToString(CultureInfo.InvariantCulture);
+            metadata["requestCount"] = (completed + 1).ToString(CultureInfo.InvariantCulture);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                operation,
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                successMessage,
+                metadata,
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+            return InventoryActionResult.Success(successMessage);
+        }
+        catch (Exception exception)
+        {
+            metadata["completed"] = completed.ToString(CultureInfo.InvariantCulture);
+            metadata["requested"] = actions.Count.ToString(CultureInfo.InvariantCulture);
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                operation,
+                DiagnosticsSeverity.Error,
+                DiagnosticsMode.LiveMutation,
+                exception.Message,
+                metadata,
+                cancellationToken);
+            return InventoryActionResult.Failure(completed > 0
+                ? $"{exception.Message} Completed {completed} of {actions.Count} queued action(s)."
+                : exception.Message);
+        }
     }
 
     private async Task<InventoryActionResult> FailInventoryActionAsync(

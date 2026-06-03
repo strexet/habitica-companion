@@ -14,6 +14,7 @@ public static class StorageKeys
     public const string TaskOrderPreferences = "preferences/taskOrder";
     public const string ColorSchemePreferences = "preferences/colorSchemes";
     public const string SpellCronWarningSuppression = "preferences/spells/cronWarningSuppression";
+    public const string PetsMountsViewPreferences = "preferences/petsMountsPage";
 
     public static IReadOnlyList<string> PortableDataKeys { get; } =
         new[]
@@ -32,3 +33,6 @@ public static class StorageKeys
 
 public sealed record TaskOrderPreferences(
     IReadOnlyDictionary<string, string[]> OrdersByType);
+
+public sealed record PetsMountsViewPreferences(
+    IReadOnlyDictionary<string, bool> FoldedGroups);

@@ -259,7 +259,7 @@ Files: `src/Habitica.WebApp/Pages/InventoryPage.razor`
 Current pattern:
 
 - Summary cards, battle loadout, preset save/restore, best-in-category strip, collapsible other items, stat-bearing accessory groups, and folded cosmetic/no-stat groups.
-- Equipment optimizer with goal selector, before/after stat deltas, recommendation equip/save actions, and a bulk sell planner for supported item categories.
+- Equipment optimizer with goal selector, before/after stat deltas, and recommendation equip/save actions.
 - Responsive `auto-fit` grids and `overflow-wrap` for long gear names.
 
 What works:
@@ -277,9 +277,32 @@ Drift:
 Improvement:
 
 - Keep before/after stat deltas close to equip actions and optimizer recommendations.
-- Keep bulk sell as a preview-and-confirm workflow with safe/unsafe explanations; do not hide the stale/fresh account data requirement.
 - Avoid duplicated slot/class text inside the same gear card.
 - Consider a compact comparison drawer for selected gear rather than expanding every item.
+
+### Pets And Mounts
+
+Files: `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+
+Current pattern:
+
+- Dedicated companion workspace with current pet/mount summary, collection search, foldable base/magic-potion/quest/premium/wacky/special groups, and a separate hatching-potion group.
+- Large collection groups are folded by default except the base collection and hatching potions. Fold choices persist only in local browser storage; search temporarily expands groups to show matches.
+- Owned pet and mount cards keep official Habitica art in fixed identity slots and place fast-equip controls beside the affected companion.
+- Missing pet cards show cached-inventory hatch readiness or the specific missing egg and/or potion. Group hints summarize cached hatch availability without live price or gem-cost claims.
+- Feed planning uses a selected pet, food dropdown ordered by favorite/generic/non-matching food, queue preview, and explicit queue execution.
+- The bulk sell planner lives at the bottom with its existing keep-count preview and confirmation flow.
+
+What works:
+
+- Companion collection management no longer competes with gear optimization for space.
+- Default folds keep large quest and premium catalogs usable on phone widths.
+- Missing-state copy remains local and auditable because it comes only from the snapshot and checked-in catalog.
+
+Improvement:
+
+- Keep special-event companions visible through the fallback group when the checked-in catalog does not describe their hatch path.
+- Keep release-pet and release-mount actions out of this page until a separately reviewed destructive flow exists.
 
 ### Party And Quests
 

@@ -184,6 +184,46 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task PushCloudSyncAsync_redacts_pet_and_mount_maps_from_user_profile_section()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var remoteSync = new FakeRemoteUserDataSyncProvider();
+        var userSnapshot = CreateUserSnapshot() with
+        {
+            Inventory = CreateUserSnapshot().Inventory with
+            {
+                OwnedPets = new Dictionary<string, int>(StringComparer.Ordinal)
+                {
+                    ["Wolf-Base"] = 5,
+                    ["Tiger-Base"] = -1
+                },
+                OwnedMounts = new Dictionary<string, bool>(StringComparer.Ordinal)
+                {
+                    ["Wolf-Base"] = true,
+                    ["Tiger-Base"] = false
+                }
+            }
+        };
+        var syncClient = new FakeHabiticaSyncClient(userSnapshot, CreateTaskSnapshot(), CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient, remoteUserDataSyncProvider: remoteSync);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        remoteSync.UploadedSections.Clear();
+
+        await controller.PushCloudSyncAsync();
+
+        var userProfileKey = CloudSyncSectionMapping.KvSuffix(CloudSyncSection.UserProfile);
+        Assert.True(remoteSync.UploadedSections.TryGetValue(userProfileKey, out var uploadedJson));
+        Assert.Contains("\"inventory\"", uploadedJson);
+        Assert.DoesNotContain("ownedPets", uploadedJson);
+        Assert.DoesNotContain("ownedMounts", uploadedJson);
+    }
+
+    [Fact]
     public async Task SignInAsync_merges_remote_cloud_data_into_visible_state()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
@@ -725,6 +765,117 @@ public sealed class AppSessionControllerTests
             && entry.Metadata["itemKey"] == "Wolf"
             && entry.Metadata["completed"] == "3"
             && entry.Metadata["requestCount"] == "4");
+    }
+
+    [Fact]
+    public async Task FeedPetAsync_runs_queue_sequentially_refreshes_snapshot_and_writes_log()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Inventory = new InventorySnapshot(
+                    0,
+                    3,
+                    0,
+                    0,
+                    1,
+                    0,
+                    Array.Empty<string>(),
+                    OwnedFood: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 2, ["Saddle"] = 1 },
+                    OwnedPets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 0 })
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest { ApiToken = "api-token", UserId = "user-id" });
+        var userRefreshCountBeforeFeed = syncClient.GetUserSnapshotCalls;
+
+        var result = await controller.FeedPetAsync(
+        [
+            new("Wolf-Base", "Meat", 2),
+            new("Wolf-Base", "Saddle", 1)
+        ]);
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(new[] { ("Wolf-Base", "Meat", 2), ("Wolf-Base", "Saddle", 1) }, syncClient.FeedPetCalls);
+        Assert.Equal(userRefreshCountBeforeFeed + 1, syncClient.GetUserSnapshotCalls);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Inventory
+            && entry.Operation == "pets-feed"
+            && entry.Metadata["completed"] == "2"
+            && entry.Metadata["requestCount"] == "3");
+    }
+
+    [Fact]
+    public async Task FeedPetAsync_stops_queue_after_first_failure()
+    {
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Inventory = new InventorySnapshot(
+                    0,
+                    3,
+                    0,
+                    0,
+                    1,
+                    0,
+                    Array.Empty<string>(),
+                    OwnedFood: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 1, ["Milk"] = 1, ["Saddle"] = 1 },
+                    OwnedPets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 0 })
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot())
+        {
+            FeedPetFailureFoodKey = "Milk"
+        };
+        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), syncClient);
+        await controller.SignInAsync(new SignInRequest { ApiToken = "api-token", UserId = "user-id" });
+
+        var result = await controller.FeedPetAsync(
+        [
+            new("Wolf-Base", "Meat", 1),
+            new("Wolf-Base", "Milk", 1),
+            new("Wolf-Base", "Saddle", 1)
+        ]);
+
+        Assert.False(result.Succeeded);
+        Assert.Equal("Meat", Assert.Single(syncClient.FeedPetCalls).FoodKey);
+        Assert.Contains("Completed 1 of 3", result.Message);
+    }
+
+    [Fact]
+    public async Task EquipPetAsync_and_EquipMountAsync_refresh_after_owned_companion_changes()
+    {
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Inventory = new InventorySnapshot(
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    1,
+                    Array.Empty<string>(),
+                    OwnedPets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 0 },
+                    OwnedMounts: new Dictionary<string, bool>(StringComparer.Ordinal) { ["Wolf-Base"] = true })
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), syncClient);
+        await controller.SignInAsync(new SignInRequest { ApiToken = "api-token", UserId = "user-id" });
+        var refreshCalls = syncClient.GetUserSnapshotCalls;
+
+        Assert.True((await controller.EquipPetAsync("Wolf-Base")).Succeeded);
+        Assert.True((await controller.EquipMountAsync("Wolf-Base")).Succeeded);
+
+        Assert.Equal("Wolf-Base", Assert.Single(syncClient.EquipPetCalls));
+        Assert.Equal("Wolf-Base", Assert.Single(syncClient.EquipMountCalls));
+        Assert.Equal(refreshCalls + 2, syncClient.GetUserSnapshotCalls);
     }
 
     [Fact]
@@ -2328,6 +2479,45 @@ public sealed class AppSessionControllerTests
         public Task BuyHealthPotionAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             BuyHealthPotionCalls++;
+            return Task.CompletedTask;
+        }
+
+        public List<(string PetKey, string FoodKey, int Amount)> FeedPetCalls { get; } = new();
+
+        public List<string> EquipPetCalls { get; } = new();
+
+        public List<string> EquipMountCalls { get; } = new();
+
+        public List<(string EggKey, string HatchingPotionKey)> HatchPetCalls { get; } = new();
+
+        public string? FeedPetFailureFoodKey { get; init; }
+
+        public Task FeedPetAsync(HabiticaCredentials credentials, string petKey, string foodKey, int amount, CancellationToken cancellationToken)
+        {
+            if (string.Equals(foodKey, FeedPetFailureFoodKey, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException($"Feed failed for {foodKey}.");
+            }
+
+            FeedPetCalls.Add((petKey, foodKey, amount));
+            return Task.CompletedTask;
+        }
+
+        public Task EquipPetAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
+        {
+            EquipPetCalls.Add(key);
+            return Task.CompletedTask;
+        }
+
+        public Task EquipMountAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
+        {
+            EquipMountCalls.Add(key);
+            return Task.CompletedTask;
+        }
+
+        public Task HatchPetAsync(HabiticaCredentials credentials, string eggKey, string hatchingPotionKey, CancellationToken cancellationToken)
+        {
+            HatchPetCalls.Add((eggKey, hatchingPotionKey));
             return Task.CompletedTask;
         }
 

@@ -45,14 +45,16 @@ public sealed class AppNavMenuTests : BunitContext
 
         Assert.Contains("Diagnostics", cut.Markup);
         Assert.Contains("Quests", cut.Markup);
+        Assert.Contains("Pets &amp; Mounts", cut.Markup);
         Assert.Contains("Spells", cut.Markup);
         Assert.DoesNotContain("Live Tests", cut.Markup);
         Assert.DoesNotContain("Checks", cut.Markup);
         Assert.Contains("/diagnostics", cut.Markup);
         Assert.Contains("/quests", cut.Markup);
         Assert.Contains("/spells", cut.Markup);
+        Assert.Contains("/pets-mounts", cut.Markup);
 
-        AssertNavOrder(cut.Markup, "Dashboard", "Tasks", "Inventory", "Party", "Quests", "Spells", "Settings", "Diagnostics");
+        AssertNavOrder(cut.Markup, "Dashboard", "Tasks", "Inventory", "Pets &amp; Mounts", "Party", "Quests", "Spells", "Settings", "Diagnostics");
     }
 
     [Fact]

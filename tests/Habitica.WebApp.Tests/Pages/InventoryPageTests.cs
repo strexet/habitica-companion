@@ -359,7 +359,7 @@ public sealed class InventoryPageTests : BunitContext
     }
 
     [Fact]
-    public void Bulk_sell_planner_requires_confirmation_and_calls_sell_action()
+    public void Does_not_render_bulk_sell_planner_after_companion_page_relocation()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
@@ -395,15 +395,10 @@ public sealed class InventoryPageTests : BunitContext
 
         var cut = Render<InventoryPage>();
 
-        Assert.Contains("Safe item sell preview", cut.Markup);
-        Assert.Contains("owned 4", cut.Markup);
-
-        cut.Find("[data-testid='confirm-bulk-sell']").Click();
-        cut.Find("[data-testid='execute-bulk-sell']").Click();
-
-        Assert.Contains((InventorySellItemType.Egg, "Wolf", 3), controller.SellInventoryItemCalls);
-        Assert.Contains((InventorySellItemType.Food, "Meat", 1), controller.SellInventoryItemCalls);
-        Assert.DoesNotContain(controller.SellInventoryItemCalls, call => call.Type == InventorySellItemType.HatchingPotion);
+        Assert.DoesNotContain("Safe item sell preview", cut.Markup);
+        Assert.DoesNotContain("Bulk sell planner", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='confirm-bulk-sell']"));
+        Assert.Empty(controller.SellInventoryItemCalls);
     }
 
     [Fact]

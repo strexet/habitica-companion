@@ -289,6 +289,14 @@ For `/user/purchase/:type/:key`, the wiki notes that a `quantity` body parameter
 
 Do not expose destructive or premium-currency actions without explicit confirmation.
 
+For this app's Pets & Mounts page:
+
+- Feed queues call `POST /user/feed/:pet/:food?amount=<number>` sequentially, one queued row at a time.
+- Pet and mount fast-equip actions call `POST /user/equip/pet/:key` and `POST /user/equip/mount/:key`.
+- Hatch actions call `POST /user/hatch/:egg/:hatchingPotion`.
+- Refresh `/user` after hatch, feed-queue, or companion-equip mutations before updating cached companion state.
+- Keep per-key pet and mount ownership maps local. Redact them from encrypted Cloudflare user-profile uploads.
+
 For battle-gear swaps, this client uses:
 
 ```http

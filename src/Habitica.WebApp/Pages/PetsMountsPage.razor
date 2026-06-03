@@ -1,0 +1,622 @@
+@page "/pets-mounts"
+@implements IDisposable
+@using System.Globalization
+@using Habitica.Storage
+@inject IAppSessionController SessionController
+@inject IKeyValueStorage ViewStorage
+@inject ISnackbar Snackbar
+
+<PageTitle>Pets &amp; Mounts</PageTitle>
+
+<div class="inventory-shell">
+    <section class="card-surface dashboard-hero">
+        <div>
+            <p class="section-label">Pets and mounts</p>
+            <h1>Companion collection</h1>
+            <p class="panel-copy">
+                Review owned and missing companions, hatch ready pets, feed with preferred food first, equip quickly, and plan safe surplus sales.
+            </p>
+        </div>
+    </section>
+
+    @if (SessionController.State.UserSnapshot is null)
+    {
+        <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
+            No saved account data is available yet. Sign in or refresh before opening the companion collection.
+        </MudAlert>
+    }
+    else
+    {
+        var snapshot = SessionController.State.UserSnapshot;
+        var canMutate = SessionController.State.IsAuthenticated
+            && !SessionController.State.IsBusy
+            && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
+        var catalogPets = GetCatalogPets(snapshot.Inventory);
+        var catalogMounts = GetCatalogMounts(snapshot.Inventory);
+        var bulkSellPlan = GetBulkSellPlan(snapshot.Inventory).ToArray();
+        var safeBulkSellPlan = bulkSellPlan.Where(static item => item.IsSafe).ToArray();
+
+        <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
+            @GetFreshnessLabel(SessionController.State.UserFreshness)
+        </MudAlert>
+
+        <section class="inventory-summary-grid">
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Current pet</span>
+                <HabiticaImage Asset="@HabiticaImageAssetResolver.Pet(snapshot.CurrentPetKey, FormatName(snapshot.CurrentPetKey, "No pet"))" Loading="eager" />
+                <strong>@FormatName(snapshot.CurrentPetKey, "None")</strong>
+            </article>
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Current mount</span>
+                <HabiticaImage Asset="@HabiticaImageAssetResolver.Mount(snapshot.CurrentMountKey, FormatName(snapshot.CurrentMountKey, "No mount"))" Loading="eager" />
+                <strong>@FormatName(snapshot.CurrentMountKey, "None")</strong>
+            </article>
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Collection</span>
+                <strong>@snapshot.Inventory.Pets.Count pet(s)</strong>
+                <span class="dashboard-stat-note">@snapshot.Inventory.Mounts.Count(static item => item.Value) mount(s) owned</span>
+            </article>
+        </section>
+
+        <section class="card-surface inventory-group-card">
+            <div class="task-group-header">
+                <div>
+                    <p class="section-label">Collection search</p>
+                    <h2>Find companions and potions</h2>
+                </div>
+            </div>
+            <input class="app-input"
+                   placeholder="Search by name or key"
+                   value="@_searchText"
+                   @oninput="eventArgs => _searchText = eventArgs.Value?.ToString() ?? string.Empty"
+                   data-testid="pets-mounts-search" />
+        </section>
+
+        <section class="card-surface inventory-group-card">
+            <div class="task-group-header">
+                <div>
+                    <p class="section-label">Feed planner</p>
+                    <h2>Feed with best food</h2>
+                </div>
+                <span class="ui-pill count-pill">@_feedQueue.Count queued</span>
+            </div>
+
+            @if (_selectedPetKey is null)
+            {
+                <p class="panel-copy">Choose Plan feed on an owned pet card to start a queue.</p>
+            }
+            else
+            {
+                var selectedPet = GetCatalogPet(_selectedPetKey);
+                var foodOptions = selectedPet is null
+                    ? Array.Empty<PetFoodRecommendation>()
+                    : PetFeedRecommendationFactory.OrderAvailableFood(selectedPet, snapshot.Inventory.Food);
+                <div class="preset-save-row">
+                    <label class="field-row compact">
+                        <span>Pet</span>
+                        <strong>@FormatName(_selectedPetKey, _selectedPetKey)</strong>
+                    </label>
+                    <label class="field-row compact">
+                        <span>Food</span>
+                        <select class="app-input" value="@_selectedFoodKey" @onchange="eventArgs => _selectedFoodKey = eventArgs.Value?.ToString()" data-testid="feed-food-select">
+                            @foreach (var food in foodOptions)
+                            {
+                                <option value="@food.Key">@food.DisplayName (@FormatFoodPriority(food.Priority), owned @food.OwnedCount)</option>
+                            }
+                        </select>
+                    </label>
+                    <label class="field-row compact">
+                        <span>Amount</span>
+                        <input class="app-input" min="1" max="99" type="number" value="@_feedAmount" @onchange="eventArgs => SetFeedAmount(eventArgs.Value?.ToString())" />
+                    </label>
+                    <MudButton Color="Color.Primary"
+                               Disabled="@(foodOptions.Count == 0 || string.IsNullOrWhiteSpace(_selectedFoodKey))"
+                               OnClick="AddFeedQueueItem"
+                               Variant="Variant.Outlined"
+                               data-testid="add-feed-queue-item">
+                        Add food
+                    </MudButton>
+                </div>
+            }
+
+            @if (_feedQueue.Count > 0)
+            {
+                <div class="bulk-sell-list" data-testid="feed-dry-run-preview">
+                    @foreach (var item in _feedQueue)
+                    {
+                        <article class="bulk-sell-item">
+                            <strong>@FormatName(item.PetKey, item.PetKey)</strong>
+                            <span class="dashboard-stat-note">@FormatName(item.FoodKey, item.FoodKey) x @item.Amount</span>
+                        </article>
+                    }
+                </div>
+                <div class="action-row inventory-actions">
+                    <MudButton Color="Color.Primary"
+                               Disabled="@(!canMutate)"
+                               OnClick="ExecuteFeedQueueAsync"
+                               Variant="Variant.Filled"
+                               data-testid="execute-feed-queue">
+                        Feed queued items
+                    </MudButton>
+                    <MudButton OnClick="ClearFeedQueue" Variant="Variant.Text">Clear queue</MudButton>
+                </div>
+            }
+        </section>
+
+        @foreach (var group in PetsMountsCatalog.Groups)
+        {
+            var groupPets = catalogPets.Where(item => item.GroupKey == group.Key && MatchesSearch(item.Key, item.DisplayName)).ToArray();
+            var groupMounts = catalogMounts.Where(item => item.GroupKey == group.Key && MatchesSearch(item.Key, item.DisplayName)).ToArray();
+            var isFolded = IsGroupFolded(group.Key);
+            <section class="card-surface inventory-group-card" data-testid="@($"pets-mounts-group-{group.Key}")">
+                <div class="task-group-header">
+                    <div>
+                        <p class="section-label">Companion group</p>
+                        <h2>@group.DisplayName</h2>
+                    </div>
+                    <MudButton OnClick="@(() => ToggleGroupAsync(group.Key))" Variant="Variant.Text" data-testid="@($"toggle-pets-mounts-group-{group.Key}")">
+                        @(isFolded ? "Show group" : "Hide group")
+                    </MudButton>
+                </div>
+
+                @if (!isFolded)
+                {
+                    <p class="panel-copy">@BuildMarketHint(group.Key, catalogPets, snapshot.Inventory)</p>
+                    @if (groupPets.Length == 0 && groupMounts.Length == 0)
+                    {
+                        <p class="panel-copy">No matching catalog entries are available in this group.</p>
+                    }
+                    else
+                    {
+                        <div class="inventory-item-list">
+                            @foreach (var pet in groupPets)
+                            {
+                                var isOwned = snapshot.Inventory.Pets.ContainsKey(pet.Key);
+                                var hatchStatus = GetHatchStatus(pet, snapshot.Inventory);
+                                <article class="inventory-item-card" data-testid="@($"pet-card-{pet.Key}")">
+                                    <div class="habitica-item-identity">
+                                        <HabiticaImage Asset="@HabiticaImageAssetResolver.Pet(pet.Key, pet.DisplayName)" />
+                                        <div>
+                                            <strong>@pet.DisplayName</strong>
+                                            <span class="dashboard-stat-note">@pet.Key</span>
+                                            <span class="dashboard-stat-note">@(isOwned ? "Owned pet" : hatchStatus)</span>
+                                        </div>
+                                    </div>
+                                    <div class="action-row inventory-actions">
+                                        @if (isOwned)
+                                        {
+                                            <MudButton Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipPetAsync(pet.Key))" Variant="Variant.Outlined" data-testid="@($"equip-pet-{pet.Key}")">
+                                                @(string.Equals(snapshot.CurrentPetKey, pet.Key, StringComparison.Ordinal) ? "Equipped pet" : "Equip pet")
+                                            </MudButton>
+                                            <MudButton OnClick="@(() => SelectPetForFeed(pet.Key, snapshot.Inventory))" Variant="Variant.Text" data-testid="@($"select-feed-{pet.Key}")">
+                                                Plan feed
+                                            </MudButton>
+                                        }
+                                        else if (CanHatch(pet, snapshot.Inventory))
+                                        {
+                                            <MudButton Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => HatchPetAsync(pet))" Variant="Variant.Outlined" data-testid="@($"hatch-pet-{pet.Key}")">
+                                                Hatch pet
+                                            </MudButton>
+                                        }
+                                    </div>
+                                </article>
+                            }
+
+                            @foreach (var mount in groupMounts)
+                            {
+                                var isOwned = snapshot.Inventory.Mounts.GetValueOrDefault(mount.Key);
+                                <article class="inventory-item-card" data-testid="@($"mount-card-{mount.Key}")">
+                                    <div class="habitica-item-identity">
+                                        <HabiticaImage Asset="@HabiticaImageAssetResolver.Mount(mount.Key, mount.DisplayName)" />
+                                        <div>
+                                            <strong>@mount.DisplayName</strong>
+                                            <span class="dashboard-stat-note">@mount.Key</span>
+                                            <span class="dashboard-stat-note">@(isOwned ? "Owned mount" : "Missing mount")</span>
+                                        </div>
+                                    </div>
+                                    @if (isOwned)
+                                    {
+                                        <MudButton Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipMountAsync(mount.Key))" Variant="Variant.Outlined" data-testid="@($"equip-mount-{mount.Key}")">
+                                            @(string.Equals(snapshot.CurrentMountKey, mount.Key, StringComparison.Ordinal) ? "Equipped mount" : "Equip mount")
+                                        </MudButton>
+                                    }
+                                </article>
+                            }
+                        </div>
+                    }
+                }
+            </section>
+        }
+
+        <section class="card-surface inventory-group-card" data-testid="pets-mounts-group-hatching-potions">
+            <div class="task-group-header">
+                <div>
+                    <p class="section-label">Hatching potions</p>
+                    <h2>Potion inventory</h2>
+                </div>
+                <MudButton OnClick="ToggleHatchingPotionsAsync" Variant="Variant.Text" data-testid="toggle-pets-mounts-group-hatching-potions">
+                    @(IsGroupFolded("hatching-potions") ? "Show group" : "Hide group")
+                </MudButton>
+            </div>
+            @if (!IsGroupFolded("hatching-potions"))
+            {
+                <div class="inventory-item-list">
+                    @foreach (var potion in PetsMountsCatalog.HatchingPotions.Where(item => MatchesSearch(item.Key, item.DisplayName)))
+                    {
+                        <article class="inventory-item-card" data-testid="@($"hatching-potion-{potion.Key}")">
+                            <div class="habitica-item-identity">
+                                <HabiticaImage Asset="@HabiticaImageAssetResolver.HatchingPotion(potion.Key, potion.DisplayName)" />
+                                <div>
+                                    <strong>@potion.DisplayName</strong>
+                                    <span class="dashboard-stat-note">@potion.Key • owned @snapshot.Inventory.HatchingPotions.GetValueOrDefault(potion.Key)</span>
+                                </div>
+                            </div>
+                        </article>
+                    }
+                </div>
+            }
+        </section>
+
+        <section class="card-surface inventory-group-card bulk-sell-card">
+            <div class="task-group-header">
+                <div>
+                    <p class="section-label">Bulk sell planner</p>
+                    <h2>Safe item sell preview</h2>
+                </div>
+                <label class="field-row compact">
+                    <span>Keep count</span>
+                    <input class="app-input" min="0" max="99" type="number" value="@_bulkSellKeepCount" @onchange="eventArgs => SetBulkSellKeepCount(eventArgs.Value?.ToString())" data-testid="bulk-sell-keep-count" />
+                </label>
+            </div>
+
+            @if (bulkSellPlan.Length == 0)
+            {
+                <p class="panel-copy">No eggs, food, or hatching potions are available in the cached inventory snapshot.</p>
+            }
+            else
+            {
+                <div class="bulk-sell-list">
+                    @foreach (var item in bulkSellPlan)
+                    {
+                        <article class="@GetBulkSellItemClass(item)">
+                            <div>
+                                <strong>@FormatName(item.Key, item.Key)</strong>
+                                <span class="dashboard-stat-note">@FormatSellType(item.Type) • owned @item.OwnedCount • sell @item.SellCount</span>
+                            </div>
+                            <span class="dashboard-stat-note">@item.Explanation</span>
+                        </article>
+                    }
+                </div>
+            }
+
+            @if (_showBulkSellConfirmation)
+            {
+                <div class="preset-remove-confirm">
+                    <span>Sell @safeBulkSellPlan.Sum(static item => item.SellCount) planned item(s)?</span>
+                    <MudButton Color="Color.Error" Disabled="@(!canMutate || safeBulkSellPlan.Length == 0)" OnClick="@(() => SellBulkPlanAsync(safeBulkSellPlan))" Variant="Variant.Filled" data-testid="execute-bulk-sell">
+                        Sell planned items
+                    </MudButton>
+                    <MudButton OnClick="@(() => _showBulkSellConfirmation = false)" Variant="Variant.Text">Cancel</MudButton>
+                </div>
+            }
+            else
+            {
+                <MudButton Color="Color.Error" Disabled="@(!canMutate || safeBulkSellPlan.Length == 0)" OnClick="@(() => _showBulkSellConfirmation = true)" Variant="Variant.Outlined" data-testid="confirm-bulk-sell">
+                    Confirm bulk sell plan
+                </MudButton>
+            }
+        </section>
+    }
+</div>
+
+@code {
+    private readonly List<PetFeedQueueItem> _feedQueue = new();
+    private readonly Dictionary<string, bool> _foldedGroups = new(StringComparer.Ordinal);
+    private string _searchText = string.Empty;
+    private string? _selectedPetKey;
+    private string? _selectedFoodKey;
+    private int _feedAmount = 1;
+    private int _bulkSellKeepCount = 1;
+    private bool _showBulkSellConfirmation;
+
+    protected override void OnInitialized()
+    {
+        SessionController.Changed += HandleStateChanged;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var preferences = await ViewStorage.GetAsync<PetsMountsViewPreferences>(StorageKeys.PetsMountsViewPreferences, CancellationToken.None);
+        if (preferences is not null)
+        {
+            foreach (var pair in preferences.FoldedGroups)
+            {
+                _foldedGroups[pair.Key] = pair.Value;
+            }
+        }
+    }
+
+    private bool MatchesSearch(string key, string displayName)
+    {
+        return string.IsNullOrWhiteSpace(_searchText)
+            || key.Contains(_searchText, StringComparison.OrdinalIgnoreCase)
+            || displayName.Contains(_searchText, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool IsGroupFolded(string key)
+    {
+        return string.IsNullOrWhiteSpace(_searchText)
+            && (_foldedGroups.TryGetValue(key, out var folded) ? folded : key is not ("base" or "hatching-potions"));
+    }
+
+    private async Task ToggleGroupAsync(string key)
+    {
+        _foldedGroups[key] = !IsGroupFolded(key);
+        await ViewStorage.SetAsync(
+            StorageKeys.PetsMountsViewPreferences,
+            new PetsMountsViewPreferences(new Dictionary<string, bool>(_foldedGroups, StringComparer.Ordinal)),
+            CancellationToken.None);
+    }
+
+    private Task ToggleHatchingPotionsAsync()
+    {
+        return ToggleGroupAsync("hatching-potions");
+    }
+
+    private static PetCatalogItem[] GetCatalogPets(InventorySnapshot inventory)
+    {
+        return PetsMountsCatalog.Pets
+            .Concat(inventory.Pets.Keys
+                .Where(key => PetsMountsCatalog.FindPet(key) is null)
+                .Select(static key => new PetCatalogItem(key, FormatName(key, key), string.Empty, string.Empty, "special")))
+            .ToArray();
+    }
+
+    private static MountCatalogItem[] GetCatalogMounts(InventorySnapshot inventory)
+    {
+        return PetsMountsCatalog.Mounts
+            .Concat(inventory.Mounts.Keys
+                .Where(key => !PetsMountsCatalog.Mounts.Any(item => string.Equals(item.Key, key, StringComparison.Ordinal)))
+                .Select(static key => new MountCatalogItem(key, $"{FormatName(key, key)} mount", "special")))
+            .ToArray();
+    }
+
+    private static PetCatalogItem? GetCatalogPet(string key)
+    {
+        return PetsMountsCatalog.FindPet(key)
+            ?? new PetCatalogItem(key, FormatName(key, key), string.Empty, string.Empty, "special");
+    }
+
+    private void SelectPetForFeed(string key, InventorySnapshot inventory)
+    {
+        _selectedPetKey = key;
+        var pet = GetCatalogPet(key);
+        _selectedFoodKey = pet is null
+            ? null
+            : PetFeedRecommendationFactory.OrderAvailableFood(pet, inventory.Food).FirstOrDefault()?.Key;
+    }
+
+    private void SetFeedAmount(string? rawValue)
+    {
+        _feedAmount = int.TryParse(rawValue, out var parsed) ? Math.Clamp(parsed, 1, 99) : 1;
+    }
+
+    private void AddFeedQueueItem()
+    {
+        if (!string.IsNullOrWhiteSpace(_selectedPetKey) && !string.IsNullOrWhiteSpace(_selectedFoodKey))
+        {
+            _feedQueue.Add(new PetFeedQueueItem(_selectedPetKey, _selectedFoodKey, _feedAmount));
+        }
+    }
+
+    private void ClearFeedQueue()
+    {
+        _feedQueue.Clear();
+    }
+
+    private async Task ExecuteFeedQueueAsync()
+    {
+        var result = await SessionController.FeedPetAsync(_feedQueue.ToArray());
+        ShowFeedback(result);
+        if (result.Succeeded)
+        {
+            _feedQueue.Clear();
+        }
+    }
+
+    private async Task EquipPetAsync(string key)
+    {
+        ShowFeedback(await SessionController.EquipPetAsync(key));
+    }
+
+    private async Task EquipMountAsync(string key)
+    {
+        ShowFeedback(await SessionController.EquipMountAsync(key));
+    }
+
+    private async Task HatchPetAsync(PetCatalogItem pet)
+    {
+        ShowFeedback(await SessionController.HatchPetAsync(pet.EggKey, pet.HatchingPotionKey));
+    }
+
+    private static bool CanHatch(PetCatalogItem pet, InventorySnapshot inventory)
+    {
+        return !string.IsNullOrWhiteSpace(pet.EggKey)
+            && !string.IsNullOrWhiteSpace(pet.HatchingPotionKey)
+            && inventory.Eggs.GetValueOrDefault(pet.EggKey) > 0
+            && inventory.HatchingPotions.GetValueOrDefault(pet.HatchingPotionKey) > 0;
+    }
+
+    private static string GetHatchStatus(PetCatalogItem pet, InventorySnapshot inventory)
+    {
+        if (string.IsNullOrWhiteSpace(pet.EggKey) || string.IsNullOrWhiteSpace(pet.HatchingPotionKey))
+        {
+            return "Missing special pet";
+        }
+
+        var hasEgg = inventory.Eggs.GetValueOrDefault(pet.EggKey) > 0;
+        var hasPotion = inventory.HatchingPotions.GetValueOrDefault(pet.HatchingPotionKey) > 0;
+        return (hasEgg, hasPotion) switch
+        {
+            (true, true) => "Ready to hatch",
+            (false, true) => $"Need egg {pet.EggKey}",
+            (true, false) => $"Need potion {pet.HatchingPotionKey}",
+            _ => $"Need egg {pet.EggKey} and potion {pet.HatchingPotionKey}"
+        };
+    }
+
+    private static string BuildMarketHint(string groupKey, IReadOnlyList<PetCatalogItem> pets, InventorySnapshot inventory)
+    {
+        var missing = pets.Where(pet => pet.GroupKey == groupKey && !inventory.Pets.ContainsKey(pet.Key)).ToArray();
+        var readyCount = missing.Count(pet => CanHatch(pet, inventory));
+        if (readyCount > 0)
+        {
+            return $"Can hatch {readyCount} pet(s) with current inventory.";
+        }
+
+        return missing.FirstOrDefault() is { } pet
+            ? GetHatchStatus(pet, inventory)
+            : "No missing hatchable pets in this group.";
+    }
+
+    private async Task SellBulkPlanAsync(IReadOnlyList<BulkSellPlanItem> plan)
+    {
+        var soldCount = 0;
+        foreach (var item in plan.Where(static item => item.IsSafe && item.SellCount > 0))
+        {
+            var result = await SessionController.SellInventoryItemAsync(item.Type, item.Key, item.SellCount);
+            ShowFeedback(result);
+            if (!result.Succeeded)
+            {
+                _showBulkSellConfirmation = false;
+                return;
+            }
+
+            soldCount += item.SellCount;
+        }
+
+        _showBulkSellConfirmation = false;
+        if (soldCount > 0)
+        {
+            Snackbar.Add($"Sold {soldCount} planned item(s).", Severity.Success);
+        }
+    }
+
+    private IEnumerable<BulkSellPlanItem> GetBulkSellPlan(InventorySnapshot inventory)
+    {
+        foreach (var item in BuildBulkSellItems(InventorySellItemType.Egg, inventory.Eggs))
+        {
+            yield return item;
+        }
+
+        foreach (var item in BuildBulkSellItems(InventorySellItemType.Food, inventory.Food))
+        {
+            yield return item;
+        }
+
+        foreach (var item in BuildBulkSellItems(InventorySellItemType.HatchingPotion, inventory.HatchingPotions))
+        {
+            yield return item;
+        }
+    }
+
+    private IEnumerable<BulkSellPlanItem> BuildBulkSellItems(InventorySellItemType type, IReadOnlyDictionary<string, int> items)
+    {
+        foreach (var item in items.OrderBy(static item => item.Key, StringComparer.OrdinalIgnoreCase))
+        {
+            var sellCount = Math.Max(0, item.Value - _bulkSellKeepCount);
+            var isSafe = sellCount > 0;
+            yield return new BulkSellPlanItem(
+                type,
+                item.Key,
+                item.Value,
+                sellCount,
+                isSafe,
+                isSafe
+                    ? $"Safe by local rule: keep {_bulkSellKeepCount} cached item(s), sell only the surplus through Habitica's supported sell endpoint."
+                    : "Unsafe by local rule: cached count is at or below the keep threshold.");
+        }
+    }
+
+    private void SetBulkSellKeepCount(string? rawValue)
+    {
+        _bulkSellKeepCount = int.TryParse(rawValue, out var parsed) ? Math.Clamp(parsed, 0, 99) : 1;
+        _showBulkSellConfirmation = false;
+    }
+
+    private static string GetBulkSellItemClass(BulkSellPlanItem item)
+    {
+        return item.IsSafe ? "bulk-sell-item safe-sell-item" : "bulk-sell-item unsafe-sell-item";
+    }
+
+    private static string FormatSellType(InventorySellItemType type)
+    {
+        return type switch
+        {
+            InventorySellItemType.Egg => "Egg",
+            InventorySellItemType.Food => "Food",
+            InventorySellItemType.HatchingPotion => "Hatching potion",
+            _ => type.ToString()
+        };
+    }
+
+    private static string FormatFoodPriority(PetFoodRecommendationPriority priority)
+    {
+        return priority switch
+        {
+            PetFoodRecommendationPriority.Favorite => "favorite",
+            PetFoodRecommendationPriority.Generic => "generic",
+            _ => "other"
+        };
+    }
+
+    private static string FormatName(string? value, string emptyLabel)
+    {
+        return string.IsNullOrWhiteSpace(value) ? emptyLabel : PetsMountsCatalog.ToReadableName(value);
+    }
+
+    private static string GetFreshnessLabel(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => "Account data is up to date",
+            SnapshotFreshnessState.Stale => "Account data may need refresh",
+            SnapshotFreshnessState.Expired => "Account data needs refresh",
+            _ => "No saved account data"
+        };
+    }
+
+    private static Severity GetFreshnessSeverity(SnapshotFreshnessState freshnessState)
+    {
+        return freshnessState switch
+        {
+            SnapshotFreshnessState.Fresh => Severity.Success,
+            SnapshotFreshnessState.Stale => Severity.Warning,
+            SnapshotFreshnessState.Expired => Severity.Error,
+            _ => Severity.Info
+        };
+    }
+
+    private void ShowFeedback(InventoryActionResult result)
+    {
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private void HandleStateChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        SessionController.Changed -= HandleStateChanged;
+    }
+
+    private sealed record BulkSellPlanItem(
+        InventorySellItemType Type,
+        string Key,
+        int OwnedCount,
+        int SellCount,
+        bool IsSafe,
+        string Explanation);
+}

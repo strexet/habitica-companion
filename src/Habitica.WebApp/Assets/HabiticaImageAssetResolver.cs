@@ -71,14 +71,29 @@ public static class HabiticaImageAssetResolver
         return Resolve(HabiticaImageKind.Inventory, "egg", "Eggs", HabiticaImageSize.Small, "Pet_Egg_Wolf.png");
     }
 
+    public static HabiticaImageAsset Egg(string key, string? displayName = null)
+    {
+        return Resolve(HabiticaImageKind.Inventory, key, displayName, HabiticaImageSize.Small, $"Pet_Egg_{key}.png");
+    }
+
     public static HabiticaImageAsset FoodSummary()
     {
         return Resolve(HabiticaImageKind.Inventory, "food", "Food", HabiticaImageSize.Small, "Pet_Food_Meat.png");
     }
 
+    public static HabiticaImageAsset Food(string key, string? displayName = null)
+    {
+        return Resolve(HabiticaImageKind.Inventory, key, displayName, HabiticaImageSize.Small, $"Pet_Food_{key}.png");
+    }
+
     public static HabiticaImageAsset HatchingPotionSummary()
     {
         return Resolve(HabiticaImageKind.Inventory, "hatching-potion", "Hatching potions", HabiticaImageSize.Small, "Pet_HatchingPotion_Base.png");
+    }
+
+    public static HabiticaImageAsset HatchingPotion(string key, string? displayName = null)
+    {
+        return Resolve(HabiticaImageKind.Inventory, key, displayName, HabiticaImageSize.Small, $"Pet_HatchingPotion_{key}.png");
     }
 
     public static HabiticaImageAsset QuestScrollSummary()

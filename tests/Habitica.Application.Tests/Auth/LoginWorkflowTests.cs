@@ -148,6 +148,14 @@ public sealed class LoginWorkflowTests
             return Task.CompletedTask;
         }
 
+        public Task FeedPetAsync(HabiticaCredentials credentials, string petKey, string foodKey, int amount, CancellationToken cancellationToken) => Task.CompletedTask;
+
+        public Task EquipPetAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken) => Task.CompletedTask;
+
+        public Task EquipMountAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken) => Task.CompletedTask;
+
+        public Task HatchPetAsync(HabiticaCredentials credentials, string eggKey, string hatchingPotionKey, CancellationToken cancellationToken) => Task.CompletedTask;
+
         public Task SellInventoryItemAsync(
             HabiticaCredentials credentials,
             InventorySellItemType type,

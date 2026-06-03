@@ -44,6 +44,14 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<(InventorySellItemType Type, string Key, int Count)> SellInventoryItemCalls { get; } = new();
 
+    public List<PetFeedQueueItem[]> FeedPetCalls { get; } = new();
+
+    public List<string> EquipPetCalls { get; } = new();
+
+    public List<string> EquipMountCalls { get; } = new();
+
+    public List<(string EggKey, string HatchingPotionKey)> HatchPetCalls { get; } = new();
+
     public List<SpellCastRequest> CastSpellCalls { get; } = new();
 
     public List<StartNewDayRequest> StartNewDayRequests { get; } = new();
@@ -98,6 +106,9 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public PartyQuestActionResult InvitePartyQuestResult { get; set; } =
         PartyQuestActionResult.Success("Party invited to quest.");
+
+    public InventoryActionResult FeedPetResult { get; set; } =
+        InventoryActionResult.Success("Pets fed.");
 
     public Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
     {
@@ -194,6 +205,35 @@ internal sealed class FakeAppSessionController : IAppSessionController
     {
         SellInventoryItemCalls.Add((type, key, count));
         return Task.FromResult(InventoryActionResult.Success("Inventory items sold."));
+    }
+
+    public Task<InventoryActionResult> FeedPetAsync(
+        IReadOnlyList<PetFeedQueueItem> queue,
+        CancellationToken cancellationToken = default)
+    {
+        FeedPetCalls.Add(queue.ToArray());
+        return Task.FromResult(FeedPetResult);
+    }
+
+    public Task<InventoryActionResult> EquipPetAsync(string key, CancellationToken cancellationToken = default)
+    {
+        EquipPetCalls.Add(key);
+        return Task.FromResult(InventoryActionResult.Success("Pet equipped."));
+    }
+
+    public Task<InventoryActionResult> EquipMountAsync(string key, CancellationToken cancellationToken = default)
+    {
+        EquipMountCalls.Add(key);
+        return Task.FromResult(InventoryActionResult.Success("Mount equipped."));
+    }
+
+    public Task<InventoryActionResult> HatchPetAsync(
+        string eggKey,
+        string hatchingPotionKey,
+        CancellationToken cancellationToken = default)
+    {
+        HatchPetCalls.Add((eggKey, hatchingPotionKey));
+        return Task.FromResult(InventoryActionResult.Success("Pet hatched."));
     }
 
     public Task InitializeAsync(CancellationToken cancellationToken = default)

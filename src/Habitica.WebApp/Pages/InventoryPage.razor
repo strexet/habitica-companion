@@ -36,8 +36,6 @@
             snapshot,
             SessionController.State.GearCatalogSnapshot,
             _optimizationGoal);
-        var bulkSellPlan = GetBulkSellPlan(snapshot.Inventory).ToArray();
-        var safeBulkSellPlan = bulkSellPlan.Where(static item => item.IsSafe).ToArray();
         var canMutate = SessionController.State.IsAuthenticated
             && !SessionController.State.IsBusy
             && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
@@ -172,65 +170,6 @@
                 </div>
             </article>
 
-            <article class="card-surface inventory-group-card bulk-sell-card">
-                <div class="task-group-header">
-                    <div>
-                        <p class="section-label">Bulk sell planner</p>
-                        <h2>Safe item sell preview</h2>
-                    </div>
-                    <label class="field-row compact">
-                        <span>Keep count</span>
-                        <input class="app-input" min="0" max="99" type="number" value="@_bulkSellKeepCount" @onchange="eventArgs => SetBulkSellKeepCount(eventArgs.Value?.ToString())" data-testid="bulk-sell-keep-count" />
-                    </label>
-                </div>
-
-                @if (bulkSellPlan.Length == 0)
-                {
-                    <p class="panel-copy">No eggs, food, or hatching potions are available in the cached inventory snapshot.</p>
-                }
-                else
-                {
-                    <div class="bulk-sell-list">
-                        @foreach (var item in bulkSellPlan)
-                        {
-                            <article class="@GetBulkSellItemClass(item)">
-                                <div>
-                                    <strong>@FormatReadableName(item.Key, item.Key)</strong>
-                                    <span class="dashboard-stat-note">@FormatSellType(item.Type) • owned @item.OwnedCount • sell @item.SellCount</span>
-                                </div>
-                                <span class="dashboard-stat-note">@item.Explanation</span>
-                            </article>
-                        }
-                    </div>
-                }
-
-                @if (_showBulkSellConfirmation)
-                {
-                    <div class="preset-remove-confirm">
-                        <span>Sell @safeBulkSellPlan.Sum(static item => item.SellCount) planned item(s)?</span>
-                        <MudButton Color="Color.Error"
-                                   Disabled="@(!canMutate || safeBulkSellPlan.Length == 0)"
-                                   OnClick="@(() => SellBulkPlanAsync(safeBulkSellPlan))"
-                                   Variant="Variant.Filled"
-                                   data-testid="execute-bulk-sell">
-                            Sell planned items
-                        </MudButton>
-                        <MudButton OnClick="@(() => _showBulkSellConfirmation = false)" Variant="Variant.Text">
-                            Cancel
-                        </MudButton>
-                    </div>
-                }
-                else
-                {
-                    <MudButton Color="Color.Error"
-                               Disabled="@(!canMutate || safeBulkSellPlan.Length == 0)"
-                               OnClick="@(() => _showBulkSellConfirmation = true)"
-                               Variant="Variant.Outlined"
-                               data-testid="confirm-bulk-sell">
-                        Confirm bulk sell plan
-                    </MudButton>
-                }
-            </article>
         </section>
 
         <section class="inventory-preset-section">
@@ -398,8 +337,6 @@
     private string _renamePresetName = string.Empty;
     private string _optimizerPresetName = string.Empty;
     private EquipmentOptimizationGoal _optimizationGoal = EquipmentOptimizationGoal.Balanced;
-    private int _bulkSellKeepCount = 1;
-    private bool _showBulkSellConfirmation;
     private bool _nonBattleEquipmentExpanded;
     private readonly HashSet<string> _expandedOtherItemGroups = new(StringComparer.Ordinal);
 
@@ -473,12 +410,6 @@
         _optimizationGoal = Enum.TryParse<EquipmentOptimizationGoal>(rawValue, out var goal)
             ? goal
             : EquipmentOptimizationGoal.Balanced;
-    }
-
-    private void SetBulkSellKeepCount(string? rawValue)
-    {
-        _bulkSellKeepCount = int.TryParse(rawValue, out var parsed) ? Math.Clamp(parsed, 0, 99) : 1;
-        _showBulkSellConfirmation = false;
     }
 
     private async Task EquipItemAsync(EquipmentSetKind kind, string key)
@@ -560,67 +491,6 @@
     private void ShowFeedback(InventoryActionResult result)
     {
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
-    }
-
-    private async Task SellBulkPlanAsync(IReadOnlyList<BulkSellPlanItem> plan)
-    {
-        var soldCount = 0;
-        foreach (var item in plan.Where(static item => item.IsSafe && item.SellCount > 0))
-        {
-            var result = await SessionController.SellInventoryItemAsync(item.Type, item.Key, item.SellCount);
-            ShowFeedback(result);
-            if (!result.Succeeded)
-            {
-                _showBulkSellConfirmation = false;
-                return;
-            }
-
-            soldCount += item.SellCount;
-        }
-
-        _showBulkSellConfirmation = false;
-        if (soldCount > 0)
-        {
-            Snackbar.Add($"Sold {soldCount} planned item(s).", Severity.Success);
-        }
-    }
-
-    private IEnumerable<BulkSellPlanItem> GetBulkSellPlan(InventorySnapshot inventory)
-    {
-        foreach (var item in BuildBulkSellItems(InventorySellItemType.Egg, inventory.Eggs))
-        {
-            yield return item;
-        }
-
-        foreach (var item in BuildBulkSellItems(InventorySellItemType.Food, inventory.Food))
-        {
-            yield return item;
-        }
-
-        foreach (var item in BuildBulkSellItems(InventorySellItemType.HatchingPotion, inventory.HatchingPotions))
-        {
-            yield return item;
-        }
-    }
-
-    private IEnumerable<BulkSellPlanItem> BuildBulkSellItems(
-        InventorySellItemType type,
-        IReadOnlyDictionary<string, int> items)
-    {
-        foreach (var item in items.OrderBy(static item => item.Key, StringComparer.OrdinalIgnoreCase))
-        {
-            var sellCount = Math.Max(0, item.Value - _bulkSellKeepCount);
-            var isSafe = sellCount > 0;
-            yield return new BulkSellPlanItem(
-                type,
-                item.Key,
-                item.Value,
-                sellCount,
-                isSafe,
-                isSafe
-                    ? $"Safe by local rule: keep {_bulkSellKeepCount} cached item(s), sell only the surplus through Habitica's supported sell endpoint."
-                    : $"Unsafe by local rule: cached count is at or below the keep threshold.");
-        }
     }
 
     private static RenderFragment RenderImageCountChip(HabiticaImageAsset asset, int count) => builder =>
@@ -972,22 +842,6 @@
         };
     }
 
-    private static string FormatSellType(InventorySellItemType type)
-    {
-        return type switch
-        {
-            InventorySellItemType.Egg => "Egg",
-            InventorySellItemType.Food => "Food",
-            InventorySellItemType.HatchingPotion => "Hatching potion",
-            _ => "Inventory"
-        };
-    }
-
-    private static string GetBulkSellItemClass(BulkSellPlanItem item)
-    {
-        return item.IsSafe ? "bulk-sell-item safe-sell-item" : "bulk-sell-item unsafe-sell-item";
-    }
-
     private EquipmentProgress? GetPresetProgress(string presetId)
     {
         var progress = SessionController.State.ActiveEquipmentProgress;
@@ -1006,11 +860,4 @@
         SessionController.Changed -= HandleStateChanged;
     }
 
-    private sealed record BulkSellPlanItem(
-        InventorySellItemType Type,
-        string Key,
-        int OwnedCount,
-        int SellCount,
-        bool IsSafe,
-        string Explanation);
 }

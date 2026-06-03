@@ -66,6 +66,19 @@ public interface IAppSessionController
 
     Task<InventoryActionResult> BuyHealthPotionAsync(CancellationToken cancellationToken = default);
 
+    Task<InventoryActionResult> FeedPetAsync(
+        IReadOnlyList<PetFeedQueueItem> queue,
+        CancellationToken cancellationToken = default);
+
+    Task<InventoryActionResult> EquipPetAsync(string key, CancellationToken cancellationToken = default);
+
+    Task<InventoryActionResult> EquipMountAsync(string key, CancellationToken cancellationToken = default);
+
+    Task<InventoryActionResult> HatchPetAsync(
+        string eggKey,
+        string hatchingPotionKey,
+        CancellationToken cancellationToken = default);
+
     Task<InventoryActionResult> SellInventoryItemAsync(
         InventorySellItemType type,
         string key,

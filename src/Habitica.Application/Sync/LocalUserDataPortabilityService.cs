@@ -121,10 +121,7 @@ public sealed class LocalUserDataPortabilityService
 
     public async Task ClearSectionAsync(string storageKey, CancellationToken cancellationToken)
     {
-        if (StorageKeys.PortableDataKeys.Contains(storageKey, StringComparer.Ordinal))
-        {
-            await _keyValueStorage.RemoveAsync(storageKey, cancellationToken);
-        }
+        await _keyValueStorage.RemoveAsync(storageKey, cancellationToken);
     }
 
     public string Serialize(LocalUserDataBundle bundle)

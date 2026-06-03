@@ -388,6 +388,45 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         using var _ = await SendForDocumentAsync(request, cancellationToken);
     }
 
+    public async Task FeedPetAsync(
+        HabiticaCredentials credentials,
+        string petKey,
+        string foodKey,
+        int amount,
+        CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(
+            HttpMethod.Post,
+            $"user/feed/{Uri.EscapeDataString(petKey)}/{Uri.EscapeDataString(foodKey)}?amount={Math.Max(1, amount).ToString(CultureInfo.InvariantCulture)}",
+            credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
+    public async Task EquipPetAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(HttpMethod.Post, $"user/equip/pet/{Uri.EscapeDataString(key)}", credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
+    public async Task EquipMountAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(HttpMethod.Post, $"user/equip/mount/{Uri.EscapeDataString(key)}", credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
+    public async Task HatchPetAsync(
+        HabiticaCredentials credentials,
+        string eggKey,
+        string hatchingPotionKey,
+        CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(
+            HttpMethod.Post,
+            $"user/hatch/{Uri.EscapeDataString(eggKey)}/{Uri.EscapeDataString(hatchingPotionKey)}",
+            credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
     public async Task SellInventoryItemAsync(
         HabiticaCredentials credentials,
         InventorySellItemType type,
@@ -618,13 +657,15 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             FoodCount: CountPositiveEntries(TryGetObject(items, "food")),
             HatchingPotionCount: CountPositiveEntries(TryGetObject(items, "hatchingPotions")),
             QuestCount: CountPositiveEntries(TryGetObject(items, "quests")),
-            OwnedPetCount: CountPositiveEntries(TryGetObject(items, "pets")),
+            OwnedPetCount: CountNonNegativeNumericEntries(TryGetObject(items, "pets")),
             OwnedMountCount: CountTrueEntries(TryGetObject(items, "mounts")),
             OwnedGearKeys: ownedGearKeys,
             OwnedQuestScrolls: CountEntries(TryGetObject(items, "quests")),
             OwnedEggs: CountEntries(TryGetObject(items, "eggs")),
             OwnedFood: CountEntries(TryGetObject(items, "food")),
-            OwnedHatchingPotions: CountEntries(TryGetObject(items, "hatchingPotions")));
+            OwnedHatchingPotions: CountEntries(TryGetObject(items, "hatchingPotions")),
+            OwnedPets: CountNonNegativeEntries(TryGetObject(items, "pets")),
+            OwnedMounts: BooleanEntries(TryGetObject(items, "mounts")));
     }
 
     private static PartyMemberSnapshot MapPartyMember(JsonElement member, DateTimeOffset retrievedAtUtc)
@@ -1060,6 +1101,47 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         }
 
         return entries;
+    }
+
+    private static int CountNonNegativeNumericEntries(JsonElement element)
+    {
+        return element.ValueKind == JsonValueKind.Object
+            ? element.EnumerateObject().Count(static property =>
+                property.Value.ValueKind == JsonValueKind.Number
+                && property.Value.GetDecimal() >= 0m)
+            : 0;
+    }
+
+    private static IReadOnlyDictionary<string, int> CountNonNegativeEntries(JsonElement element)
+    {
+        if (element.ValueKind != JsonValueKind.Object)
+        {
+            return new Dictionary<string, int>(StringComparer.Ordinal);
+        }
+
+        return element.EnumerateObject()
+            .Where(static property =>
+                property.Value.ValueKind == JsonValueKind.Number
+                && property.Value.GetDecimal() >= 0m)
+            .ToDictionary(
+                static property => property.Name,
+                static property => property.Value.GetInt32(),
+                StringComparer.Ordinal);
+    }
+
+    private static IReadOnlyDictionary<string, bool> BooleanEntries(JsonElement element)
+    {
+        if (element.ValueKind != JsonValueKind.Object)
+        {
+            return new Dictionary<string, bool>(StringComparer.Ordinal);
+        }
+
+        return element.EnumerateObject()
+            .Where(static property => property.Value.ValueKind is JsonValueKind.True or JsonValueKind.False)
+            .ToDictionary(
+                static property => property.Name,
+                static property => property.Value.GetBoolean(),
+                StringComparer.Ordinal);
     }
 
     private static int CountTrueEntries(JsonElement element)
