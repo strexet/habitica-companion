@@ -293,7 +293,7 @@ This app's Dashboard gem-for-gold action targets:
 POST /user/purchase/gems/gem
 ```
 
-Gem-for-gold purchase costs 20 GP per gem and is subscription/cap gated by Habitica. `/user` purchase-plan fields may omit explicit gem eligibility, so missing or inconclusive plan fields are treated as unknown instead of ineligible; explicit `canBuyGems` or `canBuyGemsForGold` booleans win when present. The API client supports a `quantity` body for this endpoint, but the Dashboard currently executes multi-gem purchases as sequential one-gem requests with stop-on-failure until the bulk `quantity` behavior is live-verified. After successful gem-for-gold purchases, refresh `/user` so gold, gem balance, subscription eligibility, and remaining cap state come from Habitica.
+Gem-for-gold purchase costs 20 GP per gem and is subscription/cap gated by Habitica. Habitica's web client derives the monthly allowance from `purchased.plan.gemsBought` plus `purchased.plan.consecutive.gemCapExtra` against the base conversion cap. Treat the official subscription-plan shape (`customerId`, `subscriptionId`, `planId`, `paymentMethod`, or positive `quantity`) as the eligibility signal; do not let a legacy or unrelated `canBuyGems` flag override an active plan. The API client supports a `quantity` body for this endpoint, but the Dashboard currently executes multi-gem purchases as sequential one-gem requests with stop-on-failure until the bulk `quantity` behavior is live-verified. After successful gem-for-gold purchases, refresh `/user` so gold, gem balance, subscription eligibility, and remaining cap state come from Habitica.
 
 Do not expose destructive or premium-currency actions without explicit confirmation.
 

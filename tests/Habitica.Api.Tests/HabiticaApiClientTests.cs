@@ -269,7 +269,7 @@ public sealed class HabiticaApiClientTests
     }
 
     [Fact]
-    public async Task GetUserSnapshotAsync_maps_empty_purchase_plan_to_unknown_gem_eligibility()
+    public async Task GetUserSnapshotAsync_maps_empty_purchase_plan_to_no_subscription()
     {
         var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
         {
@@ -289,12 +289,12 @@ public sealed class HabiticaApiClientTests
 
         var snapshot = await client.GetUserSnapshotAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
 
-        Assert.Null(snapshot.CanBuyGemsForGold);
+        Assert.False(snapshot.CanBuyGemsForGold);
         Assert.Null(snapshot.RemainingGemPurchases);
     }
 
     [Fact]
-    public async Task GetUserSnapshotAsync_prefers_explicit_gem_eligibility_flags()
+    public async Task GetUserSnapshotAsync_maps_subscription_plan_even_when_legacy_canBuyGems_is_false()
     {
         var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
         {
@@ -308,7 +308,10 @@ public sealed class HabiticaApiClientTests
                   "plan": {
                     "canBuyGems": false,
                     "customerId": "customer-1",
-                    "remainingGemPurchases": 9
+                    "gemsBought": 7,
+                    "consecutive": {
+                      "gemCapExtra": 2
+                    }
                   }
                 }
               }
@@ -319,8 +322,8 @@ public sealed class HabiticaApiClientTests
 
         var snapshot = await client.GetUserSnapshotAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
 
-        Assert.False(snapshot.CanBuyGemsForGold);
-        Assert.Equal(9, snapshot.RemainingGemPurchases);
+        Assert.True(snapshot.CanBuyGemsForGold);
+        Assert.Equal(19, snapshot.RemainingGemPurchases);
     }
 
     [Fact]

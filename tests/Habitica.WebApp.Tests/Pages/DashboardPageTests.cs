@@ -541,10 +541,10 @@ public sealed class DashboardPageTests : BunitContext
         var cut = Render<DashboardPage>();
 
         Assert.Contains("Buy gems with gold", cut.Markup);
-        Assert.Contains("Gem balance 2.", cut.Markup);
-        Assert.Contains("Gold can buy 4 gems at 20 GP each.", cut.Markup);
-        Assert.Contains("3 monthly purchases remaining.", cut.Markup);
-        Assert.Contains("Ready to buy 3 gems.", cut.Markup);
+        Assert.Contains("Gem pouch: 2.", cut.Markup);
+        Assert.Contains("Gold purse can trade for 4 gems at 20 GP each.", cut.Markup);
+        Assert.Contains("Monthly allowance: 3 gems left.", cut.Markup);
+        Assert.Contains("Market open: trade for up to 3 gems.", cut.Markup);
 
         cut.Find("[data-testid='gem-purchase-count']").Change("10");
         cut.Find("[data-testid='buy-gems-with-gold']").Click();
@@ -561,8 +561,8 @@ public sealed class DashboardPageTests : BunitContext
         var (cut, controller) = RenderDashboardForGemPurchase(canBuyGemsForGold: null, remainingGemPurchases: null);
 
         Assert.Contains("Buy gems with gold", cut.Markup);
-        Assert.Contains("Monthly cap unavailable.", cut.Markup);
-        Assert.Contains("Ready to try; eligibility is not confirmed by the cached plan.", cut.Markup);
+        Assert.Contains("Monthly allowance not in cache.", cut.Markup);
+        Assert.Contains("Market looks open; Habitica will make the final call.", cut.Markup);
         Assert.False(cut.Find("[data-testid='buy-gems-with-gold']").HasAttribute("disabled"));
 
         cut.Find("[data-testid='buy-gems-with-gold']").Click();
@@ -577,7 +577,7 @@ public sealed class DashboardPageTests : BunitContext
         var (cut, controller) = RenderDashboardForGemPurchase(canBuyGemsForGold: false);
 
         Assert.Contains("Buy gems with gold", cut.Markup);
-        Assert.Contains("Unavailable: Habitica reports this account cannot buy gems with gold.", cut.Markup);
+        Assert.Contains("Subscriber perk locked: subscribe in Habitica to trade gold for gems.", cut.Markup);
         Assert.True(cut.Find("[data-testid='buy-gems-with-gold']").HasAttribute("disabled"));
         var subscribeLink = cut.Find("[data-testid='gem-subscription-link']");
         Assert.Equal("https://habitica.com/user/settings/subscription", subscribeLink.GetAttribute("href"));
@@ -590,8 +590,8 @@ public sealed class DashboardPageTests : BunitContext
         var (cut, _) = RenderDashboardForGemPurchase(gold: 10m);
 
         Assert.Contains("Buy gems with gold", cut.Markup);
-        Assert.Contains("Gold can buy 0 gems at 20 GP each.", cut.Markup);
-        Assert.Contains("Unavailable: Needs 20 GP.", cut.Markup);
+        Assert.Contains("Gold purse can trade for 0 gems at 20 GP each.", cut.Markup);
+        Assert.Contains("Need 20 GP before the first gem trade.", cut.Markup);
         Assert.True(cut.Find("[data-testid='buy-gems-with-gold']").HasAttribute("disabled"));
         Assert.Empty(cut.FindAll("[data-testid='gem-subscription-link']"));
     }
@@ -602,8 +602,8 @@ public sealed class DashboardPageTests : BunitContext
         var (cut, _) = RenderDashboardForGemPurchase(remainingGemPurchases: 0);
 
         Assert.Contains("Buy gems with gold", cut.Markup);
-        Assert.Contains("0 monthly purchases remaining.", cut.Markup);
-        Assert.Contains("Unavailable: Monthly gem purchase cap reached.", cut.Markup);
+        Assert.Contains("Monthly allowance: 0 gems left.", cut.Markup);
+        Assert.Contains("Monthly allowance spent; Habitica refills it near the start of the month.", cut.Markup);
         Assert.True(cut.Find("[data-testid='buy-gems-with-gold']").HasAttribute("disabled"));
         Assert.Empty(cut.FindAll("[data-testid='gem-subscription-link']"));
     }
@@ -614,7 +614,7 @@ public sealed class DashboardPageTests : BunitContext
         var (cut, _) = RenderDashboardForGemPurchase(userFreshness: SnapshotFreshnessState.Stale);
 
         Assert.Contains("Buy gems with gold", cut.Markup);
-        Assert.Contains("Unavailable: Refresh account before buying gems with gold.", cut.Markup);
+        Assert.Contains("Refresh account first; the stall needs current gold and allowance.", cut.Markup);
         Assert.True(cut.Find("[data-testid='buy-gems-with-gold']").HasAttribute("disabled"));
         Assert.Empty(cut.FindAll("[data-testid='gem-subscription-link']"));
     }

@@ -25,6 +25,8 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
     private const double BurstHeadroomFraction = 0.5d;
     private const double RampSteepness = 3.0d;
     private const double ReserveTokens = 2.0d;
+    private const int GoldPurchasableGemBaseCap = 24;
+    private const int GoldPurchasableGemMaxCap = 50;
 
     private readonly HttpClient _httpClient;
     private readonly HabiticaApiClientOptions _options;
@@ -117,7 +119,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             CurrentHabiticaDayStartUtc: currentHabiticaDayStartUtc,
             NeedsCron: needsCron,
             GemBalance: TryGetDecimal(data, "balance", out var gemBalance) ? gemBalance : null,
-            CanBuyGemsForGold: GetCanBuyGemsForGold(purchasePlan),
+            CanBuyGemsForGold: GetCanBuyGemsForGold(purchasePlan, retrievedAtUtc),
             RemainingGemPurchases: GetRemainingGemPurchases(purchasePlan));
     }
 
@@ -1722,16 +1724,22 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         return false;
     }
 
-    private static bool? GetCanBuyGemsForGold(JsonElement plan)
+    private static bool? GetCanBuyGemsForGold(JsonElement plan, DateTimeOffset retrievedAtUtc)
     {
         if (plan.ValueKind != JsonValueKind.Object)
         {
-            return null;
+            return false;
         }
 
-        if (GetOptionalNullableBoolean(plan, "canBuyGems") is { } explicitFlag)
+        if (ParseDateTimeOffset(GetOptionalString(plan, "dateTerminated")) is { } terminatedAt
+            && terminatedAt <= retrievedAtUtc)
         {
-            return explicitFlag;
+            return false;
+        }
+
+        if (HasActiveSubscriptionSignal(plan))
+        {
+            return true;
         }
 
         if (GetOptionalNullableBoolean(plan, "canBuyGemsForGold") is { } explicitGoldFlag)
@@ -1739,18 +1747,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             return explicitGoldFlag;
         }
 
-        var hasTermination = !string.IsNullOrWhiteSpace(GetOptionalString(plan, "dateTerminated"))
-            || !string.IsNullOrWhiteSpace(GetOptionalString(plan, "dateCanceled"));
-        if (hasTermination)
-        {
-            return false;
-        }
-
-        var hasActiveSubscriptionSignal = !string.IsNullOrWhiteSpace(GetOptionalString(plan, "customerId"))
-            || !string.IsNullOrWhiteSpace(GetOptionalString(plan, "subscriptionId"))
-            || !string.IsNullOrWhiteSpace(GetOptionalString(plan, "planId"))
-            || TryGetDecimal(plan, "quantity", out var quantity) && quantity > 0m;
-        return hasActiveSubscriptionSignal ? true : null;
+        return false;
     }
 
     private static int? GetRemainingGemPurchases(JsonElement plan)
@@ -1775,7 +1772,28 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             ?? GetOptionalNullableInt32(plan, "monthlyGemCap")
             ?? GetOptionalNullableInt32(plan, "maxGemPurchases");
         var bought = GetOptionalNullableInt32(plan, "gemsBought");
+        if (cap is null && (bought is not null || HasActiveSubscriptionSignal(plan)))
+        {
+            var consecutive = TryGetObject(plan, "consecutive");
+            var extraCap = Math.Max(0, GetOptionalNullableInt32(consecutive, "gemCapExtra") ?? 0);
+            cap = Math.Clamp(GoldPurchasableGemBaseCap + extraCap, 0, GoldPurchasableGemMaxCap);
+        }
+
+        if (cap is not null && bought is null && HasActiveSubscriptionSignal(plan))
+        {
+            bought = 0;
+        }
+
         return cap is null || bought is null ? null : Math.Max(0, cap.Value - bought.Value);
+    }
+
+    private static bool HasActiveSubscriptionSignal(JsonElement plan)
+    {
+        return !string.IsNullOrWhiteSpace(GetOptionalString(plan, "customerId"))
+            || !string.IsNullOrWhiteSpace(GetOptionalString(plan, "subscriptionId"))
+            || !string.IsNullOrWhiteSpace(GetOptionalString(plan, "planId"))
+            || !string.IsNullOrWhiteSpace(GetOptionalString(plan, "paymentMethod"))
+            || TryGetDecimal(plan, "quantity", out var quantity) && quantity > 0m;
     }
 
     private static string? GetOptionalString(JsonElement element, string propertyName)

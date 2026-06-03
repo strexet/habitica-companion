@@ -500,7 +500,7 @@
                     <p class="section-label">Spend gold</p>
                     <h2>Buy gems with gold</h2>
                     <p class="panel-copy">
-                        Spend 20 GP per gem. Monthly cap depends on your Habitica subscription.
+                        Trade 20 GP for each gem. Habitica sets the monthly subscriber allowance.
                     </p>
                     <div class="armoire-controls">
                         <label>
@@ -1028,19 +1028,19 @@
     private string GetGemsForGoldStatus(UserSnapshot snapshot)
     {
         var balance = snapshot.GemBalance is null
-            ? "Gem balance unavailable."
-            : $"Gem balance {snapshot.GemBalance.Value:0.##}.";
+            ? "Gem pouch not in cache."
+            : $"Gem pouch: {snapshot.GemBalance.Value:0.##}.";
 
         var affordableCount = GetAffordableGemPurchases(snapshot);
-        var affordability = $"Gold can buy {affordableCount} gem{(affordableCount == 1 ? string.Empty : "s")} at 20 GP each.";
+        var affordability = $"Gold purse can trade for {affordableCount} gem{(affordableCount == 1 ? string.Empty : "s")} at 20 GP each.";
         var cap = snapshot.RemainingGemPurchases is null
-            ? "Monthly cap unavailable."
-            : $"{snapshot.RemainingGemPurchases.Value} monthly purchase{(snapshot.RemainingGemPurchases.Value == 1 ? string.Empty : "s")} remaining.";
+            ? "Monthly allowance not in cache."
+            : $"Monthly allowance: {snapshot.RemainingGemPurchases.Value} gem{(snapshot.RemainingGemPurchases.Value == 1 ? string.Empty : "s")} left.";
         var availability = GetGemPurchaseUnavailableReason(snapshot) is { } reason
-            ? $"Unavailable: {reason}"
+            ? reason
             : snapshot.CanBuyGemsForGold is null
-                ? "Ready to try; eligibility is not confirmed by the cached plan."
-                : $"Ready to buy {GetMaxGemPurchases(snapshot)} gem{(GetMaxGemPurchases(snapshot) == 1 ? string.Empty : "s")}.";
+                ? "Market looks open; Habitica will make the final call."
+                : $"Market open: trade for up to {GetMaxGemPurchases(snapshot)} gem{(GetMaxGemPurchases(snapshot) == 1 ? string.Empty : "s")}.";
 
         return $"{balance} {affordability} {cap} {availability}";
     }
@@ -1049,37 +1049,37 @@
     {
         if (!SessionController.State.IsAuthenticated)
         {
-            return "Sign in before buying gems with gold.";
+            return "Sign in before visiting the gold-for-gems stall.";
         }
 
         if (SessionController.State.IsBusy)
         {
-            return "Wait for the current action to finish.";
+            return "Market is busy with another order.";
         }
 
         if (SessionController.State.UserFreshness != SnapshotFreshnessState.Fresh)
         {
-            return "Refresh account before buying gems with gold.";
+            return "Refresh account first; the stall needs current gold and allowance.";
         }
 
         if (snapshot.CanBuyGemsForGold == false)
         {
-            return "Habitica reports this account cannot buy gems with gold.";
+            return "Subscriber perk locked: subscribe in Habitica to trade gold for gems.";
         }
 
         if (snapshot.RemainingGemPurchases == 0)
         {
-            return "Monthly gem purchase cap reached.";
+            return "Monthly allowance spent; Habitica refills it near the start of the month.";
         }
 
         if (snapshot.Gold < GemGoldCost)
         {
-            return "Needs 20 GP.";
+            return "Need 20 GP before the first gem trade.";
         }
 
         if (GetMaxGemPurchases(snapshot) <= 0)
         {
-            return "No gem purchase is available from the cached account data.";
+            return "No gem trade is available from the cached account data.";
         }
 
         return null;

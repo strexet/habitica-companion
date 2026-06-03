@@ -2255,7 +2255,7 @@ public sealed class AppSessionController : IAppSessionController
 
         if (State.UserSnapshot.CanBuyGemsForGold == false)
         {
-            return InventoryActionResult.Failure("Habitica reports this account cannot buy gems with gold.");
+            return InventoryActionResult.Failure("Subscribe in Habitica to unlock gold-for-gems purchases.");
         }
 
         var affordableCount = (int)Math.Floor(State.UserSnapshot.Gold / GemGoldCost);
@@ -2265,8 +2265,8 @@ public sealed class AppSessionController : IAppSessionController
         if (availableCount <= 0)
         {
             return State.UserSnapshot.RemainingGemPurchases == 0
-                ? InventoryActionResult.Failure("Monthly gem purchase cap reached.")
-                : InventoryActionResult.Failure("You need at least 20 GP to buy a gem.");
+                ? InventoryActionResult.Failure("Monthly gem allowance spent.")
+                : InventoryActionResult.Failure("You need at least 20 GP to trade for a gem.");
         }
 
         var safeCount = Math.Clamp(quantity, 1, 50);
