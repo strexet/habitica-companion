@@ -159,7 +159,7 @@ public sealed class PetGrowthPlanFactoryTests
     }
 
     [Fact]
-    public void Create_preserves_recommendation_order_and_builds_mixed_plan_without_mutating_owned_food()
+    public void Create_uses_highest_value_food_first_without_mutating_owned_food()
     {
         var ownedFood = new Dictionary<string, int>(StringComparer.Ordinal)
         {
@@ -174,9 +174,11 @@ public sealed class PetGrowthPlanFactoryTests
             ownedFood,
             matchingMountOwned: false);
 
-        Assert.Equal(new[] { "Meat", "Saddle", "Milk" }, plan.AvailableFood.Select(static item => item.Key));
-        Assert.Equal(new[] { "Meat", "Saddle" }, plan.FeedPlan.Select(static item => item.FoodKey));
-        Assert.Equal(new[] { 2, 1 }, plan.FeedPlan.Select(static item => item.Amount));
+        Assert.Equal(new[] { "Saddle", "Meat", "Milk" }, plan.AvailableFood.Select(static item => item.Key));
+        var item = Assert.Single(plan.FeedPlan);
+        Assert.Equal("Saddle", item.FoodKey);
+        Assert.Equal(1, item.Amount);
+        Assert.Equal(100m, item.ProgressPercent);
         Assert.True(plan.CanCompleteWithAvailableFood);
         Assert.Equal(2, ownedFood["Meat"]);
         Assert.Equal(1, ownedFood["Saddle"]);

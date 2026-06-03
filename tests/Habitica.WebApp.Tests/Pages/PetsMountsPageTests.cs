@@ -61,7 +61,10 @@ public sealed class PetsMountsPageTests : BunitContext
         var cut = RenderPage(controller: controller);
 
         cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
-        Assert.Contains("favorite", cut.Find("[data-testid='feed-food-select']").TextContent);
+        var foodOptions = cut.Find("[data-testid='feed-food-select']").Children;
+        Assert.Equal("Saddle", foodOptions[0].GetAttribute("value"));
+        Assert.Contains("+100%", foodOptions[0].TextContent);
+        Assert.Contains("+10%", foodOptions[1].TextContent);
         cut.Find("[data-testid='add-feed-queue-item']").Click();
 
         Assert.Contains("Wolf Base", cut.Find("[data-testid='feed-dry-run-preview']").TextContent);
@@ -70,7 +73,7 @@ public sealed class PetsMountsPageTests : BunitContext
         cut.Find("[data-testid='equip-mount-Wolf-Base']").Click();
 
         var feed = Assert.Single(controller.FeedPetCalls);
-        Assert.Equal(new PetFeedQueueItem("Wolf-Base", "Meat", 1), Assert.Single(feed));
+        Assert.Equal(new PetFeedQueueItem("Wolf-Base", "Saddle", 1), Assert.Single(feed));
         Assert.Equal("Wolf-Base", Assert.Single(controller.EquipPetCalls));
         Assert.Equal("Wolf-Base", Assert.Single(controller.EquipMountCalls));
     }

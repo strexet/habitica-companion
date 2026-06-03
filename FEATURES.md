@@ -2226,9 +2226,9 @@ GET /user
 2. Group checked-in pet and mount catalog entries into base, magic-potion, quest, premium, and wacky collections; keep unknown owned special entries visible in a fallback group.
 3. Persist fold state locally and expand matching groups while search is active.
 4. Derive ready-to-hatch and missing-ingredient hints only from the cached inventory plus checked-in catalog.
-5. Sort available food for the selected pet as favorite potion-target food, generic food, then non-matching food.
+5. Sort available food for the selected pet by growth value for that pet, highest first, and show the per-item growth value in the feed list.
 6. Model pet-to-mount growth locally from cached pet progress, mount ownership, food counts, and checked-in catalog data. A newly hatched growable pet displays as 10% grown, preferred food adds 10%, non-preferred food adds 4%, and mount conversion is treated as 100%.
-7. Build deterministic feed-plan rows by consuming favorite food first, then generic food such as saddles, then non-matching food without mutating cached inventory counts.
+7. Build deterministic feed-plan rows by consuming highest-value food first, then lower-value food without mutating cached inventory counts.
 8. Show mount-growth progress in the feed planner and on every pet card. Growable pets with cached progress show their current percent and remaining progress; unavailable or unowned pets keep an empty bar for consistent scanning.
 9. Preview feed queues before sending them. Execute queue requests sequentially and stop on the first failure.
 10. Validate cached ownership before hatch, feed, fast equip, or bulk sell mutations.
@@ -2244,7 +2244,7 @@ Test:
 - local-only fold persistence;
 - search across companion and potion keys/names;
 - missing ingredient and ready-to-hatch states;
-- favorite/generic/non-matching food ordering;
+- food ordering by pet growth value;
 - pet-to-mount growth progress and feed-plan calculation;
 - feed preview and sequential failure handling;
 - fast equip and hatch dispatch;

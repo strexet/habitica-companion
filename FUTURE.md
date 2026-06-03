@@ -103,7 +103,7 @@ Implementation plan:
 - Show a short food-needed line based on the best available plan, such as favorite-food count when enough favorite food exists or a mixed-food count when alternatives are needed.
 - Keep unowned pet cards focused on hatching requirements and avoid implying feed progress before the pet exists.
 - For owned pets that cannot grow into a normal mount, show a concise unavailable state instead of a misleading progress number.
-- Keep existing feed selection controls available; selecting a pet for feed should keep using the current dropdown ordered by favorite, generic, then other food.
+- Keep existing feed selection controls available; selecting a pet for feed should keep using the current dropdown ordered by highest growth value for that pet.
 - Preserve offline cached behavior: growth summaries should render from local snapshots and avoid live calls.
 
 Acceptance:
@@ -157,7 +157,7 @@ Implementation plan:
 Acceptance:
 - Missing mount cards show `Plan to grow` when the corresponding owned pet can be fed toward that mount.
 - Clicking `Plan to grow` selects the matching pet and prepares visible feed-plan rows with the calculated food amounts.
-- Planned rows use favorite food first and include alternative food only when needed and available.
+- Planned rows use highest-value food first and include lower-value food only when needed and available.
 - Missing pet, non-growable/special, already-owned mount, no-food, busy, and stale states do not produce invalid queued feed requests.
 - Existing feed queue clear and execution behavior remains unchanged.
 - Component tests cover successful planning, unavailable corresponding pet, insufficient/no food messaging, and generated queue execution handoff.

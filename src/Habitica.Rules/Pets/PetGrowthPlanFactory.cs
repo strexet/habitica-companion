@@ -5,9 +5,6 @@ namespace Habitica.Rules.Pets;
 public static class PetGrowthPlanFactory
 {
     public const decimal HatchedProgressPercent = 10m;
-    public const decimal FavoriteFoodProgressPercent = 10m;
-    public const decimal OtherFoodProgressPercent = 4m;
-    public const decimal GenericFoodProgressPercent = 100m;
     public const decimal MountProgressPercent = 100m;
     public const decimal ProgressPointPercent = 2m;
 
@@ -122,7 +119,7 @@ public static class PetGrowthPlanFactory
             recommendation.DisplayName,
             recommendation.OwnedCount,
             recommendation.Priority,
-            GetProgressPercent(recommendation.Priority));
+            recommendation.ProgressPercent);
     }
 
     private static PetGrowthFeedPlanItem[] BuildFeedPlan(
@@ -159,16 +156,6 @@ public static class PetGrowthPlanFactory
 
         missingProgress = Math.Max(0m, remaining);
         return plan.ToArray();
-    }
-
-    private static decimal GetProgressPercent(PetFoodRecommendationPriority priority)
-    {
-        return priority switch
-        {
-            PetFoodRecommendationPriority.Favorite => FavoriteFoodProgressPercent,
-            PetFoodRecommendationPriority.Generic => GenericFoodProgressPercent,
-            _ => OtherFoodProgressPercent
-        };
     }
 
     private static decimal NormalizeProgress(int currentProgressPoints)

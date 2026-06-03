@@ -6,7 +6,7 @@ namespace Habitica.Rules.Tests.Pets;
 public sealed class PetFeedRecommendationFactoryTests
 {
     [Fact]
-    public void OrderAvailableFood_puts_favorite_then_generic_then_non_matching_food()
+    public void OrderAvailableFood_puts_highest_pet_growth_value_first()
     {
         var recommendations = PetFeedRecommendationFactory.OrderAvailableFood(
             new PetCatalogItem("Wolf-Base", "Base Wolf", "Wolf", "Base", "base"),
@@ -17,15 +17,16 @@ public sealed class PetFeedRecommendationFactoryTests
                 ["Meat"] = 3
             });
 
-        Assert.Equal(new[] { "Meat", "Saddle", "Milk" }, recommendations.Select(static item => item.Key));
+        Assert.Equal(new[] { "Saddle", "Meat", "Milk" }, recommendations.Select(static item => item.Key));
         Assert.Equal(
             new[]
             {
-                PetFoodRecommendationPriority.Favorite,
                 PetFoodRecommendationPriority.Generic,
+                PetFoodRecommendationPriority.Favorite,
                 PetFoodRecommendationPriority.Other
             },
             recommendations.Select(static item => item.Priority));
+        Assert.Equal(new[] { 100m, 10m, 4m }, recommendations.Select(static item => item.ProgressPercent));
     }
 
     [Fact]

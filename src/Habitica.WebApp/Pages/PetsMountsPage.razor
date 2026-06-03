@@ -14,7 +14,7 @@
             <p class="section-label">Pets and mounts</p>
             <h1>Companion collection</h1>
             <p class="panel-copy">
-                Review owned and missing companions, hatch ready pets, feed with preferred food first, equip quickly, and plan safe surplus sales.
+                Review owned and missing companions, hatch ready pets, feed with highest-value food first, equip quickly, and plan safe surplus sales.
             </p>
         </div>
     </section>
@@ -102,7 +102,7 @@
                         <select class="app-input" value="@_selectedFoodKey" @onchange="eventArgs => _selectedFoodKey = eventArgs.Value?.ToString()" data-testid="feed-food-select">
                             @foreach (var food in foodOptions)
                             {
-                                <option value="@food.Key">@food.DisplayName (@FormatFoodPriority(food.Priority), owned @food.OwnedCount)</option>
+                                <option value="@food.Key">@food.DisplayName (+@FormatProgressPercent(food.ProgressPercent)%, @FormatFoodPriority(food.Priority), owned @food.OwnedCount)</option>
                             }
                         </select>
                     </label>
