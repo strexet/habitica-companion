@@ -2229,10 +2229,11 @@ GET /user
 5. Sort available food for the selected pet as favorite potion-target food, generic food, then non-matching food.
 6. Model pet-to-mount growth locally from cached pet progress, mount ownership, food counts, and checked-in catalog data. A newly hatched growable pet displays as 10% grown, preferred food adds 10%, non-preferred food adds 4%, and mount conversion is treated as 100%.
 7. Build deterministic feed-plan rows by consuming favorite food first, then generic food such as saddles, then non-matching food without mutating cached inventory counts.
-8. Preview feed queues before sending them. Execute queue requests sequentially and stop on the first failure.
-9. Validate cached ownership before hatch, feed, fast equip, or bulk sell mutations.
-10. Refresh `/user`, save the refreshed snapshot, and write `Inventory` diagnostics after companion mutations.
-11. Keep bulk sell planning limited to eggs, food, and hatching potions. Preserve the keep-count preview and explicit confirmation flow.
+8. Show mount-growth progress in the feed planner and on every pet card. Growable pets with cached progress show their current percent and remaining progress; unavailable or unowned pets keep an empty bar for consistent scanning.
+9. Preview feed queues before sending them. Execute queue requests sequentially and stop on the first failure.
+10. Validate cached ownership before hatch, feed, fast equip, or bulk sell mutations.
+11. Refresh `/user`, save the refreshed snapshot, and write `Inventory` diagnostics after companion mutations.
+12. Keep bulk sell planning limited to eggs, food, and hatching potions. Preserve the keep-count preview and explicit confirmation flow.
 ```
 
 ### Tests

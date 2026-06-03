@@ -76,6 +76,31 @@ public sealed class PetsMountsPageTests : BunitContext
     }
 
     [Fact]
+    public void Feed_planner_and_pet_cards_show_mount_growth_progress()
+    {
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 15 },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 6 })
+        });
+
+        var wolfProgress = cut.Find("[data-testid='pet-growth-Wolf-Base']");
+        Assert.Equal("40", wolfProgress.GetAttribute("data-progress"));
+        Assert.Contains("40% grown, 60% to mount", wolfProgress.TextContent);
+
+        var tigerProgress = cut.Find("[data-testid='pet-growth-TigerCub-Base']");
+        Assert.Equal("0", tigerProgress.GetAttribute("data-progress"));
+        Assert.Contains("No mount progress", tigerProgress.TextContent);
+
+        cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
+
+        var feedProgress = cut.Find("[data-testid='feed-growth-Wolf-Base']");
+        Assert.Equal("40", feedProgress.GetAttribute("data-progress"));
+        Assert.Contains("Best available plan: Meat x 6.", feedProgress.TextContent);
+    }
+
+    [Fact]
     public void Feed_queue_stays_visible_when_sequential_execution_reports_failure()
     {
         var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with

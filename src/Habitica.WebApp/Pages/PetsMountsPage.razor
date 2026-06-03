@@ -91,6 +91,7 @@
                 var foodOptions = selectedPet is null
                     ? Array.Empty<PetFoodRecommendation>()
                     : PetFeedRecommendationFactory.OrderAvailableFood(selectedPet, snapshot.Inventory.Food);
+                var selectedGrowthPlan = GetPetGrowthPlan(_selectedPetKey, snapshot.Inventory);
                 <div class="preset-save-row">
                     <label class="field-row compact">
                         <span>Pet</span>
@@ -117,6 +118,7 @@
                         Add food
                     </MudButton>
                 </div>
+                @RenderPetGrowth(selectedGrowthPlan, $"feed-growth-{_selectedPetKey}", true)
             }
 
             @if (_feedQueue.Count > 0)
@@ -173,6 +175,7 @@
                             {
                                 var isOwned = snapshot.Inventory.Pets.ContainsKey(pet.Key);
                                 var hatchStatus = GetHatchStatus(pet, snapshot.Inventory);
+                                var growthPlan = GetPetGrowthPlan(pet.Key, snapshot.Inventory);
                                 <article class="inventory-item-card" data-testid="@($"pet-card-{pet.Key}")">
                                     <div class="habitica-item-identity">
                                         <HabiticaImage Asset="@HabiticaImageAssetResolver.Pet(pet.Key, pet.DisplayName)" />
@@ -182,6 +185,7 @@
                                             <span class="dashboard-stat-note">@(isOwned ? "Owned pet" : hatchStatus)</span>
                                         </div>
                                     </div>
+                                    @RenderPetGrowth(growthPlan, $"pet-growth-{pet.Key}", false)
                                     <div class="action-row inventory-actions">
                                         @if (isOwned)
                                         {
@@ -385,6 +389,82 @@
     {
         return PetsMountsCatalog.FindPet(key)
             ?? new PetCatalogItem(key, FormatName(key, key), string.Empty, string.Empty, "special");
+    }
+
+    private static PetGrowthPlan GetPetGrowthPlan(string petKey, InventorySnapshot inventory)
+    {
+        return PetGrowthPlanFactory.Create(petKey, inventory.Pets, inventory.Mounts, inventory.Food);
+    }
+
+    private static RenderFragment RenderPetGrowth(PetGrowthPlan plan, string testId, bool includeFoodPlan) => @<div class="pet-growth" data-testid="@testId" data-progress="@FormatProgressPercent(GetVisibleGrowthPercent(plan))">
+        <div class="pet-growth-label-row">
+            <span>@FormatGrowthStatus(plan)</span>
+            <span>@FormatProgressPercent(GetVisibleGrowthPercent(plan))%</span>
+        </div>
+        <div class="pet-growth-track" role="presentation">
+            <span class="pet-growth-fill" style="@($"width: {FormatProgressPercent(GetVisibleGrowthPercent(plan))}%;")"></span>
+        </div>
+        @if (includeFoodPlan)
+        {
+            <span class="dashboard-stat-note">@FormatGrowthFoodPlan(plan)</span>
+        }
+    </div>;
+
+    private static decimal GetVisibleGrowthPercent(PetGrowthPlan plan)
+    {
+        return plan.UnavailableReason is PetGrowthUnavailableReason.UnknownPet
+            or PetGrowthUnavailableReason.PetNotOwned
+            or PetGrowthUnavailableReason.NonGrowablePet
+            ? 0m
+            : plan.CurrentProgressPercent;
+    }
+
+    private static string FormatGrowthStatus(PetGrowthPlan plan)
+    {
+        return plan.UnavailableReason switch
+        {
+            PetGrowthUnavailableReason.UnknownPet => "No mount progress",
+            PetGrowthUnavailableReason.PetNotOwned => "No mount progress",
+            PetGrowthUnavailableReason.NonGrowablePet => "No mount progress",
+            PetGrowthUnavailableReason.MountAlreadyOwned => "Mount owned",
+            PetGrowthUnavailableReason.AlreadyMountReady => "Ready for mount",
+            _ => $"{FormatProgressPercent(plan.CurrentProgressPercent)}% grown, {FormatProgressPercent(plan.RemainingProgressPercent)}% to mount"
+        };
+    }
+
+    private static string FormatGrowthFoodPlan(PetGrowthPlan plan)
+    {
+        if (plan.UnavailableReason is PetGrowthUnavailableReason.MountAlreadyOwned)
+        {
+            return "Matching mount already owned.";
+        }
+
+        if (plan.UnavailableReason is PetGrowthUnavailableReason.AlreadyMountReady)
+        {
+            return "Pet already has enough progress for mount conversion.";
+        }
+
+        if (!plan.CanGrowIntoMount)
+        {
+            return "No feedable mount progress is available for this pet.";
+        }
+
+        if (plan.FeedPlan.Count == 0)
+        {
+            return "No food available for mount growth.";
+        }
+
+        var foodSummary = string.Join(
+            ", ",
+            plan.FeedPlan.Select(static item => $"{item.DisplayName} x {item.Amount}"));
+        return plan.CanCompleteWithAvailableFood
+            ? $"Best available plan: {foodSummary}."
+            : $"Available plan: {foodSummary}; still needs {FormatProgressPercent(plan.MissingProgressAfterPlanPercent)}% progress.";
+    }
+
+    private static string FormatProgressPercent(decimal value)
+    {
+        return value.ToString("0.#", CultureInfo.InvariantCulture);
     }
 
     private void SelectPetForFeed(string key, InventorySnapshot inventory)
