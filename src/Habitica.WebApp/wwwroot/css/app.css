@@ -1,4 +1,11 @@
 :root {
+    --space-2xs: 0.25rem;
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.25rem;
+    --space-xl: 1.5rem;
+    --control-height: 2.75rem;
     --bg: #f7f1ff;
     --card-bg: rgba(255, 252, 255, 0.94);
     --card-border: rgba(103, 49, 184, 0.13);
@@ -65,8 +72,9 @@ h1,
 h2,
 h3 {
     font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
-    letter-spacing: -0.03em;
+    letter-spacing: 0;
     margin: 0;
+    overflow-wrap: anywhere;
     text-shadow: var(--heading-text-shadow, none);
 }
 
@@ -111,6 +119,11 @@ input[type="radio"] {
     border-bottom: 1px solid color-mix(in srgb, var(--appbar-text) 14%, transparent);
 }
 
+.topbar .mud-toolbar {
+    gap: 0.5rem;
+    min-height: 3.5rem;
+}
+
 .topbar-copy {
     display: flex;
     flex-direction: column;
@@ -129,6 +142,10 @@ input[type="radio"] {
 .sync-chip,
 .refresh-button {
     margin-left: 0.75rem;
+}
+
+.refresh-button {
+    min-height: 2.5rem;
 }
 
 .ui-pill {
@@ -346,6 +363,24 @@ input[type="radio"] {
     color: var(--ink);
 }
 
+.card-surface > :first-child,
+.dashboard-panel > :first-child,
+.inventory-group-card > :first-child,
+.settings-card > :first-child,
+.tasks-header > :first-child,
+.dashboard-hero > :first-child {
+    margin-top: 0;
+}
+
+.card-surface > :last-child,
+.dashboard-panel > :last-child,
+.inventory-group-card > :last-child,
+.settings-card > :last-child,
+.tasks-header > :last-child,
+.dashboard-hero > :last-child {
+    margin-bottom: 0;
+}
+
 .landing-shell,
 .dashboard-shell,
 .diagnostics-shell,
@@ -372,6 +407,19 @@ input[type="radio"] {
     padding: 1.5rem;
 }
 
+.dashboard-hero,
+.tasks-header,
+.settings-card,
+.dashboard-panel,
+.diagnostics-panel,
+.inventory-group-card,
+.live-test-card,
+.live-results-card {
+    display: grid;
+    gap: var(--space-md);
+    align-content: start;
+}
+
 .hero-panel {
     background:
         linear-gradient(145deg,
@@ -392,6 +440,7 @@ input[type="radio"] {
     color: var(--muted);
     line-height: 1.65;
     max-width: 42rem;
+    margin: var(--space-sm) 0 0;
 }
 
 .compact-copy {
@@ -536,9 +585,11 @@ input[type="radio"] {
     gap: 0.45rem;
     font-size: 0.95rem;
     color: var(--muted);
+    min-width: 0;
 }
 
 .field-row.compact {
+    flex: 1 1 13rem;
     min-width: 13rem;
 }
 
@@ -579,6 +630,7 @@ input[type="radio"] {
 
 .app-input {
     width: 100%;
+    min-height: var(--control-height);
     padding: 0.95rem 1rem;
     border-radius: 1rem;
     border: 1px solid var(--input-border);
@@ -607,6 +659,18 @@ input[type="radio"] {
     flex-wrap: wrap;
     gap: 0.75rem;
     margin-top: 1.25rem;
+    align-items: center;
+}
+
+.action-row .mud-button-root,
+.action-row .secondary-action-button,
+.preset-save-row .mud-button-root,
+.task-group-actions .secondary-action-button,
+.party-quest-card-actions .mud-button-root,
+.spell-cron-warning-actions .mud-button-root,
+.confirmation-actions .mud-button-root,
+.cron-action-row .mud-button-root {
+    min-height: var(--control-height);
 }
 
 .action-button {
@@ -616,9 +680,17 @@ input[type="radio"] {
 .tasks-toolbar {
     display: flex;
     flex-wrap: wrap;
-    align-items: end;
+    align-items: flex-end;
     gap: 1rem;
     margin-top: 1.25rem;
+}
+
+.tasks-toolbar .field-row {
+    flex: 1 1 12rem;
+}
+
+.tasks-toolbar .field-row:first-child {
+    flex-basis: 18rem;
 }
 
 .task-type-filter {
@@ -627,6 +699,10 @@ input[type="radio"] {
     gap: 0.75rem;
     align-items: center;
     min-height: 2.75rem;
+}
+
+.task-type-filter .checkbox-row.compact {
+    min-height: var(--control-height);
 }
 
 .task-group {
@@ -655,6 +731,31 @@ input[type="radio"] {
 .live-results-list {
     display: grid;
     gap: 1rem;
+}
+
+.dashboard-card-grid > *,
+.dashboard-detail-grid > *,
+.dashboard-link-grid > *,
+.inventory-summary-grid > *,
+.inventory-management-grid > *,
+.inventory-planning-grid > *,
+.inventory-group-grid > *,
+.inventory-item-list > *,
+.inventory-preset-section > *,
+.optimizer-stat-grid > *,
+.task-stat-grid > *,
+.task-chart-grid > *,
+.spells-summary-grid > *,
+.spells-grid > *,
+.party-card-grid > *,
+.party-detail-grid > *,
+.party-quest-card-grid > *,
+.diagnostics-overview-grid > *,
+.diagnostics-filter-grid > *,
+.live-tests-grid > *,
+.live-results-list > *,
+.settings-grid > * {
+    min-width: 0;
 }
 
 .dashboard-card-grid {
@@ -823,6 +924,16 @@ input[type="radio"] {
     justify-content: space-between;
 }
 
+.party-quest-card-head > :first-child,
+.compact-head > :first-child,
+.task-group-header > :first-child,
+.party-section-head > :first-child,
+.stats-panel-head > :first-child,
+.pending-damage-head > :first-child,
+.health-potion-panel > :first-child {
+    min-width: min(100%, 14rem);
+}
+
 .party-quest-card-head strong {
     display: block;
     margin-top: 0.2rem;
@@ -832,6 +943,13 @@ input[type="radio"] {
 
 .party-quest-card-actions {
     justify-content: flex-start;
+}
+
+.party-quest-card-actions,
+.dashboard-link-actions,
+.task-group-actions,
+.stats-actions {
+    align-items: center;
 }
 
 .compact-definition-list {
@@ -1322,7 +1440,7 @@ input[type="radio"] {
 .spell-card,
 .live-test-card,
 .live-results-card {
-    padding: 1.2rem;
+    padding: var(--space-lg);
     background: rgba(255, 255, 255, 0.78);
     border: 1px solid rgba(22, 36, 35, 0.08);
     border-radius: 1.25rem;
@@ -1330,7 +1448,9 @@ input[type="radio"] {
 
 .dashboard-stat-card {
     display: grid;
-    gap: 0.35rem;
+    gap: var(--space-xs);
+    align-content: start;
+    min-width: 0;
 }
 
 .spell-card {
@@ -1348,7 +1468,7 @@ input[type="radio"] {
 
 .spell-card-section {
     display: grid;
-    gap: 0.8rem;
+    gap: var(--space-sm);
     min-width: 0;
     padding: 1rem 1.15rem;
     border-bottom: 1px solid rgba(22, 36, 35, 0.1);
@@ -1391,7 +1511,7 @@ input[type="radio"] {
     display: grid;
     gap: 0.85rem;
     grid-template-columns: minmax(5.5rem, 7rem) minmax(16rem, 1fr);
-    align-items: end;
+    align-items: flex-end;
     min-width: 0;
 }
 
@@ -1878,7 +1998,7 @@ input[type="radio"] {
 
 .armoire-controls {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     gap: 0.75rem;
     flex-wrap: wrap;
     margin: 1rem 0 0.5rem;
@@ -1922,6 +2042,8 @@ input[type="radio"] {
 .dashboard-stat-card strong {
     font-size: 1.5rem;
     line-height: 1.1;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .dashboard-stat-meter {
@@ -1961,6 +2083,7 @@ input[type="radio"] {
 .dashboard-stat-note {
     color: var(--muted);
     line-height: 1.5;
+    overflow-wrap: anywhere;
 }
 
 .dashboard-definition-list {
@@ -2058,6 +2181,30 @@ input[type="radio"] {
     border-radius: 1rem;
     border: 1px solid rgba(22, 36, 35, 0.08);
     background: rgba(245, 239, 226, 0.58);
+}
+
+.inventory-item-card,
+.dashboard-link-card,
+.bulk-sell-item,
+.preset-mini-item,
+.party-quest-card,
+.party-quest-response-card,
+.party-member-card,
+.spell-recommendation,
+.action-card {
+    display: grid;
+    gap: var(--space-sm);
+    align-content: start;
+    min-width: 0;
+}
+
+.inventory-item-card > .action-row,
+.preset-mini-item > .mud-button-root,
+.dashboard-link-card > .dashboard-link-actions,
+.spell-recommendation > .mud-button-root,
+.action-card > .mud-button-root,
+.action-card > .action-row {
+    margin-top: auto;
 }
 
 .inventory-item-card.compact {
@@ -2297,9 +2444,24 @@ input[type="radio"] {
 }
 
 .preset-save-row {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
     gap: 0.75rem;
-    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.preset-save-row > .app-input,
+.preset-save-row > .field-row {
+    flex: 1 1 14rem;
+}
+
+.preset-save-row > .mud-button-root,
+.preset-save-row > .action-row {
+    flex: 0 1 auto;
+}
+
+.preset-save-row .inventory-actions {
+    margin-top: 0;
 }
 
 .preset-remove-confirm {
@@ -2314,7 +2476,13 @@ input[type="radio"] {
 
 @media (max-width: 720px) {
     .preset-save-row {
-        grid-template-columns: 1fr;
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .preset-save-row > .mud-button-root,
+    .preset-save-row > .action-row {
+        width: 100%;
     }
 }
 
@@ -2328,8 +2496,9 @@ input[type="radio"] {
 .task-group-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.75rem;
+    min-width: 0;
 }
 
 .task-group-title,
@@ -2338,9 +2507,18 @@ input[type="radio"] {
     align-items: center;
     flex-wrap: wrap;
     gap: 0.75rem;
+    min-width: 0;
+}
+
+.task-group-header > div:first-child,
+.task-group-title {
+    flex: 1 1 auto;
 }
 
 .secondary-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: 2.25rem;
     padding: 0.35rem 0.75rem;
     border-radius: 0.5rem;
@@ -2383,6 +2561,13 @@ input[type="radio"] {
     background: var(--surface);
     border: 1px solid var(--card-border);
     border-radius: 1.25rem;
+    min-width: 0;
+}
+
+.action-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.55;
 }
 
 .action-card-header {
@@ -2431,7 +2616,7 @@ input[type="radio"] {
 .color-scheme-bar {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-end;
     gap: 0.75rem 1rem;
 }
 
@@ -2443,6 +2628,7 @@ input[type="radio"] {
 
 .color-scheme-bar .color-scheme-random-row {
     flex: 0 0 auto;
+    margin-top: 0;
 }
 
 .color-scheme-advanced {
@@ -2484,6 +2670,7 @@ input[type="radio"] {
 
 .color-scheme-save-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
 }
@@ -2491,6 +2678,10 @@ input[type="radio"] {
 .color-scheme-save-row .app-input {
     flex: 1 1 auto;
     min-width: 0;
+}
+
+.color-scheme-save-row .mud-button-root {
+    min-height: var(--control-height);
 }
 
 /* Keep the scheme buttons sized to their content. Without this the flex items shrink to
@@ -3678,6 +3869,16 @@ code {
     .task-group-header {
         align-items: start;
         flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    .task-group-header > *,
+    .task-group-actions,
+    .party-section-head > *,
+    .dashboard-appearance-head > *,
+    .pending-damage-head > *,
+    .health-potion-panel > * {
+        width: 100%;
     }
 
     .party-member-row,
@@ -3712,6 +3913,16 @@ code {
     .stats-panel-head,
     .spell-recommendation {
         grid-template-columns: 1fr;
+    }
+
+    .pending-damage-head,
+    .health-potion-panel {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .pending-damage-total {
+        justify-items: start;
     }
 
     .spell-cron-warning-actions,
@@ -3755,6 +3966,19 @@ code {
 }
 
 @media (max-width: 640px) {
+    .topbar .mud-toolbar {
+        align-items: center;
+        flex-wrap: wrap;
+        height: auto;
+        padding-top: 0.45rem;
+        padding-bottom: 0.45rem;
+    }
+
+    .sync-chip,
+    .refresh-button {
+        margin-left: 0;
+    }
+
     .hero-panel,
     .sign-in-card,
     .tasks-header,
@@ -3769,9 +3993,25 @@ code {
         align-items: stretch;
     }
 
+    .action-row > *,
+    .tasks-toolbar > *,
+    .task-group-actions > *,
+    .party-quest-card-actions > *,
+    .dashboard-link-actions > *,
+    .spell-cron-warning-actions > *,
+    .confirmation-actions > *,
+    .stats-actions > * {
+        width: 100%;
+    }
+
     .task-type-filter {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .task-type-filter .checkbox-row.compact,
+    .checkbox-row.compact {
+        width: 100%;
     }
 
     .task-card-head {
@@ -3779,7 +4019,12 @@ code {
     }
 
     .task-card-actions {
-        align-items: flex-start;
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .task-card-actions > * {
+        width: 100%;
     }
 
     .action-button {
