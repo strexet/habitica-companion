@@ -287,6 +287,14 @@ For `/user/purchase/:type/:key`, the wiki notes that a `quantity` body parameter
 }
 ```
 
+This app's Dashboard gem-for-gold action targets:
+
+```http
+POST /user/purchase/gems/gem
+```
+
+Gem-for-gold purchase costs 20 GP per gem and is subscription/cap gated by Habitica. The API client supports a `quantity` body for this endpoint, but the Dashboard currently executes multi-gem purchases as sequential one-gem requests with stop-on-failure until the bulk `quantity` behavior is live-verified. After successful gem-for-gold purchases, refresh `/user` so gold, gem balance, subscription eligibility, and remaining cap state come from Habitica.
+
 Do not expose destructive or premium-currency actions without explicit confirmation.
 
 For this app's Pets & Mounts page:

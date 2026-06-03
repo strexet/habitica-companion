@@ -21,6 +21,7 @@ namespace Habitica.WebApp.State;
 public sealed class AppSessionController : IAppSessionController
 {
     private const decimal HealthPotionGoldCost = 25m;
+    private const decimal GemGoldCost = 20m;
     private readonly ICredentialStore _credentialStore;
     private readonly IDiagnosticsLogStore _diagnosticsLogStore;
     private readonly DiagnosticsLogWriter _diagnosticsLogWriter;
@@ -2236,6 +2237,108 @@ public sealed class AppSessionController : IAppSessionController
                 },
                 cancellationToken);
             return InventoryActionResult.Failure(exception.Message);
+        }
+    }
+
+    public async Task<InventoryActionResult> BuyGemsForGoldAsync(int quantity, CancellationToken cancellationToken = default)
+    {
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return InventoryActionResult.Failure("Sign in before buying gems with gold.");
+        }
+
+        if (State.UserSnapshot is null || State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return InventoryActionResult.Failure("Refresh your account before buying gems with gold.");
+        }
+
+        if (State.UserSnapshot.CanBuyGemsForGold != true)
+        {
+            return InventoryActionResult.Failure("This account is not eligible to buy gems with gold.");
+        }
+
+        var affordableCount = (int)Math.Floor(State.UserSnapshot.Gold / GemGoldCost);
+        var availableCount = State.UserSnapshot.RemainingGemPurchases is { } remaining
+            ? Math.Min(affordableCount, remaining)
+            : affordableCount;
+        if (availableCount <= 0)
+        {
+            return State.UserSnapshot.RemainingGemPurchases == 0
+                ? InventoryActionResult.Failure("Monthly gem purchase cap reached.")
+                : InventoryActionResult.Failure("You need at least 20 GP to buy a gem.");
+        }
+
+        var safeCount = Math.Clamp(quantity, 1, 50);
+        if (safeCount > availableCount)
+        {
+            return InventoryActionResult.Failure($"You can buy {availableCount} gem{(availableCount == 1 ? string.Empty : "s")} with current gold and monthly cap.");
+        }
+
+        var previousGold = State.UserSnapshot.Gold;
+        var previousGemBalance = State.UserSnapshot.GemBalance;
+        var completed = 0;
+
+        SetState(State with { ErrorMessage = null, IsBusy = true });
+
+        try
+        {
+            for (var i = 0; i < safeCount; i++)
+            {
+                await _habiticaSyncClient.PurchaseGemsForGoldAsync(credentials, 1, cancellationToken);
+                completed++;
+                await DelayBetweenHabiticaRequestsAsync(cancellationToken);
+            }
+
+            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "gems-for-gold-buy",
+                DiagnosticsSeverity.Success,
+                DiagnosticsMode.LiveMutation,
+                "Bought gems with gold.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["requestedCount"] = safeCount.ToString(CultureInfo.InvariantCulture),
+                    ["completedCount"] = completed.ToString(CultureInfo.InvariantCulture),
+                    ["goldBefore"] = previousGold.ToString(CultureInfo.InvariantCulture),
+                    ["goldAfter"] = userSnapshot.Gold.ToString(CultureInfo.InvariantCulture),
+                    ["gemBalanceBefore"] = previousGemBalance?.ToString(CultureInfo.InvariantCulture) ?? "unknown",
+                    ["gemBalanceAfter"] = userSnapshot.GemBalance?.ToString(CultureInfo.InvariantCulture) ?? "unknown",
+                    ["requestCount"] = (completed + 1).ToString(CultureInfo.InvariantCulture)
+                },
+                cancellationToken);
+            await LoadCachedStateAsync(cancellationToken);
+            _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+            SetState(State with { ErrorMessage = null, IsBusy = false });
+
+            var gemBalanceText = userSnapshot.GemBalance is null
+                ? string.Empty
+                : $" Gem balance: {userSnapshot.GemBalance.Value:0.##}.";
+            return InventoryActionResult.Success($"Bought {completed} gem{(completed == 1 ? string.Empty : "s")} with gold.{gemBalanceText}");
+        }
+        catch (Exception exception)
+        {
+            await LoadCachedStateAsync(cancellationToken);
+            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Inventory,
+                "gems-for-gold-buy",
+                DiagnosticsSeverity.Error,
+                DiagnosticsMode.LiveMutation,
+                exception.Message,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["requestedCount"] = safeCount.ToString(CultureInfo.InvariantCulture),
+                    ["completedCount"] = completed.ToString(CultureInfo.InvariantCulture),
+                    ["goldBefore"] = previousGold.ToString(CultureInfo.InvariantCulture),
+                    ["gemBalanceBefore"] = previousGemBalance?.ToString(CultureInfo.InvariantCulture) ?? "unknown"
+                },
+                cancellationToken);
+            return completed > 0
+                ? InventoryActionResult.Failure($"Bought {completed} of {safeCount} requested gem{(safeCount == 1 ? string.Empty : "s")} before failure: {exception.Message}")
+                : InventoryActionResult.Failure(exception.Message);
         }
     }
 

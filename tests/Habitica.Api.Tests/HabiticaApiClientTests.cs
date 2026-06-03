@@ -120,6 +120,7 @@ public sealed class HabiticaApiClientTests
               "success": true,
               "data": {
                 "profile": { "name": "Mage Tester" },
+                "balance": 14,
                 "lastCron": "2026-04-24T08:00:00.000Z",
                 "flags": {
                   "needsCron": true
@@ -154,6 +155,13 @@ public sealed class HabiticaApiClientTests
                 },
                 "party": {
                   "_id": "party-123"
+                },
+                "purchased": {
+                  "plan": {
+                    "customerId": "customer-1",
+                    "gemsBought": 4,
+                    "gemsTotal": 12
+                  }
                 },
                 "items": {
                   "currentPet": "Wolf-Base",
@@ -253,6 +261,9 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(4, snapshot.DayStartHour);
         Assert.Equal(-420, snapshot.TimezoneOffsetMinutes);
         Assert.Equal((bool?)true, snapshot.NeedsCron);
+        Assert.Equal(14m, snapshot.GemBalance);
+        Assert.True(snapshot.CanBuyGemsForGold);
+        Assert.Equal(8, snapshot.RemainingGemPurchases);
         Assert.NotNull(snapshot.CurrentHabiticaDayKey);
         Assert.NotNull(snapshot.CurrentHabiticaDayStartUtc);
     }
@@ -562,6 +573,33 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
         Assert.Equal("https://habitica.com/api/v3/user/buy/potion", capturedRequest.RequestUri!.ToString());
         Assert.Null(capturedRequest.Content);
+    }
+
+    [Fact]
+    public async Task PurchaseGemsForGoldAsync_sends_purchase_request_with_quantity_body()
+    {
+        HttpRequestMessage? capturedRequest = null;
+        string? capturedBody = null;
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            capturedRequest = request;
+            capturedBody = request.Content?.ReadAsStringAsync().GetAwaiter().GetResult();
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{ "success": true, "data": {} }""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.PurchaseGemsForGoldAsync(
+            new HabiticaCredentials("user-id", "api-token"),
+            3,
+            CancellationToken.None);
+
+        Assert.NotNull(capturedRequest);
+        Assert.Equal(HttpMethod.Post, capturedRequest!.Method);
+        Assert.Equal("https://habitica.com/api/v3/user/purchase/gems/gem", capturedRequest.RequestUri!.ToString());
+        Assert.Equal("""{"quantity":3}""", capturedBody);
     }
 
     [Fact]

@@ -66,6 +66,8 @@ public interface IAppSessionController
 
     Task<InventoryActionResult> BuyHealthPotionAsync(CancellationToken cancellationToken = default);
 
+    Task<InventoryActionResult> BuyGemsForGoldAsync(int quantity, CancellationToken cancellationToken = default);
+
     Task<InventoryActionResult> FeedPetAsync(
         IReadOnlyList<PetFeedQueueItem> queue,
         CancellationToken cancellationToken = default);

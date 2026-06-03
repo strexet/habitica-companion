@@ -494,6 +494,55 @@
         </section>
 
         <section class="dashboard-detail-grid">
+            @if (snapshot.CanBuyGemsForGold == true)
+            {
+                <article class="card-surface dashboard-panel">
+                    <p class="section-label">Spend gold</p>
+                    <h2>Buy gems with gold</h2>
+                    <p class="panel-copy">
+                        Spend 20 GP per gem. Monthly cap depends on your Habitica subscription.
+                    </p>
+                    <div class="armoire-controls">
+                        <label>
+                            <span>Gem count</span>
+                            <input class="app-input"
+                                   data-testid="gem-purchase-count"
+                                   min="1"
+                                   max="@GetMaxGemPurchases(snapshot)"
+                                   type="number"
+                                   value="@_gemPurchaseCount"
+                                   @onchange="eventArgs => SetGemPurchaseCount(snapshot, eventArgs.Value?.ToString())" />
+                        </label>
+                        @if (_showGemPurchaseConfirmation)
+                        {
+                            <div class="confirmation-actions">
+                                <MudButton Color="Color.Default" Disabled="@SessionController.State.IsBusy" OnClick="CancelGemPurchase" Variant="Variant.Text">
+                                    Cancel
+                                </MudButton>
+                                <MudButton Color="Color.Primary"
+                                           Disabled="@(!CanBuyGems(snapshot))"
+                                           OnClick="BuyGemsForGoldAsync"
+                                           Variant="Variant.Filled"
+                                           data-testid="confirm-buy-gems-with-gold">
+                                    Confirm purchase
+                                </MudButton>
+                            </div>
+                        }
+                        else
+                        {
+                            <MudButton Color="Color.Primary"
+                                       Disabled="@(!CanBuyGems(snapshot))"
+                                       OnClick="@(() => ShowGemPurchaseConfirmation(snapshot))"
+                                       Variant="Variant.Filled"
+                                       data-testid="buy-gems-with-gold">
+                                Buy gems
+                            </MudButton>
+                        }
+                    </div>
+                    <span class="dashboard-stat-note">@GetGemsForGoldStatus(snapshot)</span>
+                </article>
+            }
+
             <article class="card-surface dashboard-panel">
                 <p class="section-label">Spend gold</p>
                 <h2>Bulk armoire</h2>
@@ -601,13 +650,16 @@
     private bool _appearanceCollapsed = true;
     private readonly Dictionary<string, int> _pendingAllocation = new(StringComparer.Ordinal);
     private const decimal HealthPotionGoldCost = 25m;
+    private const decimal GemGoldCost = 20m;
     private int _armoirePurchaseCount = 1;
+    private int _gemPurchaseCount = 1;
     private bool _showCronConfirmation;
     private bool _startNewDayAutoEquip = true;
     private EquipmentRecommendationGoal _startNewDayGearGoal = EquipmentRecommendationGoal.Intelligence;
     private bool _startNewDayResultSucceeded;
     private string? _startNewDayResultMessage;
     private bool _showHealthPotionConfirmation;
+    private bool _showGemPurchaseConfirmation;
 
     protected override void OnInitialized()
     {
@@ -943,6 +995,76 @@
         var result = await SessionController.BuyHealthPotionAsync();
         _showHealthPotionConfirmation = false;
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private bool CanBuyGems(UserSnapshot snapshot)
+    {
+        return SessionController.State.IsAuthenticated
+            && !SessionController.State.IsBusy
+            && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh
+            && snapshot.CanBuyGemsForGold == true
+            && GetMaxGemPurchases(snapshot) > 0;
+    }
+
+    private static int GetMaxGemPurchases(UserSnapshot snapshot)
+    {
+        var affordableCount = (int)Math.Floor(snapshot.Gold / GemGoldCost);
+        return Math.Min(50, snapshot.RemainingGemPurchases is { } remaining
+            ? Math.Min(affordableCount, remaining)
+            : affordableCount);
+    }
+
+    private static string GetGemsForGoldStatus(UserSnapshot snapshot)
+    {
+        var balance = snapshot.GemBalance is null
+            ? "Gem balance unavailable."
+            : $"Gem balance {snapshot.GemBalance.Value:0.##}.";
+
+        if (snapshot.RemainingGemPurchases == 0)
+        {
+            return $"{balance} Monthly cap reached.";
+        }
+
+        var max = GetMaxGemPurchases(snapshot);
+        if (max <= 0)
+        {
+            return $"{balance} Needs 20 GP.";
+        }
+
+        var cap = snapshot.RemainingGemPurchases is null
+            ? "Monthly cap unavailable; Habitica may still reject the purchase."
+            : $"{snapshot.RemainingGemPurchases.Value} monthly purchase{(snapshot.RemainingGemPurchases.Value == 1 ? string.Empty : "s")} remaining.";
+        return $"{balance} Enough gold for {max} gem{(max == 1 ? string.Empty : "s")}. {cap}";
+    }
+
+    private void SetGemPurchaseCount(UserSnapshot snapshot, string? rawValue)
+    {
+        var max = Math.Max(1, GetMaxGemPurchases(snapshot));
+        _gemPurchaseCount = int.TryParse(rawValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value)
+            ? Math.Clamp(value, 1, max)
+            : 1;
+    }
+
+    private void ShowGemPurchaseConfirmation(UserSnapshot snapshot)
+    {
+        SetGemPurchaseCount(snapshot, _gemPurchaseCount.ToString(CultureInfo.InvariantCulture));
+        _showGemPurchaseConfirmation = true;
+    }
+
+    private void CancelGemPurchase()
+    {
+        _showGemPurchaseConfirmation = false;
+    }
+
+    private async Task BuyGemsForGoldAsync()
+    {
+        var result = await SessionController.BuyGemsForGoldAsync(_gemPurchaseCount);
+        _showGemPurchaseConfirmation = false;
+        Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+        if (result.Succeeded && SessionController.State.UserSnapshot is { } snapshot)
+        {
+            _gemPurchaseCount = Math.Clamp(_gemPurchaseCount, 1, Math.Max(1, GetMaxGemPurchases(snapshot)));
+        }
     }
 
     private bool HasPendingQuestInvitation()

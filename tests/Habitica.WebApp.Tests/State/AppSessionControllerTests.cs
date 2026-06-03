@@ -722,6 +722,81 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task BuyGemsForGoldAsync_buys_sequentially_refreshes_snapshot_and_writes_log()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Gold = 80m,
+                GemBalance = 5m,
+                CanBuyGemsForGold = true,
+                RemainingGemPurchases = 5
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.BuyGemsForGoldAsync(3);
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(new[] { 1, 1, 1 }, syncClient.PurchaseGemsForGoldCalls);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Inventory
+            && entry.Operation == "gems-for-gold-buy"
+            && entry.Metadata["requestedCount"] == "3"
+            && entry.Metadata["completedCount"] == "3"
+            && entry.Metadata["goldBefore"] == "80"
+            && entry.Metadata["gemBalanceBefore"] == "5");
+    }
+
+    [Fact]
+    public async Task BuyGemsForGoldAsync_stops_on_partial_failure()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Gold = 100m,
+                GemBalance = 5m,
+                CanBuyGemsForGold = true,
+                RemainingGemPurchases = 5
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot())
+        {
+            PurchaseGemsForGoldFailureCall = 3
+        };
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.BuyGemsForGoldAsync(4);
+
+        Assert.False(result.Succeeded);
+        Assert.Contains("Bought 2 of 4 requested gems before failure", result.Message);
+        Assert.Equal(new[] { 1, 1, 1 }, syncClient.PurchaseGemsForGoldCalls);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Inventory
+            && entry.Operation == "gems-for-gold-buy"
+            && entry.Severity == DiagnosticsSeverity.Error
+            && entry.Metadata["requestedCount"] == "4"
+            && entry.Metadata["completedCount"] == "2");
+    }
+
+    [Fact]
     public async Task SellInventoryItemAsync_sells_requested_count_refreshes_snapshot_and_writes_log()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
@@ -2386,6 +2461,10 @@ public sealed class AppSessionControllerTests
 
         public int BuyHealthPotionCalls { get; private set; }
 
+        public List<int> PurchaseGemsForGoldCalls { get; } = new();
+
+        public int? PurchaseGemsForGoldFailureCall { get; init; }
+
         public List<(InventorySellItemType Type, string Key)> SellInventoryItemCalls { get; } = new();
 
         public string? EquipGearFailureKey { get; init; }
@@ -2480,6 +2559,17 @@ public sealed class AppSessionControllerTests
         public Task BuyHealthPotionAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             BuyHealthPotionCalls++;
+            return Task.CompletedTask;
+        }
+
+        public Task PurchaseGemsForGoldAsync(HabiticaCredentials credentials, int quantity, CancellationToken cancellationToken)
+        {
+            PurchaseGemsForGoldCalls.Add(quantity);
+            if (PurchaseGemsForGoldFailureCall == PurchaseGemsForGoldCalls.Count)
+            {
+                throw new InvalidOperationException("Gem purchase failed.");
+            }
+
             return Task.CompletedTask;
         }
 

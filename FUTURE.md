@@ -51,6 +51,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Quest-pool search by public reward display name, including partial case-insensitive matches.
 - Active-quest owner/starter and started-at metadata with shared-queue fallback, unavailable states, and foldable details/rewards and participant-name drill-ins.
 - Dedicated Pets & Mounts page with grouped companion grids, feed queue planner, hatching and equip actions, local fold preferences, and relocated bulk sell planner while keeping per-pet/per-mount maps out of Cloudflare app-data uploads.
+- Dashboard eligible-only gem-for-gold purchase action with quantity clamp, explicit confirmation, sequential stop-on-failure requests, diagnostics, and post-purchase account refresh.
 
 ## Pending Queue
 
@@ -72,47 +73,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Dashboard Spend Gold Buy Gems Action
-
-Goal: add a "Buy gems with gold" action inside the Dashboard SPEND GOLD section. Visible only when the Habitica user is eligible to convert gold to gems (subscription-gated and respecting Habitica's monthly cap).
-
-Touch:
-- `src/Habitica.Api/HabiticaApiClient.cs` and `src/Habitica.Api/IHabiticaSyncClient.cs` (add `PurchaseGemsForGoldAsync(int quantity)` and extend the user snapshot mapper to expose subscription status and remaining gem-for-gold cap when the API provides them)
-- `src/Habitica.Domain/User/UserSnapshot.cs` (add nullable `bool? CanBuyGemsForGold` and `int? RemainingGemPurchases`, OR a small `SubscriptionSnapshot` record referenced from `UserSnapshot`; additive nullable fields to preserve existing call sites)
-- `src/Habitica.WebApp/Pages/DashboardPage.razor` (SPEND GOLD section around line 483-507; add the gems card and `BuyGemsForGoldAsync` UI handler with `CanBuyGems()` validation, mirroring `BuyArmoireAsync`/`CanBuyArmoire`)
-- `src/Habitica.WebApp/State/AppSessionController.cs` (`BuyGemsForGoldAsync` orchestration mirroring `BuyHealthPotionAsync` and `BuyArmoireAsync`: fresh-state guard, sequential per-gem execution if multi, refresh snapshot, diagnostics)
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs` and `tests/` for the controller orchestration
-- `HABITICA_API.md` (pin endpoint shape and quantity behavior if the implementation confirms the bulk-quantity body parameter works)
-- `FEATURES.md`
-
-Habitica endpoint:
-- `POST /user/purchase/gems/gem` with optional `quantity` body parameter — already documented at `HABITICA_API.md:269` and `:282-288`.
-- Cost: 20 GP per gem (Habitica default). Monthly cap depends on subscription tier; if the cap is not present on the user snapshot, rely on Habitica's error response and degrade gracefully.
-
-UI shape:
-- New card titled "Buy gems with gold" inside the Spend Gold block. Hidden entirely when `Snapshot.CanBuyGemsForGold != true`.
-- Quantity input clamped to `min(floor(Gold / 20), RemainingGemPurchases ?? floor(Gold / 20))`.
-- Explicit confirmation modal/inline confirm required before purchase (per `HABITICA_API.md:290`: "Do not expose destructive or premium-currency actions without explicit confirmation").
-- If the bulk `quantity` body parameter is verified to work in one call, send a single request. Otherwise loop sequentially per gem with stop-on-failure. Document the chosen path in `HABITICA_API.md` during implementation.
-- Snackbar result + refresh of user snapshot on success; surface remaining cap and updated gem balance.
-- Diagnostics logging under `DiagnosticsFeatureArea.Inventory` (rename to `Currency` is out of scope; follow-up acceptable).
-
-Out of scope:
-- selling gems back for gold;
-- mystery hourglass purchase;
-- subscription management UI beyond the gem-for-gold eligibility gate;
-- exposing other subscription perks anywhere else in the UI;
-- adding a dedicated currency page.
-
-Acceptance:
-- Buy-gems card appears only when the user is eligible to buy gems for gold; otherwise the SPEND GOLD section renders unchanged.
-- Quantity input clamps to the affordable maximum and the remaining monthly cap when the cap is known.
-- Action requires explicit confirmation. Cancel keeps state untouched.
-- Successful purchase refreshes the user snapshot and updates the displayed gold and gem totals.
-- Failed purchase (e.g. cap reached, API error) surfaces a concise error and stops further per-gem requests when looping.
-- No Habitica credentials are forwarded to Cloudflare.
-- Tests cover: card hidden when ineligible, visible when eligible, quantity clamp, confirmation gate, success refresh, partial failure during multi-gem sequence, and snapshot mapping for the new subscription fields.
 
 ### Remove Party Page CRON Summary And Buff Timing Window
 

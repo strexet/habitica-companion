@@ -86,6 +86,8 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public int BuyHealthPotionCalls { get; private set; }
 
+    public List<int> BuyGemsForGoldCalls { get; } = new();
+
     public List<string> RemovePresetCalls { get; } = new();
 
     public List<(string PresetId, string Name)> RenamePresetCalls { get; } = new();
@@ -195,6 +197,12 @@ internal sealed class FakeAppSessionController : IAppSessionController
     {
         BuyHealthPotionCalls++;
         return Task.FromResult(InventoryActionResult.Success("Health potion bought."));
+    }
+
+    public Task<InventoryActionResult> BuyGemsForGoldAsync(int quantity, CancellationToken cancellationToken = default)
+    {
+        BuyGemsForGoldCalls.Add(quantity);
+        return Task.FromResult(InventoryActionResult.Success("Gems bought."));
     }
 
     public Task<InventoryActionResult> SellInventoryItemAsync(

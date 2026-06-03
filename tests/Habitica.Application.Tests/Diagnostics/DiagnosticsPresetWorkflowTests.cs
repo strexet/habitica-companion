@@ -164,6 +164,11 @@ public sealed class DiagnosticsPresetWorkflowTests
             return Task.CompletedTask;
         }
 
+        public Task PurchaseGemsForGoldAsync(HabiticaCredentials credentials, int quantity, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
         public Task FeedPetAsync(HabiticaCredentials credentials, string petKey, string foodKey, int amount, CancellationToken cancellationToken) => Task.CompletedTask;
 
         public Task EquipPetAsync(HabiticaCredentials credentials, string key, CancellationToken cancellationToken) => Task.CompletedTask;

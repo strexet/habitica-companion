@@ -67,6 +67,8 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         var buffs = TryGetObject(stats, "buffs");
         var preferences = TryGetObject(data, "preferences");
         var flags = TryGetObject(data, "flags");
+        var purchased = TryGetObject(data, "purchased");
+        var purchasePlan = TryGetObject(purchased, "plan");
         var items = data.TryGetProperty("items", out var itemsProperty) ? itemsProperty : default;
         var gear = TryGetObject(items, "gear");
         var inventory = MapInventory(gear, items);
@@ -113,7 +115,10 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             TimezoneOffsetMinutes: timezoneOffsetMinutes,
             CurrentHabiticaDayKey: currentHabiticaDayKey,
             CurrentHabiticaDayStartUtc: currentHabiticaDayStartUtc,
-            NeedsCron: needsCron);
+            NeedsCron: needsCron,
+            GemBalance: TryGetDecimal(data, "balance", out var gemBalance) ? gemBalance : null,
+            CanBuyGemsForGold: GetCanBuyGemsForGold(purchasePlan),
+            RemainingGemPurchases: GetRemainingGemPurchases(purchasePlan));
     }
 
     public async Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -385,6 +390,16 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
     public async Task BuyHealthPotionAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
     {
         using var request = CreateRequest(HttpMethod.Post, "user/buy/potion", credentials);
+        using var _ = await SendForDocumentAsync(request, cancellationToken);
+    }
+
+    public async Task PurchaseGemsForGoldAsync(HabiticaCredentials credentials, int quantity, CancellationToken cancellationToken)
+    {
+        using var request = CreateRequest(HttpMethod.Post, "user/purchase/gems/gem", credentials);
+        request.Content = JsonContent.Create(new
+        {
+            quantity = Math.Max(1, quantity)
+        });
         using var _ = await SendForDocumentAsync(request, cancellationToken);
     }
 
@@ -1705,6 +1720,61 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
         value = 0m;
         return false;
+    }
+
+    private static bool? GetCanBuyGemsForGold(JsonElement plan)
+    {
+        if (plan.ValueKind != JsonValueKind.Object)
+        {
+            return null;
+        }
+
+        if (GetOptionalNullableBoolean(plan, "canBuyGems") is { } explicitFlag)
+        {
+            return explicitFlag;
+        }
+
+        if (GetOptionalNullableBoolean(plan, "canBuyGemsForGold") is { } explicitGoldFlag)
+        {
+            return explicitGoldFlag;
+        }
+
+        var hasTermination = !string.IsNullOrWhiteSpace(GetOptionalString(plan, "dateTerminated"))
+            || !string.IsNullOrWhiteSpace(GetOptionalString(plan, "dateCanceled"));
+        if (hasTermination)
+        {
+            return false;
+        }
+
+        return !string.IsNullOrWhiteSpace(GetOptionalString(plan, "customerId"))
+            || !string.IsNullOrWhiteSpace(GetOptionalString(plan, "subscriptionId"))
+            || !string.IsNullOrWhiteSpace(GetOptionalString(plan, "planId"))
+            || TryGetDecimal(plan, "quantity", out var quantity) && quantity > 0m;
+    }
+
+    private static int? GetRemainingGemPurchases(JsonElement plan)
+    {
+        if (plan.ValueKind != JsonValueKind.Object)
+        {
+            return null;
+        }
+
+        if (GetOptionalNullableInt32(plan, "remainingGemPurchases") is { } explicitRemaining)
+        {
+            return Math.Max(0, explicitRemaining);
+        }
+
+        if (GetOptionalNullableInt32(plan, "gemsRemaining") is { } gemsRemaining)
+        {
+            return Math.Max(0, gemsRemaining);
+        }
+
+        var cap = GetOptionalNullableInt32(plan, "gemsTotal")
+            ?? GetOptionalNullableInt32(plan, "gemLimit")
+            ?? GetOptionalNullableInt32(plan, "monthlyGemCap")
+            ?? GetOptionalNullableInt32(plan, "maxGemPurchases");
+        var bought = GetOptionalNullableInt32(plan, "gemsBought");
+        return cap is null || bought is null ? null : Math.Max(0, cap.Value - bought.Value);
     }
 
     private static string? GetOptionalString(JsonElement element, string propertyName)

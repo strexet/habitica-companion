@@ -27,6 +27,8 @@ public interface IHabiticaSyncClient
 
     Task BuyHealthPotionAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
 
+    Task PurchaseGemsForGoldAsync(HabiticaCredentials credentials, int quantity, CancellationToken cancellationToken);
+
     Task FeedPetAsync(
         HabiticaCredentials credentials,
         string petKey,

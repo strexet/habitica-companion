@@ -26,7 +26,10 @@ public sealed record UserSnapshot(
     int? TimezoneOffsetMinutes = null,
     string? CurrentHabiticaDayKey = null,
     DateTimeOffset? CurrentHabiticaDayStartUtc = null,
-    bool? NeedsCron = null);
+    bool? NeedsCron = null,
+    decimal? GemBalance = null,
+    bool? CanBuyGemsForGold = null,
+    int? RemainingGemPurchases = null);
 
 public static class HabiticaDayCalculator
 {

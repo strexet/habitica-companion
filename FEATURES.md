@@ -1131,8 +1131,8 @@ Status: partial
 Owner module: `Habitica.WebApp.Dashboard`
 Application entry point: `Habitica.Application.Dashboard`
 Primary Habitica data: user, tasks, party, inventory, equipment, quest, sync metadata
-Mutates Habitica state: yes for Start New Day and manual health-potion purchase
-Requires confirmation: yes for Start New Day and health-potion purchase
+Mutates Habitica state: yes for Start New Day, manual health-potion purchase, and gem-for-gold purchase
+Requires confirmation: yes for Start New Day, health-potion purchase, and gem-for-gold purchase
 Offline behavior: primary feature works offline from snapshots
 Rate-limit sensitivity: low unless refresh is triggered
 
@@ -1160,6 +1160,7 @@ task-count summary
 pending damage estimate with included and excluded sources
 knockout risk warning when estimated damage is high relative to current HP
 manual health-potion confirmation and action result
+gem-for-gold confirmation and action result
 warnings
 sync status
 Start New Day confirmation and action result
@@ -1171,12 +1172,13 @@ Reads from existing snapshot and derived read-model stores.
 
 ### API interaction
 
-Only through explicit refresh actions and the confirmed Start New Day action.
+Only through explicit refresh actions and confirmed mutation actions.
 
 ```text
 POST /user/equip/equipped/:key
 POST /cron
 POST /user/buy/potion
+POST /user/purchase/gems/gem
 GET /user
 GET /tasks/user
 GET /groups/party
@@ -1203,6 +1205,8 @@ Info: estimatedDamage > 0
 ```
 
 Health-potion purchase is manual only. It is disabled when the account snapshot is stale, the user is signed out, health is full, or saved gold is below 25 GP. After purchase, refresh `/user` so HP, gold, and the dashboard warning recalculate from server state.
+
+Gem-for-gold purchase is manual only and appears only when the account snapshot says the user can buy gems with gold. The Dashboard clamps requested quantity to available gold at 20 GP per gem and the known remaining monthly purchase cap when Habitica exposes it. The action requires explicit confirmation, executes sequential one-gem requests with stop-on-failure, refreshes `/user` after success, and reports updated gem balance when the refreshed snapshot includes it.
 
 ### Validation
 
@@ -1231,6 +1235,7 @@ Test:
 - Start New Day confirmation, default-enabled temporary gear optimization preview/request, gear restoration, result feedback, and session-controller refresh contract.
 - pending damage estimate sources and risk state.
 - health-potion confirmation and session-controller call.
+- gem-for-gold eligibility visibility, quantity clamp, confirmation, success refresh, partial-failure stop, and user snapshot mapping.
 
 ### Open questions
 
@@ -1245,6 +1250,7 @@ Current implementation:
 - dashboard and Spells CRON unfinished-dailies mini lists with guarded inline checkoff;
 - dashboard pending damage estimate with included/excluded source copy and knockout warning;
 - manual health-potion purchase action with confirmation and account refresh;
+- eligible-only gem-for-gold purchase action with quantity clamp, confirmation, sequential Habitica requests, diagnostics, and account refresh;
 - task workspace with cached browsing and planned guarded mutations;
 - sync timestamp surface;
 - freshness banners for cached tasks and cached account data;

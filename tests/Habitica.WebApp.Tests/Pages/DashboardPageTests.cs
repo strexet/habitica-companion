@@ -98,6 +98,7 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("inventory_quest_scroll.png", cut.Markup);
         Assert.Contains("Open tasks", cut.Markup);
         Assert.Equal("app-input", cut.Find("[data-testid='armoire-open-count']").GetAttribute("class"));
+        Assert.Empty(cut.FindAll("[data-testid='buy-gems-with-gold']"));
         Assert.Contains("Companion and Habitica links", cut.Markup);
         Assert.Contains("href=\"/tasks\"", cut.Markup);
         Assert.Contains("https://habitica.com/tasks", cut.Markup);
@@ -490,6 +491,66 @@ public sealed class DashboardPageTests : BunitContext
         cut.Find("[data-testid='confirm-buy-health-potion']").Click();
 
         Assert.Equal(1, controller.BuyHealthPotionCalls);
+    }
+
+    [Fact]
+    public void Gem_gold_purchase_card_clamps_quantity_and_requires_confirmation()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(DateTimeOffset.Parse("2026-04-25T08:00:00Z"), Array.Empty<TaskSnapshot>()),
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: new UserSnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    "Mage Tester",
+                    "wizard",
+                    15,
+                    42.5m,
+                    50m,
+                    33.5m,
+                    40m,
+                    125.1m,
+                    74.9m,
+                    85m,
+                    "party-123",
+                    null,
+                    null,
+                    new EquipmentSnapshot(
+                        new GearSlotsSnapshot(null, null, null, null, null),
+                        new GearSlotsSnapshot(null, null, null, null, null)),
+                    new InventorySnapshot(0, 0, 0, 0, 0, 0, Array.Empty<string>()),
+                    GemBalance: 2m,
+                    CanBuyGemsForGold: true,
+                    RemainingGemPurchases: 3),
+                UserFreshness: SnapshotFreshnessState.Fresh));
+        Services.AddSingleton<IAppSessionController>(controller);
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
+
+        var cut = Render<DashboardPage>();
+
+        Assert.Contains("Buy gems with gold", cut.Markup);
+        Assert.Contains("Gem balance 2.", cut.Markup);
+        Assert.Contains("Enough gold for 3 gems.", cut.Markup);
+
+        cut.Find("[data-testid='gem-purchase-count']").Change("10");
+        cut.Find("[data-testid='buy-gems-with-gold']").Click();
+        Assert.Contains("Confirm purchase", cut.Markup);
+
+        cut.Find("[data-testid='confirm-buy-gems-with-gold']").Click();
+
+        Assert.Equal(3, Assert.Single(controller.BuyGemsForGoldCalls));
     }
 
     [Fact]
