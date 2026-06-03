@@ -280,8 +280,6 @@ public sealed class PartyPageTests : BunitContext
         Assert.Empty(questsCut.FindAll("[data-testid='active-quest-participants']"));
         questsCut.Find("[data-testid='toggle-active-quest-participants']").Click();
         Assert.Contains("Participant details are unavailable.", questsCut.Find("[data-testid='active-quest-participants']").TextContent);
-        questsCut.Find(".inline-link-button").Click();
-        Assert.EndsWith("/party?member=user-1", Services.GetRequiredService<NavigationManager>().Uri, StringComparison.Ordinal);
         Assert.Contains("CRON statistics", cut.Markup);
         Assert.Contains("Historical average", cut.Markup);
         Assert.Contains("1 stored observation day", cut.Markup);
@@ -313,6 +311,9 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Effective", cut.Markup);
         Assert.Contains("Strength", cut.Markup);
         Assert.Contains("137", cut.Markup);
+
+        questsCut.Find(".inline-link-button").Click();
+        Assert.EndsWith("/party?member=user-1", Services.GetRequiredService<NavigationManager>().Uri, StringComparison.Ordinal);
     }
 
     [Fact]
