@@ -56,6 +56,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Manual task arrangement now persists locally and triggers a narrow encrypted upload of the task-order cloud-sync section without blocking or undoing local reorder changes.
 - Random theme generation now guards calm/moderate card text and primary/secondary filled-button label contrast across generated gradient stops, with readability thresholds intentionally relaxed only toward high-chaos Madness output.
 - Persisted appearance changes now request a narrow encrypted upload of the color-schemes cloud-sync section, while transient random themes, rerolls, chaos changes, and paste previews stay local until saved; Appearance close actions read `Done` unless they truly discard a preview/edit.
+- Healer Blessing estimates now use concise per-member HP copy, keep fresh-HP capping and aggregate scoring, and no longer expose group-total HP wording.
 
 ## Pending Queue
 
@@ -77,43 +78,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Simplify Blessing Estimate Copy
-
-Goal: shorten the Healer `Blessing` estimate so it focuses on the formula-calculated HP value in the same concise style as `Healing Light`, without secondary group-wide totals.
-
-Touch:
-- `src/Habitica.Rules/Spells/SpellViewModelFactory.cs` (`BuildPartyHealEstimate`)
-- direct tests under `tests/Habitica.Rules.Tests/Spells/SpellViewModelFactoryTests.cs`
-- `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs` only if page assertions depend on the old copy
-- `FEATURES.md`
-
-Implementation shape:
-- Keep the current formula and fresh-party-health capping behavior:
-  - theoretical maximum: `(CON + INT + 5) * 0.04`;
-  - when fresh party HP is available, cap each known member by that member's missing HP;
-  - when fresh party HP is unavailable, show the theoretical per-member maximum.
-- Replace verbose aggregate copy with one concise sentence focused on per-member value:
-  - no fresh HP: "Restores up to approximately X HP to each party member."
-  - same effective heal for covered members: "Restores approximately X HP to each covered party member."
-  - varied effective heal for covered members: "Restores approximately X-Y HP per covered party member."
-- Preserve a short missing-coverage warning only when useful, but do not include total HP restored across the whole group.
-- Keep `SpellEffectValue` useful for sorting/recommendations; if the score remains aggregate total heal, ensure UI copy no longer exposes that aggregate as the main description.
-
-Out of scope:
-- changing Blessing formula or confidence level;
-- changing Healing Light behavior;
-- changing party-health freshness rules;
-- changing spell-cast execution or CRON warning behavior;
-- changing spell equipment recommendation ranking except as a direct consequence of existing `SpellEffectValue` score semantics.
-
-Acceptance:
-- Blessing estimate no longer contains aggregate group-total wording such as `HP total`.
-- Blessing estimate still shows the formula-calculated per-member theoretical maximum when fresh party health is unavailable.
-- With fresh party health, Blessing estimate shows the capped per-member value or range for covered members.
-- Missing party-member HP coverage, if shown, is short and secondary.
-- Healing Light estimate remains unchanged.
-- Tests cover no fresh party health, uniform covered member healing, varied covered member healing, missing coverage, and absence of group-total copy.
 
 ## Backlog
 

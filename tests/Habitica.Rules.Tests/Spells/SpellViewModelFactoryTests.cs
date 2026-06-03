@@ -223,23 +223,47 @@ public sealed class SpellViewModelFactoryTests
     }
 
     [Fact]
-    public void Create_caps_blessing_effective_heal_by_fresh_party_member_hp()
+    public void Create_reports_uniform_blessing_heal_for_covered_party_members()
     {
         var snapshot = CreateUserSnapshot(
             className: "healer",
             level: 15,
             stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m));
         var partySnapshot = CreatePartySnapshot(
-            CreatePartyMember("near-full", health: 49m, maxHealth: 50m));
+            CreatePartyMember("near-full", health: 49m, maxHealth: 50m),
+            CreatePartyMember("also-near-full", health: 99m, maxHealth: 100m));
         var factory = new SpellViewModelFactory();
 
         var blessing = factory.Create(snapshot, null, null, partySnapshot, hasFreshPartyHealth: true)
             .Spells
             .Single(spell => spell.Id == "healAll");
 
-        Assert.Contains("Restores approximately 1 HP to each of 1 party member with fresh HP", blessing.EstimatedEffect, StringComparison.Ordinal);
-        Assert.Contains("2.56 HP maximum per member before overheal", blessing.EstimatedEffect, StringComparison.Ordinal);
-        Assert.Equal(1m, Assert.Single(blessing.EstimatedEffectValues).Value);
+        Assert.Equal("Restores approximately 1 HP to each covered party member.", blessing.EstimatedEffect);
+        Assert.DoesNotContain("HP total", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.DoesNotContain("maximum per member", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.Equal(2m, Assert.Single(blessing.EstimatedEffectValues).Value);
+    }
+
+    [Fact]
+    public void Create_reports_varied_blessing_heal_range_for_covered_party_members()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m));
+        var partySnapshot = CreatePartySnapshot(
+            CreatePartyMember("near-full", health: 49m, maxHealth: 50m),
+            CreatePartyMember("wounded", health: 45m, maxHealth: 50m));
+        var factory = new SpellViewModelFactory();
+
+        var blessing = factory.Create(snapshot, null, null, partySnapshot, hasFreshPartyHealth: true)
+            .Spells
+            .Single(spell => spell.Id == "healAll");
+
+        Assert.Equal("Restores approximately 1-2.56 HP per covered party member.", blessing.EstimatedEffect);
+        Assert.DoesNotContain("HP total", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.DoesNotContain("maximum per member", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.Equal(3.56m, Assert.Single(blessing.EstimatedEffectValues).Value);
     }
 
     [Fact]
@@ -258,7 +282,8 @@ public sealed class SpellViewModelFactoryTests
             .Spells
             .Single(spell => spell.Id == "healAll");
 
-        Assert.Contains("HP is unavailable for 1 party member.", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.Equal("Restores approximately 1 HP to each covered party member. Missing HP for 1 party member.", blessing.EstimatedEffect);
+        Assert.DoesNotContain("HP total", blessing.EstimatedEffect, StringComparison.Ordinal);
         Assert.Equal(1m, Assert.Single(blessing.EstimatedEffectValues).Value);
     }
 
@@ -273,8 +298,9 @@ public sealed class SpellViewModelFactoryTests
 
         var blessing = factory.Create(snapshot, null, null).Spells.Single(spell => spell.Id == "healAll");
 
-        Assert.Contains("Restores up to approximately 2.56 HP to each party member", blessing.EstimatedEffect, StringComparison.Ordinal);
-        Assert.Contains("theoretical maximum; fresh party-member HP is unavailable", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.Equal("Restores up to approximately 2.56 HP to each party member.", blessing.EstimatedEffect);
+        Assert.DoesNotContain("HP total", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.DoesNotContain("fresh party-member HP is unavailable", blessing.EstimatedEffect, StringComparison.Ordinal);
     }
 
     [Fact]

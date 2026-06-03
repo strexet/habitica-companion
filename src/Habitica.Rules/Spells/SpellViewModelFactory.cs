@@ -353,7 +353,7 @@ public sealed class SpellViewModelFactory
         if (members.Length == 0)
         {
             return BuildEstimate(
-                $"Restores up to approximately {maximumHeal:0.##} HP to each party member (theoretical maximum; fresh party-member HP is unavailable).",
+                $"Restores up to approximately {maximumHeal:0.##} HP to each party member.",
                 new SpellEffectValue(maximumHeal, "maximum HP to each party member"));
         }
 
@@ -369,10 +369,10 @@ public sealed class SpellViewModelFactory
         var unavailableCount = Math.Max(0, partyMemberCount - members.Length);
         var coverage = unavailableCount == 0
             ? string.Empty
-            : $" HP is unavailable for {FormatCount(unavailableCount, "party member")}.";
+            : $" Missing HP for {FormatCount(unavailableCount, "party member")}.";
         var estimate = minimumHeal == maximumEffectiveHeal
-            ? $"Restores approximately {minimumHeal:0.##} HP to each of {FormatCount(members.Length, "party member")} with fresh HP ({maximumHeal:0.##} HP maximum per member before overheal)."
-            : $"Restores approximately {minimumHeal:0.##}-{maximumEffectiveHeal:0.##} HP per party member across {FormatCount(members.Length, "party member")} with fresh HP ({totalHeal:0.##} HP total; {maximumHeal:0.##} HP maximum per member before overheal).";
+            ? $"Restores approximately {minimumHeal:0.##} HP to each covered party member."
+            : $"Restores approximately {minimumHeal:0.##}-{maximumEffectiveHeal:0.##} HP per covered party member.";
 
         return BuildEstimate(
             estimate + coverage,
