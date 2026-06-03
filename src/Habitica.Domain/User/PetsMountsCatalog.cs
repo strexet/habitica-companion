@@ -83,6 +83,23 @@ public static class PetsMountsCatalog
         return Pets.FirstOrDefault(pet => string.Equals(pet.Key, key, StringComparison.Ordinal));
     }
 
+    public static MountCatalogItem? FindMount(string key)
+    {
+        return Mounts.FirstOrDefault(mount => string.Equals(mount.Key, key, StringComparison.Ordinal));
+    }
+
+    public static bool TryGetGrowableMountKey(PetCatalogItem pet, out string mountKey)
+    {
+        if (FindMount(pet.Key) is not null)
+        {
+            mountKey = pet.Key;
+            return true;
+        }
+
+        mountKey = string.Empty;
+        return false;
+    }
+
     public static string ToReadableName(string value)
     {
         if (string.IsNullOrWhiteSpace(value))

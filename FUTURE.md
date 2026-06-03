@@ -79,53 +79,6 @@ _None._
 
 Work top to bottom. Each entry is self-contained.
 
-### Pets And Mounts Feeding Rules Model
-
-Goal: make pet-to-mount feeding progress a first-class local rules model so UI features can show progress and planned food needs without duplicating Habitica feeding formulas in Razor code.
-
-Touch:
-- `HABITICA_API.md`
-- `FEATURES.md`
-- `src/Habitica.Domain/User/PetsMountsCatalog.cs`
-- `src/Habitica.Domain/User/UserSnapshot.cs` only if the existing `InventorySnapshot.Pets` progress map needs clarification in code comments or type naming
-- `src/Habitica.Rules/Pets`
-- direct tests under `tests/Habitica.Rules.Tests/Pets/`
-- `tests/Habitica.Api.Tests/HabiticaApiClientTests.cs` only if documented user-data parsing expectations change
-
-Out of scope:
-- changing feed, hatch, equip, or sell execution;
-- adding page filters or missing-mount buttons;
-- persisting companion progress to Cloudflare app-data sync;
-- guessing unsupported Habitica formulas or special-companion rules without documentation.
-
-Implementation plan:
-- Confirm from current Habitica API/user-data docs and checked-in parsing that `items.pets[petKey]` is the feed-progress value for owned pets and that `items.mounts[mountKey]` is mount ownership.
-- Document the confirmed data shape and feeding constants in `HABITICA_API.md`: hatched baseline progress, favorite-food progress, non-favorite-food progress, mount threshold, and any unavailable/special cases.
-- Add a small rules type in `src/Habitica.Rules/Pets` that accepts a `PetCatalogItem`, current pet progress, owned food, and existing `PetFeedRecommendationFactory` output.
-- Expose calculated current percent, remaining percent, whether the pet can still grow into a mount, best available food rows, and the shortest available feed plan that uses favorite food first, generic food next, then other non-matching food where applicable.
-- Add catalog helper logic for deriving the corresponding mount key from a normal pet key and for rejecting wacky/special entries that cannot produce normal mounts.
-- Keep formulas integer/decimal based and deterministic; avoid UI-formatted strings in rules output.
-- Update `FEATURES.md` only to describe the new local rules capability if it becomes user-visible through model naming or documented behavior.
-
-Acceptance:
-- Tests cover a newly hatched pet needing 9 favorite foods to reach a mount.
-- Tests cover a newly hatched pet needing up to 23 non-favorite foods when no favorite/generic food is available.
-- Tests cover partially fed pets, already complete pets, missing/unknown pet keys, wacky pets, and pets whose matching mount is already owned.
-- Tests cover recommendation ordering and mixed available-food planning without mutating owned-food dictionaries.
-- `HABITICA_API.md` records the exact source-backed feeding constants used by the rules model.
-
-Need to run build:
-
-```bash
-DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
-```
-
-Need to run test(s): `PetFeedRecommendationFactoryTests` and new pet growth rules tests
-
-```bash
-DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj -m:1 -nodeReuse:false --filter FullyQualifiedName~Pets
-```
-
 ### Pets And Mounts Pet Card Growth Progress
 
 Goal: show each owned, feedable pet's progress toward becoming a mount and summarize how much more food is needed using the local feeding rules model.

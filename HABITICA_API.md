@@ -1,6 +1,6 @@
 # Habitica API Integration Guide
 
-Last researched: 2026-05-25
+Last researched: 2026-06-03
 Target API: Habitica API v3
 Audience: developers building a new Habitica client or integration
 
@@ -304,6 +304,10 @@ For this app's Pets & Mounts page:
 - Hatch actions call `POST /user/hatch/:egg/:hatchingPotion`.
 - Refresh `/user` after hatch, feed-queue, or companion-equip mutations before updating cached companion state.
 - Keep per-key pet and mount ownership maps local. Redact them from encrypted Cloudflare user-profile uploads.
+
+Habitica stores companion state in the `/user` response under `items.pets` and `items.mounts`. This app treats non-negative numeric `items.pets[petKey]` entries as owned pets with Habitica feed-progress points, and boolean `items.mounts[mountKey]` entries as mount ownership. Negative pet values are not owned and are filtered out of the local owned-pet map.
+
+Pet growth planning uses the public Habitica stable rules: a hatched, growable pet starts at 10% growth; preferred food adds 10%; non-preferred food adds 4%; and the pet becomes a mount at 100%. In local calculations, one cached Habitica pet-progress point maps to 2 percentage points beyond the 10% hatched baseline, so a stored progress value of `0` displays as 10%, `5` displays as 20%, and `45` displays as mount-ready. A newly hatched pet therefore needs 9 preferred foods or up to 23 non-preferred foods. `Saddle` is treated as a generic feed item that completes the remaining growth when available through the existing feed endpoint. Wacky pets and unknown/special pets without a catalog mount are not treated as growable.
 
 For battle-gear swaps, this client uses:
 
