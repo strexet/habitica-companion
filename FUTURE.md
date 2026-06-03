@@ -66,6 +66,72 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
+- Remove CRON SUMMARY / Buff timing window from Party page
+   - Description
+      - The Party page currently contains a CRON SUMMARY section with a Buff timing window block.
+      - This section should be removed from the Party page.
+   - Expected behavior
+      - The Party page no longer displays CRON SUMMARY / Buff timing window.
+   - Suggested fix
+      - Remove this section from the Party page layout.
+      - Check that removing it does not leave extra spacing, empty containers, or broken layout gaps.
+- Persist manual task arrangement on the Tasks page
+   - Description
+      - When the user rearranges tasks on the Tasks page, the new order should be saved.
+      - After leaving and reopening the Tasks page, the same task sequence should be restored.
+   - Expected behavior
+      - User rearranges tasks.
+      - New order is synced to user data.
+      - Next time the user opens the Tasks page, tasks appear in the same order.
+   - Actual behavior
+      - Task rearrangement is not persisted reliably between page visits.
+   - Suggested fix
+      - Sync the updated task order after rearrangement is completed.
+      - Store the order in user data.
+      - Restore the saved order when loading the Tasks page.
+- Improve random theme generation readability rules
+   - Description
+      - Random theme generation should better account for button readability.
+      - It should consider both button background and button text colors for primary and secondary buttons.
+      - Other color contrast/readability rules should also be reviewed.
+   - Expected behavior
+      - Generated themes remain perfectly readable with calm chaos values.
+      - High chaos values, such as MADNESS, may intentionally produce wilder results.
+      - Even with more chaotic themes, primary and secondary button text should not become unreadable unless the selected chaos level explicitly allows extreme output.
+   - Suggested fix
+      - Add readability checks for PrimaryButton + PrimaryButtonText.
+      - Add readability checks for SecondaryButton + SecondaryButtonText.
+      - Review other generated color pairs for contrast issues.
+      - Tune generation rules so CALM chaos stays readable and controlled.
+      - Allow more experimental/uncontrolled combinations only at high chaos values like MADNESS.
+- Add sync logic to APPEARANCE block and rename final customization button
+   - Description
+      - The APPEARANCE block on the dashboard and in other color scheme settings should have built-in sync logic.
+      - Sync should happen when changing a preset and when saving a new preset.
+      - After the user finishes customization, the button should say Done instead of Cancel.
+   - Expected behavior
+      - Changing an appearance/color preset updates and syncs the selected appearance state.
+      - Saving a new preset also syncs the relevant appearance/color scheme data.
+      - The final customization button says Done, making the flow feel like confirmation instead of cancellation.
+   - Suggested fix
+      - Add sync handling to the APPEARANCE block.
+      - Trigger sync when a preset is selected.
+      - Trigger sync when a new preset is saved.
+      - Replace the final customization button label from Cancel to Done.
+- Simplify Blessing description
+   - Description
+      - Blessing description is currently overwhelming and contains too much extra information.
+      - It should focus on the value calculated by the formulas.
+      - It should not include extra details such as total HP of the whole group.
+      - Healing Light description looks closer to the desired style and can be used as a reference.
+   - Expected behavior
+      - Blessing description clearly shows the formula-calculated value.
+      - The description is concise and not overloaded with secondary group-wide details.
+   - Suggested fix
+      - Remove extra explanatory/aggregate information from Blessing description.
+      - Keep the main calculated value visible.
+      - Align the description style with Healing Light where appropriate.
+
 
 ## Prioritized Next Changes
 
