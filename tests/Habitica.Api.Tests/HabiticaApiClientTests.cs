@@ -261,11 +261,35 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(4, snapshot.DayStartHour);
         Assert.Equal(-420, snapshot.TimezoneOffsetMinutes);
         Assert.Equal((bool?)true, snapshot.NeedsCron);
-        Assert.Equal(14m, snapshot.GemBalance);
+        Assert.Equal(56m, snapshot.GemBalance);
         Assert.True(snapshot.CanBuyGemsForGold);
         Assert.Equal(8, snapshot.RemainingGemPurchases);
         Assert.NotNull(snapshot.CurrentHabiticaDayKey);
         Assert.NotNull(snapshot.CurrentHabiticaDayStartUtc);
+    }
+
+    [Fact]
+    public async Task GetUserSnapshotAsync_maps_raw_balance_to_gem_count()
+    {
+        var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = JsonContent("""
+            {
+              "success": true,
+              "data": {
+                "profile": { "name": "Mage Tester" },
+                "balance": 6.25,
+                "stats": { "class": "wizard", "lvl": 15, "gp": 40 },
+                "purchased": { "plan": {} }
+              }
+            }
+            """)
+        });
+        var client = CreateClient(handler);
+
+        var snapshot = await client.GetUserSnapshotAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
+
+        Assert.Equal(25m, snapshot.GemBalance);
     }
 
     [Fact]

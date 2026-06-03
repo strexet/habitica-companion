@@ -2266,7 +2266,7 @@ public sealed class AppSessionController : IAppSessionController
         {
             return State.UserSnapshot.RemainingGemPurchases == 0
                 ? InventoryActionResult.Failure("Monthly gem limit reached.")
-                : InventoryActionResult.Failure("You need at least 20 GP to trade for a gem.");
+                : InventoryActionResult.Failure("You need at least 20 GP to buy a gem.");
         }
 
         var safeCount = Math.Clamp(quantity, 1, 50);

@@ -118,7 +118,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             CurrentHabiticaDayKey: currentHabiticaDayKey,
             CurrentHabiticaDayStartUtc: currentHabiticaDayStartUtc,
             NeedsCron: needsCron,
-            GemBalance: TryGetDecimal(data, "balance", out var gemBalance) ? gemBalance : null,
+            GemBalance: GetGemBalance(data),
             CanBuyGemsForGold: GetCanBuyGemsForGold(purchasePlan, retrievedAtUtc),
             RemainingGemPurchases: GetRemainingGemPurchases(purchasePlan));
     }
@@ -1785,6 +1785,13 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         }
 
         return cap is null || bought is null ? null : Math.Max(0, cap.Value - bought.Value);
+    }
+
+    private static decimal? GetGemBalance(JsonElement data)
+    {
+        return TryGetDecimal(data, "balance", out var balance)
+            ? balance * 4m
+            : null;
     }
 
     private static bool HasActiveSubscriptionSignal(JsonElement plan)
