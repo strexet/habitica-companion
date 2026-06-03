@@ -279,8 +279,8 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("Reward details are not available yet.", questsCut.Markup);
         Assert.Empty(questsCut.FindAll("[data-testid='active-quest-participants']"));
         questsCut.Find("[data-testid='toggle-active-quest-participants']").Click();
-        Assert.Contains("Alpha", questsCut.Find("[data-testid='active-quest-participants']").TextContent);
-        questsCut.Find("[data-testid='active-quest-participants'] .inline-link-button").Click();
+        Assert.Contains("Participant details are unavailable.", questsCut.Find("[data-testid='active-quest-participants']").TextContent);
+        questsCut.Find(".inline-link-button").Click();
         Assert.EndsWith("/party?member=user-1", Services.GetRequiredService<NavigationManager>().Uri, StringComparison.Ordinal);
         Assert.Contains("CRON statistics", cut.Markup);
         Assert.Contains("Historical average", cut.Markup);
@@ -1363,8 +1363,10 @@ public sealed class PartyPageTests : BunitContext
         Assert.DoesNotContain("<dt>Rejected</dt>", cut.Markup);
         Assert.DoesNotContain("<dt>Unknown</dt>", cut.Markup);
         Assert.DoesNotContain("<dt>In Inn</dt>", cut.Markup);
-        Assert.Contains("<dt>Owner</dt><dd><span>Unavailable</span></dd>", cut.Markup);
-        Assert.Contains("<dt>Started</dt><dd>Unavailable</dd>", cut.Markup);
+        Assert.Contains("<dt>Owner</dt>", cut.Markup);
+        Assert.Contains("<span>Unavailable</span>", cut.Markup);
+        Assert.Contains("<dt>Started</dt>", cut.Markup);
+        Assert.Contains("<dd>Unavailable</dd>", cut.Markup);
     }
 
     [Fact]

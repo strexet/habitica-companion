@@ -107,7 +107,7 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("href=\"/quests\"", cut.Markup);
         Assert.Contains("https://habitica.com/party", cut.Markup);
         var dashboardLinkCopies = cut.FindAll(".dashboard-link-copy");
-        Assert.Equal(5, dashboardLinkCopies.Count);
+        Assert.Equal(6, dashboardLinkCopies.Count);
         Assert.All(dashboardLinkCopies, copy =>
         {
             Assert.Equal(2, copy.Children.Length);

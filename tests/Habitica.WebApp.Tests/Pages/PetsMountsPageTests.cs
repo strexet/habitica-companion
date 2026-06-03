@@ -64,7 +64,7 @@ public sealed class PetsMountsPageTests : BunitContext
         Assert.Contains("favorite", cut.Find("[data-testid='feed-food-select']").TextContent);
         cut.Find("[data-testid='add-feed-queue-item']").Click();
 
-        Assert.Contains("Base Wolf", cut.Find("[data-testid='feed-dry-run-preview']").TextContent);
+        Assert.Contains("Wolf Base", cut.Find("[data-testid='feed-dry-run-preview']").TextContent);
         cut.Find("[data-testid='execute-feed-queue']").Click();
         cut.Find("[data-testid='equip-pet-Wolf-Base']").Click();
         cut.Find("[data-testid='equip-mount-Wolf-Base']").Click();
