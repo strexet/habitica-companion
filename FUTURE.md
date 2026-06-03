@@ -79,6 +79,60 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 Work top to bottom. Each entry is self-contained.
 
+### Dashboard Gem-For-Gold Availability States
+
+Goal: keep the Dashboard gem-for-gold purchase card visible for every signed-in user with an account snapshot, and move subscription, cap, gold, freshness, and unknown-eligibility outcomes into clear unavailable states instead of hiding the UI.
+
+Context:
+- Commit `aef70b3` added the Dashboard "Buy gems with gold" action, but the card is currently gated by `snapshot.CanBuyGemsForGold == true`.
+- A subscribed user can still miss the card when the cached Habitica account payload does not map to that boolean as expected.
+- The card should be findable even when the user cannot buy gems right now, so users can see the reason and know whether to refresh, earn gold, wait for the monthly cap, sign in, or expect Habitica to reject an unknown case.
+
+Touch:
+- `src/Habitica.Api/HabiticaApiClient.cs`
+- `src/Habitica.Api/IHabiticaSyncClient.cs` only if the endpoint contract or parsed user snapshot fields need adjustment
+- `src/Habitica.Domain/User/UserSnapshot.cs`
+- `src/Habitica.WebApp/Pages/DashboardPage.razor`
+- `src/Habitica.WebApp/State/AppSessionController.cs`
+- direct tests under `tests/Habitica.Api.Tests/`, `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs`, and `tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs`
+- `FEATURES.md`
+- `HABITICA_API.md` if the subscription/plan fields or gem purchase endpoint assumptions are corrected
+
+Out of scope:
+- changing the Habitica gem purchase endpoint;
+- changing gem price rules beyond the documented 20 GP per gem;
+- adding automatic refresh loops or background eligibility probing;
+- adding Cloudflare storage or sync behavior;
+- making purchases without explicit confirmation.
+
+Detailed requirements:
+- Dashboard must render a "Buy gems with gold" card whenever the user is signed in and has any cached account snapshot, regardless of subscription status, gold amount, monthly cap, stale freshness, or unknown eligibility.
+- Signed-out or missing-account states may keep existing first-run/refresh guidance, but should not silently imply the feature does not exist.
+- The card must show the current gem balance when known, gold affordability at 20 GP per gem, remaining monthly purchase count when known, and a short reason when purchase is unavailable.
+- The card must distinguish at least these states:
+  - available: fresh account snapshot, enough gold, cap remaining or unknown, and no known eligibility block;
+  - stale/expired/missing freshness: visible card, disabled purchase action, refresh reason;
+  - not enough gold: visible card, disabled purchase action, "Needs 20 GP" or equivalent short copy;
+  - monthly cap reached: visible card, disabled purchase action, cap reason;
+  - known ineligible from Habitica payload: visible card, disabled purchase action, eligibility reason;
+  - unknown eligibility/subscription payload: visible card with cautious copy and enabled action only if existing endpoint rules make that safe, otherwise disabled with "eligibility unavailable" copy.
+- Review `HabiticaApiClient.GetCanBuyGemsForGold` and `GetRemainingGemPurchases` against the currently cached Habitica user JSON fields. Avoid inferring "not subscribed" from missing plan fields if Habitica may omit them for subscribed users.
+- If Habitica exposes both explicit `canBuyGems`/`canBuyGemsForGold` and subscription-plan-derived fields, explicit booleans must win. Missing fields should map to unknown, not false, unless documented otherwise.
+- `AppSessionController.BuyGemsForGoldAsync` must keep server-side guards before mutation, but its guard messages should match the visible Dashboard state reasons.
+- Quantity input must remain clamped to available gold and known cap when available. If cap is unknown, clamp by gold and local max only.
+- Confirmation step remains required before any Habitica mutation.
+- Sequential one-gem request behavior, stop-on-failure behavior, diagnostics metadata, and post-success `/user` refresh remain intact.
+
+Acceptance:
+- A signed-in subscribed user with a fresh account snapshot sees the card even if plan-derived fields are missing or inconclusive.
+- A signed-in non-subscribed user sees the card with an unavailable reason instead of hidden UI when Habitica clearly reports ineligibility.
+- A signed-in user with insufficient gold sees the card disabled with gold reason.
+- A signed-in user at monthly cap sees the card disabled with cap reason.
+- A signed-in user with stale/expired account data sees the card disabled with refresh reason.
+- Available users can set a quantity, see confirmation, and run the existing sequential purchase flow.
+- Tests cover visible unavailable states, available state, quantity clamp, explicit boolean mapping, missing-plan-field mapping, and controller guard messages.
+- `FEATURES.md` documents that the Dashboard card is visible with stateful availability reasons, not hidden solely by eligibility.
+
 ## Backlog
 
 These entries are lower priority. Each entry is self-contained and should be promoted into `Prioritized Next Changes` before implementation.
