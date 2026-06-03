@@ -2781,6 +2781,38 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    public async Task<LocalDataActionResult> SyncAppDataSectionAsync(
+        CloudSyncSection section,
+        CancellationToken cancellationToken = default)
+    {
+        if (section == CloudSyncSection.SyncMetadata)
+        {
+            return LocalDataActionResult.Failure("Sync metadata is updated by app-data section uploads.");
+        }
+
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null)
+        {
+            return LocalDataActionResult.Success("Cloud sync skipped because no active Habitica credentials are available.");
+        }
+
+        var report = await TryUploadCloudSyncSectionAsync(credentials, section, cancellationToken);
+        var sectionResult = report?.SectionResults.FirstOrDefault(result => result.Section == section);
+        if (sectionResult is null)
+        {
+            return LocalDataActionResult.Failure("Cloud sync section upload failed.");
+        }
+
+        return sectionResult.Status switch
+        {
+            CloudSyncSectionStatusKind.Succeeded => LocalDataActionResult.Success($"Uploaded {sectionResult.SectionKey} to encrypted cloud sync."),
+            CloudSyncSectionStatusKind.Failed => LocalDataActionResult.Failure(sectionResult.ErrorMessage ?? $"Cloud sync section {sectionResult.SectionKey} failed."),
+            CloudSyncSectionStatusKind.Excluded or CloudSyncSectionStatusKind.Skipped => LocalDataActionResult.Success(
+                $"Cloud sync section {sectionResult.SectionKey} skipped: {sectionResult.ErrorMessage ?? sectionResult.Status.ToString()}."),
+            _ => LocalDataActionResult.Success($"Cloud sync section {sectionResult.SectionKey} status: {sectionResult.Status}.")
+        };
+    }
+
     public async Task<LocalDataActionResult> DownloadCloudSyncAsync(CancellationToken cancellationToken = default)
     {
         var credentials = await ResolveCredentialsAsync(cancellationToken);

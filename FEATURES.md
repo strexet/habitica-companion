@@ -1433,6 +1433,7 @@ inventory/equipmentPresets
 party/latestSnapshot
 party/cronHistory
 diagnostics/logEntries
+preferences/taskOrder
 preferences/colorSchemes
 ```
 
@@ -1536,7 +1537,7 @@ Test:
 - credential exclusion from export;
 - import conflict preview;
 - merge behavior for equipment presets and party CRON history;
-- automatic cloud sync after refresh and equipment preset changes;
+- automatic cloud sync after refresh, equipment preset changes, and manual task-order changes;
 - Settings controls for export, import, and cloud sync;
 - per-section cloud sync statuses and exclusions;
 - WebApp build after adding Pages Function assets.
@@ -2669,7 +2670,7 @@ Current view-model rules:
 11. Keep task cards compact with title, notes, immediate scoring/checkoff controls, disabled reasons, progress, and a Details toggle. Keep the task-scoped action row wrapping within the card at narrow widths instead of stretching each button to the full card width. Reveal status, value/priority/due metadata, task detail metadata, and charts inside the expanded card.
 12. For Habit scoring, clamp multi-score count to 1-20 and show determinate progress while requests execute sequentially.
 13. Apply saved per-type task order after filtering/sorting; unknown saved IDs are ignored and new task IDs append after ordered known IDs.
-14. Drag handles move items within the currently visible list and persist the resulting per-type ID order for export/import and cloud sync.
+14. Drag handles move items within the currently visible list and persist the resulting per-type ID order for export/import and encrypted cloud sync. After drag/drop, keyboard reorder, or move-button reorder, the page saves `preferences/taskOrder` locally and asks the session controller to upload only the `task-order-preferences` cloud-sync section when credentials are available; signed-out or failed cloud uploads do not undo the local order.
 15. Drag reordering is scoped to the current task type group and preserves hidden or completed items that are filtered out of the visible subset.
 16. Focused drag handles support arrow-key reordering through the same local ordering path for keyboard precision.
 17. Keep rearrange controls hidden by default. Each task group exposes an in-memory `Rearrange` toggle that reveals the drag handle plus one horizontal row of move-to-top, move-up, move-down, and move-to-bottom buttons. The buttons use the same local ordering path and disable edge moves that would not change the visible order.

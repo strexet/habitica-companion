@@ -88,6 +88,8 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<int> BuyGemsForGoldCalls { get; } = new();
 
+    public List<CloudSyncSection> SyncAppDataSectionCalls { get; } = new();
+
     public List<string> RemovePresetCalls { get; } = new();
 
     public List<(string PresetId, string Name)> RenamePresetCalls { get; } = new();
@@ -343,6 +345,14 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public Task<LocalDataActionResult> PushCloudSyncAsync(CancellationToken cancellationToken = default)
     {
+        return Task.FromResult(LocalDataResult);
+    }
+
+    public Task<LocalDataActionResult> SyncAppDataSectionAsync(
+        CloudSyncSection section,
+        CancellationToken cancellationToken = default)
+    {
+        SyncAppDataSectionCalls.Add(section);
         return Task.FromResult(LocalDataResult);
     }
 

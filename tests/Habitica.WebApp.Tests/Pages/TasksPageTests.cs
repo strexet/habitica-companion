@@ -200,7 +200,7 @@ public sealed class TasksPageTests : BunitContext
         Services.AddSingleton(new TaskListViewModelFactory());
         Services.AddSingleton(new TaskOrderPlanner());
         Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
-        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+        var sessionController = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
                 IsAuthenticated: false,
@@ -215,6 +215,7 @@ public sealed class TasksPageTests : BunitContext
                         new TaskSnapshot("todo-1", "Buy milk", TaskType.Todo, false, 1m, null, null, 1m),
                         new TaskSnapshot("habit-1", "Read docs", TaskType.Habit, false, 1m, null, null, 2m)
                     }))));
+        Services.AddSingleton<IAppSessionController>(sessionController);
 
         var cut = Render<TasksPage>();
 
@@ -283,7 +284,7 @@ public sealed class TasksPageTests : BunitContext
         Services.AddSingleton(new TaskOrderPlanner());
         var storage = new FakeKeyValueStorage();
         Services.AddSingleton<IKeyValueStorage>(storage);
-        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+        var sessionController = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
                 IsAuthenticated: false,
@@ -298,7 +299,8 @@ public sealed class TasksPageTests : BunitContext
                         new TaskSnapshot("todo-1", "Alpha", TaskType.Todo, false, 1m, null, null, 1m),
                         new TaskSnapshot("todo-2", "Beta", TaskType.Todo, false, 1m, null, null, 2m),
                         new TaskSnapshot("todo-3", "Gamma", TaskType.Todo, false, 1m, null, null, 3m)
-                    }))));
+                    })));
+        Services.AddSingleton<IAppSessionController>(sessionController);
 
         var cut = Render<TasksPage>();
         AssertMarkupOrder(cut.Markup, "Alpha", "Beta", "Gamma");
@@ -315,6 +317,7 @@ public sealed class TasksPageTests : BunitContext
         var preferences = await storage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
         Assert.NotNull(preferences);
         Assert.Equal(new[] { "todo-2", "todo-1", "todo-3" }, preferences!.OrdersByType["Todo"]);
+        Assert.Equal(new[] { CloudSyncSection.TaskOrderPreferences }, sessionController.SyncAppDataSectionCalls);
 
         var rerendered = Render<TasksPage>();
         AssertMarkupOrder(rerendered.Markup, "Beta", "Alpha", "Gamma");
@@ -329,7 +332,7 @@ public sealed class TasksPageTests : BunitContext
         Services.AddSingleton(new TaskOrderPlanner());
         var storage = new FakeKeyValueStorage();
         Services.AddSingleton<IKeyValueStorage>(storage);
-        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+        var sessionController = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
                 IsAuthenticated: false,
@@ -344,7 +347,8 @@ public sealed class TasksPageTests : BunitContext
                         new TaskSnapshot("todo-1", "Alpha", TaskType.Todo, false, 1m, null, null, 1m),
                         new TaskSnapshot("todo-2", "Beta", TaskType.Todo, false, 1m, null, null, 2m),
                         new TaskSnapshot("todo-3", "Gamma", TaskType.Todo, false, 1m, null, null, 3m)
-                    }))));
+                    })));
+        Services.AddSingleton<IAppSessionController>(sessionController);
 
         var cut = Render<TasksPage>();
 
@@ -355,6 +359,7 @@ public sealed class TasksPageTests : BunitContext
         var preferences = await storage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
         Assert.NotNull(preferences);
         Assert.Equal(new[] { "todo-2", "todo-1", "todo-3" }, preferences!.OrdersByType["Todo"]);
+        Assert.Equal(new[] { CloudSyncSection.TaskOrderPreferences }, sessionController.SyncAppDataSectionCalls);
     }
 
     [Fact]
@@ -366,7 +371,7 @@ public sealed class TasksPageTests : BunitContext
         Services.AddSingleton(new TaskOrderPlanner());
         var storage = new FakeKeyValueStorage();
         Services.AddSingleton<IKeyValueStorage>(storage);
-        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+        var sessionController = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
                 IsAuthenticated: false,
@@ -381,7 +386,8 @@ public sealed class TasksPageTests : BunitContext
                         new TaskSnapshot("todo-1", "Alpha", TaskType.Todo, false, 1m, null, null, 1m),
                         new TaskSnapshot("todo-2", "Beta", TaskType.Todo, false, 1m, null, null, 2m),
                         new TaskSnapshot("todo-3", "Gamma", TaskType.Todo, false, 1m, null, null, 3m)
-                    }))));
+                    })));
+        Services.AddSingleton<IAppSessionController>(sessionController);
 
         var cut = Render<TasksPage>();
 
@@ -398,6 +404,9 @@ public sealed class TasksPageTests : BunitContext
         var preferences = await storage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
         Assert.NotNull(preferences);
         Assert.Equal(new[] { "todo-1", "todo-2", "todo-3" }, preferences!.OrdersByType["Todo"]);
+        Assert.Equal(
+            new[] { CloudSyncSection.TaskOrderPreferences, CloudSyncSection.TaskOrderPreferences, CloudSyncSection.TaskOrderPreferences },
+            sessionController.SyncAppDataSectionCalls);
     }
 
     [Fact]

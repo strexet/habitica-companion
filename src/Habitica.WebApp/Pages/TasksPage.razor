@@ -2,6 +2,7 @@
 @implements IDisposable
 @implements IAsyncDisposable
 @using System.Globalization
+@using Habitica.Application.Sync
 @using Habitica.Domain.Tasks
 @using Habitica.Storage
 @using Microsoft.AspNetCore.Components.Rendering
@@ -866,6 +867,7 @@
                 pair => pair.Value,
                 StringComparer.Ordinal));
         await KeyValueStorage.SetAsync(StorageKeys.TaskOrderPreferences, preferences, CancellationToken.None);
+        _ = SessionController.SyncAppDataSectionAsync(CloudSyncSection.TaskOrderPreferences);
     }
 
     private string GetPreferenceUserId()

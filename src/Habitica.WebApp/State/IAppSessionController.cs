@@ -107,6 +107,8 @@ public interface IAppSessionController
 
     Task<LocalDataActionResult> PushCloudSyncAsync(CancellationToken cancellationToken = default);
 
+    Task<LocalDataActionResult> SyncAppDataSectionAsync(CloudSyncSection section, CancellationToken cancellationToken = default);
+
     Task<LocalDataActionResult> DownloadCloudSyncAsync(CancellationToken cancellationToken = default);
 
     Task SetCloudSyncSectionExcludedAsync(CloudSyncSection section, bool isExcluded, CancellationToken cancellationToken = default);

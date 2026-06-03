@@ -224,6 +224,98 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task SyncAppDataSectionAsync_skips_upload_without_credentials()
+    {
+        var remoteSync = new FakeRemoteUserDataSyncProvider();
+        var controller = CreateController(
+            new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()),
+            remoteUserDataSyncProvider: remoteSync);
+
+        var result = await controller.SyncAppDataSectionAsync(CloudSyncSection.TaskOrderPreferences);
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(0, remoteSync.SectionUploadCount);
+        Assert.Empty(controller.State.CloudSyncStatuses);
+    }
+
+    [Fact]
+    public async Task SyncAppDataSectionAsync_uploads_task_order_section_only()
+    {
+        var storage = new FakeKeyValueStorage();
+        await storage.SetAsync(
+            StorageKeys.TaskOrderPreferences,
+            new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)
+            {
+                ["Todo"] = new[] { "todo-2", "todo-1" }
+            }),
+            CancellationToken.None);
+        var remoteSync = new FakeRemoteUserDataSyncProvider();
+        var controller = CreateController(
+            new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()),
+            remoteUserDataSyncProvider: remoteSync,
+            keyValueStorage: storage);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        await WaitForConditionAsync(() => !controller.State.IsCloudSyncing && remoteSync.SectionUploadCount > 0);
+        remoteSync.ClearUploads();
+
+        var result = await controller.SyncAppDataSectionAsync(CloudSyncSection.TaskOrderPreferences);
+
+        Assert.True(result.Succeeded);
+        var sectionKey = CloudSyncSectionMapping.KvSuffix(CloudSyncSection.TaskOrderPreferences);
+        var metadataKey = CloudSyncSectionMapping.KvSuffix(CloudSyncSection.SyncMetadata);
+        Assert.Equal(new[] { sectionKey, metadataKey }, remoteSync.UploadedSectionKeys);
+        Assert.True(remoteSync.UploadedSections.TryGetValue(sectionKey, out var uploadedJson));
+        Assert.Contains("todo-2", uploadedJson);
+        Assert.DoesNotContain(CloudSyncSectionMapping.KvSuffix(CloudSyncSection.UserProfile), remoteSync.UploadedSectionKeys);
+        Assert.Contains(controller.State.CloudSyncStatuses, status =>
+            status.Section == CloudSyncSection.TaskOrderPreferences
+            && status.Direction == CloudSyncDirection.Upload
+            && status.Status == CloudSyncSectionStatusKind.Succeeded);
+    }
+
+    [Fact]
+    public async Task SyncAppDataSectionAsync_records_failed_task_order_upload_without_throwing()
+    {
+        var storage = new FakeKeyValueStorage();
+        await storage.SetAsync(
+            StorageKeys.TaskOrderPreferences,
+            new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)
+            {
+                ["Todo"] = new[] { "todo-2", "todo-1" }
+            }),
+            CancellationToken.None);
+        var remoteSync = new FakeRemoteUserDataSyncProvider();
+        var sectionKey = CloudSyncSectionMapping.KvSuffix(CloudSyncSection.TaskOrderPreferences);
+        remoteSync.FailedSectionKeys.Add(sectionKey);
+        var controller = CreateController(
+            new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()),
+            remoteUserDataSyncProvider: remoteSync,
+            keyValueStorage: storage);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+        await WaitForConditionAsync(() => !controller.State.IsCloudSyncing && remoteSync.SectionUploadCount > 0);
+        remoteSync.ClearUploads();
+
+        var result = await controller.SyncAppDataSectionAsync(CloudSyncSection.TaskOrderPreferences);
+
+        Assert.False(result.Succeeded);
+        Assert.Contains(controller.State.CloudSyncStatuses, status =>
+            status.Section == CloudSyncSection.TaskOrderPreferences
+            && status.Direction == CloudSyncDirection.Upload
+            && status.Status == CloudSyncSectionStatusKind.Failed
+            && status.Message == "Upload failed.");
+    }
+
+    [Fact]
     public async Task SignInAsync_merges_remote_cloud_data_into_visible_state()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
@@ -1879,26 +1971,28 @@ public sealed class AppSessionControllerTests
     private static AppSessionController CreateController(
         FakeDiagnosticsLogStore logStore,
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
-        IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null)
+        IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null,
+        FakeKeyValueStorage? keyValueStorage = null)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
-        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider);
+        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage);
     }
 
     private static AppSessionController CreateController(
         FakeDiagnosticsLogStore logStore,
         FakeHabiticaSyncClient syncClient,
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
-        IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null)
+        IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null,
+        FakeKeyValueStorage? keyValueStorage = null)
     {
         var credentialStore = new FakeCredentialStore();
-        var keyValueStorage = new FakeKeyValueStorage();
-        var taskSnapshotStore = new TaskSnapshotStore(keyValueStorage);
-        var userSnapshotStore = new UserSnapshotStore(keyValueStorage);
-        var partySnapshotStore = new PartySnapshotStore(keyValueStorage);
-        var partyCronHistoryStore = new PartyCronHistoryStore(keyValueStorage);
-        var gearCatalogStore = new GearCatalogStore(keyValueStorage);
-        var equipmentPresetStore = new EquipmentPresetStore(keyValueStorage);
+        var storage = keyValueStorage ?? new FakeKeyValueStorage();
+        var taskSnapshotStore = new TaskSnapshotStore(storage);
+        var userSnapshotStore = new UserSnapshotStore(storage);
+        var partySnapshotStore = new PartySnapshotStore(storage);
+        var partyCronHistoryStore = new PartyCronHistoryStore(storage);
+        var gearCatalogStore = new GearCatalogStore(storage);
+        var equipmentPresetStore = new EquipmentPresetStore(storage);
         var logWriter = new DiagnosticsLogWriter(logStore, TimeProvider.System);
 
         var freshnessPolicy = new SnapshotFreshnessPolicy();
@@ -1916,7 +2010,7 @@ public sealed class AppSessionControllerTests
             gearCatalogStore: gearCatalogStore,
             partyCronHistoryStore: partyCronHistoryStore,
             partySnapshotStore: partySnapshotStore,
-            localUserDataPortabilityService: new LocalUserDataPortabilityService(keyValueStorage, TimeProvider.System),
+            localUserDataPortabilityService: new LocalUserDataPortabilityService(storage, TimeProvider.System),
             refreshCoordinator: refreshCoordinator,
             remotePartyDataSyncProvider: remotePartyDataSyncProvider ?? new FakeRemotePartyDataSyncProvider(),
             remoteUserDataSyncProvider: remoteUserDataSyncProvider ?? new FakeRemoteUserDataSyncProvider(),
@@ -1998,6 +2092,14 @@ public sealed class AppSessionControllerTests
 
         public List<string> UploadedSectionKeys { get; } = new();
 
+        public HashSet<string> FailedSectionKeys { get; } = new(StringComparer.Ordinal);
+
+        public void ClearUploads()
+        {
+            UploadedSections.Clear();
+            UploadedSectionKeys.Clear();
+        }
+
         public Task<RemoteUserDataSnapshot?> DownloadAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
         {
             DownloadCount++;
@@ -2020,6 +2122,11 @@ public sealed class AppSessionControllerTests
         {
             SectionUploadCount++;
             UploadedSectionKeys.Add(sectionKey);
+            if (FailedSectionKeys.Contains(sectionKey))
+            {
+                return Task.FromResult(new SectionUploadResult(false, "Upload failed."));
+            }
+
             UploadedSections[sectionKey] = plainTextJson;
             return Task.FromResult(new SectionUploadResult(true));
         }

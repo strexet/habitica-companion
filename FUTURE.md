@@ -53,6 +53,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Dedicated Pets & Mounts page with grouped companion grids, feed queue planner, hatching and equip actions, local fold preferences, and relocated bulk sell planner while keeping per-pet/per-mount maps out of Cloudflare app-data uploads.
 - Dashboard eligible-only gem-for-gold purchase action with quantity clamp, explicit confirmation, sequential stop-on-failure requests, diagnostics, and post-purchase account refresh.
 - Party page overview no longer shows the dedicated CRON summary or buff-timing recommendation block, while member review and Quests workspace remain intact.
+- Manual task arrangement now persists locally and triggers a narrow encrypted upload of the task-order cloud-sync section without blocking or undoing local reorder changes.
 
 ## Pending Queue
 
@@ -74,45 +75,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Persist Manual Task Arrangement Through Cloud Sync
-
-Goal: after a user rearranges tasks on the Tasks page, persist the updated per-type task order locally and trigger encrypted app-data sync for `preferences/taskOrder` so the order survives page visits and can propagate through the existing user-data sync flow.
-
-Current state:
-- `TasksPage.razor` already writes `TaskOrderPreferences` to `StorageKeys.TaskOrderPreferences` after drag/drop, keyboard reorder, and move-button reorder.
-- `StorageKeys.TaskOrderPreferences` is already portable and mapped to `CloudSyncSection.TaskOrderPreferences`.
-- `LocalUserDataPortabilityService` already merges task-order preferences by task type during import/cloud-sync merge.
-- The missing behavior is a reliable post-save sync trigger from the reorder workflow.
-
-Touch:
-- `src/Habitica.WebApp/Pages/TasksPage.razor` (after `SaveTaskOrderPreferencesAsync`, trigger a narrow sync for the task-order section without blocking the visible reorder)
-- `src/Habitica.WebApp/State/IAppSessionController.cs` and `src/Habitica.WebApp/State/AppSessionController.cs` (add a small public method for syncing one portable app-data section, or another narrow app-data mutation hook that uploads `CloudSyncSection.TaskOrderPreferences`)
-- `tests/Habitica.WebApp.Tests/FakeAppSessionController.cs`
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs`
-- direct controller tests under `tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs` if a new session-controller method is added
-- `FEATURES.md`
-
-Implementation shape:
-- Prefer a section-scoped controller method over calling `PushCloudSyncAsync()` from the page, so a single reorder does not force a full cloud-sync merge/upload of every section.
-- Reuse `TryUploadCloudSyncSectionAsync(credentials, CloudSyncSection.TaskOrderPreferences, ...)` or equivalent existing upload machinery, preserving encrypted sync behavior and section status updates.
-- Keep local persistence as the source of immediate UI truth; cloud sync should be best-effort and must not revert local order when upload fails.
-- If the user is signed out or no credentials are available, skip cloud upload and keep the local order.
-
-Out of scope:
-- changing task sorting/filtering semantics;
-- adding remote task-order storage outside the existing encrypted Cloudflare app-data sync;
-- changing `TaskOrderPlanner` merge semantics;
-- changing Habitica task order on the official Habitica server;
-- sending Habitica API tokens to Cloudflare endpoints.
-
-Acceptance:
-- Drag/drop, keyboard reorder, and move-button reorder still update the visible order immediately.
-- Reopening the Tasks page in the same local store restores the saved order.
-- For an authenticated user with encrypted sync available, completing a reorder attempts upload of the `task-order-preferences` cloud-sync section and updates section sync status.
-- Upload failure or excluded section state surfaces through existing sync status/diagnostics patterns and does not block or undo the local reorder.
-- Signed-out reorder remains local-only and does not show an action failure.
-- Tests cover local persistence after reorder, section-sync trigger after each reorder path or shared persistence path, signed-out/no-credential skip behavior, and upload-failure nonblocking behavior.
 
 ### Improve Random Theme Readability Guards
 
