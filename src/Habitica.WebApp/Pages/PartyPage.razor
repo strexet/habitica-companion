@@ -654,59 +654,6 @@
 
         @if (!QuestWorkspaceOnly)
         {
-        <section class="card-surface dashboard-panel party-cron-summary">
-            <div class="party-section-head">
-                <div>
-                    <p class="section-label">CRON summary</p>
-                    <h2>Buff timing window</h2>
-                </div>
-                <span class="ui-pill count-pill">CRON applied @GetCronedLabel(snapshot)</span>
-            </div>
-
-            @if (snapshot.CronDashboard is null)
-            {
-                <p class="panel-copy">No party CRON statistics are saved yet. Refresh the account to start collecting read-only CRON history.</p>
-            }
-            else
-            {
-                <div class="party-cron-stat-grid">
-                    <article class="dashboard-stat-card">
-                        <span class="dashboard-stat-label">CRON applied</span>
-                        <strong>@GetCronedLabel(snapshot)</strong>
-                        <span class="dashboard-stat-note">@GetCronStateBreakdown(snapshot.CronDashboard)</span>
-                    </article>
-
-                    <article class="dashboard-stat-card">
-                        <span class="dashboard-stat-label">Average best buff time</span>
-                        <strong>@FormatTime(snapshot.CronDashboard.AverageBestBuffTime)</strong>
-                        <span class="dashboard-stat-note">Viewer-local estimate</span>
-                    </article>
-
-                    <article class="dashboard-stat-card">
-                        <span class="dashboard-stat-label">Self-first buff time</span>
-                        <strong>@FormatTime(snapshot.CronDashboard.SelfFirstBuffTime)</strong>
-                        <span class="dashboard-stat-note">After your CRON when available</span>
-                    </article>
-
-                    @if (HasCronDataGaps(snapshot.CronDashboard))
-                    {
-                        <article class="dashboard-stat-card">
-                            <span class="dashboard-stat-label">Data gaps</span>
-                            <strong>@GetCronDataGapLabel(snapshot.CronDashboard)</strong>
-                            <span class="dashboard-stat-note">Reduced confidence</span>
-                        </article>
-                    }
-                </div>
-
-                @if (!string.IsNullOrWhiteSpace(snapshot.CronDashboard.SampleSizeWarning))
-                {
-                    <MudAlert Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined">
-                        @snapshot.CronDashboard.SampleSizeWarning
-                    </MudAlert>
-                }
-            }
-        </section>
-
         <section class="card-surface dashboard-panel party-members-panel">
             @{
                 var availableMemberClasses = GetAvailableMemberClasses(members);
@@ -1496,54 +1443,6 @@
         return _partyPageModule;
     }
 
-    private static string GetCronedLabel(PartySnapshot snapshot)
-    {
-        var dashboard = snapshot.CronDashboard;
-        if (dashboard is null)
-        {
-            var cronedCount = snapshot.Members.Count(static member => member.CronState == PartyCronState.CronedToday);
-            return $"{cronedCount}/{snapshot.Members.Count}";
-        }
-
-        return $"{dashboard.CronedCount}/{dashboard.VisibleMemberCount}";
-    }
-
-    private static string GetCronStateBreakdown(PartyCronDashboardSnapshot dashboard)
-    {
-        return $"{dashboard.AwaitingCount} awaiting, {dashboard.InnCount} in Inn, {dashboard.UnknownCount + dashboard.PossiblyStaleCount} unknown";
-    }
-
-    private static bool HasCronDataGaps(PartyCronDashboardSnapshot dashboard)
-    {
-        return dashboard.UnknownCount > 0 || dashboard.PossiblyStaleCount > 0 || dashboard.StaleCount > 0 || dashboard.InnCount > 0;
-    }
-
-    private static string GetCronDataGapLabel(PartyCronDashboardSnapshot dashboard)
-    {
-        var parts = new List<string>();
-        if (dashboard.UnknownCount + dashboard.PossiblyStaleCount > 0)
-        {
-            parts.Add(FormatCount(dashboard.UnknownCount + dashboard.PossiblyStaleCount, "unknown"));
-        }
-
-        if (dashboard.StaleCount > 0)
-        {
-            parts.Add(FormatCount(dashboard.StaleCount, "stale"));
-        }
-
-        if (dashboard.InnCount > 0)
-        {
-            parts.Add(FormatCount(dashboard.InnCount, "in Inn"));
-        }
-
-        return string.Join(", ", parts);
-    }
-
-    private static string FormatCount(int count, string label)
-    {
-        return $"{count} {label}";
-    }
-
     private static string FormatStoredDayCount(int count)
     {
         var dayLabel = count == 1 ? "day" : "days";
@@ -1554,7 +1453,7 @@
     {
         return state switch
         {
-            PartyCronState.CronedToday => "CRON applied",
+            PartyCronState.CronedToday => "Processed today",
             PartyCronState.NotCronedYet => "Awaiting CRON",
             PartyCronState.InInn => "In Inn",
             _ => "Unknown"

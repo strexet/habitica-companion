@@ -762,13 +762,6 @@ input[type="radio"] {
     grid-column: 1 / -1;
 }
 
-.party-cron-stat-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-    margin-top: 1rem;
-}
-
 .party-quest-workspace,
 .party-quest-section,
 .party-quest-card,

@@ -251,13 +251,15 @@ public sealed class PartyPageTests : BunitContext
         Assert.Contains("Alpha", questsCut.Find(".inline-link-button").TextContent);
         Assert.DoesNotContain("Estimate range", questsCut.Markup);
         Assert.DoesNotContain("Damage taken", questsCut.Markup);
-        Assert.Contains("CRON summary", cut.Markup);
-        Assert.Contains("CRON applied 1/3", cut.Markup);
-        Assert.Contains("Data gaps", cut.Markup);
-        Assert.Contains("1 unknown", cut.Markup);
-        Assert.Contains("Average best buff time", cut.Markup);
-        Assert.Contains("Self-first buff time", cut.Markup);
-        Assert.Contains("Early estimate: based on 1 day of CRON history.", cut.Markup);
+        Assert.DoesNotContain("CRON summary", cut.Markup);
+        Assert.DoesNotContain("Buff timing window", cut.Markup);
+        Assert.DoesNotContain("CRON applied", cut.Markup);
+        Assert.DoesNotContain("CRON applied 1/3", cut.Markup);
+        Assert.DoesNotContain("Data gaps", cut.Markup);
+        Assert.DoesNotContain("Average best buff time", cut.Markup);
+        Assert.DoesNotContain("Self-first buff time", cut.Markup);
+        Assert.DoesNotContain("Early estimate: based on 1 day of CRON history.", cut.Markup);
+        Assert.Contains("Processed today", cut.Markup);
         Assert.Contains("Alpha", cut.Markup);
         Assert.Contains("Beta", cut.Markup);
         Assert.Contains("Gamma", cut.Markup);
@@ -826,7 +828,11 @@ public sealed class PartyPageTests : BunitContext
 
         var cut = Render<PartyPage>();
 
-        Assert.Contains("CRON applied 2/2", cut.Markup);
+        Assert.DoesNotContain("CRON applied 2/2", cut.Markup);
+        Assert.DoesNotContain("CRON applied", cut.Markup);
+        Assert.DoesNotContain("CRON summary", cut.Markup);
+        Assert.DoesNotContain("Buff timing window", cut.Markup);
+        Assert.Contains("Processed today", cut.Markup);
         Assert.DoesNotContain("Unknown 0", cut.Markup);
         Assert.DoesNotContain("0 possibly stale", cut.Markup);
     }

@@ -120,7 +120,7 @@ Current placements:
 
 Layout rules are enforced in `app.css`: image frames have stable small/medium/large dimensions, `object-fit: contain`, pixel-art rendering, responsive wrapping, `min-width: 0` text columns, and fixed fallback boxes to prevent overlap or layout shift.
 
-## 4. Party buff timing optimizer
+## 4. Party CRON rhythm tracker
 
 Status: implemented
 Owner module: `Habitica.Domain.Party`, `Habitica.Application.Auth`, `Habitica.Storage`
@@ -133,7 +133,7 @@ Rate-limit sensitivity: medium; party data should not be polled aggressively
 
 ### Goal
 
-Estimate the best time to cast team buffs from read-only party-member CRON data. The Party page shows current `CRONed X/Y`, data-gap counts when unknown/stale members exist, member-level CRON state, average member CRON time, and early/low-confidence recommendations as soon as the first refresh stores CRON data.
+Track party-member CRON rhythm from read-only party data. The Party page shows member-level CRON state, average member CRON time, and the viewer-local CRON graph when stored history exists, but it does not show a dedicated overview CRON summary or buff-timing recommendation block.
 
 ### Inputs
 
@@ -154,17 +154,11 @@ snapshot timestamp
 ### Outputs
 
 ```text
-current CRONed X/Y count
-data-gap counts when unknown or possibly stale members exist
-average best buff time
-self-first buff time
 party pending boss damage/items when available
 per-member CRON state and average CRON time
 viewer-local graph buckets
 member coverage count
 members excluded due to missing data
-confidence level
-warnings
 ```
 
 ### Local storage
@@ -243,7 +237,7 @@ Test:
 - circular average around midnight;
 - self-first recommendation with exponentially diminishing member influence;
 - early estimate warning from first refresh;
-- Party page CRON summary and member average rendering;
+- Party page member average rendering and absence of the removed overview CRON summary;
 - missing members;
 - all timestamps missing.
 
@@ -2261,7 +2255,7 @@ Rate-limit sensitivity: low for Habitica reads; shared queue actions use browser
 
 ### Goal
 
-Provide a Party overview for cached party identity, roles, members, and CRON timing plus a dedicated Quests workspace for active quest state and shared planning without directly mutating Habitica quest state.
+Provide a Party overview for cached party identity, roles, members, and member-level CRON rhythm plus a dedicated Quests workspace for active quest state and shared planning without directly mutating Habitica quest state.
 
 ### Inputs
 
@@ -2270,7 +2264,6 @@ cached user snapshot
 cached party snapshot
 party freshness state
 party quest summary
-party member CRON summary
 party member HP/MP summary
 party CRON history
 current user's owned quest scrolls
@@ -2293,8 +2286,6 @@ combined party-name-and-notes summary
 compact Party-page quest summary linking to the Quests workspace
 quest progress snapshot
 party pending boss damage/items, boss HP remaining, total boss HP when available, and pending damage to party
-CRONed X/Y summary
-buff timing recommendations
 compact party member CRON list with HP/MP, class filtering, sortable low-HP/low-MP modes, and foldable details
 viewer-local CRON statistics graph
 active quest card with real quest metadata and rewards when cached
@@ -2334,11 +2325,11 @@ Current display rules:
 2. If a party id exists but no party snapshot exists, render a refresh-required state.
 3. Show the latest cached party name and summary together. Keep member-count context in the member-list visible-count pill and keep one compact Party-page Quests summary link.
 4. Show quest key, active state, party pending boss damage or collection items when member progress is available, boss HP remaining, total boss HP when content data is available, pending damage to party, and participant count when a quest snapshot exists. Active quests show one compact participant count instead of invitation-response totals. Show owner or starter and started-at metadata when the quest snapshot or matching active shared queue entry preserves it; otherwise render concise unavailable states. Keep description/rewards and participant names behind in-memory details and participants controls. Participant names use the same Party member-detail focus behavior as other member links.
-5. Show a dedicated CRON summary when member CRON data exists.
+5. Do not show a dedicated Party overview CRON summary or buff-timing recommendation block.
 6. Show compact per-member cards with display name, class, subtle HP/MP values, CRON state, last CRON, average CRON time, and active-quest pending damage/items when available.
 7. Keep member id, level, CRON reason, and stat breakdowns behind a collapsed in-memory details toggle on each member card.
 8. Let the member list filter to available cached Habitica classes while keeping members with unknown classes visible under `All classes`, then sort by name, average CRON, latest CRON, pending quest contribution, low HP, low MP, and CRON status. HP/MP sorts are ascending so the lowest current value appears first; unknown values sort last.
-9. Show viewer-local CRON graph points and low-confidence warnings from local history.
+9. Show viewer-local CRON graph points from local history.
 10. Render party summaries and quest descriptions through `SafeMarkdownRenderer`, including Markdown inline formatting and a small safe HTML subset (`br`, `strong`/`b`, `em`/`i`, `code`) while escaping unsafe tags.
 11. Publish the current user's owned quest scrolls to the shared party quest pool after party sync when inventory and content metadata are available.
 12. Allow only the current quest owner to add that user's quest scroll to the shared queue.
@@ -2364,7 +2355,7 @@ Current display rules:
 32. Show Next Quest entries with their expiry time when available. The Next Quest card can return the item to the top of the queue. Show skipped and expired entries as readable states with `Return to queue`; selected entries can be skipped, and non-active entries can be expired manually.
 33. Expire selected entries deterministically after 72 hours. Expire queued or skipped entries when the matching owner/quest scroll has not appeared in the party quest pool for 30 days. Expiry runs during party-sync reads and queue mutations.
 34. Keep the quest pool expanded by default on `/quests`, with an in-memory `Hide quest pool` / `Show quest pool` control that does not reopen after later component rerenders. Let members search the expanded quest pool by quest name, public reward display name, type, or visible owner. Compose the in-memory search with the owned-only filter and show a distinct no-match state.
-35. Keep Party focused on summary, roles, settings, members, buff timing, and CRON statistics. Render active quest details, queue, pool, votes, controls, and recent completions on the dedicated `/quests` route.
+35. Keep Party focused on summary, roles, settings, member review, and member-level CRON rhythm. Render active quest details, queue, pool, votes, controls, and recent completions on the dedicated `/quests` route.
 36. Keep browser-only `local-claim-v1` as the default and owner/app-admin recovery path. Let owner/app admins optionally enable hashed `tokenized-invite-v1` proofs, issue labeled proof tokens, rotate/revoke/remove them, activate a shared proof in the current browser, and return that browser to local-claim fallback. Do not send Habitica credentials to Cloudflare.
 ```
 

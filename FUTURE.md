@@ -32,7 +32,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Task browsing, type/status filters, guarded task scoring controls, expandable details, and task mutation freshness gates.
 - Spell page, target recommendations, resource checks, and not-CRONed buff warning flow.
 - Dashboard Start New Day action with explicit CRON confirmation, result feedback, and post-CRON refresh.
-- Party page active quest metadata/rewards, CRON summary, member CRON graph, shared quest pool, queue, voting, recent completions, owner/admin/Officer controls, and quest start action.
+- Party page active quest metadata/rewards, member CRON graph, shared quest pool, queue, voting, recent completions, owner/admin/Officer controls, and quest start action.
 - Dashboard pending damage estimate, knockout warning, and manual health-potion purchase action.
 - Split-key encrypted Cloudflare app-data sync, legacy single-blob restore fallback, per-section payload guard, partial-success sync behavior, and refresh coordinator deduplication.
 - Refresh-domain invalidation basics after implemented mutations.
@@ -52,6 +52,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Active-quest owner/starter and started-at metadata with shared-queue fallback, unavailable states, and foldable details/rewards and participant-name drill-ins.
 - Dedicated Pets & Mounts page with grouped companion grids, feed queue planner, hatching and equip actions, local fold preferences, and relocated bulk sell planner while keeping per-pet/per-mount maps out of Cloudflare app-data uploads.
 - Dashboard eligible-only gem-for-gold purchase action with quantity clamp, explicit confirmation, sequential stop-on-failure requests, diagnostics, and post-purchase account refresh.
+- Party page overview no longer shows the dedicated CRON summary or buff-timing recommendation block, while member review and Quests workspace remain intact.
 
 ## Pending Queue
 
@@ -73,35 +74,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Remove Party Page CRON Summary And Buff Timing Window
-
-Goal: remove the Party page overview's CRON summary and buff-timing recommendation block while preserving the rest of the Party and Quests workspaces.
-
-Touch:
-- `src/Habitica.WebApp/Pages/PartyPage.razor` (remove the Party overview section/card that renders the `CRON summary` heading, `CRON applied`, `Data gaps`, `Average best buff time`, `Self-first buff time`, and the low-confidence warning copy)
-- `src/Habitica.WebApp/wwwroot/css/app.css` only if removing the block leaves unused spacing, empty grid tracks, or orphaned styling
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
-- `FEATURES.md` (update the Party buff timing / Party page current-implementation notes so they no longer claim the overview exposes the removed CRON summary or buff-timing window)
-
-Keep:
-- Party overview summary card and quest summary card;
-- member list, member filters/sorting, member details expansion, HP/MP/pending quest status, and stat details unless they are inside the removed CRON summary block;
-- `/quests` active-quest forecast data, including pending progress and estimated post-CRON labels;
-- stored party CRON history, party snapshot models, and CRON calculators.
-
-Out of scope:
-- deleting `PartyCronDashboardSnapshot`, CRON history stores, CRON graph calculation, or login-rhythm domain logic;
-- changing the Quests workspace or active quest estimates;
-- changing the party-sync D1 schema;
-- adding new Party page modes or redesigning the full Party workspace.
-
-Acceptance:
-- `/party` no longer renders `CRON summary`, `Buff timing window`, `CRON applied`, `Average best buff time`, or `Self-first buff time`.
-- Removing the section does not leave an empty card, blank grid slot, doubled margin, or broken responsive layout.
-- `/party` still renders cached party name/summary, quest summary, members, member filters/sorts, HP/MP labels, pending quest labels, and member detail expansion.
-- `/quests` still renders active quest current progress, pending party progress, estimated post-CRON progress, participant details, queue, pool, and recent completions.
-- Tests update the existing Party page assertions from positive CRON-summary expectations to negative assertions for the removed copy, while keeping coverage for remaining Party and Quests content.
 
 ### Persist Manual Task Arrangement Through Cloud Sync
 
