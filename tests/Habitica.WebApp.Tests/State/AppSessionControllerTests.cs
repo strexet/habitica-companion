@@ -904,7 +904,7 @@ public sealed class AppSessionControllerTests
         var result = await controller.BuyGemsForGoldAsync(1);
 
         Assert.False(result.Succeeded);
-        Assert.Equal("Subscribe in Habitica to unlock gold-for-gems purchases.", result.Message);
+        Assert.Equal("Subscribe in Habitica to buy gems with gold.", result.Message);
         Assert.Empty(syncClient.PurchaseGemsForGoldCalls);
     }
 
