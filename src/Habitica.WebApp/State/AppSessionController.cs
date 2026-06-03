@@ -2253,9 +2253,9 @@ public sealed class AppSessionController : IAppSessionController
             return InventoryActionResult.Failure("Refresh your account before buying gems with gold.");
         }
 
-        if (State.UserSnapshot.CanBuyGemsForGold != true)
+        if (State.UserSnapshot.CanBuyGemsForGold == false)
         {
-            return InventoryActionResult.Failure("This account is not eligible to buy gems with gold.");
+            return InventoryActionResult.Failure("Habitica reports this account cannot buy gems with gold.");
         }
 
         var affordableCount = (int)Math.Floor(State.UserSnapshot.Gold / GemGoldCost);
@@ -2272,7 +2272,10 @@ public sealed class AppSessionController : IAppSessionController
         var safeCount = Math.Clamp(quantity, 1, 50);
         if (safeCount > availableCount)
         {
-            return InventoryActionResult.Failure($"You can buy {availableCount} gem{(availableCount == 1 ? string.Empty : "s")} with current gold and monthly cap.");
+            var availabilityScope = State.UserSnapshot.RemainingGemPurchases is null
+                ? "current gold"
+                : "current gold and monthly cap";
+            return InventoryActionResult.Failure($"You can buy {availableCount} gem{(availableCount == 1 ? string.Empty : "s")} with {availabilityScope}.");
         }
 
         var previousGold = State.UserSnapshot.Gold;

@@ -494,7 +494,7 @@
         </section>
 
         <section class="dashboard-detail-grid">
-            @if (snapshot.CanBuyGemsForGold == true)
+            @if (SessionController.State.IsAuthenticated)
             {
                 <article class="card-surface dashboard-panel">
                     <p class="section-label">Spend gold</p>
@@ -508,8 +508,9 @@
                             <input class="app-input"
                                    data-testid="gem-purchase-count"
                                    min="1"
-                                   max="@GetMaxGemPurchases(snapshot)"
+                                   max="@Math.Max(1, GetMaxGemPurchases(snapshot))"
                                    type="number"
+                                   disabled="@(!CanBuyGems(snapshot))"
                                    value="@_gemPurchaseCount"
                                    @onchange="eventArgs => SetGemPurchaseCount(snapshot, eventArgs.Value?.ToString())" />
                         </label>
@@ -536,6 +537,15 @@
                                        Variant="Variant.Filled"
                                        data-testid="buy-gems-with-gold">
                                 Buy gems
+                            </MudButton>
+                        }
+                        @if (ShouldShowGemSubscriptionLink(snapshot))
+                        {
+                            <MudButton Href="https://habitica.com/user/settings/subscription"
+                                       Target="_blank"
+                                       Variant="Variant.Outlined"
+                                       data-testid="gem-subscription-link">
+                                Subscribe
                             </MudButton>
                         }
                     </div>
@@ -999,42 +1009,85 @@
 
     private bool CanBuyGems(UserSnapshot snapshot)
     {
-        return SessionController.State.IsAuthenticated
-            && !SessionController.State.IsBusy
-            && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh
-            && snapshot.CanBuyGemsForGold == true
-            && GetMaxGemPurchases(snapshot) > 0;
+        return GetGemPurchaseUnavailableReason(snapshot) is null;
     }
 
     private static int GetMaxGemPurchases(UserSnapshot snapshot)
     {
-        var affordableCount = (int)Math.Floor(snapshot.Gold / GemGoldCost);
+        var affordableCount = GetAffordableGemPurchases(snapshot);
         return Math.Min(50, snapshot.RemainingGemPurchases is { } remaining
             ? Math.Min(affordableCount, remaining)
             : affordableCount);
     }
 
-    private static string GetGemsForGoldStatus(UserSnapshot snapshot)
+    private static int GetAffordableGemPurchases(UserSnapshot snapshot)
+    {
+        return Math.Max(0, (int)Math.Floor(snapshot.Gold / GemGoldCost));
+    }
+
+    private string GetGemsForGoldStatus(UserSnapshot snapshot)
     {
         var balance = snapshot.GemBalance is null
             ? "Gem balance unavailable."
             : $"Gem balance {snapshot.GemBalance.Value:0.##}.";
 
+        var affordableCount = GetAffordableGemPurchases(snapshot);
+        var affordability = $"Gold can buy {affordableCount} gem{(affordableCount == 1 ? string.Empty : "s")} at 20 GP each.";
+        var cap = snapshot.RemainingGemPurchases is null
+            ? "Monthly cap unavailable."
+            : $"{snapshot.RemainingGemPurchases.Value} monthly purchase{(snapshot.RemainingGemPurchases.Value == 1 ? string.Empty : "s")} remaining.";
+        var availability = GetGemPurchaseUnavailableReason(snapshot) is { } reason
+            ? $"Unavailable: {reason}"
+            : snapshot.CanBuyGemsForGold is null
+                ? "Ready to try; eligibility is not confirmed by the cached plan."
+                : $"Ready to buy {GetMaxGemPurchases(snapshot)} gem{(GetMaxGemPurchases(snapshot) == 1 ? string.Empty : "s")}.";
+
+        return $"{balance} {affordability} {cap} {availability}";
+    }
+
+    private string? GetGemPurchaseUnavailableReason(UserSnapshot snapshot)
+    {
+        if (!SessionController.State.IsAuthenticated)
+        {
+            return "Sign in before buying gems with gold.";
+        }
+
+        if (SessionController.State.IsBusy)
+        {
+            return "Wait for the current action to finish.";
+        }
+
+        if (SessionController.State.UserFreshness != SnapshotFreshnessState.Fresh)
+        {
+            return "Refresh account before buying gems with gold.";
+        }
+
+        if (snapshot.CanBuyGemsForGold == false)
+        {
+            return "Habitica reports this account cannot buy gems with gold.";
+        }
+
         if (snapshot.RemainingGemPurchases == 0)
         {
-            return $"{balance} Monthly cap reached.";
+            return "Monthly gem purchase cap reached.";
         }
 
-        var max = GetMaxGemPurchases(snapshot);
-        if (max <= 0)
+        if (snapshot.Gold < GemGoldCost)
         {
-            return $"{balance} Needs 20 GP.";
+            return "Needs 20 GP.";
         }
 
-        var cap = snapshot.RemainingGemPurchases is null
-            ? "Monthly cap unavailable; Habitica may still reject the purchase."
-            : $"{snapshot.RemainingGemPurchases.Value} monthly purchase{(snapshot.RemainingGemPurchases.Value == 1 ? string.Empty : "s")} remaining.";
-        return $"{balance} Enough gold for {max} gem{(max == 1 ? string.Empty : "s")}. {cap}";
+        if (GetMaxGemPurchases(snapshot) <= 0)
+        {
+            return "No gem purchase is available from the cached account data.";
+        }
+
+        return null;
+    }
+
+    private static bool ShouldShowGemSubscriptionLink(UserSnapshot snapshot)
+    {
+        return snapshot.CanBuyGemsForGold == false;
     }
 
     private void SetGemPurchaseCount(UserSnapshot snapshot, string? rawValue)

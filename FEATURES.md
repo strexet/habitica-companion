@@ -1200,7 +1200,7 @@ Info: estimatedDamage > 0
 
 Health-potion purchase is manual only. It is disabled when the account snapshot is stale, the user is signed out, health is full, or saved gold is below 25 GP. After purchase, refresh `/user` so HP, gold, and the dashboard warning recalculate from server state.
 
-Gem-for-gold purchase is manual only and appears only when the account snapshot says the user can buy gems with gold. The Dashboard clamps requested quantity to available gold at 20 GP per gem and the known remaining monthly purchase cap when Habitica exposes it. The action requires explicit confirmation, executes sequential one-gem requests with stop-on-failure, refreshes `/user` after success, and reports updated gem balance when the refreshed snapshot includes it.
+Gem-for-gold purchase is manual only. Signed-in users with a cached account snapshot see the Dashboard card even when purchase is unavailable; the card explains stale account data, insufficient gold, monthly cap, explicit Habitica ineligibility, or unknown cached eligibility. When Habitica explicitly reports that the account cannot buy gems with gold, the card includes a `Subscribe` link to Habitica's subscription settings. The Dashboard clamps requested quantity to available gold at 20 GP per gem and the known remaining monthly purchase cap when Habitica exposes it. Unknown subscription eligibility does not hide the action; if enough gold and no explicit ineligibility are cached, the user may confirm the request and let Habitica accept or reject it. The action requires explicit confirmation, executes sequential one-gem requests with stop-on-failure, refreshes `/user` after success, and reports updated gem balance when the refreshed snapshot includes it.
 
 ### Validation
 
@@ -1244,7 +1244,7 @@ Current implementation:
 - dashboard and Spells CRON unfinished-dailies mini lists with guarded inline checkoff;
 - dashboard pending damage estimate with included/excluded source copy and knockout warning;
 - manual health-potion purchase action with confirmation and account refresh;
-- eligible-only gem-for-gold purchase action with quantity clamp, confirmation, sequential Habitica requests, diagnostics, and account refresh;
+- visible-state gem-for-gold purchase action with quantity clamp, unavailable reasons, confirmation, sequential Habitica requests, diagnostics, and account refresh;
 - task workspace with cached browsing and planned guarded mutations;
 - sync timestamp surface;
 - freshness banners for cached tasks and cached account data;

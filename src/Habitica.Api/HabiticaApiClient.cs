@@ -1746,10 +1746,11 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             return false;
         }
 
-        return !string.IsNullOrWhiteSpace(GetOptionalString(plan, "customerId"))
+        var hasActiveSubscriptionSignal = !string.IsNullOrWhiteSpace(GetOptionalString(plan, "customerId"))
             || !string.IsNullOrWhiteSpace(GetOptionalString(plan, "subscriptionId"))
             || !string.IsNullOrWhiteSpace(GetOptionalString(plan, "planId"))
             || TryGetDecimal(plan, "quantity", out var quantity) && quantity > 0m;
+        return hasActiveSubscriptionSignal ? true : null;
     }
 
     private static int? GetRemainingGemPurchases(JsonElement plan)

@@ -269,6 +269,61 @@ public sealed class HabiticaApiClientTests
     }
 
     [Fact]
+    public async Task GetUserSnapshotAsync_maps_empty_purchase_plan_to_unknown_gem_eligibility()
+    {
+        var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = JsonContent("""
+            {
+              "success": true,
+              "data": {
+                "profile": { "name": "Mage Tester" },
+                "balance": 3,
+                "stats": { "class": "wizard", "lvl": 15, "gp": 40 },
+                "purchased": { "plan": {} }
+              }
+            }
+            """)
+        });
+        var client = CreateClient(handler);
+
+        var snapshot = await client.GetUserSnapshotAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
+
+        Assert.Null(snapshot.CanBuyGemsForGold);
+        Assert.Null(snapshot.RemainingGemPurchases);
+    }
+
+    [Fact]
+    public async Task GetUserSnapshotAsync_prefers_explicit_gem_eligibility_flags()
+    {
+        var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = JsonContent("""
+            {
+              "success": true,
+              "data": {
+                "profile": { "name": "Mage Tester" },
+                "stats": { "class": "wizard", "lvl": 15, "gp": 40 },
+                "purchased": {
+                  "plan": {
+                    "canBuyGems": false,
+                    "customerId": "customer-1",
+                    "remainingGemPurchases": 9
+                  }
+                }
+              }
+            }
+            """)
+        });
+        var client = CreateClient(handler);
+
+        var snapshot = await client.GetUserSnapshotAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
+
+        Assert.False(snapshot.CanBuyGemsForGold);
+        Assert.Equal(9, snapshot.RemainingGemPurchases);
+    }
+
+    [Fact]
     public async Task CastSpellAsync_sends_spell_cast_request_with_target_id()
     {
         HttpRequestMessage? capturedRequest = null;

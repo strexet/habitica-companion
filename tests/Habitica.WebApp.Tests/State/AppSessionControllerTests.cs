@@ -850,6 +850,65 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task BuyGemsForGoldAsync_allows_unknown_eligibility_when_gold_and_cap_allow()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Gold = 80m,
+                GemBalance = 5m,
+                CanBuyGemsForGold = null,
+                RemainingGemPurchases = null
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.BuyGemsForGoldAsync(2);
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(new[] { 1, 1 }, syncClient.PurchaseGemsForGoldCalls);
+    }
+
+    [Fact]
+    public async Task BuyGemsForGoldAsync_blocks_explicit_ineligible_snapshot()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                Gold = 80m,
+                GemBalance = 5m,
+                CanBuyGemsForGold = false,
+                RemainingGemPurchases = 5
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var result = await controller.BuyGemsForGoldAsync(1);
+
+        Assert.False(result.Succeeded);
+        Assert.Equal("Habitica reports this account cannot buy gems with gold.", result.Message);
+        Assert.Empty(syncClient.PurchaseGemsForGoldCalls);
+    }
+
+    [Fact]
     public async Task BuyGemsForGoldAsync_stops_on_partial_failure()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());

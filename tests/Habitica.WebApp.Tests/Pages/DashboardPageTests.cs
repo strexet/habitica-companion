@@ -98,7 +98,7 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("inventory_quest_scroll.png", cut.Markup);
         Assert.Contains("Open tasks", cut.Markup);
         Assert.Equal("app-input", cut.Find("[data-testid='armoire-open-count']").GetAttribute("class"));
-        Assert.Empty(cut.FindAll("[data-testid='buy-gems-with-gold']"));
+        Assert.NotEmpty(cut.FindAll("[data-testid='buy-gems-with-gold']"));
         Assert.Contains("Companion and Habitica links", cut.Markup);
         Assert.Contains("href=\"/tasks\"", cut.Markup);
         Assert.Contains("https://habitica.com/tasks", cut.Markup);
@@ -542,7 +542,9 @@ public sealed class DashboardPageTests : BunitContext
 
         Assert.Contains("Buy gems with gold", cut.Markup);
         Assert.Contains("Gem balance 2.", cut.Markup);
-        Assert.Contains("Enough gold for 3 gems.", cut.Markup);
+        Assert.Contains("Gold can buy 4 gems at 20 GP each.", cut.Markup);
+        Assert.Contains("3 monthly purchases remaining.", cut.Markup);
+        Assert.Contains("Ready to buy 3 gems.", cut.Markup);
 
         cut.Find("[data-testid='gem-purchase-count']").Change("10");
         cut.Find("[data-testid='buy-gems-with-gold']").Click();
@@ -551,6 +553,70 @@ public sealed class DashboardPageTests : BunitContext
         cut.Find("[data-testid='confirm-buy-gems-with-gold']").Click();
 
         Assert.Equal(3, Assert.Single(controller.BuyGemsForGoldCalls));
+    }
+
+    [Fact]
+    public void Gem_gold_purchase_card_allows_unknown_eligibility_with_cautious_copy()
+    {
+        var (cut, controller) = RenderDashboardForGemPurchase(canBuyGemsForGold: null, remainingGemPurchases: null);
+
+        Assert.Contains("Buy gems with gold", cut.Markup);
+        Assert.Contains("Monthly cap unavailable.", cut.Markup);
+        Assert.Contains("Ready to try; eligibility is not confirmed by the cached plan.", cut.Markup);
+        Assert.False(cut.Find("[data-testid='buy-gems-with-gold']").HasAttribute("disabled"));
+
+        cut.Find("[data-testid='buy-gems-with-gold']").Click();
+        cut.Find("[data-testid='confirm-buy-gems-with-gold']").Click();
+
+        Assert.Equal(1, Assert.Single(controller.BuyGemsForGoldCalls));
+    }
+
+    [Fact]
+    public void Gem_gold_purchase_card_shows_known_ineligible_state()
+    {
+        var (cut, controller) = RenderDashboardForGemPurchase(canBuyGemsForGold: false);
+
+        Assert.Contains("Buy gems with gold", cut.Markup);
+        Assert.Contains("Unavailable: Habitica reports this account cannot buy gems with gold.", cut.Markup);
+        Assert.True(cut.Find("[data-testid='buy-gems-with-gold']").HasAttribute("disabled"));
+        var subscribeLink = cut.Find("[data-testid='gem-subscription-link']");
+        Assert.Equal("https://habitica.com/user/settings/subscription", subscribeLink.GetAttribute("href"));
+        Assert.Empty(controller.BuyGemsForGoldCalls);
+    }
+
+    [Fact]
+    public void Gem_gold_purchase_card_shows_insufficient_gold_state()
+    {
+        var (cut, _) = RenderDashboardForGemPurchase(gold: 10m);
+
+        Assert.Contains("Buy gems with gold", cut.Markup);
+        Assert.Contains("Gold can buy 0 gems at 20 GP each.", cut.Markup);
+        Assert.Contains("Unavailable: Needs 20 GP.", cut.Markup);
+        Assert.True(cut.Find("[data-testid='buy-gems-with-gold']").HasAttribute("disabled"));
+        Assert.Empty(cut.FindAll("[data-testid='gem-subscription-link']"));
+    }
+
+    [Fact]
+    public void Gem_gold_purchase_card_shows_monthly_cap_state()
+    {
+        var (cut, _) = RenderDashboardForGemPurchase(remainingGemPurchases: 0);
+
+        Assert.Contains("Buy gems with gold", cut.Markup);
+        Assert.Contains("0 monthly purchases remaining.", cut.Markup);
+        Assert.Contains("Unavailable: Monthly gem purchase cap reached.", cut.Markup);
+        Assert.True(cut.Find("[data-testid='buy-gems-with-gold']").HasAttribute("disabled"));
+        Assert.Empty(cut.FindAll("[data-testid='gem-subscription-link']"));
+    }
+
+    [Fact]
+    public void Gem_gold_purchase_card_shows_stale_refresh_state()
+    {
+        var (cut, _) = RenderDashboardForGemPurchase(userFreshness: SnapshotFreshnessState.Stale);
+
+        Assert.Contains("Buy gems with gold", cut.Markup);
+        Assert.Contains("Unavailable: Refresh account before buying gems with gold.", cut.Markup);
+        Assert.True(cut.Find("[data-testid='buy-gems-with-gold']").HasAttribute("disabled"));
+        Assert.Empty(cut.FindAll("[data-testid='gem-subscription-link']"));
     }
 
     [Fact]
@@ -641,5 +707,66 @@ public sealed class DashboardPageTests : BunitContext
 
         Assert.Contains("Done", cut.Find("[data-testid='dashboard-appearance-toggle']").TextContent);
         Assert.NotNull(cut.Find("[data-testid='color-scheme-select']"));
+    }
+
+    private (IRenderedComponent<DashboardPage> Cut, FakeAppSessionController Controller) RenderDashboardForGemPurchase(
+        decimal gold = 80m,
+        bool? canBuyGemsForGold = true,
+        int? remainingGemPurchases = 5,
+        decimal? gemBalance = 2m,
+        SnapshotFreshnessState userFreshness = SnapshotFreshnessState.Fresh)
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(DateTimeOffset.Parse("2026-04-25T08:00:00Z"), Array.Empty<TaskSnapshot>()),
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: CreateGemPurchaseUserSnapshot(gold, canBuyGemsForGold, remainingGemPurchases, gemBalance),
+                UserFreshness: userFreshness));
+        Services.AddSingleton<IAppSessionController>(controller);
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
+
+        return (Render<DashboardPage>(), controller);
+    }
+
+    private static UserSnapshot CreateGemPurchaseUserSnapshot(
+        decimal gold,
+        bool? canBuyGemsForGold,
+        int? remainingGemPurchases,
+        decimal? gemBalance)
+    {
+        return new UserSnapshot(
+            DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+            "Mage Tester",
+            "wizard",
+            15,
+            42.5m,
+            50m,
+            33.5m,
+            40m,
+            125.1m,
+            74.9m,
+            gold,
+            "party-123",
+            null,
+            null,
+            new EquipmentSnapshot(
+                new GearSlotsSnapshot(null, null, null, null, null),
+                new GearSlotsSnapshot(null, null, null, null, null)),
+            new InventorySnapshot(0, 0, 0, 0, 0, 0, Array.Empty<string>()),
+            GemBalance: gemBalance,
+            CanBuyGemsForGold: canBuyGemsForGold,
+            RemainingGemPurchases: remainingGemPurchases);
     }
 }
