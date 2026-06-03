@@ -72,89 +72,204 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Add feeding progress, growth planning, and type filtering to Pet & Mount page
-   - Description
-      - Pet cards on the Pet & Mount page should show feeding progress toward becoming a mount.
-      - Each pet card should also predict how much more food the pet needs before it can be converted into a mount.
-      - The prediction should take the best available food recommendation into account.
-      - Missing mount cards should provide a way to plan growing the corresponding pet into that mount.
-      - Pet and mount sections should also support filtering by creature type, such as wolf, fox, cactus, etc.
-   - Pet card updates
-      - Add visible feeding progress to each feedable pet card.
-      - Show the current progress toward mount conversion.
-      - Show how much more food is needed to grow this pet into a mount.
-      - Use best food recommendation when calculating the remaining food requirement.
-      - Prefer the pet’s favorite/recommended food when available.
-      - Account for Habitica feeding rules:
-         - Hatched pets start with 10% feeding progress.
-         - Preferred food adds 10% progress.
-         - Non-preferred food adds 4% progress.
-         - A pet needs 100% progress to become a mount.
-         - This means a newly hatched pet needs 9 preferred foods or up to 23 non-preferred foods.
-   - Missing mount card updates
-      - Missing mount cards should include a button for planning mount growth.
-      - Suggested button names:
-         - Plan to grow
-         - Grow this mount
-         - Add to feed plan
-      - Preferred label:
-         - Plan to grow
-      - When clicked, the app should select the corresponding pet and add it to the feed plan card.
-   - Feed plan behavior
-      - When a missing mount card is added to the feed plan, the feed plan should target the pet that grows into that mount.
-      - The plan should recommend the best available food for that pet.
-      - The plan should show how many food items are needed based on current pet progress.
-      - If the user does not have enough preferred food, the plan should account for available alternative food where possible.
-   - Pet/mount type filtering
-      - Each pet and mount section should have a filter at the top for pet/mount type.
-      - The filter should allow users to quickly narrow visible cards by creature type.
-      - Example types:
-         - Wolf
-         - Fox
-         - Cactus
-         - Dragon
-         - TigerCub
-         - PandaCub
-         - LionCub
-         - FlyingPig
-      - The filter should use public/display creature names where possible.
-      - Filtering should work consistently for both pet cards and mount cards.
-      - When a type is selected, only pets/mounts of that creature type should be shown.
-      - There should be an easy way to reset the filter and show all types again.
-   - API / data requirements
-      - Check Habitica API and official/public data sources for the exact pet and mount data structure.
-      - Confirm how pet ownership, mount ownership, and feeding progress are represented in user data.
-      - Confirm the mapping between each mount and its corresponding pet.
-      - Confirm recommended/favorite food mappings for pets.
-      - Confirm feeding formulas used by Habitica:
-         - Preferred food progress value.
-         - Non-preferred food progress value.
-         - Initial progress after hatching.
-         - Mount conversion threshold.
-      - Confirm the canonical creature type names used by the API and map them to readable display names for the filter.
-   - Expected behavior
-      - Pet cards clearly show how close each pet is to becoming a mount.
-      - Users can understand how much more food is needed without manually calculating it.
-      - Missing mounts can be converted into actionable feed plans directly from their cards.
-      - The feed plan chooses the correct corresponding pet for the selected missing mount.
-      - Food recommendations and remaining-food calculations match Habitica rules.
-      - Users can filter pet and mount cards by creature type.
-   - Suggested fix
-      - Extend Pet & Mount page card models with feeding progress data.
-      - Add helper logic for pet-to-mount mapping.
-      - Add helper logic for favorite/recommended food lookup.
-      - Add helper logic for creature type extraction and display-name mapping.
-      - Add formula-based calculation for remaining feeding progress.
-      - Add section-level type filters for pet and mount lists.
-      - Add conditional UI for missing mount cards:
-         - Show Plan to grow button when the corresponding pet exists and can be fed.
-         - Disable or explain unavailable state when the corresponding pet is missing, already converted, special, or cannot be fed.
-      - Add integration with the existing feed plan card so selected pets can be added from missing mount cards.
+_None._
 
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
+
+### Pets And Mounts Feeding Rules Model
+
+Goal: make pet-to-mount feeding progress a first-class local rules model so UI features can show progress and planned food needs without duplicating Habitica feeding formulas in Razor code.
+
+Touch:
+- `HABITICA_API.md`
+- `FEATURES.md`
+- `src/Habitica.Domain/User/PetsMountsCatalog.cs`
+- `src/Habitica.Domain/User/UserSnapshot.cs` only if the existing `InventorySnapshot.Pets` progress map needs clarification in code comments or type naming
+- `src/Habitica.Rules/Pets`
+- direct tests under `tests/Habitica.Rules.Tests/Pets/`
+- `tests/Habitica.Api.Tests/HabiticaApiClientTests.cs` only if documented user-data parsing expectations change
+
+Out of scope:
+- changing feed, hatch, equip, or sell execution;
+- adding page filters or missing-mount buttons;
+- persisting companion progress to Cloudflare app-data sync;
+- guessing unsupported Habitica formulas or special-companion rules without documentation.
+
+Implementation plan:
+- Confirm from current Habitica API/user-data docs and checked-in parsing that `items.pets[petKey]` is the feed-progress value for owned pets and that `items.mounts[mountKey]` is mount ownership.
+- Document the confirmed data shape and feeding constants in `HABITICA_API.md`: hatched baseline progress, favorite-food progress, non-favorite-food progress, mount threshold, and any unavailable/special cases.
+- Add a small rules type in `src/Habitica.Rules/Pets` that accepts a `PetCatalogItem`, current pet progress, owned food, and existing `PetFeedRecommendationFactory` output.
+- Expose calculated current percent, remaining percent, whether the pet can still grow into a mount, best available food rows, and the shortest available feed plan that uses favorite food first, generic food next, then other non-matching food where applicable.
+- Add catalog helper logic for deriving the corresponding mount key from a normal pet key and for rejecting wacky/special entries that cannot produce normal mounts.
+- Keep formulas integer/decimal based and deterministic; avoid UI-formatted strings in rules output.
+- Update `FEATURES.md` only to describe the new local rules capability if it becomes user-visible through model naming or documented behavior.
+
+Acceptance:
+- Tests cover a newly hatched pet needing 9 favorite foods to reach a mount.
+- Tests cover a newly hatched pet needing up to 23 non-favorite foods when no favorite/generic food is available.
+- Tests cover partially fed pets, already complete pets, missing/unknown pet keys, wacky pets, and pets whose matching mount is already owned.
+- Tests cover recommendation ordering and mixed available-food planning without mutating owned-food dictionaries.
+- `HABITICA_API.md` records the exact source-backed feeding constants used by the rules model.
+
+Need to run build:
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
+```
+
+Need to run test(s): `PetFeedRecommendationFactoryTests` and new pet growth rules tests
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj -m:1 -nodeReuse:false --filter FullyQualifiedName~Pets
+```
+
+### Pets And Mounts Pet Card Growth Progress
+
+Goal: show each owned, feedable pet's progress toward becoming a mount and summarize how much more food is needed using the local feeding rules model.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.Rules/Pets`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs`
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md` if companion-card display guidance changes
+
+Out of scope:
+- adding missing-mount "Plan to grow" buttons;
+- adding type filters;
+- changing feed queue execution or API calls;
+- showing exact unavailable progress for unknown/special pets unless the rules model supports it.
+
+Implementation plan:
+- Build per-card growth summaries from cached `snapshot.Inventory.Pets`, `snapshot.Inventory.Mounts`, `snapshot.Inventory.Food`, and `PetsMountsCatalog`.
+- Render a compact progress indicator on owned normal pet cards: current progress percentage, remaining percentage, and mount-ready/already-owned state.
+- Show a short food-needed line based on the best available plan, such as favorite-food count when enough favorite food exists or a mixed-food count when alternatives are needed.
+- Keep unowned pet cards focused on hatching requirements and avoid implying feed progress before the pet exists.
+- For owned pets that cannot grow into a normal mount, show a concise unavailable state instead of a misleading progress number.
+- Keep existing feed selection controls available; selecting a pet for feed should keep using the current dropdown ordered by favorite, generic, then other food.
+- Preserve offline cached behavior: growth summaries should render from local snapshots and avoid live calls.
+
+Acceptance:
+- Owned feedable pet cards show current progress and remaining progress toward mount conversion.
+- Food-needed copy uses favorite food when available and accounts for alternative available food when favorite food is insufficient or absent.
+- Already mount-complete or already-owned-mount states do not prompt unnecessary feeding.
+- Unowned pets, unknown owned pets, and special/non-growable entries render without broken progress UI.
+- Existing hatch, equip, feed preview, fold, search, and bulk-sell controls still render.
+- Component tests cover owned partial-progress pet, enough favorite food, fallback food, already-owned mount, and unowned pet card states.
+
+Need to run build:
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
+```
+
+Need to run test(s): `PetsMountsPageTests` and pet rules tests
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false --filter FullyQualifiedName~PetsMountsPageTests
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj -m:1 -nodeReuse:false --filter FullyQualifiedName~Pets
+```
+
+### Pets And Mounts Missing-Mount Growth Planning
+
+Goal: let users turn a missing mount card into an actionable feed plan for the corresponding owned pet.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.Rules/Pets`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs`
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md` if companion action guidance changes
+
+Out of scope:
+- auto-executing feed requests from a mount card;
+- planning growth for mounts whose corresponding pet is missing, special, wacky, or already converted;
+- changing feed queue validation in `AppSessionController`;
+- changing Habitica endpoint contracts.
+
+Implementation plan:
+- For each missing normal mount, derive the corresponding pet key from the mount key and look up current pet ownership/progress.
+- Add a `Plan to grow` action on missing mount cards only when the corresponding pet exists, is feedable, and the mount is not already owned.
+- On click, select that pet in the existing feed planner and enqueue or stage the smallest calculated feed plan based on current progress and available food.
+- Use the rules model's food plan so favorite food is preferred and available alternatives are included only when needed.
+- If the pet is unavailable or cannot be grown, render a concise disabled/unavailable reason near the missing mount card.
+- Keep user review before mutation: generated queue rows should still be visible in the feed planner and require the existing `Feed queued items` action.
+- Preserve stale-data and busy-state guards already used by feed and equip actions.
+
+Acceptance:
+- Missing mount cards show `Plan to grow` when the corresponding owned pet can be fed toward that mount.
+- Clicking `Plan to grow` selects the matching pet and prepares visible feed-plan rows with the calculated food amounts.
+- Planned rows use favorite food first and include alternative food only when needed and available.
+- Missing pet, non-growable/special, already-owned mount, no-food, busy, and stale states do not produce invalid queued feed requests.
+- Existing feed queue clear and execution behavior remains unchanged.
+- Component tests cover successful planning, unavailable corresponding pet, insufficient/no food messaging, and generated queue execution handoff.
+
+Need to run build:
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
+```
+
+Need to run test(s): `PetsMountsPageTests` and pet rules tests
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false --filter FullyQualifiedName~PetsMountsPageTests
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj -m:1 -nodeReuse:false --filter FullyQualifiedName~Pets
+```
+
+### Pets And Mounts Creature Type Filters
+
+Goal: add creature-type filters to pet and mount sections so users can narrow large companion collections by public creature names such as Wolf, Fox, Cactus, Dragon, Tiger Cub, Panda Cub, Lion Cub, and Flying Pig.
+
+Touch:
+- `src/Habitica.Domain/User/PetsMountsCatalog.cs`
+- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs`
+- direct catalog/rules tests under `tests/Habitica.Rules.Tests/` or `tests/Habitica.Domain.Tests/` if helper logic moves out of Razor
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md` if shared filter-control guidance changes
+
+Out of scope:
+- replacing existing search;
+- changing collection grouping or fold persistence semantics beyond expanding visible matches;
+- filtering hatching potions or bulk-sell rows;
+- changing catalog membership without source-backed data.
+
+Implementation plan:
+- Add or expose creature type metadata from `PetCatalogItem.EggKey` and the corresponding mount key, using readable display names from `PetsMountsCatalog.ToReadableName`.
+- Build filter options from catalog entries plus unknown owned entries where a readable type can be safely derived.
+- Add independent pet and mount type filters near the relevant section controls, with `All types` reset options.
+- Apply filters together with existing search and group folds: search text and selected type should both narrow visible cards.
+- Ensure filters use display names for labels while preserving canonical keys internally.
+- Reset or keep filters predictably when search changes; avoid hidden selected state that leaves all groups empty without a clear reset path.
+- Keep mobile layout compact and avoid adding per-card repeated filter labels.
+
+Acceptance:
+- Pet sections can be filtered by creature type and reset to all types.
+- Mount sections can be filtered by creature type and reset to all types.
+- Filtering by `Wolf`, `Fox`, `Cactus`, `Dragon`, `Tiger Cub`, `Panda Cub`, `Lion Cub`, and `Flying Pig` shows only matching pet or mount cards.
+- Type filters compose with existing text search and folded groups without hiding matching results unexpectedly.
+- Empty filtered states explain that no companions match the selected type/search.
+- Component tests cover pet filter, mount filter, reset behavior, search composition, and a multi-word creature display name.
+
+Need to run build:
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
+```
+
+Need to run test(s): `PetsMountsPageTests` and catalog/type helper tests
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false --filter FullyQualifiedName~PetsMountsPageTests
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj -m:1 -nodeReuse:false --filter FullyQualifiedName~PetsMounts
+```
 
 ## Backlog
 
