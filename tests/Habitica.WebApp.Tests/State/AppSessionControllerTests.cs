@@ -843,6 +843,7 @@ public sealed class AppSessionControllerTests
 
         Assert.False(result.Succeeded);
         Assert.Equal("Meat", Assert.Single(syncClient.FeedPetCalls).FoodKey);
+        Assert.Equal(new[] { "Meat", "Milk" }, syncClient.FeedPetAttemptedFoodKeys);
         Assert.Contains("Completed 1 of 3", result.Message);
     }
 
@@ -2484,6 +2485,8 @@ public sealed class AppSessionControllerTests
 
         public List<(string PetKey, string FoodKey, int Amount)> FeedPetCalls { get; } = new();
 
+        public List<string> FeedPetAttemptedFoodKeys { get; } = new();
+
         public List<string> EquipPetCalls { get; } = new();
 
         public List<string> EquipMountCalls { get; } = new();
@@ -2494,6 +2497,7 @@ public sealed class AppSessionControllerTests
 
         public Task FeedPetAsync(HabiticaCredentials credentials, string petKey, string foodKey, int amount, CancellationToken cancellationToken)
         {
+            FeedPetAttemptedFoodKeys.Add(foodKey);
             if (string.Equals(foodKey, FeedPetFailureFoodKey, StringComparison.Ordinal))
             {
                 throw new InvalidOperationException($"Feed failed for {foodKey}.");

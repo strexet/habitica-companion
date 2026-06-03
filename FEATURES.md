@@ -937,10 +937,10 @@ Verify task scoring formulas and skill target constraints.
 
 ## 9. Bulk sell planner
 
-Status: planned
-Owner module: `Habitica.Rules.Inventory`
-Application entry point: `Habitica.Application.Inventory`
-Primary Habitica data: inventory, items, pets, mounts, quests, gear where relevant
+Status: implemented (initial safe-surplus planner)
+Owner module: `Habitica.WebApp.Pages.PetsMountsPage`
+Application entry point: `Habitica.WebApp.Pages.PetsMountsPage`
+Primary Habitica data: cached eggs, food, and hatching potions
 Mutates Habitica state: yes when selling
 Requires confirmation: yes
 Offline behavior: recommendation available offline; execution requires API access
@@ -948,18 +948,13 @@ Rate-limit sensitivity: high for many sell operations
 
 ### Goal
 
-Recommend and optionally sell multiple unneeded items while avoiding items needed for pets, mounts, quests, or user-defined goals.
+Recommend and optionally sell surplus eggs, food, and hatching potions while preserving a user-defined keep count. The current implementation lives on Pets & Mounts after being moved out of Inventory.
 
 ### Inputs
 
 ```text
 inventory snapshot
-pet collection
-mount collection
-quest inventory
-item metadata
 user-defined keep rules
-sale value metadata
 ```
 
 ### Outputs
@@ -967,21 +962,14 @@ sale value metadata
 ```text
 sell candidates
 keep candidates
-blocked candidates
-expected gold
 risk warnings
 execution plan
 ```
 
 ### Local storage
 
-Suggested records:
-
 ```text
-sell_rule
-sell_recommendation_run
-sell_candidate
-sell_execution_log
+none; keep count is page-local state
 ```
 
 ### API interaction
@@ -995,24 +983,20 @@ Do not execute bulk sale without explicit user confirmation.
 Initial planner:
 
 ```text
-1. Load inventory snapshot.
-2. Apply hard keep rules.
-3. Apply pet/mount dependency rules.
-4. Apply quest dependency rules.
-5. Apply user-defined keep quantity.
-6. Calculate sale candidates and expected gold.
-7. Produce dry-run preview.
+1. Load cached eggs, food, and hatching potions.
+2. Apply the user keep-count threshold to each cached item key.
+3. Mark items with count above the threshold as safe surplus.
+4. Produce a dry-run preview with owned count, sell count, and safety explanation.
+5. Require explicit confirmation before sending sell requests.
 ```
 
 ### Validation
 
 Block sale when:
 
-- item purpose is unknown;
-- item is needed for an uncompleted pet/mount goal;
 - user keep threshold would be violated;
 - inventory snapshot is stale;
-- sale endpoint semantics are not verified.
+- the item type is outside eggs, food, or hatching potions.
 
 ### Error handling
 
@@ -1028,11 +1012,9 @@ No credentials in logs. Inventory can reveal user progression; do not send raw i
 
 Test:
 
-- keep rules;
-- pet dependency blocking;
-- mount dependency blocking;
-- unknown item blocking;
-- expected gold calculation;
+- keep-count surplus calculation;
+- confirmation gate;
+- supported sell item types;
 - partial sale failure;
 - stale snapshot warning.
 
