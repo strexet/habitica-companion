@@ -1,6 +1,6 @@
 # Future Work
 
-Last validated: 2026-06-02.
+Last validated: 2026-06-03.
 
 This is the single implementation queue. Historical source plans were merged here and removed after implemented items were filtered out. Entries higher in the file are higher priority; finish them first.
 
@@ -66,71 +66,7 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Remove CRON SUMMARY / Buff timing window from Party page
-   - Description
-      - The Party page currently contains a CRON SUMMARY section with a Buff timing window block.
-      - This section should be removed from the Party page.
-   - Expected behavior
-      - The Party page no longer displays CRON SUMMARY / Buff timing window.
-   - Suggested fix
-      - Remove this section from the Party page layout.
-      - Check that removing it does not leave extra spacing, empty containers, or broken layout gaps.
-- Persist manual task arrangement on the Tasks page
-   - Description
-      - When the user rearranges tasks on the Tasks page, the new order should be saved.
-      - After leaving and reopening the Tasks page, the same task sequence should be restored.
-   - Expected behavior
-      - User rearranges tasks.
-      - New order is synced to user data.
-      - Next time the user opens the Tasks page, tasks appear in the same order.
-   - Actual behavior
-      - Task rearrangement is not persisted reliably between page visits.
-   - Suggested fix
-      - Sync the updated task order after rearrangement is completed.
-      - Store the order in user data.
-      - Restore the saved order when loading the Tasks page.
-- Improve random theme generation readability rules
-   - Description
-      - Random theme generation should better account for button readability.
-      - It should consider both button background and button text colors for primary and secondary buttons.
-      - Other color contrast/readability rules should also be reviewed.
-   - Expected behavior
-      - Generated themes remain perfectly readable with calm chaos values.
-      - High chaos values, such as MADNESS, may intentionally produce wilder results.
-      - Even with more chaotic themes, primary and secondary button text should not become unreadable unless the selected chaos level explicitly allows extreme output.
-   - Suggested fix
-      - Add readability checks for PrimaryButton + PrimaryButtonText.
-      - Add readability checks for SecondaryButton + SecondaryButtonText.
-      - Review other generated color pairs for contrast issues.
-      - Tune generation rules so CALM chaos stays readable and controlled.
-      - Allow more experimental/uncontrolled combinations only at high chaos values like MADNESS.
-- Add sync logic to APPEARANCE block and rename final customization button
-   - Description
-      - The APPEARANCE block on the dashboard and in other color scheme settings should have built-in sync logic.
-      - Sync should happen when changing a preset and when saving a new preset.
-      - After the user finishes customization, the button should say Done instead of Cancel.
-   - Expected behavior
-      - Changing an appearance/color preset updates and syncs the selected appearance state.
-      - Saving a new preset also syncs the relevant appearance/color scheme data.
-      - The final customization button says Done, making the flow feel like confirmation instead of cancellation.
-   - Suggested fix
-      - Add sync handling to the APPEARANCE block.
-      - Trigger sync when a preset is selected.
-      - Trigger sync when a new preset is saved.
-      - Replace the final customization button label from Cancel to Done.
-- Simplify Blessing description
-   - Description
-      - Blessing description is currently overwhelming and contains too much extra information.
-      - It should focus on the value calculated by the formulas.
-      - It should not include extra details such as total HP of the whole group.
-      - Healing Light description looks closer to the desired style and can be used as a reference.
-   - Expected behavior
-      - Blessing description clearly shows the formula-calculated value.
-      - The description is concise and not overloaded with secondary group-wide details.
-   - Suggested fix
-      - Remove extra explanatory/aggregate information from Blessing description.
-      - Keep the main calculated value visible.
-      - Align the description style with Healing Light where appropriate.
+- None.
 
 
 ## Prioritized Next Changes
@@ -177,6 +113,199 @@ Acceptance:
 - Failed purchase (e.g. cap reached, API error) surfaces a concise error and stops further per-gem requests when looping.
 - No Habitica credentials are forwarded to Cloudflare.
 - Tests cover: card hidden when ineligible, visible when eligible, quantity clamp, confirmation gate, success refresh, partial failure during multi-gem sequence, and snapshot mapping for the new subscription fields.
+
+### Remove Party Page CRON Summary And Buff Timing Window
+
+Goal: remove the Party page overview's CRON summary and buff-timing recommendation block while preserving the rest of the Party and Quests workspaces.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PartyPage.razor` (remove the Party overview section/card that renders the `CRON summary` heading, `CRON applied`, `Data gaps`, `Average best buff time`, `Self-first buff time`, and the low-confidence warning copy)
+- `src/Habitica.WebApp/wwwroot/css/app.css` only if removing the block leaves unused spacing, empty grid tracks, or orphaned styling
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
+- `FEATURES.md` (update the Party buff timing / Party page current-implementation notes so they no longer claim the overview exposes the removed CRON summary or buff-timing window)
+
+Keep:
+- Party overview summary card and quest summary card;
+- member list, member filters/sorting, member details expansion, HP/MP/pending quest status, and stat details unless they are inside the removed CRON summary block;
+- `/quests` active-quest forecast data, including pending progress and estimated post-CRON labels;
+- stored party CRON history, party snapshot models, and CRON calculators.
+
+Out of scope:
+- deleting `PartyCronDashboardSnapshot`, CRON history stores, CRON graph calculation, or login-rhythm domain logic;
+- changing the Quests workspace or active quest estimates;
+- changing the party-sync D1 schema;
+- adding new Party page modes or redesigning the full Party workspace.
+
+Acceptance:
+- `/party` no longer renders `CRON summary`, `Buff timing window`, `CRON applied`, `Average best buff time`, or `Self-first buff time`.
+- Removing the section does not leave an empty card, blank grid slot, doubled margin, or broken responsive layout.
+- `/party` still renders cached party name/summary, quest summary, members, member filters/sorts, HP/MP labels, pending quest labels, and member detail expansion.
+- `/quests` still renders active quest current progress, pending party progress, estimated post-CRON progress, participant details, queue, pool, and recent completions.
+- Tests update the existing Party page assertions from positive CRON-summary expectations to negative assertions for the removed copy, while keeping coverage for remaining Party and Quests content.
+
+### Persist Manual Task Arrangement Through Cloud Sync
+
+Goal: after a user rearranges tasks on the Tasks page, persist the updated per-type task order locally and trigger encrypted app-data sync for `preferences/taskOrder` so the order survives page visits and can propagate through the existing user-data sync flow.
+
+Current state:
+- `TasksPage.razor` already writes `TaskOrderPreferences` to `StorageKeys.TaskOrderPreferences` after drag/drop, keyboard reorder, and move-button reorder.
+- `StorageKeys.TaskOrderPreferences` is already portable and mapped to `CloudSyncSection.TaskOrderPreferences`.
+- `LocalUserDataPortabilityService` already merges task-order preferences by task type during import/cloud-sync merge.
+- The missing behavior is a reliable post-save sync trigger from the reorder workflow.
+
+Touch:
+- `src/Habitica.WebApp/Pages/TasksPage.razor` (after `SaveTaskOrderPreferencesAsync`, trigger a narrow sync for the task-order section without blocking the visible reorder)
+- `src/Habitica.WebApp/State/IAppSessionController.cs` and `src/Habitica.WebApp/State/AppSessionController.cs` (add a small public method for syncing one portable app-data section, or another narrow app-data mutation hook that uploads `CloudSyncSection.TaskOrderPreferences`)
+- `tests/Habitica.WebApp.Tests/FakeAppSessionController.cs`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs`
+- direct controller tests under `tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs` if a new session-controller method is added
+- `FEATURES.md`
+
+Implementation shape:
+- Prefer a section-scoped controller method over calling `PushCloudSyncAsync()` from the page, so a single reorder does not force a full cloud-sync merge/upload of every section.
+- Reuse `TryUploadCloudSyncSectionAsync(credentials, CloudSyncSection.TaskOrderPreferences, ...)` or equivalent existing upload machinery, preserving encrypted sync behavior and section status updates.
+- Keep local persistence as the source of immediate UI truth; cloud sync should be best-effort and must not revert local order when upload fails.
+- If the user is signed out or no credentials are available, skip cloud upload and keep the local order.
+
+Out of scope:
+- changing task sorting/filtering semantics;
+- adding remote task-order storage outside the existing encrypted Cloudflare app-data sync;
+- changing `TaskOrderPlanner` merge semantics;
+- changing Habitica task order on the official Habitica server;
+- sending Habitica API tokens to Cloudflare endpoints.
+
+Acceptance:
+- Drag/drop, keyboard reorder, and move-button reorder still update the visible order immediately.
+- Reopening the Tasks page in the same local store restores the saved order.
+- For an authenticated user with encrypted sync available, completing a reorder attempts upload of the `task-order-preferences` cloud-sync section and updates section sync status.
+- Upload failure or excluded section state surfaces through existing sync status/diagnostics patterns and does not block or undo the local reorder.
+- Signed-out reorder remains local-only and does not show an action failure.
+- Tests cover local persistence after reorder, section-sync trigger after each reorder path or shared persistence path, signed-out/no-credential skip behavior, and upload-failure nonblocking behavior.
+
+### Improve Random Theme Readability Guards
+
+Goal: make generated color schemes reliably readable at calm and moderate chaos values, with explicit contrast checks for primary and secondary button text against their generated button backgrounds.
+
+Touch:
+- `src/Habitica.WebApp/Theme/ColorSchemeCatalog.cs` (random theme generation, `ApplyRandomContrastGuards`, contrast helpers, and any needed average-background helpers)
+- direct tests under `tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs`
+- `tests/Habitica.WebApp.Tests/Components/ColorSchemePanelTests.cs` only if UI behavior or random-theme save/display behavior changes
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md` if the documented chaos/readability contract changes
+
+Implementation shape:
+- Add contrast enforcement for `PrimaryButtonText` against the average or worst practical color of `PrimaryButtonGradient`.
+- Add contrast enforcement for `SecondaryButtonText` against the average or worst practical color of `SecondaryButtonGradient`.
+- Review existing generated pairs that affect persistent UI readability: `Ink` on card/background surfaces, app bar text, drawer text, disabled text, input border/background, focus outline, and danger/success/primary separation.
+- Use stricter thresholds for lower chaos and intentionally looser thresholds only near the highest chaos levels:
+  - calm to moderate chaos should prefer readable app-like themes;
+  - high chaos may be wilder, but primary/secondary filled button labels should not collapse into the same luminance as their backgrounds unless the selected chaos level is explicitly in the extreme range.
+- Keep generated token values valid CSS and avoid adding browser-only contrast calculations to tests.
+
+Out of scope:
+- changing built-in preset palettes except where a shared helper requires harmless normalization;
+- changing the custom scheme editor or pasted custom scheme validation beyond preserving new token names;
+- adding a full accessibility audit UI;
+- changing random preset selection behavior.
+
+Acceptance:
+- Deterministic tests over representative random seeds verify generated calm and moderate themes keep readable contrast for:
+  - `PrimaryButtonText` over `PrimaryButtonGradient`;
+  - `SecondaryButtonText` over `SecondaryButtonGradient`;
+  - body/card text over primary card surfaces.
+- Tests include at least one high-chaos/MADNESS case that verifies generated schemes remain valid while allowing looser contrast than calm themes.
+- Existing random-theme behaviors still hold: temporary generated themes are not persisted until saved, saved random themes validate, rerolled themes are saveable, and the `Generated` dropdown entry still works.
+- Documentation explains that chaos controls how aggressively readability guards are relaxed.
+
+### Sync Appearance Changes And Rename Customization Close Action
+
+Goal: make the shared Appearance/color-scheme controls trigger encrypted app-data sync after persisted appearance changes, and rename the final customization close action from `Cancel` to `Done` so finishing the flow reads as completion rather than abandonment.
+
+Current state:
+- Color scheme preferences are stored under `StorageKeys.ColorSchemePreferences`.
+- `CloudSyncSection.ColorSchemes` already maps to `preferences/colorSchemes` and has merge behavior for custom schemes plus selected-scheme timestamps.
+- `ColorSchemePanel` persists selected presets and saved custom/random schemes through `ColorSchemeService`, but it does not request cloud sync directly.
+- The compact advanced toggle currently shows `Cancel` while a random/custom edit flow is active; docs describe that as an abandon-and-collapse action.
+
+Touch:
+- `src/Habitica.WebApp/Components/ColorSchemePanel.razor`
+- `src/Habitica.WebApp/Theme/ColorSchemeService.cs` only if the service needs to expose a persisted-change result or separate transient preview from persisted mutations more clearly
+- `src/Habitica.WebApp/State/IAppSessionController.cs` and `src/Habitica.WebApp/State/AppSessionController.cs` if a reusable app-data-section sync method is added for this and task-order persistence
+- `tests/Habitica.WebApp.Tests/Components/ColorSchemePanelTests.cs`
+- `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs` and `tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs` if page-level wiring is used
+- `tests/Habitica.WebApp.Tests/FakeAppSessionController.cs`
+- direct controller tests under `tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs` if a new session-controller method is added
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md`
+
+Implementation shape:
+- Trigger `CloudSyncSection.ColorSchemes` upload only after persisted appearance mutations:
+  - selecting a built-in or custom preset;
+  - selecting a random preset;
+  - saving a random theme as a custom scheme;
+  - saving a custom scheme;
+  - deleting a custom scheme when that changes stored preferences.
+- Do not trigger cloud sync for transient preview actions:
+  - generating a temporary random theme;
+  - rerolling or adjusting chaos before save;
+  - paste preview before `Save Scheme`;
+  - canceling/reverting an unsaved custom edit.
+- Prefer the same narrow section-sync hook used for task-order sync if that task has already added it.
+- Keep sync best-effort; failures should use existing cloud-sync status/diagnostics and must not prevent local theme application or saving.
+- Rename the compact flow-closing label from `Cancel` to `Done` and update behavior/docs so `Done` means "close this customization surface"; retain explicit cancel/revert controls only where they truly discard unsaved preview state.
+
+Out of scope:
+- changing color scheme storage schema unless required for accurate persisted-change detection;
+- changing random theme generation rules beyond sync trigger behavior;
+- adding background polling for color-scheme sync;
+- changing encrypted sync key derivation or Cloudflare endpoints;
+- sending Habitica API tokens to Cloudflare endpoints.
+
+Acceptance:
+- Selecting a color preset persists the selected scheme and attempts a `color-schemes` section upload when authenticated.
+- Saving a random or custom scheme persists the scheme, selects it when the existing behavior does, and attempts a `color-schemes` section upload when authenticated.
+- Transient random generation, chaos slider changes, rerolls before save, and paste previews do not upload `color-schemes`.
+- Signed-out Appearance changes remain local and do not show a sync failure.
+- Cloud-sync failure does not undo local theme application, localStorage fast persistence, or IndexedDB preferences.
+- The compact customization close action shows `Done`, not `Cancel`; any remaining `Cancel` labels are attached only to controls that actually discard an unsaved paste/edit flow.
+- Tests cover persisted select sync, saved random/custom sync, transient random no-sync, signed-out no-sync, and the `Done` label/close behavior.
+
+### Simplify Blessing Estimate Copy
+
+Goal: shorten the Healer `Blessing` estimate so it focuses on the formula-calculated HP value in the same concise style as `Healing Light`, without secondary group-wide totals.
+
+Touch:
+- `src/Habitica.Rules/Spells/SpellViewModelFactory.cs` (`BuildPartyHealEstimate`)
+- direct tests under `tests/Habitica.Rules.Tests/Spells/SpellViewModelFactoryTests.cs`
+- `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs` only if page assertions depend on the old copy
+- `FEATURES.md`
+
+Implementation shape:
+- Keep the current formula and fresh-party-health capping behavior:
+  - theoretical maximum: `(CON + INT + 5) * 0.04`;
+  - when fresh party HP is available, cap each known member by that member's missing HP;
+  - when fresh party HP is unavailable, show the theoretical per-member maximum.
+- Replace verbose aggregate copy with one concise sentence focused on per-member value:
+  - no fresh HP: "Restores up to approximately X HP to each party member."
+  - same effective heal for covered members: "Restores approximately X HP to each covered party member."
+  - varied effective heal for covered members: "Restores approximately X-Y HP per covered party member."
+- Preserve a short missing-coverage warning only when useful, but do not include total HP restored across the whole group.
+- Keep `SpellEffectValue` useful for sorting/recommendations; if the score remains aggregate total heal, ensure UI copy no longer exposes that aggregate as the main description.
+
+Out of scope:
+- changing Blessing formula or confidence level;
+- changing Healing Light behavior;
+- changing party-health freshness rules;
+- changing spell-cast execution or CRON warning behavior;
+- changing spell equipment recommendation ranking except as a direct consequence of existing `SpellEffectValue` score semantics.
+
+Acceptance:
+- Blessing estimate no longer contains aggregate group-total wording such as `HP total`.
+- Blessing estimate still shows the formula-calculated per-member theoretical maximum when fresh party health is unavailable.
+- With fresh party health, Blessing estimate shows the capped per-member value or range for covered members.
+- Missing party-member HP coverage, if shown, is short and secondary.
+- Healing Light estimate remains unchanged.
+- Tests cover no fresh party health, uniform covered member healing, varied covered member healing, missing coverage, and absence of group-total copy.
 
 ## Backlog
 
