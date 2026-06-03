@@ -91,11 +91,12 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("Mage Tester", cut.Markup);
         Assert.Contains("Level 15", cut.Markup);
         Assert.Contains("HP", cut.Markup);
-        Assert.Contains("Wolf Base", cut.Markup);
-        Assert.Contains("Pet-Wolf-Base.png", cut.Markup);
-        Assert.Contains("Mount_Icon_Wolf-Base.png", cut.Markup);
-        Assert.Contains("Pet_Egg_Wolf.png", cut.Markup);
-        Assert.Contains("inventory_quest_scroll.png", cut.Markup);
+        Assert.DoesNotContain("Current pet, mount, and party", cut.Markup);
+        Assert.DoesNotContain("Pet-Wolf-Base.png", cut.Markup);
+        Assert.DoesNotContain("Mount_Icon_Wolf-Base.png", cut.Markup);
+        Assert.DoesNotContain("Saved inventory counts", cut.Markup);
+        Assert.DoesNotContain("Pet_Egg_Wolf.png", cut.Markup);
+        Assert.DoesNotContain("inventory_quest_scroll.png", cut.Markup);
         Assert.Contains("Open tasks", cut.Markup);
         Assert.Equal("app-input", cut.Find("[data-testid='armoire-open-count']").GetAttribute("class"));
         Assert.NotEmpty(cut.FindAll("[data-testid='buy-gems-with-gold']"));

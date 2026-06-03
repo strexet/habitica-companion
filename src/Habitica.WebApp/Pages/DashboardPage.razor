@@ -580,76 +580,6 @@
                 <span class="dashboard-stat-note">@FormatArmoireCapacity(snapshot)</span>
             </article>
 
-            <article class="card-surface dashboard-panel">
-                <p class="section-label">Companion state</p>
-                <h2>Current pet, mount, and party</h2>
-
-                <div class="habitica-image-row companion-image-row">
-                    <HabiticaImage Asset="@HabiticaImageAssetResolver.Pet(snapshot.CurrentPetKey, FormatReadableName(snapshot.CurrentPetKey, "No pet equipped"))" Loading="eager" />
-                    <HabiticaImage Asset="@HabiticaImageAssetResolver.Mount(snapshot.CurrentMountKey, FormatReadableName(snapshot.CurrentMountKey, "No mount equipped"))" Loading="eager" />
-                </div>
-
-                <dl class="dashboard-definition-list">
-                    <div>
-                        <dt>Pet</dt>
-                        <dd>@FormatReadableName(snapshot.CurrentPetKey, "None equipped")</dd>
-                    </div>
-
-                    <div>
-                        <dt>Mount</dt>
-                        <dd>@FormatReadableName(snapshot.CurrentMountKey, "None equipped")</dd>
-                    </div>
-
-                    <div>
-                        <dt>Party</dt>
-                        <dd>@(string.IsNullOrWhiteSpace(snapshot.PartyId) ? "No active party" : "Active party")</dd>
-                    </div>
-                </dl>
-            </article>
-
-            <article class="card-surface dashboard-panel">
-                <p class="section-label">Inventory</p>
-                <h2>Saved inventory counts</h2>
-
-                <div class="habitica-icon-chip-grid inventory-count-icon-grid">
-                    @RenderImageCountChip(HabiticaImageAssetResolver.EggSummary(), snapshot.Inventory.EggCount)
-                    @RenderImageCountChip(HabiticaImageAssetResolver.FoodSummary(), snapshot.Inventory.FoodCount)
-                    @RenderImageCountChip(HabiticaImageAssetResolver.HatchingPotionSummary(), snapshot.Inventory.HatchingPotionCount)
-                    @RenderImageCountChip(HabiticaImageAssetResolver.QuestScrollSummary(), snapshot.Inventory.QuestCount)
-                </div>
-
-                <dl class="dashboard-definition-list">
-                    <div>
-                        <dt>Owned gear</dt>
-                        <dd>@snapshot.Inventory.OwnedGearKeys.Length</dd>
-                    </div>
-
-                    <div>
-                        <dt>Eggs</dt>
-                        <dd>@snapshot.Inventory.EggCount</dd>
-                    </div>
-
-                    <div>
-                        <dt>Food</dt>
-                        <dd>@snapshot.Inventory.FoodCount</dd>
-                    </div>
-
-                    <div>
-                        <dt>Hatching potions</dt>
-                        <dd>@snapshot.Inventory.HatchingPotionCount</dd>
-                    </div>
-
-                    <div>
-                        <dt>Quest scrolls</dt>
-                        <dd>@snapshot.Inventory.QuestCount</dd>
-                    </div>
-
-                    <div>
-                        <dt>Owned pets / mounts</dt>
-                        <dd>@snapshot.Inventory.OwnedPetCount / @snapshot.Inventory.OwnedMountCount</dd>
-                    </div>
-                </dl>
-            </article>
         </section>
     }
 
@@ -936,23 +866,6 @@
     {
         _showHealthPotionConfirmation = false;
     }
-
-    private static RenderFragment RenderImageCountChip(HabiticaImageAsset asset, int count) => builder =>
-    {
-        var sequence = 0;
-        builder.OpenElement(sequence++, "span");
-        builder.AddAttribute(sequence++, "class", "habitica-icon-count-chip");
-        builder.OpenComponent<HabiticaImage>(sequence++);
-        builder.AddAttribute(sequence++, "Asset", asset);
-        builder.CloseComponent();
-        builder.OpenElement(sequence++, "strong");
-        builder.AddContent(sequence++, count);
-        builder.CloseElement();
-        builder.OpenElement(sequence++, "span");
-        builder.AddContent(sequence++, asset.AltText);
-        builder.CloseElement();
-        builder.CloseElement();
-    };
 
     private RenderFragment RenderDomainStatus(RefreshDomain domain, string label) => builder =>
     {

@@ -113,7 +113,7 @@ Habitica game entities that official Habitica represents visually now flow throu
 
 Current placements:
 
-- Dashboard companion panel shows current pet and mount image slots, and the inventory panel shows compact official category icons for eggs, food, hatching potions, and quest scroll counts.
+- Dashboard uses official gear thumbnails in the Start New Day equipment preview; companion and inventory summaries live on their dedicated pages instead of the Dashboard.
 - Inventory shows official gear thumbnails in battle loadout, best-in-category cards, expanded gear cards, accessory cards, and saved battle preset items. Inventory summary also shows companion and item-count icon chips.
 - Quests shows a quest image slot in the active quest card and compact quest scroll slots in queue, pool, and recently completed quest records.
 - Spells shows official skill icons in spell card headers and gear thumbnails for equipment recommendations.
