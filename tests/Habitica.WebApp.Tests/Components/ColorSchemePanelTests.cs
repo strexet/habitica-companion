@@ -258,7 +258,7 @@ public sealed class ColorSchemePanelTests : BunitContext
         JSInterop.Setup<string>("navigator.clipboard.readText").SetResult(string.Empty);
 
         cut.Find("[data-testid='paste-custom-scheme']").Click();
-        cut.Find("[data-testid='paste-fallback-input']").Change(ReadableSchemeParser.Serialize(pasted));
+        cut.Find("[data-testid='paste-fallback-input']").Input(ReadableSchemeParser.Serialize(pasted));
         cut.Find("[data-testid='apply-pasted-scheme']").Click();
 
         Assert.Contains("Review the live colors and save to keep them.", cut.Markup);

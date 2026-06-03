@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Bunit;
+using Habitica.Application.Sync;
 using Habitica.Application.Tasks;
 using Habitica.Domain.Sync;
 using Habitica.Domain.Tasks;
@@ -214,7 +215,7 @@ public sealed class TasksPageTests : BunitContext
                     {
                         new TaskSnapshot("todo-1", "Buy milk", TaskType.Todo, false, 1m, null, null, 1m),
                         new TaskSnapshot("habit-1", "Read docs", TaskType.Habit, false, 1m, null, null, 2m)
-                    }))));
+                    })));
         Services.AddSingleton<IAppSessionController>(sessionController);
 
         var cut = Render<TasksPage>();

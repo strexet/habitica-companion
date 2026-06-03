@@ -1070,16 +1070,38 @@ public static partial class ColorSchemeCatalog
         => backgrounds.Min(background => ContrastRatio(value, background));
 
     private static GradientStops4 EnsureGradientTextContrast(GradientStops4 stops, string text, double minimum)
-        => new(
+    {
+        var adjusted = new GradientStops4(
             EnsureBackgroundTextContrast(stops.TopLeft, text, minimum),
             EnsureBackgroundTextContrast(stops.TopRight, text, minimum),
             EnsureBackgroundTextContrast(stops.BottomLeft, text, minimum),
             EnsureBackgroundTextContrast(stops.BottomRight, text, minimum));
+        for (var step = 0; step < 12 && MinimumContrast(text, ColorsWithAverage(adjusted)) < minimum; step++)
+        {
+            adjusted = new GradientStops4(
+                ShiftBackgroundAwayFromText(adjusted.TopLeft, text),
+                ShiftBackgroundAwayFromText(adjusted.TopRight, text),
+                ShiftBackgroundAwayFromText(adjusted.BottomLeft, text),
+                ShiftBackgroundAwayFromText(adjusted.BottomRight, text));
+        }
+
+        return adjusted;
+    }
 
     private static GradientStops2 EnsureGradientTextContrast(GradientStops2 stops, string text, double minimum)
-        => new(
+    {
+        var adjusted = new GradientStops2(
             EnsureBackgroundTextContrast(stops.Start, text, minimum),
             EnsureBackgroundTextContrast(stops.End, text, minimum));
+        for (var step = 0; step < 12 && MinimumContrast(text, ColorsWithAverage(adjusted)) < minimum; step++)
+        {
+            adjusted = new GradientStops2(
+                ShiftBackgroundAwayFromText(adjusted.Start, text),
+                ShiftBackgroundAwayFromText(adjusted.End, text));
+        }
+
+        return adjusted;
+    }
 
     private static string EnsureBackgroundTextContrast(string background, string text, double minimum)
     {
@@ -1088,16 +1110,21 @@ public static partial class ColorSchemeCatalog
             return background;
         }
 
-        var (hue, saturation, lightness) = HexToHsl(background);
-        var textIsDark = RelativeLuminance(text) < 0.42;
         var candidate = background;
         for (var step = 0; step < 12 && ContrastRatio(text, candidate) < minimum; step++)
         {
-            lightness = textIsDark ? Math.Min(0.98, lightness + 0.05) : Math.Max(0.02, lightness - 0.05);
-            candidate = Hsl(hue, saturation, lightness);
+            candidate = ShiftBackgroundAwayFromText(candidate, text);
         }
 
         return candidate;
+    }
+
+    private static string ShiftBackgroundAwayFromText(string background, string text)
+    {
+        var (hue, saturation, lightness) = HexToHsl(background);
+        var textIsDark = RelativeLuminance(text) < 0.42;
+        lightness = textIsDark ? Math.Min(0.98, lightness + 0.05) : Math.Max(0.02, lightness - 0.05);
+        return Hsl(hue, saturation, lightness);
     }
 
     private static double ContrastRatio(string first, string second)
