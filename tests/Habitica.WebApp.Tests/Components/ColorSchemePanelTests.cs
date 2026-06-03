@@ -1,7 +1,9 @@
 using System.Text.Json;
 using Bunit;
+using Habitica.Application.Sync;
 using Habitica.Storage;
 using Habitica.WebApp.Components;
+using Habitica.WebApp.State;
 using Habitica.WebApp.Theme;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
@@ -44,7 +46,8 @@ public sealed class ColorSchemePanelTests : BunitContext
     public void Random_preset_selects_a_scheme_and_persists_selection()
     {
         var storage = new FakeKeyValueStorage();
-        var cut = RenderPanel(storage);
+        var sessionController = new FakeAppSessionController(SessionViewModel.Empty);
+        var cut = RenderPanel(storage, sessionController: sessionController);
 
         cut.Find("[data-testid='random-preset-scheme']").Click();
 
@@ -52,13 +55,29 @@ public sealed class ColorSchemePanelTests : BunitContext
         var preferences = storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences);
         Assert.NotNull(preferences);
         Assert.False(string.IsNullOrWhiteSpace(preferences!.SelectedSchemeId));
+        Assert.Equal(new[] { CloudSyncSection.ColorSchemes }, sessionController.SyncAppDataSectionCalls);
+    }
+
+    [Fact]
+    public void Selecting_a_scheme_syncs_color_scheme_section()
+    {
+        var storage = new FakeKeyValueStorage();
+        var sessionController = new FakeAppSessionController(SessionViewModel.Empty);
+        var cut = RenderPanel(storage, sessionController: sessionController);
+
+        cut.Find("[data-testid='color-scheme-select']").Change(ColorSchemeCatalog.DefaultDarkSchemeId);
+
+        var preferences = storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences);
+        Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, preferences!.SelectedSchemeId);
+        Assert.Equal(new[] { CloudSyncSection.ColorSchemes }, sessionController.SyncAppDataSectionCalls);
     }
 
     [Fact]
     public void Random_theme_offers_generated_option_without_persisting_it()
     {
         var storage = new FakeKeyValueStorage();
-        var cut = RenderPanel(storage);
+        var sessionController = new FakeAppSessionController(SessionViewModel.Empty);
+        var cut = RenderPanel(storage, sessionController: sessionController);
 
         cut.Find("[data-testid='random-theme-scheme']").Click();
 
@@ -70,13 +89,19 @@ public sealed class ColorSchemePanelTests : BunitContext
         // Generating a random theme must not write a dangling selection to storage.
         var preferences = storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences);
         Assert.True(preferences is null || preferences.SelectedSchemeId != ColorSchemeCatalog.RandomSchemeId);
+        Assert.Empty(sessionController.SyncAppDataSectionCalls);
+
+        cut.Find("[data-testid='reroll-random-scheme']").Click();
+
+        Assert.Empty(sessionController.SyncAppDataSectionCalls);
     }
 
     [Fact]
     public void Saving_random_theme_with_a_name_stores_a_custom_scheme()
     {
         var storage = new FakeKeyValueStorage();
-        var cut = RenderPanel(storage);
+        var sessionController = new FakeAppSessionController(SessionViewModel.Empty);
+        var cut = RenderPanel(storage, sessionController: sessionController);
 
         cut.Find("[data-testid='random-theme-scheme']").Click();
         cut.Find("[data-testid='random-scheme-name']").Change("Lucky Roll");
@@ -89,6 +114,7 @@ public sealed class ColorSchemePanelTests : BunitContext
         Assert.NotEqual(ColorSchemeCatalog.RandomSchemeId, custom.Id);
         Assert.Equal(custom.Id, preferences.SelectedSchemeId);
         Assert.Contains("Saved Lucky Roll.", cut.Markup);
+        Assert.Equal(new[] { CloudSyncSection.ColorSchemes }, sessionController.SyncAppDataSectionCalls);
     }
 
     [Fact]
@@ -119,6 +145,28 @@ public sealed class ColorSchemePanelTests : BunitContext
         Assert.NotNull(cut.Find("[data-testid='save-random-scheme']"));
         Assert.NotNull(cut.Find("[data-testid='reroll-random-scheme']"));
         Assert.NotNull(cut.Find("[data-testid='chaos-slider']"));
+    }
+
+    [Fact]
+    public void Compact_done_closes_customization_without_reverting_random_theme()
+    {
+        var storage = new FakeKeyValueStorage();
+        var sessionController = new FakeAppSessionController(SessionViewModel.Empty);
+        var cut = RenderPanel(storage, compact: true, sessionController: sessionController);
+
+        cut.Find("[data-testid='random-theme-scheme']").Click();
+
+        var toggle = cut.Find("[data-testid='color-scheme-advanced-toggle']");
+        Assert.Contains("Done", toggle.TextContent);
+        Assert.DoesNotContain("Cancel", toggle.TextContent);
+
+        toggle.Click();
+
+        Assert.Empty(cut.FindAll("[data-testid='save-random-scheme']"));
+        Assert.NotNull(cut.Find($"option[value='{ColorSchemeCatalog.RandomSchemeId}']"));
+        var preferences = storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences);
+        Assert.True(preferences is null || preferences.SelectedSchemeId != ColorSchemeCatalog.RandomSchemeId);
+        Assert.Empty(sessionController.SyncAppDataSectionCalls);
     }
 
     [Fact]
@@ -166,7 +214,8 @@ public sealed class ColorSchemePanelTests : BunitContext
         // A saved custom scheme must be deletable from the editor card, which is the only custom
         // card reachable on the compact Dashboard panel once a custom scheme is active.
         var storage = new FakeKeyValueStorage();
-        var cut = RenderPanel(storage);
+        var sessionController = new FakeAppSessionController(SessionViewModel.Empty);
+        var cut = RenderPanel(storage, sessionController: sessionController);
 
         cut.Find("[data-testid='random-theme-scheme']").Click();
         cut.Find("[data-testid='random-scheme-name']").Change("Mine");
@@ -178,13 +227,17 @@ public sealed class ColorSchemePanelTests : BunitContext
 
         var preferences = storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences);
         Assert.True(preferences is null || preferences.CustomSchemes.Count == 0);
+        Assert.Equal(
+            new[] { CloudSyncSection.ColorSchemes, CloudSyncSection.ColorSchemes },
+            sessionController.SyncAppDataSectionCalls);
     }
 
     [Fact]
     public void Custom_dark_toggle_survives_save()
     {
         var storage = new FakeKeyValueStorage();
-        var cut = RenderPanel(storage);
+        var sessionController = new FakeAppSessionController(SessionViewModel.Empty);
+        var cut = RenderPanel(storage, sessionController: sessionController);
 
         cut.Find("[data-testid='custom-scheme-dark']").Change(true);
         cut.Find("[data-testid='custom-scheme-name']").Change("Night custom");
@@ -192,6 +245,59 @@ public sealed class ColorSchemePanelTests : BunitContext
 
         var custom = Assert.Single(storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.CustomSchemes);
         Assert.True(custom.IsDark);
+        Assert.Equal(new[] { CloudSyncSection.ColorSchemes }, sessionController.SyncAppDataSectionCalls);
+    }
+
+    [Fact]
+    public void Paste_preview_does_not_sync_until_saved()
+    {
+        var storage = new FakeKeyValueStorage();
+        var sessionController = new FakeAppSessionController(SessionViewModel.Empty);
+        var cut = RenderPanel(storage, sessionController: sessionController);
+        var pasted = ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.DefaultDark, "Preview");
+        JSInterop.Setup<string>("navigator.clipboard.readText").SetResult(string.Empty);
+
+        cut.Find("[data-testid='paste-custom-scheme']").Click();
+        cut.Find("[data-testid='paste-fallback-input']").Change(ReadableSchemeParser.Serialize(pasted));
+        cut.Find("[data-testid='apply-pasted-scheme']").Click();
+
+        Assert.Contains("Review the live colors and save to keep them.", cut.Markup);
+        Assert.Empty(sessionController.SyncAppDataSectionCalls);
+    }
+
+    [Fact]
+    public void Cloud_sync_failure_does_not_undo_local_scheme_selection()
+    {
+        var storage = new FakeKeyValueStorage();
+        var sessionController = new FakeAppSessionController(SessionViewModel.Empty)
+        {
+            LocalDataResult = LocalDataActionResult.Failure("Cloud sync failed.")
+        };
+        var cut = RenderPanel(storage, sessionController: sessionController);
+
+        cut.Find("[data-testid='color-scheme-select']").Change(ColorSchemeCatalog.DefaultDarkSchemeId);
+
+        Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.SelectedSchemeId);
+        Assert.Contains("Using Gryphy (Dark).", cut.Markup);
+        Assert.DoesNotContain("Cloud sync failed.", cut.Markup);
+        Assert.Equal(new[] { CloudSyncSection.ColorSchemes }, sessionController.SyncAppDataSectionCalls);
+    }
+
+    [Fact]
+    public void Signed_out_sync_skip_result_does_not_show_failure()
+    {
+        var storage = new FakeKeyValueStorage();
+        var sessionController = new FakeAppSessionController(SessionViewModel.Empty)
+        {
+            LocalDataResult = LocalDataActionResult.Success("Cloud sync skipped because no active Habitica credentials are available.")
+        };
+        var cut = RenderPanel(storage, sessionController: sessionController);
+
+        cut.Find("[data-testid='color-scheme-select']").Change(ColorSchemeCatalog.DefaultDarkSchemeId);
+
+        Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.SelectedSchemeId);
+        Assert.Contains("Using Gryphy (Dark).", cut.Markup);
+        Assert.DoesNotContain("Cloud sync skipped", cut.Markup);
     }
 
     [Fact]
@@ -241,11 +347,15 @@ public sealed class ColorSchemePanelTests : BunitContext
         Assert.True(Assert.Single(stored.CustomSchemes).IsDark);
     }
 
-    private IRenderedComponent<ColorSchemePanel> RenderPanel(FakeKeyValueStorage storage, bool compact = false)
+    private IRenderedComponent<ColorSchemePanel> RenderPanel(
+        FakeKeyValueStorage storage,
+        bool compact = false,
+        FakeAppSessionController? sessionController = null)
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton<IKeyValueStorage>(storage);
+        Services.AddSingleton<IAppSessionController>(sessionController ?? new FakeAppSessionController(SessionViewModel.Empty));
         Services.AddScoped<ColorSchemeService>();
         return Render<ColorSchemePanel>(parameters => parameters.Add(p => p.Compact, compact));
     }

@@ -550,7 +550,7 @@ Current implementation:
 - `RefreshCoordinator` runs independent refresh domains with visible/background priority and deduplicates concurrent same-domain requests;
 - `RefreshForPageAsync` prioritizes domains needed by the current route, then refreshes other domains in the background priority group;
 - shared party-sync merge/upload runs are serialized inside the session controller so background refresh and manual sync cannot interleave quest lifecycle reconciliation;
-- successful refreshes and mutations attempt encrypted cloud sync and shared party sync without making the original Habitica action depend on remote-sync success;
+- successful refreshes, mutations, and persisted app-data preference changes attempt encrypted cloud sync and shared party sync without making the original Habitica action depend on remote-sync success;
 - refresh diagnostics include domain, reason, priority, duration, deduplication, and error metadata;
 - cloud sync diagnostics include direction, section status map, payload sizes, skipped/excluded/failed/conflicting sections, metadata upload status, and merge state.
 

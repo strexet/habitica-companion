@@ -639,6 +639,7 @@ public sealed class DashboardPageTests : BunitContext
 
         cut.Find("[data-testid='dashboard-appearance-toggle']").Click();
 
+        Assert.Contains("Done", cut.Find("[data-testid='dashboard-appearance-toggle']").TextContent);
         Assert.NotNull(cut.Find("[data-testid='color-scheme-select']"));
     }
 }

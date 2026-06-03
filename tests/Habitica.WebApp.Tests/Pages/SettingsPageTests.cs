@@ -52,6 +52,7 @@ public sealed class SettingsPageTests : BunitContext
         // Appearance controls are folded by default, matching the Dashboard; expand to reveal them.
         Assert.Empty(cut.FindAll("[data-testid='color-scheme-select']"));
         cut.Find("[data-testid='settings-appearance-toggle']").Click();
+        Assert.Contains("Done", cut.Find("[data-testid='settings-appearance-toggle']").TextContent);
         Assert.NotNull(cut.Find("[data-testid='color-scheme-select']"));
         Assert.NotNull(cut.Find("[data-testid='export-local-data']"));
         Assert.NotNull(cut.Find("[data-testid='import-local-data']"));

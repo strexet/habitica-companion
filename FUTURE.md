@@ -55,6 +55,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Party page overview no longer shows the dedicated CRON summary or buff-timing recommendation block, while member review and Quests workspace remain intact.
 - Manual task arrangement now persists locally and triggers a narrow encrypted upload of the task-order cloud-sync section without blocking or undoing local reorder changes.
 - Random theme generation now guards calm/moderate card text and primary/secondary filled-button label contrast across generated gradient stops, with readability thresholds intentionally relaxed only toward high-chaos Madness output.
+- Persisted appearance changes now request a narrow encrypted upload of the color-schemes cloud-sync section, while transient random themes, rerolls, chaos changes, and paste previews stay local until saved; Appearance close actions read `Done` unless they truly discard a preview/edit.
 
 ## Pending Queue
 
@@ -76,59 +77,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Sync Appearance Changes And Rename Customization Close Action
-
-Goal: make the shared Appearance/color-scheme controls trigger encrypted app-data sync after persisted appearance changes, and rename the final customization close action from `Cancel` to `Done` so finishing the flow reads as completion rather than abandonment.
-
-Current state:
-- Color scheme preferences are stored under `StorageKeys.ColorSchemePreferences`.
-- `CloudSyncSection.ColorSchemes` already maps to `preferences/colorSchemes` and has merge behavior for custom schemes plus selected-scheme timestamps.
-- `ColorSchemePanel` persists selected presets and saved custom/random schemes through `ColorSchemeService`, but it does not request cloud sync directly.
-- The compact advanced toggle currently shows `Cancel` while a random/custom edit flow is active; docs describe that as an abandon-and-collapse action.
-
-Touch:
-- `src/Habitica.WebApp/Components/ColorSchemePanel.razor`
-- `src/Habitica.WebApp/Theme/ColorSchemeService.cs` only if the service needs to expose a persisted-change result or separate transient preview from persisted mutations more clearly
-- `src/Habitica.WebApp/State/IAppSessionController.cs` and `src/Habitica.WebApp/State/AppSessionController.cs` if a reusable app-data-section sync method is added for this and task-order persistence
-- `tests/Habitica.WebApp.Tests/Components/ColorSchemePanelTests.cs`
-- `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs` and `tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs` if page-level wiring is used
-- `tests/Habitica.WebApp.Tests/FakeAppSessionController.cs`
-- direct controller tests under `tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs` if a new session-controller method is added
-- `FEATURES.md`
-- `docs/UX_UI_MANIFEST.md`
-
-Implementation shape:
-- Trigger `CloudSyncSection.ColorSchemes` upload only after persisted appearance mutations:
-  - selecting a built-in or custom preset;
-  - selecting a random preset;
-  - saving a random theme as a custom scheme;
-  - saving a custom scheme;
-  - deleting a custom scheme when that changes stored preferences.
-- Do not trigger cloud sync for transient preview actions:
-  - generating a temporary random theme;
-  - rerolling or adjusting chaos before save;
-  - paste preview before `Save Scheme`;
-  - canceling/reverting an unsaved custom edit.
-- Prefer the same narrow section-sync hook used for task-order sync if that task has already added it.
-- Keep sync best-effort; failures should use existing cloud-sync status/diagnostics and must not prevent local theme application or saving.
-- Rename the compact flow-closing label from `Cancel` to `Done` and update behavior/docs so `Done` means "close this customization surface"; retain explicit cancel/revert controls only where they truly discard unsaved preview state.
-
-Out of scope:
-- changing color scheme storage schema unless required for accurate persisted-change detection;
-- changing random theme generation rules beyond sync trigger behavior;
-- adding background polling for color-scheme sync;
-- changing encrypted sync key derivation or Cloudflare endpoints;
-- sending Habitica API tokens to Cloudflare endpoints.
-
-Acceptance:
-- Selecting a color preset persists the selected scheme and attempts a `color-schemes` section upload when authenticated.
-- Saving a random or custom scheme persists the scheme, selects it when the existing behavior does, and attempts a `color-schemes` section upload when authenticated.
-- Transient random generation, chaos slider changes, rerolls before save, and paste previews do not upload `color-schemes`.
-- Signed-out Appearance changes remain local and do not show a sync failure.
-- Cloud-sync failure does not undo local theme application, localStorage fast persistence, or IndexedDB preferences.
-- The compact customization close action shows `Done`, not `Cancel`; any remaining `Cancel` labels are attached only to controls that actually discard an unsaved paste/edit flow.
-- Tests cover persisted select sync, saved random/custom sync, transient random no-sync, signed-out no-sync, and the `Done` label/close behavior.
 
 ### Simplify Blessing Estimate Copy
 

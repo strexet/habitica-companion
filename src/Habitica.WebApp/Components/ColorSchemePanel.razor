@@ -1,5 +1,8 @@
+@using Habitica.Application.Sync
+@using Habitica.WebApp.State
 @using Habitica.WebApp.Theme
 @inject ColorSchemeService ColorSchemeService
+@inject IAppSessionController SessionController
 @inject IJSRuntime JsRuntime
 
 <div class="color-scheme-panel @(Compact ? "color-scheme-panel--compact" : null) @(PresetsOnly ? "color-scheme-panel--presets-only" : null)">
@@ -291,10 +294,10 @@
         && _colorSchemeState.CustomSchemes.Any(scheme =>
             string.Equals(scheme.Id, _colorSchemeEditor.Id, StringComparison.Ordinal));
 
-    private string ToggleLabel => _showAdvanced ? (InFlow ? "Cancel" : "Less") : "Customize";
+    private string ToggleLabel => _showAdvanced ? (InFlow ? "Done" : "Less") : "Customize";
 
     private string ToggleIcon => _showAdvanced
-        ? (InFlow ? Icons.Material.Filled.Close : Icons.Material.Filled.ExpandLess)
+        ? (InFlow ? Icons.Material.Filled.Done : Icons.Material.Filled.ExpandLess)
         : Icons.Material.Filled.ExpandMore;
 
     private Size ControlSize => Compact ? Size.Small : Size.Medium;
@@ -308,17 +311,12 @@
     private IEnumerable<ColorSchemeDefinition> BuiltInDarkSchemes => _colorSchemeState.BuiltInSchemes
         .Where(scheme => scheme.IsDark && scheme.Id != ColorSchemeCatalog.DefaultDarkSchemeId);
 
-    // Collapsing while a flow is open abandons it and reverts to the persisted scheme so reopening
-    // the panel starts clean rather than snapping back to the transient random theme.
-    private async Task ToggleAdvancedAsync()
+    // Done closes the compact customization surface without discarding the current draft/preview.
+    // Explicit Cancel controls remain inside flows that truly revert an unsaved preview.
+    private Task ToggleAdvancedAsync()
     {
         if (_showAdvanced)
         {
-            if (InFlow)
-            {
-                await CancelFlowAsync();
-            }
-
             _showAdvanced = false;
         }
         else
@@ -326,25 +324,8 @@
             _showAdvanced = true;
             EnsureEditor();
         }
-    }
 
-    private async Task CancelFlowAsync()
-    {
-        if (_randomActive)
-        {
-            // Reapply the persisted active scheme so the visible theme matches the dropdown again.
-            _colorSchemeState = await ColorSchemeService.SelectAsync(_colorSchemeState.ActiveScheme.Id);
-            _randomActive = false;
-        }
-        else
-        {
-            // A pasted preview leaves the live theme out of sync with the persisted active scheme.
-            // Re-apply it transiently so collapsing the panel always returns to the saved colors.
-            await ColorSchemeService.PreviewAsync(_colorSchemeState.ActiveScheme);
-        }
-
-        _colorSchemeEditor = CreateEditorForActive();
-        SetColorSchemeMessage($"Using {_colorSchemeState.ActiveScheme.Name}.", true);
+        return Task.CompletedTask;
     }
 
     private string ActiveDisplaySchemeId => _randomActive
@@ -405,6 +386,7 @@
         _colorSchemeState = await ColorSchemeService.SelectAsync(schemeId);
         _randomActive = false;
         _colorSchemeEditor = CreateEditorForActive();
+        SyncColorSchemes();
         SetColorSchemeMessage($"Using {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
@@ -414,6 +396,7 @@
         _colorSchemeState = await ColorSchemeService.SelectAsync(preset.Id);
         _randomActive = false;
         _colorSchemeEditor = CreateEditorForActive();
+        SyncColorSchemes();
         SetColorSchemeMessage($"Random preset: {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
@@ -484,6 +467,7 @@
 
         _randomActive = false;
         _colorSchemeEditor = ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme);
+        SyncColorSchemes();
         SetColorSchemeMessage($"Saved {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
@@ -567,6 +551,7 @@
         }
 
         _colorSchemeEditor = ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme);
+        SyncColorSchemes();
         SetColorSchemeMessage($"Saved {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
@@ -580,7 +565,13 @@
         var deletedName = _colorSchemeState.ActiveScheme.Name;
         _colorSchemeState = await ColorSchemeService.DeleteCustomAsync(_colorSchemeState.ActiveScheme.Id);
         _colorSchemeEditor = null;
+        SyncColorSchemes();
         SetColorSchemeMessage($"Deleted {deletedName}.", true);
+    }
+
+    private void SyncColorSchemes()
+    {
+        _ = SessionController.SyncAppDataSectionAsync(CloudSyncSection.ColorSchemes);
     }
 
     private void SetColorSchemeMessage(string message, bool succeeded)

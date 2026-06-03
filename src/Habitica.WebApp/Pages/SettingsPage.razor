@@ -46,8 +46,8 @@
                        Color="Color.Default"
                        data-testid="settings-appearance-toggle"
                        OnClick="@(() => _appearanceCollapsed = !_appearanceCollapsed)"
-                       EndIcon="@(_appearanceCollapsed ? Icons.Material.Filled.ExpandMore : Icons.Material.Filled.Close)">
-                @(_appearanceCollapsed ? "Customize theme" : "Cancel")
+                       EndIcon="@(_appearanceCollapsed ? Icons.Material.Filled.ExpandMore : Icons.Material.Filled.Done)">
+                @(_appearanceCollapsed ? "Customize theme" : "Done")
             </MudButton>
         </div>
         @if (!_appearanceCollapsed)
