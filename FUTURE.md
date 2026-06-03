@@ -72,7 +72,84 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- None.
+- Add feeding progress, growth planning, and type filtering to Pet & Mount page
+   - Description
+      - Pet cards on the Pet & Mount page should show feeding progress toward becoming a mount.
+      - Each pet card should also predict how much more food the pet needs before it can be converted into a mount.
+      - The prediction should take the best available food recommendation into account.
+      - Missing mount cards should provide a way to plan growing the corresponding pet into that mount.
+      - Pet and mount sections should also support filtering by creature type, such as wolf, fox, cactus, etc.
+   - Pet card updates
+      - Add visible feeding progress to each feedable pet card.
+      - Show the current progress toward mount conversion.
+      - Show how much more food is needed to grow this pet into a mount.
+      - Use best food recommendation when calculating the remaining food requirement.
+      - Prefer the pet’s favorite/recommended food when available.
+      - Account for Habitica feeding rules:
+         - Hatched pets start with 10% feeding progress.
+         - Preferred food adds 10% progress.
+         - Non-preferred food adds 4% progress.
+         - A pet needs 100% progress to become a mount.
+         - This means a newly hatched pet needs 9 preferred foods or up to 23 non-preferred foods.
+   - Missing mount card updates
+      - Missing mount cards should include a button for planning mount growth.
+      - Suggested button names:
+         - Plan to grow
+         - Grow this mount
+         - Add to feed plan
+      - Preferred label:
+         - Plan to grow
+      - When clicked, the app should select the corresponding pet and add it to the feed plan card.
+   - Feed plan behavior
+      - When a missing mount card is added to the feed plan, the feed plan should target the pet that grows into that mount.
+      - The plan should recommend the best available food for that pet.
+      - The plan should show how many food items are needed based on current pet progress.
+      - If the user does not have enough preferred food, the plan should account for available alternative food where possible.
+   - Pet/mount type filtering
+      - Each pet and mount section should have a filter at the top for pet/mount type.
+      - The filter should allow users to quickly narrow visible cards by creature type.
+      - Example types:
+         - Wolf
+         - Fox
+         - Cactus
+         - Dragon
+         - TigerCub
+         - PandaCub
+         - LionCub
+         - FlyingPig
+      - The filter should use public/display creature names where possible.
+      - Filtering should work consistently for both pet cards and mount cards.
+      - When a type is selected, only pets/mounts of that creature type should be shown.
+      - There should be an easy way to reset the filter and show all types again.
+   - API / data requirements
+      - Check Habitica API and official/public data sources for the exact pet and mount data structure.
+      - Confirm how pet ownership, mount ownership, and feeding progress are represented in user data.
+      - Confirm the mapping between each mount and its corresponding pet.
+      - Confirm recommended/favorite food mappings for pets.
+      - Confirm feeding formulas used by Habitica:
+         - Preferred food progress value.
+         - Non-preferred food progress value.
+         - Initial progress after hatching.
+         - Mount conversion threshold.
+      - Confirm the canonical creature type names used by the API and map them to readable display names for the filter.
+   - Expected behavior
+      - Pet cards clearly show how close each pet is to becoming a mount.
+      - Users can understand how much more food is needed without manually calculating it.
+      - Missing mounts can be converted into actionable feed plans directly from their cards.
+      - The feed plan chooses the correct corresponding pet for the selected missing mount.
+      - Food recommendations and remaining-food calculations match Habitica rules.
+      - Users can filter pet and mount cards by creature type.
+   - Suggested fix
+      - Extend Pet & Mount page card models with feeding progress data.
+      - Add helper logic for pet-to-mount mapping.
+      - Add helper logic for favorite/recommended food lookup.
+      - Add helper logic for creature type extraction and display-name mapping.
+      - Add formula-based calculation for remaining feeding progress.
+      - Add section-level type filters for pet and mount lists.
+      - Add conditional UI for missing mount cards:
+         - Show Plan to grow button when the corresponding pet exists and can be fed.
+         - Disable or explain unavailable state when the corresponding pet is missing, already converted, special, or cannot be fed.
+      - Add integration with the existing feed plan card so selected pets can be added from missing mount cards.
 
 
 ## Prioritized Next Changes
