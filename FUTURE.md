@@ -161,6 +161,29 @@ Work top to bottom. This is an intake list for rough notes that must become self
    - Make the scroll correction smooth enough to feel stable, but avoid animated jumps that feel delayed or distracting.
    - Ensure this works on desktop and mobile/narrow layouts.
 
+- Simplify Dashboard NAVIGATION companion links
+    - Description
+        - On the Dashboard, update the NAVIGATION section, specifically the Companion and Habitica links block.
+        - Remove the extra Habitica buttons from this block.
+        - Keep the main Open Habitica button in the top main Dashboard block.
+        - In the NAVIGATION companion links block, rename all remaining buttons to Open.
+    - Expected behavior
+        - The top main Dashboard block still has its Open Habitica button.
+        - The NAVIGATION / Companion and Habitica links block no longer contains separate Habitica buttons.
+        - All remaining buttons in that NAVIGATION block use the label Open.
+        - The block feels cleaner and avoids repeating Habitica access actions.
+    - Suggested fix
+        - Locate the Dashboard NAVIGATION section.
+        - Remove Habitica-related buttons from the Companion and Habitica links block.
+        - Keep only companion/tool navigation items in that block.
+        - Change each remaining button label in the block to Open.
+        - Verify that the top main Open Habitica button is unchanged.
+    - Acceptance criteria
+        - Extra Habitica buttons are removed from the Dashboard NAVIGATION companion links block.
+        - Top main Open Habitica button remains visible and functional.
+        - Remaining buttons in the NAVIGATION block are all labeled Open.
+        - No empty spacing or broken layout remains after removing the buttons.
+
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
