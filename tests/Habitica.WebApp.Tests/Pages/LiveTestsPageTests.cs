@@ -97,6 +97,45 @@ public sealed class LiveTestsPageTests : BunitContext
     }
 
     [Fact]
+    public void Diagnostics_console_keeps_long_metadata_in_dedicated_wrapping_block()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: null,
+                DiagnosticsLogEntries: new[]
+                {
+                    new DiagnosticsLogEntry(
+                        "entry-1",
+                        DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+                        DiagnosticsFeatureArea.Sync,
+                        "cloud-sync-upload",
+                        DiagnosticsSeverity.Warning,
+                        DiagnosticsMode.Local,
+                        "Cloud sync upload status: 8 uploaded, 0 failed, 1 skipped.",
+                        new Dictionary<string, string>
+                        {
+                            ["sectionStatuses"] =
+                                "user-profile:Success,tasks-current:Success,inventory-current:Success," +
+                                "party-current:Success,diagnostics:Skipped"
+                        })
+                })));
+
+        var cut = Render<LiveTestsPage>();
+
+        var metadata = cut.Find(".diagnostics-log-item .diagnostics-metadata-inline");
+        Assert.Contains("sectionStatuses", metadata.TextContent);
+        Assert.Contains("diagnostics:Skipped", metadata.TextContent);
+    }
+
+    [Fact]
     public void Diagnostics_preset_button_renders_the_returned_preview()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

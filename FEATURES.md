@@ -2520,6 +2520,7 @@ Current workflow rules:
 9. The diagnostics console filters by feature, severity, and mode.
 10. Copy and download actions export the currently filtered entries as JSONL. With no filters, they export all stored entries.
 11. The selected entry detail renders structured JSON instead of loose key/value text.
+12. Diagnostics log rows force `minmax(0, 1fr)` grid tracks and `min-width: 0` descendants so long metadata wraps inside the console instead of creating internal horizontal scrolling on tablet or phone widths.
 ```
 
 ### Validation
@@ -2575,6 +2576,7 @@ Current implementation:
 - reversible gear roundtrip with acknowledgement gate and restore verification;
 - curated `/user`, `/tasks/user`, and `/groups/party` diagnostics presets;
 - shared diagnostics console with feature, severity, and mode filters;
+- wrapped diagnostics log rows and metadata so recent-message cards stay within the console at desktop, tablet, and phone widths;
 - copy-all and download controls for JSONL diagnostics export;
 - structured selected-entry detail;
 - persistent diagnostics logging for sign-in, inventory actions, preset runs, and live tests.

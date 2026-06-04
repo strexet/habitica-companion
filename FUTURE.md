@@ -79,62 +79,6 @@ _None._
 
 Work top to bottom. Each entry is self-contained.
 
-### Authenticated Foldable UI Review Follow-Up
-
-Goal: repeat the full deployed UI/UX review after sign-in is reliable, then fix authenticated layout issues in the pages and foldable blocks that could not be inspected during the deployed audit.
-
-Source finding:
-- Requested deployed audit could not reach authenticated data because sign-in visibly retained credentials but submitted an empty request.
-- Unauthenticated route shells and Settings/Diagnostics/Privacy were checked at desktop, tablet, and mobile widths with no obvious horizontal overflow.
-- Remaining required surfaces still need real data/foldable inspection: Tasks details, Party member details, active quest details/participants, quest pool, Pets & Mounts groups, Inventory/equipment cards, Spells cards, Dashboard appearance and stat/action blocks, diagnostics filters/results, and color scheme editor under authenticated state.
-
-Touch:
-- `src/Habitica.WebApp/Pages/DashboardPage.razor`
-- `src/Habitica.WebApp/Pages/TasksPage.razor`
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- `src/Habitica.WebApp/Pages/QuestsPage.razor`
-- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
-- `src/Habitica.WebApp/Pages/InventoryPage.razor`
-- `src/Habitica.WebApp/Pages/SpellsPage.razor`
-- `src/Habitica.WebApp/Pages/SettingsPage.razor`
-- `src/Habitica.WebApp/Pages/LiveTestsPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- direct page tests under `tests/Habitica.WebApp.Tests/Pages/`
-- `docs/UX_UI_MANIFEST.md` if shared spacing/alignment rules change
-
-Out of scope:
-- changing Habitica data mutations;
-- changing formulas or business logic;
-- adding new app features beyond layout/UX repair;
-- running destructive actions during review.
-
-Implementation plan:
-- After the sign-in reliability fix lands, open the deployed app and authenticate with a test or user-approved account.
-- Visit Dashboard, Tasks, Party, Quests, Pets & Mounts, Inventory, Spells, Settings, Diagnostics, and Privacy at `1280x720`, `820x900`, and `390x844`.
-- Expand all foldable UI available in that state: task details, party member details, active quest details/rewards, active quest participants, quest pool, companion groups, appearance/custom scheme details, diagnostics filters/results, and any card-level Details buttons.
-- Only use non-mutating interactions: navigation, filters, sort controls, theme changes, Details toggles, folds, and safe read-only panels.
-- Record and fix alignment, spacing, wrapping, card footer drift, long-label/value alignment, button/input height mismatches, and contrast/readability issues.
-
-Acceptance:
-- Authenticated pages have no obvious unintended stair-step layouts or card action drift.
-- Task details and party member details expand without broken grids, cramped rows, or horizontal overflow.
-- Quest, companion, inventory, spell, diagnostics, and appearance controls wrap cleanly on mobile.
-- Header/description/control/list spacing is consistent across authenticated pages.
-- Theme switching does not hide important controls or text.
-- Follow-up findings are either fixed in the same pass or added back to `FUTURE.md` as scoped implementation entries.
-
-Need to run build:
-
-```bash
-DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
-```
-
-Need to run test(s): affected web app page tests
-
-```bash
-DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false
-```
-
 ### Pets And Mounts Pet Card Growth Progress
 
 Goal: show each owned, feedable pet's progress toward becoming a mount and summarize how much more food is needed using the local feeding rules model.
