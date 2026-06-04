@@ -72,7 +72,421 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-_None._
+- Top. Merge all pet related tasks from the Prioritized Next Changes list with this (create one unified Pet & Mounts task):
+  - Rework Pet & Mounts growth progress, missing-mount planning, feed queue, saddle flow, and creature type filters
+  - Description
+     - Merge all related Pet & Mounts tasks into one combined update.
+     - This task replaces/absorbs the following tasks from the Prioritized Next Changes list:
+        - Pets And Mounts Pet Card Growth Progress
+        - Pets And Mounts Missing-Mount Growth Planning
+        - Pets And Mounts Creature Type Filters
+     - Do not implement these as separate parallel features.
+     - Treat them as one unified Pet & Mounts page upgrade covering:
+        - Pet card growth progress.
+        - Food-needed summaries.
+        - Missing mount growth planning.
+        - Feed planner queue.
+        - Best-food recommendation.
+        - Saddle flow.
+        - Creature type filters.
+     - Avoid duplicate UI blocks, duplicate calculations, duplicate queue models, and duplicate helper logic.
+     - Preserve offline cached behavior wherever possible.
+     - Avoid live calls for passive progress/summary rendering.
+     - Keep user review before any mutation/API-consuming action.
+  - Main goal
+     - Improve the Pet & Mounts page so users can understand pet growth progress, plan missing mounts, queue feeding actions safely, use saddles intentionally, and filter large pet/mount collections by creature type.
+     - The page should clearly answer:
+        - Which owned pets can still become mounts.
+        - How close each pet is to becoming a mount.
+        - How much more food is needed.
+        - Which food is best to use.
+        - Whether planned feeding will consume available food correctly.
+        - Which missing mounts can be grown from currently owned pets.
+        - Which pets/mounts belong to a selected creature type.
+  - Very important merge instruction
+     - Merge this task with all related Prioritized Next Changes items listed above.
+     - Reconcile overlapping requirements before implementation.
+     - Use one shared rules/calculation model for:
+        - Pet progress.
+        - Favorite/recommended food.
+        - Food growth value.
+        - Remaining food requirement.
+        - Missing mount to corresponding pet mapping.
+        - Feed queue allocation.
+        - Creature type extraction.
+        - Saddle availability.
+     - Keep UI consistent between pet cards, missing mount cards, and feed planner queue cards.
+     - Do not create a separate “pet growth progress” implementation that is disconnected from the feed planner.
+     - Do not create a separate “missing mount plan” implementation that bypasses the queue model.
+     - Do not create separate creature-type parsing logic inside Razor if it should live in catalog/rules/domain helpers.
+  - Source verification requirements
+     - Check the official Habitica app repo and Habitica API before finalizing growth/feed/saddle logic.
+     - Verify how pet feeding progress is represented in current user data.
+     - Verify whether newly hatched feedable pets currently have 10%, 20%, or another minimum progress value in the API/app.
+     - Treat the observed 20% minimum as an explicit investigation item.
+     - Verify the official formula used for food progress.
+     - Public references may indicate:
+        - Hatched pets start with 10% progress.
+        - Favorite/preferred food adds 10% progress.
+        - Non-preferred food adds 4% progress.
+        - A pet transforms into a mount at 100% progress.
+        - Saddles instantly transform a pet into a mount.
+     - Do not hardcode assumptions until current official repo/API behavior is checked.
+     - Verify how saddles are stored in inventory.
+     - Verify how saddle use is performed through the API.
+     - Verify special/unfeedable pet behavior.
+     - Verify pets that already have corresponding mounts and cannot be grown again.
+     - Verify canonical pet/mount keys and how mount keys map back to corresponding pet keys.
+     - Verify favorite/recommended food mappings.
+     - Verify readable creature type names from catalog/domain data.
+  - Touch
+     - `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+     - `src/Habitica.WebApp/wwwroot/css/app.css`
+     - `src/Habitica.Rules/Pets`
+     - `src/Habitica.Domain/User/PetsMountsCatalog.cs`
+     - direct tests under `tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs`
+     - direct pet rules tests under `tests/Habitica.Rules.Tests/`
+     - direct catalog/domain tests under `tests/Habitica.Domain.Tests/` if creature type helper logic moves out of Razor
+     - `FEATURES.md`
+     - `docs/UX_UI_MANIFEST.md` if companion-card, filter-control, or action guidance changes
+  - Out of scope
+     - Auto-executing feed requests directly from a missing mount card without user review.
+     - Changing Habitica endpoint contracts.
+     - Planning growth for mounts whose corresponding pet is missing, special, wacky, already converted, or unsupported by the rules model.
+     - Showing exact unavailable progress for unknown/special pets unless the rules model supports it.
+     - Replacing existing text search.
+     - Filtering hatching potions or bulk-sell rows unless already naturally covered by shared section filtering.
+     - Changing collection grouping or fold persistence semantics beyond making visible matches understandable.
+     - Changing catalog membership without source-backed data.
+     - Implementing actual saddle purchase action before API/shop logic is verified.
+  - Pet card growth progress
+     - Build per-card growth summaries from cached local data:
+        - `snapshot.Inventory.Pets`
+        - `snapshot.Inventory.Mounts`
+        - `snapshot.Inventory.Food`
+        - `PetsMountsCatalog`
+     - Render compact growth progress on owned normal pet cards.
+     - Show current progress percentage.
+     - Show remaining progress percentage.
+     - Show mount-ready state when progress is already 100%.
+     - Show already-owned-mount state when the corresponding mount is already owned.
+     - Show concise unavailable state for owned pets that cannot grow into a normal mount.
+     - Keep unowned pet cards focused on hatching requirements.
+     - Do not imply feed progress before the pet exists.
+     - Preserve existing hatch, equip, feed preview, fold, search, and bulk-sell controls.
+  - Pet card food-needed summary
+     - Show a short food-needed line for owned feedable pets.
+     - Use the best available local feeding plan.
+     - Prefer favorite food when enough favorite food exists.
+     - Use mixed/alternative food only when favorite food is insufficient or absent.
+     - Make the copy concise.
+     - Avoid overwhelming explanations.
+     - Do not prompt unnecessary feeding for:
+        - Already mount-complete pets.
+        - Pets whose corresponding mount is already owned.
+        - Unknown/special/non-growable pets.
+  - Missing mount growth planning
+     - For each missing normal mount, derive the corresponding pet key from the mount key.
+     - Look up current pet ownership and progress.
+     - Add a `Plan to grow` action on missing mount cards only when:
+        - The corresponding pet exists.
+        - The corresponding pet is feedable.
+        - The mount is not already owned.
+        - The pet can grow into that mount.
+     - When clicked, select the matching pet and add/prep it in the feed planner queue.
+     - The user should see generated queue rows before any feeding or saddle action is executed.
+     - If the pet is unavailable or cannot be grown, render a concise disabled/unavailable reason near the missing mount card.
+     - Keep stale-data and busy-state guards already used by feed/equip actions.
+  - Feed planner behavior
+     - Rework the current FEED PLANNER / Feed with best food block into a queue-based planner.
+     - `PLAN FEED` should add the selected pet to the feed queue.
+     - Missing mount `Plan to grow` should add the corresponding pet to the same feed queue.
+     - Adding the same pet multiple times should be prevented or handled clearly.
+     - The feed queue should preserve the order in which pets were added.
+     - Each queued pet should be represented by its own queued pet card.
+     - Existing feed queue clear/execution behavior should remain compatible unless intentionally revised.
+     - Generated queue rows should require the existing explicit feed execution action before consuming inventory.
+  - Queued pet card content
+     - Show pet name/type/potion in readable form.
+     - Show current feeding progress.
+     - Show progress bar for current progress toward mount conversion.
+     - Show selected/assigned food.
+     - Show selected food growth value.
+     - Show available count for selected food.
+     - Show planned consumption count for this pet.
+     - Show expected resulting progress after planned feeding.
+     - Show whether selected food is the pet’s favorite/recommended food.
+     - Show warning when selected food is not favorite/recommended.
+     - Show warning when selected food is exhausted by earlier queued pets.
+     - Show warning when no selected food can be assigned and another food type should be selected.
+     - Show remove button for deleting this pet from the queue.
+  - Food selection behavior
+     - Each queued pet card should have assignable food.
+     - Default selected food should be the best available food for that pet.
+     - Favorite/recommended food should be selected by default when available.
+     - If favorite food is unavailable or insufficient, use the highest-value available alternative according to the rules model.
+     - Keep existing feed selection controls available where relevant.
+     - Selecting a pet for feeding should keep using dropdown ordering by highest growth value for that pet.
+     - The food selector should show:
+        - Food display name.
+        - Growth value for this pet.
+        - Available count.
+        - Favorite/recommended marker.
+     - The user should be able to manually change selected food.
+     - If user selects non-favorite food, show warning that it is less efficient.
+     - Saddles should not be selected as normal food in this flow.
+     - Saddle handling should be separate.
+  - Planned food consumption calculation
+     - For each queued pet, calculate how much selected food is needed to reach 100% progress.
+     - Use the maximum available amount that can bring the pet to 100%, without overcommitting inventory.
+     - Do not allocate more food than the pet needs to reach 100%.
+     - Do not allocate more food than the user owns.
+     - When multiple queued pets use the same food, calculate total planned consumption across the queue.
+     - Earlier queued pets reserve their planned food first.
+     - Later queued pets using the same food can only consume the remaining available count.
+     - If no remaining selected food is available for a later queued pet, set its planned consumption to 0.
+     - Show warning that another food type should be selected when selected food is exhausted by earlier queued pets.
+     - If only part of the needed food is available, show partial planned progress and make it clear the pet will not reach 100%.
+     - Recalculate queue allocations after:
+        - Adding a pet.
+        - Removing a pet.
+        - Changing selected food.
+        - Refreshing inventory/user data.
+        - Completing a feed action.
+        - Completing a mount transform action.
+        - Completing a saddle action.
+  - Transform to Mount action
+     - Each queued pet card should have a `Transform to Mount` button.
+     - `Transform to Mount` should be enabled only when the pet will be at 100% progress.
+     - `Transform to Mount` should be disabled when progress is below 100%.
+     - Disabled state should explain why the action is unavailable.
+     - If the button performs actual feeding/API actions, confirm the intended execution flow before enabling destructive/consuming operations.
+     - After successful transformation:
+        - Update pet/mount inventory state.
+        - Remove or mark the queued card as completed.
+        - Recalculate remaining queue food allocation.
+  - Use Saddle action
+     - Each queued pet card should have a separate `Use Saddle` button.
+     - `Use Saddle` should be separate from normal food selection.
+     - `Use Saddle` should be enabled when:
+        - The user has at least one saddle available.
+        - The pet can be transformed with a saddle.
+        - The corresponding mount is not already owned.
+     - When clicked, `Use Saddle` should show a confirmation prompt.
+     - Prompt should clearly explain that a saddle instantly transforms the pet into a mount.
+     - Prompt should warn that any already-fed progress/food investment is not refunded when using a saddle.
+     - If the user confirms, perform the saddle action through the correct API flow.
+     - If the user cancels, do nothing.
+     - If the user has no saddles, `Use Saddle` should not perform the action.
+     - If no saddles are available, clicking or interacting with the disabled state should guide the user to the buy saddle block.
+  - Buy saddle block
+     - Add a new buy saddle block lower on the Pet & Mounts page.
+     - If the user tries to use a saddle without having saddles, scroll down to the buy saddle block.
+     - The buy saddle block should explain that saddles instantly transform pets into mounts.
+     - The buy saddle block should show saddle availability and purchase state if supported.
+     - Check API/shop logic before adding any actual purchase action.
+  - Queue remove behavior
+     - Each queued pet card should have a remove button.
+     - Removing a pet from the queue should immediately recalculate planned food allocation for remaining queued pets.
+     - Removing an earlier pet should free its reserved food for later queued pets.
+     - Removing a later pet should not affect earlier queued pet allocations except through normal recalculation.
+  - Creature type filters
+     - Add creature-type filters to pet and mount sections.
+     - Pet sections should have a filter at the top for creature type.
+     - Mount sections should have a filter at the top for creature type.
+     - Filters should use public/readable creature names where possible.
+     - Example filter values:
+        - Wolf
+        - Fox
+        - Cactus
+        - Dragon
+        - Tiger Cub
+        - Panda Cub
+        - Lion Cub
+        - Flying Pig
+     - Use display names for labels while preserving canonical keys internally.
+     - Add `All types` reset option.
+     - Pet type filter should narrow visible pet cards.
+     - Mount type filter should narrow visible mount cards.
+     - Filters should compose with existing text search.
+     - Search text and selected type should both narrow visible cards.
+     - Folded groups should not hide matching results unexpectedly.
+     - Empty filtered states should explain that no companions match the selected type/search.
+     - Keep mobile layout compact.
+     - Avoid repeated per-card filter labels.
+  - Creature type metadata/helper logic
+     - Add or expose creature type metadata from `PetCatalogItem.EggKey` and corresponding mount keys.
+     - Use readable display names from `PetsMountsCatalog.ToReadableName`.
+     - Build filter options from catalog entries.
+     - Include unknown owned entries only where a readable type can be safely derived.
+     - If helper logic moves out of Razor, cover it with catalog/rules/domain tests.
+     - Avoid hardcoded display names in the page where catalog/domain helpers can provide them.
+  - Progress and formula behavior
+     - Use official app/API logic as source of truth.
+     - Calculate current progress from API/user inventory data.
+     - Calculate food value based on whether selected food is favorite/preferred.
+     - Calculate remaining progress to 100%.
+     - Calculate planned consumed count based on remaining progress and available food.
+     - Avoid overfeeding beyond 100% in the plan.
+     - Account for edge cases:
+        - Already mount-owned pet.
+        - Re-hatched pet that cannot become a second mount.
+        - Special/unfeedable pets.
+        - Wacky/non-standard pets.
+        - Missing pet.
+        - Missing food.
+        - Missing saddle.
+        - Unknown owned pet.
+        - Unowned pet.
+        - No food available.
+        - Insufficient food available.
+        - Busy state.
+        - Stale API/user snapshot.
+        - API state changed after sync.
+  - Expected behavior
+     - Owned feedable pet cards show current progress and remaining progress toward mount conversion.
+     - Food-needed copy uses favorite food when available.
+     - Food-needed copy accounts for alternative available food when favorite food is insufficient or absent.
+     - Already mount-complete or already-owned-mount states do not prompt unnecessary feeding.
+     - Unowned pets, unknown owned pets, and special/non-growable entries render without broken progress UI.
+     - Missing mount cards show `Plan to grow` when the corresponding owned pet can be fed toward that mount.
+     - Clicking `Plan to grow` selects the matching pet and prepares visible feed-plan queue rows with calculated food amounts.
+     - Planned rows use highest-value food first and include lower-value food only when needed and available.
+     - Missing pet, non-growable/special pet, already-owned mount, no-food, busy, and stale states do not produce invalid queued feed requests.
+     - `PLAN FEED` adds pets to a queue instead of only affecting a single planner state.
+     - Queued pet cards clearly show feeding progress and planned food usage.
+     - Best available food is selected by default.
+     - Non-favorite food selection is allowed but clearly warned.
+     - Multiple queued pets cannot overconsume the same food inventory.
+     - Later queued pets correctly receive only the remaining available food count.
+     - `Transform to Mount` is available only when the pet reaches 100% progress.
+     - Saddle usage is separate, confirmation-based, and only enabled when available.
+     - Users without saddles are guided to the buy saddle block.
+     - Queue items can be removed and the plan recalculates correctly.
+     - Pet sections can be filtered by creature type and reset to all types.
+     - Mount sections can be filtered by creature type and reset to all types.
+     - Type filters compose with search and folded groups without hiding matching results unexpectedly.
+     - Existing hatch, equip, feed preview, fold, search, bulk-sell, queue clear, and queue execution behavior still render/work.
+  - Suggested implementation plan
+     - First reconcile the existing Prioritized Next Changes tasks into this single implementation plan.
+     - Inspect current `PetsMountsPage.razor` state and existing feed planner behavior.
+     - Inspect `Habitica.Rules/Pets` and identify where shared progress/food planning logic should live.
+     - Inspect `PetsMountsCatalog` and identify where creature type metadata/helper logic should live.
+     - Add/extend shared rules helpers for:
+        - Pet progress.
+        - Favorite food lookup.
+        - Food progress value.
+        - Required food count.
+        - Best available food plan.
+        - Mixed food plan when favorite food is insufficient.
+        - Mount key to pet key mapping.
+        - Queue-wide food allocation.
+        - Saddle availability.
+        - Creature type extraction/display name.
+     - Add per-card growth summary model.
+     - Add missing-mount growth planning action using the same queue model.
+     - Replace or rework feed planner state into a queue model.
+     - Add queue item data:
+        - Pet key/id.
+        - Current progress.
+        - Selected food key/id.
+        - Selected food value.
+        - Available food count.
+        - Planned food consumption.
+        - Expected progress after planned feeding.
+        - Favorite/recommended state.
+        - Warning state.
+        - Transform availability.
+        - Saddle availability.
+     - Add queue recalculation after relevant state changes.
+     - Add UI states for:
+        - Ready to transform.
+        - Needs more food.
+        - Selected food unavailable.
+        - Non-favorite food selected.
+        - Saddle available.
+        - No saddle available.
+        - Pet cannot be fed/transformed.
+        - Already has mount.
+        - Missing corresponding pet.
+        - Unknown/special/non-growable pet.
+     - Add section-level creature type filters for pets and mounts.
+     - Update CSS for compact progress, queue cards, filter controls, warnings, and responsive layout.
+     - Update `FEATURES.md`.
+     - Update `docs/UX_UI_MANIFEST.md` if card/action/filter display guidance changes.
+     - Preserve offline cached behavior and avoid live calls for passive rendering.
+     - Keep user review before any mutation/API action.
+  - Acceptance criteria
+     - Owned feedable pet cards show current progress and remaining progress toward mount conversion.
+     - Food-needed copy uses favorite food when enough favorite food exists.
+     - Food-needed copy falls back to alternative available food when favorite food is insufficient or absent.
+     - Already-owned mount and mount-complete states do not prompt unnecessary feeding.
+     - Unowned pets, unknown owned pets, and special/non-growable entries render safely.
+     - Missing mount cards show `Plan to grow` only when the corresponding owned pet can be grown.
+     - Clicking `Plan to grow` adds/selects the matching pet in visible feed-plan queue rows.
+     - Generated feed-plan rows use highest-value food first and lower-value food only when needed and available.
+     - Missing pet, non-growable/special, already-owned mount, no-food, busy, and stale states do not produce invalid queued feed requests.
+     - Existing feed queue clear and execution behavior remains unchanged or is intentionally updated with tests.
+     - Queued pet cards show progress, selected food, food value, available count, planned consumption, expected resulting progress, and warnings.
+     - Multiple queued pets using the same food cannot exceed the available food count.
+     - Later queued pets correctly show reduced or zero available allocation when earlier queued pets consume the same food.
+     - `Transform to Mount` is disabled below 100% and enabled at 100%.
+     - `Use Saddle` is separate from food selection and requires confirmation.
+     - `Use Saddle` is enabled only when saddles are available and the pet can use one.
+     - No-saddle state guides the user to the buy saddle block.
+     - Queued pets can be removed and queue allocation recalculates immediately.
+     - Pet sections can be filtered by creature type and reset to all types.
+     - Mount sections can be filtered by creature type and reset to all types.
+     - Filtering by `Wolf`, `Fox`, `Cactus`, `Dragon`, `Tiger Cub`, `Panda Cub`, `Lion Cub`, and `Flying Pig` shows only matching pet or mount cards.
+     - Type filters compose with existing text search and folded groups.
+     - Empty filtered states explain that no companions match selected type/search.
+     - Component tests cover:
+        - Owned partial-progress pet.
+        - Enough favorite food.
+        - Fallback food.
+        - Already-owned mount.
+        - Unowned pet card state.
+        - Successful missing-mount planning.
+        - Unavailable corresponding pet.
+        - Insufficient/no food messaging.
+        - Generated queue execution handoff.
+        - Queue allocation with multiple pets using the same food.
+        - Removing queued pet recalculates allocation.
+        - Non-favorite food warning.
+        - Saddle available state.
+        - No-saddle guidance.
+        - Pet filter.
+        - Mount filter.
+        - Filter reset behavior.
+        - Search composition.
+        - Multi-word creature display name.
+     - Pet rules tests cover:
+        - Progress formula.
+        - Favorite food value.
+        - Non-favorite food value.
+        - Required food count.
+        - Mixed food plan.
+        - Queue allocation.
+        - Edge cases for unknown/special/non-growable pets.
+     - Catalog/domain tests cover creature type extraction/display names if helper logic moves there.
+  - Build command
+     - Run:
+       ```bash
+       DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
+       ```
+  - Test commands
+     - Run `PetsMountsPageTests`:
+       ```bash
+       DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false --filter FullyQualifiedName~PetsMountsPageTests
+       ```
+     - Run pet rules tests:
+       ```bash
+       DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.Rules.Tests/Habitica.Rules.Tests.csproj -m:1 -nodeReuse:false --filter FullyQualifiedName~Pets
+       ```
+     - Run catalog/domain tests if helper logic moves to domain/catalog layer:
+       ```bash
+       DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.Domain.Tests/Habitica.Domain.Tests.csproj -m:1 -nodeReuse:false --filter FullyQualifiedName~PetsMounts
+       ```
 
 
 ## Prioritized Next Changes
