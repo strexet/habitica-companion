@@ -85,6 +85,7 @@ The app reads `Habitica:XClientHeader` from [`src/Habitica.WebApp/wwwroot/appset
 - `FEATURES.md` - implemented and planned feature behavior
 - `FUTURE.md` - validated remaining backlog
 - `HABITICA_API.md` - Habitica API integration rules
+- `docs/AI_APP_TESTING.md` - browser UI/UX testing guide for AI agents
 - `RULES.md` - repository and AI-agent workflow rules
 
 ## Notes

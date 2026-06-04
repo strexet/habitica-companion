@@ -79,6 +79,209 @@ _None._
 
 Work top to bottom. Each entry is self-contained.
 
+### Deployed Sign-In Input Reliability
+
+Goal: make sign-in reliably use the visible User ID and API token values on the deployed app, including typed input, paste, browser automation, password-manager style fill, and accessibility/input-method entry.
+
+Source finding:
+- Deployed audit on `https://habitica-companion.pages.dev/sign-in` at desktop, tablet, and mobile widths showed the credentials visibly present in both inputs, but submitting still produced `Habitica User ID and API Token are required.` and stayed on `/sign-in`.
+- The same behavior was reproduced with direct typing-style browser input and with visible DOM values present, so the form model is not consistently receiving the field values before submit.
+- This blocked the full authenticated UI review of Dashboard, Tasks details, Party member details, Quests foldables, Pets & Mounts, Inventory, Spells, and authenticated Settings blocks.
+
+Touch:
+- `src/Habitica.WebApp/Pages/SignIn.razor`
+- `src/Habitica.WebApp/State/SignInRequest.cs` only if validation state changes
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/SignInPageTests.cs`
+- `FEATURES.md` if sign-in behavior/copy changes
+
+Out of scope:
+- changing credential storage or persistence semantics;
+- sending credentials anywhere except Habitica;
+- changing post-sign-in refresh domains;
+- adding new authentication methods.
+
+Implementation plan:
+- Update the User ID and API token controls so the backing request updates on `input` as well as ordinary `change`/blur flows, or handle submit by reading the latest form field values through a reliable Blazor binding pattern.
+- Keep session-only sign-in as the default and keep `Remember credentials` opt-in unchanged.
+- Add a small visible validation state that distinguishes truly empty fields from a failed Habitica authentication attempt.
+- Verify paste, autofill-like value changes, keyboard typing, and Enter/Sign In button submit paths all send the same request values to `SessionController.SignInAsync`.
+- After fix, repeat the deployed browser check with the provided credentials and confirm redirect to Dashboard plus staged refresh.
+
+Acceptance:
+- Visible non-empty User ID and API token fields never submit as empty.
+- Keyboard typing, paste, browser automation fill, and password-manager/autofill-style input all reach `SignInRequest`.
+- Failed sign-in due to invalid credentials shows an authentication error, not the empty-field error.
+- Successful sign-in redirects to `/dashboard` and enables authenticated navigation.
+- Existing session-only and optional persistent credential behavior remains unchanged.
+
+Need to run build:
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
+```
+
+Need to run test(s): `SignInPageTests` and app navigation initialization tests
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false --filter "FullyQualifiedName~SignInPageTests|FullyQualifiedName~AppNavMenuTests"
+```
+
+### Sign-In And Theme Contrast Pass
+
+Goal: fix sign-in hero and theme-token contrast so first-run UI remains readable across built-in light/dark themes and mobile widths.
+
+Source finding:
+- Deployed mobile audit at `390x844` showed the Gryphy Light sign-in hero as a large pale card with the hero H1 and copy effectively invisible; computed styles showed white hero text on a near-white `card-surface` background.
+- Theme switching to dark presets made the hero readable, confirming the issue is the light-theme hero token pairing rather than layout overflow.
+- Feature chips and secondary/accent buttons also use pale text on gold/orange accent surfaces in some themes, which can read weakly even when layout is aligned.
+
+Touch:
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.WebApp/Components/ColorSchemePanel.razor` only if preview markup must expose clearer token roles
+- `src/Habitica.WebApp/Theme/ColorSchemeService.cs`
+- direct tests under `tests/Habitica.WebApp.Tests/Components/ColorSchemePanelTests.cs` or static asset regression tests if contrast helpers exist
+- `docs/UX_UI_MANIFEST.md`
+- `FEATURES.md` if user-facing theme guarantees change
+
+Out of scope:
+- redesigning the sign-in page structure;
+- removing built-in schemes;
+- changing random theme save/sync behavior;
+- adding image assets.
+
+Implementation plan:
+- Give sign-in hero text a readable token for light surfaces, or give the hero a deliberately dark/readable treatment when it uses white hero text.
+- Normalize feature-chip and accent-button text tokens so filled accent surfaces choose a high-contrast foreground per scheme.
+- Add a small contrast guard for built-in scheme surfaces used by hero, feature chips, primary buttons, secondary buttons, and disabled topbar refresh text.
+- Recheck Gryphy Light, Gryphy Dark, Toxic Swamp, and Boss Battle on mobile and desktop.
+- Keep existing spacing/layout rhythm from the recent UI pass; this task is contrast/readability only unless a contrast fix requires small spacing support.
+
+Acceptance:
+- Gryphy Light sign-in H1 and hero copy are readable on mobile and desktop.
+- Built-in dark schemes keep readable hero/card/button/chip text.
+- Feature chips have sufficient contrast against their background in the audited built-in schemes.
+- Disabled Refresh remains visibly disabled but not mistaken for missing text.
+- No horizontal overflow appears on sign-in after the contrast changes.
+
+Need to run build:
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
+```
+
+Need to run test(s): `ColorSchemePanelTests` and static asset regression tests
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false --filter "FullyQualifiedName~ColorSchemePanelTests|FullyQualifiedName~StaticAssetRegressionTests"
+```
+
+### Signed-Out Empty-State Actionability
+
+Goal: make direct visits to authenticated pages actionable when the user is signed out or has no saved data.
+
+Source finding:
+- Deployed direct-route checks for `/dashboard`, `/tasks`, `/inventory`, `/pets-mounts`, `/party`, `/quests`, and `/spells` render page shells and empty-state copy, but the app bar Refresh button is disabled and there is no visible Sign in action in the content.
+- Several empty states say "Sign in or refresh" even though refresh is disabled while signed out, creating a dead-end UX for users who land on a deep link.
+- Layout itself did not horizontally overflow at `1280x720`, `820x900`, or `390x844`, so the issue is actionability/copy rather than sizing.
+
+Touch:
+- `src/Habitica.WebApp/Pages/DashboardPage.razor`
+- `src/Habitica.WebApp/Pages/TasksPage.razor`
+- `src/Habitica.WebApp/Pages/InventoryPage.razor`
+- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- `src/Habitica.WebApp/Pages/SpellsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- direct page tests under `tests/Habitica.WebApp.Tests/Pages/`
+- `FEATURES.md`
+
+Out of scope:
+- changing authenticated page data loading;
+- showing fake/skeleton data;
+- adding drawer navigation while signed out unless required by the empty-state CTA design.
+
+Implementation plan:
+- Add a consistent signed-out empty-state action row with `Sign in` linking to `/sign-in` on pages that require cached or authenticated Habitica data.
+- Update empty-state copy to stop suggesting Refresh when refresh is unavailable because the user is signed out.
+- Keep `Open Saved Data` behavior on sign-in if cached data exists; do not duplicate that behavior in every page unless local cache is present.
+- Add a shared helper/component or CSS utility only if it removes repeated markup across the affected pages.
+- Verify the action row wraps cleanly on mobile and aligns with each page header/card content.
+
+Acceptance:
+- Deep links to authenticated pages expose a clear Sign in action when signed out.
+- Empty-state copy accurately names the next available action.
+- Refresh still remains disabled while signed out.
+- Desktop, tablet, and mobile layouts keep no horizontal overflow.
+- Tests cover at least Dashboard, Tasks, Party/Quests, and Pets & Mounts signed-out empty states.
+
+Need to run build:
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
+```
+
+Need to run test(s): affected signed-out page tests
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false --filter "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~TasksPageTests|FullyQualifiedName~PartyPageTests|FullyQualifiedName~PetsMountsPageTests|FullyQualifiedName~SpellsPageTests|FullyQualifiedName~InventoryPageTests"
+```
+
+### Authenticated Foldable UI Review Follow-Up
+
+Goal: repeat the full deployed UI/UX review after sign-in is reliable, then fix authenticated layout issues in the pages and foldable blocks that could not be inspected during the deployed audit.
+
+Source finding:
+- Requested deployed audit could not reach authenticated data because sign-in visibly retained credentials but submitted an empty request.
+- Unauthenticated route shells and Settings/Diagnostics/Privacy were checked at desktop, tablet, and mobile widths with no obvious horizontal overflow.
+- Remaining required surfaces still need real data/foldable inspection: Tasks details, Party member details, active quest details/participants, quest pool, Pets & Mounts groups, Inventory/equipment cards, Spells cards, Dashboard appearance and stat/action blocks, diagnostics filters/results, and color scheme editor under authenticated state.
+
+Touch:
+- `src/Habitica.WebApp/Pages/DashboardPage.razor`
+- `src/Habitica.WebApp/Pages/TasksPage.razor`
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- `src/Habitica.WebApp/Pages/QuestsPage.razor`
+- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+- `src/Habitica.WebApp/Pages/InventoryPage.razor`
+- `src/Habitica.WebApp/Pages/SpellsPage.razor`
+- `src/Habitica.WebApp/Pages/SettingsPage.razor`
+- `src/Habitica.WebApp/Pages/LiveTestsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- direct page tests under `tests/Habitica.WebApp.Tests/Pages/`
+- `docs/UX_UI_MANIFEST.md` if shared spacing/alignment rules change
+
+Out of scope:
+- changing Habitica data mutations;
+- changing formulas or business logic;
+- adding new app features beyond layout/UX repair;
+- running destructive actions during review.
+
+Implementation plan:
+- After the sign-in reliability fix lands, open the deployed app and authenticate with a test or user-approved account.
+- Visit Dashboard, Tasks, Party, Quests, Pets & Mounts, Inventory, Spells, Settings, Diagnostics, and Privacy at `1280x720`, `820x900`, and `390x844`.
+- Expand all foldable UI available in that state: task details, party member details, active quest details/rewards, active quest participants, quest pool, companion groups, appearance/custom scheme details, diagnostics filters/results, and any card-level Details buttons.
+- Only use non-mutating interactions: navigation, filters, sort controls, theme changes, Details toggles, folds, and safe read-only panels.
+- Record and fix alignment, spacing, wrapping, card footer drift, long-label/value alignment, button/input height mismatches, and contrast/readability issues.
+
+Acceptance:
+- Authenticated pages have no obvious unintended stair-step layouts or card action drift.
+- Task details and party member details expand without broken grids, cramped rows, or horizontal overflow.
+- Quest, companion, inventory, spell, diagnostics, and appearance controls wrap cleanly on mobile.
+- Header/description/control/list spacing is consistent across authenticated pages.
+- Theme switching does not hide important controls or text.
+- Follow-up findings are either fixed in the same pass or added back to `FUTURE.md` as scoped implementation entries.
+
+Need to run build:
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
+```
+
+Need to run test(s): affected web app page tests
+
+```bash
+DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false
+```
+
 ### Pets And Mounts Pet Card Growth Progress
 
 Goal: show each owned, feedable pet's progress toward becoming a mount and summarize how much more food is needed using the local feeding rules model.
