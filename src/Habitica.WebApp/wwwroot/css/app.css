@@ -3366,7 +3366,7 @@ input[type="radio"] {
 .mud-button-text-secondary {
     border-color: color-mix(in srgb, var(--accent) 52%, transparent) !important;
     background: transparent !important;
-    color: var(--accent) !important;
+    color: color-mix(in srgb, var(--accent) 70%, var(--ink)) !important;
 }
 
 .mud-button-outlined-error,
@@ -3391,6 +3391,13 @@ input[type="radio"] {
     color: var(--disabled-text) !important;
     opacity: 1 !important;
     cursor: not-allowed;
+}
+
+.topbar .refresh-button:disabled,
+.topbar .refresh-button.mud-disabled {
+    border-color: color-mix(in srgb, var(--appbar-text) 24%, transparent) !important;
+    background: color-mix(in srgb, var(--appbar-text) 12%, transparent) !important;
+    color: color-mix(in srgb, var(--appbar-text) 72%, transparent) !important;
 }
 
 .mud-progress-linear .mud-progress-linear-bar-primary {
@@ -3654,6 +3661,30 @@ input[type="file"].app-input::file-selector-button {
 .feature-chip,
 .party-resource-chip {
     background: var(--accent-chip-gradient) !important;
+}
+
+.hero-panel.card-surface {
+    border-color: color-mix(in srgb, var(--appbar-text) 14%, transparent) !important;
+    background: var(--appbar-gradient) !important;
+    color: var(--appbar-text) !important;
+}
+
+.hero-panel.card-surface h1 {
+    color: var(--appbar-text) !important;
+}
+
+.hero-panel.card-surface .section-label {
+    color: color-mix(in srgb, var(--appbar-text) 82%, var(--accent)) !important;
+}
+
+.hero-panel.card-surface .hero-copy {
+    color: color-mix(in srgb, var(--appbar-text) 86%, transparent) !important;
+}
+
+.hero-panel.card-surface .feature-chip {
+    border-color: color-mix(in srgb, var(--appbar-text) 18%, transparent) !important;
+    background: color-mix(in srgb, var(--appbar-text) 10%, transparent) !important;
+    color: var(--appbar-text) !important;
 }
 
 @media print {

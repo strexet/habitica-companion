@@ -79,55 +79,6 @@ _None._
 
 Work top to bottom. Each entry is self-contained.
 
-### Sign-In And Theme Contrast Pass
-
-Goal: fix sign-in hero and theme-token contrast so first-run UI remains readable across built-in light/dark themes and mobile widths.
-
-Source finding:
-- Deployed mobile audit at `390x844` showed the Gryphy Light sign-in hero as a large pale card with the hero H1 and copy effectively invisible; computed styles showed white hero text on a near-white `card-surface` background.
-- Theme switching to dark presets made the hero readable, confirming the issue is the light-theme hero token pairing rather than layout overflow.
-- Feature chips and secondary/accent buttons also use pale text on gold/orange accent surfaces in some themes, which can read weakly even when layout is aligned.
-
-Touch:
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- `src/Habitica.WebApp/Components/ColorSchemePanel.razor` only if preview markup must expose clearer token roles
-- `src/Habitica.WebApp/Theme/ColorSchemeService.cs`
-- direct tests under `tests/Habitica.WebApp.Tests/Components/ColorSchemePanelTests.cs` or static asset regression tests if contrast helpers exist
-- `docs/UX_UI_MANIFEST.md`
-- `FEATURES.md` if user-facing theme guarantees change
-
-Out of scope:
-- redesigning the sign-in page structure;
-- removing built-in schemes;
-- changing random theme save/sync behavior;
-- adding image assets.
-
-Implementation plan:
-- Give sign-in hero text a readable token for light surfaces, or give the hero a deliberately dark/readable treatment when it uses white hero text.
-- Normalize feature-chip and accent-button text tokens so filled accent surfaces choose a high-contrast foreground per scheme.
-- Add a small contrast guard for built-in scheme surfaces used by hero, feature chips, primary buttons, secondary buttons, and disabled topbar refresh text.
-- Recheck Gryphy Light, Gryphy Dark, Toxic Swamp, and Boss Battle on mobile and desktop.
-- Keep existing spacing/layout rhythm from the recent UI pass; this task is contrast/readability only unless a contrast fix requires small spacing support.
-
-Acceptance:
-- Gryphy Light sign-in H1 and hero copy are readable on mobile and desktop.
-- Built-in dark schemes keep readable hero/card/button/chip text.
-- Feature chips have sufficient contrast against their background in the audited built-in schemes.
-- Disabled Refresh remains visibly disabled but not mistaken for missing text.
-- No horizontal overflow appears on sign-in after the contrast changes.
-
-Need to run build:
-
-```bash
-DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
-```
-
-Need to run test(s): `ColorSchemePanelTests` and static asset regression tests
-
-```bash
-DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false --filter "FullyQualifiedName~ColorSchemePanelTests|FullyQualifiedName~StaticAssetRegressionTests"
-```
-
 ### Signed-Out Empty-State Actionability
 
 Goal: make direct visits to authenticated pages actionable when the user is signed out or has no saved data.

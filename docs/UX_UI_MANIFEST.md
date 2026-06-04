@@ -71,6 +71,7 @@ Rules:
 - Add new app colors as semantic tokens first; avoid hard-coded one-off colors in Razor or CSS.
 - Header, drawer, MudBlazor button variants, inputs, progress bars, disabled buttons, and nested panels must consume scheme variables. A palette is not done if only `body` and top-level cards change.
 - Keep enough contrast between `background`, `card background`, `surface`, `strong surface`, `text`, and `muted text` in every built-in scheme. Dark schemes must not use pale surfaces with pale text.
+- Sign-in hero content uses the app-bar background/text token pair even though the element also carries `card-surface`; the generic card-gradient override must not turn the hero into pale card text on light themes. Hero feature chips should stay shell chips, not accent-filled chips with inherited shell text.
 - Preserve meaning across schemes: danger remains danger, success remains success, stale/conflict states keep text labels, and task-value colors must retain min/base/max progression without switching to unrelated semantic state colors.
 - Task value backgrounds use `Task min`, `Task base`, and `Task max` as one same-hue ramp. Values near zero stay close to base; negative values move toward min; positive values move toward max. Do not implement this as a visible CSS gradient background or as separate red/green/orange status colors.
 - Do not rely on color alone. Pair important state colors with copy, labels, icons, layout, or disabled reasons.

@@ -111,6 +111,11 @@ public sealed class StaticAssetRegressionTests
         Assert.Contains("var(--surface)", stylesheet);
         Assert.Contains("var(--input-bg)", stylesheet);
         Assert.Contains("var(--disabled-text)", stylesheet);
+        Assert.Contains(".hero-panel.card-surface", stylesheet);
+        Assert.Contains("background: var(--appbar-gradient) !important;", stylesheet);
+        Assert.Contains(".hero-panel.card-surface .feature-chip", stylesheet);
+        Assert.Contains(".topbar .refresh-button:disabled", stylesheet);
+        Assert.Contains("color-mix(in srgb, var(--accent) 70%, var(--ink))", stylesheet);
     }
 
     [Fact]
