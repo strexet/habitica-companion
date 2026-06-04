@@ -72,7 +72,94 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-_No queued entries._
+- Companion group bulk planning actions
+   - Add bulk planning actions to every COMPANION GROUP section.
+   - This includes:
+      - COMPANION GROUP - Base collection
+      - Other COMPANION GROUP sections
+   - Each companion group should have a button for adding all growable missing mounts to the feeding queue.
+   - Suggested button labels:
+      - Add All to Feeding Queue
+      - Plan All Missing Mounts
+      - Add Growable Mounts
+   - Preferred label:
+      - Add All to Feeding Queue
+   - The button should find all unavailable/missing mounts inside that companion group.
+   - For each unavailable/missing mount, derive the corresponding pet.
+   - Add only pets that are:
+      - Owned.
+      - Available in current user inventory.
+      - Feedable.
+      - Not special/non-growable.
+      - Not already converted into the corresponding mount.
+      - Not already present in the feeding queue.
+   - Do not add invalid rows for missing pets, special pets, already-owned mounts, or pets that cannot be grown.
+   - If no valid pets can be added from the group, the button should be disabled or hidden.
+   - The disabled state should explain why no pets can be added.
+   - After adding multiple pets, the feeding queue should recalculate food allocation for all queued items.
+   - The action should not execute feeding immediately.
+   - It should only prepare visible queue rows for user review.
+
+- Hatch planner
+   - Add a Hatch Planner with queue behavior similar to the Feed Planner.
+   - The Hatch Planner should allow users to prepare a queue of pets to hatch.
+   - It should not immediately execute hatch actions without user review.
+   - Each queued hatch item should represent one planned pet hatch.
+   - Each queued hatch item should show:
+      - Pet type / egg.
+      - Hatching potion.
+      - Whether the pet is already owned.
+      - Whether required egg is available.
+      - Whether required hatching potion is available.
+      - Planned egg consumption.
+      - Planned potion consumption.
+      - Warning state if resources are unavailable or already reserved by earlier queued items.
+   - Each queued hatch item should have a remove button.
+   - Removing a hatch item should recalculate reserved eggs and hatching potions for the remaining queue.
+   - The Hatch Planner should use the same queue-safety principles as the Feed Planner:
+      - Do not overcommit inventory.
+      - Earlier queued items reserve resources first.
+      - Later queued items only use remaining available resources.
+      - If no required resource remains, show warning and set planned consumption to 0 where appropriate.
+   - Hatch execution, if implemented, should use existing/current Habitica API flow and preserve user review before mutation.
+
+- Companion group bulk hatching actions
+   - Every COMPANION GROUP section should also have a button for adding hatchable missing pets to the Hatch Planner.
+   - Suggested button labels:
+      - Add All to Hatching Queue
+      - Plan All Hatchable Pets
+      - Add Hatchable Pets
+   - Preferred label:
+      - Add All to Hatching Queue
+   - The button should be available only if the group contains pets that can currently be hatched.
+   - A pet is hatchable when:
+      - The pet is not already owned.
+      - The required egg is available.
+      - The corresponding hatching potion is available.
+      - The pet is supported by current catalog/rules data.
+      - The pet is not special/unknown/unhatchable.
+      - The pet is not already present in the hatching queue.
+   - When clicked, add all valid hatchable pets from that companion group to the Hatch Planner queue.
+   - Do not add invalid rows for pets without required eggs or potions.
+   - If no pets can be hatched from the group, the button should be disabled or hidden.
+   - The disabled state should explain why no pets can be added.
+   - After adding multiple pets, the hatching queue should recalculate egg and potion allocation for all queued items.
+
+- Scroll stability when adding queue items
+   - Fix the current jumpy behavior when adding pets or mounts to a queue.
+   - Adding items to the feeding queue makes the queue block larger, which shifts the rest of the UI down.
+   - This causes the page to visually jump and makes the user lose their position.
+   - When adding items to the feeding queue or hatching queue, preserve the user’s perceived scroll position.
+   - Measure the layout offset caused by the queue size change.
+   - After adding items, adjust scroll position by the offset value so the visible content does not jump.
+   - Apply this behavior for:
+      - Adding one pet to the feeding queue.
+      - Adding multiple pets through Add All to Feeding Queue.
+      - Adding one pet to the hatching queue.
+      - Adding multiple pets through Add All to Hatching Queue.
+      - Adding pets from missing mount cards.
+   - Make the scroll correction smooth enough to feel stable, but avoid animated jumps that feel delayed or distracting.
+   - Ensure this works on desktop and mobile/narrow layouts.
 
 ## Prioritized Next Changes
 
