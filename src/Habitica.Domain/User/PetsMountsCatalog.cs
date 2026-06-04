@@ -100,6 +100,67 @@ public static class PetsMountsCatalog
         return false;
     }
 
+    public static bool TryGetPetKeyForMount(string mountKey, out string petKey)
+    {
+        if (FindMount(mountKey) is not null)
+        {
+            petKey = mountKey;
+            return true;
+        }
+
+        petKey = string.Empty;
+        return false;
+    }
+
+    public static bool TryGetCreatureTypeKey(PetCatalogItem pet, out string creatureTypeKey)
+    {
+        if (!string.IsNullOrWhiteSpace(pet.EggKey))
+        {
+            creatureTypeKey = pet.EggKey;
+            return true;
+        }
+
+        return TryGetCreatureTypeKey(pet.Key, out creatureTypeKey);
+    }
+
+    public static bool TryGetCreatureTypeKey(MountCatalogItem mount, out string creatureTypeKey)
+    {
+        if (FindPet(mount.Key) is { } pet)
+        {
+            creatureTypeKey = pet.EggKey;
+            return true;
+        }
+
+        return TryGetCreatureTypeKey(mount.Key, out creatureTypeKey);
+    }
+
+    public static bool TryGetCreatureTypeKey(string companionKey, out string creatureTypeKey)
+    {
+        if (string.IsNullOrWhiteSpace(companionKey))
+        {
+            creatureTypeKey = string.Empty;
+            return false;
+        }
+
+        var separatorIndex = companionKey.IndexOf('-', StringComparison.Ordinal);
+        var candidate = separatorIndex > 0
+            ? companionKey[..separatorIndex]
+            : companionKey;
+        if (string.IsNullOrWhiteSpace(candidate))
+        {
+            creatureTypeKey = string.Empty;
+            return false;
+        }
+
+        creatureTypeKey = candidate;
+        return true;
+    }
+
+    public static string ToCreatureTypeDisplayName(string creatureTypeKey)
+    {
+        return ToReadableName(creatureTypeKey);
+    }
+
     public static string ToReadableName(string value)
     {
         if (string.IsNullOrWhiteSpace(value))

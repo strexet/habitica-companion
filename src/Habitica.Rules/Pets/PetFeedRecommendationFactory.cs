@@ -10,28 +10,31 @@ public static class PetFeedRecommendationFactory
 
     public static IReadOnlyList<PetFoodRecommendation> OrderAvailableFood(
         PetCatalogItem pet,
-        IReadOnlyDictionary<string, int> ownedFood)
+        IReadOnlyDictionary<string, int> ownedFood,
+        bool includeGeneric = true)
     {
         return ownedFood
             .Where(static item => item.Value > 0)
             .Select(item => BuildRecommendation(pet, item.Key, item.Value))
+            .Where(item => includeGeneric || item.Priority != PetFoodRecommendationPriority.Generic)
             .OrderByDescending(static item => item.ProgressPercent)
             .ThenBy(static item => item.DisplayName, StringComparer.OrdinalIgnoreCase)
             .ThenBy(static item => item.Key, StringComparer.Ordinal)
             .ToArray();
     }
 
-    private static PetFoodRecommendation BuildRecommendation(PetCatalogItem pet, string foodKey, int ownedCount)
+    public static PetFoodRecommendation BuildRecommendation(PetCatalogItem pet, string foodKey, int ownedCount)
     {
         var catalogItem = PetsMountsCatalog.Food.FirstOrDefault(item =>
             string.Equals(item.Key, foodKey, StringComparison.Ordinal));
         var priority = catalogItem switch
         {
+            { IsGeneric: true } => PetFoodRecommendationPriority.Generic,
             { TargetPotionKey: not null } when string.Equals(
                 catalogItem.TargetPotionKey,
                 pet.HatchingPotionKey,
                 StringComparison.Ordinal) => PetFoodRecommendationPriority.Favorite,
-            { IsGeneric: true } => PetFoodRecommendationPriority.Generic,
+            not null when string.Equals(pet.GroupKey, "premium", StringComparison.Ordinal) => PetFoodRecommendationPriority.Favorite,
             _ => PetFoodRecommendationPriority.Other
         };
 

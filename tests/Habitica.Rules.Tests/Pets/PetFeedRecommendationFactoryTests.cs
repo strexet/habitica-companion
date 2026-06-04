@@ -42,4 +42,37 @@ public sealed class PetFeedRecommendationFactoryTests
 
         Assert.Equal("Milk", Assert.Single(recommendations).Key);
     }
+
+    [Fact]
+    public void OrderAvailableFood_can_exclude_generic_saddle_for_normal_food_flow()
+    {
+        var recommendations = PetFeedRecommendationFactory.OrderAvailableFood(
+            new PetCatalogItem("Wolf-Base", "Base Wolf", "Wolf", "Base", "base"),
+            new Dictionary<string, int>(StringComparer.Ordinal)
+            {
+                ["Saddle"] = 1,
+                ["Meat"] = 3
+            },
+            includeGeneric: false);
+
+        var item = Assert.Single(recommendations);
+        Assert.Equal("Meat", item.Key);
+        Assert.Equal(PetFoodRecommendationPriority.Favorite, item.Priority);
+    }
+
+    [Fact]
+    public void OrderAvailableFood_treats_premium_pet_food_as_full_growth()
+    {
+        var recommendations = PetFeedRecommendationFactory.OrderAvailableFood(
+            new PetCatalogItem("Wolf-RoyalPurple", "Royal Purple Wolf", "Wolf", "RoyalPurple", "premium"),
+            new Dictionary<string, int>(StringComparer.Ordinal)
+            {
+                ["Milk"] = 1
+            });
+
+        var item = Assert.Single(recommendations);
+        Assert.Equal("Milk", item.Key);
+        Assert.Equal(PetFoodRecommendationPriority.Favorite, item.Priority);
+        Assert.Equal(10m, item.ProgressPercent);
+    }
 }

@@ -10,7 +10,7 @@ public sealed class PetGrowthPlanFactoryTests
     {
         var plan = PetGrowthPlanFactory.Create(
             BaseWolf,
-            currentProgressPoints: 0,
+            currentProgressPoints: 5,
             new Dictionary<string, int>(StringComparer.Ordinal)
             {
                 ["Meat"] = 9
@@ -33,7 +33,7 @@ public sealed class PetGrowthPlanFactoryTests
     {
         var plan = PetGrowthPlanFactory.Create(
             BaseWolf,
-            currentProgressPoints: 0,
+            currentProgressPoints: 5,
             new Dictionary<string, int>(StringComparer.Ordinal)
             {
                 ["Milk"] = 23
@@ -60,11 +60,11 @@ public sealed class PetGrowthPlanFactoryTests
             },
             matchingMountOwned: false);
 
-        Assert.Equal(40m, plan.CurrentProgressPercent);
-        Assert.Equal(60m, plan.RemainingProgressPercent);
+        Assert.Equal(30m, plan.CurrentProgressPercent);
+        Assert.Equal(70m, plan.RemainingProgressPercent);
         var item = Assert.Single(plan.FeedPlan);
         Assert.Equal(5, item.Amount);
-        Assert.Equal(10m, plan.MissingProgressAfterPlanPercent);
+        Assert.Equal(20m, plan.MissingProgressAfterPlanPercent);
         Assert.False(plan.CanCompleteWithAvailableFood);
     }
 
@@ -73,7 +73,7 @@ public sealed class PetGrowthPlanFactoryTests
     {
         var plan = PetGrowthPlanFactory.Create(
             BaseWolf,
-            currentProgressPoints: 45,
+            currentProgressPoints: 50,
             new Dictionary<string, int>(StringComparer.Ordinal)
             {
                 ["Meat"] = 9
@@ -124,7 +124,7 @@ public sealed class PetGrowthPlanFactoryTests
     {
         var plan = PetGrowthPlanFactory.Create(
             new PetCatalogItem("Wolf-Veggie", "Veggie Wolf", "Wolf", "Veggie", "wacky"),
-            currentProgressPoints: 0,
+            currentProgressPoints: 5,
             new Dictionary<string, int>(StringComparer.Ordinal)
             {
                 ["Meat"] = 9
@@ -142,7 +142,7 @@ public sealed class PetGrowthPlanFactoryTests
     {
         var plan = PetGrowthPlanFactory.Create(
             BaseWolf,
-            currentProgressPoints: 0,
+            currentProgressPoints: 5,
             new Dictionary<string, int>(StringComparer.Ordinal)
             {
                 ["Meat"] = 9
@@ -159,7 +159,7 @@ public sealed class PetGrowthPlanFactoryTests
     }
 
     [Fact]
-    public void Create_uses_highest_value_food_first_without_mutating_owned_food()
+    public void Create_uses_highest_value_normal_food_first_without_mutating_owned_food()
     {
         var ownedFood = new Dictionary<string, int>(StringComparer.Ordinal)
         {
@@ -170,19 +170,68 @@ public sealed class PetGrowthPlanFactoryTests
 
         var plan = PetGrowthPlanFactory.Create(
             BaseWolf,
-            currentProgressPoints: 0,
+            currentProgressPoints: 5,
             ownedFood,
             matchingMountOwned: false);
 
-        Assert.Equal(new[] { "Saddle", "Meat", "Milk" }, plan.AvailableFood.Select(static item => item.Key));
-        var item = Assert.Single(plan.FeedPlan);
-        Assert.Equal("Saddle", item.FoodKey);
-        Assert.Equal(1, item.Amount);
-        Assert.Equal(100m, item.ProgressPercent);
+        Assert.Equal(new[] { "Meat", "Milk" }, plan.AvailableFood.Select(static item => item.Key));
+        Assert.Equal(new[] { "Meat", "Milk" }, plan.FeedPlan.Select(static item => item.FoodKey));
+        Assert.Equal(2, plan.FeedPlan[0].Amount);
+        Assert.Equal(18, plan.FeedPlan[1].Amount);
         Assert.True(plan.CanCompleteWithAvailableFood);
         Assert.Equal(2, ownedFood["Meat"]);
         Assert.Equal(1, ownedFood["Saddle"]);
         Assert.Equal(20, ownedFood["Milk"]);
+    }
+
+    [Fact]
+    public void AllocateQueue_reserves_earlier_pet_food_before_later_pet()
+    {
+        var allocations = PetGrowthPlanFactory.AllocateQueue(
+            [
+                new PetGrowthQueueRequest("Wolf-Base", "Meat"),
+                new PetGrowthQueueRequest("TigerCub-Base", "Meat")
+            ],
+            new Dictionary<string, int>(StringComparer.Ordinal)
+            {
+                ["Wolf-Base"] = 5,
+                ["TigerCub-Base"] = 5
+            },
+            new Dictionary<string, bool>(StringComparer.Ordinal),
+            new Dictionary<string, int>(StringComparer.Ordinal)
+            {
+                ["Meat"] = 9
+            });
+
+        Assert.Equal(2, allocations.Count);
+        Assert.Equal(9, allocations[0].PlannedAmount);
+        Assert.Equal(100m, allocations[0].ExpectedProgressPercent);
+        Assert.True(allocations[0].CanReachMount);
+        Assert.Equal(0, allocations[1].PlannedAmount);
+        Assert.Equal(0, allocations[1].SelectedFoodRemainingBeforeItem);
+        Assert.True(allocations[1].SelectedFoodExhaustedByEarlierItems);
+    }
+
+    [Fact]
+    public void AllocateQueue_marks_non_favorite_partial_food_plan()
+    {
+        var allocation = Assert.Single(PetGrowthPlanFactory.AllocateQueue(
+            [new PetGrowthQueueRequest("Wolf-Base", "Milk")],
+            new Dictionary<string, int>(StringComparer.Ordinal)
+            {
+                ["Wolf-Base"] = 5
+            },
+            new Dictionary<string, bool>(StringComparer.Ordinal),
+            new Dictionary<string, int>(StringComparer.Ordinal)
+            {
+                ["Milk"] = 2
+            }));
+
+        Assert.Equal(PetFoodRecommendationPriority.Other, allocation.SelectedFoodPriority);
+        Assert.True(allocation.UsesLessEfficientFood);
+        Assert.True(allocation.HasPartialFoodPlan);
+        Assert.Equal(2, allocation.PlannedAmount);
+        Assert.Equal(18m, allocation.ExpectedProgressPercent);
     }
 
     private static PetCatalogItem BaseWolf => new("Wolf-Base", "Base Wolf", "Wolf", "Base", "base");

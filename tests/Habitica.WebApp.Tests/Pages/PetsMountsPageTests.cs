@@ -65,27 +65,26 @@ public sealed class PetsMountsPageTests : BunitContext
         var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with
         {
             Inventory = CreateInventory(
-                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 0 },
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["TigerCub-Base"] = 5 },
                 mounts: new Dictionary<string, bool>(StringComparer.Ordinal) { ["Wolf-Base"] = true },
                 food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 2, ["Saddle"] = 1 })
         }));
         var cut = RenderPage(controller: controller);
 
-        cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
-        var foodOptions = cut.Find("[data-testid='feed-food-select']").Children;
-        Assert.Equal("Saddle", foodOptions[0].GetAttribute("value"));
-        Assert.Contains("+100%", foodOptions[0].TextContent);
-        Assert.Contains("+10%", foodOptions[1].TextContent);
-        cut.Find("[data-testid='add-feed-queue-item']").Click();
+        cut.Find("[data-testid='select-feed-TigerCub-Base']").Click();
+        var foodOptions = cut.Find("[data-testid='feed-food-select-TigerCub-Base']").Children;
+        Assert.Equal("Meat", foodOptions[0].GetAttribute("value"));
+        Assert.Contains("+10%", foodOptions[0].TextContent);
+        Assert.DoesNotContain("Saddle", cut.Find("[data-testid='feed-food-select-TigerCub-Base']").TextContent);
 
-        Assert.Contains("Wolf Base", cut.Find("[data-testid='feed-dry-run-preview']").TextContent);
+        Assert.Contains("Tiger Cub Base", cut.Find("[data-testid='feed-dry-run-preview']").TextContent);
         cut.Find("[data-testid='execute-feed-queue']").Click();
-        cut.Find("[data-testid='equip-pet-Wolf-Base']").Click();
+        cut.Find("[data-testid='equip-pet-TigerCub-Base']").Click();
         cut.Find("[data-testid='equip-mount-Wolf-Base']").Click();
 
         var feed = Assert.Single(controller.FeedPetCalls);
-        Assert.Equal(new PetFeedQueueItem("Wolf-Base", "Saddle", 1), Assert.Single(feed));
-        Assert.Equal("Wolf-Base", Assert.Single(controller.EquipPetCalls));
+        Assert.Equal(new PetFeedQueueItem("TigerCub-Base", "Meat", 2), Assert.Single(feed));
+        Assert.Equal("TigerCub-Base", Assert.Single(controller.EquipPetCalls));
         Assert.Equal("Wolf-Base", Assert.Single(controller.EquipMountCalls));
     }
 
@@ -100,8 +99,8 @@ public sealed class PetsMountsPageTests : BunitContext
         });
 
         var wolfProgress = cut.Find("[data-testid='pet-growth-Wolf-Base']");
-        Assert.Equal("40", wolfProgress.GetAttribute("data-progress"));
-        Assert.Contains("40% grown, 60% to mount", wolfProgress.TextContent);
+        Assert.Equal("30", wolfProgress.GetAttribute("data-progress"));
+        Assert.Contains("30% grown, 70% to mount", wolfProgress.TextContent);
 
         var tigerProgress = cut.Find("[data-testid='pet-growth-TigerCub-Base']");
         Assert.Equal("0", tigerProgress.GetAttribute("data-progress"));
@@ -110,8 +109,8 @@ public sealed class PetsMountsPageTests : BunitContext
         cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
 
         var feedProgress = cut.Find("[data-testid='feed-growth-Wolf-Base']");
-        Assert.Equal("40", feedProgress.GetAttribute("data-progress"));
-        Assert.Contains("Best available plan: Meat x 6.", feedProgress.TextContent);
+        Assert.Equal("30", feedProgress.GetAttribute("data-progress"));
+        Assert.Contains("Available plan: Meat x 6; still needs 10% progress.", feedProgress.TextContent);
     }
 
     [Fact]
@@ -120,8 +119,12 @@ public sealed class PetsMountsPageTests : BunitContext
         var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with
         {
             Inventory = CreateInventory(
-                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 0 },
-                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 2 })
+                pets: new Dictionary<string, int>(StringComparer.Ordinal)
+                {
+                    ["Wolf-Base"] = 5,
+                    ["TigerCub-Base"] = 5
+                },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 20 })
         }))
         {
             FeedPetResult = InventoryActionResult.Failure("Feed failed after the first queued request.")
@@ -129,12 +132,120 @@ public sealed class PetsMountsPageTests : BunitContext
         var cut = RenderPage(controller: controller);
 
         cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
-        cut.Find("[data-testid='add-feed-queue-item']").Click();
-        cut.Find("[data-testid='add-feed-queue-item']").Click();
+        cut.Find("[data-testid='select-feed-TigerCub-Base']").Click();
         cut.Find("[data-testid='execute-feed-queue']").Click();
 
         Assert.Equal(2, Assert.Single(controller.FeedPetCalls).Length);
         Assert.Contains("2 queued", cut.Markup);
+    }
+
+    [Fact]
+    public void Missing_mount_plan_adds_matching_pet_to_feed_queue()
+    {
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
+        });
+
+        cut.Find("[data-testid='plan-grow-mount-Wolf-Base']").Click();
+
+        var queue = cut.Find("[data-testid='feed-queue-card-Wolf-Base']");
+        Assert.Contains("Wolf Base", queue.TextContent);
+        Assert.Contains("After plan 100%", queue.TextContent);
+    }
+
+    [Fact]
+    public void Transform_to_mount_confirms_and_executes_planned_food()
+    {
+        var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
+        }));
+        var cut = RenderPage(controller: controller);
+
+        cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
+        cut.Find("[data-testid='transform-mount-Wolf-Base']").Click();
+        Assert.Empty(controller.FeedPetCalls);
+
+        cut.Find("[data-testid='confirm-transform-mount-Wolf-Base']").Click();
+
+        var feed = Assert.Single(controller.FeedPetCalls);
+        Assert.Equal(new PetFeedQueueItem("Wolf-Base", "Meat", 9), Assert.Single(feed));
+    }
+
+    [Fact]
+    public void Queue_allocation_recalculates_after_removing_earlier_pet()
+    {
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal)
+                {
+                    ["Wolf-Base"] = 5,
+                    ["TigerCub-Base"] = 5
+                },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
+        });
+
+        cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
+        cut.Find("[data-testid='select-feed-TigerCub-Base']").Click();
+
+        Assert.Contains("This food is exhausted by earlier queued pets.", cut.Find("[data-testid='feed-queue-card-TigerCub-Base']").TextContent);
+
+        cut.Find("[data-testid='remove-feed-queue-Wolf-Base']").Click();
+
+        var tigerQueue = cut.Find("[data-testid='feed-queue-card-TigerCub-Base']");
+        Assert.Contains("After plan 100%", tigerQueue.TextContent);
+        Assert.DoesNotContain("exhausted by earlier queued pets", tigerQueue.TextContent);
+    }
+
+    [Fact]
+    public void Type_filters_compose_with_search_and_can_reset()
+    {
+        var cut = RenderPage(CreateSnapshot());
+
+        cut.Find("[data-testid='pet-type-filter']").Change("FlyingPig");
+
+        Assert.NotEmpty(cut.FindAll("[data-testid='pet-card-FlyingPig-Base']"));
+        Assert.Empty(cut.FindAll("[data-testid='pet-card-Wolf-Base']"));
+
+        cut.Find("[data-testid='pets-mounts-search']").Input("Base");
+        Assert.NotEmpty(cut.FindAll("[data-testid='pet-card-FlyingPig-Base']"));
+        Assert.Empty(cut.FindAll("[data-testid='pet-card-Dragon-Base']"));
+
+        cut.Find("[data-testid='pet-type-filter']").Change(string.Empty);
+        Assert.NotEmpty(cut.FindAll("[data-testid='pet-card-Wolf-Base']"));
+
+        cut.Find("[data-testid='mount-type-filter']").Change("Dragon");
+        Assert.NotEmpty(cut.FindAll("[data-testid='mount-card-Dragon-Base']"));
+        Assert.Empty(cut.FindAll("[data-testid='mount-card-Wolf-Base']"));
+    }
+
+    [Fact]
+    public void Saddle_flow_is_separate_and_confirmation_based()
+    {
+        var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 1, ["Saddle"] = 1 })
+        }));
+        var cut = RenderPage(controller: controller);
+
+        cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
+
+        Assert.DoesNotContain("Saddle", cut.Find("[data-testid='feed-food-select-Wolf-Base']").TextContent);
+        cut.Find("[data-testid='use-saddle-Wolf-Base']").Click();
+        Assert.Empty(controller.FeedPetCalls);
+
+        cut.Find("[data-testid='confirm-use-saddle-Wolf-Base']").Click();
+
+        var feed = Assert.Single(controller.FeedPetCalls);
+        Assert.Equal(new PetFeedQueueItem("Wolf-Base", "Saddle", 1), Assert.Single(feed));
     }
 
     [Fact]

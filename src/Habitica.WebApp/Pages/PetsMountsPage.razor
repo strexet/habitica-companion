@@ -80,72 +80,161 @@
                    value="@_searchText"
                    @oninput="eventArgs => _searchText = eventArgs.Value?.ToString() ?? string.Empty"
                    data-testid="pets-mounts-search" />
+            @{
+                var creatureTypeOptions = GetCreatureTypeFilterOptions(catalogPets, catalogMounts);
+            }
+            <div class="companion-filter-grid">
+                <label class="field-row compact">
+                    <span>Pet type</span>
+                    <select class="app-input" value="@_petTypeFilterKey" @onchange="eventArgs => _petTypeFilterKey = eventArgs.Value?.ToString() ?? string.Empty" data-testid="pet-type-filter">
+                        <option value="">All types</option>
+                        @foreach (var option in creatureTypeOptions)
+                        {
+                            <option value="@option.Key">@option.DisplayName</option>
+                        }
+                    </select>
+                </label>
+                <label class="field-row compact">
+                    <span>Mount type</span>
+                    <select class="app-input" value="@_mountTypeFilterKey" @onchange="eventArgs => _mountTypeFilterKey = eventArgs.Value?.ToString() ?? string.Empty" data-testid="mount-type-filter">
+                        <option value="">All types</option>
+                        @foreach (var option in creatureTypeOptions)
+                        {
+                            <option value="@option.Key">@option.DisplayName</option>
+                        }
+                    </select>
+                </label>
+            </div>
         </section>
 
         <section class="card-surface inventory-group-card">
+            @{
+                var queueAllocations = GetFeedQueueAllocations(snapshot.Inventory).ToArray();
+                var executableQueue = queueAllocations.Where(static item => item.CanExecuteFeed).ToArray();
+            }
             <div class="task-group-header">
                 <div>
                     <p class="section-label">Feed planner</p>
-                    <h2>Feed with best food</h2>
+                    <h2>Feed queue</h2>
                 </div>
                 <span class="ui-pill count-pill">@_feedQueue.Count queued</span>
             </div>
 
-            @if (_selectedPetKey is null)
+            @if (_feedQueue.Count == 0)
             {
-                <p class="panel-copy">Choose Plan feed on an owned pet card to start a queue.</p>
+                <p class="panel-copy">Choose Plan feed on an owned pet or Plan to grow on a missing mount.</p>
             }
             else
             {
-                var selectedPet = GetCatalogPet(_selectedPetKey);
-                var foodOptions = selectedPet is null
-                    ? Array.Empty<PetFoodRecommendation>()
-                    : PetFeedRecommendationFactory.OrderAvailableFood(selectedPet, snapshot.Inventory.Food);
-                var selectedGrowthPlan = GetPetGrowthPlan(_selectedPetKey, snapshot.Inventory);
-                <div class="preset-save-row">
-                    <label class="field-row compact">
-                        <span>Pet</span>
-                        <strong>@FormatName(_selectedPetKey, _selectedPetKey)</strong>
-                    </label>
-                    <label class="field-row compact">
-                        <span>Food</span>
-                        <select class="app-input" value="@_selectedFoodKey" @onchange="eventArgs => _selectedFoodKey = eventArgs.Value?.ToString()" data-testid="feed-food-select">
-                            @foreach (var food in foodOptions)
-                            {
-                                <option value="@food.Key">@food.DisplayName (+@FormatProgressPercent(food.ProgressPercent)%, @FormatFoodPriority(food.Priority), owned @food.OwnedCount)</option>
-                            }
-                        </select>
-                    </label>
-                    <label class="field-row compact">
-                        <span>Amount</span>
-                        <input class="app-input" min="1" max="99" type="number" value="@_feedAmount" @onchange="eventArgs => SetFeedAmount(eventArgs.Value?.ToString())" />
-                    </label>
-                    <MudButton Color="Color.Primary"
-                               Disabled="@(foodOptions.Count == 0 || string.IsNullOrWhiteSpace(_selectedFoodKey))"
-                               OnClick="AddFeedQueueItem"
-                               Variant="Variant.Outlined"
-                               data-testid="add-feed-queue-item">
-                        Add food
-                    </MudButton>
-                </div>
-                @RenderPetGrowth(selectedGrowthPlan, $"feed-growth-{_selectedPetKey}", true)
-            }
-
-            @if (_feedQueue.Count > 0)
-            {
-                <div class="bulk-sell-list" data-testid="feed-dry-run-preview">
-                    @foreach (var item in _feedQueue)
+                <div class="feed-queue-list" data-testid="feed-dry-run-preview">
+                    @foreach (var selection in _feedQueue)
                     {
-                        <article class="bulk-sell-item">
-                            <strong>@FormatName(item.PetKey, item.PetKey)</strong>
-                            <span class="dashboard-stat-note">@FormatName(item.FoodKey, item.FoodKey) x @item.Amount</span>
+                        var allocation = queueAllocations.First(item => string.Equals(item.PetKey, selection.PetKey, StringComparison.Ordinal));
+                        var growthPlan = GetPetGrowthPlan(selection.PetKey, snapshot.Inventory);
+                        var selectedPet = GetCatalogPet(selection.PetKey);
+                        var foodOptions = selectedPet is null
+                            ? Array.Empty<PetFoodRecommendation>()
+                            : PetFeedRecommendationFactory.OrderAvailableFood(selectedPet, snapshot.Inventory.Food, includeGeneric: false);
+                        var canUseSaddle = CanUseSaddle(allocation, snapshot.Inventory);
+                        <article class="feed-queue-card" data-testid="@($"feed-queue-card-{selection.PetKey}")">
+                            <div class="task-group-header">
+                                <div>
+                                    <p class="section-label">Queued pet</p>
+                                    <h3>@FormatName(selection.PetKey, selection.PetKey)</h3>
+                                    <span class="dashboard-stat-note">@selection.PetKey</span>
+                                </div>
+                                <MudButton OnClick="@(() => RemoveQueuedPet(selection.PetKey))" Variant="Variant.Text" data-testid="@($"remove-feed-queue-{selection.PetKey}")">
+                                    Remove
+                                </MudButton>
+                            </div>
+                            @RenderPetGrowth(growthPlan, $"feed-growth-{selection.PetKey}", true)
+                            <label class="field-row compact">
+                                <span>Food</span>
+                                <select class="app-input"
+                                        value="@selection.FoodKey"
+                                        @onchange="eventArgs => ChangeQueuedFood(selection.PetKey, eventArgs.Value?.ToString())"
+                                        data-testid="@($"feed-food-select-{selection.PetKey}")">
+                                    @if (foodOptions.Count == 0)
+                                    {
+                                        <option value="">No normal food available</option>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var food in foodOptions)
+                                        {
+                                            <option value="@food.Key">@food.DisplayName (+@FormatProgressPercent(food.ProgressPercent)%, @FormatFoodPriority(food.Priority), owned @food.OwnedCount)</option>
+                                        }
+                                    }
+                                </select>
+                            </label>
+                            <div class="feed-queue-stats">
+                                <span class="ui-pill count-pill">Current @FormatProgressPercent(allocation.CurrentProgressPercent)%</span>
+                                <span class="ui-pill count-pill">After plan @FormatProgressPercent(allocation.ExpectedProgressPercent)%</span>
+                                <span class="ui-pill count-pill">Use @allocation.PlannedAmount of @allocation.RequiredAmount</span>
+                                <span class="ui-pill count-pill">Available @allocation.SelectedFoodRemainingBeforeItem / @allocation.SelectedFoodAvailableCount</span>
+                            </div>
+                            @foreach (var warning in GetQueueWarnings(allocation))
+                            {
+                                <MudAlert Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined">@warning</MudAlert>
+                            }
+                            @if (_pendingTransformPetKey == selection.PetKey)
+                            {
+                                <div class="preset-remove-confirm">
+                                    <span>Feed @FormatName(selection.PetKey, selection.PetKey) with @allocation.SelectedFoodDisplayName x @allocation.PlannedAmount?</span>
+                                    <MudButton Color="Color.Primary"
+                                               Disabled="@(!canMutate || !allocation.CanExecuteFeed)"
+                                               OnClick="@(() => ExecuteQueuedPetAsync(selection.PetKey, snapshot.Inventory))"
+                                               Variant="Variant.Filled"
+                                               data-testid="@($"confirm-transform-mount-{selection.PetKey}")">
+                                        Confirm
+                                    </MudButton>
+                                    <MudButton OnClick="@(() => _pendingTransformPetKey = null)" Variant="Variant.Text">Cancel</MudButton>
+                                </div>
+                            }
+                            else if (_pendingSaddlePetKey == selection.PetKey)
+                            {
+                                <div class="preset-remove-confirm">
+                                    <span>Use one Saddle to instantly transform this pet into a mount? Fed progress is not refunded.</span>
+                                    <MudButton Color="Color.Primary"
+                                               Disabled="@(!canMutate || !canUseSaddle)"
+                                               OnClick="@(() => UseSaddleAsync(selection.PetKey))"
+                                               Variant="Variant.Filled"
+                                               data-testid="@($"confirm-use-saddle-{selection.PetKey}")">
+                                        Confirm saddle
+                                    </MudButton>
+                                    <MudButton OnClick="@(() => _pendingSaddlePetKey = null)" Variant="Variant.Text">Cancel</MudButton>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="action-row inventory-actions">
+                                    <MudButton Color="Color.Primary"
+                                               Disabled="@(!canMutate || !allocation.CanReachMount || !allocation.CanExecuteFeed)"
+                                               OnClick="@(() => _pendingTransformPetKey = selection.PetKey)"
+                                               Variant="Variant.Outlined"
+                                               data-testid="@($"transform-mount-{selection.PetKey}")">
+                                        Transform to Mount
+                                    </MudButton>
+                                    <MudButton Color="Color.Primary"
+                                               Disabled="@(!canMutate || !canUseSaddle)"
+                                               OnClick="@(() => _pendingSaddlePetKey = selection.PetKey)"
+                                               Variant="Variant.Text"
+                                               data-testid="@($"use-saddle-{selection.PetKey}")">
+                                        Use Saddle
+                                    </MudButton>
+                                </div>
+                                @if (!canUseSaddle)
+                                {
+                                    <span class="dashboard-stat-note">No usable saddle for this pet. See the buy saddle block below.</span>
+                                }
+                            }
                         </article>
                     }
                 </div>
                 <div class="action-row inventory-actions">
                     <MudButton Color="Color.Primary"
-                               Disabled="@(!canMutate)"
-                               OnClick="ExecuteFeedQueueAsync"
+                               Disabled="@(!canMutate || executableQueue.Length == 0)"
+                               OnClick="@(() => ExecuteFeedQueueAsync(snapshot.Inventory))"
                                Variant="Variant.Filled"
                                data-testid="execute-feed-queue">
                         Feed queued items
@@ -157,8 +246,12 @@
 
         @foreach (var group in PetsMountsCatalog.Groups)
         {
-            var groupPets = catalogPets.Where(item => item.GroupKey == group.Key && MatchesSearch(item.Key, item.DisplayName)).ToArray();
-            var groupMounts = catalogMounts.Where(item => item.GroupKey == group.Key && MatchesSearch(item.Key, item.DisplayName)).ToArray();
+            var groupPets = catalogPets
+                .Where(item => item.GroupKey == group.Key && MatchesSearch(item.Key, item.DisplayName) && MatchesPetTypeFilter(item))
+                .ToArray();
+            var groupMounts = catalogMounts
+                .Where(item => item.GroupKey == group.Key && MatchesSearch(item.Key, item.DisplayName) && MatchesMountTypeFilter(item))
+                .ToArray();
             var isFolded = IsGroupFolded(group.Key);
             <section class="card-surface inventory-group-card" data-testid="@($"pets-mounts-group-{group.Key}")">
                 <div class="task-group-header">
@@ -195,16 +288,19 @@
                                             <span class="dashboard-stat-note">@(isOwned ? "Owned pet" : hatchStatus)</span>
                                         </div>
                                     </div>
-                                    @RenderPetGrowth(growthPlan, $"pet-growth-{pet.Key}", false)
+                                    @RenderPetGrowth(growthPlan, $"pet-growth-{pet.Key}", isOwned)
                                     <div class="action-row inventory-actions">
                                         @if (isOwned)
                                         {
                                             <MudButton Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipPetAsync(pet.Key))" Variant="Variant.Outlined" data-testid="@($"equip-pet-{pet.Key}")">
                                                 @(string.Equals(snapshot.CurrentPetKey, pet.Key, StringComparison.Ordinal) ? "Equipped pet" : "Equip pet")
                                             </MudButton>
-                                            <MudButton OnClick="@(() => SelectPetForFeed(pet.Key, snapshot.Inventory))" Variant="Variant.Text" data-testid="@($"select-feed-{pet.Key}")">
-                                                Plan feed
-                                            </MudButton>
+                                            @if (growthPlan.CanGrowIntoMount)
+                                            {
+                                                <MudButton OnClick="@(() => AddPetToFeedQueue(pet.Key, snapshot.Inventory))" Variant="Variant.Text" data-testid="@($"select-feed-{pet.Key}")">
+                                                    Plan feed
+                                                </MudButton>
+                                            }
                                         }
                                         else if (CanHatch(pet, snapshot.Inventory))
                                         {
@@ -233,6 +329,22 @@
                                         <MudButton Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => EquipMountAsync(mount.Key))" Variant="Variant.Outlined" data-testid="@($"equip-mount-{mount.Key}")">
                                             @(string.Equals(snapshot.CurrentMountKey, mount.Key, StringComparison.Ordinal) ? "Equipped mount" : "Equip mount")
                                         </MudButton>
+                                    }
+                                    else
+                                    {
+                                        var missingMountPlan = GetMissingMountPlan(mount.Key, snapshot.Inventory);
+                                        <div class="action-row inventory-actions">
+                                            @if (missingMountPlan.CanPlan)
+                                            {
+                                                <MudButton Color="Color.Primary"
+                                                           OnClick="@(() => AddPetToFeedQueue(missingMountPlan.PetKey!, snapshot.Inventory))"
+                                                           Variant="Variant.Text"
+                                                           data-testid="@($"plan-grow-mount-{mount.Key}")">
+                                                    Plan to grow
+                                                </MudButton>
+                                            }
+                                            <span class="dashboard-stat-note">@missingMountPlan.Message</span>
+                                        </div>
                                     }
                                 </article>
                             }
@@ -269,6 +381,20 @@
                     }
                 </div>
             }
+        </section>
+
+        <section class="card-surface inventory-group-card" id="buy-saddle-block" data-testid="buy-saddle-block">
+            <div class="task-group-header">
+                <div>
+                    <p class="section-label">Saddles</p>
+                    <h2>Instant mount option</h2>
+                </div>
+                <span class="ui-pill count-pill">@snapshot.Inventory.Food.GetValueOrDefault("Saddle") saddle(s)</span>
+            </div>
+            <p class="panel-copy">
+                Saddles instantly turn one eligible owned pet into its matching mount. Use Saddle stays separate from normal food because fed progress is not refunded.
+            </p>
+            <p class="dashboard-stat-note">Saddle purchase is not available in this app until Habitica shop behavior is verified for this flow.</p>
         </section>
 
         <section class="card-surface inventory-group-card bulk-sell-card">
@@ -327,9 +453,10 @@
     private readonly List<PetFeedQueueItem> _feedQueue = new();
     private readonly Dictionary<string, bool> _foldedGroups = new(StringComparer.Ordinal);
     private string _searchText = string.Empty;
-    private string? _selectedPetKey;
-    private string? _selectedFoodKey;
-    private int _feedAmount = 1;
+    private string _petTypeFilterKey = string.Empty;
+    private string _mountTypeFilterKey = string.Empty;
+    private string? _pendingTransformPetKey;
+    private string? _pendingSaddlePetKey;
     private int _bulkSellKeepCount = 1;
     private bool _showBulkSellConfirmation;
 
@@ -359,8 +486,34 @@
 
     private bool IsGroupFolded(string key)
     {
-        return string.IsNullOrWhiteSpace(_searchText)
+        return !HasActiveCollectionFilter(key)
             && (_foldedGroups.TryGetValue(key, out var folded) ? folded : key is not ("base" or "hatching-potions"));
+    }
+
+    private bool HasActiveCollectionFilter(string groupKey)
+    {
+        if (!string.IsNullOrWhiteSpace(_searchText))
+        {
+            return true;
+        }
+
+        return groupKey != "hatching-potions"
+            && (!string.IsNullOrWhiteSpace(_petTypeFilterKey)
+                || !string.IsNullOrWhiteSpace(_mountTypeFilterKey));
+    }
+
+    private bool MatchesPetTypeFilter(PetCatalogItem pet)
+    {
+        return string.IsNullOrWhiteSpace(_petTypeFilterKey)
+            || (PetsMountsCatalog.TryGetCreatureTypeKey(pet, out var key)
+                && string.Equals(key, _petTypeFilterKey, StringComparison.Ordinal));
+    }
+
+    private bool MatchesMountTypeFilter(MountCatalogItem mount)
+    {
+        return string.IsNullOrWhiteSpace(_mountTypeFilterKey)
+            || (PetsMountsCatalog.TryGetCreatureTypeKey(mount, out var key)
+                && string.Equals(key, _mountTypeFilterKey, StringComparison.Ordinal));
     }
 
     private async Task ToggleGroupAsync(string key)
@@ -404,6 +557,15 @@
     private static PetGrowthPlan GetPetGrowthPlan(string petKey, InventorySnapshot inventory)
     {
         return PetGrowthPlanFactory.Create(petKey, inventory.Pets, inventory.Mounts, inventory.Food);
+    }
+
+    private IEnumerable<PetGrowthQueueAllocation> GetFeedQueueAllocations(InventorySnapshot inventory)
+    {
+        return PetGrowthPlanFactory.AllocateQueue(
+            _feedQueue.Select(static item => new PetGrowthQueueRequest(item.PetKey, item.FoodKey)).ToArray(),
+            inventory.Pets,
+            inventory.Mounts,
+            inventory.Food);
     }
 
     private static RenderFragment RenderPetGrowth(PetGrowthPlan plan, string testId, bool includeFoodPlan) => @<div class="pet-growth" data-testid="@testId" data-progress="@FormatProgressPercent(GetVisibleGrowthPercent(plan))">
@@ -477,41 +639,193 @@
         return value.ToString("0.#", CultureInfo.InvariantCulture);
     }
 
-    private void SelectPetForFeed(string key, InventorySnapshot inventory)
+    private void AddPetToFeedQueue(string petKey, InventorySnapshot inventory)
     {
-        _selectedPetKey = key;
-        var pet = GetCatalogPet(key);
-        _selectedFoodKey = pet is null
-            ? null
-            : PetFeedRecommendationFactory.OrderAvailableFood(pet, inventory.Food).FirstOrDefault()?.Key;
-    }
-
-    private void SetFeedAmount(string? rawValue)
-    {
-        _feedAmount = int.TryParse(rawValue, out var parsed) ? Math.Clamp(parsed, 1, 99) : 1;
-    }
-
-    private void AddFeedQueueItem()
-    {
-        if (!string.IsNullOrWhiteSpace(_selectedPetKey) && !string.IsNullOrWhiteSpace(_selectedFoodKey))
+        if (_feedQueue.Any(item => string.Equals(item.PetKey, petKey, StringComparison.Ordinal)))
         {
-            _feedQueue.Add(new PetFeedQueueItem(_selectedPetKey, _selectedFoodKey, _feedAmount));
+            Snackbar.Add($"{FormatName(petKey, petKey)} is already queued.", Severity.Info);
+            return;
+        }
+
+        var plan = GetPetGrowthPlan(petKey, inventory);
+        var selectedFoodKey = plan.FeedPlan.FirstOrDefault()?.FoodKey
+            ?? plan.AvailableFood.FirstOrDefault()?.Key
+            ?? string.Empty;
+        _feedQueue.Add(new PetFeedQueueItem(petKey, selectedFoodKey, 0));
+    }
+
+    private void ChangeQueuedFood(string petKey, string? foodKey)
+    {
+        var index = _feedQueue.FindIndex(item => string.Equals(item.PetKey, petKey, StringComparison.Ordinal));
+        if (index >= 0)
+        {
+            _feedQueue[index] = _feedQueue[index] with { FoodKey = foodKey ?? string.Empty };
+        }
+    }
+
+    private void RemoveQueuedPet(string petKey)
+    {
+        _feedQueue.RemoveAll(item => string.Equals(item.PetKey, petKey, StringComparison.Ordinal));
+        if (_pendingTransformPetKey == petKey)
+        {
+            _pendingTransformPetKey = null;
+        }
+
+        if (_pendingSaddlePetKey == petKey)
+        {
+            _pendingSaddlePetKey = null;
         }
     }
 
     private void ClearFeedQueue()
     {
         _feedQueue.Clear();
+        _pendingTransformPetKey = null;
+        _pendingSaddlePetKey = null;
     }
 
-    private async Task ExecuteFeedQueueAsync()
+    private async Task ExecuteFeedQueueAsync(InventorySnapshot inventory)
     {
-        var result = await SessionController.FeedPetAsync(_feedQueue.ToArray());
+        var executable = ToExecutableFeedQueue(inventory).ToArray();
+        if (executable.Length == 0)
+        {
+            Snackbar.Add("No queued pet has food available to feed.", Severity.Warning);
+            return;
+        }
+
+        var result = await SessionController.FeedPetAsync(executable);
         ShowFeedback(result);
         if (result.Succeeded)
         {
-            _feedQueue.Clear();
+            ClearFeedQueue();
         }
+    }
+
+    private async Task ExecuteQueuedPetAsync(string petKey, InventorySnapshot inventory)
+    {
+        var item = ToExecutableFeedQueue(inventory)
+            .FirstOrDefault(item => string.Equals(item.PetKey, petKey, StringComparison.Ordinal));
+        if (item is null)
+        {
+            Snackbar.Add("No food is available for this queued pet.", Severity.Warning);
+            return;
+        }
+
+        var result = await SessionController.FeedPetAsync([item]);
+        ShowFeedback(result);
+        if (result.Succeeded)
+        {
+            RemoveQueuedPet(petKey);
+        }
+    }
+
+    private async Task UseSaddleAsync(string petKey)
+    {
+        var result = await SessionController.FeedPetAsync([new PetFeedQueueItem(petKey, "Saddle", 1)]);
+        ShowFeedback(result);
+        if (result.Succeeded)
+        {
+            RemoveQueuedPet(petKey);
+        }
+    }
+
+    private IEnumerable<PetFeedQueueItem> ToExecutableFeedQueue(InventorySnapshot inventory)
+    {
+        foreach (var allocation in GetFeedQueueAllocations(inventory))
+        {
+            if (!allocation.CanExecuteFeed || string.IsNullOrWhiteSpace(allocation.SelectedFoodKey))
+            {
+                continue;
+            }
+
+            yield return new PetFeedQueueItem(allocation.PetKey, allocation.SelectedFoodKey, allocation.PlannedAmount);
+        }
+    }
+
+    private static IEnumerable<string> GetQueueWarnings(PetGrowthQueueAllocation allocation)
+    {
+        if (!allocation.CanGrowIntoMount)
+        {
+            yield return "This pet cannot be grown into a normal mount from the cached catalog.";
+            yield break;
+        }
+
+        if (allocation.HasNoSelectedFood)
+        {
+            yield return "No normal food is assigned. Choose another food or use a saddle if available.";
+        }
+
+        if (allocation.SelectedFoodExhaustedByEarlierItems)
+        {
+            yield return "This food is exhausted by earlier queued pets.";
+        }
+
+        if (allocation.UsesLessEfficientFood)
+        {
+            yield return "Selected food is not this pet's favorite, so it gives less progress.";
+        }
+
+        if (allocation.HasPartialFoodPlan)
+        {
+            yield return "Available food only gives partial progress; this pet will not reach 100%.";
+        }
+    }
+
+    private static bool CanUseSaddle(PetGrowthQueueAllocation allocation, InventorySnapshot inventory)
+    {
+        return allocation.CanGrowIntoMount
+            && !string.IsNullOrWhiteSpace(allocation.MountKey)
+            && inventory.Food.GetValueOrDefault("Saddle") > 0
+            && inventory.Mounts.GetValueOrDefault(allocation.MountKey) != true;
+    }
+
+    private static MissingMountPlan GetMissingMountPlan(string mountKey, InventorySnapshot inventory)
+    {
+        if (!PetsMountsCatalog.TryGetPetKeyForMount(mountKey, out var petKey))
+        {
+            return new MissingMountPlan(false, null, "No growable pet mapping is available.");
+        }
+
+        if (!inventory.Pets.ContainsKey(petKey))
+        {
+            return new MissingMountPlan(false, petKey, $"Hatch {FormatName(petKey, petKey)} before planning this mount.");
+        }
+
+        var plan = GetPetGrowthPlan(petKey, inventory);
+        if (!plan.CanGrowIntoMount)
+        {
+            return new MissingMountPlan(false, petKey, FormatMissingMountUnavailable(plan));
+        }
+
+        return new MissingMountPlan(true, petKey, $"Grow from {FormatName(petKey, petKey)}.");
+    }
+
+    private static string FormatMissingMountUnavailable(PetGrowthPlan plan)
+    {
+        return plan.UnavailableReason switch
+        {
+            PetGrowthUnavailableReason.MountAlreadyOwned => "Matching mount is already owned.",
+            PetGrowthUnavailableReason.AlreadyMountReady => "Pet is already mount-ready; refresh before planning.",
+            PetGrowthUnavailableReason.NonGrowablePet => "This pet cannot become a normal mount.",
+            PetGrowthUnavailableReason.UnknownPet => "Pet is not in the checked-in catalog.",
+            PetGrowthUnavailableReason.PetNotOwned => "Corresponding pet is not owned.",
+            _ => "This mount cannot be planned from cached data."
+        };
+    }
+
+    private static IReadOnlyList<CreatureTypeFilterOption> GetCreatureTypeFilterOptions(
+        IReadOnlyList<PetCatalogItem> pets,
+        IReadOnlyList<MountCatalogItem> mounts)
+    {
+        return pets
+            .Select(static pet => PetsMountsCatalog.TryGetCreatureTypeKey(pet, out var key) ? key : null)
+            .Concat(mounts.Select(static mount => PetsMountsCatalog.TryGetCreatureTypeKey(mount, out var key) ? key : null))
+            .Where(static key => !string.IsNullOrWhiteSpace(key))
+            .Distinct(StringComparer.Ordinal)
+            .Select(static key => new CreatureTypeFilterOption(key!, PetsMountsCatalog.ToCreatureTypeDisplayName(key!)))
+            .OrderBy(static item => item.DisplayName, StringComparer.OrdinalIgnoreCase)
+            .ThenBy(static item => item.Key, StringComparer.Ordinal)
+            .ToArray();
     }
 
     private async Task EquipPetAsync(string key)
@@ -709,4 +1023,13 @@
         int SellCount,
         bool IsSafe,
         string Explanation);
+
+    private sealed record MissingMountPlan(
+        bool CanPlan,
+        string? PetKey,
+        string Message);
+
+    private sealed record CreatureTypeFilterOption(
+        string Key,
+        string DisplayName);
 }
