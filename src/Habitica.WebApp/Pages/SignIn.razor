@@ -54,16 +54,36 @@
                 <div class="field-grid sign-in-field-grid">
                     <label class="field-row">
                         <span>Habitica User ID</span>
-                        <input class="app-input" name="user-id" @bind="_request.UserId" />
+                        <input class="app-input"
+                               name="user-id"
+                               autocomplete="username"
+                               aria-invalid="@GetAriaInvalid(IsUserIdInvalid)"
+                               value="@_request.UserId"
+                               @onchange="HandleUserIdChanged"
+                               @oninput="HandleUserIdChanged" />
                         <span class="field-hint">Shown on Habitica Settings -> API.</span>
                     </label>
 
                     <label class="field-row">
                         <span>Habitica API Token</span>
-                        <input class="app-input" name="api-token" type="password" @bind="_request.ApiToken" />
+                        <input class="app-input"
+                               name="api-token"
+                               type="password"
+                               autocomplete="current-password"
+                               aria-invalid="@GetAriaInvalid(IsApiTokenInvalid)"
+                               value="@_request.ApiToken"
+                               @onchange="HandleApiTokenChanged"
+                               @oninput="HandleApiTokenChanged" />
                         <span class="field-hint">Treat this like a password. It is sent only to Habitica for sign-in.</span>
                     </label>
                 </div>
+
+                @if (HasMissingCredentialValidation)
+                {
+                    <MudAlert Class="inline-banner" Dense="true" Severity="Severity.Error" Variant="Variant.Outlined">
+                        Enter both Habitica User ID and API Token before signing in.
+                    </MudAlert>
+                }
 
                 <label class="checkbox-row sign-in-remember-row">
                     <input name="persist-locally" type="checkbox" @bind="_request.PersistLocally" />
@@ -135,6 +155,13 @@
     private readonly SignInRequest _request = new();
     private IJSObjectReference? _signInJumpModule;
     private IJSObjectReference? _signInJumpHandle;
+    private bool _hasSubmitted;
+
+    private bool HasMissingCredentialValidation => _hasSubmitted && (IsUserIdMissing || IsApiTokenMissing);
+    private bool IsApiTokenInvalid => _hasSubmitted && IsApiTokenMissing;
+    private bool IsApiTokenMissing => string.IsNullOrWhiteSpace(_request.ApiToken);
+    private bool IsUserIdInvalid => _hasSubmitted && IsUserIdMissing;
+    private bool IsUserIdMissing => string.IsNullOrWhiteSpace(_request.UserId);
 
     protected override void OnInitialized()
     {
@@ -166,12 +193,38 @@
 
     private async Task HandleSubmitAsync()
     {
-        await SessionController.SignInAsync(_request);
+        _hasSubmitted = true;
+        _request.ApiToken = _request.ApiToken.Trim();
+        _request.UserId = _request.UserId.Trim();
+
+        var request = new SignInRequest
+        {
+            ApiToken = _request.ApiToken,
+            PersistLocally = _request.PersistLocally,
+            UserId = _request.UserId
+        };
+
+        await SessionController.SignInAsync(request);
 
         if (SessionController.State.IsAuthenticated)
         {
             NavigationManager.NavigateTo("/dashboard");
         }
+    }
+
+    private void HandleApiTokenChanged(ChangeEventArgs eventArgs)
+    {
+        _request.ApiToken = eventArgs.Value?.ToString() ?? string.Empty;
+    }
+
+    private void HandleUserIdChanged(ChangeEventArgs eventArgs)
+    {
+        _request.UserId = eventArgs.Value?.ToString() ?? string.Empty;
+    }
+
+    private static string GetAriaInvalid(bool isInvalid)
+    {
+        return isInvalid ? "true" : "false";
     }
 
     private void HandleStateChanged()

@@ -1326,11 +1326,12 @@ Validation flow:
 2. Let the user choose session-only mode (default) or persistent mode with explicit opt-in.
 3. Show where to find the Habitica User ID and API Token on web, Android, and iOS before submission.
 4. State that the API token is password-equivalent and is sent only to Habitica for authentication.
-5. Send minimal authenticated request with x-client.
-6. Handle 401/403 as invalid credentials.
-7. Handle 429 using Retry-After.
-8. Store credentials only after successful validation, using the selected storage mode.
-9. Do not offer save-unverified mode in MVP.
+5. Keep form values synchronized on typing, paste, browser automation fill, and normal field change before submit.
+6. Send minimal authenticated request with x-client.
+7. Handle 401/403 as invalid credentials.
+8. Handle 429 using Retry-After.
+9. Store credentials only after successful validation, using the selected storage mode.
+10. Do not offer save-unverified mode in MVP.
 ```
 
 ### Validation
@@ -1360,12 +1361,15 @@ Test:
 - session-only mode;
 - persistent opt-in flow.
 - credential discovery and safety guidance rendering.
+- input-event, change-event, and empty-submit sign-in form behavior.
 
 ### Open questions
 
 Current implementation:
 
 - login form with User ID and API Token fields;
+- sign-in form fields update their backing request on `input` and `change`, then submit a trimmed request snapshot;
+- empty sign-in submissions show inline missing-credential validation instead of relying only on a page-level error banner;
 - `/`, `/sign-in`, and `/signin` sign-in entry routes for unauthenticated sessions;
 - authenticated visits to `/sign-in` or `/signin` redirect to Dashboard before rendering the sign-in form;
 - visible guidance for finding credentials in Habitica Settings/API paths on web, Android, and iOS;

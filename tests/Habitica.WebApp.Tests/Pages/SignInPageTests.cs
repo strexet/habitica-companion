@@ -80,6 +80,66 @@ public sealed class SignInPageTests : BunitContext
     }
 
     [Fact]
+    public void Submit_calls_session_controller_with_input_event_credentials()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: false,
+                DisplayName: null,
+                ErrorMessage: null,
+                LastSyncedAtUtc: null,
+                TaskFreshness: SnapshotFreshnessState.Missing,
+                TaskSnapshot: null));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<SignIn>();
+
+        cut.Find("input[name='user-id']").Input("user-id");
+        cut.Find("input[name='api-token']").Input("api-token");
+        cut.Find("form").Submit();
+
+        Assert.NotNull(controller.LastSignInRequest);
+        Assert.Equal("user-id", controller.LastSignInRequest!.UserId);
+        Assert.Equal("api-token", controller.LastSignInRequest.ApiToken);
+        Assert.False(controller.LastSignInRequest.PersistLocally);
+    }
+
+    [Fact]
+    public void Submit_empty_credentials_renders_inline_validation()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: false,
+                DisplayName: null,
+                ErrorMessage: null,
+                LastSyncedAtUtc: null,
+                TaskFreshness: SnapshotFreshnessState.Missing,
+                TaskSnapshot: null));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<SignIn>();
+
+        cut.Find("form").Submit();
+
+        Assert.Contains("Enter both Habitica User ID and API Token before signing in.", cut.Markup);
+        Assert.Equal("true", cut.Find("input[name='user-id']").GetAttribute("aria-invalid"));
+        Assert.Equal("true", cut.Find("input[name='api-token']").GetAttribute("aria-invalid"));
+        Assert.NotNull(controller.LastSignInRequest);
+        Assert.Equal(string.Empty, controller.LastSignInRequest!.UserId);
+        Assert.Equal(string.Empty, controller.LastSignInRequest.ApiToken);
+    }
+
+    [Fact]
     public void Redirects_authenticated_sessions_to_dashboard_without_rendering_form()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

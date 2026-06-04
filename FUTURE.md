@@ -79,53 +79,6 @@ _None._
 
 Work top to bottom. Each entry is self-contained.
 
-### Deployed Sign-In Input Reliability
-
-Goal: make sign-in reliably use the visible User ID and API token values on the deployed app, including typed input, paste, browser automation, password-manager style fill, and accessibility/input-method entry.
-
-Source finding:
-- Deployed audit on `https://habitica-companion.pages.dev/sign-in` at desktop, tablet, and mobile widths showed the credentials visibly present in both inputs, but submitting still produced `Habitica User ID and API Token are required.` and stayed on `/sign-in`.
-- The same behavior was reproduced with direct typing-style browser input and with visible DOM values present, so the form model is not consistently receiving the field values before submit.
-- This blocked the full authenticated UI review of Dashboard, Tasks details, Party member details, Quests foldables, Pets & Mounts, Inventory, Spells, and authenticated Settings blocks.
-
-Touch:
-- `src/Habitica.WebApp/Pages/SignIn.razor`
-- `src/Habitica.WebApp/State/SignInRequest.cs` only if validation state changes
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/SignInPageTests.cs`
-- `FEATURES.md` if sign-in behavior/copy changes
-
-Out of scope:
-- changing credential storage or persistence semantics;
-- sending credentials anywhere except Habitica;
-- changing post-sign-in refresh domains;
-- adding new authentication methods.
-
-Implementation plan:
-- Update the User ID and API token controls so the backing request updates on `input` as well as ordinary `change`/blur flows, or handle submit by reading the latest form field values through a reliable Blazor binding pattern.
-- Keep session-only sign-in as the default and keep `Remember credentials` opt-in unchanged.
-- Add a small visible validation state that distinguishes truly empty fields from a failed Habitica authentication attempt.
-- Verify paste, autofill-like value changes, keyboard typing, and Enter/Sign In button submit paths all send the same request values to `SessionController.SignInAsync`.
-- After fix, repeat the deployed browser check with the provided credentials and confirm redirect to Dashboard plus staged refresh.
-
-Acceptance:
-- Visible non-empty User ID and API token fields never submit as empty.
-- Keyboard typing, paste, browser automation fill, and password-manager/autofill-style input all reach `SignInRequest`.
-- Failed sign-in due to invalid credentials shows an authentication error, not the empty-field error.
-- Successful sign-in redirects to `/dashboard` and enables authenticated navigation.
-- Existing session-only and optional persistent credential behavior remains unchanged.
-
-Need to run build:
-
-```bash
-DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
-```
-
-Need to run test(s): `SignInPageTests` and app navigation initialization tests
-
-```bash
-DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false --filter "FullyQualifiedName~SignInPageTests|FullyQualifiedName~AppNavMenuTests"
-```
-
 ### Sign-In And Theme Contrast Pass
 
 Goal: fix sign-in hero and theme-token contrast so first-run UI remains readable across built-in light/dark themes and mobile widths.
