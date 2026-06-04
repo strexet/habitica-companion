@@ -1765,6 +1765,7 @@ Handle these states explicitly:
 - authenticated session with latest sync timestamp;
 - failed refresh with cached data still available;
 - cached diagnostics history without an active authenticated session.
+- direct visits to authenticated data routes while signed out, with page-local Sign in actions and copy that does not suggest disabled Refresh.
 
 ### Error handling
 
@@ -1783,6 +1784,7 @@ Test:
 - shell error banner rendering;
 - sync timestamp rendering when available;
 - active refresh and cloud-sync status rendering.
+- signed-out empty states for Dashboard, Tasks, Inventory, Pets & Mounts, Party/Quests, and Spells.
 
 ### Open questions
 
@@ -1794,6 +1796,7 @@ Current implementation:
 - authenticated drawer order is `Dashboard`, `Tasks`, `Inventory`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, `Diagnostics`;
 - top app bar with refresh action, active refresh count, cloud sync state, and latest sync timestamp fallback;
 - responsive drawer navigation shown only after authentication;
+- signed-out empty states on Dashboard, Tasks, Inventory, Pets & Mounts, Party, Quests, and Spells show a page-local Sign in action when no required cached snapshot is available, while authenticated empty states continue to point at Refresh;
 - dashboard navigation cards for Tasks, Inventory, Pets & Mounts, Party, Quests, and Spells;
 - stable Habitica web links for known web routes with no mobile deep links or custom schemes;
 - shared error banner;

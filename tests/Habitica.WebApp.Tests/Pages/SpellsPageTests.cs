@@ -16,6 +16,23 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class SpellsPageTests : BunitContext
 {
     [Fact]
+    public void Signed_out_empty_spells_has_sign_in_action()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty));
+
+        var cut = Render<SpellsPage>();
+
+        Assert.Contains("No saved account data is available on this device yet.", cut.Markup);
+        Assert.Contains("href=\"/sign-in\"", cut.Markup);
+        Assert.Contains("empty-state-actions", cut.Markup);
+        Assert.DoesNotContain("Sign in or refresh", cut.Markup);
+    }
+
+    [Fact]
     public void Renders_current_class_spells_default_target_values_and_equipment_recommendations()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

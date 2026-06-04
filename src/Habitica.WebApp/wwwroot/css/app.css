@@ -351,6 +351,14 @@ input[type="radio"] {
     margin-bottom: 1rem;
 }
 
+.empty-state-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
 .refresh-status-pill {
     border-radius: 0.75rem;
 }

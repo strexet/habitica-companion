@@ -22,7 +22,17 @@
     @if (SessionController.State.UserSnapshot is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-            No saved account data is available yet. Sign in or refresh before opening the companion collection.
+            @if (SessionController.State.IsAuthenticated)
+            {
+                <span>No saved account data is available yet. Refresh before opening the companion collection.</span>
+            }
+            else
+            {
+                <span>No saved account data is available on this device yet. Sign in before opening the companion collection.</span>
+                <div class="empty-state-actions">
+                    <MudButton Href="/sign-in" Variant="Variant.Filled" Color="Color.Primary">Sign in</MudButton>
+                </div>
+            }
         </MudAlert>
     }
     else

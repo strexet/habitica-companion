@@ -17,6 +17,24 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class TasksPageTests : BunitContext
 {
     [Fact]
+    public void Signed_out_empty_tasks_has_sign_in_action()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new TaskListViewModelFactory());
+        Services.AddSingleton(new TaskOrderPlanner());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty));
+
+        var cut = Render<TasksPage>();
+
+        Assert.Contains("No saved tasks are available on this device yet.", cut.Markup);
+        Assert.Contains("href=\"/sign-in\"", cut.Markup);
+        Assert.Contains("empty-state-actions", cut.Markup);
+        Assert.DoesNotContain("Sign in and refresh", cut.Markup);
+    }
+
+    [Fact]
     public void Renders_cached_tasks_and_freshness_state()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

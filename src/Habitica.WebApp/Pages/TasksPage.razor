@@ -68,7 +68,17 @@
     @if (SessionController.State.TaskSnapshot is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-            No saved tasks are available yet. Sign in and refresh to load this page.
+            @if (SessionController.State.IsAuthenticated)
+            {
+                <span>No saved tasks are available yet. Refresh to load this page.</span>
+            }
+            else
+            {
+                <span>No saved tasks are available on this device yet. Sign in to load this page.</span>
+                <div class="empty-state-actions">
+                    <MudButton Href="/sign-in" Variant="Variant.Filled" Color="Color.Primary">Sign in</MudButton>
+                </div>
+            }
         </MudAlert>
     }
     else

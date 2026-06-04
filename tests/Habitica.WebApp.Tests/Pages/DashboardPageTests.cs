@@ -18,6 +18,25 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class DashboardPageTests : BunitContext
 {
     [Fact]
+    public void Signed_out_empty_dashboard_has_sign_in_action()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty));
+
+        var cut = Render<DashboardPage>();
+
+        Assert.Contains("No saved account data is available on this device yet.", cut.Markup);
+        Assert.Contains("href=\"/sign-in\"", cut.Markup);
+        Assert.Contains("empty-state-actions", cut.Markup);
+        Assert.DoesNotContain("Sign in or refresh", cut.Markup);
+    }
+
+    [Fact]
     public void Renders_cached_user_snapshot_cards_and_freshness_state()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

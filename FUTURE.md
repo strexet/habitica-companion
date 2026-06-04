@@ -79,57 +79,6 @@ _None._
 
 Work top to bottom. Each entry is self-contained.
 
-### Signed-Out Empty-State Actionability
-
-Goal: make direct visits to authenticated pages actionable when the user is signed out or has no saved data.
-
-Source finding:
-- Deployed direct-route checks for `/dashboard`, `/tasks`, `/inventory`, `/pets-mounts`, `/party`, `/quests`, and `/spells` render page shells and empty-state copy, but the app bar Refresh button is disabled and there is no visible Sign in action in the content.
-- Several empty states say "Sign in or refresh" even though refresh is disabled while signed out, creating a dead-end UX for users who land on a deep link.
-- Layout itself did not horizontally overflow at `1280x720`, `820x900`, or `390x844`, so the issue is actionability/copy rather than sizing.
-
-Touch:
-- `src/Habitica.WebApp/Pages/DashboardPage.razor`
-- `src/Habitica.WebApp/Pages/TasksPage.razor`
-- `src/Habitica.WebApp/Pages/InventoryPage.razor`
-- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- `src/Habitica.WebApp/Pages/SpellsPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- direct page tests under `tests/Habitica.WebApp.Tests/Pages/`
-- `FEATURES.md`
-
-Out of scope:
-- changing authenticated page data loading;
-- showing fake/skeleton data;
-- adding drawer navigation while signed out unless required by the empty-state CTA design.
-
-Implementation plan:
-- Add a consistent signed-out empty-state action row with `Sign in` linking to `/sign-in` on pages that require cached or authenticated Habitica data.
-- Update empty-state copy to stop suggesting Refresh when refresh is unavailable because the user is signed out.
-- Keep `Open Saved Data` behavior on sign-in if cached data exists; do not duplicate that behavior in every page unless local cache is present.
-- Add a shared helper/component or CSS utility only if it removes repeated markup across the affected pages.
-- Verify the action row wraps cleanly on mobile and aligns with each page header/card content.
-
-Acceptance:
-- Deep links to authenticated pages expose a clear Sign in action when signed out.
-- Empty-state copy accurately names the next available action.
-- Refresh still remains disabled while signed out.
-- Desktop, tablet, and mobile layouts keep no horizontal overflow.
-- Tests cover at least Dashboard, Tasks, Party/Quests, and Pets & Mounts signed-out empty states.
-
-Need to run build:
-
-```bash
-DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet build Habitica.sln -m:1 -nodeReuse:false
-```
-
-Need to run test(s): affected signed-out page tests
-
-```bash
-DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj -m:1 -nodeReuse:false --filter "FullyQualifiedName~DashboardPageTests|FullyQualifiedName~TasksPageTests|FullyQualifiedName~PartyPageTests|FullyQualifiedName~PetsMountsPageTests|FullyQualifiedName~SpellsPageTests|FullyQualifiedName~InventoryPageTests"
-```
-
 ### Authenticated Foldable UI Review Follow-Up
 
 Goal: repeat the full deployed UI/UX review after sign-in is reliable, then fix authenticated layout issues in the pages and foldable blocks that could not be inspected during the deployed audit.

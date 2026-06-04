@@ -13,6 +13,35 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class PartyPageTests : BunitContext
 {
     [Fact]
+    public void Signed_out_empty_party_has_sign_in_action()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty));
+
+        var cut = Render<PartyPage>();
+
+        Assert.Contains("No saved account data is available on this device yet.", cut.Markup);
+        Assert.Contains("href=\"/sign-in\"", cut.Markup);
+        Assert.Contains("empty-state-actions", cut.Markup);
+    }
+
+    [Fact]
+    public void Signed_out_empty_quests_has_sign_in_action()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty));
+
+        var cut = Render<QuestsPage>();
+
+        Assert.Contains("No saved account data is available on this device yet.", cut.Markup);
+        Assert.Contains("Sign in to load quest data.", cut.Markup);
+        Assert.Contains("href=\"/sign-in\"", cut.Markup);
+        Assert.Contains("empty-state-actions", cut.Markup);
+    }
+
+    [Fact]
     public void Filters_member_cards_by_available_class()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

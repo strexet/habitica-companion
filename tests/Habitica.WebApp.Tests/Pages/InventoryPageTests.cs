@@ -12,6 +12,22 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class InventoryPageTests : BunitContext
 {
     [Fact]
+    public void Signed_out_empty_inventory_has_sign_in_action()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new InventoryViewModelFactory());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty));
+
+        var cut = Render<InventoryPage>();
+
+        Assert.Contains("No saved account data is available on this device yet.", cut.Markup);
+        Assert.Contains("href=\"/sign-in\"", cut.Markup);
+        Assert.Contains("empty-state-actions", cut.Markup);
+        Assert.DoesNotContain("Sign in or refresh", cut.Markup);
+    }
+
+    [Fact]
     public void Renders_equipment_groups_from_cached_user_snapshot()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

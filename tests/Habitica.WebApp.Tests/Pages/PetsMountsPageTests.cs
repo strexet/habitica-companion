@@ -13,6 +13,17 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class PetsMountsPageTests : BunitContext
 {
     [Fact]
+    public void Signed_out_empty_pets_mounts_has_sign_in_action()
+    {
+        var cut = RenderPage(controller: new FakeAppSessionController(SessionViewModel.Empty));
+
+        Assert.Contains("No saved account data is available on this device yet.", cut.Markup);
+        Assert.Contains("href=\"/sign-in\"", cut.Markup);
+        Assert.Contains("empty-state-actions", cut.Markup);
+        Assert.DoesNotContain("Sign in or refresh", cut.Markup);
+    }
+
+    [Fact]
     public void Renders_empty_collection_groups_and_missing_companions()
     {
         var cut = RenderPage(CreateSnapshot());

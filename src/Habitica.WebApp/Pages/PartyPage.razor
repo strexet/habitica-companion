@@ -27,13 +27,44 @@
     @if (SessionController.State.UserSnapshot?.PartyId is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-            Your saved account data does not show an active party.
+            @if (SessionController.State.UserSnapshot is null && SessionController.State.IsAuthenticated)
+            {
+                <span>No saved account data is available yet. Refresh the account to load current @(QuestWorkspaceOnly ? "quest" : "party") data.</span>
+            }
+            else if (SessionController.State.UserSnapshot is null)
+            {
+                <span>No saved account data is available on this device yet. Sign in to load @(QuestWorkspaceOnly ? "quest" : "party") data.</span>
+                <div class="empty-state-actions">
+                    <MudButton Href="/sign-in" Variant="Variant.Filled" Color="Color.Primary">Sign in</MudButton>
+                </div>
+            }
+            else if (!SessionController.State.IsAuthenticated)
+            {
+                <span>Your saved account data does not show an active party. Sign in to refresh account and @(QuestWorkspaceOnly ? "quest" : "party") data.</span>
+                <div class="empty-state-actions">
+                    <MudButton Href="/sign-in" Variant="Variant.Filled" Color="Color.Primary">Sign in</MudButton>
+                </div>
+            }
+            else
+            {
+                <span>Your saved account data does not show an active party.</span>
+            }
         </MudAlert>
     }
     else if (SessionController.State.PartySnapshot is null)
     {
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Filled">
-            No saved party data is available yet. Refresh the account to load the current party overview.
+            @if (SessionController.State.IsAuthenticated)
+            {
+                <span>No saved party data is available yet. Refresh the account to load the current @(QuestWorkspaceOnly ? "quest workspace" : "party overview").</span>
+            }
+            else
+            {
+                <span>No saved party data is available on this device yet. Sign in to load the current @(QuestWorkspaceOnly ? "quest workspace" : "party overview").</span>
+                <div class="empty-state-actions">
+                    <MudButton Href="/sign-in" Variant="Variant.Filled" Color="Color.Primary">Sign in</MudButton>
+                </div>
+            }
         </MudAlert>
     }
     else
