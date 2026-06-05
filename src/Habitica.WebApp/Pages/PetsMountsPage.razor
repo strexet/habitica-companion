@@ -331,6 +331,7 @@
             var groupMounts = catalogMounts
                 .Where(item => item.GroupKey == group.Key && MatchesSearch(item.Key, item.DisplayName) && MatchesMountTypeFilter(item))
                 .ToArray();
+            var hatchCandidates = GetGroupHatchQueueCandidates(groupPets, snapshot.Inventory).ToArray();
             var feedCandidates = GetGroupFeedQueueCandidates(groupMounts, snapshot.Inventory).ToArray();
             var isFolded = IsGroupFolded(group.Key);
             <section class="card-surface inventory-group-card" data-testid="@($"pets-mounts-group-{group.Key}")">
@@ -341,6 +342,13 @@
                     </div>
                     <div class="task-group-actions companion-group-actions">
                         <MudButton Color="Color.Primary"
+                                   Disabled="@(hatchCandidates.Length == 0)"
+                                   OnClick="@(() => AddGroupToHatchQueue(groupPets, snapshot.Inventory))"
+                                   Variant="Variant.Outlined"
+                                   data-testid="@($"add-group-hatch-queue-{group.Key}")">
+                            Add All to Hatching Queue
+                        </MudButton>
+                        <MudButton Color="Color.Primary"
                                    Disabled="@(feedCandidates.Length == 0)"
                                    OnClick="@(() => AddGroupToFeedQueue(groupMounts, snapshot.Inventory))"
                                    Variant="Variant.Outlined"
@@ -350,7 +358,15 @@
                         <MudButton OnClick="@(() => ToggleGroupAsync(group.Key))" Variant="Variant.Text" data-testid="@($"toggle-pets-mounts-group-{group.Key}")">
                             @(isFolded ? "Show group" : "Hide group")
                         </MudButton>
-                        @if (feedCandidates.Length == 0)
+                        @if (hatchCandidates.Length == 0 && feedCandidates.Length == 0)
+                        {
+                            <span class="dashboard-stat-note">No hatchable pets / No growable mounts</span>
+                        }
+                        else if (hatchCandidates.Length == 0)
+                        {
+                            <span class="dashboard-stat-note">No hatchable pets</span>
+                        }
+                        else if (feedCandidates.Length == 0)
                         {
                             <span class="dashboard-stat-note">No growable mounts</span>
                         }
@@ -937,6 +953,51 @@
 
         _hatchQueue.Add(queueItem);
         _showHatchQueueConfirmation = false;
+    }
+
+    private void AddGroupToHatchQueue(
+        IReadOnlyList<PetCatalogItem> pets,
+        InventorySnapshot inventory)
+    {
+        var candidates = GetGroupHatchQueueCandidates(pets, inventory).ToArray();
+        foreach (var candidate in candidates)
+        {
+            _hatchQueue.Add(candidate);
+        }
+
+        _showHatchQueueConfirmation = false;
+        if (candidates.Length > 0)
+        {
+            Snackbar.Add($"Added {candidates.Length} pet(s) to the hatching queue.", Severity.Success);
+        }
+    }
+
+    private IEnumerable<HatchQueueItem> GetGroupHatchQueueCandidates(
+        IReadOnlyList<PetCatalogItem> pets,
+        InventorySnapshot inventory)
+    {
+        var queuedPetKeys = new HashSet<string>(
+            _hatchQueue.Select(GetHatchPetKey),
+            StringComparer.Ordinal);
+
+        foreach (var pet in pets)
+        {
+            if (!CanPlanHatch(pet)
+                || inventory.Pets.ContainsKey(pet.Key)
+                || inventory.Eggs.GetValueOrDefault(pet.EggKey) <= 0
+                || inventory.HatchingPotions.GetValueOrDefault(pet.HatchingPotionKey) <= 0)
+            {
+                continue;
+            }
+
+            var queueItem = new HatchQueueItem(pet.EggKey, pet.HatchingPotionKey);
+            if (!queuedPetKeys.Add(GetHatchPetKey(queueItem)))
+            {
+                continue;
+            }
+
+            yield return queueItem;
+        }
     }
 
     private IEnumerable<HatchQueueAllocation> GetHatchQueueAllocations(InventorySnapshot inventory)

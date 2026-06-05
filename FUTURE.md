@@ -78,69 +78,6 @@ _No pending entries._
 
 Work top to bottom. Each entry is self-contained.
 
-### Companion Group Bulk Hatch Planning Actions
-
-Goal: add per-companion-group bulk actions that enqueue all currently hatchable missing pets into the Hatch Planner without executing hatches.
-
-Depends on:
-- `Hatch Planner Queue MVP`
-
-Touch:
-- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- `src/Habitica.Rules/Pets` hatch candidate/allocation helpers if added by the Hatch Planner task
-- `src/Habitica.Domain/User/PetsMountsCatalog.cs` only if group/pet lookup helpers are missing
-- `tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs`
-- `tests/Habitica.Rules.Tests/Pets` if rule helpers change
-- `FEATURES.md`
-
-Out of scope:
-- executing hatches directly from group buttons;
-- adding feed-queue behavior;
-- queueing pets without required egg or potion;
-- changing hatch endpoint behavior.
-
-Implementation plan:
-1. Reuse Hatch Planner candidate and allocation helpers from the previous task.
-2. Add a group header action labeled `Add All to Hatching Queue`.
-3. Candidate rules:
-   - pet belongs to the current companion group;
-   - pet is not already owned;
-   - required egg exists in current inventory;
-   - required hatching potion exists in current inventory;
-   - pet is supported by catalog/rules data;
-   - pet is not special, unknown, or unhatchable;
-   - pet is not already in the hatching queue.
-4. Add valid candidates in stable catalog order.
-5. Skip invalid pets silently from queue insertion, but expose a disabled reason when the whole group has no candidates.
-6. After bulk add, recalculate egg/potion allocation for the entire hatch queue.
-7. Keep group header actions aligned with `Add All to Feeding Queue`; if both buttons render together, use consistent sizing and wrapping.
-
-UX details:
-- Preferred label is `Add All to Hatching Queue`.
-- Disabled reason should be concise, such as `No hatchable pets`.
-- Bulk hatching action should feel like preparation, not execution.
-- On mobile, buttons may wrap, but should not create stair-step misalignment or overflow.
-
-Tests:
-- Group with two hatchable missing pets adds both queue rows.
-- Owned pet is skipped.
-- Pet missing egg is skipped.
-- Pet missing potion is skipped.
-- Special/unhatchable pet is skipped.
-- Already queued pet is skipped.
-- Disabled state renders when no hatchable pets exist.
-- Allocation recalculates when multiple queued pets share eggs or potions.
-
-Acceptance:
-- Every companion group exposes `Add All to Hatching Queue` when valid candidates exist.
-- Bulk action only queues hatchable, missing, supported pets with required resources.
-- Invalid pets do not create queue rows.
-- Existing hatch queue entries are not duplicated.
-- Hatch queue allocation recalculates after bulk add.
-- Bulk action performs no Habitica mutation.
-- Group header actions remain aligned on desktop and mobile.
-
 ### Queue Add Scroll Stability
 
 Goal: preserve the user's perceived scroll position when adding feed or hatch queue items expands planner blocks above the current content.

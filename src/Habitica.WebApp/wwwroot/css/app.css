@@ -719,6 +719,7 @@ input[type="radio"] {
 .action-row .mud-button-root,
 .action-row .secondary-action-button,
 .preset-save-row .mud-button-root,
+.task-group-actions .mud-button-root,
 .task-group-actions .secondary-action-button,
 .party-quest-card-actions .mud-button-root,
 .spell-cron-warning-actions .mud-button-root,

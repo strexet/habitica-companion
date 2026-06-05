@@ -463,6 +463,141 @@ public sealed class PetsMountsPageTests : BunitContext
     }
 
     [Fact]
+    public void Group_bulk_hatch_action_adds_valid_missing_pets_without_mutation()
+    {
+        var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                eggs: new Dictionary<string, int>(StringComparer.Ordinal)
+                {
+                    ["Wolf"] = 1,
+                    ["TigerCub"] = 1
+                },
+                potions: new Dictionary<string, int>(StringComparer.Ordinal) { ["Base"] = 2 })
+        }));
+        var cut = RenderPage(controller: controller);
+
+        cut.Find("[data-testid='add-group-hatch-queue-base']").Click();
+
+        Assert.Empty(controller.HatchPetCalls);
+        Assert.Contains("2 queued", cut.Markup);
+        Assert.NotEmpty(cut.FindAll("[data-testid='hatch-queue-card-Wolf-Base']"));
+        Assert.NotEmpty(cut.FindAll("[data-testid='hatch-queue-card-TigerCub-Base']"));
+    }
+
+    [Fact]
+    public void Group_bulk_hatch_action_skips_owned_and_already_queued_pets()
+    {
+        var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                eggs: new Dictionary<string, int>(StringComparer.Ordinal)
+                {
+                    ["Wolf"] = 1,
+                    ["TigerCub"] = 1,
+                    ["FlyingPig"] = 1
+                },
+                potions: new Dictionary<string, int>(StringComparer.Ordinal) { ["Base"] = 3 },
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 })
+        }));
+        var cut = RenderPage(controller: controller);
+
+        cut.Find("[data-testid='select-hatch-TigerCub-Base']").Click();
+        cut.Find("[data-testid='add-group-hatch-queue-base']").Click();
+
+        Assert.Empty(controller.HatchPetCalls);
+        Assert.Contains("2 queued", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='hatch-queue-card-Wolf-Base']"));
+        Assert.Single(cut.FindAll("[data-testid='hatch-queue-card-TigerCub-Base']"));
+        Assert.NotEmpty(cut.FindAll("[data-testid='hatch-queue-card-FlyingPig-Base']"));
+    }
+
+    [Fact]
+    public void Group_bulk_hatch_action_skips_pets_missing_eggs()
+    {
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                eggs: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf"] = 1 },
+                potions: new Dictionary<string, int>(StringComparer.Ordinal) { ["Base"] = 9 })
+        });
+
+        cut.Find("[data-testid='add-group-hatch-queue-base']").Click();
+
+        Assert.Contains("1 queued", cut.Markup);
+        Assert.NotEmpty(cut.FindAll("[data-testid='hatch-queue-card-Wolf-Base']"));
+        Assert.Empty(cut.FindAll("[data-testid='hatch-queue-card-TigerCub-Base']"));
+    }
+
+    [Fact]
+    public void Group_bulk_hatch_action_skips_pets_missing_hatching_potions()
+    {
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                eggs: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf"] = 2 },
+                potions: new Dictionary<string, int>(StringComparer.Ordinal) { ["White"] = 1 })
+        });
+
+        cut.Find("[data-testid='add-group-hatch-queue-magic-potion']").Click();
+
+        Assert.Contains("1 queued", cut.Markup);
+        Assert.NotEmpty(cut.FindAll("[data-testid='hatch-queue-card-Wolf-White']"));
+        Assert.Empty(cut.FindAll("[data-testid='hatch-queue-card-Wolf-Desert']"));
+    }
+
+    [Fact]
+    public void Group_bulk_hatch_action_skips_special_unhatchable_pets()
+    {
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                eggs: new Dictionary<string, int>(StringComparer.Ordinal) { ["Unknown"] = 1 },
+                potions: new Dictionary<string, int>(StringComparer.Ordinal) { ["Base"] = 1 },
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Unknown-Base"] = 5 })
+        });
+
+        var specialButton = cut.Find("[data-testid='add-group-hatch-queue-special']");
+
+        Assert.True(specialButton.HasAttribute("disabled"));
+        Assert.Contains("No hatchable pets", cut.Find("[data-testid='pets-mounts-group-special']").TextContent);
+        Assert.Empty(cut.FindAll("[data-testid='hatch-queue-card-Unknown-Base']"));
+    }
+
+    [Fact]
+    public void Group_bulk_hatch_action_is_disabled_without_valid_candidates()
+    {
+        var cut = RenderPage(CreateSnapshot());
+
+        var baseButton = cut.Find("[data-testid='add-group-hatch-queue-base']");
+
+        Assert.True(baseButton.HasAttribute("disabled"));
+        Assert.Contains("No hatchable pets", cut.Find("[data-testid='pets-mounts-group-base']").TextContent);
+    }
+
+    [Fact]
+    public void Group_bulk_hatch_action_recalculates_shared_resource_allocation()
+    {
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                eggs: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf"] = 1 },
+                potions: new Dictionary<string, int>(StringComparer.Ordinal)
+                {
+                    ["White"] = 1,
+                    ["Desert"] = 1
+                })
+        });
+
+        cut.Find("[data-testid='add-group-hatch-queue-magic-potion']").Click();
+
+        Assert.Contains("2 queued", cut.Markup);
+        var desertQueue = cut.Find("[data-testid='hatch-queue-card-Wolf-Desert']");
+        Assert.Contains("Egg reserved 1", desertQueue.TextContent);
+        Assert.Contains("Egg Wolf is reserved by earlier queued pets.", desertQueue.TextContent);
+    }
+
+    [Fact]
     public void Hatch_queue_reserves_earlier_shared_resources_and_recalculates_after_remove()
     {
         var cut = RenderPage(CreateSnapshot() with
