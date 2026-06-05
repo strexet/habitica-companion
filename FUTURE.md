@@ -72,6 +72,161 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
+- Refine header refresh button and sync status layout
+    - Description
+        - Rework the top header refresh/sync status area so it stays compact, readable, and fully inside the header bar.
+        - The Refresh button should not be pushed outside the header.
+        - Prefer showing compact sync status inside the header between player info and the Refresh button.
+        - During an active refresh, replace the disabled Refresh button with the current refresh status.
+        - If this does not fit reliably on supported viewport sizes, fall back to a non-conflicting notification bubble/toast approach.
+
+    - Preferred header layout
+        - Keep player info on the left/primary header area.
+        - Place compact sync status between player info and the Refresh button.
+        - Keep the Refresh button inside the header action area.
+        - Make sure all header elements remain vertically aligned.
+        - Make sure no header element overflows outside the header bar.
+        - Avoid placing sync status in a way that pushes header controls out of the bar.
+
+    - Last refresh / sync status info
+        - Minimize the last refresh timestamp.
+        - Use compact status-like wording instead of verbose labels.
+        - Preferred normal state:
+            - `Synced 12:42 PM`
+        - If using 24-hour format:
+            - `Synced 12:42`
+        - Do not show full date, year, seconds, or timezone in the header.
+        - If sync data is too old, show a compact stale state.
+        - Preferred stale state:
+            - `Sync stale`
+        - Alternative stale labels:
+            - `Data stale`
+            - `Refresh needed`
+            - `Outdated`
+        - Preferred error state:
+            - `Sync failed`
+        - Use smaller font size and muted/secondary styling for normal synced state.
+        - Use warning styling for stale state.
+        - Use danger/error styling for failed state.
+        - Keep the full timestamp available elsewhere only if needed, such as tooltip/title text.
+
+    - Ongoing refresh state
+        - When refresh is in progress, show an ongoing refresh status instead of the Refresh button.
+        - This is acceptable because the Refresh button is disabled during refresh anyway.
+        - Reuse the existing refresh status labels/states that already describe what is currently refreshing.
+        - Do not introduce a generic `Refreshing…` label if a more specific existing status is available.
+        - If existing statuses are too long for the header, map them to concise display labels.
+        - Suggested compact in-progress labels:
+            - `Syncing…`
+            - `Syncing tasks…`
+            - `Syncing party…`
+            - `Syncing inventory…`
+        - The ongoing status should occupy roughly the same header space as the Refresh button to avoid layout jumps.
+        - The status can include a small spinner/progress indicator if already supported by the app UI.
+        - Do not show both a disabled Refresh button and a large sync status if that makes the header crowded.
+
+    - Existing refresh statuses
+        - Reuse the existing refresh status labels/states that already describe what is currently refreshing.
+        - Do not add a new parallel refresh status system if the app already has refresh status state/data.
+        - Show the current specific refresh status in the header action/status area.
+        - Replace the disabled Refresh button with the active refresh status while refresh is running.
+        - Keep the status compact enough to fit in the header.
+        - If there are multiple internal refresh states, map them to concise display labels.
+        - Avoid duplicating refresh status text in multiple places at the same time.
+
+    - Stale sync behavior
+        - Define a threshold for when synced data should be considered stale.
+        - If the existing app already has stale-data logic, reuse it.
+        - If no threshold exists, add a reasonable centralized threshold rather than hardcoding it in the header.
+        - When data is stale, show `Sync stale` in the compact header sync status.
+        - Stale status should encourage refresh without being too visually noisy.
+        - Stale status should not replace the Refresh button unless refresh is actively running.
+        - User should still be able to click Refresh when sync is stale.
+
+    - Fit check
+        - Check whether the compact in-header layout fits on supported desktop and mobile/narrow widths.
+        - Verify that player info, compact sync status, and Refresh/current refresh status can coexist without overflow.
+        - If it fits:
+            - Use the in-header compact sync info layout.
+        - If it does not fit:
+            - Use a fallback approach where sync info appears outside the header, such as a notification bubble/toast.
+            - Keep the Refresh button inside the header regardless.
+
+    - Fallback notification behavior
+        - Use this only if compact in-header status does not fit reliably.
+        - Sync info can appear as a temporary notification bubble near the top of the app.
+        - The bubble should be outside the header bar.
+        - It should not push, resize, or conflict with header elements.
+        - It should appear when sync state changes or when sync feedback is needed.
+        - It should disappear automatically after a short time.
+        - Even when this fallback is used, the Refresh button should stay inside the header.
+
+    - Expected behavior
+        - Refresh button is always inside the top header bar when refresh is not running.
+        - During refresh, the Refresh button area shows the current specific refresh status instead of a disabled Refresh button.
+        - Normal last sync state is shown as compact text, such as `Synced 12:42 PM` or `Synced 12:42`.
+        - Stale sync state is shown as `Sync stale`.
+        - Failed sync state is shown as `Sync failed`.
+        - Header sync status uses smaller, less prominent styling in normal state.
+        - Header remains stable when refresh starts/finishes.
+        - Header elements do not conflict with sync status.
+        - No full date/timezone/seconds are shown in the header.
+        - Existing refresh statuses are reused instead of creating duplicate status logic.
+
+    - Suggested fix
+        - Review the top header component/layout and CSS.
+        - Add a compact sync status slot between player info and refresh action.
+        - Format last sync time as:
+            - `Synced h:mm AM/PM` if the app uses 12-hour time.
+            - `Synced HH:mm` if the app uses 24-hour time.
+        - Style normal sync info with smaller font and muted color.
+        - Style `Sync stale` with warning color.
+        - Style `Sync failed` with danger/error color.
+        - Replace the disabled Refresh button with the current active refresh status while refresh is running.
+        - Reuse existing refresh status state/data.
+        - Reuse existing stale-data logic if available.
+        - Map long internal statuses to concise display labels only if needed for header fit.
+        - Add responsive rules for narrow screens.
+        - If narrow layout cannot fit the compact sync info, hide/move sync info to a notification bubble while keeping Refresh inside the header.
+
+    - Acceptance criteria
+        - Refresh button stays inside the header bar.
+        - Refresh button is replaced by the current specific refresh status while refresh is running.
+        - Existing refresh status state/data is reused.
+        - No duplicate parallel refresh status system is introduced.
+        - Normal sync state is shown as `Synced 12:42 PM` or `Synced 12:42`.
+        - Sync timestamp does not include full date, year, seconds, or timezone in the header.
+        - Stale sync state is shown as `Sync stale`.
+        - Failed sync state is shown as `Sync failed`.
+        - Sync status uses smaller, less prominent styling in normal state.
+        - Header layout remains stable and aligned on desktop.
+        - Header layout remains usable on mobile/narrow widths.
+        - Sync status does not push Refresh outside the header.
+        - If compact in-header sync info does not fit, fallback notification bubble is used without breaking header layout.
+
+- Simplify Dashboard NAVIGATION companion links
+    - Description
+        - On the Dashboard, update the NAVIGATION section, specifically the Companion and Habitica links block.
+        - Remove the extra Habitica buttons from this block.
+        - Keep the main Open Habitica button in the top main Dashboard block.
+        - In the NAVIGATION companion links block, rename all remaining buttons to Open.
+    - Expected behavior
+        - The top main Dashboard block still has its Open Habitica button.
+        - The NAVIGATION / Companion and Habitica links block no longer contains separate Habitica buttons.
+        - All remaining buttons in that NAVIGATION block use the label Open.
+        - The block feels cleaner and avoids repeating Habitica access actions.
+    - Suggested fix
+        - Locate the Dashboard NAVIGATION section.
+        - Remove Habitica-related buttons from the Companion and Habitica links block.
+        - Keep only companion/tool navigation items in that block.
+        - Change each remaining button label in the block to Open.
+        - Verify that the top main Open Habitica button is unchanged.
+    - Acceptance criteria
+        - Extra Habitica buttons are removed from the Dashboard NAVIGATION companion links block.
+        - Top main Open Habitica button remains visible and functional.
+        - Remaining buttons in the NAVIGATION block are all labeled Open.
+        - No empty spacing or broken layout remains after removing the buttons.
+
 - Companion group bulk planning actions
    - Add bulk planning actions to every COMPANION GROUP section.
    - This includes:
