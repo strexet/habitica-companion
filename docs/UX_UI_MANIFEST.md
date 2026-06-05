@@ -138,6 +138,7 @@ Current pattern:
 
 - MudBlazor app bar with drawer navigation for authenticated sessions.
 - Top bar keeps identity, compact sync freshness, and Refresh/status action in one flex row; active page refresh replaces Refresh with a same-size `Syncing ...` chip.
+- On narrow phones, the top bar remains a single compact row: the identity subtitle hides, the sync chip ellipsizes inside a capped slot, and Refresh/status stays inside the app-bar chrome instead of wrapping below it.
 - Centered `.shell-content` with a `1200px` max width.
 - Reusable `card-surface`, `ui-pill`, `section-label`, `panel-copy`, `field-row`, `checkbox-row`, `app-input`, and responsive grid classes.
 

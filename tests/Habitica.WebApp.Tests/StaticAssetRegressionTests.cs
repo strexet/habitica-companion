@@ -117,6 +117,11 @@ public sealed class StaticAssetRegressionTests
         Assert.Contains(".topbar .refresh-button:disabled", stylesheet);
         Assert.Contains(".topbar-sync-slot", stylesheet);
         Assert.Contains(".refresh-status", stylesheet);
+        Assert.Contains("flex-wrap: nowrap;", stylesheet);
+        Assert.Contains(".topbar .mud-icon-button", stylesheet);
+        Assert.Contains("max-width: clamp(4.6rem, 25vw, 6.8rem);", stylesheet);
+        Assert.Contains(".topbar-copy span", stylesheet);
+        Assert.Contains("display: none;", stylesheet);
         Assert.Contains(".topbar .sync-chip--warning", stylesheet);
         Assert.Contains("color-mix(in srgb, var(--accent) 70%, var(--ink))", stylesheet);
     }
