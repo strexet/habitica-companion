@@ -1,6 +1,7 @@
 @inherits LayoutComponentBase
 @implements IDisposable
 @using Habitica.Application.Sync
+@using System.Globalization
 @inject IAppSessionController SessionController
 @inject NavigationManager NavigationManager
 
@@ -14,30 +15,28 @@
             <strong>Habitica Tool</strong>
             <span>@GetIdentityText()</span>
         </div>
-        <MudSpacer />
+
+        @if (!SessionController.State.IsRefreshing && GetHeaderSyncStatus() is { } syncStatus)
+        {
+            <div class="topbar-sync-slot">
+                <span class="sync-chip ui-pill @syncStatus.ClassName" title="@syncStatus.Title">
+                    @syncStatus.Text
+                </span>
+            </div>
+        }
 
         @if (SessionController.State.IsRefreshing)
         {
-            <span class="sync-chip ui-pill">
-                Refreshing @GetRefreshingDomainCount()
+            <span aria-live="polite" class="refresh-status sync-chip sync-chip--busy ui-pill" id="app-refresh-status" role="status">
+                @GetActiveRefreshText()
             </span>
         }
-        else if (SessionController.State.IsCloudSyncing)
+        else
         {
-            <span class="sync-chip ui-pill">
-                Cloud syncing
-            </span>
+            <MudButton Class="refresh-button" Color="Color.Secondary" Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy)" id="app-refresh" OnClick="RefreshAsync" Variant="Variant.Filled">
+                Refresh
+            </MudButton>
         }
-        else if (SessionController.State.LastSyncedAtUtc is not null)
-        {
-            <span class="sync-chip ui-pill">
-                Synced @SessionController.State.LastSyncedAtUtc.Value.ToLocalTime():g
-            </span>
-        }
-
-        <MudButton Class="refresh-button" Color="Color.Secondary" Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy || SessionController.State.IsRefreshing)" id="app-refresh" OnClick="RefreshAsync" Variant="Variant.Filled">
-            Refresh
-        </MudButton>
     </MudAppBar>
 
     @if (ShowDrawer)
@@ -102,10 +101,87 @@
         await SessionController.RefreshForPageAsync(NavigationManager.Uri);
     }
 
-    private int GetRefreshingDomainCount()
+    private HeaderSyncStatus? GetHeaderSyncStatus()
     {
-        return SessionController.State.DomainStates?.Values.Count(static state =>
-            state.IsFetching && state.Domain is not RefreshDomain.CloudSync and not RefreshDomain.PartySync) ?? 0;
+        var state = SessionController.State;
+
+        if (state.HasSyncFailure)
+        {
+            return new HeaderSyncStatus("Sync failed", "sync-chip--danger", GetFailedSyncTitle());
+        }
+
+        if (state.IsCloudSyncing)
+        {
+            return new HeaderSyncStatus("Cloud syncing", "sync-chip--busy", null);
+        }
+
+        if (state.HasStaleSync)
+        {
+            return new HeaderSyncStatus("Sync stale", "sync-chip--warning", "Some cached data may need refresh.");
+        }
+
+        if (state.LastSyncedAtUtc is null)
+        {
+            return null;
+        }
+
+        var localTime = state.LastSyncedAtUtc.Value.ToLocalTime();
+        return new HeaderSyncStatus(
+            $"Synced {localTime.ToString("h:mm tt", CultureInfo.CurrentCulture)}",
+            "sync-chip--muted",
+            $"Last synced {localTime.ToString("f", CultureInfo.CurrentCulture)}");
+    }
+
+    private string GetActiveRefreshText()
+    {
+        var activeDomains = GetActiveRefreshDomains();
+
+        return activeDomains.Length switch
+        {
+            0 => "Syncing...",
+            1 => $"Syncing {GetDomainLabel(activeDomains[0])}...",
+            _ => $"Syncing {activeDomains.Length} areas..."
+        };
+    }
+
+    private RefreshDomain[] GetActiveRefreshDomains()
+    {
+        return SessionController.State.DomainStates?
+            .Values
+            .Where(static state => state.IsFetching && state.Domain is not RefreshDomain.CloudSync and not RefreshDomain.PartySync)
+            .Select(static state => state.Domain)
+            .Distinct()
+            .OrderBy(static domain => domain)
+            .ToArray() ?? Array.Empty<RefreshDomain>();
+    }
+
+    private string? GetFailedSyncTitle()
+    {
+        var failedDomains = SessionController.State.DomainStates?
+            .Values
+            .Where(static state => !string.IsNullOrWhiteSpace(state.LastError))
+            .Select(static state => GetDomainLabel(state.Domain))
+            .Distinct()
+            .OrderBy(static label => label)
+            .ToArray();
+
+        return failedDomains is { Length: > 0 }
+            ? $"Failed: {string.Join(", ", failedDomains)}"
+            : null;
+    }
+
+    private static string GetDomainLabel(RefreshDomain domain)
+    {
+        return domain switch
+        {
+            RefreshDomain.UserProfile => "account",
+            RefreshDomain.Tasks => "tasks",
+            RefreshDomain.Party => "party",
+            RefreshDomain.GearCatalog => "gear",
+            RefreshDomain.CloudSync => "cloud",
+            RefreshDomain.PartySync => "party sync",
+            _ => "data"
+        };
     }
 
     private void ToggleDrawer()
@@ -117,4 +193,6 @@
     {
         SessionController.Changed -= HandleStateChanged;
     }
+
+    private sealed record HeaderSyncStatus(string Text, string ClassName, string? Title);
 }

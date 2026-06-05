@@ -67,6 +67,16 @@ public sealed record SessionViewModel(
         state.IsFetching && state.Domain is not RefreshDomain.CloudSync and not RefreshDomain.PartySync) == true;
 
     public bool IsCloudSyncing => DomainStates?.TryGetValue(RefreshDomain.CloudSync, out var state) == true && state.IsFetching;
+
+    public bool HasSyncFailure => DomainStates?.Values.Any(static state => !string.IsNullOrWhiteSpace(state.LastError)) == true;
+
+    public bool HasStaleSync =>
+        IsStale(TaskFreshness) ||
+        IsStale(UserFreshness) ||
+        IsStale(PartyFreshness);
+
+    private static bool IsStale(SnapshotFreshnessState freshness) =>
+        freshness is SnapshotFreshnessState.Stale or SnapshotFreshnessState.Expired;
 }
 
 public sealed record SpellCastRequest(

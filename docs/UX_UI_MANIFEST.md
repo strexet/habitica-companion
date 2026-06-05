@@ -1,6 +1,6 @@
 # UX/UI Manifest
 
-Last reviewed: 2026-06-02
+Last reviewed: 2026-06-05
 
 This manifest records the current UI implementation, what is working, where readability or responsiveness has drifted, and which outside patterns are worth copying. Treat it as product guidance for future UI work, not as a pixel spec.
 
@@ -137,13 +137,14 @@ Files: `src/Habitica.WebApp/Layout/MainLayout.razor`, `src/Habitica.WebApp/wwwro
 Current pattern:
 
 - MudBlazor app bar with drawer navigation for authenticated sessions.
+- Top bar keeps identity, compact sync freshness, and Refresh/status action in one flex row; active page refresh replaces Refresh with a same-size `Syncing ...` chip.
 - Centered `.shell-content` with a `1200px` max width.
 - Reusable `card-surface`, `ui-pill`, `section-label`, `panel-copy`, `field-row`, `checkbox-row`, `app-input`, and responsive grid classes.
 
 What works:
 
 - Navigation is predictable and app-like.
-- Freshness/error status appears near the page content rather than hidden in settings.
+- Freshness/error status appears near the page content and in compact topbar form rather than hidden in settings.
 - Shared typography and pill styles make status labels recognizable.
 
 Drift:

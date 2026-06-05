@@ -1,12 +1,15 @@
+using System.Globalization;
 using Bunit;
 using Habitica.Application.Dashboard;
+using Habitica.Application.Sync;
 using Habitica.Domain.Sync;
 using Habitica.Rules.Stats;
 using Habitica.Storage;
 using Habitica.WebApp;
-using Habitica.WebApp.Theme;
 using Habitica.WebApp.Components.Navigation;
+using Habitica.WebApp.Layout;
 using Habitica.WebApp.State;
+using Habitica.WebApp.Theme;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
@@ -167,6 +170,59 @@ public sealed class AppNavMenuTests : BunitContext
         Assert.DoesNotContain("Sign in with Habitica", cut.Markup);
     }
 
+    [Fact]
+    public void Main_layout_renders_compact_synced_time_without_date()
+    {
+        var syncedAt = DateTimeOffset.Parse("2026-04-24T12:42:00Z", CultureInfo.InvariantCulture);
+        var cut = RenderLayout(CreateAuthenticatedState(lastSyncedAtUtc: syncedAt));
+
+        var syncText = cut.Find(".topbar-sync-slot").TextContent.Trim();
+        var expectedTime = syncedAt.ToLocalTime().ToString("h:mm tt", CultureInfo.CurrentCulture);
+
+        Assert.Equal($"Synced {expectedTime}", syncText);
+        Assert.DoesNotContain("2026", syncText);
+        Assert.Contains("id=\"app-refresh\"", cut.Markup);
+    }
+
+    [Fact]
+    public void Main_layout_renders_stale_sync_status_without_hiding_refresh()
+    {
+        var cut = RenderLayout(CreateAuthenticatedState(taskFreshness: SnapshotFreshnessState.Stale));
+
+        Assert.Equal("Sync stale", cut.Find(".topbar-sync-slot").TextContent.Trim());
+        Assert.Contains("sync-chip--warning", cut.Markup);
+        Assert.Contains("id=\"app-refresh\"", cut.Markup);
+    }
+
+    [Fact]
+    public void Main_layout_renders_failed_sync_status_for_domain_errors()
+    {
+        var cut = RenderLayout(CreateAuthenticatedState(
+            domainStates: new Dictionary<RefreshDomain, DomainRefreshState>
+            {
+                [RefreshDomain.Tasks] = new(RefreshDomain.Tasks, false, LastError: "Tasks failed")
+            }));
+
+        Assert.Equal("Sync failed", cut.Find(".topbar-sync-slot").TextContent.Trim());
+        Assert.Contains("sync-chip--danger", cut.Markup);
+        Assert.Contains("Failed: tasks", cut.Markup);
+    }
+
+    [Fact]
+    public void Main_layout_replaces_refresh_button_with_active_sync_status()
+    {
+        var cut = RenderLayout(CreateAuthenticatedState(
+            domainStates: new Dictionary<RefreshDomain, DomainRefreshState>
+            {
+                [RefreshDomain.Tasks] = new(RefreshDomain.Tasks, true)
+            }));
+
+        Assert.Empty(cut.FindAll("#app-refresh"));
+        Assert.Equal("Syncing tasks...", cut.Find("#app-refresh-status").TextContent.Trim());
+        Assert.Contains("sync-chip--busy", cut.Markup);
+        Assert.DoesNotContain("Refresh</", cut.Markup);
+    }
+
     private static void AssertNavOrder(string markup, params string[] labels)
     {
         var previousIndex = -1;
@@ -177,5 +233,36 @@ public sealed class AppNavMenuTests : BunitContext
             Assert.True(index > previousIndex, $"{label} should render after the previous navigation item.");
             previousIndex = index;
         }
+    }
+
+    private IRenderedComponent<MainLayout> RenderLayout(SessionViewModel state)
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(state));
+
+        return Render<MainLayout>(parameters => parameters.Add(
+            layout => layout.Body,
+            builder => builder.AddContent(0, "Layout body")));
+    }
+
+    private static SessionViewModel CreateAuthenticatedState(
+        DateTimeOffset? lastSyncedAtUtc = null,
+        SnapshotFreshnessState taskFreshness = SnapshotFreshnessState.Fresh,
+        SnapshotFreshnessState userFreshness = SnapshotFreshnessState.Fresh,
+        SnapshotFreshnessState partyFreshness = SnapshotFreshnessState.Fresh,
+        IReadOnlyDictionary<RefreshDomain, DomainRefreshState>? domainStates = null)
+    {
+        return new SessionViewModel(
+            IsBusy: false,
+            IsAuthenticated: true,
+            DisplayName: "Mage Tester",
+            ErrorMessage: null,
+            LastSyncedAtUtc: lastSyncedAtUtc ?? DateTimeOffset.Parse("2026-04-24T12:42:00Z", CultureInfo.InvariantCulture),
+            TaskFreshness: taskFreshness,
+            TaskSnapshot: null,
+            UserFreshness: userFreshness,
+            PartyFreshness: partyFreshness,
+            DomainStates: domainStates);
     }
 }

@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-06-02
+Last updated: 2026-06-05
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -1719,6 +1719,7 @@ user freshness state
 latest sync timestamp
 active refresh count
 cloud sync activity state
+sync failure and stale snapshot predicates
 diagnostics history presence
 diagnostics warning count
 global workflow error state
@@ -1731,6 +1732,7 @@ top app bar
 responsive authenticated navigation drawer
 route links
 refresh action
+compact sync status chip
 global warning banner
 identity summary
 diagnostics visibility and warning cues
@@ -1752,8 +1754,14 @@ Navigation rules:
 1. Hide the foldable feature drawer entirely when no authenticated session is active.
 2. Show `Dashboard`, `Tasks`, `Inventory`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` in the drawer once an authenticated session exists.
 3. Keep refresh disabled unless authenticated credentials are available for the current session.
-4. Surface active refresh or cloud sync state in the top bar without hiding cached page content.
-5. Surface the latest workflow error above route content.
+4. Surface compact sync state in the top bar:
+   - `Synced h:mm AM/PM` for normal cached sync freshness;
+   - `Sync stale` when cached task, account, or party freshness is stale/expired;
+   - `Sync failed` when a tracked refresh domain has a last error;
+   - `Cloud syncing` for active app-data sync.
+5. Replace the Refresh button with a same-row `Syncing ...` chip while page refresh domains are active, using a specific domain label for one active area and a count for multiple areas.
+6. Keep header identity text, sync status, and refresh/status action aligned with ellipsis or wrapping instead of overflowing on narrow widths.
+7. Surface the latest workflow error above route content.
 ```
 
 ### Validation
@@ -1782,8 +1790,8 @@ Test:
 - authenticated navigation links;
 - unauthenticated drawer suppression;
 - shell error banner rendering;
-- sync timestamp rendering when available;
-- active refresh and cloud-sync status rendering.
+- compact sync timestamp rendering without full date text;
+- stale, failed, active refresh, and cloud-sync status rendering.
 - signed-out empty states for Dashboard, Tasks, Inventory, Pets & Mounts, Party/Quests, and Spells.
 
 ### Open questions
