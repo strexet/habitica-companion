@@ -109,6 +109,85 @@
 
         <section class="card-surface inventory-group-card">
             @{
+                var hatchAllocations = GetHatchQueueAllocations(snapshot.Inventory).ToArray();
+                var executableHatchQueue = hatchAllocations.Where(static item => item.CanExecuteHatch).ToArray();
+            }
+            <div class="task-group-header">
+                <div>
+                    <p class="section-label">Hatch planner</p>
+                    <h2>Hatch queue</h2>
+                </div>
+                <span class="ui-pill count-pill">@_hatchQueue.Count queued</span>
+            </div>
+
+            @if (_hatchQueue.Count == 0)
+            {
+                <p class="panel-copy">Choose Add to Hatch Queue on a missing pet to review eggs and hatching potions before hatching.</p>
+            }
+            else
+            {
+                <div class="hatch-queue-list" data-testid="hatch-dry-run-preview">
+                    @foreach (var selection in _hatchQueue)
+                    {
+                        var allocation = hatchAllocations.First(item => MatchesHatchQueueItem(item, selection));
+                        <article class="hatch-queue-card" data-testid="@($"hatch-queue-card-{allocation.PetKey}")">
+                            <div class="task-group-header">
+                                <div>
+                                    <p class="section-label">Queued hatch</p>
+                                    <h3>@allocation.PetDisplayName</h3>
+                                    <span class="dashboard-stat-note">@allocation.PetKey</span>
+                                    <span class="dashboard-stat-note">@allocation.OwnershipStatus</span>
+                                </div>
+                                <MudButton OnClick="@(() => RemoveQueuedHatch(selection))" Variant="Variant.Text" data-testid="@($"remove-hatch-queue-{allocation.PetKey}")">
+                                    Remove
+                                </MudButton>
+                            </div>
+                            <div class="feed-queue-stats hatch-queue-stats">
+                                <span class="ui-pill count-pill">Egg @allocation.EggKey</span>
+                                <span class="ui-pill count-pill">Egg available @allocation.EggRemainingBeforeItem / @allocation.EggAvailableCount</span>
+                                <span class="ui-pill count-pill">Egg reserved @allocation.EggReservedBeforeItem</span>
+                                <span class="ui-pill count-pill">Egg plan @allocation.PlannedEggConsumption</span>
+                                <span class="ui-pill count-pill">Potion @allocation.HatchingPotionKey</span>
+                                <span class="ui-pill count-pill">Potion available @allocation.PotionRemainingBeforeItem / @allocation.PotionAvailableCount</span>
+                                <span class="ui-pill count-pill">Potion reserved @allocation.PotionReservedBeforeItem</span>
+                                <span class="ui-pill count-pill">Potion plan @allocation.PlannedPotionConsumption</span>
+                            </div>
+                            @foreach (var warning in GetHatchQueueWarnings(allocation))
+                            {
+                                <MudAlert Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined">@warning</MudAlert>
+                            }
+                        </article>
+                    }
+                </div>
+                <div class="action-row inventory-actions">
+                    <MudButton Color="Color.Primary"
+                               Disabled="@(!canMutate || executableHatchQueue.Length == 0)"
+                               OnClick="@(() => _showHatchQueueConfirmation = true)"
+                               Variant="Variant.Filled"
+                               data-testid="execute-hatch-queue">
+                        Hatch queued pets
+                    </MudButton>
+                    <MudButton OnClick="ClearHatchQueue" Variant="Variant.Text" data-testid="clear-hatch-queue">Clear queue</MudButton>
+                </div>
+                @if (_showHatchQueueConfirmation)
+                {
+                    <div class="preset-remove-confirm">
+                        <span>Hatch @executableHatchQueue.Length queued pet(s)?</span>
+                        <MudButton Color="Color.Primary"
+                                   Disabled="@(!canMutate || executableHatchQueue.Length == 0)"
+                                   OnClick="@(() => ExecuteHatchQueueAsync(snapshot.Inventory))"
+                                   Variant="Variant.Filled"
+                                   data-testid="confirm-hatch-queue">
+                            Confirm hatch
+                        </MudButton>
+                        <MudButton OnClick="@(() => _showHatchQueueConfirmation = false)" Variant="Variant.Text">Cancel</MudButton>
+                    </div>
+                }
+            }
+        </section>
+
+        <section class="card-surface inventory-group-card">
+            @{
                 var queueAllocations = GetFeedQueueAllocations(snapshot.Inventory).ToArray();
                 var executableQueue = queueAllocations.Where(static item => item.CanExecuteFeed).ToArray();
             }
@@ -316,10 +395,10 @@
                                                 </MudButton>
                                             }
                                         }
-                                        else if (CanHatch(pet, snapshot.Inventory))
+                                        else if (CanPlanHatch(pet))
                                         {
-                                            <MudButton Color="Color.Primary" Disabled="@(!canMutate)" OnClick="@(() => HatchPetAsync(pet))" Variant="Variant.Outlined" data-testid="@($"hatch-pet-{pet.Key}")">
-                                                Hatch pet
+                                            <MudButton Color="Color.Primary" OnClick="@(() => AddPetToHatchQueue(pet, snapshot.Inventory))" Variant="Variant.Outlined" data-testid="@($"select-hatch-{pet.Key}")">
+                                                Add to Hatch Queue
                                             </MudButton>
                                         }
                                     </div>
@@ -465,6 +544,7 @@
 
 @code {
     private readonly List<PetFeedQueueItem> _feedQueue = new();
+    private readonly List<HatchQueueItem> _hatchQueue = new();
     private readonly Dictionary<string, bool> _foldedGroups = new(StringComparer.Ordinal);
     private string _searchText = string.Empty;
     private string _petTypeFilterKey = string.Empty;
@@ -473,6 +553,7 @@
     private string? _pendingSaddlePetKey;
     private int _bulkSellKeepCount = 1;
     private bool _showBulkSellConfirmation;
+    private bool _showHatchQueueConfirmation;
 
     protected override void OnInitialized()
     {
@@ -833,6 +914,179 @@
         }
     }
 
+    private void AddPetToHatchQueue(PetCatalogItem pet, InventorySnapshot inventory)
+    {
+        if (!CanPlanHatch(pet))
+        {
+            Snackbar.Add("This pet cannot be hatched from the checked-in catalog.", Severity.Warning);
+            return;
+        }
+
+        if (inventory.Pets.ContainsKey(pet.Key))
+        {
+            Snackbar.Add($"{pet.DisplayName} is already owned.", Severity.Info);
+            return;
+        }
+
+        var queueItem = new HatchQueueItem(pet.EggKey, pet.HatchingPotionKey);
+        if (_hatchQueue.Any(item => MatchesHatchQueueItem(item, queueItem)))
+        {
+            Snackbar.Add($"{pet.DisplayName} is already queued.", Severity.Info);
+            return;
+        }
+
+        _hatchQueue.Add(queueItem);
+        _showHatchQueueConfirmation = false;
+    }
+
+    private IEnumerable<HatchQueueAllocation> GetHatchQueueAllocations(InventorySnapshot inventory)
+    {
+        var remainingEggs = CloneInventoryCounts(inventory.Eggs);
+        var remainingPotions = CloneInventoryCounts(inventory.HatchingPotions);
+        var queuedPets = new HashSet<string>(StringComparer.Ordinal);
+
+        foreach (var item in _hatchQueue)
+        {
+            var petKey = GetHatchPetKey(item);
+            var catalogPet = PetsMountsCatalog.FindPet(petKey);
+            var isSupported = catalogPet is not null && CanPlanHatch(catalogPet);
+            var isOwned = inventory.Pets.ContainsKey(petKey);
+            var isDuplicate = !queuedPets.Add(petKey);
+            var eggAvailableCount = inventory.Eggs.GetValueOrDefault(item.EggKey);
+            var potionAvailableCount = inventory.HatchingPotions.GetValueOrDefault(item.HatchingPotionKey);
+            var eggRemainingBeforeItem = remainingEggs.GetValueOrDefault(item.EggKey);
+            var potionRemainingBeforeItem = remainingPotions.GetValueOrDefault(item.HatchingPotionKey);
+            var canReserveResources = isSupported && !isOwned && !isDuplicate;
+            var plannedEggConsumption = canReserveResources && eggRemainingBeforeItem > 0 ? 1 : 0;
+            var plannedPotionConsumption = canReserveResources && potionRemainingBeforeItem > 0 ? 1 : 0;
+
+            if (plannedEggConsumption > 0)
+            {
+                remainingEggs[item.EggKey] = eggRemainingBeforeItem - plannedEggConsumption;
+            }
+
+            if (plannedPotionConsumption > 0)
+            {
+                remainingPotions[item.HatchingPotionKey] = potionRemainingBeforeItem - plannedPotionConsumption;
+            }
+
+            yield return new HatchQueueAllocation(
+                item.EggKey,
+                item.HatchingPotionKey,
+                petKey,
+                catalogPet?.DisplayName ?? FormatName(petKey, petKey),
+                isSupported,
+                isOwned,
+                isDuplicate,
+                eggAvailableCount,
+                eggRemainingBeforeItem,
+                plannedEggConsumption,
+                potionAvailableCount,
+                potionRemainingBeforeItem,
+                plannedPotionConsumption);
+        }
+    }
+
+    private static Dictionary<string, int> CloneInventoryCounts(IReadOnlyDictionary<string, int> items)
+    {
+        var clone = new Dictionary<string, int>(StringComparer.Ordinal);
+        foreach (var pair in items)
+        {
+            clone[pair.Key] = pair.Value;
+        }
+
+        return clone;
+    }
+
+    private static IEnumerable<string> GetHatchQueueWarnings(HatchQueueAllocation allocation)
+    {
+        if (!allocation.IsSupported)
+        {
+            yield return "This pet cannot be hatched from the checked-in catalog.";
+            yield break;
+        }
+
+        if (allocation.IsOwned)
+        {
+            yield return "This pet is already owned, so it will not be hatched.";
+            yield break;
+        }
+
+        if (allocation.IsDuplicate)
+        {
+            yield return "This pet is already queued earlier.";
+            yield break;
+        }
+
+        if (allocation.EggAvailableCount <= 0)
+        {
+            yield return $"Need egg {allocation.EggKey} before hatching.";
+        }
+        else if (allocation.PlannedEggConsumption == 0)
+        {
+            yield return $"Egg {allocation.EggKey} is reserved by earlier queued pets.";
+        }
+
+        if (allocation.PotionAvailableCount <= 0)
+        {
+            yield return $"Need potion {allocation.HatchingPotionKey} before hatching.";
+        }
+        else if (allocation.PlannedPotionConsumption == 0)
+        {
+            yield return $"Potion {allocation.HatchingPotionKey} is reserved by earlier queued pets.";
+        }
+    }
+
+    private async Task ExecuteHatchQueueAsync(InventorySnapshot inventory)
+    {
+        var executable = GetHatchQueueAllocations(inventory)
+            .Where(static item => item.CanExecuteHatch)
+            .Select(static item => new HatchQueueItem(item.EggKey, item.HatchingPotionKey))
+            .ToArray();
+        if (executable.Length == 0)
+        {
+            _showHatchQueueConfirmation = false;
+            Snackbar.Add("No queued pet has enough eggs and hatching potions.", Severity.Warning);
+            return;
+        }
+
+        var hatchedCount = 0;
+        foreach (var item in executable)
+        {
+            var result = await SessionController.HatchPetAsync(item.EggKey, item.HatchingPotionKey);
+            ShowFeedback(result);
+            if (!result.Succeeded)
+            {
+                _showHatchQueueConfirmation = false;
+                return;
+            }
+
+            hatchedCount++;
+            RemoveQueuedHatch(item, resetConfirmation: false);
+        }
+
+        _showHatchQueueConfirmation = false;
+        if (hatchedCount > 0)
+        {
+            Snackbar.Add($"Hatched {hatchedCount} queued pet(s).", Severity.Success);
+        }
+    }
+
+    private void RemoveQueuedHatch(HatchQueueItem item, bool resetConfirmation = true)
+    {
+        _hatchQueue.RemoveAll(queued => MatchesHatchQueueItem(queued, item));
+        if (resetConfirmation)
+        {
+            _showHatchQueueConfirmation = false;
+        }
+    }
+
+    private void ClearHatchQueue()
+    {
+        _hatchQueue.Clear();
+        _showHatchQueueConfirmation = false;
+    }
+
     private static bool CanUseSaddle(PetGrowthQueueAllocation allocation, InventorySnapshot inventory)
     {
         return allocation.CanGrowIntoMount
@@ -900,17 +1154,36 @@
         ShowFeedback(await SessionController.EquipMountAsync(key));
     }
 
-    private async Task HatchPetAsync(PetCatalogItem pet)
-    {
-        ShowFeedback(await SessionController.HatchPetAsync(pet.EggKey, pet.HatchingPotionKey));
-    }
-
     private static bool CanHatch(PetCatalogItem pet, InventorySnapshot inventory)
     {
         return !string.IsNullOrWhiteSpace(pet.EggKey)
             && !string.IsNullOrWhiteSpace(pet.HatchingPotionKey)
             && inventory.Eggs.GetValueOrDefault(pet.EggKey) > 0
             && inventory.HatchingPotions.GetValueOrDefault(pet.HatchingPotionKey) > 0;
+    }
+
+    private static bool CanPlanHatch(PetCatalogItem pet)
+    {
+        return !string.IsNullOrWhiteSpace(pet.EggKey)
+            && !string.IsNullOrWhiteSpace(pet.HatchingPotionKey)
+            && PetsMountsCatalog.FindPet(pet.Key) is not null;
+    }
+
+    private static string GetHatchPetKey(HatchQueueItem item)
+    {
+        return $"{item.EggKey}-{item.HatchingPotionKey}";
+    }
+
+    private static bool MatchesHatchQueueItem(HatchQueueItem left, HatchQueueItem right)
+    {
+        return string.Equals(left.EggKey, right.EggKey, StringComparison.Ordinal)
+            && string.Equals(left.HatchingPotionKey, right.HatchingPotionKey, StringComparison.Ordinal);
+    }
+
+    private static bool MatchesHatchQueueItem(HatchQueueAllocation allocation, HatchQueueItem item)
+    {
+        return string.Equals(allocation.EggKey, item.EggKey, StringComparison.Ordinal)
+            && string.Equals(allocation.HatchingPotionKey, item.HatchingPotionKey, StringComparison.Ordinal);
     }
 
     private static string GetHatchStatus(PetCatalogItem pet, InventorySnapshot inventory)
@@ -1085,6 +1358,39 @@
         int SellCount,
         bool IsSafe,
         string Explanation);
+
+    private sealed record HatchQueueItem(
+        string EggKey,
+        string HatchingPotionKey);
+
+    private sealed record HatchQueueAllocation(
+        string EggKey,
+        string HatchingPotionKey,
+        string PetKey,
+        string PetDisplayName,
+        bool IsSupported,
+        bool IsOwned,
+        bool IsDuplicate,
+        int EggAvailableCount,
+        int EggRemainingBeforeItem,
+        int PlannedEggConsumption,
+        int PotionAvailableCount,
+        int PotionRemainingBeforeItem,
+        int PlannedPotionConsumption)
+    {
+        public bool CanExecuteHatch =>
+            IsSupported
+            && !IsOwned
+            && !IsDuplicate
+            && PlannedEggConsumption > 0
+            && PlannedPotionConsumption > 0;
+
+        public int EggReservedBeforeItem => Math.Max(0, EggAvailableCount - EggRemainingBeforeItem);
+
+        public int PotionReservedBeforeItem => Math.Max(0, PotionAvailableCount - PotionRemainingBeforeItem);
+
+        public string OwnershipStatus => IsOwned ? "Owned pet" : "Missing pet";
+    }
 
     private sealed record MissingMountPlan(
         bool CanPlan,

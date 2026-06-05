@@ -114,6 +114,8 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public InventoryActionResult FeedPetResult { get; set; } =
         InventoryActionResult.Success("Pets fed.");
 
+    public Queue<InventoryActionResult> HatchPetResults { get; } = new();
+
     public Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
@@ -243,7 +245,9 @@ internal sealed class FakeAppSessionController : IAppSessionController
         CancellationToken cancellationToken = default)
     {
         HatchPetCalls.Add((eggKey, hatchingPotionKey));
-        return Task.FromResult(InventoryActionResult.Success("Pet hatched."));
+        return Task.FromResult(HatchPetResults.Count > 0
+            ? HatchPetResults.Dequeue()
+            : InventoryActionResult.Success("Pet hatched."));
     }
 
     public Task InitializeAsync(CancellationToken cancellationToken = default)

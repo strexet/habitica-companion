@@ -2349,7 +2349,8 @@ input[type="radio"] {
 }
 
 .companion-filter-grid,
-.feed-queue-list {
+.feed-queue-list,
+.hatch-queue-list {
     display: grid;
     gap: 0.85rem;
     margin-top: 0.85rem;
@@ -2359,7 +2360,8 @@ input[type="radio"] {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
 }
 
-.feed-queue-card {
+.feed-queue-card,
+.hatch-queue-card {
     display: grid;
     gap: 0.85rem;
     min-width: 0;
@@ -2370,14 +2372,16 @@ input[type="radio"] {
     color: var(--ink);
 }
 
-.feed-queue-card h3 {
+.feed-queue-card h3,
+.hatch-queue-card h3 {
     margin: 0;
     color: var(--primary);
     font-size: 1rem;
     line-height: 1.25;
 }
 
-.feed-queue-stats {
+.feed-queue-stats,
+.hatch-queue-stats {
     display: flex;
     flex-wrap: wrap;
     gap: 0.45rem;
@@ -3540,6 +3544,7 @@ input[type="radio"] {
 .inventory-item-card,
 .dashboard-link-card,
 .feed-queue-card,
+.hatch-queue-card,
 .bulk-sell-item,
 .preset-mini-item,
 .live-result-item,
@@ -3728,6 +3733,7 @@ input[type="file"].app-input::file-selector-button {
 .bulk-sell-item,
 .preset-mini-item,
 .feed-queue-card,
+.hatch-queue-card,
 .live-test-card,
 .live-results-card,
 .live-result-item,

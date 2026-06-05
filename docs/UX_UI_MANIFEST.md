@@ -292,6 +292,7 @@ Current pattern:
 - Large collection groups are folded by default except the base collection and hatching potions. Fold choices persist only in local browser storage; search temporarily expands groups to show matches.
 - Owned pet and mount cards keep official Habitica art in fixed identity slots and place fast-equip controls beside the affected companion.
 - Missing pet cards show cached-inventory hatch readiness or the specific missing egg and/or potion. Group hints summarize cached hatch availability without live price or gem-cost claims.
+- Hatch planning uses per-pet queue cards before any mutation. Each row shows pet identity, ownership state, egg and hatching potion keys, available/reserved counts, planned consumption, local warnings, and a remove action; execution requires inline confirmation and runs queued hatches in order.
 - Feed planning uses per-pet queue cards. Each card shows growth progress, selected normal food, available/reserved counts, expected progress after feeding, warnings, remove action, Transform to Mount, and separate Use Saddle confirmation.
 - Missing mount cards can add their corresponding owned growable pet to the same feed queue with Plan to grow. Unavailable missing mounts show a short cached-data reason instead of a dead action.
 - Companion group headers keep bulk feed planning beside the fold toggle. `Add All to Feeding Queue` appends only valid growable missing mounts from the currently visible group/filter set, shows `No growable mounts` when disabled, and leaves mutation execution inside the Feed Planner controls.
