@@ -298,7 +298,7 @@
             <div class="task-group-header">
                 <div>
                     <p class="section-label">Navigation</p>
-                    <h2>Companion and Habitica links</h2>
+                    <h2>Companion links</h2>
                 </div>
                 <a class="secondary-action-button compact" href="https://habitica.com" target="_blank" rel="noopener noreferrer">
                     Open Habitica
@@ -306,12 +306,12 @@
             </div>
 
             <div class="dashboard-link-grid">
-                @RenderDashboardLink("Tasks", "/tasks", "https://habitica.com/tasks", "Score and inspect cached tasks.")
-                @RenderDashboardLink("Inventory", "/inventory", "https://habitica.com/inventory/equipment", "Plan gear and inspect inventory.")
-                @RenderDashboardLink("Pets & Mounts", "/pets-mounts", "https://habitica.com/inventory/stable", "Review companions, feed pets, and plan surplus sales.")
-                @RenderDashboardLink("Party", "/party", "https://habitica.com/party", "Review members, roles, and CRON timing.")
-                @RenderDashboardLink("Quests", "/quests", "https://habitica.com/party", "Manage active quests and shared planning.")
-                @RenderDashboardLink("Spells", "/spells", "https://habitica.com/tasks", "Cast class skills against task targets.")
+                @RenderDashboardLink("Tasks", "/tasks", "Score and inspect cached tasks.")
+                @RenderDashboardLink("Inventory", "/inventory", "Plan gear and inspect inventory.")
+                @RenderDashboardLink("Pets & Mounts", "/pets-mounts", "Review companions, feed pets, and plan surplus sales.")
+                @RenderDashboardLink("Party", "/party", "Review members, roles, and CRON timing.")
+                @RenderDashboardLink("Quests", "/quests", "Manage active quests and shared planning.")
+                @RenderDashboardLink("Spells", "/spells", "Cast class skills against task targets.")
             </div>
         </section>
 
@@ -892,7 +892,7 @@
         builder.CloseElement();
     };
 
-    private static RenderFragment RenderDashboardLink(string label, string localHref, string habiticaHref, string note) => builder =>
+    private static RenderFragment RenderDashboardLink(string label, string localHref, string note) => builder =>
     {
         var sequence = 0;
         builder.OpenElement(sequence++, "article");
@@ -912,14 +912,8 @@
         builder.OpenElement(sequence++, "a");
         builder.AddAttribute(sequence++, "class", "secondary-action-button compact");
         builder.AddAttribute(sequence++, "href", localHref);
-        builder.AddContent(sequence++, $"Open {label}");
-        builder.CloseElement();
-        builder.OpenElement(sequence++, "a");
-        builder.AddAttribute(sequence++, "class", "secondary-action-button compact");
-        builder.AddAttribute(sequence++, "href", habiticaHref);
-        builder.AddAttribute(sequence++, "target", "_blank");
-        builder.AddAttribute(sequence++, "rel", "noopener noreferrer");
-        builder.AddContent(sequence++, "Habitica");
+        builder.AddAttribute(sequence++, "aria-label", $"Open {label}");
+        builder.AddContent(sequence++, "Open");
         builder.CloseElement();
         builder.CloseElement();
         builder.CloseElement();

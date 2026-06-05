@@ -78,48 +78,6 @@ _No pending entries._
 
 Work top to bottom. Each entry is self-contained.
 
-### Dashboard Navigation Companion Link Cleanup
-
-Goal: simplify the Dashboard `NAVIGATION` block by removing repeated Habitica access buttons while preserving the primary Dashboard `Open Habitica` action.
-
-Touch:
-- `src/Habitica.WebApp/Pages/DashboardPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css` only if removing buttons leaves spacing or alignment gaps
-- `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs`
-- `FEATURES.md`
-
-Out of scope:
-- changing the top hero/main Dashboard `Open Habitica` link;
-- changing routes for companion pages;
-- changing navigation drawer behavior;
-- redesigning Dashboard page structure beyond this link block.
-
-Implementation plan:
-1. Locate the Dashboard `NAVIGATION` section and the `Companion and Habitica links` card/grid.
-2. Identify all Habitica-specific buttons inside that block.
-3. Remove the extra Habitica buttons from that block only.
-4. Keep companion/tool navigation cards or rows that open app pages such as Tasks, Party, Quests, Pets & Mounts, Inventory, Spells, Settings, or diagnostics.
-5. Rename every remaining button in that block to `Open`.
-6. Verify the main Dashboard account/top block still contains the primary `Open Habitica` action with existing URL behavior.
-7. Clean up any empty columns, gaps, or awkward card footers caused by removing the extra buttons.
-
-UX details:
-- The navigation block should read as app navigation, not a mixed list of repeated external Habitica links.
-- All remaining action labels in the block should be visually consistent.
-- Cards/rows should keep aligned titles, descriptions, and action rows after button removal.
-
-Tests:
-- Update Dashboard render test that currently asserts `Companion and Habitica links`.
-- Assert the top/main `Open Habitica` action remains present.
-- Assert the navigation block no longer renders extra Habitica-specific actions.
-- Assert remaining navigation-block buttons use `Open`.
-
-Acceptance:
-- Extra Habitica buttons are removed from the Dashboard navigation companion links block.
-- Top/main `Open Habitica` button remains visible and functional.
-- Remaining buttons in the navigation block are all labeled `Open`.
-- No empty spacing, broken grid item, or uneven action row remains.
-
 ### Companion Group Bulk Feed Planning Actions
 
 Goal: add per-companion-group bulk actions that enqueue all currently growable missing mounts into the existing Feed Planner without executing any feeding.

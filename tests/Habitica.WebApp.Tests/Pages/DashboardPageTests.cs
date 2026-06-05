@@ -119,14 +119,34 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("Open tasks", cut.Markup);
         Assert.Equal("app-input", cut.Find("[data-testid='armoire-open-count']").GetAttribute("class"));
         Assert.NotEmpty(cut.FindAll("[data-testid='buy-gems-with-gold']"));
-        Assert.Contains("Companion and Habitica links", cut.Markup);
+        Assert.Contains("Companion links", cut.Markup);
         Assert.Contains("href=\"/tasks\"", cut.Markup);
-        Assert.Contains("https://habitica.com/tasks", cut.Markup);
         Assert.Contains("href=\"/inventory\"", cut.Markup);
-        Assert.Contains("https://habitica.com/inventory/equipment", cut.Markup);
+        Assert.Contains("href=\"/pets-mounts\"", cut.Markup);
         Assert.Contains("href=\"/party\"", cut.Markup);
         Assert.Contains("href=\"/quests\"", cut.Markup);
-        Assert.Contains("https://habitica.com/party", cut.Markup);
+        Assert.Contains("href=\"/spells\"", cut.Markup);
+        var navigationPanel = cut.Find("[data-testid='dashboard-navigation-panel']");
+        var navigationMarkup = navigationPanel.InnerHtml;
+        Assert.Contains("href=\"https://habitica.com\"", navigationMarkup);
+        Assert.Contains("Open Habitica", navigationMarkup);
+        Assert.DoesNotContain("href=\"https://habitica.com/tasks\"", navigationMarkup);
+        Assert.DoesNotContain("href=\"https://habitica.com/inventory/equipment\"", navigationMarkup);
+        Assert.DoesNotContain("href=\"https://habitica.com/inventory/stable\"", navigationMarkup);
+        Assert.DoesNotContain("href=\"https://habitica.com/party\"", navigationMarkup);
+        var externalHabiticaLinks = cut
+            .FindAll("[data-testid='dashboard-navigation-panel'] a")
+            .Where(link => link.GetAttribute("href")?.StartsWith("https://habitica.com", StringComparison.Ordinal) == true)
+            .ToArray();
+        Assert.Single(externalHabiticaLinks);
+        var dashboardLinkActions = cut.FindAll(".dashboard-link-actions a");
+        Assert.Equal(6, dashboardLinkActions.Count);
+        Assert.All(dashboardLinkActions, link =>
+        {
+            Assert.Equal("Open", link.TextContent.Trim());
+            Assert.StartsWith("Open ", link.GetAttribute("aria-label") ?? string.Empty, StringComparison.Ordinal);
+            Assert.DoesNotStartWith("https://habitica.com", link.GetAttribute("href") ?? string.Empty, StringComparison.Ordinal);
+        });
         var dashboardLinkCopies = cut.FindAll(".dashboard-link-copy");
         Assert.Equal(6, dashboardLinkCopies.Count);
         Assert.All(dashboardLinkCopies, copy =>

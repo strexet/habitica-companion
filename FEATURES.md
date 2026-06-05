@@ -1232,6 +1232,7 @@ Test:
 - pending damage estimate sources and risk state.
 - health-potion confirmation and session-controller call.
 - gem-for-gold eligibility visibility, quantity clamp, confirmation, success refresh, partial-failure stop, and user snapshot mapping.
+- dashboard companion navigation keeps one primary `Open Habitica` web link and uses local `Open` actions for app pages.
 
 ### Open questions
 
@@ -1805,7 +1806,7 @@ Current implementation:
 - top app bar with refresh action, active refresh count, cloud sync state, and latest sync timestamp fallback;
 - responsive drawer navigation shown only after authentication;
 - signed-out empty states on Dashboard, Tasks, Inventory, Pets & Mounts, Party, Quests, and Spells show a page-local Sign in action when no required cached snapshot is available, while authenticated empty states continue to point at Refresh;
-- dashboard navigation cards for Tasks, Inventory, Pets & Mounts, Party, Quests, and Spells;
+- dashboard navigation cards for Tasks, Inventory, Pets & Mounts, Party, Quests, and Spells use local `Open` actions, while the Dashboard keeps a single primary `Open Habitica` web link;
 - stable Habitica web links for known web routes with no mobile deep links or custom schemes;
 - shared error banner;
 - cached identity summary in the app shell;
