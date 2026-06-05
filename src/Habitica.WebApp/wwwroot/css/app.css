@@ -2319,8 +2319,9 @@ input[type="radio"] {
     min-width: 0;
     padding: 0.95rem;
     border-radius: 0.5rem;
-    border: 1px solid rgba(22, 36, 35, 0.08);
-    background: rgba(245, 239, 226, 0.58);
+    border: 1px solid var(--card-border);
+    background: var(--surface);
+    color: var(--ink);
 }
 
 .feed-queue-card h3 {
@@ -3488,6 +3489,7 @@ input[type="radio"] {
 .spell-recommendation,
 .inventory-item-card,
 .dashboard-link-card,
+.feed-queue-card,
 .bulk-sell-item,
 .preset-mini-item,
 .live-result-item,
@@ -3675,6 +3677,7 @@ input[type="file"].app-input::file-selector-button {
 .inventory-item-card,
 .bulk-sell-item,
 .preset-mini-item,
+.feed-queue-card,
 .live-test-card,
 .live-results-card,
 .live-result-item,
