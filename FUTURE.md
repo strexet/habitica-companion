@@ -72,278 +72,399 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Refine header refresh button and sync status layout
-    - Description
-        - Rework the top header refresh/sync status area so it stays compact, readable, and fully inside the header bar.
-        - The Refresh button should not be pushed outside the header.
-        - Prefer showing compact sync status inside the header between player info and the Refresh button.
-        - During an active refresh, replace the disabled Refresh button with the current refresh status.
-        - If this does not fit reliably on supported viewport sizes, fall back to a non-conflicting notification bubble/toast approach.
-
-    - Preferred header layout
-        - Keep player info on the left/primary header area.
-        - Place compact sync status between player info and the Refresh button.
-        - Keep the Refresh button inside the header action area.
-        - Make sure all header elements remain vertically aligned.
-        - Make sure no header element overflows outside the header bar.
-        - Avoid placing sync status in a way that pushes header controls out of the bar.
-
-    - Last refresh / sync status info
-        - Minimize the last refresh timestamp.
-        - Use compact status-like wording instead of verbose labels.
-        - Preferred normal state:
-            - `Synced 12:42 PM`
-        - If using 24-hour format:
-            - `Synced 12:42`
-        - Do not show full date, year, seconds, or timezone in the header.
-        - If sync data is too old, show a compact stale state.
-        - Preferred stale state:
-            - `Sync stale`
-        - Alternative stale labels:
-            - `Data stale`
-            - `Refresh needed`
-            - `Outdated`
-        - Preferred error state:
-            - `Sync failed`
-        - Use smaller font size and muted/secondary styling for normal synced state.
-        - Use warning styling for stale state.
-        - Use danger/error styling for failed state.
-        - Keep the full timestamp available elsewhere only if needed, such as tooltip/title text.
-
-    - Ongoing refresh state
-        - When refresh is in progress, show an ongoing refresh status instead of the Refresh button.
-        - This is acceptable because the Refresh button is disabled during refresh anyway.
-        - Reuse the existing refresh status labels/states that already describe what is currently refreshing.
-        - Do not introduce a generic `Refreshing…` label if a more specific existing status is available.
-        - If existing statuses are too long for the header, map them to concise display labels.
-        - Suggested compact in-progress labels:
-            - `Syncing…`
-            - `Syncing tasks…`
-            - `Syncing party…`
-            - `Syncing inventory…`
-        - The ongoing status should occupy roughly the same header space as the Refresh button to avoid layout jumps.
-        - The status can include a small spinner/progress indicator if already supported by the app UI.
-        - Do not show both a disabled Refresh button and a large sync status if that makes the header crowded.
-
-    - Existing refresh statuses
-        - Reuse the existing refresh status labels/states that already describe what is currently refreshing.
-        - Do not add a new parallel refresh status system if the app already has refresh status state/data.
-        - Show the current specific refresh status in the header action/status area.
-        - Replace the disabled Refresh button with the active refresh status while refresh is running.
-        - Keep the status compact enough to fit in the header.
-        - If there are multiple internal refresh states, map them to concise display labels.
-        - Avoid duplicating refresh status text in multiple places at the same time.
-
-    - Stale sync behavior
-        - Define a threshold for when synced data should be considered stale.
-        - If the existing app already has stale-data logic, reuse it.
-        - If no threshold exists, add a reasonable centralized threshold rather than hardcoding it in the header.
-        - When data is stale, show `Sync stale` in the compact header sync status.
-        - Stale status should encourage refresh without being too visually noisy.
-        - Stale status should not replace the Refresh button unless refresh is actively running.
-        - User should still be able to click Refresh when sync is stale.
-
-    - Fit check
-        - Check whether the compact in-header layout fits on supported desktop and mobile/narrow widths.
-        - Verify that player info, compact sync status, and Refresh/current refresh status can coexist without overflow.
-        - If it fits:
-            - Use the in-header compact sync info layout.
-        - If it does not fit:
-            - Use a fallback approach where sync info appears outside the header, such as a notification bubble/toast.
-            - Keep the Refresh button inside the header regardless.
-
-    - Fallback notification behavior
-        - Use this only if compact in-header status does not fit reliably.
-        - Sync info can appear as a temporary notification bubble near the top of the app.
-        - The bubble should be outside the header bar.
-        - It should not push, resize, or conflict with header elements.
-        - It should appear when sync state changes or when sync feedback is needed.
-        - It should disappear automatically after a short time.
-        - Even when this fallback is used, the Refresh button should stay inside the header.
-
-    - Expected behavior
-        - Refresh button is always inside the top header bar when refresh is not running.
-        - During refresh, the Refresh button area shows the current specific refresh status instead of a disabled Refresh button.
-        - Normal last sync state is shown as compact text, such as `Synced 12:42 PM` or `Synced 12:42`.
-        - Stale sync state is shown as `Sync stale`.
-        - Failed sync state is shown as `Sync failed`.
-        - Header sync status uses smaller, less prominent styling in normal state.
-        - Header remains stable when refresh starts/finishes.
-        - Header elements do not conflict with sync status.
-        - No full date/timezone/seconds are shown in the header.
-        - Existing refresh statuses are reused instead of creating duplicate status logic.
-
-    - Suggested fix
-        - Review the top header component/layout and CSS.
-        - Add a compact sync status slot between player info and refresh action.
-        - Format last sync time as:
-            - `Synced h:mm AM/PM` if the app uses 12-hour time.
-            - `Synced HH:mm` if the app uses 24-hour time.
-        - Style normal sync info with smaller font and muted color.
-        - Style `Sync stale` with warning color.
-        - Style `Sync failed` with danger/error color.
-        - Replace the disabled Refresh button with the current active refresh status while refresh is running.
-        - Reuse existing refresh status state/data.
-        - Reuse existing stale-data logic if available.
-        - Map long internal statuses to concise display labels only if needed for header fit.
-        - Add responsive rules for narrow screens.
-        - If narrow layout cannot fit the compact sync info, hide/move sync info to a notification bubble while keeping Refresh inside the header.
-
-    - Acceptance criteria
-        - Refresh button stays inside the header bar.
-        - Refresh button is replaced by the current specific refresh status while refresh is running.
-        - Existing refresh status state/data is reused.
-        - No duplicate parallel refresh status system is introduced.
-        - Normal sync state is shown as `Synced 12:42 PM` or `Synced 12:42`.
-        - Sync timestamp does not include full date, year, seconds, or timezone in the header.
-        - Stale sync state is shown as `Sync stale`.
-        - Failed sync state is shown as `Sync failed`.
-        - Sync status uses smaller, less prominent styling in normal state.
-        - Header layout remains stable and aligned on desktop.
-        - Header layout remains usable on mobile/narrow widths.
-        - Sync status does not push Refresh outside the header.
-        - If compact in-header sync info does not fit, fallback notification bubble is used without breaking header layout.
-
-- Simplify Dashboard NAVIGATION companion links
-    - Description
-        - On the Dashboard, update the NAVIGATION section, specifically the Companion and Habitica links block.
-        - Remove the extra Habitica buttons from this block.
-        - Keep the main Open Habitica button in the top main Dashboard block.
-        - In the NAVIGATION companion links block, rename all remaining buttons to Open.
-    - Expected behavior
-        - The top main Dashboard block still has its Open Habitica button.
-        - The NAVIGATION / Companion and Habitica links block no longer contains separate Habitica buttons.
-        - All remaining buttons in that NAVIGATION block use the label Open.
-        - The block feels cleaner and avoids repeating Habitica access actions.
-    - Suggested fix
-        - Locate the Dashboard NAVIGATION section.
-        - Remove Habitica-related buttons from the Companion and Habitica links block.
-        - Keep only companion/tool navigation items in that block.
-        - Change each remaining button label in the block to Open.
-        - Verify that the top main Open Habitica button is unchanged.
-    - Acceptance criteria
-        - Extra Habitica buttons are removed from the Dashboard NAVIGATION companion links block.
-        - Top main Open Habitica button remains visible and functional.
-        - Remaining buttons in the NAVIGATION block are all labeled Open.
-        - No empty spacing or broken layout remains after removing the buttons.
-
-- Companion group bulk planning actions
-   - Add bulk planning actions to every COMPANION GROUP section.
-   - This includes:
-      - COMPANION GROUP - Base collection
-      - Other COMPANION GROUP sections
-   - Each companion group should have a button for adding all growable missing mounts to the feeding queue.
-   - Suggested button labels:
-      - Add All to Feeding Queue
-      - Plan All Missing Mounts
-      - Add Growable Mounts
-   - Preferred label:
-      - Add All to Feeding Queue
-   - The button should find all unavailable/missing mounts inside that companion group.
-   - For each unavailable/missing mount, derive the corresponding pet.
-   - Add only pets that are:
-      - Owned.
-      - Available in current user inventory.
-      - Feedable.
-      - Not special/non-growable.
-      - Not already converted into the corresponding mount.
-      - Not already present in the feeding queue.
-   - Do not add invalid rows for missing pets, special pets, already-owned mounts, or pets that cannot be grown.
-   - If no valid pets can be added from the group, the button should be disabled or hidden.
-   - The disabled state should explain why no pets can be added.
-   - After adding multiple pets, the feeding queue should recalculate food allocation for all queued items.
-   - The action should not execute feeding immediately.
-   - It should only prepare visible queue rows for user review.
-
-- Hatch planner
-   - Add a Hatch Planner with queue behavior similar to the Feed Planner.
-   - The Hatch Planner should allow users to prepare a queue of pets to hatch.
-   - It should not immediately execute hatch actions without user review.
-   - Each queued hatch item should represent one planned pet hatch.
-   - Each queued hatch item should show:
-      - Pet type / egg.
-      - Hatching potion.
-      - Whether the pet is already owned.
-      - Whether required egg is available.
-      - Whether required hatching potion is available.
-      - Planned egg consumption.
-      - Planned potion consumption.
-      - Warning state if resources are unavailable or already reserved by earlier queued items.
-   - Each queued hatch item should have a remove button.
-   - Removing a hatch item should recalculate reserved eggs and hatching potions for the remaining queue.
-   - The Hatch Planner should use the same queue-safety principles as the Feed Planner:
-      - Do not overcommit inventory.
-      - Earlier queued items reserve resources first.
-      - Later queued items only use remaining available resources.
-      - If no required resource remains, show warning and set planned consumption to 0 where appropriate.
-   - Hatch execution, if implemented, should use existing/current Habitica API flow and preserve user review before mutation.
-
-- Companion group bulk hatching actions
-   - Every COMPANION GROUP section should also have a button for adding hatchable missing pets to the Hatch Planner.
-   - Suggested button labels:
-      - Add All to Hatching Queue
-      - Plan All Hatchable Pets
-      - Add Hatchable Pets
-   - Preferred label:
-      - Add All to Hatching Queue
-   - The button should be available only if the group contains pets that can currently be hatched.
-   - A pet is hatchable when:
-      - The pet is not already owned.
-      - The required egg is available.
-      - The corresponding hatching potion is available.
-      - The pet is supported by current catalog/rules data.
-      - The pet is not special/unknown/unhatchable.
-      - The pet is not already present in the hatching queue.
-   - When clicked, add all valid hatchable pets from that companion group to the Hatch Planner queue.
-   - Do not add invalid rows for pets without required eggs or potions.
-   - If no pets can be hatched from the group, the button should be disabled or hidden.
-   - The disabled state should explain why no pets can be added.
-   - After adding multiple pets, the hatching queue should recalculate egg and potion allocation for all queued items.
-
-- Scroll stability when adding queue items
-   - Fix the current jumpy behavior when adding pets or mounts to a queue.
-   - Adding items to the feeding queue makes the queue block larger, which shifts the rest of the UI down.
-   - This causes the page to visually jump and makes the user lose their position.
-   - When adding items to the feeding queue or hatching queue, preserve the user’s perceived scroll position.
-   - Measure the layout offset caused by the queue size change.
-   - After adding items, adjust scroll position by the offset value so the visible content does not jump.
-   - Apply this behavior for:
-      - Adding one pet to the feeding queue.
-      - Adding multiple pets through Add All to Feeding Queue.
-      - Adding one pet to the hatching queue.
-      - Adding multiple pets through Add All to Hatching Queue.
-      - Adding pets from missing mount cards.
-   - Make the scroll correction smooth enough to feel stable, but avoid animated jumps that feel delayed or distracting.
-   - Ensure this works on desktop and mobile/narrow layouts.
-
-- Simplify Dashboard NAVIGATION companion links
-    - Description
-        - On the Dashboard, update the NAVIGATION section, specifically the Companion and Habitica links block.
-        - Remove the extra Habitica buttons from this block.
-        - Keep the main Open Habitica button in the top main Dashboard block.
-        - In the NAVIGATION companion links block, rename all remaining buttons to Open.
-    - Expected behavior
-        - The top main Dashboard block still has its Open Habitica button.
-        - The NAVIGATION / Companion and Habitica links block no longer contains separate Habitica buttons.
-        - All remaining buttons in that NAVIGATION block use the label Open.
-        - The block feels cleaner and avoids repeating Habitica access actions.
-    - Suggested fix
-        - Locate the Dashboard NAVIGATION section.
-        - Remove Habitica-related buttons from the Companion and Habitica links block.
-        - Keep only companion/tool navigation items in that block.
-        - Change each remaining button label in the block to Open.
-        - Verify that the top main Open Habitica button is unchanged.
-    - Acceptance criteria
-        - Extra Habitica buttons are removed from the Dashboard NAVIGATION companion links block.
-        - Top main Open Habitica button remains visible and functional.
-        - Remaining buttons in the NAVIGATION block are all labeled Open.
-        - No empty spacing or broken layout remains after removing the buttons.
+_No pending entries._
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
 
-_No prioritized entries._
+### Header Refresh And Compact Sync Status Layout
+
+Goal: make the app header keep player identity, compact sync freshness, and the Refresh action aligned inside the top bar on desktop and narrow widths.
+
+Touch:
+- `src/Habitica.WebApp/Layout/MainLayout.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.WebApp/State/SessionViewModel.cs` only if a reusable derived sync-status value belongs on the state model
+- `src/Habitica.Application/Sync` only if stale-data threshold logic must be centralized or reused from existing freshness rules
+- `tests/Habitica.WebApp.Tests/AppNavMenuTests.cs` or a new direct layout test if needed
+- `tests/Habitica.WebApp.Tests/StaticAssetRegressionTests.cs`
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md` if shared header/status guidance changes
+
+Out of scope:
+- changing refresh domain ordering or refresh request behavior;
+- changing sign-in, credential storage, or cloud-sync payloads;
+- adding a second refresh state system parallel to `DomainStates`, `IsRefreshing`, and existing session state;
+- showing full timestamps in the header.
+
+Implementation plan:
+1. Inspect current topbar markup and CSS in `MainLayout.razor` and `.topbar` rules.
+2. Reuse current session data for all status decisions:
+   - `SessionController.State.LastSyncedAtUtc` for normal last-sync display.
+   - `SessionController.State.DomainStates` for active domain refresh state and errors.
+   - `SessionController.State.IsRefreshing` for replacing the Refresh button while refresh is active.
+3. Add a compact sync-status slot between `.topbar-copy` and the refresh action.
+4. Format normal synced state as `Synced h:mm tt` for 12-hour local time, or use the app's existing local time convention if one already exists.
+5. Do not render date, year, seconds, or timezone in the header; keep any full timestamp only in `title`/tooltip text if useful.
+6. Detect failed sync from relevant domain error state and show `Sync failed`.
+7. Detect stale sync from existing freshness/stale policy if present. If no reusable rule exists, add one central threshold helper near sync freshness code instead of hardcoding time math in the Razor markup.
+8. During active refresh, replace the Refresh button with a status chip occupying roughly the same width:
+   - Prefer specific labels derived from active domains, such as `Syncing tasks...`, `Syncing party...`, `Syncing inventory...`.
+   - If several visible domains are active, use `Syncing...` or `Syncing 3 areas...` instead of a long concatenated label.
+   - Do not show both disabled `Refresh` and a large active-refresh label.
+9. Keep the Refresh button available when data is stale and no refresh is running.
+10. Add responsive CSS so the header remains aligned at common widths:
+    - desktop wide;
+    - tablet/narrow;
+    - mobile width.
+11. If the compact status cannot reliably fit on narrow screens, hide or move only the sync-status text into a non-conflicting top notification/bubble while keeping Refresh inside the header.
+
+UX details:
+- Normal state uses smaller muted text and low visual weight.
+- Stale state uses warning color but should not dominate the header.
+- Failed state uses danger/error color.
+- Active refresh state should be visually close to the Refresh button size to avoid layout jumps.
+- Header content should use `min-width: 0`, sensible flex behavior, and no overflowing labels.
+
+Tests:
+- Render authenticated layout with `LastSyncedAtUtc` and assert compact `Synced 12:42`/`Synced 12:42 PM`-style copy without full date.
+- Render stale state and assert `Sync stale`.
+- Render failed domain state and assert `Sync failed`.
+- Render active refresh state and assert Refresh button is replaced by active sync copy.
+- Add or update CSS regression coverage for `.topbar`, sync chip/status class, and refresh disabled/replaced styling.
+
+Acceptance:
+- Refresh button stays inside the header bar when no refresh is running.
+- Active refresh replaces Refresh with the current compact refresh status.
+- Existing refresh/session state is reused.
+- Header does not introduce duplicate refresh status logic.
+- Normal state shows `Synced 12:42 PM` or `Synced 12:42`.
+- Header timestamp does not include full date, year, seconds, or timezone.
+- Stale state shows `Sync stale`.
+- Failed state shows `Sync failed`.
+- Header remains stable and aligned on desktop, tablet, and mobile widths.
+- Sync status does not push Refresh outside the top bar.
+- Any fallback notification does not resize or conflict with the header.
+
+### Dashboard Navigation Companion Link Cleanup
+
+Goal: simplify the Dashboard `NAVIGATION` block by removing repeated Habitica access buttons while preserving the primary Dashboard `Open Habitica` action.
+
+Touch:
+- `src/Habitica.WebApp/Pages/DashboardPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css` only if removing buttons leaves spacing or alignment gaps
+- `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs`
+- `FEATURES.md`
+
+Out of scope:
+- changing the top hero/main Dashboard `Open Habitica` link;
+- changing routes for companion pages;
+- changing navigation drawer behavior;
+- redesigning Dashboard page structure beyond this link block.
+
+Implementation plan:
+1. Locate the Dashboard `NAVIGATION` section and the `Companion and Habitica links` card/grid.
+2. Identify all Habitica-specific buttons inside that block.
+3. Remove the extra Habitica buttons from that block only.
+4. Keep companion/tool navigation cards or rows that open app pages such as Tasks, Party, Quests, Pets & Mounts, Inventory, Spells, Settings, or diagnostics.
+5. Rename every remaining button in that block to `Open`.
+6. Verify the main Dashboard account/top block still contains the primary `Open Habitica` action with existing URL behavior.
+7. Clean up any empty columns, gaps, or awkward card footers caused by removing the extra buttons.
+
+UX details:
+- The navigation block should read as app navigation, not a mixed list of repeated external Habitica links.
+- All remaining action labels in the block should be visually consistent.
+- Cards/rows should keep aligned titles, descriptions, and action rows after button removal.
+
+Tests:
+- Update Dashboard render test that currently asserts `Companion and Habitica links`.
+- Assert the top/main `Open Habitica` action remains present.
+- Assert the navigation block no longer renders extra Habitica-specific actions.
+- Assert remaining navigation-block buttons use `Open`.
+
+Acceptance:
+- Extra Habitica buttons are removed from the Dashboard navigation companion links block.
+- Top/main `Open Habitica` button remains visible and functional.
+- Remaining buttons in the navigation block are all labeled `Open`.
+- No empty spacing, broken grid item, or uneven action row remains.
+
+### Companion Group Bulk Feed Planning Actions
+
+Goal: add per-companion-group bulk actions that enqueue all currently growable missing mounts into the existing Feed Planner without executing any feeding.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.Rules/Pets/PetGrowthPlanFactory.cs` only if candidate/growth eligibility logic should move out of Razor
+- `src/Habitica.Rules/Pets/PetFeedRecommendationFactory.cs` only if food availability helpers need reuse
+- `src/Habitica.Domain/User/PetsMountsCatalog.cs` only if catalog helpers are missing for pet/mount pairing
+- `tests/Habitica.Rules.Tests/Pets/PetGrowthPlanFactoryTests.cs` if rule helpers change
+- `tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs`
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md` if group action layout guidance changes
+
+Out of scope:
+- executing feed actions from the group button;
+- changing Feed Planner execution semantics;
+- adding hatching behavior;
+- adding support for special/non-growable pets beyond documented catalog rules;
+- changing Habitica API requests.
+
+Implementation plan:
+1. Read current Pets & Mounts group rendering and existing single-card `Plan feed` / `Plan to grow` logic.
+2. Create a reusable helper that returns valid feed-queue candidates for a companion group.
+3. Candidate rules:
+   - mount belongs to the current group;
+   - mount is not already owned;
+   - corresponding pet key can be derived from catalog data;
+   - corresponding pet is owned and has a positive growable progress state;
+   - pet/mount is not special, unknown, or non-growable;
+   - pet is not already queued;
+   - corresponding mount is not already available;
+   - at least one usable normal food option exists, or current Feed Planner can show a valid warning row if food is unavailable.
+4. Add a group header action labeled `Add All to Feeding Queue`.
+5. Prefer a disabled button with a concise reason when no candidates exist; hide only if the group header becomes too crowded on mobile.
+6. On click, append all valid group candidates to `_feedQueue` in stable catalog order.
+7. Preserve any existing queued item food choices.
+8. For new items, select the same default food choice used by single `Plan feed` behavior.
+9. After adding items, let the existing feed allocation calculation recalculate reserved food and warnings across the whole queue.
+10. Ensure folded group behavior remains intact; adding from a group should not require unrelated groups to open.
+11. Keep all action labels short and aligned with existing card/grid spacing.
+
+UX details:
+- Button belongs in the companion group header/action row, aligned with collapse/filter controls.
+- Disabled reason should be short, such as `No growable mounts`.
+- Adding multiple items should make queue contents visible enough for review before mutation.
+- No feed action should be sent until user explicitly uses Feed Planner execution controls.
+
+Tests:
+- Group with two missing mounts backed by owned growable pets adds both to queue.
+- Already-owned mount is skipped.
+- Missing pet is skipped.
+- Special/non-growable pet is skipped.
+- Already queued pet is skipped.
+- Button disabled/reason rendered when no valid candidates exist.
+- Existing queue allocation updates after bulk add.
+- Single-card planning still works.
+
+Acceptance:
+- Every companion group exposes `Add All to Feeding Queue` when valid candidates exist.
+- Bulk action adds only valid owned growable pets for missing mounts in that group.
+- Invalid pets/mounts never create queue rows.
+- Already queued pets are not duplicated.
+- Feed queue recalculates food allocation and warnings after bulk add.
+- Bulk action performs no Habitica mutation.
+- Desktop and mobile group headers remain aligned and readable.
+
+### Hatch Planner Queue MVP
+
+Goal: add a Hatch Planner on Pets & Mounts that lets users queue pet hatches, review required eggs and hatching potions, and execute only after explicit confirmation.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.Rules/Pets` for a hatch queue/allocation helper if allocation logic should be testable outside Razor
+- `src/Habitica.Domain/User/PetsMountsCatalog.cs` only if catalog helpers are missing for egg/potion/pet lookup
+- `src/Habitica.WebApp/State/AppSessionController.cs` and `src/Habitica.WebApp/State/IAppSessionController.cs` only if a batch hatch helper is needed instead of calling existing `HatchPetAsync`
+- `tests/Habitica.Rules.Tests/Pets` if rule helpers are added
+- `tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs`
+- `tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs` only if session controller API changes
+- `FEATURES.md`
+- `HABITICA_API.md` only if hatch endpoint assumptions are corrected
+- `docs/UX_UI_MANIFEST.md` if queue/card guidance changes
+
+Out of scope:
+- group-level bulk hatching actions, which are covered by the next task;
+- changing existing single pet hatch API behavior;
+- hatching unknown/special pets not supported by catalog data;
+- auto-hatching immediately after a card button click;
+- changing feed queue semantics.
+
+Implementation plan:
+1. Model hatch queue entries as `(EggKey, HatchingPotionKey)` or equivalent stable catalog keys.
+2. Add a hatch allocation helper that walks queued entries in order and reserves eggs and hatching potions.
+3. Allocation rules:
+   - earlier queue entries reserve resources first;
+   - later entries only consume remaining egg/potion counts;
+   - already-owned pets are warning/invalid rows and should not consume resources;
+   - missing egg sets planned egg consumption to `0` and warns;
+   - missing potion sets planned potion consumption to `0` and warns;
+   - unsupported/special/unhatchable catalog entries are invalid and warn;
+   - duplicate queue entries are blocked or skipped.
+4. Add a `Hatch planner` / `Hatch queue` section near the existing Feed Planner.
+5. Empty state should tell users to choose hatch actions from companion cards.
+6. Each queue card should show:
+   - pet display name;
+   - egg type;
+   - hatching potion;
+   - owned/not owned status;
+   - egg available/reserved count;
+   - potion available/reserved count;
+   - planned egg consumption;
+   - planned potion consumption;
+   - warnings for unavailable, owned, duplicate, or reserved resources;
+   - Remove action.
+7. Add explicit queue execution controls:
+   - `Hatch queued pets` disabled unless at least one queued row is executable;
+   - `Clear queue`;
+   - inline confirmation before mutation, matching Feed Planner safety.
+8. Execution should call the existing/current Habitica hatch flow for each executable item in queue order, stop on first failure, show result feedback, and refresh/update local account data through existing mutation refresh behavior.
+9. Removing or clearing queue items recalculates allocation for remaining rows.
+10. Single-card hatch actions should become planner actions where appropriate, or existing immediate hatch buttons should keep confirmation and not bypass review.
+11. Keep queue rows themed with semantic tokens and responsive spacing.
+
+UX details:
+- Hatch Planner should visually match Feed Planner rhythm but remain distinct.
+- Resource chips should align with Feed Planner count pills.
+- Warning copy should be concise and local to the affected queue row.
+- Execution controls should sit at the bottom of the queue and align with Feed Planner actions.
+
+Tests:
+- Empty Hatch Planner renders empty state.
+- Adding hatchable pet creates one queue row with egg and potion counts.
+- Already-owned pet row is blocked or skipped according to chosen UX.
+- Missing egg warns and cannot execute.
+- Missing potion warns and cannot execute.
+- Two queued pets sharing one egg reserve first item and warn on later item.
+- Remove recalculates allocation.
+- Clear removes all rows.
+- Confirmed execution calls existing hatch action with expected egg/potion keys.
+- Execution stops on failure if multiple queued rows exist.
+
+Acceptance:
+- Users can prepare hatch queue rows without immediate mutation.
+- Queue rows show pet, egg, potion, ownership, resource availability, planned consumption, and warnings.
+- Queue allocation never overcommits eggs or hatching potions.
+- Earlier queued items reserve resources before later items.
+- Remove and clear recalculate remaining allocation.
+- Hatch execution requires explicit confirmation.
+- Existing Habitica hatch API flow is reused.
+- Desktop and mobile layouts stay aligned with no horizontal overflow.
+
+### Companion Group Bulk Hatch Planning Actions
+
+Goal: add per-companion-group bulk actions that enqueue all currently hatchable missing pets into the Hatch Planner without executing hatches.
+
+Depends on:
+- `Hatch Planner Queue MVP`
+
+Touch:
+- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.Rules/Pets` hatch candidate/allocation helpers if added by the Hatch Planner task
+- `src/Habitica.Domain/User/PetsMountsCatalog.cs` only if group/pet lookup helpers are missing
+- `tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs`
+- `tests/Habitica.Rules.Tests/Pets` if rule helpers change
+- `FEATURES.md`
+
+Out of scope:
+- executing hatches directly from group buttons;
+- adding feed-queue behavior;
+- queueing pets without required egg or potion;
+- changing hatch endpoint behavior.
+
+Implementation plan:
+1. Reuse Hatch Planner candidate and allocation helpers from the previous task.
+2. Add a group header action labeled `Add All to Hatching Queue`.
+3. Candidate rules:
+   - pet belongs to the current companion group;
+   - pet is not already owned;
+   - required egg exists in current inventory;
+   - required hatching potion exists in current inventory;
+   - pet is supported by catalog/rules data;
+   - pet is not special, unknown, or unhatchable;
+   - pet is not already in the hatching queue.
+4. Add valid candidates in stable catalog order.
+5. Skip invalid pets silently from queue insertion, but expose a disabled reason when the whole group has no candidates.
+6. After bulk add, recalculate egg/potion allocation for the entire hatch queue.
+7. Keep group header actions aligned with `Add All to Feeding Queue`; if both buttons render together, use consistent sizing and wrapping.
+
+UX details:
+- Preferred label is `Add All to Hatching Queue`.
+- Disabled reason should be concise, such as `No hatchable pets`.
+- Bulk hatching action should feel like preparation, not execution.
+- On mobile, buttons may wrap, but should not create stair-step misalignment or overflow.
+
+Tests:
+- Group with two hatchable missing pets adds both queue rows.
+- Owned pet is skipped.
+- Pet missing egg is skipped.
+- Pet missing potion is skipped.
+- Special/unhatchable pet is skipped.
+- Already queued pet is skipped.
+- Disabled state renders when no hatchable pets exist.
+- Allocation recalculates when multiple queued pets share eggs or potions.
+
+Acceptance:
+- Every companion group exposes `Add All to Hatching Queue` when valid candidates exist.
+- Bulk action only queues hatchable, missing, supported pets with required resources.
+- Invalid pets do not create queue rows.
+- Existing hatch queue entries are not duplicated.
+- Hatch queue allocation recalculates after bulk add.
+- Bulk action performs no Habitica mutation.
+- Group header actions remain aligned on desktop and mobile.
+
+### Queue Add Scroll Stability
+
+Goal: preserve the user's perceived scroll position when adding feed or hatch queue items expands planner blocks above the current content.
+
+Depends on:
+- `Companion Group Bulk Feed Planning Actions`
+- `Hatch Planner Queue MVP`
+- `Companion Group Bulk Hatch Planning Actions`
+
+Touch:
+- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.WebApp/wwwroot/js/petsMountsPage.js` if JS interop is needed
+- `src/Habitica.WebApp/wwwroot/index.html` if a new JS module/script is added
+- `tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs`
+- `docs/UX_UI_MANIFEST.md` if shared scroll-stability guidance is added
+
+Out of scope:
+- virtualizing the companion grid;
+- changing queue candidate eligibility;
+- adding new mutation behavior;
+- animated page transitions beyond minimal scroll correction.
+
+Implementation plan:
+1. Identify all queue-add entry points:
+   - single pet `Plan feed`;
+   - missing mount `Plan to grow`;
+   - group `Add All to Feeding Queue`;
+   - single pet hatch queue action;
+   - group `Add All to Hatching Queue`.
+2. Before a queue-add action changes state, capture a stable anchor:
+   - preferred: bounding rect top of the clicked card/group header or nearest planner-independent content anchor;
+   - fallback: current `window.scrollY`.
+3. Apply the queue state change.
+4. After render, measure the same anchor's new top and adjust scroll by the delta so the anchor remains in the same viewport position.
+5. Use immediate or near-immediate correction; avoid slow smooth scrolling that makes the page feel delayed.
+6. Keep correction local to queue-add actions only. Removing/clearing queue items should not surprise-scroll unless testing shows a similar issue.
+7. Ensure the behavior is safe when the anchor disappears due to filtering, folding, or route change.
+8. Prefer a small JS interop helper for DOM measurement and scroll adjustment if CSS alone cannot solve the issue.
+9. Guard JS calls so prerender/test environments do not fail.
+
+UX details:
+- Adding an item should keep the card or group the user clicked visually stable.
+- Queue growth should not make the page jump downward and lose context.
+- Desktop and mobile should behave consistently.
+- Scroll correction should not fight user scrolling if the user starts another interaction quickly.
+
+Tests:
+- Component tests verify each queue-add path calls the scroll-stability flow or marks the pending correction state.
+- Existing queue add/remove tests still pass.
+- Manual browser verification required at desktop and mobile widths because real scroll measurement is browser-owned.
+
+Acceptance:
+- Adding one feed item preserves visible position.
+- Adding multiple feed items preserves visible position.
+- Adding one hatch item preserves visible position.
+- Adding multiple hatch items preserves visible position.
+- Missing mount planning preserves visible position.
+- Scroll correction does not run on unrelated interactions.
+- Behavior works on desktop and mobile/narrow layouts.
 
 ## Backlog
 
