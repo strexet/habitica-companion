@@ -294,6 +294,7 @@ Current pattern:
 - Missing pet cards show cached-inventory hatch readiness or the specific missing egg and/or potion. Group hints summarize cached hatch availability without live price or gem-cost claims.
 - Feed planning uses per-pet queue cards. Each card shows growth progress, selected normal food, available/reserved counts, expected progress after feeding, warnings, remove action, Transform to Mount, and separate Use Saddle confirmation.
 - Missing mount cards can add their corresponding owned growable pet to the same feed queue with Plan to grow. Unavailable missing mounts show a short cached-data reason instead of a dead action.
+- Companion group headers keep bulk feed planning beside the fold toggle. `Add All to Feeding Queue` appends only valid growable missing mounts from the currently visible group/filter set, shows `No growable mounts` when disabled, and leaves mutation execution inside the Feed Planner controls.
 - Pet and mount sections have creature type filters that compose with search and expand matching folded groups. Filter labels use readable catalog names and keep the existing group organization.
 - The bulk sell planner lives at the bottom with its existing keep-count preview and confirmation flow.
 

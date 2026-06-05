@@ -252,6 +252,7 @@
             var groupMounts = catalogMounts
                 .Where(item => item.GroupKey == group.Key && MatchesSearch(item.Key, item.DisplayName) && MatchesMountTypeFilter(item))
                 .ToArray();
+            var feedCandidates = GetGroupFeedQueueCandidates(groupMounts, snapshot.Inventory).ToArray();
             var isFolded = IsGroupFolded(group.Key);
             <section class="card-surface inventory-group-card" data-testid="@($"pets-mounts-group-{group.Key}")">
                 <div class="task-group-header">
@@ -259,9 +260,22 @@
                         <p class="section-label">Companion group</p>
                         <h2>@group.DisplayName</h2>
                     </div>
-                    <MudButton OnClick="@(() => ToggleGroupAsync(group.Key))" Variant="Variant.Text" data-testid="@($"toggle-pets-mounts-group-{group.Key}")">
-                        @(isFolded ? "Show group" : "Hide group")
-                    </MudButton>
+                    <div class="task-group-actions companion-group-actions">
+                        <MudButton Color="Color.Primary"
+                                   Disabled="@(feedCandidates.Length == 0)"
+                                   OnClick="@(() => AddGroupToFeedQueue(groupMounts, snapshot.Inventory))"
+                                   Variant="Variant.Outlined"
+                                   data-testid="@($"add-group-feed-queue-{group.Key}")">
+                            Add All to Feeding Queue
+                        </MudButton>
+                        <MudButton OnClick="@(() => ToggleGroupAsync(group.Key))" Variant="Variant.Text" data-testid="@($"toggle-pets-mounts-group-{group.Key}")">
+                            @(isFolded ? "Show group" : "Hide group")
+                        </MudButton>
+                        @if (feedCandidates.Length == 0)
+                        {
+                            <span class="dashboard-stat-note">No growable mounts</span>
+                        }
+                    </div>
                 </div>
 
                 @if (!isFolded)
@@ -647,11 +661,59 @@
             return;
         }
 
+        _feedQueue.Add(CreateFeedQueueItem(petKey, inventory));
+    }
+
+    private void AddGroupToFeedQueue(
+        IReadOnlyList<MountCatalogItem> mounts,
+        InventorySnapshot inventory)
+    {
+        var candidates = GetGroupFeedQueueCandidates(mounts, inventory).ToArray();
+        foreach (var candidate in candidates)
+        {
+            _feedQueue.Add(CreateFeedQueueItem(candidate.PetKey, inventory));
+        }
+
+        if (candidates.Length > 0)
+        {
+            Snackbar.Add($"Added {candidates.Length} pet(s) to the feeding queue.", Severity.Success);
+        }
+    }
+
+    private IEnumerable<GroupFeedQueueCandidate> GetGroupFeedQueueCandidates(
+        IReadOnlyList<MountCatalogItem> mounts,
+        InventorySnapshot inventory)
+    {
+        foreach (var mount in mounts)
+        {
+            if (inventory.Mounts.GetValueOrDefault(mount.Key))
+            {
+                continue;
+            }
+
+            if (!PetsMountsCatalog.TryGetPetKeyForMount(mount.Key, out var petKey)
+                || _feedQueue.Any(item => string.Equals(item.PetKey, petKey, StringComparison.Ordinal)))
+            {
+                continue;
+            }
+
+            var plan = GetPetGrowthPlan(petKey, inventory);
+            if (!plan.CanGrowIntoMount || string.IsNullOrWhiteSpace(plan.MountKey))
+            {
+                continue;
+            }
+
+            yield return new GroupFeedQueueCandidate(petKey);
+        }
+    }
+
+    private static PetFeedQueueItem CreateFeedQueueItem(string petKey, InventorySnapshot inventory)
+    {
         var plan = GetPetGrowthPlan(petKey, inventory);
         var selectedFoodKey = plan.FeedPlan.FirstOrDefault()?.FoodKey
             ?? plan.AvailableFood.FirstOrDefault()?.Key
             ?? string.Empty;
-        _feedQueue.Add(new PetFeedQueueItem(petKey, selectedFoodKey, 0));
+        return new PetFeedQueueItem(petKey, selectedFoodKey, 0);
     }
 
     private void ChangeQueuedFood(string petKey, string? foodKey)
@@ -1028,6 +1090,8 @@
         bool CanPlan,
         string? PetKey,
         string Message);
+
+    private sealed record GroupFeedQueueCandidate(string PetKey);
 
     private sealed record CreatureTypeFilterOption(
         string Key,

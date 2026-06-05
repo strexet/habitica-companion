@@ -2614,6 +2614,10 @@ input[type="radio"] {
     min-width: 0;
 }
 
+.companion-group-actions {
+    justify-content: flex-end;
+}
+
 .task-group-header > div:first-child,
 .task-group-title {
     flex: 1 1 auto;

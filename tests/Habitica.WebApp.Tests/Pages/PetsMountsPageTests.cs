@@ -157,6 +157,114 @@ public sealed class PetsMountsPageTests : BunitContext
     }
 
     [Fact]
+    public void Group_bulk_feed_action_adds_valid_growable_missing_mounts_without_mutation()
+    {
+        var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal)
+                {
+                    ["Wolf-Base"] = 5,
+                    ["TigerCub-Base"] = 5
+                },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
+        }));
+        var cut = RenderPage(controller: controller);
+
+        cut.Find("[data-testid='add-group-feed-queue-base']").Click();
+
+        Assert.Empty(controller.FeedPetCalls);
+        Assert.Contains("2 queued", cut.Markup);
+        Assert.NotEmpty(cut.FindAll("[data-testid='feed-queue-card-Wolf-Base']"));
+        var tigerQueue = cut.Find("[data-testid='feed-queue-card-TigerCub-Base']");
+        Assert.Contains("Tiger Cub Base", tigerQueue.TextContent);
+        Assert.Contains("This food is exhausted by earlier queued pets.", tigerQueue.TextContent);
+    }
+
+    [Fact]
+    public void Group_bulk_feed_action_skips_owned_missing_and_already_queued_mounts()
+    {
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal)
+                {
+                    ["Wolf-Base"] = 5,
+                    ["TigerCub-Base"] = 5,
+                    ["FlyingPig-Base"] = 5
+                },
+                mounts: new Dictionary<string, bool>(StringComparer.Ordinal) { ["Wolf-Base"] = true },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 30 })
+        });
+
+        cut.Find("[data-testid='select-feed-TigerCub-Base']").Click();
+        cut.Find("[data-testid='add-group-feed-queue-base']").Click();
+
+        Assert.Contains("2 queued", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='feed-queue-card-Wolf-Base']"));
+        Assert.Single(cut.FindAll("[data-testid='feed-queue-card-TigerCub-Base']"));
+        Assert.NotEmpty(cut.FindAll("[data-testid='feed-queue-card-FlyingPig-Base']"));
+        Assert.Empty(cut.FindAll("[data-testid='feed-queue-card-Dragon-Base']"));
+    }
+
+    [Fact]
+    public void Group_bulk_feed_action_queues_no_food_candidates_for_warning_preview()
+    {
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 })
+        });
+
+        cut.Find("[data-testid='add-group-feed-queue-base']").Click();
+
+        var queue = cut.Find("[data-testid='feed-queue-card-Wolf-Base']");
+        Assert.Contains("No normal food available", queue.TextContent);
+        Assert.Contains("No normal food is assigned.", queue.TextContent);
+    }
+
+    [Fact]
+    public void Group_bulk_feed_action_respects_visible_mount_filter()
+    {
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal)
+                {
+                    ["Wolf-Base"] = 5,
+                    ["Dragon-Base"] = 5
+                },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 30 })
+        });
+
+        cut.Find("[data-testid='mount-type-filter']").Change("Dragon");
+        cut.Find("[data-testid='add-group-feed-queue-base']").Click();
+
+        Assert.Contains("1 queued", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='feed-queue-card-Wolf-Base']"));
+        Assert.NotEmpty(cut.FindAll("[data-testid='feed-queue-card-Dragon-Base']"));
+    }
+
+    [Fact]
+    public void Group_bulk_feed_action_is_disabled_without_valid_candidates()
+    {
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Veggie"] = 5 },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
+        });
+
+        var baseButton = cut.Find("[data-testid='add-group-feed-queue-base']");
+        var wackyButton = cut.Find("[data-testid='add-group-feed-queue-wacky']");
+
+        Assert.True(baseButton.HasAttribute("disabled"));
+        Assert.True(wackyButton.HasAttribute("disabled"));
+        Assert.Contains("No growable mounts", cut.Find("[data-testid='pets-mounts-group-base']").TextContent);
+        Assert.Contains("No growable mounts", cut.Find("[data-testid='pets-mounts-group-wacky']").TextContent);
+    }
+
+    [Fact]
     public void Transform_to_mount_confirms_and_executes_planned_food()
     {
         var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with

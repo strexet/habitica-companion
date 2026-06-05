@@ -2251,8 +2251,9 @@ GET /user
 11. Refresh `/user`, save the refreshed snapshot, and write `Inventory` diagnostics after companion mutations.
 12. Keep bulk sell planning limited to eggs, food, and hatching potions. Preserve the keep-count preview and explicit confirmation flow.
 13. Missing mount cards can add their matching owned growable pet to the same feed queue with `Plan to grow`; unavailable missing mounts show a concise cached-data reason.
-14. Pet and mount sections expose creature type filters built from catalog egg keys, using readable names such as Wolf, Tiger Cub, and Flying Pig. Filters compose with search and temporarily expand folded companion groups.
-15. Use Saddle requires inline confirmation and sends one `Saddle` feed request only after confirmation. The lower saddle block shows cached saddle count and explains that saddle purchase is not available in this app until shop behavior is verified.
+14. Companion group headers expose `Add All to Feeding Queue`, which appends valid owned growable pets for missing mounts in the currently visible group/filter set without sending any Habitica feed request. Already-owned mounts, missing pets, unknown/special/non-growable catalog entries, and already queued pets are skipped. Newly queued items use the same default food selection as single-card planning, including a no-food warning preview when no normal food is available.
+15. Pet and mount sections expose creature type filters built from catalog egg keys, using readable names such as Wolf, Tiger Cub, and Flying Pig. Filters compose with search and temporarily expand folded companion groups.
+16. Use Saddle requires inline confirmation and sends one `Saddle` feed request only after confirmation. The lower saddle block shows cached saddle count and explains that saddle purchase is not available in this app until shop behavior is verified.
 ```
 
 ### Tests
@@ -2265,7 +2266,7 @@ Test:
 - missing ingredient and ready-to-hatch states;
 - food ordering by pet growth value and saddle exclusion from normal food selectors;
 - pet-to-mount growth progress and feed-plan calculation;
-- feed queue allocation, removal recalculation, missing-mount planning, saddle confirmation, type filters, and sequential failure handling;
+- feed queue allocation, removal recalculation, missing-mount planning, group bulk feed planning, saddle confirmation, type filters, and sequential failure handling;
 - fast equip and hatch dispatch;
 - bulk sell planner relocation and Inventory removal.
 
