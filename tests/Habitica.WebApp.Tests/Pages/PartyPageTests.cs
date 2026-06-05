@@ -87,7 +87,7 @@ public sealed class PartyPageTests : BunitContext
     public void Renders_cached_party_summary_and_quest_state()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(
@@ -1148,7 +1148,7 @@ public sealed class PartyPageTests : BunitContext
     public void Selected_quest_owner_can_start_inactive_selected_quest()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id"));
         Services.AddSingleton<IAppSessionController>(sessionController);
@@ -1166,7 +1166,7 @@ public sealed class PartyPageTests : BunitContext
     public void Selected_quest_owner_can_invite_when_no_party_quest_is_active()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id", hasPartyQuest: false));
         Services.AddSingleton<IAppSessionController>(sessionController);
@@ -1185,7 +1185,7 @@ public sealed class PartyPageTests : BunitContext
     public void Quest_invite_action_is_disabled_when_party_already_has_active_quest()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id", isActive: true));
         Services.AddSingleton<IAppSessionController>(sessionController);
@@ -1203,7 +1203,7 @@ public sealed class PartyPageTests : BunitContext
     public void Quest_invite_action_is_disabled_with_copy_for_non_owner()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("other-user", hasPartyQuest: false)));
 
@@ -1219,7 +1219,7 @@ public sealed class PartyPageTests : BunitContext
     public void Quest_invite_action_is_disabled_with_copy_for_stale_party_data()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             CreateSelectedQuestState("user-id", hasPartyQuest: false) with
@@ -1239,7 +1239,7 @@ public sealed class PartyPageTests : BunitContext
     public void Selected_quest_party_leader_can_start_inactive_selected_quest()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         var sessionController = new FakeAppSessionController(CreateSelectedQuestState(
             "leader-id",
@@ -1258,7 +1258,7 @@ public sealed class PartyPageTests : BunitContext
     public void Inactive_quest_renders_response_lists_instead_of_progress_estimates()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("user-id")));
 
@@ -1286,7 +1286,7 @@ public sealed class PartyPageTests : BunitContext
     public void Pending_quest_invitation_can_be_accepted_or_rejected_from_quests_page()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         var sessionController = new FakeAppSessionController(CreateSelectedQuestState("other-user"));
         Services.AddSingleton<IAppSessionController>(sessionController);
@@ -1306,7 +1306,7 @@ public sealed class PartyPageTests : BunitContext
     public void Party_member_query_expands_member_details()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("user-id")));
 
@@ -1352,7 +1352,7 @@ public sealed class PartyPageTests : BunitContext
     public void Selected_quest_start_action_is_hidden_for_non_owner()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("other-user")));
 
@@ -1365,7 +1365,7 @@ public sealed class PartyPageTests : BunitContext
     public void Selected_quest_start_action_is_hidden_for_active_quest()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState("user-id", isActive: true)));
 
@@ -1378,7 +1378,7 @@ public sealed class PartyPageTests : BunitContext
     public void Active_quest_without_completion_timing_hides_optional_estimate_fields()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState(
             "user-id",
@@ -1409,7 +1409,7 @@ public sealed class PartyPageTests : BunitContext
     public void Active_quest_uses_shared_queue_owner_and_start_time_when_cached()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateSelectedQuestState(
             "user-id",
@@ -1429,7 +1429,7 @@ public sealed class PartyPageTests : BunitContext
     public void Selected_quest_start_failure_renders_inline_error()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
-        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true);
+        JSInterop.SetupModule("./js/partyPage.js").SetupVoid("scrollToElement", _ => true).SetVoidResult();
         Services.AddMudServices();
         var sessionController = new FakeAppSessionController(CreateSelectedQuestState("user-id"))
         {

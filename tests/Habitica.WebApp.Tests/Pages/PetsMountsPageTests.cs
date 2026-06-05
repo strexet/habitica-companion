@@ -12,6 +12,8 @@ namespace Habitica.WebApp.Tests.Pages;
 
 public sealed class PetsMountsPageTests : BunitContext
 {
+    private BunitJSModuleInterop? _petsMountsPageModule;
+
     [Fact]
     public void Signed_out_empty_pets_mounts_has_sign_in_action()
     {
@@ -381,8 +383,8 @@ public sealed class PetsMountsPageTests : BunitContext
         cut.Find("[data-testid='select-hatch-Wolf-Base']").Click();
         Assert.Empty(controller.HatchPetCalls);
 
+        cut.WaitForAssertion(() => Assert.Contains("Wolf Base", cut.Find("[data-testid='hatch-queue-card-Wolf-Base']").TextContent));
         var queue = cut.Find("[data-testid='hatch-queue-card-Wolf-Base']");
-        Assert.Contains("Wolf Base", queue.TextContent);
         Assert.Contains("Egg available 1 / 1", queue.TextContent);
         Assert.Contains("Potion available 1 / 1", queue.TextContent);
 
@@ -817,16 +819,16 @@ public sealed class PetsMountsPageTests : BunitContext
 
     private BunitJSModuleInterop SetupPetsMountsPageModule()
     {
-        var module = JSInterop.SetupModule("./js/petsMountsPage.js");
-        module.SetupVoid("captureQueueAddScrollAnchor", _ => true).SetVoidResult();
-        module.SetupVoid("applyQueueAddScrollAnchor", _ => true).SetVoidResult();
-        module.SetupVoid("discardQueueAddScrollAnchor", _ => true).SetVoidResult();
-        return module;
+        _petsMountsPageModule = JSInterop.SetupModule("./js/petsMountsPage.js");
+        _petsMountsPageModule.SetupVoid("captureQueueAddScrollAnchor", _ => true).SetVoidResult();
+        _petsMountsPageModule.SetupVoid("applyQueueAddScrollAnchor", _ => true).SetVoidResult();
+        _petsMountsPageModule.SetupVoid("discardQueueAddScrollAnchor", _ => true).SetVoidResult();
+        return _petsMountsPageModule;
     }
 
     private BunitJSModuleInterop GetPetsMountsPageModule()
     {
-        return JSInterop.TryGetModuleJSInterop("./js/petsMountsPage.js")
+        return _petsMountsPageModule
             ?? throw new InvalidOperationException("Pets & Mounts JS module was not configured.");
     }
 
