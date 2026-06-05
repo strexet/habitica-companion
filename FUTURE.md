@@ -72,7 +72,65 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-_No pending entries._
+- Add feeding/hatching progress bar to Pet & Mounts page
+   - Description
+      - When feeding or hatching queue execution is in progress on the Pet & Mounts page, show a progress bar at the bottom of the relevant block.
+      - This should behave similarly to the spells progress indicator on the Spells page.
+      - The progress indicator should make long feeding/hatching actions feel visible and controlled instead of silent or unclear.
+
+   - Progress bar placement
+      - Show the progress bar at the bottom of the active Feed Planner / Hatch Planner block.
+      - If feeding is running, show progress at the bottom of the feeding block.
+      - If hatching is running, show progress at the bottom of the hatching block.
+      - If both flows can run independently, make sure progress is shown in the correct block.
+      - Avoid placing the progress bar in a way that shifts unrelated page content unexpectedly.
+
+   - Progress behavior
+      - Show progress while feeding/hatching actions are being executed.
+      - Hide the progress bar when there is no active feeding/hatching execution.
+      - Show completed/total progress where possible.
+      - Example:
+         - `Feeding 3 / 8`
+         - `Hatching 2 / 5`
+      - Show a visual progress bar in addition to text.
+      - Disable or guard conflicting queue actions while execution is in progress.
+      - Keep queued item status understandable during execution.
+
+   - Reference behavior
+      - Use the Spells page progress behavior as the reference.
+      - Match the general UX pattern of the spells progress bar where appropriate:
+         - Placement at the bottom of the block.
+         - Compact progress text.
+         - Clear visual progress.
+         - Stable layout during operation.
+      - Reuse shared components/helpers if the spells progress UI already has reusable logic.
+
+   - Expected behavior
+      - User can clearly see that feeding is currently in progress.
+      - User can clearly see that hatching is currently in progress.
+      - Progress is shown inside the relevant Pet & Mounts planner block.
+      - Progress display is visually consistent with the Spells page.
+      - Progress disappears after the operation finishes.
+      - The page does not feel frozen or ambiguous during bulk feeding/hatching.
+
+   - Suggested fix
+      - Inspect the Spells page progress implementation.
+      - Reuse the same progress pattern/component if possible.
+      - Add feeding execution progress state.
+      - Add hatching execution progress state.
+      - Render progress bar at the bottom of Feed Planner and Hatch Planner blocks.
+      - Update progress after each queued feed/hatch action completes.
+      - Handle success, partial failure, cancellation, and final cleanup states.
+      - Keep progress UI compact and aligned with the planner block design.
+
+   - Acceptance criteria
+      - Feed Planner shows a bottom progress bar while feeding is in progress.
+      - Hatch Planner shows a bottom progress bar while hatching is in progress.
+      - Progress text shows current item count and total count where available.
+      - Progress bar updates as queued actions complete.
+      - Progress UI is consistent with the Spells page progress indicator.
+      - Progress bar disappears or moves into completed state after execution finishes.
+      - Queue actions remain guarded while execution is active.
 
 ## Prioritized Next Changes
 
