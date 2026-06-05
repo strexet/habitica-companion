@@ -143,9 +143,10 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Equal(6, dashboardLinkActions.Count);
         Assert.All(dashboardLinkActions, link =>
         {
+            var href = link.GetAttribute("href") ?? string.Empty;
             Assert.Equal("Open", link.TextContent.Trim());
             Assert.StartsWith("Open ", link.GetAttribute("aria-label") ?? string.Empty, StringComparison.Ordinal);
-            Assert.DoesNotStartWith("https://habitica.com", link.GetAttribute("href") ?? string.Empty, StringComparison.Ordinal);
+            Assert.False(href.StartsWith("https://habitica.com", StringComparison.Ordinal), $"Expected local dashboard link, got {href}.");
         });
         var dashboardLinkCopies = cut.FindAll(".dashboard-link-copy");
         Assert.Equal(6, dashboardLinkCopies.Count);
