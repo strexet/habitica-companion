@@ -1,9 +1,11 @@
 @page "/pets-mounts"
 @implements IDisposable
+@implements IAsyncDisposable
 @using System.Globalization
 @using Habitica.Storage
 @inject IAppSessionController SessionController
 @inject IKeyValueStorage ViewStorage
+@inject IJSRuntime JsRuntime
 @inject ISnackbar Snackbar
 
 <PageTitle>Pets &amp; Mounts</PageTitle>
@@ -334,7 +336,7 @@
             var hatchCandidates = GetGroupHatchQueueCandidates(groupPets, snapshot.Inventory).ToArray();
             var feedCandidates = GetGroupFeedQueueCandidates(groupMounts, snapshot.Inventory).ToArray();
             var isFolded = IsGroupFolded(group.Key);
-            <section class="card-surface inventory-group-card" data-testid="@($"pets-mounts-group-{group.Key}")">
+            <section class="card-surface inventory-group-card" id="@BuildGroupElementId(group.Key)" data-testid="@($"pets-mounts-group-{group.Key}")">
                 <div class="task-group-header">
                     <div>
                         <p class="section-label">Companion group</p>
@@ -343,14 +345,14 @@
                     <div class="task-group-actions companion-group-actions">
                         <MudButton Color="Color.Primary"
                                    Disabled="@(hatchCandidates.Length == 0)"
-                                   OnClick="@(() => AddGroupToHatchQueue(groupPets, snapshot.Inventory))"
+                                   OnClick="@(() => AddGroupToHatchQueueWithScrollAsync(group.Key, groupPets, snapshot.Inventory))"
                                    Variant="Variant.Outlined"
                                    data-testid="@($"add-group-hatch-queue-{group.Key}")">
                             Add All to Hatching Queue
                         </MudButton>
                         <MudButton Color="Color.Primary"
                                    Disabled="@(feedCandidates.Length == 0)"
-                                   OnClick="@(() => AddGroupToFeedQueue(groupMounts, snapshot.Inventory))"
+                                   OnClick="@(() => AddGroupToFeedQueueWithScrollAsync(group.Key, groupMounts, snapshot.Inventory))"
                                    Variant="Variant.Outlined"
                                    data-testid="@($"add-group-feed-queue-{group.Key}")">
                             Add All to Feeding Queue
@@ -388,7 +390,7 @@
                                 var isOwned = snapshot.Inventory.Pets.ContainsKey(pet.Key);
                                 var hatchStatus = GetHatchStatus(pet, snapshot.Inventory);
                                 var growthPlan = GetPetGrowthPlan(pet.Key, snapshot.Inventory);
-                                <article class="inventory-item-card" data-testid="@($"pet-card-{pet.Key}")">
+                                <article class="inventory-item-card" id="@BuildPetElementId(pet.Key)" data-testid="@($"pet-card-{pet.Key}")">
                                     <div class="habitica-item-identity">
                                         <HabiticaImage Asset="@HabiticaImageAssetResolver.Pet(pet.Key, pet.DisplayName)" />
                                         <div>
@@ -406,14 +408,14 @@
                                             </MudButton>
                                             @if (growthPlan.CanGrowIntoMount)
                                             {
-                                                <MudButton OnClick="@(() => AddPetToFeedQueue(pet.Key, snapshot.Inventory))" Variant="Variant.Text" data-testid="@($"select-feed-{pet.Key}")">
+                                                <MudButton OnClick="@(() => AddPetToFeedQueueWithScrollAsync(pet.Key, snapshot.Inventory))" Variant="Variant.Text" data-testid="@($"select-feed-{pet.Key}")">
                                                     Plan feed
                                                 </MudButton>
                                             }
                                         }
                                         else if (CanPlanHatch(pet))
                                         {
-                                            <MudButton Color="Color.Primary" OnClick="@(() => AddPetToHatchQueue(pet, snapshot.Inventory))" Variant="Variant.Outlined" data-testid="@($"select-hatch-{pet.Key}")">
+                                            <MudButton Color="Color.Primary" OnClick="@(() => AddPetToHatchQueueWithScrollAsync(pet, snapshot.Inventory))" Variant="Variant.Outlined" data-testid="@($"select-hatch-{pet.Key}")">
                                                 Add to Hatch Queue
                                             </MudButton>
                                         }
@@ -424,7 +426,7 @@
                             @foreach (var mount in groupMounts)
                             {
                                 var isOwned = snapshot.Inventory.Mounts.GetValueOrDefault(mount.Key);
-                                <article class="inventory-item-card" data-testid="@($"mount-card-{mount.Key}")">
+                                <article class="inventory-item-card" id="@BuildMountElementId(mount.Key)" data-testid="@($"mount-card-{mount.Key}")">
                                     <div class="habitica-item-identity">
                                         <HabiticaImage Asset="@HabiticaImageAssetResolver.Mount(mount.Key, mount.DisplayName)" />
                                         <div>
@@ -446,7 +448,7 @@
                                             @if (missingMountPlan.CanPlan)
                                             {
                                                 <MudButton Color="Color.Primary"
-                                                           OnClick="@(() => AddPetToFeedQueue(missingMountPlan.PetKey!, snapshot.Inventory))"
+                                                           OnClick="@(() => AddMissingMountToFeedQueueWithScrollAsync(mount.Key, missingMountPlan.PetKey!, snapshot.Inventory))"
                                                            Variant="Variant.Text"
                                                            data-testid="@($"plan-grow-mount-{mount.Key}")">
                                                     Plan to grow
@@ -562,9 +564,11 @@
     private readonly List<PetFeedQueueItem> _feedQueue = new();
     private readonly List<HatchQueueItem> _hatchQueue = new();
     private readonly Dictionary<string, bool> _foldedGroups = new(StringComparer.Ordinal);
+    private IJSObjectReference? _petsMountsPageModule;
     private string _searchText = string.Empty;
     private string _petTypeFilterKey = string.Empty;
     private string _mountTypeFilterKey = string.Empty;
+    private string? _pendingQueueScrollCorrectionId;
     private string? _pendingTransformPetKey;
     private string? _pendingSaddlePetKey;
     private int _bulkSellKeepCount = 1;
@@ -586,6 +590,17 @@
                 _foldedGroups[pair.Key] = pair.Value;
             }
         }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_pendingQueueScrollCorrectionId is not { } correctionId)
+        {
+            return;
+        }
+
+        _pendingQueueScrollCorrectionId = null;
+        await ApplyQueueScrollAnchorAsync(correctionId);
     }
 
     private bool MatchesSearch(string key, string displayName)
@@ -750,18 +765,133 @@
         return value.ToString("0.#", CultureInfo.InvariantCulture);
     }
 
-    private void AddPetToFeedQueue(string petKey, InventorySnapshot inventory)
+    private async Task RunQueueAddWithScrollStabilityAsync(string anchorElementId, Func<bool> addAction)
+    {
+        var correctionId = Guid.NewGuid().ToString("N");
+        await CaptureQueueScrollAnchorAsync(correctionId, anchorElementId);
+
+        if (addAction())
+        {
+            _pendingQueueScrollCorrectionId = correctionId;
+        }
+        else
+        {
+            await DiscardQueueScrollAnchorAsync(correctionId);
+        }
+    }
+
+    private async Task CaptureQueueScrollAnchorAsync(string correctionId, string anchorElementId)
+    {
+        try
+        {
+            var module = await GetPetsMountsPageModuleAsync();
+            await module.InvokeVoidAsync("captureQueueAddScrollAnchor", correctionId, anchorElementId);
+        }
+        catch (JSException)
+        {
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+        catch (InvalidOperationException)
+        {
+        }
+    }
+
+    private async Task ApplyQueueScrollAnchorAsync(string correctionId)
+    {
+        try
+        {
+            var module = await GetPetsMountsPageModuleAsync();
+            await module.InvokeVoidAsync("applyQueueAddScrollAnchor", correctionId);
+        }
+        catch (JSException)
+        {
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+        catch (InvalidOperationException)
+        {
+        }
+    }
+
+    private async Task DiscardQueueScrollAnchorAsync(string correctionId)
+    {
+        try
+        {
+            var module = await GetPetsMountsPageModuleAsync();
+            await module.InvokeVoidAsync("discardQueueAddScrollAnchor", correctionId);
+        }
+        catch (JSException)
+        {
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+        catch (InvalidOperationException)
+        {
+        }
+    }
+
+    private async Task<IJSObjectReference> GetPetsMountsPageModuleAsync()
+    {
+        _petsMountsPageModule ??= await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/petsMountsPage.js");
+        return _petsMountsPageModule;
+    }
+
+    private static string BuildGroupElementId(string groupKey)
+    {
+        return $"pets-mounts-group-anchor-{Uri.EscapeDataString(groupKey)}";
+    }
+
+    private static string BuildPetElementId(string petKey)
+    {
+        return $"pets-mounts-pet-anchor-{Uri.EscapeDataString(petKey)}";
+    }
+
+    private static string BuildMountElementId(string mountKey)
+    {
+        return $"pets-mounts-mount-anchor-{Uri.EscapeDataString(mountKey)}";
+    }
+
+    private Task AddPetToFeedQueueWithScrollAsync(string petKey, InventorySnapshot inventory)
+    {
+        return RunQueueAddWithScrollStabilityAsync(
+            BuildPetElementId(petKey),
+            () => AddPetToFeedQueue(petKey, inventory));
+    }
+
+    private Task AddMissingMountToFeedQueueWithScrollAsync(string mountKey, string petKey, InventorySnapshot inventory)
+    {
+        return RunQueueAddWithScrollStabilityAsync(
+            BuildMountElementId(mountKey),
+            () => AddPetToFeedQueue(petKey, inventory));
+    }
+
+    private Task AddGroupToFeedQueueWithScrollAsync(
+        string groupKey,
+        IReadOnlyList<MountCatalogItem> mounts,
+        InventorySnapshot inventory)
+    {
+        return RunQueueAddWithScrollStabilityAsync(
+            BuildGroupElementId(groupKey),
+            () => AddGroupToFeedQueue(mounts, inventory));
+    }
+
+    private bool AddPetToFeedQueue(string petKey, InventorySnapshot inventory)
     {
         if (_feedQueue.Any(item => string.Equals(item.PetKey, petKey, StringComparison.Ordinal)))
         {
             Snackbar.Add($"{FormatName(petKey, petKey)} is already queued.", Severity.Info);
-            return;
+            return false;
         }
 
         _feedQueue.Add(CreateFeedQueueItem(petKey, inventory));
+        return true;
     }
 
-    private void AddGroupToFeedQueue(
+    private bool AddGroupToFeedQueue(
         IReadOnlyList<MountCatalogItem> mounts,
         InventorySnapshot inventory)
     {
@@ -775,6 +905,8 @@
         {
             Snackbar.Add($"Added {candidates.Length} pet(s) to the feeding queue.", Severity.Success);
         }
+
+        return candidates.Length > 0;
     }
 
     private IEnumerable<GroupFeedQueueCandidate> GetGroupFeedQueueCandidates(
@@ -930,32 +1062,50 @@
         }
     }
 
-    private void AddPetToHatchQueue(PetCatalogItem pet, InventorySnapshot inventory)
+    private Task AddPetToHatchQueueWithScrollAsync(PetCatalogItem pet, InventorySnapshot inventory)
+    {
+        return RunQueueAddWithScrollStabilityAsync(
+            BuildPetElementId(pet.Key),
+            () => AddPetToHatchQueue(pet, inventory));
+    }
+
+    private Task AddGroupToHatchQueueWithScrollAsync(
+        string groupKey,
+        IReadOnlyList<PetCatalogItem> pets,
+        InventorySnapshot inventory)
+    {
+        return RunQueueAddWithScrollStabilityAsync(
+            BuildGroupElementId(groupKey),
+            () => AddGroupToHatchQueue(pets, inventory));
+    }
+
+    private bool AddPetToHatchQueue(PetCatalogItem pet, InventorySnapshot inventory)
     {
         if (!CanPlanHatch(pet))
         {
             Snackbar.Add("This pet cannot be hatched from the checked-in catalog.", Severity.Warning);
-            return;
+            return false;
         }
 
         if (inventory.Pets.ContainsKey(pet.Key))
         {
             Snackbar.Add($"{pet.DisplayName} is already owned.", Severity.Info);
-            return;
+            return false;
         }
 
         var queueItem = new HatchQueueItem(pet.EggKey, pet.HatchingPotionKey);
         if (_hatchQueue.Any(item => MatchesHatchQueueItem(item, queueItem)))
         {
             Snackbar.Add($"{pet.DisplayName} is already queued.", Severity.Info);
-            return;
+            return false;
         }
 
         _hatchQueue.Add(queueItem);
         _showHatchQueueConfirmation = false;
+        return true;
     }
 
-    private void AddGroupToHatchQueue(
+    private bool AddGroupToHatchQueue(
         IReadOnlyList<PetCatalogItem> pets,
         InventorySnapshot inventory)
     {
@@ -970,6 +1120,8 @@
         {
             Snackbar.Add($"Added {candidates.Length} pet(s) to the hatching queue.", Severity.Success);
         }
+
+        return candidates.Length > 0;
     }
 
     private IEnumerable<HatchQueueItem> GetGroupHatchQueueCandidates(
@@ -1410,6 +1562,15 @@
     public void Dispose()
     {
         SessionController.Changed -= HandleStateChanged;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        Dispose();
+        if (_petsMountsPageModule is not null)
+        {
+            await _petsMountsPageModule.DisposeAsync();
+        }
     }
 
     private sealed record BulkSellPlanItem(

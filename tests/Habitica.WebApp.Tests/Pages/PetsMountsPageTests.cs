@@ -673,6 +673,116 @@ public sealed class PetsMountsPageTests : BunitContext
     }
 
     [Fact]
+    public void Single_feed_queue_add_runs_scroll_stability_flow()
+    {
+        var module = SetupPetsMountsPageModule();
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
+        });
+
+        cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
+
+        AssertQueueScrollCorrectionRan(cut, module);
+    }
+
+    [Fact]
+    public void Missing_mount_queue_add_runs_scroll_stability_flow()
+    {
+        var module = SetupPetsMountsPageModule();
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
+        });
+
+        cut.Find("[data-testid='plan-grow-mount-Wolf-Base']").Click();
+
+        AssertQueueScrollCorrectionRan(cut, module);
+    }
+
+    [Fact]
+    public void Group_feed_queue_add_runs_scroll_stability_flow()
+    {
+        var module = SetupPetsMountsPageModule();
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal)
+                {
+                    ["Wolf-Base"] = 5,
+                    ["TigerCub-Base"] = 5
+                },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 20 })
+        });
+
+        cut.Find("[data-testid='add-group-feed-queue-base']").Click();
+
+        AssertQueueScrollCorrectionRan(cut, module);
+    }
+
+    [Fact]
+    public void Single_hatch_queue_add_runs_scroll_stability_flow()
+    {
+        var module = SetupPetsMountsPageModule();
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                eggs: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf"] = 1 },
+                potions: new Dictionary<string, int>(StringComparer.Ordinal) { ["Base"] = 1 })
+        });
+
+        cut.Find("[data-testid='select-hatch-Wolf-Base']").Click();
+
+        AssertQueueScrollCorrectionRan(cut, module);
+    }
+
+    [Fact]
+    public void Group_hatch_queue_add_runs_scroll_stability_flow()
+    {
+        var module = SetupPetsMountsPageModule();
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                eggs: new Dictionary<string, int>(StringComparer.Ordinal)
+                {
+                    ["Wolf"] = 1,
+                    ["TigerCub"] = 1
+                },
+                potions: new Dictionary<string, int>(StringComparer.Ordinal) { ["Base"] = 2 })
+        });
+
+        cut.Find("[data-testid='add-group-hatch-queue-base']").Click();
+
+        AssertQueueScrollCorrectionRan(cut, module);
+    }
+
+    [Fact]
+    public void Queue_remove_does_not_run_scroll_stability_flow()
+    {
+        var module = SetupPetsMountsPageModule();
+        var cut = RenderPage(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
+        });
+
+        cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
+        AssertQueueScrollCorrectionRan(cut, module);
+        var captureCount = CountModuleInvocations(module, "captureQueueAddScrollAnchor");
+        var applyCount = CountModuleInvocations(module, "applyQueueAddScrollAnchor");
+
+        cut.Find("[data-testid='remove-feed-queue-Wolf-Base']").Click();
+
+        Assert.Equal(captureCount, CountModuleInvocations(module, "captureQueueAddScrollAnchor"));
+        Assert.Equal(applyCount, CountModuleInvocations(module, "applyQueueAddScrollAnchor"));
+    }
+
+    [Fact]
     public void Renders_relocated_bulk_sell_planner_and_executes_confirmed_plan()
     {
         var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with
@@ -702,6 +812,31 @@ public sealed class PetsMountsPageTests : BunitContext
         Services.AddSingleton<IKeyValueStorage>(storage ?? new InMemoryKeyValueStorage());
         Services.AddSingleton<IAppSessionController>(controller ?? new FakeAppSessionController(CreateState(snapshot ?? CreateSnapshot())));
         return Render<PetsMountsPage>();
+    }
+
+    private BunitJSModuleInterop SetupPetsMountsPageModule()
+    {
+        var module = JSInterop.SetupModule("./js/petsMountsPage.js");
+        module.SetupVoid("captureQueueAddScrollAnchor", _ => true);
+        module.SetupVoid("applyQueueAddScrollAnchor", _ => true);
+        module.SetupVoid("discardQueueAddScrollAnchor", _ => true);
+        return module;
+    }
+
+    private static void AssertQueueScrollCorrectionRan(
+        IRenderedComponent<PetsMountsPage> cut,
+        BunitJSModuleInterop module)
+    {
+        cut.WaitForAssertion(() =>
+        {
+            Assert.True(CountModuleInvocations(module, "captureQueueAddScrollAnchor") > 0);
+            Assert.True(CountModuleInvocations(module, "applyQueueAddScrollAnchor") > 0);
+        });
+    }
+
+    private static int CountModuleInvocations(BunitJSModuleInterop module, string identifier)
+    {
+        return module.Invocations.Count(invocation => invocation.Identifier == identifier);
     }
 
     private static SessionViewModel CreateState(UserSnapshot snapshot)

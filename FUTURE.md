@@ -78,67 +78,6 @@ _No pending entries._
 
 Work top to bottom. Each entry is self-contained.
 
-### Queue Add Scroll Stability
-
-Goal: preserve the user's perceived scroll position when adding feed or hatch queue items expands planner blocks above the current content.
-
-Depends on:
-- `Companion Group Bulk Feed Planning Actions`
-- `Hatch Planner Queue MVP`
-- `Companion Group Bulk Hatch Planning Actions`
-
-Touch:
-- `src/Habitica.WebApp/Pages/PetsMountsPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- `src/Habitica.WebApp/wwwroot/js/petsMountsPage.js` if JS interop is needed
-- `src/Habitica.WebApp/wwwroot/index.html` if a new JS module/script is added
-- `tests/Habitica.WebApp.Tests/Pages/PetsMountsPageTests.cs`
-- `docs/UX_UI_MANIFEST.md` if shared scroll-stability guidance is added
-
-Out of scope:
-- virtualizing the companion grid;
-- changing queue candidate eligibility;
-- adding new mutation behavior;
-- animated page transitions beyond minimal scroll correction.
-
-Implementation plan:
-1. Identify all queue-add entry points:
-   - single pet `Plan feed`;
-   - missing mount `Plan to grow`;
-   - group `Add All to Feeding Queue`;
-   - single pet hatch queue action;
-   - group `Add All to Hatching Queue`.
-2. Before a queue-add action changes state, capture a stable anchor:
-   - preferred: bounding rect top of the clicked card/group header or nearest planner-independent content anchor;
-   - fallback: current `window.scrollY`.
-3. Apply the queue state change.
-4. After render, measure the same anchor's new top and adjust scroll by the delta so the anchor remains in the same viewport position.
-5. Use immediate or near-immediate correction; avoid slow smooth scrolling that makes the page feel delayed.
-6. Keep correction local to queue-add actions only. Removing/clearing queue items should not surprise-scroll unless testing shows a similar issue.
-7. Ensure the behavior is safe when the anchor disappears due to filtering, folding, or route change.
-8. Prefer a small JS interop helper for DOM measurement and scroll adjustment if CSS alone cannot solve the issue.
-9. Guard JS calls so prerender/test environments do not fail.
-
-UX details:
-- Adding an item should keep the card or group the user clicked visually stable.
-- Queue growth should not make the page jump downward and lose context.
-- Desktop and mobile should behave consistently.
-- Scroll correction should not fight user scrolling if the user starts another interaction quickly.
-
-Tests:
-- Component tests verify each queue-add path calls the scroll-stability flow or marks the pending correction state.
-- Existing queue add/remove tests still pass.
-- Manual browser verification required at desktop and mobile widths because real scroll measurement is browser-owned.
-
-Acceptance:
-- Adding one feed item preserves visible position.
-- Adding multiple feed items preserves visible position.
-- Adding one hatch item preserves visible position.
-- Adding multiple hatch items preserves visible position.
-- Missing mount planning preserves visible position.
-- Scroll correction does not run on unrelated interactions.
-- Behavior works on desktop and mobile/narrow layouts.
-
 ## Backlog
 
 These entries are lower priority. Each entry is self-contained and should be promoted into `Prioritized Next Changes` before implementation.

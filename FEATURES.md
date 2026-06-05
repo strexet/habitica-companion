@@ -2255,8 +2255,9 @@ GET /user
 15. Missing mount cards can add their matching owned growable pet to the same feed queue with `Plan to grow`; unavailable missing mounts show a concise cached-data reason.
 16. Companion group headers expose `Add All to Feeding Queue`, which appends valid owned growable pets for missing mounts in the currently visible group/filter set without sending any Habitica feed request. Already-owned mounts, missing pets, unknown/special/non-growable catalog entries, and already queued pets are skipped. Newly queued items use the same default food selection as single-card planning, including a no-food warning preview when no normal food is available.
 17. Companion group headers expose `Add All to Hatching Queue`, which appends valid missing hatchable pets in the currently visible group/filter set without sending any Habitica hatch request. Owned pets, missing eggs, missing hatching potions, unknown/special/unhatchable catalog entries, and already queued pets are skipped. Hatch queue allocation then recalculates shared egg and potion reservations in queue order.
-18. Pet and mount sections expose creature type filters built from catalog egg keys, using readable names such as Wolf, Tiger Cub, and Flying Pig. Filters compose with search and temporarily expand folded companion groups.
-19. Use Saddle requires inline confirmation and sends one `Saddle` feed request only after confirmation. The lower saddle block shows cached saddle count and explains that saddle purchase is not available in this app until shop behavior is verified.
+18. Queue-add actions preserve the clicked card or companion-group header position after the Feed Planner or Hatch Planner grows above the collection. The behavior applies to single feed, missing-mount growth planning, group feed planning, single hatch planning, and group hatch planning; remove, clear, equip, and fold actions do not run scroll correction.
+19. Pet and mount sections expose creature type filters built from catalog egg keys, using readable names such as Wolf, Tiger Cub, and Flying Pig. Filters compose with search and temporarily expand folded companion groups.
+20. Use Saddle requires inline confirmation and sends one `Saddle` feed request only after confirmation. The lower saddle block shows cached saddle count and explains that saddle purchase is not available in this app until shop behavior is verified.
 ```
 
 ### Tests
@@ -2270,7 +2271,7 @@ Test:
 - food ordering by pet growth value and saddle exclusion from normal food selectors;
 - pet-to-mount growth progress and feed-plan calculation;
 - hatch queue empty state, resource warnings, duplicate prevention, allocation recalculation, clear, confirmation, and sequential failure handling;
-- feed queue allocation, removal recalculation, missing-mount planning, group bulk feed planning, group bulk hatch planning, saddle confirmation, type filters, and sequential failure handling;
+- feed queue allocation, removal recalculation, missing-mount planning, group bulk feed planning, group bulk hatch planning, queue-add scroll-stability markers, saddle confirmation, type filters, and sequential failure handling;
 - fast equip dispatch;
 - bulk sell planner relocation and Inventory removal.
 
