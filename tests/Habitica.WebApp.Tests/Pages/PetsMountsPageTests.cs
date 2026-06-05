@@ -675,13 +675,13 @@ public sealed class PetsMountsPageTests : BunitContext
     [Fact]
     public void Single_feed_queue_add_runs_scroll_stability_flow()
     {
-        var module = SetupPetsMountsPageModule();
         var cut = RenderPage(CreateSnapshot() with
         {
             Inventory = CreateInventory(
                 pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 },
                 food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
         });
+        var module = GetPetsMountsPageModule();
 
         cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
 
@@ -691,13 +691,13 @@ public sealed class PetsMountsPageTests : BunitContext
     [Fact]
     public void Missing_mount_queue_add_runs_scroll_stability_flow()
     {
-        var module = SetupPetsMountsPageModule();
         var cut = RenderPage(CreateSnapshot() with
         {
             Inventory = CreateInventory(
                 pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 },
                 food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
         });
+        var module = GetPetsMountsPageModule();
 
         cut.Find("[data-testid='plan-grow-mount-Wolf-Base']").Click();
 
@@ -707,7 +707,6 @@ public sealed class PetsMountsPageTests : BunitContext
     [Fact]
     public void Group_feed_queue_add_runs_scroll_stability_flow()
     {
-        var module = SetupPetsMountsPageModule();
         var cut = RenderPage(CreateSnapshot() with
         {
             Inventory = CreateInventory(
@@ -718,6 +717,7 @@ public sealed class PetsMountsPageTests : BunitContext
                 },
                 food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 20 })
         });
+        var module = GetPetsMountsPageModule();
 
         cut.Find("[data-testid='add-group-feed-queue-base']").Click();
 
@@ -727,13 +727,13 @@ public sealed class PetsMountsPageTests : BunitContext
     [Fact]
     public void Single_hatch_queue_add_runs_scroll_stability_flow()
     {
-        var module = SetupPetsMountsPageModule();
         var cut = RenderPage(CreateSnapshot() with
         {
             Inventory = CreateInventory(
                 eggs: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf"] = 1 },
                 potions: new Dictionary<string, int>(StringComparer.Ordinal) { ["Base"] = 1 })
         });
+        var module = GetPetsMountsPageModule();
 
         cut.Find("[data-testid='select-hatch-Wolf-Base']").Click();
 
@@ -743,7 +743,6 @@ public sealed class PetsMountsPageTests : BunitContext
     [Fact]
     public void Group_hatch_queue_add_runs_scroll_stability_flow()
     {
-        var module = SetupPetsMountsPageModule();
         var cut = RenderPage(CreateSnapshot() with
         {
             Inventory = CreateInventory(
@@ -754,6 +753,7 @@ public sealed class PetsMountsPageTests : BunitContext
                 },
                 potions: new Dictionary<string, int>(StringComparer.Ordinal) { ["Base"] = 2 })
         });
+        var module = GetPetsMountsPageModule();
 
         cut.Find("[data-testid='add-group-hatch-queue-base']").Click();
 
@@ -763,13 +763,13 @@ public sealed class PetsMountsPageTests : BunitContext
     [Fact]
     public void Queue_remove_does_not_run_scroll_stability_flow()
     {
-        var module = SetupPetsMountsPageModule();
         var cut = RenderPage(CreateSnapshot() with
         {
             Inventory = CreateInventory(
                 pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 },
                 food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
         });
+        var module = GetPetsMountsPageModule();
 
         cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
         AssertQueueScrollCorrectionRan(cut, module);
@@ -808,6 +808,7 @@ public sealed class PetsMountsPageTests : BunitContext
         InMemoryKeyValueStorage? storage = null)
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
+        SetupPetsMountsPageModule();
         Services.AddMudServices();
         Services.AddSingleton<IKeyValueStorage>(storage ?? new InMemoryKeyValueStorage());
         Services.AddSingleton<IAppSessionController>(controller ?? new FakeAppSessionController(CreateState(snapshot ?? CreateSnapshot())));
@@ -817,10 +818,16 @@ public sealed class PetsMountsPageTests : BunitContext
     private BunitJSModuleInterop SetupPetsMountsPageModule()
     {
         var module = JSInterop.SetupModule("./js/petsMountsPage.js");
-        module.SetupVoid("captureQueueAddScrollAnchor", _ => true);
-        module.SetupVoid("applyQueueAddScrollAnchor", _ => true);
-        module.SetupVoid("discardQueueAddScrollAnchor", _ => true);
+        module.SetupVoid("captureQueueAddScrollAnchor", _ => true).SetVoidResult();
+        module.SetupVoid("applyQueueAddScrollAnchor", _ => true).SetVoidResult();
+        module.SetupVoid("discardQueueAddScrollAnchor", _ => true).SetVoidResult();
         return module;
+    }
+
+    private BunitJSModuleInterop GetPetsMountsPageModule()
+    {
+        return JSInterop.TryGetModuleJSInterop("./js/petsMountsPage.js")
+            ?? throw new InvalidOperationException("Pets & Mounts JS module was not configured.");
     }
 
     private static void AssertQueueScrollCorrectionRan(
