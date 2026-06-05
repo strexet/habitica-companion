@@ -1017,6 +1017,8 @@ public sealed class AppSessionControllerTests
         var controller = CreateController(logStore, syncClient);
         await controller.SignInAsync(new SignInRequest { ApiToken = "api-token", UserId = "user-id" });
         var userRefreshCountBeforeFeed = syncClient.GetUserSnapshotCalls;
+        var progressUpdates = new List<PetsMountsQueueProgress?>();
+        controller.Changed += () => progressUpdates.Add(controller.State.ActivePetsMountsQueueProgress);
 
         var result = await controller.FeedPetAsync(
         [
@@ -1032,6 +1034,10 @@ public sealed class AppSessionControllerTests
             && entry.Operation == "pets-feed"
             && entry.Metadata["completed"] == "2"
             && entry.Metadata["requestCount"] == "3");
+        Assert.Contains(new PetsMountsQueueProgress(PetsMountsQueueOperation.Feed, 0, 2), progressUpdates);
+        Assert.Contains(new PetsMountsQueueProgress(PetsMountsQueueOperation.Feed, 1, 2), progressUpdates);
+        Assert.Contains(new PetsMountsQueueProgress(PetsMountsQueueOperation.Feed, 2, 2), progressUpdates);
+        Assert.Null(controller.State.ActivePetsMountsQueueProgress);
     }
 
     [Fact]
@@ -1059,6 +1065,8 @@ public sealed class AppSessionControllerTests
         };
         var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), syncClient);
         await controller.SignInAsync(new SignInRequest { ApiToken = "api-token", UserId = "user-id" });
+        var progressUpdates = new List<PetsMountsQueueProgress?>();
+        controller.Changed += () => progressUpdates.Add(controller.State.ActivePetsMountsQueueProgress);
 
         var result = await controller.FeedPetAsync(
         [
@@ -1071,6 +1079,9 @@ public sealed class AppSessionControllerTests
         Assert.Equal("Meat", Assert.Single(syncClient.FeedPetCalls).FoodKey);
         Assert.Equal(new[] { "Meat", "Milk" }, syncClient.FeedPetAttemptedFoodKeys);
         Assert.Contains("Completed 1 of 3", result.Message);
+        Assert.Contains(new PetsMountsQueueProgress(PetsMountsQueueOperation.Feed, 0, 3), progressUpdates);
+        Assert.Contains(new PetsMountsQueueProgress(PetsMountsQueueOperation.Feed, 1, 3), progressUpdates);
+        Assert.Null(controller.State.ActivePetsMountsQueueProgress);
     }
 
     [Fact]

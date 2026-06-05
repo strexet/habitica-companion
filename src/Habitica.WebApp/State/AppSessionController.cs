@@ -2441,6 +2441,7 @@ public sealed class AppSessionController : IAppSessionController
         IReadOnlyList<PetFeedQueueItem> queue,
         CancellationToken cancellationToken = default)
     {
+        SetState(State with { ActivePetsMountsQueueProgress = null });
         var validation = await ValidatePetsMountsMutationAsync("pets-feed", cancellationToken);
         if (validation.Result is not null)
         {
@@ -2488,7 +2489,8 @@ public sealed class AppSessionController : IAppSessionController
                 ["queueLength"] = safeQueue.Length.ToString(CultureInfo.InvariantCulture),
                 ["foodAmount"] = safeQueue.Sum(static item => item.Amount).ToString(CultureInfo.InvariantCulture)
             },
-            cancellationToken);
+            cancellationToken,
+            PetsMountsQueueOperation.Feed);
     }
 
     public async Task<InventoryActionResult> EquipPetAsync(string key, CancellationToken cancellationToken = default)
@@ -4466,9 +4468,17 @@ public sealed class AppSessionController : IAppSessionController
         HabiticaCredentials credentials,
         IReadOnlyList<Func<Task>> actions,
         Dictionary<string, string> metadata,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        PetsMountsQueueOperation? progressOperation = null)
     {
-        SetState(State with { ErrorMessage = null, IsBusy = true });
+        SetState(State with
+        {
+            ActivePetsMountsQueueProgress = progressOperation is null
+                ? null
+                : new PetsMountsQueueProgress(progressOperation.Value, 0, actions.Count),
+            ErrorMessage = null,
+            IsBusy = true
+        });
 
         var completed = 0;
         try
@@ -4477,6 +4487,14 @@ public sealed class AppSessionController : IAppSessionController
             {
                 await action();
                 completed++;
+                if (progressOperation is not null)
+                {
+                    SetState(State with
+                    {
+                        ActivePetsMountsQueueProgress = new PetsMountsQueueProgress(progressOperation.Value, completed, actions.Count)
+                    });
+                }
+
                 await DelayBetweenHabiticaRequestsAsync(cancellationToken);
             }
 
@@ -4495,15 +4513,16 @@ public sealed class AppSessionController : IAppSessionController
                 cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
             _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
-            SetState(State with { ErrorMessage = null, IsBusy = false });
+            SetState(State with { ActivePetsMountsQueueProgress = null, ErrorMessage = null, IsBusy = false });
             return InventoryActionResult.Success(successMessage);
         }
         catch (Exception exception)
         {
             metadata["completed"] = completed.ToString(CultureInfo.InvariantCulture);
             metadata["requested"] = actions.Count.ToString(CultureInfo.InvariantCulture);
+            SetState(State with { ActivePetsMountsQueueProgress = null, ErrorMessage = exception.Message, IsBusy = false });
             await LoadCachedStateAsync(cancellationToken);
-            SetState(State with { ErrorMessage = exception.Message, IsBusy = false });
+            SetState(State with { ActivePetsMountsQueueProgress = null, ErrorMessage = exception.Message, IsBusy = false });
             await _diagnosticsLogWriter.WriteAsync(
                 DiagnosticsFeatureArea.Inventory,
                 operation,
@@ -4536,6 +4555,7 @@ public sealed class AppSessionController : IAppSessionController
 
         SetState(State with
         {
+            ActivePetsMountsQueueProgress = null,
             DiagnosticsLogEntries = diagnosticsLogEntries,
             ErrorMessage = message,
             IsBusy = false

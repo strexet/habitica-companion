@@ -34,7 +34,8 @@ public sealed record SessionViewModel(
     bool IsAdmin = false,
     bool IsPartySyncEnabled = true,
     IReadOnlyList<CloudSyncSectionStatus>? CloudSyncSectionStatuses = null,
-    IReadOnlyList<CloudSyncSection>? CloudSyncExcludedSections = null)
+    IReadOnlyList<CloudSyncSection>? CloudSyncExcludedSections = null,
+    PetsMountsQueueProgress? ActivePetsMountsQueueProgress = null)
 {
     public static SessionViewModel Empty { get; } = new(
         IsBusy: false,
@@ -105,6 +106,17 @@ public sealed record TaskMutationProgress(
 public sealed record EquipmentProgress(
     string OperationId,
     string Label,
+    int Completed,
+    int Total);
+
+public enum PetsMountsQueueOperation
+{
+    Feed,
+    Hatch
+}
+
+public sealed record PetsMountsQueueProgress(
+    PetsMountsQueueOperation Operation,
     int Completed,
     int Total);
 

@@ -2389,6 +2389,15 @@ input[type="radio"] {
     align-items: center;
 }
 
+.pets-mounts-queue-progress {
+    display: grid;
+    gap: 0.45rem;
+    margin-top: 0.9rem;
+    color: var(--primary);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
 .inventory-item-tags {
     display: flex;
     flex-wrap: wrap;

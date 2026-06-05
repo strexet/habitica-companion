@@ -126,6 +126,80 @@ public sealed class PetsMountsPageTests : BunitContext
     }
 
     [Fact]
+    public void Queue_progress_is_hidden_without_active_execution()
+    {
+        var cut = RenderPage(CreateSnapshot());
+
+        Assert.Empty(cut.FindAll("[data-testid='feed-queue-progress']"));
+        Assert.Empty(cut.FindAll("[data-testid='hatch-queue-progress']"));
+    }
+
+    [Fact]
+    public void Feed_queue_progress_renders_in_feed_block_and_guards_matching_controls()
+    {
+        var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                pets: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf-Base"] = 5 },
+                food: new Dictionary<string, int>(StringComparer.Ordinal) { ["Meat"] = 9 })
+        }));
+        var cut = RenderPage(controller: controller);
+
+        cut.Find("[data-testid='select-feed-Wolf-Base']").Click();
+        controller.SetState(controller.State with
+        {
+            ActivePetsMountsQueueProgress = new PetsMountsQueueProgress(PetsMountsQueueOperation.Feed, 1, 3),
+            IsBusy = true
+        });
+
+        cut.WaitForAssertion(() =>
+        {
+            var progress = cut.Find("[data-testid='feed-queue-progress']");
+            Assert.Contains("Feeding 1 of 3", progress.TextContent);
+            Assert.Contains("mud-progress-linear", progress.InnerHtml);
+            Assert.Empty(cut.FindAll("[data-testid='hatch-queue-progress']"));
+            Assert.True(cut.Find("[data-testid='execute-feed-queue']").HasAttribute("disabled"));
+            Assert.True(cut.Find("[data-testid='clear-feed-queue']").HasAttribute("disabled"));
+            Assert.True(cut.Find("[data-testid='remove-feed-queue-Wolf-Base']").HasAttribute("disabled"));
+            Assert.True(cut.Find("[data-testid='feed-food-select-Wolf-Base']").HasAttribute("disabled"));
+            Assert.True(cut.Find("[data-testid='transform-mount-Wolf-Base']").HasAttribute("disabled"));
+            Assert.True(cut.Find("[data-testid='select-feed-Wolf-Base']").HasAttribute("disabled"));
+        });
+    }
+
+    [Fact]
+    public void Hatch_queue_progress_renders_in_hatch_block_and_guards_matching_controls()
+    {
+        var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with
+        {
+            Inventory = CreateInventory(
+                eggs: new Dictionary<string, int>(StringComparer.Ordinal) { ["Wolf"] = 1 },
+                potions: new Dictionary<string, int>(StringComparer.Ordinal) { ["Base"] = 1 })
+        }));
+        var cut = RenderPage(controller: controller);
+
+        cut.Find("[data-testid='select-hatch-Wolf-Base']").Click();
+        cut.Find("[data-testid='execute-hatch-queue']").Click();
+        controller.SetState(controller.State with
+        {
+            ActivePetsMountsQueueProgress = new PetsMountsQueueProgress(PetsMountsQueueOperation.Hatch, 0, 1)
+        });
+
+        cut.WaitForAssertion(() =>
+        {
+            var progress = cut.Find("[data-testid='hatch-queue-progress']");
+            Assert.Contains("Hatching 0 of 1", progress.TextContent);
+            Assert.Contains("mud-progress-linear", progress.InnerHtml);
+            Assert.Empty(cut.FindAll("[data-testid='feed-queue-progress']"));
+            Assert.True(cut.Find("[data-testid='execute-hatch-queue']").HasAttribute("disabled"));
+            Assert.True(cut.Find("[data-testid='confirm-hatch-queue']").HasAttribute("disabled"));
+            Assert.True(cut.Find("[data-testid='clear-hatch-queue']").HasAttribute("disabled"));
+            Assert.True(cut.Find("[data-testid='remove-hatch-queue-Wolf-Base']").HasAttribute("disabled"));
+            Assert.True(cut.Find("[data-testid='select-hatch-Wolf-Base']").HasAttribute("disabled"));
+        });
+    }
+
+    [Fact]
     public void Feed_queue_stays_visible_when_sequential_execution_reports_failure()
     {
         var controller = new FakeAppSessionController(CreateState(CreateSnapshot() with

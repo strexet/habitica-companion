@@ -293,8 +293,8 @@ Current pattern:
 - Large collection groups are folded by default except the base collection and hatching potions. Fold choices persist only in local browser storage; search temporarily expands groups to show matches.
 - Owned pet and mount cards keep official Habitica art in fixed identity slots and place fast-equip controls beside the affected companion.
 - Missing pet cards show cached-inventory hatch readiness or the specific missing egg and/or potion. Group hints summarize cached hatch availability without live price or gem-cost claims.
-- Hatch planning uses per-pet queue cards before any mutation. Each row shows pet identity, ownership state, egg and hatching potion keys, available/reserved counts, planned consumption, local warnings, and a remove action; execution requires inline confirmation and runs queued hatches in order.
-- Feed planning uses per-pet queue cards. Each card shows growth progress, selected normal food, available/reserved counts, expected progress after feeding, warnings, remove action, Transform to Mount, and separate Use Saddle confirmation.
+- Hatch planning uses per-pet queue cards before any mutation. Each row shows pet identity, ownership state, egg and hatching potion keys, available/reserved counts, planned consumption, local warnings, and a remove action; execution requires inline confirmation, runs queued hatches in order, and shows bottom block-local progress while active.
+- Feed planning uses per-pet queue cards. Each card shows growth progress, selected normal food, available/reserved counts, expected progress after feeding, warnings, remove action, Transform to Mount, and separate Use Saddle confirmation. Bulk feed execution shows bottom block-local progress while active.
 - Missing mount cards can add their corresponding owned growable pet to the same feed queue with Plan to grow. Unavailable missing mounts show a short cached-data reason instead of a dead action.
 - Companion group headers keep bulk hatch and feed planning beside the fold toggle. `Add All to Hatching Queue` appends only valid missing pets with cached eggs and hatching potions, shows `No hatchable pets` when disabled, and leaves mutation execution inside the Hatch Planner controls. `Add All to Feeding Queue` appends only valid growable missing mounts from the currently visible group/filter set, shows `No growable mounts` when disabled, and leaves mutation execution inside the Feed Planner controls.
 - Queue-add interactions preserve the clicked card or group header position when planner blocks above the collection expand. Scroll correction is immediate, local to add-to-queue actions, and not used for remove, clear, equip, fold, filter, or execution actions.
@@ -458,7 +458,7 @@ Android/Material progress guidance separates determinate progress, which shows e
 
 Application rule:
 
-- Use determinate progress when the app knows `completed` and `total`, as it does for spell casting, equipment slot changes, and multi-step diagnostics.
+- Use determinate progress when the app knows `completed` and `total`, as it does for spell casting, equipment slot changes, Pets & Mounts feed/hatch queues, and multi-step diagnostics.
 - Use passive inline status for freshness, sync, mana, and cached data.
 - Reserve interrupting warnings for destructive local data actions, credential handling, and irreversible Habitica mutations.
 - Keep cached data interactive during background refresh and cloud sync. Disable only the action that would conflict with the active operation.

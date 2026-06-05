@@ -40,8 +40,13 @@
     else
     {
         var snapshot = SessionController.State.UserSnapshot;
+        var feedQueueProgress = GetActiveQueueProgress(PetsMountsQueueOperation.Feed);
+        var hatchQueueProgress = GetActiveQueueProgress(PetsMountsQueueOperation.Hatch);
+        var isFeedQueueExecuting = feedQueueProgress is not null;
+        var isHatchQueueExecuting = hatchQueueProgress is not null;
         var canMutate = SessionController.State.IsAuthenticated
             && !SessionController.State.IsBusy
+            && !isHatchQueueExecuting
             && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
         var catalogPets = GetCatalogPets(snapshot.Inventory);
         var catalogMounts = GetCatalogMounts(snapshot.Inventory);
@@ -140,7 +145,7 @@
                                     <span class="dashboard-stat-note">@allocation.PetKey</span>
                                     <span class="dashboard-stat-note">@allocation.OwnershipStatus</span>
                                 </div>
-                                <MudButton OnClick="@(() => RemoveQueuedHatch(selection))" Variant="Variant.Text" data-testid="@($"remove-hatch-queue-{allocation.PetKey}")">
+                                <MudButton Disabled="@isHatchQueueExecuting" OnClick="@(() => RemoveQueuedHatch(selection))" Variant="Variant.Text" data-testid="@($"remove-hatch-queue-{allocation.PetKey}")">
                                     Remove
                                 </MudButton>
                             </div>
@@ -163,28 +168,35 @@
                 </div>
                 <div class="action-row inventory-actions">
                     <MudButton Color="Color.Primary"
-                               Disabled="@(!canMutate || executableHatchQueue.Length == 0)"
+                               Disabled="@(!canMutate || isHatchQueueExecuting || executableHatchQueue.Length == 0)"
                                OnClick="@(() => _showHatchQueueConfirmation = true)"
                                Variant="Variant.Filled"
                                data-testid="execute-hatch-queue">
                         Hatch queued pets
                     </MudButton>
-                    <MudButton OnClick="ClearHatchQueue" Variant="Variant.Text" data-testid="clear-hatch-queue">Clear queue</MudButton>
+                    <MudButton Disabled="@isHatchQueueExecuting" OnClick="ClearHatchQueue" Variant="Variant.Text" data-testid="clear-hatch-queue">Clear queue</MudButton>
                 </div>
                 @if (_showHatchQueueConfirmation)
                 {
                     <div class="preset-remove-confirm">
                         <span>Hatch @executableHatchQueue.Length queued pet(s)?</span>
                         <MudButton Color="Color.Primary"
-                                   Disabled="@(!canMutate || executableHatchQueue.Length == 0)"
+                                   Disabled="@(!canMutate || isHatchQueueExecuting || executableHatchQueue.Length == 0)"
                                    OnClick="@(() => ExecuteHatchQueueAsync(snapshot.Inventory))"
                                    Variant="Variant.Filled"
                                    data-testid="confirm-hatch-queue">
                             Confirm hatch
                         </MudButton>
-                        <MudButton OnClick="@(() => _showHatchQueueConfirmation = false)" Variant="Variant.Text">Cancel</MudButton>
+                        <MudButton Disabled="@isHatchQueueExecuting" OnClick="@(() => _showHatchQueueConfirmation = false)" Variant="Variant.Text">Cancel</MudButton>
                     </div>
                 }
+            }
+            @if (hatchQueueProgress is not null)
+            {
+                <div class="pets-mounts-queue-progress" data-testid="hatch-queue-progress" aria-live="polite">
+                    <span>@FormatQueueProgress(hatchQueueProgress)</span>
+                    <MudProgressLinear Class="scheme-progress-primary" Color="Color.Primary" Max="@hatchQueueProgress.Total" Value="@hatchQueueProgress.Completed" />
+                </div>
             }
         </section>
 
@@ -224,7 +236,7 @@
                                     <h3>@FormatName(selection.PetKey, selection.PetKey)</h3>
                                     <span class="dashboard-stat-note">@selection.PetKey</span>
                                 </div>
-                                <MudButton OnClick="@(() => RemoveQueuedPet(selection.PetKey))" Variant="Variant.Text" data-testid="@($"remove-feed-queue-{selection.PetKey}")">
+                                <MudButton Disabled="@isFeedQueueExecuting" OnClick="@(() => RemoveQueuedPet(selection.PetKey))" Variant="Variant.Text" data-testid="@($"remove-feed-queue-{selection.PetKey}")">
                                     Remove
                                 </MudButton>
                             </div>
@@ -232,6 +244,7 @@
                             <label class="field-row compact">
                                 <span>Food</span>
                                 <select class="app-input"
+                                        disabled="@isFeedQueueExecuting"
                                         value="@selection.FoodKey"
                                         @onchange="eventArgs => ChangeQueuedFood(selection.PetKey, eventArgs.Value?.ToString())"
                                         data-testid="@($"feed-food-select-{selection.PetKey}")">
@@ -263,13 +276,13 @@
                                 <div class="preset-remove-confirm">
                                     <span>Feed @FormatName(selection.PetKey, selection.PetKey) with @allocation.SelectedFoodDisplayName x @allocation.PlannedAmount?</span>
                                     <MudButton Color="Color.Primary"
-                                               Disabled="@(!canMutate || !allocation.CanExecuteFeed)"
+                                               Disabled="@(!canMutate || isFeedQueueExecuting || !allocation.CanExecuteFeed)"
                                                OnClick="@(() => ExecuteQueuedPetAsync(selection.PetKey, snapshot.Inventory))"
                                                Variant="Variant.Filled"
                                                data-testid="@($"confirm-transform-mount-{selection.PetKey}")">
                                         Confirm
                                     </MudButton>
-                                    <MudButton OnClick="@(() => _pendingTransformPetKey = null)" Variant="Variant.Text">Cancel</MudButton>
+                                    <MudButton Disabled="@isFeedQueueExecuting" OnClick="@(() => _pendingTransformPetKey = null)" Variant="Variant.Text">Cancel</MudButton>
                                 </div>
                             }
                             else if (_pendingSaddlePetKey == selection.PetKey)
@@ -277,27 +290,27 @@
                                 <div class="preset-remove-confirm">
                                     <span>Use one Saddle to instantly transform this pet into a mount? Fed progress is not refunded.</span>
                                     <MudButton Color="Color.Primary"
-                                               Disabled="@(!canMutate || !canUseSaddle)"
+                                               Disabled="@(!canMutate || isFeedQueueExecuting || !canUseSaddle)"
                                                OnClick="@(() => UseSaddleAsync(selection.PetKey))"
                                                Variant="Variant.Filled"
                                                data-testid="@($"confirm-use-saddle-{selection.PetKey}")">
                                         Confirm saddle
                                     </MudButton>
-                                    <MudButton OnClick="@(() => _pendingSaddlePetKey = null)" Variant="Variant.Text">Cancel</MudButton>
+                                    <MudButton Disabled="@isFeedQueueExecuting" OnClick="@(() => _pendingSaddlePetKey = null)" Variant="Variant.Text">Cancel</MudButton>
                                 </div>
                             }
                             else
                             {
                                 <div class="action-row inventory-actions">
                                     <MudButton Color="Color.Primary"
-                                               Disabled="@(!canMutate || !allocation.CanReachMount || !allocation.CanExecuteFeed)"
+                                               Disabled="@(!canMutate || isFeedQueueExecuting || !allocation.CanReachMount || !allocation.CanExecuteFeed)"
                                                OnClick="@(() => _pendingTransformPetKey = selection.PetKey)"
                                                Variant="Variant.Outlined"
                                                data-testid="@($"transform-mount-{selection.PetKey}")">
                                         Transform to Mount
                                     </MudButton>
                                     <MudButton Color="Color.Primary"
-                                               Disabled="@(!canMutate || !canUseSaddle)"
+                                               Disabled="@(!canMutate || isFeedQueueExecuting || !canUseSaddle)"
                                                OnClick="@(() => _pendingSaddlePetKey = selection.PetKey)"
                                                Variant="Variant.Text"
                                                data-testid="@($"use-saddle-{selection.PetKey}")">
@@ -314,13 +327,20 @@
                 </div>
                 <div class="action-row inventory-actions">
                     <MudButton Color="Color.Primary"
-                               Disabled="@(!canMutate || executableQueue.Length == 0)"
+                               Disabled="@(!canMutate || isFeedQueueExecuting || executableQueue.Length == 0)"
                                OnClick="@(() => ExecuteFeedQueueAsync(snapshot.Inventory))"
                                Variant="Variant.Filled"
                                data-testid="execute-feed-queue">
                         Feed queued items
                     </MudButton>
-                    <MudButton OnClick="ClearFeedQueue" Variant="Variant.Text">Clear queue</MudButton>
+                    <MudButton Disabled="@isFeedQueueExecuting" OnClick="ClearFeedQueue" Variant="Variant.Text" data-testid="clear-feed-queue">Clear queue</MudButton>
+                </div>
+            }
+            @if (feedQueueProgress is not null)
+            {
+                <div class="pets-mounts-queue-progress" data-testid="feed-queue-progress" aria-live="polite">
+                    <span>@FormatQueueProgress(feedQueueProgress)</span>
+                    <MudProgressLinear Class="scheme-progress-primary" Color="Color.Primary" Max="@feedQueueProgress.Total" Value="@feedQueueProgress.Completed" />
                 </div>
             }
         </section>
@@ -344,14 +364,14 @@
                     </div>
                     <div class="task-group-actions companion-group-actions">
                         <MudButton Color="Color.Primary"
-                                   Disabled="@(hatchCandidates.Length == 0)"
+                                   Disabled="@(isHatchQueueExecuting || hatchCandidates.Length == 0)"
                                    OnClick="@(() => AddGroupToHatchQueueWithScrollAsync(group.Key, groupPets, snapshot.Inventory))"
                                    Variant="Variant.Outlined"
                                    data-testid="@($"add-group-hatch-queue-{group.Key}")">
                             Add All to Hatching Queue
                         </MudButton>
                         <MudButton Color="Color.Primary"
-                                   Disabled="@(feedCandidates.Length == 0)"
+                                   Disabled="@(isFeedQueueExecuting || feedCandidates.Length == 0)"
                                    OnClick="@(() => AddGroupToFeedQueueWithScrollAsync(group.Key, groupMounts, snapshot.Inventory))"
                                    Variant="Variant.Outlined"
                                    data-testid="@($"add-group-feed-queue-{group.Key}")">
@@ -408,14 +428,14 @@
                                             </MudButton>
                                             @if (growthPlan.CanGrowIntoMount)
                                             {
-                                                <MudButton OnClick="@(() => AddPetToFeedQueueWithScrollAsync(pet.Key, snapshot.Inventory))" Variant="Variant.Text" data-testid="@($"select-feed-{pet.Key}")">
+                                                <MudButton Disabled="@isFeedQueueExecuting" OnClick="@(() => AddPetToFeedQueueWithScrollAsync(pet.Key, snapshot.Inventory))" Variant="Variant.Text" data-testid="@($"select-feed-{pet.Key}")">
                                                     Plan feed
                                                 </MudButton>
                                             }
                                         }
                                         else if (CanPlanHatch(pet))
                                         {
-                                            <MudButton Color="Color.Primary" OnClick="@(() => AddPetToHatchQueueWithScrollAsync(pet, snapshot.Inventory))" Variant="Variant.Outlined" data-testid="@($"select-hatch-{pet.Key}")">
+                                            <MudButton Color="Color.Primary" Disabled="@isHatchQueueExecuting" OnClick="@(() => AddPetToHatchQueueWithScrollAsync(pet, snapshot.Inventory))" Variant="Variant.Outlined" data-testid="@($"select-hatch-{pet.Key}")">
                                                 Add to Hatch Queue
                                             </MudButton>
                                         }
@@ -448,6 +468,7 @@
                                             @if (missingMountPlan.CanPlan)
                                             {
                                                 <MudButton Color="Color.Primary"
+                                                           Disabled="@isFeedQueueExecuting"
                                                            OnClick="@(() => AddMissingMountToFeedQueueWithScrollAsync(mount.Key, missingMountPlan.PetKey!, snapshot.Inventory))"
                                                            Variant="Variant.Text"
                                                            data-testid="@($"plan-grow-mount-{mount.Key}")">
@@ -571,6 +592,7 @@
     private string? _pendingQueueScrollCorrectionId;
     private string? _pendingTransformPetKey;
     private string? _pendingSaddlePetKey;
+    private PetsMountsQueueProgress? _activeHatchQueueProgress;
     private int _bulkSellKeepCount = 1;
     private bool _showBulkSellConfirmation;
     private bool _showHatchQueueConfirmation;
@@ -601,6 +623,26 @@
 
         _pendingQueueScrollCorrectionId = null;
         await ApplyQueueScrollAnchorAsync(correctionId);
+    }
+
+    private PetsMountsQueueProgress? GetActiveQueueProgress(PetsMountsQueueOperation operation)
+    {
+        if (operation == PetsMountsQueueOperation.Hatch
+            && _activeHatchQueueProgress is { Total: > 0 } hatchProgress)
+        {
+            return hatchProgress;
+        }
+
+        var progress = SessionController.State.ActivePetsMountsQueueProgress;
+        return progress is { Total: > 0 } && progress.Operation == operation
+            ? progress
+            : null;
+    }
+
+    private static string FormatQueueProgress(PetsMountsQueueProgress progress)
+    {
+        var label = progress.Operation == PetsMountsQueueOperation.Feed ? "Feeding" : "Hatching";
+        return $"{label} {progress.Completed} of {progress.Total}";
     }
 
     private bool MatchesSearch(string key, string displayName)
@@ -881,6 +923,11 @@
 
     private bool AddPetToFeedQueue(string petKey, InventorySnapshot inventory)
     {
+        if (GetActiveQueueProgress(PetsMountsQueueOperation.Feed) is not null)
+        {
+            return false;
+        }
+
         if (_feedQueue.Any(item => string.Equals(item.PetKey, petKey, StringComparison.Ordinal)))
         {
             Snackbar.Add($"{FormatName(petKey, petKey)} is already queued.", Severity.Info);
@@ -895,6 +942,11 @@
         IReadOnlyList<MountCatalogItem> mounts,
         InventorySnapshot inventory)
     {
+        if (GetActiveQueueProgress(PetsMountsQueueOperation.Feed) is not null)
+        {
+            return false;
+        }
+
         var candidates = GetGroupFeedQueueCandidates(mounts, inventory).ToArray();
         foreach (var candidate in candidates)
         {
@@ -947,6 +999,11 @@
 
     private void ChangeQueuedFood(string petKey, string? foodKey)
     {
+        if (GetActiveQueueProgress(PetsMountsQueueOperation.Feed) is not null)
+        {
+            return;
+        }
+
         var index = _feedQueue.FindIndex(item => string.Equals(item.PetKey, petKey, StringComparison.Ordinal));
         if (index >= 0)
         {
@@ -956,6 +1013,11 @@
 
     private void RemoveQueuedPet(string petKey)
     {
+        if (GetActiveQueueProgress(PetsMountsQueueOperation.Feed) is not null)
+        {
+            return;
+        }
+
         _feedQueue.RemoveAll(item => string.Equals(item.PetKey, petKey, StringComparison.Ordinal));
         if (_pendingTransformPetKey == petKey)
         {
@@ -970,6 +1032,11 @@
 
     private void ClearFeedQueue()
     {
+        if (GetActiveQueueProgress(PetsMountsQueueOperation.Feed) is not null)
+        {
+            return;
+        }
+
         _feedQueue.Clear();
         _pendingTransformPetKey = null;
         _pendingSaddlePetKey = null;
@@ -1081,6 +1148,11 @@
 
     private bool AddPetToHatchQueue(PetCatalogItem pet, InventorySnapshot inventory)
     {
+        if (GetActiveQueueProgress(PetsMountsQueueOperation.Hatch) is not null)
+        {
+            return false;
+        }
+
         if (!CanPlanHatch(pet))
         {
             Snackbar.Add("This pet cannot be hatched from the checked-in catalog.", Severity.Warning);
@@ -1109,6 +1181,11 @@
         IReadOnlyList<PetCatalogItem> pets,
         InventorySnapshot inventory)
     {
+        if (GetActiveQueueProgress(PetsMountsQueueOperation.Hatch) is not null)
+        {
+            return false;
+        }
+
         var candidates = GetGroupHatchQueueCandidates(pets, inventory).ToArray();
         foreach (var candidate in candidates)
         {
@@ -1264,29 +1341,47 @@
         }
 
         var hatchedCount = 0;
-        foreach (var item in executable)
+        _activeHatchQueueProgress = new PetsMountsQueueProgress(PetsMountsQueueOperation.Hatch, 0, executable.Length);
+        await InvokeAsync(StateHasChanged);
+
+        try
         {
-            var result = await SessionController.HatchPetAsync(item.EggKey, item.HatchingPotionKey);
-            ShowFeedback(result);
-            if (!result.Succeeded)
+            foreach (var item in executable)
             {
-                _showHatchQueueConfirmation = false;
-                return;
+                var result = await SessionController.HatchPetAsync(item.EggKey, item.HatchingPotionKey);
+                ShowFeedback(result);
+                if (!result.Succeeded)
+                {
+                    _showHatchQueueConfirmation = false;
+                    return;
+                }
+
+                hatchedCount++;
+                _activeHatchQueueProgress = new PetsMountsQueueProgress(PetsMountsQueueOperation.Hatch, hatchedCount, executable.Length);
+                await InvokeAsync(StateHasChanged);
+                RemoveQueuedHatch(item, resetConfirmation: false);
             }
 
-            hatchedCount++;
-            RemoveQueuedHatch(item, resetConfirmation: false);
+            _showHatchQueueConfirmation = false;
+            if (hatchedCount > 0)
+            {
+                Snackbar.Add($"Hatched {hatchedCount} queued pet(s).", Severity.Success);
+            }
         }
-
-        _showHatchQueueConfirmation = false;
-        if (hatchedCount > 0)
+        finally
         {
-            Snackbar.Add($"Hatched {hatchedCount} queued pet(s).", Severity.Success);
+            _activeHatchQueueProgress = null;
+            await InvokeAsync(StateHasChanged);
         }
     }
 
     private void RemoveQueuedHatch(HatchQueueItem item, bool resetConfirmation = true)
     {
+        if (resetConfirmation && GetActiveQueueProgress(PetsMountsQueueOperation.Hatch) is not null)
+        {
+            return;
+        }
+
         _hatchQueue.RemoveAll(queued => MatchesHatchQueueItem(queued, item));
         if (resetConfirmation)
         {
@@ -1296,6 +1391,11 @@
 
     private void ClearHatchQueue()
     {
+        if (GetActiveQueueProgress(PetsMountsQueueOperation.Hatch) is not null)
+        {
+            return;
+        }
+
         _hatchQueue.Clear();
         _showHatchQueueConfirmation = false;
     }

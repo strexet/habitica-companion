@@ -102,6 +102,12 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public int InitializeCalls { get; private set; }
 
+    public void SetState(SessionViewModel state)
+    {
+        State = state;
+        Changed?.Invoke();
+    }
+
     public LocalDataActionResult LocalDataResult { get; set; } =
         LocalDataActionResult.Success("Local data operation completed.", "{}");
 
