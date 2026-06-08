@@ -72,7 +72,152 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- _None._
+- Add member name search to Party member status
+   - Description
+      - Add a search bar to the MEMBERS / Party member status section on the Party page.
+      - The search should let users quickly find party members by name without manually scanning the full member list.
+      - This is especially useful for large parties.
+
+   - Search behavior
+      - Filter the visible member cards/rows as the user types.
+      - Search should be case-insensitive.
+      - Support partial matches.
+      - Match against the public/display member name.
+      - Also match username/login name if it is already available in the current member data and shown elsewhere in the UI.
+      - Do not search against internal user IDs.
+      - Ignore leading and trailing whitespace in the query.
+      - An empty query should show all members.
+
+   - Search field placement
+      - Place the search bar near the top of the MEMBERS / Party member status section.
+      - Keep it close to the section title and existing member controls/filters.
+      - Make sure it aligns with the current Party page layout.
+      - Keep the field compact enough for desktop and mobile layouts.
+      - Avoid pushing member controls into an uneven or stair-like arrangement.
+
+   - Search field UI
+      - Suggested placeholder:
+         - `Search members`
+      - Add a clear/reset action when the field contains text.
+      - Use existing shared search-input styling where possible.
+      - Preserve keyboard usability and visible focus state.
+      - Do not trigger page refreshes or API requests while typing.
+
+   - Filter composition
+      - If the member section already has filters, grouping, sorting, or fold behavior:
+         - Apply name search together with the existing state.
+         - Do not replace the existing filters.
+         - Search and current filters should both narrow the visible member list.
+      - Preserve the existing member ordering among matched results.
+
+   - Empty state
+      - If no member matches the query, show a concise empty state.
+      - Suggested text:
+         - `No party members match this search.`
+      - Provide an easy way to clear the query.
+      - Do not show an empty broken grid/container.
+
+   - Data and performance
+      - Filter the already loaded/cached party member data locally.
+      - Do not issue an API request for every search change.
+      - Reapply the active search when refreshed member data arrives.
+      - Handle members with missing or empty display names safely.
+
+   - Expected behavior
+      - Typing part of a member’s display name shows matching members.
+      - Matching is case-insensitive.
+      - Clearing the search restores the full member list.
+      - Existing member card content and actions remain unchanged.
+      - Search works consistently on desktop and mobile/narrow layouts.
+
+   - Suggested implementation
+      - Add local search-query state to the Party page/member section.
+      - Build a normalized searchable name for each member from available public name fields.
+      - Apply the search predicate before rendering member cards/rows.
+      - Reuse existing search components or styles if available.
+      - Keep filtering logic separate from card rendering where practical.
+
+   - Acceptance criteria
+      - MEMBERS / Party member status has a visible `Search members` field.
+      - Search matches public/display member names using partial, case-insensitive matching.
+      - Username is also searchable when available and appropriate.
+      - Internal user IDs are not exposed or used as visible search terms.
+      - Empty query shows all members.
+      - No-match state is clear and does not break the member layout.
+      - Search composes correctly with existing filters/grouping/sorting.
+      - No API request is triggered for each typed character.
+      - Component tests cover:
+         - Exact name match.
+         - Partial name match.
+         - Case-insensitive match.
+         - Username match where supported.
+         - No-match state.
+         - Clearing search.
+         - Empty/missing member name.
+
+- Rename Inventory page to Equipment across the app
+   - Description
+      - Rename the current Inventory page to Equipment.
+      - The page is primarily focused on equipment and gear-related functionality, so Equipment is a clearer and more accurate name.
+      - Apply the rename consistently across the side menu and all user-facing parts of the app.
+
+   - Side menu updates
+      - Rename the side-menu item from `Inventory` to `Equipment`.
+      - Keep the existing navigation destination and behavior unchanged.
+      - Update the selected/active navigation label accordingly.
+      - Review the menu icon and keep or replace it only if the current icon no longer fits the Equipment label.
+
+   - Page updates
+      - Rename the visible page title from `Inventory` to `Equipment`.
+      - Update page headers, breadcrumbs, section descriptions, empty states, tooltips, and related user-facing labels that refer to the page as Inventory.
+      - Keep internal labels that genuinely refer to the user’s full Habitica inventory unchanged where Equipment would be inaccurate.
+
+   - App-wide terminology review
+      - Search the app for user-facing references to:
+         - `Inventory`
+         - `Inventory page`
+         - `Open Inventory`
+         - `Go to Inventory`
+         - Similar navigation/help text
+      - Replace those references with Equipment where they refer specifically to this page.
+      - Do not blindly rename domain/API concepts such as:
+         - Inventory data models.
+         - `snapshot.Inventory`.
+         - Habitica API inventory payloads.
+         - Pet, food, egg, potion, or quest inventory concepts.
+      - Preserve technical identifiers unless renaming them is clearly necessary.
+      - Prefer a UI-only rename where possible to avoid unnecessary routing, persistence, or compatibility changes.
+
+   - Routing and compatibility
+      - Keep the existing route if changing it would break bookmarks, deep links, tests, or persisted navigation state.
+      - If the route currently contains `inventory`, it may remain unchanged internally.
+      - If a new `/equipment` route is introduced:
+         - Preserve the old route as a redirect or alias.
+         - Ensure existing deep links continue to work.
+      - Do not change API contracts or stored data keys as part of this task.
+
+   - Documentation updates
+      - Update user-facing documentation to use Equipment for this page.
+      - Review:
+         - `FEATURES.md`
+         - `docs/UX_UI_MANIFEST.md`
+         - README/navigation documentation where applicable
+      - Keep technical references to Habitica inventory data unchanged when they describe actual inventory structures rather than the page name.
+
+   - Expected behavior
+      - Side menu displays `Equipment`.
+      - Page title displays `Equipment`.
+      - User-facing navigation and help text consistently use Equipment.
+      - Existing page functionality remains unchanged.
+      - Existing links and navigation continue to work.
+
+   - Acceptance criteria
+      - No user-facing menu item or page title still calls this page Inventory.
+      - All app navigation references to this page use Equipment.
+      - Technical/API inventory terminology remains unchanged where appropriate.
+      - Existing route compatibility is preserved.
+      - Existing equipment, gear, loadout, and related page functionality still works.
+      - Tests and documentation are updated to reflect the new page name.
 
 ## Prioritized Next Changes
 
