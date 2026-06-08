@@ -688,7 +688,8 @@
         <section class="card-surface dashboard-panel party-members-panel">
             @{
                 var availableMemberClasses = GetAvailableMemberClasses(members);
-                var visibleMembers = FilterMembersByClass(members);
+                var classFilteredMembers = FilterMembersByClass(members);
+                var visibleMembers = FilterMembersBySearch(classFilteredMembers);
             }
             <div class="party-section-head">
                 <div>
@@ -696,6 +697,21 @@
                     <h2>Party member status</h2>
                 </div>
                 <div class="party-member-toolbar">
+                    <label class="party-member-search-field">
+                        <span>Search members</span>
+                        <input aria-label="Search members"
+                               class="app-input"
+                               data-testid="party-member-search"
+                               placeholder="Search members"
+                               @bind="_memberSearchText"
+                               @bind:event="oninput" />
+                    </label>
+                    @if (HasMemberSearch())
+                    {
+                        <button class="secondary-action-button compact" type="button" data-testid="clear-member-search" @onclick="ClearMemberSearch">
+                            Clear search
+                        </button>
+                    }
                     <select aria-label="Filter party members by class" class="app-input party-member-class-filter" data-testid="party-member-class-filter" @bind="_memberClassFilter">
                         <option value="">All classes</option>
                         @foreach (var className in availableMemberClasses)
@@ -717,7 +733,13 @@
 
             @if (visibleMembers.Count == 0)
             {
-                <p class="panel-copy">@(members.Count == 0 ? "No party member data is saved yet." : "No party members match this class filter.")</p>
+                <p class="panel-copy">@(GetEmptyMemberListMessage(members.Count))</p>
+                @if (HasMemberSearch())
+                {
+                    <button class="secondary-action-button compact" type="button" data-testid="clear-member-search-empty" @onclick="ClearMemberSearch">
+                        Clear search
+                    </button>
+                }
             }
             else
             {
@@ -728,7 +750,7 @@
                         <article class="party-member-card" id="@BuildMemberElementId(member.MemberId)">
                             <div class="party-member-summary-row">
                                 <div class="party-member-identity">
-                                    <strong>@member.DisplayName</strong>
+                                    <strong>@FormatMemberDisplayName(member.DisplayName)</strong>
                                     <div class="party-member-classline">
                                         <span class="ui-pill state-pill">@FormatClass(member.ClassName)</span>
                                         <span class="party-resource-chip">@FormatMemberResource("HP", member.Health, member.MaxHealth)</span>
@@ -1235,6 +1257,7 @@
     private bool _activeQuestDetailsExpanded;
     private bool _activeQuestParticipantsExpanded;
     private string? _questPoolSearchText;
+    private string? _memberSearchText;
     private string? _startQuestError;
     private string _inviteProofLabel = string.Empty;
     private string _inviteProofId = string.Empty;
@@ -1391,6 +1414,47 @@
         return members
             .Where(member => string.Equals(member.ClassName?.Trim(), _memberClassFilter, StringComparison.OrdinalIgnoreCase))
             .ToArray();
+    }
+
+    private IReadOnlyList<PartyMemberSnapshot> FilterMembersBySearch(IReadOnlyList<PartyMemberSnapshot> members)
+    {
+        var searchText = _memberSearchText?.Trim();
+        if (string.IsNullOrWhiteSpace(searchText))
+        {
+            return members;
+        }
+
+        return members
+            .Where(member => MemberMatchesSearch(member, searchText))
+            .ToArray();
+    }
+
+    private static bool MemberMatchesSearch(PartyMemberSnapshot member, string searchText)
+    {
+        return !string.IsNullOrWhiteSpace(member.DisplayName)
+            && member.DisplayName.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool HasMemberSearch()
+    {
+        return !string.IsNullOrWhiteSpace(_memberSearchText);
+    }
+
+    private void ClearMemberSearch()
+    {
+        _memberSearchText = string.Empty;
+    }
+
+    private string GetEmptyMemberListMessage(int totalMemberCount)
+    {
+        if (totalMemberCount == 0)
+        {
+            return "No party member data is saved yet.";
+        }
+
+        return HasMemberSearch()
+            ? "No party members match this search."
+            : "No party members match this class filter.";
     }
 
     private static decimal GetPendingQuestSortValue(PartyMemberSnapshot member)
@@ -2599,6 +2663,11 @@
     private static string FormatMemberId(string? memberId)
     {
         return string.IsNullOrWhiteSpace(memberId) ? "Unknown" : memberId;
+    }
+
+    private static string FormatMemberDisplayName(string? displayName)
+    {
+        return string.IsNullOrWhiteSpace(displayName) ? "Unknown member" : displayName;
     }
 
     private static string FormatStat(decimal? value)

@@ -2321,7 +2321,7 @@ combined party-name-and-notes summary
 compact Party-page quest summary linking to the Quests workspace
 quest progress snapshot
 party pending boss damage/items, boss HP remaining, total boss HP when available, and pending damage to party
-compact party member CRON list with HP/MP, class filtering, sortable low-HP/low-MP modes, and foldable details
+compact party member CRON list with HP/MP, member-name search, class filtering, sortable low-HP/low-MP modes, and foldable details
 viewer-local CRON statistics graph
 active quest card with real quest metadata and rewards when cached
 active quest owner or starter and started-at metadata when cached directly or available from the matching active shared queue entry
@@ -2363,7 +2363,7 @@ Current display rules:
 5. Do not show a dedicated Party overview CRON summary or buff-timing recommendation block.
 6. Show compact per-member cards with display name, class, subtle HP/MP values, CRON state, last CRON, average CRON time, and active-quest pending damage/items when available.
 7. Keep member id, level, CRON reason, and stat breakdowns behind a collapsed in-memory details toggle on each member card.
-8. Let the member list filter to available cached Habitica classes while keeping members with unknown classes visible under `All classes`, then sort by name, average CRON, latest CRON, pending quest contribution, low HP, low MP, and CRON status. HP/MP sorts are ascending so the lowest current value appears first; unknown values sort last.
+8. Let the member list search cached public display names locally, filter to available cached Habitica classes while keeping members with unknown classes visible under `All classes`, then sort by name, average CRON, latest CRON, pending quest contribution, low HP, low MP, and CRON status. Search trims whitespace, matches partial names case-insensitively, and shows a distinct no-match state without fetching party data. HP/MP sorts are ascending so the lowest current value appears first; unknown values sort last.
 9. Show viewer-local CRON graph points from local history.
 10. Render party summaries and quest descriptions through `SafeMarkdownRenderer`, including Markdown inline formatting and a small safe HTML subset (`br`, `strong`/`b`, `em`/`i`, `code`) while escaping unsafe tags.
 11. Publish the current user's owned quest scrolls to the shared party quest pool after party sync when inventory and content metadata are available.
@@ -2443,7 +2443,7 @@ Current implementation:
 - combined cached party-name-and-notes summary with one compact Quests link;
 - cached quest progress snapshot.
 - compact party member cards with foldable extra info and stats;
-- class filtering for compact party member cards, with unknown classes kept in the unfiltered list;
+- local display-name search and class filtering for compact party member cards, with unknown classes kept in the unfiltered list;
 - subtle HP/MP values and low-HP/low-MP member sorting;
 - active quest card with real cached quest metadata and compact rewards;
 - active quest owner/starter and started-at metadata with matching shared-queue fallback, concise unavailable states, and foldable details/rewards and participant-name drill-ins;

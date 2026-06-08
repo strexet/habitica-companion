@@ -59,6 +59,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Healer Blessing estimates now use concise per-member HP copy, keep fresh-HP capping and aggregate scoring, and no longer expose group-total HP wording.
 - Inventory page user-facing labels now read Equipment across drawer navigation, page title, dashboard link, tests, and user-facing docs while preserving the `/inventory` route and inventory data/API terminology.
 - Spell cards now support Spend All Mana count planning, a cancellable one-second Preparing stage, card-local Cancel for active cast runs, cancellation-aware sequential spell execution, and a 350 ms default Habitica API minimum request spacing without adding an appsettings override.
+- Party member status now has local display-name search that trims whitespace, matches partial names case-insensitively, composes with class filtering and sort order, shows a clearable no-match state, and avoids API requests while typing.
 
 ## Pending Queue
 
@@ -77,36 +78,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Add Party Member Status Search
-
-Goal: add compact local search to the MEMBERS / Party member status section on the Party page so large parties can be filtered by member name without extra API requests.
-
-Source: promoted from pending queue on 2026-06-08.
-
-Touch:
-- `src/Habitica.WebApp/Pages/PartyPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css` if layout/search styling needs adjustment
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
-- `FEATURES.md`
-- `docs/UX_UI_MANIFEST.md` if member-section layout guidance changes
-
-Out of scope:
-- changing party fetch/sync APIs;
-- searching internal user IDs;
-- changing member card actions, grouping, sorting, or CRON state rules except to compose with search.
-
-Acceptance:
-- MEMBERS / Party member status has visible `Search members` input near section title/controls.
-- Search trims leading/trailing whitespace and matches partial names case-insensitively.
-- Search matches public/display member name; username/login name is searchable only when already available and appropriate in current member data.
-- Empty query shows all members in existing order.
-- Search composes with existing filters/grouping/sorting/fold state.
-- No API request fires while typing.
-- No-match state says `No party members match this search.` and offers easy clear/reset.
-- Members with missing or empty display names are handled safely.
-- Desktop and narrow layouts remain aligned without overlap.
-- Tests cover exact name, partial name, case-insensitive match, username match where supported, no-match state, clear search, and empty/missing member name.
 
 ## Backlog
 

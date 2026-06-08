@@ -325,6 +325,7 @@ Current pattern:
 - Owner/app-admin party-sync settings are a compact operational panel, and kick records stay last so moderation history does not interrupt member review.
 - Officer assignment and kick/unkick controls live in expanded member details, close to the affected member identity.
 - Member cards show subtle HP/MP chips near display name/class.
+- Member status includes local display-name search near class and sort controls; no-match search states stay clearable without leaving the section.
 - Member sorting includes Low HP and Low MP modes; those sort current values ascending so the lowest member appears first, with unknown values last.
 
 What works:

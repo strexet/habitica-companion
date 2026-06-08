@@ -1154,6 +1154,18 @@ input[type="radio"] {
     min-width: 9rem;
 }
 
+.party-member-search-field {
+    display: grid;
+    gap: 0.25rem;
+    min-width: min(100%, 12rem);
+}
+
+.party-member-search-field span {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--theme-text-muted);
+}
+
 .segmented-control {
     display: flex;
     flex-wrap: wrap;
@@ -4070,6 +4082,11 @@ code {
     .party-member-toolbar {
         width: 100%;
         justify-content: flex-start;
+    }
+
+    .party-member-search-field,
+    .party-member-search-field .app-input {
+        width: 100%;
     }
 
     .spell-card-summary,

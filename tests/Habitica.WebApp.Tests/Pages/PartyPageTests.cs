@@ -84,6 +84,73 @@ public sealed class PartyPageTests : BunitContext
     }
 
     [Fact]
+    public void Searches_member_cards_by_display_name_without_api_requests()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        var sessionController = new FakeAppSessionController(CreatePartySearchState(
+            new PartyMemberSnapshot("user-1", "Alpha", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ClassName: "wizard"),
+            new PartyMemberSnapshot("user-2", "Beta", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ClassName: "healer"),
+            new PartyMemberSnapshot("user-3", "Gamma", null, null, null, PartyCronState.Unknown, "Unknown.", null, null)));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<PartyPage>();
+        var refreshCallsAfterRender = sessionController.RefreshPartyQuestStateCalls;
+
+        SetMemberSearch(cut, " Beta ");
+        Assert.Equal(new[] { "Beta" }, GetRenderedMemberNames(cut));
+
+        SetMemberSearch(cut, "lph");
+        Assert.Equal(new[] { "Alpha" }, GetRenderedMemberNames(cut));
+
+        SetMemberSearch(cut, "GAM");
+        Assert.Equal(new[] { "Gamma" }, GetRenderedMemberNames(cut));
+        Assert.Equal(refreshCallsAfterRender, sessionController.RefreshPartyQuestStateCalls);
+    }
+
+    [Fact]
+    public void Member_search_clear_resets_no_match_state()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreatePartySearchState(
+            new PartyMemberSnapshot("user-1", "Alpha", null, null, null, PartyCronState.Unknown, "Unknown.", null, null),
+            new PartyMemberSnapshot("user-2", "Beta", null, null, null, PartyCronState.Unknown, "Unknown.", null, null))));
+
+        var cut = Render<PartyPage>();
+
+        SetMemberSearch(cut, "zzz");
+
+        Assert.Empty(GetRenderedMemberNames(cut));
+        Assert.Contains("No party members match this search.", cut.Markup);
+
+        cut.Find("[data-testid='clear-member-search-empty']").Click();
+
+        Assert.Equal(new[] { "Alpha", "Beta" }, GetRenderedMemberNames(cut));
+    }
+
+    [Fact]
+    public void Member_search_composes_with_class_filter_and_empty_names()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreatePartySearchState(
+            new PartyMemberSnapshot("user-1", string.Empty, null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ClassName: "wizard"),
+            new PartyMemberSnapshot("user-2", "Alpha", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ClassName: "wizard"),
+            new PartyMemberSnapshot("user-3", "Beta", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ClassName: "healer"))));
+
+        var cut = Render<PartyPage>();
+        var filter = cut.Find("[data-testid='party-member-class-filter']");
+
+        Assert.Equal(new[] { "Unknown member", "Alpha", "Beta" }, GetRenderedMemberNames(cut));
+
+        filter.Change("wizard");
+        SetMemberSearch(cut, "alpha");
+
+        Assert.Equal(new[] { "Alpha" }, GetRenderedMemberNames(cut));
+    }
+
+    [Fact]
     public void Renders_cached_party_summary_and_quest_state()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -1655,6 +1722,29 @@ public sealed class PartyPageTests : BunitContext
             new InventorySnapshot(1, 5, 1, 1, 1, 1, Array.Empty<string>()));
     }
 
+    private static SessionViewModel CreatePartySearchState(params PartyMemberSnapshot[] members)
+    {
+        return new SessionViewModel(
+            IsBusy: false,
+            IsAuthenticated: true,
+            DisplayName: "Mage Tester",
+            ErrorMessage: null,
+            LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+            TaskFreshness: SnapshotFreshnessState.Fresh,
+            TaskSnapshot: null,
+            UserSnapshot: CreateSnapshot(),
+            UserFreshness: SnapshotFreshnessState.Fresh,
+            PartySnapshot: new PartySnapshot(
+                DateTimeOffset.Parse("2026-04-26T09:00:00Z"),
+                "party-123",
+                "Night Owls",
+                "Quest-focused party",
+                members.Length,
+                null,
+                members),
+            PartyFreshness: SnapshotFreshnessState.Fresh);
+    }
+
     private static string[] GetRenderedMemberNames(IRenderedComponent<PartyPage> cut)
     {
         return cut.FindAll(".party-member-card .party-member-identity strong")
@@ -1677,5 +1767,10 @@ public sealed class PartyPageTests : BunitContext
     private static void SetQuestPoolSearch(IRenderedComponent<PartyPage> cut, string searchText)
     {
         cut.Find("[data-testid='quest-pool-search']").Input(searchText);
+    }
+
+    private static void SetMemberSearch(IRenderedComponent<PartyPage> cut, string searchText)
+    {
+        cut.Find("[data-testid='party-member-search']").Input(searchText);
     }
 }

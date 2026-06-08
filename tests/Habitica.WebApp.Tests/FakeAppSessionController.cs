@@ -80,6 +80,8 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public int RejectPartyQuestInvitationCalls { get; private set; }
 
+    public int RefreshPartyQuestStateCalls { get; private set; }
+
     public List<(string QuestKey, DateTimeOffset CompletedAtUtc)> RemoveRecentlyCompletedQuestCalls { get; } = new();
 
     public int StartNewDayCalls { get; private set; }
@@ -403,6 +405,7 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public Task<PartyQuestActionResult> RefreshPartyQuestStateAsync(CancellationToken cancellationToken = default)
     {
+        RefreshPartyQuestStateCalls++;
         return Task.FromResult(PartyQuestActionResult.Success("Shared quest state refreshed."));
     }
 
