@@ -466,6 +466,147 @@ public sealed class TasksPageTests : BunitContext
         AssertMarkupOrder(cut.Markup, "Beta", "Alpha", "Gamma");
     }
 
+    [Fact]
+    public async Task Reset_task_order_button_renders_only_for_sections_with_live_custom_order()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new TaskListViewModelFactory());
+        Services.AddSingleton(new TaskOrderPlanner());
+        var storage = new FakeKeyValueStorage();
+        await storage.SetAsync(
+            StorageKeys.TaskOrderPreferences,
+            new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)
+            {
+                ["Todo"] = new[] { "todo-second", "todo-first" },
+                ["Daily"] = new[] { "missing-daily" },
+                ["Habit"] = Array.Empty<string>()
+            }),
+            CancellationToken.None);
+        Services.AddSingleton<IKeyValueStorage>(storage);
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateTaskSession()));
+
+        var cut = Render<TasksPage>();
+
+        Assert.NotEmpty(cut.FindAll("[data-testid='reset-task-order-Todo']"));
+        Assert.Empty(cut.FindAll("[data-testid='reset-task-order-Daily']"));
+        Assert.Empty(cut.FindAll("[data-testid='reset-task-order-Habit']"));
+    }
+
+    [Fact]
+    public async Task Reset_todo_order_preserves_daily_and_habit_orders()
+    {
+        var storage = new FakeKeyValueStorage();
+        await SeedTaskOrdersAsync(storage);
+        var sessionController = RenderTasksPageWithResetData(storage, out var cut);
+
+        cut.Find("[data-testid='reset-task-order-Todo']").Click();
+
+        AssertMarkupOrder(cut.Markup, "Todo First", "Todo Second");
+        AssertMarkupOrder(cut.Markup, "Daily Second", "Daily First");
+        AssertMarkupOrder(cut.Markup, "Habit Second", "Habit First");
+        var preferences = await storage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
+        Assert.NotNull(preferences);
+        Assert.False(preferences!.OrdersByType.ContainsKey("Todo"));
+        Assert.Equal(new[] { "daily-second", "daily-first" }, preferences.OrdersByType["Daily"]);
+        Assert.Equal(new[] { "habit-second", "habit-first" }, preferences.OrdersByType["Habit"]);
+        Assert.Equal(new[] { CloudSyncSection.TaskOrderPreferences }, sessionController.SyncAppDataSectionCalls);
+    }
+
+    [Fact]
+    public async Task Reset_daily_order_preserves_todo_and_habit_orders()
+    {
+        var storage = new FakeKeyValueStorage();
+        await SeedTaskOrdersAsync(storage);
+        var sessionController = RenderTasksPageWithResetData(storage, out var cut);
+
+        cut.Find("[data-testid='reset-task-order-Daily']").Click();
+
+        AssertMarkupOrder(cut.Markup, "Todo Second", "Todo First");
+        AssertMarkupOrder(cut.Markup, "Daily First", "Daily Second");
+        AssertMarkupOrder(cut.Markup, "Habit Second", "Habit First");
+        var preferences = await storage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
+        Assert.NotNull(preferences);
+        Assert.Equal(new[] { "todo-second", "todo-first" }, preferences!.OrdersByType["Todo"]);
+        Assert.False(preferences.OrdersByType.ContainsKey("Daily"));
+        Assert.Equal(new[] { "habit-second", "habit-first" }, preferences.OrdersByType["Habit"]);
+        Assert.Equal(new[] { CloudSyncSection.TaskOrderPreferences }, sessionController.SyncAppDataSectionCalls);
+    }
+
+    [Fact]
+    public async Task Reset_habit_order_preserves_todo_and_daily_orders()
+    {
+        var storage = new FakeKeyValueStorage();
+        await SeedTaskOrdersAsync(storage);
+        var sessionController = RenderTasksPageWithResetData(storage, out var cut);
+
+        cut.Find("[data-testid='reset-task-order-Habit']").Click();
+
+        AssertMarkupOrder(cut.Markup, "Todo Second", "Todo First");
+        AssertMarkupOrder(cut.Markup, "Daily Second", "Daily First");
+        AssertMarkupOrder(cut.Markup, "Habit First", "Habit Second");
+        var preferences = await storage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
+        Assert.NotNull(preferences);
+        Assert.Equal(new[] { "todo-second", "todo-first" }, preferences!.OrdersByType["Todo"]);
+        Assert.Equal(new[] { "daily-second", "daily-first" }, preferences.OrdersByType["Daily"]);
+        Assert.False(preferences.OrdersByType.ContainsKey("Habit"));
+        Assert.Equal(new[] { CloudSyncSection.TaskOrderPreferences }, sessionController.SyncAppDataSectionCalls);
+    }
+
+    [Fact]
+    public async Task Reset_last_task_order_removes_local_record_and_reorder_creates_new_record()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new TaskListViewModelFactory());
+        Services.AddSingleton(new TaskOrderPlanner());
+        var storage = new FakeKeyValueStorage();
+        await storage.SetAsync(
+            StorageKeys.TaskOrderPreferences,
+            new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)
+            {
+                ["Todo"] = new[] { "todo-second", "todo-first" }
+            }),
+            CancellationToken.None);
+        Services.AddSingleton<IKeyValueStorage>(storage);
+        var sessionController = new FakeAppSessionController(CreateTaskSession(TaskType.Todo));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+        var cut = Render<TasksPage>();
+
+        cut.Find("[data-testid='reset-task-order-Todo']").Click();
+
+        AssertMarkupOrder(cut.Markup, "Todo First", "Todo Second");
+        Assert.Empty(cut.FindAll("[data-testid='reset-task-order-Todo']"));
+        Assert.Null(await storage.GetRawJsonAsync(StorageKeys.TaskOrderPreferences, CancellationToken.None));
+        Assert.Equal(new[] { CloudSyncSection.TaskOrderPreferences }, sessionController.SyncAppDataSectionCalls);
+
+        cut.Find("[data-testid='rearrange-tasks-Todo']").Click();
+        cut.Find("[data-testid='move-task-down-todo-first']").Click();
+
+        var preferences = await storage.GetAsync<TaskOrderPreferences>(StorageKeys.TaskOrderPreferences, CancellationToken.None);
+        Assert.NotNull(preferences);
+        Assert.Equal(new[] { "todo-second", "todo-first" }, preferences!.OrdersByType["Todo"]);
+        Assert.Equal(
+            new[] { CloudSyncSection.TaskOrderPreferences, CloudSyncSection.TaskOrderPreferences },
+            sessionController.SyncAppDataSectionCalls);
+    }
+
+    [Fact]
+    public void Missing_task_order_data_uses_habitica_order_without_error()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new TaskListViewModelFactory());
+        Services.AddSingleton(new TaskOrderPlanner());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateTaskSession(TaskType.Todo)));
+
+        var cut = Render<TasksPage>();
+
+        AssertMarkupOrder(cut.Markup, "Todo First", "Todo Second");
+        Assert.Empty(cut.FindAll("[data-testid^='reset-task-order-']"));
+    }
+
     private static void AssertMarkupOrder(string markup, params string[] labels)
     {
         var previousIndex = -1;
@@ -476,6 +617,67 @@ public sealed class TasksPageTests : BunitContext
             Assert.True(index > previousIndex, $"{label} should render after the previous label.");
             previousIndex = index;
         }
+    }
+
+    private FakeAppSessionController RenderTasksPageWithResetData(FakeKeyValueStorage storage, out IRenderedComponent<TasksPage> cut)
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new TaskListViewModelFactory());
+        Services.AddSingleton(new TaskOrderPlanner());
+        Services.AddSingleton<IKeyValueStorage>(storage);
+        var sessionController = new FakeAppSessionController(CreateTaskSession());
+        Services.AddSingleton<IAppSessionController>(sessionController);
+        cut = Render<TasksPage>();
+        return sessionController;
+    }
+
+    private static Task SeedTaskOrdersAsync(FakeKeyValueStorage storage)
+    {
+        return storage.SetAsync(
+            StorageKeys.TaskOrderPreferences,
+            new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)
+            {
+                ["Todo"] = new[] { "todo-second", "todo-first" },
+                ["Daily"] = new[] { "daily-second", "daily-first" },
+                ["Habit"] = new[] { "habit-second", "habit-first" }
+            }),
+            CancellationToken.None);
+    }
+
+    private static SessionViewModel CreateTaskSession(params TaskType[] taskTypes)
+    {
+        var selectedTypes = taskTypes.Length == 0
+            ? new[] { TaskType.Todo, TaskType.Daily, TaskType.Habit }
+            : taskTypes;
+        var tasks = new List<TaskSnapshot>();
+
+        if (selectedTypes.Contains(TaskType.Todo))
+        {
+            tasks.Add(new TaskSnapshot("todo-first", "Todo First", TaskType.Todo, false, 1m, null, null, 1m));
+            tasks.Add(new TaskSnapshot("todo-second", "Todo Second", TaskType.Todo, false, 1m, null, null, 2m));
+        }
+
+        if (selectedTypes.Contains(TaskType.Daily))
+        {
+            tasks.Add(new TaskSnapshot("daily-first", "Daily First", TaskType.Daily, false, 1m, null, null, 1m));
+            tasks.Add(new TaskSnapshot("daily-second", "Daily Second", TaskType.Daily, false, 1m, null, null, 2m));
+        }
+
+        if (selectedTypes.Contains(TaskType.Habit))
+        {
+            tasks.Add(new TaskSnapshot("habit-first", "Habit First", TaskType.Habit, false, 1m, null, null, 1m));
+            tasks.Add(new TaskSnapshot("habit-second", "Habit Second", TaskType.Habit, false, 1m, null, null, 2m));
+        }
+
+        return new SessionViewModel(
+            IsBusy: false,
+            IsAuthenticated: false,
+            DisplayName: null,
+            ErrorMessage: null,
+            LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
+            TaskFreshness: SnapshotFreshnessState.Fresh,
+            TaskSnapshot: new TaskCollectionSnapshot(DateTimeOffset.Parse("2026-04-24T10:00:00Z"), tasks));
     }
 
     private sealed class FakeKeyValueStorage : IKeyValueStorage

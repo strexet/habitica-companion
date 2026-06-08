@@ -72,6 +72,7 @@ public sealed class TaskListViewModelFactory
         var ordered = tasks.OrderBy(static task => task.IsCompleted);
         return sortMode switch
         {
+            TaskListSortMode.Habitica => ordered,
             TaskListSortMode.ValueHigh => ordered
                 .ThenBy(static task => task.Value is null)
                 .ThenByDescending(static task => task.Value ?? decimal.MinValue)

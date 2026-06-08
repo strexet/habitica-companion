@@ -73,6 +73,23 @@ public sealed class TaskListViewModelFactoryTests
     }
 
     [Fact]
+    public void Create_preserves_snapshot_order_for_default_habitica_sort()
+    {
+        var snapshot = new TaskCollectionSnapshot(
+            DateTimeOffset.Parse("2026-04-24T12:00:00Z"),
+            new[]
+            {
+                new TaskSnapshot("todo-b", "Beta", TaskType.Todo, false, 1m, null, null, 2m),
+                new TaskSnapshot("todo-a", "Alpha", TaskType.Todo, false, 1m, null, null, 1m),
+                new TaskSnapshot("todo-c", "Gamma", TaskType.Todo, false, 1m, null, null, 3m)
+            });
+
+        var viewModel = _factory.Create(snapshot, new TaskListFilter());
+
+        Assert.Equal(new[] { "Beta", "Alpha", "Gamma" }, viewModel.Groups.Single().Items.Select(item => item.Text).ToArray());
+    }
+
+    [Fact]
     public void Reorder_visible_subset_preserves_hidden_items_in_place()
     {
         var nextOrder = _orderPlanner.ReorderVisibleSubset(

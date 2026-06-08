@@ -6,10 +6,11 @@ public sealed record TaskListFilter(
     string? SearchText = null,
     bool IncludeCompleted = true,
     IReadOnlyCollection<TaskType>? SelectedTypes = null,
-    TaskListSortMode SortMode = TaskListSortMode.Name);
+    TaskListSortMode SortMode = TaskListSortMode.Habitica);
 
 public enum TaskListSortMode
 {
+    Habitica,
     Name,
     ValueHigh,
     ValueLow,

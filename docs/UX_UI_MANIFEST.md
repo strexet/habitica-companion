@@ -504,6 +504,7 @@ Application rule:
 - Pointer/touch drag is not enough. Provide keyboard and single-pointer alternatives such as focusable reorder handles, Move up/down commands, or a compact reorder mode. Announce moved item position through a live region where practical; the Tasks page uses a focusable drag handle with arrow-key movement and a polite live region.
 - Preserve filtered-out and collapsed items when reordering a visible subset. Reorder only within the current task group unless the UI explicitly supports cross-group moves and explains the property change.
 - Do not persist every hover position. Persist only on committed drop; debounce storage/cloud writes if a future implementation syncs order remotely.
+- Give each reordered task group a compact `Reset to Habitica` action only when that group has live custom order data. Reset must sit near reorder controls, affect only that group, and require no confirmation because the user can create a fresh order by rearranging again.
 
 References:
 

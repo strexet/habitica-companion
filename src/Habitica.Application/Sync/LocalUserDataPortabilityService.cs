@@ -78,10 +78,24 @@ public sealed class LocalUserDataPortabilityService
         var importedCount = 0;
         foreach (var record in records)
         {
+            if (IsEmptyTaskOrderPreferences(record.Key, record.Value))
+            {
+                await _keyValueStorage.RemoveAsync(record.Key, cancellationToken);
+                importedCount++;
+                continue;
+            }
+
             var localJson = await _keyValueStorage.GetRawJsonAsync(record.Key, cancellationToken);
             var nextJson = mode == LocalDataImportMode.Merge && !string.IsNullOrWhiteSpace(localJson)
                 ? MergeJson(record.Key, localJson!, record.Value)
                 : record.Value;
+
+            if (IsEmptyTaskOrderPreferences(record.Key, nextJson))
+            {
+                await _keyValueStorage.RemoveAsync(record.Key, cancellationToken);
+                importedCount++;
+                continue;
+            }
 
             await _keyValueStorage.SetRawJsonAsync(record.Key, nextJson, cancellationToken);
             importedCount++;
@@ -111,10 +125,22 @@ public sealed class LocalUserDataPortabilityService
             return;
         }
 
+        if (IsEmptyTaskOrderPreferences(record.Key, record.JsonText))
+        {
+            await _keyValueStorage.RemoveAsync(record.Key, cancellationToken);
+            return;
+        }
+
         var localJson = await _keyValueStorage.GetRawJsonAsync(record.Key, cancellationToken);
         var nextJson = mode == LocalDataImportMode.Merge && !string.IsNullOrWhiteSpace(localJson)
             ? MergeJson(record.Key, localJson!, record.JsonText)
             : record.JsonText;
+
+        if (IsEmptyTaskOrderPreferences(record.Key, nextJson))
+        {
+            await _keyValueStorage.RemoveAsync(record.Key, cancellationToken);
+            return;
+        }
 
         await _keyValueStorage.SetRawJsonAsync(record.Key, nextJson, cancellationToken);
     }
@@ -354,6 +380,17 @@ public sealed class LocalUserDataPortabilityService
         {
             ["ordersByType"] = merged
         });
+    }
+
+    private static bool IsEmptyTaskOrderPreferences(string storageKey, string jsonText)
+    {
+        if (!string.Equals(storageKey, StorageKeys.TaskOrderPreferences, StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        var orders = JsonNode.Parse(jsonText)?["ordersByType"]?.AsObject();
+        return orders is null || orders.Count == 0 || orders.All(static pair => ReadStringArray(pair.Value).Count == 0);
     }
 
     private static IReadOnlyList<string> MergeTaskOrderIds(IReadOnlyList<string> localIds, IReadOnlyList<string> incomingIds)

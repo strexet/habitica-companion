@@ -2664,6 +2664,7 @@ month activity chart
 expanded task compact activity charts
 drag-handle task reordering
 per-section rearrange toggle with task-card move to top/up/down/bottom controls
+per-section Reset to Habitica task-order control when local custom order exists
 empty-state messaging
 ```
 
@@ -2681,7 +2682,7 @@ Writes:
 
 ```text
 preferences/tasksPage/{userId}
-preferences/taskOrder
+preferences/taskOrder, removed when the last section custom order is reset
 ```
 
 ### API interaction
@@ -2697,7 +2698,7 @@ Current view-model rules:
 2. Filter by search text over task text and notes.
 3. Hide completed tasks by default.
 4. Group visible tasks in this order: To-Dos, Dailies, Habits, Rewards.
-5. Sort items within each group by completion state, then the selected sort mode: name, highest value, lowest value, or due soon.
+5. Sort items within each group by completion state, then the selected sort mode: Habitica snapshot order, name, highest value, lowest value, or due soon. Habitica snapshot order is the default.
 6. Keep group fold state and completed visibility separately for each task type.
 7. Persist task-page preferences by user id on the current device.
 8. Show the numeric task value when available.
@@ -2710,10 +2711,11 @@ Current view-model rules:
 15. Drag reordering is scoped to the current task type group and preserves hidden or completed items that are filtered out of the visible subset.
 16. Focused drag handles support arrow-key reordering through the same local ordering path for keyboard precision.
 17. Keep rearrange controls hidden by default. Each task group exposes an in-memory `Rearrange` toggle that reveals the drag handle plus one horizontal row of move-to-top, move-up, move-down, and move-to-bottom buttons. The buttons use the same local ordering path and disable edge moves that would not change the visible order.
-18. Parse cached task history points when Habitica returns them and keep them attached to task snapshots.
-19. Let users switch task statistics between week, month, and year periods.
-20. Render aggregate task-history and month-activity charts from cached history without requiring a live refresh.
-21. Render smaller history and month-activity charts inside expanded task details only, so task cards remain scannable by default.
+18. Each task group with live custom order data exposes `Reset to Habitica`. Reset removes only that task type from `preferences/taskOrder`, leaves other task types unchanged, switches the task view back to Habitica snapshot order, and syncs the `task-order-preferences` section. Resetting the last custom section uploads an empty task-order section for cloud sync, then removes the local `preferences/taskOrder` record so opening the page does not create a blank placeholder. Importing an empty task-order section removes the local record.
+19. Parse cached task history points when Habitica returns them and keep them attached to task snapshots.
+20. Let users switch task statistics between week, month, and year periods.
+21. Render aggregate task-history and month-activity charts from cached history without requiring a live refresh.
+22. Render smaller history and month-activity charts inside expanded task details only, so task cards remain scannable by default.
 ```
 
 ### Validation

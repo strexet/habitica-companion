@@ -2628,6 +2628,10 @@ input[type="radio"] {
     min-width: 0;
 }
 
+.task-order-reset-button {
+    white-space: nowrap;
+}
+
 .companion-group-actions {
     justify-content: flex-end;
 }

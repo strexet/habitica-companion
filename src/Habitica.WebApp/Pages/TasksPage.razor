@@ -34,6 +34,7 @@
             <label class="field-row compact">
                 <span>Sort</span>
                 <select class="app-input" value="@_sortMode.ToString()" @onchange="eventArgs => SetSortMode(eventArgs.Value?.ToString())">
+                    <option value="Habitica">Habitica</option>
                     <option value="Name">Name</option>
                     <option value="ValueHigh">Highest value</option>
                     <option value="ValueLow">Lowest value</option>
@@ -151,6 +152,12 @@
                             <button class="secondary-action-button compact" type="button" data-testid="@($"rearrange-tasks-{group.Type}")" @onclick="@(() => ToggleRearranging(group.Type))">
                                 @(isRearranging ? "Done rearranging" : "Rearrange")
                             </button>
+                            @if (HasCustomTaskOrder(group.Type))
+                            {
+                                <button class="secondary-action-button compact task-order-reset-button" type="button" data-testid="@($"reset-task-order-{group.Type}")" @onclick="@(() => ResetTaskOrderAsync(group.Type))">
+                                    Reset to Habitica
+                                </button>
+                            }
                             <button class="secondary-action-button compact" type="button" @onclick="@(() => ToggleCompletedAsync(group.Type))">
                                 @(showCompleted ? "Hide completed" : "Show completed")
                             </button>
@@ -393,7 +400,7 @@
     private string? _searchText;
     private string? _loadedPreferenceUserId;
     private string? _reorderAnnouncement;
-    private TaskListSortMode _sortMode = TaskListSortMode.Name;
+    private TaskListSortMode _sortMode = TaskListSortMode.Habitica;
     private TaskAnalysisPeriod _analysisPeriod = TaskAnalysisPeriod.Week;
 
     private enum TaskReorderTarget
@@ -489,7 +496,19 @@
     {
         _sortMode = Enum.TryParse<TaskListSortMode>(rawValue, out var sortMode)
             ? sortMode
-            : TaskListSortMode.Name;
+            : TaskListSortMode.Habitica;
+    }
+
+    private bool HasCustomTaskOrder(TaskType taskType)
+    {
+        if (!_taskOrderPreferences.TryGetValue(taskType, out var taskIds) || taskIds.Length == 0)
+        {
+            return false;
+        }
+
+        var snapshotItems = SessionController.State.TaskSnapshot?.Items;
+        return snapshotItems is not null
+            && taskIds.Any(taskId => snapshotItems.Any(task => task.Type == taskType && string.Equals(task.Id, taskId, StringComparison.Ordinal)));
     }
 
     private void SetAnalysisPeriod(string? rawValue)
@@ -749,6 +768,20 @@
         await InvokeAsync(StateHasChanged);
     }
 
+    private async Task ResetTaskOrderAsync(TaskType taskType)
+    {
+        if (!HasCustomTaskOrder(taskType))
+        {
+            return;
+        }
+
+        _taskOrderPreferences.Remove(taskType);
+        _sortMode = TaskListSortMode.Habitica;
+        await SaveTaskOrderPreferencesAsync();
+        _reorderAnnouncement = "Order reset to Habitica.";
+        await InvokeAsync(StateHasChanged);
+    }
+
     private int GetVisiblePosition(TaskType taskType, string taskId)
     {
         var group = CurrentViewModel.Groups.FirstOrDefault(candidate => candidate.Type == taskType);
@@ -871,11 +904,18 @@
 
     private async Task SaveTaskOrderPreferencesAsync()
     {
-        var preferences = new TaskOrderPreferences(
-            _taskOrderPreferences.ToDictionary(
-                pair => pair.Key.ToString(),
-                pair => pair.Value,
-                StringComparer.Ordinal));
+        if (_taskOrderPreferences.Count == 0)
+        {
+            await KeyValueStorage.SetAsync(
+                StorageKeys.TaskOrderPreferences,
+                new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)),
+                CancellationToken.None);
+            await SessionController.SyncAppDataSectionAsync(CloudSyncSection.TaskOrderPreferences);
+            await KeyValueStorage.RemoveAsync(StorageKeys.TaskOrderPreferences, CancellationToken.None);
+            return;
+        }
+
+        var preferences = new TaskOrderPreferences(ToTaskOrderPreferenceDictionary());
         await KeyValueStorage.SetAsync(StorageKeys.TaskOrderPreferences, preferences, CancellationToken.None);
         _ = SessionController.SyncAppDataSectionAsync(CloudSyncSection.TaskOrderPreferences);
     }
@@ -911,6 +951,14 @@
     private static Dictionary<string, bool> ToPreferenceDictionary(IReadOnlyDictionary<TaskType, bool> source)
     {
         return source.ToDictionary(pair => pair.Key.ToString(), pair => pair.Value, StringComparer.Ordinal);
+    }
+
+    private Dictionary<string, string[]> ToTaskOrderPreferenceDictionary()
+    {
+        return _taskOrderPreferences.ToDictionary(
+            pair => pair.Key.ToString(),
+            pair => pair.Value,
+            StringComparer.Ordinal);
     }
 
     private void ApplyTaskOrderPreferences(TaskOrderPreferences? preferences)

@@ -171,6 +171,32 @@ public sealed class LocalUserDataPortabilityServiceTests
     }
 
     [Fact]
+    public async Task ImportAsync_removes_task_order_preferences_when_incoming_section_is_empty()
+    {
+        var storage = new InMemoryKeyValueStorage();
+        var service = new LocalUserDataPortabilityService(storage, TimeProvider.System);
+        await storage.SetAsync(
+            StorageKeys.TaskOrderPreferences,
+            new TaskOrderPreferences(new Dictionary<string, string[]>(StringComparer.Ordinal)
+            {
+                ["Todo"] = new[] { "todo-2", "todo-1" }
+            }),
+            CancellationToken.None);
+        var bundle = new LocalUserDataBundle(
+            1,
+            DateTimeOffset.Parse("2026-05-13T03:00:00Z"),
+            "user-id",
+            new[]
+            {
+                new LocalUserDataRecord(StorageKeys.TaskOrderPreferences, """{"ordersByType":{}}""")
+            });
+
+        await service.ImportAsync(bundle, LocalDataImportMode.Merge, CancellationToken.None);
+
+        Assert.Null(await storage.GetRawJsonAsync(StorageKeys.TaskOrderPreferences, CancellationToken.None));
+    }
+
+    [Fact]
     public async Task ImportAsync_merges_color_schemes_by_timestamp_per_id_and_selection()
     {
         // Cross-device merge: custom schemes union by id with newer updatedAtUtc winning, and
