@@ -1,6 +1,6 @@
 # UX/UI Manifest
 
-Last reviewed: 2026-06-05
+Last reviewed: 2026-06-08
 
 This manifest records the current UI implementation, what is working, where readability or responsiveness has drifted, and which outside patterns are worth copying. Treat it as product guidance for future UI work, not as a pixel spec.
 
@@ -112,7 +112,7 @@ Layout rules:
 
 Current placement:
 
-- Dashboard: companion summary shows current pet and mount thumbnails when available. Inventory summary uses small official category icons for eggs, food, hatching potions, and quest scroll counts. Pending quest damage remains text-only so it does not crowd Start New Day and stat allocation action rows.
+- Dashboard: Start New Day gear previews use official gear thumbnails. Companion and inventory summaries live on Inventory and Pets & Mounts, not on Dashboard. Pending quest damage remains text-only so it does not crowd Start New Day and stat allocation action rows.
 - Dashboard navigation cards use stable local routes plus stable Habitica web URLs only; do not add mobile app deep links or custom schemes.
 - Tasks: keep task cards primarily text and control driven. Use Habitica art only for explicit reward/item/quest targets added by a future feature. Task type/status affordances may use simple UI icons, not game art.
 - Inventory: gear thumbnails appear in battle loadout slots, best-in-category entries, expanded gear cards, accessory cards, and saved preset items. Fixed identity columns keep slot labels, class text, stat pills, and equip actions aligned. Summary cards use compact item icons with readable counts.
@@ -188,7 +188,7 @@ Current pattern:
 - HP, MP, and XP cards include compact meters so the current ratio has a readable shape, not only text.
 - Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action includes an optional gear recommendation preview, an expanded compact list for due unfinished Dailies, and inline confirmation instead of an immediate mutation.
 - Stats allocation table with horizontal overflow.
-- Explicit armoire action and companion/inventory summary panels.
+- Explicit armoire and gem-for-gold actions plus companion navigation links.
 
 What works:
 
@@ -551,12 +551,11 @@ References:
 
 1. Add disabled-action reason text for inventory and dashboard allocation.
 2. Add task filters for type, status, due window, and value polarity.
-3. Add inventory before/after stat deltas for equip actions.
-4. Split party quest state and queue planning into clearer modes.
-5. Add a settings danger zone with confirmation for destructive actions.
-6. Reduce repeated hero/help copy for returning authenticated users.
-7. Introduce a compact spell-card mode after the current stable card layout has been tested.
-8. Add sticky first-column or label context for mobile stat tables.
+3. Split party quest state and queue planning into clearer modes.
+4. Add a settings danger zone with confirmation for destructive actions.
+5. Reduce repeated hero/help copy for returning authenticated users.
+6. Introduce a compact spell-card mode after the current stable card layout has been tested.
+7. Add sticky first-column or label context for mobile stat tables.
 
 ## Source Notes
 

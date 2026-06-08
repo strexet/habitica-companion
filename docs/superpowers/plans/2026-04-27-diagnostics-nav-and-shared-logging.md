@@ -1,6 +1,8 @@
 # Diagnostics Navigation And Shared Logging Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+Status note, 2026-06-08: this is a historical implementation plan for Diagnostics navigation and shared logging. The feature is implemented. Do not execute this checklist as current work; use `FEATURES.md` section 17, `TECHNICAL.md`, and current code/tests for source-of-truth behavior.
+
+> **Historical only:** The checklist below records the original implementation sequence and may include expected failures, file creation steps, commands, or notes that are no longer true.
 
 **Goal:** Turn the current `Live Tests` surface into a first-class `Diagnostics` workspace with curated preset API inspection and a persistent shared diagnostics log that future features can reuse.
 
@@ -1525,7 +1527,7 @@ Run:
 /bin/zsh -c 'DOTNET_CLI_HOME=/tmp/habitica-tool-dotnet-home dotnet test Habitica.sln -m:1 -nodeReuse:false'
 ```
 
-Expected: PASS, with the existing note that `Habitica.Domain.Tests` and `Habitica.Rules.Tests` may still contain no tests.
+Expected at the time of the plan: PASS. Current test coverage has since expanded in `Habitica.Domain.Tests` and `Habitica.Rules.Tests`.
 
 - [ ] **Step 4: Run the full solution build**
 

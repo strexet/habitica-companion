@@ -30,7 +30,7 @@ Request behavior:
 
 - Uses Habitica API v3 at `https://habitica.com/api/v3`.
 - Sends `x-client`, `x-api-user`, and `x-api-key` for authenticated user, task, tavern, and party calls.
-- Sends `x-client` for content calls.
+- Sends `x-client` for content calls. This is a third-party tool observation, not local app behavior; the local app currently fetches content through the authenticated API client and sends auth headers too.
 - Fetches full `/user` for the main account snapshot instead of relying on narrow `userFields`.
 - Keeps the tool read-only. Its source explicitly warns against adding account-mutating features.
 - Handles `TooManyRequests` and `NotAuthorized` with user-facing messages, including a retry-after-wait recommendation for rate limits.
@@ -104,7 +104,7 @@ Useful design takeaways:
 
 - `includeAllPublicFields=true` can expose useful member-side party quest progress, including `party.quest.progress.up`, when Habitica returns it.
 - Total party pending boss damage/items should be computed from member progress values, not guessed from the party group's top-level progress.
-- Member list pagination must handle inaccurate group `memberCount` values.
+- Member list pagination must handle inaccurate group `memberCount` values before the app supports large group/guild scans; the current app party snapshot path is a single unpaginated party-member request.
 - Avoid unbounded member detail fetches; prefer the paged public member list and fetch individual member profiles only when a needed member is missing.
 - Rate-limit handling should use both remaining/reset headers and `Retry-After`.
 

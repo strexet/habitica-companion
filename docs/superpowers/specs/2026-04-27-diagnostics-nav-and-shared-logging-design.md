@@ -1,5 +1,7 @@
 # Diagnostics Navigation And Shared Logging Design
 
+Status note, 2026-06-08: this is a historical pre-implementation design snapshot. It does not describe the current app state. Use `FEATURES.md` section 17 for implemented Diagnostics behavior, `TECHNICAL.md` for logging/storage architecture, and `docs/UX_UI_MANIFEST.md` for current UI guidance.
+
 ## Goal
 
 Add a diagnostics-forward operator surface to the existing Habitica web app without changing the current left-side expandable navigation model.
@@ -12,9 +14,9 @@ The resulting design must:
 - add a shared cross-feature diagnostics log visible from the Diagnostics console;
 - preserve the rule that normal user-facing mutations belong on dedicated feature pages, not inside Diagnostics.
 
-## Current context
+## Original context
 
-The current app already has:
+At the time this design was written, the app had:
 
 - a left drawer shell driven by `MainLayout` and `AppNavMenu`;
 - read-only dashboard, tasks, inventory, and party views;

@@ -238,7 +238,7 @@ To determine state accurately, a client needs at least:
 - member timezone or UTC offset information used by Habitica;
 - current server time or a trusted current timestamp.
 
-Depending on API permissions and returned public fields, some of this data may not be available for other party members. If `lastCron`, Custom Day Start, or timezone data is missing, mark the result as `Unknown` rather than guessing.
+Depending on API permissions and returned public fields, some of this data may not be available for other party members. If the CRON timestamp itself is missing, mark the result as `Unknown`. If a public member timestamp is available but Custom Day Start or timezone data is hidden, the current app classifies from a UTC-day fallback and marks persisted history as low confidence.
 
 ### 12.3 Practical Algorithm
 
@@ -250,7 +250,8 @@ For each party member:
 4. Compute the start of the member's current Habitica day.
 5. If `lastCron >= currentHabiticaDayStart`, classify as `Croned today`.
 6. If `lastCron < currentHabiticaDayStart`, classify as `Not croned yet`.
-7. If required fields are missing, classify as `Unknown`.
+7. If `lastCron` is missing, classify as `Unknown`.
+8. If `lastCron` exists but day-start or timezone fields are missing, either classify as `Unknown` or use an explicitly low-confidence public-data fallback. The current app uses the UTC-day fallback.
 
 Pseudo-code:
 
@@ -259,7 +260,7 @@ type CronState = "CRONED_TODAY" | "NOT_CRONED_YET" | "UNKNOWN";
 
 function getCronState(member: HabiticaMember, now: Date): CronState {
   if (!member.lastCron) return "UNKNOWN";
-  if (!member.preferences?.dayStart) return "UNKNOWN";
+  if (member.preferences?.dayStart == null) return classifyFromPublicCronTimestamp(member.lastCron, now);
   if (!hasUsableTimezoneData(member)) return "UNKNOWN";
 
   const habiticaDayStart = computeHabiticaDayStart(

@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-06-05
+Last updated: 2026-06-08
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -270,9 +270,9 @@ Validation failures and Habitica API failures return `PartyQuestActionResult.Fai
 
 ## 5. Gear set management
 
-Status: planned
-Owner module: `Habitica.Rules.Equipment`
-Application entry point: `Habitica.Application.Equipment`
+Status: implemented for local battle presets; broader macro-oriented gear sets planned
+Owner module: `Habitica.WebApp.Pages.InventoryPage`, `Habitica.Storage`, `Habitica.WebApp.State`
+Application entry point: `Habitica.WebApp.Pages.InventoryPage`
 Primary Habitica data: user equipment, owned gear, current gear, class, stats
 Mutates Habitica state: yes when equipping a set
 Requires confirmation: yes for one-click equip if multiple slots change
@@ -282,6 +282,8 @@ Rate-limit sensitivity: medium for multi-slot changes
 ### Goal
 
 Allow users to create named combat/utility gear sets from owned equipment and equip them with one action.
+
+Current implementation supports local battle presets in Inventory: save current battle gear, save optimizer recommendations as presets, rename/remove presets, show stable preset ids, and equip changed preset slots sequentially. Broader macro-oriented gear-set references remain future work.
 
 ### Inputs
 
@@ -379,9 +381,9 @@ Confirm exact Habitica API semantics for equipping multiple slots and whether an
 
 ## 6. Skill-specific gear optimizer
 
-Status: planned
-Owner module: `Habitica.Rules.Equipment`
-Application entry point: `Habitica.Application.Equipment`
+Status: partial
+Owner module: `Habitica.Rules.Equipment`, `Habitica.Rules.Spells`, `Habitica.Application.Inventory`
+Application entry point: `Habitica.WebApp.Pages.InventoryPage`, `Habitica.WebApp.Pages.SpellsPage`
 Primary Habitica data: owned gear, gear stats, user class, user stats, skill formulas
 Mutates Habitica state: no by itself
 Requires confirmation: no
@@ -391,6 +393,8 @@ Rate-limit sensitivity: low
 ### Goal
 
 Recommend the best owned gear for a selected skill or action.
+
+Current implementation covers Inventory optimizer goals and per-spell dynamic equipment recommendations. A generic reusable optimizer surface for every skill/action remains planned.
 
 Examples:
 
@@ -548,7 +552,7 @@ GET /tasks/user
 GET /groups/party
 ```
 
-After successful spell casts, refresh `/user` and `/tasks/user` because mana, HP, XP, GP, buffs, quest contribution, and task values can change. After a party-targeted spell, also refresh `/groups/party` so cached party-member HP, MP, and buff rows reflect the cast. A failed post-cast party refresh keeps the successful cast result and previous cached party snapshot, writes a warning diagnostic, and tells the user that party refresh needs retry. Self- and task-targeted spells do not add that party request. If the user chooses `Start New Day and Cast` from the buff timing warning, run `/cron` first, refresh account/tasks/party state, and only cast after Cron succeeds. After stat allocation from Dashboard, refresh `/user`. Dynamic gear recommendation Equip buttons reuse the existing inventory equip flow and refresh `/user`, which causes spell estimates and `Equipped` button states to be recalculated. User-initiated multi-request spell flows execute sequentially with the configured `Features:HabiticaRequestDelayMilliseconds` pause between Habitica API calls; the default is a conservative 1000 ms UI pacing value, not a documented Habitica limit. `HabiticaApiClient` parses `Retry-After`, `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. A `429` response is surfaced as a wait message without raw `429 Too Many Requests` copy, and failed non-idempotent mutations are not replayed automatically. If successful responses report zero remaining requests with a reset time, the client waits before the next request.
+After successful spell casts, refresh `/user` and `/tasks/user` because mana, HP, XP, GP, buffs, quest contribution, and task values can change. After a party-targeted spell, also refresh `/groups/party` so cached party-member HP, MP, and buff rows reflect the cast. A failed post-cast party refresh keeps the successful cast result and previous cached party snapshot, writes a warning diagnostic, and tells the user that party refresh needs retry. Self- and task-targeted spells do not add that party request. If the user chooses `Start New Day and Cast` from the buff timing warning, run `/cron` first, refresh account/tasks/party state, and only cast after Cron succeeds. After stat allocation from Dashboard, refresh `/user`. Dynamic gear recommendation Equip buttons reuse the existing inventory equip flow and refresh `/user`, which causes spell estimates and `Equipped` button states to be recalculated. User-initiated multi-request spell flows execute sequentially with any extra fixed delay configured by `Features:HabiticaRequestDelayMilliseconds`; the current default is 0 ms because `HabiticaApiClient` performs adaptive token-bucket throttling and honors server rate-limit headers. `HabiticaApiClient` parses `Retry-After`, `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. A `429` response is surfaced as a wait message without raw `429 Too Many Requests` copy, and failed non-idempotent mutations are not replayed automatically. If successful responses report zero remaining requests with a reset time, the client waits before the next request.
 
 ### Algorithm / rules
 
@@ -1124,7 +1128,7 @@ Extract or verify formulas from official docs, Habitica source, or validated com
 Status: partial
 Owner module: `Habitica.WebApp.Dashboard`
 Application entry point: `Habitica.Application.Dashboard`
-Primary Habitica data: user, tasks, party, inventory, equipment, quest, sync metadata
+Primary Habitica data: user, tasks, party, gear catalog, quest, sync metadata
 Mutates Habitica state: yes for Start New Day, manual health-potion purchase, and gem-for-gold purchase
 Requires confirmation: yes for Start New Day, health-potion purchase, and gem-for-gold purchase
 Offline behavior: primary feature works offline from snapshots
@@ -1148,8 +1152,6 @@ execution logs
 
 ```text
 user summary
-current pet and mount state
-inventory readiness summary
 task-count summary
 pending damage estimate with included and excluded sources
 knockout risk warning when estimated damage is high relative to current HP
@@ -1241,7 +1243,6 @@ Current implementation:
 - responsive app shell;
 - sign-in entry route;
 - dashboard route with cached account cards;
-- dashboard inventory readiness summary;
 - dashboard stat cards fall back to current-only rendering when the API snapshot lacks non-zero stat targets;
 - dashboard Start New Day confirmation and inline result when current-user Cron is due;
 - dashboard and Spells CRON unfinished-dailies mini lists with guarded inline checkoff;

@@ -1,6 +1,6 @@
 # Habitica API Integration Guide
 
-Last researched: 2026-06-03
+Last researched: 2026-06-08
 Target API: Habitica API v3
 Audience: developers building a new Habitica client or integration
 
@@ -113,11 +113,13 @@ Retry-After: <seconds>
 Client requirements:
 
 - Respect `Retry-After` exactly.
-- Use exponential backoff with jitter for transient network failures and 5xx responses.
+- Use exponential backoff with jitter for transient network failures and 5xx responses when implementing an automatic retry layer.
 - Do not retry non-idempotent requests blindly.
 - For automated background scripts, keep at least 30 seconds between API calls unless the user explicitly initiated the action.
 - Add termination conditions for automation loops. Example: stop auto-casting skills when the user no longer has enough mana.
 - Do not poll aggressively for state that can be refreshed manually or obtained through webhooks.
+
+Current app note: `HabiticaApiClient` uses an adaptive token-bucket throttle, honors `Retry-After`, and surfaces non-success responses as `HabiticaApiException`; it does not currently replay failed requests through a generic retry/backoff layer.
 
 Operational note: public tools that enumerate party or guild members can generate many requests. Use pagination, cache immutable content, and expose progress/cancellation in the UI.
 
@@ -265,6 +267,7 @@ Common endpoints:
 | GET | `/user/inventory/buy` | Get gear/equipment available for purchase. |
 | GET | `/user/in-app-rewards` | Get in-app reward column items. |
 | POST | `/user/buy/:key` | Buy gear, armoire, potion, quest, or special item. |
+| POST | `/user/buy-health-potion` | Buy a health potion through the dedicated route. |
 | POST | `/user/buy-gear/:key` | Buy a specific gear item. |
 | POST | `/user/purchase/:type/:key` | Purchase gem or gem-purchasable item. |
 | POST | `/user/hatch/:egg/:hatchingPotion` | Hatch a pet. |
@@ -273,11 +276,13 @@ Common endpoints:
 | POST | `/user/sell/:type/:key` | Sell eggs, hatching potions, or food. |
 | POST | `/user/release-pets` | Release pets. |
 | POST | `/user/release-mounts` | Release mounts. |
-
-For this app's bulk sell planner, `:type` is limited to the inventory object names Habitica exposes for supported sellable categories: `eggs`, `food`, and `hatchingPotions`. Do not send gear or quest scrolls through the bulk sell flow unless the API contract is verified separately.
 | POST | `/user/release-both` | Release pets and mounts. |
 | POST | `/user/revive` | Revive from death. |
 | POST | `/user/rebirth` | Use Orb of Rebirth. |
+
+For this app's bulk sell planner, `:type` is limited to the inventory object names Habitica exposes for supported sellable categories: `eggs`, `food`, and `hatchingPotions`. Do not send gear or quest scrolls through the bulk sell flow unless the API contract is verified separately.
+
+For this app's Dashboard health-potion action, the current API client uses the generic route `POST /user/buy/potion`. Habitica also exposes the dedicated `POST /user/buy-health-potion` route in current server source; switch only with a focused API-client update and tests.
 
 For `/user/purchase/:type/:key`, the wiki notes that a `quantity` body parameter can be supplied for supported purchases, even where this is not fully reflected in the official API docs:
 
@@ -714,6 +719,8 @@ x-client: <tool-author-user-id>-<application-name>
 Accept: application/json
 ```
 
+Current app note: `HabiticaApiClient` fetches the content catalog through the credentialed client and therefore sends `x-api-user`, `x-api-key`, and `x-client` for `GET /content?language=en`.
+
 Use the content catalog to resolve source keys and display text before choosing an image:
 
 - Gear: use `gear.flat[*].key` as the stable equipment image key; keep `type`, `klass`, `index`, `text`, and `notes` for labels and filtering.
@@ -876,7 +883,7 @@ When `party.quest.progress.up` is present on public member records, it is the me
 
 Treat these member fields as optional. Store observed CRON timestamps as UTC timestamps for local statistics. If member-specific day start or timezone data is unavailable, classify the member from the public CRON timestamp using a UTC-day fallback and mark persisted history as low confidence; do not require webhooks or Habitica account setting changes for party reads.
 
-Pagination pattern:
+Large-group pagination pattern:
 
 1. Request `/groups/:groupId/members?limit=60`.
 2. Sort is by `_id` ascending on the server.
@@ -884,7 +891,7 @@ Pagination pattern:
 4. Request `/groups/:groupId/members?limit=60&lastId=<last-id>`.
 5. Stop when the response contains fewer than requested limit.
 
-For large guilds, expose cancellation and progress. Do not run multiple full member scans concurrently for the same account.
+The current app's party snapshot path makes one `GET /groups/party/members?includeAllPublicFields=true` request and does not paginate. Add pagination before supporting large guild/member scans, and expose cancellation and progress. Do not run multiple full member scans concurrently for the same account.
 
 ### 13.2 Party and quest operations
 

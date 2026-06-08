@@ -1,6 +1,6 @@
 # Habitica Mobile Deep Links
 
-Last researched: 2026-05-21
+Last researched: 2026-06-08
 
 This document records whether Habitica browser links can open the official mobile apps directly to party or quest views.
 
@@ -27,7 +27,7 @@ Checked:
 - `https://habitica.com/apple-app-site-association`
 - `https://habitica.com/.well-known/assetlinks.json`
 
-All three URLs returned the Habitica web app HTML shell with `content-type: text/html; charset=UTF-8`, not the JSON association documents required for iOS Universal Links or Android App Links. That means `https://habitica.com/party` must be treated as a web URL, not as a verified app-opening link.
+On 2026-06-08, the `.well-known` association URLs returned `404` JSON responses, not the JSON association documents required for iOS Universal Links or Android App Links. That means `https://habitica.com/party` must be treated as a web URL, not as a verified app-opening link.
 
 ### Android app source
 
@@ -63,4 +63,3 @@ Until the official mobile apps and `habitica.com` association files document a s
 - do not add platform-specific app-opening probes;
 - do not add custom-scheme fallbacks;
 - do not add Android `intent://` URLs.
-

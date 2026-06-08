@@ -1,6 +1,6 @@
 # TECHNICAL.md
 
-Last updated: 2026-05-25
+Last updated: 2026-06-08
 Primary audience: AI agents and senior developers
 Project type: third-party Habitica companion client
 Primary Habitica integration reference: `HABITICA_API.md`
@@ -39,7 +39,9 @@ When implementing or modifying the project, use the following priority order:
 6. Official external documentation.
 7. Community notes, forums, Reddit, and third-party tools.
 
-If these sources conflict, prefer the higher-priority source and mention the conflict in the implementation notes or pull request summary.
+If these sources conflict during implementation, prefer the higher-priority source and mention the conflict in the implementation notes or pull request summary.
+
+For documentation audits and drift fixes, verify claims against the current codebase first, then against official Habitica server/mobile repositories and public API docs. Update or qualify stale documentation instead of treating older project docs as evidence that current code is wrong.
 
 ## 4. Baseline stack
 
@@ -167,7 +169,7 @@ Responsibilities:
 - `429 Too Many Requests` handling;
 - `Retry-After` handling;
 - rate-limit header tracking;
-- retry policy for safe transient failures;
+- safe transient retry policy only when a feature explicitly implements and verifies it;
 - request/response DTOs;
 - API error normalization;
 - redaction of credentials from logs.
@@ -254,7 +256,7 @@ Native shell work must not fork domain logic or Habitica API behavior.
 
 ### 4.8 Backend
 
-Do not add a backend for the initial architecture unless a documented feature requires it.
+The initial local-only architecture has been extended by documented Cloudflare backend surfaces. Do not add another backend surface unless a documented feature requires it.
 
 The baseline read/write Habitica architecture is:
 
@@ -743,12 +745,12 @@ MVP target framework: .NET 8 LTS (`net8.0`)
 Primary UI library: MudBlazor
 Primary local browser storage: IndexedDB through a pinned Dexie.js interop boundary
 Primary API target: Habitica API v3
-Backend: none for MVP
+Backend: Cloudflare Pages Functions with KV for encrypted app-data sync and D1 for shared party sync
 Native shell: optional future .NET MAUI Blazor Hybrid
 Domain logic: pure C# class libraries
 Workflow orchestration: application/use-case layer, not UI components
 Mutation model: validated, sequential, dry-run-first for multi-step actions
-Sync model: manual/user-initiated snapshot sync
+Sync model: user-initiated Habitica refresh plus automatic encrypted app-data and party-sync attempts after supported refreshes, mutations, and local preference saves
 Freshness model: fresh/stale/expired/missing with mutation gating
 Credential model: local-only, password-equivalent, session-only by default with explicit persistent opt-in
 ```

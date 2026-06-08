@@ -2,24 +2,26 @@
 
 Third-party companion client for Habitica power users. The project is focused on local data analysis, explainable recommendations, and safe assisted actions rather than replacing the official Habitica app.
 
-Current status: web-app MVP implemented and expanding into guarded actions. The repository contains a Blazor WebAssembly PWA shell with Habitica credential sign-in, staged refresh, cached account/task/party/inventory snapshots, local dashboards, task and spell actions with freshness gates, shared party quest planning, diagnostics, and local/cloud data controls.
+Current status: web-app MVP implemented and expanding into guarded actions. The repository contains a Blazor WebAssembly PWA shell with Habitica credential sign-in, staged refresh, cached account/task/party/inventory snapshots, local dashboards, task and spell actions with freshness gates, pets and mounts planning, shared party quest planning, diagnostics, and local/cloud data controls.
 
 ## Current MVP features
 
 - credential sign-in with session-only default and persistent local opt-in
 - manual and page-prioritized refresh against Habitica API v3
-- cached account dashboard with class, stat, companion, inventory, pending-damage, and health-potion helper cards
+- cached account dashboard with class stats, Start New Day, pending-damage, armoire, gem-for-gold, and health-potion helper cards
 - Dashboard `Start New Day` action with optional gear optimization when the current user needs Cron
-- inventory and equipment explorer with slot-grouped owned gear keys, battle presets, highest-stat highlights, equipment optimizer recommendations, bulk sell planning, and guarded equip/sell actions
-- party overview with cached quest progress, member CRON timing, shared quest pool, shared queue voting, recently completed quest history, tokenless party-sync claims, Officers, settings, and kick management
+- inventory and equipment explorer with slot-grouped owned gear keys, battle presets, highest-stat highlights, equipment optimizer recommendations, and guarded equip actions
+- Pets & Mounts workspace with companion collection browsing, hatching/feed planners, fast equip actions, and guarded bulk sell planning
+- party overview with cached party summary, member CRON timing, tokenless party-sync claims, Officers, settings, and kick management
+- Quests workspace with cached quest progress, shared quest pool, shared queue voting, recently completed quest history, and guarded quest lifecycle actions
 - spells workspace with target selection, approximate effect previews, dynamic gear recommendations, sequential casting, and Cron-sensitive buff warning
 - diagnostics workspace with safe checks, guarded reversible tests, curated API presets, and a shared redacted log console
 - local-first task snapshot storage through IndexedDB with a Dexie-backed JS module
 - local-first account snapshot storage for offline dashboard access
 - encrypted per-section Cloudflare sync for portable app data, with legacy single-blob restore fallback
-- responsive app shell with sign-in, dashboard, inventory, party, diagnostics, tasks, and settings routes
+- responsive app shell with sign-in, dashboard, tasks, inventory, pets and mounts, party, quests, spells, settings, diagnostics, and privacy routes
 - task workspace with search, filters, completed toggles, detail panels, history charts, manual ordering controls, freshness indicators, inline scoring/checkoff, and Habit multi-score controls
-- color schemes (on Settings, Dashboard, and Sign-in) with 20 built-in presets, shell/control theming, task min/base/max shade ramps, random themes with a chaos slider, and copy/paste custom presets saved as portable user data
+- color schemes (on Settings, Dashboard, and Sign-in) with built-in presets, shell/control theming, task min/base/max shade ramps, random themes with a chaos slider, and copy/paste custom presets saved as portable user data
 - sign-out for the current tab session and clear-local-data controls
 
 ## Planned feature areas

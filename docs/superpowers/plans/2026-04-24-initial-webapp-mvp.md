@@ -2,7 +2,7 @@
 
 Status note, 2026-05-21: this is a historical implementation plan for the first MVP. It does not describe the current app state. Use `README.md` for the current summary, `FEATURES.md` for implemented behavior, and `FUTURE.md` for the validated backlog.
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **Historical only:** Do not execute this plan task-by-task. The checklist below records the original MVP implementation path and may refer to files that now exist or behavior that has since changed.
 
 **Goal:** Build the first usable Habitica companion web app with credential login, local-first storage, manual sync, app navigation, and read-only task views.
 

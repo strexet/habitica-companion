@@ -40,15 +40,36 @@ date '+%Y-%m-%d-%H-%M'
 
 Do not hard-code example dates from this document. The timestamp must match the actual snapshot creation time.
 
-## Default Scope
+## Source Selection
 
-Use tracked project markdown files as the default source set:
+The user may choose what files go into the snapshot.
+
+Default scope:
+
+- include all tracked project markdown documents;
+- exclude documents that are not project-related, such as dependency, SDK, build-output, and vendor docs.
+
+Use tracked project markdown files as the default all-documents source set:
 
 ```bash
 git ls-files '*.md'
 ```
 
-If the same user request also creates a new source markdown document, include that intentional new document in the snapshot even before it is committed.
+Explicit user scope overrides the default.
+
+Supported explicit scopes:
+
+- one named markdown file;
+- several named markdown files;
+- one directory of markdown files;
+- a glob-like description, such as "only docs under `docs/superpowers/`";
+- a newly edited source markdown file from the same request.
+
+When the user asks to snapshot only one file, create a zip archive that contains only that file's snapshot copy.
+
+If the same user request also creates or edits a source markdown document and asks to snapshot that file, include that intentional source document even before it is committed. Do not add unrelated markdown files in this case.
+
+If the user's requested scope is ambiguous, make the narrowest reasonable interpretation from the request and report the chosen scope.
 
 Include a file only when it is relevant to this repository, such as:
 
@@ -70,7 +91,7 @@ If a tracked markdown file is not clearly repository-specific, exclude it and re
 
 ## Required Relevance Check
 
-Before creating the archive, inspect the candidate documents enough to confirm they contain real codebase-related information.
+Before creating the archive, inspect the selected candidate documents enough to confirm they contain real codebase-related information.
 
 Recommended checks:
 
@@ -90,6 +111,8 @@ done
 
 Do not claim relevance that was not checked.
 
+For explicit single-file snapshots, inspect that file directly. It is acceptable for the file to document this snapshot workflow itself; that is repository-specific AI-agent workflow information.
+
 ## Archive Naming
 
 Use the user's requested archive name when provided.
@@ -98,6 +121,12 @@ If no name is provided, use:
 
 ```text
 habitica-tool-documents-snapshot-YYYY-MM-DD-HH-MM.zip
+```
+
+If the user asks for a single-file snapshot and does not provide an archive name, prefer:
+
+```text
+habitica-tool-document-snapshot-<source-file-stem>-YYYY-MM-DD-HH-MM.zip
 ```
 
 Place the zip file at repository root.
@@ -117,6 +146,7 @@ Example:
 ```text
 README.md -> README.snapshot-2026-06-08-13-23.md
 docs/UX_UI_MANIFEST.md -> UX_UI_MANIFEST.snapshot-2026-06-08-13-23.md
+docs/DOCUMENTS_SNAPSHOT.md -> DOCUMENTS_SNAPSHOT.snapshot-2026-06-08-13-23.md
 ```
 
 If two files would produce the same archive member name, do not overwrite either file. Use a deterministic flattened relative path for the colliding files:
@@ -148,17 +178,20 @@ Keep the original markdown content after one blank line.
 ## Creation Steps
 
 1. Check worktree status.
-2. Gather candidate markdown files.
-3. Exclude ignored dependency, SDK, build-output, and vendor documents unless explicitly requested.
-4. Inspect candidates for repository relevance.
-5. Create a temporary staging directory outside the repository, such as `/private/tmp/habitica-tool-documents-snapshot-YYYY-MM-DD-HH-MM`.
-6. Copy each source markdown file into staging with the snapshot filename.
-7. Prepend the snapshot notice to each staged copy.
-8. Zip only staged markdown files from inside the staging directory, so archive entries are root-only.
-9. Verify archive entries with `unzip -l`.
-10. Verify at least one file header with `unzip -p`.
-11. Check `git status --short`.
-12. Report included count, exclusions, archive path, and source-doc status.
+2. Determine source scope from the user request.
+3. Gather selected candidate markdown files. Use all tracked project markdown files only when the user did not request a narrower scope.
+4. Exclude ignored dependency, SDK, build-output, and vendor documents unless explicitly requested.
+5. If the user selected one file, keep the candidate list to that one file.
+6. If the user selected a newly created or edited markdown file from the same request, include it even if it is not tracked yet.
+7. Inspect candidates for repository relevance.
+8. Create a temporary staging directory outside the repository, such as `/private/tmp/habitica-tool-documents-snapshot-YYYY-MM-DD-HH-MM`.
+9. Copy each selected source markdown file into staging with the snapshot filename.
+10. Prepend the snapshot notice to each staged copy.
+11. Zip only staged markdown files from inside the staging directory, so archive entries are root-only.
+12. Verify archive entries with `unzip -l`.
+13. Verify at least one file header with `unzip -p`.
+14. Check `git status --short`.
+15. Report included count, selected scope, exclusions, archive path, and source-doc status.
 
 ## Verification Requirements
 
@@ -168,6 +201,7 @@ After creating the archive, verify:
 - member files are at zip root, with no preserved source folders;
 - every member filename has `.snapshot-YYYY-MM-DD-HH-MM.md`;
 - every member starts with `SNAPSHOT DOCUMENT`;
+- single-file snapshot requests produce a zip with exactly one markdown member;
 - source markdown files were not edited by the snapshot-copy operation;
 - `git status --short` shows the new or updated zip and any intentional source documentation changes only.
 
@@ -177,6 +211,7 @@ Report:
 
 - zip path;
 - number of included markdown files;
+- selected source scope;
 - whether ignored/vendor/toolchain markdown files were excluded;
 - whether source markdown documents were untouched by snapshot-copy generation;
 - intentional source documentation changes, if the same request included them;

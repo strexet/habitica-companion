@@ -255,7 +255,9 @@ This rule is conditional. Do not create or update snapshot archives during ordin
 
 Default behavior for snapshot requests:
 
-- use tracked project markdown files as the source set;
+- use tracked project markdown files as the source set unless the user chooses a narrower source scope;
+- allow explicit user scope such as one markdown file, several markdown files, one documentation directory, or the newly edited markdown file from the same request;
+- for a single-file snapshot request, produce a zip archive containing only that file's renamed snapshot copy;
 - exclude ignored dependency, SDK, build-output, and vendor markdown files unless explicitly requested;
 - confirm each included document contains repository-specific information;
 - do not edit source documents while preparing snapshot copies;
