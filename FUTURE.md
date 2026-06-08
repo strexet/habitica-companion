@@ -58,6 +58,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Persisted appearance changes now request a narrow encrypted upload of the color-schemes cloud-sync section, while transient random themes, rerolls, chaos changes, and paste previews stay local until saved; Appearance close actions read `Done` unless they truly discard a preview/edit.
 - Healer Blessing estimates now use concise per-member HP copy, keep fresh-HP capping and aggregate scoring, and no longer expose group-total HP wording.
 - Inventory page user-facing labels now read Equipment across drawer navigation, page title, dashboard link, tests, and user-facing docs while preserving the `/inventory` route and inventory data/API terminology.
+- Spell cards now support Spend All Mana count planning, a cancellable one-second Preparing stage, card-local Cancel for active cast runs, cancellation-aware sequential spell execution, and a 350 ms default Habitica API minimum request spacing without adding an appsettings override.
 
 ## Pending Queue
 
@@ -76,102 +77,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Spell Bulk Casting Controls And 350 ms API Spacing
-
-Goal: improve spell bulk-cast safety and ergonomics by adding `Spend All Mana`, a cancellable one-second `Preparing...` stage, card-local cancellation, and a default Habitica API minimum request spacing of 350 ms.
-
-Source: promoted from pending queue on 2026-06-08. This entry intentionally combines spell UX and request-spacing update because the pending item couples them and both affect multi-cast pacing.
-
-Current context:
-- `src/Habitica.WebApp/Pages/SpellsPage.razor` already renders spell cards, cast-count input, mana previews, CRON-sensitive buff warnings, equipment recommendations, and card-local progress.
-- `src/Habitica.WebApp/State/AppSessionController.cs` already executes spell casts sequentially, optionally auto-equips/restores gear, refreshes snapshots, and uses `DelayBetweenHabiticaRequestsAsync(...)` between relevant requests.
-- `src/Habitica.Api/HabiticaApiClientOptions.cs` currently defaults `MinRequestSpacingMilliseconds` to 300.
-- `src/Habitica.WebApp/Program.cs` currently uses 300 as the fallback for `Habitica:MinRequestSpacingMilliseconds`.
-- `src/Habitica.WebApp/wwwroot/appsettings.json` currently has no spacing override and should remain that way.
-
-Touch:
-- `src/Habitica.WebApp/Pages/SpellsPage.razor`
-- `src/Habitica.WebApp/State/IAppSessionController.cs`
-- `src/Habitica.WebApp/State/AppSessionController.cs`
-- `src/Habitica.WebApp/State/SessionViewModel.cs`
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- `src/Habitica.Api/HabiticaApiClientOptions.cs`
-- `src/Habitica.WebApp/Program.cs`
-- `src/Habitica.WebApp/wwwroot/appsettings.json` only to confirm no override is added
-- `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs`
-- `tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs`
-- `tests/Habitica.Api.Tests/HabiticaApiClientTests.cs` or a new API options test file
-- `FEATURES.md`
-- `TECHNICAL.md`
-- `docs/UX_UI_MANIFEST.md`
-
-Out of scope:
-- parallel spell casting;
-- background or unattended automation;
-- rollback of successful Habitica mutations;
-- changing spell formulas or target recommendation scoring;
-- changing Habitica rate-limit header handling beyond the default spacing value;
-- adding `Habitica:MinRequestSpacingMilliseconds` to `appsettings.json`.
-
-Spend All Mana plan:
-1. Add a compact secondary `Spend All Mana` action near each eligible spell card's cast-count input.
-2. Compute maximum casts from the same cached mana and spell cost used by the existing mana preview: `floor(availableMana / spell.ManaCost)`.
-3. Respect the existing validated count maximum, currently clamped by the page model.
-4. Update the existing count state so total mana cost, remaining mana, estimated effect, quest damage estimate, and equipment-influenced estimates recalculate through current rendering.
-5. Do not start casting automatically and do not make an API request from `Spend All Mana`.
-6. Disable or hide the action for locked spells, stale/missing account data, unaffordable spells, and zero/malformed mana cost.
-
-Preparation and cancellation plan:
-1. Add an active spell-cast operation/cancellation model owned by the page or session controller, choosing the narrowest integration that can cancel preparation, request-spacing delays, and all before-request boundaries.
-2. Start preparation only after final user confirmation, including after any CRON warning decision.
-3. Set active progress immediately, render `Preparing...`, show initial progress, and expose `Cancel` only on the active spell card.
-4. Wait approximately one second with a cancellable async delay before any gear equip, spell cast, refresh, or local snapshot mutation.
-5. Check cancellation before auto-equip, between equipment requests, before each cast, between casts, during request-spacing delays, before refresh requests, between refreshes, and before restore-gear steps.
-6. Prefer cancellation boundaries before non-idempotent requests. If cancellation happens after a request was sent, never assume the server ignored it; refresh relevant snapshots before final state is shown.
-7. Report cancellation separately from API failure and success, with completed/requested counts when partial work happened.
-8. Keep successful Habitica mutations and never attempt rollback.
-
-Request-spacing plan:
-1. Change `HabiticaApiClientOptions.MinRequestSpacingMilliseconds` default from 300 to 350.
-2. Change the `Program.cs` fallback for `Habitica:MinRequestSpacingMilliseconds` from 300 to 350.
-3. Keep `src/Habitica.WebApp/wwwroot/appsettings.json` without a spacing override.
-4. Preserve adaptive token-bucket behavior, `Retry-After`, `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`, and the rule that failed non-idempotent mutations are not automatically replayed.
-5. Keep the one-second preparation delay separate from API throttling; preparation happens once per casting run, while minimum request spacing applies between API requests.
-
-UI behavior:
-- `Spend All Mana` is visually secondary to `Cast` and placed near the cast-count input.
-- `Cancel` appears only on the actively preparing/casting spell card.
-- Count, target, auto-equip, and recommendation controls are disabled or guarded when changing them would invalidate an active execution plan.
-- Other spell cards cannot start conflicting mutation flows while one sequential spell run is active.
-- Desktop layout remains aligned, and narrow/mobile layout wraps without overlap, clipping, or stair-step controls.
-- Preparation-to-casting transition reuses the same progress area and avoids card-height jumps.
-
-Result behavior:
-- Cancelling during preparation returns a non-error message such as `Casting cancelled before it started.` and sends zero Habitica requests.
-- Cancelling after partial completion returns a non-error message such as `Casting cancelled after 2 of 5 casts.`
-- Completing all casts returns success with the completed/requested count.
-- API errors remain errors and are not collapsed into cancellation copy.
-- Diagnostics include spell id, requested count, completed count, cancellation/failure stage when useful, and no credentials or sensitive headers.
-
-Acceptance:
-- Eligible spell cards render `Spend All Mana` near the count input.
-- `Spend All Mana` fills the maximum affordable count and updates existing previews without casting.
-- Locked, stale, unaffordable, and malformed-cost states do not produce misleading counts.
-- Pressing `Cast` starts `Preparing...` for about one second before any mutation or Habitica request.
-- `Cancel` is visible and usable during preparation and later cancellable steps.
-- Cancelling during preparation performs no API requests, no gear changes, and no local snapshot mutation.
-- Cancelling after partial completion preserves completed casts, stops later casts, and refreshes enough state to avoid stale mana/task/party/equipment display.
-- Duplicate/conflicting spell casting runs cannot be queued.
-- Default effective Habitica API minimum request spacing is 350 ms when no explicit configuration override exists.
-- Existing CRON warning, auto-equip, restore-gear, spell progress, and post-cast refresh behavior still works.
-
-Tests:
-- Add Spells page tests for `Spend All Mana` rendering, max count calculation, preview update, unaffordable state, locked spell state, stale/missing snapshot state, zero/malformed mana-cost guard, active `Preparing...` progress, and Cancel visibility only on the active card.
-- Add Spells page tests that existing target, count, Cast, auto-equip, CRON warning, and recommendation controls remain present.
-- Add layout/markup tests for desktop action grouping and narrow responsive structure where existing test style supports this.
-- Add session/controller tests for one-second preparation before first mutation, zero requests during preparation, cancellation during preparation, cancellation before auto-equip, cancellation between equipment requests, cancellation before first cast, cancellation between casts, cancellation during request-spacing delay, cancellation before refresh, partial completion result, failure remaining distinct from cancellation, busy state cleanup, and existing sequential cast order.
-- Add API/config tests that the options default is 350, the composition-root fallback is 350, explicit configuration still overrides the fallback, and `appsettings.json` contains no spacing override.
 
 ### Add Party Member Status Search
 

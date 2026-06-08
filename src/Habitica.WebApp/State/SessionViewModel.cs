@@ -95,7 +95,8 @@ public sealed record TaskScoreRequest(
 public sealed record SpellCastProgress(
     string SpellId,
     int Completed,
-    int Total);
+    int Total,
+    string Label = "");
 
 public sealed record TaskMutationProgress(
     string TaskId,

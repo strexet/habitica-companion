@@ -1663,12 +1663,13 @@ input[type="radio"] {
 
 .spell-action-row {
     display: grid;
-    grid-template-columns: minmax(8rem, 1fr) minmax(8rem, 12rem);
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
     gap: 0.75rem;
     align-items: center;
 }
 
-.spell-cast-button {
+.spell-cast-button,
+.spell-spend-all-button {
     width: 100%;
     min-height: 2.75rem;
 }
@@ -1690,6 +1691,14 @@ input[type="radio"] {
     gap: 0.45rem;
     color: var(--primary);
     font-weight: 700;
+}
+
+.spell-progress-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    align-items: center;
 }
 
 .spell-cron-warning {

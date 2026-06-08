@@ -71,6 +71,7 @@
         }
         else
         {
+            var isAnySpellOperationActive = SessionController.State.ActiveSpellCastProgress is not null;
             <section class="spells-grid">
                 @foreach (var spell in viewModel.Spells)
                 {
@@ -79,15 +80,22 @@
                     var autoEquip = GetAutoEquip(spell);
                     var selectedRecommendation = GetSelectedRecommendation(spell);
                     var isCasting = SessionController.State.ActiveSpellCastProgress?.SpellId == spell.Id;
+                    var controlsDisabled = isAnySpellOperationActive;
                     var equipmentProgress = GetEquipmentProgress(spell.Id);
                     var totalMana = spell.ManaCost * count;
                     var hasEnoughMana = totalMana <= viewModel.Mana;
                     var manaAfterCast = viewModel.Mana - totalMana;
+                    var maxAffordableCasts = GetMaxAffordableCasts(spell, viewModel.Mana);
                     var bossQuestContext = GetBossQuestContext(SessionController.State.PartySnapshot?.Quest, spell);
                     var showStatPointContext = viewModel.IsStatAllocationUnlocked
                         && viewModel.UnallocatedStatPoints > 0
                         && spell.HasStatPointContext;
+                    var canSpendAllMana = canMutate
+                        && !controlsDisabled
+                        && spell.IsUnlocked
+                        && maxAffordableCasts > 0;
                     var castDisabled = !canMutate
+                        || controlsDisabled
                         || !spell.IsUnlocked
                         || !hasEnoughMana
                         || (spell.TargetKind == SpellTargetKind.Task && !HasTarget(viewModel.TargetTasks, selectedTarget));
@@ -136,7 +144,7 @@
                                         <span>Count</span>
                                         <input class="app-input"
                                                data-testid="@($"spell-count-{spell.Id}")"
-                                               disabled="@isCasting"
+                                               disabled="@controlsDisabled"
                                                min="1"
                                                type="number"
                                                value="@count"
@@ -147,7 +155,7 @@
                                     {
                                         <label class="field-row compact spell-target-field">
                                             <span>Target</span>
-                                            <select class="app-input" value="@selectedTarget" @onchange="eventArgs => SetSelectedTarget(spell.Id, eventArgs.Value?.ToString())">
+                                            <select class="app-input" disabled="@controlsDisabled" value="@selectedTarget" @onchange="eventArgs => SetSelectedTarget(spell.Id, eventArgs.Value?.ToString())">
                                                 @foreach (var task in viewModel.TargetTasks)
                                                 {
                                                     <option value="@task.Id">@task.Text (@task.Type, value @FormatDecimal(task.Value))</option>
@@ -185,13 +193,22 @@
                                         {
                                             <label class="checkbox-row compact spell-auto-equip-field">
                                                 <input data-testid="@($"spell-auto-equip-{spell.Id}")"
-                                                       disabled="@isCasting"
+                                                       disabled="@controlsDisabled"
                                                        type="checkbox"
                                                        checked="@autoEquip"
                                                        @onchange="eventArgs => SetAutoEquip(spell.Id, eventArgs.Value is true)" />
                                                 <span>Auto equip</span>
                                             </label>
                                         }
+
+                                        <MudButton Class="spell-spend-all-button"
+                                                   Color="Color.Secondary"
+                                                   Disabled="@(!canSpendAllMana)"
+                                                   OnClick="() => SpendAllMana(spell.Id, maxAffordableCasts)"
+                                                   Variant="Variant.Outlined"
+                                                   data-testid="@($"spend-all-mana-{spell.Id}")">
+                                            Spend All Mana
+                                        </MudButton>
 
                                         <MudButton Class="spell-cast-button"
                                                    Color="Color.Primary"
@@ -241,7 +258,15 @@
                         {
                             var progress = SessionController.State.ActiveSpellCastProgress!;
                             <div class="spell-card-section spell-progress">
-                                <span>Casting @progress.Completed of @progress.Total</span>
+                                <div class="spell-progress-row">
+                                    <span>@GetProgressLabel(progress)</span>
+                                    <MudButton Color="Color.Secondary"
+                                               OnClick="CancelActiveSpellCastAsync"
+                                               Variant="Variant.Outlined"
+                                               data-testid="@($"cancel-spell-cast-{spell.Id}")">
+                                        Cancel
+                                    </MudButton>
+                                </div>
                                 <MudProgressLinear Class="scheme-progress-primary" Color="Color.Primary" Max="@progress.Total" Value="@progress.Completed" />
                             </div>
                         }
@@ -267,7 +292,7 @@
                                 {
                                     <label class="field-row compact spell-recommendation-selector">
                                         <span>Auto equip option</span>
-                                        <select class="app-input" data-testid="@($"spell-recommendation-selector-{spell.Id}")" value="@selectedRecommendation?.Name" @onchange="eventArgs => SetSelectedRecommendation(spell.Id, eventArgs.Value?.ToString())">
+                                        <select class="app-input" data-testid="@($"spell-recommendation-selector-{spell.Id}")" disabled="@controlsDisabled" value="@selectedRecommendation?.Name" @onchange="eventArgs => SetSelectedRecommendation(spell.Id, eventArgs.Value?.ToString())">
                                             @foreach (var recommendation in spell.EquipmentRecommendations)
                                             {
                                                 <option value="@recommendation.Name">@recommendation.Name</option>
@@ -333,6 +358,21 @@
     private int GetSpellCount(string spellId)
     {
         return _spellCounts.TryGetValue(spellId, out var count) ? Math.Max(1, count) : 1;
+    }
+
+    private static int GetMaxAffordableCasts(SpellCardViewModel spell, decimal availableMana)
+    {
+        return spell.ManaCost <= 0m
+            ? 0
+            : Math.Clamp((int)Math.Floor(availableMana / spell.ManaCost), 0, 99);
+    }
+
+    private void SpendAllMana(string spellId, int count)
+    {
+        if (count > 0)
+        {
+            _spellCounts[spellId] = count;
+        }
     }
 
     private void SetSpellCount(string spellId, string? rawValue)
@@ -420,6 +460,11 @@
     {
         var result = await SessionController.CastSpellAsync(request);
         Snackbar.Add(result.Message, result.Succeeded ? Severity.Success : Severity.Error);
+    }
+
+    private Task CancelActiveSpellCastAsync()
+    {
+        return SessionController.CancelActiveSpellCastAsync();
     }
 
     private IReadOnlyList<TaskSnapshot> GetCronUnfinishedDailies()
@@ -732,6 +777,13 @@
     {
         return !string.IsNullOrWhiteSpace(selectedTarget)
             && targetTasks.Any(task => string.Equals(task.Id, selectedTarget, StringComparison.Ordinal));
+    }
+
+    private static string GetProgressLabel(SpellCastProgress progress)
+    {
+        return string.IsNullOrWhiteSpace(progress.Label)
+            ? $"Casting {progress.Completed} of {progress.Total}"
+            : progress.Label;
     }
 
     private sealed record EffectEstimateSource(

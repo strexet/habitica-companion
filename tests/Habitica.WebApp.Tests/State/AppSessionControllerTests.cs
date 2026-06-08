@@ -165,6 +165,17 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public void Habitica_min_request_spacing_configuration_fallback_is_350_without_appsettings_override()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var program = File.ReadAllText(Path.Combine(repositoryRoot, "src", "Habitica.WebApp", "Program.cs"));
+        var appsettings = File.ReadAllText(Path.Combine(repositoryRoot, "src", "Habitica.WebApp", "wwwroot", "appsettings.json"));
+
+        Assert.Contains("Habitica:MinRequestSpacingMilliseconds\", 350", program);
+        Assert.DoesNotContain("MinRequestSpacingMilliseconds", appsettings);
+    }
+
+    [Fact]
     public async Task SaveEquipmentPresetAsync_uploads_encrypted_cloud_sync_bundle_after_local_change()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
@@ -546,6 +557,39 @@ public sealed class AppSessionControllerTests
             && entry.Operation == "spell-cast"
             && entry.Metadata["completed"] == "2"
             && entry.Metadata["requestCount"] == "4");
+    }
+
+    [Fact]
+    public async Task CastSpellAsync_can_cancel_during_preparation_before_requests()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot() with { RetrievedAtUtc = DateTimeOffset.UtcNow }, CreateTaskSnapshot(), CreatePartySnapshot());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        var castTask = controller.CastSpellAsync(new SpellCastRequest("fireball", "todo-1", 2));
+        await WaitForConditionAsync(() => controller.State.ActiveSpellCastProgress?.Label == "Preparing...");
+
+        await controller.CancelActiveSpellCastAsync();
+        var result = await castTask;
+
+        Assert.True(result.Succeeded);
+        Assert.Equal("Casting cancelled before it started.", result.Message);
+        Assert.Empty(syncClient.CastCalls);
+        Assert.Null(controller.State.ActiveSpellCastProgress);
+        Assert.False(controller.State.IsBusy);
+        Assert.Contains(logStore.Entries, entry =>
+            entry.FeatureArea == DiagnosticsFeatureArea.Skills
+            && entry.Operation == "spell-cast"
+            && entry.Severity == DiagnosticsSeverity.Info
+            && entry.Metadata["completed"] == "0"
+            && entry.Metadata["requested"] == "2"
+            && entry.Metadata["stage"] == "preparation");
     }
 
     [Fact]
@@ -2104,6 +2148,24 @@ public sealed class AppSessionControllerTests
 
             await Task.Delay(10);
         }
+    }
+
+    private static string FindRepositoryRoot()
+    {
+        var directory = new DirectoryInfo(AppContext.BaseDirectory);
+
+        while (directory is not null)
+        {
+            var solutionPath = Path.Combine(directory.FullName, "Habitica.sln");
+            if (File.Exists(solutionPath))
+            {
+                return directory.FullName;
+            }
+
+            directory = directory.Parent;
+        }
+
+        throw new DirectoryNotFoundException("Could not locate the repository root.");
     }
 
     private sealed class FakeKeyValueStorage : IKeyValueStorage

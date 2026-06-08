@@ -56,6 +56,6 @@ builder.Services.AddScoped<IHabiticaSyncClient>(_ => new HabiticaApiClient(
     },
     new HabiticaApiClientOptions(
         builder.Configuration["Habitica:XClientHeader"],
-        MinRequestSpacingMilliseconds: builder.Configuration.GetValue("Habitica:MinRequestSpacingMilliseconds", 300))));
+        MinRequestSpacingMilliseconds: builder.Configuration.GetValue("Habitica:MinRequestSpacingMilliseconds", 350))));
 
 await builder.Build().RunAsync();

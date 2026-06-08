@@ -357,7 +357,7 @@ Files: `src/Habitica.WebApp/Pages/SpellsPage.razor`, `src/Habitica.WebApp/wwwroo
 Current pattern after the latest UI pass:
 
 - Sticky current-mana bar above the spell cards, showing available MP, max MP, and class while scrolling.
-- Spell cards with stable summary, cost/availability pills, count/target input zone, mana spent/available/after-cast preview, auto-equip toggle, cast button, progress bars, card-local quest/stat context, effect preview, and equipment recommendations.
+- Spell cards with stable summary, cost/availability pills, count/target input zone, mana spent/available/after-cast preview, auto-equip toggle, Spend All Mana, cast button, card-local cancel/progress, card-local quest/stat context, effect preview, and equipment recommendations.
 - Cron-sensitive stat buffs show an inline warning inside the spell card when the user has not started the current Habitica day. The warning offers Cancel, Cast anyway, and Start New Day and Cast, plus local per-day suppression and a collapsed due-Daily mini-list disclosure.
 - Responsive two-zone layout: variable user inputs on the left, mana/action status on the right; stacks at narrower widths.
 
@@ -366,10 +366,12 @@ What works:
 - Available mana is visible on each spell card while evaluating a cast.
 - The sticky mana bar keeps current MP visible while comparing far-apart spell cards.
 - Mana spent and after-cast value provide before/after feedback before the user commits.
+- Spend All Mana updates the existing count and previews without casting, keeping max-spend planning reversible.
 - Boss quest progress and party pending damage stay inside spell cards that can affect boss damage instead of a top-page quest summary.
 - Unspent stat points appear only on stat-sensitive spell cards when allocation is unlocked.
 - Unaffordable spell counts show a local reason in the mana preview instead of relying only on a disabled Cast button.
 - Determinate progress bars match the known cast/equip counts.
+- The one-second Preparing state gives a narrow cancellation window before the first Habitica request.
 - Auto-equip remains close to Cast without stealing space from target selection.
 - The buff timing warning is close to the Cast decision and does not block unrelated spell cards.
 - The layout avoids the prior overlap caused by placing count, target, total mana, auto-equip, and Cast in one fragile row.
@@ -477,6 +479,8 @@ Application rule:
 
 - Keep MP visible on every spell decision surface.
 - Show cost, availability, and after-cast state before mutation.
+- Keep spend-all controls non-mutating; they may change only local count/preview state.
+- For sequential spell runs, show a local preparation/progress surface and put Cancel on the active card only.
 - Disable unaffordable actions and explain why near the disabled control.
 - Preserve Habitica's terminology in user-facing text: use "skills" when describing the game concept, but `spell` remains acceptable in code.
 

@@ -54,6 +54,8 @@ public interface IAppSessionController
 
     Task<SpellActionResult> CastSpellAsync(SpellCastRequest request, CancellationToken cancellationToken = default);
 
+    Task CancelActiveSpellCastAsync();
+
     Task<SpellActionResult> StartNewDayAsync(CancellationToken cancellationToken = default);
 
     Task<SpellActionResult> StartNewDayAsync(StartNewDayRequest request, CancellationToken cancellationToken = default);

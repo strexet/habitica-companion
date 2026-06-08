@@ -54,6 +54,8 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public List<SpellCastRequest> CastSpellCalls { get; } = new();
 
+    public int CancelActiveSpellCastCalls { get; private set; }
+
     public List<StartNewDayRequest> StartNewDayRequests { get; } = new();
 
     public List<TaskScoreRequest> ScoreTaskCalls { get; } = new();
@@ -169,6 +171,12 @@ internal sealed class FakeAppSessionController : IAppSessionController
     {
         CastSpellCalls.Add(request);
         return Task.FromResult(SpellActionResult.Success("Spell cast."));
+    }
+
+    public Task CancelActiveSpellCastAsync()
+    {
+        CancelActiveSpellCastCalls++;
+        return Task.CompletedTask;
     }
 
     public Task<TaskActionResult> ScoreTaskAsync(TaskScoreRequest request, CancellationToken cancellationToken = default)

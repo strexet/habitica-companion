@@ -12,6 +12,14 @@ namespace Habitica.Api.Tests;
 public sealed class HabiticaApiClientTests
 {
     [Fact]
+    public void HabiticaApiClientOptions_defaults_to_350_ms_minimum_request_spacing()
+    {
+        var options = new HabiticaApiClientOptions("habitica-tool-author-habitica-tool");
+
+        Assert.Equal(350, options.MinRequestSpacingMilliseconds);
+    }
+
+    [Fact]
     public async Task GetUserAsync_sends_required_habitica_auth_headers()
     {
         HttpRequestMessage? capturedRequest = null;

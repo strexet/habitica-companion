@@ -159,6 +159,112 @@ public sealed class SpellsPageTests : BunitContext
     }
 
     [Fact]
+    public void Spend_all_mana_sets_max_affordable_count_and_does_not_cast()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var controller = new FakeAppSessionController(CreateState());
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<SpellsPage>();
+
+        cut.Find("[data-testid='spend-all-mana-fireball']").Click();
+
+        Assert.Equal("3", cut.Find("[data-testid='spell-count-fireball']").GetAttribute("value"));
+        Assert.Contains("30 MP", cut.Markup);
+        Assert.Contains("3.5 MP", cut.Markup);
+        Assert.Empty(controller.CastSpellCalls);
+    }
+
+    [Fact]
+    public void Spend_all_mana_is_disabled_when_spell_is_locked()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var lockedState = CreateState() with
+        {
+            Level = 10,
+            UserSnapshot = CreateState().UserSnapshot! with
+            {
+                Level = 10
+            }
+        };
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(lockedState));
+
+        var lockedCut = Render<SpellsPage>();
+
+        Assert.True(lockedCut.Find("[data-testid='spend-all-mana-fireball']").HasAttribute("disabled"));
+    }
+
+    [Fact]
+    public void Spend_all_mana_is_disabled_when_snapshot_is_stale()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var staleState = CreateState() with
+        {
+            UserFreshness = SnapshotFreshnessState.Stale
+        };
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(staleState));
+
+        var staleCut = Render<SpellsPage>();
+
+        Assert.True(staleCut.Find("[data-testid='spend-all-mana-fireball']").HasAttribute("disabled"));
+    }
+
+    [Fact]
+    public void Spend_all_mana_is_disabled_when_spell_is_unaffordable()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var unaffordableState = CreateState() with
+        {
+            UserSnapshot = CreateState().UserSnapshot! with
+            {
+                Mana = 5m
+            }
+        };
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(unaffordableState));
+
+        var unaffordableCut = Render<SpellsPage>();
+
+        Assert.True(unaffordableCut.Find("[data-testid='spend-all-mana-fireball']").HasAttribute("disabled"));
+    }
+
+    [Fact]
+    public void Active_cast_shows_preparing_label_and_cancel_only_on_active_card()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var controller = new FakeAppSessionController(CreateState() with
+        {
+            IsBusy = true,
+            ActiveSpellCastProgress = new SpellCastProgress("fireball", 0, 3, "Preparing...")
+        });
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<SpellsPage>();
+
+        Assert.Contains("Preparing...", cut.Markup);
+        Assert.Single(cut.FindAll("[data-testid='cancel-spell-cast-fireball']"));
+        Assert.Empty(cut.FindAll("[data-testid='cancel-spell-cast-frost']"));
+
+        cut.Find("[data-testid='cancel-spell-cast-fireball']").Click();
+
+        Assert.Equal(1, controller.CancelActiveSpellCastCalls);
+    }
+
+    [Fact]
     public void Cast_button_calls_session_controller_with_selected_target_and_count()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

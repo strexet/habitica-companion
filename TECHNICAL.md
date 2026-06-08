@@ -174,6 +174,11 @@ Responsibilities:
 - API error normalization;
 - redaction of credentials from logs.
 
+Default behavior:
+
+- enforce a 350 ms minimum spacing between Habitica API requests unless an explicit `Habitica:MinRequestSpacingMilliseconds` configuration override is supplied;
+- keep feature-specific preparation delays separate from API throttling so UI cancellation windows do not count as rate-limit spacing.
+
 Do not call Habitica API directly from UI components.
 
 ### 4.6 Local storage

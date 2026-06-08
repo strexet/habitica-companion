@@ -22,6 +22,7 @@ public sealed class AppSessionController : IAppSessionController
 {
     private const decimal HealthPotionGoldCost = 25m;
     private const decimal GemGoldCost = 20m;
+    private static readonly TimeSpan SpellPreparationDelay = TimeSpan.FromSeconds(1);
     private readonly ICredentialStore _credentialStore;
     private readonly IDiagnosticsLogStore _diagnosticsLogStore;
     private readonly DiagnosticsLogWriter _diagnosticsLogWriter;
@@ -46,6 +47,7 @@ public sealed class AppSessionController : IAppSessionController
     private HabiticaCredentials? _currentCredentials;
     private readonly HashSet<CloudSyncSection> _cloudSyncExcludedSections;
     private readonly SemaphoreSlim _partySyncSemaphore = new(1, 1);
+    private CancellationTokenSource? _activeSpellCastCancellation;
     private bool _includeStalePartyMembersInQuestForecasts;
     private bool _initialized;
     private bool _persistLocally;
@@ -1414,6 +1416,12 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
+    public Task CancelActiveSpellCastAsync()
+    {
+        _activeSpellCastCancellation?.Cancel();
+        return Task.CompletedTask;
+    }
+
     public async Task<SpellActionResult> CastSpellAsync(SpellCastRequest request, CancellationToken cancellationToken = default)
     {
         var credentials = await ResolveCredentialsAsync(cancellationToken);
@@ -1457,6 +1465,11 @@ public sealed class AppSessionController : IAppSessionController
             return SpellActionResult.Failure("Not enough mana for the requested cast count.");
         }
 
+        if (State.IsBusy)
+        {
+            return SpellActionResult.Failure("Another action is already running.");
+        }
+
         var originalBattleGear = NormalizePresetSlots(EquipmentSetKind.Battle, State.UserSnapshot.Equipment.Battle);
         var autoEquipSlots = request.AutoEquipRecommendedGear && request.AutoEquipGearSlots is not null
             ? NormalizePresetSlots(EquipmentSetKind.Battle, request.AutoEquipGearSlots)
@@ -1470,20 +1483,14 @@ public sealed class AppSessionController : IAppSessionController
                     return SpellActionResult.Failure($"Cannot auto-equip {slot.Key} because it is not owned.");
                 }
             }
-
-            await EquipSlotsWithoutRefreshAsync(
-                credentials,
-                EquipmentSetKind.Battle,
-                State.UserSnapshot.Equipment.Battle,
-                autoEquipSlots,
-                $"spell:{request.SpellId}:auto-equip",
-                "Auto-equipping spell gear",
-                cancellationToken);
         }
 
+        _activeSpellCastCancellation?.Dispose();
+        _activeSpellCastCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        var activeToken = _activeSpellCastCancellation.Token;
         SetState(State with
         {
-            ActiveSpellCastProgress = new SpellCastProgress(request.SpellId, 0, count),
+            ActiveSpellCastProgress = new SpellCastProgress(request.SpellId, 0, count, "Preparing..."),
             ErrorMessage = null,
             IsBusy = true
         });
@@ -1491,22 +1498,55 @@ public sealed class AppSessionController : IAppSessionController
         var completed = 0;
         var requestCount = 0;
         string? partyRefreshError = null;
+        var cancellationStage = "preparation";
+        var autoEquipChanged = false;
         try
         {
+            await Task.Delay(SpellPreparationDelay, _timeProvider, activeToken);
+            activeToken.ThrowIfCancellationRequested();
+
+            if (autoEquipSlots is not null)
+            {
+                cancellationStage = "auto-equip";
+                await EquipSlotsWithoutRefreshAsync(
+                    credentials,
+                    EquipmentSetKind.Battle,
+                    State.UserSnapshot.Equipment.Battle,
+                    autoEquipSlots,
+                    $"spell:{request.SpellId}:auto-equip",
+                    "Auto-equipping spell gear",
+                    activeToken,
+                    (_, _) =>
+                    {
+                        autoEquipChanged = true;
+                        requestCount++;
+                    });
+            }
+
+            SetState(State with
+            {
+                ActiveSpellCastProgress = new SpellCastProgress(request.SpellId, completed, count, $"Casting {completed} of {count}")
+            });
+
             for (var index = 0; index < count; index++)
             {
-                await _habiticaSyncClient.CastSpellAsync(credentials, request.SpellId, request.TargetTaskId, cancellationToken);
+                cancellationStage = "cast";
+                activeToken.ThrowIfCancellationRequested();
+                await _habiticaSyncClient.CastSpellAsync(credentials, request.SpellId, request.TargetTaskId, activeToken);
                 completed++;
                 requestCount++;
-                await DelayBetweenHabiticaRequestsAsync(cancellationToken);
+                cancellationStage = "request-spacing";
+                await DelayBetweenHabiticaRequestsAsync(activeToken);
                 SetState(State with
                 {
-                    ActiveSpellCastProgress = new SpellCastProgress(request.SpellId, completed, count)
+                    ActiveSpellCastProgress = new SpellCastProgress(request.SpellId, completed, count, $"Casting {completed} of {count}")
                 });
             }
 
             if (autoEquipSlots is not null)
             {
+                cancellationStage = "restore-gear";
+                activeToken.ThrowIfCancellationRequested();
                 await EquipSlotsWithoutRefreshAsync(
                     credentials,
                     EquipmentSetKind.Battle,
@@ -1514,27 +1554,37 @@ public sealed class AppSessionController : IAppSessionController
                     originalBattleGear,
                     $"spell:{request.SpellId}:restore-gear",
                     "Restoring battle gear",
-                    cancellationToken);
+                    activeToken,
+                    (_, _) => requestCount++);
+                autoEquipChanged = false;
             }
 
-            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, cancellationToken);
+            cancellationStage = "refresh-user";
+            activeToken.ThrowIfCancellationRequested();
+            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, activeToken);
             requestCount++;
-            await DelayBetweenHabiticaRequestsAsync(cancellationToken);
-            var taskSnapshot = await _habiticaSyncClient.GetTasksAsync(credentials, cancellationToken);
+            cancellationStage = "request-spacing";
+            await DelayBetweenHabiticaRequestsAsync(activeToken);
+            cancellationStage = "refresh-tasks";
+            activeToken.ThrowIfCancellationRequested();
+            var taskSnapshot = await _habiticaSyncClient.GetTasksAsync(credentials, activeToken);
             requestCount++;
-            await _userSnapshotStore.SaveAsync(userSnapshot, cancellationToken);
-            await _taskSnapshotStore.SaveAsync(taskSnapshot, cancellationToken);
+            await _userSnapshotStore.SaveAsync(userSnapshot, activeToken);
+            await _taskSnapshotStore.SaveAsync(taskSnapshot, activeToken);
 
             if (spell.TargetKind == SpellTargetKind.Party)
             {
                 try
                 {
-                    await DelayBetweenHabiticaRequestsAsync(cancellationToken);
+                    cancellationStage = "request-spacing";
+                    await DelayBetweenHabiticaRequestsAsync(activeToken);
+                    cancellationStage = "refresh-party";
+                    activeToken.ThrowIfCancellationRequested();
                     requestCount++;
-                    var partySnapshot = await _habiticaSyncClient.GetPartySnapshotAsync(credentials, cancellationToken);
-                    await _partySnapshotStore.SaveAsync(partySnapshot, cancellationToken);
+                    var partySnapshot = await _habiticaSyncClient.GetPartySnapshotAsync(credentials, activeToken);
+                    await _partySnapshotStore.SaveAsync(partySnapshot, activeToken);
                 }
-                catch (Exception exception)
+                catch (Exception exception) when (exception is not OperationCanceledException)
                 {
                     partyRefreshError = exception.Message;
                     await _diagnosticsLogWriter.WriteAsync(
@@ -1548,7 +1598,7 @@ public sealed class AppSessionController : IAppSessionController
                             ["spellId"] = request.SpellId,
                             ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
                         },
-                        cancellationToken);
+                        CancellationToken.None);
                 }
             }
 
@@ -1567,9 +1617,9 @@ public sealed class AppSessionController : IAppSessionController
                     ["autoEquip"] = (autoEquipSlots is not null).ToString(CultureInfo.InvariantCulture),
                     ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
                 },
-                cancellationToken);
-            await LoadCachedStateAsync(cancellationToken);
-            _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken);
+                activeToken);
+            await LoadCachedStateAsync(activeToken);
+            _ = TryMergeAndUploadCloudSyncAsync(credentials, activeToken);
             SetState(State with
             {
                 ActiveSpellCastProgress = null,
@@ -1577,14 +1627,57 @@ public sealed class AppSessionController : IAppSessionController
                 ErrorMessage = null,
                 IsBusy = false
             });
+            _activeSpellCastCancellation?.Dispose();
+            _activeSpellCastCancellation = null;
 
             return SpellActionResult.Success(partyRefreshError is null
                 ? $"Cast {request.SpellId} {completed} time(s)."
                 : $"Cast {request.SpellId} {completed} time(s). Party refresh needs retry: {partyRefreshError}");
         }
+        catch (OperationCanceledException)
+        {
+            if (requestCount > 0)
+            {
+                await RefreshAfterCancelledSpellAsync(credentials, spell.TargetKind == SpellTargetKind.Party, request.SpellId);
+            }
+
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Skills,
+                "spell-cast",
+                DiagnosticsSeverity.Info,
+                DiagnosticsMode.LiveMutation,
+                completed == 0
+                    ? "Casting cancelled before it started."
+                    : $"Casting cancelled after {completed} of {count} casts.",
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["spellId"] = request.SpellId,
+                    ["targetTaskId"] = request.TargetTaskId ?? string.Empty,
+                    ["completed"] = completed.ToString(CultureInfo.InvariantCulture),
+                    ["requested"] = count.ToString(CultureInfo.InvariantCulture),
+                    ["autoEquip"] = (autoEquipSlots is not null).ToString(CultureInfo.InvariantCulture),
+                    ["stage"] = cancellationStage,
+                    ["requestCount"] = requestCount.ToString(CultureInfo.InvariantCulture)
+                },
+                CancellationToken.None);
+            await LoadCachedStateAsync(CancellationToken.None);
+            SetState(State with
+            {
+                ActiveSpellCastProgress = null,
+                ActiveEquipmentProgress = null,
+                ErrorMessage = null,
+                IsBusy = false
+            });
+            _activeSpellCastCancellation?.Dispose();
+            _activeSpellCastCancellation = null;
+
+            return SpellActionResult.Success(completed == 0
+                ? "Casting cancelled before it started."
+                : $"Casting cancelled after {completed} of {count} casts.");
+        }
         catch (Exception exception)
         {
-            if (autoEquipSlots is not null)
+            if (autoEquipChanged && autoEquipSlots is not null)
             {
                 try
                 {
@@ -1595,7 +1688,7 @@ public sealed class AppSessionController : IAppSessionController
                         originalBattleGear,
                         $"spell:{request.SpellId}:restore-gear",
                         "Restoring battle gear",
-                        cancellationToken);
+                        CancellationToken.None);
                 }
                 catch
                 {
@@ -1616,8 +1709,8 @@ public sealed class AppSessionController : IAppSessionController
                     ["requested"] = count.ToString(CultureInfo.InvariantCulture),
                     ["autoEquip"] = (autoEquipSlots is not null).ToString(CultureInfo.InvariantCulture)
                 },
-                cancellationToken);
-            await LoadCachedStateAsync(cancellationToken);
+                CancellationToken.None);
+            await LoadCachedStateAsync(CancellationToken.None);
             SetState(State with
             {
                 ActiveSpellCastProgress = null,
@@ -1625,8 +1718,46 @@ public sealed class AppSessionController : IAppSessionController
                 ErrorMessage = exception.Message,
                 IsBusy = false
             });
+            _activeSpellCastCancellation?.Dispose();
+            _activeSpellCastCancellation = null;
 
             return SpellActionResult.Failure(exception.Message);
+        }
+    }
+
+    private async Task RefreshAfterCancelledSpellAsync(
+        HabiticaCredentials credentials,
+        bool refreshParty,
+        string spellId)
+    {
+        try
+        {
+            var userSnapshot = await _habiticaSyncClient.GetUserSnapshotAsync(credentials, CancellationToken.None);
+            await DelayBetweenHabiticaRequestsAsync(CancellationToken.None);
+            var taskSnapshot = await _habiticaSyncClient.GetTasksAsync(credentials, CancellationToken.None);
+            await _userSnapshotStore.SaveAsync(userSnapshot, CancellationToken.None);
+            await _taskSnapshotStore.SaveAsync(taskSnapshot, CancellationToken.None);
+
+            if (refreshParty)
+            {
+                await DelayBetweenHabiticaRequestsAsync(CancellationToken.None);
+                var partySnapshot = await _habiticaSyncClient.GetPartySnapshotAsync(credentials, CancellationToken.None);
+                await _partySnapshotStore.SaveAsync(partySnapshot, CancellationToken.None);
+            }
+        }
+        catch (Exception exception)
+        {
+            await _diagnosticsLogWriter.WriteAsync(
+                DiagnosticsFeatureArea.Sync,
+                "spell-cast-cancel-refresh",
+                DiagnosticsSeverity.Warning,
+                DiagnosticsMode.LiveRead,
+                exception.Message,
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["spellId"] = spellId
+                },
+                CancellationToken.None);
         }
     }
 
@@ -4705,6 +4836,7 @@ public sealed class AppSessionController : IAppSessionController
                 continue;
             }
 
+            cancellationToken.ThrowIfCancellationRequested();
             await _habiticaSyncClient.EquipGearAsync(credentials, kind, keyToToggle, cancellationToken);
             gearChanged?.Invoke(slot.SlotTitle, slot.Key);
             completed++;
