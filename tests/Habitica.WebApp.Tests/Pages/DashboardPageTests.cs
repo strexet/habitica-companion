@@ -349,7 +349,8 @@ public sealed class DashboardPageTests : BunitContext
                     new[]
                     {
                         new TaskSnapshot("daily-1", "Exercise", TaskType.Daily, false, 1m, null, null, IsDue: true),
-                        new TaskSnapshot("daily-2", "Review notes", TaskType.Daily, false, 1m, null, null, IsDue: true)
+                        new TaskSnapshot("daily-2", "Review notes", TaskType.Daily, false, 1m, null, null, IsDue: true),
+                        new TaskSnapshot("daily-weekly", "Weekly review", TaskType.Daily, false, 1m, null, null, IsDue: false)
                     }),
                 ClassName: "wizard",
                 Level: 15,
@@ -383,6 +384,7 @@ public sealed class DashboardPageTests : BunitContext
 
         Assert.Contains("Unfinished dailies", cut.Markup);
         Assert.Equal("2", cut.Find("[data-testid='cron-dailies-count']").TextContent);
+        Assert.DoesNotContain("Weekly review", cut.Markup);
         cut.Find("[data-testid='complete-cron-daily-daily-1']").Click();
         Assert.Equal("daily-1", Assert.Single(controller.ScoreTaskCalls).TaskId);
         Assert.Equal("1", cut.Find("[data-testid='cron-dailies-count']").TextContent);

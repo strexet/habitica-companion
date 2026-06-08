@@ -125,7 +125,8 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
     public async Task<TaskCollectionSnapshot> GetTasksAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
     {
-        using var request = CreateRequest(HttpMethod.Get, "tasks/user", credentials);
+        var dueDate = Uri.EscapeDataString(DateTimeOffset.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+        using var request = CreateRequest(HttpMethod.Get, $"tasks/user?dueDate={dueDate}", credentials);
         using var document = await SendForDocumentAsync(request, cancellationToken);
         var tasks = document.RootElement
             .GetProperty("data")

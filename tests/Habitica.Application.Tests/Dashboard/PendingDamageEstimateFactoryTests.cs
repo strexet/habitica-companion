@@ -77,6 +77,22 @@ public sealed class PendingDamageEstimateFactoryTests
         Assert.Equal("daily-due", Assert.Single(dailies).Id);
     }
 
+    [Fact]
+    public void GetIncompleteDailies_keeps_unknown_due_state_conservative()
+    {
+        var tasks = new TaskCollectionSnapshot(
+            DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+            new[]
+            {
+                new TaskSnapshot("daily-unknown", "Legacy daily", TaskType.Daily, false, 1m, null, null),
+                new TaskSnapshot("daily-not-due", "Weekly review", TaskType.Daily, false, 1m, null, null, IsDue: false)
+            });
+
+        var dailies = PendingDamageEstimateFactory.GetIncompleteDailies(tasks);
+
+        Assert.Equal("daily-unknown", Assert.Single(dailies).Id);
+    }
+
     private static UserSnapshot CreateUser(decimal health)
     {
         return new UserSnapshot(

@@ -72,89 +72,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-- Add member name search to Party member status
-   - Description
-      - Add a search bar to the MEMBERS / Party member status section on the Party page.
-      - The search should let users quickly find party members by name without manually scanning the full member list.
-      - This is especially useful for large parties.
-
-   - Search behavior
-      - Filter the visible member cards/rows as the user types.
-      - Search should be case-insensitive.
-      - Support partial matches.
-      - Match against the public/display member name.
-      - Also match username/login name if it is already available in the current member data and shown elsewhere in the UI.
-      - Do not search against internal user IDs.
-      - Ignore leading and trailing whitespace in the query.
-      - An empty query should show all members.
-
-   - Search field placement
-      - Place the search bar near the top of the MEMBERS / Party member status section.
-      - Keep it close to the section title and existing member controls/filters.
-      - Make sure it aligns with the current Party page layout.
-      - Keep the field compact enough for desktop and mobile layouts.
-      - Avoid pushing member controls into an uneven or stair-like arrangement.
-
-   - Search field UI
-      - Suggested placeholder:
-         - `Search members`
-      - Add a clear/reset action when the field contains text.
-      - Use existing shared search-input styling where possible.
-      - Preserve keyboard usability and visible focus state.
-      - Do not trigger page refreshes or API requests while typing.
-
-   - Filter composition
-      - If the member section already has filters, grouping, sorting, or fold behavior:
-         - Apply name search together with the existing state.
-         - Do not replace the existing filters.
-         - Search and current filters should both narrow the visible member list.
-      - Preserve the existing member ordering among matched results.
-
-   - Empty state
-      - If no member matches the query, show a concise empty state.
-      - Suggested text:
-         - `No party members match this search.`
-      - Provide an easy way to clear the query.
-      - Do not show an empty broken grid/container.
-
-   - Data and performance
-      - Filter the already loaded/cached party member data locally.
-      - Do not issue an API request for every search change.
-      - Reapply the active search when refreshed member data arrives.
-      - Handle members with missing or empty display names safely.
-
-   - Expected behavior
-      - Typing part of a member’s display name shows matching members.
-      - Matching is case-insensitive.
-      - Clearing the search restores the full member list.
-      - Existing member card content and actions remain unchanged.
-      - Search works consistently on desktop and mobile/narrow layouts.
-
-   - Suggested implementation
-      - Add local search-query state to the Party page/member section.
-      - Build a normalized searchable name for each member from available public name fields.
-      - Apply the search predicate before rendering member cards/rows.
-      - Reuse existing search components or styles if available.
-      - Keep filtering logic separate from card rendering where practical.
-
-   - Acceptance criteria
-      - MEMBERS / Party member status has a visible `Search members` field.
-      - Search matches public/display member names using partial, case-insensitive matching.
-      - Username is also searchable when available and appropriate.
-      - Internal user IDs are not exposed or used as visible search terms.
-      - Empty query shows all members.
-      - No-match state is clear and does not break the member layout.
-      - Search composes correctly with existing filters/grouping/sorting.
-      - No API request is triggered for each typed character.
-      - Component tests cover:
-         - Exact name match.
-         - Partial name match.
-         - Case-insensitive match.
-         - Username match where supported.
-         - No-match state.
-         - Clearing search.
-         - Empty/missing member name.
-
 - Rename Inventory page to Equipment across the app
    - Description
       - Rename the current Inventory page to Equipment.
@@ -222,93 +139,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Verify And Harden CRON Due-Daily Filtering
-
-Goal: ensure Dashboard and Spells CRON daily lists show only incomplete Dailies that can actually cause CRON damage for the evaluated Habitica day, while preserving existing pending-damage and Start New Day behavior.
-
-Source: promoted from pending queue on 2026-06-08. The item is partly implemented today through `PendingDamageEstimateFactory.GetIncompleteDailies()` filtering `TaskSnapshot.IsDue != false`; the work is to verify official behavior, close gaps, and add explicit coverage.
-
-Current context:
-- `src/Habitica.Application/Dashboard/PendingDamageEstimateFactory.cs` is the shared helper for pending-damage Daily inclusion and CRON mini-list source data.
-- `src/Habitica.WebApp/Pages/DashboardPage.razor` and `src/Habitica.WebApp/Pages/SpellsPage.razor` both call `PendingDamageEstimateFactory.GetIncompleteDailies(...)` and then remove locally completed CRON Dailies.
-- `src/Habitica.Api/HabiticaApiClient.cs` parses task `isDue` into `TaskSnapshot.IsDue` when Habitica returns the field.
-- Existing tests cover due vs not-due when `IsDue` is present, but do not prove parity with official schedule logic or missing-field behavior.
-
-Touch:
-- `HABITICA_API.md` if official API/source verification changes the documented task fields or CRON assumptions
-- `src/Habitica.Api/HabiticaApiClient.cs` if additional Daily schedule fields must be parsed
-- `src/Habitica.Domain/Tasks/TaskSnapshot.cs` if more schedule context must be represented locally
-- `src/Habitica.Application/Dashboard/PendingDamageEstimateFactory.cs`
-- a new or existing shared rules helper under `src/Habitica.Rules` or `src/Habitica.Application` if local due evaluation is needed
-- `src/Habitica.WebApp/Components/CronUnfinishedDailiesMiniList.razor` only if empty-state/copy behavior changes
-- `src/Habitica.WebApp/Pages/DashboardPage.razor`
-- `src/Habitica.WebApp/Pages/SpellsPage.razor`
-- `tests/Habitica.Api.Tests/HabiticaApiClientTests.cs`
-- `tests/Habitica.Application.Tests/Dashboard/PendingDamageEstimateFactoryTests.cs`
-- `tests/Habitica.WebApp.Tests/Components/CronUnfinishedDailiesMiniListTests.cs`
-- `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs`
-- `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs`
-- `FEATURES.md`
-- `docs/UX_UI_MANIFEST.md` if CRON list copy/layout changes
-
-Out of scope:
-- changing normal Tasks page visibility or filters;
-- changing Habitica CRON execution endpoint behavior;
-- adding undocumented Daily mutation endpoints;
-- estimating negative Habit damage unless the required state becomes available and documented;
-- replacing server-provided `isDue` with a local approximation when official behavior can be trusted from the API response.
-
-Official verification:
-1. Re-check current Habitica API task payloads and official Habitica repository logic for Daily due evaluation before changing code.
-2. Prefer the server-provided `isDue` field when it is present and verified as the official due state for the current Habitica day.
-3. If `isDue` is missing or insufficient, document the exact official fields needed before adding local fallback logic.
-4. Verify behavior for weekday `repeat`, `frequency`, `everyX`, `startDate`, custom day start, timezone boundaries, Inn/resting damage, and group-plan or assigned Dailies if the current API model exposes them.
-5. Document any remaining assumption in `HABITICA_API.md` and keep UI copy from overstating certainty.
-
-Plan:
-1. Audit current `TaskSnapshot.IsDue` parsing and fixture coverage for due and non-due Dailies.
-2. Compare `PendingDamageEstimateFactory.GetIncompleteDailies()` against official Habitica due logic and current API fields.
-3. If `isDue` is authoritative, keep the helper simple but add explicit tests and docs explaining that source of truth.
-4. If a local fallback is required, create a shared helper outside Razor that accepts task schedule data plus user Habitica day context and returns due/damage eligibility.
-5. Use the same shared helper for Dashboard pending damage, Dashboard CRON mini-list, and Spells CRON warning mini-list so counts cannot drift.
-6. Keep completed-in-session `_completedCronDailyIds` filtering as a page-local overlay after shared due/damage filtering.
-7. Preserve existing empty/safe states when every incomplete Daily is non-due or damage-exempt.
-
-Edge cases:
-- due weekday Daily;
-- non-due weekday Daily;
-- every-day Daily;
-- every-X-days Daily due today;
-- every-X-days Daily not due today;
-- future-start Daily;
-- completed due Daily;
-- incomplete due Daily;
-- incomplete non-due Daily;
-- missing `isDue` with insufficient schedule data;
-- stale cached task or user data;
-- custom day-start boundary around midnight;
-- timezone/date transition;
-- Inn/resting or paused-damage state where supported by current snapshots.
-
-Acceptance:
-- Dashboard CRON mini-list excludes incomplete Dailies with `IsDue == false`.
-- Spells CRON warning mini-list uses the same due/damage eligibility as Dashboard.
-- Pending damage estimate and CRON mini-list Daily counts do not disagree for the same snapshot, aside from page-local completed IDs.
-- Due incomplete Dailies remain visible and actionable.
-- Completed Dailies, non-Dailies, and known non-due Dailies are excluded.
-- Missing/unknown due data is handled conservatively and documented.
-- Existing Inn/resting or paused-damage behavior is preserved if currently supported; unsupported cases remain explicitly out of certainty.
-- Tasks page behavior remains unchanged.
-- Empty CRON state renders correctly when no damaging Dailies remain.
-
-Tests:
-- Add/confirm API parsing tests for `isDue: true`, `isDue: false`, and missing `isDue`.
-- Add application tests for due weekday, non-due weekday, every-day, every-X due/non-due, future-start where modeled, completed due, incomplete due, incomplete non-due, and unknown due data.
-- Add Dashboard page tests that the mini-list count and inline complete controls exclude non-due Dailies.
-- Add Spells page tests that CRON warnings list the same filtered Dailies as Dashboard.
-- Add component tests for empty CRON list rendering after filtering.
-- Add day-start/timezone boundary tests only if local fallback logic is introduced.
 
 ### Spell Bulk Casting Controls And 350 ms API Spacing
 
@@ -405,6 +235,36 @@ Tests:
 - Add layout/markup tests for desktop action grouping and narrow responsive structure where existing test style supports this.
 - Add session/controller tests for one-second preparation before first mutation, zero requests during preparation, cancellation during preparation, cancellation before auto-equip, cancellation between equipment requests, cancellation before first cast, cancellation between casts, cancellation during request-spacing delay, cancellation before refresh, partial completion result, failure remaining distinct from cancellation, busy state cleanup, and existing sequential cast order.
 - Add API/config tests that the options default is 350, the composition-root fallback is 350, explicit configuration still overrides the fallback, and `appsettings.json` contains no spacing override.
+
+### Add Party Member Status Search
+
+Goal: add compact local search to the MEMBERS / Party member status section on the Party page so large parties can be filtered by member name without extra API requests.
+
+Source: promoted from pending queue on 2026-06-08.
+
+Touch:
+- `src/Habitica.WebApp/Pages/PartyPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css` if layout/search styling needs adjustment
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs`
+- `FEATURES.md`
+- `docs/UX_UI_MANIFEST.md` if member-section layout guidance changes
+
+Out of scope:
+- changing party fetch/sync APIs;
+- searching internal user IDs;
+- changing member card actions, grouping, sorting, or CRON state rules except to compose with search.
+
+Acceptance:
+- MEMBERS / Party member status has visible `Search members` input near section title/controls.
+- Search trims leading/trailing whitespace and matches partial names case-insensitively.
+- Search matches public/display member name; username/login name is searchable only when already available and appropriate in current member data.
+- Empty query shows all members in existing order.
+- Search composes with existing filters/grouping/sorting/fold state.
+- No API request fires while typing.
+- No-match state says `No party members match this search.` and offers easy clear/reset.
+- Members with missing or empty display names are handled safely.
+- Desktop and narrow layouts remain aligned without overlap.
+- Tests cover exact name, partial name, case-insensitive match, username match where supported, no-match state, clear search, and empty/missing member name.
 
 ## Backlog
 

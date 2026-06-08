@@ -32,6 +32,9 @@ public sealed class PendingDamageEstimateFactory
 
     public static IReadOnlyList<TaskSnapshot> GetIncompleteDailies(TaskCollectionSnapshot? tasks)
     {
+        // Habitica computes Daily due state server-side from schedule fields and
+        // user day-start/timezone preferences. Missing IsDue is legacy/unknown
+        // cached data, so keep it visible instead of falsely marking it safe.
         return tasks?.Items
             .Where(static task => task.Type == TaskType.Daily && !task.IsCompleted && task.IsDue != false)
             .ToArray()

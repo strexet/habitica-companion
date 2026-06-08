@@ -48,52 +48,79 @@ public sealed class HabiticaApiClientTests
     [Fact]
     public async Task GetTasksAsync_maps_task_payload_into_domain_snapshots()
     {
-        var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
+        HttpRequestMessage? capturedRequest = null;
+        var handler = new StubHttpMessageHandler(request =>
         {
-            Content = JsonContent("""
+            capturedRequest = request;
+            return new HttpResponseMessage(HttpStatusCode.OK)
             {
-              "success": true,
-              "data": [
+                Content = JsonContent("""
                 {
-                  "id": "todo-1",
-                  "type": "todo",
-                  "text": "Buy milk",
-                  "notes": "2 liters",
-                  "completed": false,
-                  "priority": 1.5,
-                  "value": 18.25,
-                  "up": true,
-                  "down": false,
-                  "challenge": {
-                    "id": "challenge-1",
-                    "taskId": "challenge-task-1"
-                  },
-                  "history": [
-                    { "date": 1777046400000, "value": 12.5 },
-                    { "date": "2026-04-25T12:00:00.000Z", "value": 18.25 }
-                  ],
-                  "date": "2026-04-24T12:00:00.000Z"
-                },
-                {
-                  "id": "daily-1",
-                  "type": "daily",
-                  "text": "Exercise",
-                  "notes": null,
-                  "completed": true,
-                  "priority": 1.0,
-                  "isDue": false,
-                  "date": null
+                  "success": true,
+                  "data": [
+                    {
+                      "id": "todo-1",
+                      "type": "todo",
+                      "text": "Buy milk",
+                      "notes": "2 liters",
+                      "completed": false,
+                      "priority": 1.5,
+                      "value": 18.25,
+                      "up": true,
+                      "down": false,
+                      "challenge": {
+                        "id": "challenge-1",
+                        "taskId": "challenge-task-1"
+                      },
+                      "history": [
+                        { "date": 1777046400000, "value": 12.5 },
+                        { "date": "2026-04-25T12:00:00.000Z", "value": 18.25 }
+                      ],
+                      "date": "2026-04-24T12:00:00.000Z"
+                    },
+                    {
+                      "id": "daily-due",
+                      "type": "daily",
+                      "text": "Exercise",
+                      "notes": null,
+                      "completed": true,
+                      "priority": 1.0,
+                      "isDue": true,
+                      "date": null
+                    },
+                    {
+                      "id": "daily-not-due",
+                      "type": "daily",
+                      "text": "Weekly review",
+                      "notes": null,
+                      "completed": false,
+                      "priority": 1.0,
+                      "isDue": false,
+                      "date": null
+                    },
+                    {
+                      "id": "daily-unknown",
+                      "type": "daily",
+                      "text": "Legacy daily",
+                      "notes": null,
+                      "completed": false,
+                      "priority": 1.0,
+                      "date": null
+                    }
+                  ]
                 }
-              ]
-            }
-            """)
+                """)
+            };
         });
 
         var client = CreateClient(handler);
 
         var snapshot = await client.GetTasksAsync(new HabiticaCredentials("user-id", "api-token"), CancellationToken.None);
 
-        Assert.Equal(2, snapshot.Items.Count);
+        Assert.NotNull(capturedRequest);
+        Assert.Equal("https://habitica.com/api/v3/tasks/user", capturedRequest!.RequestUri!.GetLeftPart(UriPartial.Path));
+        Assert.StartsWith("dueDate=", capturedRequest.RequestUri.Query.TrimStart('?'), StringComparison.Ordinal);
+        Assert.Equal(4, snapshot.Items.Count);
         Assert.Equal(TaskType.Todo, snapshot.Items[0].Type);
         Assert.Equal("2 liters", snapshot.Items[0].Notes);
         Assert.Equal(1.5m, snapshot.Items[0].Difficulty);
@@ -106,8 +133,11 @@ public sealed class HabiticaApiClientTests
         Assert.Equal(DateTimeOffset.Parse("2026-04-25T12:00:00.000Z"), snapshot.Items[0].HistoryPoints[1].Date);
         Assert.Equal(TaskType.Daily, snapshot.Items[1].Type);
         Assert.True(snapshot.Items[1].IsCompleted);
+        Assert.True(snapshot.Items[1].IsDue);
+        Assert.Equal(TaskType.Daily, snapshot.Items[2].Type);
         Assert.False(snapshot.Items[1].IsChallengeTask);
-        Assert.False(snapshot.Items[1].IsDue);
+        Assert.False(snapshot.Items[2].IsDue);
+        Assert.Null(snapshot.Items[3].IsDue);
     }
 
     [Fact]

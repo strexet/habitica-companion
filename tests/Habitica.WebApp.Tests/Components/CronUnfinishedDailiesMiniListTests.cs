@@ -43,6 +43,17 @@ public sealed class CronUnfinishedDailiesMiniListTests : BunitContext
         Assert.Empty(cut.FindAll("[data-testid='complete-cron-daily-daily-1']"));
     }
 
+    [Fact]
+    public void Empty_list_renders_no_container()
+    {
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateState(SnapshotFreshnessState.Fresh)));
+
+        var cut = Render<CronUnfinishedDailiesMiniList>(parameters => parameters
+            .Add(component => component.Dailies, Array.Empty<TaskSnapshot>()));
+
+        Assert.Empty(cut.FindAll("[data-testid='cron-unfinished-dailies']"));
+    }
+
     private static IReadOnlyList<TaskSnapshot> CreateDailies()
     {
         return new[]
