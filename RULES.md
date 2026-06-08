@@ -1,6 +1,6 @@
 # RULES.md
 
-Last updated: 2026-05-21
+Last updated: 2026-06-08
 Primary audience: AI agents working in this repository
 
 ## 1. Purpose
@@ -24,6 +24,7 @@ Before implementing changes, read the relevant documents in this order:
 For any code that interacts with Habitica, `HABITICA_API.md` is mandatory reading.
 For new or changed Habitica data features, read `HABITICA_TOOL_REFERENCES.md` after `HABITICA_API.md` and before implementation so stable third-party tool workflows are considered before adding new API assumptions.
 For UI or UX work, `docs/UX_UI_MANIFEST.md` is mandatory reading before editing UI code or styles.
+For explicit documentation snapshot archive requests, `docs/DOCUMENTS_SNAPSHOT.md` is mandatory reading before creating the archive.
 
 ## 3. Habitica API rule
 
@@ -110,6 +111,7 @@ Habitica API behavior -> HABITICA_API.md
 Project stack/architecture -> TECHNICAL.md
 Feature behavior -> FEATURES.md
 UI/UX patterns, review findings, and responsive-design guidance -> docs/UX_UI_MANIFEST.md
+Documentation snapshot workflow -> docs/DOCUMENTS_SNAPSHOT.md
 AI-agent workflow rules -> RULES.md
 ```
 
@@ -244,3 +246,21 @@ Add the following instruction to `AGENTS.md`:
 ```markdown
 Before making non-trivial changes, read and follow `RULES.md`. For any Habitica API work, read `HABITICA_API.md` before editing code. Keep `TECHNICAL.md` updated when foundational technical decisions change, and keep `FEATURES.md` updated when features are added, changed, deprecated, or removed.
 ```
+
+## 15. Documentation snapshot requests
+
+When the user explicitly asks for a document, documentation, markdown, or `.md` snapshot archive, follow `docs/DOCUMENTS_SNAPSHOT.md`.
+
+This rule is conditional. Do not create or update snapshot archives during ordinary documentation or code changes unless the user asks for a snapshot.
+
+Default behavior for snapshot requests:
+
+- use tracked project markdown files as the source set;
+- exclude ignored dependency, SDK, build-output, and vendor markdown files unless explicitly requested;
+- confirm each included document contains repository-specific information;
+- do not edit source documents while preparing snapshot copies;
+- place the zip archive at repository root, named with the current snapshot creation date and time unless the user provides a different name;
+- keep archive members at the zip root, with no preserved folder structure;
+- add `.snapshot-YYYY-MM-DD-HH-MM.md` to every archive member filename, using the current snapshot creation date and time;
+- prepend a snapshot notice to every copied document explaining source path, snapshot date, relevance, and possible drift;
+- verify archive contents before reporting completion.
