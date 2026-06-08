@@ -6,13 +6,13 @@
 @inject IAppSessionController SessionController
 @inject ISnackbar Snackbar
 
-<PageTitle>Inventory</PageTitle>
+<PageTitle>Equipment</PageTitle>
 
 <div class="inventory-shell">
     <section class="card-surface dashboard-hero">
         <div>
             <p class="section-label">Equipment explorer</p>
-            <h1>Inventory and equipped gear</h1>
+            <h1>Equipment</h1>
             <p class="panel-copy">
                 Compare owned gear, save battle presets, and equip items from fresh Habitica account data.
             </p>
@@ -198,7 +198,7 @@
         @if (viewModel.Groups.Count == 0)
         {
             <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
-                No owned gear is saved yet. Refresh inventory after signing in.
+                No owned gear is saved yet. Refresh account data after signing in.
             </MudAlert>
         }
         else

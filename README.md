@@ -10,7 +10,7 @@ Current status: web-app MVP implemented and expanding into guarded actions. The 
 - manual and page-prioritized refresh against Habitica API v3
 - cached account dashboard with class stats, Start New Day, pending-damage, armoire, gem-for-gold, and health-potion helper cards
 - Dashboard `Start New Day` action with optional gear optimization when the current user needs Cron
-- inventory and equipment explorer with slot-grouped owned gear keys, battle presets, highest-stat highlights, equipment optimizer recommendations, and guarded equip actions
+- Equipment workspace with slot-grouped owned gear keys, battle presets, highest-stat highlights, equipment optimizer recommendations, and guarded equip actions
 - Pets & Mounts workspace with companion collection browsing, hatching/feed planners, fast equip actions, and guarded bulk sell planning
 - party overview with cached party summary, member CRON timing, tokenless party-sync claims, Officers, settings, and kick management
 - Quests workspace with cached quest progress, shared quest pool, shared queue voting, recently completed quest history, and guarded quest lifecycle actions
@@ -19,7 +19,7 @@ Current status: web-app MVP implemented and expanding into guarded actions. The 
 - local-first task snapshot storage through IndexedDB with a Dexie-backed JS module
 - local-first account snapshot storage for offline dashboard access
 - encrypted per-section Cloudflare sync for portable app data, with legacy single-blob restore fallback
-- responsive app shell with sign-in, dashboard, tasks, inventory, pets and mounts, party, quests, spells, settings, diagnostics, and privacy routes
+- responsive app shell with sign-in, dashboard, tasks, equipment, pets and mounts, party, quests, spells, settings, diagnostics, and privacy routes
 - task workspace with search, filters, completed toggles, detail panels, history charts, manual ordering controls, freshness indicators, inline scoring/checkoff, and Habit multi-score controls
 - color schemes (on Settings, Dashboard, and Sign-in) with built-in presets, shell/control theming, task min/base/max shade ramps, random themes with a chaos slider, and copy/paste custom presets saved as portable user data
 - sign-out for the current tab session and clear-local-data controls

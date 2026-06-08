@@ -57,7 +57,8 @@ public sealed class AppNavMenuTests : BunitContext
         Assert.Contains("/spells", cut.Markup);
         Assert.Contains("/pets-mounts", cut.Markup);
 
-        AssertNavOrder(cut.Markup, "Dashboard", "Tasks", "Inventory", "Pets &amp; Mounts", "Party", "Quests", "Spells", "Settings", "Diagnostics");
+        AssertNavOrder(cut.Markup, "Dashboard", "Tasks", "Equipment", "Pets &amp; Mounts", "Party", "Quests", "Spells", "Settings", "Diagnostics");
+        Assert.Contains("href=\"/inventory\"", cut.Markup);
     }
 
     [Fact]

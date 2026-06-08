@@ -89,7 +89,7 @@ Inspiration:
 Current audit:
 
 - The app currently uses local PWA/favicon files, Gryphy artwork on sign-in, and a MudBlazor menu icon in the shell.
-- Dashboard, Inventory, Party, and Spells now render image-backed Habitica entities through `HabiticaImageAssetResolver` and the shared `HabiticaImage` component.
+- Dashboard, Equipment, Party, and Spells now render image-backed Habitica entities through `HabiticaImageAssetResolver` and the shared `HabiticaImage` component.
 - Diagnostics, Live Tests, Tasks, Sign In, and App Shell remain intentionally text/control driven unless a specific Habitica game entity is being represented.
 
 Asset parity rule:
@@ -112,10 +112,10 @@ Layout rules:
 
 Current placement:
 
-- Dashboard: Start New Day gear previews use official gear thumbnails. Companion and inventory summaries live on Inventory and Pets & Mounts, not on Dashboard. Pending quest damage remains text-only so it does not crowd Start New Day and stat allocation action rows.
+- Dashboard: Start New Day gear previews use official gear thumbnails. Companion and inventory summaries live on Equipment and Pets & Mounts, not on Dashboard. Pending quest damage remains text-only so it does not crowd Start New Day and stat allocation action rows.
 - Dashboard navigation cards use stable local routes plus stable Habitica web URLs only; do not add mobile app deep links or custom schemes.
 - Tasks: keep task cards primarily text and control driven. Use Habitica art only for explicit reward/item/quest targets added by a future feature. Task type/status affordances may use simple UI icons, not game art.
-- Inventory: gear thumbnails appear in battle loadout slots, best-in-category entries, expanded gear cards, accessory cards, and saved preset items. Fixed identity columns keep slot labels, class text, stat pills, and equip actions aligned. Summary cards use compact item icons with readable counts.
+- Equipment: gear thumbnails appear in battle loadout slots, best-in-category entries, expanded gear cards, accessory cards, and saved preset items. Fixed identity columns keep slot labels, class text, stat pills, and equip actions aligned. Summary cards use compact item icons with readable counts.
 - Party and Quests: member cards do not invent avatar art. On Quests, active quest cards use a prominent quest art slot near the quest title. Queue, pool, and recent quest records use smaller quest scroll thumbnails while owner, vote, invite, and cancel controls stay in their own rows.
 - Spells: spell cards show class skill icons in the header beside spell name, mana cost, and availability. Equipment recommendation rows show gear thumbnails without moving cast controls or competing with mana previews.
 - Diagnostics and Live Tests: avoid gameplay thumbnails in raw payload/debug views. If endpoint lists need icons, use small technical UI icons only, and never let images hide JSON or response metadata.
@@ -255,7 +255,7 @@ Improvement:
 - Keep task-card reorder affordances hidden until the user enables the section-level Rearrange mode. Keep all four move buttons in one horizontal row.
 - Preserve hidden/completed items when reordering the visible subset, and keep the dropped task in view with a brief inline confirmation.
 
-### Inventory
+### Equipment
 
 Files: `src/Habitica.WebApp/Pages/InventoryPage.razor`
 
@@ -545,7 +545,7 @@ References:
 ### Interaction Drift
 
 - The app is strong at safe mutation but sometimes weak at "what changed" feedback.
-- Inventory can equip, but spells now show a stronger before/after preview and disabled reason.
+- Equipment can equip, but spells now show a stronger before/after preview and disabled reason.
 - Settings and diagnostics have multiple same-weight actions where the primary next action should be clearer.
 
 ## Prioritized Improvements

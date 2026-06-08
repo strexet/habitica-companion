@@ -35,7 +35,7 @@ Known blocker to recognize:
 Expected success signals:
 
 - URL changes from `/sign-in` to `/dashboard`.
-- Drawer/navigation appears with Dashboard, Tasks, Inventory, Pets & Mounts, Party, Quests, Spells, Settings, and Diagnostics.
+- Drawer/navigation appears with Dashboard, Tasks, Equipment, Pets & Mounts, Party, Quests, Spells, Settings, and Diagnostics.
 - Topbar identity changes from `Local-first Habitica companion` to the signed-in character/account identity when user data loads.
 - Refresh button is enabled when the app is idle and authenticated.
 - Page data may load in stages; wait for `Refreshing N` and `Cloud syncing` status chips to settle before judging layout.
@@ -219,7 +219,7 @@ High-priority foldables:
 - Party: member `Details`, active quest details/rewards, active quest participants, member filters/sort, CRON graph context.
 - Quests: active quest details/participants, quest pool show/hide, queue sections, recently completed sections.
 - Pets & Mounts: companion groups, bulk-sell planner panels, hatching/feed planner folds, collection filters/search.
-- Inventory: preset panels, optimizer panels, equipment groups, details/action rows.
+- Equipment: preset panels, optimizer panels, equipment groups, details/action rows.
 - Spells: CRON warning details, recommendation/details areas, target selectors.
 - Settings: Appearance, Custom scheme, Advanced, cloud-sync section list.
 - Diagnostics: filters, result groups, recent app messages, safe read-only sections.

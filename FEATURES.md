@@ -102,7 +102,7 @@ Rules:
 
 Status: implemented
 Owner module: `Habitica.WebApp.Assets`, `Habitica.WebApp.Components.HabiticaImage`
-Application entry point: Dashboard, Inventory, Party, and Spells pages
+Application entry point: Dashboard, Equipment, Party, and Spells pages
 Primary Habitica data: stable content keys from user, inventory, party quest, gear catalog, and spell view models
 Mutates Habitica state: no
 Requires confirmation: no
@@ -114,7 +114,7 @@ Habitica game entities that official Habitica represents visually now flow throu
 Current placements:
 
 - Dashboard uses official gear thumbnails in the Start New Day equipment preview; companion and inventory summaries live on their dedicated pages instead of the Dashboard.
-- Inventory shows official gear thumbnails in battle loadout, best-in-category cards, expanded gear cards, accessory cards, and saved battle preset items. Inventory summary also shows companion and item-count icon chips.
+- Equipment shows official gear thumbnails in battle loadout, best-in-category cards, expanded gear cards, accessory cards, and saved battle preset items. Equipment summary also shows companion and item-count icon chips.
 - Quests shows a quest image slot in the active quest card and compact quest scroll slots in queue, pool, and recently completed quest records.
 - Spells shows official skill icons in spell card headers and gear thumbnails for equipment recommendations.
 
@@ -283,7 +283,7 @@ Rate-limit sensitivity: medium for multi-slot changes
 
 Allow users to create named combat/utility gear sets from owned equipment and equip them with one action.
 
-Current implementation supports local battle presets in Inventory: save current battle gear, save optimizer recommendations as presets, rename/remove presets, show stable preset ids, and equip changed preset slots sequentially. Broader macro-oriented gear-set references remain future work.
+Current implementation supports local battle presets on Equipment: save current battle gear, save optimizer recommendations as presets, rename/remove presets, show stable preset ids, and equip changed preset slots sequentially. Broader macro-oriented gear-set references remain future work.
 
 ### Inputs
 
@@ -394,7 +394,7 @@ Rate-limit sensitivity: low
 
 Recommend the best owned gear for a selected skill or action.
 
-Current implementation covers Inventory optimizer goals and per-spell dynamic equipment recommendations. A generic reusable optimizer surface for every skill/action remains planned.
+Current implementation covers Equipment optimizer goals and per-spell dynamic equipment recommendations. A generic reusable optimizer surface for every skill/action remains planned.
 
 Examples:
 
@@ -653,7 +653,7 @@ Rate-limit sensitivity: high
 
 Allow users to define and execute a local Macros Collection. A macro is a named declarative sequence of validated actions such as equipping a preset or item, casting a skill, selecting a target, refreshing snapshots, and restoring the original gear captured at macro start.
 
-Macros are not implemented yet. Inventory presets added by the Inventory page are designed as future macro references. Spells added by the Spells page are also designed as future macro references.
+Macros are not implemented yet. Equipment presets added by the Equipment page are designed as future macro references. Spells added by the Spells page are also designed as future macro references.
 
 ### Inputs
 
@@ -1754,7 +1754,7 @@ Navigation rules:
 
 ```text
 1. Hide the foldable feature drawer entirely when no authenticated session is active.
-2. Show `Dashboard`, `Tasks`, `Inventory`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` in the drawer once an authenticated session exists.
+2. Show `Dashboard`, `Tasks`, `Equipment`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` in the drawer once an authenticated session exists.
 3. Keep refresh disabled unless authenticated credentials are available for the current session.
 4. Surface compact sync state in the top bar:
    - `Synced h:mm AM/PM` for normal cached sync freshness;
@@ -1794,20 +1794,20 @@ Test:
 - shell error banner rendering;
 - compact sync timestamp rendering without full date text;
 - stale, failed, active refresh, and cloud-sync status rendering.
-- signed-out empty states for Dashboard, Tasks, Inventory, Pets & Mounts, Party/Quests, and Spells.
+- signed-out empty states for Dashboard, Tasks, Equipment, Pets & Mounts, Party/Quests, and Spells.
 
 ### Open questions
 
 Current implementation:
 
-- `Sign In`, `Dashboard`, `Tasks`, `Inventory`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` routes;
+- `Sign In`, `Dashboard`, `Tasks`, `Equipment`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` routes;
 - `/` resolves after session initialization, sending authenticated sessions to Dashboard and unauthenticated sessions to Sign In;
 - saved local credentials are checked before the route body renders, avoiding a sign-in flash for returning authenticated users;
-- authenticated drawer order is `Dashboard`, `Tasks`, `Inventory`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, `Diagnostics`;
+- authenticated drawer order is `Dashboard`, `Tasks`, `Equipment`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, `Diagnostics`;
 - top app bar with refresh action, active refresh count, cloud sync state, and latest sync timestamp fallback;
 - responsive drawer navigation shown only after authentication;
-- signed-out empty states on Dashboard, Tasks, Inventory, Pets & Mounts, Party, Quests, and Spells show a page-local Sign in action when no required cached snapshot is available, while authenticated empty states continue to point at Refresh;
-- dashboard navigation cards for Tasks, Inventory, Pets & Mounts, Party, Quests, and Spells use local `Open` actions, while the Dashboard keeps a single primary `Open Habitica` web link;
+- signed-out empty states on Dashboard, Tasks, Equipment, Pets & Mounts, Party, Quests, and Spells show a page-local Sign in action when no required cached snapshot is available, while authenticated empty states continue to point at Refresh;
+- dashboard navigation cards for Tasks, Equipment, Pets & Mounts, Party, Quests, and Spells use local `Open` actions, while the Dashboard keeps a single primary `Open Habitica` web link;
 - stable Habitica web links for known web routes with no mobile deep links or custom schemes;
 - shared error banner;
 - cached identity summary in the app shell;
@@ -1996,7 +1996,7 @@ Waiting:
 
 - project-owned `x-client` header configuration for production deployments.
 
-## 15. Inventory and equipment explorer
+## 15. Equipment page and gear explorer
 
 Status: implemented
 Owner module: `Habitica.Application.Inventory`, `Habitica.Storage`, `Habitica.Api`, and `Habitica.WebApp.Pages.InventoryPage`
@@ -2172,14 +2172,14 @@ Test:
 - full-width vertical battle preset layout;
 - highest-stat highlighting, including tied highest stats;
 - empty-state rendering;
-- inventory route navigation rendering;
+- equipment navigation label rendering on the `/inventory` route;
 - diagnostics logging for inventory actions.
 
 ### Open questions
 
 Current implementation:
 
-- dedicated `Inventory` route in the app shell;
+- dedicated Equipment navigation entry in the app shell, preserving the `/inventory` route;
 - equipped battle gear block;
 - local battle gear preset list;
 - preset save, rename, full-preset equip, individual preset-item equip, and confirmed remove actions;

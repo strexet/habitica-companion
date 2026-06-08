@@ -57,6 +57,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Random theme generation now guards calm/moderate card text and primary/secondary filled-button label contrast across generated gradient stops, with readability thresholds intentionally relaxed only toward high-chaos Madness output.
 - Persisted appearance changes now request a narrow encrypted upload of the color-schemes cloud-sync section, while transient random themes, rerolls, chaos changes, and paste previews stay local until saved; Appearance close actions read `Done` unless they truly discard a preview/edit.
 - Healer Blessing estimates now use concise per-member HP copy, keep fresh-HP capping and aggregate scoring, and no longer expose group-total HP wording.
+- Inventory page user-facing labels now read Equipment across drawer navigation, page title, dashboard link, tests, and user-facing docs while preserving the `/inventory` route and inventory data/API terminology.
 
 ## Pending Queue
 
@@ -71,70 +72,6 @@ Work top to bottom. This is an intake list for rough notes that must become self
 - Bottom – (default) the lowest priority entries, add to the bottom of the `Prioritized Next Changes` list.
 
 ### Entries:
-
-- Rename Inventory page to Equipment across the app
-   - Description
-      - Rename the current Inventory page to Equipment.
-      - The page is primarily focused on equipment and gear-related functionality, so Equipment is a clearer and more accurate name.
-      - Apply the rename consistently across the side menu and all user-facing parts of the app.
-
-   - Side menu updates
-      - Rename the side-menu item from `Inventory` to `Equipment`.
-      - Keep the existing navigation destination and behavior unchanged.
-      - Update the selected/active navigation label accordingly.
-      - Review the menu icon and keep or replace it only if the current icon no longer fits the Equipment label.
-
-   - Page updates
-      - Rename the visible page title from `Inventory` to `Equipment`.
-      - Update page headers, breadcrumbs, section descriptions, empty states, tooltips, and related user-facing labels that refer to the page as Inventory.
-      - Keep internal labels that genuinely refer to the user’s full Habitica inventory unchanged where Equipment would be inaccurate.
-
-   - App-wide terminology review
-      - Search the app for user-facing references to:
-         - `Inventory`
-         - `Inventory page`
-         - `Open Inventory`
-         - `Go to Inventory`
-         - Similar navigation/help text
-      - Replace those references with Equipment where they refer specifically to this page.
-      - Do not blindly rename domain/API concepts such as:
-         - Inventory data models.
-         - `snapshot.Inventory`.
-         - Habitica API inventory payloads.
-         - Pet, food, egg, potion, or quest inventory concepts.
-      - Preserve technical identifiers unless renaming them is clearly necessary.
-      - Prefer a UI-only rename where possible to avoid unnecessary routing, persistence, or compatibility changes.
-
-   - Routing and compatibility
-      - Keep the existing route if changing it would break bookmarks, deep links, tests, or persisted navigation state.
-      - If the route currently contains `inventory`, it may remain unchanged internally.
-      - If a new `/equipment` route is introduced:
-         - Preserve the old route as a redirect or alias.
-         - Ensure existing deep links continue to work.
-      - Do not change API contracts or stored data keys as part of this task.
-
-   - Documentation updates
-      - Update user-facing documentation to use Equipment for this page.
-      - Review:
-         - `FEATURES.md`
-         - `docs/UX_UI_MANIFEST.md`
-         - README/navigation documentation where applicable
-      - Keep technical references to Habitica inventory data unchanged when they describe actual inventory structures rather than the page name.
-
-   - Expected behavior
-      - Side menu displays `Equipment`.
-      - Page title displays `Equipment`.
-      - User-facing navigation and help text consistently use Equipment.
-      - Existing page functionality remains unchanged.
-      - Existing links and navigation continue to work.
-
-   - Acceptance criteria
-      - No user-facing menu item or page title still calls this page Inventory.
-      - All app navigation references to this page use Equipment.
-      - Technical/API inventory terminology remains unchanged where appropriate.
-      - Existing route compatibility is preserved.
-      - Existing equipment, gear, loadout, and related page functionality still works.
-      - Tests and documentation are updated to reflect the new page name.
 
 ## Prioritized Next Changes
 

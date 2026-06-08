@@ -12,7 +12,7 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class InventoryPageTests : BunitContext
 {
     [Fact]
-    public void Signed_out_empty_inventory_has_sign_in_action()
+    public void Signed_out_empty_equipment_page_has_sign_in_action()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
@@ -95,6 +95,8 @@ public sealed class InventoryPageTests : BunitContext
 
         var cut = Render<InventoryPage>();
 
+        Assert.Contains("Equipment", cut.Markup);
+        Assert.DoesNotContain("Inventory and equipped gear", cut.Markup);
         Assert.Contains("Equipment explorer", cut.Markup);
         Assert.Contains("Equipped battle gear", cut.Markup);
         Assert.DoesNotContain("Equipped costume", cut.Markup);
