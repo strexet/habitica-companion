@@ -441,12 +441,14 @@ public sealed class SpellsPageTests : BunitContext
 
         Assert.Contains("Buff timing", cut.Markup);
         Assert.Contains("Party buffs expire separately for each member", cut.Markup);
-        Assert.Contains("1 daily due", cut.Markup);
-        Assert.DoesNotContain("Weekly review", cut.Markup);
+        var cronDailies = cut.Find("[data-testid='cron-unfinished-dailies']");
+        Assert.Contains("1 daily due", cronDailies.TextContent);
+        Assert.DoesNotContain("Weekly review", cronDailies.TextContent);
         Assert.Empty(cut.FindAll("[data-testid='complete-cron-daily-daily-1']"));
         Assert.Empty(controller.CastSpellCalls);
 
         cut.Find("[data-testid='cron-dailies-disclosure']").Click();
+        Assert.DoesNotContain("Weekly review", cut.Find("[data-testid='cron-unfinished-dailies']").TextContent);
         cut.Find("[data-testid='complete-cron-daily-daily-1']").Click();
         Assert.Equal("daily-1", Assert.Single(controller.ScoreTaskCalls).TaskId);
         Assert.Empty(cut.FindAll("[data-testid='cron-unfinished-dailies']"));
