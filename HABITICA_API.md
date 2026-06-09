@@ -282,7 +282,7 @@ Common endpoints:
 
 For this app's bulk sell planner, `:type` is limited to the inventory object names Habitica exposes for supported sellable categories: `eggs`, `food`, and `hatchingPotions`. Do not send gear or quest scrolls through the bulk sell flow unless the API contract is verified separately.
 
-For this app's Dashboard health-potion action, the current API client uses the generic route `POST /user/buy/potion`. Habitica also exposes the dedicated `POST /user/buy-health-potion` route in current server source; switch only with a focused API-client update and tests.
+For this app's Dashboard Start New Day health-potion action, the current API client uses the generic route `POST /user/buy/potion`. Habitica also exposes the dedicated `POST /user/buy-health-potion` route in current server source; switch only with a focused API-client update and tests. The local CRON recovery estimate uses the current app rule of 25 GP per Health Potion and 15 HP restored per purchase, caps useful healing at the cached maximum HP, and refreshes `/user` after purchase before enabling another recovery decision.
 
 For `/user/purchase/:type/:key`, the wiki notes that a `quantity` body parameter can be supplied for supported purchases, even where this is not fully reflected in the official API docs:
 

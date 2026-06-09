@@ -112,7 +112,7 @@ Layout rules:
 
 Current placement:
 
-- Dashboard: Start New Day gear previews use official gear thumbnails. Companion and inventory summaries live on Equipment and Pets & Mounts, not on Dashboard. CRON damage remains text-only inside the Start New Day panel so it does not crowd stat allocation action rows or duplicate damage cards elsewhere on the page.
+- Dashboard: Start New Day gear previews use official gear thumbnails. Companion and inventory summaries live on Equipment and Pets & Mounts, not on Dashboard. CRON damage and Health Potion recovery remain compact inside the Start New Day panel so they do not crowd stat allocation action rows or duplicate cards elsewhere on the page.
 - Dashboard navigation cards use stable local routes plus stable Habitica web URLs only; do not add mobile app deep links or custom schemes.
 - Tasks: keep task cards primarily text and control driven. Use Habitica art only for explicit reward/item/quest targets added by a future feature. Task type/status affordances may use simple UI icons, not game art.
 - Equipment: gear thumbnails appear in battle loadout slots, best-in-category entries, expanded gear cards, accessory cards, and saved preset items. Fixed identity columns keep slot labels, class text, stat pills, and equip actions aligned. Summary cards use compact item icons with readable counts.
@@ -186,7 +186,7 @@ Current pattern:
 
 - Summary stat cards for account, HP, MP, XP, gold, and open tasks.
 - HP, MP, and XP cards include compact meters so the current ratio has a readable shape, not only text.
-- Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action includes an optional gear recommendation preview, compact CRON damage summary, confirmed due unfinished-Dailies list, collapsed estimate details, and inline confirmation instead of an immediate mutation.
+- Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action includes an optional gear recommendation preview, compact CRON damage summary, contextual Health Potion recovery, confirmed due unfinished-Dailies list, collapsed estimate details, and inline confirmation instead of an immediate mutation.
 - Stats allocation table with horizontal overflow.
 - Explicit armoire and gem-for-gold actions plus companion navigation links.
 
@@ -207,7 +207,7 @@ Improvement:
 - For mobile stats, keep horizontal scroll but add a sticky first column or repeated stat label so context does not disappear.
 - Keep Start New Day as a small operational panel, not a hero or persistent global warning, because it is important only when Cron is due.
 - Keep CRON gear optimization inside the Start New Day panel, with compact current/recommended/delta stat chips and recommended item rows rather than a separate inventory-style workspace.
-- Keep CRON damage inside the Start New Day panel. The default view should show total estimated damage, HP after CRON, risk, and compact Dailies/Boss breakdown; formulas, missing due-state Dailies, and unavailable sources belong in collapsed details.
+- Keep CRON damage and recovery inside the Start New Day panel. The default damage view should show total estimated damage, HP after CRON, risk, and compact Dailies/Boss breakdown; formulas, missing due-state Dailies, and unavailable sources belong in collapsed details. Health Potion recovery should stay secondary and row-like, showing current HP, HP after CRON, 15 HP healing, 25 GP cost, gold, concise recommendation text, and a single-purchase action only when recovery is useful.
 
 ### Tasks
 

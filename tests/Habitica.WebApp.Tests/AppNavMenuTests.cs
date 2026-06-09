@@ -90,6 +90,7 @@ public sealed class AppNavMenuTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -140,6 +141,7 @@ public sealed class AppNavMenuTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,

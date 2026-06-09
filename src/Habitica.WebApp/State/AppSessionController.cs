@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Habitica.Application.Auth;
+using Habitica.Application.Dashboard;
 using Habitica.Application.Diagnostics;
 using Habitica.Application.Inventory;
 using Habitica.Application.Sync;
@@ -20,7 +21,7 @@ namespace Habitica.WebApp.State;
 
 public sealed class AppSessionController : IAppSessionController
 {
-    private const decimal HealthPotionGoldCost = 25m;
+    private const decimal HealthPotionGoldCost = HealthPotionRecoveryEstimateFactory.HealthPotionGoldCost;
     private const decimal GemGoldCost = 20m;
     private static readonly TimeSpan SpellPreparationDelay = TimeSpan.FromSeconds(1);
     private readonly ICredentialStore _credentialStore;
@@ -2338,10 +2339,14 @@ public sealed class AppSessionController : IAppSessionController
                 "Bought a health potion.",
                 new Dictionary<string, string>(StringComparer.Ordinal)
                 {
+                    ["endpoint"] = "POST /user/buy/potion",
+                    ["requestedPotionCount"] = "1",
+                    ["completedPurchaseCount"] = "1",
                     ["healthBefore"] = previousHealth.ToString(CultureInfo.InvariantCulture),
                     ["healthAfter"] = userSnapshot.Health.ToString(CultureInfo.InvariantCulture),
                     ["goldBefore"] = previousGold.ToString(CultureInfo.InvariantCulture),
                     ["goldAfter"] = userSnapshot.Gold.ToString(CultureInfo.InvariantCulture),
+                    ["recommendedForCronRisk"] = "unknown",
                     ["requestCount"] = "2"
                 },
                 cancellationToken);
@@ -2363,8 +2368,13 @@ public sealed class AppSessionController : IAppSessionController
                 exception.Message,
                 new Dictionary<string, string>(StringComparer.Ordinal)
                 {
+                    ["endpoint"] = "POST /user/buy/potion",
+                    ["requestedPotionCount"] = "1",
+                    ["completedPurchaseCount"] = "0",
                     ["healthBefore"] = previousHealth.ToString(CultureInfo.InvariantCulture),
-                    ["goldBefore"] = previousGold.ToString(CultureInfo.InvariantCulture)
+                    ["goldBefore"] = previousGold.ToString(CultureInfo.InvariantCulture),
+                    ["recommendedForCronRisk"] = "unknown",
+                    ["failureStage"] = "purchase-or-refresh"
                 },
                 cancellationToken);
             return InventoryActionResult.Failure(exception.Message);

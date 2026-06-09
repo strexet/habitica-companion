@@ -984,8 +984,7 @@ input[type="radio"] {
 .task-group-header > :first-child,
 .party-section-head > :first-child,
 .stats-panel-head > :first-child,
-.pending-damage-head > :first-child,
-.health-potion-panel > :first-child {
+.pending-damage-head > :first-child {
     min-width: min(100%, 14rem);
 }
 
@@ -1942,8 +1941,7 @@ input[type="radio"] {
     gap: 1rem;
 }
 
-.pending-damage-head,
-.health-potion-panel {
+.pending-damage-head {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
@@ -1951,8 +1949,7 @@ input[type="radio"] {
     justify-content: space-between;
 }
 
-.pending-damage-total,
-.health-potion-panel > div:first-child {
+.pending-damage-total {
     display: grid;
     gap: 0.25rem;
     min-width: min(100%, 12rem);
@@ -2011,9 +2008,46 @@ input[type="radio"] {
     font-size: 0.9rem;
 }
 
-.health-potion-panel {
-    padding-top: 0;
-    border-top: 0;
+.cron-health-potion-recovery {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.8fr) minmax(0, 1.6fr) minmax(10rem, 1fr) auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.85rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(245, 239, 226, 0.58);
+}
+
+.cron-recovery-copy,
+.cron-recovery-plan {
+    display: grid;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.cron-recovery-stats {
+    display: grid;
+    gap: 0.45rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+}
+
+.cron-recovery-stats div {
+    min-width: 0;
+}
+
+.cron-recovery-stats dt {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.cron-recovery-stats dd {
+    margin: 0.1rem 0 0;
+    font-weight: 800;
+    overflow-wrap: anywhere;
 }
 
 .spell-recommendation {
@@ -3885,7 +3919,7 @@ input[type="file"].app-input::file-selector-button {
 .spell-card-section,
 .party-quest-section,
 .party-member-details,
-.health-potion-panel,
+.cron-health-potion-recovery,
 .stats-table th,
 .stats-table td,
 .best-category-block {
@@ -4091,7 +4125,7 @@ code {
     .party-section-head > *,
     .dashboard-appearance-head > *,
     .pending-damage-head > *,
-    .health-potion-panel > * {
+    .cron-health-potion-recovery > * {
         width: 100%;
     }
 
@@ -4129,13 +4163,14 @@ code {
     .spell-cron-warning-actions,
     .confirmation-actions,
     .cron-action-row,
+    .cron-health-potion-recovery,
+    .cron-recovery-stats,
     .stats-panel-head,
     .spell-recommendation {
         grid-template-columns: 1fr;
     }
 
-    .pending-damage-head,
-    .health-potion-panel {
+    .pending-damage-head {
         align-items: stretch;
         flex-direction: column;
     }

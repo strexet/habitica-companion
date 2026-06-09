@@ -18,6 +18,27 @@ public sealed record PendingDamageSource(
     decimal Damage,
     string Detail);
 
+public sealed record HealthPotionRecoveryEstimate(
+    decimal CurrentHealth,
+    decimal MaximumHealth,
+    decimal CurrentGold,
+    decimal PotionHealing,
+    decimal PotionGoldCost,
+    decimal EffectiveHealingFromOnePotion,
+    decimal EstimatedDamage,
+    decimal EstimatedHealthAfterCron,
+    decimal ExpectedHealthAfterOnePotion,
+    decimal ExpectedHealthAfterOnePotionAndCron,
+    int MaximumUsefulPotionCount,
+    int AffordablePotionCount,
+    int RecommendedPotionCount,
+    bool ShouldShow,
+    bool CanBuySinglePotion,
+    bool IsBasedOnIncompleteDamageEstimate,
+    bool RecommendedCountRemovesKnockoutRisk,
+    string RecommendationText,
+    string AvailabilityText);
+
 public enum PendingDamageRisk
 {
     None,

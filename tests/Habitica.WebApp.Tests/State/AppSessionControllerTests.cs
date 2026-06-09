@@ -853,6 +853,9 @@ public sealed class AppSessionControllerTests
         Assert.Contains(logStore.Entries, entry =>
             entry.FeatureArea == DiagnosticsFeatureArea.Inventory
             && entry.Operation == "health-potion-buy"
+            && entry.Metadata["endpoint"] == "POST /user/buy/potion"
+            && entry.Metadata["requestedPotionCount"] == "1"
+            && entry.Metadata["completedPurchaseCount"] == "1"
             && entry.Metadata["healthBefore"] == "20"
             && entry.Metadata["goldBefore"] == "25");
     }

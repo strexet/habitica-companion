@@ -36,6 +36,7 @@ builder.Services.AddScoped<LocalUserDataPortabilityService>();
 builder.Services.AddScoped<DiagnosticsLogWriter>();
 builder.Services.AddScoped<DiagnosticsPresetWorkflow>();
 builder.Services.AddScoped<PendingDamageEstimateFactory>();
+builder.Services.AddScoped<HealthPotionRecoveryEstimateFactory>();
 builder.Services.AddScoped<InventoryViewModelFactory>();
 builder.Services.AddScoped<SpellViewModelFactory>();
 builder.Services.AddScoped<CharacterStatsViewModelFactory>();

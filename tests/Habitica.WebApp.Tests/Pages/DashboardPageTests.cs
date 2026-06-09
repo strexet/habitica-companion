@@ -24,6 +24,7 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
         Services.AddScoped<ColorSchemeService>();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty));
@@ -43,6 +44,7 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -160,6 +162,8 @@ public sealed class DashboardPageTests : BunitContext
         Assert.DoesNotContain("Pending damage estimate", cut.Markup);
         Assert.Empty(cut.FindAll("[data-testid='cron-damage-summary']"));
         Assert.Empty(cut.FindAll("[data-testid='cron-unfinished-dailies']"));
+        Assert.DoesNotContain("Manual recovery", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='buy-health-potion']"));
         Assert.Contains("3 unspent stat points", cut.Markup);
         Assert.Contains("#stats", cut.Markup);
         Assert.Contains("Equipment", cut.Markup);
@@ -174,6 +178,7 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -227,6 +232,7 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -281,6 +287,7 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -336,6 +343,7 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -413,6 +421,7 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -487,12 +496,13 @@ public sealed class DashboardPageTests : BunitContext
     }
 
     [Fact]
-    public void Health_potion_action_requires_confirmation_and_calls_session_controller()
+    public void Cron_health_potion_action_requires_confirmation_and_calls_session_controller()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -527,7 +537,9 @@ public sealed class DashboardPageTests : BunitContext
                     new EquipmentSnapshot(
                         new GearSlotsSnapshot(null, null, null, null, null),
                         new GearSlotsSnapshot(null, null, null, null, null)),
-                    new InventorySnapshot(0, 0, 0, 0, 0, 0, Array.Empty<string>())),
+                    new InventorySnapshot(0, 0, 0, 0, 0, 0, Array.Empty<string>()),
+                    CurrentHabiticaDayKey: "2026-04-25",
+                    NeedsCron: true),
                 UserFreshness: SnapshotFreshnessState.Fresh));
         Services.AddSingleton<IAppSessionController>(controller);
 
@@ -536,7 +548,11 @@ public sealed class DashboardPageTests : BunitContext
         var cut = Render<DashboardPage>();
 
         Assert.DoesNotContain("Pending damage estimate", cut.Markup);
-        Assert.Empty(cut.FindAll("[data-testid='cron-damage-summary']"));
+        Assert.NotNull(cut.Find("[data-testid='cron-damage-summary']"));
+        Assert.NotNull(cut.Find("[data-testid='cron-health-potion-recovery']"));
+        Assert.Contains("Current HP", cut.Markup);
+        Assert.Contains("After CRON", cut.Markup);
+        Assert.Contains("+15 HP", cut.Markup);
         cut.Find("[data-testid='buy-health-potion']").Click();
         Assert.Contains("Confirm purchase", cut.Markup);
 
@@ -546,12 +562,70 @@ public sealed class DashboardPageTests : BunitContext
     }
 
     [Fact]
+    public void Cron_health_potion_recovery_is_hidden_at_maximum_health()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new CharacterStatsViewModelFactory());
+        Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
+        var controller = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    new[]
+                    {
+                        new TaskSnapshot("daily-1", "Exercise", TaskType.Daily, false, 1.5m, null, null, IsDue: true)
+                    }),
+                ClassName: "wizard",
+                Level: 15,
+                UserSnapshot: new UserSnapshot(
+                    DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                    "Mage Tester",
+                    "wizard",
+                    15,
+                    50m,
+                    50m,
+                    33.5m,
+                    40m,
+                    125.1m,
+                    74.9m,
+                    100m,
+                    "party-123",
+                    null,
+                    null,
+                    new EquipmentSnapshot(
+                        new GearSlotsSnapshot(null, null, null, null, null),
+                        new GearSlotsSnapshot(null, null, null, null, null)),
+                    new InventorySnapshot(0, 0, 0, 0, 0, 0, Array.Empty<string>()),
+                    CurrentHabiticaDayKey: "2026-04-25",
+                    NeedsCron: true),
+                UserFreshness: SnapshotFreshnessState.Fresh));
+        Services.AddSingleton<IAppSessionController>(controller);
+        Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
+
+        var cut = Render<DashboardPage>();
+
+        Assert.NotNull(cut.Find("[data-testid='cron-damage-summary']"));
+        Assert.Empty(cut.FindAll("[data-testid='cron-health-potion-recovery']"));
+        Assert.Empty(cut.FindAll("[data-testid='buy-health-potion']"));
+    }
+
+    [Fact]
     public void Gem_gold_purchase_card_clamps_quantity_and_requires_confirmation()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -685,6 +759,7 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,
@@ -752,6 +827,7 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         Services.AddSingleton<IKeyValueStorage>(new InMemoryKeyValueStorage());
         Services.AddScoped<ColorSchemeService>();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty));
@@ -779,6 +855,7 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton(new CharacterStatsViewModelFactory());
         Services.AddSingleton(new PendingDamageEstimateFactory());
+        Services.AddSingleton(new HealthPotionRecoveryEstimateFactory());
         var controller = new FakeAppSessionController(
             new SessionViewModel(
                 IsBusy: false,

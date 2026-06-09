@@ -12,6 +12,7 @@
 @inject IAppSessionController SessionController
 @inject CharacterStatsViewModelFactory StatsViewModelFactory
 @inject PendingDamageEstimateFactory PendingDamageEstimateFactory
+@inject HealthPotionRecoveryEstimateFactory RecoveryEstimateFactory
 @inject ISnackbar Snackbar
 
 <PageTitle>Dashboard</PageTitle>
@@ -67,6 +68,7 @@
         var snapshot = SessionController.State.UserSnapshot;
         var statAllocation = new StatAllocationUnlockViewModelFactory().Create(snapshot);
         var damageEstimate = CreateDamageEstimate(snapshot);
+        var recoveryEstimate = RecoveryEstimateFactory.Create(snapshot, damageEstimate);
 
         <MudAlert Class="inline-banner" Dense="true" Severity="@GetFreshnessSeverity(SessionController.State.UserFreshness)" Variant="Variant.Filled">
             @GetFreshnessLabel(SessionController.State.UserFreshness)
@@ -254,6 +256,79 @@
                     }
                 </div>
 
+                @if (recoveryEstimate.ShouldShow)
+                {
+                    <div class="cron-health-potion-recovery" data-testid="cron-health-potion-recovery">
+                        <div class="cron-recovery-copy">
+                            <span class="dashboard-stat-label">Recovery</span>
+                            <strong>Health Potion</strong>
+                            <span class="dashboard-stat-note">@GetHealthPotionStatus(snapshot, recoveryEstimate)</span>
+                        </div>
+
+                        <dl class="cron-recovery-stats">
+                            <div>
+                                <dt>Current HP</dt>
+                                <dd>@FormatDecimal(recoveryEstimate.CurrentHealth) / @FormatDecimal(recoveryEstimate.MaximumHealth)</dd>
+                            </div>
+                            <div>
+                                <dt>After CRON</dt>
+                                <dd>@FormatDecimal(recoveryEstimate.EstimatedHealthAfterCron) / @FormatDecimal(recoveryEstimate.MaximumHealth)</dd>
+                            </div>
+                            <div>
+                                <dt>Health Potion</dt>
+                                <dd>+@FormatDecimal(recoveryEstimate.EffectiveHealingFromOnePotion) HP · @FormatDecimal(recoveryEstimate.PotionGoldCost) GP</dd>
+                            </div>
+                            <div>
+                                <dt>Gold</dt>
+                                <dd>@FormatDecimal(recoveryEstimate.CurrentGold) GP</dd>
+                            </div>
+                        </dl>
+
+                        <div class="cron-recovery-plan">
+                            <span>@recoveryEstimate.RecommendationText</span>
+                            @if (recoveryEstimate.RecommendedPotionCount > 0)
+                            {
+                                <span class="dashboard-stat-note">
+                                    Recommended: @recoveryEstimate.RecommendedPotionCount potion@(recoveryEstimate.RecommendedPotionCount == 1 ? string.Empty : "s") · @FormatDecimal(recoveryEstimate.RecommendedPotionCount * recoveryEstimate.PotionGoldCost) GP.
+                                </span>
+                            }
+                            <span class="dashboard-stat-note">
+                                After one potion and CRON: @FormatDecimal(recoveryEstimate.ExpectedHealthAfterOnePotionAndCron) / @FormatDecimal(recoveryEstimate.MaximumHealth) HP.
+                            </span>
+                            @if (recoveryEstimate.IsBasedOnIncompleteDamageEstimate)
+                            {
+                                <span class="dashboard-stat-note">Damage estimate incomplete - recovery cannot guarantee survival.</span>
+                            }
+                        </div>
+
+                        @if (_showHealthPotionConfirmation)
+                        {
+                            <div class="confirmation-actions">
+                                <MudButton Color="Color.Default" Disabled="@SessionController.State.IsBusy" OnClick="CancelHealthPotion" Variant="Variant.Text">
+                                    Cancel
+                                </MudButton>
+                                <MudButton Color="Color.Primary"
+                                           Disabled="@(!CanBuyHealthPotion(snapshot))"
+                                           OnClick="BuyHealthPotionAsync"
+                                           Variant="Variant.Filled"
+                                           data-testid="confirm-buy-health-potion">
+                                    Confirm purchase
+                                </MudButton>
+                            </div>
+                        }
+                        else
+                        {
+                            <MudButton Color="Color.Primary"
+                                       Disabled="@(!CanBuyHealthPotion(snapshot))"
+                                       OnClick="ShowHealthPotionConfirmation"
+                                       Variant="Variant.Outlined"
+                                       data-testid="buy-health-potion">
+                                Buy Health Potion
+                            </MudButton>
+                        }
+                    </div>
+                }
+
                 <CronUnfinishedDailiesMiniList Dailies="@unfinishedDailies" OnComplete="CompleteCronDailyAsync" />
 
                 @if (_showCronConfirmation)
@@ -365,39 +440,6 @@
                 @RenderDashboardLink("Quests", "/quests", "Manage active quests and shared planning.")
                 @RenderDashboardLink("Spells", "/spells", "Cast class skills against task targets.")
             </div>
-        </section>
-
-        <section class="card-surface dashboard-panel health-potion-panel">
-                <div>
-                    <span class="dashboard-stat-label">Manual recovery</span>
-                    <strong>Buy Health Potion</strong>
-                    <span class="dashboard-stat-note">@GetHealthPotionStatus(snapshot)</span>
-                </div>
-                @if (_showHealthPotionConfirmation)
-                {
-                    <div class="confirmation-actions">
-                        <MudButton Color="Color.Default" Disabled="@SessionController.State.IsBusy" OnClick="CancelHealthPotion" Variant="Variant.Text">
-                            Cancel
-                        </MudButton>
-                        <MudButton Color="Color.Primary"
-                                   Disabled="@(!CanBuyHealthPotion(snapshot))"
-                                   OnClick="BuyHealthPotionAsync"
-                                   Variant="Variant.Filled"
-                                   data-testid="confirm-buy-health-potion">
-                            Confirm purchase
-                        </MudButton>
-                    </div>
-                }
-                else
-                {
-                    <MudButton Color="Color.Primary"
-                               Disabled="@(!CanBuyHealthPotion(snapshot))"
-                               OnClick="ShowHealthPotionConfirmation"
-                               Variant="Variant.Outlined"
-                               data-testid="buy-health-potion">
-                        Buy Health Potion
-                    </MudButton>
-                }
         </section>
 
         var statsViewModel = StatsViewModelFactory.Create(snapshot, SessionController.State.GearCatalogSnapshot);
@@ -594,7 +636,6 @@
     private readonly HashSet<string> _completedCronDailyIds = new(StringComparer.Ordinal);
     private bool _appearanceCollapsed = true;
     private readonly Dictionary<string, int> _pendingAllocation = new(StringComparer.Ordinal);
-    private const decimal HealthPotionGoldCost = 25m;
     private const decimal GemGoldCost = 20m;
     private int _armoirePurchaseCount = 1;
     private int _gemPurchaseCount = 1;
@@ -879,11 +920,11 @@
         return SessionController.State.IsAuthenticated
             && !SessionController.State.IsBusy
             && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh
-            && snapshot.Gold >= HealthPotionGoldCost
+            && snapshot.Gold >= HealthPotionRecoveryEstimateFactory.HealthPotionGoldCost
             && (snapshot.MaxHealth <= 0m || snapshot.Health < snapshot.MaxHealth);
     }
 
-    private string GetHealthPotionStatus(UserSnapshot snapshot)
+    private string GetHealthPotionStatus(UserSnapshot snapshot, HealthPotionRecoveryEstimate recoveryEstimate)
     {
         if (!SessionController.State.IsAuthenticated)
         {
@@ -905,9 +946,7 @@
             return "Health is already full.";
         }
 
-        return snapshot.Gold < HealthPotionGoldCost
-            ? "Needs 25 GP."
-            : "Costs 25 GP and refreshes account health and gold after purchase.";
+        return recoveryEstimate.AvailabilityText;
     }
 
     private void ShowHealthPotionConfirmation()

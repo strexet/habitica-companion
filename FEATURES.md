@@ -1129,7 +1129,7 @@ Status: partial
 Owner module: `Habitica.WebApp.Dashboard`
 Application entry point: `Habitica.Application.Dashboard`
 Primary Habitica data: user, tasks, party, gear catalog, quest, sync metadata
-Mutates Habitica state: yes for Start New Day, manual health-potion purchase, and gem-for-gold purchase
+Mutates Habitica state: yes for Start New Day, CRON health-potion purchase, and gem-for-gold purchase
 Requires confirmation: yes for Start New Day, health-potion purchase, and gem-for-gold purchase
 Offline behavior: primary feature works offline from snapshots
 Rate-limit sensitivity: low unless refresh is triggered
@@ -1155,7 +1155,7 @@ user summary
 task-count summary
 pending damage estimate with included and excluded sources
 knockout risk warning when estimated damage is high relative to current HP
-manual health-potion confirmation and action result
+compact CRON health-potion recovery estimate, confirmation, and action result
 gem-for-gold confirmation and action result
 warnings
 sync status
@@ -1188,7 +1188,7 @@ Render `Start New Day` only when the current account snapshot says `NeedsCron ==
 
 Start New Day offers recommended temporary battle gear before CRON and enables that option by default. `Habitica.Rules.Equipment.EquipmentRecommendationFactory` builds the compact summary-first preview from cached owned gear and the gear catalog. Goals are `INT for mana`, `CON for less damage`, and `Survival`; all are marked assumption-based because the final CRON mana and damage calculations are server-side. The preview shows current stats, recommended stats, deltas, whether the recommended gear is already equipped, and expandable recommended-item rows. When enabled, `AppSessionController.StartNewDayAsync(StartNewDayRequest)` validates recommended gear ownership, captures the current battle slots, equips changed recommended slots sequentially without an intermediate user refresh, runs CRON only after successful gear steps, restores the captured battle slots sequentially, then refreshes account/tasks/party state. If temporary equip or CRON fails after a gear change, the controller attempts to restore the changed slots before reporting the failure. Failure messages distinguish skipped-before-CRON, failed-while-CRON-running, post-CRON restore, and completed-but-refresh-failed states.
 
-The Start New Day panel renders a compact CRON damage summary between gear optimization and confirmation, then renders `CronUnfinishedDailiesMiniList` when confirmed due unfinished Dailies exist. Each compact Daily row scores that Daily up through `AppSessionController.ScoreTaskAsync`; stale task snapshots replace row actions with a link to the shared Refresh control. The Spells CRON warning reuses the same component behind a collapsed due-count disclosure so a pending cast keeps its context.
+The Start New Day panel renders a compact CRON damage summary between gear optimization and confirmation, then renders contextual health-potion recovery when it can improve the immediate CRON outcome, followed by `CronUnfinishedDailiesMiniList` when confirmed due unfinished Dailies exist. Each compact Daily row scores that Daily up through `AppSessionController.ScoreTaskAsync`; stale task snapshots replace row actions with a link to the shared Refresh control. The Spells CRON warning reuses the same component behind a collapsed due-count disclosure so a pending cast keeps its context.
 
 `PendingDamageEstimateFactory` builds the Start New Day damage summary from confirmed due unfinished Dailies and saved active boss quest pending damage. Task refresh asks Habitica to recompute Daily due state through `/tasks/user?dueDate=<current UTC timestamp>`, then preserves returned `isDue` in cached task data. `PendingDamageEstimateFactory.GetIncompleteDailies` is the shared Daily selector for the Dashboard CRON mini list, the CRON damage estimate, and Spells CRON warnings: Daily, incomplete, and `isDue == true`. Explicit `isDue: false` Dailies and missing/unknown `isDue` Dailies are excluded from the numeric estimate; unknown due-state Dailies appear only in collapsed estimate details. Current-user Inn/resting damage exemption is not fully represented in the saved account snapshot, so the summary remains an estimate and does not claim exact final CRON damage. The standard Dashboard no longer renders a standalone pending-damage card; detailed source and unavailable-source copy is available only inside the Start New Day section.
 
@@ -1200,7 +1200,7 @@ Warning: estimatedDamage >= current HP * 0.75
 Info: estimatedDamage > 0
 ```
 
-Health-potion purchase is manual only. It is disabled when the account snapshot is stale, the user is signed out, health is full, or saved gold is below 25 GP. After purchase, refresh `/user` so HP, gold, and the dashboard warning recalculate from server state.
+Health-potion purchase is manual only and appears on Dashboard only inside the Start New Day panel. `HealthPotionRecoveryEstimateFactory` uses the Start New Day damage estimate, current HP, maximum HP, and saved gold to show current HP, HP after CRON, 15 HP healing, 25 GP cost, maximum useful potion count, affordable count, and the minimum recommendation that can remove knockout risk when the estimate is complete. It never recommends more potions than are useful or affordable, does not show recovery at full health, and avoids a guaranteed-safe claim for incomplete damage estimates. The button buys one Health Potion through the existing `POST /user/buy/potion` client route, is disabled when the account snapshot is stale, the user is signed out, health is full, or saved gold is below 25 GP, and refreshes `/user` after purchase so HP, gold, and the CRON recovery estimate recalculate from server state. The standard Dashboard no longer renders a standalone Manual Recovery card.
 
 Bulk armoire purchase is manual only. The Dashboard shows this spend-gold card before the gem-for-gold card. Its requested opening count defaults to the maximum available from current gold, capped by the app's guarded bulk limit, then lets the user reduce it before purchase.
 
@@ -1232,7 +1232,7 @@ Test:
 - redacted diagnostics.
 - Start New Day confirmation, default-enabled temporary gear optimization preview/request, gear restoration, result feedback, and session-controller refresh contract.
 - Start New Day damage summary, source details, unknown due-state handling, and risk state.
-- health-potion confirmation and session-controller call.
+- CRON health-potion recovery visibility, recommendation, confirmation, and session-controller call.
 - gem-for-gold eligibility visibility, quantity clamp, confirmation, success refresh, partial-failure stop, and user snapshot mapping.
 - dashboard companion navigation keeps one primary `Open Habitica` web link and uses local `Open` actions for app pages.
 
@@ -1247,7 +1247,7 @@ Current implementation:
 - dashboard Start New Day confirmation and inline result when current-user Cron is due;
 - dashboard and Spells CRON unfinished-dailies mini lists with guarded inline checkoff;
 - dashboard Start New Day damage summary with included/excluded source copy and knockout warning;
-- manual health-potion purchase action with confirmation and account refresh;
+- compact Start New Day health-potion recovery action with confirmation, account refresh, and no standalone Manual Recovery card;
 - visible-state gem-for-gold purchase action with quantity clamp, unavailable reasons, confirmation, sequential Habitica requests, diagnostics, and account refresh;
 - task workspace with cached browsing and planned guarded mutations;
 - sync timestamp surface;
