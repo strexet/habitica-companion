@@ -157,9 +157,8 @@ public sealed class DashboardPageTests : BunitContext
             Assert.Equal("STRONG", copy.Children[0].TagName);
             Assert.Contains("dashboard-stat-note", copy.Children[1].ClassList);
         });
-        Assert.Contains("Pending damage estimate", cut.Markup);
-        Assert.Contains("Incomplete Dailies", cut.Markup);
-        Assert.Contains("2 HP", cut.Markup);
+        Assert.DoesNotContain("Pending damage estimate", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='cron-damage-summary']"));
         Assert.Empty(cut.FindAll("[data-testid='cron-unfinished-dailies']"));
         Assert.Contains("3 unspent stat points", cut.Markup);
         Assert.Contains("#stats", cut.Markup);
@@ -384,11 +383,17 @@ public sealed class DashboardPageTests : BunitContext
         var cut = Render<DashboardPage>();
 
         Assert.Contains("Unfinished dailies", cut.Markup);
+        Assert.NotNull(cut.Find("[data-testid='cron-damage-summary']"));
+        Assert.Contains("Estimated damage", cut.Markup);
+        Assert.Contains("HP after CRON", cut.Markup);
+        Assert.Contains("Due Dailies", cut.Markup);
+        Assert.Contains("4 HP", cut.Find("[data-testid='cron-damage-summary']").TextContent);
         Assert.Equal("2", cut.Find("[data-testid='cron-dailies-count']").TextContent);
         Assert.DoesNotContain("Weekly review", cut.Markup);
         cut.Find("[data-testid='complete-cron-daily-daily-1']").Click();
         Assert.Equal("daily-1", Assert.Single(controller.ScoreTaskCalls).TaskId);
         Assert.Equal("1", cut.Find("[data-testid='cron-dailies-count']").TextContent);
+        Assert.Contains("2 HP", cut.Find("[data-testid='cron-damage-summary']").TextContent);
         Assert.NotNull(cut.Find("[data-testid='complete-cron-daily-daily-2']"));
 
         cut.Find("[data-testid='start-new-day']").Click();
@@ -463,6 +468,7 @@ public sealed class DashboardPageTests : BunitContext
         var cut = Render<DashboardPage>();
 
         Assert.Empty(cut.FindAll("[data-testid='cron-unfinished-dailies']"));
+        Assert.NotNull(cut.Find("[data-testid='cron-damage-summary']"));
         Assert.Contains("INT for mana", cut.Markup);
         Assert.True(cut.Find("[data-testid='start-new-day-auto-equip']").HasAttribute("checked"));
         Assert.NotNull(cut.Find("[data-testid='start-new-day-gear-stats']"));
@@ -529,6 +535,8 @@ public sealed class DashboardPageTests : BunitContext
         Services.AddScoped<ColorSchemeService>();
         var cut = Render<DashboardPage>();
 
+        Assert.DoesNotContain("Pending damage estimate", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='cron-damage-summary']"));
         cut.Find("[data-testid='buy-health-potion']").Click();
         Assert.Contains("Confirm purchase", cut.Markup);
 

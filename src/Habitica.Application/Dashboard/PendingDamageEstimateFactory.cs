@@ -12,31 +12,41 @@ public sealed class PendingDamageEstimateFactory
     public PendingDamageEstimate Create(
         UserSnapshot user,
         TaskCollectionSnapshot? tasks,
-        PartySnapshot? party)
+        PartySnapshot? party,
+        string? currentUserId = null)
     {
         var included = new List<PendingDamageSource>();
         var excluded = new List<string>();
 
         AddDailyDamage(tasks, included, excluded);
-        AddPartyBossDamage(party, included, excluded);
+        AddPartyBossDamage(party, currentUserId, included, excluded);
 
         excluded.Add("Negative Habit damage is not included because pending negative Habit state is not available in saved task data.");
+        excluded.Add("Inn and paused-damage state are not included because saved account data does not expose the official CRON damage pause flag.");
 
         var total = included.Sum(static source => source.Damage);
+        var readiness = ResolveReadiness(tasks, party, included, excluded);
         return new PendingDamageEstimate(
             total,
+            Math.Max(0m, user.Health - total),
             included,
             excluded,
-            ResolveRisk(total, user.Health));
+            ResolveRisk(total, user.Health, readiness),
+            readiness);
     }
 
     public static IReadOnlyList<TaskSnapshot> GetIncompleteDailies(TaskCollectionSnapshot? tasks)
     {
-        // Habitica computes Daily due state server-side from schedule fields and
-        // user day-start/timezone preferences. Missing IsDue is legacy/unknown
-        // cached data, so keep it visible instead of falsely marking it safe.
         return tasks?.Items
-            .Where(static task => task.Type == TaskType.Daily && !task.IsCompleted && task.IsDue != false)
+            .Where(static task => task.Type == TaskType.Daily && !task.IsCompleted && task.IsDue == true)
+            .ToArray()
+            ?? Array.Empty<TaskSnapshot>();
+    }
+
+    public static IReadOnlyList<TaskSnapshot> GetUnknownDueIncompleteDailies(TaskCollectionSnapshot? tasks)
+    {
+        return tasks?.Items
+            .Where(static task => task.Type == TaskType.Daily && !task.IsCompleted && task.IsDue is null)
             .ToArray()
             ?? Array.Empty<TaskSnapshot>();
     }
@@ -53,18 +63,24 @@ public sealed class PendingDamageEstimateFactory
         }
 
         var incompleteDailies = GetIncompleteDailies(tasks);
+        var unknownDailies = GetUnknownDueIncompleteDailies(tasks);
         var damage = incompleteDailies.Sum(static task => EstimateDailyDamage(task));
 
         included.Add(new PendingDamageSource(
-            "Incomplete Dailies",
+            "Due Dailies",
             damage,
             incompleteDailies.Count == 0
-                ? "No incomplete Dailies are present in saved task data."
-                : $"{incompleteDailies.Count} incomplete Daily task{(incompleteDailies.Count == 1 ? string.Empty : "s")} using local difficulty-weight estimate."));
+                ? "No confirmed due unfinished Dailies are present in saved task data."
+                : $"{incompleteDailies.Count} confirmed due unfinished Daily task{(incompleteDailies.Count == 1 ? string.Empty : "s")} using local difficulty-weight estimate."));
+        if (unknownDailies.Count > 0)
+        {
+            excluded.Add($"{unknownDailies.Count} unfinished Daily task{(unknownDailies.Count == 1 ? " has" : "s have")} unknown due state and is not included in the numeric estimate.");
+        }
     }
 
     private static void AddPartyBossDamage(
         PartySnapshot? party,
+        string? currentUserId,
         List<PendingDamageSource> included,
         List<string> excluded)
     {
@@ -81,6 +97,12 @@ public sealed class PendingDamageEstimateFactory
             return;
         }
 
+        if (IsCurrentUserExcludedFromQuestDamage(party, currentUserId))
+        {
+            excluded.Add("Party boss damage is not included because the current user is not an active quest participant or is marked as resting in the Inn.");
+            return;
+        }
+
         var damage = quest.PendingPartyDamage
             ?? (quest.ProgressDown > 0m ? quest.ProgressDown : (decimal?)null);
         if (damage is null)
@@ -90,9 +112,9 @@ public sealed class PendingDamageEstimateFactory
         }
 
         included.Add(new PendingDamageSource(
-            "Party boss pending damage",
+            "Boss",
             damage.Value,
-            "Pending boss damage from saved party quest state."));
+            "Saved active boss quest pending damage, counted once for the current user's next CRON."));
     }
 
     private static decimal EstimateDailyDamage(TaskSnapshot task)
@@ -100,8 +122,52 @@ public sealed class PendingDamageEstimateFactory
         return Math.Max(0m, task.Difficulty) * DailyDifficultyDamageFactor;
     }
 
-    private static PendingDamageRisk ResolveRisk(decimal damage, decimal health)
+    private static bool IsCurrentUserExcludedFromQuestDamage(PartySnapshot party, string? currentUserId)
     {
+        if (string.IsNullOrWhiteSpace(currentUserId))
+        {
+            return false;
+        }
+
+        var currentUser = party.Members.FirstOrDefault(member =>
+            string.Equals(member.MemberId, currentUserId, StringComparison.Ordinal));
+        if (currentUser is null)
+        {
+            return false;
+        }
+
+        return currentUser.IsInInn
+            || currentUser.ParticipationStatus is PartyQuestParticipationStatus.Rejected or PartyQuestParticipationStatus.Pending;
+    }
+
+    private static PendingDamageReadiness ResolveReadiness(
+        TaskCollectionSnapshot? tasks,
+        PartySnapshot? party,
+        IReadOnlyList<PendingDamageSource> included,
+        IReadOnlyList<string> excluded)
+    {
+        if (tasks is null || GetUnknownDueIncompleteDailies(tasks).Count > 0)
+        {
+            return PendingDamageReadiness.Incomplete;
+        }
+
+        if (party?.Quest is { IsActive: true, QuestType: PartyQuestType.Boss }
+            && !included.Any(static source => source.Label == "Boss")
+            && excluded.Any(static source => source.Contains("pending boss damage", StringComparison.OrdinalIgnoreCase)))
+        {
+            return PendingDamageReadiness.Incomplete;
+        }
+
+        return PendingDamageReadiness.Estimated;
+    }
+
+    private static PendingDamageRisk ResolveRisk(decimal damage, decimal health, PendingDamageReadiness readiness)
+    {
+        if (readiness == PendingDamageReadiness.Incomplete && damage <= 0m)
+        {
+            return PendingDamageRisk.Info;
+        }
+
         if (damage <= 0m)
         {
             return PendingDamageRisk.None;

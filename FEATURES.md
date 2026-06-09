@@ -1188,9 +1188,9 @@ Render `Start New Day` only when the current account snapshot says `NeedsCron ==
 
 Start New Day offers recommended temporary battle gear before CRON and enables that option by default. `Habitica.Rules.Equipment.EquipmentRecommendationFactory` builds the compact summary-first preview from cached owned gear and the gear catalog. Goals are `INT for mana`, `CON for less damage`, and `Survival`; all are marked assumption-based because the final CRON mana and damage calculations are server-side. The preview shows current stats, recommended stats, deltas, whether the recommended gear is already equipped, and expandable recommended-item rows. When enabled, `AppSessionController.StartNewDayAsync(StartNewDayRequest)` validates recommended gear ownership, captures the current battle slots, equips changed recommended slots sequentially without an intermediate user refresh, runs CRON only after successful gear steps, restores the captured battle slots sequentially, then refreshes account/tasks/party state. If temporary equip or CRON fails after a gear change, the controller attempts to restore the changed slots before reporting the failure. Failure messages distinguish skipped-before-CRON, failed-while-CRON-running, post-CRON restore, and completed-but-refresh-failed states.
 
-The Start New Day panel renders `CronUnfinishedDailiesMiniList` between gear optimization and confirmation when due unfinished Dailies exist. Each compact row scores that Daily up through `AppSessionController.ScoreTaskAsync`; stale task snapshots replace row actions with a link to the shared Refresh control. The Spells CRON warning reuses the same component behind a collapsed due-count disclosure so a pending cast keeps its context.
+The Start New Day panel renders a compact CRON damage summary between gear optimization and confirmation, then renders `CronUnfinishedDailiesMiniList` when confirmed due unfinished Dailies exist. Each compact Daily row scores that Daily up through `AppSessionController.ScoreTaskAsync`; stale task snapshots replace row actions with a link to the shared Refresh control. The Spells CRON warning reuses the same component behind a collapsed due-count disclosure so a pending cast keeps its context.
 
-The pending damage panel uses `PendingDamageEstimateFactory` to combine due incomplete Daily estimates and saved active boss quest pending damage. Task refresh asks Habitica to recompute Daily due state through `/tasks/user?dueDate=<current UTC timestamp>`, then preserves returned `isDue` in cached task data. `PendingDamageEstimateFactory.GetIncompleteDailies` is the shared Daily selector for both the damage estimate and CRON mini lists: Daily, incomplete, and not explicitly `isDue: false`. Missing `isDue` is treated as unknown-compatible for older cached data; no local schedule fallback is attempted without the full official schedule context. Current-user Inn/resting damage exemption is not represented in the saved account snapshot, so the panel remains an estimate and does not claim exact final CRON damage. It must show included sources and unavailable sources separately, and must label the result as an estimate based on synced data.
+`PendingDamageEstimateFactory` builds the Start New Day damage summary from confirmed due unfinished Dailies and saved active boss quest pending damage. Task refresh asks Habitica to recompute Daily due state through `/tasks/user?dueDate=<current UTC timestamp>`, then preserves returned `isDue` in cached task data. `PendingDamageEstimateFactory.GetIncompleteDailies` is the shared Daily selector for the Dashboard CRON mini list, the CRON damage estimate, and Spells CRON warnings: Daily, incomplete, and `isDue == true`. Explicit `isDue: false` Dailies and missing/unknown `isDue` Dailies are excluded from the numeric estimate; unknown due-state Dailies appear only in collapsed estimate details. Current-user Inn/resting damage exemption is not fully represented in the saved account snapshot, so the summary remains an estimate and does not claim exact final CRON damage. The standard Dashboard no longer renders a standalone pending-damage card; detailed source and unavailable-source copy is available only inside the Start New Day section.
 
 Risk thresholds:
 
@@ -1231,7 +1231,7 @@ Test:
 - partial sync failure state;
 - redacted diagnostics.
 - Start New Day confirmation, default-enabled temporary gear optimization preview/request, gear restoration, result feedback, and session-controller refresh contract.
-- pending damage estimate sources and risk state.
+- Start New Day damage summary, source details, unknown due-state handling, and risk state.
 - health-potion confirmation and session-controller call.
 - gem-for-gold eligibility visibility, quantity clamp, confirmation, success refresh, partial-failure stop, and user snapshot mapping.
 - dashboard companion navigation keeps one primary `Open Habitica` web link and uses local `Open` actions for app pages.
@@ -1246,7 +1246,7 @@ Current implementation:
 - dashboard stat cards fall back to current-only rendering when the API snapshot lacks non-zero stat targets;
 - dashboard Start New Day confirmation and inline result when current-user Cron is due;
 - dashboard and Spells CRON unfinished-dailies mini lists with guarded inline checkoff;
-- dashboard pending damage estimate with included/excluded source copy and knockout warning;
+- dashboard Start New Day damage summary with included/excluded source copy and knockout warning;
 - manual health-potion purchase action with confirmation and account refresh;
 - visible-state gem-for-gold purchase action with quantity clamp, unavailable reasons, confirmation, sequential Habitica requests, diagnostics, and account refresh;
 - task workspace with cached browsing and planned guarded mutations;

@@ -1,6 +1,6 @@
 # UX/UI Manifest
 
-Last reviewed: 2026-06-08
+Last reviewed: 2026-06-09
 
 This manifest records the current UI implementation, what is working, where readability or responsiveness has drifted, and which outside patterns are worth copying. Treat it as product guidance for future UI work, not as a pixel spec.
 
@@ -112,7 +112,7 @@ Layout rules:
 
 Current placement:
 
-- Dashboard: Start New Day gear previews use official gear thumbnails. Companion and inventory summaries live on Equipment and Pets & Mounts, not on Dashboard. Pending quest damage remains text-only so it does not crowd Start New Day and stat allocation action rows.
+- Dashboard: Start New Day gear previews use official gear thumbnails. Companion and inventory summaries live on Equipment and Pets & Mounts, not on Dashboard. CRON damage remains text-only inside the Start New Day panel so it does not crowd stat allocation action rows or duplicate damage cards elsewhere on the page.
 - Dashboard navigation cards use stable local routes plus stable Habitica web URLs only; do not add mobile app deep links or custom schemes.
 - Tasks: keep task cards primarily text and control driven. Use Habitica art only for explicit reward/item/quest targets added by a future feature. Task type/status affordances may use simple UI icons, not game art.
 - Equipment: gear thumbnails appear in battle loadout slots, best-in-category entries, expanded gear cards, accessory cards, and saved preset items. Fixed identity columns keep slot labels, class text, stat pills, and equip actions aligned. Summary cards use compact item icons with readable counts.
@@ -186,7 +186,7 @@ Current pattern:
 
 - Summary stat cards for account, HP, MP, XP, gold, and open tasks.
 - HP, MP, and XP cards include compact meters so the current ratio has a readable shape, not only text.
-- Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action includes an optional gear recommendation preview, an expanded compact list for due unfinished Dailies, and inline confirmation instead of an immediate mutation.
+- Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action includes an optional gear recommendation preview, compact CRON damage summary, confirmed due unfinished-Dailies list, collapsed estimate details, and inline confirmation instead of an immediate mutation.
 - Stats allocation table with horizontal overflow.
 - Explicit armoire and gem-for-gold actions plus companion navigation links.
 
@@ -194,7 +194,7 @@ What works:
 
 - Stat cards are scannable and stable.
 - Resource/progress meters make HP, MP, and XP easier to compare at a glance.
-- Start New Day explains missed Dailies, quest progress, buff expiry, and optional gear auto-equip before calling Habitica Cron, matching the app's explicit-mutation posture.
+- Start New Day explains missed Dailies, quest progress, buff expiry, estimated incoming damage, and optional gear auto-equip before calling Habitica Cron, matching the app's explicit-mutation posture.
 - The stats allocation table preserves comparison columns, which is better than collapsing stat math into disconnected mobile cards.
 - Pending stat allocation has clear apply/clear actions.
 
@@ -207,6 +207,7 @@ Improvement:
 - For mobile stats, keep horizontal scroll but add a sticky first column or repeated stat label so context does not disappear.
 - Keep Start New Day as a small operational panel, not a hero or persistent global warning, because it is important only when Cron is due.
 - Keep CRON gear optimization inside the Start New Day panel, with compact current/recommended/delta stat chips and recommended item rows rather than a separate inventory-style workspace.
+- Keep CRON damage inside the Start New Day panel. The default view should show total estimated damage, HP after CRON, risk, and compact Dailies/Boss breakdown; formulas, missing due-state Dailies, and unavailable sources belong in collapsed details.
 
 ### Tasks
 
@@ -466,7 +467,7 @@ Application rule:
 - Reserve interrupting warnings for destructive local data actions, credential handling, and irreversible Habitica mutations.
 - Keep cached data interactive during background refresh and cloud sync. Disable only the action that would conflict with the active operation.
 - Page-level refresh indicators belong in the app bar and the page's refresh strip. Use them for manual refresh, sign-in background refresh, and visible-domain loading.
-- Card-level refresh indicators belong inside the card whose data is stale or being refreshed, such as Dashboard pending damage when tasks or party data are refreshing.
+- Card-level refresh indicators belong inside the card whose data is stale or being refreshed, such as the Dashboard Start New Day CRON summary when tasks or party data are refreshing.
 - Field-level status belongs beside the specific value or control when a mutation affects one item, such as equipment slot progress, spell count progress, cloud sync section status, or import-conflict choices.
 - Global busy states are reserved for blocking mutations and first-load surfaces with no usable cached data.
 - Use loading skeletons only when delayed content has a stable final structure and no cached data to show. Background refreshes should use compact status chips rather than skeleton flashes.

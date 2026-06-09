@@ -1905,6 +1905,38 @@ input[type="radio"] {
     padding: 0.5rem;
 }
 
+.cron-damage-summary {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0.85rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(22, 36, 35, 0.08);
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.pending-damage-head.compact {
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.cron-damage-breakdown {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    align-items: center;
+}
+
+.cron-damage-details summary {
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.cron-damage-details .pending-damage-list {
+    margin-top: 0.6rem;
+}
+
 .pending-damage-panel {
     display: grid;
     gap: 1rem;
@@ -1980,8 +2012,8 @@ input[type="radio"] {
 }
 
 .health-potion-panel {
-    padding-top: 0.9rem;
-    border-top: 1px solid rgba(22, 36, 35, 0.08);
+    padding-top: 0;
+    border-top: 0;
 }
 
 .spell-recommendation {

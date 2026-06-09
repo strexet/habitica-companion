@@ -1,6 +1,6 @@
 # Habitica API Integration Guide
 
-Last researched: 2026-06-08
+Last researched: 2026-06-09
 Target API: Habitica API v3
 Audience: developers building a new Habitica client or integration
 
@@ -373,6 +373,8 @@ POST /cron
 
 Runs Habitica's daily reset for the authenticated user. This can process missed Dailies, active quest progress, health/mana/stat changes, notifications, and temporary buff expiry.
 
+Current server-source notes: Habitica's Cron path applies penalties from due unfinished Dailies during the user's Cron, and quest boss damage is processed through party quest progress. Users resting in the Inn / sleep state skip quest-progress processing and damage paths. Because the public account snapshot currently used by this app does not persist a complete pause-damage/Inn field, local damage previews must remain estimates and must not claim exact CRON health loss.
+
 Recommended client usage:
 
 - Show the action as `Start New Day` in UI copy; keep `Cron` in technical logs/docs.
@@ -516,7 +518,7 @@ By default, returns all active habits, dailies, todos, and rewards. Completed to
 
 Daily task payloads can include computed boolean `isDue`. Habitica's server model stores `isDue`/`nextDue` on Dailies, and the `/tasks/user` implementation recomputes those fields through `setNextDue(...)` only when a `dueDate` query value is supplied. `setNextDue(...)` delegates to the official `shouldDo(...)` schedule helper, which accounts for `dayStart`, timezone offset, `startDate`, `frequency`, `everyX`, weekday `repeat`, `daysOfMonth`, and `weeksOfMonth`.
 
-Current app rule: request `/tasks/user` with `dueDate=<current UTC timestamp>` so Habitica recomputes due state for the current server-evaluated moment. Preserve returned `isDue` as optional cached task state. CRON-facing unfinished-daily views must exclude explicit `isDue: false` values while treating older cached snapshots without the field as unknown-compatible. Do not add a local schedule fallback unless the app also stores every official schedule field and the user day-start/timezone inputs needed by `shouldDo(...)`.
+Current app rule: request `/tasks/user` with `dueDate=<current UTC timestamp>` so Habitica recomputes due state for the current server-evaluated moment. Preserve returned `isDue` as optional cached task state. CRON-facing unfinished-daily views and numeric damage estimates must include only confirmed `isDue: true` unfinished Dailies. Explicit `isDue: false` Dailies are excluded, and older cached snapshots without `isDue` are treated as unknown rather than damaging. Do not add a local schedule fallback unless the app also stores every official schedule field and the user day-start/timezone inputs needed by `shouldDo(...)`.
 
 Query parameters:
 
@@ -821,7 +823,7 @@ quest.progress.collect
 quest.members
 ```
 
-For boss quests, `quest.progress.hp` is the boss HP currently remaining. `quest.progress.up` can be present as pending boss progress, but do not treat the party-group value as the total pending party damage unless this is verified against the current API response. `quest.progress.down` is pending damage that the boss will apply to the party from missed dailies. The party response does not include the original total boss HP. Resolve that from the content catalog when needed:
+For boss quests, `quest.progress.hp` is the boss HP currently remaining. `quest.progress.up` can be present as pending boss progress, but do not treat the party-group value as the total pending party damage unless this is verified against the current API response. `quest.progress.down` is pending boss damage from missed Dailies; Habitica server-side quest processing multiplies that value by boss strength and applies it once to each participating quest member who is not resting in the Inn / sleep state. Treat it as current-user incoming damage only when the current user is a participating boss-quest member and the value has not already been applied. The party response does not include the original total boss HP. Resolve that from the content catalog when needed:
 
 ```http
 GET /content?language=en

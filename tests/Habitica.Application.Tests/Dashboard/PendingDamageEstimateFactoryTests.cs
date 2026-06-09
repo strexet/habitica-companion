@@ -17,7 +17,7 @@ public sealed class PendingDamageEstimateFactoryTests
                 DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
                 new[]
                 {
-                    new TaskSnapshot("daily-1", "Exercise", TaskType.Daily, false, 1.5m, null, null),
+                    new TaskSnapshot("daily-1", "Exercise", TaskType.Daily, false, 1.5m, null, null, IsDue: true),
                     new TaskSnapshot("daily-2", "Done", TaskType.Daily, true, 2m, null, null),
                     new TaskSnapshot("todo-1", "Buy milk", TaskType.Todo, false, 10m, null, null)
                 }),
@@ -37,9 +37,10 @@ public sealed class PendingDamageEstimateFactoryTests
                     QuestType: PartyQuestType.Boss)));
 
         Assert.Equal(7m, estimate.TotalDamage);
+        Assert.Equal(13m, estimate.EstimatedHealthAfterCron);
         Assert.Equal(PendingDamageRisk.Info, estimate.Risk);
-        Assert.Contains(estimate.IncludedSources, source => source.Label == "Incomplete Dailies" && source.Damage == 3m);
-        Assert.Contains(estimate.IncludedSources, source => source.Label == "Party boss pending damage" && source.Damage == 4m);
+        Assert.Contains(estimate.IncludedSources, source => source.Label == "Due Dailies" && source.Damage == 3m);
+        Assert.Contains(estimate.IncludedSources, source => source.Label == "Boss" && source.Damage == 4m);
     }
 
     [Fact]
@@ -51,7 +52,7 @@ public sealed class PendingDamageEstimateFactoryTests
                 DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
                 new[]
                 {
-                    new TaskSnapshot("daily-1", "Exercise", TaskType.Daily, false, 1.5m, null, null)
+                    new TaskSnapshot("daily-1", "Exercise", TaskType.Daily, false, 1.5m, null, null, IsDue: true)
                 }),
             party: null);
 
@@ -78,7 +79,7 @@ public sealed class PendingDamageEstimateFactoryTests
     }
 
     [Fact]
-    public void GetIncompleteDailies_keeps_unknown_due_state_conservative()
+    public void GetIncompleteDailies_excludes_unknown_due_state_from_confirmed_damage()
     {
         var tasks = new TaskCollectionSnapshot(
             DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
@@ -90,7 +91,56 @@ public sealed class PendingDamageEstimateFactoryTests
 
         var dailies = PendingDamageEstimateFactory.GetIncompleteDailies(tasks);
 
-        Assert.Equal("daily-unknown", Assert.Single(dailies).Id);
+        Assert.Empty(dailies);
+        Assert.Equal("daily-unknown", Assert.Single(PendingDamageEstimateFactory.GetUnknownDueIncompleteDailies(tasks)).Id);
+    }
+
+    [Fact]
+    public void Create_reports_unknown_due_dailies_without_counting_them()
+    {
+        var estimate = new PendingDamageEstimateFactory().Create(
+            CreateUser(health: 20m),
+            new TaskCollectionSnapshot(
+                DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                new[]
+                {
+                    new TaskSnapshot("daily-unknown", "Legacy daily", TaskType.Daily, false, 3m, null, null)
+                }),
+            party: null);
+
+        Assert.Equal(0m, estimate.TotalDamage);
+        Assert.Equal(PendingDamageReadiness.Incomplete, estimate.Readiness);
+        Assert.Contains(estimate.ExcludedSources, source => source.Contains("unknown due state", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Create_excludes_boss_damage_when_current_user_is_not_participating()
+    {
+        var estimate = new PendingDamageEstimateFactory().Create(
+            CreateUser(health: 20m),
+            new TaskCollectionSnapshot(DateTimeOffset.Parse("2026-04-25T08:00:00Z"), Array.Empty<TaskSnapshot>()),
+            new PartySnapshot(
+                DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
+                "party-1",
+                "Party",
+                null,
+                1,
+                new PartyQuestSnapshot(
+                    "boss",
+                    true,
+                    0m,
+                    6m,
+                    1,
+                    PendingPartyDamage: 6m,
+                    QuestType: PartyQuestType.Boss),
+                new[]
+                {
+                    new PartyMemberSnapshot("user-id", "Mage Tester", null, null, null, PartyCronState.Unknown, "Unknown.", null, null, ParticipationStatus: PartyQuestParticipationStatus.Rejected)
+                }),
+            currentUserId: "user-id");
+
+        Assert.Equal(0m, estimate.TotalDamage);
+        Assert.Contains(estimate.ExcludedSources, source => source.Contains("not an active quest participant", StringComparison.Ordinal));
     }
 
     private static UserSnapshot CreateUser(decimal health)

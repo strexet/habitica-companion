@@ -51,6 +51,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Quest-pool search by public reward display name, including partial case-insensitive matches.
 - Active-quest owner/starter and started-at metadata with shared-queue fallback, unavailable states, and foldable details/rewards and participant-name drill-ins.
 - Post-CRON party refresh now saves enriched party snapshots with CRON history, member average timing, active-quest progress, and completion estimates before reloading state, so `/quests` can show finish predictions immediately after Start New Day.
+- Incoming damage prediction now lives only inside the Dashboard Start New Day panel, uses confirmed-due unfinished Dailies for numeric totals, separates unknown due-state Dailies into collapsed details, includes active boss pending damage once for current-user CRON risk, and keeps the standalone Dashboard damage card removed.
 - Dedicated Pets & Mounts page with grouped companion grids, feed queue planner, hatching and equip actions, local fold preferences, and relocated bulk sell planner while keeping per-pet/per-mount maps out of Cloudflare app-data uploads.
 - Dashboard gem-for-gold purchase action with visible availability states, no-subscription Subscribe link, quantity clamp, explicit confirmation, sequential stop-on-failure requests, diagnostics, and post-purchase account refresh.
 - Party page overview no longer shows the buff-timing recommendation block, while member review, CRON graph context, and Quests workspace remain intact.
@@ -82,85 +83,7 @@ _No pending entries._
 
 Work top to bottom. Each entry is self-contained.
 
-### Verify Incoming Damage Prediction And Move It Into Dashboard CRON Menu
-
-Goal: verify incoming damage against current official Habitica CRON behavior, correct overestimation sources, and move the user-facing damage summary out of the standard Dashboard body into the Dashboard Start New Day / CRON menu. The merged CRON view should be compact and answer only what the user needs before starting the new Habitica day: which due unfinished Dailies can still reduce risk, estimated damage, boss contribution when applicable, estimated HP after CRON, and knockout risk.
-
-Touch:
-- `src/Habitica.Domain/Dashboard/PendingDamageEstimate.cs`
-- `src/Habitica.Application/Dashboard/PendingDamageEstimateFactory.cs`
-- `src/Habitica.Rules` for source-backed CRON damage and due-Daily eligibility rules
-- `src/Habitica.WebApp/Pages/DashboardPage.razor`
-- `src/Habitica.WebApp/Pages/SpellsPage.razor`
-- `src/Habitica.WebApp/Components/CronUnfinishedDailiesMiniList.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css`
-- direct tests under `tests/Habitica.Application.Tests/Dashboard/`, `tests/Habitica.Rules.Tests/`, `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs`, and `tests/Habitica.WebApp.Tests/Components/CronUnfinishedDailiesMiniListTests.cs`
-- `FEATURES.md`
-- `HABITICA_API.md` if endpoint field meanings or official CRON behavior notes are added or corrected
-- `docs/UX_UI_MANIFEST.md` if CRON-menu layout or shared due-Daily UI guidance changes
-- `TECHNICAL.md` only if responsibility moves between Application, Rules, and WebApp layers
-
-Out of scope:
-- reducing displayed damage heuristically without source-backed formula changes;
-- adding undocumented Habitica mutation endpoints;
-- changing Start New Day mutation sequencing except where stale damage state must be cleared after CRON;
-- duplicating damage summaries elsewhere on the Dashboard;
-- presenting party-wide damage as the authenticated user's incoming CRON damage;
-- changing unrelated Dashboard cards, navigation, spells, inventory, or party UI.
-
-Official verification plan:
-- Inspect current official Habitica server behavior before changing formulas: Daily due selection, CRON Daily damage, boss quest damage, `party.quest.progress.down`, Inn/resting behavior, paused damage, multiple missed days, group-plan Daily edge cases, and quest participant eligibility.
-- Confirm exact API field meanings used by this app, especially whether saved pending boss damage represents current-user damage, party-wide damage, already-applied damage, or damage that will be applied independently.
-- Verify whether the public API exposes enough data for exact prediction. When exact prediction is blocked by server-only data, mark that component as estimated or unavailable rather than fabricating precision.
-- Add short source comments only near non-obvious formula reproductions, pointing to official Habitica implementation inspected for the rule.
-
-Model and rules plan:
-- Replace the current loose Daily selector (`isDue` not explicitly false) if it includes unknown or non-due Dailies. A Daily may enter the numeric damage estimate only when it is confirmed due and damage-eligible for the evaluated Habitica day.
-- Use official due behavior and available fields such as `isDue`, repeat schedule, frequency, `everyX`, start date, `nextDue`, Custom Day Start, timezone context, and group-plan assignment/completion state where supported by current snapshots.
-- Separate confirmed due Dailies, excluded Dailies, and unknown-eligibility Dailies. Unknowns must not silently count as damage.
-- Build an explicit `CronDamageEstimate` model with confirmed due Dailies, excluded Dailies, unknown-eligibility Dailies, personal Daily damage, boss quest damage, other/unavailable sources, estimated total, current HP, estimated remaining HP, risk state, confidence/readiness, source explanations, and diagnostics.
-- Keep one shared eligibility helper for Dashboard CRON list, damage estimate, and Spells CRON warning so the same task set drives all CRON warnings.
-- Verify personal Daily damage formula inputs: task value/color, priority/difficulty, Constitution including buffs, level/stat scaling if official behavior uses it, checklist/group-plan state if applicable, and pre-CRON stats.
-- Verify boss quest damage formula: boss strength, task value/difficulty effects, Constitution effects, per-participant versus party-wide semantics, participant eligibility, Inn/resting behavior, paused damage, and already-applied source handling.
-- Do not multiply current-user damage by party size. Do not mix other members' pending/future boss damage into the current user's Start New Day total.
-- Do not multiply damage by missed-day count unless the official server does so for the exact case.
-- Respect Inn/resting and paused-damage behavior; when damage is skipped, show concise compact copy such as `Damage is paused while resting in the Inn.`
-
-Dashboard CRON UI plan:
-- Remove the standalone incoming-damage prediction block from the normal Dashboard body.
-- Merge damage information into the Start New Day section only.
-- Keep default CRON view compact: estimated total damage, estimated HP after CRON, risk badge (`Safe`, `Warning`, `Knockout risk`, or incomplete estimate state), optional Dailies/Boss breakdown, due damaging Daily mini-list with inline completion, temporary CRON equipment recommendation when useful, Start New Day action, confirmation, progress, result, and error state.
-- Put formula details, unavailable sources, source confidence, raw field meanings, and diagnostic explanations behind a collapsed disclosure.
-- Avoid repeated HP totals, duplicate damage totals, large source explanations, raw API field names, party-wide totals for current-user damage, and technical confidence details in the default view.
-- Recalculate the CRON section when a Daily is completed, due state changes, equipment optimization toggles, current gear or Constitution changes, active quest or participant state changes, boss data changes, Inn/paused state changes, HP changes, snapshots refresh, or CRON completes.
-- After inline Daily completion, remove it from the CRON list and recalculate personal damage, boss damage, estimated HP, and risk.
-- After successful CRON, clear or replace the pre-CRON estimate so stale damage is not displayed.
-- Preserve responsive alignment and color-scheme readability for warning and danger states.
-
-Diagnostics plan:
-- Add structured diagnostics for evaluated Habitica day, CRON-needed state, incomplete Daily count, confirmed due count, excluded non-due count, unknown due-state count, personal Daily damage, boss damage, saved pending-down value, whether pending-down was included/excluded, Constitution used, Inn/paused state, quest participation, final total, confidence/readiness, and unavailable-source reasons.
-- Do not log task text, credentials, API tokens, or sensitive headers unless existing diagnostics policy explicitly permits it.
-
-Acceptance:
-- Standard Dashboard no longer renders a standalone incoming-damage prediction card.
-- Incoming damage appears only inside the Dashboard Start New Day / CRON menu.
-- Compact CRON summary shows estimated damage, estimated HP after CRON, risk state, due damaging Dailies, and boss contribution when applicable.
-- Detailed formulas and unavailable-source explanations are collapsed by default.
-- Every Daily included in the numeric estimate is confirmed due and damage-eligible.
-- Dailies with `isDue: false` are excluded; Dailies with unknown due state are separated and do not inflate the total.
-- Schedule, recurrence, start date, Custom Day Start, timezone, group-plan, Inn/resting, paused-damage, and multiple-missed-day behavior match official Habitica behavior as closely as available API data allows.
-- Personal Daily damage and boss quest damage formulas match the current official implementation or are clearly marked approximate with unavailable components separated.
-- `party.quest.progress.down` or equivalent pending damage is interpreted correctly and never double-counted.
-- Current-user damage is not multiplied by party size and does not include unrelated other-member damage.
-- Completing a Daily updates the list, total damage, remaining HP, and risk state.
-- Existing Start New Day confirmation, temporary gear optimization, inline Daily completion, progress, result, and error handling still work.
-- Successful CRON clears stale pre-CRON damage prediction.
-- Mobile and desktop layouts remain aligned and readable in all color schemes.
-
-Tests:
-- Add rules tests for confirmed due incomplete Daily, completed due Daily, explicitly non-due Daily, unknown `isDue`, weekday schedule, every-X-days schedule, future start date, Custom Day Start boundary, timezone boundary, group-plan Daily edge states, personal damage across task values/priorities/Constitution, boss damage with active quest, no active quest, user not participating, Inn/resting, paused damage, multiple missed days, and saved pending-down without double counting.
-- Add Dashboard component tests for standalone damage card absence, unified compact Start New Day section, compact damage summary, optional breakdown, expanded source/formula details, due-Daily mini-list, unknown-source warning, estimated HP after CRON, safe/warning/knockout/incomplete states, inline Daily completion recalculation, temporary equipment preview, mobile/desktop structure, successful CRON clearing the estimate, and refresh failure stale indication.
-- Add comparison/integration coverage with representative official Habitica scenarios: no quest plus one missed Daily, boss quest plus one missed Daily, several missed Dailies, mixed due and non-due Dailies, user in Inn, user returning after multiple inactive days, and existing non-zero pending-down value.
+_No prioritized entries._
 
 ## Backlog
 
