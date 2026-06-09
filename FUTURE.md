@@ -83,7 +83,136 @@ _No pending entries._
 
 Work top to bottom. Each entry is self-contained.
 
-_No prioritized entries._
+### Dashboard Mobile Habitica Link Placement
+
+Priority: Bottom intake item, currently first because no higher-priority entries exist.
+
+Goal: move the primary external `Open Habitica` Dashboard action into the Dashboard `NAVIGATION / Companion links` section on mobile and narrow viewports while leaving desktop placement unchanged.
+
+Touch:
+- `src/Habitica.WebApp/Pages/DashboardPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- direct Dashboard tests under `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs`
+- `FEATURES.md` if Dashboard responsive behavior is documented there
+- `docs/UX_UI_MANIFEST.md` if Dashboard responsive hierarchy guidance changes
+
+Current context:
+- Dashboard companion navigation cards use local app navigation with `Open` actions.
+- Dashboard currently has one primary external `Open Habitica` web link in the top Dashboard block.
+- Habitica links must remain stable web URLs; do not add `habitica://`, Android `intent://`, app-opening probes, or mobile-specific deep links.
+- The Habitica action must stay visually distinct from local companion-page `Open` actions.
+
+Required behavior:
+- Desktop and wide tablet:
+  - Keep the existing top Dashboard placement unchanged.
+  - Do not add an `Open Habitica` action to the `NAVIGATION / Companion links` section.
+  - Preserve current hierarchy, spacing, alignment, target, `rel`, and external-link behavior.
+- Mobile and narrow layouts:
+  - Hide or move the top-block `Open Habitica` action so it is not visible or focusable there.
+  - Render the same external `Open Habitica` action inside the `NAVIGATION / Companion links` section.
+  - Place it after local companion navigation entries.
+  - Keep label exactly `Open Habitica`; local companion actions remain `Open`.
+  - Ensure exactly one visible and keyboard-focusable `Open Habitica` action exists at a given viewport width.
+
+Implementation plan:
+- Inspect Dashboard markup to identify the existing top `Open Habitica` action, href, target, rel, and styling hooks.
+- Prefer a shared render fragment, shared constants, or shared action definition so the external URL and link attributes cannot drift between desktop and mobile placements.
+- Use established responsive breakpoint conventions from `app.css`.
+- If two responsive render locations are used, ensure CSS hides the inactive placement from pointer and keyboard interaction, not only visually.
+- Keep the mobile action inside the existing companion-links section boundary without adding a large standalone card.
+- Add spacing that separates the external Habitica action from local page links without creating excessive vertical gaps.
+- Verify the action fits full-width mobile layouts and remains readable across theme tokens.
+
+Out of scope:
+- Changing the Habitica URL.
+- Adding mobile app deep links or custom URL schemes.
+- Renaming local companion navigation actions.
+- Reworking Dashboard navigation cards beyond the placement required here.
+- Changing desktop Dashboard hierarchy.
+
+Acceptance:
+- Desktop `Open Habitica` placement is unchanged.
+- Mobile `Open Habitica` appears at the bottom of `NAVIGATION / Companion links`.
+- Only one `Open Habitica` action is visible and focusable per viewport size.
+- Companion page buttons remain labeled `Open`.
+- External link destination, `target`, `rel`, and safety behavior remain unchanged.
+- Mobile layout has no overflow, stair-step alignment, duplicate spacing, or touch-target regression.
+- Tests cover desktop and mobile responsive visibility/placement behavior.
+
+Tests:
+- Add/update Dashboard component tests for the desktop render: top-block `Open Habitica` present and companion-section `Open Habitica` not active for desktop-visible markup/classes.
+- Add/update Dashboard component tests for mobile render/classes: mobile companion-section `Open Habitica` present and top placement hidden by the responsive class contract.
+- Add assertions that local companion actions still read `Open`.
+- Add assertions that both responsive instances, if present in markup, share href, target, and rel and only one is intended to be focusable at a time by class/attribute contract.
+
+### Equipment Navigation Battle Icon
+
+Priority: Bottom intake item, placed after Dashboard mobile Habitica link placement.
+
+Goal: replace the user-facing Equipment side-menu icon with a battle-equipment icon that better matches equipped gear, loadouts, stat comparison, and equipment optimization.
+
+Touch:
+- `src/Habitica.WebApp/Components/Navigation/AppNavMenu.razor`
+- direct navigation tests under `tests/Habitica.WebApp.Tests/AppNavMenuTests.cs` if icon values or rendered menu entries are asserted
+- `FEATURES.md` only if user-facing navigation documentation explicitly names the old icon
+- `docs/UX_UI_MANIFEST.md` only if navigation icon guidance changes
+
+Preferred icon:
+- `@Icons.Material.Outlined.Shield`
+
+Fallback icons, only if the preferred icon is unavailable in the installed MudBlazor icon set:
+- a sword or crossed-weapons Material icon
+- an armor, vest, or helmet Material icon
+- another outlined combat/equipment icon that is unambiguous at drawer icon size
+
+Current context:
+- The route and page label are already `Equipment`.
+- The page is focused on battle gear, equipped slots, gear stats, loadouts, presets, optimization, and comparing/equipping items.
+- A shield communicates battle equipment better than a generic storage, box, cart, backpack, settings, or tools icon.
+- Existing side-menu icons use MudBlazor/Material icon values; keep that style.
+
+Required behavior:
+- Update only the Equipment navigation icon.
+- Keep unchanged:
+  - label `Equipment`
+  - route/navigation destination
+  - drawer order
+  - active-link behavior
+  - authentication visibility
+  - click/tap behavior
+  - row size, alignment, spacing, hover/focus/active theme behavior
+- The visible text label remains the accessible name; do not add redundant screen-reader text for the icon.
+- Treat the icon as decorative when adjacent visible text already names the destination.
+
+Implementation plan:
+- Inspect `AppNavMenu.razor` and identify the Equipment entry.
+- Confirm whether `Icons.Material.Outlined.Shield` is available in the installed MudBlazor version by checking existing package/API usage or compile-time known icon namespace conventions.
+- Replace only the Equipment icon value.
+- If the preferred shield value is unavailable, choose the closest supported outlined battle-equipment icon and document the reason in the implementation summary.
+- Check neighboring nav entries to avoid reusing an icon already assigned to another primary destination.
+- Review tests for assumptions about icon strings, rendered SVG, nav row count, labels, or routes; update only direct expectations affected by the icon swap.
+
+Out of scope:
+- Changing the `Equipment` label.
+- Changing the `/inventory` route or any route alias.
+- Changing drawer ordering or visibility rules.
+- Adding remote Habitica artwork, custom fantasy art, images, emoji, text glyphs, or new icon libraries.
+- Renaming domain/API concepts from inventory to equipment outside this nav icon.
+
+Acceptance:
+- Equipment side-menu entry uses an outlined shield or another clearly battle-oriented equipment icon.
+- The icon remains visually consistent with MudBlazor/Material navigation icons.
+- Label remains `Equipment`.
+- Route remains unchanged.
+- Drawer order remains unchanged.
+- Active, hover, focus, expanded desktop drawer, narrow/mobile drawer, and theme states remain aligned with neighboring entries.
+- No row-height, spacing, alignment, accessibility, or layout regression is introduced.
+
+Tests:
+- Update `AppNavMenuTests` if they assert the Equipment icon value.
+- Keep or add assertions that the Equipment label and route still render.
+- Add a narrow assertion for the new icon value only if existing tests already validate icon values for nav entries.
+- Do not add broad snapshot-style tests for all generated SVG paths.
 
 ## Backlog
 
