@@ -1742,7 +1742,7 @@ public sealed class AppSessionController : IAppSessionController
             {
                 await DelayBetweenHabiticaRequestsAsync(CancellationToken.None);
                 var partySnapshot = await _habiticaSyncClient.GetPartySnapshotAsync(credentials, CancellationToken.None);
-                await _partySnapshotStore.SaveAsync(partySnapshot, CancellationToken.None);
+                await SaveFetchedPartySnapshotAsync(partySnapshot, credentials.UserId, CancellationToken.None);
             }
         }
         catch (Exception exception)
@@ -1871,7 +1871,7 @@ public sealed class AppSessionController : IAppSessionController
                     await DelayBetweenHabiticaRequestsAsync(cancellationToken);
                     var partySnapshot = await _habiticaSyncClient.GetPartySnapshotAsync(credentials, cancellationToken);
                     requestCount++;
-                    await _partySnapshotStore.SaveAsync(partySnapshot, cancellationToken);
+                    await SaveFetchedPartySnapshotAsync(partySnapshot, credentials.UserId, cancellationToken);
                 }
                 catch (Exception exception)
                 {
@@ -4318,6 +4318,42 @@ public sealed class AppSessionController : IAppSessionController
                 partySnapshot.RetrievedAtUtc,
                 TimeZoneInfo.Local,
                 _includeStalePartyMembersInQuestForecasts);
+        await _partySnapshotStore.SaveAsync(
+            enrichedParty with
+            {
+                Quest = enrichedQuest
+            },
+            cancellationToken);
+    }
+
+    private async Task SaveFetchedPartySnapshotAsync(
+        PartySnapshot partySnapshot,
+        string userId,
+        CancellationToken cancellationToken)
+    {
+        var cronEvents = PartyCronCalculator.CreateHistoryEvents(partySnapshot);
+        var cronHistory = await _partyCronHistoryStore.UpsertAsync(cronEvents, partySnapshot.RetrievedAtUtc, cancellationToken);
+        var cronDashboard = PartyCronCalculator.BuildDashboard(
+            partySnapshot,
+            cronHistory,
+            userId,
+            partySnapshot.RetrievedAtUtc,
+            TimeZoneInfo.Local);
+        var enrichedParty = partySnapshot with
+        {
+            Members = cronDashboard.Members,
+            CronDashboard = cronDashboard
+        };
+        var enrichedQuest = enrichedParty.Quest is null
+            ? null
+            : PartyQuestProgressCalculator.Enrich(
+                enrichedParty,
+                enrichedParty.Quest,
+                userId,
+                partySnapshot.RetrievedAtUtc,
+                TimeZoneInfo.Local,
+                _includeStalePartyMembersInQuestForecasts);
+
         await _partySnapshotStore.SaveAsync(
             enrichedParty with
             {

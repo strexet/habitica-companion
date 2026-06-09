@@ -1,6 +1,6 @@
 # FEATURES.md
 
-Last updated: 2026-06-08
+Last updated: 2026-06-09
 Primary audience: AI agents and senior developers
 Primary Habitica integration reference: `HABITICA_API.md`
 Related technical reference: `TECHNICAL.md`
@@ -2378,7 +2378,7 @@ Current display rules:
 20. Store recently completed shared quests separately from active/queued quests for display and queue-priority penalties.
 21. Keep Active Quest "Open in Habitica" links on web URLs only; official mobile app party/quest deep links are documented as unsupported in `docs/HABITICA_DEEPLINKS.md`.
 22. Let role-strip and kick-list member names focus the same expanded member details UI used by the Active Quest finishing-member link.
-23. When Habitica has a quest invitation that is not active yet, hide progress and finish estimates and show accepted, pending, and rejected member response lists instead; names focus the same expanded member details UI. For active quests, always show expected finish, show finishing member only when known, and show timing confidence plus the estimate alert only when completion timing exists.
+23. When Habitica has a quest invitation that is not active yet, hide progress and finish estimates and show accepted, pending, and rejected member response lists instead; names focus the same expanded member details UI. For active quests, always show expected finish, show finishing member only when known, and show timing confidence plus the estimate alert only when completion timing exists. Post-CRON party refreshes must save the same enriched party snapshot as normal party refreshes, including CRON history, member average timing, active-quest progress, and completion estimate, so opening `/quests` immediately after Start New Day does not require a second manual refresh to show a finish prediction.
 24. Show `Invite party` on the Next Quest card. The button is enabled only when fresh party data shows no Habitica quest or invitation and the current user owns the selected item; disabled buttons explain Habitica quest, ownership, queue-state, or refresh requirements. Success sends `POST /groups/party/quests/invite/:questKey`, refreshes party state, and marks the shared queue item `InviteSent`; invite-sent items leave the Next Quest and normal queue views because Habitica now owns the invitation flow.
 25. Let users toggle an owned-only queue filter that hides not-owned queue entries and not-owned quest-pool scrolls without mutating shared party-sync data.
 26. When a previously active companion-app quest disappears and recent party chat contains a reliable structured completion signal, mark the active shared queue item completed automatically and store an idempotent detection key.

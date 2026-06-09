@@ -1236,6 +1236,39 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task StartNewDayAsync_enriches_post_cron_party_snapshot_before_reloading_state()
+    {
+        var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
+        var syncClient = new FakeHabiticaSyncClient(
+            CreateUserSnapshot() with
+            {
+                RetrievedAtUtc = DateTimeOffset.UtcNow,
+                CurrentHabiticaDayKey = "2026-04-27",
+                NeedsCron = true
+            },
+            CreateTaskSnapshot(),
+            CreatePartySnapshotWithCompletableAwaitingDamage());
+        var controller = CreateController(logStore, syncClient);
+        await controller.SignInAsync(new SignInRequest
+        {
+            ApiToken = "api-token",
+            PersistLocally = false,
+            UserId = "user-id"
+        });
+
+        syncClient.PartySnapshot = CreatePartySnapshotWithCompletableAwaitingDamage();
+
+        var result = await controller.StartNewDayAsync();
+
+        Assert.True(result.Succeeded);
+        Assert.NotNull(controller.State.PartySnapshot?.CronDashboard);
+        Assert.Equal(600m, controller.State.PartySnapshot!.Quest?.PendingPartyProgress?.Value);
+        Assert.True(controller.State.PartySnapshot.Quest?.CompletionEstimate?.WillCompleteAfterAwaitingCron == true);
+        Assert.Equal("Marek50818", controller.State.PartySnapshot.Quest?.CompletionEstimate?.FinishingMemberDisplayName);
+        Assert.NotEqual(PartyQuestEstimateConfidence.Unknown, controller.State.PartySnapshot.Quest?.CompletionEstimate?.Confidence);
+    }
+
+    [Fact]
     public async Task StartNewDayAsync_auto_equips_recommended_gear_before_cron()
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
@@ -2946,6 +2979,51 @@ public sealed class AppSessionControllerTests
             "Quest-focused party",
             4,
             new PartyQuestSnapshot("dragon", true, 12.5m, 3m, 2));
+    }
+
+    private static PartySnapshot CreatePartySnapshotWithCompletableAwaitingDamage()
+    {
+        return new PartySnapshot(
+            DateTimeOffset.Parse("2026-04-27T12:00:00Z"),
+            "party-123",
+            "Night Owls",
+            "Quest-focused party",
+            2,
+            new PartyQuestSnapshot(
+                "dragon",
+                true,
+                0m,
+                0m,
+                2,
+                BossHealthRemaining: 500m,
+                BossHealthTotal: 500m),
+            new[]
+            {
+                new PartyMemberSnapshot(
+                    "user-id",
+                    "Mage Tester",
+                    DateTimeOffset.Parse("2026-04-27T09:00:00Z"),
+                    0,
+                    0,
+                    PartyCronState.CronedToday,
+                    "Croned today.",
+                    "2026-04-27",
+                    DateTimeOffset.Parse("2026-04-27T00:00:00Z"),
+                    PendingQuestDamage: 0m,
+                    ParticipationStatus: PartyQuestParticipationStatus.Accepted),
+                new PartyMemberSnapshot(
+                    "member-2",
+                    "Marek50818",
+                    DateTimeOffset.Parse("2026-04-26T10:10:00Z"),
+                    0,
+                    0,
+                    PartyCronState.NotCronedYet,
+                    "Not croned yet.",
+                    "2026-04-27",
+                    DateTimeOffset.Parse("2026-04-27T00:00:00Z"),
+                    PendingQuestDamage: 600m,
+                    ParticipationStatus: PartyQuestParticipationStatus.Accepted)
+            });
     }
 
     private static PartySnapshot CreatePartySnapshotWithMember()

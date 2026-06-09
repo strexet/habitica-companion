@@ -50,6 +50,7 @@ Implemented behavior belongs in `FEATURES.md`, foundational architecture notes i
 - Party-page combined summary and bottom-grouped sync administration; active quests compact participant and unavailable-finish-estimate rendering.
 - Quest-pool search by public reward display name, including partial case-insensitive matches.
 - Active-quest owner/starter and started-at metadata with shared-queue fallback, unavailable states, and foldable details/rewards and participant-name drill-ins.
+- Post-CRON party refresh now saves enriched party snapshots with CRON history, member average timing, active-quest progress, and completion estimates before reloading state, so `/quests` can show finish predictions immediately after Start New Day.
 - Dedicated Pets & Mounts page with grouped companion grids, feed queue planner, hatching and equip actions, local fold preferences, and relocated bulk sell planner while keeping per-pet/per-mount maps out of Cloudflare app-data uploads.
 - Dashboard gem-for-gold purchase action with visible availability states, no-subscription Subscribe link, quantity clamp, explicit confirmation, sequential stop-on-failure requests, diagnostics, and post-purchase account refresh.
 - Party page overview no longer shows the buff-timing recommendation block, while member review, CRON graph context, and Quests workspace remain intact.
@@ -80,79 +81,6 @@ _No pending entries._
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
-
-### Fix Quests Page Finish Prediction After First Daily CRON
-
-Goal: make the Quests page build a complete active-quest prediction immediately after a successful Start New Day / CRON flow, without requiring a second manual refresh. The reported failure path is: initial app refresh happens before Habitica CRON, user runs CRON, user opens `/quests`, boss progress and pending party damage look updated, but expected finish still renders as `Unknown`; one more refresh then shows expected finish, finishing member, confidence, and explanation.
-
-Touch:
-- `src/Habitica.Domain/Party/PartyQuestProgressCalculator.cs`
-- `src/Habitica.Domain/Party/PartySnapshot.cs`
-- party/user/task refresh orchestration under `src/Habitica.Application`
-- `src/Habitica.Storage/IPartySnapshotStore.cs`
-- `src/Habitica.Storage/PartySnapshotStore.cs`
-- `src/Habitica.Storage/IPartyCronHistoryStore.cs`
-- `src/Habitica.Storage/PartyCronHistoryStore.cs`
-- `src/Habitica.WebApp/State/AppSessionController.cs`
-- `src/Habitica.WebApp/Pages/QuestsPage.razor`
-- `src/Habitica.WebApp/Pages/PartyPage.razor` only where shared active-quest rendering or estimate formatting is affected
-- `src/Habitica.WebApp/Sync/CloudflarePartyDataSyncProvider.cs` and `src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js` only if shared party-sync CRON data ordering or merge semantics must change
-- direct tests under `tests/Habitica.Domain.Tests/Party/`, `tests/Habitica.Storage.Tests/`, `tests/Habitica.WebApp.Tests/State/`, and `tests/Habitica.WebApp.Tests/Pages/`
-- `FEATURES.md`
-- `TECHNICAL.md` if refresh-generation, derived-state, or sync ordering architecture changes
-
-Out of scope:
-- changing Habitica API endpoints or guessing undocumented fields;
-- changing quest invite, start, cancel, vote, queue, or reward behavior;
-- changing Habitica party or quest deep links;
-- making Gear Catalog block boss finish prediction unless the estimator genuinely uses gear data;
-- rewriting the Party or Quests page layout beyond the active-quest prediction states required here.
-
-Reproduction path:
-- Start with cached snapshots from the first login of a new Habitica day, before Habitica has processed CRON for the user.
-- Run the existing Start New Day flow successfully.
-- Open `/quests` immediately after CRON completes, with no second manual refresh.
-- Verify current boss HP, pending party damage, expected finish, finishing member, confidence, and explanatory text are all derived from the same post-CRON state generation.
-
-Investigation plan:
-- Trace the full ordering from initial pre-CRON refresh through CRON completion and first Quests-page render: user refresh, task refresh, party group fetch, public party-member fetch, party snapshot normalization and persistence, CRON request/response handling, local CRON-history update, average CRON-time recalculation, shared party-sync merge, cached-state reload, page notification, and quest estimate calculation.
-- Record estimator inputs before the first `Unknown` result and after the second refresh result that succeeds.
-- Identify which exact input is missing, stale, mixed-generation, or recalculated too early: boss HP, member pending boss damage, participant mapping, member `lastCron`, local/shared CRON history, average CRON time, Inn state, inactivity eligibility, or viewer timezone/day-start context.
-- Confirm whether `QuestsPage`/shared active-quest rendering computes progress and expected finish through different state paths or at different times.
-- Add diagnostics for prediction readiness and unavailability reasons, not only the final formatted estimate. Diagnostics must include refresh/CRON generation, quest key, remaining boss HP, eligible participant count, total eligible pending damage, `lastCron` readiness, CRON-history readiness, and prediction availability reason. Do not log credentials or sensitive headers.
-
-Implementation plan:
-- Make quest-prediction dependencies explicit in the model or factory that builds active-quest derived state.
-- Add a post-CRON generation/version marker where needed so pre-CRON callbacks and cached estimates cannot overwrite newer post-CRON state.
-- After successful CRON, invalidate every affected domain: user profile, tasks, party group, public party members, active quest state, local CRON history, and shared party-sync CRON state where applicable.
-- Do not rely on the CRON response for fields it does not contain. Refresh or replace snapshots needed by the estimator before finalizing the derived active-quest model.
-- Update local CRON history from the new `lastCron`, recalculate average CRON timing, and trigger quest-prediction recomputation after either party data or CRON-history data arrives.
-- Build one atomic active-quest view model from a consistent snapshot set. Current progress, pending party progress, expected finish, finishing member, timing confidence, and explanatory prediction text should be generated together.
-- While required post-CRON inputs are still loading, preserve the previous complete estimate with a stale/refreshing indication or show a compact `Calculating...` state. Do not replace a valid estimate with transient `Unknown`.
-- Ensure page state updates when the Quests page was closed during CRON, open during CRON, or holding pre-CRON cached state.
-- Coalesce independent refresh-domain callbacks where practical and ignore older refresh generations.
-- Preserve cached local data if shared party-sync fails; block prediction only when a missing input exists exclusively in party-sync data.
-
-Acceptance:
-- First-login sequence is fixed: initial refresh before CRON, successful CRON, immediate Quests-page navigation, complete prediction appears without another refresh.
-- Successful CRON invalidates stale quest-prediction dependencies and refreshes/rebuilds the active-quest derived model once required inputs are available.
-- Post-CRON `lastCron` and local CRON-history-derived timing are available before a timing prediction is finalized.
-- Current progress, pending party progress, expected finish, finishing member, confidence, and explanation use one consistent post-CRON data generation.
-- A pre-CRON cached estimate and older refresh callbacks cannot overwrite the post-CRON result.
-- Valid estimates are not replaced by transient `Unknown` during partial refresh.
-- Genuine unavailable predictions still render only `EXPECTED FINISH: Unknown`; do not show `FINISHING MEMBER: Unknown` or timing confidence without a real timing estimate.
-- If pending eligible damage defeats the boss and timing data exists, the page shows expected finish, finishing member, timing confidence, and explanatory text after one post-CRON update.
-- Existing active-quest progress, participant count, details, rewards, links, and owner/admin actions remain functional.
-
-Tests:
-- Add domain tests for completion-estimate readiness, unavailable reasons, eligible pending damage, timing-history availability, Inn/inactive member exclusion, and sufficient-damage finishing-member selection.
-- Add storage/application tests for CRON-history persistence, average timing recalculation, generation ordering, and stale pre-CRON callbacks not overwriting post-CRON state.
-- Add WebApp state/page tests for first refresh before CRON followed by successful CRON and immediate `/quests` navigation.
-- Cover Quests page already open during CRON and Quests page created after CRON.
-- Cover party progress arriving before CRON-history timing data, and CRON-history timing data arriving before party progress; both must recompute when final required data arrives.
-- Cover delayed party refresh, delayed CRON-history persistence, and refresh failure preserving a previous complete prediction with stale/failure indication.
-- Cover insufficient pending damage and missing timing history as genuine unavailable cases.
-- Cover that only one post-CRON refresh/update is required to produce the complete prediction.
 
 ### Verify Incoming Damage Prediction And Move It Into Dashboard CRON Menu
 
