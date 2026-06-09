@@ -65,27 +65,23 @@ public sealed class TaskListViewModelFactory
                 && task.Notes.Contains(searchText, StringComparison.OrdinalIgnoreCase));
     }
 
-    private static IOrderedEnumerable<TaskSnapshot> SortTasks(
+    private static IEnumerable<TaskSnapshot> SortTasks(
         IEnumerable<TaskSnapshot> tasks,
         TaskListSortMode sortMode)
     {
-        var ordered = tasks.OrderBy(static task => task.IsCompleted);
         return sortMode switch
         {
-            TaskListSortMode.Habitica => ordered,
-            TaskListSortMode.ValueHigh => ordered
-                .ThenBy(static task => task.Value is null)
-                .ThenByDescending(static task => task.Value ?? decimal.MinValue)
-                .ThenBy(static task => task.Text, StringComparer.OrdinalIgnoreCase),
-            TaskListSortMode.ValueLow => ordered
-                .ThenBy(static task => task.Value is null)
-                .ThenBy(static task => task.Value ?? decimal.MaxValue)
-                .ThenBy(static task => task.Text, StringComparer.OrdinalIgnoreCase),
-            TaskListSortMode.DueSoon => ordered
-                .ThenBy(static task => task.DueDate is null)
-                .ThenBy(static task => task.DueDate ?? DateTimeOffset.MaxValue)
-                .ThenBy(static task => task.Text, StringComparer.OrdinalIgnoreCase),
-            _ => ordered.ThenBy(static task => task.Text, StringComparer.OrdinalIgnoreCase)
+            TaskListSortMode.Habitica => tasks,
+            TaskListSortMode.ValueHigh => tasks
+                .OrderBy(static task => task.Value is null)
+                .ThenByDescending(static task => task.Value ?? decimal.MinValue),
+            TaskListSortMode.ValueLow => tasks
+                .OrderBy(static task => task.Value is null)
+                .ThenBy(static task => task.Value ?? decimal.MaxValue),
+            TaskListSortMode.DueSoon => tasks
+                .OrderBy(static task => task.DueDate is null)
+                .ThenBy(static task => task.DueDate ?? DateTimeOffset.MaxValue),
+            _ => tasks.OrderBy(static task => task.Text, StringComparer.OrdinalIgnoreCase)
         };
     }
 }

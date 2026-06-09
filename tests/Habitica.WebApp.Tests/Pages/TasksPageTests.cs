@@ -607,6 +607,76 @@ public sealed class TasksPageTests : BunitContext
         Assert.Empty(cut.FindAll("[data-testid^='reset-task-order-']"));
     }
 
+    [Fact]
+    public void Showing_completed_tasks_restores_source_position_without_custom_order()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new TaskListViewModelFactory());
+        Services.AddSingleton(new TaskOrderPlanner());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: false,
+                DisplayName: null,
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(
+                    DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
+                    new[]
+                    {
+                        new TaskSnapshot("todo-complete", "Completed First", TaskType.Todo, true, 1m, null, null, 1m),
+                        new TaskSnapshot("todo-open", "Open Second", TaskType.Todo, false, 1m, null, null, 2m)
+                    }))));
+
+        var cut = Render<TasksPage>();
+
+        Assert.DoesNotContain("Completed First", cut.Markup);
+        Assert.Contains("Open Second", cut.Markup);
+
+        cut.FindAll("button").Single(button => button.TextContent.Contains("Show completed", StringComparison.Ordinal)).Click();
+
+        AssertMarkupOrder(cut.Markup, "Completed First", "Open Second");
+    }
+
+    [Fact]
+    public async Task Scoring_task_does_not_write_task_order_preferences_or_sync_order()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new TaskListViewModelFactory());
+        Services.AddSingleton(new TaskOrderPlanner());
+        var storage = new FakeKeyValueStorage();
+        Services.AddSingleton<IKeyValueStorage>(storage);
+        var sessionController = new FakeAppSessionController(
+            new SessionViewModel(
+                IsBusy: false,
+                IsAuthenticated: true,
+                DisplayName: "Mage Tester",
+                ErrorMessage: null,
+                LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
+                TaskFreshness: SnapshotFreshnessState.Fresh,
+                TaskSnapshot: new TaskCollectionSnapshot(
+                    DateTimeOffset.Parse("2026-04-24T10:00:00Z"),
+                    new[]
+                    {
+                        new TaskSnapshot("todo-1", "Score Me", TaskType.Todo, false, 1m, null, null, 1m)
+                    }),
+                UserFreshness: SnapshotFreshnessState.Fresh));
+        Services.AddSingleton<IAppSessionController>(sessionController);
+
+        var cut = Render<TasksPage>();
+
+        cut.Find("[data-testid='score-task-todo-1']").Click();
+
+        var request = Assert.Single(sessionController.ScoreTaskCalls);
+        Assert.Equal("todo-1", request.TaskId);
+        Assert.Null(await storage.GetRawJsonAsync(StorageKeys.TaskOrderPreferences, CancellationToken.None));
+        Assert.Empty(sessionController.SyncAppDataSectionCalls);
+    }
+
     private static void AssertMarkupOrder(string markup, params string[] labels)
     {
         var previousIndex = -1;

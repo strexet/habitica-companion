@@ -90,6 +90,83 @@ public sealed class TaskListViewModelFactoryTests
     }
 
     [Fact]
+    public void Create_preserves_completed_snapshot_positions_for_default_habitica_sort()
+    {
+        var snapshot = new TaskCollectionSnapshot(
+            DateTimeOffset.Parse("2026-04-24T12:00:00Z"),
+            new[]
+            {
+                new TaskSnapshot("todo-complete", "Completed first", TaskType.Todo, true, 1m, null, null, 2m),
+                new TaskSnapshot("todo-open", "Open second", TaskType.Todo, false, 1m, null, null, 1m),
+                new TaskSnapshot("todo-complete-last", "Completed third", TaskType.Todo, true, 1m, null, null, 3m)
+            });
+
+        var viewModel = _factory.Create(snapshot, new TaskListFilter());
+
+        Assert.Equal(
+            new[] { "Completed first", "Open second", "Completed third" },
+            viewModel.Groups.Single().Items.Select(item => item.Text).ToArray());
+    }
+
+    [Fact]
+    public void Create_value_sort_ignores_completion_state_and_uses_source_order_for_ties()
+    {
+        var snapshot = new TaskCollectionSnapshot(
+            DateTimeOffset.Parse("2026-04-24T12:00:00Z"),
+            new[]
+            {
+                new TaskSnapshot("todo-complete-high", "Completed high first", TaskType.Todo, true, 1m, null, null, 5m),
+                new TaskSnapshot("todo-open-high", "Open high second", TaskType.Todo, false, 1m, null, null, 5m),
+                new TaskSnapshot("todo-open-low", "Open low third", TaskType.Todo, false, 1m, null, null, 1m)
+            });
+
+        var viewModel = _factory.Create(snapshot, new TaskListFilter(SortMode: TaskListSortMode.ValueHigh));
+
+        Assert.Equal(
+            new[] { "Completed high first", "Open high second", "Open low third" },
+            viewModel.Groups.Single().Items.Select(item => item.Text).ToArray());
+    }
+
+    [Fact]
+    public void Create_due_soon_sort_ignores_completion_state_and_uses_source_order_for_ties()
+    {
+        var dueDate = DateTimeOffset.Parse("2026-04-25T12:00:00Z");
+        var snapshot = new TaskCollectionSnapshot(
+            DateTimeOffset.Parse("2026-04-24T12:00:00Z"),
+            new[]
+            {
+                new TaskSnapshot("daily-complete", "Completed daily first", TaskType.Daily, true, 1m, null, dueDate, 1m),
+                new TaskSnapshot("daily-open", "Open daily second", TaskType.Daily, false, 1m, null, dueDate, 2m),
+                new TaskSnapshot("daily-later", "Later daily third", TaskType.Daily, false, 1m, null, dueDate.AddDays(1), 3m)
+            });
+
+        var viewModel = _factory.Create(snapshot, new TaskListFilter(SortMode: TaskListSortMode.DueSoon));
+
+        Assert.Equal(
+            new[] { "Completed daily first", "Open daily second", "Later daily third" },
+            viewModel.Groups.Single().Items.Select(item => item.Text).ToArray());
+    }
+
+    [Fact]
+    public void Create_search_preserves_relative_source_order_when_completion_state_differs()
+    {
+        var snapshot = new TaskCollectionSnapshot(
+            DateTimeOffset.Parse("2026-04-24T12:00:00Z"),
+            new[]
+            {
+                new TaskSnapshot("todo-complete", "Match complete", TaskType.Todo, true, 1m, "needle", null, 1m),
+                new TaskSnapshot("todo-other", "Other task", TaskType.Todo, false, 1m, null, null, 3m),
+                new TaskSnapshot("todo-open", "Match open", TaskType.Todo, false, 1m, "needle", null, 2m)
+            });
+
+        var viewModel = _factory.Create(snapshot, new TaskListFilter(SearchText: "needle"));
+
+        Assert.Equal(
+            new[] { "Match complete", "Match open" },
+            viewModel.Groups.Single().Items.Select(item => item.Text).ToArray());
+    }
+
+    [Fact]
     public void Reorder_visible_subset_preserves_hidden_items_in_place()
     {
         var nextOrder = _orderPlanner.ReorderVisibleSubset(
