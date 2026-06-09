@@ -141,7 +141,19 @@ public sealed class DashboardPageTests : BunitContext
             .FindAll("[data-testid='dashboard-navigation-panel'] a")
             .Where(link => link.GetAttribute("href")?.StartsWith("https://habitica.com", StringComparison.Ordinal) == true)
             .ToArray();
-        Assert.Single(externalHabiticaLinks);
+        Assert.Equal(2, externalHabiticaLinks.Length);
+        Assert.All(externalHabiticaLinks, link =>
+        {
+            Assert.Equal("Open Habitica", link.TextContent.Trim());
+            Assert.Equal("https://habitica.com", link.GetAttribute("href"));
+            Assert.Equal("_blank", link.GetAttribute("target"));
+            Assert.Equal("noopener noreferrer", link.GetAttribute("rel"));
+        });
+        var desktopHabiticaLink = cut.Find("[data-testid='dashboard-open-habitica-desktop']");
+        var mobileHabiticaLink = cut.Find("[data-testid='dashboard-open-habitica-mobile']");
+        Assert.Contains("dashboard-open-habitica--desktop", desktopHabiticaLink.GetAttribute("class"));
+        Assert.Contains("dashboard-open-habitica--mobile", mobileHabiticaLink.GetAttribute("class"));
+        AssertMarkupOrder(navigationMarkup, "dashboard-link-grid", "dashboard-open-habitica-mobile");
         var dashboardLinkActions = cut.FindAll(".dashboard-link-actions a");
         Assert.Equal(6, dashboardLinkActions.Count);
         Assert.All(dashboardLinkActions, link =>
@@ -842,6 +854,18 @@ public sealed class DashboardPageTests : BunitContext
 
         Assert.Contains("Done", cut.Find("[data-testid='dashboard-appearance-toggle']").TextContent);
         Assert.NotNull(cut.Find("[data-testid='color-scheme-select']"));
+    }
+
+    private static void AssertMarkupOrder(string markup, params string[] fragments)
+    {
+        var previousIndex = -1;
+
+        foreach (var fragment in fragments)
+        {
+            var index = markup.IndexOf(fragment, StringComparison.Ordinal);
+            Assert.True(index > previousIndex, $"{fragment} should render after the previous fragment.");
+            previousIndex = index;
+        }
     }
 
     private (IRenderedComponent<DashboardPage> Cut, FakeAppSessionController Controller) RenderDashboardForGemPurchase(

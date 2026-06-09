@@ -834,6 +834,10 @@ input[type="radio"] {
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
 }
 
+.secondary-action-button.dashboard-open-habitica--mobile {
+    display: none;
+}
+
 .inventory-summary-grid {
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
 }
@@ -4335,6 +4339,16 @@ code {
     }
 
     .action-button {
+        width: 100%;
+    }
+
+    .secondary-action-button.dashboard-open-habitica--desktop {
+        display: none;
+    }
+
+    .secondary-action-button.dashboard-open-habitica--mobile {
+        display: inline-flex;
+        margin-top: 0.85rem;
         width: 100%;
     }
 

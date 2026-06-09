@@ -113,7 +113,7 @@ Layout rules:
 Current placement:
 
 - Dashboard: Start New Day gear previews use official gear thumbnails. Companion and inventory summaries live on Equipment and Pets & Mounts, not on Dashboard. CRON damage and Health Potion recovery remain compact inside the Start New Day panel so they do not crowd stat allocation action rows or duplicate cards elsewhere on the page.
-- Dashboard navigation cards use stable local routes plus stable Habitica web URLs only; do not add mobile app deep links or custom schemes.
+- Dashboard navigation cards use stable local routes plus stable Habitica web URLs only; do not add mobile app deep links or custom schemes. `Open Habitica` stays in the Companion links header on desktop and moves to the bottom of that section on phone widths so the top of the Dashboard remains compact.
 - Tasks: keep task cards primarily text and control driven. Use Habitica art only for explicit reward/item/quest targets added by a future feature. Task type/status affordances may use simple UI icons, not game art.
 - Equipment: gear thumbnails appear in battle loadout slots, best-in-category entries, expanded gear cards, accessory cards, and saved preset items. Fixed identity columns keep slot labels, class text, stat pills, and equip actions aligned. Summary cards use compact item icons with readable counts.
 - Party and Quests: member cards do not invent avatar art. On Quests, active quest cards use a prominent quest art slot near the quest title. Queue, pool, and recent quest records use smaller quest scroll thumbnails while owner, vote, invite, and cancel controls stay in their own rows.
@@ -188,7 +188,7 @@ Current pattern:
 - HP, MP, and XP cards include compact meters so the current ratio has a readable shape, not only text.
 - Start New Day panel appears only when the current-user snapshot says the Habitica day has not been processed. The action includes an optional gear recommendation preview, compact CRON damage summary, contextual Health Potion recovery, confirmed due unfinished-Dailies list, collapsed estimate details, and inline confirmation instead of an immediate mutation.
 - Stats allocation table with horizontal overflow.
-- Explicit armoire and gem-for-gold actions plus companion navigation links.
+- Explicit armoire and gem-for-gold actions plus companion navigation links. The external `Open Habitica` action stays in the Companion links header on desktop and moves below the local companion cards on phone widths.
 
 What works:
 

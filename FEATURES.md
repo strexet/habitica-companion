@@ -1234,7 +1234,7 @@ Test:
 - Start New Day damage summary, source details, unknown due-state handling, and risk state.
 - CRON health-potion recovery visibility, recommendation, confirmation, and session-controller call.
 - gem-for-gold eligibility visibility, quantity clamp, confirmation, success refresh, partial-failure stop, and user snapshot mapping.
-- dashboard companion navigation keeps one primary `Open Habitica` web link and uses local `Open` actions for app pages.
+- dashboard companion navigation uses local `Open` actions for app pages, keeps `Open Habitica` as the only external Habitica web destination, shows it in the Companion links header on desktop, and moves it below the local companion cards on phone widths.
 
 ### Open questions
 

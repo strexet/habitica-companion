@@ -427,9 +427,7 @@
                     <p class="section-label">Navigation</p>
                     <h2>Companion links</h2>
                 </div>
-                <a class="secondary-action-button compact" href="https://habitica.com" target="_blank" rel="noopener noreferrer">
-                    Open Habitica
-                </a>
+                @RenderOpenHabiticaLink("dashboard-open-habitica dashboard-open-habitica--desktop", "dashboard-open-habitica-desktop")
             </div>
 
             <div class="dashboard-link-grid">
@@ -440,6 +438,8 @@
                 @RenderDashboardLink("Quests", "/quests", "Manage active quests and shared planning.")
                 @RenderDashboardLink("Spells", "/spells", "Cast class skills against task targets.")
             </div>
+
+            @RenderOpenHabiticaLink("dashboard-open-habitica dashboard-open-habitica--mobile", "dashboard-open-habitica-mobile")
         </section>
 
         var statsViewModel = StatsViewModelFactory.Create(snapshot, SessionController.State.GearCatalogSnapshot);
@@ -637,6 +637,7 @@
     private bool _appearanceCollapsed = true;
     private readonly Dictionary<string, int> _pendingAllocation = new(StringComparer.Ordinal);
     private const decimal GemGoldCost = 20m;
+    private const string HabiticaHomeHref = "https://habitica.com";
     private int _armoirePurchaseCount = 1;
     private int _gemPurchaseCount = 1;
     private string? _purchaseDefaultSnapshotKey;
@@ -969,6 +970,19 @@
         builder.AddContent(sequence++, label);
         builder.CloseElement();
         builder.AddContent(sequence++, $" {GetDomainStatusText(state)}");
+        builder.CloseElement();
+    };
+
+    private static RenderFragment RenderOpenHabiticaLink(string className, string testId) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "a");
+        builder.AddAttribute(sequence++, "class", $"secondary-action-button compact {className}");
+        builder.AddAttribute(sequence++, "href", HabiticaHomeHref);
+        builder.AddAttribute(sequence++, "target", "_blank");
+        builder.AddAttribute(sequence++, "rel", "noopener noreferrer");
+        builder.AddAttribute(sequence++, "data-testid", testId);
+        builder.AddContent(sequence++, "Open Habitica");
         builder.CloseElement();
     };
 
