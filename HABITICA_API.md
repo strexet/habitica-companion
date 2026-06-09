@@ -22,6 +22,10 @@ Primary references:
 
 Treat the official API docs and current server implementation as authoritative. Treat wiki pages, tools, Reddit posts, and old GitHub issues as implementation notes and operational evidence, not contract-level documentation.
 
+## Before editing Habitica behavior
+
+Read `RULES.md`, this file, `HABITICA_TOOL_REFERENCES.md`, and affected code/tests before changing Habitica API behavior. If endpoint semantics, formulas, payload fields, or rate-limit behavior are not established here and in current tests, inspect current official Habitica docs or source before editing. Record unresolved uncertainty as an assumption or follow-up instead of treating it as verified.
+
 ## 2. Base URL and transport
 
 ```text

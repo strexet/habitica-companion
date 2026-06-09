@@ -1,6 +1,6 @@
-# PROJECT.md
-
 # Habitica Companion Client
+
+Status: current product vision, not an implementation source of truth. Use `FEATURES.md` for current implemented behavior and `FUTURE.md` for active planned work.
 
 ## 1. Project Summary
 
@@ -50,7 +50,9 @@ Examples:
 - A party buff recommendation should show which member activity data was used.
 - A macro preview should show the planned steps before anything is executed.
 
-## 5. Planned Feature Areas
+## 5. Product Feature Areas
+
+This section describes product direction. Some areas are already implemented partially or fully; check `FEATURES.md` and `FUTURE.md` for current status.
 
 ## 5.1 Party Buff Timing
 
@@ -256,6 +258,7 @@ More technical details are stored in:
 - `HABITICA_API.md` — Habitica API behavior and usage rules.
 - `TECHNICAL.md` — technical stack and architecture.
 - `FEATURES.md` — detailed feature behavior.
+- `FUTURE.md` — active implementation queue and validated backlog.
 - `RULES.md` — repository and AI-agent collaboration rules.
 
 When this project vision changes, this file should be updated together with the relevant technical documents.

@@ -1,6 +1,6 @@
 # RULES.md
 
-Last updated: 2026-06-08
+Last updated: 2026-06-09
 Primary audience: AI agents working in this repository
 
 ## 1. Purpose
@@ -9,7 +9,26 @@ This file defines how AI agents must interact with the repository, project docum
 
 Agents must read this file before making non-trivial changes.
 
-## 2. Required reading order
+## 2. Documentation responsibility map
+
+Use these files as the current documentation source map:
+
+```text
+RULES.md                         repository workflow, AI-agent rules, required research
+TECHNICAL.md                     architecture, stack, layering, storage, sync, deployment decisions
+FEATURES.md                      implemented feature behavior, partial limits, code/data-flow ownership
+FUTURE.md                        single active implementation queue and validated backlog
+docs/UX_UI_MANIFEST.md           current UI behavior, interaction rules, responsive guidance
+HABITICA_API.md                  Habitica endpoints, payloads, semantics, mutation safety
+HABITICA_TOOL_REFERENCES.md      stable third-party Habitica tool observations
+CRON.md                          Habitica Cron model and Cron-related project rules
+docs/DEPLOY_CLOUDFLARE_PAGES.md  Cloudflare Pages, KV, D1, and operational deployment steps
+docs/AI_APP_TESTING.md           browser/UI validation guidance for AI agents
+```
+
+Current code and tests are the final verification source for what is actually implemented. When current docs and code disagree, identify whether the document is an intended rule or stale description before changing code.
+
+## 3. Required reading order
 
 Before implementing changes, read the relevant documents in this order:
 
@@ -19,14 +38,16 @@ Before implementing changes, read the relevant documents in this order:
 4. `TECHNICAL.md`
 5. `FEATURES.md`
 6. `docs/UX_UI_MANIFEST.md` when the change touches UI, UX, layout, visual design, interaction flow, responsive behavior, or user-facing copy
-7. Existing code in the affected area
+7. `CRON.md` when the change touches Start New Day, Daily due-state handling, party buff timing, boss damage at Cron, or member Cron state
+8. `docs/DEPLOY_CLOUDFLARE_PAGES.md` when the change touches Cloudflare Pages, KV, D1, migrations, Functions, or operational deployment
+9. Existing code and tests in the affected area
 
 For any code that interacts with Habitica, `HABITICA_API.md` is mandatory reading.
 For new or changed Habitica data features, read `HABITICA_TOOL_REFERENCES.md` after `HABITICA_API.md` and before implementation so stable third-party tool workflows are considered before adding new API assumptions.
 For UI or UX work, `docs/UX_UI_MANIFEST.md` is mandatory reading before editing UI code or styles.
 For explicit documentation snapshot archive requests, `docs/DOCUMENTS_SNAPSHOT.md` is mandatory reading before creating the archive.
 
-## 3. Habitica API rule
+## 4. Habitica API rule
 
 When interacting with Habitica API, always follow `HABITICA_API.md` first.
 
@@ -45,7 +66,7 @@ Mandatory constraints:
 
 If implementation details in code conflict with `HABITICA_API.md`, prefer `HABITICA_API.md` and update code or documentation as needed.
 
-## 4. Technical stack rule
+## 5. Technical stack rule
 
 The current baseline stack is documented in `TECHNICAL.md`.
 
@@ -72,7 +93,7 @@ Examples of changes that require updating `TECHNICAL.md`:
 
 When such a change is implemented, update `TECHNICAL.md` in the same change set.
 
-## 5. Feature documentation rule
+## 6. Feature documentation rule
 
 When adding a new feature, update `FEATURES.md`.
 
@@ -98,7 +119,7 @@ Feature documentation must include:
 
 Do not add vague product descriptions. Keep feature documentation technical.
 
-## 6. Documentation update policy
+## 7. Documentation update policy
 
 Update documentation when the repository behavior changes.
 
@@ -117,7 +138,7 @@ AI-agent workflow rules -> RULES.md
 
 If a change touches multiple categories, update all relevant documents.
 
-## 7. Architecture boundaries
+## 8. Architecture boundaries
 
 Respect the architecture in `TECHNICAL.md`.
 
@@ -132,7 +153,7 @@ Rules:
 - Storage code must not leak credentials into snapshots or debug exports.
 - Mutating operations must be validated and logged.
 
-## 8. Mutating Habitica actions
+## 9. Mutating Habitica actions
 
 Any action that changes Habitica state must be implemented conservatively.
 
@@ -150,7 +171,7 @@ Required behavior:
 
 Do not implement fire-and-forget macro execution, bulk selling, gear switching, or skill casting.
 
-## 9. Security rules
+## 10. Security rules
 
 Treat Habitica API token as password-equivalent.
 
@@ -167,7 +188,7 @@ Never:
 
 Always redact secrets in errors and logs.
 
-## 10. Testing rules
+## 11. Testing rules
 
 For non-trivial logic, add or update tests.
 
@@ -189,7 +210,21 @@ Default tests must not require live Habitica credentials.
 
 Live Habitica API tests must be opt-in and clearly separated from normal CI.
 
-## 11. AI-agent change workflow
+## 12. External-source research rule
+
+Gather current external context before changing behavior where project code and docs are insufficient.
+
+Required external checks:
+
+- Habitica API or data-shape changes: official Habitica API docs and current Habitica server repository when formulas, fields, or endpoint behavior are not fully documented here.
+- Cron, damage, Daily due-state, buff expiry, or Start New Day changes: `CRON.md`, current Cron-related project code/tests, and official Habitica Cron implementation when local docs do not fully answer the behavior.
+- Habitica mobile/web link behavior: `docs/HABITICA_DEEPLINKS.md`, official app source or association files, and stable web URLs.
+- Cloudflare, Wrangler, D1, KV, Pages Functions, or deployment changes: current official Cloudflare documentation when command syntax, bindings, or platform behavior is not obvious from current repo docs.
+- Security-sensitive or credential-handling changes: current official platform/API guidance plus existing project tests and docs.
+
+Do not rely on memory or old implementation plans for third-party service behavior. Record uncertainty as an assumption or follow-up instead of presenting it as verified behavior.
+
+## 13. AI-agent change workflow
 
 For a requested change:
 
@@ -199,16 +234,18 @@ For a requested change:
 4. Read `TECHNICAL.md` if the change touches architecture, stack, storage, deployment, sync, credentials, tests, or logging.
 5. Read `FEATURES.md` if the change adds or modifies feature behavior.
 6. Read `docs/UX_UI_MANIFEST.md` if the change touches UI, UX, layout, visual design, interaction flow, responsive behavior, or user-facing copy.
-7. Inspect the affected code.
-8. Make the smallest technically correct change.
-9. Update documentation when required by these rules.
-10. Add or update tests when logic changes.
-11. Review changed files for real issues.
-12. Report changed files and any remaining risks.
+7. Read `CRON.md` if the change touches Cron behavior.
+8. Inspect affected code and tests.
+9. Gather required external-source context under section 12 when local project sources are insufficient.
+10. Make the smallest technically correct change.
+11. Update documentation when required by these rules.
+12. Add or update tests when logic changes.
+13. Review changed files for real issues.
+14. Report changed files and any remaining risks.
 
 Do not invent issues. If no issues are found during final review, state that the changed files look correct.
 
-## 12. When to propose instead of implement
+## 14. When to propose instead of implement
 
 Propose a change instead of directly implementing it when:
 
@@ -223,7 +260,7 @@ Propose a change instead of directly implementing it when:
 
 For small, reversible, well-scoped implementation work, proceed without unnecessary discussion.
 
-## 13. Style rules for project documents
+## 15. Style rules for project documents
 
 Use English for project documentation.
 
@@ -239,15 +276,15 @@ Keep documentation:
 
 When behavior is unknown, write `Open questions` or `Assumption` instead of pretending certainty.
 
-## 14. AGENTS.md handoff command
+## 16. AGENTS.md handoff command
 
 Add the following instruction to `AGENTS.md`:
 
 ```markdown
-Before making non-trivial changes, read and follow `RULES.md`. For any Habitica API work, read `HABITICA_API.md` before editing code. Keep `TECHNICAL.md` updated when foundational technical decisions change, and keep `FEATURES.md` updated when features are added, changed, deprecated, or removed.
+Before making non-trivial changes, read and follow `RULES.md`. For any Habitica API work, read `HABITICA_API.md` before editing code. Gather current official external context when local docs/code do not fully establish third-party behavior. Keep `TECHNICAL.md` updated when foundational technical decisions change, and keep `FEATURES.md` updated when features are added, changed, deprecated, or removed.
 ```
 
-## 15. Documentation snapshot requests
+## 17. Documentation snapshot requests
 
 When the user explicitly asks for a document, documentation, markdown, or `.md` snapshot archive, follow `docs/DOCUMENTS_SNAPSHOT.md`.
 

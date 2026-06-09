@@ -83,6 +83,8 @@ _No pending entries._
 
 Work top to bottom. Each entry is self-contained.
 
+_No prioritized entries._
+
 ## Backlog
 
 These entries are lower priority. Each entry is self-contained and should be promoted into `Prioritized Next Changes` before implementation.
@@ -133,10 +135,10 @@ Acceptance:
 
 ### Skill Macro Collection MVP
 
-Goal: implement the planned local macro collection for predefined equipment and skill sequences.
+Goal: implement a local macro collection for predefined equipment and skill sequences.
 
 Touch:
-- `src/Habitica.Rules/Skills`
+- proposed new `src/Habitica.Rules/Skills` area
 - `src/Habitica.Application`
 - `src/Habitica.WebApp`
 - direct tests under `tests/`
@@ -149,12 +151,105 @@ Out of scope:
 - storing credentials in exported macros;
 - server-side macro execution.
 
+Primary data:
+- current user snapshot;
+- current task snapshot;
+- current equipment snapshot;
+- current party/quest snapshot;
+- local equipment presets;
+- owned gear catalog;
+- available skill metadata.
+
+Expected outputs:
+- compiled macro plan;
+- dry-run preview;
+- mana cost estimate;
+- expected result estimate where current formulas support it;
+- ordered Habitica API execution steps;
+- validation warnings;
+- execution log.
+
+Storage model:
+- add macro collection, macro, macro-step, dry-run, execution-log, and execution-step-log records through the existing local storage abstractions;
+- reference existing per-user Equipment battle preset ids instead of copying preset slot mappings into macro definitions;
+- persist partial execution state after every step.
+
+Macro model:
+- macros are declarative, named sequences, not executable user code;
+- initial step types are `equip`, `cast`, `selectBestTask`, `assertManaAtLeast`, `assertCurrentClass`, `refreshSnapshot`, `stopIfWarning`, and `restoreOriginalGear`;
+- spell references use stable Habitica spell ids, with text shorthand such as `spell:fireball`, `spell:pickPocket`, and `spell:healAll`;
+- structured cast steps use an explicit shape such as `{ "action": "castSpell", "spellId": "fireball", "targetTaskId": "task-id", "count": 1 }`;
+- task-targeting spells may use an explicit `targetTaskId` or a `selectBestTask` result;
+- dynamic spell equipment recommendations are strategies such as `maximize:int`, `maximize:per`, or `balanced:int,per`, compiled against the current gear snapshot at execution time;
+- dynamic gear recommendations must not be saved as generated preset ids.
+
+Equip references:
+- preset id;
+- single gear item key;
+- best-gear query such as maximize perception or maximize strength;
+- restore original battle gear or costume captured when the macro starts.
+
+Selection UX:
+- list matching presets first, then individual owned gear items;
+- preset labels include kind, name, and battle preset stat totals when available;
+- individual gear labels use the Equipment gear catalog display name with raw key fallback.
+
+Example macro:
+```text
+1. Equip gear that maximizes perception.
+2. Cast Tools of the Trade 3 times.
+3. Equip gear that maximizes strength.
+4. Cast Backstab until there is no mana left.
+5. Restore gear that was equipped before the macro started.
+```
+
+Execution flow:
+```text
+1. Load macro definition.
+2. Compile into explicit steps.
+3. Validate against latest snapshot.
+4. Produce dry-run preview.
+5. Require user confirmation.
+6. Execute one step at a time through Habitica.Api.
+7. After each mutating step, update local state or refresh relevant data.
+8. Stop on unexpected state, API error, insufficient mana, or rate-limit delay requiring user-visible wait.
+9. Persist execution log.
+```
+
+Restore rules:
+- snapshot original battle gear and costume gear before the first mutating step when any restore action is present;
+- restore actions use the captured start state, not currently edited preset definitions.
+
+Validation:
+- reject unknown step types;
+- reject missing task targets;
+- reject unavailable gear;
+- reject deleted equipment preset references;
+- reject plans that exceed available mana at dry-run time;
+- reject unsupported class skills;
+- reject destructive decisions based on stale data;
+- reject unbounded loops.
+
+Error handling:
+- stop by default when an API call fails;
+- show completed steps;
+- show failed step;
+- show whether local state may be stale;
+- offer manual refresh.
+
+Security:
+- macros must not store credentials;
+- exported macros must not include user API tokens, raw API headers, or private snapshots unless explicitly exported as a debug bundle.
+
+Pre-implementation checks:
+- confirm each skill endpoint and target semantic against `HABITICA_API.md` and current Habitica API docs before execution support is enabled.
+
 Acceptance:
-- Users can create, edit, delete, and run local declarative macros using initial step types from `FEATURES.md`.
+- Users can create, edit, delete, and run local declarative macros using the initial step types listed in this task.
 - Dry-run preview shows planned equipment changes, selected targets, mana cost, expected requests, warnings, and stop conditions.
 - Execution runs sequentially, persists progress, refreshes or updates local state after mutating steps, and stops on validation failures, API errors, stale state, or unexpected state changes.
-- Macro steps can reference existing inventory preset ids and dynamic gear strategies without copying transient recommendation data.
-- Tests cover parsing/validation, missing gear, insufficient mana, stale data, restore-original-gear behavior, and partial execution failure.
+- Macro steps can reference existing Equipment battle preset ids and dynamic gear strategies without copying transient recommendation data.
+- Tests cover parsing/validation, missing gear, insufficient mana, stale data, deleted preset references, preset-first gear selection, task target resolution, restore-original-gear behavior, partial execution failure, stop-on-failure, and rate-limit response handling.
 
 ### Task Mutation Dry-Run Summaries
 
@@ -214,7 +309,7 @@ Out of scope:
 - changing data loading behavior.
 
 Acceptance:
-- Returning authenticated users see denser top sections on Dashboard, Tasks, Party, Inventory, and Spells.
+- Returning authenticated users see denser top sections on Dashboard, Tasks, Party, Equipment, and Spells.
 - First-run, signed-out, stale-data, and empty-cache states still explain the next action.
 - Tests cover at least one authenticated returning state and one unauthenticated/empty state.
 

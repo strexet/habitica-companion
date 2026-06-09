@@ -2,9 +2,15 @@
 
 # Habitica Cron Concept
 
+Last reviewed: 2026-06-09
+
 This document describes Habitica's **Cron** concept for third-party client development and AI agents.
 
 The scope is intentionally limited to Cron-related behavior: daily reset timing, server-side effects, API implications, and party-member state detection for features such as better group buff timing.
+
+## Before editing Cron behavior
+
+Read `RULES.md`, `HABITICA_API.md`, this file, current Cron-related rules/application code, and focused tests before changing Start New Day, Daily due-state handling, pending damage, quest progress at Cron, or party buff timing. If local docs and tests do not fully establish behavior, inspect the current official Habitica Cron implementation before editing. Do not simulate server Cron locally beyond explicit documented estimates.
 
 ## 1. Short Definition
 

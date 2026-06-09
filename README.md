@@ -2,9 +2,9 @@
 
 Third-party companion client for Habitica power users. The project is focused on local data analysis, explainable recommendations, and safe assisted actions rather than replacing the official Habitica app.
 
-Current status: web-app MVP implemented and expanding into guarded actions. The repository contains a Blazor WebAssembly PWA shell with Habitica credential sign-in, staged refresh, cached account/task/party/inventory snapshots, local dashboards, task and spell actions with freshness gates, pets and mounts planning, shared party quest planning, diagnostics, and local/cloud data controls.
+Current status: web app implemented and expanding through the active `FUTURE.md` queue. The repository contains a Blazor WebAssembly PWA shell with Habitica credential sign-in, staged refresh, cached account/task/party/inventory snapshots, local dashboards, task and spell actions with freshness gates, pets and mounts planning, shared party quest planning, diagnostics, and local/cloud data controls.
 
-## Current MVP features
+## Current major features
 
 - credential sign-in with session-only default and persistent local opt-in
 - manual and page-prioritized refresh against Habitica API v3
@@ -24,9 +24,9 @@ Current status: web-app MVP implemented and expanding into guarded actions. The 
 - color schemes (on Settings, Dashboard, and Sign-in) with built-in presets, shell/control theming, task min/base/max shade ramps, random themes with a chaos slider, and copy/paste custom presets saved as portable user data
 - sign-out for the current tab session and clear-local-data controls
 
-## Planned feature areas
+## Active future work areas
 
-- richer quest explorer and party member views
+- party quest workspace modes and history analytics
 - skill macros with dry-run previews
 - task mutation dry-run summaries and remaining guarded-action estimate coverage
 
@@ -78,14 +78,14 @@ For Cloudflare Pages deployment, use [`docs/DEPLOY_CLOUDFLARE_PAGES.md`](docs/DE
 
 ## Habitica API header note
 
-The app reads `Habitica:XClientHeader` from [`src/Habitica.WebApp/wwwroot/appsettings.json`](src/Habitica.WebApp/wwwroot/appsettings.json). If it is left empty, the MVP falls back to `<current-user-id>-habitica-tool` so development remains usable, but production deployment should replace that with a project-owned Habitica `x-client` header value.
+The app reads `Habitica:XClientHeader` from [`src/Habitica.WebApp/wwwroot/appsettings.json`](src/Habitica.WebApp/wwwroot/appsettings.json). If it is left empty, the app falls back to `<current-user-id>-habitica-tool` so development remains usable, but production deployment should replace that with a project-owned Habitica `x-client` header value.
 
 ## Project documents
 
 - `PROJECT.md` - product context and goals
 - `TECHNICAL.md` - stack, architecture, storage, sync, and deployment rules
-- `FEATURES.md` - implemented and planned feature behavior
-- `FUTURE.md` - validated remaining backlog
+- `FEATURES.md` - implemented feature behavior, partial limitations, and non-active planned context
+- `FUTURE.md` - single active implementation queue and validated backlog
 - `HABITICA_API.md` - Habitica API integration rules
 - `docs/AI_APP_TESTING.md` - browser UI/UX testing guide for AI agents
 - `RULES.md` - repository and AI-agent workflow rules

@@ -1,6 +1,6 @@
 # TECHNICAL.md
 
-Last updated: 2026-06-08
+Last updated: 2026-06-09
 Primary audience: AI agents and senior developers
 Project type: third-party Habitica companion client
 Primary Habitica integration reference: `HABITICA_API.md`
@@ -29,19 +29,33 @@ The application must:
 
 ## 3. Source-of-truth hierarchy
 
-When implementing or modifying the project, use the following priority order:
+When implementing or modifying the project, use this hierarchy:
 
-1. `RULES.md` — repository workflow and AI-agent behavior rules.
-2. `HABITICA_API.md` — Habitica API usage, endpoints, headers, rate limits, security, and integration constraints.
-3. `TECHNICAL.md` — technical stack, architecture, storage, deployment, and project-level constraints.
-4. `FEATURES.md` — feature specifications and domain behavior.
-5. Current codebase.
-6. Official external documentation.
+1. `RULES.md` - repository workflow, AI-agent behavior rules, and required research.
+2. `HABITICA_API.md` - Habitica API usage, endpoints, headers, rate limits, security, and integration constraints.
+3. `TECHNICAL.md` - technical stack, architecture, storage, deployment, and project-level constraints.
+4. `FEATURES.md` - implemented feature behavior, partial limitations, and feature-specific ownership.
+5. Current code and tests - final verification source for what is actually implemented.
+6. Official external documentation and source repositories for third-party behavior.
 7. Community notes, forums, Reddit, and third-party tools.
 
 If these sources conflict during implementation, prefer the higher-priority source and mention the conflict in the implementation notes or pull request summary.
 
 For documentation audits and drift fixes, verify claims against the current codebase first, then against official Habitica server/mobile repositories and public API docs. Update or qualify stale documentation instead of treating older project docs as evidence that current code is wrong.
+
+Document ownership:
+
+```text
+RULES.md                         agent workflow and research requirements
+TECHNICAL.md                     foundational architecture and stack decisions
+FEATURES.md                      current feature implementation details
+FUTURE.md                        active future work queue
+docs/UX_UI_MANIFEST.md           UI/UX guidance and current page behavior
+HABITICA_API.md                  Habitica API contracts and safety rules
+HABITICA_TOOL_REFERENCES.md      third-party Habitica tool observations
+CRON.md                          Cron model and Cron-specific project rules
+docs/DEPLOY_CLOUDFLARE_PAGES.md  deployment and Cloudflare operations
+```
 
 ## 4. Baseline stack
 
@@ -67,7 +81,7 @@ Technology:
 
 ```text
 Blazor WebAssembly PWA
-.NET 8 LTS for MVP (`net8.0`)
+.NET 8 LTS (`net8.0`)
 Razor components
 C#
 ```
@@ -75,7 +89,7 @@ C#
 Versioning rules:
 
 - commit `global.json` with an exact .NET SDK version when the solution is scaffolded;
-- do not use floating NuGet package versions in the MVP baseline;
+- do not use floating NuGet package versions in the current baseline;
 - if JavaScript dependencies are introduced, pin them exactly and commit the lockfile.
 
 ### 4.2 UI component stack
@@ -324,16 +338,24 @@ Directory.Packages.props
   /Habitica.Rules.Tests
   /Habitica.Storage.Tests
   /Habitica.WebApp.Tests
+README.md
+RULES.md
+TECHNICAL.md
+FEATURES.md
+FUTURE.md
+HABITICA_API.md
+HABITICA_TOOL_REFERENCES.md
+CRON.md
 /docs
-  HABITICA_API.md
-  TECHNICAL.md
-  FEATURES.md
-  RULES.md
+  /UX_UI_MANIFEST.md
+  /AI_APP_TESTING.md
+  /DEPLOY_CLOUDFLARE_PAGES.md
+  /HABITICA_DEEPLINKS.md
 ```
 
 If the repository root contains these markdown files instead of `/docs`, keep all project-level documents together in the same location.
 
-Within `src/Habitica.WebApp`, the MVP baseline should also commit:
+Within `src/Habitica.WebApp`, the current web app also commits:
 
 ```text
 package.json
@@ -498,7 +520,7 @@ Definitions:
 - `expired`: too old for mutation planning, destructive actions, or high-confidence recommendations;
 - `missing`: no local snapshot is available.
 
-MVP default freshness categories:
+Current default freshness categories:
 
 ```text
 volatile gameplay state (user stats, mana, tasks, inventory, equipment, quest state)
@@ -530,7 +552,7 @@ PWA credential policy:
 
 - store only on the user's device;
 - do not sync credentials;
-- default to session-only mode for MVP;
+- default to session-only mode;
 - allow persistent storage only as an explicit user opt-in with a warning that browser runtime code cannot fully protect the token;
 - use a dedicated credential store for the raw token and keep only redacted credential metadata in ordinary app stores;
 - do not store tokens in cookies, URLs, calculation snapshots, execution logs, or telemetry payloads;
@@ -694,7 +716,7 @@ Primary deployment target:
 Cloudflare Pages for Blazor WebAssembly PWA
 ```
 
-MVP deployment contract:
+Current deployment contract:
 
 - serve the app from the site root with `base href="/"`;
 - require HTTPS;
@@ -746,7 +768,7 @@ Do not update this document for:
 Primary app: Blazor WebAssembly PWA
 Application layer: Habitica.Application
 Primary language: C#
-MVP target framework: .NET 8 LTS (`net8.0`)
+Target framework: .NET 8 LTS (`net8.0`)
 Primary UI library: MudBlazor
 Primary local browser storage: IndexedDB through a pinned Dexie.js interop boundary
 Primary API target: Habitica API v3

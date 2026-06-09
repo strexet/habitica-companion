@@ -13,6 +13,8 @@ AI agents must update this file when adding, materially changing, or removing a 
 
 Do not use this document for marketing copy. Keep it dry, technical, and explicit.
 
+`FUTURE.md` owns proposed, planned, and not-yet-implemented work. This file should describe implemented or partial current behavior only. Do not keep proposed-only feature specs here.
+
 ## 2. Feature documentation format
 
 Each feature should use this structure:
@@ -100,7 +102,7 @@ Rules:
 
 ### 3.6 Habitica image asset parity
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.WebApp.Assets`, `Habitica.WebApp.Components.HabiticaImage`
 Application entry point: Dashboard, Equipment, Party, and Spells pages
 Primary Habitica data: stable content keys from user, inventory, party quest, gear catalog, and spell view models
@@ -122,7 +124,7 @@ Layout rules are enforced in `app.css`: image frames have stable small/medium/la
 
 ## 4. Party CRON rhythm tracker
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.Domain.Party`, `Habitica.Application.Auth`, `Habitica.Storage`
 Application entry point: `Habitica.WebApp.Pages.PartyPage`
 Primary Habitica data: party group, party members, member `lastCron`, member HP/MP, member public quest progress, member preferences day start and timezone offset
@@ -247,7 +249,7 @@ Verify how consistently `lastCron`, `preferences.dayStart`, and timezone offsets
 
 ## 4.1 Party quest start action
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.Api`, `Habitica.WebApp.State`, `Habitica.WebApp.Pages.PartyPage`
 Application entry point: `Habitica.WebApp.Pages.PartyPage`
 Primary Habitica data: party group quest state, shared party quest queue entry
@@ -270,7 +272,7 @@ Validation failures and Habitica API failures return `PartyQuestActionResult.Fai
 
 ## 5. Gear set management
 
-Status: implemented for local battle presets; broader macro-oriented gear sets planned
+Status: Partial
 Owner module: `Habitica.WebApp.Pages.InventoryPage`, `Habitica.Storage`, `Habitica.WebApp.State`
 Application entry point: `Habitica.WebApp.Pages.InventoryPage`
 Primary Habitica data: user equipment, owned gear, current gear, class, stats
@@ -381,7 +383,7 @@ Confirm exact Habitica API semantics for equipping multiple slots and whether an
 
 ## 6. Skill-specific gear optimizer
 
-Status: partial
+Status: Partial
 Owner module: `Habitica.Rules.Equipment`, `Habitica.Rules.Spells`, `Habitica.Application.Inventory`
 Application entry point: `Habitica.WebApp.Pages.InventoryPage`, `Habitica.WebApp.Pages.SpellsPage`
 Primary Habitica data: owned gear, gear stats, user class, user stats, skill formulas
@@ -494,7 +496,7 @@ Verify formulas for each supported skill against Habitica source/docs before mar
 
 ## 7. Spells page
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.Rules.Spells`, `Habitica.Rules.Stats`, `Habitica.Api`, `Habitica.WebApp.State`
 Application entry point: `Habitica.WebApp.Pages.SpellsPage`; stats allocation entry point: `Habitica.WebApp.Pages.DashboardPage`
 Primary Habitica data: full user snapshot, user stats, mana, buffs, class, level, task snapshot, owned gear, gear content catalog
@@ -638,199 +640,11 @@ Test:
 
 Verify exact live API response shape for cast results, `Retry-After` propagation, and current Habitica source formulas before raising estimate confidence.
 
-## 8. Macros Collection and skill macro system
-
-Status: planned
-Owner module: `Habitica.Rules.Skills`, `Habitica.Application.Macros`, and `Habitica.WebApp.Macros`
-Application entry point: `Habitica.Application.Macros`
-Primary Habitica data: user stats, mana, skills, tasks, equipment, inventory, party/quest state
-Mutates Habitica state: yes
-Requires confirmation: yes
-Offline behavior: create/edit/dry-run available offline when snapshots exist; execution requires API access
-Rate-limit sensitivity: high
-
-### Goal
-
-Allow users to define and execute a local Macros Collection. A macro is a named declarative sequence of validated actions such as equipping a preset or item, casting a skill, selecting a target, refreshing snapshots, and restoring the original gear captured at macro start.
-
-Macros are not implemented yet. Equipment presets added by the Equipment page are designed as future macro references. Spells added by the Spells page are also designed as future macro references.
-
-### Inputs
-
-```text
-macro definition
-macro collection
-current user snapshot
-current task snapshot
-current equipment snapshot
-current party/quest snapshot
-local equipment presets
-owned gear catalog
-available skill metadata
-```
-
-### Outputs
-
-```text
-compiled macro plan
-dry-run preview
-mana cost estimate
-expected result estimate
-API execution steps
-validation warnings
-execution log
-```
-
-### Local storage
-
-Suggested records:
-
-```text
-macro_collection
-skill_macro
-skill_macro_step
-skill_macro_dry_run
-skill_macro_execution_log
-skill_macro_execution_step_log
-```
-
-Equipment presets live in local per-user inventory preset storage. Macro steps should reference preset ids when possible, not duplicate preset slot mappings into the macro definition.
-
-### API interaction
-
-Macro execution may call multiple Habitica API endpoints.
-
-All calls must go through `Habitica.Api`.
-
-### Algorithm / rules
-
-Macros must be declarative, not arbitrary code.
-
-Allowed initial step types:
-
-```text
-equip
-cast
-selectBestTask
-assertManaAtLeast
-assertCurrentClass
-refreshSnapshot
-stopIfWarning
-restoreOriginalGear
-```
-
-Spell references should use stable Habitica spell ids. Text macro shorthand may use:
-
-```text
-spell:fireball
-spell:pickPocket
-spell:healAll
-```
-
-Structured macro steps should use:
-
-```json
-{ "action": "castSpell", "spellId": "fireball", "targetTaskId": "task-id", "count": 1 }
-```
-
-For task-targeting spells, `targetTaskId` may be explicit or supplied by a future `selectBestTask` step. Dynamic spell equipment recommendations are not saved presets and must not be referenced by generated preset ids. Future macros should reference them as strategies, such as `maximize:int`, `maximize:per`, or `balanced:int,per`, then compile them against the current gear snapshot at execution time.
-
-Initial `equip` references should support:
-
-```text
-preset id
-single gear item key
-best gear query such as maximize perception or maximize strength
-restore original battle gear or costume captured when the macro starts
-```
-
-Selectable equip targets should list matching presets first, then individual owned gear items. Preset labels must include kind, name, and battle preset stat totals when available. Individual gear labels should use the inventory gear catalog display name with raw key fallback.
-
-Example macro:
-
-```text
-1. Equip gear that maximizes perception.
-2. Cast Tools of the Trade 3 times.
-3. Equip gear that maximizes strength.
-4. Cast Backstab until there is no mana left.
-5. Restore gear that was equipped before the macro started.
-```
-
-Execution flow:
-
-```text
-1. Load macro definition.
-2. Compile into explicit steps.
-3. Validate against latest snapshot.
-4. Produce dry-run preview.
-5. Require user confirmation.
-6. Execute one step at a time.
-7. After each mutating step, update local state or refresh relevant data.
-8. Stop on unexpected state, API error, insufficient mana, or rate-limit delay requiring user-visible wait.
-9. Persist execution log.
-```
-
-Macro execution must snapshot original battle gear and costume gear before the first mutating step when any restore action is present. Restore actions must use that captured state, not the currently edited preset definitions.
-
-### Validation
-
-Reject macros that:
-
-- contain unknown step types;
-- target missing tasks;
-- require unavailable gear;
-- reference deleted equipment presets;
-- exceed available mana at dry-run time;
-- contain unsupported class skills;
-- require stale data for destructive decisions;
-- would execute unbounded loops.
-
-Loops are not supported in the initial macro format.
-
-### Error handling
-
-Persist partial execution state after every step.
-
-If an API call fails:
-
-- stop by default;
-- show completed steps;
-- show failed step;
-- show whether local state may be stale;
-- offer manual refresh.
-
-### Security / privacy
-
-Macros must not store credentials.
-
-Exported macros must not include user API tokens, raw API headers, or private snapshots unless explicitly exported as a debug bundle.
-
-### Tests
-
-Test:
-
-- macro parsing;
-- macro validation;
-- insufficient mana;
-- missing gear;
-- deleted preset references;
-- restore-original-gear planning;
-- preset-first gear selection lists;
-- task target resolution;
-- sequential execution;
-- stop-on-failure;
-- partial log persistence;
-- rate-limit response handling.
-
-### Open questions
-
-Confirm each skill endpoint and target semantics against `HABITICA_API.md` and current Habitica API docs before execution support is enabled.
-
 ## 8. Best task selector for skill casting
 
-Status: planned
-Owner module: `Habitica.Rules.Tasks`
-Application entry point: `Habitica.Application.Tasks`
+Status: Partial
+Owner module: `Habitica.Rules.Spells`; generic future home may be `Habitica.Rules.Tasks`
+Application entry point: `Habitica.Rules.Spells.SpellViewModelFactory`
 Primary Habitica data: tasks, task values, task types, task tags, user stats, selected skill
 Mutates Habitica state: no by itself
 Requires confirmation: no
@@ -839,7 +653,7 @@ Rate-limit sensitivity: low
 
 ### Goal
 
-Find the best daily, habit, todo, or reward target for a selected skill or action.
+Find the best daily, habit, todo, or reward target for a selected skill or action. Current implementation is limited to the Spells page: `SpellViewModelFactory` filters valid cached task targets, chooses the first/best cached target for task-targeted spells, and exposes per-target estimates. A reusable selector with user-defined exclusions and alternate ranking remains planned.
 
 Examples:
 
@@ -935,7 +749,7 @@ Verify task scoring formulas and skill target constraints.
 
 ## 9. Bulk sell planner
 
-Status: implemented (initial safe-surplus planner)
+Status: Implemented
 Owner module: `Habitica.WebApp.Pages.PetsMountsPage`
 Application entry point: `Habitica.WebApp.Pages.PetsMountsPage`
 Primary Habitica data: cached eggs, food, and hatching potions
@@ -1022,9 +836,9 @@ Confirm exact sell endpoints and whether Habitica supports safe item sale batchi
 
 ## 10. Skill/action result estimator
 
-Status: planned
-Owner module: `Habitica.Rules.Calculations`
-Application entry point: `Habitica.Application.Calculations`
+Status: Partial
+Owner module: feature-specific rules/application factories; generic future home may be `Habitica.Rules.Calculations`
+Application entry point: feature-specific application factories
 Primary Habitica data: user stats, class, buffs, gear, tasks, party/quest state, skill metadata
 Mutates Habitica state: yes for Start New Day; otherwise no
 Requires confirmation: yes for Start New Day
@@ -1033,7 +847,7 @@ Rate-limit sensitivity: low
 
 ### Goal
 
-Display approximate results for skills and actions before execution.
+Display approximate results for skills and actions before execution. Current implementation is feature-specific: Dashboard estimates CRON damage and health-potion recovery, Spells estimates spell effects and resource costs, Equipment estimates stat deltas, and party/quest views estimate completion timing. A generic reusable estimator layer remains planned.
 
 Examples:
 
@@ -1125,9 +939,9 @@ Extract or verify formulas from official docs, Habitica source, or validated com
 
 ## 11. Dashboard and data explorer
 
-Status: partial
-Owner module: `Habitica.WebApp.Dashboard`
-Application entry point: `Habitica.Application.Dashboard`
+Status: Partial
+Owner module: `Habitica.WebApp.Pages.DashboardPage`, `Habitica.Application.Dashboard`, `Habitica.Rules.Equipment`, and `Habitica.WebApp.State.AppSessionController`
+Application entry point: `Habitica.WebApp.Pages.DashboardPage`
 Primary Habitica data: user, tasks, party, gear catalog, quest, sync metadata
 Mutates Habitica state: yes for Start New Day, CRON health-potion purchase, and gem-for-gold purchase
 Requires confirmation: yes for Start New Day, health-potion purchase, and gem-for-gold purchase
@@ -1238,36 +1052,14 @@ Test:
 
 ### Open questions
 
-Current implementation:
-
-- responsive app shell;
-- sign-in entry route;
-- dashboard route with cached account cards;
-- dashboard stat cards fall back to current-only rendering when the API snapshot lacks non-zero stat targets;
-- dashboard Start New Day confirmation and inline result when current-user Cron is due;
-- dashboard and Spells CRON unfinished-dailies mini lists with guarded inline checkoff;
-- dashboard Start New Day damage summary with included/excluded source copy and knockout warning;
-- compact Start New Day health-potion recovery action with confirmation, account refresh, and no standalone Manual Recovery card;
-- visible-state gem-for-gold purchase action with quantity clamp, unavailable reasons, confirmation, sequential Habitica requests, diagnostics, and account refresh;
-- task workspace with cached browsing and planned guarded mutations;
-- sync timestamp surface;
-- freshness banners for cached tasks and cached account data;
-- global error banner for sign-in and refresh failures.
-
-Next:
-
-- add deeper quest explorer surfaces;
-- add sync diagnostics and execution history views.
-
-Waiting:
-
-- advanced feature modules must exist before the dashboard can expose their recommendation output.
+- Final server-side CRON damage, mana, and HP outcomes remain Habitica-owned; local dashboard values stay estimate-based.
+- Current-user Inn/resting quest-damage exemption is still incomplete in the cached account projection.
 
 ## 12. Credential setup and validation
 
-Status: partial
-Owner module: `Habitica.WebApp.Auth` and `Habitica.Api`
-Application entry point: `Habitica.Application.Auth`
+Status: Partial
+Owner module: `Habitica.WebApp.Pages.SignIn`, `Habitica.Application.Auth`, `Habitica.Api`, and `Habitica.Storage`
+Application entry point: `Habitica.WebApp.State.AppSessionController.SignInAsync`
 Primary Habitica data: authenticated user profile
 Mutates Habitica state: no
 Requires confirmation: no
@@ -1309,7 +1101,7 @@ Actual token storage must use the credential storage abstraction defined in `TEC
 
 Raw token data must live only in the dedicated credential store. Ordinary app stores may keep redacted credential metadata only.
 
-Current MVP records:
+Current records:
 
 ```text
 auth/persistentCredentials
@@ -1333,7 +1125,7 @@ Validation flow:
 7. Handle 401/403 as invalid credentials.
 8. Handle 429 using Retry-After.
 9. Store credentials only after successful validation, using the selected storage mode.
-10. Do not offer save-unverified mode in MVP.
+10. Do not offer save-unverified mode.
 ```
 
 ### Validation
@@ -1367,36 +1159,12 @@ Test:
 
 ### Open questions
 
-Current implementation:
-
-- login form with User ID and API Token fields;
-- sign-in form fields update their backing request on `input` and `change`, then submit a trimmed request snapshot;
-- empty sign-in submissions show inline missing-credential validation instead of relying only on a page-level error banner;
-- `/`, `/sign-in`, and `/signin` sign-in entry routes for unauthenticated sessions;
-- authenticated visits to `/sign-in` or `/signin` redirect to Dashboard before rendering the sign-in form;
-- visible guidance for finding credentials in Habitica Settings/API paths on web, Android, and iOS;
-- visible token safety copy explaining local/session storage and non-sharing boundaries;
-- compact feature overview for dashboard, party, inventory, spells, task helpers, and local snapshots;
-- session-only mode by default;
-- persistent local credential opt-in;
-- credential validation through authenticated `GET /user` request;
-- sign-out for the current tab session;
-- clear-local-data action that removes persisted credentials and cached task and account snapshots;
-- no token logging or token echo in normalized API errors.
-
-Next:
-
-- add explicit client-side validation feedback for malformed IDs and empty values;
-- surface `Retry-After` and rate-limit guidance in the UI instead of generic error text;
-- store redacted credential metadata for richer offline auth status.
-
-Waiting:
-
-- production deployment should replace the fallback `x-client` behavior with a project-owned Habitica author header value.
+- Client-side validation currently covers missing values; malformed-ID validation remains a possible improvement.
+- Production deployment should replace fallback `x-client` behavior with a project-owned Habitica author header value.
 
 ## 12.1 Local data portability and encrypted cloud sync
 
-Status: partial
+Status: Partial
 Owner module: `Habitica.Application.Sync`, `Habitica.WebApp.Sync`, `Habitica.WebApp.Pages.SettingsPage`
 Application entry point: `Habitica.WebApp.Pages.SettingsPage`
 Primary Habitica data: local user, task, party, inventory, gear catalog, diagnostics, and party CRON history snapshots
@@ -1558,7 +1326,7 @@ Test:
 
 ## 12.2 Color scheme system
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.WebApp.Theme`, `Habitica.WebApp.Components.ColorSchemePanel`, `Habitica.WebApp.Pages.SettingsPage`, `Habitica.WebApp.Pages.DashboardPage`, `Habitica.WebApp.Pages.SignIn`, and `Habitica.Storage`
 Application entry point: `Habitica.WebApp.Theme.ColorSchemeService`
 Primary Habitica data: none
@@ -1697,7 +1465,7 @@ Test:
 
 ## 13. App shell and navigation
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.WebApp.Layout` and `Habitica.WebApp.Components.Navigation`
 Application entry point: `Habitica.WebApp.State.AppSessionController`
 Primary Habitica data: local session state, task snapshot freshness, sync timestamp, diagnostics history
@@ -1708,7 +1476,7 @@ Rate-limit sensitivity: none by itself
 
 ### Goal
 
-Provide a stable responsive PWA shell with top-level routes for sign-in, dashboard, inventory, party, diagnostics, tasks, and settings, while keeping the foldable feature drawer hidden until an authenticated session exists.
+Provide a stable responsive PWA shell with routes for sign-in, dashboard, tasks, Equipment (`/inventory`), Pets & Mounts, party, quests, spells, settings, diagnostics, and privacy, while keeping the foldable feature drawer hidden until an authenticated session exists.
 
 ### Inputs
 
@@ -1824,7 +1592,7 @@ Waiting:
 
 ## 14. Account, party, and task snapshot sync
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.Application.Auth`, `Habitica.Api`, and `Habitica.Storage`
 Application entry point: `Habitica.WebApp.State.AppSessionController`
 Primary Habitica data: authenticated user profile and user task list
@@ -1866,7 +1634,7 @@ sign-in or refresh error state
 
 ### Local storage
 
-Current MVP records:
+Current records:
 
 ```text
 auth/persistentCredentials
@@ -1973,32 +1741,12 @@ Test:
 
 ### Open questions
 
-Current implementation:
-
-- initial sync on sign-in via staged `AuthenticateMinimalAsync` (user snapshot only) followed by `RefreshCoordinator` for remaining domains;
-- manual refresh action via `RefreshForPageAsync` with page-aware domain priorities;
-- `RefreshCoordinator` provides domain-level deduplication, priority scheduling (Visible/Background), and per-domain completion callbacks;
-- `DomainRefreshState` per domain tracks fetching status, last refresh timestamp, errors, reason, priority, duration, and deduplication state;
-- `SessionViewModel.DomainStates` exposes per-domain status to UI;
-- Dashboard shows a compact refresh strip for account, tasks, and gear, plus card-level background refresh notes where a calculation depends on refreshing data;
-- mutation methods fire-and-forget cloud sync instead of blocking on it;
-- persisted-credential restore on app startup;
-- freshness classification for cached tasks, user, and party snapshots;
-- cached account snapshot with class, stat, companion, and inventory-summary fields;
-- cached party snapshot with summary and quest progress fields when the user belongs to a party;
-- successful sign-in refreshes appended into the shared diagnostics journal with redacted metadata.
-
-Next:
-
-- add per-domain error banners beyond the compact status chips.
-
-Waiting:
-
-- project-owned `x-client` header configuration for production deployments.
+- Production deployments should configure a project-owned `x-client` header instead of relying on fallback generation.
+- Additional per-domain error presentation beyond compact status chips remains a UI improvement, not a sync architecture gap.
 
 ## 15. Equipment page and gear explorer
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.Application.Inventory`, `Habitica.Storage`, `Habitica.Api`, and `Habitica.WebApp.Pages.InventoryPage`
 Application entry point: `Habitica.WebApp.Pages.InventoryPage`
 Primary Habitica data: cached user inventory summary, equipped gear keys, owned gear keys, and Habitica content gear catalog
@@ -2204,7 +1952,7 @@ Waiting:
 
 ## 15.1 Pets and mounts workspace
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.Domain.User`, `Habitica.Rules.Pets`, `Habitica.Api`, `Habitica.Storage`, and `Habitica.WebApp.Pages.PetsMountsPage`
 Application entry point: `Habitica.WebApp.Pages.PetsMountsPage`
 Primary Habitica data: cached eggs, food, hatching potions, pets, mounts, current pet, and current mount
@@ -2279,7 +2027,7 @@ Test:
 
 ## 16. Party explorer
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.WebApp.Pages.PartyPage`, `Habitica.WebApp.Pages.QuestsPage`
 Application entry point: `Habitica.WebApp.Pages.PartyPage`, `Habitica.WebApp.Pages.QuestsPage`
 Primary Habitica data: cached party group summary, quest state, party members, member CRON fields, user quest-scroll inventory, Habitica content quest metadata
@@ -2465,9 +2213,9 @@ Next:
 - add party-member explorer with throttled pagination and cancellation;
 - add a stronger party-membership proof only if official Habitica support becomes available without sending Habitica credentials to Cloudflare.
 
-## 17. Diagnostics workspace and live integration tests
+## 17. Diagnostics workspace
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.Application.Diagnostics`, `Habitica.Storage`, and `Habitica.WebApp.Pages.LiveTestsPage`
 Application entry point: `Habitica.WebApp.Pages.LiveTestsPage`
 Primary Habitica data: authenticated user snapshot, task snapshot, party snapshot, equipped battle gear, diagnostics log entries
@@ -2478,7 +2226,9 @@ Rate-limit sensitivity: low because tests are user-launched, sequential, and del
 
 ### Goal
 
-Provide a diagnostics workspace from the UI that validates implemented features against the real Habitica API, exposes curated read-only inspection presets, and keeps a persistent redacted diagnostics journal for cross-feature debugging.
+Provide a Diagnostics workspace from the UI that validates implemented features against the real Habitica API, exposes curated read-only inspection presets, and keeps a persistent redacted diagnostics journal for cross-feature debugging.
+
+`LiveTestsPage.razor` declares the canonical `/diagnostics` route and a legacy `/live-tests` compatibility alias. The authenticated drawer points to `/diagnostics`.
 
 ### Inputs
 
@@ -2509,11 +2259,11 @@ updated local snapshots after successful checks
 
 Refreshes `user/latestSnapshot`, `party/latestSnapshot`, and `tasks/latestSnapshot` as part of the safe suite and gear roundtrip verification.
 
-Persists a capped `diagnostics/logEntries` journal that stores newest-first redacted diagnostics entries across auth, inventory, preset inspection, and live test workflows.
+Persists a capped `diagnostics/logEntries` journal that stores newest-first redacted diagnostics entries across auth, inventory, preset inspection, and diagnostics-check workflows.
 
 ### API interaction
 
-Current live test flow uses:
+Current diagnostics-check flow uses:
 
 ```text
 GET /user
@@ -2533,21 +2283,22 @@ Current workflow rules:
 2. Reuse the same live `/user` response for account and inventory assertions.
 3. Fetch `/groups/party` only when the account snapshot shows an active party.
 4. Expose only curated diagnostics presets; do not allow arbitrary request paths from this workspace.
-5. Append successful and failed auth, preset, and live test workflow events into the same redacted diagnostics journal.
+5. Append successful and failed auth, preset, and diagnostics-check workflow events into the same redacted diagnostics journal.
 6. Skip the reversible gear test when no alternate owned supported battle item exists.
 7. For the reversible gear test, equip an alternate owned battle item, verify with a fresh `/user`, restore the original item, and verify restoration with another fresh `/user`.
 8. If restoration or restore verification fails, report the test as failed and preserve the latest known local snapshot.
-9. The diagnostics console filters by feature, severity, and mode.
-10. Copy and download actions export the currently filtered entries as JSONL. With no filters, they export all stored entries.
-11. The selected entry detail renders structured JSON instead of loose key/value text.
-12. Diagnostics log rows force `minmax(0, 1fr)` grid tracks and `min-width: 0` descendants so long metadata wraps inside the console instead of creating internal horizontal scrolling on tablet or phone widths.
+9. Keep normal user-facing mutations on their dedicated feature pages; Diagnostics is for verification, inspection, and operator tooling.
+10. The diagnostics console filters by feature, severity, and mode.
+11. Copy and download actions export the currently filtered entries as JSONL. With no filters, they export all stored entries.
+12. The selected entry detail renders structured JSON instead of loose key/value text.
+13. Diagnostics log rows force `minmax(0, 1fr)` grid tracks and `min-width: 0` descendants so long metadata wraps inside the console instead of creating internal horizontal scrolling on tablet or phone widths.
 ```
 
 ### Validation
 
 Require:
 
-- an authenticated session before any live test runs;
+- an authenticated session before any diagnostics check runs;
 - an authenticated session before any curated preset runs;
 - explicit user acknowledgement before the reversible gear test is enabled.
 
@@ -2570,7 +2321,7 @@ If browser clipboard or download APIs fail, keep stored diagnostics entries unch
 
 Do not display raw credentials or request headers.
 
-Keep all live tests and presets user-initiated. Do not introduce background polling or parallel batch execution through the diagnostics workspace.
+Keep all diagnostics checks and presets user-initiated. Do not introduce background polling or parallel batch execution through the Diagnostics workspace.
 
 Keep diagnostics metadata redacted by default. Do not persist tokens, raw auth headers, or full unrestricted user payloads in the journal.
 
@@ -2589,31 +2340,12 @@ Test:
 
 ### Open questions
 
-Current implementation:
-
-- dedicated `Diagnostics` route plus a `Settings` entry point;
-- safe suite covering account, inventory, party, and task snapshots;
-- reversible gear roundtrip with acknowledgement gate and restore verification;
-- curated `/user`, `/tasks/user`, and `/groups/party` diagnostics presets;
-- shared diagnostics console with feature, severity, and mode filters;
-- wrapped diagnostics log rows and metadata so recent-message cards stay within the console at desktop, tablet, and phone widths;
-- copy-all and download controls for JSONL diagnostics export;
-- structured selected-entry detail;
-- persistent diagnostics logging for sign-in, inventory actions, preset runs, and live tests.
-
-Next:
-
-- add optional live checks for task mutations with stronger warnings and dry-run summaries;
-- add richer diagnostics such as per-step timestamps and redacted raw status codes;
-- extend the shared journal to future mutation workflows such as equip actions and skill casts on their dedicated pages.
-
-Waiting:
-
-- any live test or action check that consumes gold, mana, items, or irreversible state must use the shared guarded-mutation confirmation rules before execution.
+- Optional diagnostics checks for task mutations must use stronger warnings and dry-run summaries before any live mutation.
+- Any diagnostics check or action check that consumes gold, mana, items, or irreversible state must use the shared guarded-mutation confirmation rules before execution.
 
 ## 18. Task workspace
 
-Status: implemented
+Status: Implemented
 Owner module: `Habitica.WebApp.Pages.TasksPage` and `Habitica.Application.Tasks`
 Application entry point: `Habitica.WebApp.Pages.TasksPage`
 Primary Habitica data: local task snapshot
@@ -2784,9 +2516,9 @@ Next:
 
 ## 19. Task mutation controls
 
-Status: partial
-Owner module: `Habitica.WebApp.Tasks` and `Habitica.Application.Tasks`
-Application entry point: `Habitica.Application.Tasks`
+Status: Partial
+Owner module: `Habitica.WebApp.Pages.TasksPage`, `Habitica.WebApp.State.AppSessionController`, `Habitica.Api`, and `Habitica.Application.Tasks`
+Application entry point: `Habitica.WebApp.State.AppSessionController.ScoreTaskAsync`
 Primary Habitica data: live task mutation endpoints and task snapshot state
 Mutates Habitica state: yes
 Requires confirmation: yes for multi-step, repeated, destructive, or ambiguous actions; single checkoff/score actions may use inline buttons with clear labels and undo-aware result feedback when supported
@@ -2817,11 +2549,11 @@ execution log
 
 ### Local storage
 
-Requires mutation diagnostics and task snapshot invalidation metadata. Existing diagnostics logging may be used for the initial implementation.
+Uses diagnostics logging and task snapshot invalidation metadata. Manual task ordering uses `preferences/taskOrder`; mutation controls refresh task/user snapshots instead of persisting a separate task-mutation store.
 
 ### API interaction
 
-Task mutations are available for implementation through `Habitica.Api`. Supported endpoint shapes must be documented in `HABITICA_API.md` before wiring UI controls.
+Current task scoring/checkoff mutations go through `Habitica.Api` endpoints documented in `HABITICA_API.md`. Any additional task-editing or uncompletion endpoint must be documented there before wiring UI controls.
 
 ### Algorithm / rules
 
@@ -2871,21 +2603,18 @@ Test:
 
 - exact Habitica endpoint behavior for uncompleting Dailies/To-Dos;
 - whether a completed To-Do can be safely uncompleted through the public API in all cases;
-- whether first implementation should include only scoring/checkoff or also task editing.
+- scope and confirmation model for future task editing beyond current scoring/checkoff controls.
 
 ## 20. Feature status labels
 
 Use these labels consistently:
 
 ```text
-planned
-in-progress
-implemented
-partial
-skipped
-blocked
-deprecated
-removed
+Implemented
+Partial
+Historical
+Deprecated
+Blocked
 ```
 
 When changing a status, update the relevant feature section and include the reason when useful.

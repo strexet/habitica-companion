@@ -90,7 +90,7 @@ Current audit:
 
 - The app currently uses local PWA/favicon files, Gryphy artwork on sign-in, and a MudBlazor menu icon in the shell.
 - Dashboard, Equipment, Party, and Spells now render image-backed Habitica entities through `HabiticaImageAssetResolver` and the shared `HabiticaImage` component.
-- Diagnostics, Live Tests, Tasks, Sign In, and App Shell remain intentionally text/control driven unless a specific Habitica game entity is being represented.
+- Diagnostics, Tasks, Sign In, and App Shell remain intentionally text/control driven unless a specific Habitica game entity is being represented.
 
 Asset parity rule:
 
@@ -118,7 +118,7 @@ Current placement:
 - Equipment: gear thumbnails appear in battle loadout slots, best-in-category entries, expanded gear cards, accessory cards, and saved preset items. Fixed identity columns keep slot labels, class text, stat pills, and equip actions aligned. Summary cards use compact item icons with readable counts.
 - Party and Quests: member cards do not invent avatar art. On Quests, active quest cards use a prominent quest art slot near the quest title. Queue, pool, and recent quest records use smaller quest scroll thumbnails while owner, vote, invite, and cancel controls stay in their own rows.
 - Spells: spell cards show class skill icons in the header beside spell name, mana cost, and availability. Equipment recommendation rows show gear thumbnails without moving cast controls or competing with mana previews.
-- Diagnostics and Live Tests: avoid gameplay thumbnails in raw payload/debug views. If endpoint lists need icons, use small technical UI icons only, and never let images hide JSON or response metadata.
+- Diagnostics: avoid gameplay thumbnails in raw payload/debug views. If endpoint lists need icons, use small technical UI icons only, and never let images hide JSON or response metadata.
 - Sign In and App Shell: keep existing local Gryphy/app icons. Do not add remote Habitica gameplay art to authentication or navigation unless it represents a specific game entity.
 
 Responsive verification for image work:
@@ -402,7 +402,7 @@ Improvement:
 - Consider an optional task-picker drawer that reuses task cards for spatial target selection.
 - Consider a future party-wide buff coordination surface that combines party CRON rhythm with current buff state, instead of making each spell card carry all coordination context.
 
-### Diagnostics and Live Tests
+### Diagnostics
 
 Files: `src/Habitica.WebApp/Pages/LiveTestsPage.razor`
 
@@ -528,9 +528,9 @@ References:
 
 - Freshness banners are visible on data-dependent pages.
 - Explicit mutation gates are consistent: buttons disable when data is stale, unauthenticated, or busy.
-- Summary stat cards work well for dashboard, party, inventory, and spells.
+- Summary stat cards work well for dashboard, party, Equipment, and spells.
 - Dashboard resource meters and party member HP/MP chips improve scanability without adding large new panels.
-- Responsive grid primitives are already strong in inventory and party areas.
+- Responsive grid primitives are already strong in Equipment and party areas.
 - Guarded diagnostics and session-only sign-in match the app's safety model.
 - Spell-page mana preview is now aligned with resource-spending UX best practice.
 

@@ -62,7 +62,7 @@ Supported explicit scopes:
 - one named markdown file;
 - several named markdown files;
 - one directory of markdown files;
-- a glob-like description, such as "only docs under `docs/superpowers/`";
+- a glob-like description, such as "only docs under `docs/`";
 - a newly edited source markdown file from the same request.
 
 When the user asks to snapshot only one file, create a zip archive that contains only that file's snapshot copy.
@@ -152,7 +152,7 @@ docs/DOCUMENTS_SNAPSHOT.md -> DOCUMENTS_SNAPSHOT.snapshot-2026-06-08-13-23.md
 If two files would produce the same archive member name, do not overwrite either file. Use a deterministic flattened relative path for the colliding files:
 
 ```text
-docs__superpowers__plans__example.snapshot-YYYY-MM-DD-HH-MM.md
+docs__nested__example.snapshot-YYYY-MM-DD-HH-MM.md
 ```
 
 Report any collision handling in the final response.
