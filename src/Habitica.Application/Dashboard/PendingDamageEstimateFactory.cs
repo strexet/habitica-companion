@@ -84,12 +84,13 @@ public sealed class PendingDamageEstimateFactory
         List<PendingDamageSource> included,
         List<string> excluded)
     {
-        var quest = party?.Quest;
-        if (quest is null)
+        if (party is null || party.Quest is null)
         {
             excluded.Add("Party boss damage is unavailable because no saved active quest exists.");
             return;
         }
+
+        var quest = party.Quest;
 
         if (!quest.IsActive || quest.QuestType != PartyQuestType.Boss)
         {
