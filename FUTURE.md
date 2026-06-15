@@ -77,438 +77,153 @@ Work top to bottom. This is an intake list for rough notes that must become self
 
 ### Entries:
 
-* Fix Start New Day estimated-damage styling and verify CRON damage formula
-   * Description
-      * Fix the CSS/theme styling for the compact ESTIMATED DAMAGE section inside the Dashboard Start New Day / CRON panel.
-      * The section currently appears visually detached from the active color theme.
-      * It should use the same theme tokens, typography, borders, surfaces, spacing, and warning styles as the rest of the app.
-      * Also verify the estimated damage formula against the current official Habitica GitHub/API implementation.
-      * The current estimate appears to overshoot the damage actually applied after CRON.
-      * The estimate may not be accounting for important parameters such as user stats, Constitution, buffs, task value, task priority, boss mechanics, or other official CRON modifiers.
-   * Current problematic UI example
-      * Current copy/layout includes:
-         * ESTIMATED DAMAGE 29,2 HP
-         * HP after CRON: 20,8 / 50
-         * Incomplete estimate
-         * Due Dailies: 29,2 HP
-         * 12 confirmed due unfinished Daily tasks using local difficulty-weight estimate.
-         * Party boss damage is unavailable because the synced quest state has no pending boss damage.
-         * Negative Habit damage is not included because pending negative Habit state is not available in saved task data.
-         * Inn and paused-damage state are not included because saved account data does not expose the official CRON damage pause flag.
-      * Problems:
-         * The visual block does not look theme-aware.
-         * The expanded details are too prominent.
-         * The numeric value appears too high compared with actual post-CRON damage.
-         * The wording suggests a technical estimate but does not clearly explain which parts are approximate and why.
-   * Source verification requirements
-      * Inspect the current official Habitica server source before finalizing the damage formula.
-      * Inspect official API behavior for:
-         * CRON.
-         * Due Dailies.
-         * User damage.
-         * Boss quest damage.
-         * Inn/resting or pause-damage behavior.
-         * Stat/buff contribution to damage reduction.
-      * Inspect the current project code and docs for:
-         * PendingDamageEstimateFactory
-         * PlayerDamageEstimator
-         * BossDamageEstimator
-         * CronDamageEstimate
-         * Start New Day / Dashboard rendering component.
-         * Task snapshot isDue handling.
-         * Account snapshot stat and buff fields.
-         * Quest pending damage mapping.
-      * Do not rely on the current local difficulty-weight estimate until it is checked against official behavior.
-      * If the official formula cannot be reproduced exactly from saved API data:
-         * Keep the value labeled approximate.
-         * Show unavailable parameters in collapsed details only.
-         * Avoid exact-sounding wording.
-      * Compare the estimate against at least one real before/after CRON scenario when possible.
-   * Formula accuracy requirements
-      * Verify whether the current estimate accounts for:
-         * User Constitution.
-         * Buffed Constitution.
-         * Other relevant stats.
-         * Task value/color.
-         * Task priority/difficulty.
-         * Due state.
-         * Custom Day Start.
-         * Boss quest participation.
-         * Boss strength.
-         * Saved quest.progress.down semantics.
-         * Inn/resting state.
-         * Pause-damage state.
-         * Multiple missed-day behavior.
-      * Do not count unknown due-state Dailies as damaging.
-      * Do not count non-due Dailies as damaging.
-      * Do not double-count boss damage already represented by synced pending damage.
-      * Do not include party-wide damage as current-user damage.
-      * Do not include unavailable negative Habit damage in the numeric total unless official/source-backed data exists.
-      * If negative Habit pending damage cannot be known from saved task data, keep it excluded and mention this only in collapsed details.
-      * If Inn or pause-damage state cannot be known from saved account data, do not claim the estimate is exact.
-      * If stats or buffs are missing, degrade confidence instead of pretending the local estimate is complete.
-   * Calibration requirements
-      * Add a focused comparison workflow:
-         * Capture current HP before CRON.
-         * Capture due unfinished Dailies included in the estimate.
-         * Capture relevant stats and buffs.
-         * Capture quest state.
-         * Run CRON.
-         * Refresh account/tasks/party state.
-         * Compare actual HP delta with predicted damage.
-      * Use this comparison to identify which parameters the local estimate is missing.
-      * Add diagnostics so future mismatches can be investigated without guessing.
-      * Do not silently lower the estimate with an arbitrary multiplier.
-      * Fix the formula or clearly downgrade confidence.
-   * CSS and theme requirements
-      * Remove hardcoded colors that bypass the active color scheme.
-      * Use existing app theme tokens/classes for:
-         * Card/surface background.
-         * Border.
-         * Primary text.
-         * Secondary text.
-         * Danger/warning/safe states.
-         * Muted explanatory text.
-         * Collapsed details.
-         * Stat chips or value rows.
-      * Ensure the compact CRON damage section works in:
-         * Dark themes.
-         * Light themes.
-         * High-contrast/custom themes.
-         * Mobile layout.
-         * Desktop layout.
-      * Ensure warning/danger styles remain readable.
-      * Ensure the block does not visually look like unstyled browser/default markup.
-   * UI behavior
-      * Keep the default damage view compact.
-      * Default view should show:
-         * Estimated total damage.
-         * HP after CRON.
-         * Risk or confidence badge.
-         * Compact Daily/Boss breakdown when available.
-      * Keep long explanation text inside collapsed Estimate details.
-      * Avoid showing large paragraphs in the default Start New Day view.
-      * Make unavailable-source details less visually dominant.
-      * Do not display a large standalone damage card on the standard Dashboard.
-      * Damage estimate remains inside the Start New Day / CRON panel only.
-   * Suggested wording
-      * Prefer concise default labels:
-         * Estimated damage: 29.2 HP
-         * HP after CRON: 20.8 / 50
-         * Estimate incomplete
-         * Dailies: 29.2 HP
-         * Boss: unavailable
-      * In expanded details, use clearer uncertainty wording:
-         * This estimate uses confirmed due unfinished Dailies from the latest task refresh.
-         * Some official CRON modifiers may be unavailable in cached data, so the final damage can differ.
-         * Boss damage is not included because no current-user pending boss damage was available in the synced quest state.
-      * Avoid making unavailable inputs look like additional damage sources.
-      * Avoid technical wall-of-text in the default visible state.
-   * Data/model behavior
-      * The UI should render confidence based on model state, not string matching.
-      * Keep separate fields for:
-         * Estimated Daily damage.
-         * Estimated boss damage.
-         * Excluded/unknown due Dailies.
-         * Unavailable negative Habit damage.
-         * Missing official pause/Inn data.
-         * Confidence/readiness.
-         * Source notes.
-      * Keep numeric totals separate from explanatory notes.
-      * Do not mix unavailable values into the total.
-      * Recalculate after:
-         * Task refresh.
-         * Daily completion.
-         * Equipment/stat preview change.
-         * Party/quest refresh.
-         * Health potion purchase.
-         * CRON completion.
-   * Diagnostics
-      * Add structured diagnostics for:
-         * Included due Daily IDs/count.
-         * Excluded Daily IDs/count and reasons.
-         * Task values and priorities used.
-         * User stats and buffs used.
-         * Formula branch used.
-         * Quest/boss state used.
-         * Estimate confidence.
-         * HP before CRON.
-         * Predicted damage.
-         * Actual HP delta after CRON when available.
-         * Difference between predicted and actual damage.
-      * Do not log task text if diagnostics policy avoids user content.
-      * Do not log credentials or sensitive headers.
-   * Expected behavior
-      * The Start New Day damage estimate uses the active theme correctly.
-      * The section visually matches the rest of the app.
-      * The default view is compact and readable.
-      * Expanded details are still available but not visually overwhelming.
-      * The numeric estimate is checked against official Habitica behavior.
-      * If exact prediction is not possible, the UI clearly marks the estimate as approximate or incomplete.
-      * The estimate no longer overshoots actual CRON damage because of missing known parameters that the app can access.
-      * Missing inaccessible parameters are represented as confidence limitations, not fake precision.
-   * Suggested implementation
-      * Inspect the Start New Day damage component markup and CSS.
-      * Replace local/hardcoded styling with existing theme-aware utility classes or CSS variables.
-      * Inspect PendingDamageEstimateFactory and related damage estimators.
-      * Compare local formula with official Habitica server/API behavior.
-      * Add or update a dedicated CronDamageEstimate confidence model if needed.
-      * Keep unavailable-source explanations collapsed by default.
-      * Add a small local calibration/debug summary in diagnostics, not in normal UI.
-      * Update FEATURES.md, CRON.md, HABITICA_API.md, and docs/UX_UI_MANIFEST.md if formula behavior or uncertainty wording changes.
-   * Acceptance criteria
-      * ESTIMATED DAMAGE block uses the active color theme.
-      * No unthemed/default-looking CSS remains in the section.
-      * The section is readable in light, dark, and custom themes.
-      * Default damage UI is compact.
-      * Long unavailable-source explanations are collapsed by default.
-      * Formula is verified against current official Habitica source/API behavior.
-      * User stats and accessible official modifiers are included when available.
-      * Missing inaccessible modifiers lower confidence instead of being ignored silently.
-      * Unknown or unavailable damage sources are not included in the numeric total.
-      * Numeric estimate no longer systematically exceeds actual CRON damage because of known missing accessible parameters.
-      * Estimate is labeled approximate/incomplete when exact prediction is impossible.
-      * Daily completion, stat/equipment changes, potion purchase, and CRON completion recalculate or clear the estimate correctly.
-   * Tests
-      * Add UI/component tests for:
-         * Theme classes/tokens applied to compact damage summary.
-         * Light theme readability.
-         * Dark theme readability.
-         * Custom theme readability.
-         * Collapsed details by default.
-         * Expanded estimate details.
-         * Compact mobile layout.
-         * Compact desktop layout.
-      * Add rules/model tests for:
-         * Due Daily damage with stats.
-         * Due Daily damage with buffs.
-         * Due Daily damage with task value.
-         * Due Daily damage with priority/difficulty.
-         * Non-due Daily excluded.
-         * Unknown due-state Daily excluded from numeric total.
-         * Boss damage unavailable.
-         * Boss damage included only when source-backed.
-         * Inn/pause unavailable reduces confidence.
-         * Missing stats reduces confidence.
-         * Actual-vs-estimated comparison model.
-      * Add integration-style tests for:
-         * Completing a Daily updates estimate.
-         * Running CRON clears stale estimate.
-         * Health potion purchase updates HP-after-CRON.
-         * Unavailable sources remain in details only.
-* Improve Blessing effect preview wording and add low-value healing warnings
-   * Description
-      * Improve the EFFECT PREVIEW wording for the Healer Blessing spell.
-      * The current copy is confusing:
-         * Restores approximately 0-6,62 HP per covered party member. Total for 3 casts: approximately 497,1 effective party HP restored.
-      * Avoid showing a large aggregate party HP total as the primary result.
-      * Prefer a per-party-member description that is easier to understand.
-      * Add warnings when most party members are already too close to full HP for the spell to be useful.
-      * Add a stronger warning when all or almost all party members are already near full HP and no meaningful healing is needed.
-   * Current problematic UI example
-      * Current effect preview:
-         * Restores approximately 0-6,62 HP per covered party member. Total for 3 casts: approximately 497,1 effective party HP restored.
-      * Problems:
-         * The 0-6,62 HP range is hard to interpret.
-         * The aggregate 497,1 effective party HP restored feels misleading or too abstract.
-         * The wording does not clearly say what each party member receives per cast or for all casts.
-         * The preview does not warn clearly when most healing will be wasted because party members are already close to full HP.
-         * The preview does not clearly say when healing is not needed.
-   * Required wording direction
-      * Prefer wording like:
-         * Restores approximately X HP per party member.
-         * Total for N casts: approximately Y HP per party member.
-      * Use per-member totals as the primary explanation.
-      * Do not use aggregate party-wide HP as the main displayed value.
-      * If aggregate effective healing is kept for diagnostics or expanded details, keep it secondary and clearly labeled.
-      * Avoid the word overshoot in user-facing copy.
-      * Use friendlier wording such as:
-         * Most members are already near full HP, so part of this healing would have no effect.
-         * Healing value is limited because many members are already close to full HP.
-         * Party HP is already high; Blessing may not be worth casting right now.
-         * No meaningful healing is needed right now.
-   * Source verification requirements
-      * Inspect the current project spell-estimation code for:
-         * Blessing
-         * Healer spell preview model.
-         * Party HP coverage logic.
-         * Per-member healing cap.
-         * Multi-cast preview calculation.
-         * Fresh/stale party snapshot handling.
-      * Check the current official Habitica spell definition/source for Blessing before changing the formula.
-      * Verify whether the formula should use:
-         * Intelligence.
-         * Buffed stats.
-         * Level bonus.
-         * Equipment preview stats.
-         * Number of casts.
-         * Party member missing HP cap.
-      * Do not change the spell formula merely to improve wording unless the source check shows the formula is wrong.
-   * Preview calculation requirements
-      * Keep separate values for:
-         * Raw healing per member per cast.
-         * Raw healing per member for selected cast count.
-         * Effective healing per member after HP cap.
-         * Number of party members covered by fresh HP data.
-         * Number of party members who would receive full value.
-         * Number of party members who would receive partial value.
-         * Number of party members who would receive no value because they are full or nearly full.
-      * The default visible text should prioritize per-member values.
-      * If member HP data is fresh:
-         * Cap each member’s effective healing by their missing HP.
-         * Use warnings when healing value is mostly wasted.
-      * If member HP data is stale or incomplete:
-         * Show the raw per-member estimate.
-         * Add a concise note that actual effective healing depends on current party HP.
-         * Do not invent effective healing for members with unknown HP.
-   * Suggested default copy
-      * For one cast with useful healing:
-         * Restores approximately X HP per party member.
-      * For multiple casts:
-         * Restores approximately X HP per party member per cast.
-         * Total for N casts: approximately Y HP per party member.
-      * If fresh HP capping is available:
-         * Effective healing may be lower for members already near full HP.
-      * If the preview is capped for many members:
-         * Most party members are already near full HP, so much of this healing would have no effect.
-      * If all or almost all members are healthy:
-         * Party HP is already high. Blessing is probably not needed right now.
-      * If nobody needs meaningful healing:
-         * No meaningful healing is needed right now.
-      * If some party members lack HP data:
-         * Some party HP data is unavailable, so effective healing may differ.
-   * Warning thresholds
-      * Add a warning when more than half of covered party members would not receive the full raw healing value because they are already too close to full HP.
-      * Do not describe this as overshoot.
-      * Use wording such as:
-         * Healing value is limited because most covered members are already near full HP.
-      * Add a stronger warning when all or almost all covered party members would receive little or no effective healing.
-      * Suggested threshold:
-         * More than 50% capped or no-effect members:
-            * show limited-value warning.
-         * At least 80% capped/no-effect members, or total effective healing is near zero:
-            * show low-need warning.
-         * 100% no-effect members:
-            * show No meaningful healing is needed right now.
-      * Let implementation choose exact thresholds, but they must be deterministic and covered by tests.
-      * Make the thresholds configurable or centralized if the spell preview model already has similar warning logic.
-   * UI behavior
-      * Keep EFFECT PREVIEW concise.
-      * Show the primary per-member estimate first.
-      * Show warnings below the primary estimate.
-      * Use warning styling that matches the active theme.
-      * Do not make warnings look like errors unless casting would fail.
-      * Do not hide the Cast button solely because healing is inefficient.
-      * Keep the warning near the Cast button so the user sees it before spending mana.
-      * Avoid large paragraphs and aggregate party-total numbers in the default view.
-      * Keep detailed member coverage in expanded details if needed.
-   * Multi-cast behavior
-      * For N casts:
-         * Per-cast line should reflect one cast.
-         * Total line should reflect total healing per party member across all selected casts.
-      * Example structure:
-         * Restores approximately 6.62 HP per party member per cast.
-         * Total for 3 casts: approximately 19.86 HP per party member.
-      * If effective healing is capped:
-         * Do not claim every member will receive the full total.
-         * Add a warning or note:
-            * Effective healing may be lower for members already near full HP.
-      * If most members are capped:
-         * Show the limited-value warning.
-      * If almost nobody needs healing:
-         * Show the low-need warning.
-   * Data/model behavior
-      * Avoid embedding preview logic directly in UI text.
-      * Spell preview model should expose:
-         * RawHealPerMemberPerCast
-         * RawHealPerMemberTotal
-         * CoveredMemberCount
-         * FullValueMemberCount
-         * PartialValueMemberCount
-         * NoEffectMemberCount
-         * EffectiveHealTotal
-         * HasFreshPartyHealth
-         * HealingEfficiencyWarning
-         * NoHealingNeededWarning
-      * UI should format these values consistently using existing number formatting.
-      * Preserve locale-aware decimal formatting.
-      * Avoid showing misleading ranges unless the range is actually meaningful and explained.
-      * Prefer exact source-backed per-member values over 0-X ranges in the primary text.
-   * Edge cases
-      * No party members covered by fresh HP data.
-      * User is solo or party data is unavailable.
-      * Some party members have unknown HP.
-      * All covered members are at full HP.
-      * Most covered members are near full HP.
-      * Some members need full healing and others need none.
-      * Multi-cast would heal some members to full after the first cast.
-      * Stale party snapshot.
-      * Auto-equip changes INT and therefore healing estimate.
-      * Spend All Mana changes selected cast count.
-      * Cast count is invalid or unaffordable.
-      * Party member max HP is missing.
-   * Expected behavior
-      * Blessing preview uses clear per-member wording.
-      * Multi-cast preview shows total healing per party member, not a confusing aggregate party HP total.
-      * Users are warned when most healing would have little effect because members are already near full HP.
-      * Users are warned when party HP is already high and healing is probably unnecessary.
-      * The preview remains approximate and source-backed.
-      * The formula is not changed unless official/source verification shows it is wrong.
-      * The warning uses theme-aware styling and does not look like a fatal error.
-   * Suggested implementation
-      * Inspect the current spell preview factory/model for Blessing.
-      * Split raw healing and effective healing into explicit model fields.
-      * Update the UI formatter for Blessing effect previews.
-      * Add deterministic warning classification for capped/no-effect healing.
-      * Keep aggregate party healing out of the primary copy.
-      * Place detailed aggregate/member coverage in collapsed details only if still useful.
-      * Recalculate warnings when:
-         * Cast count changes.
-         * Auto-equip recommendation changes stats.
-         * Party HP snapshot refreshes.
-         * Mana changes.
-         * Spell is cast.
-      * Update FEATURES.md and docs/UX_UI_MANIFEST.md if the documented spell preview wording changes.
-   * Acceptance criteria
-      * Blessing preview no longer uses confusing 0-X HP per covered party member wording as the primary line.
-      * Blessing preview no longer shows aggregate party HP restored as the main value.
-      * One-cast preview says approximately how much HP is restored per party member.
-      * Multi-cast preview says approximately how much HP is restored per party member for all selected casts.
-      * Effective healing caps are still respected when fresh party HP is available.
-      * More than half of covered members being capped/no-effect shows a limited-value warning.
-      * All or almost all covered members being healthy shows a stronger no-need warning.
-      * Unknown/stale party HP data produces a concise uncertainty note.
-      * Cast action remains available unless normal casting rules disable it.
-      * Warnings and preview text are theme-aware and readable.
-      * Decimal formatting remains consistent with the rest of the app.
-      * Official/source verification confirms the formula or records why the estimate remains approximate.
-   * Tests
-      * Add spell preview tests for:
-         * One Blessing cast with useful healing.
-         * Multiple Blessing casts with useful healing.
-         * All party members missing enough HP for full value.
-         * More than half of members near full HP.
-         * Almost all members near full HP.
-         * All members at full HP.
-         * Mixed full, partial, and no-effect members.
-         * Unknown party HP data.
-         * Stale party HP data.
-         * Auto-equip changing healing value.
-         * Spend All Mana changing cast count.
-         * Locale-aware decimal formatting.
-      * Add component/UI tests for:
-         * New primary wording.
-         * Multi-cast per-member total wording.
-         * Limited-value warning.
-         * No-healing-needed warning.
-         * No aggregate party HP total in the default preview.
-         * Expanded details if aggregate/member coverage is retained.
+_No pending entries._
 
 ## Prioritized Next Changes
 
 Work top to bottom. Each entry is self-contained.
 
-_No prioritized entries._
+### Fix Start New Day Estimated-Damage Styling And CRON Formula Confidence
+
+Priority: Bottom (default from pending queue).
+
+Goal: make the compact damage estimate inside the Dashboard Start New Day panel visually theme-aware, verify its formula against current Habitica CRON behavior, and expose uncertainty through structured model state instead of exact-sounding copy.
+
+Touch:
+- `src/Habitica.WebApp/Pages/DashboardPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css`
+- `src/Habitica.Application/Dashboard/PendingDamageEstimateFactory.cs`
+- `src/Habitica.Domain/Dashboard/PendingDamageEstimate.cs`
+- `src/Habitica.Application/Dashboard/HealthPotionRecoveryEstimateFactory.cs` only if HP-after-CRON or recovery readiness depends on revised estimate state
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs`
+- direct tests under `tests/Habitica.Application.Tests/Dashboard/PendingDamageEstimateFactoryTests.cs`
+- direct tests under `tests/Habitica.Application.Tests/Dashboard/HealthPotionRecoveryEstimateFactoryTests.cs` only if recovery behavior changes
+- `FEATURES.md`
+- `HABITICA_API.md` if official CRON formula, endpoint semantics, or source-backed limitations are added or corrected
+- `TECHNICAL.md` if estimate model, diagnostics, or refresh invalidation behavior changes
+- `docs/UX_UI_MANIFEST.md` if Start New Day layout, density, or warning guidance changes
+
+Out of scope:
+- moving damage estimate outside the Start New Day panel;
+- reintroducing a standalone Dashboard damage card;
+- adding app-specific Habitica deep links;
+- sending Habitica API tokens to any Cloudflare endpoint;
+- silently multiplying or discounting damage with an arbitrary calibration factor;
+- counting unknown due-state Dailies, non-due Dailies, unavailable negative Habit damage, or party-wide boss damage in the current-user numeric total without source-backed data;
+- making health-potion purchase automatic.
+
+Source checks before implementation:
+- Inspect current official Habitica server source and API behavior for CRON, due Dailies, user damage, boss quest damage, task value, task priority/difficulty, Constitution and buffs, inn/resting or pause-damage behavior, custom day start, multiple missed days, and `quest.progress.down` semantics.
+- Inspect project docs before editing: `HABITICA_API.md`, `TECHNICAL.md`, `FEATURES.md`, and `docs/UX_UI_MANIFEST.md`.
+- Inspect current project code for `PendingDamageEstimateFactory`, `PendingDamageEstimate`, `HealthPotionRecoveryEstimateFactory`, `DashboardPage.razor`, task snapshot `isDue` handling, account stat/buff fields, quest pending-damage mapping, and diagnostics policy.
+- If official behavior cannot be reproduced from cached app data, keep the estimate explicitly approximate or incomplete and record which inaccessible fields prevent exact prediction.
+
+Implementation plan:
+1. Map current inputs: confirmed due unfinished Dailies, unknown due-state Dailies, task values, task priorities, user HP/max HP, Constitution, buffs, class/level fields if used by official source, active quest pending damage, and freshness flags.
+2. Compare the local formula with official Habitica source. Replace incorrect accessible pieces with source-backed calculations; keep inaccessible pieces outside the numeric total.
+3. Extend `PendingDamageEstimate` only as needed so UI can render from typed state: daily damage, boss damage, excluded Daily count/reasons, unavailable negative Habit damage, missing inn/pause state, missing stats/buffs, confidence/readiness, source notes, and post-CRON comparison data.
+4. Update `PendingDamageEstimateFactory` to keep numeric totals separate from notes and to downgrade confidence when required inputs are missing or stale.
+5. Recalculate or clear the estimate after task refresh, Daily completion, equipment/stat preview changes, party/quest refresh, health-potion purchase, and CRON completion.
+6. Add structured diagnostics for included/excluded Daily ids, reasons, task values/priorities, stats/buffs used, formula branch, quest state, confidence, HP before CRON, predicted damage, actual HP delta when available, and prediction difference. Do not log task text, API tokens, auth headers, or sensitive user data.
+7. Restyle the compact Start New Day estimate with existing theme tokens/classes for surface, border, primary text, secondary text, danger/warning/safe states, muted details, chips, and value rows. Remove hardcoded colors that bypass active color schemes.
+8. Keep the default view compact: estimated damage, HP after CRON, risk/confidence badge, and compact Daily/Boss breakdown. Move formula notes, unavailable sources, and long explanations into collapsed details.
+9. Use concise user copy such as `Estimated damage`, `HP after CRON`, `Estimate incomplete`, `Dailies`, and `Boss: unavailable`. Avoid wording that makes unavailable inputs look like extra damage.
+10. Update user-facing docs only for behavior that actually changes.
+
+Calibration workflow to support:
+1. Capture HP before CRON.
+2. Capture included due unfinished Dailies and excluded/unknown Dailies.
+3. Capture relevant stats, buffs, task values, priorities, and quest state.
+4. Run CRON through the existing Start New Day flow.
+5. Refresh account, tasks, and party state.
+6. Compare actual HP delta with predicted damage and persist enough diagnostic data to investigate mismatches.
+
+Acceptance:
+- Start New Day damage estimate uses the active color theme and no longer looks like default or detached markup.
+- Section remains readable in light, dark, high-contrast, and custom color schemes on mobile and desktop.
+- Default damage view is compact and keeps long unavailable-source explanations collapsed.
+- Formula is checked against current official Habitica source/API behavior before finalizing local logic.
+- Accessible official modifiers such as due state, task value/priority, stats, buffs, and boss state are included when source-backed and available.
+- Missing inaccessible modifiers lower confidence instead of being ignored silently.
+- Unknown due-state Dailies, non-due Dailies, unavailable negative Habit damage, and unavailable boss damage are excluded from the numeric total.
+- Estimate does not systematically exceed actual CRON damage because of known missing accessible parameters.
+- Estimate is labeled approximate or incomplete when exact prediction is impossible from saved API data.
+- Daily completion, stat/equipment changes, party/quest refresh, health-potion purchase, and CRON completion recalculate or clear stale estimate state.
+- Health-potion recovery still avoids guaranteed-safe claims when damage confidence is incomplete.
+
+Tests:
+- Add or update application tests for due Daily damage with stats, due Daily damage with buffs, task value/color, task priority/difficulty, non-due Daily exclusion, unknown due-state exclusion, boss unavailable, boss included only when source-backed, missing inn/pause state confidence, missing stats confidence, and actual-vs-estimated comparison state.
+- Add or update Dashboard component tests for compact summary rendering, theme-aware classes/tokens, collapsed details by default, expanded details, Daily/Boss breakdown, mobile-density markup where covered by existing tests, recalculation after Daily completion, CRON completion clearing stale state, health-potion HP-after-CRON updates, and unavailable sources staying in details only.
+- Keep tests focused on changed behavior and direct dependencies.
+
+### Improve Blessing Effect Preview Wording And Low-Value Healing Warnings
+
+Priority: Bottom (default from pending queue).
+
+Goal: make Healer Blessing preview understandable by showing per-member healing first, keeping aggregate party healing out of default copy, and warning when party HP is already high enough that most healing would have little or no effect.
+
+Touch:
+- `src/Habitica.Rules/Spells/SpellViewModelFactory.cs`
+- `src/Habitica.WebApp/Pages/SpellsPage.razor`
+- `src/Habitica.WebApp/wwwroot/css/app.css` only if new warning or details styling is needed
+- direct tests under `tests/Habitica.Rules.Tests/Spells/SpellViewModelFactoryTests.cs`
+- direct tests under `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs`
+- `FEATURES.md`
+- `HABITICA_API.md` if official Blessing formula, stat inputs, or source-backed limitations are added or corrected
+- `docs/UX_UI_MANIFEST.md` if spell-card preview wording, warning placement, or density guidance changes
+
+Out of scope:
+- changing the Blessing formula solely for wording;
+- hiding or disabling the Cast button only because healing is inefficient;
+- changing cast execution order, Spend All Mana behavior, CRON warning behavior, or dynamic gear recommendation selection;
+- exposing aggregate party-wide HP restored as the primary user-facing value;
+- inventing effective healing for party members with stale or missing HP data.
+
+Source checks before implementation:
+- Inspect current official Habitica source for the Healer `healAll` / Blessing spell formula and target semantics.
+- Verify whether formula inputs include Intelligence, Constitution, buffed stats, level bonus, equipment preview stats, cast count, and per-member missing-HP cap.
+- Inspect current project code for Blessing spell metadata, preview model fields, party HP coverage, stale/fresh party snapshot logic, multi-cast calculation, auto-equip stat preview, Spend All Mana count planning, and number formatting.
+- Do not change formula output unless the official/source check shows current local behavior is wrong.
+
+Implementation plan:
+1. Split Blessing preview data into explicit values where needed: raw heal per member per cast, raw heal per member total, covered member count, full-value member count, partial-value member count, no-effect member count, effective heal total, fresh-party-health flag, stale/unknown HP flag, limited-value warning, and no-healing-needed warning.
+2. Keep source-backed raw per-member healing as the primary line. For one cast, render approximately X HP per party member. For multiple casts, render X HP per party member per cast plus total for N casts per party member.
+3. When fresh party HP is available, cap each member's effective healing by missing HP. Do not claim every member receives the full raw total when capped.
+4. Add deterministic warning classification. Show a limited-value warning when more than half of covered members would receive partial or no value. Show a stronger low-need warning when at least 80% are capped/no-effect or total effective healing is near zero. Show `No meaningful healing is needed right now.` when all covered members receive no effect.
+5. If party HP is stale, unavailable, or partially missing, show raw per-member healing plus a concise uncertainty note. Keep detailed coverage in expanded details only if still useful.
+6. Update `SpellsPage.razor` to format model state rather than infer warning behavior from strings. Preserve locale-aware decimal formatting.
+7. Style warning text with existing theme-aware warning styles. Warnings should be near the Cast button and should not look like fatal errors.
+8. Recalculate preview and warnings when cast count changes, Spend All Mana changes count, auto-equip recommendation changes stats, party HP refreshes, mana changes, and spell casts complete.
+9. Update docs only for visible behavior or verified formula semantics that change.
+
+Default copy direction:
+- One useful cast: `Restores approximately X HP per party member.`
+- Multiple useful casts: `Restores approximately X HP per party member per cast.` and `Total for N casts: approximately Y HP per party member.`
+- Fresh HP capping: `Effective healing may be lower for members already near full HP.`
+- More than half capped/no-effect: `Healing value is limited because most covered members are already near full HP.`
+- Low need: `Party HP is already high. Blessing is probably not needed right now.`
+- No effect: `No meaningful healing is needed right now.`
+- Missing HP data: `Some party HP data is unavailable, so effective healing may differ.`
+
+Acceptance:
+- Blessing preview no longer uses confusing `0-X HP per covered party member` wording as the primary line.
+- Default preview no longer shows aggregate party HP restored as the main value.
+- One-cast preview says approximately how much HP is restored per party member.
+- Multi-cast preview says approximately how much HP is restored per party member per cast and for all selected casts.
+- Effective healing caps are still respected when fresh party HP is available.
+- More than half of covered members being capped/no-effect shows a limited-value warning.
+- All or almost all covered members being healthy shows a stronger low-need warning.
+- All covered members receiving no effect shows a no-meaningful-healing warning.
+- Unknown or stale party HP data produces concise uncertainty copy without invented effective healing.
+- Cast action remains available unless normal casting rules disable it.
+- Warning and preview text are theme-aware, readable, and close to the cast decision.
+- Decimal formatting remains consistent with the rest of the app.
+- Official/source verification confirms the formula or records why the estimate remains approximate.
+
+Tests:
+- Add or update spell preview model tests for one Blessing cast with useful healing, multiple casts with useful healing, all members missing enough HP for full value, more than half near full HP, almost all near full HP, all full HP, mixed full/partial/no-effect members, unknown party HP data, stale party HP data, auto-equip changing healing value, Spend All Mana changing count, and locale-aware decimal formatting.
+- Add or update Spells page tests for new primary wording, multi-cast per-member total wording, limited-value warning, no-healing-needed warning, no aggregate party HP total in default preview, cast action staying available during low-value warning, and expanded details if aggregate/member coverage remains available.
+- Keep tests focused on changed behavior and direct dependencies.
 
 ## Backlog
 
