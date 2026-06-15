@@ -368,8 +368,8 @@ public sealed class DashboardPageTests : BunitContext
                     DateTimeOffset.Parse("2026-04-25T08:00:00Z"),
                     new[]
                     {
-                        new TaskSnapshot("daily-1", "Exercise", TaskType.Daily, false, 1m, null, null, IsDue: true),
-                        new TaskSnapshot("daily-2", "Review notes", TaskType.Daily, false, 1m, null, null, IsDue: true),
+                        new TaskSnapshot("daily-1", "Exercise", TaskType.Daily, false, 1m, null, null, Value: 0m, IsDue: true),
+                        new TaskSnapshot("daily-2", "Review notes", TaskType.Daily, false, 1m, null, null, Value: 0m, IsDue: true),
                         new TaskSnapshot("daily-weekly", "Weekly review", TaskType.Daily, false, 1m, null, null, IsDue: false)
                     }),
                 ClassName: "wizard",
@@ -406,14 +406,16 @@ public sealed class DashboardPageTests : BunitContext
         Assert.NotNull(cut.Find("[data-testid='cron-damage-summary']"));
         Assert.Contains("Estimated damage", cut.Markup);
         Assert.Contains("HP after CRON", cut.Markup);
-        Assert.Contains("Due Dailies", cut.Markup);
-        Assert.Contains("4 HP", cut.Find("[data-testid='cron-damage-summary']").TextContent);
+        Assert.Contains("Dailies", cut.Markup);
+        Assert.Contains("Boss: unavailable", cut.Markup);
+        Assert.Contains("Estimate details", cut.Markup);
+        Assert.Contains("3.8 HP", cut.Find("[data-testid='cron-damage-summary']").TextContent);
         Assert.Equal("2", cut.Find("[data-testid='cron-dailies-count']").TextContent);
         Assert.DoesNotContain("Weekly review", cut.Markup);
         cut.Find("[data-testid='complete-cron-daily-daily-1']").Click();
         Assert.Equal("daily-1", Assert.Single(controller.ScoreTaskCalls).TaskId);
         Assert.Equal("1", cut.Find("[data-testid='cron-dailies-count']").TextContent);
-        Assert.Contains("2 HP", cut.Find("[data-testid='cron-damage-summary']").TextContent);
+        Assert.Contains("1.9 HP", cut.Find("[data-testid='cron-damage-summary']").TextContent);
         Assert.NotNull(cut.Find("[data-testid='complete-cron-daily-daily-2']"));
 
         cut.Find("[data-testid='start-new-day']").Click();

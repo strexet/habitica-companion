@@ -89,6 +89,22 @@ public sealed class HealthPotionRecoveryEstimateFactoryTests
     }
 
     [Fact]
+    public void Create_does_not_claim_survival_when_danger_estimate_is_incomplete()
+    {
+        var estimate = new HealthPotionRecoveryEstimateFactory().Create(
+            CreateUser(health: 10m, maxHealth: 50m, gold: 25m),
+            CreateDamageEstimate(
+                damage: 12m,
+                risk: PendingDamageRisk.Danger,
+                readiness: PendingDamageReadiness.Incomplete));
+
+        Assert.True(estimate.ShouldShow);
+        Assert.False(estimate.RecommendedCountRemovesKnockoutRisk);
+        Assert.Contains("incomplete estimate", estimate.RecommendationText);
+        Assert.DoesNotContain("removes the current knockout risk", estimate.RecommendationText);
+    }
+
+    [Fact]
     public void Create_hides_recovery_when_damage_is_paused_by_inn()
     {
         var estimate = new HealthPotionRecoveryEstimateFactory().Create(
@@ -96,7 +112,7 @@ public sealed class HealthPotionRecoveryEstimateFactoryTests
             CreateDamageEstimate(
                 damage: 0m,
                 risk: PendingDamageRisk.Info,
-                excludedSources: new[] { "Party boss damage is not included because the current user is not an active quest participant or is marked as resting in the Inn." }));
+                isDamagePausedByInn: true));
 
         Assert.False(estimate.ShouldShow);
     }
@@ -105,7 +121,8 @@ public sealed class HealthPotionRecoveryEstimateFactoryTests
         decimal damage,
         PendingDamageRisk risk,
         PendingDamageReadiness readiness = PendingDamageReadiness.Estimated,
-        IReadOnlyList<string>? excludedSources = null)
+        IReadOnlyList<string>? excludedSources = null,
+        bool isDamagePausedByInn = false)
     {
         return new PendingDamageEstimate(
             damage,
@@ -113,7 +130,8 @@ public sealed class HealthPotionRecoveryEstimateFactoryTests
             Array.Empty<PendingDamageSource>(),
             excludedSources ?? Array.Empty<string>(),
             risk,
-            readiness);
+            readiness,
+            IsDamagePausedByInn: isDamagePausedByInn);
     }
 
     private static UserSnapshot CreateUser(decimal health, decimal maxHealth, decimal gold)

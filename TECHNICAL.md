@@ -469,6 +469,8 @@ Use snapshot-based storage.
 
 Store raw-enough synchronized data to allow recalculation when formulas or heuristics change. Store derived read models separately where useful for UI performance.
 
+Dashboard CRON damage estimates keep numeric totals separate from explanatory notes. `PendingDamageEstimate` carries typed state for Daily damage, boss damage, included Daily count, unknown due-state count, missing task values, computed Constitution use, missing stat/catalog inputs, unavailable checklist reductions, boss unavailability, Inn pause, and compact diagnostics. UI and health-potion recovery decisions must read those typed fields instead of parsing user-facing strings.
+
 Recommended object categories:
 
 ```text

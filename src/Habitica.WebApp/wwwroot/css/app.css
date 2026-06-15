@@ -1910,11 +1910,11 @@ input[type="radio"] {
 
 .cron-damage-summary {
     display: grid;
-    gap: 0.75rem;
-    padding: 0.85rem;
+    gap: 0.65rem;
+    padding: 0.8rem;
     border-radius: 0.75rem;
-    border: 1px solid rgba(22, 36, 35, 0.08);
-    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid color-mix(in srgb, var(--primary) 22%, var(--card-border));
+    background: color-mix(in srgb, var(--surface) 92%, var(--primary));
 }
 
 .pending-damage-head.compact {
@@ -1925,19 +1925,35 @@ input[type="radio"] {
 .cron-damage-breakdown {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.45rem;
+    gap: 0.4rem;
     align-items: center;
+}
+
+.cron-damage-summary .count-pill {
+    border-color: color-mix(in srgb, var(--primary) 28%, var(--card-border));
+    background: color-mix(in srgb, var(--surface) 88%, var(--primary));
+    color: color-mix(in srgb, var(--primary) 70%, var(--ink));
+}
+
+.muted-pill {
+    border-color: color-mix(in srgb, var(--muted) 28%, var(--card-border));
+    background: color-mix(in srgb, var(--surface) 90%, var(--muted));
+    color: var(--muted);
 }
 
 .cron-damage-details summary {
     cursor: pointer;
     color: var(--muted);
-    font-size: 0.9rem;
+    font-size: 0.84rem;
     font-weight: 700;
 }
 
 .cron-damage-details .pending-damage-list {
     margin-top: 0.6rem;
+    padding: 0.65rem 0.75rem 0.65rem 1.35rem;
+    border-radius: 0.65rem;
+    border: 1px solid color-mix(in srgb, var(--muted) 18%, var(--card-border));
+    background: color-mix(in srgb, var(--surface) 94%, var(--muted));
 }
 
 .pending-damage-panel {

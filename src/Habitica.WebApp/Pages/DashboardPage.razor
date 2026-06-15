@@ -225,9 +225,17 @@
                     }
 
                     <div class="cron-damage-breakdown">
-                        @foreach (var source in damageEstimate.IncludedSources.Where(static source => source.Damage > 0m))
+                        @if (damageEstimate.EstimatedDailyDamage > 0m)
                         {
-                            <span class="ui-pill count-pill">@(source.Label): @FormatDecimal(source.Damage) HP</span>
+                            <span class="ui-pill count-pill">Dailies: @FormatDecimal(damageEstimate.EstimatedDailyDamage) HP</span>
+                        }
+                        @if (damageEstimate.EstimatedBossDamage > 0m)
+                        {
+                            <span class="ui-pill count-pill">Boss: @FormatDecimal(damageEstimate.EstimatedBossDamage) HP</span>
+                        }
+                        @if (damageEstimate.EstimatedBossDamage <= 0m && damageEstimate.BossDamageUnavailable)
+                        {
+                            <span class="ui-pill muted-pill">Boss: unavailable</span>
                         }
                         @if (!damageEstimate.IncludedSources.Any(static source => source.Damage > 0m))
                         {
@@ -238,7 +246,7 @@
                     @if (damageEstimate.ExcludedSources.Count > 0)
                     {
                         <details class="cron-damage-details">
-                            <summary>Estimate details</summary>
+                            <summary>Estimate details (@GetPendingDamageDetailSummary(damageEstimate))</summary>
                             <ul class="pending-damage-list muted-list">
                                 @foreach (var source in damageEstimate.IncludedSources)
                                 {
@@ -843,7 +851,8 @@
             snapshot,
             tasks,
             SessionController.State.PartySnapshot,
-            SessionController.State.UserId);
+            SessionController.State.UserId,
+            SessionController.State.GearCatalogSnapshot);
     }
 
     private async Task CompleteCronDailyAsync(TaskSnapshot daily)
@@ -902,6 +911,20 @@
             PendingDamageRisk.Info => "Safe",
             _ => estimate.Readiness == PendingDamageReadiness.Incomplete ? "Incomplete estimate" : "Safe"
         };
+    }
+
+    private static string GetPendingDamageDetailSummary(PendingDamageEstimate estimate)
+    {
+        if (estimate.Readiness == PendingDamageReadiness.Incomplete)
+        {
+            return estimate.MissingChecklistData
+                ? "approximate"
+                : "incomplete";
+        }
+
+        return estimate.UsesComputedConstitution
+            ? "value + CON"
+            : "estimate";
     }
 
     private static string GetPendingDamagePillClass(PendingDamageEstimate estimate)

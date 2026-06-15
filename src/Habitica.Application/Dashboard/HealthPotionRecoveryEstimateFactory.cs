@@ -40,11 +40,10 @@ public sealed class HealthPotionRecoveryEstimateFactory
         var recommendedCountHealthAfterCron = Math.Min(maximumHealth, user.Health + recommendedPotionCount * HealthPotionHealing)
             - damageEstimate.TotalDamage;
         var recommendedCountRemovesKnockoutRisk = recommendedPotionCount > 0
-            && recommendedCountHealthAfterCron > 0m;
-        var damagePausedByInn = damageEstimate.ExcludedSources.Any(static source =>
-            source.Contains("resting in the Inn", StringComparison.OrdinalIgnoreCase));
+            && recommendedCountHealthAfterCron > 0m
+            && damageEstimate.Readiness != PendingDamageReadiness.Incomplete;
         var shouldShow = maximumUsefulPotionCount > 0
-            && !damagePausedByInn
+            && !damageEstimate.IsDamagePausedByInn
             && (damageEstimate.TotalDamage > 0m
                 || damageEstimate.Risk is PendingDamageRisk.Danger or PendingDamageRisk.Warning
                 || damageEstimate.EstimatedHealthAfterCron <= LowPostCronHealthThreshold);
@@ -123,6 +122,13 @@ public sealed class HealthPotionRecoveryEstimateFactory
     {
         if (damageEstimate.Risk == PendingDamageRisk.Danger)
         {
+            if (damageEstimate.Readiness == PendingDamageReadiness.Incomplete && recommendedPotionCount > 0)
+            {
+                return recommendedPotionCount == 1
+                    ? "1 Health Potion improves your post-CRON HP for this incomplete estimate."
+                    : $"{recommendedPotionCount} Health Potions improve your post-CRON HP for this incomplete estimate.";
+            }
+
             if (recommendedCountRemovesKnockoutRisk)
             {
                 return recommendedPotionCount == 1

@@ -207,7 +207,7 @@ Improvement:
 - For mobile stats, keep horizontal scroll but add a sticky first column or repeated stat label so context does not disappear.
 - Keep Start New Day as a small operational panel, not a hero or persistent global warning, because it is important only when Cron is due.
 - Keep CRON gear optimization inside the Start New Day panel, with compact current/recommended/delta stat chips and recommended item rows rather than a separate inventory-style workspace.
-- Keep CRON damage and recovery inside the Start New Day panel. The default damage view should show total estimated damage, HP after CRON, risk, and compact Dailies/Boss breakdown; formulas, missing due-state Dailies, and unavailable sources belong in collapsed details. Health Potion recovery should stay secondary and row-like, showing current HP, HP after CRON, 15 HP healing, 25 GP cost, gold, concise recommendation text, and a single-purchase action only when recovery is useful.
+- Keep CRON damage and recovery inside the Start New Day panel. The default damage view should show total estimated damage, HP after CRON, risk or confidence, and compact Dailies/Boss breakdown, using the active theme's surface, border, text, warning, danger, and muted tokens. Formulas, missing due-state Dailies, unavailable checklist/stat inputs, and unavailable sources belong in collapsed details. Health Potion recovery should stay secondary and row-like, showing current HP, HP after CRON, 15 HP healing, 25 GP cost, gold, concise recommendation text, and a single-purchase action only when recovery is useful.
 
 ### Tasks
 
