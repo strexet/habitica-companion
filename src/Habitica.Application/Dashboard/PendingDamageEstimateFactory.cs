@@ -190,7 +190,7 @@ public sealed class PendingDamageEstimateFactory
             "Saved active boss quest pending damage, counted once for the current user's next CRON."));
         diagnostics.Add(new PendingDamageDiagnostic(
             "boss",
-            quest.Key,
+            quest.Key ?? "unknown",
             damage.Value,
             quest.PendingPartyDamage is not null ? "source=pendingPartyDamage" : "source=quest.progress.down"));
 
