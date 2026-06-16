@@ -79,6 +79,8 @@
                     var selectedTarget = GetSelectedTarget(spell, viewModel.TargetTasks);
                     var autoEquip = GetAutoEquip(spell);
                     var selectedRecommendation = GetSelectedRecommendation(spell);
+                    var blessingPreview = GetBlessingPreview(spell, autoEquip, selectedRecommendation);
+                    var blessingWarningKind = blessingPreview is null ? SpellBlessingWarningKind.None : GetBlessingWarningKind(blessingPreview, count);
                     var isCasting = SessionController.State.ActiveSpellCastProgress?.SpellId == spell.Id;
                     var controlsDisabled = isAnySpellOperationActive;
                     var equipmentProgress = GetEquipmentProgress(spell.Id);
@@ -219,6 +221,13 @@
                                             Cast
                                         </MudButton>
                                     </div>
+
+                                    @if (blessingPreview is not null && blessingWarningKind != SpellBlessingWarningKind.None)
+                                    {
+                                        <p class="spell-healing-warning" data-testid="@($"spell-healing-warning-{spell.Id}")">
+                                            @GetBlessingWarningText(blessingWarningKind)
+                                        </p>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -744,13 +753,20 @@
             ? new EffectEstimateSource(
                 recommendation.EstimatedEffect,
                 recommendation.EstimatedEffectValues,
+                recommendation.BlessingPreview,
                 recommendation.TargetEstimates,
                 recommendation.TargetEffectValues)
             : new EffectEstimateSource(
                 spell.EstimatedEffect,
                 spell.EstimatedEffectValues,
+                spell.BlessingPreview,
                 spell.TargetEstimates,
                 spell.TargetEffectValues);
+        if (estimateSource.BlessingPreview is not null)
+        {
+            return FormatBlessingEstimate(estimateSource.BlessingPreview, count);
+        }
+
         var estimate = selectedTarget is not null && estimateSource.TargetEstimates.TryGetValue(selectedTarget, out var selectedEstimate)
             ? selectedEstimate
             : estimateSource.DefaultEstimate;
@@ -763,6 +779,87 @@
         }
 
         return $"{estimate} Total for {count} casts: approximately {string.Join(" and ", values.Select(value => $"{value.Value * count:0.##} {value.Unit}"))}.";
+    }
+
+    private static SpellBlessingEffectPreview? GetBlessingPreview(
+        SpellCardViewModel spell,
+        bool autoEquip,
+        SpellEquipmentRecommendation? recommendation)
+    {
+        return autoEquip && recommendation is not null
+            ? recommendation.BlessingPreview ?? spell.BlessingPreview
+            : spell.BlessingPreview;
+    }
+
+    private static string FormatBlessingEstimate(SpellBlessingEffectPreview preview, int count)
+    {
+        var castCount = Math.Max(1, count);
+        var primary = castCount == 1
+            ? $"Restores approximately {FormatDecimal(preview.RawHealPerMemberPerCast)} HP per party member."
+            : $"Restores approximately {FormatDecimal(preview.RawHealPerMemberPerCast)} HP per party member per cast. Total for {castCount} casts: approximately {FormatDecimal(preview.RawHealPerMemberPerCast * castCount)} HP per party member.";
+        var capNote = preview.HasFreshPartyHealth
+            && HasBlessingCapping(preview, castCount)
+            ? " Effective healing may be lower for members already near full HP."
+            : string.Empty;
+        var unknownNote = preview.HasUnknownPartyHealth
+            ? " Some party HP data is unavailable, so effective healing may differ."
+            : string.Empty;
+
+        return primary + capNote + unknownNote;
+    }
+
+    private static SpellBlessingWarningKind GetBlessingWarningKind(SpellBlessingEffectPreview preview, int count)
+    {
+        var castCount = Math.Max(1, count);
+        if (!preview.HasFreshPartyHealth || preview.CoveredMemberMissingHealth.Count == 0)
+        {
+            return preview.WarningKind;
+        }
+
+        var rawTotal = preview.RawHealPerMemberPerCast * castCount;
+        var effectiveHeals = preview.CoveredMemberMissingHealth
+            .Select(missingHealth => Math.Min(rawTotal, Math.Max(0m, missingHealth)))
+            .ToArray();
+        var fullValueCount = effectiveHeals.Count(heal => heal >= rawTotal);
+        var noEffectCount = effectiveHeals.Count(static heal => heal <= 0m);
+        var cappedMemberCount = Math.Max(0, effectiveHeals.Length - fullValueCount);
+        var totalEffectiveHeal = effectiveHeals.Sum();
+
+        if (noEffectCount == effectiveHeals.Length || totalEffectiveHeal <= 0m)
+        {
+            return SpellBlessingWarningKind.NoMeaningfulHealing;
+        }
+
+        if (cappedMemberCount * 5 >= effectiveHeals.Length * 4)
+        {
+            return SpellBlessingWarningKind.LowNeed;
+        }
+
+        return cappedMemberCount * 2 > effectiveHeals.Length
+            ? SpellBlessingWarningKind.LimitedValue
+            : SpellBlessingWarningKind.None;
+    }
+
+    private static bool HasBlessingCapping(SpellBlessingEffectPreview preview, int count)
+    {
+        if (!preview.HasFreshPartyHealth || preview.CoveredMemberMissingHealth.Count == 0)
+        {
+            return false;
+        }
+
+        var rawTotal = preview.RawHealPerMemberPerCast * Math.Max(1, count);
+        return preview.CoveredMemberMissingHealth.Any(missingHealth => Math.Max(0m, missingHealth) < rawTotal);
+    }
+
+    private static string GetBlessingWarningText(SpellBlessingWarningKind warningKind)
+    {
+        return warningKind switch
+        {
+            SpellBlessingWarningKind.NoMeaningfulHealing => "No meaningful healing is needed right now.",
+            SpellBlessingWarningKind.LowNeed => "Party HP is already high. Blessing is probably not needed right now.",
+            SpellBlessingWarningKind.LimitedValue => "Healing value is limited because most covered members are already near full HP.",
+            _ => string.Empty
+        };
     }
 
     private EquipmentProgress? GetEquipmentProgress(string spellId)
@@ -789,6 +886,7 @@
     private sealed record EffectEstimateSource(
         string DefaultEstimate,
         IReadOnlyList<SpellEffectValue> DefaultValues,
+        SpellBlessingEffectPreview? BlessingPreview,
         IReadOnlyDictionary<string, string> TargetEstimates,
         IReadOnlyDictionary<string, IReadOnlyList<SpellEffectValue>> TargetEffectValues);
 

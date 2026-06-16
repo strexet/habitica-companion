@@ -1721,6 +1721,17 @@ input[type="radio"] {
     background: color-mix(in srgb, var(--surface) 86%, var(--accent));
 }
 
+.spell-healing-warning {
+    margin: 0;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--accent) 36%, var(--card-border));
+    border-radius: 0.75rem;
+    background: color-mix(in srgb, var(--surface) 88%, var(--accent));
+    color: var(--ink);
+    font-weight: 700;
+    line-height: 1.35;
+}
+
 .spell-cron-warning-actions,
 .confirmation-actions,
 .cron-action-row {

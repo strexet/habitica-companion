@@ -361,6 +361,7 @@ Current pattern after the latest UI pass:
 - Sticky current-mana bar above the spell cards, showing available MP, max MP, and class while scrolling.
 - Spell cards with stable summary, cost/availability pills, count/target input zone, mana spent/available/after-cast preview, auto-equip toggle, Spend All Mana, cast button, card-local cancel/progress, card-local quest/stat context, effect preview, and equipment recommendations.
 - Cron-sensitive stat buffs show an inline warning inside the spell card when the user has not started the current Habitica day. The warning offers Cancel, Cast anyway, and Start New Day and Cast, plus local per-day suppression and a collapsed due-Daily mini-list disclosure.
+- Blessing previews keep raw per-member healing as the primary line, show multi-cast totals per member instead of party-wide aggregate HP, and place limited-value or low-need healing warnings close to Cast without disabling normal casting.
 - Responsive two-zone layout: variable user inputs on the left, mana/action status on the right; stacks at narrower widths.
 
 What works:
@@ -372,6 +373,7 @@ What works:
 - Boss quest progress and party pending damage stay inside spell cards that can affect boss damage instead of a top-page quest summary.
 - Unspent stat points appear only on stat-sensitive spell cards when allocation is unlocked.
 - Unaffordable spell counts show a local reason in the mana preview instead of relying only on a disabled Cast button.
+- Low-value Blessing warnings help avoid waste while preserving the user's ability to cast.
 - Determinate progress bars match the known cast/equip counts.
 - The one-second Preparing state gives a narrow cancellation window before the first Habitica request.
 - Auto-equip remains close to Cast without stealing space from target selection.

@@ -83,74 +83,7 @@ _No pending entries._
 
 Work top to bottom. Each entry is self-contained.
 
-### Improve Blessing Effect Preview Wording And Low-Value Healing Warnings
-
-Priority: Bottom (default from pending queue).
-
-Goal: make Healer Blessing preview understandable by showing per-member healing first, keeping aggregate party healing out of default copy, and warning when party HP is already high enough that most healing would have little or no effect.
-
-Touch:
-- `src/Habitica.Rules/Spells/SpellViewModelFactory.cs`
-- `src/Habitica.WebApp/Pages/SpellsPage.razor`
-- `src/Habitica.WebApp/wwwroot/css/app.css` only if new warning or details styling is needed
-- direct tests under `tests/Habitica.Rules.Tests/Spells/SpellViewModelFactoryTests.cs`
-- direct tests under `tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs`
-- `FEATURES.md`
-- `HABITICA_API.md` if official Blessing formula, stat inputs, or source-backed limitations are added or corrected
-- `docs/UX_UI_MANIFEST.md` if spell-card preview wording, warning placement, or density guidance changes
-
-Out of scope:
-- changing the Blessing formula solely for wording;
-- hiding or disabling the Cast button only because healing is inefficient;
-- changing cast execution order, Spend All Mana behavior, CRON warning behavior, or dynamic gear recommendation selection;
-- exposing aggregate party-wide HP restored as the primary user-facing value;
-- inventing effective healing for party members with stale or missing HP data.
-
-Source checks before implementation:
-- Inspect current official Habitica source for the Healer `healAll` / Blessing spell formula and target semantics.
-- Verify whether formula inputs include Intelligence, Constitution, buffed stats, level bonus, equipment preview stats, cast count, and per-member missing-HP cap.
-- Inspect current project code for Blessing spell metadata, preview model fields, party HP coverage, stale/fresh party snapshot logic, multi-cast calculation, auto-equip stat preview, Spend All Mana count planning, and number formatting.
-- Do not change formula output unless the official/source check shows current local behavior is wrong.
-
-Implementation plan:
-1. Split Blessing preview data into explicit values where needed: raw heal per member per cast, raw heal per member total, covered member count, full-value member count, partial-value member count, no-effect member count, effective heal total, fresh-party-health flag, stale/unknown HP flag, limited-value warning, and no-healing-needed warning.
-2. Keep source-backed raw per-member healing as the primary line. For one cast, render approximately X HP per party member. For multiple casts, render X HP per party member per cast plus total for N casts per party member.
-3. When fresh party HP is available, cap each member's effective healing by missing HP. Do not claim every member receives the full raw total when capped.
-4. Add deterministic warning classification. Show a limited-value warning when more than half of covered members would receive partial or no value. Show a stronger low-need warning when at least 80% are capped/no-effect or total effective healing is near zero. Show `No meaningful healing is needed right now.` when all covered members receive no effect.
-5. If party HP is stale, unavailable, or partially missing, show raw per-member healing plus a concise uncertainty note. Keep detailed coverage in expanded details only if still useful.
-6. Update `SpellsPage.razor` to format model state rather than infer warning behavior from strings. Preserve locale-aware decimal formatting.
-7. Style warning text with existing theme-aware warning styles. Warnings should be near the Cast button and should not look like fatal errors.
-8. Recalculate preview and warnings when cast count changes, Spend All Mana changes count, auto-equip recommendation changes stats, party HP refreshes, mana changes, and spell casts complete.
-9. Update docs only for visible behavior or verified formula semantics that change.
-
-Default copy direction:
-- One useful cast: `Restores approximately X HP per party member.`
-- Multiple useful casts: `Restores approximately X HP per party member per cast.` and `Total for N casts: approximately Y HP per party member.`
-- Fresh HP capping: `Effective healing may be lower for members already near full HP.`
-- More than half capped/no-effect: `Healing value is limited because most covered members are already near full HP.`
-- Low need: `Party HP is already high. Blessing is probably not needed right now.`
-- No effect: `No meaningful healing is needed right now.`
-- Missing HP data: `Some party HP data is unavailable, so effective healing may differ.`
-
-Acceptance:
-- Blessing preview no longer uses confusing `0-X HP per covered party member` wording as the primary line.
-- Default preview no longer shows aggregate party HP restored as the main value.
-- One-cast preview says approximately how much HP is restored per party member.
-- Multi-cast preview says approximately how much HP is restored per party member per cast and for all selected casts.
-- Effective healing caps are still respected when fresh party HP is available.
-- More than half of covered members being capped/no-effect shows a limited-value warning.
-- All or almost all covered members being healthy shows a stronger low-need warning.
-- All covered members receiving no effect shows a no-meaningful-healing warning.
-- Unknown or stale party HP data produces concise uncertainty copy without invented effective healing.
-- Cast action remains available unless normal casting rules disable it.
-- Warning and preview text are theme-aware, readable, and close to the cast decision.
-- Decimal formatting remains consistent with the rest of the app.
-- Official/source verification confirms the formula or records why the estimate remains approximate.
-
-Tests:
-- Add or update spell preview model tests for one Blessing cast with useful healing, multiple casts with useful healing, all members missing enough HP for full value, more than half near full HP, almost all near full HP, all full HP, mixed full/partial/no-effect members, unknown party HP data, stale party HP data, auto-equip changing healing value, Spend All Mana changing count, and locale-aware decimal formatting.
-- Add or update Spells page tests for new primary wording, multi-cast per-member total wording, limited-value warning, no-healing-needed warning, no aggregate party HP total in default preview, cast action staying available during low-value warning, and expanded details if aggregate/member coverage remains available.
-- Keep tests focused on changed behavior and direct dependencies.
+_No prioritized entries._
 
 ## Backlog
 

@@ -411,6 +411,109 @@ public sealed class SpellsPageTests : BunitContext
     }
 
     [Fact]
+    public void Blessing_effect_preview_shows_raw_per_member_healing_without_aggregate_total()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateHealerStateForBlessing(
+            CreatePartyMember("wounded", health: 40m, maxHealth: 50m),
+            CreatePartyMember("also-wounded", health: 90m, maxHealth: 100m))));
+
+        var cut = Render<SpellsPage>();
+
+        Assert.Contains("Blessing", cut.Markup);
+        Assert.Contains("Restores approximately 2.56 HP per party member.", cut.Markup);
+        Assert.DoesNotContain("effective party HP restored", cut.Markup);
+        Assert.DoesNotContain("HP total", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='spell-healing-warning-healAll']"));
+    }
+
+    [Fact]
+    public void Blessing_effect_preview_updates_per_member_total_when_count_changes()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateHealerStateForBlessing(
+            CreatePartyMember("wounded", health: 45m, maxHealth: 50m))));
+
+        var cut = Render<SpellsPage>();
+
+        cut.Find("[data-testid='spell-count-healAll']").Change("3");
+
+        Assert.Contains("Restores approximately 2.56 HP per party member per cast.", cut.Markup);
+        Assert.Contains("Total for 3 casts: approximately 7.68 HP per party member.", cut.Markup);
+        Assert.Contains("Effective healing may be lower for members already near full HP.", cut.Markup);
+        Assert.Contains("Party HP is already high. Blessing is probably not needed right now.", cut.Markup);
+    }
+
+    [Fact]
+    public void Blessing_limited_value_warning_stays_near_cast_and_does_not_disable_casting()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var controller = new FakeAppSessionController(CreateHealerStateForBlessing(
+            CreatePartyMember("wounded", health: 40m, maxHealth: 50m),
+            CreatePartyMember("near-full", health: 49m, maxHealth: 50m),
+            CreatePartyMember("full", health: 50m, maxHealth: 50m)));
+        Services.AddSingleton<IAppSessionController>(controller);
+
+        var cut = Render<SpellsPage>();
+
+        var warning = cut.Find("[data-testid='spell-healing-warning-healAll']");
+        Assert.Contains("Healing value is limited because most covered members are already near full HP.", warning.TextContent);
+        Assert.False(cut.Find("[data-testid='cast-spell-healAll']").HasAttribute("disabled"));
+
+        cut.Find("[data-testid='cast-spell-healAll']").Click();
+
+        Assert.Equal("healAll", Assert.Single(controller.CastSpellCalls).SpellId);
+    }
+
+    [Fact]
+    public void Blessing_no_healing_needed_warning_uses_stronger_copy()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateHealerStateForBlessing(
+            CreatePartyMember("full-1", health: 50m, maxHealth: 50m),
+            CreatePartyMember("full-2", health: 50m, maxHealth: 50m))));
+
+        var cut = Render<SpellsPage>();
+
+        Assert.Contains("No meaningful healing is needed right now.", cut.Markup);
+        Assert.False(cut.Find("[data-testid='cast-spell-healAll']").HasAttribute("disabled"));
+    }
+
+    [Fact]
+    public void Blessing_preview_uses_selected_auto_equip_recommendation()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(CreateHealerStateForBlessing(
+            new[] { "head_con" },
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["head_con"] = new("head_con", "Con Hood", "Head", "healer", null, new GearStatBlock(0m, 0m, 10m, 0m))
+            },
+            CreatePartyMember("wounded", health: 40m, maxHealth: 50m))));
+
+        var cut = Render<SpellsPage>();
+
+        Assert.Contains("Restores approximately 3.16 HP per party member.", cut.Markup);
+        cut.Find("[data-testid='spell-auto-equip-healAll']").Change(false);
+        Assert.Contains("Restores approximately 2.56 HP per party member.", cut.Markup);
+    }
+
+    [Fact]
     public void Cron_sensitive_buff_prompts_before_casting_when_habitica_day_is_not_started()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -601,6 +704,79 @@ public sealed class SpellsPageTests : BunitContext
                     ["head_int"] = new("head_int", "Int Hood", "Head", "healer", null, new GearStatBlock(0m, 9m, 0m, 0m)),
                     ["head_balanced"] = new("head_balanced", "Balanced Hood", "Head", "healer", null, new GearStatBlock(0m, 6m, 6m, 0m))
                 }));
+    }
+
+    private static SessionViewModel CreateHealerStateForBlessing(params PartyMemberSnapshot[] members)
+    {
+        return CreateHealerStateForBlessing(Array.Empty<string>(), null, members);
+    }
+
+    private static SessionViewModel CreateHealerStateForBlessing(
+        IReadOnlyList<string> ownedGearKeys,
+        IReadOnlyDictionary<string, GearCatalogItem>? catalogItems,
+        params PartyMemberSnapshot[] members)
+    {
+        return new SessionViewModel(
+            IsBusy: false,
+            IsAuthenticated: true,
+            DisplayName: "Healer Tester",
+            ErrorMessage: null,
+            LastSyncedAtUtc: DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+            TaskFreshness: SnapshotFreshnessState.Fresh,
+            TaskSnapshot: null,
+            ClassName: "healer",
+            Level: 15,
+            UserSnapshot: new UserSnapshot(
+                DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+                "Healer Tester",
+                "healer",
+                15,
+                50m,
+                50m,
+                75m,
+                75m,
+                0m,
+                100m,
+                10m,
+                "party-1",
+                null,
+                null,
+                new EquipmentSnapshot(
+                    new GearSlotsSnapshot(null, null, null, null, null),
+                    new GearSlotsSnapshot(null, null, null, null, null)),
+                new InventorySnapshot(0, 0, 0, 0, 0, 0, ownedGearKeys.ToArray()),
+                Stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m),
+                Buffs: CharacterStatsSnapshot.Zero,
+                BuffFlags: BuffFlagsSnapshot.Empty),
+            UserFreshness: SnapshotFreshnessState.Fresh,
+            PartySnapshot: new PartySnapshot(
+                DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+                "party-1",
+                "Night Owls",
+                null,
+                members.Length,
+                null,
+                members),
+            PartyFreshness: SnapshotFreshnessState.Fresh,
+            GearCatalogSnapshot: catalogItems is null
+                ? null
+                : new GearCatalogSnapshot(DateTimeOffset.Parse("2026-04-30T06:00:00Z"), catalogItems));
+    }
+
+    private static PartyMemberSnapshot CreatePartyMember(string memberId, decimal? health, decimal? maxHealth)
+    {
+        return new PartyMemberSnapshot(
+            memberId,
+            memberId,
+            null,
+            null,
+            null,
+            PartyCronState.Unknown,
+            "Unknown.",
+            null,
+            null,
+            Health: health,
+            MaxHealth: maxHealth);
     }
 
     private sealed class FakeKeyValueStorage : IKeyValueStorage

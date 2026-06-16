@@ -112,6 +112,7 @@ public sealed class SpellViewModelFactory
             definition.Stats.Count > 0,
             defaultEstimate.Text,
             defaultEstimate.Values,
+            defaultEstimate.BlessingPreview,
             targetDescriptions,
             targetEstimates.ToDictionary(pair => pair.Key, pair => pair.Value.Text, StringComparer.Ordinal),
             targetEstimates.ToDictionary(pair => pair.Key, pair => pair.Value.Values, StringComparer.Ordinal),
@@ -197,6 +198,7 @@ public sealed class SpellViewModelFactory
             EstimatedEffect = defaultEstimate.Text,
             EstimatedEffectValues = defaultEstimate.Values,
             EstimatedEffectScore = defaultEstimate.Score,
+            BlessingPreview = defaultEstimate.BlessingPreview,
             TargetEstimates = targetEstimates.ToDictionary(pair => pair.Key, pair => pair.Value.Text, StringComparer.Ordinal),
             TargetEffectValues = targetEstimates.ToDictionary(pair => pair.Key, pair => pair.Value.Values, StringComparer.Ordinal)
         };
@@ -318,13 +320,13 @@ public sealed class SpellViewModelFactory
             "healAll" => BuildPartyHealEstimate(partySnapshot, (stats.Constitution + stats.Intelligence + 5m) * 0.04m, hasFreshPartyHealth),
             "brightness" => BuildEstimate($"Adds approximately {4m * (stats.Intelligence / (stats.Intelligence + 40m)):0.##} task value to each non-reward task.", new SpellEffectValue(4m * (stats.Intelligence / (stats.Intelligence + 40m)), "task value to each non-reward task")),
             "protectAura" => BuildEstimate($"Adds approximately {RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 200m, 200m)):0.##} CON to each party member.", new SpellEffectValue(RoundSpellIncrement(DiminishingReturns(unbuffedStats.Constitution, 200m, 200m)), "CON to each party member")),
-            _ => new SpellEffectEstimate("Approximate effect depends on current stats and Habitica server state.", Array.Empty<SpellEffectValue>(), 0m)
+            _ => new SpellEffectEstimate("Approximate effect depends on current stats and Habitica server state.", Array.Empty<SpellEffectValue>(), 0m, null)
         };
     }
 
     private static SpellEffectEstimate BuildEstimate(string text, params SpellEffectValue[] values)
     {
-        return new SpellEffectEstimate(text, values, values.Sum(static value => value.Value));
+        return new SpellEffectEstimate(text, values, values.Sum(static value => value.Value), null);
     }
 
     private static SpellEffectEstimate BuildSelfHealEstimate(UserSnapshot snapshot, decimal maximumHeal, bool hasFreshUserHealth)
@@ -344,44 +346,101 @@ public sealed class SpellViewModelFactory
 
     private static SpellEffectEstimate BuildPartyHealEstimate(PartySnapshot? partySnapshot, decimal maximumHeal, bool hasFreshPartyHealth)
     {
+        var partyMemberCount = Math.Max(
+            partySnapshot?.MemberCount ?? 0,
+            partySnapshot?.Members.Count ?? 0);
         var members = hasFreshPartyHealth
             ? partySnapshot?.Members
                 .Where(static member => member.Health is not null && member.MaxHealth is > 0m)
                 .ToArray()
                 ?? Array.Empty<PartyMemberSnapshot>()
             : Array.Empty<PartyMemberSnapshot>();
-        if (members.Length == 0)
+        var unavailableCount = Math.Max(0, partyMemberCount - members.Length);
+
+        if (!hasFreshPartyHealth || members.Length == 0)
         {
-            return BuildEstimate(
-                $"Restores up to approximately {maximumHeal:0.##} HP to each party member.",
-                new SpellEffectValue(maximumHeal, "maximum HP to each party member"));
+            var preview = new SpellBlessingEffectPreview(
+                maximumHeal,
+                0m,
+                Array.Empty<decimal>(),
+                0,
+                0,
+                0,
+                0,
+                unavailableCount,
+                hasFreshPartyHealth,
+                true,
+                SpellBlessingWarningKind.None);
+            return new SpellEffectEstimate(
+                $"Restores approximately {maximumHeal:0.##} HP per party member. Some party HP data is unavailable, so effective healing may differ.",
+                new[] { new SpellEffectValue(maximumHeal, "maximum HP to each party member") },
+                maximumHeal,
+                preview);
         }
 
         var effectiveHeals = members
             .Select(member => Math.Min(maximumHeal, Math.Max(0m, member.MaxHealth!.Value - member.Health!.Value)))
             .ToArray();
+        var missingHealthValues = members
+            .Select(member => Math.Max(0m, member.MaxHealth!.Value - member.Health!.Value))
+            .ToArray();
         var totalHeal = effectiveHeals.Sum();
-        var minimumHeal = effectiveHeals.Min();
-        var maximumEffectiveHeal = effectiveHeals.Max();
-        var partyMemberCount = Math.Max(
-            partySnapshot?.MemberCount ?? members.Length,
-            partySnapshot?.Members.Count ?? members.Length);
-        var unavailableCount = Math.Max(0, partyMemberCount - members.Length);
-        var coverage = unavailableCount == 0
+        var fullValueCount = effectiveHeals.Count(heal => heal >= maximumHeal);
+        var noEffectCount = effectiveHeals.Count(static heal => heal <= 0m);
+        var partialValueCount = Math.Max(0, members.Length - fullValueCount - noEffectCount);
+        var cappedCount = partialValueCount + noEffectCount;
+        var warningKind = ClassifyBlessingWarning(members.Length, cappedCount, noEffectCount, totalHeal);
+        var hasUnknownHp = unavailableCount > 0;
+        var capNote = cappedCount == 0
             ? string.Empty
-            : $" Missing HP for {FormatCount(unavailableCount, "party member")}.";
-        var estimate = minimumHeal == maximumEffectiveHeal
-            ? $"Restores approximately {minimumHeal:0.##} HP to each covered party member."
-            : $"Restores approximately {minimumHeal:0.##}-{maximumEffectiveHeal:0.##} HP per covered party member.";
+            : " Effective healing may be lower for members already near full HP.";
+        var unknownNote = hasUnknownHp
+            ? " Some party HP data is unavailable, so effective healing may differ."
+            : string.Empty;
+        var preview = new SpellBlessingEffectPreview(
+            maximumHeal,
+            totalHeal,
+            missingHealthValues,
+            members.Length,
+            fullValueCount,
+            partialValueCount,
+            noEffectCount,
+            unavailableCount,
+            true,
+            hasUnknownHp,
+            warningKind);
 
-        return BuildEstimate(
-            estimate + coverage,
-            new SpellEffectValue(totalHeal, "effective party HP restored"));
+        return new SpellEffectEstimate(
+            $"Restores approximately {maximumHeal:0.##} HP per party member.{capNote}{unknownNote}",
+            new[] { new SpellEffectValue(totalHeal, "effective party HP restored") },
+            totalHeal,
+            preview);
     }
 
-    private static string FormatCount(int count, string unit)
+    private static SpellBlessingWarningKind ClassifyBlessingWarning(
+        int coveredMemberCount,
+        int cappedMemberCount,
+        int noEffectMemberCount,
+        decimal totalEffectiveHeal)
     {
-        return $"{count} {unit}{(count == 1 ? string.Empty : "s")}";
+        if (coveredMemberCount <= 0)
+        {
+            return SpellBlessingWarningKind.None;
+        }
+
+        if (noEffectMemberCount == coveredMemberCount || totalEffectiveHeal <= 0m)
+        {
+            return SpellBlessingWarningKind.NoMeaningfulHealing;
+        }
+
+        if (cappedMemberCount * 5 >= coveredMemberCount * 4)
+        {
+            return SpellBlessingWarningKind.LowNeed;
+        }
+
+        return cappedMemberCount * 2 > coveredMemberCount
+            ? SpellBlessingWarningKind.LimitedValue
+            : SpellBlessingWarningKind.None;
     }
 
     private static decimal CalculateTaskBonus(decimal value, decimal stat)
@@ -478,6 +537,7 @@ public sealed record SpellCardViewModel(
     bool HasStatPointContext,
     string EstimatedEffect,
     IReadOnlyList<SpellEffectValue> EstimatedEffectValues,
+    SpellBlessingEffectPreview? BlessingPreview,
     IReadOnlyDictionary<string, string> TargetDescriptions,
     IReadOnlyDictionary<string, string> TargetEstimates,
     IReadOnlyDictionary<string, IReadOnlyList<SpellEffectValue>> TargetEffectValues,
@@ -486,7 +546,8 @@ public sealed record SpellCardViewModel(
 public sealed record SpellEffectEstimate(
     string Text,
     IReadOnlyList<SpellEffectValue> Values,
-    decimal Score);
+    decimal Score,
+    SpellBlessingEffectPreview? BlessingPreview);
 
 public sealed record SpellEffectValue(
     decimal Value,
@@ -512,11 +573,34 @@ public sealed record SpellEquipmentRecommendation(
 
     public decimal EstimatedEffectScore { get; init; }
 
+    public SpellBlessingEffectPreview? BlessingPreview { get; init; }
+
     public IReadOnlyDictionary<string, string> TargetEstimates { get; init; } =
         new Dictionary<string, string>(StringComparer.Ordinal);
 
     public IReadOnlyDictionary<string, IReadOnlyList<SpellEffectValue>> TargetEffectValues { get; init; } =
         new Dictionary<string, IReadOnlyList<SpellEffectValue>>(StringComparer.Ordinal);
+}
+
+public sealed record SpellBlessingEffectPreview(
+    decimal RawHealPerMemberPerCast,
+    decimal EffectiveHealTotalPerCast,
+    IReadOnlyList<decimal> CoveredMemberMissingHealth,
+    int CoveredMemberCount,
+    int FullValueMemberCount,
+    int PartialValueMemberCount,
+    int NoEffectMemberCount,
+    int UnknownMemberCount,
+    bool HasFreshPartyHealth,
+    bool HasUnknownPartyHealth,
+    SpellBlessingWarningKind WarningKind);
+
+public enum SpellBlessingWarningKind
+{
+    None,
+    LimitedValue,
+    LowNeed,
+    NoMeaningfulHealing
 }
 
 public enum SpellTargetKind

@@ -369,6 +369,8 @@ Automation rule: before casting skills automatically, verify mana and target val
 
 Cron-sensitive stat buffs should warn when the authenticated user has not started the current Habitica day. Offer `Cast anyway`, `Start New Day and Cast`, and `Cancel`; do not cast automatically if Cron fails.
 
+Current server-source notes for Healer Blessing / `healAll`: the spell targets the party, uses computed Constitution and Intelligence from `statsComputed(user)`, adds `(computed CON + computed INT + 5) * 0.04` HP to each targeted member, caps each member at 50 HP, then deducts 25 MP from the caster. Computed stats include base stat, battle gear, matching-class gear bonus, buffs, and level bonus. Client previews should show raw per-member healing as approximate, cap effective value only for members with fresh known HP, and avoid inventing effective healing for stale or missing party HP data.
+
 ### 8.6 Cron / Start New Day
 
 ```http

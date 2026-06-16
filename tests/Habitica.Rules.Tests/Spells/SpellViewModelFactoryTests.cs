@@ -2,6 +2,7 @@ using Habitica.Domain.Party;
 using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 using Habitica.Rules.Spells;
+using System.Globalization;
 
 namespace Habitica.Rules.Tests.Spells;
 
@@ -223,29 +224,32 @@ public sealed class SpellViewModelFactoryTests
     }
 
     [Fact]
-    public void Create_reports_uniform_blessing_heal_for_covered_party_members()
+    public void Create_reports_raw_blessing_heal_for_one_useful_cast()
     {
         var snapshot = CreateUserSnapshot(
             className: "healer",
             level: 15,
             stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m));
         var partySnapshot = CreatePartySnapshot(
-            CreatePartyMember("near-full", health: 49m, maxHealth: 50m),
-            CreatePartyMember("also-near-full", health: 99m, maxHealth: 100m));
+            CreatePartyMember("wounded", health: 40m, maxHealth: 50m),
+            CreatePartyMember("also-wounded", health: 90m, maxHealth: 100m));
         var factory = new SpellViewModelFactory();
 
         var blessing = factory.Create(snapshot, null, null, partySnapshot, hasFreshPartyHealth: true)
             .Spells
             .Single(spell => spell.Id == "healAll");
 
-        Assert.Equal("Restores approximately 1 HP to each covered party member.", blessing.EstimatedEffect);
+        Assert.Equal("Restores approximately 2.56 HP per party member.", blessing.EstimatedEffect);
         Assert.DoesNotContain("HP total", blessing.EstimatedEffect, StringComparison.Ordinal);
-        Assert.DoesNotContain("maximum per member", blessing.EstimatedEffect, StringComparison.Ordinal);
-        Assert.Equal(2m, Assert.Single(blessing.EstimatedEffectValues).Value);
+        Assert.Equal(5.12m, Assert.Single(blessing.EstimatedEffectValues).Value);
+        Assert.NotNull(blessing.BlessingPreview);
+        Assert.Equal(2.56m, blessing.BlessingPreview.RawHealPerMemberPerCast);
+        Assert.Equal(2, blessing.BlessingPreview.FullValueMemberCount);
+        Assert.Equal(SpellBlessingWarningKind.None, blessing.BlessingPreview.WarningKind);
     }
 
     [Fact]
-    public void Create_reports_varied_blessing_heal_range_for_covered_party_members()
+    public void Create_caps_blessing_effective_healing_without_range_primary_copy()
     {
         var snapshot = CreateUserSnapshot(
             className: "healer",
@@ -260,10 +264,12 @@ public sealed class SpellViewModelFactoryTests
             .Spells
             .Single(spell => spell.Id == "healAll");
 
-        Assert.Equal("Restores approximately 1-2.56 HP per covered party member.", blessing.EstimatedEffect);
+        Assert.Equal("Restores approximately 2.56 HP per party member. Effective healing may be lower for members already near full HP.", blessing.EstimatedEffect);
         Assert.DoesNotContain("HP total", blessing.EstimatedEffect, StringComparison.Ordinal);
-        Assert.DoesNotContain("maximum per member", blessing.EstimatedEffect, StringComparison.Ordinal);
         Assert.Equal(3.56m, Assert.Single(blessing.EstimatedEffectValues).Value);
+        Assert.Equal(1, blessing.BlessingPreview?.FullValueMemberCount);
+        Assert.Equal(1, blessing.BlessingPreview?.PartialValueMemberCount);
+        Assert.Equal(SpellBlessingWarningKind.None, blessing.BlessingPreview?.WarningKind);
     }
 
     [Fact]
@@ -282,9 +288,11 @@ public sealed class SpellViewModelFactoryTests
             .Spells
             .Single(spell => spell.Id == "healAll");
 
-        Assert.Equal("Restores approximately 1 HP to each covered party member. Missing HP for 1 party member.", blessing.EstimatedEffect);
+        Assert.Equal("Restores approximately 2.56 HP per party member. Effective healing may be lower for members already near full HP. Some party HP data is unavailable, so effective healing may differ.", blessing.EstimatedEffect);
         Assert.DoesNotContain("HP total", blessing.EstimatedEffect, StringComparison.Ordinal);
         Assert.Equal(1m, Assert.Single(blessing.EstimatedEffectValues).Value);
+        Assert.True(blessing.BlessingPreview?.HasUnknownPartyHealth);
+        Assert.Equal(1, blessing.BlessingPreview?.UnknownMemberCount);
     }
 
     [Fact]
@@ -298,9 +306,148 @@ public sealed class SpellViewModelFactoryTests
 
         var blessing = factory.Create(snapshot, null, null).Spells.Single(spell => spell.Id == "healAll");
 
-        Assert.Equal("Restores up to approximately 2.56 HP to each party member.", blessing.EstimatedEffect);
+        Assert.Equal("Restores approximately 2.56 HP per party member. Some party HP data is unavailable, so effective healing may differ.", blessing.EstimatedEffect);
         Assert.DoesNotContain("HP total", blessing.EstimatedEffect, StringComparison.Ordinal);
         Assert.DoesNotContain("fresh party-member HP is unavailable", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.False(blessing.BlessingPreview?.HasFreshPartyHealth);
+        Assert.True(blessing.BlessingPreview?.HasUnknownPartyHealth);
+    }
+
+    [Fact]
+    public void Create_classifies_blessing_limited_value_when_more_than_half_is_capped()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m));
+        var partySnapshot = CreatePartySnapshot(
+            CreatePartyMember("wounded", health: 40m, maxHealth: 50m),
+            CreatePartyMember("near-full", health: 49m, maxHealth: 50m),
+            CreatePartyMember("full", health: 50m, maxHealth: 50m));
+        var factory = new SpellViewModelFactory();
+
+        var blessing = factory.Create(snapshot, null, null, partySnapshot, hasFreshPartyHealth: true)
+            .Spells
+            .Single(spell => spell.Id == "healAll");
+
+        Assert.Equal(1, blessing.BlessingPreview?.FullValueMemberCount);
+        Assert.Equal(1, blessing.BlessingPreview?.PartialValueMemberCount);
+        Assert.Equal(1, blessing.BlessingPreview?.NoEffectMemberCount);
+        Assert.Equal(SpellBlessingWarningKind.LimitedValue, blessing.BlessingPreview?.WarningKind);
+    }
+
+    [Fact]
+    public void Create_classifies_blessing_low_need_when_almost_all_members_are_capped()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m));
+        var partySnapshot = CreatePartySnapshot(
+            CreatePartyMember("wounded", health: 40m, maxHealth: 50m),
+            CreatePartyMember("near-full-1", health: 49m, maxHealth: 50m),
+            CreatePartyMember("near-full-2", health: 49m, maxHealth: 50m),
+            CreatePartyMember("near-full-3", health: 49m, maxHealth: 50m),
+            CreatePartyMember("full", health: 50m, maxHealth: 50m));
+        var factory = new SpellViewModelFactory();
+
+        var blessing = factory.Create(snapshot, null, null, partySnapshot, hasFreshPartyHealth: true)
+            .Spells
+            .Single(spell => spell.Id == "healAll");
+
+        Assert.Equal(SpellBlessingWarningKind.LowNeed, blessing.BlessingPreview?.WarningKind);
+    }
+
+    [Fact]
+    public void Create_classifies_blessing_no_meaningful_healing_when_all_members_are_full()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m));
+        var partySnapshot = CreatePartySnapshot(
+            CreatePartyMember("full-1", health: 50m, maxHealth: 50m),
+            CreatePartyMember("full-2", health: 50m, maxHealth: 50m));
+        var factory = new SpellViewModelFactory();
+
+        var blessing = factory.Create(snapshot, null, null, partySnapshot, hasFreshPartyHealth: true)
+            .Spells
+            .Single(spell => spell.Id == "healAll");
+
+        Assert.Equal(0m, blessing.BlessingPreview?.EffectiveHealTotalPerCast);
+        Assert.Equal(SpellBlessingWarningKind.NoMeaningfulHealing, blessing.BlessingPreview?.WarningKind);
+    }
+
+    [Fact]
+    public void Create_marks_stale_blessing_party_hp_as_unknown()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m));
+        var partySnapshot = CreatePartySnapshot(
+            CreatePartyMember("wounded", health: 40m, maxHealth: 50m));
+        var factory = new SpellViewModelFactory();
+
+        var blessing = factory.Create(snapshot, null, null, partySnapshot, hasFreshPartyHealth: false)
+            .Spells
+            .Single(spell => spell.Id == "healAll");
+
+        Assert.Contains("Some party HP data is unavailable", blessing.EstimatedEffect, StringComparison.Ordinal);
+        Assert.False(blessing.BlessingPreview?.HasFreshPartyHealth);
+        Assert.True(blessing.BlessingPreview?.HasUnknownPartyHealth);
+        Assert.Equal(1, blessing.BlessingPreview?.UnknownMemberCount);
+        Assert.Equal(0m, blessing.BlessingPreview?.EffectiveHealTotalPerCast);
+    }
+
+    [Fact]
+    public void Create_updates_blessing_preview_when_auto_equip_recommendation_changes_stats()
+    {
+        var snapshot = CreateUserSnapshot(
+            className: "healer",
+            level: 15,
+            ownedGearKeys: new[] { "head_con" });
+        var catalog = new GearCatalogSnapshot(
+            DateTimeOffset.Parse("2026-04-30T06:00:00Z"),
+            new Dictionary<string, GearCatalogItem>(StringComparer.Ordinal)
+            {
+                ["head_con"] = new("head_con", "Con Hood", "Head", "healer", null, new GearStatBlock(0m, 0m, 10m, 0m))
+            });
+        var partySnapshot = CreatePartySnapshot(CreatePartyMember("wounded", health: 40m, maxHealth: 50m));
+        var factory = new SpellViewModelFactory();
+
+        var blessing = factory.Create(snapshot, null, catalog, partySnapshot, hasFreshPartyHealth: true)
+            .Spells
+            .Single(spell => spell.Id == "healAll");
+        var recommendation = blessing.EquipmentRecommendations.First(recommendation => recommendation.BlessingPreview is not null);
+
+        Assert.True(recommendation.BlessingPreview?.RawHealPerMemberPerCast > blessing.BlessingPreview?.RawHealPerMemberPerCast);
+    }
+
+    [Fact]
+    public void Create_uses_current_culture_for_blessing_decimal_formatting()
+    {
+        var originalCulture = CultureInfo.CurrentCulture;
+        var originalUiCulture = CultureInfo.CurrentUICulture;
+        CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
+        CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("fr-FR");
+        try
+        {
+            var snapshot = CreateUserSnapshot(
+                className: "healer",
+                level: 15,
+                stats: new CharacterStatsSnapshot(0m, 25m, 20m, 0m));
+            var factory = new SpellViewModelFactory();
+
+            var blessing = factory.Create(snapshot, null, null).Spells.Single(spell => spell.Id == "healAll");
+
+            Assert.Contains("2,56 HP", blessing.EstimatedEffect, StringComparison.Ordinal);
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = originalCulture;
+            CultureInfo.CurrentUICulture = originalUiCulture;
+        }
     }
 
     [Fact]
