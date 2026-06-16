@@ -359,7 +359,7 @@ public sealed class SpellViewModelFactory
 
         if (!hasFreshPartyHealth || members.Length == 0)
         {
-            var preview = new SpellBlessingEffectPreview(
+            var unknownPreview = new SpellBlessingEffectPreview(
                 maximumHeal,
                 0m,
                 Array.Empty<decimal>(),
@@ -375,7 +375,7 @@ public sealed class SpellViewModelFactory
                 $"Restores approximately {maximumHeal:0.##} HP per party member. Some party HP data is unavailable, so effective healing may differ.",
                 new[] { new SpellEffectValue(maximumHeal, "maximum HP to each party member") },
                 maximumHeal,
-                preview);
+                unknownPreview);
         }
 
         var effectiveHeals = members
@@ -397,7 +397,7 @@ public sealed class SpellViewModelFactory
         var unknownNote = hasUnknownHp
             ? " Some party HP data is unavailable, so effective healing may differ."
             : string.Empty;
-        var preview = new SpellBlessingEffectPreview(
+        var cappedPreview = new SpellBlessingEffectPreview(
             maximumHeal,
             totalHeal,
             missingHealthValues,
@@ -414,7 +414,7 @@ public sealed class SpellViewModelFactory
             $"Restores approximately {maximumHeal:0.##} HP per party member.{capNote}{unknownNote}",
             new[] { new SpellEffectValue(totalHeal, "effective party HP restored") },
             totalHeal,
-            preview);
+            cappedPreview);
     }
 
     private static SpellBlessingWarningKind ClassifyBlessingWarning(
