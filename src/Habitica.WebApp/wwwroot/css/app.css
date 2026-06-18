@@ -2046,8 +2046,9 @@ input[type="radio"] {
     align-items: center;
     padding: 0.85rem;
     border-radius: 0.75rem;
-    border: 1px solid rgba(22, 36, 35, 0.08);
-    background: rgba(245, 239, 226, 0.58);
+    border: 1px solid color-mix(in srgb, var(--success) 24%, var(--card-border));
+    background: color-mix(in srgb, var(--surface) 90%, var(--success));
+    color: var(--ink);
 }
 
 .cron-recovery-copy,
@@ -3961,6 +3962,7 @@ input[type="file"].app-input::file-selector-button {
 .owned-quest-card,
 .safe-sell-item,
 .stat-delta-positive,
+.cron-health-potion-recovery,
 .spell-mana-preview {
     border-color: color-mix(in srgb, var(--success) 34%, var(--card-border)) !important;
     background: color-mix(in srgb, var(--surface) 88%, var(--success)) !important;
