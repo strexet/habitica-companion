@@ -750,7 +750,7 @@ The Auth Worker owns a dedicated `integration_profiles` table. Profile IDs deriv
 
 `POST /enroll` requires explicit `integration-v1` consent, validates Habitica credentials before persistence, and rotates a 256-bit management credential whose hash alone is stored. Re-enrollment updates the envelope and connection epoch while preserving the profile ID. The random connection epoch prevents obsolete authorization contexts from becoming valid after deletion and re-enrollment. Management authorization is scoped to one profile and uses constant-time hash comparison. Disconnect removes ciphertext and management credentials and marks the profile revoked. Profile deletion removes the row. OAuth validation enforces the current connection epoch and active profile on every request and refresh. Cleanup revokes grants for the disconnected epoch and deletes associated linking records. Access remains blocked when cleanup returns a retryable pending result.
 
-Enrollment is disabled in every shipped Worker configuration. Local fixtures enable the route with synthetic credentials and mocked Habitica validation. Real enrollment requires separate authorization and user consent. No PWA enrollment surface exists; browser privacy guarantees remain accurate.
+Enrollment is disabled in every shipped Worker configuration. Local fixtures enable the route with synthetic credentials and mocked Habitica validation. Real enrollment requires separate authorization and user consent. The optional Settings enrollment surface requires a configured Auth URL and explicit consent. Shipped PWA configuration leaves the Auth URL empty. Integration management state remains tab-local and separate from portable app data.
 
 ## OAuth linking boundary
 

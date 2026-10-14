@@ -1,3 +1,4 @@
+using Habitica.Application.Integration;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -24,6 +25,7 @@ public sealed class AppSessionController : IAppSessionController
     private const decimal HealthPotionGoldCost = HealthPotionRecoveryEstimateFactory.HealthPotionGoldCost;
     private const decimal GemGoldCost = 20m;
     private static readonly TimeSpan SpellPreparationDelay = TimeSpan.FromSeconds(1);
+    private readonly IChatGptIntegrationClient? _integrationClient;
     private readonly ICredentialStore _credentialStore;
     private readonly IDiagnosticsLogStore _diagnosticsLogStore;
     private readonly DiagnosticsLogWriter _diagnosticsLogWriter;
@@ -73,8 +75,10 @@ public sealed class AppSessionController : IAppSessionController
         DiagnosticsLogWriter diagnosticsLogWriter,
         SnapshotFreshnessPolicy snapshotFreshnessPolicy,
         AppFeatureOptions featureOptions,
-        TimeProvider timeProvider)
+        TimeProvider timeProvider,
+        IChatGptIntegrationClient? integrationClient = null)
     {
+        _integrationClient = integrationClient;
         _loginWorkflow = loginWorkflow;
         _habiticaSyncClient = habiticaSyncClient;
         _liveTestWorkflow = liveTestWorkflow;
@@ -96,6 +100,36 @@ public sealed class AppSessionController : IAppSessionController
         _featureOptions = featureOptions;
         _timeProvider = timeProvider;
         _cloudSyncExcludedSections = ParseCloudSyncExcludedSections(featureOptions.CloudSyncExcludedSections);
+    }
+
+    public bool IsChatGptIntegrationAvailable => _integrationClient?.IsAvailable == true;
+    public bool HasChatGptConnection => _integrationClient?.HasConnection == true;
+
+    public async Task<IntegrationLinkResult> EnrollChatGptAsync(bool consentAcknowledged, CancellationToken cancellationToken = default)
+    {
+        if (!consentAcknowledged || !State.IsAuthenticated || State.IsBusy || _integrationClient is null || !IsChatGptIntegrationAvailable)
+            return new(false, "Sign in and acknowledge the integration disclosure before enabling access.");
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null) return new(false, "Sign in before enabling integration access.");
+        var result = await _integrationClient.EnrollAsync(credentials, cancellationToken);
+        Changed?.Invoke();
+        return result;
+    }
+
+    public async Task<IntegrationLinkResult> CreateChatGptLinkAsync(CancellationToken cancellationToken = default)
+    {
+        if (_integrationClient is null || !State.IsAuthenticated) return new(false, "Sign in to manage the integration.");
+        var result = await _integrationClient.CreateLinkAsync(cancellationToken);
+        Changed?.Invoke();
+        return result;
+    }
+
+    public async Task<IntegrationLinkResult> DisconnectChatGptAsync(bool deleteProfile, CancellationToken cancellationToken = default)
+    {
+        if (_integrationClient is null || !State.IsAuthenticated) return new(false, "Sign in to manage the integration.");
+        var result = await _integrationClient.DisconnectAsync(deleteProfile, cancellationToken);
+        Changed?.Invoke();
+        return result;
     }
 
     public event Action? Changed;
@@ -129,6 +163,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default)
     {
+        if (_currentCredentials?.UserId != request.UserId) _integrationClient?.ForgetSession();
         await SignInCoreAsync(request, cancellationToken);
     }
 
@@ -2714,6 +2749,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
+        _integrationClient?.ForgetSession();
         _currentCredentials = null;
         var cachedUserSnapshot = State.UserSnapshot;
 
@@ -2731,6 +2767,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
     {
+        _integrationClient?.ForgetSession();
         _currentCredentials = null;
         _persistLocally = false;
 

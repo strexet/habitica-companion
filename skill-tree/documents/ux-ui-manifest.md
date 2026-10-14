@@ -581,6 +581,6 @@ References:
 - Notion views, filters, and sorts: https://www.notion.com/help/views-filters-and-sorts
 - Trello views: https://support.atlassian.com/trello/docs/trello-views/
 
-## Optional ChatGPT Enrollment Proposal
+## Optional ChatGPT Linking
 
-Current UI has no ChatGPT enrollment; the separately owned Auth vault remains disabled. [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns the proposed consent, capability disclosure and disconnect/delete requirements. Enrollment implementation must update privacy and settings together; existing sign-in remains browser-only.
+Settings displays a separate optional connection card with server credential-storage disclosure, code expiry, audit metadata limits and a Privacy link. Disabled configuration displays an unavailable message. Available configuration requires sign-in and a consent checkbox before enrollment. Active connection controls generate a linking code or open explicit disconnect/delete confirmation. Busy state disables duplicate requests; status messages distinguish unavailable codes and pending cleanup. Logout removes tab management state. The Auth page identifies Companion, displays the redirect destination and account label, and asks for selected scope consent. Existing sign-in remains browser-only. The [integration contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns consent and lifecycle requirements.

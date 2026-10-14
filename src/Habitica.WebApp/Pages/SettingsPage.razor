@@ -1,6 +1,7 @@
 @page "/settings"
 @using System.Text.Json
 @using Habitica.Application.Sync
+@using Habitica.Application.Integration
 @inject IAppSessionController SessionController
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
@@ -56,6 +57,53 @@
                 Choose a built-in palette or save a custom scheme. The active scheme is stored locally for fast reload and included in portable app data.
             </p>
             <ColorSchemePanel />
+        }
+    </section>
+
+    <section class="card-surface settings-card">
+        <p class="section-label">Optional connection</p>
+        <h2>ChatGPT linking</h2>
+        <p>Enabling this connection sends the Habitica credentials to the Companion integration server for encrypted storage. ChatGPT receives separate, limited access. Browser-only use and private device sync do not require this connection.</p>
+        <p>The integration stores credentials until disconnect or profile deletion. Linking codes expire within ten minutes; operational audit metadata is limited to thirty days. Companion does not store conversation text. <a href="/privacy">Privacy and data handling</a></p>
+        @if (!SessionController.IsChatGptIntegrationAvailable)
+        {
+            <p data-testid="integration-unavailable">ChatGPT linking is not enabled on this app.</p>
+        }
+        else if (!SessionController.State.IsAuthenticated)
+        {
+            <p>Sign in with Habitica before enabling a connection.</p>
+        }
+        else if (!SessionController.HasChatGptConnection)
+        {
+            <label class="checkbox-row">
+                <input data-testid="integration-consent" type="checkbox" @bind="_integrationConsent" />
+                <span>I consent to sending my Habitica credentials to the Companion integration server for encrypted storage and the lifecycle described above.</span>
+            </label>
+            <MudButton data-testid="integration-enroll" Disabled="@(!_integrationConsent || _integrationBusy || SessionController.State.IsBusy)" OnClick="EnableIntegrationAsync" Variant="Variant.Filled">Enable ChatGPT linking</MudButton>
+        }
+        else
+        {
+            <p>Connection management is available in this tab. Signing out or closing the tab forgets the local management credential; revalidate Habitica credentials to manage the connection again.</p>
+            <div class="action-row">
+                <MudButton data-testid="integration-new-code" Disabled="@_integrationBusy" OnClick="NewIntegrationCodeAsync" Variant="Variant.Filled">Generate new code</MudButton>
+                <MudButton data-testid="integration-disconnect" Disabled="@_integrationBusy" OnClick="@(() => _integrationCleanup = false)" Variant="Variant.Outlined">Disconnect</MudButton>
+                <MudButton data-testid="integration-delete" Disabled="@_integrationBusy" OnClick="@(() => _integrationCleanup = true)" Variant="Variant.Outlined">Delete integration profile</MudButton>
+            </div>
+            @if (_integrationCleanup is not null)
+            {
+                <p>@(_integrationCleanup.Value ? "Delete the integration profile and stored credentials?" : "Disconnect and remove the stored integration credentials?") Browser data and the Habitica account remain available.</p>
+                <MudButton data-testid="integration-confirm-cleanup" Disabled="@_integrationBusy" OnClick="ConfirmIntegrationCleanupAsync" Color="Color.Error" Variant="Variant.Filled">Confirm</MudButton>
+                <MudButton data-testid="integration-cancel-cleanup" OnClick="@(() => _integrationCleanup = null)" Variant="Variant.Outlined">Cancel</MudButton>
+            }
+        }
+        @if (_integrationResult is not null)
+        {
+            <p role="status">@_integrationResult.Message</p>
+            @if (_integrationResult.Code is not null)
+            {
+                <p>One-time code: <code data-testid="integration-link-code">@_integrationResult.Code</code></p>
+                <p>Valid until @_integrationResult.ExpiresAtUtc?.ToLocalTime().ToString("g"). Enter the code only on the Companion authorization page, then verify the account label and requested access.</p>
+            }
         }
     </section>
 
@@ -215,6 +263,33 @@
 
 @code {
     private bool _appearanceCollapsed = true;
+    private bool _integrationConsent;
+    private bool _integrationBusy;
+    private bool? _integrationCleanup;
+    private IntegrationLinkResult? _integrationResult;
+
+    private async Task EnableIntegrationAsync()
+    {
+        if (!_integrationConsent || _integrationBusy) return;
+        _integrationBusy = true;
+        try { _integrationResult = await SessionController.EnrollChatGptAsync(_integrationConsent); }
+        finally { _integrationBusy = false; }
+    }
+    private async Task NewIntegrationCodeAsync()
+    {
+        if (_integrationBusy) return;
+        _integrationBusy = true;
+        try { _integrationResult = await SessionController.CreateChatGptLinkAsync(); }
+        finally { _integrationBusy = false; }
+    }
+    private async Task ConfirmIntegrationCleanupAsync()
+    {
+        if (_integrationCleanup is null || _integrationBusy) return;
+        _integrationBusy = true;
+        try { _integrationResult = await SessionController.DisconnectChatGptAsync(_integrationCleanup.Value); }
+        finally { _integrationBusy = false; _integrationCleanup = null; }
+    }
+
     private const long ImportFileLimitBytes = 4 * 1024 * 1024;
     private IJSObjectReference? _exportModule;
     private string? _pendingImportJson;

@@ -14,6 +14,49 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class SettingsPageTests : BunitContext
 {
     [Fact]
+    public void Integration_enrollment_requires_consent_and_cleanup_requires_confirmation()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
+        var controller = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true })
+        {
+            IsChatGptIntegrationAvailable = true
+        };
+        Services.AddSingleton<IAppSessionController>(controller);
+        var cut = Render<SettingsPage>();
+
+        Assert.True(cut.Find("[data-testid='integration-enroll']").HasAttribute("disabled"));
+        Assert.Equal(0, controller.ChatGptEnrollCalls);
+        cut.Find("[data-testid='integration-consent']").Change(true);
+        cut.Find("[data-testid='integration-enroll']").Click();
+        Assert.Equal(1, controller.ChatGptEnrollCalls);
+        Assert.Equal("0123456789AB", cut.Find("[data-testid='integration-link-code']").TextContent);
+        cut.Find("[data-testid='integration-disconnect']").Click();
+        Assert.Equal(0, controller.ChatGptDisconnectCalls);
+        cut.Find("[data-testid='integration-cancel-cleanup']").Click();
+        Assert.Equal(0, controller.ChatGptDisconnectCalls);
+        cut.Find("[data-testid='integration-disconnect']").Click();
+        cut.Find("[data-testid='integration-confirm-cleanup']").Click();
+        Assert.Equal(1, controller.ChatGptDisconnectCalls);
+        Assert.Empty(cut.FindAll("[data-testid='integration-link-code']"));
+    }
+
+    [Fact]
+    public void Unavailable_integration_has_no_enrollment_control()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty));
+        var cut = Render<SettingsPage>();
+        Assert.NotNull(cut.Find("[data-testid='integration-unavailable']"));
+        Assert.Empty(cut.FindAll("[data-testid='integration-enroll']"));
+    }
+
+    [Fact]
     public void Renders_export_import_and_cloud_sync_controls()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

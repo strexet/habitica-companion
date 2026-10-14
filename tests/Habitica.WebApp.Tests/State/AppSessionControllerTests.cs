@@ -1,3 +1,4 @@
+using Habitica.Application.Integration;
 using Habitica.Api;
 using Habitica.Application.Auth;
 using Habitica.Application.Diagnostics;
@@ -16,6 +17,37 @@ namespace Habitica.WebApp.Tests.State;
 
 public sealed class AppSessionControllerTests
 {
+    [Fact]
+    public async Task Integration_sends_credentials_only_after_authenticated_explicit_consent_and_forgets_management_on_logout()
+    {
+        var integration = new IntegrationFixture();
+        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), integrationClient: integration);
+        Assert.False((await controller.EnrollChatGptAsync(true)).Succeeded);
+        await controller.SignInAsync(new SignInRequest { UserId = "fixture-user", ApiToken = "fixture-token" });
+        Assert.False((await controller.EnrollChatGptAsync(false)).Succeeded);
+        Assert.Equal(0, integration.EnrollCalls);
+        Assert.True((await controller.EnrollChatGptAsync(true)).Succeeded);
+        Assert.Equal(1, integration.EnrollCalls);
+        Assert.DoesNotContain("fixture-token", JsonSerializer.Serialize(controller.State));
+        await controller.LogoutAsync();
+        Assert.False(controller.HasChatGptConnection);
+    }
+    private sealed class IntegrationFixture : IChatGptIntegrationClient
+    {
+        public bool IsAvailable => true;
+        public bool HasConnection { get; private set; }
+        public int EnrollCalls { get; private set; }
+        public Task<IntegrationLinkResult> EnrollAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+        {
+            EnrollCalls++;
+            HasConnection = true;
+            return Task.FromResult(new IntegrationLinkResult(true, "Fixture enabled"));
+        }
+        public Task<IntegrationLinkResult> CreateLinkAsync(CancellationToken cancellationToken) => Task.FromResult(new IntegrationLinkResult(true, "Fixture code"));
+        public Task<IntegrationLinkResult> DisconnectAsync(bool deleteProfile, CancellationToken cancellationToken) => Task.FromResult(new IntegrationLinkResult(true, "Fixture disconnected"));
+        public void ForgetSession() => HasConnection = false;
+    }
+
     [Fact]
     public async Task InitializeAsync_loads_cached_diagnostics_entries_into_state()
     {
@@ -2122,10 +2154,11 @@ public sealed class AppSessionControllerTests
         FakeDiagnosticsLogStore logStore,
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
         IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null,
-        FakeKeyValueStorage? keyValueStorage = null)
+        FakeKeyValueStorage? keyValueStorage = null,
+        IChatGptIntegrationClient? integrationClient = null)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
-        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage);
+        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient);
     }
 
     private static AppSessionController CreateController(
@@ -2133,7 +2166,8 @@ public sealed class AppSessionControllerTests
         FakeHabiticaSyncClient syncClient,
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
         IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null,
-        FakeKeyValueStorage? keyValueStorage = null)
+        FakeKeyValueStorage? keyValueStorage = null,
+        IChatGptIntegrationClient? integrationClient = null)
     {
         var credentialStore = new FakeCredentialStore();
         var storage = keyValueStorage ?? new FakeKeyValueStorage();
@@ -2170,7 +2204,8 @@ public sealed class AppSessionControllerTests
             diagnosticsLogWriter: logWriter,
             snapshotFreshnessPolicy: freshnessPolicy,
             featureOptions: new AppFeatureOptions { HabiticaRequestDelayMilliseconds = 0 },
-            timeProvider: TimeProvider.System);
+            timeProvider: TimeProvider.System,
+            integrationClient: integrationClient);
     }
 
     private static async Task WaitForConditionAsync(Func<bool> condition)

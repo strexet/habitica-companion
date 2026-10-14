@@ -1,3 +1,5 @@
+using Habitica.Application.Integration;
+using Habitica.WebApp.Integration;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Habitica.Api;
@@ -49,6 +51,8 @@ builder.Services.AddScoped<ColorSchemeService>();
 builder.Services.AddScoped<IRemoteUserDataSyncProvider, CloudflareUserDataSyncProvider>();
 builder.Services.AddScoped<IRemotePartyDataSyncProvider, CloudflarePartyDataSyncProvider>();
 builder.Services.AddSingleton(builder.Configuration.GetSection("Features").Get<AppFeatureOptions>() ?? new AppFeatureOptions());
+builder.Services.AddScoped<IChatGptIntegrationClient>(_ => new ChatGptIntegrationClient(
+    new HttpClient { Timeout = TimeSpan.FromSeconds(15) }, builder.Configuration["ChatGptIntegration:AuthBaseUrl"]));
 builder.Services.AddScoped<IAppSessionController, AppSessionController>();
 builder.Services.AddScoped<IHabiticaSyncClient>(_ => new HabiticaApiClient(
     new HttpClient

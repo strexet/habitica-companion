@@ -1,0 +1,48 @@
+{
+  "task_id": "T-16a38176-f2fe-5f7d-a809-546f17357b49",
+  "checks": [
+    {
+      "check": "Worker bundles and typecheck",
+      "result": "pass"
+    },
+    {
+      "check": "Local Worker fixtures",
+      "result": "pass",
+      "passed": 22,
+      "covers": [
+        "PKCE S256; exact resource/audience; redirect rejection; CIMD; scope upgrade",
+        "Two-profile isolation and current connection validation",
+        "Single-use code, expiry, concurrent consume, limits, denial",
+        "Disconnect blocks access and refresh, removes linking records",
+        "Same-origin browser submission; hostile and opaque origins denied"
+      ]
+    },
+    {
+      "check": "Full .NET suite",
+      "result": "pass",
+      "passed": 460
+    },
+    {
+      "check": "PWA build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Settings and Privacy browser behavior",
+      "result": "pass",
+      "observed": "Disabled connection card renders disclosure without enrollment action; Privacy describes explicit integration consent and distinct cleanup."
+    },
+    {
+      "check": "Synthetic browser code verification",
+      "result": "pass",
+      "evidence": "skill-tree/history/validation/browser-consent.json"
+    }
+  ],
+  "limitations": [
+    "Synthetic credentials and mocked Habitica only.",
+    "Real teammate enrollment and HTTPS rollout remain separate.",
+    "MCP tools remain unavailable; retention cleanup and provider log/backup review remain activation requirements.",
+    "Only Codex in-app browser qualified locally."
+  ]
+}

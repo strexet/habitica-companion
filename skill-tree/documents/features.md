@@ -1164,7 +1164,11 @@ Test:
 
 ## Optional ChatGPT enrollment status
 
-Status: Partial; the Auth Worker has disabled-by-default credential-vault routes validated with local fixtures. No PWA enrollment UI or OAuth grant exists. The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns consent and lifecycle defaults. Current sign-in, backup, private sync and party sync retain the implemented browser credential policy.
+Status: Partial; optional enrollment and OAuth linking are implemented and disabled by default. `SettingsPage` calls `IAppSessionController`; the application integration contract delegates HTTP to `ChatGptIntegrationClient`. Empty `ChatGptIntegration:AuthBaseUrl` disables enrollment actions. Configured enrollment requires a signed-in account and explicit consent before uploading credentials to Auth for Habitica validation. Browser-only sign-in, backup, private sync and party sync retain existing credential boundaries.
+
+The integration client retains profile management credentials only in tab memory, clears management state on logout/account changes, and excludes management data from app state/export/sync. Code generation produces a 12-character, single-use, ten-minute code. Disconnect and profile deletion require a dedicated confirmation. Failed or partial cleanup retains management access for an explicit retry; ambiguous enrollment requires account revalidation. Integration HTTP calls have a fifteen-second timeout and no automatic mutation retry. Offline enrollment is unavailable. Enrollment validates `/api/v3/user`; linking and cleanup mutate integration state without mutating Habitica data.
+
+The Auth consent page verifies the code, displays the selected account and requested scopes, then requires explicit approval. OAuth uses PKCE S256 and exact MCP resource audience with two-profile isolation. Local Worker fixtures and WebApp client/controller/component tests qualify consent, cleanup, account changes, expiry, races and denial. The Codex in-app browser qualifies synthetic code verification and the disabled Settings/Privacy surface. Real enrollment, deployment and MCP tool execution remain unqualified. The [integration contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns privacy and retention defaults; hosting logs and backups require activation review.
 
 ## 12.1 Local data portability and encrypted cloud sync
 

@@ -1,3 +1,4 @@
+using Habitica.Application.Integration;
 using Habitica.Application.Diagnostics;
 using Habitica.Application.Inventory;
 using Habitica.Application.Sync;
@@ -12,6 +13,12 @@ public interface IAppSessionController
     event Action? Changed;
 
     SessionViewModel State { get; }
+
+    bool IsChatGptIntegrationAvailable { get; }
+    bool HasChatGptConnection { get; }
+    Task<IntegrationLinkResult> EnrollChatGptAsync(bool consentAcknowledged, CancellationToken cancellationToken = default);
+    Task<IntegrationLinkResult> CreateChatGptLinkAsync(CancellationToken cancellationToken = default);
+    Task<IntegrationLinkResult> DisconnectChatGptAsync(bool deleteProfile, CancellationToken cancellationToken = default);
 
     Task InitializeAsync(CancellationToken cancellationToken = default);
 

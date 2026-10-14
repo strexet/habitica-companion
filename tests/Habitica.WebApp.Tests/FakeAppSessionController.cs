@@ -1,3 +1,4 @@
+using Habitica.Application.Integration;
 using Habitica.WebApp.State;
 
 using Habitica.Application.Diagnostics;
@@ -11,6 +12,23 @@ namespace Habitica.WebApp.Tests;
 
 internal sealed class FakeAppSessionController : IAppSessionController
 {
+    public bool IsChatGptIntegrationAvailable { get; set; }
+    public bool HasChatGptConnection { get; set; }
+    public int ChatGptEnrollCalls { get; private set; }
+    public int ChatGptDisconnectCalls { get; private set; }
+    public Task<IntegrationLinkResult> EnrollChatGptAsync(bool consentAcknowledged, CancellationToken cancellationToken = default)
+    {
+        ChatGptEnrollCalls++;
+        HasChatGptConnection = true;
+        return Task.FromResult(new IntegrationLinkResult(true, "Fixture linked", "0123456789AB", DateTimeOffset.UtcNow.AddMinutes(10)));
+    }
+    public Task<IntegrationLinkResult> CreateChatGptLinkAsync(CancellationToken cancellationToken = default) => Task.FromResult(new IntegrationLinkResult(true, "Fixture linked", "0123456789AB", DateTimeOffset.UtcNow.AddMinutes(10)));
+    public Task<IntegrationLinkResult> DisconnectChatGptAsync(bool deleteProfile, CancellationToken cancellationToken = default)
+    {
+        ChatGptDisconnectCalls++;
+        HasChatGptConnection = false;
+        return Task.FromResult(new IntegrationLinkResult(true, "Fixture disconnected"));
+    }
     private bool _initialized;
 
     public FakeAppSessionController(SessionViewModel state)
