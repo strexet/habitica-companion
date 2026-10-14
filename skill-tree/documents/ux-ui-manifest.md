@@ -411,6 +411,7 @@ Files: `src/Habitica.WebApp/Pages/LiveTestsPage.razor`
 Current pattern:
 
 - Safe checks, guarded reversible gear check, quick account reads, recent app messages, filters, JSON preview, copy/download actions.
+- Diagnostic timestamps use local short date and time formatting inside the Razor expression.
 
 What works:
 

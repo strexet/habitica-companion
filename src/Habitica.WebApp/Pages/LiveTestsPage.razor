@@ -180,7 +180,7 @@
                                 <span class="ui-pill @(GetSeverityPillClass(entry.Severity))">@entry.Severity</span>
                             </div>
                             <span>@entry.Message</span>
-                            <span class="dashboard-stat-note">@entry.FeatureArea • @entry.Mode • @entry.OccurredAtUtc.ToLocalTime():g</span>
+                            <span class="dashboard-stat-note">@entry.FeatureArea • @entry.Mode • @entry.OccurredAtUtc.ToLocalTime().ToString("g")</span>
                             <code class="diagnostics-metadata-inline">@FormatMetadataCompact(entry)</code>
                         </button>
                     }
