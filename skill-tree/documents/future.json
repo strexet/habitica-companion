@@ -16,12 +16,16 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Select required task or finish root",
-    "partial_work": [],
+    "next_action": "Record the owner decision on T-b883e33b-05a6-53d8-a9a5-d11d7008887f, explicitly resume the checkpoint, then advance to the Worker scaffold.",
+    "partial_work": [
+      "Completed creator-header root and required diagnostic timestamp subtask.",
+      "Completed and committed integration architecture proposal.",
+      "Build and local browser milestone checks passed; remaining owner approval is recorded on the Auth/MCP Worker task."
+    ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf"
     ],
-    "phase": "resume-parent",
+    "phase": "blocked",
     "processing_results": [
       {
         "created_ids": [
@@ -63,7 +67,7 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": null
+    "stop_reason": "Owner approval of the concrete optional backend and credential-storage contract is required before the Auth/MCP Worker task."
   },
   "format": "skill-tree-future",
   "source_hash": "7e06adaf93a40f7fbdf7e8e753b9d556462d9e0af94d9f48cad86b94545e2b62",
