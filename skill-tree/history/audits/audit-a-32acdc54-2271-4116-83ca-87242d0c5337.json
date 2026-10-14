@@ -1,0 +1,770 @@
+{
+  "base_commit": "e8a402f73ae44e3f83030b05cb312b6d10f10608",
+  "branch": "develop",
+  "checks": [
+    {
+      "check": "all-queue-task-coverage",
+      "details": "Every task has a disposition, observed implementation, remaining scope and repository evidence paths.",
+      "result": "pass"
+    },
+    {
+      "check": "static-completion-review",
+      "details": "No complete task acceptance was established. No terminal outcomes, removals, promotions or run checkpoints were created.",
+      "result": "pass"
+    },
+    {
+      "check": "strict-future-structure",
+      "result": "pass"
+    },
+    {
+      "check": "future-prose-warnings-as-errors",
+      "result": "pass"
+    },
+    {
+      "check": "full-canonical-prose",
+      "details": "253 errors and 129 warnings; inherited cleanup remains in the existing Backlog task.",
+      "result": "fail"
+    },
+    {
+      "check": "metadata-consistency-and-identities",
+      "details": "Queue IDs, priorities, statuses, provenance and dependencies remain unchanged; generated navigation and audit freshness are refreshed.",
+      "result": "pass"
+    },
+    {
+      "check": "git-diff-whitespace",
+      "result": "pass"
+    }
+  ],
+  "coverage_gaps": [
+    "Application builds and tests were not executed. Test source inspection supplies static evidence only, with no runtime or acceptance verdict.",
+    "Browser, device, mobile usability, deployment, live Habitica, OAuth/MCP and external directory checks were not executed. No external completion is inferred from absent repository evidence.",
+    "The audit checks tracked implementation and planning contracts on develop. Ignored artifacts and undocumented external work do not establish task acceptance.",
+    "Current external API/SDK compatibility was not requalified because no integration behavior was changed."
+  ],
+  "findings": [
+    {
+      "id": "F-future-existing-foundations",
+      "observation": "Thirteen queue entries distinguish implemented foundations from remaining acceptance, including split party/quest pages, task filters/history, spell/equipment operations and static review coverage.",
+      "status": "corrected"
+    },
+    {
+      "id": "F-inherited-document-prose",
+      "observation": "A fresh strict prose scan reports 253 errors and 129 warnings across 12 canonical documents; the existing cleanup task remains required.",
+      "status": "open",
+      "task_id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8"
+    },
+    {
+      "id": "F-x-client-end-user-fallback",
+      "observation": "CreateRequest still falls back to the authenticated user ID while appsettings has an empty XClientHeader; the existing identity task remains required.",
+      "status": "open",
+      "task_id": "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e"
+    }
+  ],
+  "id": "A-32acdc54-2271-4116-83ca-87242d0c5337",
+  "recorded_at": "2026-10-14T12:33:33.522022+00:00",
+  "scope": "all-future-task-implementation-review",
+  "source_fingerprints": {
+    ".agents/skills/skill-tree-process-future-pending/references/future-workflow.md": "f58e6e116b05caebc51def8e9caa8c1a334e536c81ec8148ee066dd08569b00e",
+    ".agents/skills/skill-tree-repo-documentation-audit/SKILL.md": "3284e832070eed2ce31972968660cf2e96bebb758e9d0e35d02b7b4d11ac9560",
+    ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-document-rules.py": "82dacf2c8eb43e9c66829f3482f6c81f8d91e0fd937747a3e5751939a4ab38b5",
+    ".agents/skills/skill-tree-repo-documentation-audit/scripts/workflow-state.py": "77dedfe9c9b7e74f3f97ff8330c75028739e02ea14a72aad9f8b01ece74b2226",
+    ".codex-plugin/plugin.json": null,
+    "AGENTS.md": "37248dfd20f8068bb3867e528470c528438b1ae857c79cadfb22e5c22a7e2a46",
+    "functions/api/party-sync/[partyId].js": "dc283cbf08fe067c182a804b607d77b13292fcbb6a1b9fc2cdc9ac506d52aedd",
+    "functions/api/sync/[syncId]/sections.js": "46b1fee6d50f0474ee586f8443f39fa991dbde35c5ba1304f594d6b6c441a284",
+    "migrations/0001_party_sync.sql": "b408c060352e856484c4b0a73a162b0941c5cbe6181815869b7f8ac83ad82400",
+    "migrations/0002_party_quest_queue.sql": "bcca1cefbf940f6dfc61f7db95de0a7d8f6f7cb61a9652b86f300738304ee3bc",
+    "migrations/0004_party_sync_management.sql": "112f031032d1e2c4740a17c1cb1ebb7d4ea92abfc5fc4fc89be3dad6128e734c",
+    "plugin/plugin.json": null,
+    "skill-tree/documents/companion-first-mcp-research.md": "8960ec0a500487b505aede45709c86948380a7a647c80688b3e946866899eee0",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "a274a238ff437816e5545c6e7f1bda282309d842506a79b2957b08c4db7e1013",
+    "skill-tree/documents/features.md": "3f97b287e6816777ec101a1b8330fff4b09595fa3daad65e5969896473969d1d",
+    "skill-tree/documents/future.md": "a16f75b8d7e2db6465cb6a684803c42caf3e8a42b3599d7dfcd70e1b8ed7e238",
+    "skill-tree/documents/rules.md": "af24f995eda009e7502289176cf5255127ba61c7e7c5838b435b3d6221a0c1f9",
+    "skill-tree/documents/technical.md": "901bb15b26988b94a98f0cfb3e14092ffac958662733fdf230d1c33a6d44f454",
+    "skill-tree/documents/ux-ui-manifest.md": "ffca2b2bb26ef432d65e16b0dfa496b133f355619f6ff525d10fbe6fdc9e0dff",
+    "src/Habitica.Api/HabiticaApiClient.cs": "0e167a58fd37a26b1155a2c3df245b4b855588eb788aeeb007dfcedca5c76374",
+    "src/Habitica.Application/Auth/LoginWorkflow.cs": "722fd5bcfad711b32a3ab3ccdc0eba927edd61c96276d37dd50dae684530293a",
+    "src/Habitica.Application/Sync/LocalUserDataPortabilityService.cs": "5d2fb904242d263438458eeb3d5d666f647dede28f21efbb443b48fa455ef129",
+    "src/Habitica.Application/Tasks/TaskListViewModelFactory.cs": "4013580de8970b3af2051271b9fcbed0d0ee5a9fcb51427d27a952d6fcc18c94",
+    "src/Habitica.Domain/Tasks/TaskSnapshot.cs": "c2993c58a2d5bc89d0a79e27aea2970b412e3ab5d4cbce4ce435ad4c2569368c",
+    "src/Habitica.Storage/EquipmentPresetStore.cs": "2e20ad824507fe31283bd06666acea9081702bcfce08497ede6de2338d67ff7e",
+    "src/Habitica.Storage/StorageKeys.cs": "0d7573bfe765a2d1204e6589fcb77c54e3fcb6f6eddddad03175c01ab7d104b7",
+    "src/Habitica.Storage/TaskSnapshotStore.cs": "8bcfd83bad5ac237869c5fcdc942711078da107a945d56c4f4888281ac45ec5f",
+    "src/Habitica.WebApp/Pages/DashboardPage.razor": "63c30abebbde4d34523e2041ab69bfb9875b49ae60643072004a0687ef1e8c16",
+    "src/Habitica.WebApp/Pages/InventoryPage.razor": "a3dcc5ee35af51823f063d29935442de58dc650e1742f75de6ac7653a03338f9",
+    "src/Habitica.WebApp/Pages/PartyPage.razor": "ad2f5f82e98d957c79e34d75324f7002116c4b1451bb499d7b8dd7a05f9653d6",
+    "src/Habitica.WebApp/Pages/PrivacyPage.razor": "c03c79b0efde9d917fafff60ce577a7d2d84d9257aa9be004ed377125343f586",
+    "src/Habitica.WebApp/Pages/QuestsPage.razor": "890b67f60ee28b1eb675de66ce4ddffebc7cc745648d41f78fc1893c36508d71",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "8d89cf0c1210ba3f651052f6a06b9f8002697feb1d64c869236fcd0f9a959f2a",
+    "src/Habitica.WebApp/Pages/SpellsPage.razor": "000cb89227e51d02af6b8dbc8ba517c43aef095c3050cfc0503e53044a259bea",
+    "src/Habitica.WebApp/Pages/TasksPage.razor": "f9c6fbc5a8213441cd48843582e00fddb946d40de5ba65931a04210d06fe093b",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "3e1bb380b459706dc3021914ae539aaf297d36085dc60438e93e557a70d840fe",
+    "src/Habitica.WebApp/wwwroot/appsettings.json": "b1882569497e5bd715adc77893afa75219f4f2948cbfe9aea78a3c3be14ee11c",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "ddcf7383254d10e48ee9d1ec70e79b253946d339c10a5cd6dee94079c2b8a10d",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "39b0aa8ccd1f7134f928b60d1278001e9b98866d31025b5dd5aa27c09026836e",
+    "src/Habitica.WebApp/wwwroot/service-worker.published.js": "a6d06d3f6f3e1c7eee885697781fbf0acb27b6d56b8e6245907c4427dc187ce3",
+    "tests/Habitica.Api.Tests/HabiticaApiClientTests.cs": "02d7debc09baae2fdf7993e5036edb6061fd685d0794909ce1ebdb8962e907ee",
+    "tests/Habitica.Application.Tests/Sync/LocalUserDataPortabilityServiceTests.cs": "5745603cef1fbd21354df0803b7ded280348f23b83e2f76922acf808a40bd2f3",
+    "tests/Habitica.Application.Tests/Tasks/TaskListViewModelFactoryTests.cs": "57cd159de27c16cc688fb77b9d8c7877411034f36e5ce5f7aa31ea1605485db7",
+    "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs": "781856fe189e18ca86bac516fdcaf3d45ae178a45452d615aafa0c38210f7bcb",
+    "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs": "c3063b003aad7d70b3a2181c259b6ec55feae943dba8e23d03cef6a6c6494157",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "1e61e1f8a8b4b02ff0c9868abaa2d6bfcaef2a17716b9503460346ccdcfd330a",
+    "tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs": "b9baa1253c74a8f5e8ce4b2171c6460c32ffe35c0abc908fd9bfe5d644f06838",
+    "tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs": "4975e52b1897f795130048fc023da2366f84673bff8f9555c5cfd26929ece008",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "48b604c0a89d7cba1d7e9c3d4a247c52c40941fa06261e1b702e7d260f62e825",
+    "workers/chatgpt-auth/package.json": null,
+    "workers/chatgpt-mcp/package.json": null,
+    "wrangler.toml": "fbfd9d2381800c930e9b9a42d575ee35f7b5e984bda1c2a3427a2b637205e8e6"
+  },
+  "sources": [
+    ".agents/skills/skill-tree-repo-documentation-audit/SKILL.md",
+    ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-document-rules.py",
+    ".agents/skills/skill-tree-repo-documentation-audit/scripts/workflow-state.py",
+    ".codex-plugin/plugin.json",
+    "AGENTS.md",
+    "functions/api/party-sync/[partyId].js",
+    "functions/api/sync/[syncId]/sections.js",
+    "migrations/0001_party_sync.sql",
+    "migrations/0002_party_quest_queue.sql",
+    "migrations/0004_party_sync_management.sql",
+    "plugin/plugin.json",
+    "skill-tree/documents/companion-first-mcp-research.md",
+    "skill-tree/documents/deploy-cloudflare-pages.md",
+    "skill-tree/documents/features.md",
+    "skill-tree/documents/future.md",
+    "skill-tree/documents/rules.md",
+    "skill-tree/documents/technical.md",
+    "skill-tree/documents/ux-ui-manifest.md",
+    "src/Habitica.Api/HabiticaApiClient.cs",
+    "src/Habitica.Application/Auth/LoginWorkflow.cs",
+    "src/Habitica.Application/Sync/LocalUserDataPortabilityService.cs",
+    "src/Habitica.Application/Tasks/TaskListViewModelFactory.cs",
+    "src/Habitica.Domain/Tasks/TaskSnapshot.cs",
+    "src/Habitica.Storage/EquipmentPresetStore.cs",
+    "src/Habitica.Storage/StorageKeys.cs",
+    "src/Habitica.Storage/TaskSnapshotStore.cs",
+    "src/Habitica.WebApp/Pages/DashboardPage.razor",
+    "src/Habitica.WebApp/Pages/InventoryPage.razor",
+    "src/Habitica.WebApp/Pages/PartyPage.razor",
+    "src/Habitica.WebApp/Pages/PrivacyPage.razor",
+    "src/Habitica.WebApp/Pages/QuestsPage.razor",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor",
+    "src/Habitica.WebApp/Pages/SpellsPage.razor",
+    "src/Habitica.WebApp/Pages/TasksPage.razor",
+    "src/Habitica.WebApp/State/AppSessionController.cs",
+    "src/Habitica.WebApp/wwwroot/appsettings.json",
+    "src/Habitica.WebApp/wwwroot/css/app.css",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+    "src/Habitica.WebApp/wwwroot/service-worker.published.js",
+    "tests/Habitica.Api.Tests/HabiticaApiClientTests.cs",
+    "tests/Habitica.Application.Tests/Sync/LocalUserDataPortabilityServiceTests.cs",
+    "tests/Habitica.Application.Tests/Tasks/TaskListViewModelFactoryTests.cs",
+    "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs",
+    "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+    "tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs",
+    "tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+    "workers/chatgpt-auth/package.json",
+    "workers/chatgpt-mcp/package.json",
+    "wrangler.toml",
+    ".agents/skills/skill-tree-process-future-pending/references/future-workflow.md"
+  ],
+  "summary": {
+    "backlog": 12,
+    "clarified_context": 13,
+    "fully_implemented": 0,
+    "pending": 14,
+    "prioritized": 11,
+    "removed": 0,
+    "retained": 37,
+    "reviewed": 37
+  },
+  "task_reviews": [
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "skill-tree/documents/companion-first-mcp-research.md",
+        "skill-tree/documents/ux-ui-manifest.md"
+      ],
+      "existing": "The planning reference contains a competitor capability matrix and proposed information architecture.",
+      "implementation": "partial",
+      "queue": "Pending Queue",
+      "remaining": "Hands-on flow/screenshot evidence, tested journeys, personas and approved mobile navigation are not established by the reference.",
+      "task_id": "P-4f98b2b3-af24-5424-b2f9-066913f7133d",
+      "title": "E01 Competitive UX/IA study and mobile-first product contract"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.Domain/Tasks/TaskSnapshot.cs",
+        "src/Habitica.Application/Tasks/TaskListViewModelFactory.cs",
+        "src/Habitica.Storage/StorageKeys.cs"
+      ],
+      "existing": "TaskSnapshot models Habitica task identity, fields and imported history.",
+      "implementation": "not_implemented",
+      "queue": "Pending Queue",
+      "remaining": "Companion-owned workspace/category/project/goal/occurrence identities, lifecycle invariants and schema fixtures are absent.",
+      "task_id": "P-9d3fb820-05c3-525b-8769-85c5423d2f53",
+      "title": "E02 Companion-owned canonical workspace and task domain"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+        "src/Habitica.Storage/StorageKeys.cs",
+        "src/Habitica.Storage/TaskSnapshotStore.cs",
+        "src/Habitica.Application/Sync/LocalUserDataPortabilityService.cs",
+        "tests/Habitica.Application.Tests/Sync/LocalUserDataPortabilityServiceTests.cs"
+      ],
+      "existing": "Dexie key/value persistence, snapshot stores, portable export/import and encrypted sync exist.",
+      "implementation": "partial",
+      "queue": "Pending Queue",
+      "remaining": "Structured canonical entity/event/outbox storage, atomic domain writes, migration/recovery guarantees and a consented server-readable workspace are absent.",
+      "task_id": "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035",
+      "title": "E03 Local-first persistent storage, migration, and optional cloud workspace"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.Api/HabiticaApiClient.cs",
+        "src/Habitica.Domain/Tasks/TaskSnapshot.cs",
+        "src/Habitica.WebApp/State/AppSessionController.cs"
+      ],
+      "existing": "The API client reads and scores Habitica tasks using Habitica IDs.",
+      "implementation": "partial",
+      "queue": "Pending Queue",
+      "remaining": "Companion projection mappings, ownership/import policy and durable create/score reconciliation are absent.",
+      "task_id": "P-bbb755c5-37d7-5637-862d-17faa8e12f99",
+      "title": "E04 Habitica projection and reconciliation adapter"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.Api/HabiticaApiClient.cs",
+        "src/Habitica.Storage/StorageKeys.cs"
+      ],
+      "existing": "Scoring is awaited, freshness-gated, sequential and logged; API failures are normalized.",
+      "implementation": "partial",
+      "queue": "Pending Queue",
+      "remaining": "Durable application commands, atomic outbox, leases, cross-client ordering and unknown-outcome reconciliation are absent.",
+      "task_id": "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178",
+      "title": "E05 Durable command journal and typed failure/recovery engine"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.Api/HabiticaApiClient.cs",
+        "tests/Habitica.Api.Tests/HabiticaApiClientTests.cs"
+      ],
+      "existing": "The per-client token bucket reconciles server headers and Retry-After; ComputeAdaptiveDelay gates the extra ramp near the reserve.",
+      "implementation": "partial",
+      "queue": "Pending Queue",
+      "remaining": "Early budget-aware slowdown, coordinated scheduling, controlled sustained-success recovery and synthetic-load acceptance remain outstanding.",
+      "task_id": "P-676c0cb1-82b5-51e1-92c1-74303b58c59d",
+      "title": "E06 Early-slowdown adaptive limiter and automatic controlled recovery"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "wrangler.toml",
+        "src/Habitica.WebApp/wwwroot/service-worker.published.js",
+        "functions/api/sync/[syncId]/sections.js",
+        "functions/api/party-sync/[partyId].js",
+        "workers/chatgpt-auth/package.json",
+        "workers/chatgpt-mcp/package.json"
+      ],
+      "existing": "Pages functions handle encrypted app sync and shared party state; the service worker caches application assets.",
+      "implementation": "not_implemented",
+      "queue": "Pending Queue",
+      "remaining": "A server command ledger, authenticated executor, execution leases and browser/server ownership handoff are absent.",
+      "task_id": "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07",
+      "title": "E07 Optional always-on server executor and queue ownership handoff"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/TasksPage.razor",
+        "tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs",
+        "skill-tree/documents/ux-ui-manifest.md"
+      ],
+      "existing": "The Tasks page has responsive cards, local ordering, filters, detail expansion and score controls.",
+      "implementation": "partial",
+      "queue": "Pending Queue",
+      "remaining": "Fast task creation/editing, rescheduling and the approved mobile navigation/detail flow remain outstanding.",
+      "task_id": "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
+      "title": "E08 Mobile-first task capture, edit, and navigation redesign"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/TasksPage.razor",
+        "src/Habitica.Domain/Tasks/TaskSnapshot.cs",
+        "src/Habitica.Application/Tasks/TaskListViewModelFactory.cs",
+        "src/Habitica.Storage/StorageKeys.cs"
+      ],
+      "existing": "Cached tasks expose completed toggles, due counts and task-history charts.",
+      "implementation": "partial",
+      "queue": "Pending Queue",
+      "remaining": "Today/Upcoming/Calendar/Inbox surfaces and durable searchable Companion completion history are absent.",
+      "task_id": "P-c8632138-39c6-5797-8e03-a3414824ee96",
+      "title": "E09 Today, Upcoming, Calendar, Inbox and Completed/Logbook views"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.Domain/Tasks/TaskSnapshot.cs",
+        "src/Habitica.Application/Tasks/TaskListViewModelFactory.cs",
+        "src/Habitica.WebApp/Pages/TasksPage.razor"
+      ],
+      "existing": "The task model and list factory organize Habitica task types.",
+      "implementation": "not_implemented",
+      "queue": "Pending Queue",
+      "remaining": "Canonical categories/goals/projects, project membership/stages, goal progress and the corresponding mobile UI are absent.",
+      "task_id": "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
+      "title": "E10 Categories, goals, projects, progress and lightweight workflows UX"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.Domain/Tasks/TaskSnapshot.cs",
+        "src/Habitica.WebApp/Pages/TasksPage.razor",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs"
+      ],
+      "existing": "Imported Daily due-state/history and Habit up/down or Daily completion already exist.",
+      "implementation": "partial",
+      "queue": "Pending Queue",
+      "remaining": "Companion recurrence definitions, durable occurrence identity/history and skip/pause/restart workflows are absent.",
+      "task_id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
+      "title": "E11 Habits and Dailies as first-class recurring personal workflows"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.Application/Tasks/TaskListViewModelFactory.cs",
+        "src/Habitica.WebApp/Pages/TasksPage.razor",
+        "src/Habitica.Storage/StorageKeys.cs",
+        "tests/Habitica.Application.Tests/Tasks/TaskListViewModelFactoryTests.cs"
+      ],
+      "existing": "Cached text/notes search, type/completion filters and simple sorting exist.",
+      "implementation": "partial",
+      "queue": "Pending Queue",
+      "remaining": "Cross-project query fields, saved smart lists, review/staleness state and configurable reminders are absent.",
+      "task_id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
+      "title": "E12 Powerful search, saved views, reviews and task hygiene"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "skill-tree/documents/companion-first-mcp-research.md",
+        "src/Habitica.Domain/Tasks/TaskSnapshot.cs",
+        "src/Habitica.Storage/StorageKeys.cs",
+        "workers/chatgpt-mcp/package.json",
+        ".agents/skills/skill-tree-repo-documentation-audit/SKILL.md"
+      ],
+      "existing": "The reference proposes Companion-native tools; installed Skill Tree packages support developer workflows.",
+      "implementation": "not_implemented",
+      "queue": "Pending Queue",
+      "remaining": "Authenticated project/task/goal MCP tools, native command schemas and shared workspace authorization are absent.",
+      "task_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+      "title": "E13 MCP and Skills for Companion-native project/task/goal operations"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "skill-tree/documents/companion-first-mcp-research.md",
+        "tests/Habitica.Application.Tests/Sync/LocalUserDataPortabilityServiceTests.cs",
+        "tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs",
+        "src/Habitica.Storage/StorageKeys.cs"
+      ],
+      "existing": "Existing application/component tests, diagnostics and import/export fixtures cover current features.",
+      "implementation": "partial",
+      "queue": "Pending Queue",
+      "remaining": "Companion-domain migration, durable command failure drills, mobile adoption/accessibility evidence and hosted revocation qualification are not established.",
+      "task_id": "P-29925105-1015-5ced-8844-d56fa47e33c9",
+      "title": "E14 Mobile UX validation, observability, migration and gradual adoption"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.Api/HabiticaApiClient.cs",
+        "src/Habitica.WebApp/wwwroot/appsettings.json",
+        "tests/Habitica.Api.Tests/HabiticaApiClientTests.cs"
+      ],
+      "existing": "Configured x-client headers are supported and covered by a test source.",
+      "implementation": "partial",
+      "queue": "Prioritized Next Changes",
+      "remaining": "CreateRequest still falls back to the active user ID and appsettings keeps XClientHeader empty; stable creator configuration and missing-production-config rejection remain outstanding.",
+      "task_id": "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
+      "title": "Correct Habitica `x-client` Identity"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "skill-tree/documents/companion-first-mcp-research.md",
+        "src/Habitica.WebApp/Pages/PrivacyPage.razor",
+        "skill-tree/documents/technical.md",
+        "skill-tree/documents/features.md",
+        "skill-tree/documents/deploy-cloudflare-pages.md",
+        "skill-tree/documents/rules.md"
+      ],
+      "existing": "The reference proposes separate OAuth/MCP boundaries; future.md lists proposed retention defaults. Current privacy UI documents browser-only credentials.",
+      "implementation": "partial",
+      "queue": "Prioritized Next Changes",
+      "remaining": "The reconciled architecture/privacy/retention proposal and current-document handoffs required by the task remain unfinished; the proposal reference has no concrete retention/deletion lifecycle section.",
+      "task_id": "T-c6f6b09d-4625-5898-b91c-016c611b60df",
+      "title": "Define ChatGPT Integration Architecture, Privacy, And Retention Contract"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "wrangler.toml",
+        "workers/chatgpt-auth/package.json",
+        "workers/chatgpt-mcp/package.json"
+      ],
+      "existing": "Root Wrangler config deploys Pages with app-sync KV and party D1.",
+      "implementation": "not_implemented",
+      "queue": "Prioritized Next Changes",
+      "remaining": "Dedicated Auth/MCP Worker projects, locked packages, isolated configs and binding fixtures are absent.",
+      "task_id": "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
+      "title": "Add Dedicated Auth And MCP Worker Projects"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/PrivacyPage.razor",
+        "src/Habitica.Application/Auth/LoginWorkflow.cs",
+        "src/Habitica.Storage/StorageKeys.cs",
+        "workers/chatgpt-auth/package.json",
+        "migrations/0001_party_sync.sql",
+        "migrations/0004_party_sync_management.sql"
+      ],
+      "existing": "Habitica credentials are used by the browser login flow and current privacy UI.",
+      "implementation": "not_implemented",
+      "queue": "Prioritized Next Changes",
+      "remaining": "The integration profile schema, server credential vault, management tokens and cryptographic lifecycle fixtures are absent.",
+      "task_id": "T-e33bccdc-22f1-5043-9230-3d12d9e9563d",
+      "title": "Implement Stable Profile Identity, Credential Vault, And Connection Lifecycle"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "src/Habitica.WebApp/Pages/PrivacyPage.razor",
+        "workers/chatgpt-auth/package.json",
+        "wrangler.toml"
+      ],
+      "existing": "Settings exposes existing browser login/logout, local data and encrypted sync controls.",
+      "implementation": "not_implemented",
+      "queue": "Prioritized Next Changes",
+      "remaining": "ChatGPT enrollment, one-time ticket consumption, OAuth grants/PKCE/resource validation and consent UI are absent.",
+      "task_id": "T-16a38176-f2fe-5f7d-a809-546f17357b49",
+      "title": "Implement One-Time Linking And OAuth 2.1 Authorization"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.Api/HabiticaApiClient.cs",
+        "workers/chatgpt-mcp/package.json",
+        "wrangler.toml"
+      ],
+      "existing": "The browser API client supports Habitica reads.",
+      "implementation": "not_implemented",
+      "queue": "Prioritized Next Changes",
+      "remaining": "An OAuth-protected MCP endpoint, tool registration, read-result schemas and MCP isolation fixtures are absent.",
+      "task_id": "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
+      "title": "Implement Read-Only MCP Baseline"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.Domain/Tasks/TaskSnapshot.cs",
+        "src/Habitica.Storage/StorageKeys.cs",
+        "workers/chatgpt-mcp/package.json"
+      ],
+      "existing": "The PWA directly scores Habitica tasks through AppSessionController.",
+      "implementation": "not_implemented",
+      "queue": "Prioritized Next Changes",
+      "remaining": "Companion command submission and durable result states plus MCP write tools are absent.",
+      "task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "title": "Add Safe Task Mutation Tools"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "workers/chatgpt-mcp/package.json",
+        "plugin/plugin.json",
+        ".codex-plugin/plugin.json",
+        ".agents/skills/skill-tree-repo-documentation-audit/SKILL.md"
+      ],
+      "existing": "Eight repository-local Skill Tree development packages are installed.",
+      "implementation": "not_implemented",
+      "queue": "Prioritized Next Changes",
+      "remaining": "A Habitica-facing plugin package, core user workflow skills and verified MCP routing are absent.",
+      "task_id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+      "title": "Package The Plugin And Add Core Skills"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/PartyPage.razor",
+        "src/Habitica.WebApp/Pages/SpellsPage.razor",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "functions/api/party-sync/[partyId].js",
+        "workers/chatgpt-mcp/package.json"
+      ],
+      "existing": "Browser party/quest/spell flows and party-sync authorization guards exist.",
+      "implementation": "not_implemented",
+      "queue": "Prioritized Next Changes",
+      "remaining": "Authenticated remote MCP party/spell tools, prepared actions and shared durable command integration are absent.",
+      "task_id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+      "title": "Add Party And Spell Capabilities Incrementally"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.WebApp/Pages/DashboardPage.razor",
+        "tests/Habitica.WebApp.Tests/Pages/DashboardPageTests.cs",
+        "workers/chatgpt-mcp/package.json"
+      ],
+      "existing": "The PWA provides confirmed Start New Day, refresh and gear restoration behavior.",
+      "implementation": "not_implemented",
+      "queue": "Prioritized Next Changes",
+      "remaining": "Remote scoped prepare/execute Cron tokens, durable unknown-outcome reconciliation and MCP replay protections are absent.",
+      "task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
+      "title": "Add Start New Day Only As A Dedicated High-Risk Feature"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/PrivacyPage.razor",
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "wrangler.toml",
+        "workers/chatgpt-auth/package.json",
+        "workers/chatgpt-mcp/package.json"
+      ],
+      "existing": "Browser privacy and existing local/party data controls exist.",
+      "implementation": "not_implemented",
+      "queue": "Prioritized Next Changes",
+      "remaining": "Integration grant revocation, vault deletion, encryption-key rotation and qualified multi-user deployment/rollout are absent.",
+      "task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "title": "Security Hardening, Revocation, Key Rotation, And Team Rollout"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/PartyPage.razor",
+        "src/Habitica.WebApp/Pages/QuestsPage.razor",
+        "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs"
+      ],
+      "existing": "Party and Quests routes split member/CRON overview from a stacked quest workspace.",
+      "implementation": "partial",
+      "queue": "Backlog",
+      "remaining": "Current/queue/pool/history mode selection and mode-specific empty/cached-state and guarded-action coverage are absent.",
+      "task_id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
+      "title": "Party Quest Workspace Modes"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/PartyPage.razor",
+        "migrations/0002_party_quest_queue.sql",
+        "tests/Habitica.WebApp.Tests/Pages/PartyPageTests.cs"
+      ],
+      "existing": "The latest eight shared completions and queue penalty calculations exist.",
+      "implementation": "partial",
+      "queue": "Backlog",
+      "remaining": "Aggregates by quest and owner, covered-window disclosure and sparse-history analytics are absent.",
+      "task_id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
+      "title": "Party Quest History Analytics"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "src/Habitica.WebApp/Pages/SpellsPage.razor",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "src/Habitica.Storage/StorageKeys.cs",
+        "src/Habitica.Storage/EquipmentPresetStore.cs"
+      ],
+      "existing": "Equipment presets, dynamic recommendations and bounded spell operations exist.",
+      "implementation": "partial",
+      "queue": "Backlog",
+      "remaining": "Declarative macro CRUD, step compiler, persistent per-step progress and macro-specific validation/restore fixtures are absent.",
+      "task_id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
+      "title": "Skill Macro Collection MVP"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/TasksPage.razor",
+        "src/Habitica.WebApp/State/AppSessionController.cs",
+        "tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs",
+        "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs"
+      ],
+      "existing": "Inline scoring has count controls, freshness guards, sequential execution and progress.",
+      "implementation": "partial",
+      "queue": "Backlog",
+      "remaining": "Pre-action task outcome summaries and exact/estimate/unavailable labeling are absent.",
+      "task_id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
+      "title": "Task Mutation Dry-Run Summaries"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/SettingsPage.razor",
+        "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs"
+      ],
+      "existing": "The Settings button directly invokes HandleClearLocalDataAsync and ClearLocalDataAsync.",
+      "implementation": "not_implemented",
+      "queue": "Backlog",
+      "remaining": "Confirmation copy, cancellation state and initial-click/cancel/confirmed-clear tests are absent.",
+      "task_id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
+      "title": "Settings Danger Zone Confirmation"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/DashboardPage.razor",
+        "src/Habitica.WebApp/Pages/TasksPage.razor",
+        "src/Habitica.WebApp/Pages/PartyPage.razor",
+        "src/Habitica.WebApp/Pages/InventoryPage.razor",
+        "src/Habitica.WebApp/Pages/SpellsPage.razor"
+      ],
+      "existing": "All five target pages render hero/help copy before the authentication/cache branches; some secondary panels already collapse.",
+      "implementation": "not_implemented",
+      "queue": "Backlog",
+      "remaining": "Returning-user-specific hero/help compression across Dashboard, Tasks, Party, Equipment and Spells is absent.",
+      "task_id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
+      "title": "Returning User Copy Compression"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "src/Habitica.WebApp/Pages/DashboardPage.razor",
+        "src/Habitica.WebApp/Pages/PartyPage.razor"
+      ],
+      "existing": "Wide stats tables sit in overflow-x:auto wrappers.",
+      "implementation": "not_implemented",
+      "queue": "Backlog",
+      "remaining": "Sticky first-column or repeated row-label context is absent; existing sticky selectors target other UI.",
+      "task_id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
+      "title": "Mobile Stat Table Context"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/Pages/SpellsPage.razor",
+        "src/Habitica.WebApp/wwwroot/css/app.css",
+        "tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs"
+      ],
+      "existing": "Spell cards expose all core controls, warnings and progress in the full-card layout.",
+      "implementation": "not_implemented",
+      "queue": "Backlog",
+      "remaining": "Description/effect/rationale disclosure or compact summarization and density-specific regression coverage are absent.",
+      "task_id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
+      "title": "Compact Spell Card Density Pass"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "workers/chatgpt-mcp/package.json",
+        "plugin/plugin.json",
+        "skill-tree/documents/companion-first-mcp-research.md"
+      ],
+      "existing": "The backlog retains an intentional public-submission gate.",
+      "implementation": "not_implemented",
+      "queue": "Backlog",
+      "remaining": "No repository plugin package, stable MCP endpoint or public-review qualification evidence establishes completion; external directory state was not queried.",
+      "task_id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
+      "title": "Public Plugin Directory Submission"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "workers/chatgpt-mcp/package.json",
+        "src/Habitica.WebApp/Pages/TasksPage.razor",
+        "src/Habitica.WebApp/Pages/PartyPage.razor",
+        "src/Habitica.WebApp/Pages/SpellsPage.razor"
+      ],
+      "existing": "The app has browser UI for tasks, quests and spells.",
+      "implementation": "not_implemented",
+      "queue": "Backlog",
+      "remaining": "MCP-hosted UI resources, interaction contracts and MCP UI integration are absent.",
+      "task_id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
+      "title": "MCP Custom UI"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        "src/Habitica.WebApp/wwwroot/service-worker.published.js",
+        "wrangler.toml",
+        "functions/api/party-sync/[partyId].js"
+      ],
+      "existing": "The service worker handles install/activate/fetch caching; Pages handles request-driven sync.",
+      "implementation": "not_implemented",
+      "queue": "Backlog",
+      "remaining": "Scheduled daily review, quest alerts or Cron reminders and the separate automation security/execution design are absent.",
+      "task_id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
+      "title": "Background Automation"
+    },
+    {
+      "disposition": "retain",
+      "evidence_kind": "static source, configuration or document inspection; test sources are not execution results",
+      "evidence_paths": [
+        ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-document-rules.py",
+        "skill-tree/documents/ux-ui-manifest.md",
+        "skill-tree/documents/features.md",
+        "skill-tree/documents/rules.md"
+      ],
+      "existing": "Scoped future.md prose is valid; inherited current-state prose still triggers diagnostics.",
+      "implementation": "not_implemented",
+      "queue": "Backlog",
+      "remaining": "The fresh full-document scan reports 253 errors and 129 warnings across 12 canonical documents; full strict compliance remains unmet.",
+      "task_id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
+      "title": "Align inherited documentation prose with current document rules"
+    }
+  ]
+}

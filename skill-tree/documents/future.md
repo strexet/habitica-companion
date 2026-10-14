@@ -94,6 +94,7 @@ Description:
 
 Current context:
 - Existing Tasks page is a Habitica task-type list, not a modern daily planner or project workspace.
+- `companion-first-mcp-research.md` contains a documented-capability comparison and proposed design patterns. The reference explicitly excludes hands-on usability findings; screenshot/flow evidence, tested journeys and approved navigation prototypes remain outstanding.
 
 Requirements:
 - Real screenshots/documented workflows; task capture, planning, project organization, calendar, completed history, recurrence, error/pending states; mobile-first and accessibility criteria; explicit no-corporate-PM scope.
@@ -336,6 +337,9 @@ relation: main
 depends_on: []
 ```
 
+Current context:
+- `TasksPage.razor` already exposes cached completed/open toggles, due-pressure counts and history charts. The controls use the latest Habitica snapshot; durable Companion completion records and agenda/calendar/Inbox views remain outstanding.
+
 Source:
 - Companion-first epic `E09` (`P-c8632138-39c6-5797-8e03-a3414824ee96`); requirements are intake awaiting current-source research and decomposition.
 
@@ -394,6 +398,9 @@ relation: main
 depends_on: []
 ```
 
+Current context:
+- `TaskSnapshot` imports Habitica history and due-state; `TasksPage.razor` supports Habit up/down and Daily completion. Companion recurrence definitions, occurrence identity, skip/pause/restart and durable recurrence history remain outstanding.
+
 Source:
 - Companion-first epic `E11` (`P-f2bb7e37-6700-58ac-aa56-b537d193c777`); requirements are intake awaiting current-source research and decomposition.
 
@@ -422,6 +429,9 @@ related_task_id: null
 relation: main
 depends_on: []
 ```
+
+Current context:
+- `TaskListViewModelFactory` already filters cached task text/notes, type and completion state and supports simple sorting. Cross-project queries, saved smart views, review/staleness state and reminders remain outstanding.
 
 Source:
 - Companion-first epic `E12` (`P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d`); requirements are intake awaiting current-source research and decomposition.
@@ -480,6 +490,9 @@ related_task_id: null
 relation: main
 depends_on: []
 ```
+
+Current context:
+- Source includes component tests, local import/export fixtures and operational diagnostics. Existing checks do not qualify the planned Companion-domain migration, durable command recovery, hosted executor or real mobile adoption gates.
 
 Source:
 - Companion-first epic `E14` (`P-29925105-1015-5ced-8844-d56fa47e33c9`); requirements are intake awaiting current-source research and decomposition.
@@ -2036,6 +2049,9 @@ relation: main
 depends_on: []
 ```
 
+Current context:
+- `/party` and `/quests` already separate member/CRON overview from the quest workspace through `QuestsPage.razor` and `PartyPage.QuestWorkspaceOnly`. The quest page still stacks current quest, queue, pool and recent completions; dedicated modes and mode-switch acceptance coverage remain outstanding.
+
 Goal: separate the Party page's current quest, shared queue planning, quest pool, recent completions, and member/CRON sections into clearer scan modes.
 
 Touch:
@@ -2070,6 +2086,9 @@ relation: main
 depends_on: []
 ```
 
+Current context:
+- `PartyPage.razor` renders the eight latest shared completion cards and uses completion history for queue penalties. Aggregate completions by quest/owner, coverage-window disclosure and sparse-history analytics remain outstanding.
+
 Goal: summarize stored shared quest completion history beyond the current recent-completion cards and queue penalty labels.
 
 Touch:
@@ -2103,6 +2122,9 @@ related_task_id: null
 relation: main
 depends_on: []
 ```
+
+Current context:
+- Equipment presets, recommendation equip flows and bounded spell casting already exist in `InventoryPage.razor`, `SpellsPage.razor` and `AppSessionController`. No saved declarative macro collection, step compiler or persisted per-step execution ledger exists; reuse the existing equipment/spell operations.
 
 Goal: implement a local macro collection for predefined equipment and skill sequences.
 
@@ -2234,6 +2256,9 @@ relation: main
 depends_on: []
 ```
 
+Current context:
+- `TasksPage.razor` already has inline score/checkoff controls and progress; `AppSessionController.ScoreTaskAsync` freshness-gates and sequentially executes scores. Pre-action outcome summaries and exact/estimated/unavailable result labeling remain outstanding.
+
 Goal: add stronger pre-action summaries for existing task scoring/checkoff controls where local data can make the mutation clearer.
 
 Touch:
@@ -2269,6 +2294,9 @@ relation: main
 depends_on: []
 ```
 
+Current context:
+- The Clear Local Data button directly calls `HandleClearLocalDataAsync`, which immediately awaits `ClearLocalDataAsync`. A confirmation/cancel state and confirmation-specific tests remain outstanding.
+
 Goal: require an explicit confirmation step before clearing local browser data from Settings.
 
 Touch:
@@ -2299,6 +2327,9 @@ related_task_id: null
 relation: main
 depends_on: []
 ```
+
+Current context:
+- Dashboard, Tasks, Party, Equipment and Spells render introductory help before authentication/cache branching. Existing folded appearance/equipment panels do not implement returning-user hero/help compression.
 
 Goal: reduce repeated hero/help copy for authenticated returning users while keeping first-run empty states understandable.
 
@@ -2332,6 +2363,9 @@ relation: main
 depends_on: []
 ```
 
+Current context:
+- `.stats-table-wrap` supports horizontal overflow and `.stats-table` has a wide minimum width. Table row labels have no sticky-first-column or repeated-label mechanism; existing sticky rules apply to the spell mana bar and diagnostics console.
+
 Goal: keep row labels visible or repeated when wide stat tables scroll horizontally on small screens.
 
 Touch:
@@ -2362,6 +2396,9 @@ related_task_id: null
 relation: main
 depends_on: []
 ```
+
+Current context:
+- Spell cards already expose target/count, mana preview, cast controls, progress, warnings and equipment recommendations. Description, effect preview and recommendation rationale remain expanded; explanatory-copy disclosure and density-specific regression coverage remain outstanding.
 
 Goal: make spell cards easier to scan after the current full-card layout, recommendations, and CRON warning flow have been exercised.
 
