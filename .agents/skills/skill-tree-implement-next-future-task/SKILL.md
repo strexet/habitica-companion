@@ -1,83 +1,11 @@
 ---
 name: skill-tree-implement-next-future-task
-description: >
-  Implement exactly one task from the Prioritized Next Changes section of
-  FUTURE.md. Use for "Implement next", "Implement next feature",
-  "Implement next: <task name>", or "Implement next feature: <task name>".
-  Never select from Pending Queue or Backlog, and stop for blocking unresolved
-  questions or when a named prioritized task is absent.
+description: "Implement the highest-priority Prioritized task or an exact task ID/name; capture findings and record acceptance evidence before completion."
 license: MIT
 ---
 
 # Skill-Tree: Implement Next Task
 
-Use this skill to implement exactly one eligible task from `Prioritized Next Changes`.
+Read repository rules, [workflow](references/future-workflow.md), [metadata](references/workflow-metadata.md), selected task questions, current documentation and task-relevant source/tests. Use scripts/workflow-state.py select: highest priority wins, ties follow document order; exact IDs/names never fall back. A blocked selection stops. Implement minimal scoped changes and capture findings through intake with root/direct-parent context. Perform authorized validation and review, update current documentation, then complete with individual acceptance/source evidence. Required unrun checks prevent completion. Record authorized commits only after commit creation. Return completed/needs-dependencies/needs-clarification/validation-blocked outcome and captured IDs. Never implement from the queue alone.
 
-Never select from Pending Queue or Backlog. Never use Backlog as hidden implementation context for a missing named task.
-
-## Selection
-
-Without a task name:
-
-1. Open `FUTURE.md`.
-2. Select the first task in `Prioritized Next Changes`.
-3. Stop if that section is empty.
-4. Do not skip a blocked first task automatically.
-5. Perform the clarification gate before editing.
-
-With a task name:
-
-1. Search only prioritized headings.
-2. Normalize heading comparison by Unicode normalization, trim, whitespace collapse, and case folding.
-3. Require one unambiguous match.
-4. Stop if absent.
-5. Stop if duplicate normalized matches exist.
-6. Never fall back to a similarly named pending or backlog item.
-7. Perform the clarification gate before editing.
-
-Use the local selector when helpful:
-
-```bash
-python3 scripts/select_prioritized_task.py /path/to/Documents/FUTURE.md
-python3 scripts/select_prioritized_task.py /path/to/Documents/FUTURE.md --name "Task Name" --format json
-```
-
-## Clarification Gate
-
-Read `references/FUTURE_EXECUTION_RULES.md` and `references/PENDING_TASK_FORMAT.md` before selecting or implementing work.
-
-Before editing:
-
-1. Read the complete selected task.
-2. MUST read repository `AGENTS.md`, `Documents/RULES.md`, or equivalent repository rules.
-3. MUST read repository/document map if one exists.
-4. MUST inspect all documents referenced by the task.
-5. MUST read current-state docs such as `FEATURES.md` and task-relevant architecture/domain docs.
-6. MUST inspect current code and tests for affected paths and symbols.
-7. MUST check for recent changes that invalidate task assumptions or make the work already complete.
-8. MUST check existing `FUTURE.md` tasks for duplicate or overlapping work.
-9. Read `Questions and required clarifications`.
-10. Identify blocking unresolved questions.
-11. Ask the owner those questions.
-12. Stop implementation until answers exist.
-13. Update the task with answers or stale assumptions before implementation.
-
-Do not guess to keep moving.
-MUST NOT implement from `FUTURE.md` alone.
-
-## Scope
-
-- Honor `Touch`.
-- Honor `Discovery allowance`.
-- Honor `Out of scope`.
-- Update the task before justified scope expansion.
-- Avoid opportunistic refactors.
-- Add or update tests appropriate to the task.
-- Update current-state documentation when behavior ships.
-- Keep `FEATURES.md` current-state only. Move new plans, deferred work, or known bugs awaiting fixes to `FUTURE.md`.
-- Remove the completed task from `FUTURE.md` instead of keeping completed entries indefinitely.
-- Report required context inspected and checks actually run.
-
-## Completion
-
-Complete only after one selected task is implemented, relevant docs are updated, validations are reported, and the task is removed from `FUTURE.md`.
+Generated prose follows [document rules](references/document-rules.md). No unrelated changes, implicit permission or source/sibling dependency.

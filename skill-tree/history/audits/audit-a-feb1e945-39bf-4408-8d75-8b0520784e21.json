@@ -1,0 +1,159 @@
+{
+  "checks": [
+    {
+      "check": "future-structure-strict",
+      "details": "14 Pending epics, 11 prioritized imported contracts, 11 retained Backlog entries and one deferred prose cleanup.",
+      "result": "pass"
+    },
+    {
+      "check": "required-document-structure",
+      "result": "pass"
+    },
+    {
+      "check": "plan-and-new-document-prose",
+      "result": "pass"
+    },
+    {
+      "check": "all-document-prose-strict",
+      "details": "533 inherited findings; deferred with stable Backlog identity.",
+      "result": "fail"
+    },
+    {
+      "check": "local-markdown-links",
+      "result": "pass"
+    },
+    {
+      "check": "task-identity-dependency-closure-cycle-and-status",
+      "result": "pass"
+    },
+    {
+      "check": "generated-index-source-hash-and-inactive-checkpoint",
+      "result": "pass"
+    },
+    {
+      "check": "blocked-default-selection",
+      "details": "Expected exit 8 on the highest-priority x-client contract.",
+      "result": "pass"
+    },
+    {
+      "check": "installed-eight-generic-skill-resources",
+      "details": "Installer --verify matches source revision 0f91954.",
+      "result": "pass"
+    },
+    {
+      "check": "git-diff-whitespace",
+      "result": "pass"
+    }
+  ],
+  "corrections": [
+    "Canonical lowercase documents reside under skill-tree/documents with repaired references and missing baseline documents.",
+    "Installed generic workflows, fixed task metadata, stable import provenance, numeric priorities, dependencies and blocked gates match current Skill Tree structure.",
+    "Removed implemented-summary narration from the future queue without asserting terminal outcomes.",
+    "Research reference ownership and Companion command-only task mutation boundaries are explicit."
+  ],
+  "coverage_gaps": [
+    "Application build, application tests, browser and device checks were not run during documentation migration.",
+    "No deployments, live Habitica requests, credential enrollment, OAuth execution or external publication were performed.",
+    "External MCP/OAuth, Cloudflare and competitive UX source claims remain supplied dated research requiring fresh official verification during task research.",
+    "The migration checks planning structure and selected implementation facts; complete source-wide feature verification and inherited prose cleanup remain outside the migration verdict."
+  ],
+  "findings": [
+    {
+      "id": "F-inherited-document-prose",
+      "observation": "Full strict prose validation reports 533 inherited findings in 12 current-state documents.",
+      "status": "open",
+      "task_id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8"
+    },
+    {
+      "id": "F-x-client-end-user-fallback",
+      "observation": "HabiticaApiClient.CreateRequest uses the active user ID when ClientHeaderValue is empty; the existing highest-priority contract preserves the unresolved creator configuration decision.",
+      "status": "open",
+      "task_id": "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e"
+    }
+  ],
+  "id": "A-feb1e945-39bf-4408-8d75-8b0520784e21",
+  "recorded_at": "2026-10-14T04:41:15.840277+00:00",
+  "scope": "planning-structure-migration",
+  "source_fingerprints": {
+    "AGENTS.md": "a045e10d998912ab296ac9ac5f2eece0c41910ee889d3a250fec1e431d99d37f",
+    "Directory.Packages.props": "65c08caa280c0eb2bba4598654bb25b0e336e693aad5766445bbefc55663c387",
+    "README.md": "dac98428dc80c197f0253f975bb77631ca198a5a8500474ac94f1f09435e6613",
+    "build.sh": "75d83b99f6dcdd026b2ab31ea90b1c31b67842b80cc0e85070ef1ce777dd07d3",
+    "global.json": "9fd12b1529d47d4b26921fc36fc85fe821f2ab83149b5c52994d97e41d117d6c",
+    "run-app.sh": "be58ac40fbd1f6414d9df2aaa686bdd1f4b5839233e8648a1cbbd0b8f72fc0b0",
+    "skill-tree/documents/ai-app-testing.md": "3f96e891260bff1cb34c275ceaf26a965fac4db4cbf623a35e9e161800674154",
+    "skill-tree/documents/build-and-release.md": "34fca4d9adffcf43d0d1d5d87ee0f63417bd02b51c9ecb07fd0ed11c53816c75",
+    "skill-tree/documents/companion-first-mcp-research.md": "b0899546535e7596176e418f6e47e1a7dc5d882f0f16108d95e0629ca4838d56",
+    "skill-tree/documents/cron.md": "296a7ee5fe99c50b3b6fb0496c88216fb2fc894eddcfe8de6106035334c34ace",
+    "skill-tree/documents/dependencies.md": "d069b51c1b8e7b9dfa743c95c342d9b770016a50c79551fa838ef462dd9d4b6c",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "a274a238ff437816e5545c6e7f1bda282309d842506a79b2957b08c4db7e1013",
+    "skill-tree/documents/documents-snapshot.md": "4a8d502bb6a5000dd82d529de0552375f60e621b20d66e2aaf5a6eb2e5eb872f",
+    "skill-tree/documents/features.md": "6497c91ff9757ac55e2ec58bf7875442e23273e04c786dca618c8edccfded30e",
+    "skill-tree/documents/future.md": "d218dade7ac53df6e3df19f0b684c3635b6e7048bbed7d16d75d6686b6ab18ec",
+    "skill-tree/documents/habitica-api.md": "32845048a247c9fedbde34870f2bf6b05441aa47a22db61c4c510cb339ef2814",
+    "skill-tree/documents/habitica-deeplinks.md": "37809f11086587ab474caeab319939e444de7701e9ce19301b8e00ebc1bf9fc7",
+    "skill-tree/documents/habitica-tool-references.md": "71f6f5e98fa9602350f41627f8d5d763f47558df39df29bef392877480649466",
+    "skill-tree/documents/project.md": "86fa8e18c37be9336af912c8c5c49020250f412b23b6f7f4c6dd4754518e62ba",
+    "skill-tree/documents/repository-map.md": "0b464ed14c84ce78329164d6f67cbdf4744e10f826a5c2c0a9daede07602dbc2",
+    "skill-tree/documents/rules.md": "95a8b6539e008b0a77a8a88cf2933324c105a3c003dec1a1c19e080cca83c958",
+    "skill-tree/documents/skill-tree-workflow-proposals.md": "1ef3b8f36a8f001c836bbce590303c3849ab5c88411c9269a7051164c4f6c84e",
+    "skill-tree/documents/technical.md": "b1c2558f1277c4df3bdb5528fdafe21524755e3146bd82eeb23fd648decfd8e5",
+    "skill-tree/documents/testing.md": "929ab264d42ca19a1ef7ce8fdcac369fea9acbab85bbbfb3b5771e1d85d100c3",
+    "skill-tree/documents/ux-ui-manifest.md": "ffca2b2bb26ef432d65e16b0dfa496b133f355619f6ff525d10fbe6fdc9e0dff",
+    "skill-tree/history/planning-import.json": "3e0cd0a97f0886eb31f6e939f98011cc2364e820097ef527a9e6313f9705a8eb",
+    "src/Habitica.Api/HabiticaApiClient.cs": "0e167a58fd37a26b1155a2c3df245b4b855588eb788aeeb007dfcedca5c76374",
+    "src/Habitica.Domain/Tasks/TaskSnapshot.cs": "c2993c58a2d5bc89d0a79e27aea2970b412e3ab5d4cbce4ce435ad4c2569368c",
+    "src/Habitica.Storage/StorageKeys.cs": "0d7573bfe765a2d1204e6589fcb77c54e3fcb6f6eddddad03175c01ab7d104b7",
+    "src/Habitica.Storage/TaskSnapshotStore.cs": "8bcfd83bad5ac237869c5fcdc942711078da107a945d56c4f4888281ac45ec5f",
+    "src/Habitica.WebApp/Pages/PrivacyPage.razor": "c03c79b0efde9d917fafff60ce577a7d2d84d9257aa9be004ed377125343f586",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "8d89cf0c1210ba3f651052f6a06b9f8002697feb1d64c869236fcd0f9a959f2a",
+    "src/Habitica.WebApp/Pages/TasksPage.razor": "f9c6fbc5a8213441cd48843582e00fddb946d40de5ba65931a04210d06fe093b",
+    "src/Habitica.WebApp/Program.cs": "7146232f89ca621c8cc6c24f7ab8724b9ee41964bdef6e4cab13c4664e0d782e",
+    "src/Habitica.WebApp/package.json": "214cc3d44c28eebc447028224fef5d4387cb922397fcb87b773f97524b7ea0ad",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "39b0aa8ccd1f7134f928b60d1278001e9b98866d31025b5dd5aa27c09026836e",
+    "tests/Habitica.Api.Tests/HabiticaApiClientTests.cs": "02d7debc09baae2fdf7993e5036edb6061fd685d0794909ce1ebdb8962e907ee",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "7fe0439ea8992905c4249a98ecfbec0096c018b767f106fe419fc5a79bc3c78a",
+    "wrangler.toml": "fbfd9d2381800c930e9b9a42d575ee35f7b5e984bda1c2a3427a2b637205e8e6"
+  },
+  "sources": [
+    "README.md",
+    "AGENTS.md",
+    "global.json",
+    "Directory.Packages.props",
+    "build.sh",
+    "run-app.sh",
+    "wrangler.toml",
+    "src/Habitica.WebApp/package.json",
+    "src/Habitica.WebApp/Program.cs",
+    "src/Habitica.Domain/Tasks/TaskSnapshot.cs",
+    "src/Habitica.Storage/TaskSnapshotStore.cs",
+    "src/Habitica.Storage/StorageKeys.cs",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+    "src/Habitica.Api/HabiticaApiClient.cs",
+    "src/Habitica.WebApp/Pages/PrivacyPage.razor",
+    "src/Habitica.WebApp/Pages/TasksPage.razor",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor",
+    "tests/Habitica.Api.Tests/HabiticaApiClientTests.cs",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj",
+    "skill-tree/documents/ai-app-testing.md",
+    "skill-tree/documents/build-and-release.md",
+    "skill-tree/documents/companion-first-mcp-research.md",
+    "skill-tree/documents/cron.md",
+    "skill-tree/documents/dependencies.md",
+    "skill-tree/documents/deploy-cloudflare-pages.md",
+    "skill-tree/documents/documents-snapshot.md",
+    "skill-tree/documents/features.md",
+    "skill-tree/documents/future.md",
+    "skill-tree/documents/habitica-api.md",
+    "skill-tree/documents/habitica-deeplinks.md",
+    "skill-tree/documents/habitica-tool-references.md",
+    "skill-tree/documents/project.md",
+    "skill-tree/documents/repository-map.md",
+    "skill-tree/documents/rules.md",
+    "skill-tree/documents/skill-tree-workflow-proposals.md",
+    "skill-tree/documents/technical.md",
+    "skill-tree/documents/testing.md",
+    "skill-tree/documents/ux-ui-manifest.md",
+    "skill-tree/history/planning-import.json"
+  ]
+}

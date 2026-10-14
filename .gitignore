@@ -66,3 +66,9 @@ Thumbs.db
 
 # Operator-filled seed scripts (contain personal user IDs)
 /migrations/seed_app_admins*
+
+# Skill Tree transient state
+/skill-tree/.writer-lock
+/skill-tree/.transaction.json
+/skill-tree/artifacts/
+**/__pycache__/

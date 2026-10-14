@@ -2,7 +2,7 @@
 
 Third-party companion client for Habitica power users. The project is focused on local data analysis, explainable recommendations, and safe assisted actions rather than replacing the official Habitica app.
 
-Current status: web app implemented and expanding through the active `FUTURE.md` queue. The repository contains a Blazor WebAssembly PWA shell with Habitica credential sign-in, staged refresh, cached account/task/party/inventory snapshots, local dashboards, task and spell actions with freshness gates, pets and mounts planning, shared party quest planning, diagnostics, and local/cloud data controls.
+Current status: web app implemented and expanding through the active `skill-tree/documents/future.md` queue. The repository contains a Blazor WebAssembly PWA shell with Habitica credential sign-in, staged refresh, cached account/task/party/inventory snapshots, local dashboards, task and spell actions with freshness gates, pets and mounts planning, shared party quest planning, diagnostics, and local/cloud data controls.
 
 ## Current major features
 
@@ -25,6 +25,8 @@ Current status: web app implemented and expanding through the active `FUTURE.md`
 - sign-out for the current tab session and clear-local-data controls
 
 ## Active future work areas
+
+The Companion-first roadmap and MCP/OAuth integration are planned in [future.md](skill-tree/documents/future.md). E01–E14 require research/decomposition; implementation contracts retain explicit gates. The [research reference](skill-tree/documents/companion-first-mcp-research.md) is not a second queue.
 
 - party quest workspace modes and history analytics
 - skill macros with dry-run previews
@@ -74,7 +76,7 @@ dotnet build Habitica.sln -m:1 -nodeReuse:false
 
 ## Deploy
 
-For Cloudflare Pages deployment, use [`docs/DEPLOY_CLOUDFLARE_PAGES.md`](docs/DEPLOY_CLOUDFLARE_PAGES.md). This is the simplest hosted path for the Blazor WebAssembly app and works without a custom domain.
+For Cloudflare Pages deployment, use [`skill-tree/documents/deploy-cloudflare-pages.md`](skill-tree/documents/deploy-cloudflare-pages.md). This is the simplest hosted path for the Blazor WebAssembly app and works without a custom domain.
 
 ## Habitica API header note
 
@@ -82,13 +84,15 @@ The app reads `Habitica:XClientHeader` from [`src/Habitica.WebApp/wwwroot/appset
 
 ## Project documents
 
-- `PROJECT.md` - product context and goals
-- `TECHNICAL.md` - stack, architecture, storage, sync, and deployment rules
-- `FEATURES.md` - implemented feature behavior, partial limitations, and non-active planned context
-- `FUTURE.md` - single active implementation queue and validated backlog
-- `HABITICA_API.md` - Habitica API integration rules
-- `docs/AI_APP_TESTING.md` - browser UI/UX testing guide for AI agents
-- `RULES.md` - repository and AI-agent workflow rules
+[Document manifest](skill-tree/skill-tree.json) indexes canonical documentation, queue state and audit freshness. [Repository map](skill-tree/documents/repository-map.md), [build and release](skill-tree/documents/build-and-release.md), [testing](skill-tree/documents/testing.md) and [dependencies](skill-tree/documents/dependencies.md) provide toolchain context.
+
+- `skill-tree/documents/project.md` - product context and goals
+- `skill-tree/documents/technical.md` - stack, architecture, storage, sync, and deployment rules
+- `skill-tree/documents/features.md` - current implemented feature behavior and partial limitations
+- `skill-tree/documents/future.md` - single active implementation queue and validated backlog
+- `skill-tree/documents/habitica-api.md` - Habitica API integration rules
+- `skill-tree/documents/ai-app-testing.md` - browser UI/UX testing guide for AI agents
+- `skill-tree/documents/rules.md` - repository and AI-agent workflow rules
 
 ## Notes
 
