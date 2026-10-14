@@ -105,6 +105,7 @@ export async function authorize(request: Request, env: AuthEnv): Promise<Respons
 
 export async function cleanupProfile(env: AuthEnv, profileId: string, connectionId: string): Promise<void> {
   await env.HABITICA_INTEGRATION_DB.batch([
+    env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_read_state WHERE profile_id=? AND connection_id=?").bind(profileId, connectionId),
     env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM linking_tickets WHERE profile_id=? AND connection_id=?").bind(profileId, connectionId),
     env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM consent_links WHERE profile_id=? AND connection_id=?").bind(profileId, connectionId),
   ]);

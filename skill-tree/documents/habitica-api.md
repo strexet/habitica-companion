@@ -1264,3 +1264,7 @@ Before shipping the client:
 - Destructive and premium-currency operations require explicit confirmation.
 - Unknown fields do not break parsing.
 - Missing optional fields do not break parsing.
+
+## Optional Auth read bootstrap
+
+The integration Auth service uses existing v3 GET contracts: full `/user` for computed stat helpers and `/tasks/user?dueDate=<current UTC timestamp>` for current server-evaluated due state. The `completedTodos` filter supplies only the thirty most recent completed Todos. Stable task lookup searches the verified task set rather than assuming an undocumented direct endpoint. Responses expose narrow read models and explicit legacy Habitica provenance. Redirects never forward credentials; 401/403 requires repair and 429 or exhausted remaining quota blocks subsequent connection reads until the recorded cooldown. No background polling or upstream mutation exists in the read bootstrap.

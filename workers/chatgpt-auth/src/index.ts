@@ -1,3 +1,4 @@
+import { readOperation } from "./reads";
 import { WorkerEntrypoint } from "cloudflare:workers";
 import { vaultRoute, boundedJson, boundedText, VaultError } from "./vault";
 import { ticketRoute, networkAttempts } from "./linking";
@@ -19,6 +20,7 @@ export class AuthService extends WorkerEntrypoint<AuthEnv> {
         return Response.json(await validatedToken(this.env, input.resource, input.token), { headers });
       } catch { return Response.json({ error: "authorization_unavailable" }, { status: 503, headers }); }
     }
+    if (path === "/read" && request.method === "POST") return readOperation(request, this.env);
     // Credential-bearing operations are never exposed by the public handler.
     return Response.json({ error: "unauthorized" }, { status: 401, headers });
   }

@@ -1,0 +1,59 @@
+{
+  "task_id": "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
+  "checks": [
+    {
+      "check": "Both Worker bundles and typechecks",
+      "result": "pass"
+    },
+    {
+      "check": "Worker fixtures",
+      "result": "pass",
+      "passed": 31,
+      "covers": [
+        "SDK initialization, output-schema checks, strict input validation and tool metadata",
+        "Opaque two-account identity; account stat omission for malformed optional fields",
+        "Confirmed Daily due state; unfinished Todo filtering; bounded completed Todo lookup",
+        "Minimum tool scopes, hostile Origins, selectors and unknown mutation tools denied",
+        "401/403 credential repair, 429 Retry-After, success quota exhaustion, concurrent late-success cooldown preservation",
+        "Upstream redirect rejection; no automatic upstream retry; no credentials in tool results or captured logs"
+      ]
+    },
+    {
+      "check": "Inspector CLI 1.0.2",
+      "result": "pass",
+      "results": [
+        {
+          "method": "tools/list",
+          "exit_code": 0
+        },
+        {
+          "method": "tools/call get_profile",
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "check": "PWA solution build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Rebuilt app browser behavior",
+      "result": "pass",
+      "observed": "Privacy page renders default browser-only and explicit optional integration consent and cleanup boundaries."
+    }
+  ],
+  "sources": [
+    "https://developers.openai.com/plugins/build/auth",
+    "https://github.com/modelcontextprotocol/typescript-sdk/blob/v1.x/docs/server.md",
+    "https://github.com/modelcontextprotocol/inspector/tree/v1/main"
+  ],
+  "limitations": [
+    "Only local synthetic credentials and mocked Habitica responses were used.",
+    "MCP task results are explicitly legacy Habitica bootstrap views, separate from Companion projects, goals and completed history.",
+    "Locked SDK protocol negotiation extends through 2025-11-25; Inspector v2 and real ChatGPT require rollout qualification.",
+    "Shipped enrollment and OAuth flags remain disabled; no remote activation occurred.",
+    "Persistent cooldown/repair rows are operational state, not a completed audit-retention implementation."
+  ]
+}
