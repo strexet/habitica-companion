@@ -1,29 +1,31 @@
-# Skill Tree Workflow Proposals
+# Skill Tree Workflow Integration
 
-Status: upstream proposals only; no Skill Tree source changes or Companion implementation selection.
-
-Evidence baseline: Skill Tree revision `0f91954`, including the structural refactor `91f0bd1`, next-action handoff `973084b`, evidence-based limits `e8ae9a9`, operation classification `6ac4399`, and declarative-document contract `0f91954`.
-
-## Explicit migration and provenance
-
-The current metadata contract requires explicit setup and provides no conversion helper. Existing Companion contracts require stable IDs, integer priorities, imported Pending provenance, blocking statuses, path relocation and dependency mapping. Add an explicit dry-run/apply migration command with a source-hash guard, an identity map, checkpoint preservation and a compact import receipt. Migration must never assert Process Pending research, accepted product decisions or completed task outcomes.
+Status: installed generic workflows from Skill Tree source commit `e8448615cc853ec58f8b1fd7df05732b60e650a0`. Companion roadmap execution and product implementation require separate task selection.
 
 ## Dependency mapping during decomposition
 
-`skill-tree/common/scripts/workflow-state.py` assigns new T- IDs inside `process`; `depends_on` accepts existing T- IDs only. Companion E02–E07 decomposition needs dependencies between newly split tasks and existing MCP contracts. Add payload-local task keys resolved atomically into generated IDs, plus explicit linking from a retained Pending scope gate to promoted required tasks. Validate dangling references and cycles before saving. Keep unresolved epic gates blocked until mapping and required evidence exist.
+Process Pending accepts a lowercase payload-local `key` for new or reused tasks. `depends_on` accepts existing T- IDs and references such as `@storage`, including forward references. Processing resolves stable IDs for the entire batch and rejects unknown/duplicate keys, missing dependencies and cycles before saving queue, index or checkpoint changes. The receipt returns `task_keys`; persisted task headers contain T- IDs only.
 
-## Target manifest and index validation
+Companion E02–E07 decomposition can express dependencies between newly split tasks and existing MCP contracts. Existing Pending epic gates stay unresolved until researched tasks, required edges and completion evidence exist. No processing or implementation is started by installation.
 
-`validate-repository-documentation.py` checks required file existence and task structure. The validator does not parse or compare the target manifest and `future.json`. The target manifest also emits an empty installed-skill catalog. Extend validation to check JSON schemas, source hashes, index agreement, installed workflow entrypoints, dependency closure and preserved active state. Populate installed-skill navigation without requiring the Skill Tree source checkout. Companion agents need a trustworthy document map and exact task identity lookup.
+## Manifest and index validation
 
-## Prose lint with useful diagnostics
+The target manifest catalogs all eight repository-local installed generic Skill Tree packages. Repository validation checks JSON structure, repository-relative paths, canonical source-digest coverage/freshness, installed entrypoints/resources, task-index agreement, queue hashes, required dependencies/cycles and active-run identities. Validation reads persisted state without refreshing or replacing checkpoints. Stale audit coverage produces a warning; recorded historical verdicts remain unchanged.
 
-`validate-document-rules.py` rejects every occurrence of words such as `that`, `this` and `my`; the history pattern also flags legitimate `may be used to` wording. Product names such as `My Day` require escaping for lint despite exact naming. Add line/column locations, separate warning/error categories, quoted-label handling and an explicit scoped legacy cleanup mode. Keep English and declarative-contract requirements; avoid forcing broad wording changes during a structural migration.
+## Located prose diagnostics
 
-## Snapshot scope and local contracts
+Diagnostics report rule, severity, file, line, column and offending source excerpt. Definite language/naming/personal-pronoun/historical-narrative violations are errors; ambiguous demonstratives and unquoted title-case labels are review warnings. Quoted labels, code and technical identifiers retain exact syntax. Relative/complement clauses containing `that` and current-purpose wording such as `may be used to` remain valid.
 
-The Companion snapshot contract supports one file, selected files and directories, a root output archive, and `.snapshot-YYYY-MM-DD-HH-MM.md` members. The refreshed generic helper accepts a repository target and optional output only, emits kebab-case snapshot members, and defaults to ignored artifacts. Add explicit include/scope and naming/output-policy options so the helper can honor repository-owned contracts. Preserve explicit-request-only snapshot creation and avoid including unrelated workflow packages or evidence.
+Default lint fails on errors; `--warnings-as-errors` and strict repository validation also fail on warnings. Existing current-state prose cleanup remains deferred in Backlog; installing the validator does not rewrite product contracts.
+
+## Scoped snapshots
+
+The snapshot helper accepts repeated `--include` file/directory selections, `--member-style dotted`, `--output-dir root`, explicit output paths and timestamps. Directory scopes select relevant tracked Markdown; an explicitly selected new file may be untracked. Overlapping selections deduplicate; missing/excluded/external selections reject the whole request before archive creation. Live documents remain unchanged and member notices identify source paths.
+
+The default helper uses kebab-case members and ignored artifacts. [documents-snapshot.md](documents-snapshot.md) owns the Companion root-output and dotted-member contract. Snapshot creation still requires an explicit developer request.
 
 ## Validation boundaries
 
-The migration checks structure, links, index consistency, installed package contents and selected source claims. Application builds, application tests, deployment, live Habitica calls, OAuth compatibility and hands-on competitor/mobile usability remain outside the migration verdict. Current-state prose cleanup remains a deferred Companion Backlog item; upstream proposals remain reference material.
+Source qualification passes 79 Python and 24 Node behavioral/installation/provider tests, synchronization, strict source validation and installer dry runs. The ancillary quick validator lacks PyYAML; strict source validation checks package frontmatter and resource integrity.
+
+Companion integration checks installed package contents, planning metadata consistency, scoped prose and snapshot dry-run selection. Application builds/tests, deployments, live Habitica calls, OAuth compatibility and mobile usability remain outside workflow-helper qualification.

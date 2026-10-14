@@ -20,4 +20,4 @@
 
 ## Planning toolchain
 
-Eight generic Skill Tree packages are copied into `.agents/skills/`, including Add Pending, Work Through Next and Implement All. Installed packages include standalone references and helpers; execution requires no source-repository checkout. Python 3 executes workflow helpers. Skill Tree source revision: `0f91954`; generated package resources are owned by Skill Tree and require synchronized upstream updates.
+Eight generic Skill Tree packages are copied into `.agents/skills/`, including Add Pending, Work Through Next and Implement All. Installed packages include standalone references and helpers; execution requires no source-repository checkout. Python 3 executes workflow helpers. Skill Tree source revision: `e8448615cc853ec58f8b1fd7df05732b60e650a0`; generated package resources are owned by Skill Tree and require synchronized upstream updates.

@@ -23,4 +23,6 @@ python3 .agents/skills/skill-tree-repo-documentation-audit/scripts/workflow-stat
 git diff --check
 ```
 
-Default task selection is expected to stop on the highest-priority blocked `x-client` contract. Structural validation and indexed state consistency never establish implementation readiness, external compatibility or completed acceptance. The strict prose validator applies separately; inherited prose findings require scoped cleanup and remain audit coverage gaps.
+Default task selection is expected to stop on the highest-priority blocked `x-client` contract. Metadata validation checks manifest paths/hashes, the installed skill catalog, index agreement, dependency closure and checkpoint identities without changing state. Structural validation and indexed state consistency never establish implementation readiness, external compatibility or completed acceptance. The strict prose validator applies separately; inherited prose findings require scoped cleanup and remain audit coverage gaps.
+
+Prose lint reports located errors and review warnings. `--warnings-as-errors` or repository `--strict` elevates warnings for strict qualification. Scoped plan validation avoids rewriting unrelated current-state prose.

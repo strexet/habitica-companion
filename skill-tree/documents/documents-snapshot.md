@@ -97,7 +97,7 @@ Recommended checks:
 
 ```bash
 git ls-files '*.md'
-rg -n "src/Habitica|tests/Habitica|Habitica\\.|Cloudflare|wrangler|Blazor|Razor|Dapper|LiteDB|IndexedDB|Habitica API|AI-agent|workflow|deployment|feature|architecture" *.md docs -g '*.md'
+rg -n "src/Habitica|tests/Habitica|Habitica\\.|Cloudflare|wrangler|Blazor|Razor|Dapper|LiteDB|IndexedDB|Habitica API|AI-agent|workflow|deployment|feature|architecture" README.md AGENTS.md skill-tree/documents -g '*.md'
 ```
 
 Also inspect headings when needed:
@@ -112,6 +112,18 @@ done
 Do not claim relevance that was not checked.
 
 For explicit single-file snapshots, inspect that file directly. It is acceptable for the file to document this snapshot workflow itself; that is repository-specific AI-agent workflow information.
+
+## Installed helper
+
+The installed Skill Tree helper supports explicit file/directory selection and the repository naming/output contract. From the repository root:
+
+```sh
+python3 .agents/skills/skill-tree-create-documents-snapshot/scripts/create-documentation-snapshot.py . --include skill-tree/documents/future.md skill-tree/documents/technical.md --member-style dotted --output-dir root --dry-run
+```
+
+Pass identical scope and naming options for archive creation, removing `--dry-run` only after an explicit snapshot request. Directory scopes include relevant tracked Markdown; an explicitly selected new file may be untracked. Missing or excluded selections reject the request before archive creation.
+
+Use `--output <archive.zip>` for a requested archive name or the single-file naming convention below. Use `--timestamp YYYY-MM-DD-HH-MM` when the current user-local snapshot timestamp requires explicit control. Existing archives require a different destination. No snapshot archive is created by ordinary skill installation or documentation updates.
 
 ## Archive Naming
 
