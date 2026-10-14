@@ -21,23 +21,23 @@
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b"
     },
     "current_task_id": null,
-    "cycle_signature": "e1abb58e6d90f60f6be6d7bf4ae5555374fb870fde12752f877776e55ff2318e",
+    "cycle_signature": "3052be101751197128769ac334745056f8aa656e117543231c38a7c3bd8cb10e",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Select required task or finish root",
+    "next_action": "Apply owner decisions, decompose required E02/E03/E04/E05/E07 scope, attach promoted dependencies to T-4a1de222-156a-52cf-8966-262a2c8216ed and resume the initial snapshot.",
     "partial_work": [
-      "Completed and committed the Auth/MCP scaffold and credential vault.",
-      "OAuth linking and resource validation source are implemented; local OAuth fixtures pass.",
-      "Settings integration consent and tab-local management client are implemented; targeted WebApp tests pass.",
-      "Milestone remains open for full regression checks, browser consent review, lifecycle cleanup qualification and documentation."
+      "OAuth/browser consent milestone completed in 6c1221f and e43a90d.",
+      "Read-only MCP milestone completed in 226abe2; 31 Worker tests, Inspector CLI and app build/browser checks pass.",
+      "T-4a1de222-156a-52cf-8966-262a2c8216ed remains blocked on canonical workspace and command API decisions.",
+      "E02/E03/E04/E05/E07 received scoped source research; Pending identities remain retained until owner decisions permit executable decomposition."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
       "P-23092c14-bc50-42c9-948f-201991e9594f"
     ],
-    "phase": "resume-parent",
+    "phase": "blocked-material-decision",
     "processing_results": [
       {
         "created_ids": [
@@ -76,6 +76,41 @@
         "task_keys": {
           "browser-consent": "T-2f23b014-4b4d-46e5-8986-49abb1066bf3"
         }
+      },
+      {
+        "created_ids": [],
+        "dispositions": {
+          "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07": {
+            "reason": "Executor opt-in, dedicated workspace storage and lease ownership require owner selection from companion-workspace-contract.md.",
+            "status": "retained"
+          },
+          "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178": {
+            "reason": "Command conflicts and unknown-outcome execution policy require owner selection from companion-workspace-contract.md before journal decomposition.",
+            "status": "retained"
+          },
+          "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035": {
+            "reason": "Cloud audience, server-readable data, storage authority and history retention require owner selection from companion-workspace-contract.md.",
+            "status": "retained"
+          },
+          "P-9d3fb820-05c3-525b-8769-85c5423d2f53": {
+            "reason": "Canonical relationships and goal progress require owner selection from companion-workspace-contract.md before executable domain decomposition.",
+            "status": "retained"
+          },
+          "P-bbb755c5-37d7-5637-862d-17faa8e12f99": {
+            "reason": "Projection adoption and external deletion policies require owner selection from companion-workspace-contract.md before reconciliation implementation.",
+            "status": "retained"
+          }
+        },
+        "id": "PR-4f28c8f2-2e5a-4ec4-959a-a165198c38f1",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-9d3fb820-05c3-525b-8769-85c5423d2f53",
+          "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035",
+          "P-bbb755c5-37d7-5637-862d-17faa8e12f99",
+          "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178",
+          "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -103,10 +138,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": null
+    "stop_reason": "Awaiting owner selection of workspace privacy, domain, deletion, retention and executor defaults in companion-workspace-contract.md."
   },
   "format": "skill-tree-future",
-  "source_hash": "958ca957c40d4bba37fb37a2aee612dca6f56a3053e3159f1a33c9c659436dbb",
+  "source_hash": "a012521c1f781ab3ddcb1fb21e8508c523b8ddfc342e28cbc01def9379833a20",
   "tasks": [
     {
       "depends_on": [],
@@ -139,7 +174,7 @@
     {
       "depends_on": [],
       "id": "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035",
-      "line": 140,
+      "line": 143,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -153,7 +188,7 @@
     {
       "depends_on": [],
       "id": "P-bbb755c5-37d7-5637-862d-17faa8e12f99",
-      "line": 172,
+      "line": 178,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -167,7 +202,7 @@
     {
       "depends_on": [],
       "id": "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178",
-      "line": 204,
+      "line": 213,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -181,7 +216,7 @@
     {
       "depends_on": [],
       "id": "P-676c0cb1-82b5-51e1-92c1-74303b58c59d",
-      "line": 236,
+      "line": 248,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -195,7 +230,7 @@
     {
       "depends_on": [],
       "id": "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07",
-      "line": 265,
+      "line": 277,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -209,7 +244,7 @@
     {
       "depends_on": [],
       "id": "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
-      "line": 297,
+      "line": 312,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -223,7 +258,7 @@
     {
       "depends_on": [],
       "id": "P-c8632138-39c6-5797-8e03-a3414824ee96",
-      "line": 326,
+      "line": 341,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -237,7 +272,7 @@
     {
       "depends_on": [],
       "id": "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
-      "line": 358,
+      "line": 373,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -251,7 +286,7 @@
     {
       "depends_on": [],
       "id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
-      "line": 387,
+      "line": 402,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -265,7 +300,7 @@
     {
       "depends_on": [],
       "id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
-      "line": 419,
+      "line": 434,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -279,7 +314,7 @@
     {
       "depends_on": [],
       "id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
-      "line": 448,
+      "line": 463,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -293,7 +328,7 @@
     {
       "depends_on": [],
       "id": "P-29925105-1015-5ced-8844-d56fa47e33c9",
-      "line": 480,
+      "line": 495,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -309,7 +344,7 @@
         "T-53352a18-54d2-57b6-accc-91f8e6dfad13"
       ],
       "id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-      "line": 513,
+      "line": 528,
       "parent_pending_ids": [
         "P-90b811d4-3aea-509c-8dca-84d5c892a637"
       ],
@@ -327,7 +362,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
-      "line": 703,
+      "line": 718,
       "parent_pending_ids": [
         "P-1590c3c7-25e6-589e-8efb-91f35d873b4e"
       ],
@@ -345,7 +380,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-      "line": 834,
+      "line": 849,
       "parent_pending_ids": [
         "P-d0950eec-bfbf-561f-b192-dcf8dde67488"
       ],
@@ -371,7 +406,7 @@
         "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"
       ],
       "id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "line": 945,
+      "line": 960,
       "parent_pending_ids": [
         "P-46dde168-2e75-53fd-b2c0-0c1769f7711d"
       ],
@@ -389,7 +424,7 @@
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 1071,
+      "line": 1086,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -405,7 +440,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1226,
+      "line": 1241,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -419,7 +454,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1263,
+      "line": 1278,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -433,7 +468,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1300,
+      "line": 1315,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -447,7 +482,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1433,
+      "line": 1448,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -461,7 +496,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1471,
+      "line": 1486,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -475,7 +510,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1505,
+      "line": 1520,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -489,7 +524,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1540,
+      "line": 1555,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -503,7 +538,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1574,
+      "line": 1589,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -517,7 +552,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1612,
+      "line": 1627,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -531,7 +566,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1639,
+      "line": 1654,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -545,7 +580,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1661,
+      "line": 1676,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -559,7 +594,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1688,
+      "line": 1703,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

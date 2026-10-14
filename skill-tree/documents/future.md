@@ -137,6 +137,9 @@ Data/model behavior:
 Expected behavior:
 - Approved schema/use-case contract, migration examples, invariants, round-trip fixtures, backward compatibility plan; no dependency on Habitica fields for Companion entity identity.
 
+Processing blocker:
+- Canonical relationships and goal progress require owner selection from companion-workspace-contract.md before executable domain decomposition.
+
 ### E03 Local-first persistent storage, migration, and optional cloud workspace
 
 ```yaml
@@ -168,6 +171,9 @@ Edge cases:
 
 Expected behavior:
 - Documented local-only vs hosted guarantee levels, migratable schema, no lost preexisting data, explicit server-readability consent, migration rehearsals and recovery tests.
+
+Processing blocker:
+- Cloud audience, server-readable data, storage authority and history retention require owner selection from companion-workspace-contract.md.
 
 ### E04 Habitica projection and reconciliation adapter
 
@@ -201,6 +207,9 @@ Edge cases:
 Expected behavior:
 - Companion-completed Todo absent in Habitica is safely created and completed when reconcilable; tests show no silent duplicate creates/scores and no resurrection loops.
 
+Processing blocker:
+- Projection adoption and external deletion policies require owner selection from companion-workspace-contract.md before reconciliation implementation.
+
 ### E05 Durable command journal and typed failure/recovery engine
 
 ```yaml
@@ -232,6 +241,9 @@ Runtime behavior:
 
 Expected behavior:
 - Fault-injection tests for offline/timeout/429/5xx/concurrent tabs; accurately distinguished local save vs game sync; no blind retry of non-idempotent mutation.
+
+Processing blocker:
+- Command conflicts and unknown-outcome execution policy require owner selection from companion-workspace-contract.md before journal decomposition.
 
 ### E06 Early-slowdown adaptive limiter and automatic controlled recovery
 
@@ -293,6 +305,9 @@ Edge cases:
 
 Expected behavior:
 - Simulated restart/redeploy/outage does not silently lose accepted commands; ambiguous upstream effects remain blocked for reconciliation rather than double-applied.
+
+Processing blocker:
+- Executor opt-in, dedicated workspace storage and lease ownership require owner selection from companion-workspace-contract.md.
 
 ### E08 Mobile-first task capture, edit, and navigation redesign
 
