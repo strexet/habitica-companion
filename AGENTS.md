@@ -1,22 +1,7 @@
 <!-- BEGIN skill-tree-skills -->
-These Skill Tree repository skills may be installed:
-
-- `skill-tree-repo-documentation` handles general repository documentation initialization, audit, and repair.
-- `skill-tree-repo-documentation-audit` handles general documentation audit against current code, tests, configuration, and docs.
-- `skill-tree-process-future-pending` handles general `Process pending` and `Process pending tasks` workflows.
-- `skill-tree-implement-next-future-task` handles general `Implement next` and `Implement next: <task name>` workflows.
-- `skill-tree-create-documents-snapshot` handles general explicit-request-only Markdown documentation snapshots.
-- `skill-tree-unity-repo-documentation` handles Unity repository documentation initialization, audit, and repair.
-- `skill-tree-unity-repo-documentation-audit` handles Unity documentation audit against current Unity code, assets, settings, tests, and docs.
-- `skill-tree-unity-process-future-pending` handles Unity `Process pending` workflows.
-- `skill-tree-unity-implement-next-future-task` handles Unity `Implement next` workflows.
-- `skill-tree-unity-create-documents-snapshot` handles explicit-request-only Unity Markdown documentation snapshots.
-
-Prefer Unity-prefixed skills for Unity repositories. Prefer non-Unity skills for other repositories.
-
-`Implement next` never selects from `Pending Queue` or `Backlog`. It never falls back to Backlog when a named prioritized task is absent.
-
-Blocking unresolved questions in a prioritized task stop implementation until the owner answers them.
-
-For `Process pending` or `Implement next`, read repository rules, current docs, task-relevant code, and tests before editing. Never use `FUTURE.md` as the sole implementation source.
+Skill Tree navigation resides in skill-tree/skill-tree.json. Applicable repository rules remain mandatory. Task definitions reside in skill-tree/documents/future.md; active state resides in future.json. Add Pending captures brief understood requests; Process Pending accepts IDs/names and produces researched tasks; standalone processing prints the prioritized list, presents one recommended next action last and waits for developer selection; explicitly launched Work Through Next/Implement All controllers continue automatically within root/snapshot boundaries; Implement Next selects the highest numeric priority or an exact prioritized ID/name. Work Through Next resolves one main and required dependencies. Implement All freezes an initial prioritized snapshot. Required clarifications stop execution. History provides evidence without granting authorization. Installed packages contain standalone contracts/helpers. No queue-only implementation or implicit publication/scheduling permission.
 <!-- END skill-tree-skills -->
+
+Before non-trivial changes, read `skill-tree/documents/rules.md` and the manifest. Habitica work requires `skill-tree/documents/habitica-api.md`; UI work requires `skill-tree/documents/ux-ui-manifest.md`. Verify current behavior against code and tests.
+
+Canonical documentation and task identities use the current Skill Tree structure. Imported contracts retain source intent and blockers; metadata creation does not count as Process Pending, implementation, validation or acceptance. MCP and Companion-first behavior remains planned. Use the installed generic Skill Tree packages for this Blazor repository.

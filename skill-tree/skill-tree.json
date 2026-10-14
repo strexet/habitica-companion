@@ -1,0 +1,179 @@
+{
+  "audit_scopes": [
+    {
+      "fresh": false,
+      "id": "A-feb1e945-39bf-4408-8d75-8b0520784e21",
+      "path": "skill-tree/history/audits/audit-a-feb1e945-39bf-4408-8d75-8b0520784e21.json",
+      "recorded_at": "2026-10-14T04:41:15.840277+00:00",
+      "scope": "planning-structure-migration"
+    },
+    {
+      "fresh": false,
+      "id": "A-810353ff-e4d3-43e4-8f3f-c7b974fcd846",
+      "path": "skill-tree/history/audits/audit-a-810353ff-e4d3-43e4-8f3f-c7b974fcd846.json",
+      "recorded_at": "2026-10-14T04:42:19.026375+00:00",
+      "scope": "planning-structure-migration"
+    },
+    {
+      "fresh": true,
+      "id": "A-0cf7d709-7bca-43f7-b4a0-8bf117b70162",
+      "path": "skill-tree/history/audits/audit-a-0cf7d709-7bca-43f7-b4a0-8bf117b70162.json",
+      "recorded_at": "2026-10-14T04:42:53.600822+00:00",
+      "scope": "planning-structure-migration"
+    }
+  ],
+  "catalog": [],
+  "files": [
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/ai-app-testing.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/build-and-release.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/companion-first-mcp-research.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/cron.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/dependencies.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/deploy-cloudflare-pages.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/documents-snapshot.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/features.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/future.json",
+      "role": "generated-index-and-active-state"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/future.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/habitica-api.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/habitica-deeplinks.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/habitica-tool-references.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/project.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/repository-map.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/rules.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/skill-tree-workflow-proposals.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/technical.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/testing.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
+      "path": "skill-tree/documents/ux-ui-manifest.md",
+      "role": "canonical"
+    }
+  ],
+  "format": "skill-tree-manifest",
+  "history": {
+    "audits": "skill-tree/history/audits",
+    "runs": "skill-tree/history/runs",
+    "task_outcomes": "skill-tree/history/task-outcomes.jsonl"
+  },
+  "latest_audit": {
+    "fresh": true,
+    "id": "A-0cf7d709-7bca-43f7-b4a0-8bf117b70162",
+    "path": "skill-tree/history/audits/audit-a-0cf7d709-7bca-43f7-b4a0-8bf117b70162.json",
+    "recorded_at": "2026-10-14T04:42:53.600822+00:00",
+    "scope": "planning-structure-migration"
+  },
+  "policy_references": [
+    "AGENTS.md",
+    "skill-tree/documents/rules.md"
+  ],
+  "queue": "skill-tree/documents/future.md",
+  "retention": {
+    "audits": 10,
+    "pins": [],
+    "runs": 10
+  },
+  "role": "target",
+  "source_digests": {
+    "skill-tree/documents/ai-app-testing.md": "3f96e891260bff1cb34c275ceaf26a965fac4db4cbf623a35e9e161800674154",
+    "skill-tree/documents/build-and-release.md": "34fca4d9adffcf43d0d1d5d87ee0f63417bd02b51c9ecb07fd0ed11c53816c75",
+    "skill-tree/documents/companion-first-mcp-research.md": "8960ec0a500487b505aede45709c86948380a7a647c80688b3e946866899eee0",
+    "skill-tree/documents/cron.md": "349b8ab8f9d35c3ec39eee649c2f67946159f1587987fdeefbfb93cc0afcbb65",
+    "skill-tree/documents/dependencies.md": "d069b51c1b8e7b9dfa743c95c342d9b770016a50c79551fa838ef462dd9d4b6c",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "a274a238ff437816e5545c6e7f1bda282309d842506a79b2957b08c4db7e1013",
+    "skill-tree/documents/documents-snapshot.md": "4a8d502bb6a5000dd82d529de0552375f60e621b20d66e2aaf5a6eb2e5eb872f",
+    "skill-tree/documents/features.md": "3f97b287e6816777ec101a1b8330fff4b09595fa3daad65e5969896473969d1d",
+    "skill-tree/documents/future.md": "5dd38315103225c3537db23835d57bbccb3c9a8e74ed25b91c1b5ce706bbf937",
+    "skill-tree/documents/habitica-api.md": "32845048a247c9fedbde34870f2bf6b05441aa47a22db61c4c510cb339ef2814",
+    "skill-tree/documents/habitica-deeplinks.md": "37809f11086587ab474caeab319939e444de7701e9ce19301b8e00ebc1bf9fc7",
+    "skill-tree/documents/habitica-tool-references.md": "365f6d395422ba7444fdfe3c61304ef0f86f5069be76066ba67f6378d1c0883b",
+    "skill-tree/documents/project.md": "86fa8e18c37be9336af912c8c5c49020250f412b23b6f7f4c6dd4754518e62ba",
+    "skill-tree/documents/repository-map.md": "0b464ed14c84ce78329164d6f67cbdf4744e10f826a5c2c0a9daede07602dbc2",
+    "skill-tree/documents/rules.md": "af24f995eda009e7502289176cf5255127ba61c7e7c5838b435b3d6221a0c1f9",
+    "skill-tree/documents/skill-tree-workflow-proposals.md": "1ef3b8f36a8f001c836bbce590303c3849ab5c88411c9269a7051164c4f6c84e",
+    "skill-tree/documents/technical.md": "901bb15b26988b94a98f0cfb3e14092ffac958662733fdf230d1c33a6d44f454",
+    "skill-tree/documents/testing.md": "929ab264d42ca19a1ef7ce8fdcac369fea9acbab85bbbfb3b5771e1d85d100c3",
+    "skill-tree/documents/ux-ui-manifest.md": "ffca2b2bb26ef432d65e16b0dfa496b133f355619f6ff525d10fbe6fdc9e0dff"
+  },
+  "state": "skill-tree/documents/future.json",
+  "validation_commands": [
+    "python3 .agents/skills/skill-tree-process-future-pending/scripts/validate-future-document.py skill-tree/documents/future.md --strict --format json",
+    "python3 .agents/skills/skill-tree-repo-documentation-audit/scripts/validate-repository-documentation.py . --format json",
+    "git diff --check"
+  ]
+}

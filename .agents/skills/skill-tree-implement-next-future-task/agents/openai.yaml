@@ -1,7 +1,7 @@
 interface:
   display_name: "Skill-Tree: Implement Next Task"
-  short_description: "Implement one prioritized FUTURE.md task"
-  default_prompt: "Implement the next eligible task from Prioritized Next Changes."
+  short_description: "Implement Next Task"
+  default_prompt: "Apply Implement Next Task to the selected repository under applicable rules."
 
 policy:
   allow_implicit_invocation: true
