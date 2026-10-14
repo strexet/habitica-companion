@@ -1,0 +1,20 @@
+CREATE TABLE integration_profiles (
+  profile_id TEXT PRIMARY KEY,
+  credential_ciphertext TEXT,
+  credential_iv TEXT,
+  credential_key_version TEXT,
+  credential_schema_version INTEGER,
+  display_name_cache TEXT,
+  created_at_utc TEXT NOT NULL,
+  updated_at_utc TEXT NOT NULL,
+  last_verified_at_utc TEXT NOT NULL,
+  last_used_at_utc TEXT,
+  revoked_at_utc TEXT,
+  management_token_hash TEXT,
+  management_token_rotated_at_utc TEXT NOT NULL,
+  consent_version TEXT NOT NULL,
+  consented_at_utc TEXT NOT NULL,
+  connection_id TEXT NOT NULL,
+  generation INTEGER NOT NULL DEFAULT 1,
+  CHECK (revoked_at_utc IS NOT NULL OR (credential_ciphertext IS NOT NULL AND credential_iv IS NOT NULL AND credential_key_version IS NOT NULL AND management_token_hash IS NOT NULL))
+);

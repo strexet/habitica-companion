@@ -529,7 +529,7 @@ Native credential policy, if native shell is added:
 
 ## Optional ChatGPT integration proposal
 
-Separate Auth/MCP Worker scaffolds are implemented; credential vault and OAuth behavior remain absent. Local integration implementation follows the owner-approved [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract). Current credential storage remains browser-local; the proposal defines separate integration resources and a narrow internal operation boundary. Documentation completion does not activate the proposed backend.
+Separate Auth/MCP Workers and a disabled-by-default Auth credential vault are implemented; OAuth behavior remains absent. Local integration implementation follows the owner-approved [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract). Current credential storage remains browser-local; the proposal defines separate integration resources and a narrow internal operation boundary. The owner approved local implementation and tests. Enrollment and deployment remain disabled; current browser behavior sends no credentials to the integration backend.
 
 ## 10. Sync strategy
 
@@ -743,3 +743,11 @@ Sync model: user-initiated Habitica refresh plus automatic encrypted app-data an
 Freshness model: fresh/stale/expired/missing with mutation gating
 Credential model: local-only, password-equivalent, session-only by default with explicit persistent opt-in
 ```
+
+## Integration credential vault
+
+The Auth Worker owns a dedicated `integration_profiles` table. Profile IDs derive from HMAC-SHA256 over the validated canonical Habitica User ID with `PROFILE_ID_KEY`; the HMAC key remains stable across credential rotation. AES-256-GCM envelopes bind profile ID, credential schema and key version in authenticated data. Random 96-bit IVs prevent nonce reuse; distinct `CREDENTIAL_KEY_V1` and `CREDENTIAL_KEY_V2` secrets provide versioned decryption independently of profile derivation. The current write version is configured by `CREDENTIAL_CURRENT_KEY_VERSION`.
+
+`POST /enroll` requires explicit `integration-v1` consent, validates Habitica credentials before persistence, and rotates a 256-bit management credential whose hash alone is stored. Re-enrollment updates the envelope and connection epoch while preserving the profile ID. The random connection epoch prevents obsolete authorization contexts from becoming valid after deletion and re-enrollment. Management authorization is scoped to one profile and uses constant-time hash comparison. Disconnect removes ciphertext and management credentials and marks the profile revoked. Profile deletion removes the row. Current lifecycle operations have no OAuth grants to revoke; authorization implementation must enforce the connection epoch and deny revoked profiles.
+
+Enrollment is disabled in every shipped Worker configuration. Local fixtures enable the route with synthetic credentials and mocked Habitica validation. Real enrollment requires separate authorization and user consent. No PWA enrollment surface exists; browser privacy guarantees remain accurate.

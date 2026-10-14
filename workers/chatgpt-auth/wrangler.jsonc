@@ -17,7 +17,8 @@
   "vars": {
     "ENVIRONMENT": "local",
     "CREDENTIAL_CURRENT_KEY_VERSION": "1",
-    "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool"
+    "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool",
+    "ENROLLMENT_ENABLED": false
   },
   "env": {
     "preview": {
@@ -25,7 +26,8 @@
       "vars": {
         "ENVIRONMENT": "preview",
         "CREDENTIAL_CURRENT_KEY_VERSION": "1",
-        "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool"
+        "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool",
+        "ENROLLMENT_ENABLED": false
       },
       "kv_namespaces": [
         {
@@ -44,7 +46,8 @@
       "secrets": {
         "required": [
           "PROFILE_ID_KEY",
-          "CREDENTIAL_KEY_V1"
+          "CREDENTIAL_KEY_V1",
+          "CREDENTIAL_KEY_V2"
         ]
       }
     },
@@ -53,7 +56,8 @@
       "vars": {
         "ENVIRONMENT": "production",
         "CREDENTIAL_CURRENT_KEY_VERSION": "1",
-        "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool"
+        "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool",
+        "ENROLLMENT_ENABLED": false
       },
       "kv_namespaces": [
         {
@@ -72,7 +76,8 @@
       "secrets": {
         "required": [
           "PROFILE_ID_KEY",
-          "CREDENTIAL_KEY_V1"
+          "CREDENTIAL_KEY_V1",
+          "CREDENTIAL_KEY_V2"
         ]
       }
     }
@@ -95,7 +100,8 @@
   "secrets": {
     "required": [
       "PROFILE_ID_KEY",
-      "CREDENTIAL_KEY_V1"
+      "CREDENTIAL_KEY_V1",
+      "CREDENTIAL_KEY_V2"
     ]
   }
 }

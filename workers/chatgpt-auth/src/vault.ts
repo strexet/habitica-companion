@@ -1,0 +1,131 @@
+import { deriveProfileId, encryptCredential, tokenHash, newManagementToken, tokenMatches, validateKeySeparation, type HabiticaCredential } from "./cryptography";
+import { resourceConfiguration } from "../../shared/resources";
+
+export const consentVersion = "integration-v1";
+const headers = { "cache-control": "no-store", "x-content-type-options": "nosniff" };
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+export interface IntegrationProfile {
+  profile_id: string;
+  credential_ciphertext: string | null;
+  credential_iv: string | null;
+  credential_key_version: string | null;
+  credential_schema_version: number | null;
+  display_name_cache: string | null;
+  revoked_at_utc: string | null;
+  management_token_hash: string | null;
+  generation: number;
+  connection_id: string;
+}
+export class VaultError extends Error {
+  constructor(public readonly code: string, public readonly status: number) { super(code); }
+}
+export async function boundedJson(input: Request | Response, limit: number): Promise<unknown> {
+  const reader = input.body?.getReader();
+  if (!reader) throw new VaultError("invalid_request", 400);
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > limit) { await reader.cancel(); throw new VaultError("payload_too_large", 413); }
+      chunks.push(value);
+    }
+  } finally { reader.releaseLock(); }
+  const bytes = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
+  try { return JSON.parse(new TextDecoder().decode(bytes)); }
+  catch { throw new VaultError("invalid_request", 400); }
+}
+function credentialKeys(env: AuthEnv) {
+  return { "1": env.CREDENTIAL_KEY_V1, "2": env.CREDENTIAL_KEY_V2 };
+}
+export { credentialKeys };
+export async function loadProfile(env: AuthEnv, id: string): Promise<IntegrationProfile | null> {
+  return env.HABITICA_INTEGRATION_DB.prepare("SELECT * FROM integration_profiles WHERE profile_id = ?").bind(id).first<IntegrationProfile>();
+}
+export async function activeProfile(env: AuthEnv, id: string, connectionId?: string): Promise<IntegrationProfile> {
+  const profile = await loadProfile(env, id);
+  if (!profile || profile.revoked_at_utc || !profile.credential_ciphertext || (connectionId !== undefined && profile.connection_id !== connectionId)) {
+    throw new VaultError("unauthorized", 401);
+  }
+  return profile;
+}
+async function verifyHabitica(credential: HabiticaCredential, env: AuthEnv): Promise<string | null> {
+  if (!env.HABITICA_X_CLIENT_HEADER) throw new VaultError("integration_unavailable", 503);
+  const response = await fetch("https://habitica.com/api/v3/user?userFields=_id,profile", {
+    headers: { "x-api-user": credential.habiticaUserId, "x-api-key": credential.apiToken, "x-client": env.HABITICA_X_CLIENT_HEADER, accept: "application/json" },
+    signal: AbortSignal.timeout(10000),
+  });
+  if (response.status === 401 || response.status === 403) throw new VaultError("invalid_credentials", 401);
+  if (!response.ok) throw new VaultError("habitica_unavailable", 502);
+  const document = await boundedJson(response, 1048576) as { success?: boolean; data?: { _id?: string; id?: string; profile?: { name?: string } } };
+  const id = document.data?._id ?? document.data?.id;
+  if (document.success !== true || typeof id !== "string" || id.toLowerCase() !== credential.habiticaUserId) throw new VaultError("invalid_credentials", 401);
+  const name = document.data?.profile?.name;
+  return typeof name === "string" ? name.slice(0, 256) : null;
+}
+async function enroll(request: Request, env: AuthEnv): Promise<Response> {
+  if (!Boolean(env.ENROLLMENT_ENABLED)) throw new VaultError("unauthorized", 401);
+  if (!request.headers.get("content-type")?.startsWith("application/json")) throw new VaultError("invalid_request", 400);
+  const parsed = await boundedJson(request, 16384);
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new VaultError("invalid_request", 400);
+  const body = parsed as Partial<HabiticaCredential> & { consentVersion?: string };
+  if (body.consentVersion !== consentVersion || typeof body.habiticaUserId !== "string" || !uuid.test(body.habiticaUserId) || typeof body.apiToken !== "string" || !body.apiToken.trim() || body.apiToken.length > 1024) throw new VaultError("invalid_request", 400);
+  const credential = { habiticaUserId: body.habiticaUserId.toLowerCase(), apiToken: body.apiToken };
+  validateKeySeparation(env.PROFILE_ID_KEY, credentialKeys(env));
+  const name = await verifyHabitica(credential, env);
+  const profileId = await deriveProfileId(credential.habiticaUserId, env.PROFILE_ID_KEY);
+  const envelope = await encryptCredential(profileId, credential, env.CREDENTIAL_CURRENT_KEY_VERSION, credentialKeys(env));
+  const managementToken = newManagementToken();
+  const hash = await tokenHash(managementToken);
+  const now = new Date().toISOString();
+  await env.HABITICA_INTEGRATION_DB.prepare(`INSERT INTO integration_profiles
+    (profile_id, credential_ciphertext, credential_iv, credential_key_version, credential_schema_version,
+     display_name_cache, created_at_utc, updated_at_utc, last_verified_at_utc, management_token_hash,
+     management_token_rotated_at_utc, consent_version, consented_at_utc, connection_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(profile_id) DO UPDATE SET credential_ciphertext=excluded.credential_ciphertext,
+    credential_iv=excluded.credential_iv, credential_key_version=excluded.credential_key_version,
+    credential_schema_version=excluded.credential_schema_version, display_name_cache=excluded.display_name_cache,
+    updated_at_utc=excluded.updated_at_utc, last_verified_at_utc=excluded.last_verified_at_utc,
+    management_token_hash=excluded.management_token_hash, management_token_rotated_at_utc=excluded.management_token_rotated_at_utc,
+    consent_version=excluded.consent_version, consented_at_utc=excluded.consented_at_utc,
+    revoked_at_utc=NULL, generation=integration_profiles.generation+1, connection_id=excluded.connection_id`)
+    .bind(profileId, envelope.ciphertext, envelope.iv, envelope.keyVersion, envelope.schemaVersion, name, now, now, now, hash, now, consentVersion, now, crypto.randomUUID()).run();
+  return Response.json({ profileId, managementToken }, { status: 201, headers });
+}
+async function manage(request: Request, env: AuthEnv, profileId: string): Promise<Response> {
+  const token = request.headers.get("authorization")?.match(/^Bearer (\S+)$/)?.[1];
+  const profile = await loadProfile(env, profileId);
+  if (!token || !profile || !await tokenMatches(token, profile.management_token_hash)) throw new VaultError("unauthorized", 401);
+  if (request.method === "DELETE") {
+    const result = await env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_profiles WHERE profile_id = ? AND management_token_hash = ?").bind(profileId, profile.management_token_hash).run();
+    if (!result.meta.changes) throw new VaultError("unauthorized", 401);
+    return Response.json({ deleted: true }, { headers });
+  }
+  const now = new Date().toISOString();
+  const result = await env.HABITICA_INTEGRATION_DB.prepare(`UPDATE integration_profiles SET credential_ciphertext=NULL,
+    credential_iv=NULL, credential_key_version=NULL, credential_schema_version=NULL, management_token_hash=NULL,
+    revoked_at_utc=?, updated_at_utc=?, generation=generation+1 WHERE profile_id=? AND management_token_hash=?`)
+    .bind(now, now, profileId, profile.management_token_hash).run();
+  if (!result.meta.changes) throw new VaultError("unauthorized", 401);
+  return Response.json({ disconnected: true }, { headers });
+}
+export async function vaultRoute(request: Request, env: AuthEnv): Promise<Response | null> {
+  const url = new URL(request.url);
+  const management = url.pathname.match(/^\/profiles\/(prf_[A-Za-z0-9_-]+)(\/disconnect)?$/);
+  if (!(url.pathname === "/enroll" && request.method === "POST") && !(management && ((!management[2] && request.method === "DELETE") || (management[2] && request.method === "POST")))) return null;
+  try {
+    if (url.protocol !== "https:" && !(env.ENVIRONMENT === "local" && ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname))) throw new VaultError("invalid_transport", 403);
+    const origin = request.headers.get("origin");
+    const allowed = resourceConfiguration(env.ENVIRONMENT).issuer;
+    if (origin && origin !== allowed) throw new VaultError("invalid_origin", 403);
+    return management ? await manage(request, env, management[1]) : await enroll(request, env);
+  } catch (error) {
+    const safe = error instanceof VaultError ? error : new VaultError("integration_unavailable", 503);
+    return Response.json({ error: safe.code }, { status: safe.status, headers });
+  }
+}

@@ -12,13 +12,14 @@
     "build": "npm run check && wrangler deploy --dry-run --env \"\" --outdir dist",
     "build:preview": "wrangler deploy --dry-run --env preview --outdir dist-preview",
     "build:production": "wrangler deploy --dry-run --env production --outdir dist-production",
-    "test": "node --test --test-timeout=30000 test/*.test.mjs"
+    "test": "node --experimental-strip-types --test --test-timeout=30000 test/*.test.mjs"
   },
   "dependencies": {
     "@cloudflare/workers-oauth-provider": "1.2.3"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "5.20261014.1",
+    "@types/node": "22.20.5",
     "miniflare": "5.20261012.0-beta",
     "typescript": "7.0.2",
     "wrangler": "4.151.0"

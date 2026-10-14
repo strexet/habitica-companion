@@ -1164,7 +1164,7 @@ Test:
 
 ## Optional ChatGPT enrollment status
 
-Status: Proposed; no enrollment, integration credential storage or OAuth grant exists in the PWA. The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns consent and lifecycle defaults. Current sign-in, backup, private sync and party sync retain the implemented browser credential policy.
+Status: Partial; the Auth Worker has disabled-by-default credential-vault routes validated with local fixtures. No PWA enrollment UI or OAuth grant exists. The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns consent and lifecycle defaults. Current sign-in, backup, private sync and party sync retain the implemented browser credential policy.
 
 ## 12.1 Local data portability and encrypted cloud sync
 

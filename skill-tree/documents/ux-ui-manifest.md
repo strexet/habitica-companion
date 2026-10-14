@@ -583,4 +583,4 @@ References:
 
 ## Optional ChatGPT Enrollment Proposal
 
-Current UI has no ChatGPT enrollment or remote credential vault. [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns the proposed consent, capability disclosure and disconnect/delete requirements. Enrollment implementation must update privacy and settings together; existing sign-in remains browser-only.
+Current UI has no ChatGPT enrollment; the separately owned Auth vault remains disabled. [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns the proposed consent, capability disclosure and disconnect/delete requirements. Enrollment implementation must update privacy and settings together; existing sign-in remains browser-only.

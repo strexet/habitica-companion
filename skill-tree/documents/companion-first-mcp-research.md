@@ -52,7 +52,7 @@ Habitica Companion PWA
 
 ## Proposed ChatGPT Enrollment, Privacy And Retention Contract
 
-Status: repository-owner approved for local implementation and tests. The current PWA has no ChatGPT enrollment or remote credential vault. Deployment, real enrollment, public registration and scheduled execution require separate applicable owner scope.
+Status: repository-owner approved for local implementation and tests. The current PWA has no ChatGPT enrollment UI. The Auth Worker has a disabled-by-default credential-vault implementation validated with local fixtures. Deployment, real enrollment, public registration and scheduled execution require separate applicable owner scope.
 
 ### Current boundary
 
@@ -79,7 +79,7 @@ Application credential envelopes use authenticated encryption with a unique rand
 | Record | Proposed lifetime and deletion behavior |
 | --- | --- |
 | Active credential envelope | Until credential replacement, integration disconnect or profile deletion; replacement removes the superseded envelope. |
-| Stable profile and Habitica-account association | Retained during disconnect for reconnect stability; profile deletion removes the association and display metadata. Random IDs are never reused. |
+| Stable profile and Habitica-account association | Retained during disconnect for reconnect stability; profile deletion removes the association and display metadata. Opaque IDs are never assigned to a different Habitica account. |
 | OAuth grants and tokens | Access-token target lifetime ten minutes; refresh-grant target maximum lifetime thirty days. Disconnect immediately blocks operations in application state and revokes grants; expiry and provider cleanup remove residual records. |
 | Linking ticket hash | Maximum ten minutes or successful single consume, whichever occurs first; expired ticket cleanup is required. |
 | Management credential hash | Until replacement, disconnect or profile deletion; reconnect requires fresh Habitica validation and fresh explicit enrollment. |
