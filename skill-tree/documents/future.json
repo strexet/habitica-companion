@@ -2,14 +2,16 @@
   "active_run": {
     "completed_ids": [
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7",
-      "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e"
+      "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
+      "T-c6f6b09d-4625-5898-b91c-016c611b60df"
     ],
     "completion_refs": {
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
-      "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6"
+      "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
+      "T-c6f6b09d-4625-5898-b91c-016c611b60df": "O-ed64ce15-7bea-467d-8a8b-06a3494a05fd"
     },
     "current_task_id": null,
-    "cycle_signature": "ecae4cb78f53cd68e1dd88350061c333915b596719cf3a5366e79451a1521960",
+    "cycle_signature": "6a19cb1777f5625db154b35baa924d4d517e10c879dd5965aa9e9b7aa548d8e4",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
@@ -43,9 +45,10 @@
     ],
     "required_ids": [
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
-      "T-1dd173f5-440f-4416-8a9b-221e1028aae7"
+      "T-1dd173f5-440f-4416-8a9b-221e1028aae7",
+      "T-c6f6b09d-4625-5898-b91c-016c611b60df"
     ],
-    "root_task_id": "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
+    "root_task_id": "T-c6f6b09d-4625-5898-b91c-016c611b60df",
     "snapshot": [
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df",
@@ -63,7 +66,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "7e820295ed80efacc19c7371fec2d44951cf93e9f7eda47e7e4f2b915e8891ea",
+  "source_hash": "7e06adaf93a40f7fbdf7e8e753b9d556462d9e0af94d9f48cad86b94545e2b62",
   "tasks": [
     {
       "depends_on": [],
@@ -262,27 +265,11 @@
       "title": "E14 Mobile UX validation, observability, migration and gradual adoption"
     },
     {
-      "depends_on": [],
-      "id": "T-c6f6b09d-4625-5898-b91c-016c611b60df",
-      "line": 513,
-      "parent_pending_ids": [
-        "P-ebb08836-4b75-5fb9-bf2f-6aed5789b9e8"
-      ],
-      "priority": 199,
-      "processing_run_id": null,
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-c6f6b09d-4625-5898-b91c-016c611b60df",
-      "status": "Ready",
-      "title": "Define ChatGPT Integration Architecture, Privacy, And Retention Contract"
-    },
-    {
       "depends_on": [
         "T-c6f6b09d-4625-5898-b91c-016c611b60df"
       ],
       "id": "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
-      "line": 610,
+      "line": 513,
       "parent_pending_ids": [
         "P-509dc30e-afbf-5eff-a2cc-cd9737e6236d"
       ],
@@ -301,7 +288,7 @@
         "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e"
       ],
       "id": "T-e33bccdc-22f1-5043-9230-3d12d9e9563d",
-      "line": 740,
+      "line": 643,
       "parent_pending_ids": [
         "P-55d076da-8a7f-50c7-af15-f4a106a697cb"
       ],
@@ -319,7 +306,7 @@
         "T-e33bccdc-22f1-5043-9230-3d12d9e9563d"
       ],
       "id": "T-16a38176-f2fe-5f7d-a809-546f17357b49",
-      "line": 871,
+      "line": 774,
       "parent_pending_ids": [
         "P-2db8e8bd-00de-53f2-823d-06dc23f53eeb"
       ],
@@ -338,7 +325,7 @@
         "T-16a38176-f2fe-5f7d-a809-546f17357b49"
       ],
       "id": "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
-      "line": 1035,
+      "line": 938,
       "parent_pending_ids": [
         "P-9cf8044d-e032-54f0-b10b-647e6bcfb067"
       ],
@@ -356,7 +343,7 @@
         "T-53352a18-54d2-57b6-accc-91f8e6dfad13"
       ],
       "id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-      "line": 1226,
+      "line": 1129,
       "parent_pending_ids": [
         "P-90b811d4-3aea-509c-8dca-84d5c892a637"
       ],
@@ -374,7 +361,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
-      "line": 1416,
+      "line": 1319,
       "parent_pending_ids": [
         "P-1590c3c7-25e6-589e-8efb-91f35d873b4e"
       ],
@@ -392,7 +379,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-      "line": 1547,
+      "line": 1450,
       "parent_pending_ids": [
         "P-d0950eec-bfbf-561f-b192-dcf8dde67488"
       ],
@@ -418,7 +405,7 @@
         "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"
       ],
       "id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "line": 1658,
+      "line": 1561,
       "parent_pending_ids": [
         "P-46dde168-2e75-53fd-b2c0-0c1769f7711d"
       ],
@@ -436,7 +423,7 @@
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 1784,
+      "line": 1687,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -452,7 +439,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1939,
+      "line": 1842,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -466,7 +453,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1976,
+      "line": 1879,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -480,7 +467,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 2013,
+      "line": 1916,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -494,7 +481,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 2146,
+      "line": 2049,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -508,7 +495,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 2184,
+      "line": 2087,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -522,7 +509,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 2218,
+      "line": 2121,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -536,7 +523,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 2253,
+      "line": 2156,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -550,7 +537,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 2287,
+      "line": 2190,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -564,7 +551,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 2325,
+      "line": 2228,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -578,7 +565,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 2352,
+      "line": 2255,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -592,7 +579,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 2374,
+      "line": 2277,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -606,7 +593,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 2401,
+      "line": 2304,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

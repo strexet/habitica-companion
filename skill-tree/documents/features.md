@@ -1162,6 +1162,10 @@ Test:
 - Client-side validation currently covers missing values; malformed-ID validation remains a possible improvement.
 - API-client initialization requires the configured project-owned `x-client`; missing or blank configuration raises a configuration error before network access.
 
+## Optional ChatGPT enrollment status
+
+Status: Proposed; no enrollment, integration credential storage or OAuth grant exists in the PWA. The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns consent and lifecycle defaults. Current sign-in, backup, private sync and party sync retain the implemented browser credential policy.
+
 ## 12.1 Local data portability and encrypted cloud sync
 
 Status: Partial

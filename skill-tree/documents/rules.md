@@ -170,6 +170,10 @@ Required behavior:
 
 Do not implement fire-and-forget macro execution, bulk selling, gear switching, or skill casting.
 
+## Optional integration approval boundary
+
+The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) defines the candidate server-side trust boundary. Current PWA sign-in and sync grant no remote credential-storage consent. Backend/vault implementation requires repository-owner approval of the concrete proposal; enrollment requires separate explicit per-user consent.
+
 ## 10. Security rules
 
 Treat Habitica API token as password-equivalent.

@@ -510,103 +510,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Define ChatGPT Integration Architecture, Privacy, And Retention Contract
-
-```yaml
-id: T-c6f6b09d-4625-5898-b91c-016c611b60df
-priority: 199
-status: Ready
-parent_pending_ids: ["P-ebb08836-4b75-5fb9-bf2f-6aed5789b9e8"]
-processing_run_id: null
-root_task_id: T-c6f6b09d-4625-5898-b91c-016c611b60df
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Migration source:
-- Imported numbered contract 1 from PR #1; originating Pending identity records imported intent, not a new Process Pending result.
-
-Origin:
-- Owner request for multi-user ChatGPT integration.
-- Security-sensitive architecture change.
-
-Goal:
-- Document the new optional trust boundary before implementation.
-
-Current behavior:
-- Habitica credentials remain on-device.
-- private sync is browser-encrypted.
-- party sync never receives the API token.
-- privacy UI says credentials stay in the browser and are sent only to Habitica.
-
-Desired behavior:
-- Existing local-only behavior remains default.
-- A proposed ChatGPT enrollment contract describes explicit consent for encrypted server-side credential storage.
-- Planning text distinguishes current browser-only use from the proposed integration.
-- Retention/deletion defaults are documented as proposals awaiting approval before implementation.
-
-Touch:
-- `skill-tree/documents/rules.md`
-- `skill-tree/documents/technical.md`
-- `skill-tree/documents/features.md`
-- `skill-tree/documents/habitica-api.md`
-- `skill-tree/documents/deploy-cloudflare-pages.md`
-- `skill-tree/documents/ux-ui-manifest.md`
-- `skill-tree/documents/future.md`
-- `skill-tree/documents/companion-first-mcp-research.md`
-
-Discovery allowance:
-- Current OpenAI MCP/Plugin auth documentation.
-- current MCP authorization specification.
-- current Cloudflare Workers OAuth Provider documentation.
-- current Habitica API Usage Guidelines.
-
-Out of scope:
-- Worker code.
-- OAuth code.
-- credential persistence.
-- Runtime privacy UI changes; update `src/Habitica.WebApp/Pages/PrivacyPage.razor` with enrollment implementation, when the behavior exists.
-
-Implementation constraints:
-- Explicit opt-in.
-- No silent migration of current users.
-- No reuse of personal-sync or party-sync storage for integration secrets.
-- Write a concrete proposed deletion contract and identify metadata retained after revocation, if any.
-- Current-state documents retain current browser-only guarantees and link to the proposal. Completing documentation does not approve a new backend or credential-storage boundary.
-
-Proposed retention contract:
-- active encrypted credential envelope: until disconnect/delete;
-- OAuth grants/tokens: until revocation/expiry;
-- one-time linking tickets: <= 10 minutes;
-- operational audit metadata: short bounded retention, e.g. 30 days;
-- raw prompts/conversation text: not stored by Companion.
-
-Questions and required clarifications:
-- [Resolved - imported planning constraint] The project-owned `x-client` identity must be decided before server-side Habitica requests ship; architecture documentation can proceed without live requests.
-- [Recommended default - confirmation optional] Operational audit retention?
-  Recommendation:
-  - 30 days.
-- [Recommended default - confirmation optional] Keep anonymized aggregate metrics after deletion?
-  Recommendation:
-  - only non-user-identifying counters, if needed at all.
-
-Validation:
-- Check current privacy/security statements against `PrivacyPage.razor` and the browser credential/network paths.
-- Verify future network behavior and retention choices are explicitly marked proposed, with the approval boundary recorded.
-
-Acceptance:
-- The proposal explains the consent, storage, revocation and deletion changes for opted-in users.
-- Current behavior remains accurately documented; no planned storage is described as implemented.
-- Proposed retention defaults and required owner approval are explicit.
-
-Documentation updates:
-- all touched docs.
-
-Risks:
-- privacy text drifting from implementation.
-- accidental reuse of legacy sync concepts.
-
 ### Add Dedicated Auth And MCP Worker Projects
 
 ```yaml
@@ -707,7 +610,7 @@ Implementation constraints:
 - preview and production resources are separate unless explicitly documented otherwise.
 
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Has the owner approved the proposed backend, credential-storage and trust boundary produced by `T-c6f6b09d-4625-5898-b91c-016c611b60df`?
+- [Unresolved - blocks implementation] Has the owner approved the [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract), including the backend, credential-storage boundary and lifecycle defaults?
   Reason: `skill-tree/documents/rules.md` requires proposal and approval for changes to backend and credential-storage boundaries. Documentation completion alone is insufficient.
   Required answer from: repository owner after review of the architecture proposal.
 - [Recommended default - confirmation optional] Separate Workers vs combined Worker?

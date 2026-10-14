@@ -50,6 +50,63 @@ Habitica Companion PWA
     -> Habitica API v3
 ```
 
+## Proposed ChatGPT Enrollment, Privacy And Retention Contract
+
+Status: proposal awaiting repository-owner approval for backend and credential-storage implementation. The current PWA has no ChatGPT enrollment or remote credential vault. Documentation acceptance approves the proposal document only. Deployment, real enrollment, public registration and scheduled execution require separate applicable owner scope.
+
+### Current boundary
+
+`CredentialStore` persists credentials only in the browser when persistent mode is selected. Session credentials remain in application memory. `cloudflareSync.js` derives an encryption key and sync identifier locally; private sync receives ciphertext. `cloudflarePartySync.js` sends local claims or invite proofs, never Habitica credentials. `PrivacyPage.razor` describes the implemented browser boundary. The optional integration must preserve the current default for non-enrolled users.
+
+### Proposed consent and data flow
+
+Enrollment requires a separate explicit consent screen identifying the Companion operator, Cloudflare processing, the password-equivalent Habitica token, granted capabilities, retention limits and disconnect/delete controls. Existing sign-in, private sync, party membership and imported data never constitute integration consent. Cancellation sends no credentials to the integration backend.
+
+After consent, the browser submits credentials directly to the Auth Worker over HTTPS. Auth validates credentials with Habitica, allocates or recovers the account's immutable opaque profile ID, encrypts the credential envelope and issues a management credential shown only to the enrolling browser. Consent version and timestamp are recorded. Credentials never enter OAuth parameters, linking URLs, MCP tool arguments, token props, logs or exported data.
+
+ChatGPT receives only a Companion OAuth grant. The MCP Worker validates the resource audience and scopes through the Auth Service Binding; Auth rechecks profile/connection state before every credential-bearing operation. The Auth Worker executes allowlisted Habitica requests using the project-owned `x-client`. MCP receives normalized results, never the long-lived Habitica token. No generic URL, route or header proxy is exposed.
+
+Read capabilities are separate from task, spell, party and Cron mutation capabilities. Write tools remain disabled until the authoritative Companion command API, durable result ledger, confirmation contracts and capability-specific dependencies are accepted. OAuth permission alone never bypasses mutation validation. Background execution remains a distinct opt-in capability.
+
+### Proposed ownership and secrets
+
+Separate Auth and MCP Workers own separate environment configurations. Auth alone binds `OAUTH_KV`, `HABITICA_INTEGRATION_DB` and credential-encryption secrets. The MCP Worker has only an Auth Service Binding and public resource configuration. Existing `HABITICA_SYNC_KV` and `HABITICA_PARTY_DB` never hold integration secrets or OAuth grants.
+
+Application credential envelopes use authenticated encryption with a unique random nonce, explicit key version and profile-associated data. Encryption keys remain Worker secrets outside the database. Plaintext exists only for a validated enrollment or bounded request lifetime. Management credentials and linking tickets are stored as hashes; one-time tickets expire within ten minutes and are consumed atomically. Preview and production use separate databases, namespaces, keys and canonical resource URLs.
+
+### Proposed lifecycle and retention defaults
+
+| Record | Proposed lifetime and deletion behavior |
+| --- | --- |
+| Active credential envelope | Until credential replacement, integration disconnect or profile deletion; replacement removes the superseded envelope. |
+| Stable profile and Habitica-account association | Retained during disconnect for reconnect stability; profile deletion removes the association and display metadata. Random IDs are never reused. |
+| OAuth grants and tokens | Access-token target lifetime ten minutes; refresh-grant target maximum lifetime thirty days. Disconnect immediately blocks operations in application state and revokes grants; expiry and provider cleanup remove residual records. |
+| Linking ticket hash | Maximum ten minutes or successful single consume, whichever occurs first; expired ticket cleanup is required. |
+| Management credential hash | Until replacement, disconnect or profile deletion; reconnect requires fresh Habitica validation and fresh explicit enrollment. |
+| Operational audit metadata | Maximum thirty days; operation category, result code, timestamp and opaque trace ID only. No credentials, headers, task text, raw request/response bodies, prompts or conversation text. Profile deletion removes attributable audit metadata. |
+| Prepared actions and result ledger | Capability-specific contracts must define retention before writes are enabled; unsupported capabilities remain denied. |
+| Anonymous aggregate metrics | No retained aggregate analytics in the initial integration. Any later analytics requires a separate documented purpose and consent review. |
+
+Disconnect marks the connection revoked before cleanup, prevents new operations, deletes the connection envelope and management credentials, invalidates tickets and revokes grants. Stable profile identity remains for a later authorized reconnect. Delete profile performs the same access block and removes the profile association, labels and attributable audit records. Cleanup failures return an explicit pending-cleanup state and permit idempotent retry; revoked state continues to deny access. An in-flight Habitica request cannot be recalled and must be reported separately.
+
+Application deletion does not clear browser snapshots, delete Habitica data, remove legacy private/party sync records or erase ChatGPT conversations. Hosting-provider request logs and backups have separate operator-controlled lifecycles. Production activation requires verification and disclosure of provider retention and restored-backup deletion handling; no immediate physical erasure guarantee is claimed. Habitica token rotation is an independent account-level recovery control.
+
+### Proposed implementation and release gates
+
+The repository owner must approve the optional server-side trust boundary and retention defaults before the backend/vault task proceeds. Per-user enrollment still requires consent after owner approval. Before enrollment exists, the PWA privacy page continues to describe only current browser behavior. Enrollment implementation must update the privacy page, sign-in/settings notices and disconnect/delete UI together.
+
+Required implementation evidence includes isolation between two profiles, expired/replayed ticket rejection, audience/scope enforcement, credential redaction, disconnect denial despite residual provider records, deletion retry after cleanup faults and reconnect identity stability. Local fixtures must use synthetic credentials. Real credential enrollment, deployment and destructive lifecycle tests require named target and action scope.
+
+### Official compatibility sources
+
+The proposed OAuth flow uses authorization code with S256 PKCE and an authenticated immutable profile response, following [OpenAI plugin authentication guidance](https://developers.openai.com/plugins/build/auth). Profile output contains identity fields only; connection health remains a separate result.
+
+Resource discovery and audience-bound access follow [MCP authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization). Companion OAuth tokens are not passed through to Habitica.
+
+The split server candidate follows Cloudflare's [authorization server reference](https://github.com/cloudflare/workers-oauth-provider/blob/main/docs/authorization-server.md) and [resource server reference](https://github.com/cloudflare/workers-oauth-provider/blob/main/docs/resource-servers.md). Package versions and local binding compatibility require verification during scaffolding. The proposed operation proxy and retention defaults are Companion design choices, not provider guarantees.
+
+Habitica traffic uses the creator identity and rate controls from [Habitica API Usage Guidelines](https://github.com/HabitRPG/habitica/wiki/API-Usage-Guidelines). Background traffic retains the thirty-second minimum gap. Shared-IP traffic budgets must be tested before hosted execution.
+
 ---
 
 # Planning Constraints

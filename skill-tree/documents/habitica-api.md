@@ -99,6 +99,8 @@ Habitica uses this value to identify third-party tools that cause server problem
 
 The PWA supplies a public project-owned value through `Habitica:XClientHeader`. `HabiticaApiClient` rejects missing or blank configuration during initialization and applies the configured value to every request. Authenticated user changes do not change the creator identity. `HABITICA_X_CLIENT_HEADER` provides the build-time override; the header contains no API token.
 
+Optional server-side Habitica access is defined in the [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract). The proposal does not authorize credential upload or live backend execution. Current API requests originate in the browser.
+
 ## 5. Rate limiting and traffic policy
 
 Habitica rate-limits third-party API traffic. Every API response can include:

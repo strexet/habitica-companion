@@ -77,6 +77,10 @@ Shared party sync requires a D1 database bound to the Pages project.
 
 The party sync Function must not receive Habitica API tokens. Browser-only `local-claim-v1` remains the default and owner/app-admin recovery path. Migration `0008` adds optional hashed `tokenized-invite-v1` proofs: owner/app admins can issue, rotate, revoke, remove, enable, and disable proofs from Party settings. D1 stores SHA-256 token hashes, labels, issuer metadata, and lifecycle timestamps, never raw reusable proof tokens. Apply migrations through `0008` before deploying Function code that reads invite-proof settings or tables.
 
+## Optional Auth/MCP deployment proposal
+
+The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) proposes separate Auth/MCP Workers, OAuth KV and integration D1 resources. Existing Pages resources remain dedicated to private and party sync. Worker code, resources and remote enrollment are absent. Local implementation approval and live deployment scope are separate. Provider log/backup retention must be verified before activation.
+
 ## First deployment
 
 1. Push this repository to GitHub.

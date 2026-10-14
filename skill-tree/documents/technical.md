@@ -527,6 +527,10 @@ Native credential policy, if native shell is added:
 - Windows: platform credential store or DPAPI-backed storage;
 - Linux: platform-supported secret service where available, otherwise clearly document limitations.
 
+## Optional ChatGPT integration proposal
+
+Dedicated Auth/MCP Workers and a credential vault are proposed in the [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract). Current credential storage remains browser-local; the proposal defines separate integration resources and a narrow internal operation boundary. Documentation completion does not activate the proposed backend.
+
 ## 10. Sync strategy
 
 Use local-first snapshots with staged sign-in sync and page-prioritized user-initiated refresh.

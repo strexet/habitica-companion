@@ -580,3 +580,7 @@ References:
 - Linear filters: https://linear.app/docs/filters
 - Notion views, filters, and sorts: https://www.notion.com/help/views-filters-and-sorts
 - Trello views: https://support.atlassian.com/trello/docs/trello-views/
+
+## Optional ChatGPT Enrollment Proposal
+
+Current UI has no ChatGPT enrollment or remote credential vault. [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns the proposed consent, capability disclosure and disconnect/delete requirements. Enrollment implementation must update privacy and settings together; existing sign-in remains browser-only.
