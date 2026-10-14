@@ -521,7 +521,7 @@ processing_run_id: null
 root_task_id: T-16a38176-f2fe-5f7d-a809-546f17357b49
 related_task_id: null
 relation: main
-depends_on: ["T-e33bccdc-22f1-5043-9230-3d12d9e9563d"]
+depends_on: ["T-e33bccdc-22f1-5043-9230-3d12d9e9563d", "T-2f23b014-4b4d-46e5-8986-49abb1066bf3"]
 ```
 
 Migration source:
@@ -574,7 +574,7 @@ Use:
 
 ```text
 OAuth userId = profileId
-OAuth props = { profileId }
+OAuth props = { profileId, connectionId }
 ```
 
 One-time linking ticket model:
@@ -612,7 +612,8 @@ Desired behavior:
 Touch:
 - Proposed `workers/chatgpt-auth/**` and integration D1 migrations.
 - `src/Habitica.WebApp/Pages/SettingsPage.razor`, `src/Habitica.WebApp/Pages/PrivacyPage.razor`.
-- New narrowly scoped linking client under `src/Habitica.WebApp/`.
+- New narrowly scoped linking client under `src/Habitica.WebApp/` and an application-layer integration client contract.
+- `workers/chatgpt-mcp/src/**` protected-resource metadata and Auth token-validation binding.
 - Focused OAuth and WebApp tests; `skill-tree/documents/features.md`, `skill-tree/documents/technical.md`, `skill-tree/documents/ux-ui-manifest.md`, deployment docs.
 
 Discovery allowance:

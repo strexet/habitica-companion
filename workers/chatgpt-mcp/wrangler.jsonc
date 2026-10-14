@@ -15,13 +15,15 @@
     }
   },
   "vars": {
-    "ENVIRONMENT": "local"
+    "ENVIRONMENT": "local",
+    "OAUTH_ENABLED": false
   },
   "env": {
     "preview": {
       "name": "habitica-chatgpt-mcp-preview",
       "vars": {
-        "ENVIRONMENT": "preview"
+        "ENVIRONMENT": "preview",
+        "OAUTH_ENABLED": false
       },
       "services": [
         {
@@ -34,7 +36,8 @@
     "production": {
       "name": "habitica-chatgpt-mcp-production",
       "vars": {
-        "ENVIRONMENT": "production"
+        "ENVIRONMENT": "production",
+        "OAUTH_ENABLED": false
       },
       "services": [
         {

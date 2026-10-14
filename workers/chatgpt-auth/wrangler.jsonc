@@ -4,7 +4,8 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-10-12",
   "compatibility_flags": [
-    "nodejs_compat"
+    "nodejs_compat",
+    "global_fetch_strictly_public"
   ],
   "workers_dev": false,
   "preview_urls": false,
@@ -18,7 +19,8 @@
     "ENVIRONMENT": "local",
     "CREDENTIAL_CURRENT_KEY_VERSION": "1",
     "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool",
-    "ENROLLMENT_ENABLED": false
+    "ENROLLMENT_ENABLED": false,
+    "OAUTH_ENABLED": false
   },
   "env": {
     "preview": {
@@ -27,7 +29,8 @@
         "ENVIRONMENT": "preview",
         "CREDENTIAL_CURRENT_KEY_VERSION": "1",
         "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool",
-        "ENROLLMENT_ENABLED": false
+        "ENROLLMENT_ENABLED": false,
+        "OAUTH_ENABLED": false
       },
       "kv_namespaces": [
         {
@@ -57,7 +60,8 @@
         "ENVIRONMENT": "production",
         "CREDENTIAL_CURRENT_KEY_VERSION": "1",
         "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool",
-        "ENROLLMENT_ENABLED": false
+        "ENROLLMENT_ENABLED": false,
+        "OAUTH_ENABLED": false
       },
       "kv_namespaces": [
         {

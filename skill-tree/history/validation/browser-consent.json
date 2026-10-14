@@ -1,0 +1,15 @@
+{
+  "task_id": "T-2f23b014-4b4d-46e5-8986-49abb1066bf3",
+  "result": "pass",
+  "checks": [
+    "22 local Worker tests pass; valid same-origin POST succeeds; hostile and opaque origins return 403.",
+    "Actual Codex in-app browser reached Approve Companion access with Synthetic browser fixture and profile:read after valid code submission.",
+    "Secure and HttpOnly provider cookies remain enabled; same-origin referrer policy suppresses cross-origin referrer."
+  ],
+  "screenshot": "skill-tree/history/validation/browser-consent.jpg",
+  "limitations": [
+    "Synthetic account and mocked Habitica only.",
+    "Other browsers and remote HTTPS require rollout qualification."
+  ],
+  "source": "https://fetch.spec.whatwg.org/#append-a-request-origin-header"
+}

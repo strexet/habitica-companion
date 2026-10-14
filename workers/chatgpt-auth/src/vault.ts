@@ -19,7 +19,7 @@ export interface IntegrationProfile {
 export class VaultError extends Error {
   constructor(public readonly code: string, public readonly status: number) { super(code); }
 }
-export async function boundedJson(input: Request | Response, limit: number): Promise<unknown> {
+export async function boundedText(input: Request | Response, limit: number): Promise<string> {
   const reader = input.body?.getReader();
   if (!reader) throw new VaultError("invalid_request", 400);
   const chunks: Uint8Array[] = [];
@@ -36,8 +36,11 @@ export async function boundedJson(input: Request | Response, limit: number): Pro
   const bytes = new Uint8Array(size);
   let offset = 0;
   for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
-  try { return JSON.parse(new TextDecoder().decode(bytes)); }
-  catch { throw new VaultError("invalid_request", 400); }
+  return new TextDecoder().decode(bytes);
+}
+export async function boundedJson(input: Request | Response, limit: number): Promise<unknown> {
+  try { return JSON.parse(await boundedText(input, limit)); }
+  catch (error) { if (error instanceof VaultError) throw error; throw new VaultError("invalid_request", 400); }
 }
 function credentialKeys(env: AuthEnv) {
   return { "1": env.CREDENTIAL_KEY_V1, "2": env.CREDENTIAL_KEY_V2 };
@@ -97,16 +100,29 @@ async function enroll(request: Request, env: AuthEnv): Promise<Response> {
     .bind(profileId, envelope.ciphertext, envelope.iv, envelope.keyVersion, envelope.schemaVersion, name, now, now, now, hash, now, consentVersion, now, crypto.randomUUID()).run();
   return Response.json({ profileId, managementToken }, { status: 201, headers });
 }
-async function manage(request: Request, env: AuthEnv, profileId: string): Promise<Response> {
+export async function managedProfile(request: Request, env: AuthEnv, profileId: string): Promise<IntegrationProfile> {
   const token = request.headers.get("authorization")?.match(/^Bearer (\S+)$/)?.[1];
   const profile = await loadProfile(env, profileId);
   if (!token || !profile || !await tokenMatches(token, profile.management_token_hash)) throw new VaultError("unauthorized", 401);
+  return activeProfile(env, profileId);
+}
+async function manage(request: Request, env: AuthEnv, profileId: string, cleanup?: (id: string, connectionId: string) => Promise<void>): Promise<Response> {
+  const token = request.headers.get("authorization")?.match(/^Bearer (\S+)$/)?.[1];
+  const profile = await loadProfile(env, profileId);
+  if (!token || !profile || !await tokenMatches(token, profile.management_token_hash)) throw new VaultError("unauthorized", 401);
+  const now = new Date().toISOString();
+  const blocked = await env.HABITICA_INTEGRATION_DB.prepare(`UPDATE integration_profiles SET credential_ciphertext=NULL,
+    credential_iv=NULL, credential_key_version=NULL, credential_schema_version=NULL,
+    revoked_at_utc=COALESCE(revoked_at_utc,?), updated_at_utc=? WHERE profile_id=? AND management_token_hash=?`)
+    .bind(now, now, profileId, profile.management_token_hash).run();
+  if (!blocked.meta.changes) throw new VaultError("unauthorized", 401);
+  try { if (cleanup) await cleanup(profileId, profile.connection_id); }
+  catch { return Response.json({ accessBlocked: true, pendingCleanup: true }, { status: 202, headers }); }
   if (request.method === "DELETE") {
     const result = await env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_profiles WHERE profile_id = ? AND management_token_hash = ?").bind(profileId, profile.management_token_hash).run();
     if (!result.meta.changes) throw new VaultError("unauthorized", 401);
     return Response.json({ deleted: true }, { headers });
   }
-  const now = new Date().toISOString();
   const result = await env.HABITICA_INTEGRATION_DB.prepare(`UPDATE integration_profiles SET credential_ciphertext=NULL,
     credential_iv=NULL, credential_key_version=NULL, credential_schema_version=NULL, management_token_hash=NULL,
     revoked_at_utc=?, updated_at_utc=?, generation=generation+1 WHERE profile_id=? AND management_token_hash=?`)
@@ -114,16 +130,16 @@ async function manage(request: Request, env: AuthEnv, profileId: string): Promis
   if (!result.meta.changes) throw new VaultError("unauthorized", 401);
   return Response.json({ disconnected: true }, { headers });
 }
-export async function vaultRoute(request: Request, env: AuthEnv): Promise<Response | null> {
+export async function vaultRoute(request: Request, env: AuthEnv, cleanup?: (id: string, connectionId: string) => Promise<void>): Promise<Response | null> {
   const url = new URL(request.url);
   const management = url.pathname.match(/^\/profiles\/(prf_[A-Za-z0-9_-]+)(\/disconnect)?$/);
   if (!(url.pathname === "/enroll" && request.method === "POST") && !(management && ((!management[2] && request.method === "DELETE") || (management[2] && request.method === "POST")))) return null;
   try {
     if (url.protocol !== "https:" && !(env.ENVIRONMENT === "local" && ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname))) throw new VaultError("invalid_transport", 403);
     const origin = request.headers.get("origin");
-    const allowed = resourceConfiguration(env.ENVIRONMENT).issuer;
-    if (origin && origin !== allowed) throw new VaultError("invalid_origin", 403);
-    return management ? await manage(request, env, management[1]) : await enroll(request, env);
+    const config = resourceConfiguration(env.ENVIRONMENT);
+    if (origin && origin !== config.issuer && origin !== config.pwaOrigin) throw new VaultError("invalid_origin", 403);
+    return management ? await manage(request, env, management[1], cleanup) : await enroll(request, env);
   } catch (error) {
     const safe = error instanceof VaultError ? error : new VaultError("integration_unavailable", 503);
     return Response.json({ error: safe.code }, { status: safe.status, headers });
