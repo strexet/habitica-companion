@@ -80,7 +80,7 @@ For Cloudflare Pages deployment, use [`skill-tree/documents/deploy-cloudflare-pa
 
 ## Habitica API header note
 
-The app reads `Habitica:XClientHeader` from [`src/Habitica.WebApp/wwwroot/appsettings.json`](src/Habitica.WebApp/wwwroot/appsettings.json). If it is left empty, the app falls back to `<current-user-id>-habitica-tool` so development remains usable, but production deployment should replace that with a project-owned Habitica `x-client` header value.
+The app reads the public, project-owned `Habitica:XClientHeader` from [`src/Habitica.WebApp/wwwroot/appsettings.json`](src/Habitica.WebApp/wwwroot/appsettings.json). The committed value identifies the tool creator and keeps the `habitica-tool` application suffix for every signed-in user. Missing or blank configuration prevents API-client initialization; no end-user fallback exists. Forks and local experiments must supply their own creator/app identity through configuration. `HABITICA_X_CLIENT_HEADER` overrides the value during `build.sh`; never include an API token in the header.
 
 ## Project documents
 

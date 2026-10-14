@@ -97,6 +97,8 @@ Important rules:
 
 Habitica uses this value to identify third-party tools that cause server problems. Tools that generate problematic traffic may be rate-limited or blocked.
 
+The PWA supplies a public project-owned value through `Habitica:XClientHeader`. `HabiticaApiClient` rejects missing or blank configuration during initialization and applies the configured value to every request. Authenticated user changes do not change the creator identity. `HABITICA_X_CLIENT_HEADER` provides the build-time override; the header contains no API token.
+
 ## 5. Rate limiting and traffic policy
 
 Habitica rate-limits third-party API traffic. Every API response can include:

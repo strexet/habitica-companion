@@ -60,17 +60,7 @@ The supplied architecture reference defines candidate integration constraints. F
 
 The repository documentation states the Habitica requirement for `x-client` to identify the **tool creator**, not the end user.
 
-However, the current `HabiticaApiClient.CreateRequest()` fallback uses:
-
-```text
-<current-user-id>-habitica-tool
-```
-
-when `ClientHeaderValue` is empty.
-
-The fallback conflicts with Habitica's API Usage Guidelines.
-
-The fallback must be corrected before adding a server-side integration. Both the PWA and MCP backend should use one stable project-owned `x-client` value.
+`HabiticaApiClient` requires an explicitly configured project-owned `x-client` and rejects missing or blank values. The PWA configuration contains the owner-supplied public creator identity with the stable `habitica-tool` suffix. Future MCP execution must use the same logical application identity.
 
 The server-side MCP architecture must never generate `x-client` from the connected end user's Habitica User ID.
 
@@ -715,7 +705,7 @@ Keep detailed OAuth/MCP contracts in [future.md](future.md), but apply the liste
 
 | Original task | Status / new dependency interpretation |
 |---|---|
-| **0 — Correct `x-client`** | Still an immediate prerequisite, with creator ID owner decision blocking production. |
+| **0 — Correct `x-client`** | API-client initialization requires a public project-owned creator/app value; no end-user fallback exists. |
 | **1 — Privacy architecture** | Must explicitly cover Companion-owned data, hosted workspace visibility, local-only mode, durability guarantees and command history. |
 | **2 — Auth/MCP Workers** | Infrastructure can be built independently, but cloud workspace and outbox execution ownership must be designed before production writes. |
 | **3 — Profile/vault** | Must distinguish Habitica identity, Companion workspace identity and stable OAuth profile identity; no implicit connection to existing party-sync local claims. |

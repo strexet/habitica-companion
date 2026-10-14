@@ -6,6 +6,20 @@ namespace Habitica.WebApp.Tests;
 public sealed class StaticAssetRegressionTests
 {
     [Fact]
+    public void Shipped_habitica_header_has_public_creator_uuid_and_application_name()
+    {
+        var path = Path.Combine(FindRepositoryRoot(), "src", "Habitica.WebApp", "wwwroot", "appsettings.json");
+        using var config = System.Text.Json.JsonDocument.Parse(File.ReadAllText(path));
+        var header = config.RootElement.GetProperty("Habitica").GetProperty("XClientHeader").GetString();
+
+        Assert.NotNull(header);
+        Assert.True(header!.Length > 37);
+        Assert.True(Guid.TryParseExact(header[..36], "D", out _));
+        Assert.Equal('-', header[36]);
+        Assert.Equal("habitica-tool", header[37..]);
+    }
+
+    [Fact]
     public void Indexeddb_storage_module_imports_dexie_from_published_vendor_path()
     {
         var repositoryRoot = FindRepositoryRoot();

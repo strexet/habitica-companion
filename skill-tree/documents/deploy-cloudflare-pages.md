@@ -83,13 +83,13 @@ The party sync Function must not receive Habitica API tokens. Browser-only `loca
 2. In Cloudflare, open `Workers & Pages`.
 3. Create a Pages application and import the GitHub repository.
 4. Use the build settings listed above.
-5. Add this environment variable if you want a production Habitica `x-client` value available to the frontend and Pages Functions:
+5. Retain the committed project-owned `Habitica:XClientHeader`, or set a public creator/app override for the frontend build:
 
    ```text
    HABITICA_X_CLIENT_HEADER=your-habitica-user-id-habitica-tool
    ```
 
-   This value is public in the deployed frontend. Do not put Habitica API tokens, passwords, or private keys in Cloudflare Pages environment variables for this static app.
+   `build.sh` applies the override to the static frontend configuration. The API client rejects missing or blank configuration before network access. The header never derives from the signed-in user. The value is public in the deployed frontend. Do not put Habitica API tokens, passwords, or private keys in Cloudflare Pages environment variables for this static app.
 
 6. Save and deploy.
 7. Open the generated `https://<project>.pages.dev` URL.

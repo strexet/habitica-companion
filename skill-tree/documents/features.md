@@ -1160,7 +1160,7 @@ Test:
 ### Open questions
 
 - Client-side validation currently covers missing values; malformed-ID validation remains a possible improvement.
-- Production deployment should replace fallback `x-client` behavior with a project-owned Habitica author header value.
+- API-client initialization requires the configured project-owned `x-client`; missing or blank configuration raises a configuration error before network access.
 
 ## 12.1 Local data portability and encrypted cloud sync
 
@@ -1614,7 +1614,7 @@ persistent-storage opt-in
 existing cached task snapshot
 existing cached user snapshot
 existing cached party snapshot
-configured x-client value or fallback header strategy
+required project-owned x-client value
 ```
 
 ### Outputs
@@ -1741,7 +1741,7 @@ Test:
 
 ### Open questions
 
-- Production deployments should configure a project-owned `x-client` header instead of relying on fallback generation.
+- Deployment configuration must retain a nonempty project-owned `x-client`; authenticated account identity never supplies a fallback.
 - Additional per-domain error presentation beyond compact status chips remains a UI improvement, not a sync architecture gap.
 
 ## 15. Equipment page and gear explorer

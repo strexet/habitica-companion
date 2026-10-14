@@ -29,7 +29,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
     private const int GoldPurchasableGemMaxCap = 50;
 
     private readonly HttpClient _httpClient;
-    private readonly HabiticaApiClientOptions _options;
+    private readonly string _clientHeaderValue;
     private readonly TimeSpan _minRequestSpacing;
 
     // Adaptive throttle state. This client is used sequentially within a user
@@ -44,7 +44,14 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
     public HabiticaApiClient(HttpClient httpClient, HabiticaApiClientOptions options)
     {
         _httpClient = httpClient;
-        _options = options;
+        if (string.IsNullOrWhiteSpace(options.ClientHeaderValue))
+        {
+            throw new ArgumentException(
+                "Habitica:XClientHeader must contain the tool creator's User ID and application name.",
+                nameof(options));
+        }
+
+        _clientHeaderValue = options.ClientHeaderValue;
         _minRequestSpacing = TimeSpan.FromMilliseconds(Math.Max(0, options.MinRequestSpacingMilliseconds));
     }
 
@@ -498,12 +505,9 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
     private HttpRequestMessage CreateRequest(HttpMethod method, string relativePath, HabiticaCredentials credentials)
     {
         var request = new HttpRequestMessage(method, relativePath);
-        var clientHeaderValue = string.IsNullOrWhiteSpace(_options.ClientHeaderValue)
-            ? $"{credentials.UserId}-{_options.ApplicationName}"
-            : _options.ClientHeaderValue;
         request.Headers.Add("x-api-user", credentials.UserId);
         request.Headers.Add("x-api-key", credentials.ApiToken);
-        request.Headers.Add("x-client", clientHeaderValue);
+        request.Headers.Add("x-client", _clientHeaderValue);
         request.Headers.Accept.ParseAdd("application/json");
         return request;
     }

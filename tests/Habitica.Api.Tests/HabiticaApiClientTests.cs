@@ -11,6 +11,52 @@ namespace Habitica.Api.Tests;
 
 public sealed class HabiticaApiClientTests
 {
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" \t")]
+    public void Missing_creator_header_rejects_client_initialization_before_network_access(string? header)
+    {
+        var requests = 0;
+        using var http = new HttpClient(new StubHttpMessageHandler(_ =>
+        {
+            requests++;
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        }));
+
+        var error = Assert.Throws<ArgumentException>(() =>
+            new HabiticaApiClient(http, new HabiticaApiClientOptions(header)));
+
+        Assert.Contains("Habitica:XClientHeader", error.Message);
+        Assert.Equal(0, requests);
+    }
+
+    [Fact]
+    public async Task Different_accounts_and_read_write_requests_share_configured_creator_header()
+    {
+        var headers = new List<(string User, string Client, HttpMethod Method)>();
+        var handler = new StubHttpMessageHandler(request =>
+        {
+            headers.Add((request.Headers.GetValues("x-api-user").Single(),
+                request.Headers.GetValues("x-client").Single(), request.Method));
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = JsonContent("""{"success":true,"data":{"profile":{"name":"Fixture"},"stats":{"class":"wizard","lvl":15}}}""")
+            };
+        });
+        var client = CreateClient(handler);
+
+        await client.GetUserAsync(new HabiticaCredentials("first-user", "first-test-token"), CancellationToken.None);
+        await client.RunCronAsync(new HabiticaCredentials("second-user", "second-test-token"), CancellationToken.None);
+
+        Assert.Equal(2, headers.Count);
+        Assert.Equal("first-user", headers[0].User);
+        Assert.Equal("second-user", headers[1].User);
+        Assert.Equal(HttpMethod.Get, headers[0].Method);
+        Assert.Equal(HttpMethod.Post, headers[1].Method);
+        Assert.All(headers, header => Assert.Equal("habitica-tool-author-habitica-tool", header.Client));
+    }
+
     [Fact]
     public void HabiticaApiClientOptions_defaults_to_350_ms_minimum_request_spacing()
     {
