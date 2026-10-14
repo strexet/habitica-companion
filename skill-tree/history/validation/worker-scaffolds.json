@@ -1,0 +1,55 @@
+{
+  "task_id": "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
+  "checks": [
+    {
+      "check": "independent Auth and MCP builds",
+      "result": "pass",
+      "environments": [
+        "local",
+        "preview",
+        "production"
+      ],
+      "typecheck": "pass",
+      "deployment": "dry-run only"
+    },
+    {
+      "check": "Miniflare local fixture suite",
+      "result": "pass",
+      "passed": 4,
+      "observed": [
+        "Named Auth Service Binding reaches health stub.",
+        "Both public Workers reject protected requests and arbitrary bearer values.",
+        "Missing service binding returns 503 without upstream data.",
+        "Configs isolate KV/D1 resources and environment service names."
+      ]
+    },
+    {
+      "check": "PWA solution build",
+      "result": "pass",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "check": "local browser /sign-in",
+      "result": "pass",
+      "observed": "Sign-in and saved-data access render; no integration enrollment or remote credential upload occurs."
+    }
+  ],
+  "limitations": [
+    "Remote resource IDs and domains are inert placeholders.",
+    "No resources were created and no Worker was deployed.",
+    "OAuth, credential storage and MCP tools remain unimplemented."
+  ],
+  "toolchain": {
+    "wrangler": "4.151.0",
+    "typescript": "7.0.2",
+    "oauth_provider": "1.2.3",
+    "mcp_sdk": "1.32.1",
+    "miniflare": "5.20261012.0-beta",
+    "compatibility_date": "2026-10-12"
+  },
+  "recovery_evidence": [
+    "Miniflare exported v4 option conversion adapts fixture options to selected v5 runtime.",
+    "Runtime rejected unsupported 2026-10-15 compatibility date; configuration and fixtures use supported 2026-10-12."
+  ]
+}

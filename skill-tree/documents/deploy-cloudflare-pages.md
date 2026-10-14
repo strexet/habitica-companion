@@ -79,7 +79,7 @@ The party sync Function must not receive Habitica API tokens. Browser-only `loca
 
 ## Optional Auth/MCP deployment proposal
 
-The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) proposes separate Auth/MCP Workers, OAuth KV and integration D1 resources. Existing Pages resources remain dedicated to private and party sync. Worker code, resources and remote enrollment are absent. Local implementation approval and live deployment scope are separate. Provider log/backup retention must be verified before activation.
+The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) proposes separate Auth/MCP Workers, OAuth KV and integration D1 resources. Existing Pages resources remain dedicated to private and party sync. Worker scaffold source exists; Cloudflare resources and remote enrollment are absent. Local implementation approval and live deployment scope are separate. Provider log/backup retention must be verified before activation.
 
 ## First deployment
 
@@ -125,3 +125,24 @@ Push to the production branch and Cloudflare Pages will rebuild automatically.
 - Personal sync keeps Habitica credentials in the browser and stores only encrypted KV blobs.
 - Shared party sync sends browser-local claims or optional tokenized invite proofs to the Pages Function and stores shared party data, roles, settings, kick records, and hashed proof metadata in D1.
 - `service-worker*.js` files may remain in the repo, but `index.html` does not register them.
+
+## Dedicated Worker local validation
+
+`workers/chatgpt-auth/` and `workers/chatgpt-mcp/` own package manifests, lockfiles, generated binding declarations and Wrangler configurations. `workers/shared/resources.ts` owns the exact issuer/resource pair per environment. Remote URLs and resource IDs are inert placeholders requiring operator replacement before separately authorized deployment. No resource provisioning occurs during local validation.
+
+```sh
+cd workers/chatgpt-auth
+npm ci
+npm run build
+npm run build:preview
+npm run build:production
+cd ../chatgpt-mcp
+npm ci
+npm run build
+npm run build:preview
+npm run build:production
+cd ../chatgpt-auth
+npm test
+```
+
+Build scripts use Wrangler dry-run. Scaffold fixtures use Miniflare with a named `AuthService` binding; protected HTTP paths return unauthorized. Auth alone owns `OAUTH_KV`, integration D1 and declared secret names. Preview and production use distinct integration resources and Auth Service bindings. Existing Pages resources are excluded. Secrets belong in ignored local `.dev.vars` files or separately approved Worker secret provisioning, never source/configuration.

@@ -1,0 +1,56 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "habitica-chatgpt-mcp-local",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-12",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "invocation_logs": false
+    }
+  },
+  "vars": {
+    "ENVIRONMENT": "local"
+  },
+  "env": {
+    "preview": {
+      "name": "habitica-chatgpt-mcp-preview",
+      "vars": {
+        "ENVIRONMENT": "preview"
+      },
+      "services": [
+        {
+          "binding": "AUTH_SERVER",
+          "service": "habitica-chatgpt-auth-preview",
+          "entrypoint": "AuthService"
+        }
+      ]
+    },
+    "production": {
+      "name": "habitica-chatgpt-mcp-production",
+      "vars": {
+        "ENVIRONMENT": "production"
+      },
+      "services": [
+        {
+          "binding": "AUTH_SERVER",
+          "service": "habitica-chatgpt-auth-production",
+          "entrypoint": "AuthService"
+        }
+      ]
+    }
+  },
+  "services": [
+    {
+      "binding": "AUTH_SERVER",
+      "service": "habitica-chatgpt-auth-local",
+      "entrypoint": "AuthService"
+    }
+  ],
+  "send_metrics": false
+}

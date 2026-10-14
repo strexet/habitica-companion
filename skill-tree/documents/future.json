@@ -3,29 +3,30 @@
     "completed_ids": [
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7",
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
-      "T-c6f6b09d-4625-5898-b91c-016c611b60df"
+      "T-c6f6b09d-4625-5898-b91c-016c611b60df",
+      "T-b883e33b-05a6-53d8-a9a5-d11d7008887f"
     ],
     "completion_refs": {
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
+      "T-b883e33b-05a6-53d8-a9a5-d11d7008887f": "O-84147b67-67cd-4c09-80fe-17befff407d7",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df": "O-ed64ce15-7bea-467d-8a8b-06a3494a05fd"
     },
     "current_task_id": null,
-    "cycle_signature": "6a19cb1777f5625db154b35baa924d4d517e10c879dd5965aa9e9b7aa548d8e4",
+    "cycle_signature": "f31907df71569c80c8aad48528ad377965bb19bd38f1c1bc5d2720a2f81b3684",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Record the owner decision on T-b883e33b-05a6-53d8-a9a5-d11d7008887f, explicitly resume the checkpoint, then advance to the Worker scaffold.",
+    "next_action": "Select required task or finish root",
     "partial_work": [
-      "Completed creator-header root and required diagnostic timestamp subtask.",
-      "Completed and committed integration architecture proposal.",
-      "Build and local browser milestone checks passed; remaining owner approval is recorded on the Auth/MCP Worker task."
+      "Owner approved local Auth/MCP implementation and tests of the concrete enrollment contract.",
+      "Real enrollment and deployment remain outside the current scope."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf"
     ],
-    "phase": "blocked",
+    "phase": "resume-parent",
     "processing_results": [
       {
         "created_ids": [
@@ -50,9 +51,10 @@
     "required_ids": [
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7",
-      "T-c6f6b09d-4625-5898-b91c-016c611b60df"
+      "T-c6f6b09d-4625-5898-b91c-016c611b60df",
+      "T-b883e33b-05a6-53d8-a9a5-d11d7008887f"
     ],
-    "root_task_id": "T-c6f6b09d-4625-5898-b91c-016c611b60df",
+    "root_task_id": "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
     "snapshot": [
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df",
@@ -67,10 +69,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Owner approval of the concrete optional backend and credential-storage contract is required before the Auth/MCP Worker task."
+    "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "7e06adaf93a40f7fbdf7e8e753b9d556462d9e0af94d9f48cad86b94545e2b62",
+  "source_hash": "fb2c4bc18c32073739e77982966783e25b486c92f395f22270d0e66f0a7130fb",
   "tasks": [
     {
       "depends_on": [],
@@ -270,29 +272,11 @@
     },
     {
       "depends_on": [
-        "T-c6f6b09d-4625-5898-b91c-016c611b60df"
-      ],
-      "id": "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
-      "line": 513,
-      "parent_pending_ids": [
-        "P-509dc30e-afbf-5eff-a2cc-cd9737e6236d"
-      ],
-      "priority": 198,
-      "processing_run_id": null,
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
-      "status": "Blocked pending answers",
-      "title": "Add Dedicated Auth And MCP Worker Projects"
-    },
-    {
-      "depends_on": [
         "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
         "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e"
       ],
       "id": "T-e33bccdc-22f1-5043-9230-3d12d9e9563d",
-      "line": 643,
+      "line": 513,
       "parent_pending_ids": [
         "P-55d076da-8a7f-50c7-af15-f4a106a697cb"
       ],
@@ -310,7 +294,7 @@
         "T-e33bccdc-22f1-5043-9230-3d12d9e9563d"
       ],
       "id": "T-16a38176-f2fe-5f7d-a809-546f17357b49",
-      "line": 774,
+      "line": 644,
       "parent_pending_ids": [
         "P-2db8e8bd-00de-53f2-823d-06dc23f53eeb"
       ],
@@ -329,7 +313,7 @@
         "T-16a38176-f2fe-5f7d-a809-546f17357b49"
       ],
       "id": "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
-      "line": 938,
+      "line": 808,
       "parent_pending_ids": [
         "P-9cf8044d-e032-54f0-b10b-647e6bcfb067"
       ],
@@ -347,7 +331,7 @@
         "T-53352a18-54d2-57b6-accc-91f8e6dfad13"
       ],
       "id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-      "line": 1129,
+      "line": 999,
       "parent_pending_ids": [
         "P-90b811d4-3aea-509c-8dca-84d5c892a637"
       ],
@@ -365,7 +349,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
-      "line": 1319,
+      "line": 1189,
       "parent_pending_ids": [
         "P-1590c3c7-25e6-589e-8efb-91f35d873b4e"
       ],
@@ -383,7 +367,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-      "line": 1450,
+      "line": 1320,
       "parent_pending_ids": [
         "P-d0950eec-bfbf-561f-b192-dcf8dde67488"
       ],
@@ -409,7 +393,7 @@
         "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"
       ],
       "id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "line": 1561,
+      "line": 1431,
       "parent_pending_ids": [
         "P-46dde168-2e75-53fd-b2c0-0c1769f7711d"
       ],
@@ -427,7 +411,7 @@
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 1687,
+      "line": 1557,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -443,7 +427,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1842,
+      "line": 1712,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -457,7 +441,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1879,
+      "line": 1749,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -471,7 +455,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1916,
+      "line": 1786,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -485,7 +469,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 2049,
+      "line": 1919,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -499,7 +483,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 2087,
+      "line": 1957,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -513,7 +497,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 2121,
+      "line": 1991,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -527,7 +511,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 2156,
+      "line": 2026,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -541,7 +525,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 2190,
+      "line": 2060,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -555,7 +539,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 2228,
+      "line": 2098,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -569,7 +553,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 2255,
+      "line": 2125,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -583,7 +567,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 2277,
+      "line": 2147,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -597,7 +581,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 2304,
+      "line": 2174,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

@@ -1,0 +1,25 @@
+{
+  "name": "habitica-chatgpt-mcp",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "types": "wrangler types --include-runtime false --env-interface McpEnv",
+    "check": "npm run types && tsc --noEmit",
+    "build": "npm run check && wrangler deploy --dry-run --env \"\" --outdir dist",
+    "build:preview": "wrangler deploy --dry-run --env preview --outdir dist-preview",
+    "build:production": "wrangler deploy --dry-run --env production --outdir dist-production"
+  },
+  "dependencies": {
+    "@cloudflare/workers-oauth-provider": "1.2.3",
+    "@modelcontextprotocol/sdk": "1.32.1"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.0",
+    "typescript": "7.0.2",
+    "@cloudflare/workers-types": "5.20261014.1"
+  }
+}

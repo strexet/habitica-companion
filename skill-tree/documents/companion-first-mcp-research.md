@@ -52,7 +52,7 @@ Habitica Companion PWA
 
 ## Proposed ChatGPT Enrollment, Privacy And Retention Contract
 
-Status: proposal awaiting repository-owner approval for backend and credential-storage implementation. The current PWA has no ChatGPT enrollment or remote credential vault. Documentation acceptance approves the proposal document only. Deployment, real enrollment, public registration and scheduled execution require separate applicable owner scope.
+Status: repository-owner approved for local implementation and tests. The current PWA has no ChatGPT enrollment or remote credential vault. Deployment, real enrollment, public registration and scheduled execution require separate applicable owner scope.
 
 ### Current boundary
 
@@ -93,7 +93,7 @@ Application deletion does not clear browser snapshots, delete Habitica data, rem
 
 ### Proposed implementation and release gates
 
-The repository owner must approve the optional server-side trust boundary and retention defaults before the backend/vault task proceeds. Per-user enrollment still requires consent after owner approval. Before enrollment exists, the PWA privacy page continues to describe only current browser behavior. Enrollment implementation must update the privacy page, sign-in/settings notices and disconnect/delete UI together.
+The repository owner approved the optional server-side trust boundary and retention defaults for local implementation and tests. Per-user enrollment still requires consent. Before enrollment exists, the PWA privacy page continues to describe only current browser behavior. Enrollment implementation must update the privacy page, sign-in/settings notices and disconnect/delete UI together.
 
 Required implementation evidence includes isolation between two profiles, expired/replayed ticket rejection, audience/scope enforcement, credential redaction, disconnect denial despite residual provider records, deletion retry after cleanup faults and reconnect identity stability. Local fixtures must use synthetic credentials. Real credential enrollment, deployment and destructive lifecycle tests require named target and action scope.
 

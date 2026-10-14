@@ -21,4 +21,4 @@ dotnet build Habitica.sln -m:1 -nodeReuse:false
 
 `build.sh` installs the selected SDK into the local `dotnet/` directory, prepares vendored Dexie, optionally writes `HABITICA_X_CLIENT_HEADER` into web configuration, and publishes the web application into `output/`. `wrangler.toml` identifies Pages output as `output/wwwroot`.
 
-[deploy-cloudflare-pages.md](deploy-cloudflare-pages.md) owns Pages, KV, D1, migration and operational instructions. Current bindings are `HABITICA_SYNC_KV` and `HABITICA_PARTY_DB`. Dedicated MCP/Auth Workers are planned and absent. Deployment, real-service checks and publication require an applicable developer request.
+[deploy-cloudflare-pages.md](deploy-cloudflare-pages.md) owns Pages, KV, D1, migration and operational instructions. Current bindings are `HABITICA_SYNC_KV` and `HABITICA_PARTY_DB`. Dedicated MCP/Auth Worker scaffolds reside under `workers/`; [deploy-cloudflare-pages.md](deploy-cloudflare-pages.md#dedicated-worker-local-validation) owns local dry-run and binding fixture commands. Deployment, real-service checks and publication require an applicable developer request.

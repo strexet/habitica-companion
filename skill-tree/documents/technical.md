@@ -316,7 +316,7 @@ Both provider boundaries must stay abstract so another remote sync provider can 
 
 ## 5. Repository ownership
 
-[repository-map.md](repository-map.md) owns physical paths and module responsibilities. Application source remains under `src/`, tests under `tests/`, Pages Functions under `functions/`, and canonical documentation under `skill-tree/documents/`. The manifest indexes documentation and workflow state; dedicated Auth/MCP Workers remain planned.
+[repository-map.md](repository-map.md) owns physical paths and module responsibilities. Application source remains under `src/`, tests under `tests/`, Pages Functions under `functions/`, and canonical documentation under `skill-tree/documents/`. The manifest indexes documentation and workflow state; dedicated Auth/MCP Worker scaffolds reside under `workers/`. Protected operations remain denied until authorization is implemented.
 
 `src/Habitica.WebApp/package.json` and `package-lock.json` pin browser dependencies. Dependency versions reside in [dependencies.md](dependencies.md); build/release steps reside in [build-and-release.md](build-and-release.md).
 
@@ -529,7 +529,7 @@ Native credential policy, if native shell is added:
 
 ## Optional ChatGPT integration proposal
 
-Dedicated Auth/MCP Workers and a credential vault are proposed in the [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract). Current credential storage remains browser-local; the proposal defines separate integration resources and a narrow internal operation boundary. Documentation completion does not activate the proposed backend.
+Separate Auth/MCP Worker scaffolds are implemented; credential vault and OAuth behavior remain absent. Local integration implementation follows the owner-approved [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract). Current credential storage remains browser-local; the proposal defines separate integration resources and a narrow internal operation boundary. Documentation completion does not activate the proposed backend.
 
 ## 10. Sync strategy
 

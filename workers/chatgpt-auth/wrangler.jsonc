@@ -1,0 +1,101 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "habitica-chatgpt-auth-local",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-12",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "invocation_logs": false
+    }
+  },
+  "vars": {
+    "ENVIRONMENT": "local",
+    "CREDENTIAL_CURRENT_KEY_VERSION": "1",
+    "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool"
+  },
+  "env": {
+    "preview": {
+      "name": "habitica-chatgpt-auth-preview",
+      "vars": {
+        "ENVIRONMENT": "preview",
+        "CREDENTIAL_CURRENT_KEY_VERSION": "1",
+        "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool"
+      },
+      "kv_namespaces": [
+        {
+          "binding": "OAUTH_KV",
+          "id": "00000000000000000000000000000002"
+        }
+      ],
+      "d1_databases": [
+        {
+          "binding": "HABITICA_INTEGRATION_DB",
+          "database_name": "habitica-integration-preview",
+          "database_id": "00000000-0000-4000-8000-000000000002",
+          "migrations_dir": "migrations"
+        }
+      ],
+      "secrets": {
+        "required": [
+          "PROFILE_ID_KEY",
+          "CREDENTIAL_KEY_V1"
+        ]
+      }
+    },
+    "production": {
+      "name": "habitica-chatgpt-auth-production",
+      "vars": {
+        "ENVIRONMENT": "production",
+        "CREDENTIAL_CURRENT_KEY_VERSION": "1",
+        "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool"
+      },
+      "kv_namespaces": [
+        {
+          "binding": "OAUTH_KV",
+          "id": "00000000000000000000000000000003"
+        }
+      ],
+      "d1_databases": [
+        {
+          "binding": "HABITICA_INTEGRATION_DB",
+          "database_name": "habitica-integration-production",
+          "database_id": "00000000-0000-4000-8000-000000000003",
+          "migrations_dir": "migrations"
+        }
+      ],
+      "secrets": {
+        "required": [
+          "PROFILE_ID_KEY",
+          "CREDENTIAL_KEY_V1"
+        ]
+      }
+    }
+  },
+  "kv_namespaces": [
+    {
+      "binding": "OAUTH_KV",
+      "id": "00000000000000000000000000000001"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "HABITICA_INTEGRATION_DB",
+      "database_name": "habitica-integration-local",
+      "database_id": "00000000-0000-4000-8000-000000000001",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "send_metrics": false,
+  "secrets": {
+    "required": [
+      "PROFILE_ID_KEY",
+      "CREDENTIAL_KEY_V1"
+    ]
+  }
+}
