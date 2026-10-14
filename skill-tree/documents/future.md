@@ -11,10 +11,10 @@ Task definitions reside in `skill-tree/documents/future.md`; `future.json` conta
    - Habitica party/quest link behavior: `skill-tree/documents/habitica-deeplinks.md`
    - Cloudflare deployment and D1/KV: `skill-tree/documents/deploy-cloudflare-pages.md`
 2. Implement one entry only. Do not bundle unrelated cleanup, renames, or opportunistic refactors.
-3. If a task lists `Touch:`, edit only the listed paths and direct tests unless the task explicitly permits more.
+3. Respect `Touch:` and `Discovery allowance:`. Research missing paths before implementation; capture required scope changes through the selected controller instead of silently broadening the task.
 4. Add or update tests next to affected code. UI behavior changes need Razor component tests where similar tests exist.
 5. User-facing behavior changes must update `skill-tree/documents/features.md`; sync architecture or backend behavior changes must update `skill-tree/documents/technical.md`.
-6. Schema changes need the next numbered migration under `migrations/` and a deployment-doc update.
+6. Schema changes need the next numbered migration in the owning database directory and a deployment-doc update. Existing party D1 uses `migrations/`; the proposed integration database uses `workers/chatgpt-auth/migrations/`. Never mix credential-vault migrations into party D1.
 7. Never send Habitica API tokens to Cloudflare party-sync or app-data sync endpoints.
 8. Keep labels short and plain. If UI copy is ambiguous, choose the smallest clear label and proceed.
 9. If a needed Habitica endpoint is not documented in `skill-tree/documents/habitica-api.md`, stop and add a follow-up entry instead of guessing.
@@ -28,8 +28,8 @@ Task definitions reside in `skill-tree/documents/future.md`; `future.json` conta
 ## Companion-First Integration Planning Gates
 
 - `skill-tree/documents/future.md` is the **only active implementation queue**. The architecture and [competitive mobile UX research](companion-first-mcp-research.md) are reference material, not a second queue.
-- The **14 E01–E14 high-level product, UX and reliability epics** below are raw research/decomposition intake. Promote one independently verifiable subtask at a time with `Process pending`.
-- The **11 MCP/OAuth contracts** below carry explicit dependencies and blockers. `Implement next` must not skip a blocked highest-ranked task.
+- The **14 E01–E14 high-level product, UX and reliability epics** below are raw research/decomposition intake. Use exact P- IDs or full task titles with `Process pending`; E01–E14 are provenance labels. Decompose selected intake into independently verifiable tasks, preserving every originating Pending ID and recording required T- dependency edges.
+- The **11 MCP/OAuth contracts** below carry explicit dependencies and blockers. `Ready` means the task contract has no unanswered blocking question; unfinished prerequisites remain in `depends_on` and must complete before execution. `Implement next` must not skip a blocked highest-ranked task.
 - Once Companion-owned task/project/goal storage is established, Habitica is a game projection. No parallel direct-to-Habitica MCP write path is allowed.
 - Persist accepted application commands, but do **not** promise exactly-once remote rewards when Habitica reports a timeout without upstream idempotency. Preserve unknown outcomes for reconciliation.
 - Conduct hands-on competitor/mobile usability work in E01 before implementation-specific UI tasks are promoted.
@@ -37,8 +37,10 @@ Task definitions reside in `skill-tree/documents/future.md`; `future.json` conta
 
 ## Pending Task Format
 
-Pending intake requires a stable P- identity and the fixed metadata fields. Add Pending records understood intent; Process Pending performs source research before promotion.
+Pending intake requires a stable P- identity and the fixed metadata fields. Add Pending records understood intent; Process Pending performs source research before promotion. Use a level-three title immediately followed by the metadata fence, then concise nested bullets:
 
+~~~~markdown
+### Task title
 ```yaml
 id: P-<uuid>
 priority: 100
@@ -51,18 +53,18 @@ relation: main
 depends_on: []
 ```
 
-Use a level-three title immediately followed by the metadata fence, then concise nested bullets:
-
-```text
 Description:
 - State the change, reason and relevant context.
+
 Expected behavior:
 - State an observable outcome.
+
 Source:
 - Record request or finding provenance.
+
 Current context:
 - Name verified implementation, affected paths and unresolved constraints when relevant.
-```
+~~~~
 
 No full implementation plan is required for Pending intake. Preserve supplied requirements. Recheck code, tests, configuration and official external behavior before promotion. Promoted tasks receive T- identities and all originating Pending IDs; deferred tasks retain B- identities.
 
@@ -87,11 +89,20 @@ depends_on: []
 Source:
 - Companion-first epic `E01` (`P-4f98b2b3-af24-5424-b2f9-066913f7133d`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Benchmark Todoist, Things 3, TickTick, Amazing Marvin, Microsoft To Do and selective Asana/Linear/Jira flows. Produce a screenshot/flow inventory, 'borrow/adapt/reject' matrix, mobile IA, core personas and default-vs-advanced rules.
-- Current context: Existing Tasks page is a Habitica task-type list, not a modern daily planner or project workspace.
-- Requirements: Real screenshots/documented workflows; task capture, planning, project organization, calendar, completed history, recurrence, error/pending states; mobile-first and accessibility criteria; explicit no-corporate-PM scope.
-- Suggested implementation: `skill-tree/documents/ux-ui-manifest.md`, canonical design/research notes under `skill-tree/documents/` and large artifacts under ignored `skill-tree/artifacts/`, low-fidelity mobile prototypes.
-- Acceptance: Written benchmark with dated links, documented observations vs hypotheses, tested journeys, and approved navigation prototype before detailed UI tickets.
+Description:
+- Benchmark Todoist, Things 3, TickTick, Amazing Marvin, Microsoft To Do and selective Asana/Linear/Jira flows. Produce a screenshot/flow inventory, 'borrow/adapt/reject' matrix, mobile IA, core personas and default-vs-advanced rules.
+
+Current context:
+- Existing Tasks page is a Habitica task-type list, not a modern daily planner or project workspace.
+
+Requirements:
+- Real screenshots/documented workflows; task capture, planning, project organization, calendar, completed history, recurrence, error/pending states; mobile-first and accessibility criteria; explicit no-corporate-PM scope.
+
+Suggested implementation:
+- `skill-tree/documents/ux-ui-manifest.md`, canonical design/research notes under `skill-tree/documents/` and large artifacts under ignored `skill-tree/artifacts/`, low-fidelity mobile prototypes.
+
+Expected behavior:
+- Written benchmark with dated links, documented observations vs hypotheses, tested journeys, and approved navigation prototype before detailed UI tickets.
 
 ### E02 Companion-owned canonical workspace and task domain
 
@@ -110,11 +121,20 @@ depends_on: []
 Source:
 - Companion-first epic `E02` (`P-9d3fb820-05c3-525b-8769-85c5423d2f53`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Define first-class Categories, Goals, Projects, Sections, Labels, Tasks, Subtasks, TaskOccurrences and lifecycle events; distinguish user task state from Habitica game state.
-- Current context: `TaskSnapshot` is Habitica-centric and lacks Companion-owned IDs, project/goals, lifecycle and recurrence history.
-- Requirements: Stable IDs, task kinds (Todo/Daily/Habit vs game projection), dates/planned/deadline, priority, states, goals progress, optional dependencies and staleness metadata, extensible schemas, safe deletion/archive.
-- Data/model behavior: Versioned local entities with opaque IDs and a separate external projection mapping. Define primary project vs multiple project memberships explicitly during decomposition.
-- Acceptance: Approved schema/use-case contract, migration examples, invariants, round-trip fixtures, backward compatibility plan; no dependency on Habitica fields for Companion entity identity.
+Description:
+- Define first-class Categories, Goals, Projects, Sections, Labels, Tasks, Subtasks, TaskOccurrences and lifecycle events; distinguish user task state from Habitica game state.
+
+Current context:
+- `TaskSnapshot` is Habitica-centric and lacks Companion-owned IDs, project/goals, lifecycle and recurrence history.
+
+Requirements:
+- Stable IDs, task kinds (Todo/Daily/Habit vs game projection), dates/planned/deadline, priority, states, goals progress, optional dependencies and staleness metadata, extensible schemas, safe deletion/archive.
+
+Data/model behavior:
+- Versioned local entities with opaque IDs and a separate external projection mapping. Define primary project vs multiple project memberships explicitly during decomposition.
+
+Expected behavior:
+- Approved schema/use-case contract, migration examples, invariants, round-trip fixtures, backward compatibility plan; no dependency on Habitica fields for Companion entity identity.
 
 ### E03 Local-first persistent storage, migration, and optional cloud workspace
 
@@ -133,11 +153,20 @@ depends_on: []
 Source:
 - Companion-first epic `E03` (`P-4f954f5a-1084-5c87-8e26-1bfc5fd95035`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Convert snapshot-only cache to durable task domain/event/outbox stores; plan cross-device sync and server-readable opt-in workspace for remote MCP without silently weakening existing encrypted KV sync.
-- Current context: IndexedDB Dexie currently has one `kv` store; existing encrypted KV sync is browser-derived/opaque to backend.
-- Requirements: Atomic entity+event+outbox commits, IndexedDB schema upgrades, restore/export, storage eviction handling, multi-tab/multi-device versioning, merge/conflict semantics, opt-in account identity and privacy contract.
-- Edge cases: Offline client vs server changes, reset browser, import duplicate, stale cloud snapshot, migration rollback, mixed PWA versions.
-- Acceptance: Documented local-only vs hosted guarantee levels, migratable schema, no lost preexisting data, explicit server-readability consent, migration rehearsals and recovery tests.
+Description:
+- Add durable task domain/event/outbox stores alongside existing key/value snapshots, preferences and presets; plan cross-device sync and server-readable opt-in workspace for remote MCP without silently weakening existing encrypted KV sync.
+
+Current context:
+- IndexedDB Dexie currently has one `kv` store; existing encrypted KV sync is browser-derived/opaque to backend.
+
+Requirements:
+- Atomic entity+event+outbox commits, IndexedDB schema upgrades, restore/export, storage eviction handling, multi-tab/multi-device versioning, merge/conflict semantics, opt-in account identity and privacy contract.
+
+Edge cases:
+- Offline client vs server changes, reset browser, import duplicate, stale cloud snapshot, migration rollback, mixed PWA versions.
+
+Expected behavior:
+- Documented local-only vs hosted guarantee levels, migratable schema, no lost preexisting data, explicit server-readability consent, migration rehearsals and recovery tests.
 
 ### E04 Habitica projection and reconciliation adapter
 
@@ -156,11 +185,20 @@ depends_on: []
 Source:
 - Companion-first epic `E04` (`P-bbb755c5-37d7-5637-862d-17faa8e12f99`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Treat Habitica API as gamification projection. Map Companion Tasks/Labels to Habitica task types/tags and reconcile missing, changed, completed and externally deleted tasks.
-- Current context: API reads/writes Habitica tasks directly, and task IDs currently come from Habitica.
-- Requirements: Stable Companion-to-Habitica IDs/aliases; import ownership policy; reserved alias/tag namespace only after upstream verification; safe create-then-complete chain; no duplicate awards after ambiguous timeout.
-- Edge cases: Externally deleted Todo, external edit, alias collision, already completed Todo, unknown score result, Habitica tag rename/delete, daily/habit repeated events.
-- Acceptance: Companion-completed Todo absent in Habitica is safely created and completed when reconcilable; tests show no silent duplicate creates/scores and no resurrection loops.
+Description:
+- Treat Habitica API as gamification projection. Map Companion Tasks/Labels to Habitica task types/tags and reconcile missing, changed, completed and externally deleted tasks.
+
+Current context:
+- API reads/writes Habitica tasks directly, and task IDs currently come from Habitica.
+
+Requirements:
+- Stable Companion-to-Habitica IDs/aliases; import ownership policy; reserved alias/tag namespace only after upstream verification; safe create-then-complete chain; no duplicate awards after ambiguous timeout.
+
+Edge cases:
+- Externally deleted Todo, external edit, alias collision, already completed Todo, unknown score result, Habitica tag rename/delete, daily/habit repeated events.
+
+Expected behavior:
+- Companion-completed Todo absent in Habitica is safely created and completed when reconcilable; tests show no silent duplicate creates/scores and no resurrection loops.
 
 ### E05 Durable command journal and typed failure/recovery engine
 
@@ -179,11 +217,20 @@ depends_on: []
 Source:
 - Companion-first epic `E05` (`P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Replace direct fire-and-forget Habitica actions with a persisted application-level transactional outbox and consistent retry/reconcile semantics across manual PWA and MCP.
-- Current context: Current C# API client throttle is in-memory; no durable application command ledger exists.
-- Requirements: Submission persistence, dependency graph, per-task ordering, retries, state machine, leases, cancellation boundaries, typed API failures, unknown-outcome reconciliation and visible queue inspection.
-- Runtime behavior: UI never crashes from ordinary upstream 401/429/5xx/timeouts; pauses then resumes eligible commands; permanent blockers remain visible and are not silently dropped.
-- Acceptance: Fault-injection tests for offline/timeout/429/5xx/concurrent tabs; accurately distinguished local save vs game sync; no blind retry of non-idempotent mutation.
+Description:
+- Wrap the existing awaited Habitica action flows in a persisted application-level transactional outbox and consistent retry/reconcile semantics across manual PWA and MCP.
+
+Current context:
+- `AppSessionController.ScoreTaskAsync` freshness-gates and sequentially awaits scores and snapshot saves. The C# API client throttle is in-memory; no durable application command ledger exists.
+
+Requirements:
+- Submission persistence, dependency graph, per-task ordering, retries, state machine, leases, cancellation boundaries, typed API failures, unknown-outcome reconciliation and visible queue inspection.
+
+Runtime behavior:
+- UI never crashes from ordinary upstream 401/429/5xx/timeouts; pauses then resumes eligible commands; permanent blockers remain visible and are not silently dropped.
+
+Expected behavior:
+- Fault-injection tests for offline/timeout/429/5xx/concurrent tabs; accurately distinguished local save vs game sync; no blind retry of non-idempotent mutation.
 
 ### E06 Early-slowdown adaptive limiter and automatic controlled recovery
 
@@ -202,10 +249,17 @@ depends_on: []
 Source:
 - Companion-first epic `E06` (`P-676c0cb1-82b5-51e1-92c1-74303b58c59d`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Redesign outbound Habitica traffic scheduling to slow earlier, preserve headroom and recover progressively on sustained success.
-- Current context: `HabiticaApiClient` token bucket uses adaptive ramp near depletion, but lacks coordinated cross-client durable backpressure and recovery logic.
-- Requirements: Actual header reconciliation, forward-looking budget, safety reserve, per-user plus possible shared-egress quotas, AIMD/circuit-breaker separation, backoff+jitter, fair scheduling, observability.
-- Acceptance: In synthetic load tests rate reduction begins before near-zero budget; 429 and timeouts do not spin; stable success restores throughput gradually; no credential exposure in traces.
+Description:
+- Redesign outbound Habitica traffic scheduling to slow earlier, preserve headroom and recover progressively on sustained success.
+
+Current context:
+- `HabiticaApiClient` token bucket uses adaptive ramp near depletion, but lacks coordinated cross-client durable backpressure and recovery logic.
+
+Requirements:
+- Actual header reconciliation, forward-looking budget, safety reserve, per-user plus possible shared-egress quotas, AIMD/circuit-breaker separation, backoff+jitter, fair scheduling, observability.
+
+Expected behavior:
+- In synthetic load tests rate reduction begins before near-zero budget; 429 and timeouts do not spin; stable success restores throughput gradually; no credential exposure in traces.
 
 ### E07 Optional always-on server executor and queue ownership handoff
 
@@ -224,11 +278,20 @@ depends_on: []
 Source:
 - Companion-first epic `E07` (`P-2dcaca70-8d94-55b1-aaee-7e7262e60f07`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Let opted-in users process Companion outbox commands and MCP edits after the browser closes, with durable server ledger, leases and safe resumption.
-- Current context: PWA cannot guarantee unattended background execution; MCP already requires remote account connection for live interactions.
-- Requirements: Per-profile server authentication, accepted-command ACK boundary, local-to-server handoff/dedup, single execution owner, persisted retries, bounded sweep, optional Cloudflare Queues as transport, cleanup/revocation.
-- Edge cases: Split brain browser+Worker, disconnect mid-execution, credential revoked, Cloudflare Queue DLQ/expiry, duplicate delivery, mobile app shutdown.
-- Acceptance: Simulated restart/redeploy/outage does not silently lose accepted commands; ambiguous upstream effects remain blocked for reconciliation rather than double-applied.
+Description:
+- Let opted-in users process Companion outbox commands and MCP edits after the browser closes, with durable server ledger, leases and safe resumption.
+
+Current context:
+- PWA cannot guarantee unattended background execution; the planned remote MCP integration requires an authenticated account connection; no MCP endpoint exists yet.
+
+Requirements:
+- Per-profile server authentication, accepted-command ACK boundary, local-to-server handoff/dedup, single execution owner, persisted retries, bounded sweep, optional Cloudflare Queues as transport, cleanup/revocation.
+
+Edge cases:
+- Split brain browser+Worker, disconnect mid-execution, credential revoked, Cloudflare Queue DLQ/expiry, duplicate delivery, mobile app shutdown.
+
+Expected behavior:
+- Simulated restart/redeploy/outage does not silently lose accepted commands; ambiguous upstream effects remain blocked for reconciliation rather than double-applied.
 
 ### E08 Mobile-first task capture, edit, and navigation redesign
 
@@ -247,10 +310,17 @@ depends_on: []
 Source:
 - Companion-first epic `E08` (`P-0ddc8784-c740-5a23-819c-b17db8f6829f`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Redesign Todos, Dailies and Habits for smartphone-first use, with minimal fast entry and advanced configuration when requested.
-- Current context: Existing `TasksPage.razor` is a large grouped list with expanding cards, filters and score controls.
-- Requirements: Fast Add from main views, one-handed touch design, clean task rows, keyboard/safe-area behavior, simple vs advanced detail sheet, quick reschedule, undo where safe, accessible date picker, responsive secondary desktop views.
-- Acceptance: Common capture/completion/reschedule flows need few interactions on a narrow phone; no core task property requires desktop; WCAG/touch/keyboard tests and mobile usability review.
+Description:
+- Redesign Todos, Dailies and Habits for smartphone-first use, with minimal fast entry and advanced configuration when requested.
+
+Current context:
+- Existing `TasksPage.razor` is a large grouped list with expanding cards, filters and score controls.
+
+Requirements:
+- Fast Add from main views, one-handed touch design, clean task rows, keyboard/safe-area behavior, simple vs advanced detail sheet, quick reschedule, undo where safe, accessible date picker, responsive secondary desktop views.
+
+Expected behavior:
+- Common capture/completion/reschedule flows need few interactions on a narrow phone; no core task property requires desktop; WCAG/touch/keyboard tests and mobile usability review.
 
 ### E09 Today, Upcoming, Calendar, Inbox and Completed/Logbook views
 
@@ -269,10 +339,17 @@ depends_on: []
 Source:
 - Companion-first epic `E09` (`P-c8632138-39c6-5797-8e03-a3414824ee96`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Add a unified agenda/planning surface and durable completed history, not just the current Habitica task-type grouping.
-- Requirements: Today planner, Inbox, near-term Upcoming, Week/Month + agenda calendar, overdue, unscheduled/Anytime, completed history and restore, explicit occurrence/recurrence handling.
-- Data behavior: Distinguish all-day date/time, planned date/deadline, game Daily due-state and completion timestamp; calendar uses Companion records, not API-only recent completed limit.
-- Acceptance: Fully usable on mobile; accurate date boundary across time zones/DST; no duplicate recurring Dailies; completed items remain visible/searchable after Habitica removes completed items.
+Description:
+- Add a unified agenda/planning surface and durable completed history, not just the current Habitica task-type grouping.
+
+Requirements:
+- Today planner, Inbox, near-term Upcoming, Week/Month + agenda calendar, overdue, unscheduled/Anytime, completed history and restore, explicit occurrence/recurrence handling.
+
+Data behavior:
+- Distinguish all-day date/time, planned date/deadline, game Daily due-state and completion timestamp; calendar uses Companion records, not API-only recent completed limit.
+
+Expected behavior:
+- Fully usable on mobile; accurate date boundary across time zones/DST; no duplicate recurring Dailies; completed items remain visible/searchable after Habitica removes completed items.
 
 ### E10 Categories, goals, projects, progress and lightweight workflows UX
 
@@ -291,10 +368,17 @@ depends_on: []
 Source:
 - Companion-first epic `E10` (`P-0529505a-68be-5308-a805-44a2f4ddd6a9`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Offer real personal-project power with categories/areas, projects, sections, optional goals and progress, simple stages (Inbox/Next/In Progress/Waiting/Done) and cross-project organization.
-- Requirements: Simple mode works without hierarchy; optional advanced fields and project board; move task between projects; goal linking and progress rules; useful stale/blocked/missing-next-action warnings.
-- Out of scope: Corporate user performance dashboards, employee monitoring, burnout scoring, sprint velocity, capacity forecasting and mandatory PM rituals.
-- Acceptance: A casual user creates a Todo with one field; a power user creates a project with tasks/deadlines/labels and reviews progress from a phone.
+Description:
+- Offer real personal-project power with categories/areas, projects, sections, optional goals and progress, simple stages (Inbox/Next/In Progress/Waiting/Done) and cross-project organization.
+
+Requirements:
+- Simple mode works without hierarchy; optional advanced fields and project board; move task between projects; goal linking and progress rules; useful stale/blocked/missing-next-action warnings.
+
+Out of scope:
+- Corporate user performance dashboards, employee monitoring, burnout scoring, sprint velocity, capacity forecasting and mandatory PM rituals.
+
+Expected behavior:
+- A casual user creates a Todo with one field; a power user creates a project with tasks/deadlines/labels and reviews progress from a phone.
 
 ### E11 Habits and Dailies as first-class recurring personal workflows
 
@@ -313,10 +397,17 @@ depends_on: []
 Source:
 - Companion-first epic `E11` (`P-f2bb7e37-6700-58ac-aa56-b537d193c777`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Make habitual and scheduled work ergonomic in Companion while respecting distinct Habitica Habit/Daily semantics and Cron day boundaries.
-- Requirements: Recurrence patterns, per-occurrence completion history, skip/pause/restart, streaks where determinable, habit up/down, Daily schedule with Habitica due-state reconciliation, calendar/Today integration, optional dedicated habit dashboard.
-- Edge cases: Day-start offset, missed Cron, timezone travel, duplicate reward count, skipped occurrence, delayed sync and task type conversion.
-- Acceptance: Recurring work remains consistent across date changes and offline reconnect; reward projections never assume scores confirmed before Habitica responds.
+Description:
+- Make habitual and scheduled work ergonomic in Companion while respecting distinct Habitica Habit/Daily semantics and Cron day boundaries.
+
+Requirements:
+- Recurrence patterns, per-occurrence completion history, skip/pause/restart, streaks where determinable, habit up/down, Daily schedule with Habitica due-state reconciliation, calendar/Today integration, optional dedicated habit dashboard.
+
+Edge cases:
+- Day-start offset, missed Cron, timezone travel, duplicate reward count, skipped occurrence, delayed sync and task type conversion.
+
+Expected behavior:
+- Recurring work remains consistent across date changes and offline reconnect; reward projections never assume scores confirmed before Habitica responds.
 
 ### E12 Powerful search, saved views, reviews and task hygiene
 
@@ -335,9 +426,14 @@ depends_on: []
 Source:
 - Companion-first epic `E12` (`P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Add cross-project filters, saved smart lists, stale/unreviewed tasks, unblocked next actions, and a gentle review flow.
-- Requirements: Search text, label, project, category, state, planned date, deadline, priority, game sync state; per-type staleness thresholds and exclude waiting/someday/recurring as appropriate; configurable reminders without punitive wording.
-- Acceptance: Users can find stalled or forgotten tasks without mandatory status management; backlog review works in a few mobile gestures.
+Description:
+- Add cross-project filters, saved smart lists, stale/unreviewed tasks, unblocked next actions, and a gentle review flow.
+
+Requirements:
+- Search text, label, project, category, state, planned date, deadline, priority, game sync state; per-type staleness thresholds and exclude waiting/someday/recurring as appropriate; configurable reminders without punitive wording.
+
+Expected behavior:
+- Users can find stalled or forgotten tasks without mandatory status management; backlog review works in a few mobile gestures.
 
 ### E13 MCP and Skills for Companion-native project/task/goal operations
 
@@ -356,11 +452,20 @@ depends_on: []
 Source:
 - Companion-first epic `E13` (`P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Extend the existing OAuth/MCP plugin to use canonical Companion domain commands for categories, projects, goals, labels, advanced task fields, filters, planning, activity log and queue status.
-- Current context: Original MCP task plan targets Habitica tasks and does not know Companion-owned projects/goals.
-- Requirements: Narrow tools such as `list_projects`, `create_project`, `list_categories`, `list_goals`, `create_companion_task`, `update_companion_task`, `list_upcoming`, `get_completed_history`, `get_sync_status`; schema-level validation, per-profile auth, confirmation for sensitive actions, no generic API proxy.
-- Dependencies: Canonical domain, workspace accessible to MCP, authoritative command API, sync/reconciliation and permission model must exist first.
-- Acceptance: ChatGPT performs the same advanced task workflows as the manual app, sees pending-vs-confirmed game projection, and cannot bypass validation or access another user's workspace.
+Description:
+- Extend the planned OAuth/MCP integration with canonical Companion domain commands for categories, projects, goals, labels, advanced task fields, filters, planning, activity log and queue status.
+
+Current context:
+- The read-only bootstrap contract targets Habitica data. Companion-native project/goal operations remain planned; no OAuth/MCP plugin is implemented.
+
+Requirements:
+- Narrow tools such as `list_projects`, `create_project`, `list_categories`, `list_goals`, `create_companion_task`, `update_companion_task`, `list_upcoming`, `get_completed_history`, `get_sync_status`; schema-level validation, per-profile auth, confirmation for sensitive actions, no generic API proxy.
+
+Dependencies:
+- Canonical domain, workspace accessible to MCP, authoritative command API, sync/reconciliation and permission model must exist first.
+
+Expected behavior:
+- ChatGPT performs the same advanced task workflows as the manual app, sees pending-vs-confirmed game projection, and cannot bypass validation or access another user's workspace.
 
 ### E14 Mobile UX validation, observability, migration and gradual adoption
 
@@ -379,9 +484,14 @@ depends_on: []
 Source:
 - Companion-first epic `E14` (`P-29925105-1015-5ced-8844-d56fa47e33c9`); requirements are intake awaiting current-source research and decomposition.
 
-- Description: Progressive rollout with feature flags, backward-compatible migration, optional adoption of imported tasks, qualitative testing with consenting users, and accessibility/performance gates.
-- Requirements: Real iOS Safari/PWA/Android tests, offline/network-fault drills, migration backup/restore, screen-reader and large-text support, honest sync progress/diagnostics, no unconsented behavior tracking.
-- Acceptance: Legacy users retain existing data and existing gameplay workflows; users can switch advanced features off without corrupting records; recovery after interrupted migration is validated.
+Description:
+- Progressive rollout with feature flags, backward-compatible migration, optional adoption of imported tasks, qualitative testing with consenting users, and accessibility/performance gates.
+
+Requirements:
+- Real iOS Safari/PWA/Android tests, offline/network-fault drills, migration backup/restore, screen-reader and large-text support, honest sync progress/diagnostics, no unconsented behavior tracking.
+
+Expected behavior:
+- Legacy users retain existing data and existing gameplay workflows; users can switch advanced features off without corrupting records; recovery after interrupted migration is validated.
 
 ## Prioritized Next Changes
 
@@ -433,8 +543,8 @@ Touch:
 - `README.md`
 - `skill-tree/documents/habitica-api.md`
 - `skill-tree/documents/technical.md`
-- deployment docs
-- API-client tests
+- `skill-tree/documents/deploy-cloudflare-pages.md`
+- `tests/Habitica.Api.Tests/HabiticaApiClientTests.cs`
 
 Discovery allowance:
 - Add validation for missing production configuration.
@@ -480,7 +590,7 @@ Documentation updates:
 - `README.md`
 - `skill-tree/documents/habitica-api.md`
 - `skill-tree/documents/technical.md`
-- deployment docs.
+- `skill-tree/documents/deploy-cloudflare-pages.md`
 
 Risks:
 - Existing deployments with empty configuration will fail until configured.
@@ -518,9 +628,9 @@ Current behavior:
 
 Desired behavior:
 - Existing local-only behavior remains default.
-- ChatGPT enrollment explicitly allows encrypted server-side credential storage.
-- Privacy copy distinguishes normal Companion use from ChatGPT-enabled use.
-- Data-retention and deletion semantics are documented.
+- A proposed ChatGPT enrollment contract describes explicit consent for encrypted server-side credential storage.
+- Planning text distinguishes current browser-only use from the proposed integration.
+- Retention/deletion defaults are documented as proposals awaiting approval before implementation.
 
 Touch:
 - `skill-tree/documents/rules.md`
@@ -529,8 +639,8 @@ Touch:
 - `skill-tree/documents/habitica-api.md`
 - `skill-tree/documents/deploy-cloudflare-pages.md`
 - `skill-tree/documents/ux-ui-manifest.md`
-- `src/Habitica.WebApp/Pages/PrivacyPage.razor`
-- `skill-tree/documents/future.md` if the plan is imported into the repository queue.
+- `skill-tree/documents/future.md`
+- `skill-tree/documents/companion-first-mcp-research.md`
 
 Discovery allowance:
 - Current OpenAI MCP/Plugin auth documentation.
@@ -542,15 +652,16 @@ Out of scope:
 - Worker code.
 - OAuth code.
 - credential persistence.
+- Runtime privacy UI changes; update `src/Habitica.WebApp/Pages/PrivacyPage.razor` with enrollment implementation, when the behavior exists.
 
 Implementation constraints:
 - Explicit opt-in.
 - No silent migration of current users.
 - No reuse of personal-sync or party-sync storage for integration secrets.
-- Publish a concrete deletion contract.
-- Publish what metadata is retained after revocation, if any.
+- Write a concrete proposed deletion contract and identify metadata retained after revocation, if any.
+- Current-state documents retain current browser-only guarantees and link to the proposal. Completing documentation does not approve a new backend or credential-storage boundary.
 
-Recommended retention contract:
+Proposed retention contract:
 - active encrypted credential envelope: until disconnect/delete;
 - OAuth grants/tokens: until revocation/expiry;
 - one-time linking tickets: <= 10 minutes;
@@ -567,13 +678,13 @@ Questions and required clarifications:
   - only non-user-identifying counters, if needed at all.
 
 Validation:
-- Search all privacy/security docs for contradictory "credentials never leave browser" statements.
-- Verify the final text matches actual planned network behavior.
+- Check current privacy/security statements against `PrivacyPage.razor` and the browser credential/network paths.
+- Verify future network behavior and retention choices are explicitly marked proposed, with the approval boundary recorded.
 
 Acceptance:
-- A user can understand exactly what changes when enabling ChatGPT integration.
-- Non-opted-in behavior is unchanged.
-- retention/deletion rules are explicit.
+- The proposal explains the consent, storage, revocation and deletion changes for opted-in users.
+- Current behavior remains accurately documented; no planned storage is described as implemented.
+- Proposed retention defaults and required owner approval are explicit.
 
 Documentation updates:
 - all touched docs.
@@ -600,7 +711,7 @@ Migration source:
 - Imported numbered contract 2 from PR #1; originating Pending identity records imported intent, not a new Process Pending result.
 
 Origin:
-- Cloudflare OAuth Provider v1 split architecture.
+- Imported proposal for a split Cloudflare OAuth/MCP architecture; package compatibility requires current official verification.
 - Need to isolate authentication/credentials from MCP execution.
 
 Goal:
@@ -631,7 +742,7 @@ Current behavior:
 Desired behavior:
 - Auth Worker owns OAuth and integration application state.
 - MCP Worker owns tools and Habitica execution.
-- MCP Worker validates OAuth tokens over Service Binding.
+- MCP Worker has a narrow Auth Service Binding boundary; scaffolding denies protected requests until OAuth validation is implemented by the authorization task.
 
 Bindings:
 
@@ -659,50 +770,6 @@ Preferred design:
 - MCP asks auth/internal service for an authenticated short-lived operation context.
 - Keep plaintext Habitica credentials in Worker memory for the minimum request duration.
 
-Out of scope:
-- full OAuth authorization UI.
-- MCP tools.
-
-Implementation constraints:
-- use current pinned compatible versions of:
-  - `@cloudflare/workers-oauth-provider`;
-  - MCP TypeScript SDK / Cloudflare handler.
-- `OAUTH_KV` is bound to the Auth Worker.
-- MCP Worker has no direct OAuth KV binding.
-- exact canonical MCP resource URI is configured once.
-- preview and production resources are separate unless explicitly documented otherwise.
-
-Questions and required clarifications:
-- [Unresolved - blocks implementation] Required prerequisite contracts must reach recorded completion before implementation: `T-c6f6b09d-4625-5898-b91c-016c611b60df`.
-- [Recommended default - confirmation optional] Separate Workers vs combined Worker?
-  Recommendation:
-  - separate Workers.
-- [Recommended default - confirmation optional] Use root Wrangler config for both?
-  Recommendation:
-  - no; each Worker owns a dedicated deployment config.
-
-Validation:
-- deploy preview Auth Worker.
-- deploy preview MCP Worker.
-- Service Binding health check.
-- protected-resource metadata resolves to the correct authorization issuer.
-- wrong-resource tokens are rejected.
-
-Acceptance:
-- Workers deploy independently.
-- MCP resource Worker can validate tokens through Auth Worker.
-- no existing Pages binding is reused for integration state.
-
-Documentation updates:
-- `skill-tree/documents/technical.md`
-- deployment docs.
-- repository map if one is later added.
-
-Risks:
-- preview/production binding mistakes.
-- configuration drift between two Workers.
-
-
 Touch:
 - Proposed `workers/chatgpt-auth/**` and `workers/chatgpt-mcp/**`, each with deployment configuration.
 - Worker package manifests, integration database migrations and focused tests.
@@ -712,18 +779,62 @@ Discovery allowance:
 - Create isolated Worker directories and dedicated integration D1/OAuth KV bindings.
 - Inspect current SDK APIs and Wrangler conventions before deciding specific filenames.
 
+Out of scope:
+- full OAuth authorization UI.
+- MCP tools.
+
+Implementation constraints:
+- Verify current official APIs, select compatible versions and commit new Worker-local lockfiles; no existing Worker package pins are present. Candidate dependencies:
+  - `@cloudflare/workers-oauth-provider`;
+  - MCP TypeScript SDK / Cloudflare handler.
+- `OAUTH_KV` is bound to the Auth Worker.
+- MCP Worker has no direct OAuth KV binding.
+- exact canonical MCP resource URI is configured once.
+- preview and production resources are separate unless explicitly documented otherwise.
+
+Questions and required clarifications:
+- [Unresolved - blocks implementation] Has the owner approved the proposed backend, credential-storage and trust boundary produced by `T-c6f6b09d-4625-5898-b91c-016c611b60df`?
+  Reason: `skill-tree/documents/rules.md` requires proposal and approval for changes to backend and credential-storage boundaries. Documentation completion alone is insufficient.
+  Required answer from: repository owner after review of the architecture proposal.
+- [Recommended default - confirmation optional] Separate Workers vs combined Worker?
+  Recommendation:
+  - separate Workers.
+- [Recommended default - confirmation optional] Use root Wrangler config for both?
+  Recommendation:
+  - no; each Worker owns a dedicated deployment config.
+
+Validation:
+- Build each Worker bundle independently with the selected locked toolchain.
+- Exercise the Service Binding health/stub contract in isolated local fixtures.
+- Check distinct environment/resource bindings and verify protected stubs fail closed.
+- OAuth metadata/resource-token enforcement belongs to the authorization task. Live preview smoke checks require explicit deployment scope and are not scaffolding acceptance.
+
+Acceptance:
+- Both Worker bundles build independently and have dedicated environment configurations.
+- Local binding fixtures reach the Auth stub; protected operations are denied until authorization exists.
+- No existing Pages binding is reused for integration state.
+
+Documentation updates:
+- `skill-tree/documents/technical.md`
+- `skill-tree/documents/deploy-cloudflare-pages.md`
+- `skill-tree/documents/repository-map.md`
+
+Risks:
+- preview/production binding mistakes.
+- configuration drift between two Workers.
+
 ### Implement Stable Profile Identity, Credential Vault, And Connection Lifecycle
 
 ```yaml
 id: T-e33bccdc-22f1-5043-9230-3d12d9e9563d
 priority: 197
-status: Blocked pending answers
+status: Ready
 parent_pending_ids: ["P-55d076da-8a7f-50c7-af15-f4a106a697cb"]
 processing_run_id: null
 root_task_id: T-e33bccdc-22f1-5043-9230-3d12d9e9563d
 related_task_id: null
 relation: main
-depends_on: ["T-b883e33b-05a6-53d8-a9a5-d11d7008887f"]
+depends_on: ["T-b883e33b-05a6-53d8-a9a5-d11d7008887f", "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e"]
 ```
 
 Migration source:
@@ -785,10 +896,12 @@ Desired behavior:
 - encrypted credentials can be deleted/revoked.
 
 Touch:
-- Auth Worker.
-- dedicated integration migration(s).
-- cryptography tests.
-- deployment secrets documentation.
+- Proposed `workers/chatgpt-auth/src/**`, `workers/chatgpt-auth/migrations/**` and Worker-local credential/cryptography tests.
+- `skill-tree/documents/technical.md`, `skill-tree/documents/deploy-cloudflare-pages.md`.
+
+Discovery allowance:
+- Add a dedicated integration database schema, credential envelope utilities and isolated cryptography tests.
+- Preserve existing personal-sync KV and party-sync D1 security boundaries.
 
 Out of scope:
 - OAuth consent.
@@ -811,7 +924,6 @@ Failure handling:
 - revoked profile -> cannot issue credential context.
 
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Required prerequisite contracts must reach recorded completion before implementation: `T-b883e33b-05a6-53d8-a9a5-d11d7008887f`.
 - [Recommended default - confirmation optional] Cache display name?
   Recommendation:
   - yes, but treat the display-name cache as optional user data and refresh opportunistically.
@@ -835,25 +947,19 @@ Acceptance:
 - no raw credential is persisted.
 
 Documentation updates:
-- `skill-tree/documents/technical.md`
-- privacy/security docs.
-- deployment docs.
+- `skill-tree/documents/technical.md`, `skill-tree/documents/rules.md` (current guarantees and approved integration boundary).
+- `skill-tree/documents/deploy-cloudflare-pages.md`
 
 Risks:
 - misuse of master keys.
 - decryptable server-side storage is intentionally a different trust model than current browser-only use.
-
-
-Discovery allowance:
-- Add a dedicated integration database schema, credential envelope utilities and isolated cryptography tests.
-- Preserve existing personal-sync KV and party-sync D1 security boundaries.
 
 ### Implement One-Time Linking And OAuth 2.1 Authorization
 
 ```yaml
 id: T-16a38176-f2fe-5f7d-a809-546f17357b49
 priority: 196
-status: Blocked pending answers
+status: Ready
 parent_pending_ids: ["P-2db8e8bd-00de-53f2-823d-06dc23f53eeb"]
 processing_run_id: null
 root_task_id: T-16a38176-f2fe-5f7d-a809-546f17357b49
@@ -895,7 +1001,7 @@ ChatGPT
     -> access / refresh token
 ```
 
-OAuth Provider requirements:
+Authorization requirements (verify candidate SDK symbols against the selected locked provider and current official specification before coding):
 - `OAuthAuthorizationServer`;
 - `OAUTH_KV`;
 - exact resource registration;
@@ -947,6 +1053,15 @@ Desired behavior:
 - scope grant is explicit.
 - write scopes can be added later by step-up.
 
+Touch:
+- Proposed `workers/chatgpt-auth/**` and integration D1 migrations.
+- `src/Habitica.WebApp/Pages/SettingsPage.razor`, `src/Habitica.WebApp/Pages/PrivacyPage.razor`.
+- New narrowly scoped linking client under `src/Habitica.WebApp/`.
+- Focused OAuth and WebApp tests; `skill-tree/documents/features.md`, `skill-tree/documents/technical.md`, `skill-tree/documents/ux-ui-manifest.md`, deployment docs.
+
+Discovery allowance:
+- Implement a short-lived linking ticket store and small consent page; verify current OAuth SDK behavior before coding.
+
 Out of scope:
 - actual Habitica MCP tools.
 
@@ -969,6 +1084,11 @@ Failure handling:
 - revoked profile -> authorization fails.
 - lost local management token -> revalidate Habitica credentials and rotate management token.
 
+Questions and required clarifications:
+- [Recommended default - confirmation optional] Should pairing be used instead of an account/password system?
+  Recommendation: Use single-use, short-lived pairing tickets tied to validated local Habitica credentials.
+  Rationale: Avoids a separate login system and cross-origin cookie assumptions.
+
 Validation:
 - auth code + PKCE happy path.
 - wrong PKCE verifier.
@@ -983,43 +1103,27 @@ Validation:
 - two-profile isolation.
 
 Acceptance:
-- two different teammates can connect the same MCP server to separate Habitica accounts.
+- Two isolated profile fixtures can authorize the same MCP resource independently; real teammate enrollment is qualified during the scoped rollout task.
 - OAuth access for A never resolves B's vault.
 - no standalone Companion account/password system is required.
 
 Documentation updates:
 - `skill-tree/documents/features.md`
 - `skill-tree/documents/technical.md`
-- deployment docs.
-- privacy UI.
-- UX manifest.
+- `skill-tree/documents/deploy-cloudflare-pages.md`
+- `src/Habitica.WebApp/Pages/PrivacyPage.razor`
+- `skill-tree/documents/ux-ui-manifest.md`
 
 Risks:
 - pairing code becomes account authentication and must be protected accordingly.
 - consent UI may be confused with Habitica's own login unless wording is explicit.
-
-
-Touch:
-- Proposed `workers/chatgpt-auth/**` and integration D1 migrations.
-- `src/Habitica.WebApp/Pages/SettingsPage.razor`, `src/Habitica.WebApp/Pages/PrivacyPage.razor`.
-- New narrowly scoped linking client under `src/Habitica.WebApp/`.
-- Focused OAuth and WebApp tests; `skill-tree/documents/features.md`, `skill-tree/documents/technical.md`, `skill-tree/documents/ux-ui-manifest.md`, deployment docs.
-
-Discovery allowance:
-- Implement a short-lived linking ticket store and small consent page; verify current OAuth SDK behavior before coding.
-
-Questions and required clarifications:
-- [Unresolved - blocks implementation] Required prerequisite contracts must reach recorded completion before implementation: `T-e33bccdc-22f1-5043-9230-3d12d9e9563d`.
-- [Recommended default - confirmation optional] Should pairing be used instead of an account/password system?
-  Recommendation: Use single-use, short-lived pairing tickets tied to validated local Habitica credentials.
-  Rationale: Avoids a separate login system and cross-origin cookie assumptions.
 
 ### Implement Read-Only MCP Baseline
 
 ```yaml
 id: T-53352a18-54d2-57b6-accc-91f8e6dfad13
 priority: 195
-status: Blocked pending answers
+status: Ready
 parent_pending_ids: ["P-9cf8044d-e032-54f0-b10b-647e6bcfb067"]
 processing_run_id: null
 root_task_id: T-53352a18-54d2-57b6-accc-91f8e6dfad13
@@ -1056,7 +1160,7 @@ Input:
 {}
 ```
 
-Output must match the OpenAI profile schema exactly:
+Candidate profile output from the imported proposal; verify the current official target-client profile contract before implementation and update the schema if required:
 
 ```json
 {
@@ -1105,7 +1209,7 @@ Filters:
 Rules:
 - request Habitica due-state evaluation for current Dailies.
 - do not invent schedule results when `isDue` is unavailable.
-- return stable task IDs.
+- Return stable Habitica task IDs with explicit Habitica provenance. Never pass bootstrap IDs directly to Companion mutation tools; resolve the verified projection mapping first.
 
 #### `get_task`
 
@@ -1116,13 +1220,21 @@ Otherwise:
 
 Do not introduce an undocumented API assumption merely for efficiency.
 
+Current behavior:
+- No OAuth-protected MCP endpoint exists; the browser C# client reads Habitica directly.
+
+Desired behavior:
+- Authenticated semantic read tools with validated schemas. Habitica-only task reads are explicitly **legacy/bootstrap** until E02/E03/E04 define the canonical Companion workspace.
+
 Touch:
-- MCP Worker.
-- narrow TypeScript Habitica API client.
-- fixtures/tests.
+- Proposed `workers/chatgpt-mcp/src/**`, a narrow TypeScript Habitica client and Worker-local read/auth fixtures/tests.
 - `skill-tree/documents/features.md`
 - `skill-tree/documents/technical.md`
 - `skill-tree/documents/habitica-api.md` only if newly verified contracts are added.
+
+Discovery allowance:
+- Add narrow TypeScript read models and fixtures without porting the whole C# application layer.
+- Verify current official MCP transport, target-client profile schema and tool metadata; imported examples are candidates, not compatibility evidence.
 
 Out of scope:
 - writes.
@@ -1159,6 +1271,11 @@ Diagnostics:
 - rate-limit metadata.
 - no raw request/response dumps by default.
 
+Questions and required clarifications:
+- [Recommended default - confirmation optional] Can legacy Habitica task reads ship before Companion-owned records?
+  Recommendation: Yes, for read-only bootstrap only; label Habitica task provenance explicitly.
+  Rationale: Connection/authentication can be tested without creating a parallel task authority.
+
 Validation:
 - MCP Inspector initialization.
 - tool list.
@@ -1182,7 +1299,7 @@ Acceptance:
 Documentation updates:
 - `skill-tree/documents/features.md`
 - `skill-tree/documents/technical.md`
-- MCP deployment docs.
+- `skill-tree/documents/deploy-cloudflare-pages.md`
 
 Risks:
 - TypeScript/C# mapping drift.
@@ -1191,22 +1308,6 @@ Risks:
 Mitigation:
 - keep server schemas narrow;
 - reuse neutral JSON fixtures for parity where useful.
-
-
-Current behavior:
-- No OAuth-protected MCP endpoint exists; the browser C# client reads Habitica directly.
-
-Desired behavior:
-- Authenticated semantic read tools with validated schemas. Habitica-only task reads are explicitly **legacy/bootstrap** until E02/E03/E04 define the canonical Companion workspace.
-
-Discovery allowance:
-- Add narrow TypeScript read models and fixtures without porting the whole C# application layer.
-
-Questions and required clarifications:
-- [Unresolved - blocks implementation] Required prerequisite contracts must reach recorded completion before implementation: `T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e`, `T-16a38176-f2fe-5f7d-a809-546f17357b49`.
-- [Recommended default - confirmation optional] Can legacy Habitica task reads ship before Companion-owned records?
-  Recommendation: Yes, for read-only bootstrap only; label Habitica task provenance explicitly.
-  Rationale: Connection/authentication can be tested without creating a parallel task authority.
 
 ### Add Safe Task Mutation Tools
 
@@ -1231,7 +1332,7 @@ Migration source:
 Integration gate: **Blocked pending E02/E03/E04/E05** (and E07 for unattended hosted execution). The legacy section below documents useful semantic tool contracts and validation, but **the target write implementation MUST call the Companion authoritative command API** (`create task / update / completion event / outbox`) rather than directly calling Habitica from MCP. MCP response must report `savedInCompanion` separately from `habiticaProjectionStatus`. Do not expose a direct-write parallel path even as a convenient MVP shortcut. Add native category/project/goal/label tools under E13; authoring native tool schemas is a high-level epic until domain definitions are approved.
 
 Goal:
-- Add the smallest useful write surface for everyday Habitica task management.
+- Add the smallest useful Companion task-command surface with separate Habitica projection outcomes.
 
 Tools:
 
@@ -1275,7 +1376,7 @@ Do not accept arbitrary Habitica JSON.
 #### `update_task`
 
 Rules:
-- stable task ID required;
+- stable Companion task ID required;
 - partial updates only;
 - whitelist fields;
 - prefetch current task when type/state matters.
@@ -1283,9 +1384,9 @@ Rules:
 #### `complete_task`
 
 Rules:
-- stable task ID;
+- stable Companion task ID;
 - only supported completable task types;
-- re-read current state immediately before mutation;
+- validate current Companion state before durable command acceptance; the projection executor verifies Habitica preconditions before any upstream effect;
 - mark `destructiveHint=true` because Habitica scoring has game-state effects;
 - refresh affected state after success.
 
@@ -1296,9 +1397,9 @@ Rules:
 - explicit `up|down`;
 - bounded count;
 - recommended initial maximum: 10;
-- sequential requests;
-- stop on first failure;
-- report successful count and failure position;
+- persist bounded ordered scoring events through the shared command API;
+- projection executor sends sequential requests and stops on the first failure or unknown outcome;
+- report accepted event count separately from confirmed projection count and failure position;
 - `destructiveHint=true`.
 
 Idempotency/replay policy:
@@ -1307,20 +1408,37 @@ Do not assume MCP request ID is a durable idempotency key.
 
 Before implementation:
 - verify exact ChatGPT/MCP retry behavior available to the Worker;
-- record an operation correlation id;
+- record a durable Companion command ID and correlation ID;
+- reuse the command API deduplication contract instead of treating transport request IDs as command identities;
 - never automatically retry a non-idempotent upstream call after an ambiguous network result.
 
 For operations where a duplicate would be materially harmful, promote the action to a server-issued prepare/execute workflow.
 
 Mutation result contract:
 - operation;
-- task ID;
+- Companion task ID and durable command ID;
 - task text where safe/useful;
-- mutation confirmed/not confirmed;
-- successful sub-operation count;
+- `savedInCompanion` after durable acceptance;
+- `habiticaProjectionStatus`: pending, confirmed, `UnknownOutcome` or blocked;
+- accepted event count separately from confirmed upstream sub-operation count;
 - refresh success;
 - updated stats where returned and useful;
 - explicit ambiguous-state flag when the upstream result is uncertain.
+
+Current behavior:
+- Companion's current task mutations target Habitica; the canonical Companion command/outbox layer is not implemented.
+
+Desired behavior:
+- MCP writes persist Companion commands via the same authoritative command API used by the PWA, and separately report locally saved vs Habitica-projected outcomes.
+
+Touch:
+- Proposed `workers/chatgpt-mcp/**` and shared Companion command API (final paths depend on E02/E03 decomposition).
+- `src/Habitica.Application/**`, `src/Habitica.Domain/**` as justified by the canonical domain contract.
+- Targeted tests and `skill-tree/documents/features.md`, `skill-tree/documents/technical.md`, `skill-tree/documents/habitica-api.md` where relevant.
+
+Discovery allowance:
+- Research selected P- IDs for E02/E03/E04/E05 and resolve E07 for unattended execution before implementation; preserve produced T- IDs and record required dependency edges atomically, using task keys for same-batch dependencies.
+- Complete required promoted tasks and update exact command symbols, persistence paths and field schemas before removing the blocking gate. E13 governs later native category/project/goal tools.
 
 Out of scope:
 - delete.
@@ -1341,8 +1459,13 @@ Implementation constraints:
 Failure handling:
 - ambiguous fuzzy match -> return candidates; do not mutate.
 - upstream timeout after request may have been sent -> return `outcomeUnknown`; do not replay automatically.
-- success + refresh failure -> report mutation success separately.
-- partial repeated scoring -> report exact successful count.
+- durable save + projection or refresh failure -> preserve the command and report each stage separately.
+- partial repeated scoring -> report accepted and confirmed counts separately; preserve unknown outcomes for reconciliation.
+
+Questions and required clarifications:
+- [Unresolved - blocks implementation] What is the authoritative Companion command API and trusted background executor boundary?
+  Reason: Direct MCP-to-Habitica writes would bypass the Companion source of truth, command journal and reconciliation.
+  Required answer from: E02/E03/E04/E05/E07 decomposition and implementation.
 
 Validation:
 - create valid Todo.
@@ -1361,7 +1484,8 @@ Validation:
 - no secret leakage.
 
 Acceptance:
-- natural-language task management works without generic API access.
+- Natural-language task management resolves Companion IDs and submits through the same authoritative command API as the PWA; no direct MCP-to-Habitica write path exists.
+- Durable save, pending projection, confirmed projection and unknown outcomes remain distinguishable in tool results.
 - every mutation outcome is auditable and unambiguous where the upstream response is known.
 - ambiguous network outcomes are never replayed automatically.
 
@@ -1375,33 +1499,12 @@ Risks:
 - users not realizing task completion affects game state.
 - fuzzy matching mistakes.
 
-
-Current behavior:
-- Companion's current task mutations target Habitica; the canonical Companion command/outbox layer is not implemented.
-
-Desired behavior:
-- MCP writes persist Companion commands via the same authoritative command API used by the PWA, and separately report locally saved vs Habitica-projected outcomes.
-
-Touch:
-- Proposed `workers/chatgpt-mcp/**` and shared Companion command API (final paths depend on E02/E03 decomposition).
-- `src/Habitica.Application/**`, `src/Habitica.Domain/**` as justified by the canonical domain contract.
-- Targeted tests and `skill-tree/documents/features.md`, `skill-tree/documents/technical.md`, `skill-tree/documents/habitica-api.md` where relevant.
-
-Discovery allowance:
-- First research/complete E02/E03/E04/E05 and resolve E07 for unattended execution; update exact symbols and persistence choices before implementation.
-
-Questions and required clarifications:
-- [Unresolved - blocks implementation] Required prerequisite contracts must reach recorded completion before implementation: `T-53352a18-54d2-57b6-accc-91f8e6dfad13`.
-- [Unresolved - blocks implementation] What is the authoritative Companion command API and trusted background executor boundary?
-  Reason: Direct MCP-to-Habitica writes would bypass the Companion source of truth, command journal and reconciliation.
-  Required answer from: E02/E03/E04/E05/E07 decomposition and implementation.
-
 ### Package The Plugin And Add Core Skills
 
 ```yaml
 id: T-3987ba88-f69f-59f1-811e-f51cabfa5978
 priority: 100
-status: Blocked pending answers
+status: Ready
 parent_pending_ids: ["P-1590c3c7-25e6-589e-8efb-91f35d873b4e"]
 processing_run_id: null
 root_task_id: T-3987ba88-f69f-59f1-811e-f51cabfa5978
@@ -1418,7 +1521,7 @@ Integration gate: Add Skills for project planning, goal review, upcoming/calenda
 Goal:
 - Package stable MCP capabilities with focused reusable workflows after the tool contract has proven reliable.
 
-Portable target layout:
+Candidate target layout (final paths depend on the selected distribution host and verified official manifest schema):
 
 ```text
 plugin/
@@ -1433,14 +1536,26 @@ plugin/
       SKILL.md
 ```
 
-Optional compatibility layout may also be produced when needed:
+Alternative host-specific layout from the imported proposal, requiring verification:
 
 ```text
 .codex-plugin/plugin.json
 .mcp.json
 ```
 
-Do not treat compatibility files as the canonical portable manifest.
+Do not claim a universal portable manifest. Select the host-supported layout during research; keep only verified compatibility files.
+
+Current behavior:
+- Eight Skill Tree development skills are installed. No Habitica-facing MCP workflow/plugin package exists.
+
+Desired behavior:
+- A package for the selected distribution host with distinct Skills driving validated MCP workflows, using Companion-native contracts where available.
+
+Touch:
+- Proposed `plugin/**`; `README.md`; `skill-tree/documents/features.md`; plugin setup/validation docs; focused tests.
+
+Discovery allowance:
+- Use current official OpenAI plugin/Skills schemas and avoid unverifiable compatibility packages.
 
 Out of scope:
 - public Plugin Directory submission.
@@ -1492,8 +1607,17 @@ Testing:
 - denied scope.
 - ambiguous task.
 
+Questions and required clarifications:
+- [Resolved - imported planning constraint] The initial integration target is ChatGPT. Verify the current official distribution format and remote-MCP support during package research; record any unsupported capability as a blocker before coding.
+- [Recommended default - confirmation optional] Publish publicly immediately?
+  Recommendation: No; validate private/team use first.
+  Rationale: Auth and credential-handling integration should be proven before public distribution.
+
+Validation:
+- Validate plugin/Skill schemas, positive and negative triggers, denied scopes, account isolation and real MCP call routing.
+
 Acceptance:
-- plugin can be tested by at least two team users.
+- Package schema and MCP routing pass isolated two-profile fixtures; real two-user enrollment is part of the scoped team rollout.
 - no user copies a Habitica token into ChatGPT.
 - skills consistently use MCP tools rather than inventing results.
 
@@ -1505,28 +1629,6 @@ Documentation updates:
 Risks:
 - overlapping skill activation.
 - Skills drifting into hidden business logic.
-
-
-Current behavior:
-- There is no validated repository-owned ChatGPT plugin or Agent Skills package.
-
-Desired behavior:
-- A portable plugin with distinct Skills driving validated MCP workflows, using Companion-native contracts where available.
-
-Touch:
-- Proposed `plugin/**`; `README.md`; `skill-tree/documents/features.md`; plugin setup/validation docs; focused tests.
-
-Discovery allowance:
-- Use current official OpenAI plugin/Skills schemas and avoid unverifiable compatibility packages.
-
-Questions and required clarifications:
-- [Unresolved - blocks implementation] Required prerequisite contracts must reach recorded completion before implementation: `T-4a1de222-156a-52cf-8966-262a2c8216ed`.
-- [Recommended default - confirmation optional] Publish publicly immediately?
-  Recommendation: No; validate private/team use first.
-  Rationale: Auth and credential-handling integration should be proven before public distribution.
-
-Validation:
-- Validate plugin/Skill schemas, positive and negative triggers, denied scopes, account isolation and real MCP call routing.
 
 ### Add Party And Spell Capabilities Incrementally
 
@@ -1561,6 +1663,19 @@ Rollout order:
 6. prepare_spell_cast
 7. execute_spell_cast
 ```
+
+Current behavior:
+- Party, quest and spell flows are implemented in the browser C# application and existing trust-based party-sync functions.
+
+Desired behavior:
+- Advanced MCP operations use narrow shared authorization and command contracts without copying C# workflows or treating local party claims as trusted remote identity.
+
+Touch:
+- Proposed `workers/chatgpt-mcp/**`, targeted Companion domain/application contracts, relevant party-sync code only after authenticated design review.
+- Direct tests and `skill-tree/documents/features.md`, `skill-tree/documents/technical.md`, `skill-tree/documents/habitica-api.md`; party documentation as needed.
+
+Discovery allowance:
+- Add test fixtures and verified internal reads; do not silently change party-sync authorization.
 
 Out of scope:
 - automatic background spell casting.
@@ -1603,6 +1718,14 @@ Parity strategy:
 - run Worker tests against matching expected safety outcomes.
 - do not claim full parity when not actually covered.
 
+Questions and required clarifications:
+- [Unresolved - blocks implementation] What proof authorizes party writes initiated through MCP?
+  Reason: Existing party local claims do not prove a remote user has the required permissions.
+  Required answer from: Party authorization research and E05 shared command layer.
+
+Validation:
+- Verify party role checks, cross-profile isolation, stale state, spell plans, sequential execution, partial failure and parity fixtures.
+
 Acceptance:
 - party and spell tools preserve existing Companion safety assumptions.
 - repeated mutations stop on failure.
@@ -1617,29 +1740,6 @@ Documentation updates:
 Risks:
 - C#/TypeScript logic drift.
 - tool surface growing too broad.
-
-
-Current behavior:
-- Party, quest and spell flows are implemented in the browser C# application and existing trust-based party-sync functions.
-
-Desired behavior:
-- Advanced MCP operations use narrow shared authorization and command contracts without copying C# workflows or treating local party claims as trusted remote identity.
-
-Touch:
-- Proposed `workers/chatgpt-mcp/**`, targeted Companion domain/application contracts, relevant party-sync code only after authenticated design review.
-- Direct tests and `skill-tree/documents/features.md`, `skill-tree/documents/technical.md`, `skill-tree/documents/habitica-api.md`; party documentation as needed.
-
-Discovery allowance:
-- Add test fixtures and verified internal reads; do not silently change party-sync authorization.
-
-Questions and required clarifications:
-- [Unresolved - blocks implementation] Required prerequisite contracts must reach recorded completion before implementation: `T-4a1de222-156a-52cf-8966-262a2c8216ed`.
-- [Unresolved - blocks implementation] What proof authorizes party writes initiated through MCP?
-  Reason: Existing party local claims do not prove a remote user has the required permissions.
-  Required answer from: Party authorization research and E05 shared command layer.
-
-Validation:
-- Verify party role checks, cross-profile isolation, stale state, spell plans, sequential execution, partial failure and parity fixtures.
 
 ### Add Start New Day Only As A Dedicated High-Risk Feature
 
@@ -1711,10 +1811,33 @@ destructiveHint=true
 openWorldHint=false
 ```
 
+Current behavior:
+- The PWA implements an explicitly confirmed Start New Day flow; no remote Cron executor exists.
+
+Desired behavior:
+- Two-phase Cron through a durable command journal, with unknown-outcome resolution and no automatic replay.
+
+Touch:
+- Proposed `workers/chatgpt-mcp/**`, shared command/safety executor from E05.
+- `skill-tree/documents/cron.md`, `skill-tree/documents/features.md`, `skill-tree/documents/technical.md`, `skill-tree/documents/habitica-api.md`, focused Worker/Cron tests.
+
+Discovery allowance:
+- Review live Cron rules and tests and add prepare/execute only after the durable command contract is defined.
+
 Out of scope:
 - scheduled Cron.
 - automatic Cron because `needsCron=true`.
 - chaining Cron + spell without a separately prepared plan.
+
+Implementation constraints:
+- Require scope `habitica.cron.execute`, explicit intent, short-lived single-use prepared action and fresh precondition verification.
+- Treat timeout/unknown result as potentially successful; never blindly rerun Cron.
+- Preserve Habitica day boundary, buffs and quest-risk handling from `skill-tree/documents/cron.md`.
+
+Questions and required clarifications:
+- [Unresolved - blocks implementation] How will an ambiguous Cron result be reconciled safely?
+  Reason: A second Cron call may have irreversible gameplay effects.
+  Required answer from: E05 and current Habitica server/API verification.
 
 Validation:
 - no-Cron-needed state.
@@ -1743,31 +1866,6 @@ Risks:
 - irreversible gameplay impact.
 - double Cron if replay handling is wrong.
 - stale client assumptions.
-
-
-Current behavior:
-- The PWA implements an explicitly confirmed Start New Day flow; no remote Cron executor exists.
-
-Desired behavior:
-- Two-phase Cron through a durable command journal, with unknown-outcome resolution and no automatic replay.
-
-Touch:
-- Proposed `workers/chatgpt-mcp/**`, shared command/safety executor from E05.
-- `skill-tree/documents/cron.md`, `skill-tree/documents/features.md`, `skill-tree/documents/technical.md`, `skill-tree/documents/habitica-api.md`, focused Worker/Cron tests.
-
-Discovery allowance:
-- Review live Cron rules and tests and add prepare/execute only after the durable command contract is defined.
-
-Implementation constraints:
-- Require scope `habitica.cron.execute`, explicit intent, short-lived single-use prepared action and fresh precondition verification.
-- Treat timeout/unknown result as potentially successful; never blindly rerun Cron.
-- Preserve Habitica day boundary, buffs and quest-risk handling from `skill-tree/documents/cron.md`.
-
-Questions and required clarifications:
-- [Unresolved - blocks implementation] Required prerequisite contracts must reach recorded completion before implementation: `T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e`, `T-c6f6b09d-4625-5898-b91c-016c611b60df`, `T-b883e33b-05a6-53d8-a9a5-d11d7008887f`, `T-e33bccdc-22f1-5043-9230-3d12d9e9563d`, `T-16a38176-f2fe-5f7d-a809-546f17357b49`, `T-53352a18-54d2-57b6-accc-91f8e6dfad13`, `T-4a1de222-156a-52cf-8966-262a2c8216ed`, `T-3987ba88-f69f-59f1-811e-f51cabfa5978`, `T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec`.
-- [Unresolved - blocks implementation] How will an ambiguous Cron result be reconciled safely?
-  Reason: A second Cron call may have irreversible gameplay effects.
-  Required answer from: E05 and current Habitica server/API verification.
 
 ### Security Hardening, Revocation, Key Rotation, And Team Rollout
 
@@ -1855,43 +1953,6 @@ Stage 4: optional wider Companion users
 Stage 5: public plugin review only if intentionally desired
 ```
 
-Validation:
-- cross-user isolation.
-- OAuth revocation.
-- full credential deletion.
-- management-token rotation.
-- encryption-key rotation.
-- expired access/refresh token.
-- invalid resource/audience.
-- invalid scopes.
-- pairing brute-force controls.
-- production/preview separation.
-- log scan for secrets.
-- upstream 429 behavior.
-- account reconnect preserves profile ID.
-
-Acceptance:
-- a user can fully remove server-side Habitica credentials.
-- revocation becomes effective immediately for new tool calls.
-- multiple users remain isolated.
-- no secret appears in production logs.
-- non-opted-in Companion users remain local-only.
-
-Documentation updates:
-- `skill-tree/documents/features.md`
-- `skill-tree/documents/technical.md`
-- `skill-tree/documents/rules.md`
-- deployment docs.
-- privacy docs.
-- UX manifest.
-
-Risks:
-- operational misconfiguration.
-- losing a key before migration.
-- OAuth grants surviving credential deletion.
-- upstream IP-level rate limiting after centralizing requests.
-
-
 Current behavior:
 - The existing application has no ChatGPT-specific grant revocation, credential deletion lifecycle, security dashboard, or key rotation workflow.
 
@@ -1916,10 +1977,46 @@ Implementation constraints:
 
 Questions and required clarifications:
 - [Unresolved - blocks implementation] Define the selected rollout capabilities, then record every included capability as a required T- dependency before hardening and rollout validation. E14 adoption and migration gates remain mandatory.
-- [Unresolved - blocks implementation] Required prerequisite contracts must reach recorded completion before implementation: `T-3987ba88-f69f-59f1-811e-f51cabfa5978`.
 - [Recommended default - confirmation optional] Which rollout group is appropriate?
   Recommendation: Owner first, one trusted teammate second, then an expanded opt-in group.
   Rationale: Verify revocation, privacy, isolation and rate-limit behavior before expanding.
+
+Validation:
+- cross-user isolation.
+- OAuth revocation.
+- full credential deletion.
+- management-token rotation.
+- encryption-key rotation.
+- expired access/refresh token.
+- invalid resource/audience.
+- invalid scopes.
+- pairing brute-force controls.
+- production/preview separation.
+- log scan for secrets.
+- upstream 429 behavior.
+- account reconnect preserves profile ID.
+- In an explicitly authorized rollout environment, verify two consenting team accounts can enroll independently, use the packaged tools and revoke access without cross-profile effects.
+
+Acceptance:
+- a user can fully remove server-side Habitica credentials.
+- revocation becomes effective immediately for new tool calls.
+- Two consenting team accounts complete the scoped enrollment/tool/revocation smoke flow with separate vault identities and no cross-profile access.
+- no secret appears in production logs.
+- non-opted-in Companion users remain local-only.
+
+Documentation updates:
+- `skill-tree/documents/features.md`
+- `skill-tree/documents/technical.md`
+- `skill-tree/documents/rules.md`
+- `skill-tree/documents/deploy-cloudflare-pages.md`
+- `src/Habitica.WebApp/Pages/PrivacyPage.razor`
+- `skill-tree/documents/ux-ui-manifest.md`
+
+Risks:
+- operational misconfiguration.
+- losing a key before migration.
+- OAuth grants surviving credential deletion.
+- upstream IP-level rate limiting after centralizing requests.
 
 ## Backlog
 
@@ -2071,7 +2168,7 @@ Example macro:
 1. Equip gear maximizing perception.
 2. Cast Tools of the Trade 3 times.
 3. Equip gear maximizing strength.
-4. Cast Backstab until there is no mana left.
+4. Plan a finite Backstab count from available MP during dry-run; execute at most the confirmed count and stop on failure or changed preconditions.
 5. Restore gear equipped before the macro started.
 ```
 

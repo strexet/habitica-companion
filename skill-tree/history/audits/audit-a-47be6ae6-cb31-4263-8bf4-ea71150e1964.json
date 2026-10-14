@@ -1,0 +1,147 @@
+{
+  "checks": [
+    {
+      "check": "strict-future-document",
+      "result": "pass"
+    },
+    {
+      "check": "future-prose-warnings-as-errors",
+      "result": "pass"
+    },
+    {
+      "check": "metadata-index-manifest-consistency",
+      "details": "Index refreshed; the preceding audit correctly became stale after queue edits. A new scoped audit replaces the latest verdict without changing historical records.",
+      "result": "pass"
+    },
+    {
+      "check": "task-identities-priorities-origin-preservation",
+      "details": "37 tasks: 14 Pending, 11 prioritized, 12 Backlog. No promotions, removals, processing receipts or acceptance outcomes were created.",
+      "result": "pass"
+    },
+    {
+      "check": "pending-and-prioritized-body-structure",
+      "details": "14 Pending entries contain Description, Expected behavior and Source. All 11 prioritized contracts use the ordered required sections and nonempty acceptance lists bounded by Documentation updates.",
+      "result": "pass"
+    },
+    {
+      "check": "dependency-closure-and-default-selection",
+      "details": "Dependencies resolve without cycles. Credential validation requires the x-client identity task. Default selection still stops at the highest-priority unresolved creator-ID decision.",
+      "result": "pass"
+    },
+    {
+      "check": "readiness-and-checkpoint",
+      "details": "Five contracts have no unanswered blocking question; six retain explicit blocking decisions. Ready contracts remain subject to dependency completion and implementation discovery. Active checkpoint remains null.",
+      "result": "pass"
+    },
+    {
+      "check": "git-diff-whitespace",
+      "result": "pass"
+    }
+  ],
+  "coverage_gaps": [
+    "Application builds, application tests, browser/device checks, deployments, credential enrollment and live Habitica/OAuth/MCP calls were not run; documentation checks provide no runtime acceptance.",
+    "External SDK, authorization, profile and packaging contracts were not requalified against current official sources. Imported technical examples require verification during the owning task research or implementation discovery.",
+    "Canonical domain, hosted execution, party authorization, Cron reconciliation and rollout decisions remain explicit blockers in existing intake and prioritized contracts. No Process Pending or product implementation was performed.",
+    "Inherited prose findings outside future.md remain deferred under B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8; the scoped pass does not assert repository-wide prose compliance."
+  ],
+  "findings": [
+    {
+      "id": "F-future-pending-body-format",
+      "observation": "Pending entries lacked the required Expected behavior section; all 14 bodies use the current intake structure.",
+      "status": "corrected"
+    },
+    {
+      "id": "F-future-current-behavior-drift",
+      "observation": "Queue claims described awaited Habitica actions as fire-and-forget, general key/value storage as snapshot-only, and planned MCP components as existing. Source-backed wording replaces the contradicted claims.",
+      "status": "corrected"
+    },
+    {
+      "id": "F-future-dependency-questions",
+      "observation": "Incomplete T dependencies were duplicated as unresolved clarification questions. Scheduling edges remain in metadata; only material unanswered decisions block contract readiness.",
+      "status": "corrected"
+    },
+    {
+      "id": "F-future-vault-x-client-dependency",
+      "observation": "Credential validation lacked the project-owned x-client prerequisite; the vault task requires the existing identity task.",
+      "status": "corrected"
+    },
+    {
+      "id": "F-future-planned-privacy-and-stage-acceptance",
+      "observation": "Architecture planning mixed future privacy copy with runtime changes, and scaffolding acceptance required later OAuth behavior. Planning, scaffold, authorization and team-rollout evidence are scoped to the owning contracts.",
+      "status": "corrected"
+    },
+    {
+      "id": "F-future-companion-command-results",
+      "observation": "Legacy mutation details conflicted with Companion authority. Tool contracts require Companion IDs, durable command identity and separate saved, pending, confirmed and unknown projection outcomes.",
+      "status": "corrected"
+    },
+    {
+      "id": "F-future-imported-sdk-packaging-assumptions",
+      "observation": "Imported package paths, SDK symbols and profile examples are candidates requiring current official verification; installed Skill Tree development skills are distinguished from the planned Habitica plugin.",
+      "status": "corrected"
+    },
+    {
+      "id": "F-future-migration-owner-and-bounded-macro",
+      "observation": "Integration migrations belong to the integration database directory. The macro example uses a finite confirmed cast count consistent with the existing no-unbounded-loop constraint.",
+      "status": "corrected"
+    },
+    {
+      "id": "F-x-client-end-user-fallback",
+      "observation": "The API client still substitutes the active user ID when ClientHeaderValue is empty. The creator-ID decision and implementation remain in the existing prioritized task.",
+      "status": "open",
+      "task_id": "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e"
+    }
+  ],
+  "id": "A-47be6ae6-cb31-4263-8bf4-ea71150e1964",
+  "recorded_at": "2026-10-14T07:21:50.483946+00:00",
+  "scope": "future-contract-revalidation",
+  "skill_tree_revision": "e8448615cc853ec58f8b1fd7df05732b60e650a0",
+  "source_fingerprints": {
+    ".agents/skills/skill-tree-process-future-pending/references/future-workflow.md": "f58e6e116b05caebc51def8e9caa8c1a334e536c81ec8148ee066dd08569b00e",
+    ".agents/skills/skill-tree-process-future-pending/references/pending-task-format.md": "b743ee91fedb2921891d4c737d7609805955fab573b8c55f0c9706ceac026aeb",
+    ".agents/skills/skill-tree-repo-documentation-audit/SKILL.md": "3284e832070eed2ce31972968660cf2e96bebb758e9d0e35d02b7b4d11ac9560",
+    ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-document-rules.py": "82dacf2c8eb43e9c66829f3482f6c81f8d91e0fd937747a3e5751939a4ab38b5",
+    ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-repository-documentation.py": "fda41cbd3d8228d4bfb53820e74b536db6f9bba8ec0e92209b47d05662652f3a",
+    ".agents/skills/skill-tree-repo-documentation-audit/scripts/workflow-state.py": "77dedfe9c9b7e74f3f97ff8330c75028739e02ea14a72aad9f8b01ece74b2226",
+    "AGENTS.md": "37248dfd20f8068bb3867e528470c528438b1ae857c79cadfb22e5c22a7e2a46",
+    "functions/api/party-sync/[partyId].js": "dc283cbf08fe067c182a804b607d77b13292fcbb6a1b9fc2cdc9ac506d52aedd",
+    "skill-tree/documents/future.md": "a11bb1bf42750ef42614cedc302f701eafffbc1f7a2cfd13cb5d252352309a8e",
+    "skill-tree/documents/rules.md": "af24f995eda009e7502289176cf5255127ba61c7e7c5838b435b3d6221a0c1f9",
+    "skill-tree/history/planning-import.json": "3e0cd0a97f0886eb31f6e939f98011cc2364e820097ef527a9e6313f9705a8eb",
+    "src/Habitica.Api/HabiticaApiClient.cs": "0e167a58fd37a26b1155a2c3df245b4b855588eb788aeeb007dfcedca5c76374",
+    "src/Habitica.Api/HabiticaApiClientOptions.cs": "4a13d17043891496d0bb698e462aee8b247a630aad263ffbcd89f4b417f1dccc",
+    "src/Habitica.Domain/Tasks/TaskSnapshot.cs": "c2993c58a2d5bc89d0a79e27aea2970b412e3ab5d4cbce4ce435ad4c2569368c",
+    "src/Habitica.Storage/TaskSnapshotStore.cs": "8bcfd83bad5ac237869c5fcdc942711078da107a945d56c4f4888281ac45ec5f",
+    "src/Habitica.WebApp/Pages/PrivacyPage.razor": "c03c79b0efde9d917fafff60ce577a7d2d84d9257aa9be004ed377125343f586",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "8d89cf0c1210ba3f651052f6a06b9f8002697feb1d64c869236fcd0f9a959f2a",
+    "src/Habitica.WebApp/Program.cs": "7146232f89ca621c8cc6c24f7ab8724b9ee41964bdef6e4cab13c4664e0d782e",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "3e1bb380b459706dc3021914ae539aaf297d36085dc60438e93e557a70d840fe",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "39b0aa8ccd1f7134f928b60d1278001e9b98866d31025b5dd5aa27c09026836e",
+    "tests/Habitica.Api.Tests/HabiticaApiClientTests.cs": "02d7debc09baae2fdf7993e5036edb6061fd685d0794909ce1ebdb8962e907ee",
+    "wrangler.toml": "fbfd9d2381800c930e9b9a42d575ee35f7b5e984bda1c2a3427a2b637205e8e6"
+  },
+  "sources": [
+    "AGENTS.md",
+    "skill-tree/documents/rules.md",
+    "skill-tree/documents/future.md",
+    "skill-tree/history/planning-import.json",
+    ".agents/skills/skill-tree-repo-documentation-audit/SKILL.md",
+    ".agents/skills/skill-tree-process-future-pending/references/pending-task-format.md",
+    ".agents/skills/skill-tree-process-future-pending/references/future-workflow.md",
+    ".agents/skills/skill-tree-repo-documentation-audit/scripts/workflow-state.py",
+    ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-repository-documentation.py",
+    ".agents/skills/skill-tree-repo-documentation-audit/scripts/validate-document-rules.py",
+    "src/Habitica.Api/HabiticaApiClient.cs",
+    "src/Habitica.Api/HabiticaApiClientOptions.cs",
+    "src/Habitica.WebApp/Program.cs",
+    "src/Habitica.WebApp/State/AppSessionController.cs",
+    "src/Habitica.Domain/Tasks/TaskSnapshot.cs",
+    "src/Habitica.Storage/TaskSnapshotStore.cs",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js",
+    "src/Habitica.WebApp/Pages/PrivacyPage.razor",
+    "src/Habitica.WebApp/Pages/SettingsPage.razor",
+    "functions/api/party-sync/[partyId].js",
+    "wrangler.toml",
+    "tests/Habitica.Api.Tests/HabiticaApiClientTests.cs"
+  ]
+}

@@ -22,11 +22,18 @@
       "scope": "planning-structure-migration"
     },
     {
-      "fresh": true,
+      "fresh": false,
       "id": "A-de6cc6a2-7a8f-41f4-a586-fc145494a8fb",
       "path": "skill-tree/history/audits/audit-a-de6cc6a2-7a8f-41f4-a586-fc145494a8fb.json",
       "recorded_at": "2026-10-14T06:00:48.471264+00:00",
       "scope": "skill-tree-helper-installation"
+    },
+    {
+      "fresh": true,
+      "id": "A-47be6ae6-cb31-4263-8bf4-ea71150e1964",
+      "path": "skill-tree/history/audits/audit-a-47be6ae6-cb31-4263-8bf4-ea71150e1964.json",
+      "recorded_at": "2026-10-14T07:21:50.483946+00:00",
+      "scope": "future-contract-revalidation"
     }
   ],
   "catalog": [
@@ -270,10 +277,10 @@
   },
   "latest_audit": {
     "fresh": true,
-    "id": "A-de6cc6a2-7a8f-41f4-a586-fc145494a8fb",
-    "path": "skill-tree/history/audits/audit-a-de6cc6a2-7a8f-41f4-a586-fc145494a8fb.json",
-    "recorded_at": "2026-10-14T06:00:48.471264+00:00",
-    "scope": "skill-tree-helper-installation"
+    "id": "A-47be6ae6-cb31-4263-8bf4-ea71150e1964",
+    "path": "skill-tree/history/audits/audit-a-47be6ae6-cb31-4263-8bf4-ea71150e1964.json",
+    "recorded_at": "2026-10-14T07:21:50.483946+00:00",
+    "scope": "future-contract-revalidation"
   },
   "policy_references": [
     "AGENTS.md",
@@ -295,7 +302,7 @@
     "skill-tree/documents/deploy-cloudflare-pages.md": "a274a238ff437816e5545c6e7f1bda282309d842506a79b2957b08c4db7e1013",
     "skill-tree/documents/documents-snapshot.md": "6f79e4202c9cfc84df57641150d8a2fce2ab5d9670f6efe4d05eec00f89d73c9",
     "skill-tree/documents/features.md": "3f97b287e6816777ec101a1b8330fff4b09595fa3daad65e5969896473969d1d",
-    "skill-tree/documents/future.md": "5dd38315103225c3537db23835d57bbccb3c9a8e74ed25b91c1b5ce706bbf937",
+    "skill-tree/documents/future.md": "a11bb1bf42750ef42614cedc302f701eafffbc1f7a2cfd13cb5d252352309a8e",
     "skill-tree/documents/habitica-api.md": "32845048a247c9fedbde34870f2bf6b05441aa47a22db61c4c510cb339ef2814",
     "skill-tree/documents/habitica-deeplinks.md": "37809f11086587ab474caeab319939e444de7701e9ce19301b8e00ebc1bf9fc7",
     "skill-tree/documents/habitica-tool-references.md": "365f6d395422ba7444fdfe3c61304ef0f86f5069be76066ba67f6378d1c0883b",
