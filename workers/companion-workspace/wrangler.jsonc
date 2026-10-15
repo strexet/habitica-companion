@@ -1,0 +1,86 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "habitica-companion-workspace-local",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-12",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+  "send_metrics": false,
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "invocation_logs": false
+    }
+  },
+  "vars": {
+    "ENVIRONMENT": "local",
+    "WORKSPACE_ENABLED": false
+  },
+  "d1_databases": [
+    {
+      "binding": "WORKSPACE_DB",
+      "database_name": "companion-workspace-local",
+      "database_id": "00000000-0000-4000-8000-000000000101",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "services": [
+    {
+      "binding": "AUTH_IDENTITY",
+      "service": "habitica-chatgpt-auth-local",
+      "entrypoint": "WorkspaceIdentityService"
+    }
+  ],
+  "env": {
+    "preview": {
+      "name": "habitica-companion-workspace-preview",
+      "vars": {
+        "ENVIRONMENT": "preview",
+        "WORKSPACE_ENABLED": false
+      },
+      "d1_databases": [
+        {
+          "binding": "WORKSPACE_DB",
+          "database_name": "companion-workspace-preview",
+          "database_id": "00000000-0000-4000-8000-000000000102",
+          "migrations_dir": "migrations"
+        }
+      ],
+      "services": [
+        {
+          "binding": "AUTH_IDENTITY",
+          "service": "habitica-chatgpt-auth-preview",
+          "entrypoint": "WorkspaceIdentityService"
+        }
+      ]
+    },
+    "production": {
+      "name": "habitica-companion-workspace-production",
+      "vars": {
+        "ENVIRONMENT": "production",
+        "WORKSPACE_ENABLED": false
+      },
+      "d1_databases": [
+        {
+          "binding": "WORKSPACE_DB",
+          "database_name": "companion-workspace-production",
+          "database_id": "00000000-0000-4000-8000-000000000103",
+          "migrations_dir": "migrations"
+        }
+      ],
+      "services": [
+        {
+          "binding": "AUTH_IDENTITY",
+          "service": "habitica-chatgpt-auth-production",
+          "entrypoint": "WorkspaceIdentityService"
+        }
+      ]
+    }
+  },
+  "dev": {
+    "port": 8789
+  }
+}

@@ -1,0 +1,109 @@
+@using Habitica.Application.Workspace
+@inject WorkspaceDataController Workspace
+@inject IAppSessionController Session
+@inject IJSRuntime Js
+@implements IAsyncDisposable
+
+<section class="card-surface settings-card">
+    <p class="section-label">Companion workspace</p>
+    <h2>Cloud tasks and workspace backups</h2>
+    <p>Cloud workspace access is optional and separate from ChatGPT linking and private device sync. The workspace server can read task names, notes, categories, projects, goals, completion history and commands. Enabling access also stores encrypted Habitica credentials on the integration server.</p>
+    <p>Tasks and command history remain until you delete the cloud workspace. Disconnect pauses access and background execution while retaining cloud data. Browser copies and Habitica records have separate controls. Background execution requires another opt-in.</p>
+    @if (!Workspace.IsAvailable)
+    {
+        <p data-testid="workspace-unavailable">Cloud workspace is not enabled on this app.</p>
+    }
+    else if (!Session.State.IsAuthenticated)
+    {
+        <p>Sign in before connecting cloud task data.</p>
+    }
+    else if (Workspace.CloudWorkspaceId is null)
+    {
+        <label class="checkbox-row"><input type="checkbox" @bind="_consent" data-testid="workspace-consent" /><span>I consent to encrypted server credential storage and server-readable workspace data with the retention described above.</span></label>
+        <MudButton data-testid="workspace-connect" Disabled="@(!_consent || _busy || Session.State.IsBusy)" OnClick="ConnectAsync" Variant="Variant.Filled">Connect cloud workspace</MudButton>
+    }
+    else
+    {
+        <p>Cloud workspace access is available for this tab. Signing out or closing this tab forgets its access token.</p>
+        <div class="action-row">
+            <MudButton Disabled="@_busy" OnClick="ExportCloudAsync" Variant="Variant.Outlined">Export cloud workspace</MudButton>
+            <MudButton Disabled="@_busy" OnClick="@(() => _cleanup = false)" Variant="Variant.Outlined">Disconnect cloud workspace</MudButton>
+            <MudButton Disabled="@_busy" OnClick="@(() => _cleanup = true)" Variant="Variant.Outlined">Delete cloud workspace</MudButton>
+        </div>
+        @if (_cleanup is not null)
+        {
+            <p>@(_cleanup.Value ? "Permanently delete all cloud tasks, notes and command history? Export a backup first." : "Disconnect every workspace session and pause execution? Cloud tasks and history will remain stored.")</p>
+            <MudButton Disabled="@_busy" OnClick="CleanupAsync" Color="Color.Error" Variant="Variant.Filled">Confirm workspace action</MudButton>
+            <MudButton OnClick="@(() => _cleanup = null)" Variant="Variant.Outlined">Cancel</MudButton>
+        }
+    }
+    <h3>Local workspace backups</h3>
+    <p>Workspace backups include readable notes and command history, with no credentials. These files are separate from the Habitica data backup and encrypted private sync below. Restore keeps independent workspace IDs and preserves existing data on conflicts. Clear saved browser data also removes local workspaces.</p>
+    @if (Session.State.IsAuthenticated)
+    {
+        <MudButton Disabled="@_busy" OnClick="RefreshLocalAsync" Variant="Variant.Outlined">Find local workspaces</MudButton>
+        @foreach (var id in _localIds)
+        {
+            <div class="action-row"><span>@id</span><MudButton Disabled="@_busy" OnClick="@(() => ExportLocalAsync(id))" Variant="Variant.Text">Export local workspace</MudButton></div>
+        }
+        <label>Restore workspace backup<InputFile disabled="@_busy" OnChange="SelectFileAsync" data-testid="workspace-restore-file" /></label>
+        @if (_restoreJson is not null)
+        {
+            <p>Restore this backup into the current account's browser storage? Cloud data will remain unchanged.</p>
+            <MudButton Disabled="@_busy" OnClick="RestoreAsync" Variant="Variant.Filled">Confirm local restore</MudButton>
+            <MudButton OnClick="@(() => _restoreJson = null)" Variant="Variant.Outlined">Cancel</MudButton>
+        }
+    }
+    @if (_message is not null) { <p role="status">@_message</p> }
+</section>
+
+@code {
+    private bool _consent, _busy;
+    private bool? _cleanup;
+    private string? _message, _restoreJson;
+    private IReadOnlyList<Guid> _localIds = Array.Empty<Guid>();
+    private IJSObjectReference? _exportModule;
+    private async Task RunAsync(Func<Task<WorkspaceActionResult>> action)
+    {
+        if (_busy) return;
+        _busy = true;
+        try
+        {
+            var result = await action(); _message = result.Message;
+            if (result.Succeeded && result.Json is not null)
+            {
+                _exportModule ??= await Js.InvokeAsync<IJSObjectReference>("import", "./js/diagnosticsExport.js");
+                await _exportModule.InvokeVoidAsync("downloadTextFile", $"companion-workspace-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}.json", result.Json, "application/json;charset=utf-8");
+            }
+        }
+        catch { _message = "The workspace action could not be confirmed. Check the connection before trying again."; }
+        finally { _busy = false; }
+    }
+    private Task ConnectAsync() => RunAsync(() => Workspace.ConnectAsync(_consent));
+    private Task ExportCloudAsync() => RunAsync(() => Workspace.ExportCloudAsync());
+    private Task ExportLocalAsync(Guid id) => RunAsync(() => Workspace.ExportLocalAsync(id));
+    private async Task CleanupAsync() { if (_cleanup is null) return; await RunAsync(() => Workspace.DisconnectAsync(_cleanup.Value)); _cleanup = null; }
+    private async Task RefreshLocalAsync()
+    {
+        try { _localIds = await Workspace.ListLocalAsync(); _message = _localIds.Count == 0 ? "No local workspace backups are saved for this account." : null; }
+        catch { _message = "Local workspace storage is unavailable."; }
+    }
+    private async Task SelectFileAsync(InputFileChangeEventArgs args)
+    {
+        try
+        {
+            await using var stream = args.File.OpenReadStream(16 * 1024 * 1024);
+            using var reader = new StreamReader(stream); _restoreJson = await reader.ReadToEndAsync();
+            _ = Habitica.Domain.Workspace.WorkspaceJournalJson.Deserialize(_restoreJson);
+            _message = null;
+        }
+        catch { _restoreJson = null; _message = "This file is not a valid workspace backup."; }
+    }
+    private async Task RestoreAsync()
+    {
+        if (_restoreJson is null) return;
+        var json = _restoreJson; _restoreJson = null;
+        await RunAsync(() => Workspace.RestoreLocalAsync(json)); var message = _message; await RefreshLocalAsync(); _message = message;
+    }
+    public async ValueTask DisposeAsync() { if (_exportModule is not null) await _exportModule.DisposeAsync(); }
+}

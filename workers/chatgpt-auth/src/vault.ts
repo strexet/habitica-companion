@@ -106,7 +106,7 @@ async function enroll(request: Request, env: AuthEnv): Promise<Response> {
     WHERE integration_profiles.generation=?`)
     .bind(profileId, envelope.ciphertext, envelope.iv, envelope.keyVersion, envelope.schemaVersion, name, now, now, now, hash, now, consentVersion, now, connectionId, previous?.generation ?? 0);
   const writes = [upsert];
-  if (Boolean(env.OAUTH_ENABLED)) writes.push(env.HABITICA_INTEGRATION_DB.prepare(`UPDATE integration_read_state SET credential_repair_required=0
+  if (Boolean(env.OAUTH_ENABLED) || Boolean(env.WORKSPACE_ENABLED)) writes.push(env.HABITICA_INTEGRATION_DB.prepare(`UPDATE integration_read_state SET credential_repair_required=0
     WHERE profile_id=? AND connection_id=? AND EXISTS(SELECT 1 FROM integration_profiles WHERE profile_id=? AND management_token_hash=?)`)
     .bind(profileId, connectionId, profileId, hash));
   const results = await env.HABITICA_INTEGRATION_DB.batch(writes);

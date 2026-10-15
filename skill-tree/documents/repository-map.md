@@ -26,3 +26,5 @@
 `src/Habitica.WebApp/Program.cs` registers application, API and storage services. `TasksPage.razor` serves `/tasks`; `SettingsPage.razor` serves `/settings`. Separate Auth/MCP scaffolds exist under `workers/`; protected operations are denied. Plugin packaging and MCP tools remain absent.
 
 `README.md` and `AGENTS.md` provide root discovery. `skill-tree/skill-tree.json` indexes document ownership, hashes, policies and validation commands. `future.md` owns all active plans; `companion-first-mcp-research.md` provides reference context only.
+
+The `workers/companion-workspace` package owns the optional canonical cloud command API and isolated D1 history. `workers/shared/workspace-domain.ts` validates the neutral canonical schema; `workspace-commands.ts` defines portable request identity; `workspace-http.ts` contains bounded request helpers. The private Auth identity broker connects the trust boundaries without exposing stored Habitica credentials. `WorkspaceSettingsPanel` and `WorkspaceDataController` own separate workspace privacy and backup controls.

@@ -13,6 +13,31 @@ namespace Habitica.WebApp.Tests.Pages;
 
 public sealed class SettingsPageTests : BunitContext
 {
+    public SettingsPageTests()
+    {
+        Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new Habitica.WebApp.Integration.WorkspaceCloudClient(new HttpClient(), new Habitica.WebApp.Integration.ChatGptIntegrationClient(new HttpClient(), null), null));
+        Services.AddSingleton(new IndexedDbWorkspaceDatabase(JSInterop.JSRuntime));
+        Services.AddScoped<WorkspaceDataController>();
+    }
+
+    [Fact]
+    public void Workspace_cloud_consent_is_separate_from_ChatGPT_and_private_sync()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices(); Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage()); Services.AddScoped<ColorSchemeService>();
+        var controller = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true });
+        Services.AddSingleton<IAppSessionController>(controller);
+        Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new Habitica.WebApp.Integration.WorkspaceCloudClient(new HttpClient(), new Habitica.WebApp.Integration.ChatGptIntegrationClient(new HttpClient(), "https://auth.invalid/", false), "https://workspace.invalid/"));
+        var cut = Render<SettingsPage>();
+        Assert.True(cut.Find("[data-testid='workspace-connect']").HasAttribute("disabled"));
+        Assert.NotNull(cut.Find("[data-testid='integration-unavailable']"));
+        Assert.Equal(0, controller.WorkspaceConnectCalls);
+        cut.Find("[data-testid='workspace-consent']").Change(true);
+        cut.Find("[data-testid='workspace-connect']").Click();
+        Assert.Equal(1, controller.WorkspaceConnectCalls); Assert.Equal(0, controller.ChatGptEnrollCalls);
+        Assert.Contains("server can read", cut.Markup);
+    }
+
     [Fact]
     public void Integration_enrollment_requires_consent_and_cleanup_requires_confirmation()
     {

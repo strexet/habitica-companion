@@ -104,3 +104,9 @@ export async function clearWorkspaces() {
     await workspaces.clear(); await commands.clear(); await events.clear();
   });
 }
+
+export async function listWorkspaces(scope) {
+    if (!/^[A-Za-z0-9_-]{1,128}$/.test(scope)) throw new Error('invalid_scope');
+    const rows = await database.table('workspaces').where('scope').equals(scope).toArray();
+    return rows.map(row => row.id);
+}

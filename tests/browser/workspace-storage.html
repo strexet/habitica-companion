@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><meta charset="utf-8"><title>Disposable workspace storage qualification</title>
 <style>body{font:18px system-ui;max-width:54rem;margin:2rem auto;padding:1rem}button{font:inherit;padding:1rem}li{margin:.7rem}</style>
 <h1>Disposable workspace storage qualification</h1><p>Synthetic data only. The dedicated test origin isolates this database from the app.</p>
-<button id="run">Run upgrade and transaction checks</button><button id="read">Verify persisted data after reload</button><ol id="results"></ol>
+<button id="run">Run upgrade and transaction checks</button><button id="read">Verify persisted data after reload</button><button id="lifecycle">Verify local workspace listing and clear</button><ol id="results"></ol>
 <script type="module">
 import Dexie from '/vendor/dexie.mjs';
 const scope='fixture_a'; const id='10000000-0000-4000-8000-000000000001';
@@ -40,5 +40,13 @@ document.querySelector('#run').onclick=async()=>{
 };
 document.querySelector('#read').onclick=async()=>{
  result.replaceChildren();try{const api=await storage();const stored=JSON.parse(await api.getWorkspace(scope,id));check(stored.storeVersion===3&&stored.commands.length===2&&stored.events.length===2,'Canonical data and ordered journal survive a full page reload');check(await api.getJson('fixture/legacy')==='{"preserved":true}','Legacy data also survives reload');}catch(error){check(false,'Reload verification: '+error.name);}
+};
+document.querySelector('#lifecycle').onclick=async()=>{
+ result.replaceChildren();try{
+  const api=await storage();check((await api.listWorkspaces(scope)).includes(id),'Local workspace discovery returns the current account workspace');
+  check((await api.listWorkspaces('fixture_b')).length===0,'Local workspace discovery isolates other accounts');
+  await api.clearWorkspaces();check((await api.listWorkspaces(scope)).length===0&&await api.getWorkspace(scope,id)===null,'Clear local workspaces removes canonical data and journal');
+  check(await api.getJson('fixture/legacy')==='{"preserved":true}','Canonical clear preserves separate legacy app data');
+ }catch(error){check(false,'Lifecycle verification: '+error.name);}
 };
 </script></html>

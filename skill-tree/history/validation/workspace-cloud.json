@@ -1,0 +1,81 @@
+{
+  "task_id": "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+  "required_fix_id": "T-80bb3b80-8a9c-4252-9924-5a100f746f93",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "Auth, MCP and Workspace bundles and typechecks",
+      "result": "pass"
+    },
+    {
+      "check": "Full app build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Full .NET suite",
+      "result": "pass",
+      "passed": 496,
+      "suites": {
+        "Api": 31,
+        "Application": 74,
+        "Domain": 24,
+        "Rules": 42,
+        "Storage": 21,
+        "WebApp": 304
+      }
+    },
+    {
+      "check": "Auth Worker tests",
+      "result": "pass",
+      "passed": 35
+    },
+    {
+      "check": "Workspace Worker tests",
+      "result": "pass",
+      "passed": 8
+    },
+    {
+      "check": "Isolated browser storage transactions and reload",
+      "result": "pass",
+      "checks": 13
+    },
+    {
+      "check": "Isolated browser account listing and canonical clear",
+      "result": "pass",
+      "checks": 4,
+      "evidence": "skill-tree/history/validation/workspace-storage-lifecycle.jpg"
+    },
+    {
+      "check": "Rebuilt Settings browser smoke",
+      "result": "pass",
+      "observed": "Separate workspace disclosure, disabled cloud access and independent local backup/privacy controls render.",
+      "evidence": "skill-tree/history/validation/workspace-settings.jpg"
+    }
+  ],
+  "regression": {
+    "before": "Delayed command reached a deleted and recreated same-ID workspace with HTTP 201.",
+    "after": "Command, export, disconnect, delete and disconnect/reconnect cases reject stale requests with 401 or 409; replacement data remains unchanged."
+  },
+  "coverage": [
+    "Separate workspace consent and derived account identity",
+    "Two-account isolation and exact-origin checks",
+    "Atomic canonical/event/journal writes; injected append rollback",
+    "Revision conflicts, duplicate receipts and concurrent writers",
+    "Neutral domain fixture, Daily completion and bounded Habit scoring",
+    "Malformed graph, timestamp, enum, duplicate property and payload rejection",
+    "Simultaneous sessions, unchanged credential revalidation and Auth revocation",
+    "Deletion/recreation and disconnect access epochs",
+    "History capacity refuses new writes without truncation",
+    "Cross-runtime Worker export and C# hash/journal validation",
+    "Client unsafe configuration, token separation, export identity and late-response guards",
+    "Settings separate consent, account-scoped local listing/export/restore and browser clearing"
+  ],
+  "limitations": [
+    "All server fixtures use synthetic accounts and mocked Habitica validation.",
+    "Cloud enrollment, provisioning, deployment and real Habitica effects were not executed.",
+    "Local-to-cloud adoption, projection reconciliation and hosted execution remain subsequent dependencies.",
+    "New documentation prose passes lint; existing unrelated documentation lint errors remain."
+  ]
+}

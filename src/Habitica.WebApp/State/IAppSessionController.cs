@@ -1,4 +1,5 @@
 using Habitica.Application.Integration;
+using Habitica.Application.Workspace;
 using Habitica.Application.Diagnostics;
 using Habitica.Application.Inventory;
 using Habitica.Application.Sync;
@@ -13,6 +14,8 @@ public interface IAppSessionController
     event Action? Changed;
 
     SessionViewModel State { get; }
+
+    Task<WorkspaceActionResult> ConnectWorkspaceAsync(bool consentAcknowledged, CancellationToken cancellationToken = default);
 
     bool IsChatGptIntegrationAvailable { get; }
     bool HasChatGptConnection { get; }

@@ -1,4 +1,5 @@
 using Habitica.Application.Integration;
+using Habitica.Application.Workspace;
 using Habitica.WebApp.Integration;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -51,8 +52,12 @@ builder.Services.AddScoped<ColorSchemeService>();
 builder.Services.AddScoped<IRemoteUserDataSyncProvider, CloudflareUserDataSyncProvider>();
 builder.Services.AddScoped<IRemotePartyDataSyncProvider, CloudflarePartyDataSyncProvider>();
 builder.Services.AddSingleton(builder.Configuration.GetSection("Features").Get<AppFeatureOptions>() ?? new AppFeatureOptions());
-builder.Services.AddScoped<IChatGptIntegrationClient>(_ => new ChatGptIntegrationClient(
-    new HttpClient { Timeout = TimeSpan.FromSeconds(15) }, builder.Configuration["ChatGptIntegration:AuthBaseUrl"]));
+builder.Services.AddScoped<IndexedDbWorkspaceDatabase>();
+builder.Services.AddScoped<WorkspaceDataController>();
+builder.Services.AddScoped<ChatGptIntegrationClient>(_ => new ChatGptIntegrationClient(
+    new HttpClient { Timeout = TimeSpan.FromSeconds(15) }, builder.Configuration["ChatGptIntegration:AuthBaseUrl"], builder.Configuration.GetValue("ChatGptIntegration:Enabled", false)));
+builder.Services.AddScoped<IChatGptIntegrationClient>(sp => sp.GetRequiredService<ChatGptIntegrationClient>());
+builder.Services.AddScoped<IWorkspaceCloudClient>(sp => new WorkspaceCloudClient(new HttpClient { Timeout = TimeSpan.FromSeconds(15) }, sp.GetRequiredService<ChatGptIntegrationClient>(), builder.Configuration["CompanionWorkspace:BaseUrl"]));
 builder.Services.AddScoped<IAppSessionController, AppSessionController>();
 builder.Services.AddScoped<IHabiticaSyncClient>(_ => new HabiticaApiClient(
     new HttpClient

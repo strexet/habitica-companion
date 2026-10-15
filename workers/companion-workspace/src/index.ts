@@ -1,0 +1,132 @@
+import { resourceConfiguration } from "../../shared/resources";
+import { bearer, uuid, workspaceJson, workspaceObject, WorkspaceError, workspaceSessionToken, workspaceTokenHash } from "../../shared/workspace-http";
+import { emptyWorkspace } from "../../shared/workspace-domain";
+import { workspaceCommand, commandHash } from "../../shared/workspace-commands";
+import { accept } from "./commands";
+interface Identity { profileId: string; connectionId: string }
+interface WorkspaceRow { profile_id: string; workspace_id: string; connection_id: string; access_epoch: string; active: number; executor_enabled: number; document_json: string; store_version: number; archive_bytes: number; commit_tag: string }
+const headers = { "cache-control": "no-store", "x-content-type-options": "nosniff" };
+const consentVersion = "workspace-v1";
+const bytes = (value: string) => new TextEncoder().encode(value).length;
+const json = (value: unknown, status = 200) => Response.json(value, { status, headers });
+async function identity(env: WorkspaceEnv, path: string, authorization?: string, value?: Identity): Promise<Identity> {
+ const response = await env.AUTH_IDENTITY.fetch("https://identity.internal/" + path, { method: "POST", headers: { "content-type": "application/json", ...(authorization ? { authorization } : {}) }, body: value ? JSON.stringify(value) : undefined });
+ if (!response.ok) throw new WorkspaceError("unauthorized", 401);
+ const result = await response.json<Identity>();
+ if (!/^prf_[A-Za-z0-9_-]{43}$/.test(result.profileId)) throw new WorkspaceError("unauthorized", 401);
+ uuid(result.connectionId); return result;
+}
+async function session(request: Request, env: WorkspaceEnv): Promise<WorkspaceRow> {
+ const hash = await workspaceTokenHash(bearer(request));
+ const row = await env.WORKSPACE_DB.prepare(`SELECT w.* FROM workspace_sessions s JOIN workspaces w ON w.profile_id=s.profile_id
+ WHERE s.token_hash=? AND s.expires_at_utc>? AND s.connection_id=w.connection_id AND s.access_epoch=w.access_epoch AND w.active=1`).bind(hash, new Date().toISOString()).first<WorkspaceRow>();
+ if (!row) throw new WorkspaceError("unauthorized", 401);
+ await identity(env, "epoch", undefined, { profileId: row.profile_id, connectionId: row.connection_id });
+ const current = await env.WORKSPACE_DB.prepare(`SELECT w.* FROM workspace_sessions s JOIN workspaces w ON w.profile_id=s.profile_id
+ WHERE s.token_hash=? AND s.expires_at_utc>? AND s.access_epoch=? AND w.access_epoch=s.access_epoch AND w.active=1`).bind(hash,new Date().toISOString(),row.access_epoch).first<WorkspaceRow>();
+ if (!current) throw new WorkspaceError("unauthorized", 401); return current;
+}
+async function connect(request: Request, env: WorkspaceEnv): Promise<Response> {
+ const body = workspaceObject(await workspaceJson(request), ["consentVersion", "workspaceId"]);
+ if (body.consentVersion !== consentVersion) throw new WorkspaceError("consent_required", 403);
+ const who = await identity(env, "management", `Bearer ${bearer(request)}`);
+ const workspaceId = body.workspaceId === undefined ? crypto.randomUUID() : uuid(body.workspaceId);
+ const existing = await env.WORKSPACE_DB.prepare("SELECT workspace_id FROM workspaces WHERE profile_id=?").bind(who.profileId).first<{ workspace_id: string }>();
+ if (body.workspaceId !== undefined && existing && existing.workspace_id !== workspaceId) throw new WorkspaceError("workspace_mismatch", 409);
+ const now = new Date().toISOString(); const tag = crypto.randomUUID(); const documentJson = JSON.stringify(emptyWorkspace(workspaceId));
+ // Consent never replaces retained canonical data. Reconnection revokes old session epochs.
+ await env.WORKSPACE_DB.prepare(`INSERT INTO workspaces(profile_id,workspace_id,connection_id,access_epoch,consent_version,consented_at_utc,document_json,archive_bytes,commit_tag,created_at_utc,updated_at_utc)
+ VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(profile_id) DO UPDATE SET connection_id=excluded.connection_id,consent_version=excluded.consent_version,
+ consented_at_utc=excluded.consented_at_utc,active=1,access_epoch=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.access_epoch ELSE excluded.access_epoch END,executor_enabled=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.executor_enabled ELSE 0 END,updated_at_utc=excluded.updated_at_utc`)
+ .bind(who.profileId, workspaceId, who.connectionId, crypto.randomUUID(), consentVersion, now, documentJson, bytes(documentJson) + 512, tag, now, now).run();
+ const row = await env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=?").bind(who.profileId).first<WorkspaceRow>();
+ if (!row || row.connection_id !== who.connectionId) throw new WorkspaceError("connection_changed", 409);
+ if (body.workspaceId !== undefined && row.workspace_id !== workspaceId) throw new WorkspaceError("workspace_mismatch", 409);
+ const token = workspaceSessionToken(); const hash = await workspaceTokenHash(token); const expires = new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString();
+ await env.WORKSPACE_DB.batch([
+  env.WORKSPACE_DB.prepare(`INSERT INTO workspace_sessions(token_hash,profile_id,connection_id,access_epoch,created_at_utc,expires_at_utc)
+   SELECT ?,profile_id,connection_id,access_epoch,?,? FROM workspaces WHERE profile_id=? AND active=1 AND connection_id=? AND access_epoch=?`).bind(hash, now, expires, who.profileId, who.connectionId, row.access_epoch),
+  env.WORKSPACE_DB.prepare(`DELETE FROM workspace_sessions WHERE profile_id=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND access_epoch=? AND active=1) AND (access_epoch<>? OR expires_at_utc<=? OR token_hash NOT IN
+   (SELECT token_hash FROM workspace_sessions WHERE profile_id=? ORDER BY created_at_utc DESC,rowid DESC LIMIT 8))`).bind(who.profileId, who.profileId, row.access_epoch, row.access_epoch, now, who.profileId),
+ ]);
+ const check = await env.WORKSPACE_DB.prepare("SELECT token_hash FROM workspace_sessions WHERE token_hash=?").bind(hash).first();
+ if (!check) throw new WorkspaceError("connection_changed", 409);
+ return json({ workspaceId: row.workspace_id, sessionToken: token, expiresAtUtc: expires, consentVersion, executorEnabled: Boolean(row.executor_enabled) }, 201);
+}
+async function duplicate(env: WorkspaceEnv, row: WorkspaceRow, id: string, hash: string): Promise<Response | null> {
+ const receipt = await env.WORKSPACE_DB.prepare("SELECT c.payload_hash,c.entry_json FROM workspace_commands c JOIN workspaces w ON w.profile_id=c.profile_id WHERE c.profile_id=? AND c.command_id=? AND w.access_epoch=? AND w.active=1").bind(row.profile_id, id, row.access_epoch).first<{ payload_hash: string; entry_json: string }>();
+ if (!receipt) return null;
+ if (receipt.payload_hash !== hash) throw new WorkspaceError("command_id_reused", 409);
+ return json({ disposition: "duplicate", savedInCompanion: true, entry: JSON.parse(receipt.entry_json) });
+}
+async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow): Promise<Response> {
+ let input; try { input = workspaceCommand(await workspaceJson(request, 32768)); } catch (error) { if (error instanceof WorkspaceError) throw error; throw new WorkspaceError("invalid_command", 422); }
+ if (input.workspaceId !== row.workspace_id) throw new WorkspaceError("workspace_mismatch", 409);
+ const hash = await commandHash(input); const replay = await duplicate(env, row, input.id, hash); if (replay) return replay;
+ const accepted = await accept(JSON.parse(row.document_json), input, new Date().toISOString());
+ const serialized = JSON.stringify(accepted.document);
+ // D1 has a per-row bound. Reject before acceptance rather than silently dropping history.
+ if (bytes(serialized) > 1024 * 1024) throw new WorkspaceError("workspace_capacity", 413);
+ if (row.store_version >= Number.MAX_SAFE_INTEGER) throw new WorkspaceError("revision_exhausted", 409);
+ const archiveBytes = row.archive_bytes - bytes(row.document_json) + bytes(serialized) + bytes(JSON.stringify(accepted.entry)) + bytes(JSON.stringify(accepted.event)) + 2;
+ if (archiveBytes > 8 * 1024 * 1024) throw new WorkspaceError("workspace_capacity", 413);
+ const version = row.store_version + 1; const tag = crypto.randomUUID();
+ const result = await env.WORKSPACE_DB.batch([
+  env.WORKSPACE_DB.prepare(`UPDATE workspaces SET document_json=?,store_version=?,commit_tag=?,updated_at_utc=?,archive_bytes=?
+   WHERE profile_id=? AND store_version=? AND connection_id=? AND access_epoch=? AND active=1`).bind(serialized, version, tag, accepted.entry.acceptedAtUtc, archiveBytes, row.profile_id, row.store_version, row.connection_id, row.access_epoch),
+  env.WORKSPACE_DB.prepare(`INSERT INTO workspace_commands(profile_id,command_id,sequence,payload_hash,entry_json)
+   SELECT profile_id,?,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?`).bind(input.id, version, hash, JSON.stringify(accepted.entry), row.profile_id, tag),
+  env.WORKSPACE_DB.prepare(`INSERT INTO workspace_events(profile_id,event_id,sequence,event_json)
+   SELECT profile_id,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?`).bind(accepted.event.id, version, JSON.stringify(accepted.event), row.profile_id, tag),
+ ]);
+ if (!result[0].meta.changes) { const retry = await duplicate(env, row, input.id, hash); if (retry) return retry; throw new WorkspaceError("stale_revision", 409); }
+ return json({ disposition: "accepted", savedInCompanion: true, entry: accepted.entry, revision: accepted.document.revision }, 201);
+}
+async function snapshot(env: WorkspaceEnv, row: WorkspaceRow): Promise<Response> {
+ // Read the document and journal from one database transaction, including concurrent acceptance.
+ const results = await env.WORKSPACE_DB.batch([
+  env.WORKSPACE_DB.prepare("SELECT document_json,store_version FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1").bind(row.profile_id,row.connection_id,row.access_epoch),
+  env.WORKSPACE_DB.prepare("SELECT entry_json FROM workspace_commands WHERE profile_id=? ORDER BY sequence").bind(row.profile_id),
+  env.WORKSPACE_DB.prepare("SELECT event_json FROM workspace_events WHERE profile_id=? ORDER BY sequence").bind(row.profile_id),
+ ]);
+ const current = results[0].results[0] as { document_json: string; store_version: number } | undefined;
+ if (!current) throw new WorkspaceError("unauthorized", 401);
+ const value = JSON.stringify({ document: JSON.parse(current.document_json), storeVersion: current.store_version, commands: results[1].results.map(item => JSON.parse((item as { entry_json: string }).entry_json)), events: results[2].results.map(item => JSON.parse((item as { event_json: string }).event_json)) });
+ if (new TextEncoder().encode(value).length > 16 * 1024 * 1024) throw new WorkspaceError("export_capacity", 413);
+ return new Response(value, { headers: { ...headers, "content-type": "application/json" } });
+}
+async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
+ if (new URL(request.url).pathname === "/health" && request.method === "GET") return json({ service: "workspace", enabled: Boolean(env.WORKSPACE_ENABLED) });
+ if (!Boolean(env.WORKSPACE_ENABLED)) throw new WorkspaceError("workspace_unavailable", 503);
+ const path = new URL(request.url).pathname;
+ if (path === "/connect" && request.method === "POST") return connect(request, env);
+ const row = await session(request, env);
+ if (path === "/workspace" && request.method === "GET") return json({ document: JSON.parse(row.document_json), storeVersion: row.store_version, executorEnabled: Boolean(row.executor_enabled) });
+ if (path === "/export" && request.method === "GET") return snapshot(env, row);
+ if (path === "/commands" && request.method === "POST") return command(request, env, row);
+ if (path === "/disconnect" && request.method === "POST") {
+  const stopped = await env.WORKSPACE_DB.batch([env.WORKSPACE_DB.prepare("UPDATE workspaces SET active=0,executor_enabled=0 WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1").bind(row.profile_id,row.connection_id,row.access_epoch),env.WORKSPACE_DB.prepare("DELETE FROM workspace_sessions WHERE profile_id=? AND access_epoch=?").bind(row.profile_id,row.access_epoch)]);
+  if (!stopped[0].meta.changes) throw new WorkspaceError("unauthorized", 401);
+  return json({ disconnected: true, retained: true });
+ }
+ if (path === "/workspace" && request.method === "DELETE") {
+  const body = workspaceObject(await workspaceJson(request), ["confirmWorkspaceId"]);
+  if (uuid(body.confirmWorkspaceId) !== row.workspace_id) throw new WorkspaceError("confirmation_required", 409);
+  const deleted = await env.WORKSPACE_DB.prepare("DELETE FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1").bind(row.profile_id,row.connection_id,row.access_epoch).run();
+  if (!deleted.meta.changes) throw new WorkspaceError("unauthorized", 401);
+  return json({ deleted: true });
+ }
+ throw new WorkspaceError("not_found", 404);
+}
+export default {
+ async fetch(request: Request, env: WorkspaceEnv): Promise<Response> {
+  const url = new URL(request.url); const config = resourceConfiguration(env.ENVIRONMENT); const origin = request.headers.get("origin"); let response: Response;
+  try {
+   if (url.protocol !== "https:" && !(env.ENVIRONMENT === "local" && ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname))) throw new WorkspaceError("invalid_transport", 403);
+   if (origin && origin !== config.pwaOrigin) throw new WorkspaceError("invalid_origin", 403);
+   response = request.method === "OPTIONS" ? new Response(null, { status: 204, headers }) : await handle(request, env);
+  } catch (error) { response = json({ error: error instanceof WorkspaceError ? error.code : "workspace_unavailable" }, error instanceof WorkspaceError ? error.status : 503); }
+  if (origin === config.pwaOrigin) { response.headers.set("access-control-allow-origin", origin); response.headers.set("access-control-allow-methods", "GET, POST, DELETE, OPTIONS"); response.headers.set("access-control-allow-headers", "content-type, authorization"); response.headers.set("vary", "Origin"); }
+  return response;
+ },
+} satisfies ExportedHandler<WorkspaceEnv>;

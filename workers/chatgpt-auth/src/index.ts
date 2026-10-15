@@ -1,3 +1,4 @@
+import { workspaceIdentity } from "./workspace-identity";
 import { readOperation } from "./reads";
 import { WorkerEntrypoint } from "cloudflare:workers";
 import { vaultRoute, boundedJson, boundedText, VaultError } from "./vault";
@@ -24,6 +25,11 @@ export class AuthService extends WorkerEntrypoint<AuthEnv> {
     // Credential-bearing operations are never exposed by the public handler.
     return Response.json({ error: "unauthorized" }, { status: 401, headers });
   }
+}
+
+// This binding belongs only to the Workspace Worker; public routes never dispatch named entrypoints.
+export class WorkspaceIdentityService extends WorkerEntrypoint<AuthEnv> {
+  async fetch(request: Request): Promise<Response> { return workspaceIdentity(request, this.env); }
 }
 
 async function handlePublicRequest(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {

@@ -19,6 +19,14 @@ public sealed class IndexedDbWorkspaceDatabase : IAsyncDisposable
         return new ScopedStore(this, scope);
     }
 
+    public async Task<IReadOnlyList<Guid>> ListAsync(string scope, CancellationToken cancellationToken)
+    {
+        _ = ForScope(scope);
+        var module = await _module.Value;
+        var ids = await module.InvokeAsync<string[]>("listWorkspaces", cancellationToken, scope);
+        return ids.Select(Guid.Parse).ToArray();
+    }
+
     public async Task ClearAsync(CancellationToken cancellationToken)
     {
         var module = await _module.Value;

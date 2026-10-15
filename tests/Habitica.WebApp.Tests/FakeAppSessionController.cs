@@ -12,6 +12,9 @@ namespace Habitica.WebApp.Tests;
 
 internal sealed class FakeAppSessionController : IAppSessionController
 {
+    public int WorkspaceConnectCalls { get; private set; }
+    public Task<Habitica.Application.Workspace.WorkspaceActionResult> ConnectWorkspaceAsync(bool consentAcknowledged, CancellationToken cancellationToken = default) { WorkspaceConnectCalls++; return Task.FromResult(new Habitica.Application.Workspace.WorkspaceActionResult(false, "Unavailable")); }
+
     public bool IsChatGptIntegrationAvailable { get; set; }
     public bool HasChatGptConnection { get; set; }
     public int ChatGptEnrollCalls { get; private set; }

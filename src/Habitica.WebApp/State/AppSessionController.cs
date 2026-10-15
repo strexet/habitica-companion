@@ -1,4 +1,5 @@
 using Habitica.Application.Integration;
+using Habitica.Application.Workspace;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -26,6 +27,8 @@ public sealed class AppSessionController : IAppSessionController
     private const decimal GemGoldCost = 20m;
     private static readonly TimeSpan SpellPreparationDelay = TimeSpan.FromSeconds(1);
     private readonly IChatGptIntegrationClient? _integrationClient;
+    private readonly IWorkspaceCloudClient? _workspaceClient;
+    private readonly IndexedDbWorkspaceDatabase? _workspaceDatabase;
     private readonly ICredentialStore _credentialStore;
     private readonly IDiagnosticsLogStore _diagnosticsLogStore;
     private readonly DiagnosticsLogWriter _diagnosticsLogWriter;
@@ -76,9 +79,13 @@ public sealed class AppSessionController : IAppSessionController
         SnapshotFreshnessPolicy snapshotFreshnessPolicy,
         AppFeatureOptions featureOptions,
         TimeProvider timeProvider,
-        IChatGptIntegrationClient? integrationClient = null)
+        IChatGptIntegrationClient? integrationClient = null,
+        IWorkspaceCloudClient? workspaceClient = null,
+        IndexedDbWorkspaceDatabase? workspaceDatabase = null)
     {
         _integrationClient = integrationClient;
+        _workspaceClient = workspaceClient;
+        _workspaceDatabase = workspaceDatabase;
         _loginWorkflow = loginWorkflow;
         _habiticaSyncClient = habiticaSyncClient;
         _liveTestWorkflow = liveTestWorkflow;
@@ -100,6 +107,15 @@ public sealed class AppSessionController : IAppSessionController
         _featureOptions = featureOptions;
         _timeProvider = timeProvider;
         _cloudSyncExcludedSections = ParseCloudSyncExcludedSections(featureOptions.CloudSyncExcludedSections);
+    }
+
+    public async Task<WorkspaceActionResult> ConnectWorkspaceAsync(bool consentAcknowledged, CancellationToken cancellationToken = default)
+    {
+        if (!consentAcknowledged || !State.IsAuthenticated || State.IsBusy || _workspaceClient is null)
+            return new(false, "Sign in and acknowledge the cloud workspace disclosure first.");
+        var credentials = await ResolveCredentialsAsync(cancellationToken);
+        if (credentials is null) return new(false, "Sign in before connecting cloud data.");
+        return await _workspaceClient.ConnectAsync(credentials, cancellationToken);
     }
 
     public bool IsChatGptIntegrationAvailable => _integrationClient?.IsAvailable == true;
@@ -163,7 +179,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default)
     {
-        if (_currentCredentials?.UserId != request.UserId) _integrationClient?.ForgetSession();
+        if (_currentCredentials?.UserId != request.UserId) { _integrationClient?.ForgetSession(); _workspaceClient?.ForgetSession(); }
         await SignInCoreAsync(request, cancellationToken);
     }
 
@@ -2750,6 +2766,7 @@ public sealed class AppSessionController : IAppSessionController
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         _integrationClient?.ForgetSession();
+        _workspaceClient?.ForgetSession();
         _currentCredentials = null;
         var cachedUserSnapshot = State.UserSnapshot;
 
@@ -2768,9 +2785,11 @@ public sealed class AppSessionController : IAppSessionController
     public async Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
     {
         _integrationClient?.ForgetSession();
+        _workspaceClient?.ForgetSession();
         _currentCredentials = null;
         _persistLocally = false;
 
+        if (_workspaceDatabase is not null) await _workspaceDatabase.ClearAsync(cancellationToken);
         await _credentialStore.ClearPersistentCredentialsAsync(cancellationToken);
         await _diagnosticsLogStore.ClearAsync(cancellationToken);
         await _equipmentPresetStore.ClearAsync(cancellationToken);

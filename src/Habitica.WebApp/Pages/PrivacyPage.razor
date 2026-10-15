@@ -7,10 +7,15 @@
         <p class="section-label">Privacy</p>
         <h1>Data handling</h1>
         <p class="panel-copy">
-            By default, Habitica credentials stay in this browser and are sent only to Habitica. Optional ChatGPT linking requires separate consent to encrypted credential storage on the Companion integration server. Exports, private device sync, and shared party sync do not include your API token.
+            By default, Habitica credentials stay in this browser and are sent only to Habitica. Optional ChatGPT linking or cloud workspace access requires separate consent to encrypted credential storage on the Companion integration server. Exports, private device sync, and shared party sync do not include your API token.
         </p>
 
         <div class="settings-grid">
+            <MudPaper Class="card-surface action-card" Elevation="0">
+                <h2>Optional cloud workspace</h2>
+                <p>Cloud task storage requires its own explicit consent, independently of ChatGPT. The workspace server can read task names, notes, categories, projects, goals, completion history and commands. Enabling it also requires encrypted credential storage on the integration server. Private device sync retains its separate encrypted boundary.</p>
+                <p>Workspace task and command history remains until explicit workspace deletion. Disconnect revokes workspace sessions and pauses background execution while retaining that history. Delete cloud workspace removes cloud tasks and command history; it does not delete local browser copies, integration credentials, or Habitica records. Delete integration profile separately removes stored credentials. Background execution requires separate opt-in. Local workspace backups are readable and contain no credentials.</p>
+            </MudPaper>
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Optional ChatGPT linking</h2>
                 <p>When linking is available, Settings asks for explicit consent before sending credentials to the Companion integration server. ChatGPT receives a separate OAuth grant; it never receives the Habitica API token. Disconnect removes stored credentials and denies integration access. Delete integration profile removes the profile record. Browser snapshots, Habitica data and ChatGPT conversations are separate.</p>

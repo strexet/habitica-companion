@@ -9,13 +9,15 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
 {
     private readonly HttpClient _http;
     private readonly Uri? _baseUri;
+    private readonly bool _linkingEnabled;
     private string? _profileId;
     private string? _managementToken;
     private int _sessionVersion;
 
-    public ChatGptIntegrationClient(HttpClient http, string? authBaseUrl)
+    public ChatGptIntegrationClient(HttpClient http, string? authBaseUrl, bool linkingEnabled = true)
     {
         _http = http;
+        _linkingEnabled = linkingEnabled;
         if (Uri.TryCreate(authBaseUrl, UriKind.Absolute, out var uri)
             && (uri.Scheme == Uri.UriSchemeHttps || (uri.Scheme == Uri.UriSchemeHttp && uri.IsLoopback))
             && string.IsNullOrEmpty(uri.UserInfo) && string.IsNullOrEmpty(uri.Query) && string.IsNullOrEmpty(uri.Fragment)
@@ -25,10 +27,18 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
         }
     }
 
-    public bool IsAvailable => _baseUri is not null;
+    public bool IsAvailable => _baseUri is not null && _linkingEnabled;
+    internal bool IsVaultAvailable => _baseUri is not null;
     public bool HasConnection => _profileId is not null && _managementToken is not null;
 
     public async Task<IntegrationLinkResult> EnrollAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
+    {
+        if (!IsAvailable) return Unavailable();
+        var result = await EnrollProfileAsync(credentials, cancellationToken);
+        return result.Succeeded ? await CreateLinkAsync(cancellationToken) : result;
+    }
+
+    internal async Task<IntegrationLinkResult> EnrollProfileAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
     {
         if (_baseUri is null) return Unavailable();
         var sessionVersion = _sessionVersion;
@@ -47,7 +57,7 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
             if (_sessionVersion != sessionVersion) return new(false, "Enrollment may have completed. Revalidate the account to manage the connection.");
             _profileId = enrollment.ProfileId;
             _managementToken = enrollment.ManagementToken;
-            return await CreateLinkAsync(cancellationToken);
+            return new(true, "Credentials verified for this tab.");
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
         catch { return new(false, "Enrollment result is unavailable. Revalidate the account before trying again."); }
@@ -55,7 +65,7 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
 
     public async Task<IntegrationLinkResult> CreateLinkAsync(CancellationToken cancellationToken)
     {
-        if (_baseUri is null || !HasConnection) return Unavailable();
+        if (!IsAvailable || !HasConnection) return Unavailable();
         var sessionVersion = _sessionVersion;
         try
         {
@@ -96,6 +106,15 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
         _sessionVersion++;
         _profileId = null;
         _managementToken = null;
+    }
+
+    internal HttpRequestMessage WorkspaceHandshake(Uri uri)
+    {
+        if (!HasConnection) throw new InvalidOperationException("Credential verification is required.");
+        var request = new HttpRequestMessage(HttpMethod.Post, uri);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _managementToken);
+        request.Content = JsonContent.Create(new { consentVersion = "workspace-v1" });
+        return request;
     }
 
     private HttpRequestMessage ManagementRequest(HttpMethod method, string suffix)

@@ -584,3 +584,9 @@ References:
 ## Optional ChatGPT Linking
 
 Settings displays a separate optional connection card with server credential-storage disclosure, code expiry, audit metadata limits and a Privacy link. Disabled configuration displays an unavailable message. Available configuration requires sign-in and a consent checkbox before enrollment. Active connection controls generate a linking code or open explicit disconnect/delete confirmation. Busy state disables duplicate requests; status messages distinguish unavailable codes and pending cleanup. Logout removes tab management state. The Auth page identifies Companion, displays the redirect destination and account label, and asks for selected scope consent. Existing sign-in remains browser-only. The [integration contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns consent and lifecycle requirements.
+
+## Workspace privacy and portable data controls
+
+Settings separates cloud workspace consent from ChatGPT linking and encrypted private sync. The disclosure names server-readable task notes and history, encrypted server credential storage, retained data after disconnect and independently enabled background execution. An unavailable deployment shows an explicit unavailable state with no connection action. Cloud export, disconnect and deletion require an authenticated tab session; deletion has a confirmation step.
+
+Local canonical workspace backups have separate listing, export and confirmed restore controls. Restore preserves existing data on conflicts and does not upload to the cloud. Global browser clearing includes local canonical records. Workspace and legacy backup copy identifies the distinct formats and readable content. Privacy repeats the separate workspace, credential, browser and Habitica deletion boundaries.

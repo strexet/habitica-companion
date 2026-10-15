@@ -1,0 +1,98 @@
+{
+  "document": {
+    "schemaVersion": 1,
+    "id": "864ba20e-3c9d-4586-bfd9-c783c04c3b39",
+    "revision": 2,
+    "categories": [],
+    "projects": [],
+    "sections": [],
+    "labels": [],
+    "goals": [],
+    "tasks": [
+      {
+        "id": "c23c1cc4-113f-47bb-b8a4-f3475fc501ba",
+        "revision": 2,
+        "isArchived": false,
+        "text": "A synthetic task",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-15T04:16:47.340Z",
+        "updatedAtUtc": "2026-10-15T04:16:47.340Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null
+      }
+    ],
+    "occurrences": [],
+    "completions": [],
+    "habitScores": [],
+    "projections": [
+      {
+        "id": "8f5c9352-b105-4b73-ab21-11c90ebd3a4a",
+        "revision": 2,
+        "isArchived": false,
+        "taskId": "c23c1cc4-113f-47bb-b8a4-f3475fc501ba",
+        "state": "pending",
+        "habiticaTaskId": null
+      }
+    ]
+  },
+  "storeVersion": 2,
+  "commands": [
+    {
+      "command": {
+        "id": "a5d49afd-c4b0-4540-ad75-b01e372fe7a6",
+        "workspaceId": "864ba20e-3c9d-4586-bfd9-c783c04c3b39",
+        "expectedRevision": 1,
+        "operation": "createTodo",
+        "taskId": "c23c1cc4-113f-47bb-b8a4-f3475fc501ba",
+        "patch": {
+          "text": "A synthetic task",
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": true
+      },
+      "payloadHash": "919a43d79f81388cc0b430462befb423ececd9f76185f7f57b04ebfbf131866a",
+      "acceptedAtUtc": "2026-10-15T04:16:47.340Z",
+      "projectionState": "pending",
+      "effects": [
+        "create"
+      ],
+      "confirmedEffects": 0,
+      "failure": "none",
+      "retryAtUtc": null,
+      "lease": null,
+      "dispatchedAtUtc": null,
+      "attempts": 0
+    }
+  ],
+  "events": [
+    {
+      "id": "d463f24d-906e-4054-8870-c8c85b637ec6",
+      "commandId": "a5d49afd-c4b0-4540-ad75-b01e372fe7a6",
+      "kind": "accepted",
+      "atUtc": "2026-10-15T04:16:47.340Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": null,
+      "evidenceReference": null
+    }
+  ]
+}

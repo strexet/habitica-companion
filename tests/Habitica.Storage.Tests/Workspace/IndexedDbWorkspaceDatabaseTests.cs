@@ -19,6 +19,8 @@ public sealed class IndexedDbWorkspaceDatabaseTests
         Assert.Equal(WorkspaceJournalJson.Serialize(snapshot), WorkspaceJournalJson.Serialize(loaded!));
         Assert.Null(await b.LoadAsync(snapshot.Document.Id, default));
         Assert.Equal(1, js.ImportCount);
+        Assert.Equal(new[] { snapshot.Document.Id }, await database.ListAsync("fixture_a", default));
+        Assert.Empty(await database.ListAsync("fixture_b", default));
         await Assert.ThrowsAsync<ArgumentException>(() => a.TryCommitAsync(1, snapshot with { StoreVersion = 3 }, default));
         await Assert.ThrowsAsync<JsonException>(() => a.TryCommitAsync(1, snapshot with { StoreVersion = 2, Document = snapshot.Document with { SchemaVersion = 99 } }, default));
     }
@@ -78,6 +80,7 @@ public sealed class IndexedDbWorkspaceDatabaseTests
         {
             token.ThrowIfCancellationRequested(); object? result = null;
             if (identifier == "getWorkspace") result = ReadOverride ?? _rows.GetValueOrDefault(((string)args![0]!, (string)args[1]!));
+            else if (identifier == "listWorkspaces") result = _rows.Keys.Where(key => key.Scope == (string)args![0]!).Select(key => key.Id).ToArray();
             else if (identifier == "clearWorkspaces") _rows.Clear();
             else if (identifier == "commitWorkspace")
             {
