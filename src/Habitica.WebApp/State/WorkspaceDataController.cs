@@ -5,6 +5,14 @@ namespace Habitica.WebApp.State;
 
 public sealed class WorkspaceDataController(IAppSessionController session, IWorkspaceCloudClient cloud, IndexedDbWorkspaceDatabase database)
 {
+    public bool PartyPlanningAvailable => cloud.PartyPlanningAvailable;
+    public async Task<PartyPlanningResult> ManagePartyAsync(PartyPlanningRequest request, CancellationToken cancellationToken = default)
+    {
+        if (!session.State.IsAuthenticated) return new(false, "Sign in before managing authenticated party planning.");
+        var user = session.State.UserId;
+        var result = await cloud.ManagePartyAsync(request, cancellationToken);
+        return session.State.IsAuthenticated && session.State.UserId == user ? result : new(false, "The account changed; the result was discarded.");
+    }
     public bool IsAvailable => cloud.IsAvailable;
     public Guid? CloudWorkspaceId => cloud.WorkspaceId;
     public bool ExecutorEnabled => cloud.ExecutorEnabled;

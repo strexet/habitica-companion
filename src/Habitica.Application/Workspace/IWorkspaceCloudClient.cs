@@ -7,6 +7,8 @@ public sealed record WorkspaceActionResult(bool Succeeded, string Message, strin
 public interface IWorkspaceCloudClient
 {
     bool IsAvailable { get; }
+    bool PartyPlanningAvailable => false;
+    Task<PartyPlanningResult> ManagePartyAsync(PartyPlanningRequest request, CancellationToken cancellationToken) => Task.FromResult(new PartyPlanningResult(false, "Authenticated party planning is unavailable."));
     Guid? WorkspaceId { get; }
     bool ExecutorEnabled { get; }
     bool ExecutorAvailable { get; }

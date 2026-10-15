@@ -600,3 +600,9 @@ Every save opens a field-level review before confirmation. Native urgency and ga
 Existing Habitica links require a separate comparison of canonical and external records, explicit identity entry and fresh approval. Linking retains native task fields. Forms use shared input/button primitives, flexible action rows and wrapping task/history text. The fieldset, task list and preview permit narrow layouts without fixed-width user content.
 
 The authenticated workspace restore control uses the shared file-input styling and a shrinking field wrapper. Native file controls must not impose a page-wide grid minimum. The real-Razor synthetic Settings fixture fits the 360-pixel phone viewport after the field repair; the fixture distinguishes layout measurement from component interaction checks.
+
+## Authenticated planning settings
+
+Settings separates authenticated shared planning from the legacy queue and from cloud task storage. The disclosure names readable quest selections, contributor labels, votes and receipts, plus retention until removal. Consent is enabled only after loading a verified party and selecting the explicit acknowledgement; the request binds the displayed party ID. Leader permission controls and whole-namespace deletion appear only for a verified leader view. Server checks remain authoritative.
+
+Own contribution export/removal remains available after party departure through management authentication. Destructive actions show concrete effects before confirmation, including deletion of votes on removed owned quests. Failed or changed-state actions clear cached management state and require a reload. Account changes clear displayed party facts and discard late responses. The synthetic real-Razor settings fixture qualifies narrow wrapping separately from component interaction tests.

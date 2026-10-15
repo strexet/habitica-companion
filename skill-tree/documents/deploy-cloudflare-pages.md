@@ -192,3 +192,9 @@ Workspace scheduled cleanup removes expired unaccepted preparation payloads in b
 The Workspace environments declare `AUTH_PARTY` targeting the matching Auth Worker `PartyService` entrypoint. Auth and Workspace `PARTY_ENABLED` flags ship false. `party:read` is a separate OAuth consent scope; existing profile/account/task grants do not gain party access. The MCP Worker has no direct party proof or credential binding. Public Auth URLs cannot invoke the named entrypoint.
 
 Build Auth, MCP and Workspace with the pinned package scripts before local synthetic party fixtures. The context tool requires an active cloud workspace but creates no shared planning namespace. Queue/voting consent and persistence remain separate required work. No real service activation is part of local build or test commands.
+
+## Authenticated planning schema and controls
+
+Apply Workspace migration `0004-authenticated-party-planning.sql` after migrations 0001–0003 before enabling party planning in an authorized environment. The migration creates only authenticated Workspace planning tables and does not touch party-sync D1 or credential-vault migrations. Auth and Workspace `PARTY_ENABLED` flags plus PWA `CompanionWorkspace:PartyPlanningEnabled` remain false in shipped configuration.
+
+PWA activation requires cloud workspace access and separate consent bound to the displayed verified party. OAuth readers require `party:read`; queue/vote tools require the independently consented `party.planning.write` scope. Leader settings/deletion and management-authenticated own contribution export/removal use bounded Workspace routes. Management tokens remain tab-local. Shared planning records are not part of the task-only workspace export and are not removed by cloud workspace deletion; use the separate contribution/namespace controls. No task or migration command grants deployment authorization.

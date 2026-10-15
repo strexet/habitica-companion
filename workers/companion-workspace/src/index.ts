@@ -1,5 +1,6 @@
-import {partyApi,PartyApiFailure} from './party-api';
-import {partyToolScopes,type PartyTool} from '../../shared/party-tools';
+import {consentParty,partySettings,ownContributions,planningState} from './party-planning';
+import {partyApi,PartyApiFailure,fetchPartyProof} from './party-api';
+import {partyToolScopes,publicPartyContext,type PartyTool} from '../../shared/party-tools';
 import { purgeExpiredPreparations } from "./preparation-retention";
 import { WorkerEntrypoint } from "cloudflare:workers";
 import { taskApi } from "./task-api";
@@ -109,7 +110,36 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  if (!Boolean(env.WORKSPACE_ENABLED)) throw new WorkspaceError("workspace_unavailable", 503);
  const path = new URL(request.url).pathname;
  if (path === "/connect" && request.method === "POST") return connect(request, env);
+ if(path==='/party/contributions'&&(request.method==='GET'||request.method==='POST')){
+  if(!env.PARTY_ENABLED)throw new WorkspaceError('party_unavailable',503);
+  const who=await identity(env,'management',`Bearer ${bearer(request)}`);
+  if(request.method==='POST'){
+   const input=workspaceObject(await workspaceJson(request),['confirm']);
+   if(input.confirm!=='remove-my-party-contributions')throw new WorkspaceError('confirmation_required',409);
+  }
+  await identity(env,'epoch',undefined,who);
+  return json(await ownContributions(env,who.profileId,request.method==='POST'));
+ }
  const row = await session(request, env);
+ if(path.startsWith('/party/')||path==='/party-api'){
+  if(!env.PARTY_ENABLED)throw new WorkspaceError('party_unavailable',503);
+  if(path==='/party-api'&&request.method==='POST'){
+   const input=workspaceObject(await workspaceJson(request),['tool','arguments']);return json(await partyApi(env,row,input.tool as PartyTool,input.arguments));
+  }
+  const proof=await fetchPartyProof(env,{profileId:row.profile_id,connectionId:row.connection_id,accessEpoch:row.access_epoch},path==='/party/state'?'get_quest_planning_state':'get_party_context');
+  if(path==='/party/context'&&request.method==='GET')return json(publicPartyContext(proof));
+  if(path==='/party/state'&&request.method==='GET')return json(await planningState(env,row,proof));
+  if(path==='/party/consent'&&request.method==='POST'){
+   const input=workspaceObject(await workspaceJson(request),['consentVersion','expectedPartyId']);if(uuid(input.expectedPartyId)!==proof.party.id)throw new WorkspaceError('party_changed',409);return json(await consentParty(env,row,proof,input.consentVersion));
+  }
+  if(path==='/party/settings'&&request.method==='POST'){
+   const input=workspaceObject(await workspaceJson(request),['expectedNamespaceId','expectedRevision','membersCanQueue']);return json(await partySettings(env,row,proof,input));
+  }
+  if(path==='/party/planning'&&request.method==='DELETE'){
+   const input=workspaceObject(await workspaceJson(request),['expectedNamespaceId','expectedRevision','confirmNamespaceId']);if(input.confirmNamespaceId===undefined)throw new WorkspaceError('confirmation_required',409);return json(await partySettings(env,row,proof,input));
+  }
+  throw new WorkspaceError('not_found',404);
+ }
  if (path === "/workspace" && request.method === "GET") return json({ document: JSON.parse(row.document_json), storeVersion: row.store_version, executorEnabled: Boolean(row.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED) });
  if (path === "/export" && request.method === "GET") return snapshot(env, row);
  if (path === "/task-api" && request.method === "POST") {
@@ -173,7 +203,7 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
    if(!Array.isArray(who.scopes)||!who.scopes.includes("profile:read")||!who.scopes.includes(requiredScope))throw new WorkspaceError("insufficient_scope",403);
    const row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
    if(!row)throw new WorkspaceError("workspace_consent_required",403);
-   if(Object.hasOwn(partyToolScopes,body.tool))return json(await partyApi(this.env,{profileId:who.profileId,connectionId:who.connectionId,accessEpoch:row.access_epoch},body.tool as PartyTool,body.arguments,request.headers.get("authorization")??undefined));
+   if(Object.hasOwn(partyToolScopes,body.tool))return json(await partyApi(this.env,row,body.tool as PartyTool,body.arguments,request.headers.get("authorization")??undefined));
    return json(await taskApi(this.env,row,body.tool as TaskTool,body.arguments,cmd=>command(new Request("https://workspace.internal/commands",{method:"POST",body:JSON.stringify(cmd)}),this.env,row,true)));
   }catch(error){return json({error:error instanceof WorkspaceError?error.code:"command_outcome_unknown",...(error instanceof PartyApiFailure?{rate:error.rate}:{}),savedInCompanion:error instanceof WorkspaceError?false:null,outcomeUnknown:!(error instanceof WorkspaceError)},error instanceof WorkspaceError?error.status:503);}
  }

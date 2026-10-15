@@ -6,21 +6,23 @@ using Habitica.Domain.Workspace;
 
 namespace Habitica.WebApp.Integration;
 
-public sealed class WorkspaceCloudClient : IWorkspaceCloudClient
+public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
 {
     private readonly HttpClient _http;
     private readonly ChatGptIntegrationClient _vault;
     private readonly Uri? _baseUri;
     private string? _token;
     private int _generation;
+    private readonly bool _partyEnabled;
+    public bool PartyPlanningAvailable => _partyEnabled && IsAvailable;
     public Guid? WorkspaceId { get; private set; }
     public bool ExecutorEnabled { get; private set; }
     public bool ExecutorAvailable { get; private set; }
     public bool IsAvailable => _baseUri is not null && _vault.IsVaultAvailable;
 
-    public WorkspaceCloudClient(HttpClient http, ChatGptIntegrationClient vault, string? baseUrl)
+    public WorkspaceCloudClient(HttpClient http, ChatGptIntegrationClient vault, string? baseUrl, bool partyEnabled = false)
     {
-        _http = http; _vault = vault;
+        _http = http; _vault = vault; _partyEnabled = partyEnabled;
         if (Uri.TryCreate(baseUrl, UriKind.Absolute, out var uri)
             && (uri.Scheme == "https" || uri.Scheme == "http" && uri.IsLoopback)
             && uri.AbsolutePath == "/" && string.IsNullOrEmpty(uri.UserInfo) && string.IsNullOrEmpty(uri.Query) && string.IsNullOrEmpty(uri.Fragment)) _baseUri = uri;

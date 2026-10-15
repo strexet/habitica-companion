@@ -55,6 +55,10 @@ internal sealed class WorkspaceTaskFixture
     {
         public WorkspaceJournalSnapshot State { get; set; } = new(new WorkspaceDocument { Id = Guid.NewGuid() }, 1, [], []);
         public bool Connected { get; set; }
+        public bool PartyPlanningAvailable { get; set; }
+        public List<PartyPlanningRequest> PartyRequests { get; } = [];
+        public Func<PartyPlanningRequest, Task<PartyPlanningResult>> PartyAction { get; set; } = _ => Task.FromResult(new PartyPlanningResult(false, "Unavailable"));
+        public Task<PartyPlanningResult> ManagePartyAsync(PartyPlanningRequest request, CancellationToken token) { PartyRequests.Add(request); return PartyAction(request); }
         public bool LoseAcceptance { get; set; }
         public bool FailLoads { get; set; }
         public TaskCompletionSource? LoadGate { get; set; }

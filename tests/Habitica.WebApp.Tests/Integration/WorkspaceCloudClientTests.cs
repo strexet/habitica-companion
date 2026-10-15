@@ -7,7 +7,7 @@ using Habitica.WebApp.Integration;
 
 namespace Habitica.WebApp.Tests.Integration;
 
-public sealed class WorkspaceCloudClientTests
+public sealed partial class WorkspaceCloudClientTests
 {
     private const string Management = "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm";
     private const string Session = "sssssssssssssssssssssssssssssssssssssssssss";

@@ -1,0 +1,95 @@
+@using Habitica.Application.Workspace
+@inject WorkspaceDataController Workspace
+@inject IAppSessionController Session
+@inject IJSRuntime Js
+@implements IDisposable
+
+<section class="card-surface settings-card" data-testid="authenticated-party-settings">
+    <p class="section-label">Optional shared planning</p>
+    <h2>Authenticated party planning</h2>
+    <p>This queue is separate from legacy party planning. The server stores readable quest selections, contributor labels, votes and planning receipts. Only separately consented current party members can read shared planning. Records remain until explicit removal. Planning does not start quests, purchase scrolls or cast spells.</p>
+    <p>You can export or remove your own contributions after leaving a party. Removing your queued quests also removes votes on those quests. The verified current leader can delete the whole authenticated queue. Browser-claimed roles grant no access. Cloud workspace deletion and credential deletion do not remove these separate shared records; use the contribution controls before credential deletion or revalidate later.</p>
+    @if (!Workspace.PartyPlanningAvailable) { <p>Authenticated party planning is not enabled on this app.</p> }
+    else if (!Session.State.IsAuthenticated) { <p>Sign in before managing authenticated party planning.</p> }
+    else
+    {
+        @if (Workspace.CloudWorkspaceId is null) { <p>Connect the cloud workspace above before enabling shared planning.</p> }
+        else
+        {
+            <div class="action-row">
+                <MudButton Disabled="@_busy" OnClick="@(() => RunAsync(new(PartyPlanningAction.Context)))" Variant="Variant.Outlined" data-testid="party-context">Check current party</MudButton>
+                <MudButton Disabled="@_busy" OnClick="@(() => RunAsync(new(PartyPlanningAction.State)))" Variant="Variant.Outlined" data-testid="party-state">Load authenticated queue status</MudButton>
+            </div>
+            @if (_view is not null)
+            {
+                <p data-testid="party-identity">Verified party: @_view.Party.Name. Role: @_view.MemberRole.</p>
+                @if (_view.NamespaceId is null)
+                {
+                    <label class="checkbox-row"><input type="checkbox" @bind="_consent" data-testid="party-consent" /><span>I consent to the shared readable planning data and retention described above for this verified party.</span></label>
+                    <MudButton Disabled="@(_busy || !_consent)" OnClick="ConsentAsync" Variant="Variant.Filled" data-testid="party-enable">Enable authenticated planning</MudButton>
+                }
+                else
+                {
+                    <p>Authenticated queue entries: @(_view.Queue?.Count ?? 0). Legacy planning remains separate.</p>
+                    @if (_view.MemberRole == "leader")
+                    {
+                        <label class="checkbox-row"><input type="checkbox" @bind="_membersCanQueue" data-testid="party-members-can-queue" /><span>Allow verified members to queue their own scrolls</span></label>
+                        <MudButton Disabled="@_busy" OnClick="SaveSettingsAsync" Variant="Variant.Outlined" data-testid="party-save-settings">Save queue permission</MudButton>
+                        <MudButton Disabled="@_busy" OnClick="@(() => _confirmation = PartyPlanningAction.DeleteNamespace)" Variant="Variant.Outlined" data-testid="party-delete">Delete authenticated party planning</MudButton>
+                    }
+                }
+            }
+        }
+        <div class="action-row">
+            <MudButton Disabled="@_busy" OnClick="@(() => RunAsync(new(PartyPlanningAction.ExportOwn)))" Variant="Variant.Outlined" data-testid="party-export-own">Export my contributions</MudButton>
+            <MudButton Disabled="@_busy" OnClick="@(() => _confirmation = PartyPlanningAction.RemoveOwn)" Variant="Variant.Outlined" data-testid="party-remove-own">Remove my contributions</MudButton>
+        </div>
+        @if (_confirmation is not null)
+        {
+            <p>@(_confirmation == PartyPlanningAction.DeleteNamespace ? "Permanently delete the authenticated queue, votes, receipts and consent for every member? Export needed contributions first." : "Permanently remove your authenticated queued quests, votes, receipts and planning consent? Votes on your removed quests will also be deleted.")</p>
+            <MudButton Disabled="@_busy" OnClick="ConfirmAsync" Color="Color.Error" Variant="Variant.Filled" data-testid="party-confirm">Confirm party action</MudButton>
+            <MudButton OnClick="@(() => _confirmation = null)" Variant="Variant.Outlined">Cancel</MudButton>
+        }
+    }
+    @if (_message is not null) { <p role="status">@_message</p> }
+</section>
+
+@code {
+    private PartyPlanningView? _view;
+    private PartyPlanningAction? _confirmation;
+    private bool _consent, _busy, _membersCanQueue;
+    private string? _message, _account;
+    protected override void OnInitialized() { _account = Session.State.UserId; Session.Changed += SessionChanged; }
+    private void SessionChanged()
+    {
+        if (!Session.State.IsAuthenticated || _account != Session.State.UserId) { _account = Session.State.UserId; _view = null; _message = null; _confirmation = null; _consent = false; }
+        _ = InvokeAsync(StateHasChanged);
+    }
+    private async Task ConsentAsync() { if (!_consent) return; await RunAsync(new(PartyPlanningAction.Consent, ExpectedPartyId: _view?.Party.Id)); _consent = false; }
+    private Task SaveSettingsAsync() => RunAsync(new(PartyPlanningAction.Settings, _view?.NamespaceId, _view?.Revision, _membersCanQueue));
+    private async Task ConfirmAsync()
+    {
+        if (_confirmation is not { } action) return;
+        var request = new PartyPlanningRequest(action, _view?.NamespaceId, _view?.Revision); _confirmation = null;
+        await RunAsync(request);
+    }
+    private async Task RunAsync(PartyPlanningRequest request)
+    {
+        if (_busy) return; _busy = true; var exportAccount = Session.State.UserId;
+        try
+        {
+            var result = await Workspace.ManagePartyAsync(request); _message = result.Message;
+            if (result.View is not null) { _view = result.View; _membersCanQueue = result.View.MembersCanQueue ?? true; }
+            else if (request.Action != PartyPlanningAction.ExportOwn) _view = null;
+            if (result.Succeeded && result.ExportJson is not null)
+            {
+                await using var module = await Js.InvokeAsync<IJSObjectReference>("import", "./js/diagnosticsExport.js");
+                if (!Session.State.IsAuthenticated || Session.State.UserId != exportAccount) return;
+                await module.InvokeVoidAsync("downloadTextFile", $"party-contributions-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}.json", result.ExportJson, "application/json;charset=utf-8");
+            }
+        }
+        catch { _view = null; _message = "Party planning could not be confirmed. Reload current state before another action."; }
+        finally { _busy = false; }
+    }
+    public void Dispose() => Session.Changed -= SessionChanged;
+}
