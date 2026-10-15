@@ -350,48 +350,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Implement opt-in authoritative cloud workspace API
-
-```yaml
-id: T-be68f853-9737-4657-a8a4-7aff8dfc497b
-priority: 204
-status: Ready
-parent_pending_ids: ["P-4f954f5a-1084-5c87-8e26-1bfc5fd95035"]
-processing_run_id: PR-be6457c2-7735-441f-a88c-ad66e73c0004
-root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-relation: blocker
-depends_on: ["T-924119e2-17fd-4a06-b332-60839c849ade", "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17", "T-4971181f-827f-4945-af27-4f4bc8ded5c8", "T-77d41018-e04b-4a88-b92c-079b3d8ef421", "T-80bb3b80-8a9c-4252-9924-5a100f746f93"]
-```
-
-Goal:
-- Provide separately consented cloud authority and a shared command API through an isolated Worker and D1.
-Current behavior:
-- Canonical workspace implementation is absent; inspected source remains Habitica snapshot based.
-Desired behavior:
-- Implement the approved companion-workspace-contract.md within the selected dependency scope.
-Touch:
-- workers/companion-workspace, Auth/PWA workspace authorization and consent surfaces, isolated D1 and tests.
-Discovery allowance:
-- Reuse existing .NET, Dexie and Worker infrastructure; add narrowly scoped contracts and fixtures.
-Out of scope:
-- Live enrollment, remote provisioning, deployment and real Habitica mutations.
-Implementation constraints:
-- Preserve legacy snapshots and encrypted private sync; use synthetic fixtures for service qualification.
-- Preserve independent Companion identity and explicit projection outcomes.
-Questions and required clarifications:
-- [Resolved - owner decision] Adopt the approved workspace defaults for local implementation and tests.
-Validation:
-- Build all touched components; run synthetic two-profile isolation, atomicity/conflict, consent and lifecycle fixtures; inspect local PWA behavior.
-Acceptance:
-- Separate explicit workspace consent gates server-readable data; account authorization cannot select another workspace.
-- Shared commands atomically save canonical changes, events and journal records with revision and command-ID deduplication.
-- Workspace lifecycle and portable data controls preserve existing encrypted sync boundaries.
-Documentation updates:
-- technical.md, features.md and applicable storage/deployment/UI documentation.
-Risks:
-- Domain parity, ambiguous upstream outcomes and ownership races require explicit fixture coverage.
-
 ### Implement verified Habitica projection reconciliation
 
 ```yaml
