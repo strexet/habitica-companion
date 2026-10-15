@@ -350,6 +350,52 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
+### Persist consented authenticated party planning commands
+
+```yaml
+id: T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d
+priority: 101
+status: Ready
+parent_pending_ids: ["P-112ddb0c-2e2b-4fc3-84f7-ad3e2cb8b64f"]
+processing_run_id: PR-c9b4cdd6-f97a-47fd-a91d-7cb7f9f83a60
+root_task_id: T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec
+related_task_id: T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec
+relation: subtask
+depends_on: ["T-991d6cf2-7c54-4006-ab58-eda921ae66d6", "T-eee74da1-053f-494e-8589-0e1b660e2367"]
+```
+
+Goal:
+- Implement separately consented authenticated party planning without trusting legacy browser claims.
+Current behavior:
+- Verified read-only party context exists. Legacy queue and vote rows remain mutable through local claims; no authenticated planning store exists.
+Desired behavior:
+- Workspace owns separate bounded party state and a typed durable party command ledger. MCP planning tools and PWA consent/management controls call the same authority.
+Touch:
+- Workspace migration 0004 and party command service, shared typed contracts, Auth owned-scroll proof, OAuth/MCP schemas, PWA settings/client/controller and focused fixtures.
+Discovery allowance:
+- Add typed settings requests and management-authenticated contribution routes. Share existing CAS/deduplication patterns; preserve the task-only journal serialization contract.
+Out of scope:
+- Legacy queue migration, automatic quest start/accept/purchase, spells, background party writes and real activation.
+Implementation constraints:
+- Fresh enrolled actor/party proof, independent party:read and party.planning.write grants, separate party-planning-v1 consent, current connection/access epoch and namespace epoch/revision checks.
+- Members queue only an owned scroll. Votes set an explicit boolean for the actor only. Leader alone changes queue permissions or deletes the namespace. No actor/party/role selectors from MCP arguments.
+- Preserve original durable command receipts on retries. Bound state and receipts; atomically update state and typed command record. Export/remove own contributions with management authentication even after departure; delete removes shared state and revokes consent/preparations.
+- PWA disclosure states shared readable data, retention and separate legacy planning. Default configuration remains disabled.
+Questions and required clarifications:
+- [Resolved - owner decision] Approved authenticated party contract defines permission, privacy and retention defaults.
+Validation:
+- Two/three-profile fixtures cover member/leader/outside-party permissions, ownership, spoofed claims, duplicate/concurrent/revision/epoch behavior, departure/revocation, consent, export/removal and namespace deletion.
+- Component/client tests verify explicit consent, confirmation, redaction and stale account responses. Build the app and inspect default and synthetic narrow layout behavior.
+Acceptance:
+- Only freshly verified consented members read or mutate the separate authenticated namespace with server-derived actor and party.
+- Owned-scroll queue commands and explicit votes are durable, deduplicated and reject stale revision or namespace epochs without upstream game effects.
+- Leader-only controls and management-authenticated contributor export/removal preserve the approved departure and deletion policy.
+- PWA consent and management controls accurately disclose shared data and require explicit approval of destructive actions.
+Documentation updates:
+- features.md, technical.md, habitica-api.md, ux-ui-manifest.md, testing.md and deploy-cloudflare-pages.md.
+Risks:
+- Legacy state contamination, stale membership, vote-toggle replay, lost command acknowledgement and shared-record privacy gaps.
+
 ### Add Party And Spell Capabilities Incrementally
 
 ```yaml
@@ -361,7 +407,7 @@ processing_run_id: null
 root_task_id: T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec
 related_task_id: null
 relation: main
-depends_on: ["T-4a1de222-156a-52cf-8966-262a2c8216ed", "T-991d6cf2-7c54-4006-ab58-eda921ae66d6"]
+depends_on: ["T-4a1de222-156a-52cf-8966-262a2c8216ed", "T-991d6cf2-7c54-4006-ab58-eda921ae66d6", "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d"]
 ```
 
 Migration source:

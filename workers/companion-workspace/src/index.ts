@@ -173,7 +173,7 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
    if(!Array.isArray(who.scopes)||!who.scopes.includes("profile:read")||!who.scopes.includes(requiredScope))throw new WorkspaceError("insufficient_scope",403);
    const row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
    if(!row)throw new WorkspaceError("workspace_consent_required",403);
-   if(Object.hasOwn(partyToolScopes,body.tool))return json(await partyApi(this.env,who,body.tool as PartyTool,body.arguments,request.headers.get("authorization")??undefined));
+   if(Object.hasOwn(partyToolScopes,body.tool))return json(await partyApi(this.env,{profileId:who.profileId,connectionId:who.connectionId,accessEpoch:row.access_epoch},body.tool as PartyTool,body.arguments,request.headers.get("authorization")??undefined));
    return json(await taskApi(this.env,row,body.tool as TaskTool,body.arguments,cmd=>command(new Request("https://workspace.internal/commands",{method:"POST",body:JSON.stringify(cmd)}),this.env,row,true)));
   }catch(error){return json({error:error instanceof WorkspaceError?error.code:"command_outcome_unknown",...(error instanceof PartyApiFailure?{rate:error.rate}:{}),savedInCompanion:error instanceof WorkspaceError?false:null,outcomeUnknown:!(error instanceof WorkspaceError)},error instanceof WorkspaceError?error.status:503);}
  }

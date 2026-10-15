@@ -1,0 +1,38 @@
+{
+  "task_id": "T-eee74da1-053f-494e-8589-0e1b660e2367",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "Isolated staged-source builds of all three Workers",
+      "result": "pass"
+    },
+    {
+      "check": "Isolated staged-source Workspace suite",
+      "result": "pass",
+      "passed": 43
+    },
+    {
+      "check": "Full working-tree Workspace suite including parent planning fixtures",
+      "result": "pass",
+      "passed": 48
+    },
+    {
+      "check": "App build",
+      "result": "pass"
+    },
+    {
+      "check": "Disconnect, deletion and access-epoch replacement in flight",
+      "result": "pass",
+      "cases": 3
+    }
+  ],
+  "coverage": [
+    "Each invalidation control first verifies a successful normal context read",
+    "Late facts are discarded when the exact Workspace connection/access epoch is inactive, absent or replaced",
+    "The isolated staged-source checkout excludes unfinished parent planning implementation"
+  ],
+  "limitations": [
+    "Local synthetic service bindings and actual MCP SDK only; no real party requests or deployment.",
+    "PWA planning controls remain unfinished parent work and are not part of this repair commit."
+  ]
+}
