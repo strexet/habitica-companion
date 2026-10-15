@@ -2718,3 +2718,11 @@ Synthetic tests exercise native HTTP and actual MCP SDK calls, strict field and 
 Connected Workspace Settings offers an explicit renewal action with the existing readable-data and credential-storage disclosure. Renewal requires a fresh acknowledgement and uses the current signed-in PWA credentials through the established connection flow. Successful connection generation changes invalidate older in-flight responses. Late renewal after tab sign-out cannot restore forgotten access.
 
 An unavailable workspace reload keeps a pending original command preview visible for the same account and source. The retained view is marked stale and blocks unrelated edits. The original command ID remains available for receipt lookup or exact retry after renewed access. Account changes still clear the retained view. A successful original receipt resolves acceptance uncertainty without accepting another command.
+
+## Packaged Habitica workflows
+
+Status: locally qualified source package; host installation and live enrollment remain unverified. Owner: `plugin/`. Entry points: daily review, account review and task-management skills through the packaged MCP connection. The portable manifest declares an inactive remote endpoint and no credentials, hooks or registered connector identity.
+
+Daily/account review reads legacy Habitica status and bounded task lists. Task management resolves canonical Companion IDs, prepares a command, presents the preview for approval and accepts the original server-issued ID through Workspace. Saved canonical state and Habitica effects remain distinct. Missing inputs, multiple candidates, denied scope and unknown outcomes stop acceptance or replay as applicable. Offline tools report unavailable data; skills never invent results or use direct Habitica requests. No project/goal/calendar/full-history workflows are advertised.
+
+Security remains server-enforced. Enrollment, cloud storage and background execution each retain separate consent. Skills never request API tokens in chat. Isolated schema and actual SDK fixtures cover two-profile isolation, read workflows, canonical acceptance, insufficient scope, missing fields and absence of upstream writes. Manual host/model activation scenarios and private setup reside in `plugin/README.md`.

@@ -99,3 +99,7 @@ The app reads the public, project-owned `Habitica:XClientHeader` from [`src/Habi
 - Credentials are treated as password-equivalent and stay local to the user's device.
 - Habitica-changing actions are explicit, freshness-gated, and run through the application/API layers.
 - Larger or destructive future actions should keep using validation, preview, confirmation, and follow-up refresh.
+
+## Optional workflow plugin
+
+[`plugin/`](plugin/README.md) packages daily review, account review and reviewed canonical task-management skills with the remote MCP declaration. The committed endpoint is inactive. Private setup requires a separately approved deployment and OAuth enrollment; no Habitica token is copied into ChatGPT. Local package tests use isolated synthetic profiles.

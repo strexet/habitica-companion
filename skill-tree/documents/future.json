@@ -20,7 +20,8 @@
       "T-49eaa44e-5c98-4219-a380-4201e4143494",
       "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e",
       "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89",
-      "T-4a1de222-156a-52cf-8966-262a2c8216ed"
+      "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
     ],
     "completion_refs": {
       "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89": "O-2b79fcef-7244-48d6-bad7-16c7b8937eee",
@@ -28,6 +29,7 @@
       "T-16a38176-f2fe-5f7d-a809-546f17357b49": "O-7d50e0cb-ee45-4fe5-bd54-6b38b3b22e6e",
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3": "O-48ebee79-cbbb-4c1c-829c-038c887076e9",
+      "T-3987ba88-f69f-59f1-811e-f51cabfa5978": "O-048b3fa0-28ea-49a0-bec1-a8e537a805f5",
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8": "O-d3de5c55-c4ac-4eb9-9b46-36aa630adf68",
       "T-49eaa44e-5c98-4219-a380-4201e4143494": "O-9f6a3618-fbbf-4d96-b034-bbe5f19e01ca",
       "T-4a1de222-156a-52cf-8966-262a2c8216ed": "O-1be18cd1-6faf-47ff-bc66-14861e6858e4",
@@ -44,13 +46,13 @@
       "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17": "O-a050001b-edd5-41b3-ba4e-3a9005c3c5e4",
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b"
     },
-    "current_task_id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
-    "cycle_signature": "ac85fff23877caf40165e3e31653016ac3d95c138ca3b100b668c7310f404afd",
+    "current_task_id": null,
+    "cycle_signature": "051c769f08041ad26c67463a616b0073c1d5d8f5ad87ee05c4c7adeabf922e16",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Select required task or finish root",
     "partial_work": [
       "Root task API, MCP scope/prepare/acceptance surface and PWA editor are implemented and compile.",
       "Root full suites pass: 516 .NET, 50 Auth, 34 Workspace. Native/MCP preview/receipt recovery, quota/unknown outcomes, scope checks, local UI confirmation and linking are covered synthetically.",
@@ -70,7 +72,7 @@
       "P-6aae2186-4693-4f67-9cf5-71e9a89d0de3",
       "P-ff948539-db7d-43b1-bc7e-957f26b6903a"
     ],
-    "phase": "implement",
+    "phase": "resume-parent",
     "processing_results": [
       {
         "created_ids": [
@@ -323,7 +325,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "0d023f4789b059044a113a9875607384924a75a1a79c322e299f3d059aa57f09",
+  "source_hash": "254a586ceeef8201b59ab7df21a92a9e5fe121706e0b7215e40ccec8e0912589",
   "tasks": [
     {
       "depends_on": [],
@@ -455,26 +457,8 @@
       "depends_on": [
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
-      "id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
-      "line": 353,
-      "parent_pending_ids": [
-        "P-1590c3c7-25e6-589e-8efb-91f35d873b4e"
-      ],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
-      "status": "Ready",
-      "title": "Package The Plugin And Add Core Skills"
-    },
-    {
-      "depends_on": [
-        "T-4a1de222-156a-52cf-8966-262a2c8216ed"
-      ],
       "id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-      "line": 484,
+      "line": 353,
       "parent_pending_ids": [
         "P-d0950eec-bfbf-561f-b192-dcf8dde67488"
       ],
@@ -500,7 +484,7 @@
         "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"
       ],
       "id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "line": 595,
+      "line": 464,
       "parent_pending_ids": [
         "P-46dde168-2e75-53fd-b2c0-0c1769f7711d"
       ],
@@ -518,7 +502,7 @@
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 721,
+      "line": 590,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -534,7 +518,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 876,
+      "line": 745,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -548,7 +532,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 913,
+      "line": 782,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -562,7 +546,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 950,
+      "line": 819,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -576,7 +560,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1083,
+      "line": 952,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -590,7 +574,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1121,
+      "line": 990,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -604,7 +588,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1155,
+      "line": 1024,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -618,7 +602,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1190,
+      "line": 1059,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -632,7 +616,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1224,
+      "line": 1093,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -646,7 +630,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1262,
+      "line": 1131,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -660,7 +644,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1289,
+      "line": 1158,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -674,7 +658,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1311,
+      "line": 1180,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -688,7 +672,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1338,
+      "line": 1207,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

@@ -1,0 +1,56 @@
+{
+  "task_id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "Portable plugin and MCP exact upstream 1.0.0 schemas",
+      "result": "pass"
+    },
+    {
+      "check": "Skill Creator frontmatter/scaffold validator",
+      "result": "pass",
+      "skills": 3
+    },
+    {
+      "check": "Actual SDK two-profile workflow routing and scope isolation",
+      "result": "pass",
+      "tests": 2,
+      "upstream_mutations": 0
+    },
+    {
+      "check": "App build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Rebuilt app default Settings guards",
+      "result": "pass",
+      "evidence": "skill-tree/history/validation/plugin-default-settings.jpg"
+    },
+    {
+      "check": "New prose lint and trigger/stop scenario source review",
+      "result": "pass"
+    }
+  ],
+  "coverage": [
+    "Distinct daily review, account review and canonical task-management triggers",
+    "Read intent performs no mutation; missing fields and denied scopes fail closed",
+    "Canonical task and receipt reads cannot cross OAuth profiles",
+    "Task tools use explicit server preview approval and original IDs for recovery",
+    "No embedded credentials, bearer headers, connector registration ID or hooks",
+    "No fake native project/goal/calendar/history workflows"
+  ],
+  "sources": [
+    "https://developers.openai.com/plugins/build/plugins",
+    "https://developers.openai.com/plugins/build/skills",
+    "https://developers.openai.com/plugins/deploy/connect-chatgpt",
+    "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+    "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json"
+  ],
+  "limitations": [
+    "The committed endpoint is intentionally inactive. No host import, real enrollment, deployment or publication occurred.",
+    "Activation examples were reviewed against skill instructions; automatic model selection and real host behavior require the documented manual rollout scenarios. Deterministic SDK tests do not qualify model activation.",
+    "Only local two-profile fixtures qualify schema/routing acceptance; two consenting real users remain rollout scope."
+  ]
+}

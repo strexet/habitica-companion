@@ -1,0 +1,17 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "habitica-companion",
+  "version": "0.1.0",
+  "description": "Review Habitica status and manage Companion tasks with explicit previews and durable receipts.",
+  "repository": "https://github.com/strexet/habitica-companion",
+  "keywords": ["habitica", "tasks", "personal-productivity"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Habitica Companion",
+        "shortDescription": "Review your day and manage Companion tasks",
+        "capabilities": ["Read", "Write"]
+      }
+    }
+  }
+}

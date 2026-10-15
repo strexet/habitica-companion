@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "habitica-companion": {
+      "type": "streamable-http",
+      "url": "https://habitica-mcp.example.invalid/mcp"
+    }
+  }
+}
