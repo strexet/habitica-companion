@@ -1,0 +1,50 @@
+{
+  "task_id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+  "result": "pass",
+  "required_evidence": [
+    "skill-tree/history/validation/party-context.json",
+    "skill-tree/history/validation/party-read-access.json",
+    "skill-tree/history/validation/authenticated-party-planning.json",
+    "skill-tree/history/validation/private-spell-gateway.json",
+    "skill-tree/history/validation/reviewed-spell-actions.json"
+  ],
+  "checks": {
+    "workers_builds": "all three pass",
+    "auth_tests": 62,
+    "workspace_tests": 63,
+    "app_build": "pass; zero warnings/errors",
+    "dotnet_tests": 525,
+    "default_app_behavior": "cloud/party integrations remain unavailable; evidence in reviewed-spell-actions.json"
+  },
+  "acceptance_mapping": {
+    "party and spell tools preserve existing Companion safety assumptions.": [
+      "Credential-backed current actor/party membership, independent scope checks and separately consented authenticated namespace",
+      "Owned-scroll queueing, explicit personal votes, leader controls and own contribution export/removal",
+      "Narrow allowlisted spells, two-minute preview, single-use token and shared durable gameplay ownership/fences",
+      "Neutral C#/Worker metadata and affordability fixture with explicit parity limits"
+    ],
+    "repeated mutations stop on failure.": [
+      "Partial refusal stops at the first failed single cast",
+      "Unknown responses fence subsequent task/spell effects and receipt recovery never resends",
+      "Known delayed success stops the unexecuted remainder within the foreground budget"
+    ],
+    "stale/changed state prevents execution.": [
+      "Fresh account/party/precondition checks before every effect",
+      "Scope, enrollment, namespace, consent and Workspace access-epoch invalidation",
+      "Expired previews and replaced tokens cannot accept new effects"
+    ]
+  },
+  "limitations": [
+    "Local implementation and synthetic tests only; no real enrollment, host activation, deployment, gameplay mutation or message was sent.",
+    "Start New Day and team release retain separate unresolved gates.",
+    "A final new-file whitespace check found an extra trailing blank line in the synthetic helper. The root checkpoint removes the blank line; no runtime behavior changes."
+  ],
+  "commits": [
+    "d57d85e",
+    "89c66e1",
+    "f361501",
+    "0835b46",
+    "f6e2587",
+    "27c2177"
+  ]
+}

@@ -27,13 +27,15 @@
       "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3",
       "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d",
       "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f",
-      "T-05547c12-8391-4d20-a0cb-0371361d6cd7"
+      "T-05547c12-8391-4d20-a0cb-0371361d6cd7",
+      "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
       "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89": "O-2b79fcef-7244-48d6-bad7-16c7b8937eee",
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
       "T-16a38176-f2fe-5f7d-a809-546f17357b49": "O-7d50e0cb-ee45-4fe5-bd54-6b38b3b22e6e",
+      "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec": "O-1cbc3cfc-9cf0-4922-8317-4c16090d9aa0",
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
       "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d": "O-9ebb8704-9e9e-405c-b175-bec36f05b86c",
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3": "O-48ebee79-cbbb-4c1c-829c-038c887076e9",
@@ -58,15 +60,19 @@
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b",
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e"
     },
-    "current_task_id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-    "cycle_signature": "d1ec4acf5d38543044d8f809cbb9158436007a3be9f990492bbf542350946702",
+    "current_task_id": null,
+    "cycle_signature": "5173c5fddd767c5310b1d14d1a6f6bd290c0a79aacabc93d4eb85f543aef7471",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Review concrete local Cron/hardening contracts; obtain owner selections before implementation. No live activation is authorized.",
     "partial_work": [
-      "Owner approved authenticated party planning boundary for local implementation and synthetic tests. Real activation remains separate."
+      "Party/spell root and required descendants are complete and committed.",
+      "Nine of eleven initial prioritized roots are complete.",
+      "The next Cron root requires an approved reconciliation contract and retains the real multi-user activation gate.",
+      "Security rollout requires explicit selected capabilities and E14 decomposition.",
+      "Concrete Cron reconciliation and hardening/release-scope proposals are recorded in companion-workspace-contract.md; owner questions are pending."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -88,7 +94,7 @@
       "P-f4cf9801-4310-4923-b210-826b1c227e3a",
       "P-d34a0b07-32a5-48dc-acdd-7da4d17f9d4e"
     ],
-    "phase": "implement",
+    "phase": "awaiting-clarification",
     "processing_results": [
       {
         "created_ids": [
@@ -459,10 +465,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": null
+    "stop_reason": "Required clarification remains for Cron reconciliation and selected rollout capabilities."
   },
   "format": "skill-tree-future",
-  "source_hash": "5c0ff31971ffd5035b5712ec6c5893da718a0aeae40384661739d43d4bb7e2bb",
+  "source_hash": "9c2ee48d02d3683b31a90681062459ece0d40a68ff981cce25eb3b7bf9befb74",
   "tasks": [
     {
       "depends_on": [],
@@ -592,28 +598,6 @@
     },
     {
       "depends_on": [
-        "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-        "T-991d6cf2-7c54-4006-ab58-eda921ae66d6",
-        "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d",
-        "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f",
-        "T-05547c12-8391-4d20-a0cb-0371361d6cd7"
-      ],
-      "id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-      "line": 353,
-      "parent_pending_ids": [
-        "P-d0950eec-bfbf-561f-b192-dcf8dde67488"
-      ],
-      "priority": 99,
-      "processing_run_id": null,
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-      "status": "Ready",
-      "title": "Add Party And Spell Capabilities Incrementally"
-    },
-    {
-      "depends_on": [
         "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
         "T-c6f6b09d-4625-5898-b91c-016c611b60df",
         "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
@@ -625,7 +609,7 @@
         "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"
       ],
       "id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "line": 464,
+      "line": 353,
       "parent_pending_ids": [
         "P-46dde168-2e75-53fd-b2c0-0c1769f7711d"
       ],
@@ -643,7 +627,7 @@
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 590,
+      "line": 479,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -659,7 +643,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 745,
+      "line": 634,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -673,7 +657,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 782,
+      "line": 671,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -687,7 +671,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 819,
+      "line": 708,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -701,7 +685,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 952,
+      "line": 841,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -715,7 +699,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 990,
+      "line": 879,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -729,7 +713,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1024,
+      "line": 913,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -743,7 +727,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1059,
+      "line": 948,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -757,7 +741,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1093,
+      "line": 982,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -771,7 +755,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1131,
+      "line": 1020,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -785,7 +769,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1158,
+      "line": 1047,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -799,7 +783,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1180,
+      "line": 1069,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -813,7 +797,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1207,
+      "line": 1096,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

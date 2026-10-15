@@ -350,117 +350,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Add Party And Spell Capabilities Incrementally
-
-```yaml
-id: T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec
-priority: 99
-status: Ready
-parent_pending_ids: ["P-d0950eec-bfbf-561f-b192-dcf8dde67488"]
-processing_run_id: null
-root_task_id: T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec
-related_task_id: null
-relation: main
-depends_on: ["T-4a1de222-156a-52cf-8966-262a2c8216ed", "T-991d6cf2-7c54-4006-ab58-eda921ae66d6", "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d", "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f", "T-05547c12-8391-4d20-a0cb-0371361d6cd7"]
-```
-
-Migration source:
-- Imported numbered contract 8 from PR #1; originating Pending identity records imported intent, not a new Process Pending result.
-
-Integration gate: The eventual unified scheduler/outbox from E05/E07 owns command lifecycle for server-managed gameplay mutations. Existing party-sync `local-claim-v1` is not proof of identity and must not grant new MCP party writes. Require authenticated party authorization and role checks from trusted evidence before exposing queue/vote operations.
-
-Goal:
-- Expand beyond task management without copying the existing C# application layer wholesale into TypeScript.
-
-Rollout order:
-
-```text
-1. get_party_context
-2. get_quest_planning_state
-3. queue_quest
-4. vote_quest
-5. get_spell_context
-6. prepare_spell_cast
-7. execute_spell_cast
-```
-
-Current behavior:
-- Party, quest and spell flows are implemented in the browser C# application and existing trust-based party-sync functions.
-
-Desired behavior:
-- Advanced MCP operations use narrow shared authorization and command contracts without copying C# workflows or treating local party claims as trusted remote identity.
-
-Touch:
-- Proposed `workers/chatgpt-mcp/**`, targeted Companion domain/application contracts, relevant party-sync code only after authenticated design review.
-- Direct tests and `skill-tree/documents/features.md`, `skill-tree/documents/technical.md`, `skill-tree/documents/habitica-api.md`; party documentation as needed.
-
-Discovery allowance:
-- Add test fixtures and verified internal reads; do not silently change party-sync authorization.
-
-Out of scope:
-- automatic background spell casting.
-- unlimited cast loops.
-- arbitrary macro execution.
-- purchases.
-- Start New Day in the same implementation change.
-
-Implementation constraints:
-- one advanced mutation category per implementation change.
-- verify each Habitica endpoint against project docs and current upstream source.
-- reuse existing party-sync state only through a narrow internal contract.
-- do not expose party-sync administrative actions automatically.
-- bounded spell repetitions only.
-- prefetch fresh user/target state.
-- action plans expire quickly.
-- execute token is single-use.
-
-Prepare/execute record:
-
-```text
-prepared_actions
-----------------
-action_id
-profile_id
-action_type
-payload_hash
-precondition_hash
-created_at_utc
-expires_at_utc
-consumed_at_utc
-```
-
-Do not persist API token, raw OAuth token, or unnecessary full Habitica snapshots.
-
-Parity strategy:
-- identify representative C# behaviors.
-- encode externally observable cases as neutral JSON fixtures.
-- run C# tests against existing application logic.
-- run Worker tests against matching expected safety outcomes.
-- do not claim full parity when not actually covered.
-
-Questions and required clarifications:
-- [Resolved - owner decision] The repository owner approved `companion-workspace-contract.md#authenticated-party-planning-boundary` for local implementation and synthetic tests.
-  Reason: Fresh credential-backed membership and a separate authenticated namespace prevent browser-claimed roles and records from authorizing MCP writes.
-  Required answer from: Owner approval received on 2026-10-15; live activation remains separate.
-
-Validation:
-- Verify party role checks, cross-profile isolation, stale state, spell plans, sequential execution, partial failure and parity fixtures.
-
-Acceptance:
-- party and spell tools preserve existing Companion safety assumptions.
-- repeated mutations stop on failure.
-- stale/changed state prevents execution.
-
-Documentation updates:
-- `skill-tree/documents/features.md`
-- `skill-tree/documents/technical.md`
-- `skill-tree/documents/habitica-api.md`.
-- party docs as relevant.
-
-Risks:
-- C#/TypeScript logic drift.
-- tool surface growing too broad.
-
 ### Add Start New Day Only As A Dedicated High-Risk Feature
 
 ```yaml
@@ -557,7 +446,7 @@ Implementation constraints:
 Questions and required clarifications:
 - [Unresolved - blocks implementation] How will an ambiguous Cron result be reconciled safely?
   Reason: A second Cron call may have irreversible gameplay effects.
-  Required answer from: E05 and current Habitica server/API verification.
+  Required answer from: Owner selection of the concrete local reconciliation proposal in `companion-workspace-contract.md#proposed-local-cron-continuation`, researched against current server ordering on 2026-10-16. Real multi-user qualification remains a live activation gate.
 
 Validation:
 - no-Cron-needed state.
@@ -674,7 +563,7 @@ Stage 5: public plugin review only if intentionally desired
 ```
 
 Current behavior:
-- The existing application has no ChatGPT-specific grant revocation, credential deletion lifecycle, security dashboard, or key rotation workflow.
+- Settings and Auth implement linking, disconnect/profile deletion, token cleanup and stable re-enrollment identity. Workspace implements typed task/party/spell safety and own-data controls. Separate grant-only revocation, complete status/rotation controls, operational protection and real release qualification remain required hardening work.
 
 Desired behavior:
 - Team-ready multi-user integration with auditable revocation, vault deletion, key rotation, protected deployment environments and controlled release gates.
@@ -696,7 +585,7 @@ Implementation constraints:
 - Credential encryption-key rotation and stable profile-ID key rotation require separate procedures.
 
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Define the selected rollout capabilities, then record every included capability as a required T- dependency before hardening and rollout validation. E14 adoption and migration gates remain mandatory.
+- [Unresolved - blocks implementation] Define the selected rollout capabilities, then record every included capability as a required T- dependency before hardening and rollout validation. E14 adoption and migration gates remain mandatory. The concrete choices and required dependency units reside in `companion-workspace-contract.md#proposed-hardening-and-release-scope`.
 - [Recommended default - confirmation optional] Which rollout group is appropriate?
   Recommendation: Owner first, one trusted teammate second, then an expanded opt-in group.
   Rationale: Verify revocation, privacy, isolation and rate-limit behavior before expanding.

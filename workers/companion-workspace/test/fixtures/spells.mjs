@@ -44,4 +44,3 @@ export async function setup(t,options={}){
  const execute=(p,i=0)=>tool(i,'execute_spell_cast',{actionId:p.actionId,executeToken:p.executeToken});
  return {f,state,stats,profiles,sessions,clients,tokens,http,tool,prepare,execute,consent,client};
 }
-
