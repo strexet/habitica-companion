@@ -30,6 +30,11 @@
           "binding": "AUTH_SERVER",
           "service": "habitica-chatgpt-auth-preview",
           "entrypoint": "AuthService"
+        },
+        {
+          "binding": "WORKSPACE_SERVER",
+          "service": "habitica-companion-workspace-preview",
+          "entrypoint": "WorkspaceCommandService"
         }
       ]
     },
@@ -44,6 +49,11 @@
           "binding": "AUTH_SERVER",
           "service": "habitica-chatgpt-auth-production",
           "entrypoint": "AuthService"
+        },
+        {
+          "binding": "WORKSPACE_SERVER",
+          "service": "habitica-companion-workspace-production",
+          "entrypoint": "WorkspaceCommandService"
         }
       ]
     }
@@ -53,6 +63,11 @@
       "binding": "AUTH_SERVER",
       "service": "habitica-chatgpt-auth-local",
       "entrypoint": "AuthService"
+    },
+    {
+      "binding": "WORKSPACE_SERVER",
+      "service": "habitica-companion-workspace-local",
+      "entrypoint": "WorkspaceCommandService"
     }
   ],
   "send_metrics": false

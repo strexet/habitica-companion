@@ -590,3 +590,11 @@ Settings displays a separate optional connection card with server credential-sto
 Settings separates cloud workspace consent from ChatGPT linking and encrypted private sync. The disclosure names server-readable task notes and history, encrypted server credential storage, retained data after disconnect and independently enabled background execution. An unavailable deployment shows an explicit unavailable state with no connection action. Cloud export, disconnect and deletion require an authenticated tab session; deletion has a confirmation step.
 
 Local canonical workspace backups have separate listing, export and confirmed restore controls. Restore preserves existing data on conflicts and does not upload to the cloud. Global browser clearing includes local canonical records. Workspace and legacy backup copy identifies the distinct formats and readable content. Privacy repeats the separate workspace, credential, browser and Habitica deletion boundaries.
+
+## Companion task editor and command review
+
+The Tasks page exposes the canonical editor through an explicit disclosure button. Browser and cloud sources remain visible, with independent workspace selection, a read-only explanation for frozen or stale copies and separate paused-execution status for restored copies. The existing Habitica task dashboard remains separate. Account changes clear the editor's pending content and discard late data.
+
+Every save opens a field-level review before confirmation. Native urgency and game difficulty have separate labels. Checklist replacement requires an explicit checkbox; empty replacement clears the list. Completion and Habit-score previews show the affected occurrence or bounded event count and explain possible game effects. Unknown acceptance preserves the original command ID and replaces ordinary cancellation with receipt checking or an original-command retry. Successful canonical saving and projection progress use separate text labels and a bounded recent-history disclosure.
+
+Existing Habitica links require a separate comparison of canonical and external records, explicit identity entry and fresh approval. Linking retains native task fields. Forms use shared input/button primitives, flexible action rows and wrapping task/history text. The fieldset, task list and preview permit narrow layouts without fixed-width user content.

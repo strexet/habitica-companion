@@ -4415,3 +4415,16 @@ code {
     }
 
 }
+
+.companion-editor { display: grid; gap: 1rem; min-width: 0; margin-top: 1rem; overflow-wrap: anywhere; }
+.companion-task-form { display: grid; gap: .85rem; min-width: 0; border: 1px solid var(--card-border); border-radius: .65rem; padding: 1rem; }
+.companion-task-form label { display: grid; gap: .35rem; min-width: 0; }
+.companion-task-form .checkbox-row { display: flex; }
+.companion-task-form textarea { min-height: 5rem; resize: vertical; width: 100%; box-sizing: border-box; }
+.companion-task-form details { display: grid; gap: .75rem; }
+.companion-task-list { display: grid; gap: .5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
+.companion-task-list button { text-align: left; display: grid; gap: .35rem; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+.companion-command-preview { border: 1px solid var(--card-border); border-radius: .65rem; padding: 1rem; min-width: 0; }
+.companion-command-preview dl { display: grid; grid-template-columns: minmax(6rem, 1fr) minmax(0, 3fr); gap: .5rem; }
+.companion-command-preview dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.companion-editor small { display: block; overflow-wrap: anywhere; }

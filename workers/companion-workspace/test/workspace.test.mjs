@@ -151,7 +151,7 @@ test('projection adoption requires reviewed fresh metadata and never writes upst
  const preview=await(await call(f,'/projection/preview',w.sessionToken,{taskId:c.taskId,habiticaTaskId:externalId})).json();
  assert.equal(preview.task.text,c.patch.text); assert.equal(preview.external.text,remoteText); assert.equal(preview.pendingCommandCount,0);
  remoteText='Changed after preview';
- const approval={taskId:c.taskId,habiticaTaskId:externalId,expectedRevision:preview.expectedRevision,expectedFingerprint:preview.external.fingerprint};
+ const approval={taskId:c.taskId,habiticaTaskId:externalId,expectedWorkspaceId:w.workspaceId,expectedAccessEpoch:preview.accessEpoch,expectedRevision:preview.expectedRevision,expectedFingerprint:preview.external.fingerprint};
  assert.equal((await call(f,'/projection/adopt',w.sessionToken,approval)).status,409);
  const fresh=await(await call(f,'/projection/preview',w.sessionToken,{taskId:c.taskId,habiticaTaskId:externalId})).json();
  assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedFingerprint:fresh.external.fingerprint})).status,200);

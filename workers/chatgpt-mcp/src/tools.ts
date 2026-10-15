@@ -1,3 +1,6 @@
+import { canonicalTaskTools } from "./task-tools";
+import { taskToolScopes, taskToolInput } from "../../shared/task-tools";
+import { workspaceJson } from "../../shared/workspace-http";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { CallToolRequestSchema, ListToolsRequestSchema, type Tool } from "@modelcontextprotocol/sdk/types.js";
@@ -20,13 +23,24 @@ const descriptions: Record<ReadTool, string> = {
   list_tasks: "Read the legacy Habitica task bootstrap view, not Companion projects, goals, plans or completed history. dueOnly returns only confirmed server-evaluated due Dailies. Completed To Dos cover at most the 30 most recent entries.",
   get_task: "Find a stable Habitica task ID in the legacy bootstrap view. Searches active tasks and at most 30 recent completed To Dos. Null means unavailable in this bounded view, not necessarily deleted. IDs require verified mapping before any future Companion mutation.",
 };
-export const toolDefinitions = (Object.keys(readScopes) as ReadTool[]).map(name => ({ name, description: descriptions[name], inputSchema: schemas[name].input, outputSchema: schemas[name].output, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }, securitySchemes: [{ type: "oauth2", scopes: [readScopes[name]] }], _meta: { securitySchemes: [{ type: "oauth2", scopes: [readScopes[name]] }], ...(name === "get_profile" ? { "openai/profile": true } : {}) } })) as Tool[];
+const bootstrapTools = (Object.keys(readScopes) as ReadTool[]).map(name => ({ name, description: descriptions[name], inputSchema: schemas[name].input, outputSchema: schemas[name].output, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }, securitySchemes: [{ type: "oauth2", scopes: [readScopes[name]] }], _meta: { securitySchemes: [{ type: "oauth2", scopes: [readScopes[name]] }], ...(name === "get_profile" ? { "openai/profile": true } : {}) } })) as Tool[];
+
+export const toolDefinitions=[...bootstrapTools,...canonicalTaskTools];
 
 export async function handleMcp(request: Request, env: McpEnv, parsedBody: unknown): Promise<Response> {
   const server = new Server({ name: "habitica-companion-read-bootstrap", version: "0.1.0" }, { capabilities: { tools: {} } });
   server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: toolDefinitions }));
   server.setRequestHandler(CallToolRequestSchema, async call => {
     const name = call.params.name;
+    if(Object.hasOwn(taskToolScopes,name)){
+      try{taskToolInput(name,call.params.arguments??{});}catch{return {isError:true,content:[{type:"text",text:"Invalid Companion arguments. Use exact IDs and the documented field whitelist; no account selectors are accepted."}]};}
+      try{
+        const response=await env.WORKSPACE_SERVER.fetch("https://workspace.internal/tool",{method:"POST",headers:{authorization:request.headers.get("authorization")??"","content-type":"application/json"},body:JSON.stringify({tool:name,arguments:call.params.arguments??{}}),signal:AbortSignal.timeout(15000)});
+        const result=await response.json<Record<string,unknown>>();
+        if(!response.ok)return {isError:true,content:[{type:"text",text:JSON.stringify({...result,recovery:"Check the original command receipt. Reuse the same request or command ID; never create a new action to retry an uncertain result."})}],structuredContent:result};
+        return {content:[{type:"text",text:JSON.stringify(result)}],structuredContent:result};
+      }catch{return {isError:true,content:[{type:"text",text:"Command outcome is unknown. Check get_task_command using the original command ID. Do not prepare a new command to retry."}],structuredContent:{savedInCompanion:null,outcomeUnknown:true}};}
+    }
     try { readInput(name, call.params.arguments ?? {}); }
     catch { return { isError: true, content: [{ type: "text", text: "Invalid tool arguments. No account selectors are accepted." }] }; }
     try {
@@ -44,11 +58,5 @@ export async function handleMcp(request: Request, env: McpEnv, parsedBody: unkno
   finally { await server.close(); }
 }
 export async function requestBody(request: Request): Promise<unknown> {
-  const reader = request.body?.getReader(); if (!reader) return undefined;
-  const chunks: Uint8Array[] = []; let size = 0;
-  try {
-    while (true) { const { done, value } = await reader.read(); if (done) break; size += value.length; if (size > 65536) { await reader.cancel(); throw new Error("Body too large."); } chunks.push(value); }
-  } finally { reader.releaseLock(); }
-  const body = new Uint8Array(size); let offset = 0; for (const chunk of chunks) { body.set(chunk, offset); offset += chunk.length; }
-  return JSON.parse(new TextDecoder().decode(body));
+  return workspaceJson(request,65536);
 }

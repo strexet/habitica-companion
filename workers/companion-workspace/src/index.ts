@@ -1,3 +1,7 @@
+import { purgeExpiredPreparations } from "./preparation-retention";
+import { WorkerEntrypoint } from "cloudflare:workers";
+import { taskApi } from "./task-api";
+import { taskToolScopes, type TaskTool } from "../../shared/task-tools";
 import { handoff } from "./handoff";
 import { executeScheduled, cloudAuthority, type WorkspaceRow } from "./executor";
 import { adoptProjection } from "./projection-adapter";
@@ -61,7 +65,7 @@ async function duplicate(env: WorkspaceEnv, row: WorkspaceRow, id: string, hash:
  if (receipt.payload_hash !== hash) throw new WorkspaceError("command_id_reused", 409);
  return json({ disposition: "duplicate", savedInCompanion: true, entry: JSON.parse(receipt.entry_json) });
 }
-async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow): Promise<Response> {
+async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, prepared = false): Promise<Response> {
  let input; try { input = workspaceCommand(await workspaceJson(request, 65536)); } catch (error) { if (error instanceof WorkspaceError) throw error; throw new WorkspaceError("invalid_command", 422); }
  if (input.workspaceId !== row.workspace_id) throw new WorkspaceError("workspace_mismatch", 409);
  const hash = await commandHash(input); const replay = await duplicate(env, row, input.id, hash); if (replay) return replay;
@@ -75,7 +79,8 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow): 
  const version = row.store_version + 1; const tag = crypto.randomUUID();
  const result = await env.WORKSPACE_DB.batch([
   env.WORKSPACE_DB.prepare(`UPDATE workspaces SET document_json=?,store_version=?,commit_tag=?,updated_at_utc=?,archive_bytes=?
-   WHERE profile_id=? AND store_version=? AND connection_id=? AND access_epoch=? AND active=1`).bind(serialized, version, tag, accepted.entry.acceptedAtUtc, archiveBytes, row.profile_id, row.store_version, row.connection_id, row.access_epoch),
+   WHERE profile_id=? AND store_version=? AND connection_id=? AND access_epoch=? AND active=1
+   AND (?=0 OR EXISTS(SELECT 1 FROM workspace_preparations p WHERE p.profile_id=workspaces.profile_id AND p.command_id=? AND p.access_epoch=workspaces.access_epoch AND p.expires_at_utc>strftime('%Y-%m-%dT%H:%M:%fZ','now')))` ).bind(serialized, version, tag, accepted.entry.acceptedAtUtc, archiveBytes, row.profile_id, row.store_version, row.connection_id, row.access_epoch, Number(prepared), input.id),
   env.WORKSPACE_DB.prepare(`INSERT INTO workspace_commands(profile_id,command_id,sequence,payload_hash,entry_json)
    SELECT profile_id,?,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?`).bind(input.id, version, hash, JSON.stringify(accepted.entry), row.profile_id, tag),
   env.WORKSPACE_DB.prepare(`INSERT INTO workspace_events(profile_id,event_id,sequence,event_json)
@@ -105,6 +110,10 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  const row = await session(request, env);
  if (path === "/workspace" && request.method === "GET") return json({ document: JSON.parse(row.document_json), storeVersion: row.store_version, executorEnabled: Boolean(row.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED) });
  if (path === "/export" && request.method === "GET") return snapshot(env, row);
+ if (path === "/task-api" && request.method === "POST") {
+  const body=workspaceObject(await workspaceJson(request,65536),["tool","arguments"]);
+  return json(await taskApi(env,row,body.tool as TaskTool,body.arguments,cmd=>command(new Request("https://workspace.internal/commands",{method:"POST",body:JSON.stringify(cmd)}),env,row,true)));
+ }
  if (path === "/handoff" && request.method === "POST") return handoff(request,env,row);
  if (path === "/executor" && request.method === "POST") {
   const body=workspaceObject(await workspaceJson(request),["enabled","consentVersion"]);
@@ -116,7 +125,7 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  }
  if (path === "/commands" && request.method === "POST") return command(request, env, row);
  if (["/projection/preview","/projection/adopt"].includes(path) && request.method === "POST") {
-  const body=workspaceObject(await workspaceJson(request),path.endsWith("preview")?["taskId","habiticaTaskId"]:["taskId","habiticaTaskId","expectedRevision","expectedFingerprint"]);
+  const body=workspaceObject(await workspaceJson(request),path.endsWith("preview")?["taskId","habiticaTaskId"]:["taskId","habiticaTaskId","expectedWorkspaceId","expectedAccessEpoch","expectedRevision","expectedFingerprint"]);
   const taskId=uuid(body.taskId); const externalId=uuid(body.habiticaTaskId); const document=JSON.parse(row.document_json);
   const task=document.tasks.find((task: {id:string})=>task.id===taskId); if (!task) throw new WorkspaceError("task_unavailable",422);
   const response=await env.AUTH_PROJECTION.fetch("https://projection.internal/operation",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({profileId:row.profile_id,connectionId:row.connection_id,operation:"inspect",arguments:{selector:externalId},automated:false})});
@@ -125,8 +134,8 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
   if (!observed.task) throw new WorkspaceError("external_deleted",409);
   const pending=await env.WORKSPACE_DB.prepare("SELECT entry_json FROM workspace_commands WHERE profile_id=?").bind(row.profile_id).all<{entry_json:string}>();
   const unresolved=pending.results.map(row=>JSON.parse(row.entry_json)).filter(entry=>entry.command.taskId===taskId && !["notRequested","confirmed","cancelled"].includes(entry.projectionState));
-  if (path.endsWith("preview")) return json({task,external:observed.task,expectedRevision:document.revision,pendingCommandCount:unresolved.length});
-  if (unresolved.length || body.expectedRevision!==document.revision || typeof body.expectedFingerprint!=="string") throw new WorkspaceError("adoption_conflict",409);
+  if (path.endsWith("preview")) return json({workspaceId:row.workspace_id,accessEpoch:row.access_epoch,task,external:observed.task,expectedRevision:document.revision,pendingCommandCount:unresolved.length});
+  if (unresolved.length || body.expectedWorkspaceId!==row.workspace_id || body.expectedAccessEpoch!==row.access_epoch || body.expectedRevision!==document.revision || typeof body.expectedFingerprint!=="string") throw new WorkspaceError("adoption_conflict",409);
   const adopted=adoptProjection(document,taskId,observed.task,body.expectedFingerprint); const serialized=JSON.stringify(adopted);
   const archiveBytes=row.archive_bytes-bytes(row.document_json)+bytes(serialized);
   if (bytes(serialized)>1024*1024 || archiveBytes>8*1024*1024 || row.store_version===Number.MAX_SAFE_INTEGER) throw new WorkspaceError("workspace_capacity",413);
@@ -149,6 +158,22 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  }
  throw new WorkspaceError("not_found", 404);
 }
+export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
+ async fetch(request:Request):Promise<Response>{
+  try{
+   if(!this.env.WORKSPACE_ENABLED||request.method!=="POST")throw new WorkspaceError("workspace_unavailable",503);
+   const body=workspaceObject(await workspaceJson(request,65536),["tool","arguments"]);
+   if(typeof body.tool!=="string"||!Object.hasOwn(taskToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
+   const verified=await this.env.AUTH_IDENTITY.fetch("https://identity.internal/mcp",{method:"POST",headers:{authorization:request.headers.get("authorization")??""},signal:AbortSignal.timeout(5000)});
+   if(!verified.ok)throw new WorkspaceError("unauthorized",401);
+   const who=await verified.json<Identity&{scopes:string[]}>();
+   if(!Array.isArray(who.scopes)||!who.scopes.includes(taskToolScopes[body.tool as TaskTool]))throw new WorkspaceError("insufficient_scope",403);
+   const row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
+   if(!row)throw new WorkspaceError("workspace_consent_required",403);
+   return json(await taskApi(this.env,row,body.tool as TaskTool,body.arguments,cmd=>command(new Request("https://workspace.internal/commands",{method:"POST",body:JSON.stringify(cmd)}),this.env,row,true)));
+  }catch(error){return json({error:error instanceof WorkspaceError?error.code:"command_outcome_unknown",savedInCompanion:error instanceof WorkspaceError?false:null,outcomeUnknown:!(error instanceof WorkspaceError)},error instanceof WorkspaceError?error.status:503);}
+ }
+}
 export default {
  async fetch(request: Request, env: WorkspaceEnv): Promise<Response> {
   const url = new URL(request.url); const config = resourceConfiguration(env.ENVIRONMENT); const origin = request.headers.get("origin"); let response: Response;
@@ -160,5 +185,5 @@ export default {
   if (origin === config.pwaOrigin) { response.headers.set("access-control-allow-origin", origin); response.headers.set("access-control-allow-methods", "GET, POST, DELETE, OPTIONS"); response.headers.set("access-control-allow-headers", "content-type, authorization"); response.headers.set("vary", "Origin"); }
   return response;
  },
- async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { await executeScheduled(env); },
+ async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { await purgeExpiredPreparations(env); await executeScheduled(env); },
 } satisfies ExportedHandler<WorkspaceEnv>;

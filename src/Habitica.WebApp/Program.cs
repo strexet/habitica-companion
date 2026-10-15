@@ -54,6 +54,7 @@ builder.Services.AddScoped<IRemotePartyDataSyncProvider, CloudflarePartyDataSync
 builder.Services.AddSingleton(builder.Configuration.GetSection("Features").Get<AppFeatureOptions>() ?? new AppFeatureOptions());
 builder.Services.AddScoped<IndexedDbWorkspaceDatabase>();
 builder.Services.AddScoped<WorkspaceDataController>();
+builder.Services.AddScoped<WorkspaceTaskController>();
 builder.Services.AddScoped<ChatGptIntegrationClient>(_ => new ChatGptIntegrationClient(
     new HttpClient { Timeout = TimeSpan.FromSeconds(15) }, builder.Configuration["ChatGptIntegration:AuthBaseUrl"], builder.Configuration.GetValue("ChatGptIntegration:Enabled", false)));
 builder.Services.AddScoped<IChatGptIntegrationClient>(sp => sp.GetRequiredService<ChatGptIntegrationClient>());

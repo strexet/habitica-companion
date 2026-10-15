@@ -1,3 +1,4 @@
+import { taskToolScopes } from "../../shared/task-tools";
 import { OAuthResourceServer, insufficientScope, type OAuthResourceTokenValidation } from "@cloudflare/workers-oauth-provider";
 import { handleMcp, requestBody } from "./tools";
 import { readScopes } from "../../shared/read-tools";
@@ -47,6 +48,10 @@ export default {
           if (name && Object.hasOwn(readScopes, name)) {
             const scope = readScopes[name as keyof typeof readScopes];
             if (!context.auth.scope?.includes(scope)) return insufficientScope(context.auth, [scope]);
+          }
+          if (name && Object.hasOwn(taskToolScopes,name)) {
+            const scope=taskToolScopes[name as keyof typeof taskToolScopes];
+            if (!context.auth.scope?.includes(scope)) return insufficientScope(context.auth,["profile:read",scope]);
           }
           const response = await handleMcp(mcpRequest, mcpEnv, body);
           response.headers.set("cache-control", "no-store");

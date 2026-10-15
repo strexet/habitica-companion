@@ -5,7 +5,7 @@ import { activeProfile, boundedText, VaultError } from "./vault";
 import { attempts, consumeTicket, networkAttempts } from "./linking";
 import { tokenHash } from "./cryptography";
 
-export const scopes = ["profile:read", "account:read", "tasks:read"];
+export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write"];
 export function authorizationServer(env: AuthEnv) {
   const config = resourceConfiguration(env.ENVIRONMENT);
   return new OAuthAuthorizationServer<AuthEnv>({
@@ -47,11 +47,13 @@ function consentHeaders(headers: Headers) {
 async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["beginConsent"]>[0], profileLabel?: string) {
   const details = await oauth.describeConsent(request);
   const consent = await oauth.beginConsent(request);
-  const scopeInputs = details.scope.map(scope => `<label><input ${profileLabel ? 'type="checkbox" checked' : 'type="hidden"'} name="scope" value="${escape(scope)}">${profileLabel ? escape(scope) : ''}</label>`).join("");
+  const labels: Record<string,string>={"profile:read":"Identify the linked account","account:read":"Read Habitica stats and day status","tasks:read":"Read Companion tasks and legacy Habitica tasks","habitica.tasks.write":"Save Companion tasks, completions and Habit scores"};
+  const writeNotice=details.scope.includes("habitica.tasks.write")?"<p>Task access can save changes and completion or scoring commands. The separately enabled Companion executor can apply those commands to Habitica game state, even while the app is closed. Existing read access does not grant task writes.</p>":"";
+  const scopeInputs = details.scope.map(scope => `<label><input ${profileLabel ? 'type="checkbox" checked' : 'type="hidden"'} name="scope" value="${escape(scope)}">${profileLabel ? escape(labels[scope]??scope) : ''}</label>`).join("");
   const origin = details.clientDomain ? `Published by ${escape(details.clientDomain)}.` : "Client name is self-declared.";
   const identity = profileLabel ? `<p>Habitica account: <strong>${escape(profileLabel)}</strong></p>` : '<label>One-time Companion code <input name="code" maxlength="16" autocomplete="off" required></label><p>Generate the code from Companion Settings after explicit integration enrollment.</p>';
   const warning = details.redirectIsLoopback ? "<p>This grants access to a local app. Continue only after starting that app's connection flow.</p>" : "";
-  const content = `<p>Client: <strong>${escape(details.clientName)}</strong>. ${origin}</p><p>Redirect destination: ${escape(details.redirectHost)}.</p>${warning}<form method="post"><input type="hidden" name="handle" value="${escape(consent.handle)}">${identity}${scopeInputs}<button name="decision" value="${profileLabel ? 'approve' : 'identify'}">${profileLabel ? 'Allow selected access' : 'Verify code'}</button><button name="decision" value="deny" formnovalidate>Deny</button></form><p>Habitica API tokens are never sent to ChatGPT. Credential storage belongs to the opted-in Companion integration.</p>`;
+  const content = `<p>Client: <strong>${escape(details.clientName)}</strong>. ${origin}</p><p>Redirect destination: ${escape(details.redirectHost)}.</p>${warning}${writeNotice}<form method="post"><input type="hidden" name="handle" value="${escape(consent.handle)}">${identity}${scopeInputs}<button name="decision" value="${profileLabel ? 'approve' : 'identify'}">${profileLabel ? 'Allow selected access' : 'Verify code'}</button><button name="decision" value="deny" formnovalidate>Deny</button></form><p>Habitica API tokens are never sent to ChatGPT. Credential storage belongs to the opted-in Companion integration.</p>`;
   return { consent, response: new Response(page(profileLabel ? "Approve Companion access" : "Link Companion account", content), { headers: consentHeaders(consent.headers) }) };
 }
 export async function authorize(request: Request, env: AuthEnv): Promise<Response> {

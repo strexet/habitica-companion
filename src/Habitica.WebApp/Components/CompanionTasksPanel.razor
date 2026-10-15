@@ -1,0 +1,188 @@
+@using System.Globalization
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@inject WorkspaceTaskController Workspace
+@inject IAppSessionController Session
+@implements IDisposable
+
+<div class="companion-editor" data-testid="companion-task-editor">
+    @if (!Session.State.IsAuthenticated)
+    {
+        <p>Sign in to manage this account's Companion tasks. Cloud access remains optional.</p>
+    }
+    else
+    {
+        <p>Companion tasks have independent IDs and saved command history. Browser workspaces stay on this device until an explicit transfer in Settings. Cloud commands use the same reviewed command API as ChatGPT.</p>
+        <div class="action-row">
+            <MudButton Disabled="@(_busy || Workspace.HasPendingIntent)" OnClick="@(() => RunAsync(() => Workspace.LoadAsync(false)))" Variant="Variant.Outlined">Load browser workspace</MudButton>
+            <MudButton Disabled="@(_busy || Workspace.HasPendingIntent)" OnClick="@(() => RunAsync(() => Workspace.CreateLocalAsync()))" Variant="Variant.Outlined" data-testid="canonical-new-workspace">New browser workspace</MudButton>
+            @if (Workspace.CloudConnected) { <MudButton Disabled="@(_busy || Workspace.HasPendingIntent)" OnClick="@(() => RunAsync(() => Workspace.LoadAsync(true)))" Variant="Variant.Outlined">Load cloud workspace</MudButton> }
+        </div>
+        @if (!Workspace.IsCloud && Workspace.LocalIds.Count > 1)
+        {
+            <label>Browser workspace<select class="app-input" disabled="@(_busy || Workspace.HasPendingIntent)" @onchange="SelectWorkspaceAsync"><option value="">Choose workspace</option>@foreach (var id in Workspace.LocalIds) { <option value="@id">@id</option> }</select></label>
+        }
+        @if (Workspace.Snapshot is { } snapshot)
+        {
+            <p><strong>@(Workspace.IsCloud ? "Cloud workspace" : "Browser workspace")</strong> · @snapshot.Document.Tasks.Count tasks · revision @snapshot.Document.Revision</p>
+            @if (Workspace.IsReadOnly) { <p>@(Workspace.RequiresReload ? "Reload current workspace data before editing again." : "This copy is frozen or cloud-owned. Use the cloud workspace for edits, or finish the transfer in Settings.")</p> }
+            @if (!Workspace.IsCloud && snapshot.Authority?.Mode == WorkspaceAuthorityMode.Paused) { <p>Execution is paused for this restored copy. Saving canonical changes does not enable game effects.</p> }
+            <div class="companion-task-list" aria-label="Companion task selection">
+                @foreach (var task in snapshot.Document.Tasks.Where(task => !task.IsArchived))
+                {
+                    <button class="secondary-action-button" disabled="@(_busy || Workspace.HasPendingIntent)" @onclick="@(() => SelectTask(task))" data-testid="@($"canonical-task-{task.Id:D}")"><strong>@task.Text</strong><span>@task.Kind · @task.State</span></button>
+                }
+            </div>
+            @if (!Workspace.IsReadOnly)
+            {
+                <MudButton Disabled="@(_busy || Workspace.HasPendingIntent)" OnClick="NewTodo" Variant="Variant.Text">New Todo</MudButton>
+                <fieldset disabled="@(_busy || Workspace.HasPendingIntent)" class="companion-task-form">
+                    <legend>@(_selectedId is null ? "New Companion Todo" : "Selected Companion task")</legend>
+                    <label>Action<select class="app-input" @bind="_operation" data-testid="canonical-operation"><option value="CreateTodo">Create Todo</option>@if (_selectedId is not null) { <option value="UpdateTask">Update selected task</option>@if (Selected?.Kind == CompanionTaskKind.Habit) { <option value="ScoreHabit">Record Habit scores</option> } else { <option value="CompleteTask">Complete selected task</option> } }</select></label>
+                    @if (_operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.UpdateTask)
+                    {
+                        <label>Task name<input class="app-input" maxlength="2048" @bind="_text" data-testid="canonical-text" /></label>
+                        <label>Notes<textarea class="app-input" maxlength="10000" @bind="_notes" data-testid="canonical-notes"></textarea></label>
+                        <label>Companion urgency<select class="app-input" @bind="_priority"><option value="Low">Low</option><option value="Normal">Normal</option><option value="High">High</option><option value="Urgent">Urgent</option></select></label>
+                        <label>Deadline<input class="app-input" type="date" value="@_deadline" @onchange="e => _deadline = e.Value?.ToString() ?? string.Empty" /></label>
+                        <details><summary>Habitica task details</summary>
+                            <p>Game difficulty is independent of Companion urgency. Blank values leave existing settings unchanged.</p>
+                            <label>Game difficulty<select class="app-input" @bind="_difficulty"><option value="">Default / unchanged</option><option value="0.1">Trivial</option><option value="1">Easy</option><option value="1.5">Medium</option><option value="2">Hard</option></select></label>
+                            <label>Attribute<select class="app-input" @bind="_attribute"><option value="">Default / unchanged</option><option value="Str">Strength</option><option value="Int">Intelligence</option><option value="Per">Perception</option><option value="Con">Constitution</option></select></label>
+                            <label class="checkbox-row"><input type="checkbox" @bind="_replaceChecklist" /><span>Replace checklist with the lines below</span></label>
+                            <label>Checklist, one item per line<textarea class="app-input" @bind="_checklist"></textarea></label>
+                            <p>An empty replacement clears the checklist. Unchanged lines retain their completion state.</p>
+                        </details>
+                    }
+                    @if (_operation == WorkspaceOperation.ScoreHabit)
+                    {
+                        <label>Direction<select class="app-input" @bind="_direction"><option value="Up">Positive</option><option value="Down">Negative</option></select></label>
+                        <label>Number of scores<input class="app-input" type="number" min="1" max="10" @bind="_count" /></label>
+                    }
+                    @if (_operation == WorkspaceOperation.CompleteTask && Selected?.Kind == CompanionTaskKind.Daily)
+                    {
+                        <label>Daily occurrence date<input class="app-input" type="date" value="@_occurrence" @onchange="e => _occurrence = e.Value?.ToString() ?? string.Empty" /></label>
+                        <p>The executor also checks the current Habitica day, due state and day readiness before any score.</p>
+                    }
+                    <label class="checkbox-row"><input type="checkbox" @bind="_project" data-testid="canonical-project" /><span>Request Habitica projection. Already linked tasks project changes automatically.</span></label>
+                    <MudButton OnClick="PrepareAsync" Variant="Variant.Filled" data-testid="canonical-preview">Review command</MudButton>
+                </fieldset>
+            }
+            @if (Workspace.Preview is { } preview)
+            {
+                <section class="companion-command-preview" aria-label="Review Companion command">
+                    <h3>Review before saving</h3>
+                    <dl>
+                        <dt>Action</dt><dd>@ActionLabel(preview.Command.Operation)</dd>
+                        <dt>Task</dt><dd>@(preview.Command.Patch?.Text ?? Selected?.Text ?? preview.Command.TaskId.ToString())</dd>
+                        @if (preview.Command.Patch is { } patch)
+                        {
+                            <dt>Notes</dt><dd>@(patch.ClearNotes ? "Clear notes" : patch.Notes ?? "Unchanged")</dd>
+                            <dt>Companion urgency</dt><dd>@(patch.Priority?.ToString() ?? "Unchanged")</dd>
+                            <dt>Deadline</dt><dd>@(patch.ClearDeadline ? "Clear deadline" : patch.Deadline?.ToString("yyyy-MM-dd") ?? "Unchanged")</dd>
+                            @if (patch.HabiticaDetails is { } details)
+                            {
+                                <dt>Game difficulty</dt><dd>@(details.Difficulty?.ToString(CultureInfo.InvariantCulture) ?? "Unchanged")</dd>
+                                <dt>Attribute</dt><dd>@(details.Attribute?.ToString() ?? "Unchanged")</dd>
+                                @if (details.Checklist is { } checklist) { <dt>Checklist replacement</dt><dd><ul>@foreach (var item in checklist) { <li>@item.Text · @(item.Completed ? "Completed" : "Open")</li> }</ul>@if (checklist.Count == 0) { <span>Clear checklist</span> }</dd> }
+                            }
+                        }
+                        @if (preview.Command.Operation == WorkspaceOperation.ScoreHabit) { <dt>Scores</dt><dd>@preview.Command.Count · @preview.Command.Direction</dd> }
+                        @if (preview.Command.OccurrenceDate is { } date) { <dt>Occurrence</dt><dd>@date.ToString("yyyy-MM-dd")</dd> }
+                    </dl>
+                    <p>@(preview.MayAffectHabitica ? "This command requests game effects. The separately enabled executor can apply them after canonical acceptance. Saving and projection are reported separately." : "This command saves Companion data without requesting a new Habitica projection.")</p>
+                    @if (Workspace.AcceptanceUnknown) { <p>The original acceptance is uncertain. Check its receipt or retry only this original command ID.</p><MudButton Disabled="@_busy" OnClick="@(() => RunAsync(() => Workspace.CheckOriginalAsync()))" Variant="Variant.Outlined">Check original receipt</MudButton> }
+                    <MudButton Disabled="@_busy" OnClick="@(() => RunAsync(() => Workspace.ConfirmAsync()))" Variant="Variant.Filled" data-testid="canonical-confirm">@(Workspace.AcceptanceUnknown ? "Retry original command" : "Confirm and save command")</MudButton>
+                    <MudButton Disabled="@(_busy || Workspace.AcceptanceUnknown)" OnClick="CancelPreview" Variant="Variant.Outlined">Cancel preview</MudButton>
+                </section>
+            }
+            else if (Workspace.HasPendingIntent)
+            {
+                <p>The preview response was not confirmed. Retry the original preview to recover its command ID.</p>
+                <MudButton Disabled="@_busy" OnClick="PrepareAsync" Variant="Variant.Outlined">Retry original preview</MudButton>
+                <MudButton Disabled="@_busy" OnClick="CancelPreview" Variant="Variant.Outlined">Cancel preview</MudButton>
+            }
+            @if (Workspace.LastReceipt is { } receipt)
+            {
+                <p data-testid="canonical-receipt">Saved in Companion: @(receipt.SavedInCompanion ? "Yes" : "Unconfirmed"). Habitica projection: @receipt.HabiticaProjectionStatus. Accepted events: @receipt.AcceptedEventCount. Confirmed effects: @receipt.ConfirmedProjectionCount / @receipt.TotalProjectionCount.</p>
+                @if (receipt.FailurePosition is { } position) { <p>Projection stopped at effect @position. @receipt.Failure. Review the original command before further game effects.</p> }
+            }
+            @if (Workspace.IsCloud && _selectedId is not null)
+            {
+                <fieldset class="companion-task-form" disabled="@(_busy || Workspace.HasPendingIntent)">
+                    <legend>Link an existing Habitica task</legend>
+                    <p>Use the exact Habitica task ID. Review both records before linking. Linking preserves Companion fields and does not change Habitica state.</p>
+                    <label>Habitica task ID<input class="app-input" @bind="_externalId" /></label>
+                    <MudButton OnClick="PreviewLinkAsync" Variant="Variant.Outlined">Preview task link</MudButton>
+                    @if (Workspace.LinkPreview is { } link)
+                    {
+                        <dl><dt>Companion task</dt><dd>@link.Task.Text · @link.Task.Kind · @link.Task.State</dd><dt>Habitica task</dt><dd>@link.External.Text · @link.External.Kind · @(link.External.Completed ? "Completed" : "Open")</dd></dl>
+                        <details><summary>Habitica notes</summary><p>@link.External.Notes</p></details>
+                        @if (link.PendingCommandCount > 0) { <p>Resolve @link.PendingCommandCount pending projected commands before linking.</p> }
+                        <MudButton Disabled="@(link.PendingCommandCount > 0)" OnClick="@(() => RunAsync(() => Workspace.AdoptLinkAsync()))" Variant="Variant.Filled">Confirm reviewed task link</MudButton>
+                    }
+                </fieldset>
+            }
+            <details><summary>Recent command history</summary><ul>@foreach (var entry in snapshot.Commands.Reverse().Take(10)) { <li>@(entry.TaskSnapshot?.Text ?? "Task") · @entry.Command.Operation · @entry.ProjectionState · @entry.ConfirmedEffects / @entry.Effects.Count effects <small>@entry.Command.Id</small></li> }</ul></details>
+        }
+        @if (_error is not null) { <p role="alert">@_error</p> }
+        @if (Workspace.Message is not null) { <p role="status">@Workspace.Message</p> }
+    }
+</div>
+
+@code {
+    private bool _busy, _project, _replaceChecklist;
+    private string _externalId = "", _text = "", _notes = "", _deadline = "", _difficulty = "", _attribute = "", _checklist = "", _occurrence = "";
+    private string? _error, _account;
+    private Guid? _selectedId;
+    private int _count = 1;
+    private WorkspaceOperation _operation;
+    private CompanionPriority _priority = CompanionPriority.Normal;
+    private HabitScoreDirection _direction;
+    private CompanionTask? Selected => Workspace.Snapshot?.Document.Tasks.FirstOrDefault(task => task.Id == _selectedId);
+    protected override void OnInitialized() { _account = AccountKey; Session.Changed += OnSessionChanged; }
+    private string AccountKey => Session.State.IsAuthenticated ? Session.State.UserId ?? "" : "";
+    private void OnSessionChanged() { if (_account != AccountKey) { _account = AccountKey; Workspace.Forget(); NewTodo(); } _ = InvokeAsync(StateHasChanged); }
+    private async Task RunAsync(Func<Task> action)
+    {
+        if (_busy) return; _busy = true; _error = null;
+        try { await action(); }
+        catch (InvalidOperationException error) { _error = error.Message; }
+        catch { _error = "Workspace action could not be confirmed. Keep the original preview and check its receipt before retrying."; }
+        finally { _busy = false; }
+    }
+    private void NewTodo() { Workspace.CancelLinkPreview(); _externalId = ""; _selectedId = null; _operation = WorkspaceOperation.CreateTodo; _text = _notes = _deadline = _difficulty = _attribute = _checklist = ""; _priority = CompanionPriority.Normal; _project = _replaceChecklist = false; _count = 1; }
+    private void SelectTask(CompanionTask task)
+    {
+        Workspace.CancelLinkPreview(); _externalId = ""; _selectedId = task.Id; _operation = WorkspaceOperation.UpdateTask; _text = task.Text; _notes = task.Notes ?? ""; _priority = task.Priority; _deadline = task.Deadline?.ToString("yyyy-MM-dd") ?? "";
+        _difficulty = task.HabiticaDetails?.Difficulty?.ToString(CultureInfo.InvariantCulture) ?? ""; _attribute = task.HabiticaDetails?.Attribute?.ToString() ?? "";
+        _checklist = string.Join("\n", task.HabiticaDetails?.Checklist?.Select(item => item.Text) ?? []); _project = _replaceChecklist = false; _count = 1;
+    }
+    private static DateOnly? Date(string value) => value.Length == 0 ? null : DateOnly.ParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+    private Task PrepareAsync() => RunAsync(() => Workspace.PrepareAsync(Input()));
+    private WorkspaceTaskInput Input()
+    {
+        var current = _operation == WorkspaceOperation.UpdateTask ? Selected?.HabiticaDetails : null;
+        double? difficulty = _difficulty.Length == 0 ? null : double.Parse(_difficulty, CultureInfo.InvariantCulture);
+        HabiticaTaskAttribute? attribute = _attribute.Length == 0 ? null : Enum.Parse<HabiticaTaskAttribute>(_attribute);
+        IReadOnlyList<TaskChecklistItem>? checklist = null;
+        if (_replaceChecklist)
+        {
+            var prior = Selected?.HabiticaDetails?.Checklist ?? [];
+            checklist = _checklist.Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).Select((text, index) => index < prior.Count && prior[index].Text == text ? prior[index] : new TaskChecklistItem(Guid.NewGuid(), text)).ToArray();
+        }
+        if (difficulty == current?.Difficulty) difficulty = null;
+        if (attribute == current?.Attribute) attribute = null;
+        var details = difficulty is null && attribute is null && checklist is null ? null : new HabiticaTaskDetails(difficulty, attribute, checklist);
+        return new(_operation, _selectedId, _text, _notes, _priority, Date(_deadline), details, _project, _direction, _count, Date(_occurrence));
+    }
+    private Task PreviewLinkAsync() => RunAsync(async () =>
+    {
+        if (_selectedId is not { } taskId || !Guid.TryParse(_externalId, out var externalId) || externalId == Guid.Empty) throw new InvalidOperationException("Select a Companion task and enter an exact Habitica task ID.");
+        await Workspace.PreviewLinkAsync(taskId, externalId);
+    });
+    private void CancelPreview() { Workspace.CancelPreview(); _error = null; }
+    private Task SelectWorkspaceAsync(ChangeEventArgs args) => Guid.TryParse(args.Value?.ToString(), out var id) ? RunAsync(() => Workspace.LoadAsync(false, id)) : Task.CompletedTask;
+    private static string ActionLabel(WorkspaceOperation operation) => operation switch { WorkspaceOperation.CreateTodo => "Create Todo", WorkspaceOperation.UpdateTask => "Update task", WorkspaceOperation.CompleteTask => "Record completion", _ => "Record Habit scores" };
+    public void Dispose() => Session.Changed -= OnSessionChanged;
+}

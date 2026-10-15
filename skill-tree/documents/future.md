@@ -350,6 +350,63 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
+### Recover expired cloud workspace access
+
+```yaml
+id: T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89
+priority: 195
+status: Ready
+parent_pending_ids: ["P-6aae2186-4693-4f67-9cf5-71e9a89d0de3"]
+processing_run_id: PR-bd3e1004-5d10-48a0-95b3-aba3e356af25
+root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+relation: blocker
+depends_on: []
+```
+
+Goal:
+- Recover expired cloud access without replacing an uncertain accepted command.
+
+Current behavior:
+- Connected Settings has no revalidation control, and a failed cloud reload can hide the original command preview.
+
+Desired behavior:
+- Explicit renewed consent revalidates cloud access from the current PWA account.
+- The editor preserves uncertain original command identity across unavailable reloads and connection renewal.
+
+Touch:
+- Workspace Settings, typed cloud client/controller and focused UI/lifecycle tests.
+
+Discovery allowance:
+- Inspect current session renewal and generation guards; reuse the existing enrollment/connection flow.
+
+Out of scope:
+- Real enrollment, deployment, changes to granted capabilities and automatic credential storage.
+
+Implementation constraints:
+- Renewal requires an explicit action and the existing data-handling disclosure.
+- Account changes discard old responses; renewal never creates another canonical command for a pending intent.
+
+Failure handling:
+- Preserve original command IDs on transport uncertainty and keep receipt recovery available.
+
+Questions and required clarifications:
+- None. The owner-approved cloud contract already defines connection consent and command recovery.
+
+Validation:
+- Build the app; qualify expired/unavailable cloud reads, renewed connection, stale responses and original receipt recovery with synthetic services.
+- Check rebuilt Settings and Tasks behavior in the browser.
+
+Acceptance:
+- Connected Settings offers an explicitly consented renewal path and rejects stale responses.
+- An unavailable reload preserves the original uncertain preview and successful renewal permits receipt recovery without duplicate acceptance.
+
+Documentation updates:
+- skill-tree/documents/features.md and skill-tree/documents/testing.md.
+
+Risks:
+- Lost intent identity and accidental duplicate task acceptance after reconnection.
+
 ### Add Safe Task Mutation Tools
 
 ```yaml
@@ -361,7 +418,7 @@ processing_run_id: null
 root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
 related_task_id: null
 relation: main
-depends_on: ["T-53352a18-54d2-57b6-accc-91f8e6dfad13", "T-924119e2-17fd-4a06-b332-60839c849ade", "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17", "T-4971181f-827f-4945-af27-4f4bc8ded5c8", "T-be68f853-9737-4657-a8a4-7aff8dfc497b", "T-773bb444-a0e6-45b9-bdcb-18561bb6182f", "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9", "T-49eaa44e-5c98-4219-a380-4201e4143494"]
+depends_on: ["T-53352a18-54d2-57b6-accc-91f8e6dfad13", "T-924119e2-17fd-4a06-b332-60839c849ade", "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17", "T-4971181f-827f-4945-af27-4f4bc8ded5c8", "T-be68f853-9737-4657-a8a4-7aff8dfc497b", "T-773bb444-a0e6-45b9-bdcb-18561bb6182f", "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9", "T-49eaa44e-5c98-4219-a380-4201e4143494", "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89"]
 ```
 
 Pending scope gates:
@@ -370,7 +427,7 @@ Pending scope gates:
 Migration source:
 - Imported numbered contract 6 from PR #1; originating Pending identity records imported intent, not a new Process Pending result.
 
-Integration gate: **Blocked pending E02/E03/E04/E05** (and E07 for unattended hosted execution). The legacy section below documents useful semantic tool contracts and validation, but **the target write implementation MUST call the Companion authoritative command API** (`create task / update / completion event / outbox`) rather than directly calling Habitica from MCP. MCP response must report `savedInCompanion` separately from `habiticaProjectionStatus`. Do not expose a direct-write parallel path even as a convenient MVP shortcut. Add native category/project/goal/label tools under E13; authoring native tool schemas is a high-level epic until domain definitions are approved.
+Integration gate: The approved E02/E03/E04/E05/E07 dependencies have completed local qualification. The selected task now integrates canonical reads, reviewed preparation and exact command acceptance into MCP and the PWA. Both surfaces must call the same authoritative command API and report saved state separately from Habitica projection. Native category/project/goal/label tools remain E13 scope.
 
 Goal:
 - Add the smallest useful Companion task-command surface with separate Habitica projection outcomes.
@@ -467,7 +524,7 @@ Mutation result contract:
 - explicit ambiguous-state flag when the upstream result is uncertain.
 
 Current behavior:
-- Companion's current task mutations target Habitica; the canonical Companion command/outbox layer is not implemented.
+- Canonical commands, local/cloud persistence, verified projection and separately opted-in execution are implemented. The legacy Tasks page still scores Habitica directly; the selected task adds separate canonical controls and MCP routing.
 
 Desired behavior:
 - MCP writes persist Companion commands via the same authoritative command API used by the PWA, and separately report locally saved vs Habitica-projected outcomes.

@@ -40,7 +40,7 @@ public sealed class WorkspaceCloudClient : IWorkspaceCloudClient
             var result = await response.Content.ReadFromJsonAsync<Connection>(cancellationToken);
             if (result is null || result.WorkspaceId == Guid.Empty || result.ConsentVersion != "workspace-v1" || result.ExpiresAtUtc <= DateTimeOffset.UtcNow
                 || !System.Text.RegularExpressions.Regex.IsMatch(result.SessionToken ?? "", "^[A-Za-z0-9_-]{43}$") || generation != _generation) return new(false, "Cloud connection could not be confirmed.");
-            WorkspaceId = result.WorkspaceId; _token = result.SessionToken;
+            _generation++; WorkspaceId = result.WorkspaceId; _token = result.SessionToken;
             ExecutorEnabled = result.ExecutorEnabled; ExecutorAvailable = result.ExecutorAvailable;
             return new(true, "Cloud workspace connected for this tab. Background execution is separately controlled. Browser data has not been uploaded.");
         }
@@ -119,7 +119,7 @@ public sealed class WorkspaceCloudClient : IWorkspaceCloudClient
             var result = await response.Content.ReadFromJsonAsync<Transfer>(cancellationToken);
             if (result is null || !result.Accepted || result.WorkspaceId != snapshot.Document.Id || result.TransferId != snapshot.Authority.TransferId || generation != _generation)
                 return new(false, "Transfer receipt could not be validated. The local copy remains frozen.");
-            WorkspaceId = result.WorkspaceId; ExecutorEnabled = result.ExecutorEnabled;
+            _generation++; WorkspaceId = result.WorkspaceId; ExecutorEnabled = result.ExecutorEnabled;
             return new(true, "Workspace transferred. The local copy cannot execute tasks. Background execution remains separately controlled.");
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
@@ -127,6 +127,102 @@ public sealed class WorkspaceCloudClient : IWorkspaceCloudClient
     }
 
     public void ForgetSession() { _generation++; _token = null; WorkspaceId = null; ExecutorEnabled = false; ExecutorAvailable = false; }
+    public async Task<WorkspaceJournalSnapshot?> LoadWorkspaceAsync(CancellationToken cancellationToken)
+    {
+        var result = await ExportAsync(cancellationToken);
+        return result.Succeeded && result.Json is not null ? WorkspaceJournalJson.Deserialize(result.Json) : null;
+    }
+
+    public async Task<WorkspaceTaskResponse<WorkspaceCommandPreview>> PrepareCommandAsync(Guid requestId, WorkspaceCommand intent, CancellationToken cancellationToken)
+    {
+        if (WorkspaceId != intent.WorkspaceId) return new(false, null, "The workspace connection changed.");
+        var command = WorkspaceTaskApiJson.Element(intent);
+        var args = new Dictionary<string, object?>
+        {
+            ["requestId"] = requestId, ["operation"] = command.GetProperty("operation"), ["patch"] = command.GetProperty("patch"),
+            ["expectedRevision"] = intent.ExpectedRevision, ["direction"] = command.GetProperty("direction"), ["count"] = intent.Count,
+            ["occurrenceDate"] = command.GetProperty("occurrenceDate"), ["projectToHabitica"] = intent.ProjectToHabitica
+        };
+        if (intent.Operation != WorkspaceOperation.CreateTodo) args["taskId"] = intent.TaskId;
+        var result = await CallTaskAsync<WorkspaceCommandPreview>("prepare_task_command", args, cancellationToken);
+        if (result.Succeeded && result.Value is { } preview && (preview.Command.WorkspaceId != intent.WorkspaceId || preview.PreparedCommandId != preview.Command.Id || preview.Command.Operation != intent.Operation || preview.CorrelationId == Guid.Empty || preview.PreparedCommandId == Guid.Empty))
+            return new(false, null, "The command preview could not be validated.", true);
+        return result;
+    }
+
+    public async Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>> AcceptCommandAsync(WorkspaceCommandPreview preview, CancellationToken cancellationToken)
+    {
+        if (WorkspaceId != preview.Command.WorkspaceId) return new(false, null, "The workspace connection changed.");
+        var tool = preview.Command.Operation switch { WorkspaceOperation.CreateTodo => "create_todo", WorkspaceOperation.UpdateTask => "update_task", WorkspaceOperation.CompleteTask => "complete_task", WorkspaceOperation.ScoreHabit => "score_habit", _ => throw new InvalidOperationException("Unsupported command.") };
+        var result = await CallTaskAsync<WorkspaceMutationReceipt>(tool, new { commandId = preview.PreparedCommandId }, cancellationToken, preview.PreparedCommandId);
+        if (result.Succeeded && result.Value is { } receipt && (receipt.TaskId != preview.Command.TaskId || receipt.Operation != System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(preview.Command.Operation.ToString())))
+            return new(false, null, "The command receipt identity did not match. Check the original command before retrying.", true);
+        return result;
+    }
+
+    public Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>> ReadCommandAsync(Guid commandId, CancellationToken cancellationToken) =>
+        CallTaskAsync<WorkspaceMutationReceipt>("get_task_command", new { commandId }, cancellationToken, commandId);
+
+    public async Task<WorkspaceTaskResponse<WorkspaceProjectionPreview>> PreviewLinkAsync(Guid taskId, Guid habiticaTaskId, CancellationToken cancellationToken)
+    {
+        if (WorkspaceId is null) return new(false, null, "Connect the cloud workspace first.");
+        var generation = _generation; var workspaceId = WorkspaceId;
+        try
+        {
+            using var request = Request(HttpMethod.Post, "projection/preview"); request.Content = JsonContent.Create(new { taskId, habiticaTaskId });
+            using var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            if (!response.IsSuccessStatusCode) return new(false, null, "The link preview is unavailable. Check the task identity, connection and quota before trying again.");
+            var preview = WorkspaceTaskApiJson.Deserialize<WorkspaceProjectionPreview>(await BoundedTextAsync(response.Content, cancellationToken));
+            if (generation != _generation || WorkspaceId != workspaceId || preview.WorkspaceId != workspaceId || preview.Task.Id != taskId || preview.External.Id != habiticaTaskId || preview.AccessEpoch == Guid.Empty || preview.ExpectedRevision < 1 || preview.PendingCommandCount < 0
+                || !System.Text.RegularExpressions.Regex.IsMatch(preview.External.Fingerprint ?? "", "^[a-f0-9]{64}$")) return new(false, null, "The link preview could not be validated.");
+            return new(true, preview, "Review the separate Companion and Habitica task states before linking.");
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
+        catch { return new(false, null, "The link preview could not be validated."); }
+    }
+
+    public async Task<WorkspaceActionResult> AdoptLinkAsync(WorkspaceProjectionPreview preview, CancellationToken cancellationToken)
+    {
+        if (WorkspaceId is null || preview.WorkspaceId != WorkspaceId || preview.PendingCommandCount != 0) return new(false, "Resolve pending projected commands before linking.");
+        var generation = _generation;
+        try
+        {
+            using var request = Request(HttpMethod.Post, "projection/adopt"); request.Content = JsonContent.Create(new { taskId = preview.Task.Id, habiticaTaskId = preview.External.Id, expectedWorkspaceId = preview.WorkspaceId, expectedAccessEpoch = preview.AccessEpoch, expectedRevision = preview.ExpectedRevision, expectedFingerprint = preview.External.Fingerprint });
+            using var response = await _http.SendAsync(request, cancellationToken);
+            if (!response.IsSuccessStatusCode) return new(false, "The link was not confirmed. Reload current task states and review a fresh preview.");
+            var result = await response.Content.ReadFromJsonAsync<Adoption>(cancellationToken);
+            if (result is null || !result.Adopted || result.TaskId != preview.Task.Id || result.HabiticaTaskId != preview.External.Id || result.Revision <= preview.ExpectedRevision || generation != _generation)
+                return new(false, "The link receipt could not be validated. Reload before reviewing another link.");
+            return new(true, "Tasks linked without changing their fields or Habitica state. Future accepted commands can request projection.");
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
+        catch { return new(false, "Link outcome is unknown. Reload and review current mapping before another confirmation."); }
+    }
+
+    private async Task<WorkspaceTaskResponse<T>> CallTaskAsync<T>(string tool, object args, CancellationToken cancellationToken, Guid? expectedCommandId = null)
+    {
+        if (WorkspaceId is null) return new(false, default, "Connect the cloud workspace first.");
+        var generation = _generation;
+        try
+        {
+            using var request = Request(HttpMethod.Post, "task-api");
+            request.Content = new StringContent(WorkspaceTaskApiJson.Serialize(new { tool, arguments = args }), System.Text.Encoding.UTF8, "application/json");
+            using var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            if (!response.IsSuccessStatusCode) return new(false, default, "The command was not confirmed. Check its original receipt; review current state before preparing another action.", (int)response.StatusCode >= 500);
+            var value = WorkspaceTaskApiJson.Deserialize<T>(await BoundedTextAsync(response.Content, cancellationToken));
+            if (generation != _generation) return new(false, default, "The account session changed; the response was discarded.", true);
+            if (value is WorkspaceMutationReceipt receipt && (receipt.CommandId != expectedCommandId || receipt.TaskId == Guid.Empty || receipt.CorrelationId == Guid.Empty || !receipt.SavedInCompanion
+                || receipt.ConfirmedProjectionCount < 0 || receipt.TotalProjectionCount is < 0 or > 11 || receipt.ConfirmedProjectionCount > receipt.TotalProjectionCount
+                || receipt.AcceptedEventCount is < 0 or > 10 || receipt.FailurePosition is { } position && (position < 1 || position > receipt.TotalProjectionCount)
+                || !new[] { "pending", "confirmed", "blocked", "UnknownOutcome", "notRequested", "cancelled" }.Contains(receipt.HabiticaProjectionStatus)
+                || receipt.OutcomeUnknown != (receipt.HabiticaProjectionStatus == "UnknownOutcome")
+                || receipt.HabiticaProjectionStatus == "confirmed" && receipt.ConfirmedProjectionCount != receipt.TotalProjectionCount))
+                return new(false, default, "The command receipt could not be validated. Check the original command before retrying.", true);
+            return new(true, value, "Workspace command state received.");
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
+        catch { return new(false, default, "Command outcome is unknown. Reuse the original request or command ID to check its receipt.", true); }
+    }
     private HttpRequestMessage Request(HttpMethod method, string path)
     {
         var request = new HttpRequestMessage(method, new Uri(_baseUri!, path));
@@ -144,5 +240,6 @@ public sealed class WorkspaceCloudClient : IWorkspaceCloudClient
     private sealed record Connection(Guid WorkspaceId, string? SessionToken, DateTimeOffset ExpiresAtUtc, string ConsentVersion, bool ExecutorEnabled = false, bool ExecutorAvailable = false);
     private sealed record Executor(bool ExecutorEnabled, bool ExecutorAvailable);
     private sealed record Transfer(bool Accepted, Guid TransferId, Guid WorkspaceId, bool ExecutorEnabled);
+    private sealed record Adoption(bool Adopted, Guid TaskId, Guid HabiticaTaskId, long Revision);
     private sealed record Cleanup(bool Deleted, bool Disconnected);
 }

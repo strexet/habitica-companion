@@ -38,19 +38,17 @@
       "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17": "O-a050001b-edd5-41b3-ba4e-3a9005c3c5e4",
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b"
     },
-    "current_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+    "current_task_id": "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89",
     "cycle_signature": "facb3459d7df777754fd7b9669e342fad417112721b1bec77587bbf29e214e8b",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Implement the selected expired-session recovery blocker, qualify renewal and retained uncertain preview, then resume parent acceptance.",
     "partial_work": [
-      "Owner approved workspace defaults; required E02/E03/E04/E05/E07 dependencies were promoted with preserved provenance.",
-      "Canonical domain completed in a47a487.",
-      "Typed command journal completed in 6b42722.",
-      "Atomic local persistence and portability completed in b7dcc06; real browser rollback/concurrency/upgrade/reload checks pass.",
-      "Current cloud dependency requires private Auth identity validation, isolated workspace D1, atomic command acceptance and PWA consent/lifecycle integration."
+      "Root task API, MCP scope/prepare/acceptance surface and PWA editor are implemented and compile.",
+      "Root full suites pass: 516 .NET, 50 Auth, 34 Workspace. Native/MCP preview/receipt recovery, quota/unknown outcomes, scope checks, local UI confirmation and linking are covered synthetically.",
+      "Root acceptance remains open for required expired-session recovery T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89 and final rebuilt browser checks."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -62,7 +60,8 @@
       "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07",
       "P-b9215ddd-d598-4c25-abb2-7a6d9a1d7845",
       "P-6ea76a88-a928-4235-aa55-c80466e20b54",
-      "P-642949f7-826f-45aa-8e6f-9d9ffabbea97"
+      "P-642949f7-826f-45aa-8e6f-9d9ffabbea97",
+      "P-6aae2186-4693-4f67-9cf5-71e9a89d0de3"
     ],
     "phase": "implement",
     "processing_results": [
@@ -240,6 +239,23 @@
         "task_keys": {
           "task-fields": "T-49eaa44e-5c98-4219-a380-4201e4143494"
         }
+      },
+      {
+        "created_ids": [
+          "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89"
+        ],
+        "dispositions": {
+          "P-6aae2186-4693-4f67-9cf5-71e9a89d0de3": {
+            "reason": "Connected Settings and typed client source establish the renewal gap; existing generation guards and durable receipts define the bounded repair.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-bd3e1004-5d10-48a0-95b3-aba3e356af25",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-6aae2186-4693-4f67-9cf5-71e9a89d0de3"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -260,7 +276,8 @@
       "T-77d41018-e04b-4a88-b92c-079b3d8ef421",
       "T-80bb3b80-8a9c-4252-9924-5a100f746f93",
       "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-      "T-49eaa44e-5c98-4219-a380-4201e4143494"
+      "T-49eaa44e-5c98-4219-a380-4201e4143494",
+      "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89"
     ],
     "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
     "snapshot": [
@@ -280,7 +297,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "7c70e412a9d662c031e9d4ad5016379f7d4d130d30a62f0840cbcdfaeab1d54a",
+  "source_hash": "595fa92919a481aa393f2b375fb831bdbabf1b3ecbf4000965d5b87fedc4c50d",
   "tasks": [
     {
       "depends_on": [],
@@ -409,6 +426,22 @@
       "title": "E14 Mobile UX validation, observability, migration and gradual adoption"
     },
     {
+      "depends_on": [],
+      "id": "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89",
+      "line": 353,
+      "parent_pending_ids": [
+        "P-6aae2186-4693-4f67-9cf5-71e9a89d0de3"
+      ],
+      "priority": 195,
+      "processing_run_id": "PR-bd3e1004-5d10-48a0-95b3-aba3e356af25",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "relation": "blocker",
+      "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "status": "Ready",
+      "title": "Recover expired cloud workspace access"
+    },
+    {
       "depends_on": [
         "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
         "T-924119e2-17fd-4a06-b332-60839c849ade",
@@ -417,10 +450,11 @@
         "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
         "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
         "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
-        "T-49eaa44e-5c98-4219-a380-4201e4143494"
+        "T-49eaa44e-5c98-4219-a380-4201e4143494",
+        "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89"
       ],
       "id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-      "line": 353,
+      "line": 410,
       "parent_pending_ids": [
         "P-90b811d4-3aea-509c-8dca-84d5c892a637"
       ],
@@ -438,7 +472,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
-      "line": 543,
+      "line": 600,
       "parent_pending_ids": [
         "P-1590c3c7-25e6-589e-8efb-91f35d873b4e"
       ],
@@ -456,7 +490,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-      "line": 674,
+      "line": 731,
       "parent_pending_ids": [
         "P-d0950eec-bfbf-561f-b192-dcf8dde67488"
       ],
@@ -482,7 +516,7 @@
         "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"
       ],
       "id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "line": 785,
+      "line": 842,
       "parent_pending_ids": [
         "P-46dde168-2e75-53fd-b2c0-0c1769f7711d"
       ],
@@ -500,7 +534,7 @@
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 911,
+      "line": 968,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -516,7 +550,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1066,
+      "line": 1123,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -530,7 +564,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1103,
+      "line": 1160,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -544,7 +578,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1140,
+      "line": 1197,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -558,7 +592,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1273,
+      "line": 1330,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -572,7 +606,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1311,
+      "line": 1368,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -586,7 +620,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1345,
+      "line": 1402,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -600,7 +634,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1380,
+      "line": 1437,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -614,7 +648,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1414,
+      "line": 1471,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -628,7 +662,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1452,
+      "line": 1509,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -642,7 +676,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1479,
+      "line": 1536,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -656,7 +690,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1501,
+      "line": 1558,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -670,7 +704,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1528,
+      "line": 1585,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

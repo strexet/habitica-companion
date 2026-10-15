@@ -45,6 +45,12 @@ public sealed class SettingsPageTests : BunitContext
         public Task<Habitica.Application.Workspace.WorkspaceActionResult> ExportAsync(CancellationToken token) => throw new NotSupportedException();
         public Task<Habitica.Application.Workspace.WorkspaceActionResult> HandoffAsync(string archive, CancellationToken token) => throw new NotSupportedException();
         public Task<Habitica.Application.Workspace.WorkspaceActionResult> DisconnectAsync(bool delete, CancellationToken token) => throw new NotSupportedException();
+        public Task<Habitica.Domain.Workspace.WorkspaceJournalSnapshot?> LoadWorkspaceAsync(CancellationToken token) => throw new NotSupportedException();
+        public Task<Habitica.Application.Workspace.WorkspaceTaskResponse<Habitica.Application.Workspace.WorkspaceCommandPreview>> PrepareCommandAsync(Guid requestId, Habitica.Domain.Workspace.WorkspaceCommand intent, CancellationToken token) => throw new NotSupportedException();
+        public Task<Habitica.Application.Workspace.WorkspaceTaskResponse<Habitica.Application.Workspace.WorkspaceMutationReceipt>> AcceptCommandAsync(Habitica.Application.Workspace.WorkspaceCommandPreview preview, CancellationToken token) => throw new NotSupportedException();
+        public Task<Habitica.Application.Workspace.WorkspaceTaskResponse<Habitica.Application.Workspace.WorkspaceMutationReceipt>> ReadCommandAsync(Guid id, CancellationToken token) => throw new NotSupportedException();
+        public Task<Habitica.Application.Workspace.WorkspaceTaskResponse<Habitica.Application.Workspace.WorkspaceProjectionPreview>> PreviewLinkAsync(Guid taskId, Guid externalId, CancellationToken token) => throw new NotSupportedException();
+        public Task<Habitica.Application.Workspace.WorkspaceActionResult> AdoptLinkAsync(Habitica.Application.Workspace.WorkspaceProjectionPreview preview, CancellationToken token) => throw new NotSupportedException();
         public void ForgetSession() { }
     }
 

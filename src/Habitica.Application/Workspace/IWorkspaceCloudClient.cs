@@ -14,6 +14,12 @@ public interface IWorkspaceCloudClient
     Task<WorkspaceActionResult> ExportAsync(CancellationToken cancellationToken);
     Task<WorkspaceActionResult> SetExecutorAsync(bool enabled, CancellationToken cancellationToken);
     Task<WorkspaceActionResult> HandoffAsync(string archive, CancellationToken cancellationToken);
+    Task<WorkspaceJournalSnapshot?> LoadWorkspaceAsync(CancellationToken cancellationToken);
+    Task<WorkspaceTaskResponse<WorkspaceCommandPreview>> PrepareCommandAsync(Guid requestId, WorkspaceCommand intent, CancellationToken cancellationToken);
+    Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>> AcceptCommandAsync(WorkspaceCommandPreview preview, CancellationToken cancellationToken);
+    Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>> ReadCommandAsync(Guid commandId, CancellationToken cancellationToken);
+    Task<WorkspaceTaskResponse<WorkspaceProjectionPreview>> PreviewLinkAsync(Guid taskId, Guid habiticaTaskId, CancellationToken cancellationToken);
+    Task<WorkspaceActionResult> AdoptLinkAsync(WorkspaceProjectionPreview preview, CancellationToken cancellationToken);
     Task<WorkspaceActionResult> DisconnectAsync(bool deleteWorkspace, CancellationToken cancellationToken);
     void ForgetSession();
 }
