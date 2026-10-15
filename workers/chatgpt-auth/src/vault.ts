@@ -1,4 +1,4 @@
-import { deriveProfileId, encryptCredential, tokenHash, newManagementToken, tokenMatches, validateKeySeparation, type HabiticaCredential } from "./cryptography";
+import { deriveProfileId, encryptCredential, decryptCredential, tokenHash, newManagementToken, tokenMatches, validateKeySeparation, type HabiticaCredential } from "./cryptography";
 import { resourceConfiguration } from "../../shared/resources";
 
 export const consentVersion = "integration-v1";
@@ -82,10 +82,16 @@ async function enroll(request: Request, env: AuthEnv): Promise<Response> {
   const name = await verifyHabitica(credential, env);
   const profileId = await deriveProfileId(credential.habiticaUserId, env.PROFILE_ID_KEY);
   const envelope = await encryptCredential(profileId, credential, env.CREDENTIAL_CURRENT_KEY_VERSION, credentialKeys(env));
+  const previous = await loadProfile(env, profileId);
+  let connectionId = crypto.randomUUID();
+  if (previous && !previous.revoked_at_utc && previous.credential_ciphertext && previous.credential_iv && previous.credential_key_version && previous.credential_schema_version === 1) {
+    const stored = await decryptCredential(profileId, { ciphertext: previous.credential_ciphertext, iv: previous.credential_iv, keyVersion: previous.credential_key_version, schemaVersion: 1 }, credentialKeys(env));
+    if (stored.habiticaUserId === credential.habiticaUserId && await tokenMatches(credential.apiToken, await tokenHash(stored.apiToken))) connectionId = previous.connection_id;
+  }
   const managementToken = newManagementToken();
   const hash = await tokenHash(managementToken);
   const now = new Date().toISOString();
-  await env.HABITICA_INTEGRATION_DB.prepare(`INSERT INTO integration_profiles
+  const upsert = env.HABITICA_INTEGRATION_DB.prepare(`INSERT INTO integration_profiles
     (profile_id, credential_ciphertext, credential_iv, credential_key_version, credential_schema_version,
      display_name_cache, created_at_utc, updated_at_utc, last_verified_at_utc, management_token_hash,
      management_token_rotated_at_utc, consent_version, consented_at_utc, connection_id)
@@ -96,8 +102,15 @@ async function enroll(request: Request, env: AuthEnv): Promise<Response> {
     updated_at_utc=excluded.updated_at_utc, last_verified_at_utc=excluded.last_verified_at_utc,
     management_token_hash=excluded.management_token_hash, management_token_rotated_at_utc=excluded.management_token_rotated_at_utc,
     consent_version=excluded.consent_version, consented_at_utc=excluded.consented_at_utc,
-    revoked_at_utc=NULL, generation=integration_profiles.generation+1, connection_id=excluded.connection_id`)
-    .bind(profileId, envelope.ciphertext, envelope.iv, envelope.keyVersion, envelope.schemaVersion, name, now, now, now, hash, now, consentVersion, now, crypto.randomUUID()).run();
+    revoked_at_utc=NULL, generation=integration_profiles.generation+1, connection_id=excluded.connection_id
+    WHERE integration_profiles.generation=?`)
+    .bind(profileId, envelope.ciphertext, envelope.iv, envelope.keyVersion, envelope.schemaVersion, name, now, now, now, hash, now, consentVersion, now, connectionId, previous?.generation ?? 0);
+  const writes = [upsert];
+  if (Boolean(env.OAUTH_ENABLED)) writes.push(env.HABITICA_INTEGRATION_DB.prepare(`UPDATE integration_read_state SET credential_repair_required=0
+    WHERE profile_id=? AND connection_id=? AND EXISTS(SELECT 1 FROM integration_profiles WHERE profile_id=? AND management_token_hash=?)`)
+    .bind(profileId, connectionId, profileId, hash));
+  const results = await env.HABITICA_INTEGRATION_DB.batch(writes);
+  if (!results[0].meta.changes) throw new VaultError("enrollment_changed", 409);
   return Response.json({ profileId, managementToken }, { status: 201, headers });
 }
 export async function managedProfile(request: Request, env: AuthEnv, profileId: string): Promise<IntegrationProfile> {

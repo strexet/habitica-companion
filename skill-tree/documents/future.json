@@ -11,7 +11,8 @@
       "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
       "T-924119e2-17fd-4a06-b332-60839c849ade",
       "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
-      "T-4971181f-827f-4945-af27-4f4bc8ded5c8"
+      "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+      "T-77d41018-e04b-4a88-b92c-079b3d8ef421"
     ],
     "completion_refs": {
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
@@ -20,6 +21,7 @@
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3": "O-48ebee79-cbbb-4c1c-829c-038c887076e9",
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8": "O-d3de5c55-c4ac-4eb9-9b46-36aa630adf68",
       "T-53352a18-54d2-57b6-accc-91f8e6dfad13": "O-02146734-4822-48de-81a5-71f0c7208776",
+      "T-77d41018-e04b-4a88-b92c-079b3d8ef421": "O-056e3e62-a872-45aa-953d-0452b29a71e3",
       "T-924119e2-17fd-4a06-b332-60839c849ade": "O-23ae7a58-8ca6-44f8-ab06-e245f94fae3d",
       "T-b883e33b-05a6-53d8-a9a5-d11d7008887f": "O-84147b67-67cd-4c09-80fe-17befff407d7",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df": "O-ed64ce15-7bea-467d-8a8b-06a3494a05fd",
@@ -34,10 +36,11 @@
     "mode": "all",
     "next_action": "implement",
     "partial_work": [
-      "OAuth/browser consent milestone completed in 6c1221f and e43a90d.",
-      "Read-only MCP milestone completed in 226abe2; 31 Worker tests, Inspector CLI and app build/browser checks pass.",
-      "T-4a1de222-156a-52cf-8966-262a2c8216ed remains blocked on canonical workspace and command API decisions.",
-      "E02/E03/E04/E05/E07 received scoped source research; Pending identities remain retained until owner decisions permit executable decomposition."
+      "Owner approved workspace defaults; required E02/E03/E04/E05/E07 dependencies were promoted with preserved provenance.",
+      "Canonical domain completed in a47a487.",
+      "Typed command journal completed in 6b42722.",
+      "Atomic local persistence and portability completed in b7dcc06; real browser rollback/concurrency/upgrade/reload checks pass.",
+      "Current cloud dependency requires private Auth identity validation, isolated workspace D1, atomic command acceptance and PWA consent/lifecycle integration."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -46,7 +49,8 @@
       "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035",
       "P-bbb755c5-37d7-5637-862d-17faa8e12f99",
       "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178",
-      "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07"
+      "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07",
+      "P-b9215ddd-d598-4c25-abb2-7a6d9a1d7845"
     ],
     "phase": "implement",
     "processing_results": [
@@ -171,6 +175,23 @@
           "local-storage": "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
           "projection": "T-773bb444-a0e6-45b9-bdcb-18561bb6182f"
         }
+      },
+      {
+        "created_ids": [
+          "T-77d41018-e04b-4a88-b92c-079b3d8ef421"
+        ],
+        "dispositions": {
+          "P-b9215ddd-d598-4c25-abb2-7a6d9a1d7845": {
+            "reason": "A synthetic OAuth fixture confirms session invalidation during unchanged verified enrollment.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-3581988f-8de3-4ea8-b4d0-b4e4a00b9068",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-b9215ddd-d598-4c25-abb2-7a6d9a1d7845"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -187,7 +208,8 @@
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
       "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
       "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
-      "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9"
+      "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
+      "T-77d41018-e04b-4a88-b92c-079b3d8ef421"
     ],
     "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
     "snapshot": [
@@ -207,7 +229,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "1e5de87e07238e2af2addcf445c3ad96692d23a8cdedc0b6171b587eb660f3de",
+  "source_hash": "4bdb68fa6d6a2de98a5668c70ecb55e73f59b8220573c0c3d77855ff1d2726b3",
   "tasks": [
     {
       "depends_on": [],
@@ -339,7 +361,8 @@
       "depends_on": [
         "T-924119e2-17fd-4a06-b332-60839c849ade",
         "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
-        "T-4971181f-827f-4945-af27-4f4bc8ded5c8"
+        "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+        "T-77d41018-e04b-4a88-b92c-079b3d8ef421"
       ],
       "id": "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
       "line": 353,

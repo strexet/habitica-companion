@@ -361,7 +361,7 @@ processing_run_id: PR-be6457c2-7735-441f-a88c-ad66e73c0004
 root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
 related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
 relation: blocker
-depends_on: ["T-924119e2-17fd-4a06-b332-60839c849ade", "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17", "T-4971181f-827f-4945-af27-4f4bc8ded5c8"]
+depends_on: ["T-924119e2-17fd-4a06-b332-60839c849ade", "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17", "T-4971181f-827f-4945-af27-4f4bc8ded5c8", "T-77d41018-e04b-4a88-b92c-079b3d8ef421"]
 ```
 
 Goal:
