@@ -1,0 +1,67 @@
+{
+  "task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "App build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Full .NET suites",
+      "result": "pass",
+      "passed": 519
+    },
+    {
+      "check": "All three Worker builds and type checks",
+      "result": "pass"
+    },
+    {
+      "check": "Auth suite",
+      "result": "pass",
+      "passed": 50
+    },
+    {
+      "check": "Workspace suite",
+      "result": "pass",
+      "passed": 34
+    },
+    {
+      "check": "Final expanded canonical API/MCP receipt suite",
+      "result": "pass",
+      "passed": 7
+    },
+    {
+      "check": "Final wrong access-epoch adoption negative control",
+      "result": "pass"
+    },
+    {
+      "check": "Rebuilt app disclosure and signed-out guard",
+      "result": "pass",
+      "evidence": "skill-tree/history/validation/task-tools-app-editor.jpg"
+    },
+    {
+      "check": "Synthetic real-Razor preview phone layout",
+      "result": "pass",
+      "viewport_width": 360,
+      "document_width": 345,
+      "evidence": "skill-tree/history/validation/task-tools-preview-phone.jpg"
+    }
+  ],
+  "coverage": [
+    "Shared authoritative preparation/acceptance API serves PWA and MCP; MCP has no upstream write binding",
+    "Stable request and server-issued command identities survive retries and lost acknowledgements",
+    "Exact native IDs, whitelisted partial patches, kind checks, scope checks, tenant checks, expiry and access epochs prevent unintended writes",
+    "Todo and Daily completion and bounded positive/negative Habit events use durable canonical commands",
+    "Structured results separate canonical save from pending, confirmed, quota-paused and unknown projection outcomes",
+    "Synthetic executor confirms repeated acceptance makes no second upstream effect",
+    "Expired unaccepted previews are cleaned up; accepted preparation bindings remain with command history",
+    "Required renewal and narrow restore bugs completed as separate commits"
+  ],
+  "limitations": [
+    "No real ChatGPT enrollment, deployment or real Habitica mutation occurred. MCP qualification uses the actual SDK with synthetic local service bindings.",
+    "Component tests qualify interactions; exported real-Razor HTML qualifies static narrow layout only. The ordinary app retains disabled cloud configuration.",
+    "Native project/goal/calendar/history-analysis tools remain outside this milestone."
+  ]
+}

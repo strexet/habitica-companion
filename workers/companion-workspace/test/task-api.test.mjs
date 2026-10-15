@@ -73,17 +73,17 @@ test('prepared partial updates, Todo and Daily completions, exact-name selection
 
 test('prepared receipts distinguish upstream uncertainty and quota from durable canonical acceptance without replay',async t=>{
  const {executeProfile}=await import('../src/executor.ts');
- for(const failure of ['unknown','quota']){
+ for(const failure of ['confirmed','unknown','quota']){
   let writes=0,reads=0;const f=await fixture(t,{workspace:true,projection:true,executor:true,habitica:async request=>{
    if(request.url.includes('user?userFields=_id,profile'))return Response.json({success:true,data:{_id:request.headers.get('x-api-user'),profile:{name:'Synthetic'}}});
-   if(request.method==='GET'){reads++;return new Response('',{status:failure==='quota'?429:404,headers:failure==='quota'?{'retry-after':'120'}:{}});}writes++;return new Response('',{status:502});
+   if(request.method==='GET'){reads++;return new Response('',{status:failure==='quota'?429:404,headers:failure==='quota'?{'retry-after':'120'}:{}});}writes++;if(failure==='confirmed'){const patch=await request.json();return Response.json({success:true,data:{id:'90000000-0000-4000-8000-000000000031',userId:request.headers.get('x-api-user'),text:patch.text,notes:patch.notes??'',type:'todo',alias:patch.alias,priority:1,attribute:'str',completed:false,checklist:[],group:{},challenge:{}}},{status:201});}return new Response('',{status:502});
   }});const p=await enrolled(f);const w=await connect(f,p);const preview=await(await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'createTodo',patch:{text:'Durable despite projection failure'},projectToHabitica:true})).json();
   const saved=await(await call(f,w,'create_todo',{commandId:preview.preparedCommandId})).json();assert.equal(saved.savedInCompanion,true);assert.equal(saved.habiticaProjectionStatus,'pending');
   assert.equal((await f.workspace.fetch(origin+'/executor',{method:'POST',headers:{authorization:`Bearer ${w.sessionToken}`,'content-type':'application/json'},body:JSON.stringify({enabled:true,consentVersion:'executor-v1'})})).status,200);
   const wait=async()=>{await f.workspaceDb.prepare("UPDATE workspace_runtime SET next_network_at_utc='2000-01-01T00:00:00Z'").run();await f.db.prepare("UPDATE integration_projection_state SET next_automated_at_utc='2000-01-01T00:00:00Z'").run();};
-  assert.equal(await executeProfile(await f.mf.getBindings('workspace'),p.profileId,{wait}),failure==='unknown'?'unknown':'refused');
-  const receipt=await(await call(f,w,'get_task_command',{commandId:preview.preparedCommandId})).json();assert.equal(receipt.savedInCompanion,true);assert.equal(receipt.habiticaProjectionStatus,failure==='unknown'?'UnknownOutcome':'pending');assert.equal(receipt.outcomeUnknown,failure==='unknown');assert.equal(receipt.failurePosition,1);assert.equal(receipt.confirmedProjectionCount,0);
-  const again=await(await call(f,w,'create_todo',{commandId:preview.preparedCommandId})).json();assert.deepEqual(again,receipt);assert.equal(reads,1);assert.equal(writes,failure==='unknown'?1:0);assert.equal((await f.workspaceDb.prepare('SELECT COUNT(*) AS n FROM workspace_commands').first()).n,1);
+  assert.equal(await executeProfile(await f.mf.getBindings('workspace'),p.profileId,{wait}),failure==='confirmed'?'applied':failure==='unknown'?'unknown':'refused');
+  const receipt=await(await call(f,w,'get_task_command',{commandId:preview.preparedCommandId})).json();assert.equal(receipt.savedInCompanion,true);assert.equal(receipt.habiticaProjectionStatus,failure==='confirmed'?'confirmed':failure==='unknown'?'UnknownOutcome':'pending');assert.equal(receipt.outcomeUnknown,failure==='unknown');assert.equal(receipt.failurePosition,failure==='confirmed'?null:1);assert.equal(receipt.confirmedProjectionCount,failure==='confirmed'?1:0);
+  const again=await(await call(f,w,'create_todo',{commandId:preview.preparedCommandId})).json();assert.deepEqual(again,receipt);assert.equal(reads,1);assert.equal(writes,failure==='quota'?0:1);assert.equal((await f.workspaceDb.prepare('SELECT COUNT(*) AS n FROM workspace_commands').first()).n,1);
  }
 });
 

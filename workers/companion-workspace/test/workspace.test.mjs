@@ -154,6 +154,7 @@ test('projection adoption requires reviewed fresh metadata and never writes upst
  const approval={taskId:c.taskId,habiticaTaskId:externalId,expectedWorkspaceId:w.workspaceId,expectedAccessEpoch:preview.accessEpoch,expectedRevision:preview.expectedRevision,expectedFingerprint:preview.external.fingerprint};
  assert.equal((await call(f,'/projection/adopt',w.sessionToken,approval)).status,409);
  const fresh=await(await call(f,'/projection/preview',w.sessionToken,{taskId:c.taskId,habiticaTaskId:externalId})).json();
+ assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedAccessEpoch:crypto.randomUUID(),expectedFingerprint:fresh.external.fingerprint})).status,409);
  assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedFingerprint:fresh.external.fingerprint})).status,200);
  const exported=await(await call(f,'/export',w.sessionToken)).json(); assert.equal(exported.document.tasks[0].id,c.taskId); assert.equal(exported.document.tasks[0].text,c.patch.text); assert.equal(exported.document.projections[0].habiticaTaskId,externalId); assert.equal(taskWrites,0);
  const update={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:exported.document.revision,operation:'updateTask',taskId:c.taskId,patch:{notes:'An explicit later edit'}};

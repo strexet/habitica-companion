@@ -50,8 +50,8 @@
                             <label>Game difficulty<select class="app-input" @bind="_difficulty"><option value="">Default / unchanged</option><option value="0.1">Trivial</option><option value="1">Easy</option><option value="1.5">Medium</option><option value="2">Hard</option></select></label>
                             <label>Attribute<select class="app-input" @bind="_attribute"><option value="">Default / unchanged</option><option value="Str">Strength</option><option value="Int">Intelligence</option><option value="Per">Perception</option><option value="Con">Constitution</option></select></label>
                             <label class="checkbox-row"><input type="checkbox" @bind="_replaceChecklist" /><span>Replace checklist with the lines below</span></label>
-                            <label>Checklist, one item per line<textarea class="app-input" @bind="_checklist"></textarea></label>
-                            <p>An empty replacement clears the checklist. Unchanged lines retain their completion state.</p>
+                            <label>Checklist, one item per line<textarea class="app-input" maxlength="25700" @bind="_checklist"></textarea></label>
+                            <p>An empty replacement clears the checklist. Lines kept at the same position retain their completion state.</p>
                         </details>
                     }
                     @if (_operation == WorkspaceOperation.ScoreHabit)
