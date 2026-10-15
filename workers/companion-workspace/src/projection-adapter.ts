@@ -1,3 +1,4 @@
+import type { HabiticaTaskDetails } from "../../shared/task-details.ts";
 import { workspaceDocument, type WorkspaceDocument, type CompanionTask, type Projection } from "../../shared/workspace-domain.ts";
 import { projectionAlias, remotePatchMatches, type RemoteTask, type RemotePatch } from "../../shared/projection.ts";
 import { WorkspaceError, uuid } from "../../shared/workspace-http.ts";
@@ -8,10 +9,11 @@ export type ProjectionStep = { kind: "inspect"; operation: "inspect" | "inspectD
  | { kind: "account" } | { kind: "blocked"; code: string }
  | { kind: "write"; operation: "create" | "update" | "score"; arguments: Record<string,unknown> }
  | { kind: "observedApplied"; task: RemoteTask; evidence: string };
-function createPatch(task: CompanionTask): RemotePatch { return { text: task.text, notes: task.notes ?? "", ...(task.deadline ? { date: task.deadline } : {}) }; }
+function detailsPatch(details?:HabiticaTaskDetails|null):Partial<RemotePatch>{return {...(details?.difficulty!=null?{priority:details.difficulty}:{}),...(details?.attribute!=null?{attribute:details.attribute}:{}),...(details?.checklist!=null?{checklist:details.checklist}:{} )};}
+function createPatch(task: CompanionTask): RemotePatch { return { ...detailsPatch(task.habiticaDetails), text: task.text, notes: task.notes ?? "", ...(task.deadline ? { date: task.deadline } : {}) }; }
 function updatePatch(entry: CommandEntry): RemotePatch {
  const patch = entry.command.patch; if (!patch) return {};
- return { ...(patch.text === null ? {} : { text: patch.text }), ...(patch.clearNotes || patch.notes !== null ? { notes: patch.clearNotes ? "" : patch.notes! } : {}), ...(patch.clearDeadline || patch.deadline !== null ? { date: patch.clearDeadline ? null : patch.deadline! } : {}) };
+ return { ...detailsPatch(patch.habiticaDetails), ...(patch.text === null ? {} : { text: patch.text }), ...(patch.clearNotes || patch.notes !== null ? { notes: patch.clearNotes ? "" : patch.notes! } : {}), ...(patch.clearDeadline || patch.deadline !== null ? { date: patch.clearDeadline ? null : patch.deadline! } : {}) };
 }
 export const patchMatches = remotePatchMatches;
 export function projectionStep(document: WorkspaceDocument, entry: CommandEntry, observation?: Observation, account?: AccountObservation): ProjectionStep {

@@ -60,6 +60,16 @@ function stableJson(value) {
   if (Array.isArray(value)) return "[" + value.map(stableJson).join(",") + "]";
   return "{" + Object.keys(value).sort().map(key => JSON.stringify(key) + ":" + stableJson(value[key])).join(",") + "}";
 }
+function commandIdentityJson(value) {
+  const normalized = structuredClone(value);
+  if (normalized?.patch?.habiticaDetails === null) delete normalized.patch.habiticaDetails;
+  return stableJson(normalized);
+}
+function taskIntentJson(value) {
+  const normalized = structuredClone(value ?? null);
+  if (normalized?.habiticaDetails === null) delete normalized.habiticaDetails;
+  return stableJson(normalized);
+}
 export async function commitWorkspace(scope, expectedStoreVersion, json) {
   workspaceScope(scope);
   if (typeof json !== "string" || json.length > 16 * 1024 * 1024 || !Number.isSafeInteger(expectedStoreVersion) || expectedStoreVersion < 0) throw new Error("Invalid workspace commit.");
@@ -86,7 +96,7 @@ export async function commitWorkspace(scope, expectedStoreVersion, json) {
       const next = commandById.get(old.id);
       if (!next || next.position !== old.position) throw new Error("Command history cannot be removed or reordered.");
       const before = JSON.parse(old.json); const after = JSON.parse(next.json);
-      if (before.payloadHash !== after.payloadHash || stableJson(before.command) !== stableJson(after.command) || stableJson(before.taskSnapshot ?? null) !== stableJson(after.taskSnapshot ?? null)) throw new Error("Accepted command identity is immutable.");
+      if (before.payloadHash !== after.payloadHash || commandIdentityJson(before.command) !== commandIdentityJson(after.command) || taskIntentJson(before.taskSnapshot) !== taskIntentJson(after.taskSnapshot)) throw new Error("Accepted command identity is immutable.");
     }
     for (const old of oldEvents) {
       const next = eventById.get(old.id);

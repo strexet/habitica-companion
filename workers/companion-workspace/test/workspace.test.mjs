@@ -101,7 +101,7 @@ test('invalid canonical graphs and malformed commands cannot partially save', as
  const c = command(source.id);
  const duplicateKeys = JSON.stringify(c).replace('"expectedRevision":1', '"expectedRevision":999,"expectedRevision":1');
  const malformed = await f.workspace.fetch(origin + '/commands', { method: 'POST', headers: { authorization: `Bearer ${w.sessionToken}` }, body: duplicateKeys }); assert.equal(malformed.status, 400);
- assert.equal((await call(f, '/commands', w.sessionToken, { ...c, patch: { text: 'x'.repeat(40000) } })).status, 413);
+ assert.equal((await call(f, '/commands', w.sessionToken, { ...c, patch: { text: 'x'.repeat(70000) } })).status, 413);
  const data = await (await call(f, '/export', w.sessionToken)).json(); assert.equal(data.commands.length, 0); assert.equal(data.storeVersion, 1);
 });
 
@@ -127,7 +127,7 @@ test('delayed authorized requests cannot reach a deleted and recreated workspace
    const replacement = await connect(f, profile, w.workspaceId);
    release(); const stale = await pending;
    assert.ok([401,409].includes(stale.status), `${action}: a stale request reached replacement data (status ${stale.status})`);
-   const current = await call(f, '/export', replacement.sessionToken); assert.equal(current.status, 200); const data = await current.json(); assert.equal(data.document.tasks.length, 0); assert.equal(data.commands.length, 0);
+   const current = await call(f, '/export', replacement.sessionToken); assert.equal(current.status, 200, `${action}: ${await current.clone().text()}`); const data = await current.json(); assert.equal(data.document.tasks.length, 0); assert.equal(data.commands.length, 0);
   } finally { release(); }
  }
 });

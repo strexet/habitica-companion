@@ -16,7 +16,8 @@
       "T-80bb3b80-8a9c-4252-9924-5a100f746f93",
       "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
       "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
-      "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9"
+      "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
+      "T-49eaa44e-5c98-4219-a380-4201e4143494"
     ],
     "completion_refs": {
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
@@ -24,6 +25,7 @@
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3": "O-48ebee79-cbbb-4c1c-829c-038c887076e9",
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8": "O-d3de5c55-c4ac-4eb9-9b46-36aa630adf68",
+      "T-49eaa44e-5c98-4219-a380-4201e4143494": "O-9f6a3618-fbbf-4d96-b034-bbe5f19e01ca",
       "T-53352a18-54d2-57b6-accc-91f8e6dfad13": "O-02146734-4822-48de-81a5-71f0c7208776",
       "T-773bb444-a0e6-45b9-bdcb-18561bb6182f": "O-9d7ad5bd-d5ee-469e-93b0-79c129d87495",
       "T-77d41018-e04b-4a88-b92c-079b3d8ef421": "O-056e3e62-a872-45aa-953d-0452b29a71e3",
@@ -37,7 +39,7 @@
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b"
     },
     "current_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-    "cycle_signature": "b941aa386cebfec9e4da694d32478610a078dd5c0c6d2ff40e58c48f414d5cac",
+    "cycle_signature": "facb3459d7df777754fd7b9669e342fad417112721b1bec77587bbf29e214e8b",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
@@ -59,7 +61,8 @@
       "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178",
       "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07",
       "P-b9215ddd-d598-4c25-abb2-7a6d9a1d7845",
-      "P-6ea76a88-a928-4235-aa55-c80466e20b54"
+      "P-6ea76a88-a928-4235-aa55-c80466e20b54",
+      "P-642949f7-826f-45aa-8e6f-9d9ffabbea97"
     ],
     "phase": "implement",
     "processing_results": [
@@ -218,6 +221,25 @@
           "P-6ea76a88-a928-4235-aa55-c80466e20b54"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-49eaa44e-5c98-4219-a380-4201e4143494"
+        ],
+        "dispositions": {
+          "P-642949f7-826f-45aa-8e6f-9d9ffabbea97": {
+            "reason": "Inspected canonical and projection contracts establish a bounded required field gap; the existing upstream whitelist defines supported values.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-18fc209d-54d0-43d7-8866-722a49af1c3b",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-642949f7-826f-45aa-8e6f-9d9ffabbea97"
+        ],
+        "task_keys": {
+          "task-fields": "T-49eaa44e-5c98-4219-a380-4201e4143494"
+        }
       }
     ],
     "required_ids": [
@@ -237,7 +259,8 @@
       "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
       "T-77d41018-e04b-4a88-b92c-079b3d8ef421",
       "T-80bb3b80-8a9c-4252-9924-5a100f746f93",
-      "T-4a1de222-156a-52cf-8966-262a2c8216ed"
+      "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "T-49eaa44e-5c98-4219-a380-4201e4143494"
     ],
     "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
     "snapshot": [
@@ -257,7 +280,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "a2a572d8571bef6add710eb787d6a91d25d6848bd734efac170167a607d07daa",
+  "source_hash": "7c70e412a9d662c031e9d4ad5016379f7d4d130d30a62f0840cbcdfaeab1d54a",
   "tasks": [
     {
       "depends_on": [],
@@ -393,7 +416,8 @@
         "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
         "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
         "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
-        "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9"
+        "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
+        "T-49eaa44e-5c98-4219-a380-4201e4143494"
       ],
       "id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
       "line": 353,

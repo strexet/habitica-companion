@@ -1,3 +1,4 @@
+import { habiticaDetails } from "../../shared/task-details.ts";
 import { workspaceDocument, utcTicks, type WorkspaceDocument } from '../../shared/workspace-domain.ts';
 import { workspaceCommand, commandHash } from '../../shared/workspace-commands.ts';
 import { workspaceObject as object, uuid, WorkspaceError } from '../../shared/workspace-http.ts';
@@ -25,7 +26,8 @@ export async function journal(value:unknown):Promise<Journal>{
   if(row.lease!=null){const lease=object(row.lease,['owner','token','expiresAtUtc']);uuid(lease.token);valid(typeof lease.owner==='string'&&lease.owner.trim().length>0&&lease.owner.length<=128&&timestamp(lease.expiresAtUtc));}
   if(['executing','unknownOutcome'].includes(String(row.projectionState)))valid(timestamp(row.dispatchedAtUtc)&&Number(row.attempts)>0);
   valid(row.retryAtUtc==null||timestamp(row.retryAtUtc));valid(row.dispatchedAtUtc==null||timestamp(row.dispatchedAtUtc));
-  if(row.taskSnapshot!=null){const task=object(row.taskSnapshot,['id','revision','isArchived','text','kind','state','priority','createdAtUtc','updatedAtUtc','notes','categoryId','projectId','sectionId','parentTaskId','labelIds','dependsOn','plannedDate','deadline','reviewAfterUtc','staleSinceUtc','recurrence']);
+  if(row.taskSnapshot!=null){const task=object(row.taskSnapshot,['id','revision','isArchived','text','kind','state','priority','createdAtUtc','updatedAtUtc','notes','categoryId','projectId','sectionId','parentTaskId','labelIds','dependsOn','plannedDate','deadline','reviewAfterUtc','staleSinceUtc','recurrence','habiticaDetails']);
+   habiticaDetails(task.habiticaDetails);
    valid(task.id===command.taskId&&task.revision===command.expectedRevision+1&&['todo','daily','habit'].includes(String(task.kind))&&['active','paused','completed','waiting','someday','cancelled'].includes(String(task.state))&&['low','normal','high','urgent'].includes(String(task.priority))&&typeof task.text==='string'&&task.text.trim().length>0&&task.text.length<=2048&&(task.notes==null||typeof task.notes==='string'&&task.notes.length<=10000)&&timestamp(task.createdAtUtc)&&timestamp(task.updatedAtUtc)&&utcTicks(task.updatedAtUtc)===utcTicks(row.acceptedAtUtc)&&utcTicks(task.createdAtUtc)<=utcTicks(task.updatedAtUtc));
   }
   commands.push({...row,command} as unknown as CommandEntry);

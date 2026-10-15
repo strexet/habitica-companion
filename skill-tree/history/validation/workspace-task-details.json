@@ -1,0 +1,73 @@
+{
+  "task_id": "T-49eaa44e-5c98-4219-a380-4201e4143494",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "Full app and all three Worker builds",
+      "result": "pass"
+    },
+    {
+      "check": "Full .NET suite",
+      "result": "pass",
+      "passed": 508,
+      "suites": {
+        "Api": 31,
+        "Application": 83,
+        "Domain": 24,
+        "Rules": 42,
+        "Storage": 21,
+        "WebApp": 307
+      }
+    },
+    {
+      "check": "Auth Worker suite",
+      "result": "pass",
+      "passed": 50
+    },
+    {
+      "check": "Workspace suite",
+      "result": "pass",
+      "passed": 27
+    },
+    {
+      "check": "Browser storage transactions and legacy null-field equivalence",
+      "result": "pass",
+      "passed": 12,
+      "evidence": "skill-tree/history/validation/task-details-storage.jpg"
+    },
+    {
+      "check": "Browser reload",
+      "result": "pass",
+      "passed": 4,
+      "evidence": "skill-tree/history/validation/task-details-reload.jpg"
+    },
+    {
+      "check": "Rebuilt app Settings smoke",
+      "result": "pass",
+      "evidence": "skill-tree/history/validation/task-details-settings.jpg"
+    },
+    {
+      "check": "Changed documentation prose lint",
+      "result": "pass"
+    }
+  ],
+  "coverage": [
+    "Canonical difficulty/attribute/checklist validation in C# and TypeScript",
+    "Native urgency remains separate from game difficulty",
+    "Partial detail patches retain unspecified values; empty checklist clears",
+    "Immutable accepted task snapshots survive later edits",
+    "Projection creation carries accepted details; partial update carries explicit fields only",
+    "Legacy v1 hashes unchanged and v2 Unicode identity matches independent neutral fixture",
+    "Real Worker cloud journal validates through C# codec",
+    "Numeric coercion, duplicate IDs, unknown fields, invalid values and bounds reject before save",
+    "Browser legacy absent/null detail compatibility preserves immutable history"
+  ],
+  "validation_notes": [
+    "The request-size fixture was updated from forty to seventy thousand characters because the command body limit deliberately increased to sixty-four KiB.",
+    "One initial full-suite lifecycle control returned an unexpected unauthorized response. A targeted lifecycle run and the final full suite passed; the failure did not reproduce and no source defect was established. The fixture now identifies the lifecycle action in any future failure."
+  ],
+  "limitations": [
+    "All backend accounts and API responses are synthetic. No real upstream action occurred.",
+    "Manual authoring and MCP command routing remain the parent task."
+  ]
+}

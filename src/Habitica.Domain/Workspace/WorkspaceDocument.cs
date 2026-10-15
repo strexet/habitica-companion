@@ -9,6 +9,18 @@ public enum RecurrenceFrequency { Daily, Weekly, Monthly }
 public enum OccurrenceState { Pending, Completed, Skipped }
 public enum HabitScoreDirection { Up, Down }
 public enum ProjectionState { Unlinked, Pending, Linked, ExternalConflict, UnknownOutcome }
+public enum HabiticaTaskAttribute { Str, Int, Per, Con }
+public sealed record TaskChecklistItem(Guid Id, string Text, bool Completed = false);
+public sealed record HabiticaTaskDetails(double? Difficulty = null, HabiticaTaskAttribute? Attribute = null, IReadOnlyList<TaskChecklistItem>? Checklist = null)
+{
+    public static bool IsValid(HabiticaTaskDetails? value) => value is null ||
+        (value.Difficulty is null or 0.1 or 1 or 1.5 or 2 && (value.Attribute is null || Enum.IsDefined(value.Attribute.Value))
+        && (value.Checklist is null || value.Checklist.Count <= 100 && value.Checklist.All(item => item is not null && item.Id != Guid.Empty && !string.IsNullOrWhiteSpace(item.Text) && item.Text.Length <= 256)
+            && value.Checklist.Select(item => item.Id).Distinct().Count() == value.Checklist.Count));
+
+    public static HabiticaTaskDetails? Merge(HabiticaTaskDetails? current, HabiticaTaskDetails? patch) => patch is null ? current :
+        new(patch.Difficulty ?? current?.Difficulty, patch.Attribute ?? current?.Attribute, patch.Checklist ?? current?.Checklist);
+}
 
 public abstract record WorkspaceEntity(Guid Id, long Revision, bool IsArchived);
 public sealed record WorkspaceCategory(Guid Id, long Revision, string Name, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
@@ -46,7 +58,8 @@ public sealed record CompanionTask(
     DateTimeOffset? ReviewAfterUtc = null,
     DateTimeOffset? StaleSinceUtc = null,
     RecurrenceRule? Recurrence = null,
-    bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
+    bool IsArchived = false,
+    HabiticaTaskDetails? HabiticaDetails = null) : WorkspaceEntity(Id, Revision, IsArchived);
 
 public sealed record TaskOccurrence(Guid Id, long Revision, Guid TaskId, DateOnly Date, OccurrenceState State, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record CompletionEvent(Guid Id, long Revision, Guid TaskId, Guid CommandId, DateTimeOffset CompletedAtUtc, Guid? OccurrenceId = null, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);

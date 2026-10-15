@@ -174,10 +174,12 @@ public sealed class WorkspaceCommandTests
         Assert.Equal(SubmissionDisposition.Duplicate, recovered!.Disposition); Assert.Single(store.State!.Commands);
     }
 
-    [Fact]
-    public void NeutralCommandFixtureHasPortableUtf8IdentityHash()
+    [Theory]
+    [InlineData("command-v1.json")]
+    [InlineData("command-v2.json")]
+    public void NeutralCommandFixtureHasPortableUtf8IdentityHash(string filename)
     {
-        using var fixture = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "fixtures", "command-v1.json")));
+        using var fixture = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "fixtures", filename)));
         var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false) } };
         var command = fixture.RootElement.GetProperty("command").Deserialize<WorkspaceCommand>(options)!;
         Assert.Equal(fixture.RootElement.GetProperty("payloadHash").GetString(), WorkspaceCommandEngine.Hash(command));

@@ -1,3 +1,4 @@
+import { mergeDetails } from "../../shared/task-details.ts";
 import { workspaceDocument, type WorkspaceDocument, type CompanionTask } from "../../shared/workspace-domain.ts";
 import { commandHash, type WorkspaceCommand } from "../../shared/workspace-commands.ts";
 import { WorkspaceError } from "../../shared/workspace-http.ts";
@@ -19,11 +20,11 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  if (command.operation === "scoreHabit" && (task!.kind !== "habit" || task!.state !== "active")) throw new WorkspaceError("habit_not_active", 422);
  if (command.operation === "completeTask" && (task!.kind === "daily" ? command.occurrenceDate === null : command.occurrenceDate !== null)) throw new WorkspaceError(task!.kind === "daily" ? "occurrence_required" : "unexpected_occurrence", 422);
  if (command.operation === "createTodo") {
-  task = { id: command.taskId, revision, isArchived: false, text: patch!.text!, kind: "todo", state: "active", priority: patch!.priority ?? "normal", createdAtUtc: now, updatedAtUtc: now, notes: patch!.notes, categoryId: null, projectId: null, sectionId: null, parentTaskId: null, labelIds: [], dependsOn: [], plannedDate: null, deadline: patch!.deadline, reviewAfterUtc: null, staleSinceUtc: null, recurrence: null } satisfies CompanionTask;
+  task = { id: command.taskId, revision, isArchived: false, text: patch!.text!, kind: "todo", state: "active", priority: patch!.priority ?? "normal", createdAtUtc: now, updatedAtUtc: now, notes: patch!.notes, categoryId: null, projectId: null, sectionId: null, parentTaskId: null, labelIds: [], dependsOn: [], plannedDate: null, deadline: patch!.deadline, reviewAfterUtc: null, staleSinceUtc: null, recurrence: null, habiticaDetails: patch!.habiticaDetails ?? null } satisfies CompanionTask;
   result.tasks.push(task);
  } else {
   task!.revision = revision; task!.updatedAtUtc = now;
-  if (command.operation === "updateTask") { task!.text = patch!.text ?? task!.text; task!.notes = patch!.clearNotes ? null : patch!.notes ?? task!.notes; task!.priority = patch!.priority ?? task!.priority; task!.deadline = patch!.clearDeadline ? null : patch!.deadline ?? task!.deadline; }
+  if (command.operation === "updateTask") { task!.habiticaDetails=mergeDetails(task!.habiticaDetails,patch!.habiticaDetails); task!.text = patch!.text ?? task!.text; task!.notes = patch!.clearNotes ? null : patch!.notes ?? task!.notes; task!.priority = patch!.priority ?? task!.priority; task!.deadline = patch!.clearDeadline ? null : patch!.deadline ?? task!.deadline; }
   if (command.operation === "completeTask") {
    let occurrenceId = null;
    if (task!.kind === "daily") {

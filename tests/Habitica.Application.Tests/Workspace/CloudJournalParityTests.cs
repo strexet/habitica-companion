@@ -4,6 +4,20 @@ namespace Habitica.Application.Tests.Workspace;
 
 public sealed class CloudJournalParityTests
 {
+    [Fact]
+    public void ExtendedWorkerJournalRetainsTaskDetailsAndPortablePartialCommandHashes()
+    {
+        var snapshot = WorkspaceJournalJson.Deserialize(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "fixtures", "cloud-journal-v2.json")));
+        Assert.Equal(3, snapshot.Commands.Count); Assert.Equal(3, snapshot.Events!.Count);
+        Assert.Equal(1.5, snapshot.Document.Tasks[0].HabiticaDetails!.Difficulty);
+        Assert.Equal(HabiticaTaskAttribute.Int, snapshot.Document.Tasks[0].HabiticaDetails!.Attribute);
+        Assert.Empty(snapshot.Document.Tasks[0].HabiticaDetails!.Checklist!);
+        Assert.Equal(HabiticaTaskAttribute.Per, snapshot.Commands[0].TaskSnapshot!.HabiticaDetails!.Attribute);
+        Assert.Equal(2, snapshot.Commands[0].TaskSnapshot!.HabiticaDetails!.Checklist!.Count);
+        Assert.All(snapshot.Commands, entry => Assert.Equal(WorkspaceCommandIdentity.Hash(entry.Command), entry.PayloadHash));
+        Assert.Equal(WorkspaceAuthorityMode.Cloud, snapshot.Authority!.Mode);
+    }
+
     [Theory]
     [InlineData("cloud-journal-v1.json", true)]
     [InlineData("cloud-journal-legacy.json", false)]

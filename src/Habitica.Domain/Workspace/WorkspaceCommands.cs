@@ -13,7 +13,8 @@ public sealed record WorkspaceTaskPatch(
     bool ClearNotes = false,
     CompanionPriority? Priority = null,
     DateOnly? Deadline = null,
-    bool ClearDeadline = false);
+    bool ClearDeadline = false,
+    HabiticaTaskDetails? HabiticaDetails = null);
 
 public sealed record WorkspaceCommand(
     Guid Id,

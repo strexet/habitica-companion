@@ -1,3 +1,4 @@
+import { habiticaDetails, type HabiticaTaskDetails } from "./task-details.ts";
 import { WorkspaceError, workspaceObject, uuid } from "./workspace-http.ts";
 export interface Entity { id: string; revision: number; isArchived: boolean }
 export interface Category extends Entity { name: string }
@@ -6,7 +7,7 @@ export interface Section extends Category { projectId: string; position: number 
 export interface Goal extends Category { taskIds: string[] }
 export interface Recurrence { frequency: "daily" | "weekly" | "monthly"; interval: number; startDate: string; timeZoneId: string; weekdays: string[]; daysOfMonth: number[] }
 export interface CompanionTask extends Entity {
-  text: string; kind: "todo" | "daily" | "habit"; state: "active" | "completed" | "waiting" | "someday" | "paused" | "cancelled"; priority: "low" | "normal" | "high" | "urgent";
+  habiticaDetails?: HabiticaTaskDetails | null; text: string; kind: "todo" | "daily" | "habit"; state: "active" | "completed" | "waiting" | "someday" | "paused" | "cancelled"; priority: "low" | "normal" | "high" | "urgent";
   createdAtUtc: string; updatedAtUtc: string; notes: string | null; categoryId: string | null; projectId: string | null; sectionId: string | null; parentTaskId: string | null;
   labelIds: string[]; dependsOn: string[]; plannedDate: string | null; deadline: string | null; reviewAfterUtc: string | null; staleSinceUtc: string | null; recurrence: Recurrence | null;
 }
@@ -56,8 +57,8 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   const sections = list(value.sections).map(item => { const row = workspaceObject(item, [...baseKeys, "name", "projectId", "position"]); return { ...entity(row, revision), name: named(row.name), projectId: uuid(row.projectId), position: integer(row.position ?? 0, 0, 2147483647) }; });
   const goals = list(value.goals).map(item => { const row = workspaceObject(item, [...baseKeys, "name", "taskIds"]); if (!Array.isArray(row.taskIds)) return fail(); return { ...entity(row, revision), name: named(row.name), taskIds: ids(row.taskIds) }; });
   const tasks: CompanionTask[] = list(value.tasks).map(item => {
-    const row = workspaceObject(item, [...baseKeys, "text", "kind", "state", "priority", "createdAtUtc", "updatedAtUtc", "notes", "categoryId", "projectId", "sectionId", "parentTaskId", "labelIds", "dependsOn", "plannedDate", "deadline", "reviewAfterUtc", "staleSinceUtc", "recurrence"]);
-    const task = { ...entity(row, revision), text: named(row.text, 2048), kind: choice(row.kind, ["todo", "daily", "habit"]), state: choice(row.state, ["active", "completed", "waiting", "someday", "paused", "cancelled"]), priority: choice(row.priority, ["low", "normal", "high", "urgent"]),
+    const row = workspaceObject(item, [...baseKeys, "text", "kind", "state", "priority", "createdAtUtc", "updatedAtUtc", "notes", "categoryId", "projectId", "sectionId", "parentTaskId", "labelIds", "dependsOn", "plannedDate", "deadline", "reviewAfterUtc", "staleSinceUtc", "recurrence", "habiticaDetails"]);
+    const task = { ...entity(row, revision), habiticaDetails: habiticaDetails(row.habiticaDetails), text: named(row.text, 2048), kind: choice(row.kind, ["todo", "daily", "habit"]), state: choice(row.state, ["active", "completed", "waiting", "someday", "paused", "cancelled"]), priority: choice(row.priority, ["low", "normal", "high", "urgent"]),
       createdAtUtc: utc(row.createdAtUtc), updatedAtUtc: utc(row.updatedAtUtc), notes: row.notes === undefined || row.notes === null ? null : named(row.notes, 10000, true),
       categoryId: optionalId(row.categoryId), projectId: optionalId(row.projectId), sectionId: optionalId(row.sectionId), parentTaskId: optionalId(row.parentTaskId), labelIds: ids(row.labelIds, true), dependsOn: ids(row.dependsOn, true), plannedDate: optDate(row.plannedDate), deadline: optDate(row.deadline), reviewAfterUtc: optUtc(row.reviewAfterUtc), staleSinceUtc: optUtc(row.staleSinceUtc), recurrence: recurrence(row.recurrence) };
     if (utcTicks(task.createdAtUtc) > utcTicks(task.updatedAtUtc) || task.kind !== "todo" && ["completed", "cancelled"].includes(task.state) || task.kind !== "daily" && task.recurrence !== null) return fail();

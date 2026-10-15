@@ -1,0 +1,38 @@
+{
+  "command": {
+    "id": "20000000-0000-4000-8000-000000000001",
+    "workspaceId": "10000000-0000-4000-8000-000000000001",
+    "expectedRevision": 1,
+    "operation": "createTodo",
+    "taskId": "20000000-0000-4000-8000-000000000002",
+    "patch": {
+      "text": "Read \"chapter\" 📚",
+      "notes": "Private\nnotes §",
+      "clearNotes": false,
+      "priority": "high",
+      "deadline": "2026-10-16",
+      "clearDeadline": false,
+      "habiticaDetails": {
+        "difficulty": 1.5,
+        "attribute": "per",
+        "checklist": [
+          {
+            "id": "30000000-0000-4000-8000-000000000001",
+            "text": "Résumé ☕",
+            "completed": false
+          },
+          {
+            "id": "30000000-0000-4000-8000-000000000002",
+            "text": "Review",
+            "completed": true
+          }
+        ]
+      }
+    },
+    "direction": null,
+    "count": 1,
+    "occurrenceDate": null,
+    "projectToHabitica": true
+  },
+  "payloadHash": "aa19f2bc2716c3bec46186831e5d84a61d8624524141f9239dee56ceacb81ad7"
+}

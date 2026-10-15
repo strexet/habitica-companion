@@ -1,0 +1,330 @@
+{
+  "document": {
+    "schemaVersion": 1,
+    "id": "10000000-0000-4000-8000-000000000001",
+    "revision": 4,
+    "categories": [],
+    "projects": [],
+    "sections": [],
+    "labels": [],
+    "goals": [],
+    "tasks": [
+      {
+        "id": "20000000-0000-4000-8000-000000000002",
+        "revision": 4,
+        "isArchived": false,
+        "habiticaDetails": {
+          "difficulty": 1.5,
+          "attribute": "int",
+          "checklist": []
+        },
+        "text": "Read \"chapter\" 📚",
+        "kind": "todo",
+        "state": "active",
+        "priority": "high",
+        "createdAtUtc": "2026-10-15T10:17:15.209Z",
+        "updatedAtUtc": "2026-10-15T10:17:15.239Z",
+        "notes": "Private\nnotes §",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": "2026-10-16",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null
+      }
+    ],
+    "occurrences": [],
+    "completions": [],
+    "habitScores": [],
+    "projections": [
+      {
+        "id": "a426dc5a-85d9-4be4-837e-f955e338dab6",
+        "revision": 2,
+        "isArchived": false,
+        "taskId": "20000000-0000-4000-8000-000000000002",
+        "state": "pending",
+        "habiticaTaskId": null,
+        "fingerprint": null,
+        "correlationAlias": null
+      }
+    ]
+  },
+  "storeVersion": 4,
+  "authority": {
+    "mode": "cloud",
+    "transferId": null,
+    "cloudWorkspaceId": "10000000-0000-4000-8000-000000000001"
+  },
+  "commands": [
+    {
+      "command": {
+        "id": "20000000-0000-4000-8000-000000000001",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "operation": "createTodo",
+        "taskId": "20000000-0000-4000-8000-000000000002",
+        "patch": {
+          "text": "Read \"chapter\" 📚",
+          "notes": "Private\nnotes §",
+          "clearNotes": false,
+          "priority": "high",
+          "deadline": "2026-10-16",
+          "clearDeadline": false,
+          "habiticaDetails": {
+            "difficulty": 1.5,
+            "attribute": "per",
+            "checklist": [
+              {
+                "id": "30000000-0000-4000-8000-000000000001",
+                "text": "Résumé ☕",
+                "completed": false
+              },
+              {
+                "id": "30000000-0000-4000-8000-000000000002",
+                "text": "Review",
+                "completed": true
+              }
+            ]
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": true
+      },
+      "payloadHash": "aa19f2bc2716c3bec46186831e5d84a61d8624524141f9239dee56ceacb81ad7",
+      "acceptedAtUtc": "2026-10-15T10:17:15.209Z",
+      "projectionState": "pending",
+      "effects": [
+        "create"
+      ],
+      "confirmedEffects": 0,
+      "failure": "none",
+      "retryAtUtc": null,
+      "lease": null,
+      "dispatchedAtUtc": null,
+      "attempts": 0,
+      "taskSnapshot": {
+        "id": "20000000-0000-4000-8000-000000000002",
+        "revision": 2,
+        "isArchived": false,
+        "text": "Read \"chapter\" 📚",
+        "kind": "todo",
+        "state": "active",
+        "priority": "high",
+        "createdAtUtc": "2026-10-15T10:17:15.209Z",
+        "updatedAtUtc": "2026-10-15T10:17:15.209Z",
+        "notes": "Private\nnotes §",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": "2026-10-16",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": {
+          "difficulty": 1.5,
+          "attribute": "per",
+          "checklist": [
+            {
+              "id": "30000000-0000-4000-8000-000000000001",
+              "text": "Résumé ☕",
+              "completed": false
+            },
+            {
+              "id": "30000000-0000-4000-8000-000000000002",
+              "text": "Review",
+              "completed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "command": {
+        "id": "aa009bd8-b03d-4bd9-ad3b-4bc11a352725",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 2,
+        "operation": "updateTask",
+        "taskId": "20000000-0000-4000-8000-000000000002",
+        "patch": {
+          "text": null,
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": {
+            "difficulty": null,
+            "attribute": "int",
+            "checklist": null
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "ffd7226c03a5f90c0c747e1f44f89a3ffc2fc3d1a953971b1df07023923b0087",
+      "acceptedAtUtc": "2026-10-15T10:17:15.225Z",
+      "projectionState": "pending",
+      "effects": [
+        "create",
+        "update"
+      ],
+      "confirmedEffects": 0,
+      "failure": "none",
+      "retryAtUtc": null,
+      "lease": null,
+      "dispatchedAtUtc": null,
+      "attempts": 0,
+      "taskSnapshot": {
+        "id": "20000000-0000-4000-8000-000000000002",
+        "revision": 3,
+        "isArchived": false,
+        "habiticaDetails": {
+          "difficulty": 1.5,
+          "attribute": "int",
+          "checklist": [
+            {
+              "id": "30000000-0000-4000-8000-000000000001",
+              "text": "Résumé ☕",
+              "completed": false
+            },
+            {
+              "id": "30000000-0000-4000-8000-000000000002",
+              "text": "Review",
+              "completed": true
+            }
+          ]
+        },
+        "text": "Read \"chapter\" 📚",
+        "kind": "todo",
+        "state": "active",
+        "priority": "high",
+        "createdAtUtc": "2026-10-15T10:17:15.209Z",
+        "updatedAtUtc": "2026-10-15T10:17:15.225Z",
+        "notes": "Private\nnotes §",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": "2026-10-16",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null
+      }
+    },
+    {
+      "command": {
+        "id": "373ae61b-0516-48c2-90ef-87e5e77cfcbf",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 3,
+        "operation": "updateTask",
+        "taskId": "20000000-0000-4000-8000-000000000002",
+        "patch": {
+          "text": null,
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": {
+            "difficulty": null,
+            "attribute": null,
+            "checklist": []
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "258fc5fbba7be8ba40a8aaf6efffd9191d928b42a3fb907292c48a1c7ffd7390",
+      "acceptedAtUtc": "2026-10-15T10:17:15.239Z",
+      "projectionState": "pending",
+      "effects": [
+        "create",
+        "update"
+      ],
+      "confirmedEffects": 0,
+      "failure": "none",
+      "retryAtUtc": null,
+      "lease": null,
+      "dispatchedAtUtc": null,
+      "attempts": 0,
+      "taskSnapshot": {
+        "id": "20000000-0000-4000-8000-000000000002",
+        "revision": 4,
+        "isArchived": false,
+        "habiticaDetails": {
+          "difficulty": 1.5,
+          "attribute": "int",
+          "checklist": []
+        },
+        "text": "Read \"chapter\" 📚",
+        "kind": "todo",
+        "state": "active",
+        "priority": "high",
+        "createdAtUtc": "2026-10-15T10:17:15.209Z",
+        "updatedAtUtc": "2026-10-15T10:17:15.239Z",
+        "notes": "Private\nnotes §",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": "2026-10-16",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "2d310a1d-f402-4eec-ba86-7250b9b1ec1b",
+      "commandId": "20000000-0000-4000-8000-000000000001",
+      "kind": "accepted",
+      "atUtc": "2026-10-15T10:17:15.209Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": null,
+      "evidenceReference": null
+    },
+    {
+      "id": "a5bd1f54-c83f-4e8c-b42d-e385d010644b",
+      "commandId": "aa009bd8-b03d-4bd9-ad3b-4bc11a352725",
+      "kind": "accepted",
+      "atUtc": "2026-10-15T10:17:15.225Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": null,
+      "evidenceReference": null
+    },
+    {
+      "id": "f5d50eef-d7ae-476a-a195-e07f04e5fbe3",
+      "commandId": "373ae61b-0516-48c2-90ef-87e5e77cfcbf",
+      "kind": "accepted",
+      "atUtc": "2026-10-15T10:17:15.239Z",
+      "confirmedEffects": 0,
+      "failure": "none",
+      "attemptToken": null,
+      "evidenceReference": null
+    }
+  ]
+}

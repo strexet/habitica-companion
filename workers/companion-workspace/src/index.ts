@@ -62,7 +62,7 @@ async function duplicate(env: WorkspaceEnv, row: WorkspaceRow, id: string, hash:
  return json({ disposition: "duplicate", savedInCompanion: true, entry: JSON.parse(receipt.entry_json) });
 }
 async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow): Promise<Response> {
- let input; try { input = workspaceCommand(await workspaceJson(request, 32768)); } catch (error) { if (error instanceof WorkspaceError) throw error; throw new WorkspaceError("invalid_command", 422); }
+ let input; try { input = workspaceCommand(await workspaceJson(request, 65536)); } catch (error) { if (error instanceof WorkspaceError) throw error; throw new WorkspaceError("invalid_command", 422); }
  if (input.workspaceId !== row.workspace_id) throw new WorkspaceError("workspace_mismatch", 409);
  const hash = await commandHash(input); const replay = await duplicate(env, row, input.id, hash); if (replay) return replay;
  const accepted = await accept(JSON.parse(row.document_json), input, new Date().toISOString());

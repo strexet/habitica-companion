@@ -17,12 +17,14 @@ public static class WorkspaceJournalValidation
         {
             if (entry is null || entry.Command is null || entry.Command.Id == Guid.Empty || !ids.Add(entry.Command.Id)
                 || entry.Command.WorkspaceId != snapshot.Document.Id || entry.Command.ExpectedRevision < 1 || entry.Command.ExpectedRevision >= snapshot.Document.Revision
+                || !HabiticaTaskDetails.IsValid(entry.Command.Patch?.HabiticaDetails)
                 || entry.PayloadHash != WorkspaceCommandIdentity.Hash(entry.Command) || entry.AcceptedAtUtc == default || entry.AcceptedAtUtc.Offset != TimeSpan.Zero
                 || !Enum.IsDefined(entry.ProjectionState) || !Enum.IsDefined(entry.Failure) || entry.Effects is null || entry.Effects.Count > 11
                 || entry.Effects.Any(effect => !Enum.IsDefined(effect)) || entry.ConfirmedEffects < 0 || entry.ConfirmedEffects > entry.Effects.Count || entry.Attempts < 0) return false;
             if (entry.TaskSnapshot is { } accepted && (accepted.Id != entry.Command.TaskId || accepted.Revision != entry.Command.ExpectedRevision + 1
                 || !Enum.IsDefined(accepted.Kind) || !Enum.IsDefined(accepted.State) || !Enum.IsDefined(accepted.Priority)
                 || string.IsNullOrWhiteSpace(accepted.Text) || accepted.Text.Length > 2048 || accepted.Notes?.Length > 10000
+                || !HabiticaTaskDetails.IsValid(accepted.HabiticaDetails)
                 || accepted.CreatedAtUtc == default || accepted.CreatedAtUtc.Offset != TimeSpan.Zero || accepted.UpdatedAtUtc != entry.AcceptedAtUtc || accepted.CreatedAtUtc > accepted.UpdatedAtUtc)) return false;
             if (entry.ProjectionState == ProjectionCommandState.NotRequested ? entry.Effects.Count != 0 : entry.Effects.Count == 0) return false;
             if (entry.ProjectionState == ProjectionCommandState.Confirmed && entry.ConfirmedEffects != entry.Effects.Count) return false;

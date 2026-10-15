@@ -26,6 +26,7 @@ public static class WorkspaceCommandEngine
             if (patch is null || patch == new WorkspaceTaskPatch()
                 || patch.Text is not null && (string.IsNullOrWhiteSpace(patch.Text) || patch.Text.Length > 2048)
                 || patch.Notes?.Length > 10000 || patch.Priority is { } priority && !Enum.IsDefined(priority)
+                || !HabiticaTaskDetails.IsValid(patch.HabiticaDetails) || patch.HabiticaDetails == new HabiticaTaskDetails()
                 || patch.ClearNotes && patch.Notes is not null || patch.ClearDeadline && patch.Deadline is not null
                 || command.Operation == WorkspaceOperation.CreateTodo && string.IsNullOrWhiteSpace(patch.Text))
                 return Reject(SubmissionDisposition.Invalid, "invalid_patch");
@@ -56,12 +57,12 @@ public static class WorkspaceCommandEngine
         var occurrences = document.Occurrences.ToList(); var scores = document.HabitScores.ToList();
         CompanionTask updated;
         if (command.Operation == WorkspaceOperation.CreateTodo)
-            updated = new(command.TaskId, revision, patch!.Text!, CompanionTaskKind.Todo, CompanionTaskState.Active, patch.Priority ?? CompanionPriority.Normal, now, now, patch.Notes, Deadline: patch.Deadline);
+            updated = new(command.TaskId, revision, patch!.Text!, CompanionTaskKind.Todo, CompanionTaskState.Active, patch.Priority ?? CompanionPriority.Normal, now, now, patch.Notes, Deadline: patch.Deadline, HabiticaDetails: patch.HabiticaDetails);
         else
         {
             updated = current! with { Revision = revision, UpdatedAtUtc = now };
             if (command.Operation == WorkspaceOperation.UpdateTask)
-                updated = updated with { Text = patch!.Text ?? updated.Text, Notes = patch.ClearNotes ? null : patch.Notes ?? updated.Notes, Priority = patch.Priority ?? updated.Priority, Deadline = patch.ClearDeadline ? null : patch.Deadline ?? updated.Deadline };
+                updated = updated with { Text = patch!.Text ?? updated.Text, Notes = patch.ClearNotes ? null : patch.Notes ?? updated.Notes, Priority = patch.Priority ?? updated.Priority, Deadline = patch.ClearDeadline ? null : patch.Deadline ?? updated.Deadline, HabiticaDetails = HabiticaTaskDetails.Merge(updated.HabiticaDetails, patch.HabiticaDetails) };
             if (command.Operation == WorkspaceOperation.CompleteTask)
             {
                 Guid? occurrenceId = null;
