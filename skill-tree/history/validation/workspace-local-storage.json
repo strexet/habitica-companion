@@ -1,0 +1,61 @@
+{
+  "task_id": "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "Full app build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Storage tests",
+      "result": "pass",
+      "passed": 21
+    },
+    {
+      "check": "Application tests",
+      "result": "pass",
+      "passed": 73
+    },
+    {
+      "check": "Domain tests",
+      "result": "pass",
+      "passed": 24
+    },
+    {
+      "check": "Real browser IndexedDB transaction fixture",
+      "result": "pass",
+      "passed": 11,
+      "evidence": "skill-tree/history/validation/workspace-storage-checks.jpg"
+    },
+    {
+      "check": "Full reload persistence fixture",
+      "result": "pass",
+      "passed": 2,
+      "evidence": "skill-tree/history/validation/workspace-storage-reload.jpg"
+    },
+    {
+      "check": "Rebuilt app Settings",
+      "result": "pass",
+      "observed": "Existing session, privacy, optional connection and portable data controls render after schema upgrade."
+    }
+  ],
+  "coverage": [
+    "Schema-1 kv data survives schema-2 upgrade",
+    "Scoped canonical documents, command records and append-only events share a transaction",
+    "Quota fault after initial write rolls every table back",
+    "Concurrent compare/exchange admits exactly one writer",
+    "Stale writers cannot overwrite data",
+    "History identity/order remains immutable while equivalent field ordering is accepted",
+    "Canonical and legacy records survive page reload",
+    "Strict typed journal codec, identity checks and scoped adapter interop",
+    "Export/restore preserves IDs and command history; conflicts preserve existing state",
+    "Imported in-flight requests become unknown; copied undispatched leases return to pending"
+  ],
+  "limitations": [
+    "Browser tests use isolated synthetic origins, separate from the app database.",
+    "Mobile devices, physical eviction and mixed-version rollout remain unqualified.",
+    "Canonical workspace UI/export/clear integration and remote APIs remain the cloud-workspace dependency."
+  ]
+}

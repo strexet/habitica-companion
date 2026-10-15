@@ -350,47 +350,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Persist atomic local Companion workspace changes
-
-```yaml
-id: T-4971181f-827f-4945-af27-4f4bc8ded5c8
-priority: 205
-status: Ready
-parent_pending_ids: ["P-4f954f5a-1084-5c87-8e26-1bfc5fd95035"]
-processing_run_id: PR-be6457c2-7735-441f-a88c-ad66e73c0004
-root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-relation: blocker
-depends_on: ["T-924119e2-17fd-4a06-b332-60839c849ade", "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17"]
-```
-
-Goal:
-- Persist entities, events and outbox commands atomically with compatible browser upgrades and portable recovery.
-Current behavior:
-- Canonical workspace implementation is absent; inspected source remains Habitica snapshot based.
-Desired behavior:
-- Implement the approved companion-workspace-contract.md within the selected dependency scope.
-Touch:
-- src/Habitica.Storage, indexedDbStorage.js, workspace application ports, storage/browser fixtures.
-Discovery allowance:
-- Reuse existing .NET, Dexie and Worker infrastructure; add narrowly scoped contracts and fixtures.
-Out of scope:
-- Live enrollment, remote provisioning, deployment and real Habitica mutations.
-Implementation constraints:
-- Preserve legacy snapshots and encrypted private sync; use synthetic fixtures for service qualification.
-- Preserve independent Companion identity and explicit projection outcomes.
-Questions and required clarifications:
-- [Resolved - owner decision] Adopt the approved workspace defaults for local implementation and tests.
-Validation:
-- Build; test failed commits, revision conflicts and restore; qualify fresh and upgraded Dexie in a local browser.
-Acceptance:
-- Atomic workspace and journal commits reject stale revisions without partial writes and survive reload.
-- Legacy key/value data remains available; workspace export/restore preserves identities, events and pending outcomes.
-Documentation updates:
-- technical.md, features.md and applicable storage/deployment/UI documentation.
-Risks:
-- Domain parity, ambiguous upstream outcomes and ownership races require explicit fixture coverage.
-
 ### Implement opt-in authoritative cloud workspace API
 
 ```yaml

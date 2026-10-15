@@ -1,0 +1,44 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Disposable workspace storage qualification</title>
+<style>body{font:18px system-ui;max-width:54rem;margin:2rem auto;padding:1rem}button{font:inherit;padding:1rem}li{margin:.7rem}</style>
+<h1>Disposable workspace storage qualification</h1><p>Synthetic data only. The dedicated test origin isolates this database from the app.</p>
+<button id="run">Run upgrade and transaction checks</button><button id="read">Verify persisted data after reload</button><ol id="results"></ol>
+<script type="module">
+import Dexie from '/vendor/dexie.mjs';
+const scope='fixture_a'; const id='10000000-0000-4000-8000-000000000001';
+const result=document.querySelector('#results');
+function check(condition,label){const li=document.createElement('li');li.textContent=(condition?'PASS: ':'FAIL: ')+label;result.append(li);if(!condition)throw new Error(label);}
+const entry=(n)=>({command:{id:`20000000-0000-4000-8000-00000000000${n}`},payloadHash:'fixture-hash-'+n});
+const event=(n)=>({id:`30000000-0000-4000-8000-00000000000${n}`,commandId:entry(n).command.id,kind:'accepted'});
+const snapshot=(version)=>({document:{id,revision:version,tasks:[{id:'40000000-0000-4000-8000-000000000001',text:'Synthetic task v'+version}]},storeVersion:version,commands:[entry(1)],events:[event(1)]});
+async function storage(){return import('/js/storage/indexedDbStorage.js');}
+document.querySelector('#run').onclick=async()=>{
+ document.querySelector('#run').disabled=true;result.replaceChildren();
+ try{
+  const legacy=new Dexie('habitica-tool');legacy.version(1).stores({kv:'&key, updatedAtUtc'});
+  await legacy.open();await legacy.table('kv').put({key:'fixture/legacy',jsonText:'{"preserved":true}',updatedAtUtc:'2026-10-15T00:00:00Z'});legacy.close();
+  const api=await storage();check(await api.getJson('fixture/legacy')==='{"preserved":true}','Schema 1 data survives the version 2 upgrade');
+  check(await api.commitWorkspace(scope,0,JSON.stringify(snapshot(1))),'Initial canonical data, command and event commit');
+  check(await api.getWorkspace('fixture_b',id)===null,'Different local account scope cannot read the workspace');
+  check(!await api.commitWorkspace(scope,0,JSON.stringify(snapshot(1))),'Stale revision does not overwrite a saved workspace');
+  const before=await api.getWorkspace(scope,id);
+  const next=snapshot(2);next.commands.push(entry(2));next.events.push(event(2));
+  const original=IDBObjectStore.prototype.put;let injected=false;
+  IDBObjectStore.prototype.put=function(...args){if(this.name==='workspaceEvents'&&!injected){injected=true;throw new DOMException('Synthetic quota failure','QuotaExceededError');}return original.apply(this,args);};
+  let failed=false;try{await api.commitWorkspace(scope,1,JSON.stringify(next));}catch{failed=true;}finally{IDBObjectStore.prototype.put=original;}
+  check(injected&&failed,'Storage failure occurs after the canonical write begins');
+  check(await api.getWorkspace(scope,id)===before,'Failed transaction leaves canonical data, commands and history unchanged');
+  const races=await Promise.all([api.commitWorkspace(scope,1,JSON.stringify(next)),api.commitWorkspace(scope,1,JSON.stringify(next))]);
+  check(races.filter(Boolean).length===1,'Two concurrent writers produce exactly one accepted revision');
+  const stored=JSON.parse(await api.getWorkspace(scope,id));check(stored.storeVersion===2&&stored.commands.length===2&&stored.events.length===2,'Accepted revision includes matching entities, commands and events');
+  const equivalent={...stored,storeVersion:3};equivalent.commands=equivalent.commands.map(value=>Object.fromEntries(Object.entries(value).reverse()));
+  check(await api.commitWorkspace(scope,2,JSON.stringify(equivalent)),'Equivalent JSON field ordering preserves immutable command history');
+  stored.storeVersion=3; const unchanged=await api.getWorkspace(scope,id);
+  const tampered={...stored,storeVersion:4,events:[stored.events[1],stored.events[0]]};let denied=false;try{await api.commitWorkspace(scope,3,JSON.stringify(tampered));}catch{denied=true;}
+  check(denied&&await api.getWorkspace(scope,id)===unchanged,'Accepted history cannot be removed or reordered');
+  check((await api.getJson('fixture/legacy'))==='{"preserved":true}','Legacy store remains unchanged after canonical transactions');
+ }catch(error){const li=document.createElement('li');li.textContent='CHECK STOPPED: '+error.name;result.append(li);}
+};
+document.querySelector('#read').onclick=async()=>{
+ result.replaceChildren();try{const api=await storage();const stored=JSON.parse(await api.getWorkspace(scope,id));check(stored.storeVersion===3&&stored.commands.length===2&&stored.events.length===2,'Canonical data and ordered journal survive a full page reload');check(await api.getJson('fixture/legacy')==='{"preserved":true}','Legacy data also survives reload');}catch(error){check(false,'Reload verification: '+error.name);}
+};
+</script></html>

@@ -1,19 +1,19 @@
 using Habitica.Domain.Workspace;
 
-namespace Habitica.Application.Workspace;
+namespace Habitica.Domain.Workspace;
 
 public static class WorkspaceJournalValidation
 {
     public static bool IsValid(WorkspaceJournalSnapshot snapshot)
     {
-        if (snapshot.StoreVersion < snapshot.Document.Revision || snapshot.StoreVersion > WorkspaceDocument.MaxRevision
+        if (snapshot.Document is null || snapshot.StoreVersion < snapshot.Document.Revision || snapshot.StoreVersion > WorkspaceDocument.MaxRevision
             || snapshot.Commands is null || WorkspaceRules.Validate(snapshot.Document).Count != 0) return false;
         var ids = new HashSet<Guid>();
         foreach (var entry in snapshot.Commands)
         {
             if (entry is null || entry.Command is null || entry.Command.Id == Guid.Empty || !ids.Add(entry.Command.Id)
                 || entry.Command.WorkspaceId != snapshot.Document.Id || entry.Command.ExpectedRevision < 1 || entry.Command.ExpectedRevision >= snapshot.Document.Revision
-                || entry.PayloadHash != WorkspaceCommandEngine.Hash(entry.Command) || entry.AcceptedAtUtc == default || entry.AcceptedAtUtc.Offset != TimeSpan.Zero
+                || entry.PayloadHash != WorkspaceCommandIdentity.Hash(entry.Command) || entry.AcceptedAtUtc == default || entry.AcceptedAtUtc.Offset != TimeSpan.Zero
                 || !Enum.IsDefined(entry.ProjectionState) || !Enum.IsDefined(entry.Failure) || entry.Effects is null || entry.Effects.Count > 11
                 || entry.Effects.Any(effect => !Enum.IsDefined(effect)) || entry.ConfirmedEffects < 0 || entry.ConfirmedEffects > entry.Effects.Count || entry.Attempts < 0) return false;
             if (entry.ProjectionState == ProjectionCommandState.NotRequested ? entry.Effects.Count != 0 : entry.Effects.Count == 0) return false;

@@ -21,26 +21,36 @@ public static class WorkspaceJson
 
     public static WorkspaceDocument Deserialize(string json)
     {
-        if (json.Length > 16 * 1024 * 1024) throw new JsonException("Workspace exceeds the import bound.");
-        using var parsed = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = 32 });
-        var pending = new Stack<JsonElement>();
-        pending.Push(parsed.RootElement);
-        while (pending.TryPop(out var value))
-        {
-            if (value.ValueKind == JsonValueKind.Object)
-            {
-                var names = new HashSet<string>(StringComparer.Ordinal);
-                foreach (var property in value.EnumerateObject())
-                {
-                    if (!names.Add(property.Name)) throw new JsonException("Duplicate workspace property.");
-                    pending.Push(property.Value);
-                }
-            }
-            else if (value.ValueKind == JsonValueKind.Array) foreach (var item in value.EnumerateArray()) pending.Push(item);
-        }
+        using var parsed = ParseStrict(json);
         var document = parsed.Deserialize<WorkspaceDocument>(Options) ?? throw new JsonException("Workspace is required.");
         RequireValid(document);
         return document;
+    }
+
+    internal static JsonDocument ParseStrict(string json)
+    {
+        if (json.Length > 16 * 1024 * 1024) throw new JsonException("Workspace exceeds the import bound.");
+        var parsed = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = 32 });
+        try
+        {
+            var pending = new Stack<JsonElement>();
+            pending.Push(parsed.RootElement);
+            while (pending.TryPop(out var value))
+            {
+                if (value.ValueKind == JsonValueKind.Object)
+                {
+                    var names = new HashSet<string>(StringComparer.Ordinal);
+                    foreach (var property in value.EnumerateObject())
+                    {
+                        if (!names.Add(property.Name)) throw new JsonException("Duplicate workspace property.");
+                        pending.Push(property.Value);
+                    }
+                }
+                else if (value.ValueKind == JsonValueKind.Array) foreach (var item in value.EnumerateArray()) pending.Push(item);
+            }
+            return parsed;
+        }
+        catch { parsed.Dispose(); throw; }
     }
 
     private static void RequireValid(WorkspaceDocument document)
