@@ -3,11 +3,32 @@ using Habitica.Domain.Tasks;
 using Habitica.Domain.User;
 using Habitica.Rules.Spells;
 using System.Globalization;
+using System.Text.Json;
 
 namespace Habitica.Rules.Tests.Spells;
 
 public sealed class SpellViewModelFactoryTests
 {
+    [Fact]
+    public void Neutral_spell_fixture_matches_metadata_and_single_cast_affordability()
+    {
+        using var fixture = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "fixtures", "spell-safety-v1.json")));
+        var metadata = fixture.RootElement.GetProperty("spell");
+        foreach (var sample in fixture.RootElement.GetProperty("cases").EnumerateArray())
+        {
+            var snapshot = CreateUserSnapshot(sample.GetProperty("className").GetString()!, sample.GetProperty("level").GetInt32())
+                with { Mana = sample.GetProperty("mana").GetDecimal() };
+            var spell = new SpellViewModelFactory().Create(snapshot, null, null).Spells.SingleOrDefault(x => x.Id == metadata.GetProperty("id").GetString());
+            if (spell is not null)
+            {
+                Assert.Equal(metadata.GetProperty("manaCost").GetInt32(), spell.ManaCost);
+                Assert.Equal(metadata.GetProperty("unlockLevel").GetInt32(), spell.UnlockLevel);
+                Assert.Equal(metadata.GetProperty("target").GetString(), spell.TargetKind.ToString());
+            }
+            Assert.Equal(sample.GetProperty("domainEligible").GetBoolean(), spell is not null && spell.IsUnlocked && snapshot.Mana >= spell.ManaCost);
+        }
+    }
+
     [Fact]
     public void Create_returns_current_class_spells_and_marks_locked_spells_by_level()
     {

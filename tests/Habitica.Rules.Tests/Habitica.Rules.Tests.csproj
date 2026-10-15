@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\src\Habitica.Rules\Habitica.Rules.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="../fixtures/workspace/spell-safety-v1.json" Link="fixtures/spell-safety-v1.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

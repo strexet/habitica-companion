@@ -1,0 +1,57 @@
+{
+  "task_id": "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "All three Worker builds/type checks",
+      "result": "pass"
+    },
+    {
+      "check": "Auth suite",
+      "result": "pass",
+      "passed": 62
+    },
+    {
+      "check": "Workspace suite",
+      "result": "pass",
+      "passed": 49
+    },
+    {
+      "check": "App build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Full .NET suites",
+      "result": "pass",
+      "passed": 525
+    },
+    {
+      "check": "Rebuilt default Settings integration guards",
+      "result": "pass",
+      "evidence": "skill-tree/history/validation/spell-gateway-default-settings.jpg"
+    }
+  ],
+  "coverage": [
+    "Fresh encrypted-enrollment actor, verified current party and exact state hash before one constant-path quantity-one spell POST",
+    "Independent OAuth scope/profile identity and final credential/grant checks",
+    "Class, unlock, aggregate mana, health, current party and precondition changes prevent effects",
+    "Immutable applied/refused receipts, same-attempt concurrency and competing lease ownership",
+    "Unknown spells fence task effects; unknown task effects fence spells; no ambiguous replay",
+    "Final-read quota, semantic refusal credential distinction, malformed success and failed durable reservation",
+    "Neutral shared fixture checks C# metadata/single-cast affordability and explicitly stricter server limits"
+  ],
+  "limitations": [
+    "Synthetic private binding only; no live calls, enrollment, deployment or public/MCP spell execution.",
+    "Auth operational attempt retention remains thirty days. Workspace durable accepted-action fencing remains required before exposing spell tools.",
+    "No exact healing/reward formula, arbitrary spell/target, scheduled spell or full C#/Worker parity claim."
+  ],
+  "upstream_sources": [
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/user/spells.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/spells.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/common/script/content/spells.js"
+  ],
+  "source_checked_at": "2026-10-15",
+  "fixture_correction": "Replacing the OAuth grant invalidates the old token (401), rather than yielding an active token with reduced scopes (403). Final assertion matches observed provider behavior and still verifies zero dispatch."
+}

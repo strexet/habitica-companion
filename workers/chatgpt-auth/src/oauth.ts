@@ -5,7 +5,7 @@ import { activeProfile, boundedText, VaultError } from "./vault";
 import { attempts, consumeTicket, networkAttempts } from "./linking";
 import { tokenHash } from "./cryptography";
 
-export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "party:read", "party.planning.write"];
+export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "party:read", "party.planning.write", "habitica.spells.execute"];
 export function authorizationServer(env: AuthEnv) {
   const config = resourceConfiguration(env.ENVIRONMENT);
   return new OAuthAuthorizationServer<AuthEnv>({
@@ -47,14 +47,15 @@ function consentHeaders(headers: Headers) {
 async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["beginConsent"]>[0], profileLabel?: string) {
   const details = await oauth.describeConsent(request);
   const consent = await oauth.beginConsent(request);
-  const labels: Record<string,string>={"party:read":"Read verified party, owned quest scrolls and consented planning state","party.planning.write":"Queue owned quests and set personal votes in shared Companion planning","profile:read":"Identify the linked account","account:read":"Read Habitica stats and day status","tasks:read":"Read Companion tasks and legacy Habitica tasks","habitica.tasks.write":"Save Companion tasks, completions and Habit scores"};
+  const labels: Record<string,string>={"habitica.spells.execute":"Execute explicitly reviewed allowlisted spell plans with game effects","party:read":"Read verified party, owned quest scrolls and consented planning state","party.planning.write":"Queue owned quests and set personal votes in shared Companion planning","profile:read":"Identify the linked account","account:read":"Read Habitica stats and day status","tasks:read":"Read Companion tasks and legacy Habitica tasks","habitica.tasks.write":"Save Companion tasks, completions and Habit scores"};
   const writeNotice=details.scope.includes("habitica.tasks.write")?"<p>Task access can save changes and completion or scoring commands. The separately enabled Companion executor can apply those commands to Habitica game state, even while the app is closed. Existing read access does not grant task writes.</p>":"";
+  const spellNotice=details.scope.includes('habitica.spells.execute')?'<p>Spell access can spend mana and affect the verified current party after explicit preview approval. Habitica may post an automatic spell notice in party chat. Unknown outcomes pause new gameplay effects; no automatic replay or scheduled spell casting is permitted.</p>':'';
   const partyNotice=details.scope.some(scope=>scope.startsWith('party'))?'<p>Authenticated Companion planning is separate from legacy party sync. Shared quest selections and contributor labels are readable by opted-in current party members. Enable separate planning consent in Companion Settings before using shared records. Planning access does not start quests or cast spells.</p>':'';
   const scopeInputs = details.scope.map(scope => `<label><input ${profileLabel ? 'type="checkbox" checked' : 'type="hidden"'} name="scope" value="${escape(scope)}">${profileLabel ? escape(labels[scope]??scope) : ''}</label>`).join("");
   const origin = details.clientDomain ? `Published by ${escape(details.clientDomain)}.` : "Client name is self-declared.";
   const identity = profileLabel ? `<p>Habitica account: <strong>${escape(profileLabel)}</strong></p>` : '<label>One-time Companion code <input name="code" maxlength="16" autocomplete="off" required></label><p>Generate the code from Companion Settings after explicit integration enrollment.</p>';
   const warning = details.redirectIsLoopback ? "<p>This grants access to a local app. Continue only after starting that app's connection flow.</p>" : "";
-  const content = `<p>Client: <strong>${escape(details.clientName)}</strong>. ${origin}</p><p>Redirect destination: ${escape(details.redirectHost)}.</p>${warning}${writeNotice}${partyNotice}<form method="post"><input type="hidden" name="handle" value="${escape(consent.handle)}">${identity}${scopeInputs}<button name="decision" value="${profileLabel ? 'approve' : 'identify'}">${profileLabel ? 'Allow selected access' : 'Verify code'}</button><button name="decision" value="deny" formnovalidate>Deny</button></form><p>Habitica API tokens are never sent to ChatGPT. Credential storage belongs to the opted-in Companion integration.</p>`;
+  const content = `<p>Client: <strong>${escape(details.clientName)}</strong>. ${origin}</p><p>Redirect destination: ${escape(details.redirectHost)}.</p>${warning}${writeNotice}${partyNotice}${spellNotice}<form method="post"><input type="hidden" name="handle" value="${escape(consent.handle)}">${identity}${scopeInputs}<button name="decision" value="${profileLabel ? 'approve' : 'identify'}">${profileLabel ? 'Allow selected access' : 'Verify code'}</button><button name="decision" value="deny" formnovalidate>Deny</button></form><p>Habitica API tokens are never sent to ChatGPT. Credential storage belongs to the opted-in Companion integration.</p>`;
   return { consent, response: new Response(page(profileLabel ? "Approve Companion access" : "Link Companion account", content), { headers: consentHeaders(consent.headers) }) };
 }
 export async function authorize(request: Request, env: AuthEnv): Promise<Response> {

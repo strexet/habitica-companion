@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "spell": {
+    "id": "healAll",
+    "manaCost": 25,
+    "unlockLevel": 14,
+    "target": "Party"
+  },
+  "scope": "C# metadata and single-cast affordability; server additionally requires an alive actor, classes enabled and a one-to-three cast bound. No effect formula parity claim.",
+  "cases": [
+    {
+      "name": "ready",
+      "className": "healer",
+      "level": 14,
+      "mana": 75,
+      "health": 40,
+      "classesDisabled": false,
+      "count": 3,
+      "domainEligible": true,
+      "workerEligible": true
+    },
+    {
+      "name": "locked",
+      "className": "healer",
+      "level": 13,
+      "mana": 75,
+      "health": 40,
+      "classesDisabled": false,
+      "count": 1,
+      "domainEligible": false,
+      "workerEligible": false
+    },
+    {
+      "name": "wrong-class",
+      "className": "wizard",
+      "level": 20,
+      "mana": 75,
+      "health": 40,
+      "classesDisabled": false,
+      "count": 1,
+      "domainEligible": false,
+      "workerEligible": false
+    },
+    {
+      "name": "mana",
+      "className": "healer",
+      "level": 20,
+      "mana": 24,
+      "health": 40,
+      "classesDisabled": false,
+      "count": 1,
+      "domainEligible": false,
+      "workerEligible": false
+    },
+    {
+      "name": "aggregate",
+      "className": "healer",
+      "level": 20,
+      "mana": 49,
+      "health": 40,
+      "classesDisabled": false,
+      "count": 2,
+      "domainEligible": true,
+      "workerEligible": false
+    },
+    {
+      "name": "dead",
+      "className": "healer",
+      "level": 20,
+      "mana": 75,
+      "health": 0,
+      "classesDisabled": false,
+      "count": 1,
+      "domainEligible": true,
+      "workerEligible": false
+    },
+    {
+      "name": "disabled",
+      "className": "healer",
+      "level": 20,
+      "mana": 75,
+      "health": 40,
+      "classesDisabled": true,
+      "count": 1,
+      "domainEligible": true,
+      "workerEligible": false
+    },
+    {
+      "name": "bounded",
+      "className": "healer",
+      "level": 20,
+      "mana": 100,
+      "health": 40,
+      "classesDisabled": false,
+      "count": 4,
+      "domainEligible": true,
+      "workerEligible": false
+    }
+  ]
+}

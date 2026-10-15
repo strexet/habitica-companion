@@ -20,14 +20,14 @@ async function rememberCheck(env: AuthEnv, who: Context, target: string, task: R
  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(await workspaceTokenHash(token),who.profileId,who.connectionId,target,task?.id ?? null,task?.fingerprint ?? null,task?.kind ?? null,task ? Number(task.completed) : null,task ? Number(task.up) : null,task ? Number(task.down) : null,task?.isDue === null || !task ? null : Number(task.isDue),account ? JSON.stringify(account) : null,now,new Date(Date.now()+90000).toISOString()).run();
  return token;
 }
-async function rateState(env: AuthEnv, who: Context, response: Response) {
+export async function rateState(env: AuthEnv, who: Context, response: Response, markCredentialFailure = true) {
  const retry = response.headers.get("retry-after"); const resetText = response.headers.get("x-ratelimit-reset");
  const retrySeconds = retry ? /^\d{1,9}$/.test(retry) ? Number(retry) : Math.ceil((Date.parse(retry)-Date.now())/1000) : 60;
  const reset = resetText && /^\d{1,12}$/.test(resetText) ? Number(resetText)*1000 : 0;
  const blocked = response.status === 429 || response.headers.get("x-ratelimit-remaining") === "0" ? new Date(Math.max(Date.now()+Math.max(Number.isFinite(retrySeconds)?retrySeconds:60,1)*1000,reset)).toISOString() : null;
  await env.HABITICA_INTEGRATION_DB.prepare(`INSERT INTO integration_read_state(profile_id,connection_id,blocked_until_utc,credential_repair_required) VALUES(?,?,?,?)
  ON CONFLICT(profile_id,connection_id) DO UPDATE SET blocked_until_utc=CASE WHEN integration_read_state.blocked_until_utc IS NULL OR excluded.blocked_until_utc>integration_read_state.blocked_until_utc THEN excluded.blocked_until_utc ELSE integration_read_state.blocked_until_utc END,
- credential_repair_required=MAX(integration_read_state.credential_repair_required,excluded.credential_repair_required)`).bind(who.profileId,who.connectionId,blocked,[401,403].includes(response.status)?1:0).run();
+ credential_repair_required=MAX(integration_read_state.credential_repair_required,excluded.credential_repair_required)`).bind(who.profileId,who.connectionId,blocked,markCredentialFailure&&[401,403].includes(response.status)?1:0).run();
  return blocked;
 }
 export async function projectionOperation(request: Request, env: AuthEnv): Promise<Response> {
