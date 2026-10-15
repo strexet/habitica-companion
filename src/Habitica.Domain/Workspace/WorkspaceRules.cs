@@ -12,7 +12,7 @@ public static class WorkspaceRules
     {
         var errors = new List<WorkspaceViolation>();
         if (document.SchemaVersion != WorkspaceDocument.CurrentSchemaVersion) errors.Add(new("unsupported_schema"));
-        if (document.Id == Guid.Empty || document.Revision < 1) errors.Add(new("invalid_workspace"));
+        if (document.Id == Guid.Empty || document.Revision < 1 || document.Revision > WorkspaceDocument.MaxRevision) errors.Add(new("invalid_workspace"));
         if (document.Categories is null || document.Projects is null || document.Sections is null || document.Labels is null
             || document.Goals is null || document.Tasks is null || document.Occurrences is null || document.Completions is null
             || document.HabitScores is null || document.Projections is null)

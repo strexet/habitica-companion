@@ -350,47 +350,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Implement durable Companion command journal
-
-```yaml
-id: T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17
-priority: 206
-status: Ready
-parent_pending_ids: ["P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178"]
-processing_run_id: PR-be6457c2-7735-441f-a88c-ad66e73c0004
-root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-relation: blocker
-depends_on: ["T-924119e2-17fd-4a06-b332-60839c849ade"]
-```
-
-Goal:
-- Define shared command validation, revision conflicts, deduplication and typed projection recovery.
-Current behavior:
-- Canonical workspace implementation is absent; inspected source remains Habitica snapshot based.
-Desired behavior:
-- Implement the approved companion-workspace-contract.md within the selected dependency scope.
-Touch:
-- src/Habitica.Application/Workspace, domain command types, shared Worker contracts and journal fixtures.
-Discovery allowance:
-- Reuse existing .NET, Dexie and Worker infrastructure; add narrowly scoped contracts and fixtures.
-Out of scope:
-- Live enrollment, remote provisioning, deployment and real Habitica mutations.
-Implementation constraints:
-- Preserve legacy snapshots and encrypted private sync; use synthetic fixtures for service qualification.
-- Preserve independent Companion identity and explicit projection outcomes.
-Questions and required clarifications:
-- [Resolved - owner decision] Adopt the approved workspace defaults for local implementation and tests.
-Validation:
-- Build and exercise command state transitions, concurrent revisions, idempotency and recovery fixtures.
-Acceptance:
-- Durable command identities deduplicate equivalent submissions and reject conflicting payload reuse.
-- Known, pending, blocked and unknown projection outcomes remain distinct; ambiguous effects never replay automatically.
-Documentation updates:
-- technical.md, features.md and applicable storage/deployment/UI documentation.
-Risks:
-- Domain parity, ambiguous upstream outcomes and ownership races require explicit fixture coverage.
-
 ### Persist atomic local Companion workspace changes
 
 ```yaml

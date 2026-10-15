@@ -101,6 +101,7 @@ public sealed class WorkspaceRulesTests
     {
         var json = WorkspaceJson.Serialize(Workspace(Todo()));
         Assert.Throws<JsonException>(() => WorkspaceJson.Deserialize(json.Replace("\"schemaVersion\":1", "\"schemaVersion\":2")));
+        Assert.Throws<JsonException>(() => WorkspaceJson.Deserialize(json.Replace("\"revision\":1", "\"revision\":9007199254740992")));
         Assert.Throws<JsonException>(() => WorkspaceJson.Deserialize(json.Replace("\"schemaVersion\":1", "\"schemaVersion\":1,\"schemaVersion\":1")));
         Assert.Throws<JsonException>(() => WorkspaceJson.Deserialize(json.Replace("\"kind\":\"todo\"", "\"kind\":0")));
         Assert.Throws<JsonException>(() => WorkspaceJson.Deserialize(json.Replace("\"kind\":\"todo\",", "")));

@@ -1,0 +1,55 @@
+{
+  "task_id": "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "Full app build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Application tests",
+      "result": "pass",
+      "passed": 69,
+      "journal_cases": 12
+    },
+    {
+      "check": "Domain tests",
+      "result": "pass",
+      "passed": 24
+    },
+    {
+      "check": "Worker command contract fixtures",
+      "result": "pass",
+      "passed": 2
+    },
+    {
+      "check": "Worker typecheck",
+      "result": "pass"
+    },
+    {
+      "check": "Local Settings browser smoke",
+      "result": "pass",
+      "observed": "Fresh app tab renders Settings and existing privacy/portable-data controls after rebuilt app startup."
+    }
+  ],
+  "coverage": [
+    "Atomic candidate snapshots and compare/exchange contract",
+    "Stable command payload IDs, replay receipts and changed-payload rejection",
+    "Whitelisted input, canonical revisions and cross-runtime UTF-8 hashes",
+    "Todo/Daily completion and bounded ordered Habit events",
+    "Per-task ordering, profile repair and quota cooldown",
+    "Lease ownership, expired undispatched work and unknown dispatched effects",
+    "Unknown acceptance after lost storage acknowledgement; original command ID recovers receipt",
+    "Append-only typed transition evidence and corrupt-journal rejection"
+  ],
+  "operation_notes": [
+    "Local app server cleanup deadline produced a prerequisite interruption; server restart and a fresh browser tab restored validation. No application failure was inferred from the expired server."
+  ],
+  "limitations": [
+    "Concrete durable browser storage and remote service adapters remain separate required dependencies.",
+    "Core tests use a synthetic atomic store and make no upstream calls.",
+    "PWA canonical command controls remain unintegrated."
+  ]
+}

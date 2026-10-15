@@ -56,6 +56,7 @@ public sealed record HabiticaProjection(Guid Id, long Revision, Guid TaskId, Pro
 public sealed record WorkspaceDocument
 {
     public const int CurrentSchemaVersion = 1;
+    public const long MaxRevision = 9007199254740991;
     public int SchemaVersion { get; init; } = CurrentSchemaVersion;
     public required Guid Id { get; init; }
     public long Revision { get; init; } = 1;

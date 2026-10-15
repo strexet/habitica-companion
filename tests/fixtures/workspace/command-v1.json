@@ -1,0 +1,22 @@
+{
+  "command": {
+    "id": "20000000-0000-4000-8000-000000000001",
+    "workspaceId": "10000000-0000-4000-8000-000000000001",
+    "expectedRevision": 1,
+    "operation": "createTodo",
+    "taskId": "20000000-0000-4000-8000-000000000002",
+    "patch": {
+      "text": "Read \"chapter\" 📚",
+      "notes": "Private\nnotes §",
+      "clearNotes": false,
+      "priority": "high",
+      "deadline": "2026-10-16",
+      "clearDeadline": false
+    },
+    "direction": null,
+    "count": 1,
+    "occurrenceDate": null,
+    "projectToHabitica": true
+  },
+  "payloadHash": "0cc5d7aa9882c438ad8e42b4e964adb4ca47a314702ab85fba1195471a792d5c"
+}

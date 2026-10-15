@@ -1,0 +1,52 @@
+export type WorkspaceOperation = "createTodo" | "updateTask" | "completeTask" | "scoreHabit";
+export interface WorkspacePatch { text: string | null; notes: string | null; clearNotes: boolean; priority: "low" | "normal" | "high" | "urgent" | null; deadline: string | null; clearDeadline: boolean }
+export interface WorkspaceCommand { id: string; workspaceId: string; expectedRevision: number; operation: WorkspaceOperation; taskId: string; patch: WorkspacePatch | null; direction: "up" | "down" | null; count: number; occurrenceDate: string | null; projectToHabitica: boolean }
+const operations = ["createTodo", "updateTask", "completeTask", "scoreHabit"];
+function object(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("invalid_command");
+  return value as Record<string, unknown>;
+}
+function keys(value: Record<string, unknown>, allowed: string[]) { if (Object.keys(value).some(key => !allowed.includes(key))) throw new Error("invalid_command"); }
+function id(value: unknown) {
+  if (typeof value !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value) || value === "00000000-0000-0000-0000-000000000000") throw new Error("invalid_command");
+  return value.toLowerCase();
+}
+function text(value: unknown, max: number): string | null {
+  if (value === undefined || value === null) return null;
+  if (typeof value !== "string" || value.length > max) throw new Error("invalid_command"); return value;
+}
+function bool(value: unknown) { if (value !== undefined && typeof value !== "boolean") throw new Error("invalid_command"); return value === true; }
+function date(value: unknown): string | null {
+  if (value === undefined || value === null) return null;
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value) || value.startsWith("0000") || !Number.isFinite(Date.parse(value)) || new Date(value).toISOString().slice(0, 10) !== value) throw new Error("invalid_command");
+  return value;
+}
+export function workspaceCommand(value: unknown): WorkspaceCommand {
+  const input = object(value); keys(input, ["id", "workspaceId", "expectedRevision", "operation", "taskId", "patch", "direction", "count", "occurrenceDate", "projectToHabitica"]);
+  if (!Number.isSafeInteger(input.expectedRevision) || Number(input.expectedRevision) < 1 || (typeof input.operation !== "string" || !operations.includes(input.operation))) throw new Error("invalid_command");
+  let patch: WorkspacePatch | null = null;
+  if (input.patch !== undefined && input.patch !== null) {
+    const candidate = object(input.patch); keys(candidate, ["text", "notes", "clearNotes", "priority", "deadline", "clearDeadline"]);
+    if (candidate.priority !== undefined && candidate.priority !== null && (typeof candidate.priority !== "string" || !["low", "normal", "high", "urgent"].includes(candidate.priority))) throw new Error("invalid_command");
+    patch = { text: text(candidate.text, 2048), notes: text(candidate.notes, 10000), clearNotes: bool(candidate.clearNotes), priority: candidate.priority as WorkspacePatch["priority"] ?? null, deadline: date(candidate.deadline), clearDeadline: bool(candidate.clearDeadline) };
+    if (patch.text !== null && /^\p{White_Space}*$/u.test(patch.text) || patch.clearNotes && patch.notes !== null || patch.clearDeadline && patch.deadline !== null) throw new Error("invalid_command");
+    if (Object.values(patch).every(value => value === null || value === false)) throw new Error("invalid_command");
+  }
+  const operation = input.operation as WorkspaceOperation;
+  if (operation === "createTodo" || operation === "updateTask") { if (!patch || operation === "createTodo" && (patch.text === null || /^\p{White_Space}*$/u.test(patch.text))) throw new Error("invalid_command"); }
+  else if (patch) throw new Error("invalid_command");
+  if (input.direction !== undefined && input.direction !== null && (typeof input.direction !== "string" || !["up", "down"].includes(input.direction))) throw new Error("invalid_command");
+  const direction = input.direction as WorkspaceCommand["direction"] ?? null;
+  const count = input.count === undefined ? 1 : input.count;
+  if (!Number.isInteger(count) || Number(count) < 1 || Number(count) > 10 || operation !== "scoreHabit" && count !== 1 || (operation === "scoreHabit" ? direction === null : direction !== null)) throw new Error("invalid_command");
+  const occurrenceDate = date(input.occurrenceDate);
+  if (operation !== "completeTask" && occurrenceDate !== null) throw new Error("invalid_command");
+  return { id: id(input.id), workspaceId: id(input.workspaceId), expectedRevision: Number(input.expectedRevision), operation, taskId: id(input.taskId), patch, direction, count: Number(count), occurrenceDate, projectToHabitica: bool(input.projectToHabitica) };
+}
+export async function commandHash(command: WorkspaceCommand): Promise<string> {
+  const patch = command.patch;
+  const fields = [command.id, command.workspaceId, String(command.expectedRevision), command.operation, command.taskId, patch === null ? "0" : "1", patch?.text ?? null, patch?.notes ?? null, patch?.clearNotes ? "1" : "0", patch?.priority ?? null, patch?.deadline ?? null, patch?.clearDeadline ? "1" : "0", command.direction, String(command.count), command.occurrenceDate, command.projectToHabitica ? "1" : "0"];
+  const encoder = new TextEncoder();
+  const payload = "companion-command-v1\n" + fields.map(value => value === null ? "-1:" : encoder.encode(value).length + ":" + value).join("");
+  return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", encoder.encode(payload))), value => value.toString(16).padStart(2, "0")).join("");
+}
