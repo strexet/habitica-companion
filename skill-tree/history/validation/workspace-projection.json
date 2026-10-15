@@ -1,0 +1,79 @@
+{
+  "task_id": "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "Auth, Workspace and MCP bundle/type checks",
+      "result": "pass"
+    },
+    {
+      "check": "Full app build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Full .NET suite",
+      "result": "pass",
+      "passed": 498,
+      "suites": {
+        "Api": 31,
+        "Application": 76,
+        "Domain": 24,
+        "Rules": 42,
+        "Storage": 21,
+        "WebApp": 304
+      }
+    },
+    {
+      "check": "Auth Worker suite",
+      "result": "pass",
+      "passed": 49
+    },
+    {
+      "check": "Workspace/adapter suite",
+      "result": "pass",
+      "passed": 15
+    },
+    {
+      "check": "Real browser transaction and immutable-intent assertions",
+      "result": "pass",
+      "passed": 12,
+      "evidence": "skill-tree/history/validation/projection-intent-storage.jpg"
+    },
+    {
+      "check": "Browser full reload including accepted intent",
+      "result": "pass",
+      "passed": 3,
+      "evidence": "skill-tree/history/validation/projection-intent-reload.jpg"
+    },
+    {
+      "check": "Rebuilt app Settings smoke",
+      "result": "pass",
+      "observed": "Separate privacy/backup controls render and shipped cloud access remains disabled."
+    }
+  ],
+  "coverage": [
+    "Independent Companion identity and stable verified mapping",
+    "Preview and fresh fingerprint approval without upstream mutation",
+    "External deletion/edit and pre-existing completion review",
+    "Accepted task snapshots preserve older queued intent",
+    "Create then score composition through the real private gateway",
+    "Owned task preconditions; group/challenge/foreign task denial",
+    "Atomic precondition consumption and durable dispatch reservation",
+    "Duplicate attempts, concurrent calls and reservation storage failure",
+    "Known 401/429 refusals and persisted quota/credential state",
+    "Unknown scores never replay; positive correlated creation reconciliation",
+    "Persisted automated spacing and fresh Daily due/Cron/day checks",
+    "Scheduled thirty-day operational cleanup and credential disconnect",
+    "Current/legacy Worker exports validated by C# journal and command hashes"
+  ],
+  "limitations": [
+    "All Habitica responses and accounts are synthetic; no real backend enrollment or mutations occurred.",
+    "The hosted executor dependency must persist and orchestrate Workspace ownership and dispatch.",
+    "Manual task controls remain part of the mutation milestone.",
+    "Habitica provides no cross-request conditional transaction; preflight observations have a bounded race window.",
+    "Uncertain scores require review because no per-command upstream scoring receipt exists.",
+    "Shipped projection access remains disabled; no schedule or Worker was deployed."
+  ]
+}

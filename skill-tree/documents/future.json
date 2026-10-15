@@ -14,7 +14,8 @@
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
       "T-77d41018-e04b-4a88-b92c-079b3d8ef421",
       "T-80bb3b80-8a9c-4252-9924-5a100f746f93",
-      "T-be68f853-9737-4657-a8a4-7aff8dfc497b"
+      "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+      "T-773bb444-a0e6-45b9-bdcb-18561bb6182f"
     ],
     "completion_refs": {
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
@@ -23,6 +24,7 @@
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3": "O-48ebee79-cbbb-4c1c-829c-038c887076e9",
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8": "O-d3de5c55-c4ac-4eb9-9b46-36aa630adf68",
       "T-53352a18-54d2-57b6-accc-91f8e6dfad13": "O-02146734-4822-48de-81a5-71f0c7208776",
+      "T-773bb444-a0e6-45b9-bdcb-18561bb6182f": "O-9d7ad5bd-d5ee-469e-93b0-79c129d87495",
       "T-77d41018-e04b-4a88-b92c-079b3d8ef421": "O-056e3e62-a872-45aa-953d-0452b29a71e3",
       "T-80bb3b80-8a9c-4252-9924-5a100f746f93": "O-93622767-ee19-41ab-bda6-82f140e5b0b3",
       "T-924119e2-17fd-4a06-b332-60839c849ade": "O-23ae7a58-8ca6-44f8-ab06-e245f94fae3d",
@@ -32,8 +34,8 @@
       "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17": "O-a050001b-edd5-41b3-ba4e-3a9005c3c5e4",
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b"
     },
-    "current_task_id": "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
-    "cycle_signature": "7277d77307bb37b8dc5240eb99599a55d39a4b93054a1b6dc2df856171593d74",
+    "current_task_id": "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
+    "cycle_signature": "96d61ed7b980cfbd28b929c444d2c99b59161810ff9e83c7c76661f2b2becfe9",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
@@ -252,7 +254,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "77b1b0dc72b21e9a372330f0a55043e201304ed3d9a983e1afe4b1c84544c0e9",
+  "source_hash": "2f99bee203c6936c552ba249aeab6fbc7d771849973fb4e24855b72930d237bc",
   "tasks": [
     {
       "depends_on": [],
@@ -382,32 +384,12 @@
     },
     {
       "depends_on": [
-        "T-924119e2-17fd-4a06-b332-60839c849ade",
-        "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
-        "T-be68f853-9737-4657-a8a4-7aff8dfc497b"
-      ],
-      "id": "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
-      "line": 353,
-      "parent_pending_ids": [
-        "P-bbb755c5-37d7-5637-862d-17faa8e12f99"
-      ],
-      "priority": 203,
-      "processing_run_id": "PR-be6457c2-7735-441f-a88c-ad66e73c0004",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-      "relation": "blocker",
-      "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-      "status": "Ready",
-      "title": "Implement verified Habitica projection reconciliation"
-    },
-    {
-      "depends_on": [
         "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
         "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
         "T-773bb444-a0e6-45b9-bdcb-18561bb6182f"
       ],
       "id": "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
-      "line": 394,
+      "line": 353,
       "parent_pending_ids": [
         "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07"
       ],
@@ -431,7 +413,7 @@
         "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9"
       ],
       "id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-      "line": 435,
+      "line": 394,
       "parent_pending_ids": [
         "P-90b811d4-3aea-509c-8dca-84d5c892a637"
       ],
@@ -449,7 +431,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
-      "line": 625,
+      "line": 584,
       "parent_pending_ids": [
         "P-1590c3c7-25e6-589e-8efb-91f35d873b4e"
       ],
@@ -467,7 +449,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-      "line": 756,
+      "line": 715,
       "parent_pending_ids": [
         "P-d0950eec-bfbf-561f-b192-dcf8dde67488"
       ],
@@ -493,7 +475,7 @@
         "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"
       ],
       "id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "line": 867,
+      "line": 826,
       "parent_pending_ids": [
         "P-46dde168-2e75-53fd-b2c0-0c1769f7711d"
       ],
@@ -511,7 +493,7 @@
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 993,
+      "line": 952,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -527,7 +509,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1148,
+      "line": 1107,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -541,7 +523,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1185,
+      "line": 1144,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -555,7 +537,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1222,
+      "line": 1181,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -569,7 +551,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1355,
+      "line": 1314,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -583,7 +565,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1393,
+      "line": 1352,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -597,7 +579,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1427,
+      "line": 1386,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -611,7 +593,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1462,
+      "line": 1421,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -625,7 +607,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1496,
+      "line": 1455,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -639,7 +621,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1534,
+      "line": 1493,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -653,7 +635,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1561,
+      "line": 1520,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -667,7 +649,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1583,
+      "line": 1542,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -681,7 +663,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1610,
+      "line": 1569,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

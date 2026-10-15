@@ -30,6 +30,7 @@ async function fixture(t, overrides = {}) {
   t.after(() => mf.dispose());
   const db = await mf.getD1Database("HABITICA_INTEGRATION_DB", "auth");
   await db.prepare(await readFile(new URL("migrations/0001-integration-profiles.sql", root), "utf8")).run();
+  for (const sql of (await readFile(new URL("migrations/0005-projection-gateway.sql", root), "utf8")).split(";")) if (sql.trim()) await db.prepare(sql).run();
   const worker = await mf.getWorker("auth");
   return { worker, db, messages };
 }

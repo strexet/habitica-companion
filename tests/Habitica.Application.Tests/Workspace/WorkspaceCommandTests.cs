@@ -29,6 +29,20 @@ public sealed class WorkspaceCommandTests
     }
 
     [Fact]
+    public void AcceptedTaskSnapshotPreservesIntentAcrossLaterEditsAndRejectsMismatchedHistory()
+    {
+        var state = Empty(); var create = Create(state, true); state = Accept(state, create);
+        var accepted = Assert.Single(state.Commands).TaskSnapshot;
+        Assert.NotNull(accepted); Assert.Equal("Read chapter", accepted.Text);
+        state = Accept(state, new(Guid.NewGuid(), state.Document.Id, state.Document.Revision, WorkspaceOperation.UpdateTask, create.TaskId, new(Text: "Later edit")));
+        Assert.Equal("Read chapter", state.Commands[0].TaskSnapshot!.Text);
+        Assert.Equal("Later edit", state.Commands[1].TaskSnapshot!.Text);
+        Assert.True(WorkspaceJournalValidation.IsValid(state));
+        Assert.False(WorkspaceJournalValidation.IsValid(state with { Commands = state.Commands.Select(entry => entry with { TaskSnapshot = entry.TaskSnapshot! with { Id = Guid.NewGuid() } }).ToArray() }));
+        Assert.True(WorkspaceJournalValidation.IsValid(state with { Commands = state.Commands.Select(entry => entry with { TaskSnapshot = null }).ToArray() }));
+    }
+
+    [Fact]
     public void DuplicateIdUsesOriginalReceiptAndDifferentPayloadCannotReuseId()
     {
         var state = Empty(); var command = Create(state); var accepted = Accept(state, command);

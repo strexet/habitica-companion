@@ -32,6 +32,11 @@
       "binding": "AUTH_IDENTITY",
       "service": "habitica-chatgpt-auth-local",
       "entrypoint": "WorkspaceIdentityService"
+    },
+    {
+      "binding": "AUTH_PROJECTION",
+      "service": "habitica-chatgpt-auth-local",
+      "entrypoint": "ProjectionService"
     }
   ],
   "env": {
@@ -54,6 +59,11 @@
           "binding": "AUTH_IDENTITY",
           "service": "habitica-chatgpt-auth-preview",
           "entrypoint": "WorkspaceIdentityService"
+        },
+        {
+          "binding": "AUTH_PROJECTION",
+          "service": "habitica-chatgpt-auth-preview",
+          "entrypoint": "ProjectionService"
         }
       ]
     },
@@ -76,6 +86,11 @@
           "binding": "AUTH_IDENTITY",
           "service": "habitica-chatgpt-auth-production",
           "entrypoint": "WorkspaceIdentityService"
+        },
+        {
+          "binding": "AUTH_PROJECTION",
+          "service": "habitica-chatgpt-auth-production",
+          "entrypoint": "ProjectionService"
         }
       ]
     }

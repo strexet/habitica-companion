@@ -114,7 +114,9 @@ public static class WorkspaceRules
         {
             if (!tasks.ContainsKey(projection.TaskId) || !projectionTasks.Add(projection.TaskId) || !Enum.IsDefined(projection.State)
                 || projection.HabiticaTaskId is not null && (!Guid.TryParseExact(projection.HabiticaTaskId, "D", out var external) || external == Guid.Empty || !externalIds.Add(projection.HabiticaTaskId))
-                || projection.State == ProjectionState.Linked && projection.HabiticaTaskId is null) errors.Add(new("invalid_projection", projection.Id));
+                || projection.State == ProjectionState.Linked && projection.HabiticaTaskId is null
+                || projection.Fingerprint is not null && !System.Text.RegularExpressions.Regex.IsMatch(projection.Fingerprint, "^[a-f0-9]{64}$")
+                || projection.CorrelationAlias is not null && projection.CorrelationAlias != $"companion_{document.Id:N}_{projection.TaskId:N}") errors.Add(new("invalid_projection", projection.Id));
         }
         return errors;
     }

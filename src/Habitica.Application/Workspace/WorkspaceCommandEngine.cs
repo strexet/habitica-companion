@@ -91,7 +91,7 @@ public static class WorkspaceCommandEngine
         }
         var state = !requested ? ProjectionCommandState.NotRequested
             : mapping?.State is ProjectionState.ExternalConflict or ProjectionState.UnknownOutcome ? ProjectionCommandState.Blocked : ProjectionCommandState.Pending;
-        var entry = new WorkspaceCommandEntry(command, hash, now, state, effects, Failure: state == ProjectionCommandState.Blocked ? ProjectionFailure.Precondition : ProjectionFailure.None);
+        var entry = new WorkspaceCommandEntry(command, hash, now, state, effects, Failure: state == ProjectionCommandState.Blocked ? ProjectionFailure.Precondition : ProjectionFailure.None, TaskSnapshot: updated);
         var projections = document.Projections.ToList();
         if (requested && mapping is null) projections.Add(new(Guid.NewGuid(), revision, updated.Id, ProjectionState.Pending));
         var result = document with { Revision = revision, Tasks = tasks, Completions = completions, Occurrences = occurrences, HabitScores = scores, Projections = projections };

@@ -21,7 +21,8 @@
     "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool",
     "ENROLLMENT_ENABLED": false,
     "OAUTH_ENABLED": false,
-    "WORKSPACE_ENABLED": false
+    "WORKSPACE_ENABLED": false,
+    "PROJECTION_ENABLED": false
   },
   "env": {
     "preview": {
@@ -32,7 +33,8 @@
         "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool",
         "ENROLLMENT_ENABLED": false,
         "OAUTH_ENABLED": false,
-        "WORKSPACE_ENABLED": false
+        "WORKSPACE_ENABLED": false,
+        "PROJECTION_ENABLED": false
       },
       "kv_namespaces": [
         {
@@ -54,6 +56,11 @@
           "CREDENTIAL_KEY_V1",
           "CREDENTIAL_KEY_V2"
         ]
+      },
+      "triggers": {
+        "crons": [
+          "17 * * * *"
+        ]
       }
     },
     "production": {
@@ -64,7 +71,8 @@
         "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool",
         "ENROLLMENT_ENABLED": false,
         "OAUTH_ENABLED": false,
-        "WORKSPACE_ENABLED": false
+        "WORKSPACE_ENABLED": false,
+        "PROJECTION_ENABLED": false
       },
       "kv_namespaces": [
         {
@@ -85,6 +93,11 @@
           "PROFILE_ID_KEY",
           "CREDENTIAL_KEY_V1",
           "CREDENTIAL_KEY_V2"
+        ]
+      },
+      "triggers": {
+        "crons": [
+          "17 * * * *"
         ]
       }
     }
@@ -109,6 +122,11 @@
       "PROFILE_ID_KEY",
       "CREDENTIAL_KEY_V1",
       "CREDENTIAL_KEY_V2"
+    ]
+  },
+  "triggers": {
+    "crons": [
+      "17 * * * *"
     ]
   }
 }

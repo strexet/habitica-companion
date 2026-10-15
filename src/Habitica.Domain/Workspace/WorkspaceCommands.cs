@@ -39,7 +39,8 @@ public sealed record WorkspaceCommandEntry(
     DateTimeOffset? RetryAtUtc = null,
     ProjectionLease? Lease = null,
     DateTimeOffset? DispatchedAtUtc = null,
-    int Attempts = 0);
+    int Attempts = 0,
+    CompanionTask? TaskSnapshot = null);
 
 public sealed record WorkspaceJournalEvent(Guid Id, Guid CommandId, JournalEventKind Kind, DateTimeOffset AtUtc, int ConfirmedEffects, ProjectionFailure Failure, Guid? AttemptToken = null, string? EvidenceReference = null);
 public sealed record WorkspaceJournalSnapshot(WorkspaceDocument Document, long StoreVersion, IReadOnlyList<WorkspaceCommandEntry> Commands, IReadOnlyList<WorkspaceJournalEvent>? Events = null);

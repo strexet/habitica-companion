@@ -350,47 +350,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Implement verified Habitica projection reconciliation
-
-```yaml
-id: T-773bb444-a0e6-45b9-bdcb-18561bb6182f
-priority: 203
-status: Ready
-parent_pending_ids: ["P-bbb755c5-37d7-5637-862d-17faa8e12f99"]
-processing_run_id: PR-be6457c2-7735-441f-a88c-ad66e73c0004
-root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-relation: blocker
-depends_on: ["T-924119e2-17fd-4a06-b332-60839c849ade", "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17", "T-be68f853-9737-4657-a8a4-7aff8dfc497b"]
-```
-
-Goal:
-- Project adopted Companion commands through Auth-owned narrow operations without duplicate game effects.
-Current behavior:
-- Canonical workspace implementation is absent; inspected source remains Habitica snapshot based.
-Desired behavior:
-- Implement the approved companion-workspace-contract.md within the selected dependency scope.
-Touch:
-- Workspace projection adapter, Auth projection service, existing Habitica API contracts and synthetic fixtures.
-Discovery allowance:
-- Reuse existing .NET, Dexie and Worker infrastructure; add narrowly scoped contracts and fixtures.
-Out of scope:
-- Live enrollment, remote provisioning, deployment and real Habitica mutations.
-Implementation constraints:
-- Preserve legacy snapshots and encrypted private sync; use synthetic fixtures for service qualification.
-- Preserve independent Companion identity and explicit projection outcomes.
-Questions and required clarifications:
-- [Resolved - owner decision] Adopt the approved workspace defaults for local implementation and tests.
-Validation:
-- Verify current upstream contracts; exercise missing tasks, external edits/deletions, create-then-complete, 401/429 and ambiguous response fixtures.
-Acceptance:
-- Stable adopted projection mapping preserves Companion identity and blocks verified external deletions for review.
-- Ordered create/update/score effects distinguish known failure from unknown outcomes and never blindly replay ambiguous effects.
-Documentation updates:
-- technical.md, features.md and applicable storage/deployment/UI documentation.
-Risks:
-- Domain parity, ambiguous upstream outcomes and ownership races require explicit fixture coverage.
-
 ### Qualify opted-in hosted command execution ownership
 
 ```yaml

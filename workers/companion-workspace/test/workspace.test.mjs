@@ -138,3 +138,52 @@ test('archive capacity stops new acceptance before retained history becomes unex
  const response = await call(f, '/commands', w.sessionToken, command(w.workspaceId)); assert.equal(response.status, 413);
  const data = await (await call(f, '/export', w.sessionToken)).json(); assert.equal(data.document.revision, 1); assert.equal(data.commands.length, 0); assert.equal(data.events.length, 0);
 });
+
+test('projection adoption requires reviewed fresh metadata and never writes upstream or overwrites canonical fields', async t => {
+ const externalId='90000000-0000-4000-8000-000000000001'; let taskWrites=0; let remoteText='External task';
+ const f=await fixture(t,{workspace:true,projection:true,habitica:async request=>{
+  const user=request.headers.get('x-api-user');
+  if (request.url.includes('user?userFields=_id,profile')) return Response.json({success:true,data:{_id:user,profile:{name:'Synthetic'}}});
+  if (request.method!=='GET')taskWrites++;
+  return Response.json({success:true,data:{id:externalId,userId:user,type:'todo',text:remoteText,notes:'External notes',priority:1,attribute:'str',completed:false,checklist:[],group:{},challenge:{}}});
+ }});
+ const w=await connect(f,await enrolled(f)); const c={...command(w.workspaceId),projectToHabitica:false}; assert.equal((await call(f,'/commands',w.sessionToken,c)).status,201);
+ const preview=await(await call(f,'/projection/preview',w.sessionToken,{taskId:c.taskId,habiticaTaskId:externalId})).json();
+ assert.equal(preview.task.text,c.patch.text); assert.equal(preview.external.text,remoteText); assert.equal(preview.pendingCommandCount,0);
+ remoteText='Changed after preview';
+ const approval={taskId:c.taskId,habiticaTaskId:externalId,expectedRevision:preview.expectedRevision,expectedFingerprint:preview.external.fingerprint};
+ assert.equal((await call(f,'/projection/adopt',w.sessionToken,approval)).status,409);
+ const fresh=await(await call(f,'/projection/preview',w.sessionToken,{taskId:c.taskId,habiticaTaskId:externalId})).json();
+ assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedFingerprint:fresh.external.fingerprint})).status,200);
+ const exported=await(await call(f,'/export',w.sessionToken)).json(); assert.equal(exported.document.tasks[0].id,c.taskId); assert.equal(exported.document.tasks[0].text,c.patch.text); assert.equal(exported.document.projections[0].habiticaTaskId,externalId); assert.equal(taskWrites,0);
+ const update={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:exported.document.revision,operation:'updateTask',taskId:c.taskId,patch:{notes:'An explicit later edit'}};
+ const saved=await(await call(f,'/commands',w.sessionToken,update)).json(); assert.equal(saved.entry.projectionState,'pending'); assert.deepEqual(saved.entry.effects,['update']);
+ assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedRevision:exported.document.revision+1,expectedFingerprint:fresh.external.fingerprint})).status,409);
+});
+
+test('accepted completion drives ordered create then score through the private gateway without a second canonical ID', async t => {
+ const {projectionStep,confirmMapping}=await import('../src/projection-adapter.ts');
+ let remote=null;const writes=[];
+ const f=await fixture(t,{workspace:true,projection:true,habitica:async request=>{
+  const user=request.headers.get('x-api-user');
+  if(request.url.includes('user?userFields=_id,profile'))return Response.json({success:true,data:{_id:user,profile:{name:'Synthetic'}}});
+  if(request.method==='GET')return remote?Response.json({success:true,data:remote}):new Response('',{status:404});
+  writes.push(new URL(request.url).pathname);
+  if(request.url.endsWith('/score/up')){remote.completed=true;return Response.json({success:true,data:{delta:1}});}
+  remote={id:'90000000-0000-4000-8000-000000000002',userId:user,notes:'',priority:1,attribute:'str',completed:false,checklist:[],group:{},challenge:{},...await request.json()};
+  return Response.json({success:true,data:remote},{status:201});
+ }});
+ const profile=await enrolled(f);const w=await connect(f,profile);const c={...command(w.workspaceId),projectToHabitica:false};assert.equal((await call(f,'/commands',w.sessionToken,c)).status,201);
+ const complete={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:2,operation:'completeTask',taskId:c.taskId,projectToHabitica:true};assert.equal((await call(f,'/commands',w.sessionToken,complete)).status,201);
+ const exported=await(await call(f,'/export',w.sessionToken)).json();let doc=exported.document;let entry=exported.commands[1];
+ const context=await(await f.workspaceIdentity.fetch('https://identity.internal/management',{method:'POST',headers:{authorization:`Bearer ${profile.managementToken}`}})).json();
+ const gateway=async(operation,args,writing=false)=>{
+  const r=await f.projection.fetch('https://projection.internal/operation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({...context,operation,arguments:args,automated:false,...(writing?{attemptId:crypto.randomUUID(),attemptAtUtc:new Date().toISOString()}:{})})});assert.equal(r.status,200,await r.clone().text());return r.json();
+ };
+ for(let i=0;i<2;i++){
+  const need=projectionStep(doc,entry);assert.equal(need.kind,'inspect');const observed=await gateway(need.operation,{selector:need.selector});
+  const step=projectionStep(doc,entry,observed);assert.equal(step.kind,'write');const result=await gateway(step.operation,step.arguments,true);assert.equal(result.kind,'applied');
+  doc=confirmMapping(doc,c.taskId,result.task);entry={...entry,confirmedEffects:entry.confirmedEffects+1};
+ }
+ assert.deepEqual(writes,['/api/v3/tasks/user','/api/v3/tasks/90000000-0000-4000-8000-000000000002/score/up']);assert.equal(doc.tasks[0].id,c.taskId);assert.equal(doc.tasks[0].state,'completed');assert.equal(doc.completions.length,1);assert.equal(entry.confirmedEffects,2);
+});

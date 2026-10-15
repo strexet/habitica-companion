@@ -4,7 +4,7 @@ import { WorkspaceError } from "../../shared/workspace-http";
 export interface CommandEntry {
  command: WorkspaceCommand; payloadHash: string; acceptedAtUtc: string;
  projectionState: string; effects: string[]; confirmedEffects: number; failure: string;
- retryAtUtc: string | null; lease: null; dispatchedAtUtc: string | null; attempts: number;
+ retryAtUtc: string | null; lease: null; dispatchedAtUtc: string | null; attempts: number; taskSnapshot?: CompanionTask | null;
 }
 export interface JournalEvent { id: string; commandId: string; kind: string; atUtc: string; confirmedEffects: number; failure: string; attemptToken: null; evidenceReference: null }
 export async function accept(document: WorkspaceDocument, command: WorkspaceCommand, now: string): Promise<{ document: WorkspaceDocument; entry: CommandEntry; event: JournalEvent }> {
@@ -48,6 +48,6 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  const blocked = mapping && ["externalConflict", "unknownOutcome"].includes(mapping.state);
  const failure = requested && blocked ? "precondition" : "none";
  if (requested && !mapping) result.projections.push({ id: crypto.randomUUID(), revision, taskId: task!.id, state: "pending", habiticaTaskId: null, isArchived: false });
- const entry: CommandEntry = { command, payloadHash: await commandHash(command), acceptedAtUtc: now, projectionState: !requested ? "notRequested" : blocked ? "blocked" : "pending", effects, confirmedEffects: 0, failure, retryAtUtc: null, lease: null, dispatchedAtUtc: null, attempts: 0 };
+ const entry: CommandEntry = { command, payloadHash: await commandHash(command), acceptedAtUtc: now, projectionState: !requested ? "notRequested" : blocked ? "blocked" : "pending", effects, confirmedEffects: 0, failure, retryAtUtc: null, lease: null, dispatchedAtUtc: null, attempts: 0, taskSnapshot: structuredClone(task!) };
  return { document: workspaceDocument(result), entry, event: { id: crypto.randomUUID(), commandId: command.id, kind: "accepted", atUtc: now, confirmedEffects: 0, failure, attemptToken: null, evidenceReference: null } };
 }

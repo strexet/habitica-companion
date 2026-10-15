@@ -85,7 +85,7 @@ export async function commitWorkspace(scope, expectedStoreVersion, json) {
       const next = commandById.get(old.id);
       if (!next || next.position !== old.position) throw new Error("Command history cannot be removed or reordered.");
       const before = JSON.parse(old.json); const after = JSON.parse(next.json);
-      if (before.payloadHash !== after.payloadHash || stableJson(before.command) !== stableJson(after.command)) throw new Error("Accepted command identity is immutable.");
+      if (before.payloadHash !== after.payloadHash || stableJson(before.command) !== stableJson(after.command) || stableJson(before.taskSnapshot ?? null) !== stableJson(after.taskSnapshot ?? null)) throw new Error("Accepted command identity is immutable.");
     }
     for (const old of oldEvents) {
       const next = eventById.get(old.id);

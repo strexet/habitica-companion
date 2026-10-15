@@ -1,3 +1,4 @@
+import { projectionOperation, clearProjectionContext, purgeProjectionMetadata } from "./projection";
 import { workspaceIdentity } from "./workspace-identity";
 import { readOperation } from "./reads";
 import { WorkerEntrypoint } from "cloudflare:workers";
@@ -32,9 +33,13 @@ export class WorkspaceIdentityService extends WorkerEntrypoint<AuthEnv> {
   async fetch(request: Request): Promise<Response> { return workspaceIdentity(request, this.env); }
 }
 
+export class ProjectionService extends WorkerEntrypoint<AuthEnv> {
+  async fetch(request: Request): Promise<Response> { return projectionOperation(request, this.env); }
+}
+
 async function handlePublicRequest(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     resourceConfiguration(env.ENVIRONMENT);
-    const vault = await vaultRoute(request, env, Boolean(env.OAUTH_ENABLED) ? (id, connectionId) => cleanupProfile(env, id, connectionId) : undefined);
+    const vault = await vaultRoute(request, env, async (id, connectionId) => { if (Boolean(env.OAUTH_ENABLED)) await cleanupProfile(env, id, connectionId); await clearProjectionContext(env,id,connectionId); });
     if (vault) return vault;
     if (new URL(request.url).pathname === "/health" && request.method === "GET") return Response.json({ service: "auth", authorization: Boolean(env.OAUTH_ENABLED) ? "enabled" : "unavailable" }, { headers });
     if (Boolean(env.OAUTH_ENABLED)) {
@@ -60,6 +65,7 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
     return Response.json({ error: "unauthorized" }, { status: 401, headers });
 }
 export default {
+  async scheduled(_event, env): Promise<void> { await purgeProjectionMetadata(env); },
   async fetch(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const config = resourceConfiguration(env.ENVIRONMENT);

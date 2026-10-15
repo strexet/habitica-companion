@@ -1,3 +1,4 @@
+import { adoptProjection } from "./projection-adapter";
 import { resourceConfiguration } from "../../shared/resources";
 import { bearer, uuid, workspaceJson, workspaceObject, WorkspaceError, workspaceSessionToken, workspaceTokenHash } from "../../shared/workspace-http";
 import { emptyWorkspace } from "../../shared/workspace-domain";
@@ -104,6 +105,26 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  if (path === "/workspace" && request.method === "GET") return json({ document: JSON.parse(row.document_json), storeVersion: row.store_version, executorEnabled: Boolean(row.executor_enabled) });
  if (path === "/export" && request.method === "GET") return snapshot(env, row);
  if (path === "/commands" && request.method === "POST") return command(request, env, row);
+ if (["/projection/preview","/projection/adopt"].includes(path) && request.method === "POST") {
+  const body=workspaceObject(await workspaceJson(request),path.endsWith("preview")?["taskId","habiticaTaskId"]:["taskId","habiticaTaskId","expectedRevision","expectedFingerprint"]);
+  const taskId=uuid(body.taskId); const externalId=uuid(body.habiticaTaskId); const document=JSON.parse(row.document_json);
+  const task=document.tasks.find((task: {id:string})=>task.id===taskId); if (!task) throw new WorkspaceError("task_unavailable",422);
+  const response=await env.AUTH_PROJECTION.fetch("https://projection.internal/operation",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({profileId:row.profile_id,connectionId:row.connection_id,operation:"inspect",arguments:{selector:externalId},automated:false})});
+  if (!response.ok) throw new WorkspaceError("projection_preview_unavailable",response.status===401?401:503);
+  const observed=await response.json<{task: import("../../shared/projection").RemoteTask|null}>();
+  if (!observed.task) throw new WorkspaceError("external_deleted",409);
+  const pending=await env.WORKSPACE_DB.prepare("SELECT entry_json FROM workspace_commands WHERE profile_id=?").bind(row.profile_id).all<{entry_json:string}>();
+  const unresolved=pending.results.map(row=>JSON.parse(row.entry_json)).filter(entry=>entry.command.taskId===taskId && !["notRequested","confirmed","cancelled"].includes(entry.projectionState));
+  if (path.endsWith("preview")) return json({task,external:observed.task,expectedRevision:document.revision,pendingCommandCount:unresolved.length});
+  if (unresolved.length || body.expectedRevision!==document.revision || typeof body.expectedFingerprint!=="string") throw new WorkspaceError("adoption_conflict",409);
+  const adopted=adoptProjection(document,taskId,observed.task,body.expectedFingerprint); const serialized=JSON.stringify(adopted);
+  const archiveBytes=row.archive_bytes-bytes(row.document_json)+bytes(serialized);
+  if (bytes(serialized)>1024*1024 || archiveBytes>8*1024*1024 || row.store_version===Number.MAX_SAFE_INTEGER) throw new WorkspaceError("workspace_capacity",413);
+  const updated=await env.WORKSPACE_DB.prepare("UPDATE workspaces SET document_json=?,archive_bytes=?,store_version=store_version+1,commit_tag=?,updated_at_utc=? WHERE profile_id=? AND access_epoch=? AND store_version=? AND active=1")
+   .bind(serialized,archiveBytes,crypto.randomUUID(),new Date().toISOString(),row.profile_id,row.access_epoch,row.store_version).run();
+  if (!updated.meta.changes) throw new WorkspaceError("stale_revision",409);
+  return json({adopted:true,taskId,habiticaTaskId:observed.task.id,revision:adopted.revision});
+ }
  if (path === "/disconnect" && request.method === "POST") {
   const stopped = await env.WORKSPACE_DB.batch([env.WORKSPACE_DB.prepare("UPDATE workspaces SET active=0,executor_enabled=0 WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1").bind(row.profile_id,row.connection_id,row.access_epoch),env.WORKSPACE_DB.prepare("DELETE FROM workspace_sessions WHERE profile_id=? AND access_epoch=?").bind(row.profile_id,row.access_epoch)]);
   if (!stopped[0].meta.changes) throw new WorkspaceError("unauthorized", 401);

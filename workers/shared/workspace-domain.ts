@@ -1,4 +1,4 @@
-import { WorkspaceError, workspaceObject, uuid } from "./workspace-http";
+import { WorkspaceError, workspaceObject, uuid } from "./workspace-http.ts";
 export interface Entity { id: string; revision: number; isArchived: boolean }
 export interface Category extends Entity { name: string }
 export interface Project extends Category { categoryId: string | null }
@@ -13,7 +13,7 @@ export interface CompanionTask extends Entity {
 export interface Occurrence extends Entity { taskId: string; date: string; state: "pending" | "completed" | "skipped" }
 export interface Completion extends Entity { taskId: string; commandId: string; completedAtUtc: string; occurrenceId: string | null }
 export interface HabitScore extends Entity { taskId: string; commandId: string; recordedAtUtc: string; direction: "up" | "down" }
-export interface Projection extends Entity { taskId: string; state: "unlinked" | "pending" | "linked" | "externalConflict" | "unknownOutcome"; habiticaTaskId: string | null }
+export interface Projection extends Entity { taskId: string; state: "unlinked" | "pending" | "linked" | "externalConflict" | "unknownOutcome"; habiticaTaskId: string | null; fingerprint?: string | null; correlationAlias?: string | null }
 export interface WorkspaceDocument { schemaVersion: 1; id: string; revision: number; categories: Category[]; projects: Project[]; sections: Section[]; labels: Category[]; goals: Goal[]; tasks: CompanionTask[]; occurrences: Occurrence[]; completions: Completion[]; habitScores: HabitScore[]; projections: Projection[] }
 const fail = (): never => { throw new WorkspaceError("invalid_workspace", 422); };
 function named(value: unknown, max = 256, allowEmpty = false): string { if (typeof value !== "string" || value.length > max || !allowEmpty && /^\p{White_Space}*$/u.test(value)) return fail(); return value; }
@@ -66,7 +66,7 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   const occurrences = list(value.occurrences).map(item => { const row = workspaceObject(item, [...baseKeys, "taskId", "date", "state"]); if (row.date === "0001-01-01") return fail(); return { ...entity(row, revision), taskId: uuid(row.taskId), date: date(row.date), state: choice(row.state, ["pending", "completed", "skipped"]) }; });
   const completions = list(value.completions).map(item => { const row = workspaceObject(item, [...baseKeys, "taskId", "commandId", "completedAtUtc", "occurrenceId"]); return { ...entity(row, revision), taskId: uuid(row.taskId), commandId: uuid(row.commandId), completedAtUtc: utc(row.completedAtUtc), occurrenceId: optionalId(row.occurrenceId) }; });
   const habitScores = list(value.habitScores).map(item => { const row = workspaceObject(item, [...baseKeys, "taskId", "commandId", "recordedAtUtc", "direction"]); return { ...entity(row, revision), taskId: uuid(row.taskId), commandId: uuid(row.commandId), recordedAtUtc: utc(row.recordedAtUtc), direction: choice(row.direction, ["up", "down"]) }; });
-  const projections = list(value.projections).map(item => { const row = workspaceObject(item, [...baseKeys, "taskId", "state", "habiticaTaskId"]); return { ...entity(row, revision), taskId: uuid(row.taskId), state: choice(row.state, ["unlinked", "pending", "linked", "externalConflict", "unknownOutcome"]), habiticaTaskId: optionalId(row.habiticaTaskId) }; });
+  const projections = list(value.projections).map(item => { const row = workspaceObject(item, [...baseKeys, "taskId", "state", "habiticaTaskId", "fingerprint", "correlationAlias"]); return { ...entity(row, revision), taskId: uuid(row.taskId), state: choice(row.state, ["unlinked", "pending", "linked", "externalConflict", "unknownOutcome"]), habiticaTaskId: optionalId(row.habiticaTaskId), fingerprint: row.fingerprint === undefined || row.fingerprint === null ? null : typeof row.fingerprint === "string" && /^[a-f0-9]{64}$/.test(row.fingerprint) ? row.fingerprint : fail(), correlationAlias: row.correlationAlias === undefined || row.correlationAlias === null ? null : typeof row.correlationAlias === "string" && /^companion_[a-f0-9]{32}_[a-f0-9]{32}$/.test(row.correlationAlias) ? row.correlationAlias : fail() }; });
   const all = [...categories, ...labels, ...projects, ...sections, ...goals, ...tasks, ...occurrences, ...completions, ...habitScores, ...projections];
   if (all.length > 100000 || new Set([id, ...all.map(item => item.id)]).size !== all.length + 1) return fail();
   const categoryIds = new Set(categories.map(item => item.id)); const projectMap = new Map(projects.map(item => [item.id, item])); const sectionMap = new Map(sections.map(item => [item.id, item])); const taskMap = new Map(tasks.map(item => [item.id, item])); const labelIds = new Set(labels.map(item => item.id)); const occurrenceMap = new Map(occurrences.map(item => [item.id, item]));
@@ -97,7 +97,7 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   for (const score of habitScores) if (taskMap.get(score.taskId)?.kind !== "habit") return fail();
   const mapped = new Set<string>(); const external = new Set<string>();
   for (const projection of projections) {
-    if (!taskMap.has(projection.taskId) || mapped.has(projection.taskId) || projection.state === "linked" && !projection.habiticaTaskId || projection.habiticaTaskId && external.has(projection.habiticaTaskId)) return fail();
+    if (projection.correlationAlias && projection.correlationAlias !== `companion_${id.replaceAll("-", "")}_${projection.taskId.replaceAll("-", "")}` || !taskMap.has(projection.taskId) || mapped.has(projection.taskId) || projection.state === "linked" && !projection.habiticaTaskId || projection.habiticaTaskId && external.has(projection.habiticaTaskId)) return fail();
     mapped.add(projection.taskId); if (projection.habiticaTaskId) external.add(projection.habiticaTaskId);
   }
   return { schemaVersion: 1, id, revision, categories, projects, sections, labels, goals, tasks, occurrences, completions, habitScores, projections };
