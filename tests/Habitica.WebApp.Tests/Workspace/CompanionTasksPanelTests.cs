@@ -24,6 +24,7 @@ public sealed class CompanionTasksPanelTests : BunitContext
         Assert.Empty(f.Controller.Snapshot!.Commands); Assert.Contains("Review before saving", cut.Markup);
         Assert.Empty(cut.FindAll("script"));
         Assert.Contains("<script>untrusted note</script>", cut.Find(".companion-command-preview").TextContent);
+        WorkspaceLayoutEvidence.Save("canonical-preview", cut.Markup);
         cut.Find("[data-testid='canonical-confirm']").Click();
         Assert.Single(f.Controller.Snapshot!.Commands);
         Assert.Contains("Saved in Companion: Yes", cut.Find("[data-testid='canonical-receipt']").TextContent);

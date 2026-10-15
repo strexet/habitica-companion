@@ -133,6 +133,22 @@ public sealed class WorkspaceCloudClientTests
         Assert.False((await client.HandoffAsync(WorkspaceJournalJson.Serialize(snapshot with { Authority = null }), default)).Succeeded);
     }
 
+    [Fact]
+    public async Task LateRenewalCannotRestoreCloudAccessAfterTheTabSessionIsForgotten()
+    {
+        var vault = Vault(out var vaultHttp); using var ownedVaultHttp = vaultHttp;
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously); var calls = 0;
+        using var http = new HttpClient(new Handler(async (_, _) =>
+        {
+            if (++calls == 1) return Connection();
+            entered.SetResult(); await release.Task; return Connection();
+        }));
+        var client = new WorkspaceCloudClient(http, vault, "https://workspace.invalid/"); Assert.True((await client.ConnectAsync(Credentials, default)).Succeeded);
+        var renewed = client.ConnectAsync(Credentials, default); await entered.Task; client.ForgetSession(); release.SetResult();
+        Assert.False((await renewed).Succeeded); Assert.Null(client.WorkspaceId); Assert.False(client.ExecutorEnabled);
+    }
+
     private static HttpResponseMessage Json(object value, HttpStatusCode status = HttpStatusCode.OK) => new(status) { Content = JsonContent.Create(value) };
     private sealed class Handler(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> response) : HttpMessageHandler
     {

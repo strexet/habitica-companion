@@ -42,8 +42,10 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         var id = localId ?? (Snapshot is not null && !IsCloud ? Snapshot.Document.Id : ids.FirstOrDefault());
         var snapshot = cloudSource ? await cloud.LoadWorkspaceAsync(cancellationToken) : id == Guid.Empty ? null : await database.ForScope(scope).LoadAsync(id, cancellationToken);
         if (!StillCurrent(scope)) return;
-        _scope = scope; _snapshot = snapshot; LocalIds = ids; IsCloud = cloudSource; RequiresReload = snapshot is null;
+        var retainOriginal = snapshot is null && _intent is not null && _scope == scope && IsCloud == cloudSource;
+        _scope = scope; _snapshot = retainOriginal ? _snapshot : snapshot; LocalIds = ids; IsCloud = cloudSource; RequiresReload = snapshot is null;
         Message = snapshot is null ? cloudSource ? "Cloud data is unavailable. Reconnect in Settings or try again later." : "Create a local workspace to start saving Companion tasks." : null;
+        if (retainOriginal) Message = cloudSource ? "Workspace access is unavailable. The original command reference remains available; renew cloud access in Settings before checking its receipt." : "Browser storage is unavailable. The original command reference remains available; restore storage access before checking its receipt.";
     }
     public async Task CreateLocalAsync(CancellationToken cancellationToken = default)
     {

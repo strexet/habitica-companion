@@ -6,6 +6,24 @@ namespace Habitica.WebApp.Tests.Workspace;
 public sealed class WorkspaceTaskControllerTests
 {
     [Fact]
+    public async Task UnavailableCloudReloadRetainsUncertainPreviewUntilRenewedReceiptRecovery()
+    {
+        var f = new WorkspaceTaskFixture(); f.Client.Connected = true;
+        await f.Controller.LoadAsync(true); await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo());
+        var id = f.Controller.Preview!.PreparedCommandId; f.Client.LoseAcceptance = true;
+        await f.Controller.ConfirmAsync(); f.Client.FailLoads = true;
+        await f.Controller.LoadAsync(true);
+        Assert.True(f.Controller.AcceptanceUnknown); Assert.True(f.Controller.RequiresReload);
+        Assert.NotNull(f.Controller.Snapshot); Assert.Equal(id, f.Controller.Preview!.PreparedCommandId);
+        Assert.Throws<InvalidOperationException>(() => f.Controller.CancelPreview());
+        f.Client.FailLoads = false; // The same account's explicit renewal restores access.
+        await f.Controller.CheckOriginalAsync();
+        Assert.False(f.Controller.AcceptanceUnknown); Assert.False(f.Controller.RequiresReload);
+        Assert.Equal(id, f.Controller.LastReceipt!.CommandId); Assert.Single(f.Client.AcceptedIds);
+        Assert.Single(f.Controller.Snapshot!.Document.Tasks);
+    }
+
+    [Fact]
     public async Task LocalReviewDoesNotSaveUntilConfirmationAndLostAcknowledgementReusesOriginalCommand()
     {
         var f = new WorkspaceTaskFixture(); await f.Controller.CreateLocalAsync();

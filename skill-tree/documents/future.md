@@ -350,63 +350,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Recover expired cloud workspace access
-
-```yaml
-id: T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89
-priority: 195
-status: Ready
-parent_pending_ids: ["P-6aae2186-4693-4f67-9cf5-71e9a89d0de3"]
-processing_run_id: PR-bd3e1004-5d10-48a0-95b3-aba3e356af25
-root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-relation: blocker
-depends_on: ["T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e"]
-```
-
-Goal:
-- Recover expired cloud access without replacing an uncertain accepted command.
-
-Current behavior:
-- Connected Settings has no revalidation control, and a failed cloud reload can hide the original command preview.
-
-Desired behavior:
-- Explicit renewed consent revalidates cloud access from the current PWA account.
-- The editor preserves uncertain original command identity across unavailable reloads and connection renewal.
-
-Touch:
-- Workspace Settings, typed cloud client/controller and focused UI/lifecycle tests.
-
-Discovery allowance:
-- Inspect current session renewal and generation guards; reuse the existing enrollment/connection flow.
-
-Out of scope:
-- Real enrollment, deployment, changes to granted capabilities and automatic credential storage.
-
-Implementation constraints:
-- Renewal requires an explicit action and the existing data-handling disclosure.
-- Account changes discard old responses; renewal never creates another canonical command for a pending intent.
-
-Failure handling:
-- Preserve original command IDs on transport uncertainty and keep receipt recovery available.
-
-Questions and required clarifications:
-- None. The owner-approved cloud contract already defines connection consent and command recovery.
-
-Validation:
-- Build the app; qualify expired/unavailable cloud reads, renewed connection, stale responses and original receipt recovery with synthetic services.
-- Check rebuilt Settings and Tasks behavior in the browser.
-
-Acceptance:
-- Connected Settings offers an explicitly consented renewal path and rejects stale responses.
-- An unavailable reload preserves the original uncertain preview and successful renewal permits receipt recovery without duplicate acceptance.
-
-Documentation updates:
-- skill-tree/documents/features.md and skill-tree/documents/testing.md.
-
-Risks:
-- Lost intent identity and accidental duplicate task acceptance after reconnection.
-
 ### Add Safe Task Mutation Tools
 
 ```yaml

@@ -25,6 +25,9 @@
     else
     {
         <p>Cloud workspace access is available for this tab. Signing out or closing this tab forgets its access token.</p>
+        <p>If access expires or stops responding, renew the connection before checking the original command receipt. Renewal keeps accepted commands and does not enable background execution.</p>
+        <label class="checkbox-row"><input type="checkbox" @bind="_renewConsent" data-testid="workspace-renew-consent" /><span>I renew cloud workspace access with encrypted server credential storage and the readable-data retention described above.</span></label>
+        <MudButton Disabled="@(_busy || !_renewConsent || Session.State.IsBusy)" OnClick="RenewAsync" Variant="Variant.Outlined" data-testid="workspace-renew">Renew cloud connection</MudButton>
         <div class="action-row">
             <MudButton Disabled="@_busy" OnClick="ExportCloudAsync" Variant="Variant.Outlined">Export cloud workspace</MudButton>
             <MudButton Disabled="@_busy" OnClick="@(() => _cleanup = false)" Variant="Variant.Outlined">Disconnect cloud workspace</MudButton>
@@ -78,7 +81,7 @@
 </section>
 
 @code {
-    private bool _consent, _busy, _executorConsent;
+    private bool _consent, _busy, _executorConsent, _renewConsent;
     private Guid? _transferId;
     private bool? _cleanup;
     private string? _message, _restoreJson;
@@ -101,6 +104,7 @@
         finally { _busy = false; }
     }
     private Task ConnectAsync() => RunAsync(() => Workspace.ConnectAsync(_consent));
+    private async Task RenewAsync() { await RunAsync(() => Workspace.ConnectAsync(_renewConsent)); _renewConsent = false; }
     private async Task SetExecutorAsync(bool enabled) { await RunAsync(() => Workspace.SetExecutorAsync(enabled)); _executorConsent = false; }
     private async Task TransferAsync() { if (_transferId is not { } id) return; await RunAsync(() => Workspace.TransferAsync(id)); _transferId = null; }
     private Task ExportCloudAsync() => RunAsync(() => Workspace.ExportCloudAsync());

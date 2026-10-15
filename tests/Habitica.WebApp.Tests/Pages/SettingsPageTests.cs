@@ -21,6 +21,21 @@ public sealed class SettingsPageTests : BunitContext
     }
 
     [Fact]
+    public void ConnectedWorkspaceRenewalRequiresExplicitDataConsent()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose; Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage()); Services.AddScoped<ColorSchemeService>();
+        var session = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true });
+        Services.AddSingleton<IAppSessionController>(session); Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new ExecutorCloud());
+        var cut = Render<SettingsPage>();
+        Assert.True(cut.Find("[data-testid='workspace-renew']").HasAttribute("disabled")); Assert.Equal(0, session.WorkspaceConnectCalls);
+        Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("workspace-renewal", cut.Markup);
+        cut.Find("[data-testid='workspace-renew-consent']").Change(true); cut.Find("[data-testid='workspace-renew']").Click();
+        Assert.Equal(1, session.WorkspaceConnectCalls);
+        Assert.True(cut.Find("[data-testid='workspace-renew']").HasAttribute("disabled"));
+    }
+
+    [Fact]
     public void Background_execution_requires_its_own_opt_in_and_can_be_paused()
     {
         JSInterop.Mode = JSRuntimeMode.Loose; Services.AddMudServices();

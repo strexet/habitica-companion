@@ -1,0 +1,60 @@
+{
+  "task_id": "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "Full app build",
+      "result": "pass"
+    },
+    {
+      "check": "Focused workspace component/client/controller suite",
+      "result": "pass",
+      "passed": 21
+    },
+    {
+      "check": "Connected Settings consent and late renewal guards",
+      "result": "pass"
+    },
+    {
+      "check": "Unavailable cloud reload followed by original receipt recovery",
+      "result": "pass",
+      "accepted_command_count": 1,
+      "canonical_task_count": 1
+    },
+    {
+      "check": "Actual rebuilt app Tasks disclosure and signed-out guard",
+      "result": "pass",
+      "evidence": "skill-tree/history/validation/task-tools-app-editor.jpg"
+    },
+    {
+      "check": "Actual rebuilt Settings phone-width guard",
+      "result": "pass",
+      "viewport_width": 360,
+      "document_width": 349
+    },
+    {
+      "check": "Synthetic real-Razor connected Settings phone layout",
+      "result": "pass",
+      "viewport_width": 360,
+      "document_width": 345,
+      "evidence": "skill-tree/history/validation/workspace-restore-phone.jpg"
+    },
+    {
+      "check": "Changed documentation prose",
+      "result": "pass"
+    }
+  ],
+  "coverage": [
+    "Renewal remains available in a connected tab and requires renewed disclosure acknowledgement",
+    "Late renewal cannot restore forgotten workspace access",
+    "Unavailable reload retains the original uncertain preview and marks the view stale",
+    "Receipt recovery preserves the original server ID and does not accept another command",
+    "Account-change protection remains active",
+    "Required narrow restore subtask completed and committed as 2b12e17"
+  ],
+  "limitations": [
+    "Connected UI and service interactions use synthetic component/client fixtures; the ordinary rebuilt app retains disabled cloud configuration.",
+    "A missing receipt does not authorize another command or automatic replay.",
+    "No real enrollment, cloud deployment, uploaded file or upstream mutation occurred."
+  ]
+}
