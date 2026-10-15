@@ -109,8 +109,11 @@ test('delayed authorized requests cannot reach a deleted and recreated workspace
  let f, gate;
  f = await fixture(t, { workspace: true, identity: async request => {
   const response = await f.workspaceIdentity.fetch(request);
+  // Materialize the tiny identity receipt before parking the synthetic binding callback.
+  // Holding its live stream across other Worker requests can stall the fixture bridge.
+  const detached = new Response(await response.arrayBuffer(), { status: response.status, headers: new Headers(response.headers) });
   if (gate && new URL(request.url).pathname === '/epoch') { const held = gate; gate = null; held.enter(); await held.wait; }
-  return response;
+  return detached;
  } });
  const profile = await enrolled(f);
  for (const action of ['command', 'export', 'disconnect', 'delete', 'disconnect-reconnect']) {
@@ -120,7 +123,8 @@ test('delayed authorized requests cannot reach a deleted and recreated workspace
    : action === 'export' ? call(f, '/export', w.sessionToken)
    : ['disconnect', 'disconnect-reconnect'].includes(action) ? call(f, '/disconnect', w.sessionToken, {})
    : call(f, '/workspace', w.sessionToken, { confirmWorkspaceId: w.workspaceId }, 'DELETE');
-  await entered;
+  const early = await Promise.race([entered.then(() => null), pending]);
+  assert.equal(early, null, `${action}: the request returned before the gated identity read`);
   try {
    if (action === 'disconnect-reconnect') assert.equal((await call(f, '/disconnect', w.sessionToken, {})).status, 200);
    else assert.equal((await call(f, '/workspace', w.sessionToken, { confirmWorkspaceId: w.workspaceId }, 'DELETE')).status, 200);

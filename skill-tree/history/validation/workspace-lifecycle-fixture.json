@@ -1,0 +1,43 @@
+{
+  "task_id": "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "Final-source fresh fixture repetitions",
+      "result": "pass",
+      "iterations": 20,
+      "lifecycle_operations_per_iteration": 5
+    },
+    {
+      "check": "Isolated staged-source Workspace suite",
+      "result": "pass",
+      "passed": 43
+    },
+    {
+      "check": "Full parent working-tree Workspace suite",
+      "result": "pass",
+      "passed": 48
+    },
+    {
+      "check": "App build and full .NET suites",
+      "result": "pass",
+      "passed": 524,
+      "warnings": 0,
+      "errors": 0
+    }
+  ],
+  "coverage": [
+    "Buffer the synthetic identity response before pausing a callback",
+    "Fail explicitly if the request returns before reaching the intended gate",
+    "Stale command/export/disconnect/delete/disconnect-reconnect requests remain rejected",
+    "Every replacement session must export an empty workspace and journal"
+  ],
+  "observations": [
+    "Unbuffered controls intermittently returned unauthorized or stalled. Captured phases located a stall after gate release.",
+    "Buffered final-source controls passed twenty repeated fresh fixtures and both isolated/full suites."
+  ],
+  "limitations": [
+    "The transport repair does not establish the underlying cause of every pre-repair transient response, or prove a production session defect.",
+    "No production authorization source or test assertion was weakened."
+  ]
+}
