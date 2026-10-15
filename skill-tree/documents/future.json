@@ -21,7 +21,8 @@
       "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e",
       "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89",
       "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-      "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
+      "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+      "T-991d6cf2-7c54-4006-ab58-eda921ae66d6"
     ],
     "completion_refs": {
       "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89": "O-2b79fcef-7244-48d6-bad7-16c7b8937eee",
@@ -39,6 +40,7 @@
       "T-77d41018-e04b-4a88-b92c-079b3d8ef421": "O-056e3e62-a872-45aa-953d-0452b29a71e3",
       "T-80bb3b80-8a9c-4252-9924-5a100f746f93": "O-93622767-ee19-41ab-bda6-82f140e5b0b3",
       "T-924119e2-17fd-4a06-b332-60839c849ade": "O-23ae7a58-8ca6-44f8-ab06-e245f94fae3d",
+      "T-991d6cf2-7c54-4006-ab58-eda921ae66d6": "O-747dceb1-50c9-4703-9399-b64b2a0ccba6",
       "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9": "O-1289cd22-e42d-43e3-8c68-1c7954321b8a",
       "T-b883e33b-05a6-53d8-a9a5-d11d7008887f": "O-84147b67-67cd-4c09-80fe-17befff407d7",
       "T-be68f853-9737-4657-a8a4-7aff8dfc497b": "O-2cf7fc6d-d2b2-480c-b190-e9907a73ea5a",
@@ -46,17 +48,15 @@
       "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17": "O-a050001b-edd5-41b3-ba4e-3a9005c3c5e4",
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b"
     },
-    "current_task_id": null,
-    "cycle_signature": "051c769f08041ad26c67463a616b0073c1d5d8f5ad87ee05c4c7adeabf922e16",
+    "current_task_id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+    "cycle_signature": "9e42768f7bef18b29c2790859a95fd21ccc0a67d07dd852a8b3f64cf5bc02a9f",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Obtain owner selection of proposed authenticated party planning boundary; then clear the stop and advance the existing run.",
+    "next_action": "implement",
     "partial_work": [
-      "Completed canonical task-command qualification as 83e91d3 and plugin source package as 026a29a. Eight of eleven initial roots complete.",
-      "Party authorization source review found legacy local claims can still mutate shared queue/role records; forwarding MCP identity alone cannot establish trustworthy planning state.",
-      "A concrete separate authenticated planning namespace and permission/consent proposal is recorded in companion-workspace-contract.md. No party/spell code changed."
+      "Owner approved authenticated party planning boundary for local implementation and synthetic tests. Real activation remains separate."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -70,9 +70,10 @@
       "P-6ea76a88-a928-4235-aa55-c80466e20b54",
       "P-642949f7-826f-45aa-8e6f-9d9ffabbea97",
       "P-6aae2186-4693-4f67-9cf5-71e9a89d0de3",
-      "P-ff948539-db7d-43b1-bc7e-957f26b6903a"
+      "P-ff948539-db7d-43b1-bc7e-957f26b6903a",
+      "P-92427ffc-b96b-4dab-82f4-57f3861a6ad2"
     ],
-    "phase": "awaiting-party-contract",
+    "phase": "implement",
     "processing_results": [
       {
         "created_ids": [
@@ -282,6 +283,25 @@
           "P-ff948539-db7d-43b1-bc7e-957f26b6903a"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-991d6cf2-7c54-4006-ab58-eda921ae66d6"
+        ],
+        "dispositions": {
+          "P-92427ffc-b96b-4dab-82f4-57f3861a6ad2": {
+            "reason": "Inspected OAuth, vault, private binding and upstream group source establish the bounded read-only proof contract.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-1d4a1919-e34e-4588-8e2b-8caaca44f123",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-92427ffc-b96b-4dab-82f4-57f3861a6ad2"
+        ],
+        "task_keys": {
+          "party-context": "T-991d6cf2-7c54-4006-ab58-eda921ae66d6"
+        }
       }
     ],
     "required_ids": [
@@ -305,9 +325,11 @@
       "T-49eaa44e-5c98-4219-a380-4201e4143494",
       "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89",
       "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e",
-      "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
+      "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+      "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+      "T-991d6cf2-7c54-4006-ab58-eda921ae66d6"
     ],
-    "root_task_id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+    "root_task_id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
     "snapshot": [
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df",
@@ -322,10 +344,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Owner selection required for authenticated party planning trust and shared-data boundary in T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec."
+    "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "93850304ef7c13a12fa2e429689cfee8e35741345296c017c697207688a4566d",
+  "source_hash": "ba08247440f79e6f7e51832543c4a331c47a3d874e64e8552c9d80d23956edbc",
   "tasks": [
     {
       "depends_on": [],
@@ -455,7 +477,8 @@
     },
     {
       "depends_on": [
-        "T-4a1de222-156a-52cf-8966-262a2c8216ed"
+        "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+        "T-991d6cf2-7c54-4006-ab58-eda921ae66d6"
       ],
       "id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
       "line": 353,
@@ -468,7 +491,7 @@
       "related_task_id": null,
       "relation": "main",
       "root_task_id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-      "status": "Blocked pending answers",
+      "status": "Ready",
       "title": "Add Party And Spell Capabilities Incrementally"
     },
     {

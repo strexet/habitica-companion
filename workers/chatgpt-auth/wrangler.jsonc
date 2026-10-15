@@ -22,7 +22,8 @@
     "ENROLLMENT_ENABLED": false,
     "OAUTH_ENABLED": false,
     "WORKSPACE_ENABLED": false,
-    "PROJECTION_ENABLED": false
+    "PROJECTION_ENABLED": false,
+    "PARTY_ENABLED": false
   },
   "env": {
     "preview": {
@@ -34,7 +35,8 @@
         "ENROLLMENT_ENABLED": false,
         "OAUTH_ENABLED": false,
         "WORKSPACE_ENABLED": false,
-        "PROJECTION_ENABLED": false
+        "PROJECTION_ENABLED": false,
+        "PARTY_ENABLED": false
       },
       "kv_namespaces": [
         {
@@ -72,7 +74,8 @@
         "ENROLLMENT_ENABLED": false,
         "OAUTH_ENABLED": false,
         "WORKSPACE_ENABLED": false,
-        "PROJECTION_ENABLED": false
+        "PROJECTION_ENABLED": false,
+        "PARTY_ENABLED": false
       },
       "kv_namespaces": [
         {

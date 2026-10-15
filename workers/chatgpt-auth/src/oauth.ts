@@ -5,7 +5,7 @@ import { activeProfile, boundedText, VaultError } from "./vault";
 import { attempts, consumeTicket, networkAttempts } from "./linking";
 import { tokenHash } from "./cryptography";
 
-export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write"];
+export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "party:read"];
 export function authorizationServer(env: AuthEnv) {
   const config = resourceConfiguration(env.ENVIRONMENT);
   return new OAuthAuthorizationServer<AuthEnv>({
@@ -47,7 +47,7 @@ function consentHeaders(headers: Headers) {
 async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["beginConsent"]>[0], profileLabel?: string) {
   const details = await oauth.describeConsent(request);
   const consent = await oauth.beginConsent(request);
-  const labels: Record<string,string>={"profile:read":"Identify the linked account","account:read":"Read Habitica stats and day status","tasks:read":"Read Companion tasks and legacy Habitica tasks","habitica.tasks.write":"Save Companion tasks, completions and Habit scores"};
+  const labels: Record<string,string>={"party:read":"Read verified current party and minimal quest context","profile:read":"Identify the linked account","account:read":"Read Habitica stats and day status","tasks:read":"Read Companion tasks and legacy Habitica tasks","habitica.tasks.write":"Save Companion tasks, completions and Habit scores"};
   const writeNotice=details.scope.includes("habitica.tasks.write")?"<p>Task access can save changes and completion or scoring commands. The separately enabled Companion executor can apply those commands to Habitica game state, even while the app is closed. Existing read access does not grant task writes.</p>":"";
   const scopeInputs = details.scope.map(scope => `<label><input ${profileLabel ? 'type="checkbox" checked' : 'type="hidden"'} name="scope" value="${escape(scope)}">${profileLabel ? escape(labels[scope]??scope) : ''}</label>`).join("");
   const origin = details.clientDomain ? `Published by ${escape(details.clientDomain)}.` : "Client name is self-declared.";

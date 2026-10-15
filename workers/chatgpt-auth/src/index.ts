@@ -1,3 +1,4 @@
+import {partyProofOperation} from './party';
 import { projectionOperation, clearProjectionContext, purgeProjectionMetadata } from "./projection";
 import { workspaceIdentity } from "./workspace-identity";
 import { readOperation } from "./reads";
@@ -31,6 +32,10 @@ export class AuthService extends WorkerEntrypoint<AuthEnv> {
 // This binding belongs only to the Workspace Worker; public routes never dispatch named entrypoints.
 export class WorkspaceIdentityService extends WorkerEntrypoint<AuthEnv> {
   async fetch(request: Request): Promise<Response> { return workspaceIdentity(request, this.env); }
+}
+
+export class PartyService extends WorkerEntrypoint<AuthEnv> {
+  async fetch(request:Request):Promise<Response>{return partyProofOperation(request,this.env);}
 }
 
 export class ProjectionService extends WorkerEntrypoint<AuthEnv> {

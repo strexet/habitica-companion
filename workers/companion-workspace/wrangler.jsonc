@@ -18,7 +18,8 @@
   "vars": {
     "ENVIRONMENT": "local",
     "WORKSPACE_ENABLED": false,
-    "EXECUTOR_ENABLED": false
+    "EXECUTOR_ENABLED": false,
+    "PARTY_ENABLED": false
   },
   "d1_databases": [
     {
@@ -38,6 +39,11 @@
       "binding": "AUTH_PROJECTION",
       "service": "habitica-chatgpt-auth-local",
       "entrypoint": "ProjectionService"
+    },
+    {
+      "binding": "AUTH_PARTY",
+      "service": "habitica-chatgpt-auth-local",
+      "entrypoint": "PartyService"
     }
   ],
   "env": {
@@ -46,7 +52,8 @@
       "vars": {
         "ENVIRONMENT": "preview",
         "WORKSPACE_ENABLED": false,
-        "EXECUTOR_ENABLED": false
+        "EXECUTOR_ENABLED": false,
+        "PARTY_ENABLED": false
       },
       "d1_databases": [
         {
@@ -66,6 +73,11 @@
           "binding": "AUTH_PROJECTION",
           "service": "habitica-chatgpt-auth-preview",
           "entrypoint": "ProjectionService"
+        },
+        {
+          "binding": "AUTH_PARTY",
+          "service": "habitica-chatgpt-auth-preview",
+          "entrypoint": "PartyService"
         }
       ],
       "triggers": {
@@ -79,7 +91,8 @@
       "vars": {
         "ENVIRONMENT": "production",
         "WORKSPACE_ENABLED": false,
-        "EXECUTOR_ENABLED": false
+        "EXECUTOR_ENABLED": false,
+        "PARTY_ENABLED": false
       },
       "d1_databases": [
         {
@@ -99,6 +112,11 @@
           "binding": "AUTH_PROJECTION",
           "service": "habitica-chatgpt-auth-production",
           "entrypoint": "ProjectionService"
+        },
+        {
+          "binding": "AUTH_PARTY",
+          "service": "habitica-chatgpt-auth-production",
+          "entrypoint": "PartyService"
         }
       ],
       "triggers": {

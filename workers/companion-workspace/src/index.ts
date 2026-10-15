@@ -1,3 +1,5 @@
+import {partyApi,PartyApiFailure} from './party-api';
+import {partyToolScopes,type PartyTool} from '../../shared/party-tools';
 import { purgeExpiredPreparations } from "./preparation-retention";
 import { WorkerEntrypoint } from "cloudflare:workers";
 import { taskApi } from "./task-api";
@@ -163,15 +165,17 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
   try{
    if(!this.env.WORKSPACE_ENABLED||request.method!=="POST")throw new WorkspaceError("workspace_unavailable",503);
    const body=workspaceObject(await workspaceJson(request,65536),["tool","arguments"]);
-   if(typeof body.tool!=="string"||!Object.hasOwn(taskToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
+   if(typeof body.tool!=="string"||!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
    const verified=await this.env.AUTH_IDENTITY.fetch("https://identity.internal/mcp",{method:"POST",headers:{authorization:request.headers.get("authorization")??""},signal:AbortSignal.timeout(5000)});
    if(!verified.ok)throw new WorkspaceError("unauthorized",401);
    const who=await verified.json<Identity&{scopes:string[]}>();
-   if(!Array.isArray(who.scopes)||!who.scopes.includes(taskToolScopes[body.tool as TaskTool]))throw new WorkspaceError("insufficient_scope",403);
+   const requiredScope=Object.hasOwn(partyToolScopes,body.tool)?partyToolScopes[body.tool as PartyTool]:taskToolScopes[body.tool as TaskTool];
+   if(!Array.isArray(who.scopes)||!who.scopes.includes("profile:read")||!who.scopes.includes(requiredScope))throw new WorkspaceError("insufficient_scope",403);
    const row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
    if(!row)throw new WorkspaceError("workspace_consent_required",403);
+   if(Object.hasOwn(partyToolScopes,body.tool))return json(await partyApi(this.env,who,body.tool as PartyTool,body.arguments,request.headers.get("authorization")??undefined));
    return json(await taskApi(this.env,row,body.tool as TaskTool,body.arguments,cmd=>command(new Request("https://workspace.internal/commands",{method:"POST",body:JSON.stringify(cmd)}),this.env,row,true)));
-  }catch(error){return json({error:error instanceof WorkspaceError?error.code:"command_outcome_unknown",savedInCompanion:error instanceof WorkspaceError?false:null,outcomeUnknown:!(error instanceof WorkspaceError)},error instanceof WorkspaceError?error.status:503);}
+  }catch(error){return json({error:error instanceof WorkspaceError?error.code:"command_outcome_unknown",...(error instanceof PartyApiFailure?{rate:error.rate}:{}),savedInCompanion:error instanceof WorkspaceError?false:null,outcomeUnknown:!(error instanceof WorkspaceError)},error instanceof WorkspaceError?error.status:503);}
  }
 }
 export default {

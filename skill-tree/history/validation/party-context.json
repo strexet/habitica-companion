@@ -1,0 +1,48 @@
+{
+  "task_id": "T-991d6cf2-7c54-4006-ab58-eda921ae66d6",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "All three Worker bundles/type checks",
+      "result": "pass"
+    },
+    {
+      "check": "Workspace full suite",
+      "result": "pass",
+      "passed": 40
+    },
+    {
+      "check": "Auth full suite",
+      "result": "pass",
+      "passed": 50
+    },
+    {
+      "check": "App build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Rebuilt default Settings optional integration guards",
+      "result": "pass",
+      "evidence": "skill-tree/history/validation/party-context-default-settings.jpg"
+    },
+    {
+      "check": "Changed document prose and diff whitespace",
+      "result": "pass"
+    }
+  ],
+  "coverage": [
+    "Fresh exact enrolled actor and authenticated party verification; browser local claims do not influence results",
+    "Two isolated profiles, private-service and OAuth scope checks",
+    "Missing party, malformed leader, identity mismatch, wrong group type, changed party, quota and invalid credentials deny data",
+    "Enrollment change while upstream request is in flight discards proof",
+    "Minimal public facts omit chat, private upstream fields, actor/leader IDs and credentials",
+    "Read-only route performs no gameplay writes"
+  ],
+  "limitations": [
+    "Synthetic local service bindings and actual MCP SDK qualify tool behavior; no real enrollment, deployment or Habitica request occurred.",
+    "No authenticated planning persistence or spells are implemented by this read unit.",
+    "Membership facts are fresh observations; remote membership can change after any read."
+  ]
+}

@@ -1,3 +1,4 @@
+import {partyToolScopes,type PartyTool} from '../../shared/party-tools';
 import { taskToolScopes } from "../../shared/task-tools";
 import { OAuthResourceServer, insufficientScope, type OAuthResourceTokenValidation } from "@cloudflare/workers-oauth-provider";
 import { handleMcp, requestBody } from "./tools";
@@ -49,6 +50,7 @@ export default {
             const scope = readScopes[name as keyof typeof readScopes];
             if (!context.auth.scope?.includes(scope)) return insufficientScope(context.auth, [scope]);
           }
+          if(name&&Object.hasOwn(partyToolScopes,name)&&!context.auth.scope?.includes(partyToolScopes[name as PartyTool]))return insufficientScope(context.auth,["profile:read",partyToolScopes[name as PartyTool]]);
           if (name && Object.hasOwn(taskToolScopes,name)) {
             const scope=taskToolScopes[name as keyof typeof taskToolScopes];
             if (!context.auth.scope?.includes(scope)) return insufficientScope(context.auth,["profile:read",scope]);

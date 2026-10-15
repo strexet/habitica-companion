@@ -186,3 +186,9 @@ The executor processes one eligible profile and at most one effect per scheduled
 The current Workspace package requires migration `0003-prepared-commands.sql` in addition to the initial workspace/ownership migrations. The MCP `WORKSPACE_SERVER` binding targets the Workspace `WorkspaceCommandService` named entrypoint in the matching environment. The public Workspace handler never exposes that private entrypoint. Auth supports explicit `habitica.tasks.write` grants; older read grants remain read-only. The new package and scope implementation grant no deployment authorization and enable no shipped flag.
 
 Workspace scheduled cleanup removes expired unaccepted preparation payloads in bounded transactions before optional execution. Accepted preparation bindings remain with canonical command history until workspace deletion. Qualify cleanup timing, archive accounting, scope escalation and service identity in the authorized remote rollout lane. Browser and MCP command acceptance remain available only after the separate workspace consent and configuration gates.
+
+## Optional verified party read binding
+
+The Workspace environments declare `AUTH_PARTY` targeting the matching Auth Worker `PartyService` entrypoint. Auth and Workspace `PARTY_ENABLED` flags ship false. `party:read` is a separate OAuth consent scope; existing profile/account/task grants do not gain party access. The MCP Worker has no direct party proof or credential binding. Public Auth URLs cannot invoke the named entrypoint.
+
+Build Auth, MCP and Workspace with the pinned package scripts before local synthetic party fixtures. The context tool requires an active cloud workspace but creates no shared planning namespace. Queue/voting consent and persistence remain separate required work. No real service activation is part of local build or test commands.

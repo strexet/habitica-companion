@@ -355,13 +355,13 @@ Highest numeric priority first; unmet dependencies and blocking questions stop i
 ```yaml
 id: T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec
 priority: 99
-status: Blocked pending answers
+status: Ready
 parent_pending_ids: ["P-d0950eec-bfbf-561f-b192-dcf8dde67488"]
 processing_run_id: null
 root_task_id: T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec
 related_task_id: null
 relation: main
-depends_on: ["T-4a1de222-156a-52cf-8966-262a2c8216ed"]
+depends_on: ["T-4a1de222-156a-52cf-8966-262a2c8216ed", "T-991d6cf2-7c54-4006-ab58-eda921ae66d6"]
 ```
 
 Migration source:
@@ -439,9 +439,9 @@ Parity strategy:
 - do not claim full parity when not actually covered.
 
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Adopt the separate authenticated party planning namespace and permission model in `companion-workspace-contract.md#proposed-authenticated-party-planning-boundary`, or select an alternative trust model.
-  Reason: Verified Habitica membership can establish the actor and party, but existing queue rows and roles remain mutable through browser claims. Reusing the legacy state would not establish trusted authorization. The proposed namespace introduces shared server-readable planning and a separate consent boundary.
-  Required answer from: Repository owner after reviewing the concrete party planning proposal.
+- [Resolved - owner decision] The repository owner approved `companion-workspace-contract.md#authenticated-party-planning-boundary` for local implementation and synthetic tests.
+  Reason: Fresh credential-backed membership and a separate authenticated namespace prevent browser-claimed roles and records from authorizing MCP writes.
+  Required answer from: Owner approval received on 2026-10-15; live activation remains separate.
 
 Validation:
 - Verify party role checks, cross-profile isolation, stale state, spell plans, sequential execution, partial failure and parity fixtures.

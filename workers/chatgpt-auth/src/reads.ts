@@ -10,7 +10,7 @@ const text = (value: unknown, length = 256) => typeof value === "string" && valu
 const number = (value: unknown) => typeof value === "number" && Number.isFinite(value) ? value : undefined;
 const boolean = (value: unknown) => typeof value === "boolean" ? value : undefined;
 const headers = { "cache-control": "no-store" };
-class ReadFailure extends Error {
+export class ReadFailure extends Error {
   constructor(public code: string, public status: number, public rate: Record<string, unknown> = {}) { super(code); }
 }
 function rateMetadata(response: Response) {
@@ -26,7 +26,7 @@ function rateMetadata(response: Response) {
   }
   return rate;
 }
-async function upstream(env: AuthEnv, profileId: string, connectionId: string, path: string) {
+export async function upstream(env: AuthEnv, profileId: string, connectionId: string, path: string) {
   const state = await env.HABITICA_INTEGRATION_DB.prepare("SELECT blocked_until_utc,credential_repair_required FROM integration_read_state WHERE profile_id=? AND connection_id=?")
     .bind(profileId, connectionId).first<{ blocked_until_utc: string | null; credential_repair_required: number }>();
   if (state?.credential_repair_required) throw new ReadFailure("credential_repair_required", 401);
