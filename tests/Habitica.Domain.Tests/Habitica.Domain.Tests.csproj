@@ -23,4 +23,7 @@
     <ProjectReference Include="..\..\src\Habitica.Domain\Habitica.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="../fixtures/workspace/*.json" Link="fixtures/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

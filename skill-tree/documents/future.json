@@ -8,7 +8,8 @@
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d",
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3",
       "T-16a38176-f2fe-5f7d-a809-546f17357b49",
-      "T-53352a18-54d2-57b6-accc-91f8e6dfad13"
+      "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
+      "T-924119e2-17fd-4a06-b332-60839c849ade"
     ],
     "completion_refs": {
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
@@ -16,17 +17,18 @@
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3": "O-48ebee79-cbbb-4c1c-829c-038c887076e9",
       "T-53352a18-54d2-57b6-accc-91f8e6dfad13": "O-02146734-4822-48de-81a5-71f0c7208776",
+      "T-924119e2-17fd-4a06-b332-60839c849ade": "O-23ae7a58-8ca6-44f8-ab06-e245f94fae3d",
       "T-b883e33b-05a6-53d8-a9a5-d11d7008887f": "O-84147b67-67cd-4c09-80fe-17befff407d7",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df": "O-ed64ce15-7bea-467d-8a8b-06a3494a05fd",
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b"
     },
-    "current_task_id": null,
+    "current_task_id": "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
     "cycle_signature": "3052be101751197128769ac334745056f8aa656e117543231c38a7c3bd8cb10e",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Apply owner decisions, decompose required E02/E03/E04/E05/E07 scope, attach promoted dependencies to T-4a1de222-156a-52cf-8966-262a2c8216ed and resume the initial snapshot.",
+    "next_action": "implement",
     "partial_work": [
       "OAuth/browser consent milestone completed in 6c1221f and e43a90d.",
       "Read-only MCP milestone completed in 226abe2; 31 Worker tests, Inspector CLI and app build/browser checks pass.",
@@ -35,9 +37,14 @@
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
-      "P-23092c14-bc50-42c9-948f-201991e9594f"
+      "P-23092c14-bc50-42c9-948f-201991e9594f",
+      "P-9d3fb820-05c3-525b-8769-85c5423d2f53",
+      "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035",
+      "P-bbb755c5-37d7-5637-862d-17faa8e12f99",
+      "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178",
+      "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07"
     ],
-    "phase": "blocked-material-decision",
+    "phase": "implement",
     "processing_results": [
       {
         "created_ids": [
@@ -111,6 +118,55 @@
           "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-924119e2-17fd-4a06-b332-60839c849ade",
+          "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+          "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+          "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+          "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
+          "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9"
+        ],
+        "dispositions": {
+          "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07": {
+            "reason": "Owner adopted the concrete workspace defaults; inspected source supports the dependency decomposition.",
+            "status": "promoted"
+          },
+          "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178": {
+            "reason": "Owner adopted the concrete workspace defaults; inspected source supports the dependency decomposition.",
+            "status": "promoted"
+          },
+          "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035": {
+            "reason": "Owner adopted the concrete workspace defaults; inspected source supports the dependency decomposition.",
+            "status": "promoted"
+          },
+          "P-9d3fb820-05c3-525b-8769-85c5423d2f53": {
+            "reason": "Owner adopted the concrete workspace defaults; inspected source supports the dependency decomposition.",
+            "status": "promoted"
+          },
+          "P-bbb755c5-37d7-5637-862d-17faa8e12f99": {
+            "reason": "Owner adopted the concrete workspace defaults; inspected source supports the dependency decomposition.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-be6457c2-7735-441f-a88c-ad66e73c0004",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-9d3fb820-05c3-525b-8769-85c5423d2f53",
+          "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035",
+          "P-bbb755c5-37d7-5637-862d-17faa8e12f99",
+          "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178",
+          "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07"
+        ],
+        "task_keys": {
+          "cloud-workspace": "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+          "domain": "T-924119e2-17fd-4a06-b332-60839c849ade",
+          "executor": "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
+          "journal": "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+          "local-storage": "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+          "projection": "T-773bb444-a0e6-45b9-bdcb-18561bb6182f"
+        }
       }
     ],
     "required_ids": [
@@ -121,9 +177,15 @@
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d",
       "T-16a38176-f2fe-5f7d-a809-546f17357b49",
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3",
-      "T-53352a18-54d2-57b6-accc-91f8e6dfad13"
+      "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
+      "T-924119e2-17fd-4a06-b332-60839c849ade",
+      "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+      "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+      "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+      "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
+      "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9"
     ],
-    "root_task_id": "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
+    "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
     "snapshot": [
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df",
@@ -138,10 +200,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Awaiting owner selection of workspace privacy, domain, deletion, retention and executor defaults in companion-workspace-contract.md."
+    "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "a012521c1f781ab3ddcb1fb21e8508c523b8ddfc342e28cbc01def9379833a20",
+  "source_hash": "d490c1ebd383cc5e7e688ef41de5c82ae0e8e0803e82a5f62926d8f6bc0d18aa",
   "tasks": [
     {
       "depends_on": [],
@@ -159,64 +221,8 @@
     },
     {
       "depends_on": [],
-      "id": "P-9d3fb820-05c3-525b-8769-85c5423d2f53",
-      "line": 108,
-      "parent_pending_ids": [],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E02 Companion-owned canonical workspace and task domain"
-    },
-    {
-      "depends_on": [],
-      "id": "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035",
-      "line": 143,
-      "parent_pending_ids": [],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E03 Local-first persistent storage, migration, and optional cloud workspace"
-    },
-    {
-      "depends_on": [],
-      "id": "P-bbb755c5-37d7-5637-862d-17faa8e12f99",
-      "line": 178,
-      "parent_pending_ids": [],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E04 Habitica projection and reconciliation adapter"
-    },
-    {
-      "depends_on": [],
-      "id": "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178",
-      "line": 213,
-      "parent_pending_ids": [],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E05 Durable command journal and typed failure/recovery engine"
-    },
-    {
-      "depends_on": [],
       "id": "P-676c0cb1-82b5-51e1-92c1-74303b58c59d",
-      "line": 248,
+      "line": 108,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -229,22 +235,8 @@
     },
     {
       "depends_on": [],
-      "id": "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07",
-      "line": 277,
-      "parent_pending_ids": [],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E07 Optional always-on server executor and queue ownership handoff"
-    },
-    {
-      "depends_on": [],
       "id": "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
-      "line": 312,
+      "line": 137,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -258,7 +250,7 @@
     {
       "depends_on": [],
       "id": "P-c8632138-39c6-5797-8e03-a3414824ee96",
-      "line": 341,
+      "line": 166,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -272,7 +264,7 @@
     {
       "depends_on": [],
       "id": "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
-      "line": 373,
+      "line": 198,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -286,7 +278,7 @@
     {
       "depends_on": [],
       "id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
-      "line": 402,
+      "line": 227,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -300,7 +292,7 @@
     {
       "depends_on": [],
       "id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
-      "line": 434,
+      "line": 259,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -314,7 +306,7 @@
     {
       "depends_on": [],
       "id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
-      "line": 463,
+      "line": 288,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -328,7 +320,7 @@
     {
       "depends_on": [],
       "id": "P-29925105-1015-5ced-8844-d56fa47e33c9",
-      "line": 495,
+      "line": 320,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -341,10 +333,113 @@
     },
     {
       "depends_on": [
-        "T-53352a18-54d2-57b6-accc-91f8e6dfad13"
+        "T-924119e2-17fd-4a06-b332-60839c849ade"
+      ],
+      "id": "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+      "line": 353,
+      "parent_pending_ids": [
+        "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178"
+      ],
+      "priority": 206,
+      "processing_run_id": "PR-be6457c2-7735-441f-a88c-ad66e73c0004",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "relation": "blocker",
+      "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "status": "Ready",
+      "title": "Implement durable Companion command journal"
+    },
+    {
+      "depends_on": [
+        "T-924119e2-17fd-4a06-b332-60839c849ade",
+        "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17"
+      ],
+      "id": "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+      "line": 394,
+      "parent_pending_ids": [
+        "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035"
+      ],
+      "priority": 205,
+      "processing_run_id": "PR-be6457c2-7735-441f-a88c-ad66e73c0004",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "relation": "blocker",
+      "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "status": "Ready",
+      "title": "Persist atomic local Companion workspace changes"
+    },
+    {
+      "depends_on": [
+        "T-924119e2-17fd-4a06-b332-60839c849ade",
+        "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+        "T-4971181f-827f-4945-af27-4f4bc8ded5c8"
+      ],
+      "id": "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+      "line": 435,
+      "parent_pending_ids": [
+        "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035"
+      ],
+      "priority": 204,
+      "processing_run_id": "PR-be6457c2-7735-441f-a88c-ad66e73c0004",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "relation": "blocker",
+      "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "status": "Ready",
+      "title": "Implement opt-in authoritative cloud workspace API"
+    },
+    {
+      "depends_on": [
+        "T-924119e2-17fd-4a06-b332-60839c849ade",
+        "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+        "T-be68f853-9737-4657-a8a4-7aff8dfc497b"
+      ],
+      "id": "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
+      "line": 477,
+      "parent_pending_ids": [
+        "P-bbb755c5-37d7-5637-862d-17faa8e12f99"
+      ],
+      "priority": 203,
+      "processing_run_id": "PR-be6457c2-7735-441f-a88c-ad66e73c0004",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "relation": "blocker",
+      "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "status": "Ready",
+      "title": "Implement verified Habitica projection reconciliation"
+    },
+    {
+      "depends_on": [
+        "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+        "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+        "T-773bb444-a0e6-45b9-bdcb-18561bb6182f"
+      ],
+      "id": "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
+      "line": 518,
+      "parent_pending_ids": [
+        "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07"
+      ],
+      "priority": 202,
+      "processing_run_id": "PR-be6457c2-7735-441f-a88c-ad66e73c0004",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "relation": "blocker",
+      "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+      "status": "Ready",
+      "title": "Qualify opted-in hosted command execution ownership"
+    },
+    {
+      "depends_on": [
+        "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
+        "T-924119e2-17fd-4a06-b332-60839c849ade",
+        "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+        "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+        "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+        "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
+        "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9"
       ],
       "id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-      "line": 528,
+      "line": 559,
       "parent_pending_ids": [
         "P-90b811d4-3aea-509c-8dca-84d5c892a637"
       ],
@@ -354,7 +449,7 @@
       "related_task_id": null,
       "relation": "main",
       "root_task_id": "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-      "status": "Blocked pending answers",
+      "status": "Ready",
       "title": "Add Safe Task Mutation Tools"
     },
     {
@@ -362,7 +457,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
-      "line": 718,
+      "line": 749,
       "parent_pending_ids": [
         "P-1590c3c7-25e6-589e-8efb-91f35d873b4e"
       ],
@@ -380,7 +475,7 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed"
       ],
       "id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-      "line": 849,
+      "line": 880,
       "parent_pending_ids": [
         "P-d0950eec-bfbf-561f-b192-dcf8dde67488"
       ],
@@ -406,7 +501,7 @@
         "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"
       ],
       "id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "line": 960,
+      "line": 991,
       "parent_pending_ids": [
         "P-46dde168-2e75-53fd-b2c0-0c1769f7711d"
       ],
@@ -424,7 +519,7 @@
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 1086,
+      "line": 1117,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -440,7 +535,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1241,
+      "line": 1272,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -454,7 +549,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1278,
+      "line": 1309,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -468,7 +563,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1315,
+      "line": 1346,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -482,7 +577,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1448,
+      "line": 1479,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -496,7 +591,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1486,
+      "line": 1517,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -510,7 +605,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1520,
+      "line": 1551,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -524,7 +619,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1555,
+      "line": 1586,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -538,7 +633,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1589,
+      "line": 1620,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -552,7 +647,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1627,
+      "line": 1658,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -566,7 +661,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1654,
+      "line": 1685,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -580,7 +675,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1676,
+      "line": 1707,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -594,7 +689,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1703,
+      "line": 1734,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

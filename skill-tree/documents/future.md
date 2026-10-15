@@ -105,146 +105,6 @@ Suggested implementation:
 Expected behavior:
 - Written benchmark with dated links, documented observations vs hypotheses, tested journeys, and approved navigation prototype before detailed UI tickets.
 
-### E02 Companion-owned canonical workspace and task domain
-
-```yaml
-id: P-9d3fb820-05c3-525b-8769-85c5423d2f53
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Source:
-- Companion-first epic `E02` (`P-9d3fb820-05c3-525b-8769-85c5423d2f53`); requirements are intake awaiting current-source research and decomposition.
-
-Description:
-- Define first-class Categories, Goals, Projects, Sections, Labels, Tasks, Subtasks, TaskOccurrences and lifecycle events; distinguish user task state from Habitica game state.
-
-Current context:
-- `TaskSnapshot` is Habitica-centric and lacks Companion-owned IDs, project/goals, lifecycle and recurrence history.
-
-Requirements:
-- Stable IDs, task kinds (Todo/Daily/Habit vs game projection), dates/planned/deadline, priority, states, goals progress, optional dependencies and staleness metadata, extensible schemas, safe deletion/archive.
-
-Data/model behavior:
-- Versioned local entities with opaque IDs and a separate external projection mapping. Define primary project vs multiple project memberships explicitly during decomposition.
-
-Expected behavior:
-- Approved schema/use-case contract, migration examples, invariants, round-trip fixtures, backward compatibility plan; no dependency on Habitica fields for Companion entity identity.
-
-Processing blocker:
-- Canonical relationships and goal progress require owner selection from companion-workspace-contract.md before executable domain decomposition.
-
-### E03 Local-first persistent storage, migration, and optional cloud workspace
-
-```yaml
-id: P-4f954f5a-1084-5c87-8e26-1bfc5fd95035
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Source:
-- Companion-first epic `E03` (`P-4f954f5a-1084-5c87-8e26-1bfc5fd95035`); requirements are intake awaiting current-source research and decomposition.
-
-Description:
-- Add durable task domain/event/outbox stores alongside existing key/value snapshots, preferences and presets; plan cross-device sync and server-readable opt-in workspace for remote MCP without silently weakening existing encrypted KV sync.
-
-Current context:
-- IndexedDB Dexie currently has one `kv` store; existing encrypted KV sync is browser-derived/opaque to backend.
-
-Requirements:
-- Atomic entity+event+outbox commits, IndexedDB schema upgrades, restore/export, storage eviction handling, multi-tab/multi-device versioning, merge/conflict semantics, opt-in account identity and privacy contract.
-
-Edge cases:
-- Offline client vs server changes, reset browser, import duplicate, stale cloud snapshot, migration rollback, mixed PWA versions.
-
-Expected behavior:
-- Documented local-only vs hosted guarantee levels, migratable schema, no lost preexisting data, explicit server-readability consent, migration rehearsals and recovery tests.
-
-Processing blocker:
-- Cloud audience, server-readable data, storage authority and history retention require owner selection from companion-workspace-contract.md.
-
-### E04 Habitica projection and reconciliation adapter
-
-```yaml
-id: P-bbb755c5-37d7-5637-862d-17faa8e12f99
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Source:
-- Companion-first epic `E04` (`P-bbb755c5-37d7-5637-862d-17faa8e12f99`); requirements are intake awaiting current-source research and decomposition.
-
-Description:
-- Treat Habitica API as gamification projection. Map Companion Tasks/Labels to Habitica task types/tags and reconcile missing, changed, completed and externally deleted tasks.
-
-Current context:
-- API reads/writes Habitica tasks directly, and task IDs currently come from Habitica.
-
-Requirements:
-- Stable Companion-to-Habitica IDs/aliases; import ownership policy; reserved alias/tag namespace only after upstream verification; safe create-then-complete chain; no duplicate awards after ambiguous timeout.
-
-Edge cases:
-- Externally deleted Todo, external edit, alias collision, already completed Todo, unknown score result, Habitica tag rename/delete, daily/habit repeated events.
-
-Expected behavior:
-- Companion-completed Todo absent in Habitica is safely created and completed when reconcilable; tests show no silent duplicate creates/scores and no resurrection loops.
-
-Processing blocker:
-- Projection adoption and external deletion policies require owner selection from companion-workspace-contract.md before reconciliation implementation.
-
-### E05 Durable command journal and typed failure/recovery engine
-
-```yaml
-id: P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Source:
-- Companion-first epic `E05` (`P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178`); requirements are intake awaiting current-source research and decomposition.
-
-Description:
-- Wrap the existing awaited Habitica action flows in a persisted application-level transactional outbox and consistent retry/reconcile semantics across manual PWA and MCP.
-
-Current context:
-- `AppSessionController.ScoreTaskAsync` freshness-gates and sequentially awaits scores and snapshot saves. The C# API client throttle is in-memory; no durable application command ledger exists.
-
-Requirements:
-- Submission persistence, dependency graph, per-task ordering, retries, state machine, leases, cancellation boundaries, typed API failures, unknown-outcome reconciliation and visible queue inspection.
-
-Runtime behavior:
-- UI never crashes from ordinary upstream 401/429/5xx/timeouts; pauses then resumes eligible commands; permanent blockers remain visible and are not silently dropped.
-
-Expected behavior:
-- Fault-injection tests for offline/timeout/429/5xx/concurrent tabs; accurately distinguished local save vs game sync; no blind retry of non-idempotent mutation.
-
-Processing blocker:
-- Command conflicts and unknown-outcome execution policy require owner selection from companion-workspace-contract.md before journal decomposition.
-
 ### E06 Early-slowdown adaptive limiter and automatic controlled recovery
 
 ```yaml
@@ -273,41 +133,6 @@ Requirements:
 
 Expected behavior:
 - In synthetic load tests rate reduction begins before near-zero budget; 429 and timeouts do not spin; stable success restores throughput gradually; no credential exposure in traces.
-
-### E07 Optional always-on server executor and queue ownership handoff
-
-```yaml
-id: P-2dcaca70-8d94-55b1-aaee-7e7262e60f07
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Source:
-- Companion-first epic `E07` (`P-2dcaca70-8d94-55b1-aaee-7e7262e60f07`); requirements are intake awaiting current-source research and decomposition.
-
-Description:
-- Let opted-in users process Companion outbox commands and MCP edits after the browser closes, with durable server ledger, leases and safe resumption.
-
-Current context:
-- PWA cannot guarantee unattended background execution; the planned remote MCP integration requires an authenticated account connection; no MCP endpoint exists yet.
-
-Requirements:
-- Per-profile server authentication, accepted-command ACK boundary, local-to-server handoff/dedup, single execution owner, persisted retries, bounded sweep, optional Cloudflare Queues as transport, cleanup/revocation.
-
-Edge cases:
-- Split brain browser+Worker, disconnect mid-execution, credential revoked, Cloudflare Queue DLQ/expiry, duplicate delivery, mobile app shutdown.
-
-Expected behavior:
-- Simulated restart/redeploy/outage does not silently lose accepted commands; ambiguous upstream effects remain blocked for reconciliation rather than double-applied.
-
-Processing blocker:
-- Executor opt-in, dedicated workspace storage and lease ownership require owner selection from companion-workspace-contract.md.
 
 ### E08 Mobile-first task capture, edit, and navigation redesign
 
@@ -525,18 +350,224 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
+### Implement durable Companion command journal
+
+```yaml
+id: T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17
+priority: 206
+status: Ready
+parent_pending_ids: ["P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178"]
+processing_run_id: PR-be6457c2-7735-441f-a88c-ad66e73c0004
+root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+relation: blocker
+depends_on: ["T-924119e2-17fd-4a06-b332-60839c849ade"]
+```
+
+Goal:
+- Define shared command validation, revision conflicts, deduplication and typed projection recovery.
+Current behavior:
+- Canonical workspace implementation is absent; inspected source remains Habitica snapshot based.
+Desired behavior:
+- Implement the approved companion-workspace-contract.md within the selected dependency scope.
+Touch:
+- src/Habitica.Application/Workspace, domain command types, shared Worker contracts and journal fixtures.
+Discovery allowance:
+- Reuse existing .NET, Dexie and Worker infrastructure; add narrowly scoped contracts and fixtures.
+Out of scope:
+- Live enrollment, remote provisioning, deployment and real Habitica mutations.
+Implementation constraints:
+- Preserve legacy snapshots and encrypted private sync; use synthetic fixtures for service qualification.
+- Preserve independent Companion identity and explicit projection outcomes.
+Questions and required clarifications:
+- [Resolved - owner decision] Adopt the approved workspace defaults for local implementation and tests.
+Validation:
+- Build and exercise command state transitions, concurrent revisions, idempotency and recovery fixtures.
+Acceptance:
+- Durable command identities deduplicate equivalent submissions and reject conflicting payload reuse.
+- Known, pending, blocked and unknown projection outcomes remain distinct; ambiguous effects never replay automatically.
+Documentation updates:
+- technical.md, features.md and applicable storage/deployment/UI documentation.
+Risks:
+- Domain parity, ambiguous upstream outcomes and ownership races require explicit fixture coverage.
+
+### Persist atomic local Companion workspace changes
+
+```yaml
+id: T-4971181f-827f-4945-af27-4f4bc8ded5c8
+priority: 205
+status: Ready
+parent_pending_ids: ["P-4f954f5a-1084-5c87-8e26-1bfc5fd95035"]
+processing_run_id: PR-be6457c2-7735-441f-a88c-ad66e73c0004
+root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+relation: blocker
+depends_on: ["T-924119e2-17fd-4a06-b332-60839c849ade", "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17"]
+```
+
+Goal:
+- Persist entities, events and outbox commands atomically with compatible browser upgrades and portable recovery.
+Current behavior:
+- Canonical workspace implementation is absent; inspected source remains Habitica snapshot based.
+Desired behavior:
+- Implement the approved companion-workspace-contract.md within the selected dependency scope.
+Touch:
+- src/Habitica.Storage, indexedDbStorage.js, workspace application ports, storage/browser fixtures.
+Discovery allowance:
+- Reuse existing .NET, Dexie and Worker infrastructure; add narrowly scoped contracts and fixtures.
+Out of scope:
+- Live enrollment, remote provisioning, deployment and real Habitica mutations.
+Implementation constraints:
+- Preserve legacy snapshots and encrypted private sync; use synthetic fixtures for service qualification.
+- Preserve independent Companion identity and explicit projection outcomes.
+Questions and required clarifications:
+- [Resolved - owner decision] Adopt the approved workspace defaults for local implementation and tests.
+Validation:
+- Build; test failed commits, revision conflicts and restore; qualify fresh and upgraded Dexie in a local browser.
+Acceptance:
+- Atomic workspace and journal commits reject stale revisions without partial writes and survive reload.
+- Legacy key/value data remains available; workspace export/restore preserves identities, events and pending outcomes.
+Documentation updates:
+- technical.md, features.md and applicable storage/deployment/UI documentation.
+Risks:
+- Domain parity, ambiguous upstream outcomes and ownership races require explicit fixture coverage.
+
+### Implement opt-in authoritative cloud workspace API
+
+```yaml
+id: T-be68f853-9737-4657-a8a4-7aff8dfc497b
+priority: 204
+status: Ready
+parent_pending_ids: ["P-4f954f5a-1084-5c87-8e26-1bfc5fd95035"]
+processing_run_id: PR-be6457c2-7735-441f-a88c-ad66e73c0004
+root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+relation: blocker
+depends_on: ["T-924119e2-17fd-4a06-b332-60839c849ade", "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17", "T-4971181f-827f-4945-af27-4f4bc8ded5c8"]
+```
+
+Goal:
+- Provide separately consented cloud authority and a shared command API through an isolated Worker and D1.
+Current behavior:
+- Canonical workspace implementation is absent; inspected source remains Habitica snapshot based.
+Desired behavior:
+- Implement the approved companion-workspace-contract.md within the selected dependency scope.
+Touch:
+- workers/companion-workspace, Auth/PWA workspace authorization and consent surfaces, isolated D1 and tests.
+Discovery allowance:
+- Reuse existing .NET, Dexie and Worker infrastructure; add narrowly scoped contracts and fixtures.
+Out of scope:
+- Live enrollment, remote provisioning, deployment and real Habitica mutations.
+Implementation constraints:
+- Preserve legacy snapshots and encrypted private sync; use synthetic fixtures for service qualification.
+- Preserve independent Companion identity and explicit projection outcomes.
+Questions and required clarifications:
+- [Resolved - owner decision] Adopt the approved workspace defaults for local implementation and tests.
+Validation:
+- Build all touched components; run synthetic two-profile isolation, atomicity/conflict, consent and lifecycle fixtures; inspect local PWA behavior.
+Acceptance:
+- Separate explicit workspace consent gates server-readable data; account authorization cannot select another workspace.
+- Shared commands atomically save canonical changes, events and journal records with revision and command-ID deduplication.
+- Workspace lifecycle and portable data controls preserve existing encrypted sync boundaries.
+Documentation updates:
+- technical.md, features.md and applicable storage/deployment/UI documentation.
+Risks:
+- Domain parity, ambiguous upstream outcomes and ownership races require explicit fixture coverage.
+
+### Implement verified Habitica projection reconciliation
+
+```yaml
+id: T-773bb444-a0e6-45b9-bdcb-18561bb6182f
+priority: 203
+status: Ready
+parent_pending_ids: ["P-bbb755c5-37d7-5637-862d-17faa8e12f99"]
+processing_run_id: PR-be6457c2-7735-441f-a88c-ad66e73c0004
+root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+relation: blocker
+depends_on: ["T-924119e2-17fd-4a06-b332-60839c849ade", "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17", "T-be68f853-9737-4657-a8a4-7aff8dfc497b"]
+```
+
+Goal:
+- Project adopted Companion commands through Auth-owned narrow operations without duplicate game effects.
+Current behavior:
+- Canonical workspace implementation is absent; inspected source remains Habitica snapshot based.
+Desired behavior:
+- Implement the approved companion-workspace-contract.md within the selected dependency scope.
+Touch:
+- Workspace projection adapter, Auth projection service, existing Habitica API contracts and synthetic fixtures.
+Discovery allowance:
+- Reuse existing .NET, Dexie and Worker infrastructure; add narrowly scoped contracts and fixtures.
+Out of scope:
+- Live enrollment, remote provisioning, deployment and real Habitica mutations.
+Implementation constraints:
+- Preserve legacy snapshots and encrypted private sync; use synthetic fixtures for service qualification.
+- Preserve independent Companion identity and explicit projection outcomes.
+Questions and required clarifications:
+- [Resolved - owner decision] Adopt the approved workspace defaults for local implementation and tests.
+Validation:
+- Verify current upstream contracts; exercise missing tasks, external edits/deletions, create-then-complete, 401/429 and ambiguous response fixtures.
+Acceptance:
+- Stable adopted projection mapping preserves Companion identity and blocks verified external deletions for review.
+- Ordered create/update/score effects distinguish known failure from unknown outcomes and never blindly replay ambiguous effects.
+Documentation updates:
+- technical.md, features.md and applicable storage/deployment/UI documentation.
+Risks:
+- Domain parity, ambiguous upstream outcomes and ownership races require explicit fixture coverage.
+
+### Qualify opted-in hosted command execution ownership
+
+```yaml
+id: T-a5243cdf-dfc9-438b-ae11-2a3d865608b9
+priority: 202
+status: Ready
+parent_pending_ids: ["P-2dcaca70-8d94-55b1-aaee-7e7262e60f07"]
+processing_run_id: PR-be6457c2-7735-441f-a88c-ad66e73c0004
+root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
+relation: blocker
+depends_on: ["T-4971181f-827f-4945-af27-4f4bc8ded5c8", "T-be68f853-9737-4657-a8a4-7aff8dfc497b", "T-773bb444-a0e6-45b9-bdcb-18561bb6182f"]
+```
+
+Goal:
+- Persist one execution owner and bounded recovery for separately opted-in server processing.
+Current behavior:
+- Canonical workspace implementation is absent; inspected source remains Habitica snapshot based.
+Desired behavior:
+- Implement the approved companion-workspace-contract.md within the selected dependency scope.
+Touch:
+- Workspace Worker ledger/leases, local-to-server handoff, settings controls and restart/fault fixtures.
+Discovery allowance:
+- Reuse existing .NET, Dexie and Worker infrastructure; add narrowly scoped contracts and fixtures.
+Out of scope:
+- Live enrollment, remote provisioning, deployment and real Habitica mutations.
+Implementation constraints:
+- Preserve legacy snapshots and encrypted private sync; use synthetic fixtures for service qualification.
+- Preserve independent Companion identity and explicit projection outcomes.
+Questions and required clarifications:
+- [Resolved - owner decision] Adopt the approved workspace defaults for local implementation and tests.
+Validation:
+- Build; qualify duplicate delivery, lease expiry, browser/server handoff, restart, unknown outcomes and opt-out with synthetic services; inspect settings behavior.
+Acceptance:
+- Accepted commands survive synthetic restart and duplicate wakeup without duplicate execution ownership.
+- Disconnect, executor disable, quota cooldown and unknown outcomes prevent unsafe new effects; automated calls preserve thirty-second pacing.
+Documentation updates:
+- technical.md, features.md and applicable storage/deployment/UI documentation.
+Risks:
+- Domain parity, ambiguous upstream outcomes and ownership races require explicit fixture coverage.
+
 ### Add Safe Task Mutation Tools
 
 ```yaml
 id: T-4a1de222-156a-52cf-8966-262a2c8216ed
 priority: 194
-status: Blocked pending answers
+status: Ready
 parent_pending_ids: ["P-90b811d4-3aea-509c-8dca-84d5c892a637"]
 processing_run_id: null
 root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
 related_task_id: null
 relation: main
-depends_on: ["T-53352a18-54d2-57b6-accc-91f8e6dfad13"]
+depends_on: ["T-53352a18-54d2-57b6-accc-91f8e6dfad13", "T-924119e2-17fd-4a06-b332-60839c849ade", "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17", "T-4971181f-827f-4945-af27-4f4bc8ded5c8", "T-be68f853-9737-4657-a8a4-7aff8dfc497b", "T-773bb444-a0e6-45b9-bdcb-18561bb6182f", "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9"]
 ```
 
 Pending scope gates:
@@ -679,7 +710,7 @@ Failure handling:
 - partial repeated scoring -> report accepted and confirmed counts separately; preserve unknown outcomes for reconciliation.
 
 Questions and required clarifications:
-- [Unresolved - blocks implementation] What is the authoritative Companion command API and trusted background executor boundary?
+- [Resolved - owner decision] The approved companion-workspace-contract.md defines the dedicated Workspace Worker, shared command API, durable journal and separately opted-in executor boundary.
   Reason: Direct MCP-to-Habitica writes would bypass the Companion source of truth, command journal and reconciliation.
   Required answer from: E02/E03/E04/E05/E07 decomposition and implementation.
 
