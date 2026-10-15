@@ -52,11 +52,11 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Select required task or finish root",
+    "next_action": "Obtain owner selection of proposed authenticated party planning boundary; then clear the stop and advance the existing run.",
     "partial_work": [
-      "Root task API, MCP scope/prepare/acceptance surface and PWA editor are implemented and compile.",
-      "Root full suites pass: 516 .NET, 50 Auth, 34 Workspace. Native/MCP preview/receipt recovery, quota/unknown outcomes, scope checks, local UI confirmation and linking are covered synthetically.",
-      "Root acceptance remains open for required expired-session recovery T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89 and final rebuilt browser checks."
+      "Completed canonical task-command qualification as 83e91d3 and plugin source package as 026a29a. Eight of eleven initial roots complete.",
+      "Party authorization source review found legacy local claims can still mutate shared queue/role records; forwarding MCP identity alone cannot establish trustworthy planning state.",
+      "A concrete separate authenticated planning namespace and permission/consent proposal is recorded in companion-workspace-contract.md. No party/spell code changed."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -72,7 +72,7 @@
       "P-6aae2186-4693-4f67-9cf5-71e9a89d0de3",
       "P-ff948539-db7d-43b1-bc7e-957f26b6903a"
     ],
-    "phase": "resume-parent",
+    "phase": "awaiting-party-contract",
     "processing_results": [
       {
         "created_ids": [
@@ -322,10 +322,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": null
+    "stop_reason": "Owner selection required for authenticated party planning trust and shared-data boundary in T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec."
   },
   "format": "skill-tree-future",
-  "source_hash": "254a586ceeef8201b59ab7df21a92a9e5fe121706e0b7215e40ccec8e0912589",
+  "source_hash": "93850304ef7c13a12fa2e429689cfee8e35741345296c017c697207688a4566d",
   "tasks": [
     {
       "depends_on": [],

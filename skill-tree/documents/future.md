@@ -439,9 +439,9 @@ Parity strategy:
 - do not claim full parity when not actually covered.
 
 Questions and required clarifications:
-- [Unresolved - blocks implementation] What proof authorizes party writes initiated through MCP?
-  Reason: Existing party local claims do not prove a remote user has the required permissions.
-  Required answer from: Party authorization research and E05 shared command layer.
+- [Unresolved - blocks implementation] Adopt the separate authenticated party planning namespace and permission model in `companion-workspace-contract.md#proposed-authenticated-party-planning-boundary`, or select an alternative trust model.
+  Reason: Verified Habitica membership can establish the actor and party, but existing queue rows and roles remain mutable through browser claims. Reusing the legacy state would not establish trusted authorization. The proposed namespace introduces shared server-readable planning and a separate consent boundary.
+  Required answer from: Repository owner after reviewing the concrete party planning proposal.
 
 Validation:
 - Verify party role checks, cross-profile isolation, stale state, spell plans, sequential execution, partial failure and parity fixtures.
