@@ -314,8 +314,8 @@
     "skill-tree/documents/dependencies.md": "ef0a360701ccfcc93ec7f725f1b7a90c4dd2d10567ddd26e58d264977cc0d6e1",
     "skill-tree/documents/deploy-cloudflare-pages.md": "de37226b99c35b38d27101e3311d90c3258c7f2849fc4e2a9f823f6595d98892",
     "skill-tree/documents/documents-snapshot.md": "6f79e4202c9cfc84df57641150d8a2fce2ab5d9670f6efe4d05eec00f89d73c9",
-    "skill-tree/documents/features.md": "f1a917fbe89b03e0d0c6f967525cc24776917949ca58eb3ae88a297ae8a28c27",
-    "skill-tree/documents/future.md": "595fa92919a481aa393f2b375fb831bdbabf1b3ecbf4000965d5b87fedc4c50d",
+    "skill-tree/documents/features.md": "2e1143f1899c8b476035de3e3d9bebf35ca2f89c5474bfb96e467423de4c7df0",
+    "skill-tree/documents/future.md": "50bb9565e594d5535c47554aa3a7454d159bfb6ee296b6865027eebfdf1c43d5",
     "skill-tree/documents/habitica-api.md": "bd33435b1527a4ea5e2b0e3ff4956a670905be75cdd2c3b71ab4fb035a569a5d",
     "skill-tree/documents/habitica-deeplinks.md": "37809f11086587ab474caeab319939e444de7701e9ce19301b8e00ebc1bf9fc7",
     "skill-tree/documents/habitica-tool-references.md": "365f6d395422ba7444fdfe3c61304ef0f86f5069be76066ba67f6378d1c0883b",
@@ -324,8 +324,8 @@
     "skill-tree/documents/rules.md": "7847c47cd88c7fd89ecb3dd61e5ffda7fa8440daa75aaa8c52295a71310fdc1a",
     "skill-tree/documents/skill-tree-workflow-proposals.md": "35d9e950e9cc7a22e2b1765db8c2e00355be5cda6be170f9e249ab7e6c5440d1",
     "skill-tree/documents/technical.md": "3357b975fff806a3058e4dd943ef9eb710b53fdca5c8b1ef4667aeb00a7afbd7",
-    "skill-tree/documents/testing.md": "d5e4c71b2a2c8345dfcf8a26fcff86d9d139148efaf40b2695fea28b665e65be",
-    "skill-tree/documents/ux-ui-manifest.md": "6db43fcf96af0a40657f152fc1bd296eb02070d25660d7ea4f6ce8c406c7418f"
+    "skill-tree/documents/testing.md": "25dddb931d60c64f2802f4ca56ee521d76bbd5c0834b40126c3c0e7d0d8ef4e1",
+    "skill-tree/documents/ux-ui-manifest.md": "f7d691dce039a85e76433e3046dfa0dde61a2d18dca8d539aa1745f89fe34e07"
   },
   "state": "skill-tree/documents/future.json",
   "validation_commands": [

@@ -1,0 +1,39 @@
+{
+  "task_id": "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "Full app build",
+      "result": "pass"
+    },
+    {
+      "check": "Focused workspace component/client/controller suite",
+      "result": "pass",
+      "passed": 21
+    },
+    {
+      "check": "Authenticated real-Razor Settings layout at phone width",
+      "result": "pass",
+      "viewport_width": 360,
+      "before_document_width": 371,
+      "after_document_width": 345,
+      "restore_input_width": 274.203125,
+      "evidence": "skill-tree/history/validation/workspace-restore-phone.jpg"
+    },
+    {
+      "check": "Rebuilt signed-out Settings app guard and phone width",
+      "result": "pass",
+      "viewport_width": 360,
+      "document_width": 349
+    }
+  ],
+  "coverage": [
+    "Restore input retains its label and existing handlers",
+    "Shared input styling and shrinkable wrapper prevent intrinsic grid overflow",
+    "No restore persistence or confirmation semantics changed"
+  ],
+  "limitations": [
+    "The authenticated layout uses synthetic HTML rendered by the actual Razor component; interactions are qualified by component tests.",
+    "No real credentials, cloud enrollment or uploaded files were used."
+  ]
+}

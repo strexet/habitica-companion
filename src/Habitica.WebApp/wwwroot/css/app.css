@@ -4428,3 +4428,5 @@ code {
 .companion-command-preview dl { display: grid; grid-template-columns: minmax(6rem, 1fr) minmax(0, 3fr); gap: .5rem; }
 .companion-command-preview dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .companion-editor small { display: block; overflow-wrap: anywhere; }
+.workspace-restore-field { min-width: 0; }
+.workspace-restore-field input { min-width: 0; max-width: 100%; }

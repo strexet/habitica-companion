@@ -66,7 +66,7 @@
             <MudButton Disabled="@_busy" OnClick="TransferAsync" Variant="Variant.Filled">Confirm freeze and upload</MudButton>
             <MudButton Disabled="@_busy" OnClick="@(() => _transferId = null)" Variant="Variant.Outlined">Cancel</MudButton>
         }
-        <label>Restore workspace backup<InputFile disabled="@_busy" OnChange="SelectFileAsync" data-testid="workspace-restore-file" /></label>
+        <label class="field-row workspace-restore-field">Restore workspace backup<InputFile class="app-input" disabled="@_busy" OnChange="SelectFileAsync" data-testid="workspace-restore-file" /></label>
         @if (_restoreJson is not null)
         {
             <p>Restore this backup into the current account's browser storage? Cloud data will remain unchanged.</p>

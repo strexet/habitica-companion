@@ -361,7 +361,7 @@ processing_run_id: PR-bd3e1004-5d10-48a0-95b3-aba3e356af25
 root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
 related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
 relation: blocker
-depends_on: []
+depends_on: ["T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e"]
 ```
 
 Goal:
