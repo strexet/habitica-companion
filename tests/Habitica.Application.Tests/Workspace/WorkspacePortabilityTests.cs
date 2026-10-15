@@ -26,7 +26,8 @@ public sealed class WorkspacePortabilityTests
         Assert.Equal(original.Commands[0].Command.Id, restored.Commands[0].Command.Id);
         Assert.Equal(original.Events![0].Id, restored.Events![0].Id);
         Assert.Equal(WorkspaceRestoreOutcome.Unchanged, await service.RestoreAsync(json!, default));
-        Assert.Equal(json, await service.ExportAsync(restored.Document.Id, default));
+        Assert.Equal(WorkspaceAuthorityMode.Paused, restored.Authority!.Mode);
+        Assert.False(ProjectionJournal.Acquire(restored, restored.Commands[0].Command.Id, "copied-browser", Now, TimeSpan.FromSeconds(30)).Acquired);
         Assert.DoesNotContain("apiToken", json!); Assert.DoesNotContain("managementToken", json!);
     }
 

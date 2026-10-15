@@ -34,6 +34,7 @@ public static class ProjectionJournal
     {
         if (string.IsNullOrWhiteSpace(owner) || owner.Length > 128 || now.Offset != TimeSpan.Zero || duration < TimeSpan.FromSeconds(1) || duration > TimeSpan.FromMinutes(5))
             throw new ArgumentException("Invalid projection lease.");
+        if (snapshot.Authority?.Mode is { } mode && mode != WorkspaceAuthorityMode.Local) return new(snapshot, null, false);
         snapshot = RecoverExpired(snapshot, now);
         var entry = snapshot.Commands.FirstOrDefault(value => value.Command.Id == commandId);
         if (entry is null || entry.ProjectionState != ProjectionCommandState.Pending || entry.RetryAtUtc > now || now < entry.AcceptedAtUtc
@@ -50,6 +51,7 @@ public static class ProjectionJournal
     public static WorkspaceJournalSnapshot Dispatch(WorkspaceJournalSnapshot snapshot, Guid commandId, Guid leaseToken, DateTimeOffset now)
     {
         var entry = Leased(snapshot, commandId, leaseToken);
+        if (snapshot.Authority?.Mode is { } mode && mode != WorkspaceAuthorityMode.Local) throw new InvalidOperationException("Local execution ownership is unavailable.");
         if (entry.ProjectionState != ProjectionCommandState.Leased || entry.Lease!.ExpiresAtUtc <= now || now.Offset != TimeSpan.Zero || now < entry.AcceptedAtUtc) throw new InvalidOperationException("Projection lease is not dispatchable.");
         return Replace(snapshot, entry with { ProjectionState = ProjectionCommandState.Executing, DispatchedAtUtc = now, Attempts = checked(entry.Attempts + 1), Failure = ProjectionFailure.None, RetryAtUtc = null }, JournalEventKind.Dispatched, now);
     }

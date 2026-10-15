@@ -17,7 +17,8 @@
   },
   "vars": {
     "ENVIRONMENT": "local",
-    "WORKSPACE_ENABLED": false
+    "WORKSPACE_ENABLED": false,
+    "EXECUTOR_ENABLED": false
   },
   "d1_databases": [
     {
@@ -44,7 +45,8 @@
       "name": "habitica-companion-workspace-preview",
       "vars": {
         "ENVIRONMENT": "preview",
-        "WORKSPACE_ENABLED": false
+        "WORKSPACE_ENABLED": false,
+        "EXECUTOR_ENABLED": false
       },
       "d1_databases": [
         {
@@ -65,13 +67,19 @@
           "service": "habitica-chatgpt-auth-preview",
           "entrypoint": "ProjectionService"
         }
-      ]
+      ],
+      "triggers": {
+        "crons": [
+          "* * * * *"
+        ]
+      }
     },
     "production": {
       "name": "habitica-companion-workspace-production",
       "vars": {
         "ENVIRONMENT": "production",
-        "WORKSPACE_ENABLED": false
+        "WORKSPACE_ENABLED": false,
+        "EXECUTOR_ENABLED": false
       },
       "d1_databases": [
         {
@@ -92,10 +100,20 @@
           "service": "habitica-chatgpt-auth-production",
           "entrypoint": "ProjectionService"
         }
-      ]
+      ],
+      "triggers": {
+        "crons": [
+          "* * * * *"
+        ]
+      }
     }
   },
   "dev": {
     "port": 8789
+  },
+  "triggers": {
+    "crons": [
+      "* * * * *"
+    ]
   }
 }

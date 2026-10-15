@@ -1,3 +1,5 @@
+import { handoff } from "./handoff";
+import { executeScheduled, cloudAuthority, type WorkspaceRow } from "./executor";
 import { adoptProjection } from "./projection-adapter";
 import { resourceConfiguration } from "../../shared/resources";
 import { bearer, uuid, workspaceJson, workspaceObject, WorkspaceError, workspaceSessionToken, workspaceTokenHash } from "../../shared/workspace-http";
@@ -5,7 +7,6 @@ import { emptyWorkspace } from "../../shared/workspace-domain";
 import { workspaceCommand, commandHash } from "../../shared/workspace-commands";
 import { accept } from "./commands";
 interface Identity { profileId: string; connectionId: string }
-interface WorkspaceRow { profile_id: string; workspace_id: string; connection_id: string; access_epoch: string; active: number; executor_enabled: number; document_json: string; store_version: number; archive_bytes: number; commit_tag: string }
 const headers = { "cache-control": "no-store", "x-content-type-options": "nosniff" };
 const consentVersion = "workspace-v1";
 const bytes = (value: string) => new TextEncoder().encode(value).length;
@@ -52,7 +53,7 @@ async function connect(request: Request, env: WorkspaceEnv): Promise<Response> {
  ]);
  const check = await env.WORKSPACE_DB.prepare("SELECT token_hash FROM workspace_sessions WHERE token_hash=?").bind(hash).first();
  if (!check) throw new WorkspaceError("connection_changed", 409);
- return json({ workspaceId: row.workspace_id, sessionToken: token, expiresAtUtc: expires, consentVersion, executorEnabled: Boolean(row.executor_enabled) }, 201);
+ return json({ workspaceId: row.workspace_id, sessionToken: token, expiresAtUtc: expires, consentVersion, executorEnabled: Boolean(row.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED) }, 201);
 }
 async function duplicate(env: WorkspaceEnv, row: WorkspaceRow, id: string, hash: string): Promise<Response | null> {
  const receipt = await env.WORKSPACE_DB.prepare("SELECT c.payload_hash,c.entry_json FROM workspace_commands c JOIN workspaces w ON w.profile_id=c.profile_id WHERE c.profile_id=? AND c.command_id=? AND w.access_epoch=? AND w.active=1").bind(row.profile_id, id, row.access_epoch).first<{ payload_hash: string; entry_json: string }>();
@@ -86,13 +87,13 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow): 
 async function snapshot(env: WorkspaceEnv, row: WorkspaceRow): Promise<Response> {
  // Read the document and journal from one database transaction, including concurrent acceptance.
  const results = await env.WORKSPACE_DB.batch([
-  env.WORKSPACE_DB.prepare("SELECT document_json,store_version FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1").bind(row.profile_id,row.connection_id,row.access_epoch),
+  env.WORKSPACE_DB.prepare("SELECT document_json,store_version,authority_json FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1").bind(row.profile_id,row.connection_id,row.access_epoch),
   env.WORKSPACE_DB.prepare("SELECT entry_json FROM workspace_commands WHERE profile_id=? ORDER BY sequence").bind(row.profile_id),
   env.WORKSPACE_DB.prepare("SELECT event_json FROM workspace_events WHERE profile_id=? ORDER BY sequence").bind(row.profile_id),
  ]);
- const current = results[0].results[0] as { document_json: string; store_version: number } | undefined;
+ const current = results[0].results[0] as { document_json: string; store_version: number; authority_json: string|null } | undefined;
  if (!current) throw new WorkspaceError("unauthorized", 401);
- const value = JSON.stringify({ document: JSON.parse(current.document_json), storeVersion: current.store_version, commands: results[1].results.map(item => JSON.parse((item as { entry_json: string }).entry_json)), events: results[2].results.map(item => JSON.parse((item as { event_json: string }).event_json)) });
+ const value = JSON.stringify({ document: JSON.parse(current.document_json), storeVersion: current.store_version, authority: current.authority_json ? JSON.parse(current.authority_json) : cloudAuthority(row.workspace_id), commands: results[1].results.map(item => JSON.parse((item as { entry_json: string }).entry_json)), events: results[2].results.map(item => JSON.parse((item as { event_json: string }).event_json)) });
  if (new TextEncoder().encode(value).length > 16 * 1024 * 1024) throw new WorkspaceError("export_capacity", 413);
  return new Response(value, { headers: { ...headers, "content-type": "application/json" } });
 }
@@ -102,8 +103,17 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  const path = new URL(request.url).pathname;
  if (path === "/connect" && request.method === "POST") return connect(request, env);
  const row = await session(request, env);
- if (path === "/workspace" && request.method === "GET") return json({ document: JSON.parse(row.document_json), storeVersion: row.store_version, executorEnabled: Boolean(row.executor_enabled) });
+ if (path === "/workspace" && request.method === "GET") return json({ document: JSON.parse(row.document_json), storeVersion: row.store_version, executorEnabled: Boolean(row.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED) });
  if (path === "/export" && request.method === "GET") return snapshot(env, row);
+ if (path === "/handoff" && request.method === "POST") return handoff(request,env,row);
+ if (path === "/executor" && request.method === "POST") {
+  const body=workspaceObject(await workspaceJson(request),["enabled","consentVersion"]);
+  if (typeof body.enabled!=="boolean" || body.enabled && body.consentVersion!=="executor-v1") throw new WorkspaceError("executor_consent_required",403);
+  if (body.enabled && !env.EXECUTOR_ENABLED) throw new WorkspaceError("executor_unavailable",503);
+  const changed=await env.WORKSPACE_DB.prepare("UPDATE workspaces SET executor_enabled=? WHERE profile_id=? AND access_epoch=? AND active=1").bind(Number(body.enabled),row.profile_id,row.access_epoch).run();
+  if (!changed.meta.changes) throw new WorkspaceError("connection_changed",409);
+  return json({executorEnabled:body.enabled,executorAvailable:Boolean(env.EXECUTOR_ENABLED)});
+ }
  if (path === "/commands" && request.method === "POST") return command(request, env, row);
  if (["/projection/preview","/projection/adopt"].includes(path) && request.method === "POST") {
   const body=workspaceObject(await workspaceJson(request),path.endsWith("preview")?["taskId","habiticaTaskId"]:["taskId","habiticaTaskId","expectedRevision","expectedFingerprint"]);
@@ -150,4 +160,5 @@ export default {
   if (origin === config.pwaOrigin) { response.headers.set("access-control-allow-origin", origin); response.headers.set("access-control-allow-methods", "GET, POST, DELETE, OPTIONS"); response.headers.set("access-control-allow-headers", "content-type, authorization"); response.headers.set("vary", "Origin"); }
   return response;
  },
+ async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { await executeScheduled(env); },
 } satisfies ExportedHandler<WorkspaceEnv>;

@@ -9,7 +9,7 @@ const result=document.querySelector('#results');
 function check(condition,label){const li=document.createElement('li');li.textContent=(condition?'PASS: ':'FAIL: ')+label;result.append(li);if(!condition)throw new Error(label);}
 const entry=(n)=>({command:{id:`20000000-0000-4000-8000-00000000000${n}`},payloadHash:'fixture-hash-'+n,taskSnapshot:{id:'40000000-0000-4000-8000-000000000001',text:'Accepted synthetic intent'}});
 const event=(n)=>({id:`30000000-0000-4000-8000-00000000000${n}`,commandId:entry(n).command.id,kind:'accepted'});
-const snapshot=(version)=>({document:{id,revision:version,tasks:[{id:'40000000-0000-4000-8000-000000000001',text:'Synthetic task v'+version}]},storeVersion:version,commands:[entry(1)],events:[event(1)]});
+const snapshot=(version)=>({document:{id,revision:version,tasks:[{id:'40000000-0000-4000-8000-000000000001',text:'Synthetic task v'+version}]},storeVersion:version,authority:{mode:'frozen',transferId:'50000000-0000-4000-8000-000000000001',cloudWorkspaceId:null},commands:[entry(1)],events:[event(1)]});
 async function storage(){return import('/js/storage/indexedDbStorage.js');}
 document.querySelector('#run').onclick=async()=>{
  document.querySelector('#run').disabled=true;result.replaceChildren();
@@ -42,7 +42,7 @@ document.querySelector('#run').onclick=async()=>{
  }catch(error){const li=document.createElement('li');li.textContent='CHECK STOPPED: '+error.name;result.append(li);}
 };
 document.querySelector('#read').onclick=async()=>{
- result.replaceChildren();try{const api=await storage();const stored=JSON.parse(await api.getWorkspace(scope,id));check(stored.storeVersion===3&&stored.commands.length===2&&stored.events.length===2,'Canonical data and ordered journal survive a full page reload');check(stored.commands.every(entry=>entry.taskSnapshot?.text==='Accepted synthetic intent'),'Accepted task intent survives reload');check(await api.getJson('fixture/legacy')==='{"preserved":true}','Legacy data also survives reload');}catch(error){check(false,'Reload verification: '+error.name);}
+ result.replaceChildren();try{const api=await storage();const stored=JSON.parse(await api.getWorkspace(scope,id));check(stored.storeVersion===3&&stored.commands.length===2&&stored.events.length===2,'Canonical data and ordered journal survive a full page reload');check(stored.commands.every(entry=>entry.taskSnapshot?.text==='Accepted synthetic intent'),'Accepted task intent survives reload');check(stored.authority?.mode==='frozen'&&stored.authority.transferId==='50000000-0000-4000-8000-000000000001','Execution ownership freeze survives reload');check(await api.getJson('fixture/legacy')==='{"preserved":true}','Legacy data also survives reload');}catch(error){check(false,'Reload verification: '+error.name);}
 };
 document.querySelector('#lifecycle').onclick=async()=>{
  result.replaceChildren();try{

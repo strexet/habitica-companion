@@ -1,12 +1,12 @@
-import { workspaceDocument, type WorkspaceDocument, type CompanionTask } from "../../shared/workspace-domain";
-import { commandHash, type WorkspaceCommand } from "../../shared/workspace-commands";
-import { WorkspaceError } from "../../shared/workspace-http";
+import { workspaceDocument, type WorkspaceDocument, type CompanionTask } from "../../shared/workspace-domain.ts";
+import { commandHash, type WorkspaceCommand } from "../../shared/workspace-commands.ts";
+import { WorkspaceError } from "../../shared/workspace-http.ts";
 export interface CommandEntry {
  command: WorkspaceCommand; payloadHash: string; acceptedAtUtc: string;
  projectionState: string; effects: string[]; confirmedEffects: number; failure: string;
- retryAtUtc: string | null; lease: null; dispatchedAtUtc: string | null; attempts: number; taskSnapshot?: CompanionTask | null;
+ retryAtUtc: string | null; lease: {owner:string;token:string;expiresAtUtc:string} | null; dispatchedAtUtc: string | null; attempts: number; taskSnapshot?: CompanionTask | null;
 }
-export interface JournalEvent { id: string; commandId: string; kind: string; atUtc: string; confirmedEffects: number; failure: string; attemptToken: null; evidenceReference: null }
+export interface JournalEvent { id: string; commandId: string; kind: string; atUtc: string; confirmedEffects: number; failure: string; attemptToken: string | null; evidenceReference: string | null }
 export async function accept(document: WorkspaceDocument, command: WorkspaceCommand, now: string): Promise<{ document: WorkspaceDocument; entry: CommandEntry; event: JournalEvent }> {
  document = workspaceDocument(document);
  if (command.workspaceId !== document.id) throw new WorkspaceError("workspace_mismatch", 409);

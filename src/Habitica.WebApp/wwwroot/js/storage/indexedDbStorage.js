@@ -51,6 +51,7 @@ export async function getWorkspace(scope, id) {
     const eventRows = await events.where("[scope+workspaceId]").equals([scope, id]).toArray();
     commandRows.sort((a, b) => a.position - b.position); eventRows.sort((a, b) => a.position - b.position);
     return JSON.stringify({ document: JSON.parse(row.documentJson), storeVersion: row.storeVersion,
+      authority: row.authorityJson ? JSON.parse(row.authorityJson) : null,
       commands: commandRows.map(value => JSON.parse(value.json)), events: eventRows.map(value => JSON.parse(value.json)) });
   });
 }
@@ -93,7 +94,7 @@ export async function commitWorkspace(scope, expectedStoreVersion, json) {
     }
     const oldCommandById = new Map(oldCommands.map(row => [row.id, row.json]));
     const oldEventIds = new Set(oldEvents.map(row => row.id));
-    await workspaces.put({ scope, id, storeVersion: value.storeVersion, documentJson: JSON.stringify(value.document), updatedAtUtc: new Date().toISOString() });
+    await workspaces.put({ scope, id, storeVersion: value.storeVersion, documentJson: JSON.stringify(value.document), authorityJson: JSON.stringify(value.authority ?? null), updatedAtUtc: new Date().toISOString() });
     await commands.bulkPut(nextCommands.filter(row => oldCommandById.get(row.id) !== row.json));
     await events.bulkPut(nextEvents.filter(row => !oldEventIds.has(row.id)));
     return true;

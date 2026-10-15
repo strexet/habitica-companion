@@ -8,6 +8,10 @@ public static class WorkspaceJournalValidation
     {
         if (snapshot.Document is null || snapshot.StoreVersion < snapshot.Document.Revision || snapshot.StoreVersion > WorkspaceDocument.MaxRevision
             || snapshot.Commands is null || WorkspaceRules.Validate(snapshot.Document).Count != 0) return false;
+        if (snapshot.Authority is { } authority && (!Enum.IsDefined(authority.Mode) || authority.TransferId == Guid.Empty || authority.CloudWorkspaceId == Guid.Empty
+            || authority.Mode == WorkspaceAuthorityMode.Local && (authority.TransferId is not null || authority.CloudWorkspaceId is not null)
+            || authority.Mode == WorkspaceAuthorityMode.Frozen && (authority.TransferId is null || authority.CloudWorkspaceId is not null)
+            || authority.Mode == WorkspaceAuthorityMode.Cloud && authority.CloudWorkspaceId != snapshot.Document.Id)) return false;
         var ids = new HashSet<Guid>();
         foreach (var entry in snapshot.Commands)
         {

@@ -21,6 +21,34 @@ public sealed class SettingsPageTests : BunitContext
     }
 
     [Fact]
+    public void Background_execution_requires_its_own_opt_in_and_can_be_paused()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose; Services.AddMudServices();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true }));
+        var cloud = new ExecutorCloud(); Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(cloud);
+        var cut = Render<Habitica.WebApp.Components.WorkspaceSettingsPanel>();
+        Assert.True(cut.Find("[data-testid='workspace-executor-enable']").HasAttribute("disabled")); Assert.Equal(0, cloud.Calls);
+        cut.Find("[data-testid='workspace-executor-consent']").Change(true); cut.Find("[data-testid='workspace-executor-enable']").Click();
+        Assert.Equal(1, cloud.Calls); Assert.True(cloud.ExecutorEnabled); Assert.Contains("while this tab is closed", cut.Markup);
+        cut.Find("[data-testid='workspace-executor-pause']").Click(); Assert.False(cloud.ExecutorEnabled); Assert.Equal(2, cloud.Calls);
+        Assert.True(cut.Find("[data-testid='workspace-executor-enable']").HasAttribute("disabled"));
+    }
+    private sealed class ExecutorCloud : Habitica.Application.Workspace.IWorkspaceCloudClient
+    {
+        public bool IsAvailable => true;
+        public Guid? WorkspaceId => Guid.NewGuid();
+        public bool ExecutorEnabled { get; private set; }
+        public bool ExecutorAvailable => true;
+        public int Calls { get; private set; }
+        public Task<Habitica.Application.Workspace.WorkspaceActionResult> SetExecutorAsync(bool enabled, CancellationToken token) { Calls++; ExecutorEnabled = enabled; return Task.FromResult(new Habitica.Application.Workspace.WorkspaceActionResult(true, "Synthetic execution setting saved.")); }
+        public Task<Habitica.Application.Workspace.WorkspaceActionResult> ConnectAsync(Habitica.Domain.Auth.HabiticaCredentials credentials, CancellationToken token) => throw new NotSupportedException();
+        public Task<Habitica.Application.Workspace.WorkspaceActionResult> ExportAsync(CancellationToken token) => throw new NotSupportedException();
+        public Task<Habitica.Application.Workspace.WorkspaceActionResult> HandoffAsync(string archive, CancellationToken token) => throw new NotSupportedException();
+        public Task<Habitica.Application.Workspace.WorkspaceActionResult> DisconnectAsync(bool delete, CancellationToken token) => throw new NotSupportedException();
+        public void ForgetSession() { }
+    }
+
+    [Fact]
     public void Workspace_cloud_consent_is_separate_from_ChatGPT_and_private_sync()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

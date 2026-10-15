@@ -350,47 +350,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Qualify opted-in hosted command execution ownership
-
-```yaml
-id: T-a5243cdf-dfc9-438b-ae11-2a3d865608b9
-priority: 202
-status: Ready
-parent_pending_ids: ["P-2dcaca70-8d94-55b1-aaee-7e7262e60f07"]
-processing_run_id: PR-be6457c2-7735-441f-a88c-ad66e73c0004
-root_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-related_task_id: T-4a1de222-156a-52cf-8966-262a2c8216ed
-relation: blocker
-depends_on: ["T-4971181f-827f-4945-af27-4f4bc8ded5c8", "T-be68f853-9737-4657-a8a4-7aff8dfc497b", "T-773bb444-a0e6-45b9-bdcb-18561bb6182f"]
-```
-
-Goal:
-- Persist one execution owner and bounded recovery for separately opted-in server processing.
-Current behavior:
-- Canonical workspace implementation is absent; inspected source remains Habitica snapshot based.
-Desired behavior:
-- Implement the approved companion-workspace-contract.md within the selected dependency scope.
-Touch:
-- Workspace Worker ledger/leases, local-to-server handoff, settings controls and restart/fault fixtures.
-Discovery allowance:
-- Reuse existing .NET, Dexie and Worker infrastructure; add narrowly scoped contracts and fixtures.
-Out of scope:
-- Live enrollment, remote provisioning, deployment and real Habitica mutations.
-Implementation constraints:
-- Preserve legacy snapshots and encrypted private sync; use synthetic fixtures for service qualification.
-- Preserve independent Companion identity and explicit projection outcomes.
-Questions and required clarifications:
-- [Resolved - owner decision] Adopt the approved workspace defaults for local implementation and tests.
-Validation:
-- Build; qualify duplicate delivery, lease expiry, browser/server handoff, restart, unknown outcomes and opt-out with synthetic services; inspect settings behavior.
-Acceptance:
-- Accepted commands survive synthetic restart and duplicate wakeup without duplicate execution ownership.
-- Disconnect, executor disable, quota cooldown and unknown outcomes prevent unsafe new effects; automated calls preserve thirty-second pacing.
-Documentation updates:
-- technical.md, features.md and applicable storage/deployment/UI documentation.
-Risks:
-- Domain parity, ambiguous upstream outcomes and ownership races require explicit fixture coverage.
-
 ### Add Safe Task Mutation Tools
 
 ```yaml

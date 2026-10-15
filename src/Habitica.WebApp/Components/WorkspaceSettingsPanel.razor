@@ -30,6 +30,18 @@
             <MudButton Disabled="@_busy" OnClick="@(() => _cleanup = false)" Variant="Variant.Outlined">Disconnect cloud workspace</MudButton>
             <MudButton Disabled="@_busy" OnClick="@(() => _cleanup = true)" Variant="Variant.Outlined">Delete cloud workspace</MudButton>
         </div>
+        <h3>Background task execution</h3>
+        <p>When enabled, the server can project accepted commands to Habitica while this tab is closed. Calls run sequentially at least thirty seconds apart. Unknown outcomes pause new effects for review. Pausing prevents new calls; an already transmitted effect can still finish.</p>
+        @if (Workspace.ExecutorEnabled)
+        {
+            <MudButton Disabled="@_busy" OnClick="@(() => SetExecutorAsync(false))" Variant="Variant.Outlined" data-testid="workspace-executor-pause">Pause background execution</MudButton>
+        }
+        else if (Workspace.ExecutorAvailable)
+        {
+            <label class="checkbox-row"><input type="checkbox" @bind="_executorConsent" data-testid="workspace-executor-consent" /><span>I enable background execution of accepted commands, including Habitica effects, while the app is closed.</span></label>
+            <MudButton Disabled="@(_busy || !_executorConsent)" OnClick="@(() => SetExecutorAsync(true))" Variant="Variant.Filled" data-testid="workspace-executor-enable">Enable background execution</MudButton>
+        }
+        else { <p>Background execution is unavailable on this server.</p> }
         @if (_cleanup is not null)
         {
             <p>@(_cleanup.Value ? "Permanently delete all cloud tasks, notes and command history? Export a backup first." : "Disconnect every workspace session and pause execution? Cloud tasks and history will remain stored.")</p>
@@ -44,7 +56,15 @@
         <MudButton Disabled="@_busy" OnClick="RefreshLocalAsync" Variant="Variant.Outlined">Find local workspaces</MudButton>
         @foreach (var id in _localIds)
         {
-            <div class="action-row"><span>@id</span><MudButton Disabled="@_busy" OnClick="@(() => ExportLocalAsync(id))" Variant="Variant.Text">Export local workspace</MudButton></div>
+            <div class="action-row"><span>@id</span><MudButton Disabled="@_busy" OnClick="@(() => ExportLocalAsync(id))" Variant="Variant.Text">Export local workspace</MudButton>
+                @if (Workspace.CloudWorkspaceId is not null) { <MudButton Disabled="@(_busy || Workspace.ExecutorEnabled)" OnClick="@(() => _transferId = id)" Variant="Variant.Outlined">Transfer workspace to cloud</MudButton> }
+            </div>
+        }
+        @if (_transferId is not null)
+        {
+            <p>Freeze this local workspace and upload its readable tasks, notes and history? The cloud workspace must be empty with execution paused. The local copy stays frozen if the result is uncertain; retry the same transfer to recover its receipt. Background execution requires its own opt-in.</p>
+            <MudButton Disabled="@_busy" OnClick="TransferAsync" Variant="Variant.Filled">Confirm freeze and upload</MudButton>
+            <MudButton Disabled="@_busy" OnClick="@(() => _transferId = null)" Variant="Variant.Outlined">Cancel</MudButton>
         }
         <label>Restore workspace backup<InputFile disabled="@_busy" OnChange="SelectFileAsync" data-testid="workspace-restore-file" /></label>
         @if (_restoreJson is not null)
@@ -58,7 +78,8 @@
 </section>
 
 @code {
-    private bool _consent, _busy;
+    private bool _consent, _busy, _executorConsent;
+    private Guid? _transferId;
     private bool? _cleanup;
     private string? _message, _restoreJson;
     private IReadOnlyList<Guid> _localIds = Array.Empty<Guid>();
@@ -80,6 +101,8 @@
         finally { _busy = false; }
     }
     private Task ConnectAsync() => RunAsync(() => Workspace.ConnectAsync(_consent));
+    private async Task SetExecutorAsync(bool enabled) { await RunAsync(() => Workspace.SetExecutorAsync(enabled)); _executorConsent = false; }
+    private async Task TransferAsync() { if (_transferId is not { } id) return; await RunAsync(() => Workspace.TransferAsync(id)); _transferId = null; }
     private Task ExportCloudAsync() => RunAsync(() => Workspace.ExportCloudAsync());
     private Task ExportLocalAsync(Guid id) => RunAsync(() => Workspace.ExportLocalAsync(id));
     private async Task CleanupAsync() { if (_cleanup is null) return; await RunAsync(() => Workspace.DisconnectAsync(_cleanup.Value)); _cleanup = null; }

@@ -34,7 +34,7 @@ async function fixture(t, options = {}) {
     { name: "mcp", modules: true, script: await readFile(new URL("dist/index.js", mcpRoot), "utf8"),
       compatibilityDate: authConfig.compatibility_date, compatibilityFlags: ["nodejs_compat"],
       bindings: { ENVIRONMENT: "local", OAUTH_ENABLED: true }, serviceBindings: { ...(options.workspace ? { AUTH_PROJECTION: { name: "auth", entrypoint: "ProjectionService" }, WORKSPACE_IDENTITY: { name: "auth", entrypoint: "WorkspaceIdentityService" } } : {}), AUTH_SERVER: { name: "auth", entrypoint: "AuthService" } } },
-    ...(options.workspace ? [{ name: "workspace", modules: true, script: await readFile(new URL("../companion-workspace/dist/index.js", authRoot), "utf8"), compatibilityDate: authConfig.compatibility_date, compatibilityFlags: ["nodejs_compat"], bindings: { ENVIRONMENT: "local", WORKSPACE_ENABLED: true }, d1Databases: ["WORKSPACE_DB"], serviceBindings: { AUTH_PROJECTION: { name: "auth", entrypoint: "ProjectionService" }, AUTH_IDENTITY: options.identity ?? { name: "auth", entrypoint: "WorkspaceIdentityService" } } }] : []),
+    ...(options.workspace ? [{ name: "workspace", modules: true, script: await readFile(new URL("../companion-workspace/dist/index.js", authRoot), "utf8"), compatibilityDate: authConfig.compatibility_date, compatibilityFlags: ["nodejs_compat"], bindings: { ENVIRONMENT: "local", WORKSPACE_ENABLED: true, EXECUTOR_ENABLED: Boolean(options.executor) }, d1Databases: ["WORKSPACE_DB"], serviceBindings: { AUTH_PROJECTION: options.projectionService ?? { name: "auth", entrypoint: "ProjectionService" }, AUTH_IDENTITY: options.identity ?? { name: "auth", entrypoint: "WorkspaceIdentityService" } } }] : []),
   ] }));
   t.after(() => mf.dispose());
   const db = await mf.getD1Database("HABITICA_INTEGRATION_DB", "auth");
@@ -44,8 +44,10 @@ async function fixture(t, options = {}) {
   let workspace, workspaceDb, workspaceIdentity, projection;
   if (options.workspace) {
     workspace = await mf.getWorker("workspace"); workspaceDb = await mf.getD1Database("WORKSPACE_DB", "workspace");
-    const sqlText = await readFile(new URL("../companion-workspace/migrations/0001-workspace.sql", authRoot), "utf8");
-    for (const sql of sqlText.split(";")) if (sql.trim()) await workspaceDb.prepare(sql).run();
+    for (const migration of ["0001-workspace.sql","0002-execution-ownership.sql"]) {
+      const sqlText = await readFile(new URL("../companion-workspace/migrations/"+migration, authRoot), "utf8");
+      for (const sql of sqlText.split(";")) if (sql.trim()) await workspaceDb.prepare(sql).run();
+    }
     workspaceIdentity = (await mf.getBindings("mcp")).WORKSPACE_IDENTITY; projection = (await mf.getBindings("mcp")).AUTH_PROJECTION;
   }
   const auth = await mf.getWorker("auth");

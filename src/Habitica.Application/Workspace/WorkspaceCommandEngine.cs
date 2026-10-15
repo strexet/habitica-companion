@@ -35,6 +35,8 @@ public static class WorkspaceCommandEngine
         var existing = snapshot.Commands.FirstOrDefault(entry => entry.Command.Id == command.Id);
         if (existing is not null)
             return existing.PayloadHash == hash ? new(SubmissionDisposition.Duplicate, snapshot, existing) : Reject(SubmissionDisposition.IdempotencyConflict, "command_id_reused");
+        if (snapshot.Authority?.Mode is WorkspaceAuthorityMode.Frozen or WorkspaceAuthorityMode.Cloud)
+            return Reject(SubmissionDisposition.Invalid, "workspace_owned_elsewhere");
         if (command.ExpectedRevision != snapshot.Document.Revision) return Reject(SubmissionDisposition.RevisionConflict, "stale_revision");
         var document = snapshot.Document;
         var current = document.Tasks.FirstOrDefault(task => task.Id == command.TaskId);
@@ -96,6 +98,6 @@ public static class WorkspaceCommandEngine
         if (requested && mapping is null) projections.Add(new(Guid.NewGuid(), revision, updated.Id, ProjectionState.Pending));
         var result = document with { Revision = revision, Tasks = tasks, Completions = completions, Occurrences = occurrences, HabitScores = scores, Projections = projections };
         if (WorkspaceRules.Validate(result).Count != 0) return Reject(SubmissionDisposition.Invalid, "invalid_result");
-        return new(SubmissionDisposition.Accepted, new(result, snapshot.StoreVersion + 1, snapshot.Commands.Append(entry).ToArray(), (snapshot.Events ?? Array.Empty<WorkspaceJournalEvent>()).Append(new(Guid.NewGuid(), command.Id, JournalEventKind.Accepted, now, 0, entry.Failure)).ToArray()), entry);
+        return new(SubmissionDisposition.Accepted, new(result, snapshot.StoreVersion + 1, snapshot.Commands.Append(entry).ToArray(), (snapshot.Events ?? Array.Empty<WorkspaceJournalEvent>()).Append(new(Guid.NewGuid(), command.Id, JournalEventKind.Accepted, now, 0, entry.Failure)).ToArray(), snapshot.Authority), entry);
     }
 }

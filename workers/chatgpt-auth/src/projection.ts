@@ -37,16 +37,16 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
   const input = workspaceObject(await workspaceJson(request,262144),["profileId","connectionId","operation","arguments","attemptId","attemptAtUtc","automated"]);
   if (typeof input.profileId !== "string" || !/^prf_[A-Za-z0-9_-]{43}$/.test(input.profileId) || typeof input.automated !== "boolean") throw new WorkspaceError("invalid_request");
   who = { profileId: input.profileId, connectionId: uuid(input.connectionId) };
-  const operation = input.operation; if (typeof operation !== "string" || !["inspect","inspectDaily","inspectAccount","create","update","score","reconcile"].includes(operation)) throw new WorkspaceError("invalid_operation");
+  const operation = input.operation; if (typeof operation !== "string" || !["inspect","inspectDaily","inspectAccount","create","update","score","reconcile","lookup"].includes(operation)) throw new WorkspaceError("invalid_operation");
   const writing = ["create","update","score"].includes(operation);
-  const args = workspaceObject(input.arguments,operation === "reconcile" ? ["operation","arguments"] : writing ? operation === "create" ? ["selector","checkToken","patch"] : operation === "update" ? ["selector","checkToken","expectedFingerprint","patch"] : ["selector","checkToken","expectedFingerprint","direction","accountCheckToken","occurrenceDate"] : operation === "inspectAccount" ? [] : ["selector"]);
+  const args = workspaceObject(input.arguments,["reconcile","lookup"].includes(operation) ? ["operation","arguments"] : writing ? operation === "create" ? ["selector","checkToken","patch"] : operation === "update" ? ["selector","checkToken","expectedFingerprint","patch"] : ["selector","checkToken","expectedFingerprint","direction","accountCheckToken","occurrenceDate"] : operation === "inspectAccount" ? [] : ["selector"]);
   const profile = await activeProfile(env,who.profileId,who.connectionId);
   // Operational attempt metadata expires after thirty days. Old attempt timestamps cannot authorize a new send.
   await env.HABITICA_INTEGRATION_DB.batch([
    env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_projection_attempts WHERE created_at_utc<?").bind(new Date(Date.now()-30*86400000).toISOString()),
    env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_projection_checks WHERE expires_at_utc<=?").bind(new Date().toISOString()),
   ]);
-  if (operation === "reconcile") return await reconcileAttempt(env,who,input,args);
+  if (["reconcile","lookup"].includes(operation)) return await reconcileAttempt(env,who,input,args,operation === "lookup");
   let payloadHash: string | undefined;
   if (writing) {
    attemptId = uuid(input.attemptId); payloadHash = await workspaceTokenHash(JSON.stringify({ operation, arguments: args, attemptAtUtc: input.attemptAtUtc }));
@@ -154,13 +154,15 @@ export async function purgeProjectionMetadata(env: AuthEnv): Promise<void> {
  ]);
 }
 
-async function reconcileAttempt(env: AuthEnv, who: Context, input: Record<string,unknown>, args: Record<string,unknown>): Promise<Response> {
+async function reconcileAttempt(env: AuthEnv, who: Context, input: Record<string,unknown>, args: Record<string,unknown>, lookupOnly = false): Promise<Response> {
  const attemptId=uuid(input.attemptId); const operation=args.operation;
  if (typeof operation!=="string" || !["create","update","score"].includes(operation)) throw new WorkspaceError("invalid_operation");
  const original=workspaceObject(args.arguments); const hash=await workspaceTokenHash(JSON.stringify({operation,arguments:original,attemptAtUtc:input.attemptAtUtc}));
  const prior=await env.HABITICA_INTEGRATION_DB.prepare("SELECT payload_hash,state,outcome_json FROM integration_projection_attempts WHERE profile_id=? AND connection_id=? AND attempt_id=?").bind(who.profileId,who.connectionId,attemptId).first<{payload_hash:string;state:string;outcome_json:string|null}>();
- if (!prior || prior.payload_hash!==hash) throw new WorkspaceError("attempt_not_found",409);
+ if (!prior) return json({kind:"unknown",code:"attempt_not_found"});
+ if (prior.payload_hash!==hash) throw new WorkspaceError("attempt_id_reused",409);
  if (!["dispatched","unknown"].includes(prior.state)) return json(prior.outcome_json?JSON.parse(prior.outcome_json):{kind:"unknown",code:"outcome_unknown"});
+ if (lookupOnly) return json({kind:"unknown",code:"outcome_unknown"});
  // Habit scores have no conclusive per-command upstream receipt. Caller assertions never resolve them.
  if (operation==="score") return json({kind:"unknown",code:"score_outcome_requires_review"});
  const target=selector(original.selector);

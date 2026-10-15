@@ -91,6 +91,48 @@ public sealed class WorkspaceCloudClientTests
         Assert.False((await client.ConnectAsync(Credentials, CancellationToken.None)).Succeeded); Assert.Equal(0, calls);
     }
 
+    [Fact]
+    public async Task Executor_requires_validated_response_and_late_result_cannot_restore_session_state()
+    {
+        var vault = Vault(out var vaultHttp); using var ownedVaultHttp = vaultHttp;
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var http = new HttpClient(new Handler(async (request, token) =>
+        {
+            if (request.RequestUri!.AbsolutePath == "/connect") return Connection();
+            Assert.Equal("/executor", request.RequestUri.AbsolutePath);
+            Assert.Equal(Session, request.Headers.Authorization!.Parameter);
+            var body = await request.Content!.ReadAsStringAsync(token); Assert.Contains("executor-v1", body); Assert.DoesNotContain(Credentials.ApiToken, body);
+            entered.SetResult(); await release.Task; return Json(new { executorEnabled = true, executorAvailable = true });
+        }));
+        var client = new WorkspaceCloudClient(http, vault, "https://workspace.invalid/");
+        await client.ConnectAsync(Credentials, default);
+        var pending = client.SetExecutorAsync(true, default); await entered.Task; client.ForgetSession(); release.SetResult();
+        Assert.False((await pending).Succeeded); Assert.False(client.ExecutorEnabled); Assert.Null(client.WorkspaceId);
+    }
+
+    [Fact]
+    public async Task Transfer_accepts_only_matching_frozen_receipt_and_updates_the_cloud_identity()
+    {
+        var vault = Vault(out var vaultHttp); using var ownedVaultHttp = vaultHttp;
+        var localId = Guid.NewGuid(); var transferId = Guid.NewGuid();
+        var snapshot = new WorkspaceJournalSnapshot(new WorkspaceDocument { Id = localId }, 2, [], [], new(WorkspaceAuthorityMode.Frozen, transferId));
+        using var http = new HttpClient(new Handler(async (request, token) =>
+        {
+            if (request.RequestUri!.AbsolutePath == "/connect") return Connection();
+            Assert.Equal("/handoff", request.RequestUri.AbsolutePath); Assert.Equal(Session, request.Headers.Authorization!.Parameter);
+            using var body = JsonDocument.Parse(await request.Content!.ReadAsStringAsync(token));
+            Assert.Equal("workspace-handoff-v1", body.RootElement.GetProperty("consentVersion").GetString());
+            Assert.Equal(transferId, body.RootElement.GetProperty("transferId").GetGuid());
+            Assert.Equal(localId, WorkspaceJournalJson.Deserialize(body.RootElement.GetProperty("archive").GetString()!).Document.Id);
+            return Json(new { accepted = true, transferId, workspaceId = localId, executorEnabled = false }, HttpStatusCode.Created);
+        }));
+        var client = new WorkspaceCloudClient(http, vault, "https://workspace.invalid/"); await client.ConnectAsync(Credentials, default);
+        Assert.True((await client.HandoffAsync(WorkspaceJournalJson.Serialize(snapshot), default)).Succeeded);
+        Assert.Equal(localId, client.WorkspaceId); Assert.False(client.ExecutorEnabled);
+        Assert.False((await client.HandoffAsync(WorkspaceJournalJson.Serialize(snapshot with { Authority = null }), default)).Succeeded);
+    }
+
     private static HttpResponseMessage Json(object value, HttpStatusCode status = HttpStatusCode.OK) => new(status) { Content = JsonContent.Create(value) };
     private sealed class Handler(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> response) : HttpMessageHandler
     {

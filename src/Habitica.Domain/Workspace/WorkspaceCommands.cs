@@ -43,7 +43,9 @@ public sealed record WorkspaceCommandEntry(
     CompanionTask? TaskSnapshot = null);
 
 public sealed record WorkspaceJournalEvent(Guid Id, Guid CommandId, JournalEventKind Kind, DateTimeOffset AtUtc, int ConfirmedEffects, ProjectionFailure Failure, Guid? AttemptToken = null, string? EvidenceReference = null);
-public sealed record WorkspaceJournalSnapshot(WorkspaceDocument Document, long StoreVersion, IReadOnlyList<WorkspaceCommandEntry> Commands, IReadOnlyList<WorkspaceJournalEvent>? Events = null);
+public enum WorkspaceAuthorityMode { Local, Frozen, Cloud, Paused }
+public sealed record WorkspaceExecutionAuthority(WorkspaceAuthorityMode Mode, Guid? TransferId = null, Guid? CloudWorkspaceId = null);
+public sealed record WorkspaceJournalSnapshot(WorkspaceDocument Document, long StoreVersion, IReadOnlyList<WorkspaceCommandEntry> Commands, IReadOnlyList<WorkspaceJournalEvent>? Events = null, WorkspaceExecutionAuthority? Authority = null);
 public sealed record CommandSubmission(SubmissionDisposition Disposition, WorkspaceJournalSnapshot? Snapshot, WorkspaceCommandEntry? Entry, string? ErrorCode = null)
 {
     public bool? SavedInCompanion => Disposition == SubmissionDisposition.Unavailable ? null : Disposition is SubmissionDisposition.Accepted or SubmissionDisposition.Duplicate;

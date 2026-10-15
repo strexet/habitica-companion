@@ -14,6 +14,8 @@ public sealed class WorkspaceCloudClient : IWorkspaceCloudClient
     private string? _token;
     private int _generation;
     public Guid? WorkspaceId { get; private set; }
+    public bool ExecutorEnabled { get; private set; }
+    public bool ExecutorAvailable { get; private set; }
     public bool IsAvailable => _baseUri is not null && _vault.IsVaultAvailable;
 
     public WorkspaceCloudClient(HttpClient http, ChatGptIntegrationClient vault, string? baseUrl)
@@ -39,6 +41,7 @@ public sealed class WorkspaceCloudClient : IWorkspaceCloudClient
             if (result is null || result.WorkspaceId == Guid.Empty || result.ConsentVersion != "workspace-v1" || result.ExpiresAtUtc <= DateTimeOffset.UtcNow
                 || !System.Text.RegularExpressions.Regex.IsMatch(result.SessionToken ?? "", "^[A-Za-z0-9_-]{43}$") || generation != _generation) return new(false, "Cloud connection could not be confirmed.");
             WorkspaceId = result.WorkspaceId; _token = result.SessionToken;
+            ExecutorEnabled = result.ExecutorEnabled; ExecutorAvailable = result.ExecutorAvailable;
             return new(true, "Cloud workspace connected for this tab. Background execution is separately controlled. Browser data has not been uploaded.");
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
@@ -82,7 +85,48 @@ public sealed class WorkspaceCloudClient : IWorkspaceCloudClient
         catch { return new(false, "Cloud cleanup outcome is unknown. Reconnect to check its status."); }
     }
 
-    public void ForgetSession() { _generation++; _token = null; WorkspaceId = null; }
+    public async Task<WorkspaceActionResult> SetExecutorAsync(bool enabled, CancellationToken cancellationToken)
+    {
+        if (WorkspaceId is null) return new(false, "Connect the cloud workspace first.");
+        var generation = _generation;
+        try
+        {
+            using var request = Request(HttpMethod.Post, "executor");
+            request.Content = JsonContent.Create(new { enabled, consentVersion = enabled ? "executor-v1" : null });
+            using var response = await _http.SendAsync(request, cancellationToken);
+            if (!response.IsSuccessStatusCode) return new(false, "Execution setting could not be confirmed. Reconnect to check its status.");
+            var result = await response.Content.ReadFromJsonAsync<Executor>(cancellationToken);
+            if (result is null || result.ExecutorEnabled != enabled || generation != _generation) return new(false, "Execution setting could not be confirmed.");
+            ExecutorEnabled = result.ExecutorEnabled; ExecutorAvailable = result.ExecutorAvailable;
+            return new(true, enabled ? "Background execution enabled. Accepted commands may affect Habitica while this tab is closed." : "Background execution paused. Already transmitted effects may still finish.");
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
+        catch { return new(false, "Execution setting outcome is unknown. Reconnect to check its status."); }
+    }
+
+    public async Task<WorkspaceActionResult> HandoffAsync(string archive, CancellationToken cancellationToken)
+    {
+        if (WorkspaceId is null) return new(false, "Connect the cloud workspace first.");
+        var generation = _generation;
+        try
+        {
+            var snapshot = WorkspaceJournalJson.Deserialize(archive);
+            if (snapshot.Authority?.Mode != WorkspaceAuthorityMode.Frozen) return new(false, "Local ownership must be frozen before upload.");
+            using var request = Request(HttpMethod.Post, "handoff");
+            request.Content = JsonContent.Create(new { consentVersion = "workspace-handoff-v1", transferId = snapshot.Authority.TransferId, archive });
+            using var response = await _http.SendAsync(request, cancellationToken);
+            if (!response.IsSuccessStatusCode) return new(false, "Transfer was not confirmed. The local copy remains frozen; retry the same transfer after checking cloud data.");
+            var result = await response.Content.ReadFromJsonAsync<Transfer>(cancellationToken);
+            if (result is null || !result.Accepted || result.WorkspaceId != snapshot.Document.Id || result.TransferId != snapshot.Authority.TransferId || generation != _generation)
+                return new(false, "Transfer receipt could not be validated. The local copy remains frozen.");
+            WorkspaceId = result.WorkspaceId; ExecutorEnabled = result.ExecutorEnabled;
+            return new(true, "Workspace transferred. The local copy cannot execute tasks. Background execution remains separately controlled.");
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
+        catch { return new(false, "Transfer outcome is unknown. The local copy remains frozen; retry the same transfer to recover its receipt."); }
+    }
+
+    public void ForgetSession() { _generation++; _token = null; WorkspaceId = null; ExecutorEnabled = false; ExecutorAvailable = false; }
     private HttpRequestMessage Request(HttpMethod method, string path)
     {
         var request = new HttpRequestMessage(method, new Uri(_baseUri!, path));
@@ -97,6 +141,8 @@ public sealed class WorkspaceCloudClient : IWorkspaceCloudClient
         while ((read = await stream.ReadAsync(buffer, cancellationToken)) > 0) { if (output.Length + read > limit) throw new InvalidOperationException(); await output.WriteAsync(buffer.AsMemory(0, read), cancellationToken); }
         return System.Text.Encoding.UTF8.GetString(output.GetBuffer(), 0, (int)output.Length);
     }
-    private sealed record Connection(Guid WorkspaceId, string? SessionToken, DateTimeOffset ExpiresAtUtc, string ConsentVersion);
+    private sealed record Connection(Guid WorkspaceId, string? SessionToken, DateTimeOffset ExpiresAtUtc, string ConsentVersion, bool ExecutorEnabled = false, bool ExecutorAvailable = false);
+    private sealed record Executor(bool ExecutorEnabled, bool ExecutorAvailable);
+    private sealed record Transfer(bool Accepted, Guid TransferId, Guid WorkspaceId, bool ExecutorEnabled);
     private sealed record Cleanup(bool Deleted, bool Disconnected);
 }
