@@ -76,6 +76,7 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
   },outcome.kind==='unknown'||!['applied','refused'].includes(outcome.kind??'')?undefined:null);
  }
  try{
+  if(await env.WORKSPACE_DB.prepare("SELECT 1 FROM prepared_spell_actions WHERE profile_id=? AND status IN ('accepted','dispatching','unknownOutcome') LIMIT 1").bind(profileId).first())return 'spell_fenced';
   const r=await runtime();if(!r)return 'lost_lease';
   const entries=(await env.WORKSPACE_DB.prepare('SELECT entry_json FROM workspace_commands WHERE profile_id=? ORDER BY sequence').bind(profileId).all<{entry_json:string}>()).results.map(c=>JSON.parse(c.entry_json) as CommandEntry);
   // A saved dispatch is never sent again. A receipt lookup does not touch Habitica.

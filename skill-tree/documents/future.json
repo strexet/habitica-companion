@@ -26,9 +26,11 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367",
       "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3",
       "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d",
-      "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f"
+      "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f",
+      "T-05547c12-8391-4d20-a0cb-0371361d6cd7"
     ],
     "completion_refs": {
+      "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
       "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89": "O-2b79fcef-7244-48d6-bad7-16c7b8937eee",
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
       "T-16a38176-f2fe-5f7d-a809-546f17357b49": "O-7d50e0cb-ee45-4fe5-bd54-6b38b3b22e6e",
@@ -57,7 +59,7 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e"
     },
     "current_task_id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-    "cycle_signature": "7901ecd56d53539d0f2aadc53600c755058517471d64ce7ed3591bb460aaa07b",
+    "cycle_signature": "d1ec4acf5d38543044d8f809cbb9158436007a3be9f990492bbf542350946702",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
@@ -83,7 +85,8 @@
       "P-112ddb0c-2e2b-4fc3-84f7-ad3e2cb8b64f",
       "P-084f4079-44b9-4799-8b43-9a7ee012b93b",
       "P-e26d8c99-365e-49bf-9345-fa5e7cbbb61f",
-      "P-f4cf9801-4310-4923-b210-826b1c227e3a"
+      "P-f4cf9801-4310-4923-b210-826b1c227e3a",
+      "P-d34a0b07-32a5-48dc-acdd-7da4d17f9d4e"
     ],
     "phase": "implement",
     "processing_results": [
@@ -390,6 +393,25 @@
         "task_keys": {
           "spell-gateway": "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f"
         }
+      },
+      {
+        "created_ids": [
+          "T-05547c12-8391-4d20-a0cb-0371361d6cd7"
+        ],
+        "dispositions": {
+          "P-d34a0b07-32a5-48dc-acdd-7da4d17f9d4e": {
+            "reason": "Accepted private gateway plus current Workspace runtime, planning and MCP source define the exact reviewed ledger and recovery boundary.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-4450a7b5-468b-4047-ae00-5120c40f728f",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-d34a0b07-32a5-48dc-acdd-7da4d17f9d4e"
+        ],
+        "task_keys": {
+          "reviewed-spells": "T-05547c12-8391-4d20-a0cb-0371361d6cd7"
+        }
       }
     ],
     "required_ids": [
@@ -419,7 +441,8 @@
       "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d",
       "T-eee74da1-053f-494e-8589-0e1b660e2367",
       "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3",
-      "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f"
+      "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f",
+      "T-05547c12-8391-4d20-a0cb-0371361d6cd7"
     ],
     "root_task_id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
     "snapshot": [
@@ -439,7 +462,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "6b4acf59d15992be1dab277084816fd0f146435ce18f0a67a00b161372f2c7cf",
+  "source_hash": "5c0ff31971ffd5035b5712ec6c5893da718a0aeae40384661739d43d4bb7e2bb",
   "tasks": [
     {
       "depends_on": [],
@@ -572,7 +595,8 @@
         "T-4a1de222-156a-52cf-8966-262a2c8216ed",
         "T-991d6cf2-7c54-4006-ab58-eda921ae66d6",
         "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d",
-        "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f"
+        "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f",
+        "T-05547c12-8391-4d20-a0cb-0371361d6cd7"
       ],
       "id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
       "line": 353,

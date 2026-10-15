@@ -65,8 +65,8 @@ export async function partySettings(env:WorkspaceEnv,row:WorkspaceRow,proof:Part
  if(uuid(input.expectedNamespaceId)!==p.namespace_id||input.expectedRevision!==p.revision)throw new WorkspaceError('stale_party_revision',409);
  if(input.confirmNamespaceId!==undefined){
   if(uuid(input.confirmNamespaceId)!==p.namespace_id)throw new WorkspaceError('confirmation_required',409);
-  const result=await env.WORKSPACE_DB.prepare(`DELETE FROM authenticated_party_plans WHERE party_id=? AND namespace_id=? AND revision=? AND ${consentPredicate} AND ?>strftime('%Y-%m-%dT%H:%M:%fZ','now')`).bind(p.party_id,p.namespace_id,p.revision,...fence(row),proof.expiresAtUtc).run();
-  if(!result.meta.changes)throw new WorkspaceError('party_changed',409);return {deleted:true};
+  const result=await env.WORKSPACE_DB.batch([env.WORKSPACE_DB.prepare(`DELETE FROM authenticated_party_plans WHERE party_id=? AND namespace_id=? AND revision=? AND ${consentPredicate} AND ?>strftime('%Y-%m-%dT%H:%M:%fZ','now')`).bind(p.party_id,p.namespace_id,p.revision,...fence(row),proof.expiresAtUtc),env.WORKSPACE_DB.prepare("DELETE FROM prepared_spell_actions WHERE namespace_id=? AND status='prepared' AND NOT EXISTS(SELECT 1 FROM authenticated_party_plans WHERE namespace_id=?)").bind(p.namespace_id,p.namespace_id)]);
+  if(!result[0].meta.changes)throw new WorkspaceError('party_changed',409);return {deleted:true};
  }
  if(typeof input.membersCanQueue!=='boolean')throw new WorkspaceError('invalid_settings',422);
  if(p.revision===Number.MAX_SAFE_INTEGER)throw new WorkspaceError('revision_exhausted',409);
@@ -92,6 +92,7 @@ export async function ownContributions(env:WorkspaceEnv,profile:string,remove:bo
  statements.push(env.WORKSPACE_DB.prepare('DELETE FROM authenticated_party_write_guard'));
  statements.push(env.WORKSPACE_DB.prepare('DELETE FROM authenticated_party_commands WHERE profile_id=?').bind(profile));
  statements.push(env.WORKSPACE_DB.prepare('DELETE FROM authenticated_party_consents WHERE profile_id=?').bind(profile));
+ statements.push(env.WORKSPACE_DB.prepare("DELETE FROM prepared_spell_actions WHERE profile_id=? AND status='prepared'").bind(profile));
  await env.WORKSPACE_DB.batch(statements);return {removed:true};
 }
 export async function planningHash(tool:string,args:Record<string,unknown>){return workspaceTokenHash(JSON.stringify([tool,...Object.keys(args).sort().map(key=>[key,args[key]])]));}

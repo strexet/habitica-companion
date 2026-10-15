@@ -1,3 +1,5 @@
+import {spellTools,handleSpellTool} from './spell-tools';
+import {spellToolScopes,type SpellTool} from '../../shared/spell-tools';
 import {partyTools} from './party-tools';
 import {partyToolScopes,partyInput} from '../../shared/party-tools';
 import { canonicalTaskTools } from "./task-tools";
@@ -27,13 +29,14 @@ const descriptions: Record<ReadTool, string> = {
 };
 const bootstrapTools = (Object.keys(readScopes) as ReadTool[]).map(name => ({ name, description: descriptions[name], inputSchema: schemas[name].input, outputSchema: schemas[name].output, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }, securitySchemes: [{ type: "oauth2", scopes: [readScopes[name]] }], _meta: { securitySchemes: [{ type: "oauth2", scopes: [readScopes[name]] }], ...(name === "get_profile" ? { "openai/profile": true } : {}) } })) as Tool[];
 
-export const toolDefinitions=[...bootstrapTools,...canonicalTaskTools,...partyTools];
+export const toolDefinitions=[...bootstrapTools,...canonicalTaskTools,...partyTools,...spellTools];
 
 export async function handleMcp(request: Request, env: McpEnv, parsedBody: unknown): Promise<Response> {
   const server = new Server({ name: "habitica-companion-read-bootstrap", version: "0.1.0" }, { capabilities: { tools: {} } });
   server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: toolDefinitions }));
   server.setRequestHandler(CallToolRequestSchema, async call => {
     const name = call.params.name;
+    if(Object.hasOwn(spellToolScopes,name))return handleSpellTool(request,env,name as SpellTool,call.params.arguments??{});
     if(Object.hasOwn(taskToolScopes,name)||Object.hasOwn(partyToolScopes,name)){
       try{if(Object.hasOwn(partyToolScopes,name))partyInput(name,call.params.arguments??{});else taskToolInput(name,call.params.arguments??{});}catch{return {isError:true,content:[{type:"text",text:"Invalid Companion arguments. Use exact IDs and the documented field whitelist; no account selectors are accepted."}]};}
       const isParty=Object.hasOwn(partyToolScopes,name);const partyMutation=isParty&&!name.startsWith("get_");

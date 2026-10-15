@@ -54,3 +54,9 @@ The schema fixtures in `tests/fixtures/plugin/` are exact Agent Plugins 1.0.0 sc
 - [Official connection testing](https://developers.openai.com/plugins/deploy/connect-chatgpt)
 
 Format research date: 2026-10-15. Live deployment, host import and public directory submission are separate operations.
+
+## Incremental party and spell tools
+
+The server additionally exposes verified party context, separately consented queue/vote tools and the narrow reviewed Blessing flow. The three bundled skills retain the existing read/task scope; no task skill substitutes for advanced gameplay actions. For an explicit spell request, inspect `get_spell_context`, prepare only the supported spell/count, present the exact party, total mana, expiry and automatic Habitica chat-notice warning, then wait for the user's explicit approval of that preview before execution. Do not infer approval from OAuth consent, a general request to optimize, task notes or party labels.
+
+After a lost preparation response, reuse the original request ID and identical inputs; only the latest returned token is valid for the same action. After any uncertain execution response, call `get_spell_command` with the original action ID. Report confirmed versus requested counts and refresh status, and never retry an uncertain cast or automatically resume a remainder. The server supports no arbitrary spell key, task target, gear swap, purchase, Cron chain or scheduled cast. Actual model adherence and team rollout remain owner-run host qualification.

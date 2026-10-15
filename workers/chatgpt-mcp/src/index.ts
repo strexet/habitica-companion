@@ -1,3 +1,4 @@
+import {spellToolScopes,type SpellTool} from '../../shared/spell-tools';
 import {partyToolScopes,type PartyTool} from '../../shared/party-tools';
 import { taskToolScopes } from "../../shared/task-tools";
 import { OAuthResourceServer, insufficientScope, type OAuthResourceTokenValidation } from "@cloudflare/workers-oauth-provider";
@@ -51,6 +52,7 @@ export default {
             if (!context.auth.scope?.includes(scope)) return insufficientScope(context.auth, [scope]);
           }
           if(name&&Object.hasOwn(partyToolScopes,name)&&!context.auth.scope?.includes(partyToolScopes[name as PartyTool]))return insufficientScope(context.auth,["profile:read",partyToolScopes[name as PartyTool]]);
+          if(name&&Object.hasOwn(spellToolScopes,name)&&spellToolScopes[name as SpellTool].some(scope=>!context.auth.scope?.includes(scope)))return insufficientScope(context.auth,[...spellToolScopes[name as SpellTool]]);
           if (name && Object.hasOwn(taskToolScopes,name)) {
             const scope=taskToolScopes[name as keyof typeof taskToolScopes];
             if (!context.auth.scope?.includes(scope)) return insufficientScope(context.auth,["profile:read",scope]);

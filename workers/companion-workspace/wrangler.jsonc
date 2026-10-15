@@ -19,7 +19,8 @@
     "ENVIRONMENT": "local",
     "WORKSPACE_ENABLED": false,
     "EXECUTOR_ENABLED": false,
-    "PARTY_ENABLED": false
+    "PARTY_ENABLED": false,
+    "SPELLS_ENABLED": false
   },
   "d1_databases": [
     {
@@ -44,6 +45,11 @@
       "binding": "AUTH_PARTY",
       "service": "habitica-chatgpt-auth-local",
       "entrypoint": "PartyService"
+    },
+    {
+      "binding": "AUTH_SPELL",
+      "service": "habitica-chatgpt-auth-local",
+      "entrypoint": "SpellService"
     }
   ],
   "env": {
@@ -53,7 +59,8 @@
         "ENVIRONMENT": "preview",
         "WORKSPACE_ENABLED": false,
         "EXECUTOR_ENABLED": false,
-        "PARTY_ENABLED": false
+        "PARTY_ENABLED": false,
+        "SPELLS_ENABLED": false
       },
       "d1_databases": [
         {
@@ -78,6 +85,11 @@
           "binding": "AUTH_PARTY",
           "service": "habitica-chatgpt-auth-preview",
           "entrypoint": "PartyService"
+        },
+        {
+          "binding": "AUTH_SPELL",
+          "service": "habitica-chatgpt-auth-preview",
+          "entrypoint": "SpellService"
         }
       ],
       "triggers": {
@@ -92,7 +104,8 @@
         "ENVIRONMENT": "production",
         "WORKSPACE_ENABLED": false,
         "EXECUTOR_ENABLED": false,
-        "PARTY_ENABLED": false
+        "PARTY_ENABLED": false,
+        "SPELLS_ENABLED": false
       },
       "d1_databases": [
         {
@@ -117,6 +130,11 @@
           "binding": "AUTH_PARTY",
           "service": "habitica-chatgpt-auth-production",
           "entrypoint": "PartyService"
+        },
+        {
+          "binding": "AUTH_SPELL",
+          "service": "habitica-chatgpt-auth-production",
+          "entrypoint": "SpellService"
         }
       ],
       "triggers": {

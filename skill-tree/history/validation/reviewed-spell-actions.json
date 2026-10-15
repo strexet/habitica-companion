@@ -1,0 +1,64 @@
+{
+  "task_id": "T-05547c12-8391-4d20-a0cb-0371361d6cd7",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "All three Worker builds/type checks",
+      "result": "pass"
+    },
+    {
+      "check": "Auth suite",
+      "result": "pass",
+      "passed": 62
+    },
+    {
+      "check": "Workspace suite",
+      "result": "pass",
+      "passed": 63
+    },
+    {
+      "check": "App build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Full .NET suites",
+      "result": "pass",
+      "passed": 525
+    },
+    {
+      "check": "Rebuilt default Settings unavailable guards",
+      "result": "pass",
+      "evidence": "skill-tree/history/validation/reviewed-spell-default-settings.jpg"
+    },
+    {
+      "check": "Changed prose and diff whitespace",
+      "result": "pass"
+    }
+  ],
+  "coverage": [
+    "Actual MCP SDK requests with two isolated synthetic profiles across OAuth, Workspace D1 and private Auth spell gateway",
+    "Exact two-minute preview, aggregate mana, current verified party and automatic chat-notice warning",
+    "Stable preparation request/action identity; token rotation stores hashes only; single-use acceptance; repeated/concurrent execution cannot duplicate effects",
+    "Fresh preconditions between quantity-one casts; class/mana/state changes stop execution",
+    "Partial refusal has separate requested, attempted-gateway and confirmed-effect counts, failure position and refresh outcome",
+    "Saved dispatch before private call; failed persistence prevents forwarding",
+    "Lost cast acknowledgement recovers original receipt through lookup only and stops unexecuted remainder",
+    "Twenty-one-second buffered response delay enforces the foreground reserve, returns known partial success and skips refresh without sending another cast",
+    "Shared Workspace task runtime lease preserves task request metadata; retained unknown spell actions fence task and spell execution after Auth operational receipts expire",
+    "Scope denial at MCP and direct Workspace boundary; private Auth scope/revocation cases remain in the Auth suite",
+    "Consent opt-out, namespace deletion, Workspace reconnect and profile isolation prevent stale/unowned execution",
+    "Separate management own-history export omits execution tokens/private requests and works after Workspace disconnect; explicit Workspace deletion cascades private history"
+  ],
+  "limitations": [
+    "Local synthetic qualification only: no real enrollment, host activation, deployment or upstream game effect.",
+    "No new PWA casting UI, arbitrary spells/targets, gear swaps, purchases, Cron or background casting.",
+    "Private accepted spell history remains until explicit Workspace deletion; shared namespace deletion revokes unaccepted previews.",
+    "No full formula or C#/Worker execution parity claim."
+  ],
+  "fixture_notes": [
+    "The deadline fixture buffers the completed private response before delaying delivery, avoiding live Miniflare stream transport artifacts.",
+    "Workspace deletion confirmation uses the canonical document id; an initial fixture field mismatch was corrected without changing product behavior."
+  ]
+}
