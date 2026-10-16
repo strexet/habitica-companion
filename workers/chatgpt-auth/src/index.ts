@@ -1,3 +1,5 @@
+import {networkBudget,trafficFailure} from './traffic';
+import {trafficOperation} from './traffic-route';
 import {keyOperation,purgeKeyJobs} from './key-operations';
 import {managementRoute} from './management';
 import {cronOperation} from './cron';
@@ -17,6 +19,7 @@ const headers = { "cache-control": "no-store", "x-content-type-options": "nosnif
 export class AuthService extends WorkerEntrypoint<AuthEnv> {
   async fetch(request: Request): Promise<Response> {
     const path = new URL(request.url).pathname;
+    if(path === "/traffic") return trafficOperation(request,this.env);
     if (path === "/health" && request.method === "GET") {
       return Response.json({ service: "auth", authorization: "unavailable" }, { headers });
     }
@@ -77,6 +80,7 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
         }
         return authorizationServer(env).fetch(request, env, ctx);
       } catch (error) {
+        const quota=trafficFailure(error);if(quota)return quota;
         const status = error instanceof VaultError ? error.status : 503;
         return Response.json({ error: status === 429 ? "try_later" : "integration_unavailable" }, { status, headers });
       }
@@ -95,8 +99,11 @@ export default {
     const origin = request.headers.get("origin");
     if (isManagement && url.protocol !== "https:" && !(env.ENVIRONMENT === "local" && ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname))) return Response.json({ error: "invalid_transport" }, { status: 403, headers });
     if (isManagement && origin && origin !== config.pwaOrigin && origin !== config.issuer) return Response.json({ error: "invalid_origin" }, { status: 403, headers });
-    const response = isManagement && request.method === "OPTIONS"
-      ? new Response(null, { status: 204, headers }) : await handlePublicRequest(request, env, ctx);
+    let response:Response;
+    try {
+      if(request.method!=="OPTIONS"&&url.pathname!=="/health"&&(env.OAUTH_ENABLED||env.ENROLLMENT_ENABLED||env.WORKSPACE_ENABLED))await networkBudget(env,request,url.pathname==="/enroll"?"enrollment":"public");
+      response=isManagement&&request.method==="OPTIONS"?new Response(null,{status:204,headers}):await handlePublicRequest(request,env,ctx);
+    }catch(error){response=trafficFailure(error)??Response.json({error:"integration_unavailable"},{status:503,headers});}
     if (isManagement && origin === config.pwaOrigin) {
       response.headers.set("access-control-allow-origin", origin);
       response.headers.set("access-control-allow-methods", "GET, POST, DELETE, OPTIONS");

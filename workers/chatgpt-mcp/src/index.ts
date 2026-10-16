@@ -27,6 +27,8 @@ export default {
 
     if (Boolean(env.OAUTH_ENABLED)) {
       const config = resourceConfiguration(env.ENVIRONMENT, env);
+      const ingress=await env.AUTH_SERVER.fetch("https://auth.internal/traffic",{method:"POST",headers:{"cf-connecting-ip":request.headers.get("cf-connecting-ip")??""},body:JSON.stringify({lane:"mcp"}),signal:AbortSignal.timeout(5000)});
+      if(!ingress.ok)return ingress;
       const server = new OAuthResourceServer<McpEnv, AuthProps>({
         resourceMetadata: { resource: config.resource, authorization_servers: [config.issuer] },
         requiredScopes: ["profile:read"],
@@ -48,6 +50,8 @@ export default {
           catch { return Response.json({ error: "invalid_request" }, { status: 400, headers }); }
           const call = body as { method?: string; params?: { name?: string } } | null;
           const name = call?.method === "tools/call" ? call.params?.name : undefined;
+          const quota=await mcpEnv.AUTH_SERVER.fetch("https://auth.internal/traffic",{method:"POST",body:JSON.stringify({lane:"mcp",profileId:context.props.profileId,connectionId:context.props.connectionId,recovery:["get_task_command","get_spell_command","get_cron_command"].includes(name??"")}),signal:AbortSignal.timeout(5000)});
+          if(!quota.ok)return quota;
           if (name && Object.hasOwn(readScopes, name)) {
             const scope = readScopes[name as keyof typeof readScopes];
             if (!context.auth.scope?.includes(scope)) return insufficientScope(context.auth, [scope]);

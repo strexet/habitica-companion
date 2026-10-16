@@ -13,6 +13,13 @@ public sealed class WorkspaceDataController(IAppSessionController session, IWork
         var result = await cloud.ManagePartyAsync(request, cancellationToken);
         return session.State.IsAuthenticated && session.State.UserId == user ? result : new(false, "The account changed; the result was discarded.");
     }
+    public async Task<WorkspaceStatusResult> ReadOperationalStatusAsync(CancellationToken cancellationToken = default)
+    {
+        if (!session.State.IsAuthenticated) return new(false, "Sign in before checking workspace status.");
+        var user = session.State.UserId;
+        var result = await cloud.ReadOperationalStatusAsync(cancellationToken);
+        return session.State.IsAuthenticated && session.State.UserId == user ? result : new(false, "The account changed; the result was discarded.");
+    }
     public bool IsAvailable => cloud.IsAvailable;
     public Guid? CloudWorkspaceId => cloud.WorkspaceId;
     public bool ExecutorEnabled => cloud.ExecutorEnabled;

@@ -1,0 +1,44 @@
+{
+  "task_id": "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+  "result": "pass",
+  "checks": {
+    "three_worker_builds": "pass",
+    "auth_tests": 100,
+    "workspace_tests_serial_files": 82,
+    "dotnet_tests": 545,
+    "app_build": {
+      "warnings": 0,
+      "errors": 0
+    },
+    "app_release_publish": "pass",
+    "original_receipt_negative_control": {
+      "auth_bundle_before_repair": "b35fba41889cdd2f352b8eaca936b1a65ddf45f7d9f21db2439c3e6f71d74ec4",
+      "control": "Original known quota refusal remains available through spell lookup",
+      "expected_failures": 1,
+      "positive_controls": 26
+    },
+    "original_receipt_repaired_controls": 27,
+    "narrow_browser": {
+      "client_width": 375,
+      "scroll_width": 375
+    },
+    "browser_evidence": [
+      "skill-tree/history/validation/operations-status-narrow.jpg",
+      "skill-tree/history/validation/operations-release-default-settings.jpg"
+    ]
+  },
+  "coverage": [
+    "Atomic concurrent caps and minute rollover; network/global/profile isolation with separate receipt recovery",
+    "Every upstream request consumes durable capacity before mutation reservation; 429 and credential repair share current-connection authority",
+    "No upstream HTTP or consumed creation precondition on local quota refusal",
+    "Original known spell/Cron refusals retain recovery records and retry metadata; uncertain dispatches retain fences",
+    "Anonymous UTC-day quota observations and no per-profile read telemetry",
+    "Active-workspace-only task/spell/Cron operational counts with no task text or identifiers",
+    "Manual bounded authenticated status, malformed/missing/oversized response denial, no retry and account/session stale-response rejection",
+    "Published default Settings and real Razor narrow layout"
+  ],
+  "limitations": [
+    "Synthetic local qualification does not establish real traffic capacity, hosted OAuth, host/model adherence or mobile-device behavior.",
+    "No real enrollment, deployment, effect, operator key migration or production change."
+  ]
+}

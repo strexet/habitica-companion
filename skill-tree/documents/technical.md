@@ -913,3 +913,9 @@ Spell/Cron private gateways normalize every unsuccessful lookup response to `unk
 ## Isolated dev configuration
 
 `deploy/prepare-dev.mjs` validates public environment identities and generates separate dev Worker/Pages configs, frontend settings and a staged plugin. Dedicated dev resources exclude committed normal/preview resource IDs. Runtime integration origins accept only a complete canonical HTTPS origin/resource tuple; partial overrides reject. Source defaults remain disabled. `deploy/frontend-settings.mjs` preserves unrelated settings while the build restores source configuration on success/failure. [The operator checklist](../../deploy/README.md) owns remote setup and client qualification steps.
+
+## Integration operational protection
+
+`workers/chatgpt-auth/src/traffic.ts` uses the existing authorization counter table for atomic minute quotas and anonymous UTC-day denial/429 metrics. Profile upstream cooldown and credential repair use the existing current-connection read-state record; enrollment cooldown uses an independent bounded counter record. Expiry cleanup removes at most one hundred counter rows per call. Private traffic checks mediate MCP and Workspace ingress without exposing a public quota-control endpoint. Every upstream dispatch consumes capacity before mutation reservation. Operator aggregates exclude profile/network keys.
+
+Workspace operational status performs profile-scoped aggregate queries and rechecks the active connection/access epoch within the D1 batch. App status reads cap the response at eight KiB, require complete count fields and discard stale session/account results. The status snapshot grants no retry or reconciliation authority. [The adopted operational contract](companion-workspace-contract.md#adopted-operational-protection-boundary) owns numeric caps and privacy boundaries.

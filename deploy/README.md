@@ -100,3 +100,18 @@ Disable enrollment/OAuth and Workspace access in the generated configs and redep
 - A consenting second tester and available iOS/Android devices for the broader release qualification stage.
 
 [Official Cloudflare Pages configuration](https://developers.cloudflare.com/pages/functions/wrangler-configuration/), [D1 migrations](https://developers.cloudflare.com/d1/reference/migrations/) and [Codex MCP setup](https://learn.chatgpt.com/docs/extend/mcp?surface=app) define the platform setup details.
+
+## Anonymous quota diagnostics
+
+The Auth database retains fixed anonymous daily counts for local quota denials and actual upstream 429 responses. An operator can inspect only the metric rows in the dev D1 console:
+
+```sql
+SELECT CASE WHEN bucket LIKE 'metric:local_denied:%' THEN 'local_quota_denials' ELSE 'upstream_429' END AS metric,
+       SUM(attempts) AS count
+FROM authorization_attempts
+WHERE (bucket LIKE 'metric:local_denied:%' OR bucket LIKE 'metric:upstream_429:%')
+  AND expires_at_utc > strftime('%Y-%m-%dT%H:%M:%fZ','now')
+GROUP BY metric;
+```
+
+User Settings exposes only the active workspace's saved-work counts. Status checks neither poll Habitica nor retry commands. Local quota errors carry Retry-After; upstream cooldown and credential-repair state remain authoritative. Original receipt recovery has a separate bounded allowance. Raw counter buckets, profile identifiers, credentials and request bodies remain excluded from shared diagnostics.

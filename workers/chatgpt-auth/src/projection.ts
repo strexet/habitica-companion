@@ -1,3 +1,4 @@
+import {upstreamBudget,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
 import { activeProfile, boundedJson, credentialKeys, VaultError } from "./vault";
 import { decryptCredential } from "./cryptography";
 import { workspaceJson, workspaceObject, uuid, workspaceSessionToken, workspaceTokenHash, WorkspaceError } from "../../shared/workspace-http";
@@ -91,6 +92,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
    WHERE (integration_projection_state.lease_until_utc IS NULL OR integration_projection_state.lease_until_utc<=?)
    AND (?=0 OR integration_projection_state.next_automated_at_utc IS NULL OR integration_projection_state.next_automated_at_utc<=?)`).bind(who.profileId,who.connectionId,lease,new Date(Date.now()+15000).toISOString(),new Date(Date.now()+30000).toISOString(),now,Number(input.automated),now).run();
   if (!acquired.meta.changes) return json({kind:"refused",code:"projection_busy",retryAtUtc:new Date(Date.now()+30000).toISOString()},429);
+  await upstreamBudget(env,who.profileId);
   if (writing) {
    const prepared = await env.HABITICA_INTEGRATION_DB.batch([
     env.HABITICA_INTEGRATION_DB.prepare("INSERT INTO integration_projection_attempts(profile_id,connection_id,attempt_id,payload_hash,operation,state,created_at_utc) SELECT ?,?,?,?,?,'dispatched',? FROM integration_projection_checks WHERE token_hash=? AND profile_id=? AND connection_id=? AND expires_at_utc>?").bind(who.profileId,who.connectionId,attemptId!,payloadHash!,operation,now,precondition!.token_hash,who.profileId,who.connectionId,now),
@@ -102,6 +104,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
   const method = operation === "create" || operation === "score" ? "POST" : operation === "update" ? "PUT" : "GET";
   await activeProfile(env,who.profileId,who.connectionId);
   const response = await fetch("https://habitica.com/api/v3/"+path,{method,redirect:"manual",headers:{"x-api-user":credential.habiticaUserId,"x-api-key":credential.apiToken,"x-client":env.HABITICA_X_CLIENT_HEADER,accept:"application/json","content-type":"application/json"},body:operation === "create" ? JSON.stringify({...patch,type:"todo",alias:target}) : operation === "update" ? JSON.stringify(patch) : undefined,signal:AbortSignal.timeout(10000)});
+  await observeUpstream(env,response,who.profileId);
   const retryAtUtc = await rateState(env,who,response);
   if (!writing) {
    if (response.status === 404 && operation === "inspect") return json({task:null,checkToken:await rememberCheck(env,who,target,null)});
@@ -132,6 +135,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
   await env.HABITICA_INTEGRATION_DB.prepare("UPDATE integration_projection_attempts SET state=?,outcome_json=? WHERE profile_id=? AND connection_id=? AND attempt_id=?").bind(outcome.kind,JSON.stringify(outcome),who.profileId,who.connectionId,attemptId!).run();
   return json(outcome);
  } catch (error) {
+  if(error instanceof TrafficLimit&&!dispatched)return Response.json({kind:"refused",code:"rate_limited",retryAtUtc:error.retryAtUtc},{status:429,headers:{"cache-control":"no-store","retry-after":String(error.retryAfterSeconds)}});
   if (dispatched && who && attemptId) {
    try { await env.HABITICA_INTEGRATION_DB.prepare("UPDATE integration_projection_attempts SET state='unknown',outcome_json=? WHERE profile_id=? AND connection_id=? AND attempt_id=?").bind(JSON.stringify({kind:"unknown",code:"outcome_unknown"}),who.profileId,who.connectionId,attemptId).run(); } catch { /* The pre-send dispatched record still prevents replay. */ }
    return json({kind:"unknown",code:"outcome_unknown"});

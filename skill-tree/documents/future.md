@@ -126,7 +126,7 @@ Description:
 - Redesign outbound Habitica traffic scheduling to slow earlier, preserve headroom and recover progressively on sustained success.
 
 Current context:
-- `HabiticaApiClient` token bucket uses adaptive ramp near depletion, but lacks coordinated cross-client durable backpressure and recovery logic.
+- `HabiticaApiClient` uses adaptive ramp near depletion. The integration backend adds durable profile/network/global quotas, shared upstream cooldowns and anonymous rate diagnostics. Predictive browser scheduling, cross-device fairness and gradual AIMD recovery remain outstanding.
 
 Requirements:
 - Actual header reconciliation, forward-looking budget, safety reserve, per-user plus possible shared-egress quotas, AIMD/circuit-breaker separation, backoff+jitter, fair scheduling, observability.
@@ -320,47 +320,6 @@ Expected behavior:
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
-
-### Bound integration traffic and expose safe stalled work status
-
-```yaml
-id: T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca
-priority: 102
-status: Ready
-parent_pending_ids: ["P-d724d4bc-ff32-470b-a476-395303dba5b9"]
-processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
-root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
-related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
-relation: subtask
-depends_on: []
-```
-
-Goal:
-- Add persistent profile/network/global protection and bounded own queue-age/stalled-work diagnostics without identifying telemetry or background polling.
-Current behavior:
-- Linking already has profile/network attempts and upstream cooldowns; executor pacing and unknown fences exist. Aggregate protection and bounded stalled-command visibility remain incomplete.
-Desired behavior:
-- Quota tests deny excess traffic without retry storms. Own diagnostics expose queue age and stalled/uncertain command categories without credentials, raw payloads, conversation logging or cross-profile data.
-Touch:
-- Auth public/private operation limits, MCP request boundary, Workspace own diagnostics and synthetic rate/fault tests.
-Discovery allowance:
-- Reuse current Auth, Workspace and browser integration contracts; add bounded missing controls and direct synthetic cases.
-Included capabilities and limits:
-- All implemented tools with live Cron off; no live traffic, external monitoring, background Habitica polling or production changes.
-Out of scope:
-- Live activation, deployment, real enrollment, device operations and real Habitica effects.
-Implementation constraints:
-- Persist bounded cooldowns, enforce conservative per-profile/network/global limits and report only sanitized own work state or anonymous aggregates. Preserve unknown outcomes and original recovery paths.
-Questions and required clarifications:
-- None for local implementation. Standing owner direction adopts required local contracts; external operations remain separately scoped.
-Validation:
-- Focused fault, concurrency, revocation and isolation cases; affected regression suites; Worker/app builds and default app behavior checks.
-Acceptance:
-- Quota tests deny excess traffic without retry storms. Own diagnostics expose queue age and stalled/uncertain command categories without credentials, raw payloads, conversation logging or cross-profile data.
-Documentation updates:
-- features.md, technical.md, testing.md, deployment guidance and applicable UX/privacy contracts.
-Risks:
-- Revocation gaps, stale ownership, secret exposure and false qualification claims.
 
 ### Qualify E14 local adoption and recovery boundaries
 

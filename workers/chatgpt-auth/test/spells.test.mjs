@@ -138,3 +138,10 @@ test('failed durable dispatch reservation prevents an upstream cast',async t=>{
  const response=await f.call('cast',intent.args,intent.attempt);
  assert.equal(response.status,503);assert.equal(f.state.posts,0);
 });
+
+test('local final-dispatch quota preserves an original known refusal receipt without casting',async t=>{
+ const f=await setup(t);const intent=await f.intent();
+ f.state.groupHook=async()=>{for(const window of [Math.floor(Date.now()/60000),Math.floor(Date.now()/60000)+1])await f.db.prepare('INSERT OR REPLACE INTO authorization_attempts(bucket,attempts,expires_at_utc) VALUES(?,?,?)').bind('traffic:upstream:profile:'+f.profile.profileId+':'+window,60,new Date((window+1)*60000).toISOString()).run();};
+ const response=await f.call('cast',intent.args,intent.attempt);assert.equal(response.status,429);assert.ok(response.headers.has('retry-after'));const refused=await response.json();assert.equal(refused.kind,'refused');assert.equal(refused.code,'rate_limited');assert.equal(f.state.posts,0);
+ assert.deepEqual(await(await f.call('lookup',intent.args,intent.attempt)).json(),refused);assert.equal(f.state.posts,0);
+});

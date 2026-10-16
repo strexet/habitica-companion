@@ -1,3 +1,5 @@
+import {profileBudget,trafficFailure} from './traffic';
+import {trafficOperation} from './traffic-route';
 import { activeProfile } from "./vault";
 import { tokenHash, tokenMatches } from "./cryptography";
 import { validatedToken } from "./oauth";
@@ -5,6 +7,7 @@ import { resourceConfiguration } from "../../shared/resources";
 import { bearer, workspaceJson, workspaceObject, WorkspaceError } from "../../shared/workspace-http";
 
 export async function workspaceIdentity(request: Request, env: AuthEnv): Promise<Response> {
+  if(env.WORKSPACE_ENABLED&&new URL(request.url).pathname==="/traffic")return trafficOperation(request,env);
   try {
     if (!Boolean(env.WORKSPACE_ENABLED) || request.method !== "POST") throw new WorkspaceError("unauthorized", 401);
     const path = new URL(request.url).pathname;
@@ -13,6 +16,7 @@ export async function workspaceIdentity(request: Request, env: AuthEnv): Promise
       const row = await env.HABITICA_INTEGRATION_DB.prepare("SELECT profile_id,management_token_hash FROM integration_profiles WHERE management_token_hash=?").bind(await tokenHash(token)).first<{ profile_id: string; management_token_hash: string }>();
       if (!row || !await tokenMatches(token, row.management_token_hash)) throw new WorkspaceError("unauthorized", 401);
       const profile = await activeProfile(env, row.profile_id);
+      await profileBudget(env,profile.profile_id,"workspace");
       return Response.json({ profileId: profile.profile_id, connectionId: profile.connection_id }, { headers: { "cache-control": "no-store" } });
     }
     if (path === "/epoch") {
@@ -28,5 +32,5 @@ export async function workspaceIdentity(request: Request, env: AuthEnv): Promise
       return Response.json({ profileId: context.props.profileId, connectionId: context.props.connectionId, scopes: context.scope, grantEpoch:context.props.grantEpoch }, { headers: { "cache-control": "no-store" } });
     }
     throw new WorkspaceError("unauthorized", 401);
-  } catch { return Response.json({ error: "unauthorized" }, { status: 401, headers: { "cache-control": "no-store" } }); }
+  } catch(error) { return trafficFailure(error)??Response.json({ error: "unauthorized" }, { status: 401, headers: { "cache-control": "no-store" } }); }
 }

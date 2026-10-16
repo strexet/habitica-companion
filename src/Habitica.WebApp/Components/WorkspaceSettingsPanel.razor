@@ -25,6 +25,15 @@
     else
     {
         <p>Cloud workspace access is available for this tab. Signing out or closing this tab forgets its access token.</p>
+        <MudButton Disabled="@_busy" OnClick="CheckOperationsAsync" Variant="Variant.Outlined" data-testid="workspace-check-status">Check saved work status</MudButton>
+        @if (_operations is { } operations && _operationsAccount == Session.State.UserId && _operationsWorkspace == Workspace.CloudWorkspaceId)
+        {
+            <div role="status" data-testid="workspace-operations">
+                <p>Checked @operations.CheckedAtUtc.ToLocalTime().ToString("g"). Pending: @operations.Pending. Waiting over 15 minutes: @operations.Stalled. Uncertain: @operations.Uncertain. Blocked: @operations.Blocked. Expired execution leases: @operations.ExpiredLeases.</p>
+                @if (operations.OldestPendingAtUtc is { } oldest) { <p>Oldest pending task command: @oldest.ToLocalTime().ToString("g").</p> }
+                <p>This check reads saved command state only. Uncertain effects stay paused; checking status never retries an action.</p>
+            </div>
+        }
         <p>If access expires or stops responding, renew the connection before checking the original command receipt. Renewal keeps accepted commands and does not enable background execution.</p>
         <label class="checkbox-row"><input type="checkbox" @bind="_renewConsent" data-testid="workspace-renew-consent" /><span>I renew cloud workspace access with encrypted server credential storage and the readable-data retention described above.</span></label>
         <MudButton Disabled="@(_busy || !_renewConsent || Session.State.IsBusy)" OnClick="RenewAsync" Variant="Variant.Outlined" data-testid="workspace-renew">Renew cloud connection</MudButton>
@@ -81,6 +90,9 @@
 </section>
 
 @code {
+    private WorkspaceOperationalStatus? _operations;
+    private string? _operationsAccount;
+    private Guid? _operationsWorkspace;
     private bool _consent, _busy, _executorConsent, _renewConsent;
     private Guid? _transferId;
     private bool? _cleanup;
@@ -90,7 +102,7 @@
     private async Task RunAsync(Func<Task<WorkspaceActionResult>> action)
     {
         if (_busy) return;
-        _busy = true;
+        _busy = true; _operations = null;
         try
         {
             var result = await action(); _message = result.Message;
@@ -101,6 +113,21 @@
             }
         }
         catch { _message = "The workspace action could not be confirmed. Check the connection before trying again."; }
+        finally { _busy = false; }
+    }
+    private async Task CheckOperationsAsync()
+    {
+        if (_busy) return;
+        _busy = true; _operations = null;
+        var account = Session.State.UserId; var workspace = Workspace.CloudWorkspaceId;
+        try
+        {
+            var result = await Workspace.ReadOperationalStatusAsync();
+            if (account != Session.State.UserId || workspace != Workspace.CloudWorkspaceId) return;
+            _message = result.Message;
+            if (result.Succeeded) { _operations = result.Status; _operationsAccount = account; _operationsWorkspace = workspace; }
+        }
+        catch { _message = "Saved work status is unavailable. No action was retried."; }
         finally { _busy = false; }
     }
     private Task ConnectAsync() => RunAsync(() => Workspace.ConnectAsync(_consent));

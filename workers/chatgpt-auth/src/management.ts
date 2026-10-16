@@ -1,3 +1,4 @@
+import {trafficFailure} from './traffic';
 import {managedProfile,boundedJson,VaultError} from './vault';
 import {authorizationServer,scopes} from './oauth';
 import {newManagementToken,tokenHash} from './cryptography';
@@ -23,7 +24,7 @@ export async function managementRoute(request:Request,env:AuthEnv):Promise<Respo
     truncated=Boolean(cursor);
    }
    const state=await env.HABITICA_INTEGRATION_DB.prepare('SELECT credential_repair_required FROM integration_read_state WHERE profile_id=? AND connection_id=?').bind(profile.profile_id,profile.connection_id).first<{credential_repair_required:number}>();
-   const final=await managedProfile(request,env,profile.profile_id);if(final.grant_epoch!==profile.grant_epoch||final.connection_id!==profile.connection_id)throw new VaultError('management_changed',409);
+   const final=await managedProfile(request,env,profile.profile_id,false);if(final.grant_epoch!==profile.grant_epoch||final.connection_id!==profile.connection_id)throw new VaultError('management_changed',409);
    return Response.json({displayName:profile.display_name_cache??'Habitica account',permissions:[...permissions].sort(),grantCount,permissionsTruncated:truncated,credentialStatus:state?.credential_repair_required?'repair_needed':'last_verified',lastVerifiedAtUtc:profile.last_verified_at_utc,lastUsedAtUtc:profile.last_used_at_utc,usageMeaning:'Last verified ChatGPT tool authorization; background Workspace execution is separate.'},{headers});
   }
   if(request.method!=='POST')throw new VaultError('invalid_request',405);
@@ -54,5 +55,5 @@ export async function managementRoute(request:Request,env:AuthEnv):Promise<Respo
    pendingCleanup=Boolean(cursor);
   }catch{pendingCleanup=true;}
   return Response.json({revoked:true,pendingCleanup,credentialsRetained:true,workspaceAccessRetained:true},{headers});
- }catch(error){const safe=error instanceof VaultError||error instanceof WorkspaceError?error:new VaultError('management_unavailable',503);return Response.json({error:safe.code},{status:safe.status,headers});}
+ }catch(error){const quota=trafficFailure(error);if(quota)return quota;const safe=error instanceof VaultError||error instanceof WorkspaceError?error:new VaultError('management_unavailable',503);return Response.json({error:safe.code},{status:safe.status,headers});}
 }

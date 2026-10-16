@@ -1,3 +1,4 @@
+import {upstreamBudget,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
 import { activeProfile, boundedJson, credentialKeys, VaultError } from "./vault";
 import { decryptCredential } from "./cryptography";
 import { validatedToken } from "./oauth";
@@ -35,7 +36,9 @@ export async function upstream(env: AuthEnv, profileId: string, connectionId: st
   if (profile.credential_schema_version !== 1) throw new ReadFailure("service_unavailable", 503);
   const credential = await decryptCredential(profileId, { ciphertext: profile.credential_ciphertext!, iv: profile.credential_iv!, keyVersion: profile.credential_key_version!, schemaVersion: 1 }, credentialKeys(env));
   if (!env.HABITICA_X_CLIENT_HEADER) throw new ReadFailure("service_unavailable", 503);
+  try{await upstreamBudget(env,profileId);}catch(error){if(error instanceof TrafficLimit)throw new ReadFailure("rate_limited",429,{retryAfterSeconds:error.retryAfterSeconds});throw error;}
   const response = await fetch("https://habitica.com/api/v3/" + path, { method: "GET", redirect: "manual", headers: { "x-api-user": credential.habiticaUserId, "x-api-key": credential.apiToken, "x-client": env.HABITICA_X_CLIENT_HEADER, accept: "application/json" }, signal: AbortSignal.timeout(10000) });
+  await observeUpstream(env,response,profileId);
   const rate = rateMetadata(response);
   const retry = Number(rate.retryAfterSeconds);
   const reset = Number(rate.resetUnixSeconds) * 1000;
@@ -97,7 +100,7 @@ async function execute(env: AuthEnv, profileId: string, connectionId: string, to
 }
 export async function readOperation(request: Request, env: AuthEnv): Promise<Response> {
   const correlationId = crypto.randomUUID(); const started = Date.now();
-  let tool: ReadTool | undefined; let redactedProfile: string | undefined;
+  let tool: ReadTool | undefined;
   try {
     const body = object(await boundedJson(request, 16384));
     if (Object.keys(body).some(key => !["tool", "arguments"].includes(key))) throw new ReadFailure("invalid_request", 400);
@@ -106,15 +109,13 @@ export async function readOperation(request: Request, env: AuthEnv): Promise<Res
     const context = token ? await validatedToken(env, resourceConfiguration(env.ENVIRONMENT, env).resource, token) : null;
     if (!context) throw new ReadFailure("unauthorized", 401);
     if (!context.scope?.includes(readScopes[tool])) throw new ReadFailure("insufficient_scope", 403);
-    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(context.props.profileId));
-    redactedProfile = Array.from(new Uint8Array(digest).slice(0, 6), byte => byte.toString(16).padStart(2, "0")).join("");
     const result = await execute(env, context.props.profileId, context.props.connectionId, tool, input);
     // No task text, credentials, tokens or upstream bodies enter diagnostics.
-    console.info(JSON.stringify({ correlationId, profile: redactedProfile, tool, route: tool === "get_profile" ? "profile-cache" : tool === "get_account_status" ? "account" : "tasks", durationMs: Date.now() - started, status: 200, rate: result.rate }));
+    console.info(JSON.stringify({ correlationId, tool, route: tool === "get_profile" ? "profile-cache" : tool === "get_account_status" ? "account" : "tasks", durationMs: Date.now() - started, status: 200, rate: result.rate }));
     return Response.json({ data: result.data, correlationId, rate: result.rate }, { headers });
   } catch (error) {
     const failure = error instanceof ReadFailure ? error : new ReadFailure(error instanceof VaultError && error.status === 401 ? "unauthorized" : "service_unavailable", error instanceof VaultError ? error.status : 503);
-    console.info(JSON.stringify({ correlationId, profile: redactedProfile, tool, durationMs: Date.now() - started, status: failure.status, rate: failure.rate }));
-    return Response.json({ error: failure.code, correlationId, rate: failure.rate }, { status: failure.status, headers });
+    console.info(JSON.stringify({ correlationId, tool, durationMs: Date.now() - started, status: failure.status, rate: failure.rate }));
+    return Response.json({ error: failure.code, correlationId, rate: failure.rate }, { status: failure.status, headers: { ...headers, ...(failure.status===429&&typeof failure.rate.retryAfterSeconds==="number"?{"retry-after":String(failure.rate.retryAfterSeconds)}:{}) } });
   }
 }

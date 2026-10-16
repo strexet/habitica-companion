@@ -111,7 +111,7 @@ test('delayed authorized requests cannot reach a deleted and recreated workspace
   const response = await f.workspaceIdentity.fetch(request);
   // Materialize the tiny identity receipt before parking the synthetic binding callback.
   // Holding its live stream across other Worker requests can stall the fixture bridge.
-  const detached = new Response(await response.arrayBuffer(), { status: response.status, headers: new Headers(response.headers) });
+  const detached = new Response(response.status === 204 ? null : await response.arrayBuffer(), { status: response.status, headers: new Headers(response.headers) });
   if (gate && new URL(request.url).pathname === '/epoch') { const held = gate; gate = null; held.enter(); await held.wait; }
   return detached;
  } });

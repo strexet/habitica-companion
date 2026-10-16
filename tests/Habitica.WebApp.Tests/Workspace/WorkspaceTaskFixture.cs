@@ -59,6 +59,9 @@ internal sealed class WorkspaceTaskFixture
         public List<PartyPlanningRequest> PartyRequests { get; } = [];
         public Func<PartyPlanningRequest, Task<PartyPlanningResult>> PartyAction { get; set; } = _ => Task.FromResult(new PartyPlanningResult(false, "Unavailable"));
         public Task<PartyPlanningResult> ManagePartyAsync(PartyPlanningRequest request, CancellationToken token) { PartyRequests.Add(request); return PartyAction(request); }
+        public int StatusReads { get; private set; }
+        public Func<Task<WorkspaceStatusResult>> StatusAction { get; set; } = () => Task.FromResult(new WorkspaceStatusResult(false, "Unavailable"));
+        public Task<WorkspaceStatusResult> ReadOperationalStatusAsync(CancellationToken token) { StatusReads++; return StatusAction(); }
         public bool LoseAcceptance { get; set; }
         public bool FailLoads { get; set; }
         public TaskCompletionSource? LoadGate { get; set; }

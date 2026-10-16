@@ -1,3 +1,4 @@
+import {upstreamBudget,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
 import {validatedToken} from './oauth';
 import {activeProfile,boundedJson,VaultError} from './vault';
 import {ReadFailure} from './reads';
@@ -8,7 +9,7 @@ import {resourceConfiguration} from '../../shared/resources';
 import {workspaceJson,workspaceObject,workspaceTokenHash,WorkspaceError,uuid} from '../../shared/workspace-http';
 import type {AuthProps} from '../../shared/contracts';
 interface Outcome {kind:'applied'|'refused'|'unknown';code:string;retryAtUtc?:string}
-const json=(value:unknown,status=200)=>Response.json(value,{status,headers:{'cache-control':'no-store'}});
+const json=(value:unknown,status=200)=>{const retry=value&&typeof value==='object'?(value as {retryAtUtc?:string}).retryAtUtc:undefined;return Response.json(value,{status,headers:{...{'cache-control':'no-store'},...(status===429&&retry?{'retry-after':String(Math.max(1,Math.ceil((Date.parse(retry)-Date.now())/1000)))}:{})}});};
 async function grant(env:AuthEnv,request:Request,who:AuthProps,operation:keyof typeof cronScopes){
  const token=request.headers.get('authorization')?.match(/^Bearer (\S+)$/)?.[1];const context=token?await validatedToken(env,resourceConfiguration(env.ENVIRONMENT, env).resource,token):null;
  if(!context||context.props.profileId!==who.profileId||context.props.connectionId!==who.connectionId)throw new WorkspaceError('unauthorized',401);
@@ -58,16 +59,18 @@ export async function cronOperation(request:Request,env:AuthEnv):Promise<Respons
   const rate=await env.HABITICA_INTEGRATION_DB.prepare('SELECT blocked_until_utc,credential_repair_required FROM integration_read_state WHERE profile_id=? AND connection_id=?').bind(who.profileId,who.connectionId).first<{blocked_until_utc:string|null;credential_repair_required:number}>();
   if(rate?.credential_repair_required)throw new WorkspaceError('credential_repair_required',401);
   if(rate?.blocked_until_utc&&Date.parse(rate.blocked_until_utc)>Date.now())throw new ReadFailure('rate_limited',429,{retryAfterSeconds:Math.ceil((Date.parse(rate.blocked_until_utc)-Date.now())/1000)});
+  await upstreamBudget(env,who.profileId);
   const reserved=await env.HABITICA_INTEGRATION_DB.prepare(`INSERT OR IGNORE INTO integration_projection_attempts(profile_id,connection_id,attempt_id,payload_hash,operation,state,created_at_utc) SELECT ?,?,?,?,'cron','dispatched',? FROM integration_projection_state WHERE profile_id=? AND connection_id=? AND lease_token=? AND lease_until_utc>? AND NOT EXISTS(SELECT 1 FROM integration_projection_attempts WHERE profile_id=? AND connection_id=? AND state IN ('dispatched','unknown'))`).bind(who.profileId,who.connectionId,attemptId,hash,new Date().toISOString(),who.profileId,who.connectionId,lease,new Date(Date.now()+11000).toISOString(),who.profileId,who.connectionId).run();
   if(!reserved.meta.changes){const found=await prior();if(found)return json(found);throw new WorkspaceError('cron_busy_or_stale',409);}dispatched=true;
   const response=await fetch('https://habitica.com/api/v3/cron',{method:'POST',redirect:'manual',headers:{'x-api-user':observed.credential.habiticaUserId,'x-api-key':observed.credential.apiToken,'x-client':env.HABITICA_X_CLIENT_HEADER,'content-type':'application/json',accept:'application/json'},body:'{}',signal:AbortSignal.timeout(10000)});
+  await observeUpstream(env,response,who!.profileId);
   const retryAtUtc=await rateState(env,who,response,false);let outcome:Outcome={kind:'unknown',code:'outcome_unknown',...(retryAtUtc?{retryAtUtc}:{})};
   if(response.status===200){const result=workspaceObject(await boundedJson(response,2097152));const data=workspaceObject(result.data);if(result.success===true&&Object.keys(data).length===0)outcome={kind:'applied',code:'applied'};}
   await record(outcome);return json(await prior()??outcome);
  }catch(error){
   if(dispatched){const outcome:Outcome={kind:'unknown',code:'outcome_unknown'};try{await record(outcome);}catch{/* The durable dispatch still fences gameplay. */}return json(outcome);}
   const known=error instanceof WorkspaceError||error instanceof VaultError||error instanceof ReadFailure;
-  const outcome:Outcome={kind:'refused',code:known?error.code:'cron_unavailable',...(error instanceof ReadFailure&&typeof error.rate.retryAfterSeconds==='number'?{retryAtUtc:new Date(Date.now()+error.rate.retryAfterSeconds*1000).toISOString()}:{})};
+  const outcome:Outcome={kind:'refused',code:known?error.code:'cron_unavailable',...(error instanceof TrafficLimit?{retryAtUtc:error.retryAtUtc}:error instanceof ReadFailure&&typeof error.rate.retryAfterSeconds==='number'?{retryAtUtc:new Date(Date.now()+error.rate.retryAfterSeconds*1000).toISOString()}:{})};
   if(owned&&who&&attemptId&&hash&&outcome.code!=='unauthorized'&&outcome.code!=='insufficient_scope'&&!(error instanceof VaultError)){
    try{const held=await env.HABITICA_INTEGRATION_DB.prepare('SELECT 1 FROM integration_projection_state WHERE profile_id=? AND connection_id=? AND lease_token=? AND lease_until_utc>?').bind(who.profileId,who.connectionId,lease!,new Date().toISOString()).first();if(held){await record(outcome);return json(await prior()??outcome,known?error.status:503);}}catch{return json({kind:'refused',code:'cron_unavailable'},503);}
   }

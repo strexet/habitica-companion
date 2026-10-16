@@ -1,3 +1,4 @@
+import {upstreamBudget,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
 import {activeProfile,credentialKeys,boundedJson,VaultError} from './vault';
 import {decryptCredential} from './cryptography';
 import {validatedToken} from './oauth';
@@ -9,7 +10,7 @@ import {spellScopes,supportedSpell,spellEligibility,spellStats,spellStateHash} f
 import {workspaceObject,workspaceJson,workspaceTokenHash,WorkspaceError,uuid} from '../../shared/workspace-http';
 import type {AuthProps} from '../../shared/contracts';
 const headers={'cache-control':'no-store'};
-const json=(value:unknown,status=200)=>Response.json(value,{status,headers});
+const json=(value:unknown,status=200)=>{const retry=value&&typeof value==='object'?(value as {retryAtUtc?:string}).retryAtUtc:undefined;return Response.json(value,{status,headers:{...headers,...(status===429&&retry?{'retry-after':String(Math.max(1,Math.ceil((Date.parse(retry)-Date.now())/1000)))}:{})}});};
 interface Critical {actorId:string;stats:Record<string,unknown>;equipped:Record<string,unknown>;sleep:boolean|null;classesDisabled:boolean|null;needsCron:boolean|null;lastCron:string|null;party:unknown}
 interface SpellOutcome {kind:'applied'|'refused'|'unknown';code:string;mana?:number;health?:number;nextPreconditionHash?:string;retryAtUtc?:string}
 function accountCritical(raw:unknown,actorId:string,party:unknown,previous?:Critical):Critical{
@@ -96,10 +97,12 @@ export async function spellOperation(request:Request,env:AuthEnv):Promise<Respon
   const rate=await env.HABITICA_INTEGRATION_DB.prepare('SELECT blocked_until_utc,credential_repair_required FROM integration_read_state WHERE profile_id=? AND connection_id=?').bind(who.profileId,who.connectionId).first<{blocked_until_utc:string|null;credential_repair_required:number}>();
   if(rate?.credential_repair_required)throw new WorkspaceError('credential_repair_required',401);
   if(rate?.blocked_until_utc&&Date.parse(rate.blocked_until_utc)>Date.now())throw new ReadFailure('rate_limited',429,{retryAfterSeconds:Math.ceil((Date.parse(rate.blocked_until_utc)-Date.now())/1000)});
+  await upstreamBudget(env,who.profileId);
   const reserved=await env.HABITICA_INTEGRATION_DB.prepare(`INSERT OR IGNORE INTO integration_projection_attempts(profile_id,connection_id,attempt_id,payload_hash,operation,state,created_at_utc) SELECT ?,?,?,?,'spell','dispatched',? FROM integration_projection_state WHERE profile_id=? AND connection_id=? AND lease_token=? AND lease_until_utc>? AND NOT EXISTS(SELECT 1 FROM integration_projection_attempts WHERE profile_id=? AND connection_id=? AND state IN ('unknown','dispatched'))`)
    .bind(who.profileId,who.connectionId,attemptId,hash,new Date().toISOString(),who.profileId,who.connectionId,lease,new Date(Date.now()+11000).toISOString(),who.profileId,who.connectionId).run();
   if(!reserved.meta.changes){const prior=await existing();if(prior)return json(prior);throw new WorkspaceError('spell_busy_or_stale',409);}dispatched=true;
   const response=await fetch('https://habitica.com/api/v3/user/class/cast/healAll',{method:'POST',redirect:'manual',headers:{'x-api-user':observed.credential.habiticaUserId,'x-api-key':observed.credential.apiToken,'x-client':env.HABITICA_X_CLIENT_HEADER,'content-type':'application/json',accept:'application/json'},body:JSON.stringify({quantity:1}),signal:AbortSignal.timeout(10000)});
+  await observeUpstream(env,response,who!.profileId);
   const retryAtUtc=await rateState(env,who,response,false);
   let outcome:SpellOutcome;
   if([400,401,403,404,409,422,429].includes(response.status))outcome={kind:'refused',code:response.status===429?'rate_limited':'spell_refused',...(retryAtUtc?{retryAtUtc}:{})};
@@ -114,7 +117,7 @@ export async function spellOperation(request:Request,env:AuthEnv):Promise<Respon
  }catch(error){
   if(dispatched){const outcome:SpellOutcome={kind:'unknown',code:'outcome_unknown'};try{await record(outcome);}catch{/* The durable dispatched attempt continues to fence gameplay. */}return json(outcome);}
   const known=error instanceof WorkspaceError||error instanceof VaultError||error instanceof ReadFailure;
-  const outcome:SpellOutcome={kind:'refused',code:known?error.code:'spell_unavailable',...(error instanceof ReadFailure&&typeof error.rate.retryAfterSeconds==='number'?{retryAtUtc:new Date(Date.now()+error.rate.retryAfterSeconds*1000).toISOString()}:{})};
+  const outcome:SpellOutcome={kind:'refused',code:known?error.code:'spell_unavailable',...(error instanceof TrafficLimit?{retryAtUtc:error.retryAtUtc}:error instanceof ReadFailure&&typeof error.rate.retryAfterSeconds==='number'?{retryAtUtc:new Date(Date.now()+error.rate.retryAfterSeconds*1000).toISOString()}:{})};
   // Only the lease owner records a known pre-dispatch refusal; a competing in-flight attempt stays authoritative.
   if(leaseOwned&&lease&&who&&attemptId&&hash&&outcome.code!=='unauthorized'&&outcome.code!=='insufficient_scope'&&!(error instanceof VaultError)){const held=await env.HABITICA_INTEGRATION_DB.prepare('SELECT 1 FROM integration_projection_state WHERE profile_id=? AND connection_id=? AND lease_token=?').bind(who.profileId,who.connectionId,lease).first();if(held){try{await record(outcome);return json(await existing()??outcome,known?error.status:503);}catch{return json({kind:'refused',code:'spell_unavailable'},503);}}}
   return json(outcome,known?error.status:503);

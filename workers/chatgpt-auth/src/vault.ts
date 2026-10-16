@@ -1,3 +1,4 @@
+import {upstreamBudget,observeUpstream,TrafficLimit,trafficFailure,charge} from './traffic';
 import { deriveProfileId, encryptCredential, decryptCredential, tokenHash, newManagementToken, tokenMatches, validateKeySeparation, type HabiticaCredential } from "./cryptography";
 import { resourceConfiguration } from "../../shared/resources";
 
@@ -61,10 +62,13 @@ export async function activeProfile(env: AuthEnv, id: string, connectionId?: str
 }
 async function verifyHabitica(credential: HabiticaCredential, env: AuthEnv): Promise<string | null> {
   if (!env.HABITICA_X_CLIENT_HEADER) throw new VaultError("integration_unavailable", 503);
+  await upstreamBudget(env);
   const response = await fetch("https://habitica.com/api/v3/user?userFields=_id,profile", {
     headers: { "x-api-user": credential.habiticaUserId, "x-api-key": credential.apiToken, "x-client": env.HABITICA_X_CLIENT_HEADER, accept: "application/json" },
     signal: AbortSignal.timeout(10000),
   });
+  await observeUpstream(env,response);
+  if(response.status===429)await upstreamBudget(env);
   if (response.status === 401 || response.status === 403) throw new VaultError("invalid_credentials", 401);
   if (!response.ok) throw new VaultError("habitica_unavailable", 502);
   const document = await boundedJson(response, 1048576) as { success?: boolean; data?: { _id?: string; id?: string; profile?: { name?: string } } };
@@ -84,6 +88,7 @@ async function enroll(request: Request, env: AuthEnv): Promise<Response> {
   validateKeySeparation(env.PROFILE_ID_KEY, credentialKeys(env));
   const name = await verifyHabitica(credential, env);
   const profileId = await deriveProfileId(credential.habiticaUserId, env.PROFILE_ID_KEY);
+  await charge(env,"enrollment:profile:"+profileId,5);
   const envelope = await encryptCredential(profileId, credential, env.CREDENTIAL_CURRENT_KEY_VERSION, credentialKeys(env));
   const previous = await loadProfile(env, profileId);
   let connectionId = crypto.randomUUID();
@@ -116,16 +121,18 @@ async function enroll(request: Request, env: AuthEnv): Promise<Response> {
   if (!results[0].meta.changes) throw new VaultError("enrollment_changed", 409);
   return Response.json({ profileId, managementToken }, { status: 201, headers });
 }
-export async function managedProfile(request: Request, env: AuthEnv, profileId: string): Promise<IntegrationProfile> {
+export async function managedProfile(request: Request, env: AuthEnv, profileId: string, applyBudget = true): Promise<IntegrationProfile> {
   const token = request.headers.get("authorization")?.match(/^Bearer (\S+)$/)?.[1];
   const profile = await loadProfile(env, profileId);
   if (!token || !profile || !await tokenMatches(token, profile.management_token_hash)) throw new VaultError("unauthorized", 401);
+  if(applyBudget)await charge(env,"management:profile:"+profileId,30);
   return activeProfile(env, profileId);
 }
 async function manage(request: Request, env: AuthEnv, profileId: string, cleanup?: (id: string, connectionId: string) => Promise<void>): Promise<Response> {
   const token = request.headers.get("authorization")?.match(/^Bearer (\S+)$/)?.[1];
   const profile = await loadProfile(env, profileId);
   if (!token || !profile || !await tokenMatches(token, profile.management_token_hash)) throw new VaultError("unauthorized", 401);
+  await charge(env,"management:recovery:"+profileId,20);
   const now = new Date().toISOString();
   const blocked = await env.HABITICA_INTEGRATION_DB.prepare(`UPDATE integration_profiles SET credential_ciphertext=NULL,
     credential_iv=NULL, credential_key_version=NULL, credential_schema_version=NULL,
@@ -157,6 +164,7 @@ export async function vaultRoute(request: Request, env: AuthEnv, cleanup?: (id: 
     if (origin && origin !== config.issuer && origin !== config.pwaOrigin) throw new VaultError("invalid_origin", 403);
     return management ? await manage(request, env, management[1], cleanup) : await enroll(request, env);
   } catch (error) {
+    const quota=trafficFailure(error);if(quota)return quota;
     const safe = error instanceof VaultError ? error : new VaultError("integration_unavailable", 503);
     return Response.json({ error: safe.code }, { status: safe.status, headers });
   }

@@ -167,3 +167,12 @@ test('expired preconditions cannot dispatch a write', async t => {
  await f.db.prepare('UPDATE integration_projection_checks SET expires_at_utc=?').bind(new Date(Date.now()-1).toISOString()).run();
  const result=await f.call('score',{selector:taskId,checkToken:inspected.checkToken,expectedFingerprint:inspected.task.fingerprint,direction:'up'},f.attempt());assert.equal(result.status,409);assert.equal(f.requests.filter(r=>r.method==='POST').length,0);
 });
+
+test('local upstream quota refuses before consuming a create precondition or reserving dispatch',async t=>{
+ const f=await setup(t,request=>request.method==='GET'?new Response('',{status:404}):Response.json({success:true,data:task({alias})},{status:201}));
+ const absent=await(await f.call('inspect',{selector:alias})).json();const args={selector:alias,checkToken:absent.checkToken,patch:{text:'Synthetic task'}};const a=f.attempt();
+ for(const window of [Math.floor(Date.now()/60000),Math.floor(Date.now()/60000)+1])await f.db.prepare('INSERT OR REPLACE INTO authorization_attempts(bucket,attempts,expires_at_utc) VALUES(?,?,?)').bind('traffic:upstream:profile:'+f.profile.profileId+':'+window,60,new Date((window+1)*60000).toISOString()).run();
+ const limited=await f.call('create',args,a);assert.equal(limited.status,429);const result=await limited.json();assert.equal(result.kind,'refused');assert.ok(result.retryAtUtc);assert.equal(f.requests.filter(r=>r.method==='POST').length,0);
+ assert.equal(await f.db.prepare('SELECT state FROM integration_projection_attempts WHERE attempt_id=?').bind(a.attemptId).first(),null);
+ await f.db.prepare("DELETE FROM authorization_attempts WHERE bucket LIKE 'traffic:upstream:profile:%'").run();assert.equal((await(await f.call('create',args,a)).json()).kind,'applied');assert.equal(f.requests.filter(r=>r.method==='POST').length,1);
+});

@@ -11,7 +11,7 @@ export async function attempts(env: AuthEnv, bucket: string, limit: number, wind
     ON CONFLICT(bucket) DO UPDATE SET attempts=attempts+1 WHERE attempts < ? RETURNING attempts`)
     .bind(key, expires, limit).first();
   if (!row) throw new VaultError("try_later", 429);
-  await env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM authorization_attempts WHERE expires_at_utc < ?").bind(now.toISOString()).run();
+  await env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM authorization_attempts WHERE rowid IN (SELECT rowid FROM authorization_attempts WHERE expires_at_utc < ? LIMIT 100)").bind(now.toISOString()).run();
 }
 export async function networkAttempts(request: Request, env: AuthEnv): Promise<void> {
   const ip = request.headers.get("cf-connecting-ip") ?? (env.ENVIRONMENT === "local" ? "local" : null);

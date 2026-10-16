@@ -1,3 +1,4 @@
+import {operationalStatus} from './operations';
 import {mcpEpoch} from './mcp-epoch';
 import {cronApi,cronHistory} from './cron-api';
 import {cronToolScopes,type CronTool} from '../../shared/cron-tools';
@@ -114,6 +115,8 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  if (new URL(request.url).pathname === "/health" && request.method === "GET") return json({ service: "workspace", enabled: Boolean(env.WORKSPACE_ENABLED) });
  if (!Boolean(env.WORKSPACE_ENABLED)) throw new WorkspaceError("workspace_unavailable", 503);
  const path = new URL(request.url).pathname;
+ const ingress=await env.AUTH_IDENTITY.fetch("https://identity.internal/traffic",{method:"POST",headers:{"cf-connecting-ip":request.headers.get("cf-connecting-ip")??""},body:JSON.stringify({lane:"workspace"}),signal:AbortSignal.timeout(5000)});
+ if(!ingress.ok)return ingress;
  if (path === "/connect" && request.method === "POST") return connect(request, env);
  if(path==='/cron/history'&&request.method==='GET'){
   const who=await identity(env,'management',`Bearer ${bearer(request)}`);await identity(env,'epoch',undefined,who);
@@ -134,6 +137,9 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
   return json(await ownContributions(env,who.profileId,request.method==='POST'));
  }
  const row = await session(request, env);
+ const quota=await env.AUTH_IDENTITY.fetch("https://identity.internal/traffic",{method:"POST",body:JSON.stringify({lane:"workspace",profileId:row.profile_id,connectionId:row.connection_id,recovery:request.method==="GET"&&(path==="/operations"||path.startsWith("/commands/"))}),signal:AbortSignal.timeout(5000)});
+ if(!quota.ok)return quota;
+ if(path==="/operations"&&request.method==="GET")return json(await operationalStatus(env,row));
  if(path.startsWith('/party/')||path==='/party-api'){
   if(!env.PARTY_ENABLED)throw new WorkspaceError('party_unavailable',503);
   if(path==='/party-api'&&request.method==='POST'){

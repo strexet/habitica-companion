@@ -1,11 +1,15 @@
+using System.Text.Json.Serialization;
 using Habitica.Domain.Auth;
 using Habitica.Domain.Workspace;
 
 namespace Habitica.Application.Workspace;
 
 public sealed record WorkspaceActionResult(bool Succeeded, string Message, string? Json = null);
+public sealed record WorkspaceOperationalStatus([property: JsonRequired] DateTimeOffset CheckedAtUtc, [property: JsonRequired] int Pending, [property: JsonRequired] int Stalled, [property: JsonRequired] int Uncertain, [property: JsonRequired] int Blocked, [property: JsonRequired] int ExpiredLeases, DateTimeOffset? OldestPendingAtUtc);
+public sealed record WorkspaceStatusResult(bool Succeeded, string Message, WorkspaceOperationalStatus? Status = null);
 public interface IWorkspaceCloudClient
 {
+    Task<WorkspaceStatusResult> ReadOperationalStatusAsync(CancellationToken cancellationToken) => Task.FromResult(new WorkspaceStatusResult(false, "Workspace status is unavailable."));
     bool IsAvailable { get; }
     bool PartyPlanningAvailable => false;
     Task<PartyPlanningResult> ManagePartyAsync(PartyPlanningRequest request, CancellationToken cancellationToken) => Task.FromResult(new PartyPlanningResult(false, "Authenticated party planning is unavailable."));
