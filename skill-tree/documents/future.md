@@ -332,7 +332,7 @@ processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
 root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 relation: subtask
-depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e"]
+depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735"]
 ```
 
 Goal:
@@ -350,7 +350,7 @@ Out of scope:
 Implementation constraints:
 - All implemented tools require isolation/revocation qualification; live Cron remains off. Real log inspection verifies absence of secrets with minimum redacted evidence. Missing infrastructure remains a blocker.
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Authorized preview endpoints, two consenting account owners, host enrollment and iOS/Android device scope are unavailable. The local run cannot satisfy real release acceptance.
+- [Unresolved - blocks implementation] Existing-site account/resource preparation is complete. Three encryption secrets, Worker/Pages publication, actual per-account OAuth/plugin enrollment, a second consenting owner and iOS/Android device qualification remain outstanding. Preparation cannot satisfy real release acceptance.
 Validation:
 - Verify local environment/resource separation and prepare exact owner/teammate/device checks. Maintain independent ChatGPT and Codex desktop results in the plugin client matrix; direct MCP access, packaged skills and optional CLI diagnostics remain distinct checks. Execute real checks only inside separately authorized scope.
 Acceptance:

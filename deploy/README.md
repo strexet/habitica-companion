@@ -2,6 +2,31 @@
 
 Status: local dev prerequisites pass on `develop`. Cloudflare resources, deployment, real enrollment and real client/device qualification remain unrun. The [launch readiness record](../skill-tree/documents/deploy-cloudflare-pages.md#intermediate-dev-launch-readiness) owns the release gates.
 
+## Selected target and current owner action
+
+The owner-selected pilot website is `https://habitica-companion.pages.dev`. Cloudflare account access is verified. The existing Pages project retains browser-sync KV and party D1 bindings. Separate `habitica-companion-dev-oauth`, `habitica-companion-dev-auth` and `habitica-companion-dev-workspace` resources are created; Auth/Workspace migrations 0001–0007 are applied. Existing party migrations require no changes. Worker and website publication remain pending secure key provisioning.
+
+| Service | Selected address |
+| --- | --- |
+| Website | `https://habitica-companion.pages.dev` |
+| Auth | `https://habitica-companion-dev-auth.strexet.workers.dev` |
+| Workspace | `https://habitica-companion-dev-workspace.strexet.workers.dev` |
+| MCP endpoint | `https://habitica-companion-dev-mcp.strexet.workers.dev/mcp` |
+
+The generated bundle is ready at `deploy/.dev/`; public input resides in ignored `deploy/dev.local.json`. No new Pages project or account/subdomain lookup is needed. The next owner action is [three local encryption-secret prompts](#8-generate-and-enter-the-three-server-secrets), followed by a chat reply confirming completion without values. Account details, version descriptions, status messages and Markdown links belong in chat; only shell command blocks belong in Terminal.
+
+The existing Pages stable address uses the `main` production slot and automatic Git deployment. The authorized pilot uploads code built from local `develop` to that slot with the actual commit hash; no Git branch merge or source switch is implied. A later automatic main deployment can replace the manual pilot. Project Git settings remain unchanged. The recorded pre-pilot deployment is `774c03ca-039f-439c-93b2-ac3d26db11d3`; asset rollback cannot undo database changes.
+
+The generator accepts an optional `existingPages` selection containing exact project, origin, retained KV/party IDs, party database name, production branch and previous deployment ID. The selection is an operator record, not automatic proof of remote ownership. Authenticated inventory must establish the match before reuse. Default dedicated-dev generation retains the suffix/isolation restrictions. New backend names retain the `-dev` prefix and integration resources remain distinct.
+
+For the selected existing project, the eventual Pages upload uses the prepared bundle and observed slot:
+
+```sh
+./workers/chatgpt-auth/node_modules/.bin/wrangler --cwd deploy/.dev/pages pages deploy "$PWD/output/wwwroot" --project-name habitica-companion --branch main --commit-hash "$(git rev-parse HEAD)"
+```
+
+Publication remains an agent/operator step after the key prompts; the owner does not need to execute the upload command. The walkthrough below also documents the alternate new dedicated Pages project route; skip the alternate project/storage creation steps for the selected existing target.
+
 ## What gets created
 
 Cloudflare hosts the app and backend. The repository is the folder containing the source and deployment scripts on the Mac: `/Users/petr/Projects/habitica-tool`. A terminal command runs locally until a Wrangler command explicitly creates or publishes a Cloudflare resource. Wrangler is Cloudflare’s command-line tool, already pinned in the repository.

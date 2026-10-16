@@ -1,0 +1,117 @@
+{
+  "task_id": "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
+  "date": "2026-10-16",
+  "result": "pass-preparation-only",
+  "owner_selected_website": "https://habitica-companion.pages.dev",
+  "account_id": "8c962c94f28f5bdd298024365e0dea40",
+  "baseline_project": {
+    "name": "habitica-companion",
+    "subdomain": "habitica-companion.pages.dev",
+    "production_branch": "main",
+    "domains": [
+      "habitica-companion.pages.dev"
+    ],
+    "created_on": "2026-05-13T04:06:21.277113Z",
+    "source": {
+      "type": "github",
+      "owner": "strexet",
+      "repo_name": "habitica-companion",
+      "production_branch": "main",
+      "production_deployments_enabled": true,
+      "preview_deployment_setting": "all"
+    },
+    "deployments": {
+      "canonical": {
+        "id": "774c03ca-039f-439c-93b2-ac3d26db11d3",
+        "environment": "production",
+        "url": "https://774c03ca.habitica-companion.pages.dev",
+        "aliases": null,
+        "created_on": "2026-10-14T07:46:04.731764Z",
+        "branch": "main",
+        "commit_hash": "e8a402f73ae44e3f83030b05cb312b6d10f10608",
+        "stage": "success"
+      },
+      "latest": {
+        "id": "774c03ca-039f-439c-93b2-ac3d26db11d3",
+        "environment": "production",
+        "url": "https://774c03ca.habitica-companion.pages.dev",
+        "aliases": null,
+        "created_on": "2026-10-14T07:46:04.731764Z",
+        "branch": "main",
+        "commit_hash": "e8a402f73ae44e3f83030b05cb312b6d10f10608",
+        "stage": "success"
+      }
+    },
+    "deployment_configs": {
+      "preview": {
+        "kv_namespaces": {
+          "HABITICA_SYNC_KV": {
+            "namespace_id": "8f3984e2aa7c4bff8dc245f3552927e5"
+          }
+        },
+        "d1_databases": {
+          "HABITICA_PARTY_DB": {
+            "id": "fec1ea40-3502-4b66-9051-c3f566999a03"
+          }
+        },
+        "env_var_names": [],
+        "compatibility_date": "2026-05-13",
+        "always_use_latest_compatibility_date": false
+      },
+      "production": {
+        "kv_namespaces": {
+          "HABITICA_SYNC_KV": {
+            "namespace_id": "8f3984e2aa7c4bff8dc245f3552927e5"
+          }
+        },
+        "d1_databases": {
+          "HABITICA_PARTY_DB": {
+            "id": "fec1ea40-3502-4b66-9051-c3f566999a03"
+          }
+        },
+        "env_var_names": [],
+        "compatibility_date": "2026-05-13",
+        "always_use_latest_compatibility_date": false
+      }
+    }
+  },
+  "account_worker_subdomain": "strexet",
+  "retained_browser_bindings": {
+    "kv": "8f3984e2aa7c4bff8dc245f3552927e5",
+    "party_d1": "fec1ea40-3502-4b66-9051-c3f566999a03"
+  },
+  "new_integration_resources": {
+    "oauth_kv": "cd15636d00ac4be584ef7854a9a98fba",
+    "auth_d1": "9ad15b09-0e9c-4f2c-967f-88c104745dd1",
+    "workspace_d1": "b6331e3b-ddb8-484b-99c5-f4f2fdeadcd2"
+  },
+  "new_database_migrations": "Auth 0001-0007 and Workspace 0001-0007 applied remotely to newly created dev databases",
+  "existing_party_migrations": "Read-only list reports no pending migrations; no schema/data writes performed",
+  "validation": {
+    "configuration_tests": 7,
+    "three_generated_worker_dry_runs": "pass",
+    "pages_functions_compile": "pass",
+    "release_app_publish": "pass",
+    "published_public_endpoints": "match selected generated configuration",
+    "shipped_source_appsettings": "restored unchanged"
+  },
+  "operation_classification": {
+    "read_only_inventory": "success",
+    "new_kv_and_two_databases": "executed controls; success",
+    "new_database_migrations": "executed controls; success",
+    "initial_missing_generated_configs": "prerequisite failure before migration/build dispatch; resolved by preserving older public input and generating selected bundle"
+  },
+  "remote_publication_performed": false,
+  "secret_provisioning": "required owner-local entry; no secret values generated, read, transmitted or recorded by preparation",
+  "live_cron_enabled": false,
+  "cloud_game_effects_enabled": false,
+  "limitations": [
+    "Existing stable Pages URL is its main production slot; published develop artifact must retain actual commit metadata.",
+    "Automatic Git main deployment remains enabled and can replace a manual pilot.",
+    "All live OAuth, plugin/skill, real-account, multi-user and device qualification remains unrun."
+  ],
+  "source_fingerprints": {
+    "deploy/prepare-dev.mjs": "3cb88dfdd02354c31939260cdeaf03bff681ace25d1278d1e6065780a73bc7f7",
+    "tests/Functions/dev-preparation.test.mjs": "b879b67555d9d4a86f9868849da5fc3daf7eedbe8f058f62f326ab807f9a567c"
+  }
+}

@@ -20,6 +20,18 @@ test('unsafe or incomplete dev input is rejected before output is written',()=>{
  for(const patch of [{accountId:'0'.repeat(32)},{pagesProject:'habitica-companion'},{mcpOrigin:'https://mcp.example.invalid'},{pwaOrigin:'https://habitica-companion.pages.dev'},{authOrigin:'https://auth.dev.example.org/path'},{mcpOrigin:input().authOrigin},{pagesKvId:'8f3984e2aa7c4bff8dc245f3552927e5'},{authDatabaseId:input().workspaceDatabaseId},{apiToken:'private'},{liveCron:true}])assert.throws(()=>prepareDev({...input(),...patch},'/tmp/unused-dev-config'));
  const valid=input();delete valid.authKvId;assert.throws(()=>prepareDev(valid,'/tmp/unused-dev-config'));
 });
+test('explicit existing Pages selection retains only reviewed browser storage and isolates dev backends',()=>{
+ const oldKv='8f3984e2aa7c4bff8dc245f3552927e5',oldParty='fec1ea40-3502-4b66-9051-c3f566999a03';
+ const selected={...input(),pagesProject:'habitica-companion',pwaOrigin:'https://habitica-companion.pages.dev',pagesKvId:oldKv,partyDatabaseId:oldParty};
+ selected.existingPages={project:selected.pagesProject,origin:selected.pwaOrigin,kvNamespaceId:oldKv,partyDatabaseId:oldParty,partyDatabaseName:'habitica-companion-party-sync',productionBranch:'main',previousDeploymentId:'11111111-2222-4333-8444-555555555555'};
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'companion-existing-'));try{
+  const result=writeDev(selected,path.join(dir,'generated'));assert.equal(result.pages.name,selected.pagesProject);assert.equal(result.pages.kv_namespaces[0].id,oldKv);assert.equal(result.pages.d1_databases[0].database_id,oldParty);assert.equal(result.pages.d1_databases[0].database_name,selected.existingPages.partyDatabaseName);
+  for(const c of Object.values(result.configs)){assert.ok(c.name.startsWith('habitica-companion-dev-'));assert.equal(c.vars.PWA_ORIGIN,selected.pwaOrigin);for(const flag of ['PROJECTION_ENABLED','PARTY_ENABLED','SPELLS_ENABLED','EXECUTOR_ENABLED','KEY_OPERATIONS_ENABLED','CRON_ENABLED'])if(flag in c.vars)assert.equal(c.vars[flag],false);}
+  assert.equal(result.configs['chatgpt-auth'].d1_databases[0].database_id,selected.authDatabaseId);assert.equal(result.configs['companion-workspace'].d1_databases[0].database_id,selected.workspaceDatabaseId);
+  const plan=JSON.parse(fs.readFileSync(path.join(dir,'generated/deployment-plan.json')));assert.deepEqual(plan.websiteTarget,selected.existingPages);
+  for(const patch of [{existingPages:undefined},{existingPages:true},{existingPages:{...selected.existingPages,project:'other'}},{existingPages:{...selected.existingPages,kvNamespaceId:'d'.repeat(32)}},{existingPages:{...selected.existingPages,partyDatabaseId:input().partyDatabaseId}},{authKvId:oldKv},{authDatabaseId:oldParty},{authOrigin:'https://habitica-auth-preview.example.invalid'}])assert.throws(()=>prepareDev({...selected,...patch},'/tmp/unused-existing-config'));
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
 test('runtime origins reject partial bindings and stay consistent for all environments',async()=>{
  const {resourceConfiguration}=await import('../../workers/shared/resources.ts');const c=prepareDev(input(),'/tmp/unused-dev-config').configs['chatgpt-auth'];assert.deepEqual(resourceConfiguration('preview',c.vars),{pwaOrigin:input().pwaOrigin,issuer:input().authOrigin,resource:input().mcpOrigin+'/mcp',workspaceOrigin:input().workspaceOrigin});
  assert.throws(()=>resourceConfiguration('preview',{AUTH_ISSUER:input().authOrigin}));assert.throws(()=>resourceConfiguration('preview',{...c.vars,MCP_RESOURCE:'https://mcp.dev.example.org/other'}));assert.throws(()=>resourceConfiguration('preview',{...c.vars,PWA_ORIGIN:input().authOrigin}));assert.equal(resourceConfiguration('local').issuer,'http://localhost:8787');

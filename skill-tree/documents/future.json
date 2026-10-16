@@ -40,12 +40,14 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
       "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
       "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2",
-      "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e"
+      "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+      "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
       "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89": "O-2b79fcef-7244-48d6-bad7-16c7b8937eee",
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
+      "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735": "O-aa7c4f5f-c42d-48df-806e-bff08b0e1c17",
       "T-16a38176-f2fe-5f7d-a809-546f17357b49": "O-7d50e0cb-ee45-4fe5-bd54-6b38b3b22e6e",
       "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec": "O-1cbc3cfc-9cf0-4922-8317-4c16090d9aa0",
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
@@ -85,18 +87,20 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "275a7df3d9e623ad06f0dbc47c12f74beccc73377c543ad4335302975bb1df1f",
+    "cycle_signature": "72edc15c8535edcb63d0354b4380e66f492c33ee8d18ad6389e63f0fb900f62f",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Prepare the dedicated dev environment using deploy/README.md, then qualify the owner pilot with ChatGPT and Codex desktop.",
+    "next_action": "Owner provisions PROFILE_ID_KEY, CREDENTIAL_KEY_V1 and CREDENTIAL_KEY_V2 using deploy/.dev/chatgpt-auth.json, then the authorized existing-site deployment can continue.",
     "partial_work": [
-      "Dev-only continuation completed isolated configuration, traffic/status protection, required layout and read-scope fixes, and local E14 evidence.",
-      "Projection, party planning, spells, executor, key operations and live Cron remain off in initial generated dev configuration. Existing browser game controls retain real effects.",
-      "Unselected Pending/Backlog work and parallel Miniflare investigation remain deferred."
+      "Owner selected https://habitica-companion.pages.dev; exact main slot and original deployment ID are recorded. Existing browser KV/party D1 bindings are preserved.",
+      "New OAuth KV plus Auth/Workspace D1 created; seven migrations applied to each new database. Existing party database has no pending migrations.",
+      "Seven configuration controls, three generated Worker dry runs, Pages Functions compilation and release app build pass.",
+      "Earlier generated-config prerequisite failure changed no remote data; the previous public operator input was preserved before replacement.",
+      "No Worker or website publication, enrollment, gameplay effects or live Cron activation performed."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -128,7 +132,8 @@
       "P-08a257f2-27ad-4217-b434-3a378c565fc7",
       "P-92e12da3-2559-4bf4-819e-442254c9bd81",
       "P-39328781-1536-468d-9e1c-3c0bad9c5cb3",
-      "P-287005d4-1e7f-446d-a802-9f78aeca7e72"
+      "P-287005d4-1e7f-446d-a802-9f78aeca7e72",
+      "P-b04d7a62-5b9e-4347-8028-4561c51891e2"
     ],
     "phase": "blocked",
     "processing_results": [
@@ -642,6 +647,23 @@
           "P-287005d4-1e7f-446d-a802-9f78aeca7e72"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735"
+        ],
+        "dispositions": {
+          "P-b04d7a62-5b9e-4347-8028-4561c51891e2": {
+            "reason": "Current authenticated account/project inventory and explicit owner target selection define a bounded preparation change.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-0a3bf1c2-0342-4d67-860a-7e6c387f424e",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-b04d7a62-5b9e-4347-8028-4561c51891e2"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -686,7 +708,8 @@
       "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
       "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08",
       "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
-      "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2"
+      "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2",
+      "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735"
     ],
     "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "snapshot": [
@@ -703,10 +726,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Local dev prerequisites pass. Cloudflare interactive account access, selected stable dev origins and isolated resource IDs, secure secret entry, actual host access and consenting-user/device participation remain unavailable. No remote deployment or enrollment has occurred."
+    "stop_reason": "Cloudflare account/project inventory and new dev integration resources are prepared. The three Auth encryption secrets require owner-local secure entry before Worker/Pages publication. Real per-account OAuth, plugin/skill and multi-user/device qualification remains unrun."
   },
   "format": "skill-tree-future",
-  "source_hash": "b08b2773f6f57a347488c922a91c57df38ebb742f9745931073c75abb52716a8",
+  "source_hash": "72b04cd2586a446c02c4b3ce24b26f44fb4353ae55dc15207efa597625d22641",
   "tasks": [
     {
       "depends_on": [],
@@ -822,7 +845,8 @@
     },
     {
       "depends_on": [
-        "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e"
+        "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+        "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
       "line": 324,
