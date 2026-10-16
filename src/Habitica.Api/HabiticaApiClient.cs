@@ -91,7 +91,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         var currentHabiticaDayKey = dayStartHour is not null && timezoneOffsetMinutes is not null
             ? HabiticaDayCalculator.ComputeDayKey(retrievedAtUtc, dayStartHour.Value, timezoneOffsetMinutes.Value)
             : null;
-        var needsCron = GetOptionalNullableBoolean(flags, "needsCron")
+        var needsCron = GetOptionalNullableBoolean(data, "needsCron")
             ?? HabiticaDayCalculator.NeedsCron(lastCronUtc, currentHabiticaDayStartUtc);
 
         return new UserSnapshot(

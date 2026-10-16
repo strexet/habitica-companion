@@ -32,7 +32,7 @@ test('packaged workflow tool names route through actual SDK with two isolated OA
  const f=await fixture(t,{workspace:true,habitica:async request=>{
   if(request.method!=='GET'){writes++;return new Response(null,{status:500});}
   const user=request.headers.get('x-api-user');
-  const data=request.url.includes('tasks/user')?[{id:'90000000-0000-4000-8000-000000000011',type:'daily',text:'Fixture Daily',isDue:true,completed:false}]:{_id:user,profile:{name:user===accounts[0].habiticaUserId?'Fixture A':'Fixture B'},stats:{hp:37,mp:12,lvl:5},flags:{needsCron:false}};
+  const data=request.url.includes('tasks/user')?[{id:'90000000-0000-4000-8000-000000000011',type:'daily',text:'Fixture Daily',isDue:true,completed:false}]:{_id:user,profile:{name:user===accounts[0].habiticaUserId?'Fixture A':'Fixture B'},stats:{hp:37,mp:12,lvl:5},needsCron:false};
   return Response.json({success:true,data});
  }});
  const profiles=await Promise.all(accounts.map(account=>enrolled(f,account)));

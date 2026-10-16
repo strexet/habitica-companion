@@ -82,7 +82,7 @@ test('automated calls share a persisted thirty-second gate', async t => {
 
 test('Daily scoring requires fresh server due-state, confirmed Cron state and matching Habitica day', async t => {
  const f = await setup(t, request => {
-  const data = new URL(request.url).pathname === '/api/v3/user' ? { preferences: { dayStart: 0, timezoneOffset: 0 }, flags: { needsCron: false } }
+  const data = new URL(request.url).pathname === '/api/v3/user' ? { preferences: { dayStart: 0, timezoneOffset: 0 }, needsCron: false }
    : request.url.includes('tasks/user?') ? [task({ type: 'daily', isDue: true })] : { delta: 1 };
   return Response.json({ success: true, data });
  });
@@ -91,6 +91,21 @@ test('Daily scoring requires fresh server due-state, confirmed Cron state and ma
  assert.equal((await f.call('score', { ...args, occurrenceDate: '2000-01-01' }, f.attempt())).status, 409);
  assert.equal((await (await f.call('score', args, f.attempt())).json()).kind, 'applied');
  assert.equal(f.requests.filter(r => r.method === 'POST').length, 1);
+});
+
+test('Daily readiness comes from full UserGet and unavailable server readiness cannot authorize scoring',async t=>{
+ let readiness=false;
+ const f=await setup(t,request=>{
+  if(new URL(request.url).pathname==='/api/v3/user'){
+   assert.equal(new URL(request.url).searchParams.has('userFields'),false);
+   return Response.json({success:true,data:{preferences:{dayStart:0,timezoneOffset:0},needsCron:readiness,flags:{needsCron:false}}});
+  }
+  return Response.json({success:true,data:[task({type:'daily',isDue:true})]});
+ });
+ assert.equal((await(await f.call('inspectAccount')).json()).needsCron,false);
+ for(const value of [undefined,null,'false',0,{}]){readiness=value;assert.equal((await f.call('inspectAccount')).status,409);}
+ readiness=true;const account=await(await f.call('inspectAccount')).json();const inspected=await(await f.call('inspectDaily',{selector:taskId})).json();
+ const denied=await f.call('score',{selector:taskId,checkToken:inspected.checkToken,expectedFingerprint:inspected.task.fingerprint,direction:'up',accountCheckToken:account.accountCheckToken,occurrenceDate:account.day},f.attempt());assert.equal(denied.status,409);assert.equal(f.requests.filter(r=>r.method==='POST').length,0);
 });
 
 test('credential disconnect deletes private projection state and denies subsequent operations', async t => {

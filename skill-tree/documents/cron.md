@@ -415,3 +415,9 @@ Primary references used for this document:
 - Habitica API usage notes: https://habitica.fandom.com/wiki/Application_Programming_Interface
 
 The implementation details in Habitica source may change. Treat this document as a development guide and re-check official API/source behavior before building destructive Cron actions.
+
+## Authoritative Cron readiness response
+
+Full `GET /user` returns computed `needsCron` at the top level. The field is not `flags.needsCron`; a `userFields` projection suppresses the computed value. Current official [user serialization](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/user/index.js) and [timezone-aware day eligibility](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/user/methods.js) were inspected on 2026-10-16. Server readiness can account for a timezone transition that a simple current-day comparison cannot reproduce.
+
+Auth account status reads the top-level boolean and reports malformed/missing values as unknown. Daily projection obtains an unfiltered, bounded user response and requires the explicit server boolean before issuing an account check receipt. Existing timezone/day checks remain mandatory, and pending Cron blocks Daily scoring. The PWA snapshot parser honors a valid server boolean first; the existing local `lastCron`/day-start fallback remains only when a valid server boolean is unavailable. Neither path reads a synthetic flags field. Raw user responses remain private and absent from normalized output.

@@ -194,6 +194,19 @@ public sealed class HabiticaApiClientTests
         Assert.Null(snapshot.Items[3].IsDue);
     }
 
+    [Theory]
+    [InlineData("true", "false", true)]
+    [InlineData("false", "true", false)]
+    [InlineData("null", "false", true)]
+    [InlineData("\"malformed\"", "false", true)]
+    public async Task GetUserSnapshotAsync_prefers_server_readiness_and_ignores_legacy_flags(string serverValue, string legacyValue, bool expected)
+    {
+        var payload = "{\"success\":true,\"data\":{\"profile\":{\"name\":\"Fixture\"},\"stats\":{},\"lastCron\":\"2000-01-01T00:00:00Z\",\"preferences\":{\"dayStart\":0,\"timezoneOffset\":0},\"needsCron\":" + serverValue + ",\"flags\":{\"needsCron\":" + legacyValue + "}}}";
+        var handler = new StubHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK) { Content = JsonContent(payload) });
+        var snapshot = await CreateClient(handler).GetUserSnapshotAsync(new HabiticaCredentials("fixture-user", "fixture-token"), CancellationToken.None);
+        Assert.Equal(expected, snapshot.NeedsCron);
+    }
+
     [Fact]
     public async Task GetUserSnapshotAsync_maps_account_and_inventory_fields()
     {
@@ -206,9 +219,7 @@ public sealed class HabiticaApiClientTests
                 "profile": { "name": "Mage Tester" },
                 "balance": 14,
                 "lastCron": "2026-04-24T08:00:00.000Z",
-                "flags": {
-                  "needsCron": true
-                },
+                "needsCron": true,
                 "preferences": {
                   "dayStart": 4,
                   "timezoneOffset": -420

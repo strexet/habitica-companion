@@ -98,7 +98,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
    ]);
    if (!prepared[0].meta.changes) throw new WorkspaceError("precondition_consumed",409); dispatched = true;
   }
-  const path = operation === "inspectAccount" ? "user?userFields=preferences,flags,lastCron" : operation === "inspectDaily" ? "tasks/user?type=dailys&history=false&dueDate="+encodeURIComponent(now) : operation === "create" ? "tasks/user" : `tasks/${encodeURIComponent(target)}${operation === "score" ? `/score/${args.direction}` : ""}`;
+  const path = operation === "inspectAccount" ? "user" : operation === "inspectDaily" ? "tasks/user?type=dailys&history=false&dueDate="+encodeURIComponent(now) : operation === "create" ? "tasks/user" : `tasks/${encodeURIComponent(target)}${operation === "score" ? `/score/${args.direction}` : ""}`;
   const method = operation === "create" || operation === "score" ? "POST" : operation === "update" ? "PUT" : "GET";
   await activeProfile(env,who.profileId,who.connectionId);
   const response = await fetch("https://habitica.com/api/v3/"+path,{method,redirect:"manual",headers:{"x-api-user":credential.habiticaUserId,"x-api-key":credential.apiToken,"x-client":env.HABITICA_X_CLIENT_HEADER,accept:"application/json","content-type":"application/json"},body:operation === "create" ? JSON.stringify({...patch,type:"todo",alias:target}) : operation === "update" ? JSON.stringify(patch) : undefined,signal:AbortSignal.timeout(10000)});
@@ -108,9 +108,9 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
    if (!response.ok) return json({kind:"refused",code:[401,403].includes(response.status)?"credential_repair_required":response.status===429?"rate_limited":"habitica_unavailable",...(retryAtUtc?{retryAtUtc}:{})},response.status===429?429:response.status===401||response.status===403?401:502);
    const body = workspaceObject(await boundedJson(response,2097152)); if (body.success !== true) throw new WorkspaceError("invalid_upstream_response",502);
    if (operation === "inspectAccount") {
-    const account = workspaceObject(body.data); const prefs = workspaceObject(account.preferences); const flags = workspaceObject(account.flags);
-    if (typeof prefs.dayStart !== "number" || !Number.isInteger(prefs.dayStart) || prefs.dayStart<0 || prefs.dayStart>23 || typeof prefs.timezoneOffset !== "number" || !Number.isFinite(prefs.timezoneOffset) || Math.abs(prefs.timezoneOffset)>840 || typeof flags.needsCron !== "boolean") throw new WorkspaceError("daily_precondition_unknown",409);
-    const state = {dayStart:prefs.dayStart,timezoneOffset:prefs.timezoneOffset,needsCron:flags.needsCron,day:day({dayStart:prefs.dayStart,timezoneOffset:prefs.timezoneOffset})};
+    const account = workspaceObject(body.data); const prefs = workspaceObject(account.preferences);
+    if (typeof prefs.dayStart !== "number" || !Number.isInteger(prefs.dayStart) || prefs.dayStart<0 || prefs.dayStart>23 || typeof prefs.timezoneOffset !== "number" || !Number.isFinite(prefs.timezoneOffset) || Math.abs(prefs.timezoneOffset)>840 || typeof account.needsCron !== "boolean") throw new WorkspaceError("daily_precondition_unknown",409);
+    const state = {dayStart:prefs.dayStart,timezoneOffset:prefs.timezoneOffset,needsCron:account.needsCron,day:day({dayStart:prefs.dayStart,timezoneOffset:prefs.timezoneOffset})};
     return json({...state,accountCheckToken:await rememberCheck(env,who,"account",null,state)});
    }
    if (operation === "inspectDaily" && !Array.isArray(body.data)) throw new WorkspaceError("invalid_upstream_response",502);

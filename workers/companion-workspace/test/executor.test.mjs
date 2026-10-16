@@ -116,7 +116,7 @@ test('revoked credentials block new effects and old-context unknown receipts rem
 test('hosted Daily execution obtains fresh account and due receipts before the paced score',async t=>{
  const externalId='90000000-0000-4000-8000-000000000023';let writes=0;let remote;
  const x=await setup(t,{habitica:async request=>{
-  if(request.url.includes('user?userFields=preferences'))return Response.json({success:true,data:{preferences:{dayStart:0,timezoneOffset:0},flags:{needsCron:false},lastCron:new Date().toISOString()}});
+  if(new URL(request.url).pathname==='/api/v3/user')return Response.json({success:true,data:{preferences:{dayStart:0,timezoneOffset:0},needsCron:false,lastCron:new Date().toISOString()}});
   if(request.method==='GET')return Response.json({success:true,data:[remote]});
   assert.ok(request.url.endsWith('/score/up'));writes++;return Response.json({success:true,data:{delta:1}});
  }});

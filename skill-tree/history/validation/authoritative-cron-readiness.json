@@ -1,0 +1,63 @@
+{
+  "task_id": "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "All three Worker builds/type checks",
+      "result": "pass"
+    },
+    {
+      "check": "Auth full suite",
+      "result": "pass",
+      "passed": 64
+    },
+    {
+      "check": "All explicit Workspace test files with serial file scheduling",
+      "result": "pass",
+      "passed": 63,
+      "note": "All explicit in-test concurrent/gated cases remain enabled."
+    },
+    {
+      "check": "App build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Full .NET suites after required refresh repair",
+      "result": "pass",
+      "passed": 531
+    },
+    {
+      "check": "Rebuilt app default Settings unavailable guards",
+      "result": "pass",
+      "evidence": "skill-tree/history/validation/refresh-priority-default-settings.jpg"
+    }
+  ],
+  "coverage": [
+    "Full UserGet top-level needsCron true/false; legacy flags do not override authoritative readiness",
+    "Missing/malformed readiness remains unknown in account status and cannot produce a Daily account receipt",
+    "Daily projection uses unfiltered UserGet, rejects pending Cron and retains day/due-state checks",
+    "PWA parser uses server boolean before existing local fallback; four API cases",
+    "Plugin and hosted Daily fixtures match actual upstream shape",
+    "Required refresh-priority repair completed as T-211d2ac1-5778-47fb-8148-c9e1a320e31a in b6505e2"
+  ],
+  "sources_checked_at": "2026-10-16",
+  "upstream_sources": [
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/user/index.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/models/user/methods.js"
+  ],
+  "qualification_observation": {
+    "parallel_workspace_suite": "One replacement export in the delete lifecycle case returned 401 instead of expected 200. No production cause is established.",
+    "isolated_lifecycle_repetitions": 15,
+    "isolated_result": "pass",
+    "serial_diagnostic_discovery": "64 modules pass, including one helper module",
+    "serial_explicit_final": "63 tests pass; test assertions and within-test concurrency unchanged",
+    "followup": "P-28d6ece4-a519-44a8-9625-3367479a03c3"
+  },
+  "limitations": [
+    "No real Habitica calls, enrollment, deployment or game effects.",
+    "Parallel Miniflare lifecycle instability remains a nonblocking captured investigation, separate from the verified readiness-shape defect.",
+    "The existing PWA inferred fallback remains when a valid server boolean is unavailable; server mutation checks require the actual boolean."
+  ]
+}

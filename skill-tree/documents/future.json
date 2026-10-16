@@ -29,7 +29,8 @@
       "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f",
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7",
       "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-      "T-211d2ac1-5778-47fb-8148-c9e1a320e31a"
+      "T-211d2ac1-5778-47fb-8148-c9e1a320e31a",
+      "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -51,6 +52,7 @@
       "T-773bb444-a0e6-45b9-bdcb-18561bb6182f": "O-9d7ad5bd-d5ee-469e-93b0-79c129d87495",
       "T-77d41018-e04b-4a88-b92c-079b3d8ef421": "O-056e3e62-a872-45aa-953d-0452b29a71e3",
       "T-80bb3b80-8a9c-4252-9924-5a100f746f93": "O-93622767-ee19-41ab-bda6-82f140e5b0b3",
+      "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995": "O-4b7709a5-b2d8-40c2-821c-9e482a57d24b",
       "T-924119e2-17fd-4a06-b332-60839c849ade": "O-23ae7a58-8ca6-44f8-ab06-e245f94fae3d",
       "T-991d6cf2-7c54-4006-ab58-eda921ae66d6": "O-747dceb1-50c9-4703-9399-b64b2a0ccba6",
       "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9": "O-1289cd22-e42d-43e3-8c68-1c7954321b8a",
@@ -62,8 +64,8 @@
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b",
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e"
     },
-    "current_task_id": "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
-    "cycle_signature": "6ec2c1611b41d8bdc6a28abfc7c49fc493060bd537550cae9eae59fc41f1c373",
+    "current_task_id": "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
+    "cycle_signature": "9b955d9321f8a8cce21a3b52466b1ccbf59e7ff7964be8cc8488ed69b9bf57ae",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
@@ -95,7 +97,8 @@
       "P-d34a0b07-32a5-48dc-acdd-7da4d17f9d4e",
       "P-00657a7e-98a7-4fd9-b6be-b0fdb427feb4",
       "P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1",
-      "P-74e56de7-49ae-4791-bcce-a596f758d362"
+      "P-74e56de7-49ae-4791-bcce-a596f758d362",
+      "P-28d6ece4-a519-44a8-9625-3367479a03c3"
     ],
     "phase": "implement",
     "processing_results": [
@@ -532,7 +535,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "c6f2b5919acfc533acbbc097e650b53fcb13dad40253df54644c4019cd78942a",
+  "source_hash": "467e8da590fd991faefdfb6a33fc6f39b1058713743f07beffcf971429bd60b0",
   "tasks": [
     {
       "depends_on": [],
@@ -661,29 +664,25 @@
       "title": "E14 Mobile UX validation, observability, migration and gradual adoption"
     },
     {
-      "depends_on": [
-        "T-211d2ac1-5778-47fb-8148-c9e1a320e31a"
-      ],
-      "id": "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
-      "line": 353,
-      "parent_pending_ids": [
-        "P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1"
-      ],
-      "priority": 102,
-      "processing_run_id": "PR-119edc02-2ff9-44cd-9dbf-bbd7bb9f6bcb",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
-      "relation": "blocker",
+      "depends_on": [],
+      "id": "P-28d6ece4-a519-44a8-9625-3367479a03c3",
+      "line": 349,
+      "parent_pending_ids": [],
+      "priority": 97,
+      "processing_run_id": null,
+      "queue": "Pending Queue",
+      "related_task_id": "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
+      "relation": "followup",
       "root_task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "status": "Ready",
-      "title": "Read actual server Cron readiness instead of synthetic flag fields"
+      "status": "Pending",
+      "title": "Investigate parallel Miniflare lifecycle qualification instability"
     },
     {
       "depends_on": [
         "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995"
       ],
       "id": "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
-      "line": 395,
+      "line": 379,
       "parent_pending_ids": [
         "P-00657a7e-98a7-4fd9-b6be-b0fdb427feb4"
       ],
@@ -710,7 +709,7 @@
         "T-c754c836-f4b7-413c-9733-35f18a0db6a6"
       ],
       "id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "line": 440,
+      "line": 424,
       "parent_pending_ids": [
         "P-46dde168-2e75-53fd-b2c0-0c1769f7711d"
       ],
@@ -728,7 +727,7 @@
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 566,
+      "line": 550,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -744,7 +743,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 721,
+      "line": 705,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -758,7 +757,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 758,
+      "line": 742,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -772,7 +771,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 795,
+      "line": 779,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -786,7 +785,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 928,
+      "line": 912,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -800,7 +799,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 966,
+      "line": 950,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -814,7 +813,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1000,
+      "line": 984,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -828,7 +827,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1035,
+      "line": 1019,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -842,7 +841,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1069,
+      "line": 1053,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -856,7 +855,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1107,
+      "line": 1091,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -870,7 +869,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1134,
+      "line": 1118,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -884,7 +883,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1156,
+      "line": 1140,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -898,7 +897,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1183,
+      "line": 1167,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

@@ -875,3 +875,7 @@ The foreground loop reserves thirty-five seconds per private call within a fifty
 ## Refresh-view ownership
 
 `RefreshCoordinator` deduplicates network work while applying caller-specific priority/reason to the returned status. `AppSessionController` assigns a refresh-view generation on page refresh and sign-in, snapshots completion dictionaries before deferred cache loading and checks ownership before publishing status. A short synchronous gate protects generation selection and final status publication without holding a lock across an await. Cached fetch results remain usable after view ownership changes; stale metadata does not replace current route priorities.
+
+## Computed account readiness boundary
+
+`get_account_status` and projection `inspectAccount` normalize the computed top-level `needsCron` from a bounded full-user read. The filtered user-fields route does not return computed readiness. Private raw user data remains outside public read models and attempt receipts. Server Daily projection requires an explicit boolean plus the existing timezone/day verification; the PWA snapshot parser uses the authoritative boolean before the existing inferred fallback.

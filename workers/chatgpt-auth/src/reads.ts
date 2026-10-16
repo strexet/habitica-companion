@@ -73,8 +73,8 @@ async function execute(env: AuthEnv, profileId: string, connectionId: string, to
   }
   if (tool === "get_account_status") {
     const result = await upstream(env, profileId, connectionId, "user");
-    const user = object(result.data); const stats = object(user.stats); const party = object(user.party); const flags = object(user.flags);
-    const status: ObjectValue = { retrievedAtUtc: new Date().toISOString(), needsCron: boolean(flags.needsCron) ?? null };
+    const user = object(result.data); const stats = object(user.stats); const party = object(user.party);
+    const status: ObjectValue = { retrievedAtUtc: new Date().toISOString(), needsCron: boolean(user.needsCron) ?? null };
     const klass = text(stats.class, 32); if (klass) status.class = klass;
     for (const [source, target] of [["lvl", "level"], ["hp", "hp"], ["maxHealth", "maxHp"], ["mp", "mp"], ["maxMP", "maxMp"], ["exp", "xp"], ["toNextLevel", "nextLevelTarget"], ["gp", "gp"]]) {
       const value = number(stats[source]); if (value !== undefined) status[target] = value;

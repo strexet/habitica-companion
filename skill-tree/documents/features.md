@@ -2768,3 +2768,7 @@ Synthetic actual-SDK/D1 cases cover count bounds, token rotation/consumption, re
 ## Current-page refresh status
 
 Status: implemented. Owner: application `RefreshCoordinator` and WebApp `AppSessionController`. Overlapping requests share one underlying domain fetch while each caller receives the requested priority and reason. A newer page or sign-in refresh replaces the refresh-view generation. Earlier asynchronous notifications and final boot/page completions continue caching fetched data but cannot publish domain-status dictionaries over the current page view. Generation selection and status publication share a short synchronous guard; notification dictionaries are copied before asynchronous cache loading. No additional Habitica request, offline promise, telemetry or credential handling is introduced. Controlled tests hold a shared Party fetch and an earlier page cache read to verify caller metadata, one network call and latest-page priority.
+
+## Verified account readiness
+
+Auth account status and Daily projection consume authoritative top-level Cron readiness from full UserGet. Missing/malformed readiness stays unknown and cannot authorize Daily projection. The PWA prefers a valid server boolean before the existing local-day fallback, preserving server timezone-transition decisions. Faithful fixtures cover contradictory legacy flag values, malformed/missing server readiness and pending-Cron scoring refusal. No new effect or UI control is introduced.

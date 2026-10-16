@@ -19,7 +19,7 @@ function habitica(request, status = 200, responseHeaders = {}) {
   const name = id === accounts[0].habiticaUserId ? 'Fixture A' : 'Fixture B';
   if (url.searchParams.has('userFields')) return Response.json({ success: true, data: { _id: id, profile: { name } } });
   if (status !== 200) return new Response('Never expose upstream secret ' + accounts[0].apiToken, { status, headers: responseHeaders });
-  if (url.pathname.endsWith('/user') && !url.pathname.includes('/tasks/')) return Response.json({ success: true, data: { profile: { name }, stats: { class: 'wizard', lvl: 12, hp: 45, maxHealth: 50, mp: 'malformed', maxMP: 80, exp: 15, toNextLevel: 60, gp: 9 }, flags: { needsCron: true }, party: { _id: 'party-fixture' }, auth: { secret: accounts[0].apiToken } } }, { headers: responseHeaders });
+  if (url.pathname.endsWith('/user') && !url.pathname.includes('/tasks/')) return Response.json({ success: true, data: { profile: { name }, stats: { class: 'wizard', lvl: 12, hp: 45, maxHealth: 50, mp: 'malformed', maxMP: 80, exp: 15, toNextLevel: 60, gp: 9 }, needsCron: true, party: { _id: 'party-fixture' }, auth: { secret: accounts[0].apiToken } } }, { headers: responseHeaders });
   assert.ok(url.searchParams.get('dueDate'));
   assert.ok(Number.isFinite(Date.parse(url.searchParams.get('dueDate'))));
   return Response.json({ success: true, data: url.searchParams.get('type') === 'completedTodos' ? [{ id: ids[4], type: 'todo', text: 'Completed To Do', completed: true }] : activeTasks }, { headers: responseHeaders });
@@ -37,6 +37,14 @@ async function connected(t, options = {}, account = accounts[0], scope = 'profil
 async function rpc(f, token, name, args = {}, moreHeaders = {}) {
   return f.mcp.fetch(resource, { method: 'POST', headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json', accept: 'application/json, text/event-stream', ...moreHeaders }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } }) });
 }
+
+test('account status uses the actual top-level server readiness and leaves malformed values unknown',async t=>{
+ let readiness=true;
+ const f=await connected(t,{habitica:request=>Response.json({success:true,data:{_id:request.headers.get('x-api-user'),profile:{name:'Fixture A'},needsCron:readiness,flags:{needsCron:readiness!==true}}})});
+ for(const [value,expected]of [[true,true],[false,false],[undefined,null],['false',null],[0,null],[{},null]]){
+  readiness=value;const result=await f.client.callTool({name:'get_account_status',arguments:{}});assert.equal(result.structuredContent.needsCron,expected);
+ }
+});
 
 test('SDK initialization, strict tool schemas and useful read-only outputs', async t => {
   const f = await connected(t, { habitica });

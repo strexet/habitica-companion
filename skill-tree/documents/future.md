@@ -346,51 +346,35 @@ Requirements:
 Expected behavior:
 - Legacy users retain existing data and existing gameplay workflows; users can switch advanced features off without corrupting records; recovery after interrupted migration is validated.
 
+### Investigate parallel Miniflare lifecycle qualification instability
+
+```yaml
+id: P-28d6ece4-a519-44a8-9625-3367479a03c3
+priority: 97
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: T-b92db026-a8cf-5922-8556-666cbea947ab
+related_task_id: T-90a73b3c-0a12-4387-a4dd-8fadb6d51995
+relation: followup
+depends_on: []
+```
+
+Description:
+- Investigate the recurring synthetic identity/lifecycle fixture failure seen only during parallel suite execution. Preserve all stale-epoch and replacement-session assertions.
+
+Expected behavior:
+- Qualification identifies and removes the host/transport or source cause of intermittent replacement-session 401 responses without weakening isolation checks or relabeling missing evidence as product success.
+
+Current context:
+- A parallel Workspace run failed on the replacement export in the delete case. Fifteen isolated repetitions passed; a serial diagnostic discovery run passed all 64 discovered modules including one helper. No production cause is established. The earlier response-buffer repair did not eliminate every observed parallel failure.
+
+Source:
+- /tmp/habitica-readiness-companion-workspace-tests.txt, /tmp/habitica-readiness-lifecycle-diagnostic.txt and /tmp/habitica-readiness-workspace-serial-diagnostic.txt; unchanged workspace.test.mjs security assertions.
+
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
-
-### Read actual server Cron readiness instead of synthetic flag fields
-
-```yaml
-id: T-90a73b3c-0a12-4387-a4dd-8fadb6d51995
-priority: 102
-status: Ready
-parent_pending_ids: ["P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1"]
-processing_run_id: PR-119edc02-2ff9-44cd-9dbf-bbd7bb9f6bcb
-root_task_id: T-b92db026-a8cf-5922-8556-666cbea947ab
-related_task_id: T-c754c836-f4b7-413c-9733-35f18a0db6a6
-relation: blocker
-depends_on: ["T-211d2ac1-5778-47fb-8148-c9e1a320e31a"]
-```
-
-Goal:
-- Correct the verified upstream readiness mismatch before building the remote Cron flow.
-Current behavior:
-- Auth account status reads flags.needsCron and projection uses a filtered user read that omits computed needsCron. The PWA parser ignores the authoritative top-level value.
-Desired behavior:
-- Account status, Daily projection and the PWA consume actual full UserGet top-level readiness. Unavailable authoritative server readiness cannot authorize a server mutation.
-Touch:
-- Auth account/projection reads, PWA API snapshot parser, faithful synthetic fixtures and focused regressions.
-Discovery allowance:
-- Use the existing bounded full-user read for computed readiness; preserve narrow normalized output and redaction.
-Out of scope:
-- Implementing Cron, changing day formulas, guessing travel/DST readiness, real network effects and unrelated refactors.
-Implementation constraints:
-- Prefer the explicit top-level boolean over local inferred day state in the PWA. Existing PWA fallback remains only when the top-level value is absent; do not use flags.needsCron.
-- Server projection requires a top-level boolean from an unfiltered read and existing verified timezone/day checks; malformed/missing readiness blocks safely.
-Questions and required clarifications:
-- [Resolved - source evidence and standing owner direction] Actual upstream UserGet source defines the field and computed-read behavior; this required repair is covered by the approved local workflow.
-Validation:
-- Faithful full-user fixtures, conflicting top-level/local/legacy flag cases, missing/malformed values, Daily scoring refusal/success and redaction.
-- Build Workers and app; run focused and regression suites and check app behavior.
-Acceptance:
-- Server account status and Daily projection use actual authoritative top-level readiness; missing/malformed values never authorize Daily effects.
-- The PWA honors the server boolean before local fallback and synthetic fixtures match upstream response structure.
-Documentation updates:
-- habitica-api.md, features.md, technical.md, cron.md and testing.md.
-Risks:
-- Incorrect day readiness or fixtures masking real server incompatibility.
 
 ### Verify a one-dispatch private Cron gateway
 
