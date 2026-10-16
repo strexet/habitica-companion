@@ -23,6 +23,8 @@ namespace Habitica.WebApp.State;
 
 public sealed class AppSessionController : IAppSessionController
 {
+    private readonly object _refreshViewGate = new();
+    private long _refreshViewGeneration;
     private const decimal HealthPotionGoldCost = HealthPotionRecoveryEstimateFactory.HealthPotionGoldCost;
     private const decimal GemGoldCost = 20m;
     private static readonly TimeSpan SpellPreparationDelay = TimeSpan.FromSeconds(1);
@@ -220,6 +222,7 @@ public sealed class AppSessionController : IAppSessionController
             return;
         }
 
+        var viewGeneration = BeginRefreshView();
         var pageDomains = ResolvePageDomains(pageRoute);
         var allDomains = new[] { RefreshDomain.UserProfile, RefreshDomain.Tasks, RefreshDomain.Party, RefreshDomain.GearCatalog };
         var requests = new List<(RefreshDomain Domain, RefreshPriority Priority)>();
@@ -235,7 +238,7 @@ public sealed class AppSessionController : IAppSessionController
         }
 
         var domainStates = MarkDomainsFetching(requests, RefreshReason.ManualRefresh);
-        SetState(State with { ErrorMessage = null, DomainStates = domainStates });
+        SetRefreshState(viewGeneration, state => state with { ErrorMessage = null, DomainStates = domainStates });
 
         await _refreshCoordinator.RefreshDomainsAsync(
             credentials,
@@ -243,27 +246,48 @@ public sealed class AppSessionController : IAppSessionController
             state =>
             {
                 domainStates[state.Domain] = state;
-                LoadCachedStateAndNotify(domainStates, cancellationToken);
+                LoadCachedStateAndNotify(domainStates, viewGeneration, cancellationToken);
             },
             cancellationToken,
             RefreshReason.ManualRefresh);
 
         await LoadCachedStateAsync(cancellationToken);
-        SetState(State with { DomainStates = domainStates });
+        SetRefreshState(viewGeneration, state => state with { DomainStates = domainStates });
         _ = TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken, RefreshReason.ManualRefresh);
         _ = TryMergeAndUploadPartySyncAsync(credentials, cancellationToken);
     }
 
     private void LoadCachedStateAndNotify(
         Dictionary<RefreshDomain, DomainRefreshState> domainStates,
+        long viewGeneration,
         CancellationToken cancellationToken)
     {
+        if (viewGeneration != Interlocked.Read(ref _refreshViewGeneration)) return;
+        var notificationStates = new Dictionary<RefreshDomain, DomainRefreshState>(domainStates);
         _ = Task.Run(async () =>
         {
+            if (viewGeneration != Interlocked.Read(ref _refreshViewGeneration)) return;
             await LoadCachedStateAsync(cancellationToken);
-            PreserveSyncDomainStates(domainStates);
-            SetState(State with { DomainStates = new Dictionary<RefreshDomain, DomainRefreshState>(domainStates) });
+            if (viewGeneration != Interlocked.Read(ref _refreshViewGeneration)) return;
+            SetRefreshState(viewGeneration, state =>
+            {
+                PreserveSyncDomainStates(notificationStates);
+                return state with { DomainStates = notificationStates };
+            });
         }, cancellationToken);
+    }
+
+    private long BeginRefreshView()
+    {
+        lock (_refreshViewGate) return ++_refreshViewGeneration;
+    }
+
+    private void SetRefreshState(long viewGeneration, Func<SessionViewModel, SessionViewModel> update)
+    {
+        lock (_refreshViewGate)
+        {
+            if (viewGeneration == _refreshViewGeneration) SetState(update(State));
+        }
     }
 
     private Dictionary<RefreshDomain, DomainRefreshState> MarkDomainsFetching(
@@ -4464,6 +4488,7 @@ public sealed class AppSessionController : IAppSessionController
 
     private async Task SignInCoreAsync(SignInRequest request, CancellationToken cancellationToken)
     {
+        BeginRefreshView();
         if (string.IsNullOrWhiteSpace(request.UserId) || string.IsNullOrWhiteSpace(request.ApiToken))
         {
             SetState(State with
@@ -4545,6 +4570,7 @@ public sealed class AppSessionController : IAppSessionController
 
     private async Task CompleteSignInRefreshAsync(HabiticaCredentials credentials)
     {
+        var viewGeneration = Interlocked.Read(ref _refreshViewGeneration);
         var cancellationToken = CancellationToken.None;
         var domainStates = State.DomainStates is null
             ? new Dictionary<RefreshDomain, DomainRefreshState>()
@@ -4564,7 +4590,7 @@ public sealed class AppSessionController : IAppSessionController
                 state =>
                 {
                     domainStates[state.Domain] = state;
-                    LoadCachedStateAndNotify(domainStates, cancellationToken);
+                    LoadCachedStateAndNotify(domainStates, viewGeneration, cancellationToken);
                 },
                 cancellationToken,
                 RefreshReason.AppBoot);
@@ -4573,11 +4599,11 @@ public sealed class AppSessionController : IAppSessionController
             await TryMergeAndUploadCloudSyncAsync(credentials, cancellationToken, RefreshReason.AppBoot);
             await TryMergeAndUploadPartySyncAsync(credentials, cancellationToken);
             await LoadCachedStateAsync(cancellationToken);
-            PreserveSyncDomainStates(domainStates);
-
-            SetState(State with
+            if (viewGeneration != Interlocked.Read(ref _refreshViewGeneration)) return;
+            SetRefreshState(viewGeneration, state =>
             {
-                DomainStates = domainStates
+                PreserveSyncDomainStates(domainStates);
+                return state with { DomainStates = domainStates };
             });
         }
         catch (Exception exception)
@@ -4594,7 +4620,8 @@ public sealed class AppSessionController : IAppSessionController
                 },
                 cancellationToken);
 
-            SetState(State with
+            if (viewGeneration != Interlocked.Read(ref _refreshViewGeneration)) return;
+            SetRefreshState(viewGeneration, state => state with
             {
                 ErrorMessage = exception.Message,
                 DomainStates = domainStates

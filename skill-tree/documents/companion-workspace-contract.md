@@ -63,7 +63,7 @@ Sources checked on 2026-10-15: [Habitica group controller](https://github.com/Ha
 
 ## Proposed local Cron continuation
 
-Status: proposed on 2026-10-16; owner selection is required before implementation of `T-b92db026-a8cf-5922-8556-666cbea947ab`. Approval covers disabled local code and synthetic tests. Real multi-user qualification remains mandatory before exposing Cron in a live environment; no deployment or real Cron call is proposed here.
+Status: owner-approved on 2026-10-16 for local implementation and synthetic tests of `T-b92db026-a8cf-5922-8556-666cbea947ab`. Approval covers disabled local code and synthetic tests. Real multi-user qualification remains mandatory before exposing Cron in a live environment; no deployment or real Cron call is proposed here.
 
 Current evidence: the inspected [Cron controller](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/cron.js) sends a successful empty response after `cronWrapper` completes. The [wrapper](https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/cron.js) saves user/tasks and `lastCron` before processing quest progress. An exception can therefore follow the personal day transition. Source checked on 2026-10-16. The following reconciliation policy is an application design inferred from that ordering.
 
@@ -75,7 +75,7 @@ Proposed qualification: independent `habitica.cron.execute` consent, cross-profi
 
 ## Proposed hardening and release scope
 
-Status: proposed on 2026-10-16; capability selection is required before implementation of `T-96866c8f-9554-55d8-a638-6d8b5afaf21c`. The recommended scope covers all locally implemented tools: profile/account reads, canonical tasks and projection, authenticated party planning, and reviewed Blessing casts. Cron remains disabled for live release until the separate gate passes. An alternative initial scope contains only profile/account reads and canonical task tools; party/spell flags then remain off throughout rollout qualification.
+Status: owner-selected on 2026-10-16 for local implementation and synthetic tests of `T-96866c8f-9554-55d8-a638-6d8b5afaf21c`. The selected scope covers all locally implemented tools: profile/account reads, canonical tasks and projection, authenticated party planning, and reviewed Blessing casts. Cron remains disabled for live release until the separate gate passes. Live activation remains separate for every capability.
 
 Current source evidence: vault disconnect/deletion already remove encrypted credentials and revoke new access; OAuth/linking cleanup and stable re-enrollment identity have synthetic coverage. Settings already exposes linking, disconnect and profile deletion. Workspace owns task/history export/deletion, planning contributor cleanup and separate spell-history export. Separate grant-only revocation, operator encryption-key migration, complete permission/usage status, aggregate operational limits and E14 release qualification remain distinct hardening work. Existing local fixtures do not prove real device behavior or two-user host enrollment.
 
@@ -88,3 +88,7 @@ After scope selection, Process Pending records required implementation dependenc
 5. Release qualification: documented owner-first and one-consenting-teammate stages, separate preview/production resource checks, real iOS Safari/PWA and Android checks, and independent enrollment/tool/revocation with two consenting accounts in an explicitly authorized environment. Production log inspection uses redaction and minimum retention. Missing devices, accounts, endpoints, host access or deployment authorization remain recorded release blockers.
 
 Selection authorizes local implementation and synthetic tests for the chosen capabilities. Deployment, production secret changes, real enrollment, host installation, messages and real game effects remain separate. The hardening root cannot complete the real two-user acceptance criterion using synthetic accounts. Included E14 capability dependencies are captured before implementation; no unrelated Pending or Backlog work is promoted.
+
+## Standing local contract direction
+
+The owner directed automatic adoption of further contracts on 2026-10-16 within the existing Implement All snapshot and required dependencies. This direction covers local implementation and synthetic checks, including the approved conservative Cron policy and all implemented tools for hardening. Agents record concrete contracts and source evidence before implementation without repeated contract-approval prompts. Missing facts remain unresolved; automatic adoption does not invent external state or qualify unrun acceptance checks. Deployment, production secret changes, real enrollment, host installation, device qualification, messages and live Habitica effects remain separate.

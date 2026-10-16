@@ -1,0 +1,49 @@
+{
+  "task_id": "T-211d2ac1-5778-47fb-8148-c9e1a320e31a",
+  "result": "pass",
+  "checks": [
+    {
+      "check": "Original-source controlled negative cases",
+      "result": "expected failure",
+      "cases": 2,
+      "observed": "Both expected Visible, observed Background."
+    },
+    {
+      "check": "Exact staged-source app build",
+      "result": "pass"
+    },
+    {
+      "check": "Exact staged-source full .NET suites",
+      "result": "pass",
+      "passed": 527
+    },
+    {
+      "check": "Working-tree app build",
+      "result": "pass",
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "check": "Working-tree full .NET suites",
+      "result": "pass",
+      "passed": 531,
+      "context": "Includes four uncommitted parent API readiness cases."
+    },
+    {
+      "check": "Rebuilt app Settings unavailable guards",
+      "result": "pass",
+      "evidence": "skill-tree/history/validation/refresh-priority-default-settings.jpg"
+    }
+  ],
+  "coverage": [
+    "Shared Party fetch performs one network call but returns background/AppBoot versus visible/ManualRefresh per caller",
+    "An older page equipment-cache read is held until a newer page finishes; releasing the older view cannot replace current priorities",
+    "Sign-in/page notifications carry generation ownership; dictionaries are copied before deferred loading",
+    "Generation changes and status publication share a synchronous gate without awaiting under a lock"
+  ],
+  "limitations": [
+    "No live Habitica requests, credentials, deployment or production state changes.",
+    "The separate readiness parent remains uncommitted and is excluded from the exact staged-source build/tests.",
+    "An unrelated parallel Miniflare lifecycle fixture failed once; fifteen isolated repetitions and a serial diagnostic suite passed. That observation is not classified as a production defect or covered by this .NET repair."
+  ]
+}

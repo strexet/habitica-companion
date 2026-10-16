@@ -28,7 +28,8 @@
       "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d",
       "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f",
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7",
-      "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"
+      "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+      "T-211d2ac1-5778-47fb-8148-c9e1a320e31a"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -37,6 +38,7 @@
       "T-16a38176-f2fe-5f7d-a809-546f17357b49": "O-7d50e0cb-ee45-4fe5-bd54-6b38b3b22e6e",
       "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec": "O-1cbc3cfc-9cf0-4922-8317-4c16090d9aa0",
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
+      "T-211d2ac1-5778-47fb-8148-c9e1a320e31a": "O-ee0b74ce-2986-417f-95b7-92a78a6bfe88",
       "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d": "O-9ebb8704-9e9e-405c-b175-bec36f05b86c",
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3": "O-48ebee79-cbbb-4c1c-829c-038c887076e9",
       "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3": "O-f684df86-5cbd-4a55-9f83-286b66f0d3d6",
@@ -60,19 +62,17 @@
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b",
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e"
     },
-    "current_task_id": null,
-    "cycle_signature": "5173c5fddd767c5310b1d14d1a6f6bd290c0a79aacabc93d4eb85f543aef7471",
+    "current_task_id": "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
+    "cycle_signature": "6ec2c1611b41d8bdc6a28abfc7c49fc493060bd537550cae9eae59fc41f1c373",
     "deferred_ids": [],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Review concrete local Cron/hardening contracts; obtain owner selections before implementation. No live activation is authorized.",
+    "next_action": "implement",
     "partial_work": [
-      "Party/spell root and required descendants are complete and committed.",
-      "Nine of eleven initial prioritized roots are complete.",
-      "The next Cron root requires an approved reconciliation contract and retains the real multi-user activation gate.",
-      "Security rollout requires explicit selected capabilities and E14 decomposition.",
-      "Concrete Cron reconciliation and hardening/release-scope proposals are recorded in companion-workspace-contract.md; owner questions are pending."
+      "Owner adopted the local Cron contract and selected all implemented tools with live Cron off on 2026-10-16.",
+      "Further contracts inside the initial snapshot and required dependencies are adopted automatically for local implementation and synthetic checks.",
+      "Live activation, real enrollment, device qualification and production secret changes remain separate."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -92,9 +92,12 @@
       "P-084f4079-44b9-4799-8b43-9a7ee012b93b",
       "P-e26d8c99-365e-49bf-9345-fa5e7cbbb61f",
       "P-f4cf9801-4310-4923-b210-826b1c227e3a",
-      "P-d34a0b07-32a5-48dc-acdd-7da4d17f9d4e"
+      "P-d34a0b07-32a5-48dc-acdd-7da4d17f9d4e",
+      "P-00657a7e-98a7-4fd9-b6be-b0fdb427feb4",
+      "P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1",
+      "P-74e56de7-49ae-4791-bcce-a596f758d362"
     ],
-    "phase": "awaiting-clarification",
+    "phase": "implement",
     "processing_results": [
       {
         "created_ids": [
@@ -418,6 +421,63 @@
         "task_keys": {
           "reviewed-spells": "T-05547c12-8391-4d20-a0cb-0371361d6cd7"
         }
+      },
+      {
+        "created_ids": [
+          "T-c754c836-f4b7-413c-9733-35f18a0db6a6"
+        ],
+        "dispositions": {
+          "P-00657a7e-98a7-4fd9-b6be-b0fdb427feb4": {
+            "reason": "The approved conservative contract and current Auth/C# source define the private single-dispatch boundary and required synthetic cases.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-8580ede7-422b-4ccd-aab8-5565fe1f16f0",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-00657a7e-98a7-4fd9-b6be-b0fdb427feb4"
+        ],
+        "task_keys": {
+          "private-cron": "T-c754c836-f4b7-413c-9733-35f18a0db6a6"
+        }
+      },
+      {
+        "created_ids": [
+          "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995"
+        ],
+        "dispositions": {
+          "P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1": {
+            "reason": "Current upstream source proves the top-level computed field and the filtered-read mismatch; the fix is required for the Cron gateway and existing Daily projection.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-119edc02-2ff9-44cd-9dbf-bbd7bb9f6bcb",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1"
+        ],
+        "task_keys": {
+          "readiness-shape": "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995"
+        }
+      },
+      {
+        "created_ids": [
+          "T-211d2ac1-5778-47fb-8148-c9e1a320e31a"
+        ],
+        "dispositions": {
+          "P-74e56de7-49ae-4791-bcce-a596f758d362": {
+            "reason": "Source proves both stale metadata paths behind the observed page-priority regression; a controlled test can qualify the repair.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-1a33dcce-10f9-4a1c-83eb-e17a63076baf",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-74e56de7-49ae-4791-bcce-a596f758d362"
+        ],
+        "task_keys": {
+          "refresh-priority": "T-211d2ac1-5778-47fb-8148-c9e1a320e31a"
+        }
       }
     ],
     "required_ids": [
@@ -448,9 +508,13 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367",
       "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3",
       "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f",
-      "T-05547c12-8391-4d20-a0cb-0371361d6cd7"
+      "T-05547c12-8391-4d20-a0cb-0371361d6cd7",
+      "T-b92db026-a8cf-5922-8556-666cbea947ab",
+      "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
+      "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
+      "T-211d2ac1-5778-47fb-8148-c9e1a320e31a"
     ],
-    "root_task_id": "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+    "root_task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
     "snapshot": [
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df",
@@ -465,10 +529,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Required clarification remains for Cron reconciliation and selected rollout capabilities."
+    "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "9c2ee48d02d3683b31a90681062459ece0d40a68ff981cce25eb3b7bf9befb74",
+  "source_hash": "c6f2b5919acfc533acbbc097e650b53fcb13dad40253df54644c4019cd78942a",
   "tasks": [
     {
       "depends_on": [],
@@ -598,6 +662,42 @@
     },
     {
       "depends_on": [
+        "T-211d2ac1-5778-47fb-8148-c9e1a320e31a"
+      ],
+      "id": "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
+      "line": 353,
+      "parent_pending_ids": [
+        "P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1"
+      ],
+      "priority": 102,
+      "processing_run_id": "PR-119edc02-2ff9-44cd-9dbf-bbd7bb9f6bcb",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
+      "relation": "blocker",
+      "root_task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
+      "status": "Ready",
+      "title": "Read actual server Cron readiness instead of synthetic flag fields"
+    },
+    {
+      "depends_on": [
+        "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995"
+      ],
+      "id": "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
+      "line": 395,
+      "parent_pending_ids": [
+        "P-00657a7e-98a7-4fd9-b6be-b0fdb427feb4"
+      ],
+      "priority": 101,
+      "processing_run_id": "PR-8580ede7-422b-4ccd-aab8-5565fe1f16f0",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
+      "relation": "subtask",
+      "root_task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
+      "status": "Ready",
+      "title": "Verify a one-dispatch private Cron gateway"
+    },
+    {
+      "depends_on": [
         "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
         "T-c6f6b09d-4625-5898-b91c-016c611b60df",
         "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
@@ -606,10 +706,11 @@
         "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
         "T-4a1de222-156a-52cf-8966-262a2c8216ed",
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
-        "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"
+        "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+        "T-c754c836-f4b7-413c-9733-35f18a0db6a6"
       ],
       "id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "line": 353,
+      "line": 440,
       "parent_pending_ids": [
         "P-46dde168-2e75-53fd-b2c0-0c1769f7711d"
       ],
@@ -619,7 +720,7 @@
       "related_task_id": null,
       "relation": "main",
       "root_task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "status": "Blocked pending answers",
+      "status": "Ready",
       "title": "Add Start New Day Only As A Dedicated High-Risk Feature"
     },
     {
@@ -627,7 +728,7 @@
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 479,
+      "line": 566,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -637,13 +738,13 @@
       "related_task_id": null,
       "relation": "main",
       "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "status": "Blocked pending answers",
+      "status": "Ready",
       "title": "Security Hardening, Revocation, Key Rotation, And Team Rollout"
     },
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 634,
+      "line": 721,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -657,7 +758,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 671,
+      "line": 758,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -671,7 +772,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 708,
+      "line": 795,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -685,7 +786,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 841,
+      "line": 928,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -699,7 +800,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 879,
+      "line": 966,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -713,7 +814,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 913,
+      "line": 1000,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -727,7 +828,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 948,
+      "line": 1035,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -741,7 +842,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 982,
+      "line": 1069,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -755,7 +856,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1020,
+      "line": 1107,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -769,7 +870,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1047,
+      "line": 1134,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -783,7 +884,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1069,
+      "line": 1156,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -797,7 +898,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1096,
+      "line": 1183,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

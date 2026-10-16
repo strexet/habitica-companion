@@ -105,7 +105,7 @@ public sealed class RefreshCoordinator
     {
         if (_inflight.TryGetValue(domain, out var existing) && !existing.IsCompleted)
         {
-            return MarkDeduplicatedAsync(existing, cancellationToken);
+            return MarkDeduplicatedAsync(existing, reason, priority, cancellationToken);
         }
 
         var task = DispatchDomainAsync(domain, credentials, reason, priority, cancellationToken);
@@ -165,10 +165,12 @@ public sealed class RefreshCoordinator
 
     private async Task<DomainRefreshState> MarkDeduplicatedAsync(
         Task<DomainRefreshState> existing,
+        RefreshReason reason,
+        RefreshPriority priority,
         CancellationToken cancellationToken)
     {
         var result = await existing;
-        var deduplicated = result with { Deduplicated = true };
+        var deduplicated = result with { Deduplicated = true, Reason = reason, Priority = priority };
         await WriteRefreshDiagnosticsAsync(deduplicated, cancellationToken);
         return deduplicated;
     }

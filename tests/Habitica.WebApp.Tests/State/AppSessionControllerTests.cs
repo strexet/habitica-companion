@@ -178,6 +178,64 @@ public sealed class AppSessionControllerTests
     }
 
     [Fact]
+    public async Task Shared_refresh_retains_each_callers_reason_and_priority()
+    {
+        var pending = new TaskCompletionSource<PartySnapshot>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var client = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot()) { PendingPartySnapshot = pending.Task };
+        var storage = new FakeKeyValueStorage();
+        var coordinator = new RefreshCoordinator(client, new UserSnapshotStore(storage), new TaskSnapshotStore(storage),
+            new PartySnapshotStore(storage), new PartyCronHistoryStore(storage), new GearCatalogStore(storage),
+            new DiagnosticsLogWriter(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), TimeProvider.System),
+            new SnapshotFreshnessPolicy(), TimeProvider.System);
+        await new UserSnapshotStore(storage).SaveAsync(CreateUserSnapshot(), CancellationToken.None);
+        var credentials = new HabiticaCredentials("fixture-user", "fixture-token");
+        var background = coordinator.RefreshDomainsAsync(credentials, [(RefreshDomain.Party, RefreshPriority.Background)], _ => { }, CancellationToken.None, RefreshReason.AppBoot);
+        var visible = coordinator.RefreshDomainsAsync(credentials, [(RefreshDomain.Party, RefreshPriority.Visible)], _ => { }, CancellationToken.None, RefreshReason.ManualRefresh);
+        Assert.Equal(1, client.GetPartySnapshotCalls);
+        pending.SetResult(CreatePartySnapshot());
+        var first = Assert.Single(await background);
+        var second = Assert.Single(await visible);
+        Assert.Equal(RefreshPriority.Background, first.Priority);
+        Assert.Equal(RefreshReason.AppBoot, first.Reason);
+        Assert.False(first.Deduplicated);
+        Assert.Equal(RefreshPriority.Visible, second.Priority);
+        Assert.Equal(RefreshReason.ManualRefresh, second.Reason);
+        Assert.True(second.Deduplicated);
+    }
+
+    [Fact]
+    public async Task Older_page_refresh_cannot_replace_the_latest_page_status_after_delayed_cache_reads()
+    {
+        var storage = new FakeKeyValueStorage();
+        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), keyValueStorage: storage);
+        await controller.SignInAsync(new SignInRequest { UserId = "fixture-user", ApiToken = "fixture-token", PersistLocally = false });
+        var tag = new AsyncLocal<string>();
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        storage.BeforeGetAsync = async key =>
+        {
+            if (tag.Value == "older" && key == StorageKeys.EquipmentPresets)
+            {
+                entered.TrySetResult();
+                await release.Task;
+            }
+        };
+        tag.Value = "older";
+        var older = controller.RefreshForPageAsync("https://localhost/quests");
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        try
+        {
+            tag.Value = "newer";
+            await controller.RefreshForPageAsync("https://localhost/tasks");
+            Assert.Equal(RefreshPriority.Visible, controller.State.DomainStates![RefreshDomain.Tasks].Priority);
+        }
+        finally { release.TrySetResult(); }
+        await older.WaitAsync(TimeSpan.FromSeconds(5));
+        Assert.Equal(RefreshPriority.Visible, controller.State.DomainStates![RefreshDomain.Tasks].Priority);
+        Assert.Equal(RefreshPriority.Background, controller.State.DomainStates[RefreshDomain.Party].Priority);
+    }
+
+    [Fact]
     public async Task RefreshForPageAsync_prioritizes_party_domains_for_quests_route()
     {
         var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()));
@@ -2244,11 +2302,14 @@ public sealed class AppSessionControllerTests
         private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
         private readonly Dictionary<string, string> _values = new(StringComparer.Ordinal);
 
-        public Task<TValue?> GetAsync<TValue>(string key, CancellationToken cancellationToken)
+        public Func<string, Task>? BeforeGetAsync { get; set; }
+
+        public async Task<TValue?> GetAsync<TValue>(string key, CancellationToken cancellationToken)
         {
-            return Task.FromResult(_values.TryGetValue(key, out var json)
+            if (BeforeGetAsync is not null) await BeforeGetAsync(key);
+            return _values.TryGetValue(key, out var json)
                 ? JsonSerializer.Deserialize<TValue>(json, JsonOptions)
-                : default);
+                : default;
         }
 
         public Task<string?> GetRawJsonAsync(string key, CancellationToken cancellationToken)
@@ -2940,6 +3001,8 @@ public sealed class AppSessionControllerTests
 
         public PartySnapshot PartySnapshot { get; set; }
 
+        public Task<PartySnapshot>? PendingPartySnapshot { get; set; }
+
         public int GetPartySnapshotCalls { get; private set; }
 
         public string? GetPartySnapshotFailureMessage { get; set; }
@@ -2952,7 +3015,7 @@ public sealed class AppSessionControllerTests
                 throw new InvalidOperationException(GetPartySnapshotFailureMessage);
             }
 
-            return Task.FromResult(PartySnapshot);
+            return PendingPartySnapshot ?? Task.FromResult(PartySnapshot);
         }
 
         public int GetTasksCalls { get; private set; }

@@ -350,18 +350,105 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
+### Read actual server Cron readiness instead of synthetic flag fields
+
+```yaml
+id: T-90a73b3c-0a12-4387-a4dd-8fadb6d51995
+priority: 102
+status: Ready
+parent_pending_ids: ["P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1"]
+processing_run_id: PR-119edc02-2ff9-44cd-9dbf-bbd7bb9f6bcb
+root_task_id: T-b92db026-a8cf-5922-8556-666cbea947ab
+related_task_id: T-c754c836-f4b7-413c-9733-35f18a0db6a6
+relation: blocker
+depends_on: ["T-211d2ac1-5778-47fb-8148-c9e1a320e31a"]
+```
+
+Goal:
+- Correct the verified upstream readiness mismatch before building the remote Cron flow.
+Current behavior:
+- Auth account status reads flags.needsCron and projection uses a filtered user read that omits computed needsCron. The PWA parser ignores the authoritative top-level value.
+Desired behavior:
+- Account status, Daily projection and the PWA consume actual full UserGet top-level readiness. Unavailable authoritative server readiness cannot authorize a server mutation.
+Touch:
+- Auth account/projection reads, PWA API snapshot parser, faithful synthetic fixtures and focused regressions.
+Discovery allowance:
+- Use the existing bounded full-user read for computed readiness; preserve narrow normalized output and redaction.
+Out of scope:
+- Implementing Cron, changing day formulas, guessing travel/DST readiness, real network effects and unrelated refactors.
+Implementation constraints:
+- Prefer the explicit top-level boolean over local inferred day state in the PWA. Existing PWA fallback remains only when the top-level value is absent; do not use flags.needsCron.
+- Server projection requires a top-level boolean from an unfiltered read and existing verified timezone/day checks; malformed/missing readiness blocks safely.
+Questions and required clarifications:
+- [Resolved - source evidence and standing owner direction] Actual upstream UserGet source defines the field and computed-read behavior; this required repair is covered by the approved local workflow.
+Validation:
+- Faithful full-user fixtures, conflicting top-level/local/legacy flag cases, missing/malformed values, Daily scoring refusal/success and redaction.
+- Build Workers and app; run focused and regression suites and check app behavior.
+Acceptance:
+- Server account status and Daily projection use actual authoritative top-level readiness; missing/malformed values never authorize Daily effects.
+- The PWA honors the server boolean before local fallback and synthetic fixtures match upstream response structure.
+Documentation updates:
+- habitica-api.md, features.md, technical.md, cron.md and testing.md.
+Risks:
+- Incorrect day readiness or fixtures masking real server incompatibility.
+
+### Verify a one-dispatch private Cron gateway
+
+```yaml
+id: T-c754c836-f4b7-413c-9733-35f18a0db6a6
+priority: 101
+status: Ready
+parent_pending_ids: ["P-00657a7e-98a7-4fd9-b6be-b0fdb427feb4"]
+processing_run_id: PR-8580ede7-422b-4ccd-aab8-5565fe1f16f0
+root_task_id: T-b92db026-a8cf-5922-8556-666cbea947ab
+related_task_id: T-b92db026-a8cf-5922-8556-666cbea947ab
+relation: subtask
+depends_on: ["T-90a73b3c-0a12-4387-a4dd-8fadb6d51995"]
+```
+
+Goal:
+- Establish the private Cron safety boundary before exposing reviewed Workspace actions.
+Current behavior:
+- Task and spell gateways share durable Auth dispatch receipts and a gameplay lease. No remote Cron service exists.
+Desired behavior:
+- Private status, one-dispatch execution and receipt lookup use fresh actor/day/account/Daily/quest facts and independent OAuth scope checks.
+Touch:
+- Auth Cron entrypoint, shared contracts, flags/scopes, bounded upstream observation and synthetic fixtures.
+Discovery allowance:
+- Reuse the existing generic Auth attempt table and shared gameplay lease; add only a private named entrypoint and disabled feature flag.
+Out of scope:
+- Public/MCP execution, new PWA controls, scheduled Cron, real enrollment, deployment and real Habitica calls.
+Implementation constraints:
+- Current timezone/day start, lastCron and confirmed Cron requirement must agree. Fresh complete Daily/checklist data and relevant quest state enter an exact bounded fingerprint; missing critical data rejects preparation.
+- One POST /cron per durable attempt, shared task/spell lease and unknown-outcome fence, final enrollment/grant/quota checks and immutable terminal receipts.
+- Only a valid original successful response confirms completion. Missing receipts, changed lastCron/needsCron and server/transport failures never authorize replay or prove complete quest processing.
+- Keep CRON_ENABLED false in all shipped environments and persist no credentials/full raw snapshots.
+Questions and required clarifications:
+- [Resolved - owner decision] The owner adopted the concrete conservative local contract on 2026-10-16; subsequent required local contracts are adopted automatically within the active snapshot.
+Validation:
+- Synthetic cases cover actor/scope, day/lastCron/timezone, Daily/checklist/quest changes, expiry, no-Cron-needed, quota, concurrent/repeated attempts, storage failure, revocation and unknown outcomes.
+- Build Workers and app, run regression suites and check the default disabled app.
+Acceptance:
+- Fresh safety-critical actor/day/account/Daily/quest facts and independent grants gate one durable Cron dispatch.
+- Original receipts deduplicate execution and ambiguous Cron effects fence all gameplay without replay or inferred success from day progression.
+- Disabled shipped configuration and synthetic tests preserve the separate live activation gate.
+Documentation updates:
+- cron.md, habitica-api.md, features.md, technical.md, testing.md and deployment guidance.
+Risks:
+- Partial user/quest effects, wrong day, duplicated Cron and false success inference.
+
 ### Add Start New Day Only As A Dedicated High-Risk Feature
 
 ```yaml
 id: T-b92db026-a8cf-5922-8556-666cbea947ab
 priority: 98
-status: Blocked pending answers
+status: Ready
 parent_pending_ids: ["P-46dde168-2e75-53fd-b2c0-0c1769f7711d"]
 processing_run_id: null
 root_task_id: T-b92db026-a8cf-5922-8556-666cbea947ab
 related_task_id: null
 relation: main
-depends_on: ["T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e", "T-c6f6b09d-4625-5898-b91c-016c611b60df", "T-b883e33b-05a6-53d8-a9a5-d11d7008887f", "T-e33bccdc-22f1-5043-9230-3d12d9e9563d", "T-16a38176-f2fe-5f7d-a809-546f17357b49", "T-53352a18-54d2-57b6-accc-91f8e6dfad13", "T-4a1de222-156a-52cf-8966-262a2c8216ed", "T-3987ba88-f69f-59f1-811e-f51cabfa5978", "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec"]
+depends_on: ["T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e", "T-c6f6b09d-4625-5898-b91c-016c611b60df", "T-b883e33b-05a6-53d8-a9a5-d11d7008887f", "T-e33bccdc-22f1-5043-9230-3d12d9e9563d", "T-16a38176-f2fe-5f7d-a809-546f17357b49", "T-53352a18-54d2-57b6-accc-91f8e6dfad13", "T-4a1de222-156a-52cf-8966-262a2c8216ed", "T-3987ba88-f69f-59f1-811e-f51cabfa5978", "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec", "T-c754c836-f4b7-413c-9733-35f18a0db6a6"]
 ```
 
 Migration source:
@@ -444,9 +531,9 @@ Implementation constraints:
 - Preserve Habitica day boundary, buffs and quest-risk handling from `skill-tree/documents/cron.md`.
 
 Questions and required clarifications:
-- [Unresolved - blocks implementation] How will an ambiguous Cron result be reconciled safely?
+- [Resolved - owner decision] The owner adopted the conservative local Cron contract on 2026-10-16: original successful receipts alone confirm completion; observed day progression never proves full quest processing or permits replay.
   Reason: A second Cron call may have irreversible gameplay effects.
-  Required answer from: Owner selection of the concrete local reconciliation proposal in `companion-workspace-contract.md#proposed-local-cron-continuation`, researched against current server ordering on 2026-10-16. Real multi-user qualification remains a live activation gate.
+  Required answer from: Owner approval received; `companion-workspace-contract.md#proposed-local-cron-continuation` governs local implementation. Real multi-user qualification remains a live activation gate.
 
 Validation:
 - no-Cron-needed state.
@@ -481,7 +568,7 @@ Risks:
 ```yaml
 id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 priority: 97
-status: Blocked pending answers
+status: Ready
 parent_pending_ids: ["P-0ea957c0-5210-5931-b545-82b9f13197db"]
 processing_run_id: null
 root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
@@ -585,8 +672,8 @@ Implementation constraints:
 - Credential encryption-key rotation and stable profile-ID key rotation require separate procedures.
 
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Define the selected rollout capabilities, then record every included capability as a required T- dependency before hardening and rollout validation. E14 adoption and migration gates remain mandatory. The concrete choices and required dependency units reside in `companion-workspace-contract.md#proposed-hardening-and-release-scope`.
-- [Recommended default - confirmation optional] Which rollout group is appropriate?
+- [Resolved - owner decision] The owner selected all implemented tools with live Cron off on 2026-10-16. Record every included capability as a required T- dependency before hardening and rollout validation. E14 adoption and migration gates remain mandatory. The concrete choices and required dependency units reside in `companion-workspace-contract.md#proposed-hardening-and-release-scope`.
+- [Resolved - owner decision] Local qualification covers all implemented tools; live rollout remains separately scoped.
   Recommendation: Owner first, one trusted teammate second, then an expanded opt-in group.
   Rationale: Verify revocation, privacy, isolation and rate-limit behavior before expanding.
 
