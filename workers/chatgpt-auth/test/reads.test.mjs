@@ -162,3 +162,10 @@ test('late concurrent success cannot erase a quota cooldown', async t => {
   assert.equal((await f.client.callTool({ name: 'get_account_status', arguments: {} })).isError, true);
   assert.equal(calls, 2);
 });
+
+test('read tool scope challenge is complete for a fresh client grant',async t=>{
+ const f=await fixture(t);const profile=await enrolled(f);const initial=await(await exchange(f,await authorization(f,profile,'profile:read'))).json();
+ const call=token=>f.mcp.fetch(resource,{method:'POST',headers:{authorization:'Bearer '+token,'content-type':'application/json',accept:'application/json, text/event-stream'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:'get_account_status',arguments:{}}})});
+ const denied=await call(initial.access_token);assert.equal(denied.status,403);const requested=denied.headers.get('www-authenticate')?.match(/scope="([^"]+)"/)?.[1];assert.ok(requested);assert.ok(requested.split(' ').includes('profile:read'));assert.ok(requested.split(' ').includes('account:read'));
+ const upgraded=await(await exchange(f,await authorization(f,profile,requested))).json();const success=await call(upgraded.access_token);assert.equal(success.status,200);const result=await success.json();assert.equal(result.result?.isError,undefined);assert.ok(result.result?.structuredContent?.retrievedAtUtc);
+});

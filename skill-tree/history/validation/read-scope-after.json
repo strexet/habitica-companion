@@ -1,0 +1,20 @@
+{
+  "task_id": "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2",
+  "result": "pass",
+  "checks": {
+    "negative_control": "read-scope-before.json",
+    "fresh_scope_upgrade": "pass",
+    "auth_tests": 102,
+    "workspace_tests": 82,
+    "three_worker_builds": "pass",
+    "app_release_publish": "pass"
+  },
+  "coverage": [
+    "Profile-only grant denied with complete profile/account scope challenge",
+    "A fresh grant using exactly the advertised scopes successfully reads account status",
+    "No additional write scope or cross-profile permission granted"
+  ],
+  "limitations": [
+    "Synthetic Auth/MCP client; real ChatGPT and Codex connections remain unrun."
+  ]
+}

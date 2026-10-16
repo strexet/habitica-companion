@@ -54,7 +54,7 @@ export default {
           if(!quota.ok)return quota;
           if (name && Object.hasOwn(readScopes, name)) {
             const scope = readScopes[name as keyof typeof readScopes];
-            if (!context.auth.scope?.includes(scope)) return insufficientScope(context.auth, [scope]);
+            if (!context.auth.scope?.includes(scope)) return insufficientScope(context.auth, ["profile:read", scope]);
           }
           if(name&&Object.hasOwn(partyToolScopes,name)&&!context.auth.scope?.includes(partyToolScopes[name as PartyTool]))return insufficientScope(context.auth,["profile:read",partyToolScopes[name as PartyTool]]);
           if(name&&Object.hasOwn(cronToolScopes,name)&&cronToolScopes[name as CronTool].some(scope=>!context.auth.scope?.includes(scope)))return insufficientScope(context.auth,[...cronToolScopes[name as CronTool]]);

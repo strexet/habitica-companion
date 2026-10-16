@@ -38,7 +38,8 @@
       "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
       "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
-      "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00"
+      "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
+      "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -55,6 +56,7 @@
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8": "O-d3de5c55-c4ac-4eb9-9b46-36aa630adf68",
       "T-49eaa44e-5c98-4219-a380-4201e4143494": "O-9f6a3618-fbbf-4d96-b034-bbe5f19e01ca",
       "T-4a1de222-156a-52cf-8966-262a2c8216ed": "O-1be18cd1-6faf-47ff-bc66-14861e6858e4",
+      "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2": "O-1213a8c8-f039-463e-a137-ac7f9d6122e0",
       "T-4dd09108-6149-4ab2-9326-b6f53e05f811": "O-75a3f695-3334-45b4-8000-06045ef1ca34",
       "T-53352a18-54d2-57b6-accc-91f8e6dfad13": "O-02146734-4822-48de-81a5-71f0c7208776",
       "T-5737120b-52a5-4a57-9072-fce514adaf33": "O-53aa48f8-4d3c-4d9a-bb8b-12ec41ed3a60",
@@ -81,7 +83,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
-    "cycle_signature": "07c3f6a325fb8b0b52fb324d1a20ef3cf4af88d0e1be962e2906a7c47189699d",
+    "cycle_signature": "4390a34cddc0887ef8ac6ad21868a19a5952457bce8452e0ab3d31e4918a10b7",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
@@ -122,7 +124,8 @@
       "P-29925105-1015-5ced-8844-d56fa47e33c9",
       "P-08a257f2-27ad-4217-b434-3a378c565fc7",
       "P-92e12da3-2559-4bf4-819e-442254c9bd81",
-      "P-39328781-1536-468d-9e1c-3c0bad9c5cb3"
+      "P-39328781-1536-468d-9e1c-3c0bad9c5cb3",
+      "P-287005d4-1e7f-446d-a802-9f78aeca7e72"
     ],
     "phase": "implement",
     "processing_results": [
@@ -619,6 +622,23 @@
           "P-39328781-1536-468d-9e1c-3c0bad9c5cb3"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2"
+        ],
+        "dispositions": {
+          "P-287005d4-1e7f-446d-a802-9f78aeca7e72": {
+            "reason": "The failing scope-upgrade control demonstrates a required client-consent defect in the selected E14 scope.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-0cfc7f55-6e98-494f-b0e5-654ea4cd2fd7",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-287005d4-1e7f-446d-a802-9f78aeca7e72"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -662,7 +682,8 @@
       "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
       "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
       "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08",
-      "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00"
+      "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
+      "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2"
     ],
     "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "snapshot": [
@@ -682,7 +703,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "6ebc9dfc9a37de53f0c24bd889cdacd0fa561a61a48f7870a456c04cf49c9c3b",
+  "source_hash": "0e2a45a28e019f85c95750d117ec8d9efb55554f6528370d7c3d4d25dfd9566d",
   "tasks": [
     {
       "depends_on": [],
@@ -802,7 +823,8 @@
         "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
         "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
         "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08",
-        "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00"
+        "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
+        "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2"
       ],
       "id": "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
       "line": 324,

@@ -1,0 +1,8 @@
+{
+  "result": "expected-failure",
+  "source_commit": "4c6f292",
+  "mcp_source_sha256": "e856d70cf8548917e09087d74cff665d7560c4f6ed36f41840e88058c569a5ee",
+  "missing_scope": "profile:read",
+  "expected_negative_controls": 1,
+  "positive_callback_controls": 1
+}
