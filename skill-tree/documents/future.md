@@ -321,45 +321,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Publish the selected production website and verify hosted boundaries
-
-```yaml
-id: T-34491faa-090e-4d97-b496-1fe947770688
-priority: 101
-status: Ready
-parent_pending_ids: ["P-f7230fa1-ddc2-4070-bc06-0d327c058990"]
-processing_run_id: PR-fa5639d7-7b15-4e36-9349-27e340b923ed
-root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
-related_task_id: T-d76d2a9a-1318-4e63-9bb4-73f620b108cc
-relation: subtask
-depends_on: ["T-58907376-21eb-417f-988e-fe65449a0bb7"]
-```
-
-Goal:
-- Publish the selected existing production website and qualify unauthenticated hosted behavior.
-Current behavior:
-- Production resources and local bundles are ready; application publication and remote transport qualification remain unrun.
-Desired behavior:
-- Auth, Workspace and MCP publish in dependency order, followed by the current develop-built website in the existing main Pages slot. Public checks confirm routing, settings, health, OAuth identities and authentication/CORS refusals.
-Touch:
-- Reviewed generated production configs, Cloudflare deployment resources, public hosted checks and sanitized deployment evidence.
-Discovery allowance:
-- Recheck account, secret names, current website slot and retained bindings before mutation; use locked Wrangler and current official docs.
-Out of scope:
-- Reading secret values, real credential enrollment, per-account consent, gameplay writes, live Cron, device operations, Git merge/push or changing automatic Git deployment settings.
-Implementation constraints:
-- Preserve existing Pages KV/party D1 bindings and record rollback identity/source commit. Projection, party planning, spells, executor, key operations and Cron stay disabled. Verify host logs/retention independently before real enrollment.
-Questions and required clarifications:
-- None for authorized publication and public checks. Owner account/client enrollment and broader release gates remain separate.
-Validation:
-- Check required secret names and exact production configuration, publish built backends then Pages, verify stable HTTPS/routed pages and published settings, probe OAuth metadata plus unauthenticated/CORS boundaries and inspect default browser UI.
-Acceptance:
-- The selected stable production website serves the recorded develop source and exact production integration endpoints with retained browser bindings, healthy backend transport and passing unauthenticated boundary checks.
-Documentation updates:
-- Current deployment result, readiness record, owner next action and preserved unrun account/client/device gates.
-Risks:
-- Accidental wrong-slot upload, endpoint/binding mismatch, exposing game effects or confusing public smoke checks with real account acceptance.
-
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml
@@ -377,9 +338,9 @@ depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f4
 Goal:
 - Preserve and execute real multi-user and mobile release qualification before broader availability.
 Current behavior:
-- Local synthetic checks do not prove actual two-account host enrollment, production logs, iOS Safari/PWA or Android behavior. No live environment or device operation is authorized by local implementation scope.
+- Local synthetic checks do not prove actual two-account host enrollment, production logs, iOS Safari/PWA or Android behavior. The selected production website and backends are published with public boundary checks; real accounts, client consent and device behavior remain unqualified.
 Desired behavior:
-- Owner-first checks qualify ChatGPT and Codex desktop independently against the same dev backend, including OAuth callbacks/refresh, MCP discovery, scoped tools, original receipts and plugin/skill activation. The consenting-teammate stage verifies separate identities and revocation, alongside mobile and production-log evidence.
+- Owner-first checks qualify ChatGPT and Codex desktop independently against the same selected production backend, including OAuth callbacks/refresh, MCP discovery, scoped tools, original receipts and plugin/skill activation. The consenting-teammate stage verifies separate identities and revocation, alongside mobile and production-log evidence.
 Touch:
 - Release qualification matrix and explicitly authorized deployment/account/device lanes when supplied.
 Discovery allowance:
@@ -389,11 +350,11 @@ Out of scope:
 Implementation constraints:
 - All implemented tools require isolation/revocation qualification; live Cron remains off. Real log inspection verifies absence of secrets with minimum redacted evidence. Missing infrastructure remains a blocker.
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Existing-site account/resource preparation is complete. Three encryption secrets, Worker/Pages publication, actual per-account OAuth/plugin enrollment, a second consenting owner and iOS/Android device qualification remain outstanding. Preparation cannot satisfy real release acceptance.
+- [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. Actual per-account OAuth/plugin enrollment, a second consenting owner and iOS/Android device qualification remain outstanding. Preparation cannot satisfy real release acceptance.
 Validation:
 - Verify local environment/resource separation and prepare exact owner/teammate/device checks. Maintain independent ChatGPT and Codex desktop results in the plugin client matrix; direct MCP access, packaged skills and optional CLI diagnostics remain distinct checks. Execute real checks only inside separately authorized scope.
 Acceptance:
-- ChatGPT and Codex desktop each complete the documented owner-first dev OAuth, scoped-tool, original-receipt, revocation and plugin/skill checks with client/version and sanitized evidence recorded; success in one client never substitutes for the other.
+- ChatGPT and Codex desktop each complete the documented owner-first pilot OAuth, scoped-tool, original-receipt, revocation and plugin/skill checks with client/version and sanitized evidence recorded; success in one client never substitutes for the other.
 - Two consenting team accounts complete independent real enrollment, packaged-tool and revocation flows with no cross-profile effects.
 - Real iOS Safari/PWA and Android checks plus redacted production-log inspection qualify release or retain explicit failed gates.
 Documentation updates:

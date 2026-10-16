@@ -1,0 +1,666 @@
+{
+  "kind": "selected-production-publication",
+  "date": "2026-10-16",
+  "task_id": "T-34491faa-090e-4d97-b496-1fe947770688",
+  "website": "https://habitica-companion.pages.dev",
+  "environment": "production",
+  "separate_dev_environment": false,
+  "source_branch": "develop",
+  "pages_slot": "main",
+  "pages_source_commit": "f94b768fc4e0431ce7459a3f3fc25f7c50751e2e",
+  "application_build_source_commit": "9b3760b37ca017d5d0f7b03ddf881496fdf5f72a",
+  "build_note": "Subsequent source commit changes only deployment configuration, focused tests and planning/operator documents; application sources and published assets are unchanged.",
+  "pages_deployment": {
+    "id": "b42d4b4f-4cb4-40e7-9623-607b09091d76",
+    "environment": "production",
+    "url": "https://b42d4b4f.habitica-companion.pages.dev",
+    "aliases": null,
+    "created_on": "2026-10-16T11:49:02.724263Z",
+    "branch": "main",
+    "commit_hash": "f94b768fc4e0431ce7459a3f3fc25f7c50751e2e",
+    "stage": "success"
+  },
+  "prior_pages_deployment_id": "774c03ca-039f-439c-93b2-ac3d26db11d3",
+  "worker_versions": {
+    "chatgpt-auth": "a486e487-3860-462f-843e-751fbecb6fb8",
+    "companion-workspace": "30beea24-6e50-4154-b246-b2b57b8be0f4",
+    "chatgpt-mcp": "3b4b2893-4ff1-4143-8308-77eda45212e6"
+  },
+  "retained_browser_bindings": {
+    "kv_namespaces": {
+      "HABITICA_SYNC_KV": {
+        "namespace_id": "8f3984e2aa7c4bff8dc245f3552927e5"
+      }
+    },
+    "d1_databases": {
+      "HABITICA_PARTY_DB": {
+        "id": "fec1ea40-3502-4b66-9051-c3f566999a03"
+      }
+    },
+    "env_var_names": [],
+    "compatibility_date": "2026-10-12",
+    "always_use_latest_compatibility_date": false
+  },
+  "git_auto_deployment_changed": false,
+  "required_secret_names": [
+    "CREDENTIAL_KEY_V1",
+    "CREDENTIAL_KEY_V2",
+    "PROFILE_ID_KEY"
+  ],
+  "secret_values_inspected": false,
+  "enabled_flags": {
+    "chatgpt-auth": {
+      "ENROLLMENT_ENABLED": true,
+      "OAUTH_ENABLED": true,
+      "WORKSPACE_ENABLED": true,
+      "PROJECTION_ENABLED": false,
+      "PARTY_ENABLED": false,
+      "SPELLS_ENABLED": false,
+      "CRON_ENABLED": false,
+      "KEY_OPERATIONS_ENABLED": false
+    },
+    "companion-workspace": {
+      "WORKSPACE_ENABLED": true,
+      "EXECUTOR_ENABLED": false,
+      "PARTY_ENABLED": false,
+      "SPELLS_ENABLED": false,
+      "CRON_ENABLED": false
+    },
+    "chatgpt-mcp": {
+      "OAUTH_ENABLED": true
+    }
+  },
+  "release_app_build": "pass; optional wasm-tools optimization warning, no build failure",
+  "focused_configuration_controls": {
+    "passed": 7,
+    "failed": 0,
+    "evidence": "skill-tree/history/validation/pages-account-selection.json"
+  },
+  "backend_public_checks": [
+    {
+      "name": "auth-health",
+      "url": "https://habitica-companion-auth.strexet.workers.dev/health",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "no-store"
+      },
+      "body": {
+        "service": "auth",
+        "authorization": "enabled"
+      },
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl"
+    },
+    {
+      "name": "workspace-health",
+      "url": "https://habitica-companion-workspace.strexet.workers.dev/health",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "no-store"
+      },
+      "body": {
+        "service": "workspace",
+        "enabled": true
+      },
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl"
+    },
+    {
+      "name": "mcp-health",
+      "url": "https://habitica-companion-mcp.strexet.workers.dev/health",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "no-store"
+      },
+      "body": {
+        "service": "mcp",
+        "authService": "reachable",
+        "authorization": "unavailable"
+      },
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl"
+    },
+    {
+      "name": "oauth-metadata",
+      "url": "https://habitica-companion-auth.strexet.workers.dev/.well-known/oauth-authorization-server",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "issuer": "https://habitica-companion-auth.strexet.workers.dev",
+        "authorization_endpoint": "https://habitica-companion-auth.strexet.workers.dev/authorize",
+        "token_endpoint": "https://habitica-companion-auth.strexet.workers.dev/oauth/token",
+        "protected_resources": [
+          "https://habitica-companion-mcp.strexet.workers.dev/mcp"
+        ],
+        "registration_endpoint": "https://habitica-companion-auth.strexet.workers.dev/oauth/register",
+        "scopes_supported": [
+          "profile:read",
+          "account:read",
+          "tasks:read",
+          "habitica.tasks.write",
+          "party:read",
+          "party.planning.write",
+          "habitica.spells.execute",
+          "habitica.cron.execute"
+        ],
+        "response_types_supported": [
+          "code"
+        ],
+        "response_modes_supported": [
+          "query"
+        ],
+        "grant_types_supported": [
+          "authorization_code",
+          "refresh_token"
+        ],
+        "token_endpoint_auth_methods_supported": [
+          "client_secret_basic",
+          "client_secret_post",
+          "none",
+          "private_key_jwt"
+        ],
+        "token_endpoint_auth_signing_alg_values_supported": [
+          "RS256",
+          "ES256"
+        ],
+        "revocation_endpoint": "https://habitica-companion-auth.strexet.workers.dev/oauth/token",
+        "code_challenge_methods_supported": [
+          "S256"
+        ],
+        "authorization_response_iss_parameter_supported": true,
+        "client_id_metadata_document_supported": true
+      },
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl"
+    },
+    {
+      "name": "resource-metadata",
+      "url": "https://habitica-companion-mcp.strexet.workers.dev/.well-known/oauth-protected-resource/mcp",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "body": {
+        "resource": "https://habitica-companion-mcp.strexet.workers.dev/mcp",
+        "authorization_servers": [
+          "https://habitica-companion-auth.strexet.workers.dev"
+        ],
+        "scopes_supported": [
+          "profile:read"
+        ],
+        "bearer_methods_supported": [
+          "header"
+        ]
+      },
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl",
+      "initial_probe_note": "Corrected test route using MCP WWW-Authenticate challenge and management route contract."
+    },
+    {
+      "name": "mcp-denies-anonymous",
+      "url": "https://habitica-companion-mcp.strexet.workers.dev/mcp",
+      "status": 401,
+      "expected": 401,
+      "pass": true,
+      "headers": {
+        "cache-control": "no-store",
+        "www-authenticate": "Bearer realm=\"OAuth\", resource_metadata=\"https://habitica-companion-mcp.strexet.workers.dev/.well-known/oauth-protected-resource/mcp\", scope=\"profile:read\""
+      },
+      "body": "",
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl"
+    },
+    {
+      "name": "workspace-denies-anonymous",
+      "url": "https://habitica-companion-workspace.strexet.workers.dev/export",
+      "status": 401,
+      "expected": 401,
+      "pass": true,
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "no-store"
+      },
+      "body": {
+        "error": "unauthorized"
+      },
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl"
+    },
+    {
+      "name": "auth-denies-anonymous",
+      "url": "https://habitica-companion-auth.strexet.workers.dev/profiles/prf_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/status",
+      "status": 401,
+      "expected": 401,
+      "pass": true,
+      "body": {
+        "error": "unauthorized"
+      },
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl",
+      "initial_probe_note": "Corrected test route using MCP WWW-Authenticate challenge and management route contract."
+    },
+    {
+      "name": "auth-pwa-cors",
+      "url": "https://habitica-companion-auth.strexet.workers.dev/enroll",
+      "status": 204,
+      "expected": 204,
+      "pass": true,
+      "headers": {
+        "access-control-allow-origin": "https://habitica-companion.pages.dev",
+        "cache-control": "no-store"
+      },
+      "body": "",
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl"
+    },
+    {
+      "name": "auth-foreign-cors",
+      "url": "https://habitica-companion-auth.strexet.workers.dev/enroll",
+      "status": 403,
+      "expected": 403,
+      "pass": true,
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "no-store"
+      },
+      "body": {
+        "error": "invalid_origin"
+      },
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl"
+    },
+    {
+      "name": "workspace-pwa-cors",
+      "url": "https://habitica-companion-workspace.strexet.workers.dev/connect",
+      "status": 204,
+      "expected": 204,
+      "pass": true,
+      "headers": {
+        "access-control-allow-origin": "https://habitica-companion.pages.dev",
+        "cache-control": "no-store"
+      },
+      "body": "",
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl"
+    },
+    {
+      "name": "workspace-foreign-cors",
+      "url": "https://habitica-companion-workspace.strexet.workers.dev/connect",
+      "status": 403,
+      "expected": 403,
+      "pass": true,
+      "headers": {
+        "content-type": "application/json",
+        "cache-control": "no-store"
+      },
+      "body": {
+        "error": "invalid_origin"
+      },
+      "initial_transport": "Python urllib received Cloudflare 1010 before application",
+      "transport": "curl"
+    }
+  ],
+  "pages_public_checks": [
+    {
+      "url": "https://habitica-companion.pages.dev/",
+      "status": 200,
+      "sha256": "48ee7ff942aceb2ba681ad80a3aa26877ad59ff40ee50936074c1b59bc1515e2",
+      "pass": true
+    },
+    {
+      "url": "https://habitica-companion.pages.dev/settings",
+      "status": 200,
+      "sha256": "48ee7ff942aceb2ba681ad80a3aa26877ad59ff40ee50936074c1b59bc1515e2",
+      "pass": true
+    },
+    {
+      "url": "https://habitica-companion.pages.dev/privacy",
+      "status": 200,
+      "sha256": "48ee7ff942aceb2ba681ad80a3aa26877ad59ff40ee50936074c1b59bc1515e2",
+      "pass": true
+    },
+    {
+      "url": "https://habitica-companion.pages.dev/tasks",
+      "status": 200,
+      "sha256": "48ee7ff942aceb2ba681ad80a3aa26877ad59ff40ee50936074c1b59bc1515e2",
+      "pass": true
+    },
+    {
+      "url": "https://habitica-companion.pages.dev/appsettings.json",
+      "status": 200,
+      "sha256": "900333b73be16588080302e9ac9e24f775b61b2f2b49f78b4a18f151406e3194",
+      "settings_match": true,
+      "pass": true
+    },
+    {
+      "url": "https://habitica-companion.pages.dev/api/sync/not-a-valid-sync-id/sections",
+      "status": 400,
+      "sha256": "dae4fc7d9153d5a942d03ef05eb69900bbfeb698217e089551f2437cb3e80190",
+      "pass": true,
+      "body": "{\"ok\":false,\"error\":\"invalid_parameters\"}"
+    }
+  ],
+  "browser_observations": {
+    "settings": "Rendered disclosures and sign-in requirements for ChatGPT linking and cloud workspace; party planning unavailable; sync actions disabled while signed out.",
+    "home": "Redirects to /sign-in; Habitica User ID and API Token fields render; remember credentials unchecked. No fields submitted.",
+    "screenshot_path": "/tmp/habitica-production-settings.png",
+    "screenshot_sha256": "2c025dd3ad77b3dac0b46514efe8ba2b3c032d5b8ea10a21750b26901506b476"
+  },
+  "hosting_review": {
+    "observed_settings": {
+      "habitica-companion-auth": {
+        "observability": {
+          "enabled": true,
+          "head_sampling_rate": 1,
+          "redact_query_string": false,
+          "logs": {
+            "enabled": true,
+            "head_sampling_rate": 1,
+            "persist": true,
+            "invocation_logs": false
+          },
+          "traces": {
+            "enabled": false,
+            "persist": true,
+            "head_sampling_rate": 1
+          }
+        },
+        "logpush": false,
+        "tail_consumers": [],
+        "binding_types": [
+          {
+            "name": "AUTH_ISSUER",
+            "type": "plain_text"
+          },
+          {
+            "name": "CREDENTIAL_CURRENT_KEY_VERSION",
+            "type": "plain_text"
+          },
+          {
+            "name": "CREDENTIAL_KEY_V1",
+            "type": "secret_text"
+          },
+          {
+            "name": "CREDENTIAL_KEY_V2",
+            "type": "secret_text"
+          },
+          {
+            "name": "CRON_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "ENROLLMENT_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "ENVIRONMENT",
+            "type": "plain_text"
+          },
+          {
+            "name": "HABITICA_INTEGRATION_DB",
+            "type": "d1"
+          },
+          {
+            "name": "HABITICA_X_CLIENT_HEADER",
+            "type": "plain_text"
+          },
+          {
+            "name": "KEY_OPERATIONS_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "MCP_RESOURCE",
+            "type": "plain_text"
+          },
+          {
+            "name": "OAUTH_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "OAUTH_KV",
+            "type": "kv_namespace"
+          },
+          {
+            "name": "PARTY_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "PROFILE_ID_KEY",
+            "type": "secret_text"
+          },
+          {
+            "name": "PROJECTION_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "PWA_ORIGIN",
+            "type": "plain_text"
+          },
+          {
+            "name": "SPELLS_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "WORKSPACE_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "WORKSPACE_ORIGIN",
+            "type": "plain_text"
+          }
+        ]
+      },
+      "habitica-companion-workspace": {
+        "observability": {
+          "enabled": true,
+          "head_sampling_rate": 1,
+          "redact_query_string": false,
+          "logs": {
+            "enabled": true,
+            "head_sampling_rate": 1,
+            "persist": true,
+            "invocation_logs": false
+          },
+          "traces": {
+            "enabled": false,
+            "persist": true,
+            "head_sampling_rate": 1
+          }
+        },
+        "logpush": false,
+        "tail_consumers": [],
+        "binding_types": [
+          {
+            "name": "AUTH_CRON",
+            "type": "service"
+          },
+          {
+            "name": "AUTH_IDENTITY",
+            "type": "service"
+          },
+          {
+            "name": "AUTH_ISSUER",
+            "type": "plain_text"
+          },
+          {
+            "name": "AUTH_PARTY",
+            "type": "service"
+          },
+          {
+            "name": "AUTH_PROJECTION",
+            "type": "service"
+          },
+          {
+            "name": "AUTH_SPELL",
+            "type": "service"
+          },
+          {
+            "name": "CRON_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "ENVIRONMENT",
+            "type": "plain_text"
+          },
+          {
+            "name": "EXECUTOR_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "MCP_RESOURCE",
+            "type": "plain_text"
+          },
+          {
+            "name": "PARTY_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "PWA_ORIGIN",
+            "type": "plain_text"
+          },
+          {
+            "name": "SPELLS_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "WORKSPACE_DB",
+            "type": "d1"
+          },
+          {
+            "name": "WORKSPACE_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "WORKSPACE_ORIGIN",
+            "type": "plain_text"
+          }
+        ]
+      },
+      "habitica-companion-mcp": {
+        "observability": {
+          "enabled": true,
+          "head_sampling_rate": 1,
+          "redact_query_string": false,
+          "logs": {
+            "enabled": true,
+            "head_sampling_rate": 1,
+            "persist": true,
+            "invocation_logs": false
+          },
+          "traces": {
+            "enabled": false,
+            "persist": true,
+            "head_sampling_rate": 1
+          }
+        },
+        "logpush": false,
+        "tail_consumers": [],
+        "binding_types": [
+          {
+            "name": "AUTH_ISSUER",
+            "type": "plain_text"
+          },
+          {
+            "name": "AUTH_SERVER",
+            "type": "service"
+          },
+          {
+            "name": "ENVIRONMENT",
+            "type": "plain_text"
+          },
+          {
+            "name": "MCP_RESOURCE",
+            "type": "plain_text"
+          },
+          {
+            "name": "OAUTH_ENABLED",
+            "type": "json"
+          },
+          {
+            "name": "PWA_ORIGIN",
+            "type": "plain_text"
+          },
+          {
+            "name": "WORKSPACE_ORIGIN",
+            "type": "plain_text"
+          },
+          {
+            "name": "WORKSPACE_SERVER",
+            "type": "service"
+          }
+        ]
+      },
+      "ada5184c-865d-4c6a-864a-88618f19c06f": {
+        "name": "habitica-companion-auth",
+        "version": "production",
+        "time_travel_window": null,
+        "read_replication": {
+          "mode": "disabled"
+        }
+      },
+      "383e0502-7be4-42f9-b818-ee9710f3fa4d": {
+        "name": "habitica-companion-workspace",
+        "version": "production",
+        "time_travel_window": null,
+        "read_replication": {
+          "mode": "disabled"
+        }
+      }
+    },
+    "application_console_logging_matches": 0,
+    "account_plan_lookup": "HTTP 403 under current Wrangler OAuth scope; no permission change attempted.",
+    "workers_logs_retention_days": {
+      "Free": 3,
+      "Paid": 7,
+      "exact_tier": "unverified",
+      "conservative_upper_bound": 7
+    },
+    "d1_time_travel_days": {
+      "Free": 7,
+      "Paid": 30,
+      "exact_tier": "unverified",
+      "conservative_upper_bound": 30
+    },
+    "references": [
+      "https://developers.cloudflare.com/workers/observability/logs/workers-logs/",
+      "https://developers.cloudflare.com/d1/reference/time-travel/"
+    ],
+    "app_audit_retention_days": 30,
+    "real_credential_log_scan": "unrun; no real enrollment performed"
+  },
+  "limitations": [
+    "Owner account sign-in and separate storage consents remain required.",
+    "ChatGPT and Codex desktop authentication, selected scopes, packaged plugin skills and revocation remain unrun.",
+    "Real two-user isolation and iOS/Android qualification remain unrun.",
+    "Live Habitica Cron, cloud projection, spells, party planning, executor and key operations remain disabled. Cloudflare maintenance triggers are distinct.",
+    "Existing browser gameplay controls can affect real Habitica; the initial pilot covers reads and Companion-only canonical saves.",
+    "Public probes using Python urllib received Cloudflare 1010 before the app; curl and the actual browser succeeded without changing Cloudflare protection settings."
+  ],
+  "documentation_validation": {
+    "future": true,
+    "repository_documents": {
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "Latest recorded audit is stale; historical verdicts remain unchanged"
+      ]
+    },
+    "prose_lint": {
+      "introduced_diagnostics": [],
+      "existing_errors": 6,
+      "existing_warnings": 10
+    }
+  }
+}

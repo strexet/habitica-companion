@@ -1,8 +1,8 @@
 # Habitica Companion plugin
 
-The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamable HTTP MCP declaration and three skills. The selected first-dev clients are ChatGPT and Codex desktop; each client requires independent connection and workflow qualification. Actual installation, model activation and two-user enrollment remain rollout checks. No plugin is installed or published by repository tests.
+The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamable HTTP MCP declaration and three skills. The selected owner-pilot clients are ChatGPT and Codex desktop; each client requires independent connection and workflow qualification. Actual installation, model activation and two-user enrollment remain rollout checks. No plugin is installed or published by repository tests.
 
-The committed MCP endpoint uses `.invalid` and cannot connect. The integration Workers and PWA cloud settings also ship disabled. A deployable package requires an approved operator-configured HTTPS endpoint matching the Auth resource/audience and the MCP Worker configuration. Never add authorization headers or Habitica credentials to the package.
+The committed MCP endpoint uses `.invalid` and cannot connect. Default Worker templates and PWA settings remain disabled. The ignored reviewed production bundle publishes `https://habitica-companion-mcp.strexet.workers.dev/mcp` and stages a matching package under `deploy/.production/plugin/`. The production endpoint is public and requires OAuth for tools; actual host import and authentication remain unrun. A deployable package requires an approved operator-configured HTTPS endpoint matching the Auth resource/audience and the MCP Worker configuration. Never add authorization headers or Habitica credentials to the package.
 
 ## Private setup
 
@@ -16,7 +16,7 @@ The source package contains no registered connector ID, public listing, marketpl
 
 ## Client qualification matrix
 
-ChatGPT and Codex desktop are required first-dev clients. Direct MCP qualification uses the same approved dev HTTPS backend with distinct client registrations and grants. Owner-first checks precede the separate two-consenting-account release stage. Codex CLI diagnostics supplement the desktop lane. A successful direct connection does not prove plugin installation or skill activation.
+ChatGPT and Codex desktop are required owner-pilot clients. Direct MCP qualification uses the same approved production HTTPS backend with distinct client registrations and grants. Owner-first checks precede the separate two-consenting-account release stage. Codex CLI diagnostics supplement the desktop lane. A successful direct connection does not prove plugin installation or skill activation.
 
 | Check | ChatGPT | Codex desktop |
 | --- | --- | --- |
