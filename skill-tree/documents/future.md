@@ -321,6 +321,45 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
+### Publish the selected production website and verify hosted boundaries
+
+```yaml
+id: T-34491faa-090e-4d97-b496-1fe947770688
+priority: 101
+status: Ready
+parent_pending_ids: ["P-f7230fa1-ddc2-4070-bc06-0d327c058990"]
+processing_run_id: PR-fa5639d7-7b15-4e36-9349-27e340b923ed
+root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+related_task_id: T-d76d2a9a-1318-4e63-9bb4-73f620b108cc
+relation: subtask
+depends_on: []
+```
+
+Goal:
+- Publish the selected existing production website and qualify unauthenticated hosted behavior.
+Current behavior:
+- Production resources and local bundles are ready; application publication and remote transport qualification remain unrun.
+Desired behavior:
+- Auth, Workspace and MCP publish in dependency order, followed by the current develop-built website in the existing main Pages slot. Public checks confirm routing, settings, health, OAuth identities and authentication/CORS refusals.
+Touch:
+- Reviewed generated production configs, Cloudflare deployment resources, public hosted checks and sanitized deployment evidence.
+Discovery allowance:
+- Recheck account, secret names, current website slot and retained bindings before mutation; use locked Wrangler and current official docs.
+Out of scope:
+- Reading secret values, real credential enrollment, per-account consent, gameplay writes, live Cron, device operations, Git merge/push or changing automatic Git deployment settings.
+Implementation constraints:
+- Preserve existing Pages KV/party D1 bindings and record rollback identity/source commit. Projection, party planning, spells, executor, key operations and Cron stay disabled. Verify host logs/retention independently before real enrollment.
+Questions and required clarifications:
+- None for authorized publication and public checks. Owner account/client enrollment and broader release gates remain separate.
+Validation:
+- Check required secret names and exact production configuration, publish built backends then Pages, verify stable HTTPS/routed pages and published settings, probe OAuth metadata plus unauthenticated/CORS boundaries and inspect default browser UI.
+Acceptance:
+- The selected stable production website serves the recorded develop source and exact production integration endpoints with retained browser bindings, healthy backend transport and passing unauthenticated boundary checks.
+Documentation updates:
+- Current deployment result, readiness record, owner next action and preserved unrun account/client/device gates.
+Risks:
+- Accidental wrong-slot upload, endpoint/binding mismatch, exposing game effects or confusing public smoke checks with real account acceptance.
+
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml
@@ -332,7 +371,7 @@ processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
 root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 relation: subtask
-depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735", "T-29ef8846-6aa7-4255-990d-a8651e689ec2"]
+depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735", "T-29ef8846-6aa7-4255-990d-a8651e689ec2", "T-34491faa-090e-4d97-b496-1fe947770688"]
 ```
 
 Goal:

@@ -88,7 +88,7 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": null,
+    "current_task_id": "T-34491faa-090e-4d97-b496-1fe947770688",
     "cycle_signature": "f00458c2742de056f9305c24f9ecbe267eda17cb05d2969da218220ae646bfd2",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
@@ -96,13 +96,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Owner replaces PROFILE_ID_KEY with a fresh locally generated value using deploy/.production/chatgpt-auth.json. Continue remaining key setup and selected existing-site publication afterward.",
+    "next_action": "implement",
     "partial_work": [
-      "Selected target is https://habitica-companion.pages.dev with production Auth/Workspace/MCP names and no separate dev environment. Source remains develop; the website uses its existing main slot.",
-      "Auth Worker identity preserved during rename; exposed setup key active binding removed. No secret value is stored in source, documentation or evidence.",
-      "OAuth KV renamed in place. Production Auth/Workspace D1 schemas applied. Old task-owned databases contained zero application rows and were removed; existing browser storage untouched.",
-      "Production bundle is deploy/.production; prior setup files were preserved outside the active deployment path so stale key commands cannot recreate the unwanted target.",
-      "Seven configuration tests, three Worker dry runs, Pages Functions compilation and release app build pass. No app publication, enrollment or gameplay effect performed."
+      "Owner completed protected key provisioning. Required names verified without values.",
+      "Resume only selected production publication and public hosted checks; real account/client/device consent and game effects remain separate."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -136,9 +133,10 @@
       "P-39328781-1536-468d-9e1c-3c0bad9c5cb3",
       "P-287005d4-1e7f-446d-a802-9f78aeca7e72",
       "P-b04d7a62-5b9e-4347-8028-4561c51891e2",
-      "P-8f3991ad-372e-4ca5-a6f8-ced1ffeaf263"
+      "P-8f3991ad-372e-4ca5-a6f8-ced1ffeaf263",
+      "P-f7230fa1-ddc2-4070-bc06-0d327c058990"
     ],
-    "phase": "blocked",
+    "phase": "implement",
     "processing_results": [
       {
         "created_ids": [
@@ -684,6 +682,23 @@
           "P-8f3991ad-372e-4ca5-a6f8-ced1ffeaf263"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-34491faa-090e-4d97-b496-1fe947770688"
+        ],
+        "dispositions": {
+          "P-f7230fa1-ddc2-4070-bc06-0d327c058990": {
+            "reason": "Owner publication scope and all protected secret-name prerequisites are supplied; the prepared production plan defines exact bounded targets.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-fa5639d7-7b15-4e36-9349-27e340b923ed",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-f7230fa1-ddc2-4070-bc06-0d327c058990"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -730,7 +745,8 @@
       "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
       "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2",
       "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
-      "T-29ef8846-6aa7-4255-990d-a8651e689ec2"
+      "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+      "T-34491faa-090e-4d97-b496-1fe947770688"
     ],
     "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "snapshot": [
@@ -747,10 +763,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Production names, resources, migrations and builds are prepared. The exposed setup PROFILE_ID_KEY active binding was removed; owner must enter a fresh profile key plus distinct CREDENTIAL_KEY_V1 and CREDENTIAL_KEY_V2 through protected prompts before application publication."
+    "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "ea76cf54560f77a0fa16cf4b6487144c156166e86c59db1b50cbee31033f2952",
+  "source_hash": "c048b770e3ee1ee2fc6f4449901bf50b5b746caaa628d725f7528faa99b1e539",
   "tasks": [
     {
       "depends_on": [],
@@ -865,13 +881,30 @@
       "title": "E13 MCP and Skills for Companion-native project/task/goal operations"
     },
     {
+      "depends_on": [],
+      "id": "T-34491faa-090e-4d97-b496-1fe947770688",
+      "line": 324,
+      "parent_pending_ids": [
+        "P-f7230fa1-ddc2-4070-bc06-0d327c058990"
+      ],
+      "priority": 101,
+      "processing_run_id": "PR-fa5639d7-7b15-4e36-9349-27e340b923ed",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "relation": "subtask",
+      "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "status": "Ready",
+      "title": "Publish the selected production website and verify hosted boundaries"
+    },
+    {
       "depends_on": [
         "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
         "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
-        "T-29ef8846-6aa7-4255-990d-a8651e689ec2"
+        "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+        "T-34491faa-090e-4d97-b496-1fe947770688"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 324,
+      "line": 363,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -887,7 +920,7 @@
     {
       "depends_on": [],
       "id": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
-      "line": 365,
+      "line": 404,
       "parent_pending_ids": [
         "P-28d6ece4-a519-44a8-9625-3367479a03c3"
       ],
@@ -911,7 +944,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 404,
+      "line": 443,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -927,7 +960,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 559,
+      "line": 598,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -941,7 +974,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 596,
+      "line": 635,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -955,7 +988,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 633,
+      "line": 672,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -969,7 +1002,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 766,
+      "line": 805,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -983,7 +1016,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 804,
+      "line": 843,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -997,7 +1030,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 838,
+      "line": 877,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1011,7 +1044,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 873,
+      "line": 912,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1025,7 +1058,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 907,
+      "line": 946,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1039,7 +1072,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 945,
+      "line": 984,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1053,7 +1086,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 972,
+      "line": 1011,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1067,7 +1100,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 994,
+      "line": 1033,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1081,7 +1114,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1021,
+      "line": 1060,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
