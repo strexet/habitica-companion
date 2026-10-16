@@ -47,7 +47,8 @@
       "T-34491faa-090e-4d97-b496-1fe947770688",
       "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
       "T-159a415e-0d56-4028-96a4-339a5d5040f8",
-      "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941"
+      "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+      "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -79,6 +80,7 @@
       "T-773bb444-a0e6-45b9-bdcb-18561bb6182f": "O-9d7ad5bd-d5ee-469e-93b0-79c129d87495",
       "T-77d41018-e04b-4a88-b92c-079b3d8ef421": "O-056e3e62-a872-45aa-953d-0452b29a71e3",
       "T-80bb3b80-8a9c-4252-9924-5a100f746f93": "O-93622767-ee19-41ab-bda6-82f140e5b0b3",
+      "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108": "O-47e8cb8a-fa05-4e7f-bf62-842c0f09a339",
       "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941": "O-f47ae9c9-bdbf-4622-a685-4cfc7c91068e",
       "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995": "O-4b7709a5-b2d8-40c2-821c-9e482a57d24b",
       "T-924119e2-17fd-4a06-b332-60839c849ade": "O-23ae7a58-8ca6-44f8-ab06-e245f94fae3d",
@@ -99,14 +101,14 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "d4b4e4aafc1c1a230a84c2e211e826b089d57a8cd32e46ce9071a069d4f1c0ac",
+    "cycle_signature": "457fffd7ee3df4a0e32e340606648ae3a90915c47c677024c49be17c186e1f67",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Owner closes the spent authorization tab, restarts Authenticate in Codex and uses a fresh Companion code; then report the client connection result.",
+    "next_action": "Publish reviewed Auth and MCP repair to the existing production pilot and run owner continuity checks.",
     "partial_work": [
       "Auth source 893f619 is deployed as version 0131fa19-a146-4095-8047-e2282bcd7891; reviewed resources, secret names and disabled effect flags are retained.",
       "The synthetic browser reproduces the original double-click symptom. Corrected single approval and denial reach the separate client callback. Auth build and eighteen targeted checks pass.",
@@ -151,7 +153,8 @@
       "P-7077ec7f-eda9-49b2-b654-e4f6309eeea4",
       "P-4f9fc663-7bd2-4c13-8e4a-804709937671",
       "P-70ff88fd-b14f-4d7c-bff9-6594b4256587",
-      "P-e0494acc-da19-4d22-bdb3-9b71af18cc7d"
+      "P-e0494acc-da19-4d22-bdb3-9b71af18cc7d",
+      "P-2544a5ca-8301-4a81-b027-08c485b1de48"
     ],
     "phase": "blocked",
     "processing_results": [
@@ -784,6 +787,23 @@
           "P-e0494acc-da19-4d22-bdb3-9b71af18cc7d"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108"
+        ],
+        "dispositions": {
+          "P-2544a5ca-8301-4a81-b027-08c485b1de48": {
+            "reason": "Pinned provider and MCP enforcement establish bounded source defects with synthetic regression paths.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-4f70800b-b9e8-47fc-96ab-3c1510deee5c",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-2544a5ca-8301-4a81-b027-08c485b1de48"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -835,7 +855,8 @@
       "T-58907376-21eb-417f-988e-fe65449a0bb7",
       "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
       "T-159a415e-0d56-4028-96a4-339a5d5040f8",
-      "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941"
+      "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+      "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108"
     ],
     "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "snapshot": [
@@ -852,10 +873,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "The live Auth browser callback blocker is repaired and deployed. Owner client authorization must resume through a fresh Authenticate flow; real plugin, workspace consent confirmation, multi-user and device gates remain open."
+    "stop_reason": "Local OAuth continuity repairs pass. Backend publication and owner ChatGPT/Codex request and refresh retests remain required; wider release gates remain open."
   },
   "format": "skill-tree-future",
-  "source_hash": "3ca21b34501fa2233ed832768e4f3670e6ffd4031abf88d9604f38c12e1385e5",
+  "source_hash": "1fe257d7ff041e17a1a0919d4b364157862ab5b33bd55ae666f292588ba3d782",
   "tasks": [
     {
       "depends_on": [],
@@ -977,7 +998,8 @@
         "T-34491faa-090e-4d97-b496-1fe947770688",
         "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
         "T-159a415e-0d56-4028-96a4-339a5d5040f8",
-        "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941"
+        "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+        "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
       "line": 324,

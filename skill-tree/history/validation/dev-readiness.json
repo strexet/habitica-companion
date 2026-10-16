@@ -12,7 +12,7 @@
   "run_id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
   "completed_main_tasks": 10,
   "initial_main_tasks": 11,
-  "completed_task_units": 47,
+  "completed_task_units": 48,
   "current_queues": {
     "Pending Queue": 8,
     "Prioritized Next Changes": 3,
@@ -32,7 +32,7 @@
     "Codex CLI"
   ],
   "client_qualification_matrix": "plugin/README.md#client-qualification-matrix",
-  "client_qualification_status": "unrun",
+  "client_qualification_status": "owner-reported-initial-success-chatgpt-repeat-request-failure",
   "historical_baseline": {
     "source_commit": "5c2efbd",
     "completed_task_units": 35,
@@ -69,5 +69,7 @@
   ],
   "latest_auth_correction_reference": "skill-tree/history/validation/oauth-callback-browser-repair.json",
   "auth_source_commit": "893f619ed45bacf07018f5fa9a34f7b75686ff5e",
-  "auth_version_id": "0131fa19-a146-4095-8047-e2282bcd7891"
+  "auth_version_id": "0131fa19-a146-4095-8047-e2282bcd7891",
+  "owner_observation_reference": "skill-tree/history/validation/oauth-request-continuity.json",
+  "next_owner_action": "Refresh ChatGPT tool definitions and authorize once; test separate account/task/account reads and another read after more than ten minutes. Check Codex independently."
 }

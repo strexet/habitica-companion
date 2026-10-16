@@ -8,7 +8,7 @@ The owner pilot is published directly to [habitica-companion.pages.dev](https://
 
 Auth, Workspace and MCP Workers are published. Production integration OAuth KV and Auth/Workspace D1 resources are separate from the retained browser-sync KV and party database. [Publication evidence](../history/validation/production-publication.json) records the deployed versions, bindings, build and public boundary checks. [The operator guide](../../deploy/README.md#current-owner-action-sign-in-and-connect) provides exact owner sign-in, consent and client setup steps.
 
-Hosted public checks establish HTTPS, routed-page refresh, production frontend settings, backend health, OAuth discovery, anonymous-access denial and exact-origin CORS. The signed-out Settings page renders integration disclosures and sign-in requirements. Real account behavior, OAuth completion, private plugin activation, multi-user isolation and mobile-device checks remain unqualified.
+Hosted public checks establish HTTPS, routed-page refresh, production frontend settings, backend health, OAuth discovery, anonymous-access denial and exact-origin CORS. The signed-out Settings page renders integration disclosures and sign-in requirements. The owner reports initial OAuth completion in ChatGPT and Codex, ChatGPT discovery of 25 tools and two successful reads. ChatGPT requests reconnection on the next request within one minute. Repeat-request and refresh continuity, private packaged skills, multi-user isolation and mobile-device checks remain unqualified.
 
 ### Completed publication prerequisites
 
@@ -17,7 +17,7 @@ Hosted public checks establish HTTPS, routed-page refresh, production frontend s
 - [x] Auth and Workspace migrations `0001`–`0007` are applied. The retained party database has no pending migrations.
 - [x] All three required secret names are present on Auth; no values appear in public settings or evidence. The current credential write version is `1`; version `2` is provisioned for future guarded rotation.
 - [x] The release app build passes and deployed frontend settings match the reviewed production bundle. Pages account selection uses `CLOUDFLARE_ACCOUNT_ID`; Pages configuration omits the unsupported `account_id` field. Worker configuration retains the account field.
-- [x] Deployed logging settings disable invocation logs and traces; no Logpush destination or tail consumer is configured. Application source has no console logging. Provider retention has conservative upper bounds of seven days for logs and thirty days for D1 recovery; exact plan lookup is unavailable with the current OAuth scope. Application operational metadata has a separate thirty-day cleanup policy.
+- [x] Deployed logging settings disable invocation logs and traces; no Logpush destination or tail consumer is configured. Application read handlers emit structured correlation/tool/route/status/duration/rate metadata. Read-log payloads exclude credentials, account identifiers, task text and raw bodies; production log inspection remains a release gate. Provider retention has conservative upper bounds of seven days for logs and thirty days for D1 recovery; exact plan lookup is unavailable with the current OAuth scope. Application operational metadata has a separate thirty-day cleanup policy.
 - [x] Deployment identities and rollback instructions are recorded. Website rollback cannot reverse database changes or confirmed Habitica actions. The operator can stop new enrollment or cloud access by disabling flags and redeploying the reviewed backend configuration without deleting accepted history.
 
 ### Initial capability selection
@@ -279,3 +279,10 @@ Private request shapes contain only operation metadata:
 ```
 
 Each line is a separate private request. No scheduler performs key migration. Existing Auth maintenance only removes bounded expired job metadata. Live rotation, key deletion, caller provisioning and deployment remain separate operations.
+
+
+### Repeated-request OAuth qualification
+
+Bootstrap read metadata includes `profile:read` and the operation scope in both security-scheme locations. Refresh requests may inherit the already bound MCP audience when `resource` is omitted; explicit audience mismatches remain denied. Temporary profile-storage failures return a temporary OAuth error without deleting recoverable grants. The access-token lifetime remains ten minutes.
+
+The owner retest uses a refreshed ChatGPT tool definition and a fresh authorization, then separate read-only requests for account status, tasks and account status again. Repeat account status after more than ten minutes to exercise refresh. Check Codex independently while retaining the ChatGPT connection. A repeated reconnect dialog remains a failed gate; record only the failing tool and approximate elapsed time, excluding codes, tokens and account content.

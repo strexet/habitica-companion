@@ -1,0 +1,162 @@
+{
+  "date": "2026-10-16",
+  "task_id": "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+  "kind": "oauth-request-continuity",
+  "owner_report": {
+    "source": "Owner messages; not independent tool-call observation",
+    "chatgpt": "Initial discovery of 25 tools and two real read requests reported successful. Next request within one minute requests reconnect.",
+    "codex": "Authentication-complete callback reported; actual tool discovery and reads unobserved.",
+    "client_versions": "not captured",
+    "account_content_retained": false
+  },
+  "before": {
+    "reproduced_defects": [
+      "Read security metadata omits enforced profile scope.",
+      "Refresh without resource returns invalid_target.",
+      "Transient profile storage failure returns terminal invalid_grant."
+    ],
+    "regression_log_sha256": "1b89842167a99012ea318543fa55bcc7f3dad847d0a4352ce44fa7148552c4e9"
+  },
+  "repair": [
+    "Advertise profile scope plus operation scope for every bootstrap read in both security scheme locations.",
+    "Allow only refresh requests to inherit an omitted resource; provider validates the grant audience and client. Authorization-code exact-resource checks remain.",
+    "Return temporarily_unavailable with HTTP 503 for temporary profile storage failures; revoked or mismatched-epoch connections remain invalid_grant."
+  ],
+  "checks": {
+    "auth_build": "pass; generated bindings, TypeScript and Worker bundle",
+    "mcp_build": "pass; generated bindings, TypeScript and Worker bundle",
+    "sequential_tests": {
+      "passed": 38,
+      "failed": 0,
+      "coverage": [
+        "wire-declared scopes and repeated bootstrap reads",
+        "bound refresh with omitted and explicit resource and rotation",
+        "wrong audience/client and revoked grant denial",
+        "temporary D1 failure then same-grant recovery",
+        "independent registered client grants",
+        "existing OAuth, reads, management and connection continuity"
+      ]
+    },
+    "test_log_sha256": "0e595d0b8cb99ab0e0601fd51ba6a529cb32faceae921d040aa46516085d6296",
+    "introduced_prose_diagnostics": [],
+    "repository_documentation": "pass",
+    "future_document": "strict pass"
+  },
+  "preflight": {
+    "habitica-companion-auth": {
+      "vars": {
+        "AUTH_ISSUER": "https://habitica-companion-auth.strexet.workers.dev",
+        "CREDENTIAL_CURRENT_KEY_VERSION": "1",
+        "CRON_ENABLED": false,
+        "ENROLLMENT_ENABLED": true,
+        "ENVIRONMENT": "production",
+        "HABITICA_X_CLIENT_HEADER": "ff304279-d0c6-43e5-bd2d-caa41c7e017a-habitica-tool",
+        "KEY_OPERATIONS_ENABLED": false,
+        "MCP_RESOURCE": "https://habitica-companion-mcp.strexet.workers.dev/mcp",
+        "OAUTH_ENABLED": true,
+        "PARTY_ENABLED": false,
+        "PROJECTION_ENABLED": false,
+        "PWA_ORIGIN": "https://habitica-companion.pages.dev",
+        "SPELLS_ENABLED": false,
+        "WORKSPACE_ENABLED": true,
+        "WORKSPACE_ORIGIN": "https://habitica-companion-workspace.strexet.workers.dev"
+      },
+      "binding_identities": [
+        {
+          "id": "ada5184c-865d-4c6a-864a-88618f19c06f",
+          "name": "HABITICA_INTEGRATION_DB",
+          "type": "d1"
+        },
+        {
+          "name": "OAUTH_KV",
+          "namespace_id": "cd15636d00ac4be584ef7854a9a98fba",
+          "type": "kv_namespace"
+        }
+      ],
+      "secret_names": [
+        "CREDENTIAL_KEY_V1",
+        "CREDENTIAL_KEY_V2",
+        "PROFILE_ID_KEY"
+      ],
+      "observability": {
+        "enabled": true,
+        "head_sampling_rate": 1,
+        "redact_query_string": false,
+        "logs": {
+          "enabled": true,
+          "head_sampling_rate": 1,
+          "persist": true,
+          "invocation_logs": false
+        },
+        "traces": {
+          "enabled": false,
+          "persist": true,
+          "head_sampling_rate": 1
+        }
+      }
+    },
+    "habitica-companion-mcp": {
+      "vars": {
+        "AUTH_ISSUER": "https://habitica-companion-auth.strexet.workers.dev",
+        "ENVIRONMENT": "production",
+        "MCP_RESOURCE": "https://habitica-companion-mcp.strexet.workers.dev/mcp",
+        "OAUTH_ENABLED": true,
+        "PWA_ORIGIN": "https://habitica-companion.pages.dev",
+        "WORKSPACE_ORIGIN": "https://habitica-companion-workspace.strexet.workers.dev"
+      },
+      "binding_identities": [
+        {
+          "entrypoint": "AuthService",
+          "name": "AUTH_SERVER",
+          "service": "habitica-companion-auth",
+          "type": "service"
+        },
+        {
+          "entrypoint": "WorkspaceCommandService",
+          "name": "WORKSPACE_SERVER",
+          "service": "habitica-companion-workspace",
+          "type": "service"
+        }
+      ],
+      "secret_names": [],
+      "observability": {
+        "enabled": true,
+        "head_sampling_rate": 1,
+        "redact_query_string": false,
+        "logs": {
+          "enabled": true,
+          "head_sampling_rate": 1,
+          "persist": true,
+          "invocation_logs": false
+        },
+        "traces": {
+          "enabled": false,
+          "persist": true,
+          "head_sampling_rate": 1
+        }
+      }
+    }
+  },
+  "documentation_correction": "Structured console.info read metadata exists. Earlier zero-console observations omitted console.info and do not prove absence of application logs. Invocation logging and traces remain disabled; production secret-free log qualification remains open.",
+  "official_sources": [
+    "https://developers.openai.com/plugins/build/auth",
+    "https://developers.openai.com/plugins/deploy/connect-chatgpt#refresh-metadata",
+    "https://github.com/cloudflare/workers-oauth-provider/blob/main/docs/authorization-server.md"
+  ],
+  "deployment": {
+    "status": "prepared-local-commit-before-publication",
+    "pages_update": false,
+    "migrations": false,
+    "secret_changes": false
+  },
+  "live_retest": "Required: refresh ChatGPT metadata, authorize once, separate account/task/account reads, a read after more than ten minutes and independent Codex read. No live resolution claim.",
+  "remaining_gates": [
+    "ChatGPT request/refresh continuity live retest",
+    "Codex reads and refresh",
+    "scoped-write denial, receipts, revocation and cross-profile tests",
+    "packaged skill qualification",
+    "two consenting accounts",
+    "iOS and Android",
+    "redacted production-log inspection"
+  ]
+}

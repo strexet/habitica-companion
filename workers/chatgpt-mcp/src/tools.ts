@@ -29,7 +29,7 @@ const descriptions: Record<ReadTool, string> = {
   list_tasks: "Read the legacy Habitica task bootstrap view, not Companion projects, goals, plans or completed history. dueOnly returns only confirmed server-evaluated due Dailies. Completed To Dos cover at most the 30 most recent entries.",
   get_task: "Find a stable Habitica task ID in the legacy bootstrap view. Searches active tasks and at most 30 recent completed To Dos. Null means unavailable in this bounded view, not necessarily deleted. IDs require verified mapping before any future Companion mutation.",
 };
-const bootstrapTools = (Object.keys(readScopes) as ReadTool[]).map(name => ({ name, description: descriptions[name], inputSchema: schemas[name].input, outputSchema: schemas[name].output, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }, securitySchemes: [{ type: "oauth2", scopes: [readScopes[name]] }], _meta: { securitySchemes: [{ type: "oauth2", scopes: [readScopes[name]] }], ...(name === "get_profile" ? { "openai/profile": true } : {}) } })) as Tool[];
+const bootstrapTools = (Object.keys(readScopes) as ReadTool[]).map(name => ({ name, description: descriptions[name], inputSchema: schemas[name].input, outputSchema: schemas[name].output, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }, securitySchemes: [{ type: "oauth2", scopes: [...new Set(["profile:read", readScopes[name]])] }], _meta: { securitySchemes: [{ type: "oauth2", scopes: [...new Set(["profile:read", readScopes[name]])] }], ...(name === "get_profile" ? { "openai/profile": true } : {}) } })) as Tool[];
 
 export const toolDefinitions=[...bootstrapTools,...canonicalTaskTools,...partyTools,...spellTools,...cronTools];
 

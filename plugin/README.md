@@ -2,7 +2,7 @@
 
 The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamable HTTP MCP declaration and three skills. The selected owner-pilot clients are ChatGPT and Codex desktop; each client requires independent connection and workflow qualification. Actual installation, model activation and two-user enrollment remain rollout checks. No plugin is installed or published by repository tests.
 
-The committed MCP endpoint uses `.invalid` and cannot connect. Default Worker templates and PWA settings remain disabled. The ignored reviewed production bundle publishes `https://habitica-companion-mcp.strexet.workers.dev/mcp` and stages a matching package under `deploy/.production/plugin/`. The production endpoint is public and requires OAuth for tools; actual host import and authentication remain unrun. A deployable package requires an approved operator-configured HTTPS endpoint matching the Auth resource/audience and the MCP Worker configuration. Never add authorization headers or Habitica credentials to the package.
+The committed MCP endpoint uses `.invalid` and cannot connect. Default Worker templates and PWA settings remain disabled. The ignored reviewed production bundle publishes `https://habitica-companion-mcp.strexet.workers.dev/mcp` and stages a matching package under `deploy/.production/plugin/`. The production endpoint is public and requires OAuth for tools; the owner reports initial ChatGPT custom-MCP authentication and Codex authentication; complete client qualification remains open. A deployable package requires an approved operator-configured HTTPS endpoint matching the Auth resource/audience and the MCP Worker configuration. Never add authorization headers or Habitica credentials to the package.
 
 ## Private setup
 
@@ -20,18 +20,20 @@ ChatGPT and Codex desktop are required owner-pilot clients. Direct MCP qualifica
 
 | Check | ChatGPT | Codex desktop |
 | --- | --- | --- |
-| Private MCP connection, initialization and tool discovery | Unrun | Unrun |
-| OAuth discovery, PKCE, exact issuer/resource and selected scopes | Unrun | Unrun |
-| Client-specific callback, consent flow, token refresh and reconnect | Unrun | Unrun |
-| Read-only access, denied write scope and cross-profile isolation | Unrun | Unrun |
+| Private MCP connection, initialization and tool discovery | Owner reports 25 tools and two successful reads | Owner reports authentication completion; discovery unrun |
+| OAuth discovery, PKCE, exact issuer/resource and selected scopes | Owner reports initial completion; detailed protocol checks unrun | Owner reports initial completion; detailed protocol checks unrun |
+| Client-specific callback, consent flow, token refresh and reconnect | Failed: owner reports reconnect on the next request within one minute; repair retest pending | Owner reports callback completion; refresh/reconnect unrun |
+| Read-only access, denied write scope and cross-profile isolation | Two reads owner-reported; negatives and isolation unrun | Unrun |
 | Reviewed canonical task command and original receipt recovery after interruption | Unrun | Unrun |
 | Grant revocation denies new access and unaccepted previews | Unrun | Unrun |
 | Private plugin installation and all three bundled skills, explicit and natural invocation | Unrun | Unrun |
 | Live Cron denied; unselected game-effect lanes disabled | Unrun | Unrun |
 
+Owner observations are self-reported; client versions, granted scopes and independent tool-call traces are not captured. The custom MCP connection does not establish bundled-skill installation.
+
 Record app/client version, transport, selected permissions, actual callback mode, deployed commit and sanitized evidence per cell. Codex callback checks cover the actual loopback host/path/port and issuer response rather than reusing a ChatGPT redirect. Origin/CORS checks use observed client requests; no blanket origin exception is required by the test plan. Token values, one-time codes and credential-bearing request data remain excluded from evidence. Use [official OpenAI MCP guidance](https://learn.chatgpt.com/docs/extend/mcp?surface=app) and [plugin packaging guidance](https://developers.openai.com/plugins/build/plugins) for client setup.
 
-All workflow scenarios below apply independently to both clients. Selected real effects require explicit review and test scope; the initial dev lane keeps projection, spells and background execution disabled, with live Cron off. Missing hosted endpoints, host access or per-user consent remain unrun gates.
+All workflow scenarios below apply independently to both clients. Selected real effects require explicit review and test scope; the initial owner pilot keeps projection, spells and background execution disabled, with live Cron off. Missing hosted endpoints, host access or per-user consent remain unrun gates.
 
 ## Workflow qualification scenarios
 

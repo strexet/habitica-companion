@@ -93,6 +93,15 @@ Direct MCP connectivity and packaged skill installation are separate checks. The
 
 Start with “Show my Habitica account status. Change nothing.” Then request a Companion-only test Todo with no Habitica projection, review the preview and explicitly approve the save. A lost response requires lookup of the original receipt, not a replacement command. A second consenting account and real iOS/Android checks follow the owner pilot; no owner can consent for another account.
 
+## ChatGPT reconnect regression check
+
+1. Open [ChatGPT Plugins](https://chatgpt.com/plugins), select **habitica-companion**, open the connection details and select **Refresh**. Metadata refresh is required after server authentication/tool metadata changes; [official refresh instructions](https://developers.openai.com/plugins/deploy/connect-chatgpt#refresh-metadata) describe the supported custom-MCP flow.
+2. Complete **Reconnect** once if ChatGPT requests authorization. Generate a fresh linking code in [Companion Settings](https://habitica-companion.pages.dev/settings) and enter the code only on the Companion authorization page opened by ChatGPT. Review the account and requested scopes, then approve. Keep the integration profile and existing credentials.
+3. Start a new ChatGPT conversation, type `@` and select **habitica-companion**. Send three separate messages: `Show my Habitica account status. Change nothing.`, `Show my Habitica tasks. Change nothing.`, then `Show my Habitica account status again. Change nothing.` Expected: successful reads without another reconnect dialog. A prompt for additional permissions on an operation outside the approved scopes requires separate consent.
+4. After more than ten minutes, send the account-status request again. Expected: successful read through automatic token refresh. Run a read in Codex, then repeat a ChatGPT read to check client independence. Report only the failing request, elapsed time and error label; exclude tokens, linking codes and account data.
+
+The owner reports initial authentication in both clients and two successful ChatGPT reads, followed by immediate repeated reconnection. Local continuity checks pass; the live regression remains open until the owner retest succeeds.
+
 ## Stop and recover
 
 Stop new cloud access by disabling enrollment/OAuth and Workspace flags in the matching generated production configs and redeploying the affected Workers. Keep all game-effect/executor/Cron flags false. Per-account disconnect/deletion controls remain separate. Retain accepted histories and unknown-effect fences. Never delete established browser data or retry unknown gameplay effects to repair a connection. Restore only verified backups with compatible schemas.

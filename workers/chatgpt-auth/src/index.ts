@@ -76,7 +76,9 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
         if (path === "/oauth/register") await networkAttempts(request, env);
         if (path === "/oauth/token" && request.method === "POST") {
           const input = new URLSearchParams(await boundedText(request.clone(), 16384));
-          if (input.get("resource") !== resourceConfiguration(env.ENVIRONMENT, env).resource) return Response.json({ error: "invalid_target" }, { status: 400, headers });
+          // Refresh may inherit the resource already bound to the validated grant.
+          const inheritedRefresh = input.get("grant_type") === "refresh_token" && !input.has("resource");
+          if (!inheritedRefresh && input.get("resource") !== resourceConfiguration(env.ENVIRONMENT, env).resource) return Response.json({ error: "invalid_target" }, { status: 400, headers });
         }
         return authorizationServer(env).fetch(request, env, ctx);
       } catch (error) {

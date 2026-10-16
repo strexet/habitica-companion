@@ -18,7 +18,11 @@ export function authorizationServer(env: AuthEnv) {
       const props = authProps(options.props);
       if (!props) throw new OAuthError("invalid_grant", { description: "Connection no longer active." });
       try { const profile=await activeProfile(env, props.profileId, props.connectionId); if(props.grantEpoch!==profile.grant_epoch)throw new VaultError("unauthorized",401); }
-      catch { throw new OAuthError("invalid_grant", { description: "Connection no longer active." }); }
+      catch (error) {
+        if (error instanceof VaultError && error.status === 401) throw new OAuthError("invalid_grant", { description: "Connection no longer active." });
+        // invalid_grant revokes the provider grant; storage outages must remain recoverable.
+        throw new OAuthError("temporarily_unavailable", { description: "Connection verification temporarily unavailable.", statusCode: 503 });
+      }
       if (options.userId !== props.profileId) throw new OAuthError("invalid_grant", { description: "Connection no longer active." });
     },
   });
