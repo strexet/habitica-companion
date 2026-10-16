@@ -1,6 +1,6 @@
 # Dev deployment operator checklist
 
-Status: local preparation supports isolated dev configuration. Remote resources, hosted enrollment and client/device qualification remain unverified. The source defaults remain disabled. ChatGPT and Codex desktop are required test clients; live Cron stays off. [Deployment readiness](../skill-tree/documents/deploy-cloudflare-pages.md#intermediate-dev-launch-readiness) owns launch gates.
+Status: local dev prerequisites and synthetic recovery qualification pass; isolated dev configuration is prepared. Remote resources, hosted enrollment and client/device qualification remain unverified. The source defaults remain disabled. ChatGPT and Codex desktop are required test clients; live Cron stays off. [Deployment readiness](../skill-tree/documents/deploy-cloudflare-pages.md#intermediate-dev-launch-readiness) owns launch gates.
 
 ## 1. Provide Cloudflare access and choose addresses
 
@@ -13,7 +13,7 @@ The operator needs access to a Cloudflare account with permission to create Work
 
 Run commands from the repository root after dependencies are installed. Do not paste authentication output or tokens into chat. Report only the selected account ID and non-secret resource identities. The account/project configuration must refer to `develop` code from `strexet/habitica-tool`.
 
-Use a dedicated direct-upload Pages project named `habitica-companion-dev`, separate from the existing production project. Select the stable PWA origin `https://habitica-companion-dev.pages.dev`. Worker names generated from the project are `habitica-companion-dev-auth`, `habitica-companion-dev-mcp` and `habitica-companion-dev-workspace`.
+Choose an available dedicated direct-upload Pages project ending in `-dev`, separate from the existing production project. Commands below use `habitica-companion-dev` as the example; replace the project and derived names consistently if unavailable. The matching stable PWA origin is `https://habitica-companion-dev.pages.dev`. Worker names generated from the example project are `habitica-companion-dev-auth`, `habitica-companion-dev-mcp` and `habitica-companion-dev-workspace`.
 
 For each Worker, select either a custom hostname in an account-owned Cloudflare zone or the matching stable `https://<worker-name>.<account-subdomain>.workers.dev` address. Custom domains require the corresponding zone/DNS access. Every service needs a distinct HTTPS origin. Ephemeral deployment preview URLs cannot serve as stable OAuth identities.
 
@@ -81,14 +81,20 @@ Inspect published `output/wwwroot/appsettings.json` before the Pages upload. The
 ## 6. Participate in live client qualification
 
 1. Open dev Settings and complete explicit integration storage consent for the test account. Enable cloud workspace access separately; adoption of existing browser data remains explicit. Use a test browser profile to preserve ordinary local data.
-2. Connect the dev MCP address in ChatGPT using the supported custom MCP flow. Connect the same address in Codex desktop MCP settings and complete the separate OAuth consent. Use the exact callback selected by each client; no redirect or Origin wildcard is required.
+2. Generate a fresh one-time linking code in dev Settings for each client. The current card label is “ChatGPT linking”; linking supports both clients and each code is consumed once. Connect the dev MCP address in ChatGPT using the supported custom MCP flow. Generate another code, connect the same address in Codex desktop MCP settings and complete separate OAuth consent. Use the exact callback selected by each client; no redirect or Origin wildcard is required.
 3. Install the staged `deploy/.dev/plugin/` through a supported private/local plugin source and check all three bundled skills in each client. Record unavailable host features as failed/unrun gates. Direct MCP connectivity does not qualify plugin activation.
-4. Run the [client matrix](../plugin/README.md#client-qualification-matrix): reads, denied scope, reviewed canonical task save, original receipt recovery, reconnect and revocation. Initial tests save Companion data only. Projection, spells and background execution remain off; live Cron remains off throughout dev preparation.
+4. Run the [client matrix](../plugin/README.md#client-qualification-matrix): reads, denied scope, reviewed canonical task save, original receipt recovery, reconnect and revocation. Initial tests save Companion data only. Projection, spells and background execution remain off; live Cron remains off throughout dev preparation. The flags constrain cloud integration only; existing browser Habitica controls can still change the real account. Keep initial tests within the canonical Companion task lane and avoid legacy scoring/equipment/spell controls.
 5. Invite one consenting teammate for the separate account-isolation/revocation stage. The operator cannot consent on behalf of another account owner. Real iOS Safari/PWA and Android qualification requires selected devices and owners; record versions and redacted results.
 
 ## 7. Stop and recover
 
 Disable enrollment/OAuth and Workspace access in the generated configs and redeploy the affected Workers to stop new access. Disable the executor before any later effectful testing. Retain command history and unknown outcomes; never retry uncertain game effects. Revoke host access through account controls as needed. Restore only from verified dev backups and record schema compatibility. Keep production separate and leave live Cron disabled.
+
+## Owner participation and automation handoff
+
+Interactive Cloudflare account login/selection, address choices, secure secret entry and each account owner’s consent require owner participation. Resource creation, public configuration, migrations and publication commands are prepared for an operator or agent with the selected account access and explicit dev deployment scope. No production publication is part of the dev plan.
+
+The first owner pilot requires only the dedicated dev environment and the owner’s available clients. A second consenting tester and physical devices qualify broader release gates; absence of the second-user/device lanes does not block the initial owner pilot.
 
 ## Information required from the operator
 

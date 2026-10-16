@@ -39,7 +39,8 @@
       "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
       "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
-      "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2"
+      "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2",
+      "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -53,6 +54,7 @@
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3": "O-48ebee79-cbbb-4c1c-829c-038c887076e9",
       "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3": "O-f684df86-5cbd-4a55-9f83-286b66f0d3d6",
       "T-3987ba88-f69f-59f1-811e-f51cabfa5978": "O-048b3fa0-28ea-49a0-bec1-a8e537a805f5",
+      "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e": "O-9e01fa6a-caa6-4e3c-be17-1e389f562720",
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8": "O-d3de5c55-c4ac-4eb9-9b46-36aa630adf68",
       "T-49eaa44e-5c98-4219-a380-4201e4143494": "O-9f6a3618-fbbf-4d96-b034-bbe5f19e01ca",
       "T-4a1de222-156a-52cf-8966-262a2c8216ed": "O-1be18cd1-6faf-47ff-bc66-14861e6858e4",
@@ -82,18 +84,19 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
-    "cycle_signature": "4390a34cddc0887ef8ac6ad21868a19a5952457bce8452e0ab3d31e4918a10b7",
+    "current_task_id": null,
+    "cycle_signature": "275a7df3d9e623ad06f0dbc47c12f74beccc73377c543ad4335302975bb1df1f",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Prepare the dedicated dev environment using deploy/README.md, then qualify the owner pilot with ChatGPT and Codex desktop.",
     "partial_work": [
-      "Owner narrows continuation to dev prerequisites: isolated deployment preparation, bounded traffic/own diagnostics and E14 local recovery qualification. ChatGPT and Codex desktop remain required dev clients.",
-      "Real deployment, per-user enrollment and device qualification require the prepared environment and operator participation. Live Cron remains off."
+      "Dev-only continuation completed isolated configuration, traffic/status protection, required layout and read-scope fixes, and local E14 evidence.",
+      "Projection, party planning, spells, executor, key operations and live Cron remain off in initial generated dev configuration. Existing browser game controls retain real effects.",
+      "Unselected Pending/Backlog work and parallel Miniflare investigation remain deferred."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -127,7 +130,7 @@
       "P-39328781-1536-468d-9e1c-3c0bad9c5cb3",
       "P-287005d4-1e7f-446d-a802-9f78aeca7e72"
     ],
-    "phase": "implement",
+    "phase": "blocked",
     "processing_results": [
       {
         "created_ids": [
@@ -700,10 +703,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": null
+    "stop_reason": "Local dev prerequisites pass. Cloudflare interactive account access, selected stable dev origins and isolated resource IDs, secure secret entry, actual host access and consenting-user/device participation remain unavailable. No remote deployment or enrollment has occurred."
   },
   "format": "skill-tree-future",
-  "source_hash": "0e2a45a28e019f85c95750d117ec8d9efb55554f6528370d7c3d4d25dfd9566d",
+  "source_hash": "b08b2773f6f57a347488c922a91c57df38ebb742f9745931073c75abb52716a8",
   "tasks": [
     {
       "depends_on": [],
@@ -819,33 +822,10 @@
     },
     {
       "depends_on": [
-        "T-5737120b-52a5-4a57-9072-fce514adaf33",
-        "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
-        "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
-        "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08",
-        "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
-        "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2"
-      ],
-      "id": "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
-      "line": 324,
-      "parent_pending_ids": [
-        "P-29925105-1015-5ced-8844-d56fa47e33c9"
-      ],
-      "priority": 101,
-      "processing_run_id": "PR-a888ac19-1755-417e-8a69-4126028348c3",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "relation": "subtask",
-      "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "status": "Ready",
-      "title": "Qualify E14 local adoption and recovery boundaries"
-    },
-    {
-      "depends_on": [
         "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 364,
+      "line": 324,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -861,7 +841,7 @@
     {
       "depends_on": [],
       "id": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
-      "line": 405,
+      "line": 365,
       "parent_pending_ids": [
         "P-28d6ece4-a519-44a8-9625-3367479a03c3"
       ],
@@ -885,7 +865,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 444,
+      "line": 404,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -901,7 +881,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 599,
+      "line": 559,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -915,7 +895,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 636,
+      "line": 596,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -929,7 +909,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 673,
+      "line": 633,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -943,7 +923,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 806,
+      "line": 766,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -957,7 +937,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 844,
+      "line": 804,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -971,7 +951,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 878,
+      "line": 838,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -985,7 +965,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 913,
+      "line": 873,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -999,7 +979,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 947,
+      "line": 907,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1013,7 +993,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 985,
+      "line": 945,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1027,7 +1007,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1012,
+      "line": 972,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1041,7 +1021,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1034,
+      "line": 994,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1055,7 +1035,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1061,
+      "line": 1021,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

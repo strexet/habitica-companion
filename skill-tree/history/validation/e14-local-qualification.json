@@ -1,0 +1,78 @@
+{
+  "task_id": "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+  "date": "2026-10-16",
+  "result": "pass-local-only",
+  "suite_results": {
+    "auth": 102,
+    "workspace": 82,
+    "dotnet": 545,
+    "functions_and_configuration": 22,
+    "focused_ui": 43,
+    "layout_cases": 20
+  },
+  "builds": {
+    "app_release": "pass",
+    "three_workers": "pass",
+    "generated_pages_functions": "pass"
+  },
+  "coverage": [
+    "Explicit canonical adoption and legacy portable records remain separate",
+    "Export/restore preserves IDs and history; conflicts and invalid imports fail closed",
+    "Interrupted handoff, frozen ownership and restored unknown outcomes prevent duplicate dispatch",
+    "Concurrent CAS, stale sessions, profile/epoch boundaries and revoke during waits",
+    "Original task/spell/Cron receipt lookup preserves unknown-effect fences",
+    "Authenticated party permissions, consent and contributor export/removal",
+    "Management revoke and private key-operation local controls",
+    "Codex-shaped local CIMD callback fixture accepts selected loopback ports and rejects changed host/path; refresh succeeds",
+    "Fresh OAuth grant using exactly advertised read scopes succeeds",
+    "Twenty responsive/200-percent text cases have matching client/scroll widths and no clipped controls",
+    "Native Tab reaches saved-work status button; separate component tests qualify interactions"
+  ],
+  "evidence": [
+    "skill-tree/history/validation/dev-preparation.json",
+    "skill-tree/history/validation/integration-operations.json",
+    "skill-tree/history/validation/e14-layout-after.json",
+    "skill-tree/history/validation/e14-keyboard-status.jpg",
+    "skill-tree/history/validation/read-scope-after.json",
+    "skill-tree/history/validation/reconnection-receipt-boundaries.json"
+  ],
+  "source_fingerprints": {
+    "deploy/prepare-dev.mjs": "1cb41ed0d64b620c3114ee6fd65ff234dad985306c191967ac1711b0590da78e",
+    "deploy/frontend-settings.mjs": "4b3d4deb794f0fb2ed5056ccceb6c6ba64e755003958d0e8dfeaec4b962f8b35",
+    "build.sh": "8060223198fd0c560754927c34173cd2776a8fb20b4c244128d14672b6817052",
+    "tests/Functions/dev-preparation.test.mjs": "0c01788124741b9e3e9d76da509c432fff57e39f42366ca66eb870a8c657a62c",
+    "workers/chatgpt-auth/test/codex-compatibility.test.mjs": "69dd646528fc49b6c13ec5d1e286b6f4c7de7d1bb816411f7eed5cfc1cb9a7e9",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "e4f80aea6345de22e8ab39eac304491994ddfba6261989899aaad9dd8ac8871c",
+    "workers/chatgpt-auth/test/reads.test.mjs": "e126a9f5d1c8cd11580a0af8d713bcb41a0fb04c935e1c421d60d3da1f819672",
+    "tests/Habitica.Application.Tests/Workspace/WorkspacePortabilityTests.cs": "bbb9d6d92634f08393b9ef997e8ac0435926275b7f07ee248e580dd9bf3cae05",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceHandoffTests.cs": "ff9937503ddc27e2dbf6980edf2a291cb0de98ec43f6148ee3db5496819f07fd",
+    "tests/Habitica.Storage.Tests/Workspace/IndexedDbWorkspaceDatabaseTests.cs": "5abd2d792c852254095d83c8c0cb56e9836a63852dc236e7d62d3de9c4c668bb",
+    "tests/Habitica.Application.Tests/Sync/LocalUserDataPortabilityServiceTests.cs": "5745603cef1fbd21354df0803b7ded280348f23b83e2f76922acf808a40bd2f3",
+    "workers/companion-workspace/test/executor.test.mjs": "c5a99a34d4493ba521280820c0c564c7af2202972cb598991f7cd2f7bf2a90e9",
+    "workers/companion-workspace/test/party-planning.test.mjs": "b8730df3dd7ad8de03a366e55933f54318c13ac08d2e613cc336b82bd7fb25d4",
+    "workers/companion-workspace/test/task-api.test.mjs": "7199614a7136b5b6374b7038f150993c555b4c424fa1e7c383ef6a335c345c9c",
+    "workers/companion-workspace/test/spells.test.mjs": "c7ec1a5d19f03fe5fa6549d953ac8cf249efbb6eb348560aaf8f907f5fa67515",
+    "workers/companion-workspace/test/cron.test.mjs": "c5764606f3e708e23efe84253d71130fb6575fb04be29a0ea0a5988b34cc5eee",
+    "workers/chatgpt-auth/test/key-operations.test.mjs": "03821682d0ca3503fe44932b8a129e48a1325a79f953a6208b30e94be1d5ded1"
+  },
+  "local_log_fingerprints": {
+    "/tmp/habitica-e14-chatgpt-auth-tests.txt": "130cc4f606927fdc01a7b4d78c8fccb4b62541b35fec94d917991b1fec4d78db",
+    "/tmp/habitica-e14-companion-workspace-tests.txt": "d1e0bc87eb4ef075d781d363742edc098d58bd75de3f704cb7d9ffa7245f2826",
+    "/tmp/habitica-e14-functions-final.txt": "d9d379dac929749c3230b1796a1d033d814432d633df3be4bc79265815482b69",
+    "/tmp/habitica-operations-final-dotnet.txt": "eae9ec262172dcc03881fdd8f3de6ad8d6a9080daac70e65257e4cf631d3ef97",
+    "/tmp/habitica-e14-layout-validation.txt": "75dd236ab149d46721f0c4ebcd67b31243c26e0c12b12182c607970712835f9c",
+    "/tmp/habitica-e14-release.txt": "28885d23e52c0f6aa5cd6820f51a2cbb8bc24e82b6983c5aa542c74c72ded140",
+    "/tmp/habitica-e14-pages-functions-build.txt": "418bd67d12f676803f298720d554a806c435366de874fc0727b3bc982bb879e2",
+    "/tmp/habitica-e14-chatgpt-auth-build.txt": "83c7752651cea8b4b5dce5cf3e47bcd1bb51673ee8a46c2cef707e6ee0c301f2",
+    "/tmp/habitica-e14-chatgpt-mcp-build.txt": "79058544e1a8f6afbdda692edfeb33789e326fc971da7e41c044994fdc8f811d",
+    "/tmp/habitica-e14-companion-workspace-build.txt": "6764cc0c432c4e51d43c2659dc1f02dacf83c7ae47d474074ed6f898c10cc39a"
+  },
+  "limitations": [
+    "Cloudflare account, resources, secrets, remote migrations and deployment are unrun",
+    "Real ChatGPT/Codex desktop OAuth, plugin installation and skill activation are unrun",
+    "Real multi-user, iOS/Android, assistive technology and full keyboard flows are unrun",
+    "Static Razor fixture layout is separate from live application/device acceptance",
+    "Initial dev cloud game-effect capabilities remain disabled and live Cron stays off",
+    "Release publication succeeds without the optional wasm-tools optimization workload"
+  ]
+}

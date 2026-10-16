@@ -321,46 +321,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Qualify E14 local adoption and recovery boundaries
-
-```yaml
-id: T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e
-priority: 101
-status: Ready
-parent_pending_ids: ["P-29925105-1015-5ced-8844-d56fa47e33c9"]
-processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
-root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
-related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
-relation: subtask
-depends_on: ["T-5737120b-52a5-4a57-9072-fce514adaf33", "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4", "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca", "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08", "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00", "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2"]
-```
-
-Goal:
-- Qualify E14 adoption and recovery for all implemented local capabilities.
-Current behavior:
-- Component, storage and synthetic Worker suites cover canonical workspaces, explicit adoption, backups, conflicts, hosted ownership and command uncertainty. Real mobile-device and multi-user host qualification remain unrun.
-Desired behavior:
-- A documented local evidence matrix covers flags, legacy preservation, explicit adoption, backup/restore, interrupted storage/network, conflicts, concurrent versions and accessible responsive controls.
-Touch:
-- Existing app/Worker fixtures, browser checks and E14 qualification documentation.
-Discovery allowance:
-- Reuse current checks and add only evidence-backed missing controls or required bug subtasks.
-Out of scope:
-- Implementing unselected E01-E13 UX/product epics, real devices, enrollment, deployment and real effects.
-Implementation constraints:
-- Cover profile/account reads, canonical tasks/projection, authenticated party planning, reviewed Blessing and disabled local Cron. Preserve legacy browser data; adoption stays explicit. Report real device gaps separately.
-Questions and required clarifications:
-- None for local evidence. Real device and consenting-user checks remain release prerequisites.
-Validation:
-- Run relevant interrupted storage/network, version conflict, revoke and backup/restore cases. Inspect responsive, large-text and accessible control behavior on synthetic data.
-Acceptance:
-- E14 local evidence covers selected implemented capabilities and preserves explicit adoption and legacy data through interruption/recovery.
-- Responsive and accessible control evidence records exact local coverage and outstanding device limitations.
-Documentation updates:
-- testing.md, ux-ui-manifest.md, deployment guidance and a bounded release qualification matrix.
-Risks:
-- Treating synthetic browser checks as device or live account qualification.
-
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml

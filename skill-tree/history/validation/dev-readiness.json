@@ -1,7 +1,7 @@
 {
   "kind": "intermediate-dev-readiness",
   "date": "2026-10-16",
-  "source_commit": "5c2efbd",
+  "source_commit": "902f398 plus recorded E14 source fingerprints",
   "initial_queue_commit": "2d47b81d^",
   "initial_entries": 37,
   "initial_queues": {
@@ -12,17 +12,17 @@
   "run_id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
   "completed_main_tasks": 10,
   "initial_main_tasks": 11,
-  "completed_task_units": 35,
+  "completed_task_units": 40,
   "current_queues": {
     "Pending Queue": 8,
-    "Prioritized Next Changes": 5,
+    "Prioritized Next Changes": 3,
     "Backlog": 12
   },
-  "current_task": "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
-  "launch_readiness": "preparation-required",
+  "current_task": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+  "launch_readiness": "local-prerequisites-pass-remote-setup-required",
   "cloudflare_project_inventory": "unavailable-noninteractive-auth",
   "remote_deployment_performed": false,
-  "local_validation_reference": "skill-tree/history/validation/reconnection-receipt-boundaries.json",
+  "local_validation_reference": "skill-tree/history/validation/e14-local-qualification.json",
   "checklist": "skill-tree/documents/deploy-cloudflare-pages.md#intermediate-dev-launch-readiness",
   "required_first_dev_clients": [
     "ChatGPT",
@@ -32,5 +32,23 @@
     "Codex CLI"
   ],
   "client_qualification_matrix": "plugin/README.md#client-qualification-matrix",
-  "client_qualification_status": "unrun"
+  "client_qualification_status": "unrun",
+  "historical_baseline": {
+    "source_commit": "5c2efbd",
+    "completed_task_units": 35,
+    "current_queues": {
+      "Pending Queue": 8,
+      "Prioritized Next Changes": 5,
+      "Backlog": 12
+    },
+    "launch_readiness": "preparation-required"
+  },
+  "operator_checklist": "deploy/README.md",
+  "local_prerequisite_tasks_completed": [
+    "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+    "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08",
+    "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+    "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
+    "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2"
+  ]
 }

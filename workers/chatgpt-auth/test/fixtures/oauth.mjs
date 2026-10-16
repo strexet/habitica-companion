@@ -27,6 +27,7 @@ async function fixture(t, options = {}) {
           const user = request.headers.get("x-api-user");
           return Response.json({ success: true, data: { _id: user, profile: { name: user === accounts[0].habiticaUserId ? "Fixture A" : "Fixture B" } } });
         }
+        if(options.clientMetadata&&request.url===options.clientMetadata.client_id)return Response.json(options.clientMetadata);
         if (request.url === "https://client.example.com/oauth-client.json") return Response.json({ client_id: request.url, client_name: "CIMD Fixture", redirect_uris: [redirectUri], token_endpoint_auth_method: "none" });
         return new Response("Blocked fixture destination", { status: 404 });
       },
@@ -93,9 +94,9 @@ async function form(f, page, values) {
   const response = await f.auth.fetch(issuer + "/authorize", { method: "POST", redirect: "manual", headers: { "content-type": "application/x-www-form-urlencoded", cookie: cookies(page.jar), origin: issuer }, body });
   remember(page.jar, response); return response;
 }
-async function authorization(f, profile, scope = "profile:read") {
+async function authorization(f, profile, scope = "profile:read", overrides = {}) {
   const code = await ticket(f, profile);
-  const page = await authPage(f, scope);
+  const page = await authPage(f, scope, overrides);
   assert.equal(page.response.status, 200);
   const firstHtml = await page.response.text();
   assert.ok(firstHtml.includes('&#60;script&#62;untrusted&#60;/script&#62;'));
@@ -109,10 +110,10 @@ async function authorization(f, profile, scope = "profile:read") {
   const location = new URL(allowed.headers.get('location'));
   assert.equal(location.searchParams.get('state'), 'fixture-state');
   assert.equal(location.searchParams.get('iss'), issuer);
-  return { code: location.searchParams.get('code'), verifier: page.verifier };
+  return { code: location.searchParams.get('code'), verifier: page.verifier, clientId: overrides.client_id ?? f.clientId, redirectUri: overrides.redirect_uri ?? redirectUri, callback: location.origin + location.pathname };
 }
 async function exchange(f, auth, overrides = {}) {
-  return f.auth.fetch(issuer + "/oauth/token", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ grant_type: "authorization_code", code: auth.code, code_verifier: auth.verifier, client_id: f.clientId, redirect_uri: redirectUri, resource, ...overrides }) });
+  return f.auth.fetch(issuer + "/oauth/token", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ grant_type: "authorization_code", code: auth.code, code_verifier: auth.verifier, client_id: auth.clientId ?? f.clientId, redirect_uri: auth.redirectUri ?? redirectUri, resource, ...overrides }) });
 }
 
 

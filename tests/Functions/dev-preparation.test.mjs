@@ -12,6 +12,7 @@ test('dev artifacts isolate resource identities and keep all game-effect flags o
   const result=writeDev(input(),target);assert.equal(result.configs['chatgpt-auth'].vars.ENROLLMENT_ENABLED,true);
   for(const c of Object.values(result.configs)){for(const key of ['CRON_ENABLED','SPELLS_ENABLED','PROJECTION_ENABLED','PARTY_ENABLED','EXECUTOR_ENABLED','KEY_OPERATIONS_ENABLED'])if(key in c.vars)assert.equal(c.vars[key],false);assert.equal(c.vars.MCP_RESOURCE,input().mcpOrigin+'/mcp');assert.ok(!c.env);for(const b of c.services||[])assert.ok(b.service.includes('-dev-'));}
   assert.ok(fs.existsSync(path.join(target,'pages/functions/api')));assert.equal(JSON.parse(fs.readFileSync(path.join(target,'pages/wrangler.json'))).d1_databases[0].database_id,input().partyDatabaseId);assert.equal(result.pages.kv_namespaces[0].id,input().pagesKvId);assert.equal(result.settings.Features.PartySyncEnabled,true);assert.equal(result.settings.CompanionWorkspace.PartyPlanningEnabled,false);assert.equal(JSON.parse(fs.readFileSync(path.join(target,'plugin/mcp.json'))).mcpServers['habitica-companion'].url,input().mcpOrigin+'/mcp');
+  const plan=JSON.parse(fs.readFileSync(path.join(target,'deployment-plan.json')));assert.equal(plan.cloudGameEffectsEnabled,false);assert.equal(plan.liveCronEnabled,false);assert.deepEqual(plan.requiredClients,['ChatGPT','Codex desktop']);
   assert.throws(()=>writeDev(input(),target));
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
