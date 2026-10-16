@@ -31,7 +31,8 @@
       "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
       "T-211d2ac1-5778-47fb-8148-c9e1a320e31a",
       "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
-      "T-c754c836-f4b7-413c-9733-35f18a0db6a6"
+      "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
+      "T-b92db026-a8cf-5922-8556-666cbea947ab"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -59,6 +60,7 @@
       "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9": "O-1289cd22-e42d-43e3-8c68-1c7954321b8a",
       "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f": "O-31dca147-51af-4489-863f-be4aa92285dc",
       "T-b883e33b-05a6-53d8-a9a5-d11d7008887f": "O-84147b67-67cd-4c09-80fe-17befff407d7",
+      "T-b92db026-a8cf-5922-8556-666cbea947ab": "O-e70ae478-e644-48d6-8451-13f7bbdc4e6a",
       "T-be68f853-9737-4657-a8a4-7aff8dfc497b": "O-2cf7fc6d-d2b2-480c-b190-e9907a73ea5a",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df": "O-ed64ce15-7bea-467d-8a8b-06a3494a05fd",
       "T-c754c836-f4b7-413c-9733-35f18a0db6a6": "O-1f71b9d7-7b0f-4c7f-b63e-81b5b0b683e0",
@@ -66,9 +68,11 @@
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b",
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e"
     },
-    "current_task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-    "cycle_signature": "a9f313f12938721cba60837e1862ef600e0bf2add21f3a6616b7859f16d5a7e6",
-    "deferred_ids": [],
+    "current_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "cycle_signature": "285be0753b84d434615e23e22e5799b2cb44996ac2a19cc5d2d65cc0aa35180a",
+    "deferred_ids": [
+      "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
+    ],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
@@ -76,7 +80,9 @@
     "partial_work": [
       "Owner adopted the local Cron contract and selected all implemented tools with live Cron off on 2026-10-16.",
       "Further contracts inside the initial snapshot and required dependencies are adopted automatically for local implementation and synthetic checks.",
-      "Live activation, real enrollment, device qualification and production secret changes remain separate."
+      "Live activation, real enrollment, device qualification and production secret changes remain separate.",
+      "Private Cron prerequisite completed in 17477c1. Reviewed Workspace/MCP Cron ledger implemented; focused and broad synthetic qualification pending.",
+      "Typed Cron actions use 2-minute previews, one dispatch, a shared 90-second lease and 60-second foreground budget; own-account operation requires no shared planning consent. All live Cron flags remain false."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -483,6 +489,25 @@
         "task_keys": {
           "refresh-priority": "T-211d2ac1-5778-47fb-8148-c9e1a320e31a"
         }
+      },
+      {
+        "created_ids": [
+          "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
+        ],
+        "dispositions": {
+          "P-28d6ece4-a519-44a8-9625-3367479a03c3": {
+            "reason": "Serial and isolated controls establish a bounded parallel qualification investigation with no demonstrated production source defect.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-def147f5-3bef-4500-9128-55ff55501a0a",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-28d6ece4-a519-44a8-9625-3367479a03c3"
+        ],
+        "task_keys": {
+          "parallel-lifecycle": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
+        }
       }
     ],
     "required_ids": [
@@ -517,9 +542,10 @@
       "T-b92db026-a8cf-5922-8556-666cbea947ab",
       "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
       "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
-      "T-211d2ac1-5778-47fb-8148-c9e1a320e31a"
+      "T-211d2ac1-5778-47fb-8148-c9e1a320e31a",
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
-    "root_task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
+    "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "snapshot": [
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df",
@@ -537,7 +563,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "0ea90ab2d674ed046a656e1e2a852f20e5c80061ced50235e90cfd6ef5b32701",
+  "source_hash": "c2653c9a9cd5d015bb7f458437e3e76df3ef39c45c7f0ca3ae5e38bae370aad3",
   "tasks": [
     {
       "depends_on": [],
@@ -667,51 +693,26 @@
     },
     {
       "depends_on": [],
-      "id": "P-28d6ece4-a519-44a8-9625-3367479a03c3",
-      "line": 349,
-      "parent_pending_ids": [],
+      "id": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
+      "line": 353,
+      "parent_pending_ids": [
+        "P-28d6ece4-a519-44a8-9625-3367479a03c3"
+      ],
       "priority": 97,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
+      "processing_run_id": "PR-def147f5-3bef-4500-9128-55ff55501a0a",
+      "queue": "Prioritized Next Changes",
       "related_task_id": "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
       "relation": "followup",
       "root_task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "status": "Pending",
-      "title": "Investigate parallel Miniflare lifecycle qualification instability"
-    },
-    {
-      "depends_on": [
-        "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
-        "T-c6f6b09d-4625-5898-b91c-016c611b60df",
-        "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
-        "T-e33bccdc-22f1-5043-9230-3d12d9e9563d",
-        "T-16a38176-f2fe-5f7d-a809-546f17357b49",
-        "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
-        "T-4a1de222-156a-52cf-8966-262a2c8216ed",
-        "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
-        "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
-        "T-c754c836-f4b7-413c-9733-35f18a0db6a6"
-      ],
-      "id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "line": 379,
-      "parent_pending_ids": [
-        "P-46dde168-2e75-53fd-b2c0-0c1769f7711d"
-      ],
-      "priority": 98,
-      "processing_run_id": null,
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
       "status": "Ready",
-      "title": "Add Start New Day Only As A Dedicated High-Risk Feature"
+      "title": "Investigate parallel Miniflare lifecycle qualification instability"
     },
     {
       "depends_on": [
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 505,
+      "line": 392,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -727,7 +728,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 660,
+      "line": 547,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -741,7 +742,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 697,
+      "line": 584,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -755,7 +756,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 734,
+      "line": 621,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -769,7 +770,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 867,
+      "line": 754,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -783,7 +784,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 905,
+      "line": 792,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -797,7 +798,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 939,
+      "line": 826,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -811,7 +812,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 974,
+      "line": 861,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -825,7 +826,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1008,
+      "line": 895,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -839,7 +840,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1046,
+      "line": 933,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -853,7 +854,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1073,
+      "line": 960,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -867,7 +868,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1095,
+      "line": 982,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -881,7 +882,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1122,
+      "line": 1009,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

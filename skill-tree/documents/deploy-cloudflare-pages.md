@@ -211,4 +211,8 @@ Spell previews require separately activated authenticated planning consent and a
 
 ## Private Cron activation boundary
 
-Auth `CRON_ENABLED` ships false in local, preview and production. The named `CronService` entrypoint has no public route and no production MCP dispatch binding. No new Auth migration or real deployment is performed by local qualification. OAuth `habitica.cron.execute` is a separate explicit consent scope with missed-Daily damage, buff/task reset, quest progress and no-replay warnings. Existing read/task/spell grants do not acquire Cron execution. Workspace reviewed persistence, receipt recovery and real multi-user activation qualification remain mandatory before live exposure.
+Auth `CRON_ENABLED` ships false in local, preview and production. The named `CronService` entrypoint has no public route and no production MCP dispatch binding. No new Auth migration or real deployment is performed by local qualification. OAuth `habitica.cron.execute` is a separate explicit consent scope with missed-Daily damage, buff/task reset, quest progress and no-replay warnings. Existing read/task/spell grants do not acquire Cron execution. Workspace reviewed persistence and receipt recovery are locally implemented. Real multi-user activation qualification remains mandatory before live exposure.
+
+## Reviewed Cron deployment boundary
+
+Workspace migration `0006-reviewed-cron-actions.sql` defines typed previews and retained Cron receipts. `AUTH_CRON` binds only Workspace to Auth's private `CronService`; production MCP has no direct Cron binding. Both `CRON_ENABLED` flags remain false in local, preview and production. The existing minute Worker wakeup runs only the separately enabled task executor and never Cron. Applying migrations, setting live flags, deploying and real account/device qualification require separate authorization. Private Cron history is an additional own-data export at `/cron/history`, protected by management authentication.

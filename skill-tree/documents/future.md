@@ -346,161 +346,48 @@ Requirements:
 Expected behavior:
 - Legacy users retain existing data and existing gameplay workflows; users can switch advanced features off without corrupting records; recovery after interrupted migration is validated.
 
+## Prioritized Next Changes
+
+Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
+
 ### Investigate parallel Miniflare lifecycle qualification instability
 
 ```yaml
-id: P-28d6ece4-a519-44a8-9625-3367479a03c3
+id: T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55
 priority: 97
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
+status: Ready
+parent_pending_ids: ["P-28d6ece4-a519-44a8-9625-3367479a03c3"]
+processing_run_id: PR-def147f5-3bef-4500-9128-55ff55501a0a
 root_task_id: T-b92db026-a8cf-5922-8556-666cbea947ab
 related_task_id: T-90a73b3c-0a12-4387-a4dd-8fadb6d51995
 relation: followup
 depends_on: []
 ```
 
-Description:
-- Investigate the recurring synthetic identity/lifecycle fixture failure seen only during parallel suite execution. Preserve all stale-epoch and replacement-session assertions.
-
-Expected behavior:
-- Qualification identifies and removes the host/transport or source cause of intermittent replacement-session 401 responses without weakening isolation checks or relabeling missing evidence as product success.
-
-Current context:
-- A parallel Workspace run failed on the replacement export in the delete case. Fifteen isolated repetitions passed; a serial diagnostic discovery run passed all 64 discovered modules including one helper. No production cause is established. The earlier response-buffer repair did not eliminate every observed parallel failure.
-
-Source:
-- /tmp/habitica-readiness-companion-workspace-tests.txt, /tmp/habitica-readiness-lifecycle-diagnostic.txt and /tmp/habitica-readiness-workspace-serial-diagnostic.txt; unchanged workspace.test.mjs security assertions.
-
-## Prioritized Next Changes
-
-Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
-
-### Add Start New Day Only As A Dedicated High-Risk Feature
-
-```yaml
-id: T-b92db026-a8cf-5922-8556-666cbea947ab
-priority: 98
-status: Ready
-parent_pending_ids: ["P-46dde168-2e75-53fd-b2c0-0c1769f7711d"]
-processing_run_id: null
-root_task_id: T-b92db026-a8cf-5922-8556-666cbea947ab
-related_task_id: null
-relation: main
-depends_on: ["T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e", "T-c6f6b09d-4625-5898-b91c-016c611b60df", "T-b883e33b-05a6-53d8-a9a5-d11d7008887f", "T-e33bccdc-22f1-5043-9230-3d12d9e9563d", "T-16a38176-f2fe-5f7d-a809-546f17357b49", "T-53352a18-54d2-57b6-accc-91f8e6dfad13", "T-4a1de222-156a-52cf-8966-262a2c8216ed", "T-3987ba88-f69f-59f1-811e-f51cabfa5978", "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec", "T-c754c836-f4b7-413c-9733-35f18a0db6a6"]
-```
-
-Migration source:
-- Imported numbered contract 9 from PR #1; originating Pending identity records imported intent, not a new Process Pending result.
-
-Integration gate: The prepared Cron operation enters the same durable command ledger. A timeout must transition to `UnknownOutcome` and reconcile with current Habitica `needsCron`/Cron state; never automatically send `POST /cron` again merely because the first response is missing.
-
 Goal:
-- Expose Cron only after the integration has proven safe under real multi-user use.
-
-Tools:
-
-```text
-get_cron_status
-prepare_start_new_day
-execute_start_new_day
-```
-
-Do not provide:
-
-```text
-start_new_day()
-```
-
-as an immediate one-step mutation.
-
-Preparation must gather:
-- current `needsCron`;
-- fresh user state;
-- current due unfinished Dailies;
-- relevant quest state where available;
-- warnings about temporary buffs;
-- estimated/unknown risk fields according to existing Companion rules;
-- expiration timestamp.
-
-Execution:
-- consumes single-use action token;
-- re-fetches safety-critical state;
-- aborts if important state changed;
-- calls Cron once;
-- never auto-retries Cron;
-- refreshes user/tasks/party;
-- if refresh fails after Cron, returns "Cron succeeded; refresh failed".
-
-OAuth scope:
-
-```text
-habitica.cron.execute
-```
-
-Annotations:
-
-```text
-readOnlyHint=false
-destructiveHint=true
-openWorldHint=false
-```
-
+- Identify the cause of intermittent replacement-session authorization failures during parallel local qualification.
 Current behavior:
-- The PWA implements an explicitly confirmed Start New Day flow; no remote Cron executor exists.
-
+- Fifteen isolated lifecycle repetitions and serial explicit-file qualification pass unchanged security assertions. Parallel execution sometimes returns an unexpected replacement export 401. No production cause is established.
 Desired behavior:
-- Two-phase Cron through a durable command journal, with unknown-outcome resolution and no automatic replay.
-
+- Parallel qualification produces reproducible, isolated evidence without weakening stale-epoch or replacement-session checks.
 Touch:
-- Proposed `workers/chatgpt-mcp/**`, shared command/safety executor from E05.
-- `skill-tree/documents/cron.md`, `skill-tree/documents/features.md`, `skill-tree/documents/technical.md`, `skill-tree/documents/habitica-api.md`, focused Worker/Cron tests.
-
+- Workspace lifecycle synthetic fixtures and local test transport diagnostics.
 Discovery allowance:
-- Review live Cron rules and tests and add prepare/execute only after the durable command contract is defined.
-
+- Add sanitized bounded diagnostics and compare isolated, serial and parallel controls.
 Out of scope:
-- scheduled Cron.
-- automatic Cron because `needsCron=true`.
-- chaining Cron + spell without a separately prepared plan.
-
+- Production auth changes without a reproduced source cause, weaker assertions and live account operations.
 Implementation constraints:
-- Require scope `habitica.cron.execute`, explicit intent, short-lived single-use prepared action and fresh precondition verification.
-- Treat timeout/unknown result as potentially successful; never blindly rerun Cron.
-- Preserve Habitica day boundary, buffs and quest-risk handling from `skill-tree/documents/cron.md`.
-
+- Preserve current credential, epoch and profile isolation assertions. Never expose bearer tokens or raw credentials in diagnostics.
 Questions and required clarifications:
-- [Resolved - owner decision] The owner adopted the conservative local Cron contract on 2026-10-16: original successful receipts alone confirm completion; observed day progression never proves full quest processing or permits replay.
-  Reason: A second Cron call may have irreversible gameplay effects.
-  Required answer from: Owner approval received; `companion-workspace-contract.md#proposed-local-cron-continuation` governs local implementation. Real multi-user qualification remains a live activation gate.
-
+- None for local investigation; implementation remains deferred outside the initial snapshot.
 Validation:
-- no-Cron-needed state.
-- normal prepared execution.
-- plan expiration.
-- Daily state changed.
-- quest state changed.
-- upstream Cron failure.
-- Cron success + refresh failure.
-- repeated execution token.
-- network ambiguity.
-- scope denial.
-
+- Reproduce the failing signature, establish a cause, exercise the unchanged lifecycle case and run the full affected suite.
 Acceptance:
-- Cron cannot execute from a stale preparation.
-- same action token cannot execute twice.
-- no automatic retry can repeat Cron.
-
+- The parallel lifecycle failure has an evidence-backed resolution with unchanged security assertions.
 Documentation updates:
-- `skill-tree/documents/cron.md`
-- `skill-tree/documents/features.md`
-- `skill-tree/documents/technical.md`
-- skill docs if added.
-
+- Record qualification controls and limits in testing.md.
 Risks:
-- irreversible gameplay impact.
-- double Cron if replay handling is wrong.
-- stale client assumptions.
+- Mistaking host transport instability for a production defect.
 
 ### Security Hardening, Revocation, Key Rotation, And Team Rollout
 

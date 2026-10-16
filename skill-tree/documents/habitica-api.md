@@ -1298,3 +1298,7 @@ Full `GET /user` returns the computed top-level boolean `needsCron`. A `userFiel
 ## Private integration Cron request
 
 The private gateway sends only `POST /cron` with an empty object, after fresh actor/day/task/quest preconditions and durable dispatch reservation. A valid success is HTTP 200 with `success=true` and empty object data. All other dispatched responses retain uncertainty; a missing acknowledgement never authorizes replay. Receipt lookup does not call Habitica. Fresh progress observation reads UserGet and reports no causal completion guarantee. Current task due-state is evaluated by the server helper using a full previous-day timestamp; no Cron damage, reward or travel/DST formula is copied into TypeScript. The [local Cron contract](companion-workspace-contract.md#proposed-local-cron-continuation) governs implementation and keeps live activation separate.
+
+## Remote Cron orchestration
+
+Workspace sends the private Cron gateway only the saved attempt identity and exact preconditions. Workspace does not construct arbitrary upstream paths, replay saved dispatches or combine Cron with a spell. A new typed Cron ledger owns expiring previews, acceptance, recovery and explicit own-history projection. The [reviewed Cron boundary](companion-workspace-contract.md#adopted-reviewed-cron-action-boundary) defines shared ownership, uncertainty and refresh limits.

@@ -1,3 +1,5 @@
+import {cronApi,cronHistory} from './cron-api';
+import {cronToolScopes,type CronTool} from '../../shared/cron-tools';
 import {spellApi,spellHistory} from './spell-api';
 import {spellToolScopes,type SpellTool} from '../../shared/spell-tools';
 import {consentParty,partySettings,ownContributions,planningState} from './party-planning';
@@ -112,6 +114,10 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  if (!Boolean(env.WORKSPACE_ENABLED)) throw new WorkspaceError("workspace_unavailable", 503);
  const path = new URL(request.url).pathname;
  if (path === "/connect" && request.method === "POST") return connect(request, env);
+ if(path==='/cron/history'&&request.method==='GET'){
+  const who=await identity(env,'management',`Bearer ${bearer(request)}`);await identity(env,'epoch',undefined,who);
+  return json(await cronHistory(env,who.profileId));
+ }
  if(path==='/spells/history'&&request.method==='GET'){
   const who=await identity(env,'management',`Bearer ${bearer(request)}`);await identity(env,'epoch',undefined,who);
   return json(await spellHistory(env,who.profileId));
@@ -201,15 +207,16 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
   try{
    if(!this.env.WORKSPACE_ENABLED||request.method!=="POST")throw new WorkspaceError("workspace_unavailable",503);
    const body=workspaceObject(await workspaceJson(request,65536),["tool","arguments"]);
-   if(typeof body.tool!=="string"||!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool)&&!Object.hasOwn(spellToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
+   if(typeof body.tool!=="string"||!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool)&&!Object.hasOwn(spellToolScopes,body.tool)&&!Object.hasOwn(cronToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
    const verified=await this.env.AUTH_IDENTITY.fetch("https://identity.internal/mcp",{method:"POST",headers:{authorization:request.headers.get("authorization")??""},signal:AbortSignal.timeout(5000)});
    if(!verified.ok)throw new WorkspaceError("unauthorized",401);
    const who=await verified.json<Identity&{scopes:string[]}>();
    const requiredScope=Object.hasOwn(partyToolScopes,body.tool)?partyToolScopes[body.tool as PartyTool]:taskToolScopes[body.tool as TaskTool];
-   const required=Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:['profile:read',requiredScope];
+   const required=Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:['profile:read',requiredScope];
    if(!Array.isArray(who.scopes)||required.some(scope=>!who.scopes.includes(scope)))throw new WorkspaceError("insufficient_scope",403);
    const row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
    if(!row)throw new WorkspaceError("workspace_consent_required",403);
+   if(Object.hasOwn(cronToolScopes,body.tool))return json(await cronApi(this.env,row,body.tool as CronTool,body.arguments,request.headers.get('authorization')??''));
    if(Object.hasOwn(spellToolScopes,body.tool))return json(await spellApi(this.env,row,body.tool as SpellTool,body.arguments,request.headers.get('authorization')??''));
    if(Object.hasOwn(partyToolScopes,body.tool))return json(await partyApi(this.env,row,body.tool as PartyTool,body.arguments,request.headers.get("authorization")??undefined));
    return json(await taskApi(this.env,row,body.tool as TaskTool,body.arguments,cmd=>command(new Request("https://workspace.internal/commands",{method:"POST",body:JSON.stringify(cmd)}),this.env,row,true)));
