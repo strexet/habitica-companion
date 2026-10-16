@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-16",
+  "task_id": "T-159a415e-0d56-4028-96a4-339a5d5040f8",
+  "kind": "local-linking-code-ux",
+  "changes": [
+    "Connected Settings provides visible ordered Codex/browser authorization steps beside code controls.",
+    "The guide names Authenticate, One-time Companion code, Verify code and Allow selected access.",
+    "Code placement is explicitly separate from MCP server settings and chat.",
+    "The guide covers ChatGPT, keeping Settings open, expiry and used-code replacement.",
+    "Generated-code status repeats the exact destination and expiry recovery action."
+  ],
+  "validation": {
+    "release_build": {
+      "result": "pass",
+      "log_sha256": "ee7b0cc66227b92c0f018e00582191a5a1805b4d78fad09e00445b045f6852ee",
+      "limitation": "Optional wasm-tools optimization warning remains; the publish build succeeds."
+    },
+    "existing_settings_component_checks": {
+      "passed": 8,
+      "failed": 0,
+      "log_sha256": "b86064290f5eb923bd12ff7a28290dc82b8f75ae9fbc5808f89523cd63894311"
+    },
+    "real_razor_connected_state_fixture": "pass; synthetic account/code only, no real credentials or grants",
+    "responsive_layout": [
+      {
+        "guideHeight": 297.5,
+        "guideLeft": 41,
+        "guideRight": 968,
+        "pageWidth": 1009,
+        "pass": true,
+        "width": 1024
+      },
+      {
+        "guideHeight": 807,
+        "guideLeft": 35.3984375,
+        "guideRight": 339.6015625,
+        "pageWidth": 375,
+        "pass": true,
+        "width": 390
+      },
+      {
+        "guideHeight": 1093,
+        "guideLeft": 35.3984375,
+        "guideRight": 269.6015625,
+        "pageWidth": 305,
+        "pass": true,
+        "width": 320
+      }
+    ],
+    "new_prose_diagnostics": [],
+    "screenshot": "/tmp/habitica-linking-guide-preview.png",
+    "screenshot_sha256": "1d8632c79c247641e77bd6c12b11094429bb6cad6a63658014781556e874328e"
+  },
+  "limitations": [
+    "No live enrollment, client authentication or real permission grant was performed.",
+    "The change is local and committed for the next website update; the production website still serves f94b768.",
+    "Responsive browser checks do not establish physical-device or assistive-technology qualification."
+  ]
+}

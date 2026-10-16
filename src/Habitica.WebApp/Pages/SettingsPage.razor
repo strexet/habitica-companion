@@ -112,6 +112,17 @@
                 <MudButton data-testid="integration-confirm-management" Disabled="@_integrationBusy" OnClick="ConfirmIntegrationManagementAsync" Variant="Variant.Filled">Confirm</MudButton>
                 <MudButton data-testid="integration-cancel-management" Disabled="@_integrationBusy" OnClick="@(() => _integrationManagementAction = null)" Variant="Variant.Outlined">Cancel</MudButton>
             }
+            <MudAlert Class="inline-banner" Severity="Severity.Info" Variant="Variant.Outlined" data-testid="integration-linking-guide">
+                <h3>Where to enter the one-time code</h3>
+                <ol>
+                    <li>In Codex, open <strong>Settings → MCP servers</strong> and select <strong>Authenticate</strong> for Habitica Companion. A Companion authorization page opens in the browser.</li>
+                    <li>Keep Companion Settings open. Select <strong>Generate new code</strong> below, then paste the code into <strong>One-time Companion code</strong> on the authorization page and select <strong>Verify code</strong>.</li>
+                    <li>Check the account and requested permissions, then select <strong>Allow selected access</strong>. Return to Codex to finish connecting.</li>
+                </ol>
+                <p>For ChatGPT, start connecting the Habitica Companion plugin, then use the same browser authorization steps with a separate fresh code.</p>
+                <p><strong>Paste the code only on the Companion authorization page.</strong> Do not enter it in MCP server settings or chat.</p>
+                <p>Codes expire within ten minutes and can be used once. If a code has expired or was already used, select <strong>Generate new code</strong> and enter the new code on the authorization page.</p>
+            </MudAlert>
             <div class="action-row">
                 <MudButton data-testid="integration-new-code" Disabled="@_integrationBusy" OnClick="NewIntegrationCodeAsync" Variant="Variant.Filled">Generate new code</MudButton>
                 <MudButton data-testid="integration-disconnect" Disabled="@_integrationBusy" OnClick="@(() => _integrationCleanup = false)" Variant="Variant.Outlined">Disconnect</MudButton>
@@ -129,8 +140,8 @@
             <p role="status">@_integrationResult.Message</p>
             @if (_integrationResult.Code is not null)
             {
-                <p>One-time code: <code data-testid="integration-link-code">@_integrationResult.Code</code></p>
-                <p>Valid until @_integrationResult.ExpiresAtUtc?.ToLocalTime().ToString("g"). Enter the code only on the Companion authorization page, then verify the account label and requested access.</p>
+                <p>One-time Companion code: <code data-testid="integration-link-code">@_integrationResult.Code</code></p>
+                <p>Valid until @_integrationResult.ExpiresAtUtc?.ToLocalTime().ToString("g"). Paste into <strong>One-time Companion code</strong> in the browser page opened by <strong>Authenticate</strong>. If the code expires, select <strong>Generate new code</strong> above.</p>
             }
         }
     </section>

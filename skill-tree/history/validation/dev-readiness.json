@@ -12,7 +12,7 @@
   "run_id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
   "completed_main_tasks": 10,
   "initial_main_tasks": 11,
-  "completed_task_units": 45,
+  "completed_task_units": 46,
   "current_queues": {
     "Pending Queue": 8,
     "Prioritized Next Changes": 3,
@@ -62,5 +62,9 @@
   "production_integration_resources_ready": true,
   "latest_publication_reference": "skill-tree/history/validation/production-publication.json",
   "owner_reported_enrollment": "Integration enrollment reported successful; client grants not yet reported.",
-  "next_update_local_reference": "skill-tree/history/validation/sign-in-header.json"
+  "next_update_local_reference": "skill-tree/history/validation/sign-in-header.json",
+  "next_update_local_references": [
+    "skill-tree/history/validation/sign-in-header.json",
+    "skill-tree/history/validation/linking-code-ux.json"
+  ]
 }

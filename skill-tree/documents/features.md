@@ -1170,6 +1170,8 @@ The integration client retains profile management credentials only in tab memory
 
 The Auth consent page verifies the code, displays the selected account and requested scopes, then requires explicit approval. OAuth uses PKCE S256 and exact MCP resource audience with two-profile isolation. Local Worker fixtures and WebApp client/controller/component tests qualify consent, cleanup, account changes, expiry, races and denial. The Codex in-app browser qualifies synthetic code verification and the disabled Settings/Privacy surface. Real enrollment, deployment and ChatGPT rollout remain unqualified. The [integration contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) owns privacy and retention defaults; hosting logs and backups require activation review.
 
+Connected integration Settings explains the client-linking handoff beside the code controls: Codex `Authenticate` opens the browser authorization page; the `One-time Companion code` field accepts the code; `Verify code` and `Allow selected access` complete the reviewed grant. The guide covers ChatGPT, code expiry and single-use recovery without changing consent or authorization behavior. Code status repeats the exact destination and replacement action.
+
 ## 12.1 Local data portability and encrypted cloud sync
 
 Status: Partial

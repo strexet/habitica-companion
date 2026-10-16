@@ -45,13 +45,15 @@
       "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
       "T-58907376-21eb-417f-988e-fe65449a0bb7",
       "T-34491faa-090e-4d97-b496-1fe947770688",
-      "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58"
+      "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+      "T-159a415e-0d56-4028-96a4-339a5d5040f8"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
       "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89": "O-2b79fcef-7244-48d6-bad7-16c7b8937eee",
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
       "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735": "O-aa7c4f5f-c42d-48df-806e-bff08b0e1c17",
+      "T-159a415e-0d56-4028-96a4-339a5d5040f8": "O-bd86cfe5-e6df-40d4-8d64-25ed8ea68fcb",
       "T-16a38176-f2fe-5f7d-a809-546f17357b49": "O-7d50e0cb-ee45-4fe5-bd54-6b38b3b22e6e",
       "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec": "O-1cbc3cfc-9cf0-4922-8317-4c16090d9aa0",
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
@@ -95,19 +97,20 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "7aac32f74f51c1c49146cae4a7d449b81639e0219bc5ed23f506a70e9fc35c17",
+    "cycle_signature": "92aebef5b8aabdd2aa0d61182edd052c4d90fbb1318387889da8b41c571ff390",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Owner adds the production MCP endpoint to Codex or ChatGPT and authorizes the connection using a fresh one-time code on the Companion authorization page.",
+    "next_action": "Owner completes client authorization using a fresh one-time code in the browser authorization form; publish the prepared sign-in and linking-guide UI changes in the next selected update.",
     "partial_work": [
       "Production remains deployment b42d4b4f-4cb4-40e7-9623-607b09091d76 with source f94b768.",
-      "Header Sign in navigation is implemented locally for the next update; release build, fourteen focused checks and local 320-pixel navigation pass.",
-      "Owner reports verified integration enrollment; no active client permissions or recorded tool use in the reported status. No credential or linking-code value is retained in task evidence.",
-      "Real client OAuth/plugin, separate workspace consent confirmation, multi-user and device qualification remain open; live Cron and cloud game effects remain off."
+      "Header Sign in navigation is committed as 0ce97eb for the next update. The linking-code guide is also implemented locally with no authorization behavior change.",
+      "The linking-guide release build and eight existing Settings checks pass. Real Razor synthetic connected-state content fits 1024/390/320-pixel widths.",
+      "Owner reports integration enrollment; real client OAuth/plugin, separate workspace consent confirmation, two-user and device qualification remain open.",
+      "Live Cron and cloud game effects remain disabled. No live grant, credential entry or publication was performed for the guidance change."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -144,7 +147,8 @@
       "P-8f3991ad-372e-4ca5-a6f8-ced1ffeaf263",
       "P-f7230fa1-ddc2-4070-bc06-0d327c058990",
       "P-7077ec7f-eda9-49b2-b654-e4f6309eeea4",
-      "P-4f9fc663-7bd2-4c13-8e4a-804709937671"
+      "P-4f9fc663-7bd2-4c13-8e4a-804709937671",
+      "P-70ff88fd-b14f-4d7c-bff9-6594b4256587"
     ],
     "phase": "blocked",
     "processing_results": [
@@ -743,6 +747,23 @@
           "P-4f9fc663-7bd2-4c13-8e4a-804709937671"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-159a415e-0d56-4028-96a4-339a5d5040f8"
+        ],
+        "dispositions": {
+          "P-70ff88fd-b14f-4d7c-bff9-6594b4256587": {
+            "reason": "Current Settings and authorization-page source confirm the missing handoff and exact destination labels.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-50a891f5-badd-4262-b442-36f758911fd4",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-70ff88fd-b14f-4d7c-bff9-6594b4256587"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -792,7 +813,8 @@
       "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
       "T-34491faa-090e-4d97-b496-1fe947770688",
       "T-58907376-21eb-417f-988e-fe65449a0bb7",
-      "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58"
+      "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+      "T-159a415e-0d56-4028-96a4-339a5d5040f8"
     ],
     "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "snapshot": [
@@ -809,10 +831,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "The sign-in navigation improvement is complete locally. Owner reports integration enrollment succeeded; independent client OAuth/plugin, workspace consent confirmation, multi-user and device qualification remain outstanding."
+    "stop_reason": "The requested linking-code guidance is complete locally. Real client OAuth/plugin, separate workspace consent confirmation, multi-user and device qualification remain outstanding."
   },
   "format": "skill-tree-future",
-  "source_hash": "5787c97f88046d38aa113459c7dd98027977668d3a5d260bcc8e70e0dcfe0622",
+  "source_hash": "60a47880fe33627794645d1f3b2e6e4b3b5f5764a0b4d41c5ddce3d37613fdc9",
   "tasks": [
     {
       "depends_on": [],
@@ -932,7 +954,8 @@
         "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
         "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
         "T-34491faa-090e-4d97-b496-1fe947770688",
-        "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58"
+        "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+        "T-159a415e-0d56-4028-96a4-339a5d5040f8"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
       "line": 324,

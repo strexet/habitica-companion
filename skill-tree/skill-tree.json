@@ -314,8 +314,8 @@
     "skill-tree/documents/dependencies.md": "ef0a360701ccfcc93ec7f725f1b7a90c4dd2d10567ddd26e58d264977cc0d6e1",
     "skill-tree/documents/deploy-cloudflare-pages.md": "0ba74d281eb6f512f54742e1a578217ae846231bb3db13229b168d18c3bf4887",
     "skill-tree/documents/documents-snapshot.md": "6f79e4202c9cfc84df57641150d8a2fce2ab5d9670f6efe4d05eec00f89d73c9",
-    "skill-tree/documents/features.md": "2bd085c282a1d69cfdd1f11dd67edf139729d8b678524266387f8f686b9abbd9",
-    "skill-tree/documents/future.md": "5787c97f88046d38aa113459c7dd98027977668d3a5d260bcc8e70e0dcfe0622",
+    "skill-tree/documents/features.md": "6052c5b1bce9a1b5a692ebef032773e3199edd08d0f641127911efe9af0688b9",
+    "skill-tree/documents/future.md": "60a47880fe33627794645d1f3b2e6e4b3b5f5764a0b4d41c5ddce3d37613fdc9",
     "skill-tree/documents/habitica-api.md": "862a7b7fed38c0c43855f45af37051ad1f48a77db9b67b6a5cccc55b071e7606",
     "skill-tree/documents/habitica-deeplinks.md": "37809f11086587ab474caeab319939e444de7701e9ce19301b8e00ebc1bf9fc7",
     "skill-tree/documents/habitica-tool-references.md": "365f6d395422ba7444fdfe3c61304ef0f86f5069be76066ba67f6378d1c0883b",
@@ -325,7 +325,7 @@
     "skill-tree/documents/skill-tree-workflow-proposals.md": "35d9e950e9cc7a22e2b1765db8c2e00355be5cda6be170f9e249ab7e6c5440d1",
     "skill-tree/documents/technical.md": "8418f4451bf5ca60dec17d6d5fbc99f73a6a2df548b9139c9995eb2149d8766d",
     "skill-tree/documents/testing.md": "6e20fe8aef5754ab27c66250820c2835f7c765f125c00afb853c097c4d366838",
-    "skill-tree/documents/ux-ui-manifest.md": "bf36aaf65b460e59f8956113528b5f8b15ed4e7369716082bc76cdd954a35f95"
+    "skill-tree/documents/ux-ui-manifest.md": "b8175b4fae35a9abc472e56d387c204cd557e38f1b2cee8a6fa703f076d41404"
   },
   "state": "skill-tree/documents/future.json",
   "validation_commands": [
