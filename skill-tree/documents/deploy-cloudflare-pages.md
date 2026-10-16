@@ -2,6 +2,35 @@
 
 This app is a Blazor WebAssembly app with Cloudflare Pages Functions for personal encrypted user-data sync and shared party CRON sync. Cloudflare Pages can build the app from GitHub and serve the published static files from the `*.pages.dev` domain.
 
+## Intermediate dev launch readiness
+
+Status: preparation required. The `develop` branch can supply an intermediate owner-testing release. Existing browser features and optional Companion cloud/MCP features have separate activation requirements. Local synthetic qualification does not establish deployed HTTPS, real-account, multi-user or mobile-device behavior. Cloudflare project inventory is unavailable through the current noninteractive session; deployed project settings and resource ownership require verification.
+
+### Required before dev enrollment
+
+- [ ] Complete prioritized traffic/operational protection (`T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca`) and local E14 adoption/recovery qualification (`T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e`). Preserve unknown-outcome fences and qualify throttling without write retries.
+- [ ] Select the Cloudflare account, Pages project, `develop` deployment lane and stable HTTPS addresses for PWA, Auth, MCP and Workspace. The Worker `preview` environment can serve dev. Verify the Git-connected repository against the current `origin` repository, `strexet/habitica-tool`, before enabling branch builds. Replace inert remote addresses in `workers/shared/resources.ts`; configure exact OAuth issuer/resource, PWA origin, CORS and reachable routes. Worker public routes are absent and `workers_dev`/`preview_urls` are disabled.
+- [ ] Isolate dev storage. Root `wrangler.toml` assigns matching normal/preview IDs to both Pages KV and party D1; separate dev bindings require explicit configuration and dashboard verification. Provision separate integration OAuth KV, Auth D1 and Workspace D1; replace placeholder Worker resource IDs. Bind each dev Worker only to the matching dev services. Production resource IDs and databases must remain excluded from dev migrations and tests. [Cloudflare Pages configuration](https://developers.cloudflare.com/pages/functions/wrangler-configuration/) defines environment-specific bindings and configuration authority.
+- [ ] Apply Auth migrations `0001`–`0007` and Workspace migrations `0001`–`0007` to the isolated dev databases. Apply root party migrations through `0008` before enabling the corresponding Pages Functions. Record database identities, migration results and empty/new dev storage verification.
+- [ ] Provision the stable `PROFILE_ID_KEY` and credential encryption keys through Worker secret storage according to the selected read/write key versions. Verify the public creator `HABITICA_X_CLIENT_HEADER`, request/log redaction, provider log/backup retention and the configured 30-day audit cleanup. Keep secret values outside source, static frontend configuration and evidence exports.
+- [ ] Prepare environment-specific frontend configuration and inspect published `output/wwwroot/appsettings.json`. Set `ChatGptIntegration:AuthBaseUrl`, `ChatGptIntegration:Enabled`, `CompanionWorkspace:BaseUrl` and the selected party-planning flag. Current `build.sh` replaces the entire settings document when `HABITICA_X_CLIENT_HEADER` is supplied; preserve the complete settings document during dev configuration generation. Recheck published settings after the build, including the header-override path.
+- [ ] Record the deployed commit, build/test evidence, enabled capabilities, recovery contact and rollback procedure. Back up dev workspace data before schema changes. Reverting static assets does not reverse D1 schema changes or confirmed Habitica actions. Verify a flag-based stop procedure for enrollment and command execution without deleting accepted command history.
+
+### Initial capability selection
+
+Enable enrollment, OAuth and Workspace only after the preceding checks. Enable authenticated party planning separately after membership and consent checks. Keep `CRON_ENABLED` false in Auth and Workspace. Keep private key operations disabled. Start with projection, spells and the background executor disabled; activate selected real-effect lanes only with explicit test scope and reviewed actions. Separate Cloudflare storage does not create a separate Habitica account: enabled scoring, projection and spells affect the enrolled real account.
+
+A browser-only Pages preview can precede cloud enrollment after Pages storage isolation and build checks. Such a preview cannot validate the disabled cloud/MCP capabilities.
+
+### Hosted smoke checks before owner handoff
+
+- [ ] Publish the release build to dev and verify HTTPS, routed-page refresh, Settings, static configuration and expected disabled controls. Confirm legacy browser data remains intact and cloud adoption requires explicit choice.
+- [ ] Verify OAuth discovery, exact audience, PKCE, consent cookies, CORS and the intended ChatGPT/plugin host against deployed addresses. Complete explicit account enrollment through the consent UI; never import credentials from chat or test fixtures.
+- [ ] Save and read a canonical task, recover the original command receipt after an interrupted response, export/restore a backup and exercise revoke/disconnect/delete controls. Verify rejected cross-profile access and retained uncertainty without duplicate effects. Exercise real effects only in selected lanes.
+- [ ] Confirm safe 429/backoff behavior, stalled/unknown status, secret-free logs and the stop/rollback procedure. Record unresolved hosted limitations for the owner test session.
+
+Real multi-user isolation and mobile-device qualification require a second consenting tester and selected browser/device lanes. The dev environment supplies the venue for multi-user and mobile release checks; the broader release gate remains open until evidence satisfies the corresponding task. Dev preparation does not require completion of unselected planner/UX epics or the nonblocking parallel Miniflare investigation.
+
 ## Before editing deployment behavior
 
 Read `skill-tree/documents/rules.md`, `skill-tree/documents/technical.md`, this document, `wrangler.toml`, `build.sh`, current Functions under `functions/api`, and migrations under `migrations`. If Cloudflare Pages, KV, D1, Wrangler, or Pages Functions behavior is unclear from this repo, verify current official Cloudflare documentation before editing commands or operational steps.

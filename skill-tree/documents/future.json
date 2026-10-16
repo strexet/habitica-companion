@@ -84,9 +84,9 @@
     "mode": "all",
     "next_action": "implement",
     "partial_work": [
-      "Management hardening completed in a373e40 and guarded key operations in 805809f. Required re-enrollment/receipt-boundary repair is qualified and ready for commit.",
+      "Management hardening completed in a373e40, guarded key operations in 805809f and re-enrollment/receipt-boundary repair in 5c2efbd. Local repair qualification is committed.",
       "Remaining local hardening units are bounded traffic/operational diagnostics and E14 local adoption/recovery qualification.",
-      "Real multi-user/mobile and production-log qualification remains blocked on separately authorized environment, accounts and devices. Live Cron and key operations remain disabled."
+      "Dev readiness checklist resides in deploy-cloudflare-pages.md. Remote account access and deployed bindings remain unverified. Real multi-user/mobile and provider-log qualification remains open; live Cron and key operations remain disabled."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -639,7 +639,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "7a4a5eb7391e43c7697b9b30682ccdacd729a03d738e53d03f47b36d41325cd0",
+  "source_hash": "c7714b482474f9dea1167b1109459faaccfd49909137ed5e1c792876abb383ad",
   "tasks": [
     {
       "depends_on": [],

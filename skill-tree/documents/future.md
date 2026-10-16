@@ -28,8 +28,8 @@ Task definitions reside in `skill-tree/documents/future.md`; `future.json` conta
 ## Companion-First Integration Planning Gates
 
 - `skill-tree/documents/future.md` is the **only active implementation queue**. The architecture and [competitive mobile UX research](companion-first-mcp-research.md) are reference material, not a second queue.
-- The **14 E01–E14 high-level product, UX and reliability epics** below are raw research/decomposition intake. Use exact P- IDs or full task titles with `Process pending`; E01–E14 are provenance labels. Decompose selected intake into independently verifiable tasks, preserving every originating Pending ID and recording required T- dependency edges.
-- The **11 MCP/OAuth contracts** below carry explicit dependencies and blockers. `Ready` means the task contract has no unanswered blocking question; unfinished prerequisites remain in `depends_on` and must complete before execution. `Implement next` must not skip a blocked highest-ranked task.
+- The remaining **E01–E14 product, UX and reliability epics** below are raw research/decomposition intake. Use exact P- IDs or full task titles with `Process pending`; E01–E14 are provenance labels. Decompose selected intake into independently verifiable tasks, preserving every originating Pending ID and recording required T- dependency edges.
+- The remaining prioritized contracts below carry explicit dependencies and blockers. `Ready` means the task contract has no unanswered blocking question; unfinished prerequisites remain in `depends_on` and must complete before execution. `Implement next` must not skip a blocked highest-ranked task.
 - Once Companion-owned task/project/goal storage is established, Habitica is a game projection. No parallel direct-to-Habitica MCP write path is allowed.
 - Persist accepted application commands, but do **not** promise exactly-once remote rewards when Habitica reports a timeout without upstream idempotency. Preserve unknown outcomes for reconciliation.
 - Conduct hands-on competitor/mobile usability work in E01 before implementation-specific UI tasks are promoted.
@@ -155,7 +155,7 @@ Description:
 - Redesign Todos, Dailies and Habits for smartphone-first use, with minimal fast entry and advanced configuration when requested.
 
 Current context:
-- Existing `TasksPage.razor` is a large grouped list with expanding cards, filters and score controls.
+- `TasksPage.razor` includes the Habitica grouped list and the basic canonical `CompanionTasksPanel` with reviewed commands. The broader capture/navigation redesign remains outstanding.
 
 Requirements:
 - Fast Add from main views, one-handed touch design, clean task rows, keyboard/safe-area behavior, simple vs advanced detail sheet, quick reschedule, undo where safe, accessible date picker, responsive secondary desktop views.
@@ -178,7 +178,7 @@ depends_on: []
 ```
 
 Current context:
-- `TasksPage.razor` already exposes cached completed/open toggles, due-pressure counts and history charts. The controls use the latest Habitica snapshot; durable Companion completion records and agenda/calendar/Inbox views remain outstanding.
+- `TasksPage.razor` already exposes cached completed/open toggles, due-pressure counts and history charts. The controls use the latest Habitica snapshot. Canonical workspace completion records exist; agenda/calendar/Inbox views and a searchable completed-history surface remain outstanding.
 
 Source:
 - Companion-first epic `E09` (`P-c8632138-39c6-5797-8e03-a3414824ee96`); requirements are intake awaiting current-source research and decomposition.
@@ -239,7 +239,7 @@ depends_on: []
 ```
 
 Current context:
-- `TaskSnapshot` imports Habitica history and due-state; `TasksPage.razor` supports Habit up/down and Daily completion. Companion recurrence definitions, occurrence identity, skip/pause/restart and durable recurrence history remain outstanding.
+- `TaskSnapshot` imports Habitica history and due-state; `TasksPage.razor` supports Habit up/down and Daily completion. The canonical workspace defines recurrence rules, occurrence identity, completion records and Habit score history. Full recurrence authoring, skip/pause/restart controls, recurrence-history views and calendar integration require research and implementation.
 
 Source:
 - Companion-first epic `E11` (`P-f2bb7e37-6700-58ac-aa56-b537d193c777`); requirements are intake awaiting current-source research and decomposition.
@@ -303,16 +303,16 @@ Source:
 - Companion-first epic `E13` (`P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156`); requirements are intake awaiting current-source research and decomposition.
 
 Description:
-- Extend the planned OAuth/MCP integration with canonical Companion domain commands for categories, projects, goals, labels, advanced task fields, filters, planning, activity log and queue status.
+- Extend the optional OAuth/MCP integration with canonical Companion domain commands for categories, projects, goals, labels, advanced task fields, filters, planning, activity log and queue status.
 
 Current context:
-- The read-only bootstrap contract targets Habitica data. Companion-native project/goal operations remain planned; no OAuth/MCP plugin is implemented.
+- Auth/OAuth, plugin packaging, Habitica read tools and reviewed canonical task tools are implemented with local synthetic qualification. `list_companion_tasks`, `prepare_task_command`, `create_todo`, `update_task`, `complete_task`, `score_habit` and command receipts already exist. Advanced category/project/goal, planning/history and queue-status tools remain outside the implemented task surface; hosted enrollment remains unqualified.
 
 Requirements:
 - Narrow tools such as `list_projects`, `create_project`, `list_categories`, `list_goals`, `create_companion_task`, `update_companion_task`, `list_upcoming`, `get_completed_history`, `get_sync_status`; schema-level validation, per-profile auth, confirmation for sensitive actions, no generic API proxy.
 
 Dependencies:
-- Canonical domain, workspace accessible to MCP, authoritative command API, sync/reconciliation and permission model must exist first.
+- Canonical domain, MCP-accessible Workspace, authoritative task commands, projection reconciliation and profile permissions exist as local foundations. Reuse the implemented boundaries; research remaining advanced operations and outstanding hardening/release dependencies before promotion.
 
 Expected behavior:
 - ChatGPT performs the same advanced task workflows as the manual app, sees pending-vs-confirmed game projection, and cannot bypass validation or access another user's workspace.

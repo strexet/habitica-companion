@@ -23,7 +23,7 @@
 | `skill-tree/documents/` | Canonical repository documents, planned task definitions and queue state |
 | `skill-tree/history/` | Bounded audit/run records and compact terminal outcomes |
 
-`src/Habitica.WebApp/Program.cs` registers application, API and storage services. `TasksPage.razor` serves `/tasks`; `SettingsPage.razor` serves `/settings`. Separate Auth/MCP scaffolds exist under `workers/`; protected operations are denied. Plugin packaging and MCP tools remain absent.
+`src/Habitica.WebApp/Program.cs` registers application, API and storage services. `TasksPage.razor` serves `/tasks`; `SettingsPage.razor` serves `/settings`. Separate Auth, MCP and Workspace Workers implement optional account/profile reads, canonical task commands, authenticated party planning and reviewed spell/Cron contracts. `plugin/` contains plugin packaging and task/review skills. Shipped remote feature flags remain disabled; hosted enrollment and real-account qualification remain outstanding.
 
 `README.md` and `AGENTS.md` provide root discovery. `skill-tree/skill-tree.json` indexes document ownership, hashes, policies and validation commands. `future.md` owns all active plans; `companion-first-mcp-research.md` provides reference context only.
 
