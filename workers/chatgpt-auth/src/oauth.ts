@@ -17,7 +17,7 @@ export function authorizationServer(env: AuthEnv) {
     tokenExchangeCallback: async options => {
       const props = authProps(options.props);
       if (!props) throw new OAuthError("invalid_grant", { description: "Connection no longer active." });
-      try { await activeProfile(env, props.profileId, props.connectionId); }
+      try { const profile=await activeProfile(env, props.profileId, props.connectionId); if(props.grantEpoch!==profile.grant_epoch)throw new VaultError("unauthorized",401); }
       catch { throw new OAuthError("invalid_grant", { description: "Connection no longer active." }); }
       if (options.userId !== props.profileId) throw new OAuthError("invalid_grant", { description: "Connection no longer active." });
     },
@@ -29,8 +29,10 @@ export async function validatedToken(env: AuthEnv, resource: string, token: stri
   if (!validated) return null;
   const props = authProps(validated.props);
   if (!props || props.profileId !== validated.userId) return null;
-  try { await activeProfile(env, props.profileId, props.connectionId); }
+  try { const profile=await activeProfile(env, props.profileId, props.connectionId); if(props.grantEpoch!==profile.grant_epoch)throw new VaultError("unauthorized",401); }
   catch (error) { if (error instanceof VaultError) return null; throw error; }
+  const used=await env.HABITICA_INTEGRATION_DB.prepare("UPDATE integration_profiles SET last_used_at_utc=? WHERE profile_id=? AND connection_id=? AND grant_epoch=? AND revoked_at_utc IS NULL").bind(new Date().toISOString(),props.profileId,props.connectionId,props.grantEpoch??'').run();
+  if(!used.meta.changes)return null;
   return { props, audience: validated.audience, expiresAt: validated.expiresAt, scope: validated.scope, userId: validated.userId, clientId: validated.clientId };
 }
 const escape = (value: string) => value.replace(/[&<>"']/g, character => `&#${character.charCodeAt(0)};`);
@@ -89,16 +91,16 @@ export async function authorize(request: Request, env: AuthEnv): Promise<Respons
       const next = await display(oauth, approved.request, profile.display_name_cache || "Habitica account");
       // Preserve both the old-cookie deletion and new browser-binding cookie.
       for (const cookie of approved.headers.getSetCookie()) next.response.headers.append("set-cookie", cookie);
-      await env.HABITICA_INTEGRATION_DB.prepare("INSERT INTO consent_links(handle_hash,profile_id,connection_id,expires_at_utc) VALUES(?,?,?,?)")
-        .bind(await tokenHash(next.consent.handle), profile.profile_id, profile.connection_id, new Date(Date.now() + 600000).toISOString()).run();
+      await env.HABITICA_INTEGRATION_DB.prepare("INSERT INTO consent_links(handle_hash,profile_id,connection_id,expires_at_utc,grant_epoch) VALUES(?,?,?,?,?)")
+        .bind(await tokenHash(next.consent.handle), profile.profile_id, profile.connection_id, new Date(Date.now() + 600000).toISOString(),profile.grant_epoch).run();
       return next.response;
     }
     const now = new Date().toISOString();
-    const link = await env.HABITICA_INTEGRATION_DB.prepare("UPDATE consent_links SET consumed_at_utc=? WHERE handle_hash=? AND consumed_at_utc IS NULL AND expires_at_utc>? RETURNING profile_id,connection_id")
-      .bind(now, await tokenHash(handle), now).first<{ profile_id: string; connection_id: string }>();
+    const link = await env.HABITICA_INTEGRATION_DB.prepare("UPDATE consent_links SET consumed_at_utc=? WHERE handle_hash=? AND consumed_at_utc IS NULL AND expires_at_utc>? RETURNING profile_id,connection_id,grant_epoch")
+      .bind(now, await tokenHash(handle), now).first<{ profile_id: string; connection_id: string; grant_epoch:string }>();
     if (!link) throw new VaultError("invalid_consent", 400);
-    await activeProfile(env, link.profile_id, link.connection_id);
-    const { redirectTo } = await oauth.completeAuthorization({ request: approved.request, userId: link.profile_id, scope: approved.request.scope, metadata: { connectionId: link.connection_id }, props: { profileId: link.profile_id, connectionId: link.connection_id } });
+    const profile=await activeProfile(env, link.profile_id, link.connection_id);if(profile.grant_epoch!==link.grant_epoch)throw new VaultError("invalid_consent",400);
+    const { redirectTo } = await oauth.completeAuthorization({ request: approved.request, userId: link.profile_id, scope: approved.request.scope, metadata: { connectionId: link.connection_id, grantEpoch:link.grant_epoch }, props: { profileId: link.profile_id, connectionId: link.connection_id, grantEpoch:link.grant_epoch } });
     approved.headers.set("location", redirectTo);
     return new Response(null, { status: 302, headers: approved.headers });
   } catch (error) {

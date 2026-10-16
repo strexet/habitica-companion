@@ -1,0 +1,38 @@
+{
+  "task_id": "T-5737120b-52a5-4a57-9072-fce514adaf33",
+  "result": "pass",
+  "checks": {
+    "all_three_worker_builds": "pass",
+    "auth_tests": 84,
+    "workspace_tests_serial_explicit_files": 77,
+    "app_build": {
+      "warnings": 0,
+      "errors": 0
+    },
+    "dotnet_tests": 536,
+    "narrow_real_razor_layout": {
+      "viewport_width": 390,
+      "document_scroll_width": 375,
+      "evidence": "skill-tree/history/validation/integration-management-narrow.jpg"
+    },
+    "component_client_interactions": "pass"
+  },
+  "coverage": [
+    "Bounded current-epoch permissions, display labels, credential repair and verified authorization usage",
+    "Management-only origin/CORS and cross-profile isolation",
+    "Grant revocation blocks old access and refresh tokens without changing vault/connection identity",
+    "Durable D1 epoch barrier works before provider cleanup",
+    "Pending consent, stale linking tickets and old task/spell/Cron previews cannot regain authority",
+    "Monotonic Workspace epochs refuse old in-flight authority and bind late previews to old grants",
+    "Accepted unknown effects remain fenced after revocation/relinking",
+    "Management rotation preserves ChatGPT grants, invalidates old management bearer and serializes concurrent rotation",
+    "Client replaces only the active tab token, forgets uncertain rotation and discards forgotten-session late responses",
+    "Separate user confirmations, status clearing and no credential/token values in management messages"
+  ],
+  "limitations": [
+    "Synthetic local qualification only. Real devices, production logs and consenting-account enrollment remain explicit release prerequisites.",
+    "Already dispatched effects cannot be undone.",
+    "Grant-only revocation intentionally preserves separately authorized Workspace/background access; Workspace disable/disconnect is separate.",
+    "Provider cleanup is bounded; old authority is denied by the durable epoch regardless of provider cleanup completion."
+  ]
+}

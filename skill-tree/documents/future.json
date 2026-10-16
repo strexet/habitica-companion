@@ -32,7 +32,8 @@
       "T-211d2ac1-5778-47fb-8148-c9e1a320e31a",
       "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
       "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
-      "T-b92db026-a8cf-5922-8556-666cbea947ab"
+      "T-b92db026-a8cf-5922-8556-666cbea947ab",
+      "T-5737120b-52a5-4a57-9072-fce514adaf33"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -50,6 +51,7 @@
       "T-49eaa44e-5c98-4219-a380-4201e4143494": "O-9f6a3618-fbbf-4d96-b034-bbe5f19e01ca",
       "T-4a1de222-156a-52cf-8966-262a2c8216ed": "O-1be18cd1-6faf-47ff-bc66-14861e6858e4",
       "T-53352a18-54d2-57b6-accc-91f8e6dfad13": "O-02146734-4822-48de-81a5-71f0c7208776",
+      "T-5737120b-52a5-4a57-9072-fce514adaf33": "O-53aa48f8-4d3c-4d9a-bb8b-12ec41ed3a60",
       "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e": "O-ac3595ee-b36e-4620-acf2-1358e28fec07",
       "T-773bb444-a0e6-45b9-bdcb-18561bb6182f": "O-9d7ad5bd-d5ee-469e-93b0-79c129d87495",
       "T-77d41018-e04b-4a88-b92c-079b3d8ef421": "O-056e3e62-a872-45aa-953d-0452b29a71e3",
@@ -68,8 +70,8 @@
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b",
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e"
     },
-    "current_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-    "cycle_signature": "285be0753b84d434615e23e22e5799b2cb44996ac2a19cc5d2d65cc0aa35180a",
+    "current_task_id": "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+    "cycle_signature": "2ea788baeeb8dbdec2abcbea53325277663af96640fa753adcf8b8804e5e6db9",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
@@ -106,7 +108,11 @@
       "P-00657a7e-98a7-4fd9-b6be-b0fdb427feb4",
       "P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1",
       "P-74e56de7-49ae-4791-bcce-a596f758d362",
-      "P-28d6ece4-a519-44a8-9625-3367479a03c3"
+      "P-28d6ece4-a519-44a8-9625-3367479a03c3",
+      "P-bab5e0c9-8f97-4cd9-a4a1-aa9f39aa506f",
+      "P-e7108584-78d2-4df6-b60c-f0c47af75aa1",
+      "P-d724d4bc-ff32-470b-a476-395303dba5b9",
+      "P-29925105-1015-5ced-8844-d56fa47e33c9"
     ],
     "phase": "implement",
     "processing_results": [
@@ -508,6 +514,48 @@
         "task_keys": {
           "parallel-lifecycle": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
         }
+      },
+      {
+        "created_ids": [
+          "T-5737120b-52a5-4a57-9072-fce514adaf33",
+          "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+          "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+          "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+          "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc"
+        ],
+        "dispositions": {
+          "P-29925105-1015-5ced-8844-d56fa47e33c9": {
+            "reason": "Current source and the selected local hardening contract define independently verifiable controls, E14 local evidence and separate mandatory real release gates.",
+            "status": "promoted"
+          },
+          "P-bab5e0c9-8f97-4cd9-a4a1-aa9f39aa506f": {
+            "reason": "Current source and the selected local hardening contract define independently verifiable controls, E14 local evidence and separate mandatory real release gates.",
+            "status": "promoted"
+          },
+          "P-d724d4bc-ff32-470b-a476-395303dba5b9": {
+            "reason": "Current source and the selected local hardening contract define independently verifiable controls, E14 local evidence and separate mandatory real release gates.",
+            "status": "promoted"
+          },
+          "P-e7108584-78d2-4df6-b60c-f0c47af75aa1": {
+            "reason": "Current source and the selected local hardening contract define independently verifiable controls, E14 local evidence and separate mandatory real release gates.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-a888ac19-1755-417e-8a69-4126028348c3",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-bab5e0c9-8f97-4cd9-a4a1-aa9f39aa506f",
+          "P-e7108584-78d2-4df6-b60c-f0c47af75aa1",
+          "P-d724d4bc-ff32-470b-a476-395303dba5b9",
+          "P-29925105-1015-5ced-8844-d56fa47e33c9"
+        ],
+        "task_keys": {
+          "e14-local": "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+          "keys": "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+          "management": "T-5737120b-52a5-4a57-9072-fce514adaf33",
+          "operations": "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+          "release": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc"
+        }
       }
     ],
     "required_ids": [
@@ -543,7 +591,12 @@
       "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
       "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
       "T-211d2ac1-5778-47fb-8148-c9e1a320e31a",
-      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "T-5737120b-52a5-4a57-9072-fce514adaf33",
+      "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+      "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+      "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc"
     ],
     "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "snapshot": [
@@ -563,7 +616,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "c2653c9a9cd5d015bb7f458437e3e76df3ef39c45c7f0ca3ae5e38bae370aad3",
+  "source_hash": "5d1289c497f6d4b4785219d5235944c43782200ac1524c667c380810398aeadd",
   "tasks": [
     {
       "depends_on": [],
@@ -679,22 +732,78 @@
     },
     {
       "depends_on": [],
-      "id": "P-29925105-1015-5ced-8844-d56fa47e33c9",
-      "line": 320,
-      "parent_pending_ids": [],
+      "id": "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+      "line": 324,
+      "parent_pending_ids": [
+        "P-e7108584-78d2-4df6-b60c-f0c47af75aa1"
+      ],
+      "priority": 103,
+      "processing_run_id": "PR-a888ac19-1755-417e-8a69-4126028348c3",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "relation": "subtask",
+      "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "status": "Ready",
+      "title": "Add resumable credential encryption key operations"
+    },
+    {
+      "depends_on": [],
+      "id": "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+      "line": 365,
+      "parent_pending_ids": [
+        "P-d724d4bc-ff32-470b-a476-395303dba5b9"
+      ],
+      "priority": 102,
+      "processing_run_id": "PR-a888ac19-1755-417e-8a69-4126028348c3",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "relation": "subtask",
+      "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "status": "Ready",
+      "title": "Bound integration traffic and expose safe stalled work status"
+    },
+    {
+      "depends_on": [
+        "T-5737120b-52a5-4a57-9072-fce514adaf33",
+        "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+        "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca"
+      ],
+      "id": "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+      "line": 406,
+      "parent_pending_ids": [
+        "P-29925105-1015-5ced-8844-d56fa47e33c9"
+      ],
+      "priority": 101,
+      "processing_run_id": "PR-a888ac19-1755-417e-8a69-4126028348c3",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "relation": "subtask",
+      "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "status": "Ready",
+      "title": "Qualify E14 local adoption and recovery boundaries"
+    },
+    {
+      "depends_on": [
+        "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e"
+      ],
+      "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "line": 446,
+      "parent_pending_ids": [
+        "P-29925105-1015-5ced-8844-d56fa47e33c9"
+      ],
       "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E14 Mobile UX validation, observability, migration and gradual adoption"
+      "processing_run_id": "PR-a888ac19-1755-417e-8a69-4126028348c3",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "relation": "subtask",
+      "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "status": "Blocked pending answers",
+      "title": "Qualify real multi-user and mobile release gates"
     },
     {
       "depends_on": [],
       "id": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
-      "line": 353,
+      "line": 486,
       "parent_pending_ids": [
         "P-28d6ece4-a519-44a8-9625-3367479a03c3"
       ],
@@ -709,10 +818,15 @@
     },
     {
       "depends_on": [
-        "T-3987ba88-f69f-59f1-811e-f51cabfa5978"
+        "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+        "T-5737120b-52a5-4a57-9072-fce514adaf33",
+        "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+        "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+        "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+        "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 392,
+      "line": 525,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -728,7 +842,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 547,
+      "line": 680,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -742,7 +856,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 584,
+      "line": 717,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -756,7 +870,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 621,
+      "line": 754,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -770,7 +884,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 754,
+      "line": 887,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -784,7 +898,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 792,
+      "line": 925,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -798,7 +912,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 826,
+      "line": 959,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -812,7 +926,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 861,
+      "line": 994,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -826,7 +940,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 895,
+      "line": 1028,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -840,7 +954,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 933,
+      "line": 1066,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -854,7 +968,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 960,
+      "line": 1093,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -868,7 +982,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 982,
+      "line": 1115,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -882,7 +996,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1009,
+      "line": 1142,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

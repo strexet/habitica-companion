@@ -4,7 +4,7 @@ import { WorkspaceError, workspaceTokenHash, uuid } from '../../shared/workspace
 import type { WorkspaceRow } from './executor.ts';
 import type { CommandEntry } from './commands.ts';
 import { accept } from './commands.ts';
-interface Preparation {access_epoch:string;request_id:string;command_id:string;input_hash:string;command_json:string;correlation_id:string;expires_at_utc:string}
+interface Preparation {grant_epoch:string;access_epoch:string;request_id:string;command_id:string;input_hash:string;command_json:string;correlation_id:string;expires_at_utc:string}
 const bytes=(value:string)=>new TextEncoder().encode(value).length;
 function stable(value:unknown):string {if(value===null||typeof value!=='object')return JSON.stringify(value);if(Array.isArray(value))return '['+value.map(stable).join(',')+']';return '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+stable((value as Record<string,unknown>)[k])).join(',')+'}';}
 export function mutationResult(entry:CommandEntry,document:{tasks:{id:string;text:string}[]},correlationId:string,refreshSucceeded=true){
@@ -37,18 +37,18 @@ export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,ar
    const tag=crypto.randomUUID();const expires=new Date(Date.now()+10*60000).toISOString();const correlationId=crypto.randomUUID();
    const changed=await env.WORKSPACE_DB.batch([
     env.WORKSPACE_DB.prepare('UPDATE workspaces SET archive_bytes=?,commit_tag=?,store_version=store_version+1 WHERE profile_id=? AND access_epoch=? AND store_version=? AND commit_tag=? AND active=1').bind(size,tag,row.profile_id,row.access_epoch,row.store_version,row.commit_tag),
-    env.WORKSPACE_DB.prepare('INSERT INTO workspace_preparations(profile_id,access_epoch,request_id,command_id,input_hash,command_json,correlation_id,created_at_utc,expires_at_utc) SELECT profile_id,access_epoch,?,?,?,?,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?').bind(requestId,command.id,hash,serialized,correlationId,now,expires,row.profile_id,tag),
+    env.WORKSPACE_DB.prepare('INSERT INTO workspace_preparations(profile_id,access_epoch,request_id,command_id,input_hash,command_json,correlation_id,created_at_utc,expires_at_utc,grant_epoch) SELECT profile_id,access_epoch,?,?,?,?,?,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?').bind(requestId,command.id,hash,serialized,correlationId,now,expires,row.mcp_grant_epoch??'legacy',row.profile_id,tag),
    ]);
    prepared=await env.WORKSPACE_DB.prepare('SELECT * FROM workspace_preparations WHERE profile_id=? AND request_id=?').bind(row.profile_id,requestId).first<Preparation>();
    if(!prepared||prepared.input_hash!==hash)throw new WorkspaceError(changed[0].meta.changes?'request_id_reused':'workspace_changed',409);
   }
-  const found=await receipt(prepared.command_id);if(!found&&prepared.access_epoch!==row.access_epoch)throw new WorkspaceError('preview_connection_changed',409);const command=JSON.parse(prepared.command_json);
+  const found=await receipt(prepared.command_id);if(!found&&(prepared.access_epoch!==row.access_epoch||prepared.grant_epoch!==(row.mcp_grant_epoch??'legacy')))throw new WorkspaceError('preview_connection_changed',409);const command=JSON.parse(prepared.command_json);
   return {preparedCommandId:prepared.command_id,correlationId:prepared.correlation_id,expiresAtUtc:prepared.expires_at_utc,expired:prepared.expires_at_utc<=new Date().toISOString()&&!found,command,mayAffectHabitica:command.projectToHabitica||document.projections.some((p:{taskId:string;state:string})=>p.taskId===command.taskId&&p.state!=='unlinked'),savedInCompanion:Boolean(found),...(found?{receipt:mutationResult(found.entry,document,found.correlationId)}:{})};
  }
  const commandId=uuid(input.commandId);const found=await receipt(commandId);const operation=operationForTool[name as keyof typeof operationForTool];
  if(found){if(found.entry.command.operation!==operation)throw new WorkspaceError('operation_mismatch',409);return mutationResult(found.entry,document,found.correlationId);}
  const prepared=await env.WORKSPACE_DB.prepare('SELECT * FROM workspace_preparations WHERE profile_id=? AND command_id=?').bind(row.profile_id,commandId).first<Preparation>();
- if(!prepared||prepared.access_epoch!==row.access_epoch||prepared.expires_at_utc<=new Date().toISOString())throw new WorkspaceError('prepare_required_or_expired',409);
+ if(!prepared||prepared.grant_epoch!==(row.mcp_grant_epoch??'legacy')||prepared.access_epoch!==row.access_epoch||prepared.expires_at_utc<=new Date().toISOString())throw new WorkspaceError('prepare_required_or_expired',409);
  const command=JSON.parse(prepared.command_json);if(command.operation!==operation)throw new WorkspaceError('operation_mismatch',409);
  const response=await submit(command);if(!response.ok){let code='command_unavailable';try{code=(await response.json<{error:string}>()).error??code;}catch{}throw new WorkspaceError(code,response.status);}
  const result=await response.json<{entry:CommandEntry}>();

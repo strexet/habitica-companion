@@ -130,6 +130,77 @@ public sealed class ChatGptIntegrationClientTests
         Assert.False(client.HasConnection);
     }
 
+    [Fact]
+    public async Task Management_rotation_replaces_only_the_tab_token_and_status_uses_the_new_bearer()
+    {
+        var rotated = new string('r', 43);
+        using var http = new HttpClient(new Handler(async (request, cancellation) =>
+        {
+            var path = request.RequestUri!.AbsolutePath;
+            if (path == "/enroll") return Json(new { profileId = ProfileId, managementToken = ManagementToken }, HttpStatusCode.Created);
+            if (path.EndsWith("/rotate-management"))
+            {
+                Assert.Equal(ManagementToken, request.Headers.Authorization!.Parameter);
+                using var body = JsonDocument.Parse(await request.Content!.ReadAsStringAsync(cancellation));
+                Assert.Equal("rotate-management-token", body.RootElement.GetProperty("confirm").GetString());
+                return Json(new { rotated = true, managementToken = rotated });
+            }
+            Assert.Equal(rotated, request.Headers.Authorization!.Parameter);
+            if (path.EndsWith("/revoke-grants")) return Json(new { revoked = true, pendingCleanup = true });
+            Assert.Equal(HttpMethod.Get, request.Method);
+            return Json(new { displayName = "Fixture account", permissions = new[] { "profile:read" }, credentialStatus = "repair_needed", lastVerifiedAtUtc = DateTimeOffset.UtcNow, permissionsTruncated = false });
+        }));
+        var client = new ChatGptIntegrationClient(http, "https://auth.invalid/");
+        await client.RevalidateAsync(new HabiticaCredentials("fixture-user", "fixture-token"), CancellationToken.None);
+        var result = await client.RotateManagementAsync(CancellationToken.None);
+        Assert.True(result.Succeeded);
+        Assert.DoesNotContain(rotated, JsonSerializer.Serialize(result));
+        var status = await client.GetStatusAsync(CancellationToken.None);
+        Assert.True(status.Succeeded);
+        Assert.Equal("repair_needed", status.CredentialStatus);
+        Assert.DoesNotContain(rotated, JsonSerializer.Serialize(status));
+        var revoked = await client.RevokeGrantsAsync(CancellationToken.None);
+        Assert.True(revoked.Succeeded);
+        Assert.Contains("cleanup is pending", revoked.Message);
+        Assert.True(client.HasConnection);
+    }
+
+    [Fact]
+    public async Task Lost_rotation_response_forgets_an_unusable_management_token_without_copying_error_details()
+    {
+        using var http = new HttpClient(new Handler((request, _) => request.RequestUri!.AbsolutePath == "/enroll"
+            ? Task.FromResult(Json(new { profileId = ProfileId, managementToken = ManagementToken }, HttpStatusCode.Created))
+            : throw new HttpRequestException("fixture-private-token")));
+        var client = new ChatGptIntegrationClient(http, "https://auth.invalid/");
+        await client.RevalidateAsync(new HabiticaCredentials("fixture-user", "fixture-token"), CancellationToken.None);
+        var result = await client.RotateManagementAsync(CancellationToken.None);
+        Assert.False(result.Succeeded);
+        Assert.False(client.HasConnection);
+        Assert.DoesNotContain("fixture-private-token", result.Message);
+    }
+
+    [Fact]
+    public async Task A_late_management_rotation_cannot_restore_a_forgotten_tab_session()
+    {
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var http = new HttpClient(new Handler(async (request, _) =>
+        {
+            if (request.RequestUri!.AbsolutePath == "/enroll") return Json(new { profileId = ProfileId, managementToken = ManagementToken }, HttpStatusCode.Created);
+            entered.SetResult();
+            await release.Task;
+            return Json(new { rotated = true, managementToken = new string('r', 43) });
+        }));
+        var client = new ChatGptIntegrationClient(http, "https://auth.invalid/");
+        await client.RevalidateAsync(new HabiticaCredentials("fixture-user", "fixture-token"), CancellationToken.None);
+        var pending = client.RotateManagementAsync(CancellationToken.None);
+        await entered.Task;
+        client.ForgetSession();
+        release.SetResult();
+        Assert.False((await pending).Succeeded);
+        Assert.False(client.HasConnection);
+    }
+
     private static HttpResponseMessage Ticket() => Json(new { code = "0123456789AB", expiresAtUtc = DateTimeOffset.UtcNow.AddMinutes(10) });
     private static HttpResponseMessage Json(object value, HttpStatusCode status = HttpStatusCode.OK) => new(status) { Content = JsonContent.Create(value) };
     private sealed class Handler(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> respond) : HttpMessageHandler

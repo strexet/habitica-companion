@@ -84,6 +84,34 @@
         else
         {
             <p>Connection management is available in this tab. Signing out or closing the tab forgets the local management credential; revalidate Habitica credentials to manage the connection again.</p>
+            <p>Revoke ChatGPT access keeps stored credentials and separate Workspace/background access. Disconnect or disable the Workspace separately to pause its executor. To replace a Habitica API token, update the browser sign-in credentials, then revalidate.</p>
+            <div class="action-row">
+                <MudButton data-testid="integration-status" Disabled="@_integrationBusy" OnClick="LoadIntegrationStatusAsync" Variant="Variant.Outlined">Check integration status</MudButton>
+                <MudButton data-testid="integration-revoke-grants" Disabled="@_integrationBusy" OnClick="@(() => _integrationManagementAction = "revoke")" Variant="Variant.Outlined">Revoke ChatGPT access</MudButton>
+                <MudButton data-testid="integration-rotate-management" Disabled="@_integrationBusy" OnClick="@(() => _integrationManagementAction = "rotate")" Variant="Variant.Outlined">Replace tab management credential</MudButton>
+                <MudButton data-testid="integration-revalidate" Disabled="@(_integrationBusy || SessionController.State.IsBusy)" OnClick="@(() => _integrationManagementAction = "revalidate")" Variant="Variant.Outlined">Revalidate stored Habitica credentials</MudButton>
+            </div>
+            @if (_integrationStatus is not null)
+            {
+                <p role="status">@_integrationStatus.Message</p>
+                @if (_integrationStatus.Succeeded)
+                {
+                    <dl data-testid="integration-status-details">
+                        <dt>Connected account</dt><dd>@_integrationStatus.DisplayName</dd>
+                        <dt>Permissions</dt><dd>@(_integrationStatus.Permissions?.Length > 0 ? string.Join(", ", _integrationStatus.Permissions) : "No active ChatGPT permissions")</dd>
+                        <dt>Credential status</dt><dd>@(_integrationStatus.CredentialStatus == "repair_needed" ? "Repair needed" : "Verified at the time shown below")</dd>
+                        <dt>Last verified</dt><dd>@(_integrationStatus.LastVerifiedAtUtc?.ToLocalTime().ToString("g") ?? "Unavailable")</dd>
+                        <dt>Last ChatGPT tool authorization</dt><dd>@(_integrationStatus.LastUsedAtUtc?.ToLocalTime().ToString("g") ?? "No recorded use")</dd>
+                    </dl>
+                    @if (_integrationStatus.PermissionsTruncated) { <p>The permission list is incomplete. Revoke access to remove all previous grants.</p> }
+                }
+            }
+            @if (_integrationManagementAction is not null)
+            {
+                <p>@(_integrationManagementAction == "revoke" ? "Revoke all ChatGPT grants and invalidate old unaccepted previews? Stored credentials and separate Workspace access remain available." : _integrationManagementAction == "rotate" ? "Replace the management credential for this tab? Other tab management credentials stop working. ChatGPT access remains available." : "Send the current browser sign-in credentials to verify and replace the encrypted server credential? No new ChatGPT access is granted.")</p>
+                <MudButton data-testid="integration-confirm-management" Disabled="@_integrationBusy" OnClick="ConfirmIntegrationManagementAsync" Variant="Variant.Filled">Confirm</MudButton>
+                <MudButton data-testid="integration-cancel-management" Disabled="@_integrationBusy" OnClick="@(() => _integrationManagementAction = null)" Variant="Variant.Outlined">Cancel</MudButton>
+            }
             <div class="action-row">
                 <MudButton data-testid="integration-new-code" Disabled="@_integrationBusy" OnClick="NewIntegrationCodeAsync" Variant="Variant.Filled">Generate new code</MudButton>
                 <MudButton data-testid="integration-disconnect" Disabled="@_integrationBusy" OnClick="@(() => _integrationCleanup = false)" Variant="Variant.Outlined">Disconnect</MudButton>
@@ -270,6 +298,35 @@
     private bool _integrationBusy;
     private bool? _integrationCleanup;
     private IntegrationLinkResult? _integrationResult;
+    private IntegrationStatusResult? _integrationStatus;
+    private string? _integrationManagementAction;
+
+    private async Task LoadIntegrationStatusAsync()
+    {
+        if (_integrationBusy) return;
+        _integrationBusy = true;
+        _integrationStatus = null;
+        try { _integrationStatus = await SessionController.GetChatGptStatusAsync(); }
+        finally { _integrationBusy = false; }
+    }
+
+    private async Task ConfirmIntegrationManagementAsync()
+    {
+        if (_integrationBusy || _integrationManagementAction is null) return;
+        _integrationBusy = true;
+        _integrationStatus = null;
+        _integrationResult = null;
+        try
+        {
+            _integrationResult = _integrationManagementAction switch
+            {
+                "revoke" => await SessionController.RevokeChatGptGrantsAsync(),
+                "rotate" => await SessionController.RotateChatGptManagementAsync(),
+                _ => await SessionController.RevalidateChatGptAsync()
+            };
+        }
+        finally { _integrationBusy = false; _integrationManagementAction = null; }
+    }
 
     private async Task EnableIntegrationAsync()
     {

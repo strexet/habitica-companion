@@ -45,6 +45,10 @@ public sealed class AppSessionControllerTests
         }
         public Task<IntegrationLinkResult> CreateLinkAsync(CancellationToken cancellationToken) => Task.FromResult(new IntegrationLinkResult(true, "Fixture code"));
         public Task<IntegrationLinkResult> DisconnectAsync(bool deleteProfile, CancellationToken cancellationToken) => Task.FromResult(new IntegrationLinkResult(true, "Fixture disconnected"));
+        public Task<IntegrationStatusResult> GetStatusAsync(CancellationToken cancellationToken) => Task.FromResult(new IntegrationStatusResult(true, "Fixture status"));
+        public Task<IntegrationLinkResult> RevokeGrantsAsync(CancellationToken cancellationToken) => Task.FromResult(new IntegrationLinkResult(true, "Fixture revoked"));
+        public Task<IntegrationLinkResult> RotateManagementAsync(CancellationToken cancellationToken) => Task.FromResult(new IntegrationLinkResult(true, "Fixture rotated"));
+        public Task<IntegrationLinkResult> RevalidateAsync(HabiticaCredentials credentials, CancellationToken cancellationToken) => EnrollAsync(credentials, cancellationToken);
         public void ForgetSession() => HasConnection = false;
     }
 

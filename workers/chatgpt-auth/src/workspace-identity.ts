@@ -25,7 +25,7 @@ export async function workspaceIdentity(request: Request, env: AuthEnv): Promise
       const token = request.headers.get("authorization")?.match(/^Bearer (\S+)$/)?.[1];
       const context = token && token.length <= 4096 ? await validatedToken(env, resourceConfiguration(env.ENVIRONMENT).resource, token) : null;
       if (!context) throw new WorkspaceError("unauthorized", 401);
-      return Response.json({ profileId: context.props.profileId, connectionId: context.props.connectionId, scopes: context.scope }, { headers: { "cache-control": "no-store" } });
+      return Response.json({ profileId: context.props.profileId, connectionId: context.props.connectionId, scopes: context.scope, grantEpoch:context.props.grantEpoch }, { headers: { "cache-control": "no-store" } });
     }
     throw new WorkspaceError("unauthorized", 401);
   } catch { return Response.json({ error: "unauthorized" }, { status: 401, headers: { "cache-control": "no-store" } }); }

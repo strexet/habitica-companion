@@ -38,13 +38,13 @@ async function fixture(t, options = {}) {
   ] }));
   t.after(() => mf.dispose());
   const db = await mf.getD1Database("HABITICA_INTEGRATION_DB", "auth");
-  for (const migration of ["0001-integration-profiles.sql", "0002-linking.sql", "0003-read-state.sql", "0004-management-identity.sql", "0005-projection-gateway.sql"]) {
+  for (const migration of ["0001-integration-profiles.sql", "0002-linking.sql", "0003-read-state.sql", "0004-management-identity.sql", "0005-projection-gateway.sql","0006-grant-revocation.sql"]) {
     for (const sql of (await readFile(new URL("migrations/" + migration, authRoot), "utf8")).split(';')) if (sql.trim()) await db.prepare(sql).run();
   }
   let workspace, workspaceDb, workspaceIdentity, projection;
   if (options.workspace) {
     workspace = await mf.getWorker("workspace"); workspaceDb = await mf.getD1Database("WORKSPACE_DB", "workspace");
-    for (const migration of ["0001-workspace.sql","0002-execution-ownership.sql","0003-prepared-commands.sql","0004-authenticated-party-planning.sql","0005-reviewed-spell-actions.sql","0006-reviewed-cron-actions.sql"]) {
+    for (const migration of ["0001-workspace.sql","0002-execution-ownership.sql","0003-prepared-commands.sql","0004-authenticated-party-planning.sql","0005-reviewed-spell-actions.sql","0006-reviewed-cron-actions.sql","0007-mcp-grant-epoch.sql"]) {
       const sqlText = await readFile(new URL("../companion-workspace/migrations/"+migration, authRoot), "utf8");
       for (const sql of sqlText.split(";")) if (sql.trim()) await workspaceDb.prepare(sql).run();
     }

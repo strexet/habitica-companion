@@ -317,38 +317,171 @@ Dependencies:
 Expected behavior:
 - ChatGPT performs the same advanced task workflows as the manual app, sees pending-vs-confirmed game projection, and cannot bypass validation or access another user's workspace.
 
-### E14 Mobile UX validation, observability, migration and gradual adoption
-
-```yaml
-id: P-29925105-1015-5ced-8844-d56fa47e33c9
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Current context:
-- Source includes component tests, local import/export fixtures and operational diagnostics. Existing checks do not qualify the planned Companion-domain migration, durable command recovery, hosted executor or real mobile adoption gates.
-
-Source:
-- Companion-first epic `E14` (`P-29925105-1015-5ced-8844-d56fa47e33c9`); requirements are intake awaiting current-source research and decomposition.
-
-Description:
-- Progressive rollout with feature flags, backward-compatible migration, optional adoption of imported tasks, qualitative testing with consenting users, and accessibility/performance gates.
-
-Requirements:
-- Real iOS Safari/PWA/Android tests, offline/network-fault drills, migration backup/restore, screen-reader and large-text support, honest sync progress/diagnostics, no unconsented behavior tracking.
-
-Expected behavior:
-- Legacy users retain existing data and existing gameplay workflows; users can switch advanced features off without corrupting records; recovery after interrupted migration is validated.
-
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
+
+### Add resumable credential encryption key operations
+
+```yaml
+id: T-642c474f-619b-41e0-bc07-d1c72fbcf4d4
+priority: 103
+status: Ready
+parent_pending_ids: ["P-e7108584-78d2-4df6-b60c-f0c47af75aa1"]
+processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
+root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+relation: subtask
+depends_on: []
+```
+
+Goal:
+- Provide bounded resumable envelope re-encryption and referenced-key removal checks without changing stable profile identity.
+Current behavior:
+- Versioned V1/V2 envelopes and current-write selection exist. No bounded migration or reference inventory protects operator removal of a referenced old key.
+Desired behavior:
+- Interrupted and repeated migration preserves decryptability and profile identity. Referenced keys cannot be declared removable; summaries expose only counts and versions.
+Touch:
+- Auth versioned cryptography, private operator helper, synthetic D1 fixtures and deployment runbook.
+Discovery allowance:
+- Reuse current Auth, Workspace and browser integration contracts; add bounded missing controls and direct synthetic cases.
+Included capabilities and limits:
+- All opted-in credential consumers; no real key migration, secret changes, key deletion, deployment or profile-ID key rotation.
+Out of scope:
+- Live activation, deployment, real enrollment, device operations and real Habitica effects.
+Implementation constraints:
+- Operate only on encrypted vault envelopes with optimistic generation checks, explicit bounded batches, restart-safe cursors and credential-free summaries. Never rotate PROFILE_ID_KEY as part of envelope migration.
+Questions and required clarifications:
+- None for local implementation. Standing owner direction adopts required local contracts; external operations remain separately scoped.
+Validation:
+- Focused fault, concurrency, revocation and isolation cases; affected regression suites; Worker/app builds and default app behavior checks.
+Acceptance:
+- Interrupted and repeated migration preserves decryptability and profile identity. Referenced keys cannot be declared removable; summaries expose only counts and versions.
+Documentation updates:
+- features.md, technical.md, testing.md, deployment guidance and applicable UX/privacy contracts.
+Risks:
+- Revocation gaps, stale ownership, secret exposure and false qualification claims.
+
+### Bound integration traffic and expose safe stalled work status
+
+```yaml
+id: T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca
+priority: 102
+status: Ready
+parent_pending_ids: ["P-d724d4bc-ff32-470b-a476-395303dba5b9"]
+processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
+root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+relation: subtask
+depends_on: []
+```
+
+Goal:
+- Add persistent profile/network/global protection and bounded own queue-age/stalled-work diagnostics without identifying telemetry or background polling.
+Current behavior:
+- Linking already has profile/network attempts and upstream cooldowns; executor pacing and unknown fences exist. Aggregate protection and bounded stalled-command visibility remain incomplete.
+Desired behavior:
+- Quota tests deny excess traffic without retry storms. Own diagnostics expose queue age and stalled/uncertain command categories without credentials, raw payloads, conversation logging or cross-profile data.
+Touch:
+- Auth public/private operation limits, MCP request boundary, Workspace own diagnostics and synthetic rate/fault tests.
+Discovery allowance:
+- Reuse current Auth, Workspace and browser integration contracts; add bounded missing controls and direct synthetic cases.
+Included capabilities and limits:
+- All implemented tools with live Cron off; no live traffic, external monitoring, background Habitica polling or production changes.
+Out of scope:
+- Live activation, deployment, real enrollment, device operations and real Habitica effects.
+Implementation constraints:
+- Persist bounded cooldowns, enforce conservative per-profile/network/global limits and report only sanitized own work state or anonymous aggregates. Preserve unknown outcomes and original recovery paths.
+Questions and required clarifications:
+- None for local implementation. Standing owner direction adopts required local contracts; external operations remain separately scoped.
+Validation:
+- Focused fault, concurrency, revocation and isolation cases; affected regression suites; Worker/app builds and default app behavior checks.
+Acceptance:
+- Quota tests deny excess traffic without retry storms. Own diagnostics expose queue age and stalled/uncertain command categories without credentials, raw payloads, conversation logging or cross-profile data.
+Documentation updates:
+- features.md, technical.md, testing.md, deployment guidance and applicable UX/privacy contracts.
+Risks:
+- Revocation gaps, stale ownership, secret exposure and false qualification claims.
+
+### Qualify E14 local adoption and recovery boundaries
+
+```yaml
+id: T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e
+priority: 101
+status: Ready
+parent_pending_ids: ["P-29925105-1015-5ced-8844-d56fa47e33c9"]
+processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
+root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+relation: subtask
+depends_on: ["T-5737120b-52a5-4a57-9072-fce514adaf33", "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4", "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca"]
+```
+
+Goal:
+- Qualify E14 adoption and recovery for all implemented local capabilities.
+Current behavior:
+- Component, storage and synthetic Worker suites cover canonical workspaces, explicit adoption, backups, conflicts, hosted ownership and command uncertainty. Real mobile-device and multi-user host qualification remain unrun.
+Desired behavior:
+- A documented local evidence matrix covers flags, legacy preservation, explicit adoption, backup/restore, interrupted storage/network, conflicts, concurrent versions and accessible responsive controls.
+Touch:
+- Existing app/Worker fixtures, browser checks and E14 qualification documentation.
+Discovery allowance:
+- Reuse current checks and add only evidence-backed missing controls or required bug subtasks.
+Out of scope:
+- Implementing unselected E01-E13 UX/product epics, real devices, enrollment, deployment and real effects.
+Implementation constraints:
+- Cover profile/account reads, canonical tasks/projection, authenticated party planning, reviewed Blessing and disabled local Cron. Preserve legacy browser data; adoption stays explicit. Report real device gaps separately.
+Questions and required clarifications:
+- None for local evidence. Real device and consenting-user checks remain release prerequisites.
+Validation:
+- Run relevant interrupted storage/network, version conflict, revoke and backup/restore cases. Inspect responsive, large-text and accessible control behavior on synthetic data.
+Acceptance:
+- E14 local evidence covers selected implemented capabilities and preserves explicit adoption and legacy data through interruption/recovery.
+- Responsive and accessible control evidence records exact local coverage and outstanding device limitations.
+Documentation updates:
+- testing.md, ux-ui-manifest.md, deployment guidance and a bounded release qualification matrix.
+Risks:
+- Treating synthetic browser checks as device or live account qualification.
+
+### Qualify real multi-user and mobile release gates
+
+```yaml
+id: T-d76d2a9a-1318-4e63-9bb4-73f620b108cc
+priority: 100
+status: Blocked pending answers
+parent_pending_ids: ["P-29925105-1015-5ced-8844-d56fa47e33c9"]
+processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
+root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+relation: subtask
+depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e"]
+```
+
+Goal:
+- Preserve and execute real multi-user and mobile release qualification before broader availability.
+Current behavior:
+- Local synthetic checks do not prove actual two-account host enrollment, production logs, iOS Safari/PWA or Android behavior. No live environment or device operation is authorized by local implementation scope.
+Desired behavior:
+- Owner-first and consenting-teammate stages verify separate identities, tools and revocation, alongside mobile and production-log evidence.
+Touch:
+- Release qualification matrix and explicitly authorized deployment/account/device lanes when supplied.
+Discovery allowance:
+- Prepare concrete reviewable runbooks and inspect local environment separation without publishing or enrolling.
+Out of scope:
+- Automatic deployment, real enrollment, secret changes, real Cron, messages or device execution without separate authorization.
+Implementation constraints:
+- All implemented tools require isolation/revocation qualification; live Cron remains off. Real log inspection verifies absence of secrets with minimum redacted evidence. Missing infrastructure remains a blocker.
+Questions and required clarifications:
+- [Unresolved - blocks implementation] Authorized preview endpoints, two consenting account owners, host enrollment and iOS/Android device scope are unavailable. The local run cannot satisfy real release acceptance.
+Validation:
+- Verify local environment/resource separation and prepare exact owner/teammate/device checks. Execute real checks only inside separately authorized scope.
+Acceptance:
+- Two consenting team accounts complete independent real enrollment, packaged-tool and revocation flows with no cross-profile effects.
+- Real iOS Safari/PWA and Android checks plus redacted production-log inspection qualify release or retain explicit failed gates.
+Documentation updates:
+- Deployment and release qualification matrix; preserve unrun gates in future.md.
+Risks:
+- Exposing live effects or claiming release success from synthetic evidence.
 
 ### Investigate parallel Miniflare lifecycle qualification instability
 
@@ -400,7 +533,7 @@ processing_run_id: null
 root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 related_task_id: null
 relation: main
-depends_on: ["T-3987ba88-f69f-59f1-811e-f51cabfa5978"]
+depends_on: ["T-3987ba88-f69f-59f1-811e-f51cabfa5978", "T-5737120b-52a5-4a57-9072-fce514adaf33", "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4", "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca", "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc"]
 ```
 
 Migration source:

@@ -1,3 +1,4 @@
+import {mcpEpoch} from './mcp-epoch';
 import {cronApi,cronHistory} from './cron-api';
 import {cronToolScopes,type CronTool} from '../../shared/cron-tools';
 import {spellApi,spellHistory} from './spell-api';
@@ -210,12 +211,13 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
    if(typeof body.tool!=="string"||!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool)&&!Object.hasOwn(spellToolScopes,body.tool)&&!Object.hasOwn(cronToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
    const verified=await this.env.AUTH_IDENTITY.fetch("https://identity.internal/mcp",{method:"POST",headers:{authorization:request.headers.get("authorization")??""},signal:AbortSignal.timeout(5000)});
    if(!verified.ok)throw new WorkspaceError("unauthorized",401);
-   const who=await verified.json<Identity&{scopes:string[]}>();
+   const who=await verified.json<Identity&{scopes:string[];grantEpoch:string}>();
    const requiredScope=Object.hasOwn(partyToolScopes,body.tool)?partyToolScopes[body.tool as PartyTool]:taskToolScopes[body.tool as TaskTool];
    const required=Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:['profile:read',requiredScope];
    if(!Array.isArray(who.scopes)||required.some(scope=>!who.scopes.includes(scope)))throw new WorkspaceError("insufficient_scope",403);
-   const row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
+   let row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
    if(!row)throw new WorkspaceError("workspace_consent_required",403);
+   row=await mcpEpoch(this.env,row,who.grantEpoch);
    if(Object.hasOwn(cronToolScopes,body.tool))return json(await cronApi(this.env,row,body.tool as CronTool,body.arguments,request.headers.get('authorization')??''));
    if(Object.hasOwn(spellToolScopes,body.tool))return json(await spellApi(this.env,row,body.tool as SpellTool,body.arguments,request.headers.get('authorization')??''));
    if(Object.hasOwn(partyToolScopes,body.tool))return json(await partyApi(this.env,row,body.tool as PartyTool,body.arguments,request.headers.get("authorization")??undefined));

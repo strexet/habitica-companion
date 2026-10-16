@@ -118,6 +118,37 @@ public sealed class SettingsPageTests : BunitContext
     }
 
     [Fact]
+    public void Integration_management_requires_confirmation_and_keeps_grant_revocation_separate_from_deletion()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        Services.AddScoped<ColorSchemeService>();
+        var controller = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true }) { IsChatGptIntegrationAvailable = true };
+        Services.AddSingleton<IAppSessionController>(controller);
+        var cut = Render<SettingsPage>();
+        cut.Find("[data-testid='integration-consent']").Change(true);
+        cut.Find("[data-testid='integration-enroll']").Click();
+        cut.Find("[data-testid='integration-status']").Click();
+        Assert.Contains("Fixture account", cut.Find("[data-testid='integration-status-details']").TextContent);
+        Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("integration-management", cut.Markup);
+        cut.Find("[data-testid='integration-revoke-grants']").Click();
+        Assert.Equal(0, controller.ChatGptRevokeCalls);
+        cut.Find("[data-testid='integration-cancel-management']").Click();
+        cut.Find("[data-testid='integration-revoke-grants']").Click();
+        cut.Find("[data-testid='integration-confirm-management']").Click();
+        Assert.Equal(1, controller.ChatGptRevokeCalls);
+        Assert.Equal(0, controller.ChatGptDisconnectCalls);
+        Assert.Empty(cut.FindAll("[data-testid='integration-link-code']"));
+        Assert.Empty(cut.FindAll("[data-testid='integration-status-details']"));
+        cut.Find("[data-testid='integration-rotate-management']").Click();
+        Assert.Equal(0, controller.ChatGptRotateCalls);
+        cut.Find("[data-testid='integration-confirm-management']").Click();
+        Assert.Equal(1, controller.ChatGptRotateCalls);
+        Assert.Contains("Workspace", cut.Markup);
+    }
+
+    [Fact]
     public void Unavailable_integration_has_no_enrollment_control()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

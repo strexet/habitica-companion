@@ -31,7 +31,7 @@ export async function setup(t,options={}){
  direct=(await f.mf.getBindings('mcp')).AUTH_CRON;
  const profiles=[],sessions=[],clients=[],tokens=[];
  const http=(i,path,body,method='POST',management=false)=>f.workspace.fetch(origin+path,{method,headers:{authorization:'Bearer '+(management?profiles[i].managementToken:sessions[i]),'content-type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})});
- async function client(i,granted=scope){
+ async function client(i,granted=options.scope??scope){
   const response=await exchange(f,await authorization(f,profiles[i],granted));assert.equal(response.status,200);const token=(await response.json()).access_token;tokens[i]=token;
   const c=new Client({name:'cron-fixture',version:'1.0.0'});t.after(()=>c.close());await c.connect(new StreamableHTTPClientTransport(new URL(resource),{requestInit:{headers:{authorization:'Bearer '+token}},fetch:(url,init)=>f.mcp.fetch(String(url),init)}));clients[i]=c;return c;
  }

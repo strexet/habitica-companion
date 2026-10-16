@@ -14,6 +14,9 @@ export interface IntegrationProfile {
   revoked_at_utc: string | null;
   management_token_hash: string | null;
   generation: number;
+  grant_epoch:string;
+  last_used_at_utc:string|null;
+  last_verified_at_utc:string;
   connection_id: string;
 }
 export class VaultError extends Error {

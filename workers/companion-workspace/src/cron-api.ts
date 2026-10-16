@@ -3,7 +3,7 @@ import {WorkspaceError,workspaceSessionToken,workspaceTokenHash,workspaceObject}
 import type {WorkspaceRow} from './executor';
 interface Payload {expectedPreconditionHash:string;expectedDay:string;expectedLastCron:string}
 interface Entry {actionId:string;requestId:string;preview:Record<string,unknown>;attempted:boolean;confirmed:boolean;outcomeUnknown:boolean;failure:string|null;refreshSucceeded:boolean|null;observedProgress:Record<string,unknown>|null}
-interface Action {profile_id:string;action_id:string;request_id:string;connection_id:string;access_epoch:string;status:string;version:number;payload_json:string;entry_json:string;attempt_json:string|null;expires_at_utc:string;consumed_at_utc:string|null}
+interface Action {grant_epoch:string;profile_id:string;action_id:string;request_id:string;connection_id:string;access_epoch:string;status:string;version:number;payload_json:string;entry_json:string;attempt_json:string|null;expires_at_utc:string;consumed_at_utc:string|null}
 interface Attempt {profileId:string;connectionId:string;operation:string;arguments:Payload;attemptId:string;attemptAtUtc:string}
 const now=()=>new Date().toISOString();
 const view=(a:Action)=>({...JSON.parse(a.entry_json) as Entry,status:a.status,accepted:a.consumed_at_utc!==null,expiresAtUtc:a.expires_at_utc});
@@ -44,14 +44,14 @@ export async function cronApi(env:WorkspaceEnv,row:WorkspaceRow,tool:CronTool,ar
    const id=crypto.randomUUID(),expires=new Date(Date.now()+120000).toISOString();
    const e:Entry={actionId:id,requestId:String(input.requestId),preview:context,attempted:false,confirmed:false,outcomeUnknown:false,failure:null,refreshSucceeded:null,observedProgress:null};
    const payload:Payload={expectedPreconditionHash:observed.preconditionHash,expectedDay:context.day,expectedLastCron:context.lastCron};
-   await env.WORKSPACE_DB.prepare(`INSERT OR IGNORE INTO prepared_cron_actions(profile_id,action_id,request_id,input_hash,connection_id,access_epoch,status,payload_json,entry_json,created_at_utc,expires_at_utc) SELECT profile_id,?,?,?,?,?,'prepared',?,?,?,? FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1 AND (SELECT COUNT(*) FROM prepared_cron_actions WHERE profile_id=?)<1000`)
-    .bind(id,input.requestId,await workspaceTokenHash('start-new-day-v1'),row.connection_id,row.access_epoch,JSON.stringify(payload),JSON.stringify(e),now(),expires,row.profile_id,row.connection_id,row.access_epoch,row.profile_id).run();
+   await env.WORKSPACE_DB.prepare(`INSERT OR IGNORE INTO prepared_cron_actions(profile_id,action_id,request_id,input_hash,connection_id,access_epoch,status,payload_json,entry_json,created_at_utc,expires_at_utc,grant_epoch) SELECT profile_id,?,?,?,?,?,'prepared',?,?,?,?,? FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1 AND (SELECT COUNT(*) FROM prepared_cron_actions WHERE profile_id=?)<1000`)
+    .bind(id,input.requestId,await workspaceTokenHash('start-new-day-v1'),row.connection_id,row.access_epoch,JSON.stringify(payload),JSON.stringify(e),now(),expires,row.mcp_grant_epoch??'legacy',row.profile_id,row.connection_id,row.access_epoch,row.profile_id).run();
    a=await env.WORKSPACE_DB.prepare('SELECT * FROM prepared_cron_actions WHERE profile_id=? AND request_id=?').bind(row.profile_id,input.requestId).first<Action>();
    if(!a)throw new WorkspaceError('cron_conflict_or_capacity',409);
   }
   await current(env,row);
   if(a.status!=='prepared')return view(a);
-  if(a.connection_id!==row.connection_id||a.access_epoch!==row.access_epoch||a.expires_at_utc<=now())throw new WorkspaceError('preview_expired_or_changed',409);
+  if(a.grant_epoch!==(row.mcp_grant_epoch??'legacy')||a.connection_id!==row.connection_id||a.access_epoch!==row.access_epoch||a.expires_at_utc<=now())throw new WorkspaceError('preview_expired_or_changed',409);
   const token=workspaceSessionToken();
   const rotated=await env.WORKSPACE_DB.prepare("UPDATE prepared_cron_actions SET token_hash=?,version=version+1 WHERE profile_id=? AND action_id=? AND status='prepared' AND version=? AND expires_at_utc>? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1)").bind(await workspaceTokenHash(token),row.profile_id,a.action_id,a.version,now(),row.profile_id,row.connection_id,row.access_epoch).run();
   if(!rotated.meta.changes)throw new WorkspaceError('preview_changed',409);
@@ -63,7 +63,7 @@ export async function cronApi(env:WorkspaceEnv,row:WorkspaceRow,tool:CronTool,ar
  return execute(env,row,found,String(input.executeToken),authorization);
 }
 async function execute(env:WorkspaceEnv,row:WorkspaceRow,initial:Action,token:string,authorization:string){
- if(initial.connection_id!==row.connection_id||initial.access_epoch!==row.access_epoch||initial.expires_at_utc<=now())throw new WorkspaceError('preview_expired_or_changed',409);
+ if(initial.grant_epoch!==(row.mcp_grant_epoch??'legacy')||initial.connection_id!==row.connection_id||initial.access_epoch!==row.access_epoch||initial.expires_at_utc<=now())throw new WorkspaceError('preview_expired_or_changed',409);
  if(row.authority_json&&JSON.parse(row.authority_json).mode!=='cloud')throw new WorkspaceError('workspace_authority_required',409);
  const lease=crypto.randomUUID(),deadline=Date.now()+60000;
  const acquired=await env.WORKSPACE_DB.prepare(`INSERT INTO workspace_runtime(profile_id,access_epoch,lease_token,lease_until_utc,last_wake_at_utc) SELECT profile_id,access_epoch,?,?,? FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1 ON CONFLICT(profile_id) DO UPDATE SET access_epoch=excluded.access_epoch,lease_token=excluded.lease_token,lease_until_utc=excluded.lease_until_utc,last_wake_at_utc=excluded.last_wake_at_utc WHERE workspace_runtime.lease_until_utc IS NULL OR workspace_runtime.lease_until_utc<=?`)

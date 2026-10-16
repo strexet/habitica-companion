@@ -1,3 +1,4 @@
+import {managementRoute} from './management';
 import {cronOperation} from './cron';
 import {spellOperation} from './spells';
 import {partyProofOperation} from './party';
@@ -56,6 +57,7 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
     resourceConfiguration(env.ENVIRONMENT);
     const vault = await vaultRoute(request, env, async (id, connectionId) => { if (Boolean(env.OAUTH_ENABLED)) await cleanupProfile(env, id, connectionId); await clearProjectionContext(env,id,connectionId); });
     if (vault) return vault;
+    const management=await managementRoute(request,env);if(management)return management;
     if (new URL(request.url).pathname === "/health" && request.method === "GET") return Response.json({ service: "auth", authorization: Boolean(env.OAUTH_ENABLED) ? "enabled" : "unavailable" }, { headers });
     if (Boolean(env.OAUTH_ENABLED)) {
       try {
@@ -92,7 +94,7 @@ export default {
       ? new Response(null, { status: 204, headers }) : await handlePublicRequest(request, env, ctx);
     if (isManagement && origin === config.pwaOrigin) {
       response.headers.set("access-control-allow-origin", origin);
-      response.headers.set("access-control-allow-methods", "POST, DELETE, OPTIONS");
+      response.headers.set("access-control-allow-methods", "GET, POST, DELETE, OPTIONS");
       response.headers.set("access-control-allow-headers", "content-type, authorization");
       response.headers.set("vary", "Origin");
     }

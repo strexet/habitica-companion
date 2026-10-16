@@ -90,3 +90,26 @@ test('accepted actions without a saved dispatch are stopped on recovery rather t
  const s=await setup(t),p=await s.prepare();await s.f.workspaceDb.prepare("UPDATE prepared_cron_actions SET status='accepted',consumed_at_utc=?,token_hash=NULL WHERE action_id=?").bind(new Date().toISOString(),p.actionId).run();
  const r=(await s.tool(0,'get_cron_command',{actionId:p.actionId})).structuredContent;assert.equal(r.status,'stopped');assert.equal(r.failure,'execution_stopped');assert.equal(r.outcomeUnknown,false);assert.equal(s.state.posts,0);
 });
+
+test('renewed grants cannot execute old unaccepted task, spell or Cron previews, while unknown effects remain fenced',async t=>{
+ const granted=scope+' habitica.tasks.write';const s=await setup(t,{scope:granted}),profile=s.profiles[0],p=await s.prepare();
+ assert.equal((await s.http(0,'/party/consent',{consentVersion:'party-planning-v1',expectedPartyId:party})).status,200);
+ const spell=(await s.tool(0,'prepare_spell_cast',{requestId:crypto.randomUUID(),spellId:'healAll',count:1})).structuredContent;
+ const task=(await s.tool(0,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'createTodo',patch:{text:'Old grant intent'},projectToHabitica:false})).structuredContent;
+ const revoke=()=>s.f.auth.fetch(`http://localhost:8787/profiles/${profile.profileId}/revoke-grants`,{method:'POST',headers:{authorization:'Bearer '+profile.managementToken,'content-type':'application/json'},body:JSON.stringify({confirm:'revoke-chatgpt-grants'})});
+ assert.equal((await revoke()).status,200);const denied=await s.f.mcp.fetch('http://localhost:8788/mcp',{method:'POST',headers:{authorization:'Bearer '+s.tokens[0],'content-type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:'execute_start_new_day',arguments:{actionId:p.actionId,executeToken:p.executeToken}}})});assert.equal(denied.status,401);await s.client(0,granted);
+ assert.equal((await s.execute(p)).isError,true);assert.equal((await s.tool(0,'execute_spell_cast',{actionId:spell.actionId,executeToken:spell.executeToken})).isError,true);assert.equal((await s.tool(0,'create_todo',{commandId:task.preparedCommandId})).isError,true);
+ assert.equal((await s.http(0,'/workspace',undefined,'GET')).status,200);const fresh=await s.prepare();s.state.unknown=true;assert.equal((await s.execute(fresh)).structuredContent.outcomeUnknown,true);
+ assert.equal((await revoke()).status,200);await s.client(0,granted);assert.equal((await s.tool(0,'get_cron_command',{actionId:fresh.actionId})).structuredContent.outcomeUnknown,true);assert.equal(s.state.posts,1);
+});
+
+test('an old in-flight preview cannot regain authority after a newer grant epoch is observed',async t=>{
+ const s=await setup(t),p=await s.prepare();const old=await s.f.workspaceDb.prepare('SELECT * FROM prepared_cron_actions WHERE action_id=?').bind(p.actionId).first();
+ const profile=s.profiles[0];assert.equal((await s.f.auth.fetch(`http://localhost:8787/profiles/${profile.profileId}/revoke-grants`,{method:'POST',headers:{authorization:'Bearer '+profile.managementToken,'content-type':'application/json'},body:JSON.stringify({confirm:'revoke-chatgpt-grants'})})).status,200);
+ await s.client(0,scope);assert.equal((await s.tool(0,'get_cron_status')).structuredContent.canPrepare,true);
+ // Model an old request finishing its preparation after newer-epoch cleanup.
+ const keys=Object.keys(old);await s.f.workspaceDb.prepare(`INSERT INTO prepared_cron_actions(${keys.join(',')}) VALUES(${keys.map(()=>'?').join(',')})`).bind(...keys.map(key=>old[key])).run();
+ assert.equal((await s.execute(p)).isError,true);assert.equal(s.state.posts,0);
+ const {mcpEpoch}=await import('../src/mcp-epoch.ts');const env=await s.f.mf.getBindings('workspace'),row=await s.f.workspaceDb.prepare('SELECT * FROM workspaces WHERE profile_id=?').bind(profile.profileId).first();
+ await assert.rejects(()=>mcpEpoch(env,row,'legacy'),/unauthorized/);assert.equal((await s.f.workspaceDb.prepare('SELECT mcp_grant_epoch FROM workspaces WHERE profile_id=?').bind(profile.profileId).first()).mcp_grant_epoch,row.mcp_grant_epoch);
+});

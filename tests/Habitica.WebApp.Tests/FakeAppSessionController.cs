@@ -26,6 +26,13 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.FromResult(new IntegrationLinkResult(true, "Fixture linked", "0123456789AB", DateTimeOffset.UtcNow.AddMinutes(10)));
     }
     public Task<IntegrationLinkResult> CreateChatGptLinkAsync(CancellationToken cancellationToken = default) => Task.FromResult(new IntegrationLinkResult(true, "Fixture linked", "0123456789AB", DateTimeOffset.UtcNow.AddMinutes(10)));
+    public int ChatGptRevokeCalls { get; private set; }
+    public int ChatGptRotateCalls { get; private set; }
+    public Task<IntegrationStatusResult> GetChatGptStatusAsync(CancellationToken cancellationToken = default) => Task.FromResult(new IntegrationStatusResult(true, "Loaded", "Fixture account", ["profile:read"], "last_verified"));
+    public Task<IntegrationLinkResult> RevokeChatGptGrantsAsync(CancellationToken cancellationToken = default) { ChatGptRevokeCalls++; return Task.FromResult(new IntegrationLinkResult(true, "Access revoked")); }
+    public Task<IntegrationLinkResult> RotateChatGptManagementAsync(CancellationToken cancellationToken = default) { ChatGptRotateCalls++; return Task.FromResult(new IntegrationLinkResult(true, "Management replaced")); }
+    public Task<IntegrationLinkResult> RevalidateChatGptAsync(CancellationToken cancellationToken = default) => Task.FromResult(new IntegrationLinkResult(true, "Revalidated"));
+
     public Task<IntegrationLinkResult> DisconnectChatGptAsync(bool deleteProfile, CancellationToken cancellationToken = default)
     {
         ChatGptDisconnectCalls++;

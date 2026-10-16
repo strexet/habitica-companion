@@ -5,7 +5,7 @@ import {requireCurrentPartyAccess} from './party-access';
 import type {WorkspaceRow} from './executor';
 interface Payload {spellId:'healAll';partyId:string;expectedPreconditionHash:string;count:number}
 interface Entry {actionId:string;requestId:string;spellId:string;requestedCount:number;attemptedCount:number;confirmedCount:number;failurePosition:number|null;failure:string|null;retryAtUtc:string|null;refreshSucceeded:boolean|null;outcomeUnknown:boolean;mana:number|null;health:number|null;preview:Record<string,unknown>}
-interface Action {profile_id:string;action_id:string;request_id:string;input_hash:string;connection_id:string;access_epoch:string;namespace_id:string;status:string;version:number;payload_json:string;entry_json:string;attempt_json:string|null;expires_at_utc:string;consumed_at_utc:string|null}
+interface Action {grant_epoch:string;profile_id:string;action_id:string;request_id:string;input_hash:string;connection_id:string;access_epoch:string;namespace_id:string;status:string;version:number;payload_json:string;entry_json:string;attempt_json:string|null;expires_at_utc:string;consumed_at_utc:string|null}
 interface Attempt {profileId:string;connectionId:string;operation:string;arguments:{spellId:string;partyId:string;expectedPreconditionHash:string;remainingCount:number};attemptId:string;attemptAtUtc:string}
 interface Outcome {kind:string;code:string;mana?:number;health?:number;nextPreconditionHash?:string;retryAtUtc?:string}
 const now=()=>new Date().toISOString();
@@ -57,14 +57,14 @@ export async function spellApi(env:WorkspaceEnv,row:WorkspaceRow,tool:SpellTool,
    const namespace=await planning(env,row,partyId);const id=crypto.randomUUID();const expires=new Date(Date.now()+120000).toISOString();
    const entry:Entry={actionId:id,requestId:String(input.requestId),spellId:supportedSpell.id,requestedCount:Number(input.count),attemptedCount:0,confirmedCount:0,failurePosition:null,failure:null,retryAtUtc:null,refreshSucceeded:null,outcomeUnknown:false,mana:null,health:null,preview:{...context,totalMana:supportedSpell.manaCost*Number(input.count),target:'verified-current-party',repetitions:Number(input.count)}};
    const payload:Payload={spellId:supportedSpell.id,partyId,expectedPreconditionHash:observed.preconditionHash,count:Number(input.count)};
-   await env.WORKSPACE_DB.prepare(`INSERT OR IGNORE INTO prepared_spell_actions(profile_id,action_id,request_id,input_hash,connection_id,access_epoch,namespace_id,status,payload_json,entry_json,created_at_utc,expires_at_utc) SELECT profile_id,?,?,?,?,?,?,'prepared',?,?,?,? FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1 AND (SELECT COUNT(*) FROM prepared_spell_actions WHERE profile_id=?)<1000 AND EXISTS(SELECT 1 FROM authenticated_party_consents c WHERE c.profile_id=workspaces.profile_id AND c.namespace_id=? AND c.connection_id=workspaces.connection_id AND c.access_epoch=workspaces.access_epoch)`)
-    .bind(id,input.requestId,hash,row.connection_id,row.access_epoch,namespace,JSON.stringify(payload),JSON.stringify(entry),now(),expires,row.profile_id,row.connection_id,row.access_epoch,row.profile_id,namespace).run();
+   await env.WORKSPACE_DB.prepare(`INSERT OR IGNORE INTO prepared_spell_actions(profile_id,action_id,request_id,input_hash,connection_id,access_epoch,namespace_id,status,payload_json,entry_json,created_at_utc,expires_at_utc,grant_epoch) SELECT profile_id,?,?,?,?,?,?,'prepared',?,?,?,?,? FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1 AND (SELECT COUNT(*) FROM prepared_spell_actions WHERE profile_id=?)<1000 AND EXISTS(SELECT 1 FROM authenticated_party_consents c WHERE c.profile_id=workspaces.profile_id AND c.namespace_id=? AND c.connection_id=workspaces.connection_id AND c.access_epoch=workspaces.access_epoch)`)
+    .bind(id,input.requestId,hash,row.connection_id,row.access_epoch,namespace,JSON.stringify(payload),JSON.stringify(entry),now(),expires,row.mcp_grant_epoch??'legacy',row.profile_id,row.connection_id,row.access_epoch,row.profile_id,namespace).run();
    prepared=await env.WORKSPACE_DB.prepare('SELECT * FROM prepared_spell_actions WHERE profile_id=? AND request_id=?').bind(row.profile_id,input.requestId).first<Action>();
    if(!prepared)throw new WorkspaceError('spell_conflict_or_capacity',409);
    if(prepared.input_hash!==hash)throw new WorkspaceError('request_id_reused',409);
   }
   if(prepared.status!=='prepared')return view(prepared);
-  if(prepared.connection_id!==row.connection_id||prepared.access_epoch!==row.access_epoch||prepared.expires_at_utc<=now())throw new WorkspaceError('preview_expired_or_changed',409);
+  if(prepared.grant_epoch!==(row.mcp_grant_epoch??'legacy')||prepared.connection_id!==row.connection_id||prepared.access_epoch!==row.access_epoch||prepared.expires_at_utc<=now())throw new WorkspaceError('preview_expired_or_changed',409);
   await planning(env,row,JSON.parse(prepared.payload_json).partyId,prepared.namespace_id);
   const token=workspaceSessionToken();
   const rotated=await env.WORKSPACE_DB.prepare("UPDATE prepared_spell_actions SET token_hash=?,version=version+1 WHERE profile_id=? AND action_id=? AND status='prepared' AND version=? AND expires_at_utc>? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND connection_id=? AND access_epoch=? AND active=1)").bind(await workspaceTokenHash(token),row.profile_id,prepared.action_id,prepared.version,now(),row.profile_id,row.connection_id,row.access_epoch).run();
@@ -78,7 +78,7 @@ export async function spellApi(env:WorkspaceEnv,row:WorkspaceRow,tool:SpellTool,
 
 async function execute(env:WorkspaceEnv,row:WorkspaceRow,initial:Action,token:string,authorization:string){
  const payload=JSON.parse(initial.payload_json) as Payload;
- if(initial.access_epoch!==row.access_epoch||initial.connection_id!==row.connection_id||initial.expires_at_utc<=now())throw new WorkspaceError('preview_expired_or_changed',409);
+ if(initial.grant_epoch!==(row.mcp_grant_epoch??'legacy')||initial.access_epoch!==row.access_epoch||initial.connection_id!==row.connection_id||initial.expires_at_utc<=now())throw new WorkspaceError('preview_expired_or_changed',409);
  await planning(env,row,payload.partyId,initial.namespace_id);
  if(row.authority_json&&JSON.parse(row.authority_json).mode!=='cloud')throw new WorkspaceError('workspace_authority_required',409);
  const lease=crypto.randomUUID();const until=new Date(Date.now()+90000).toISOString();

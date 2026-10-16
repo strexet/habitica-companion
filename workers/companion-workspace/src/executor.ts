@@ -2,7 +2,7 @@ import { event, type Authority } from './journal.ts';
 import type { CommandEntry, JournalEvent } from './commands.ts';
 import { projectionStep, confirmMapping, type Observation, type AccountObservation } from './projection-adapter.ts';
 import type { WorkspaceDocument } from '../../shared/workspace-domain.ts';
-export interface WorkspaceRow {profile_id:string;workspace_id:string;connection_id:string;access_epoch:string;active:number;executor_enabled:number;document_json:string;store_version:number;archive_bytes:number;commit_tag:string;authority_json:string|null}
+export interface WorkspaceRow {mcp_grant_epoch?:string|null;profile_id:string;workspace_id:string;connection_id:string;access_epoch:string;active:number;executor_enabled:number;document_json:string;store_version:number;archive_bytes:number;commit_tag:string;authority_json:string|null}
 interface Runtime {access_epoch:string;lease_token:string|null;lease_until_utc:string|null;next_network_at_utc:string|null;command_id:string|null;prepared_request_json:string|null}
 interface Prepared {profileId:string;connectionId:string;operation:string;arguments:Record<string,unknown>;automated:boolean;attemptId:string;attemptAtUtc:string}
 interface Outcome {kind?:string;code?:string;retryAtUtc?:string;task?:{id:string;fingerprint:string;alias:string|null}}

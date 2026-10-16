@@ -21,6 +21,10 @@ public interface IAppSessionController
     bool HasChatGptConnection { get; }
     Task<IntegrationLinkResult> EnrollChatGptAsync(bool consentAcknowledged, CancellationToken cancellationToken = default);
     Task<IntegrationLinkResult> CreateChatGptLinkAsync(CancellationToken cancellationToken = default);
+    Task<IntegrationStatusResult> GetChatGptStatusAsync(CancellationToken cancellationToken = default);
+    Task<IntegrationLinkResult> RevokeChatGptGrantsAsync(CancellationToken cancellationToken = default);
+    Task<IntegrationLinkResult> RotateChatGptManagementAsync(CancellationToken cancellationToken = default);
+    Task<IntegrationLinkResult> RevalidateChatGptAsync(CancellationToken cancellationToken = default);
     Task<IntegrationLinkResult> DisconnectChatGptAsync(bool deleteProfile, CancellationToken cancellationToken = default);
 
     Task InitializeAsync(CancellationToken cancellationToken = default);

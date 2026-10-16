@@ -57,6 +57,7 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
             if (_sessionVersion != sessionVersion) return new(false, "Enrollment may have completed. Revalidate the account to manage the connection.");
             _profileId = enrollment.ProfileId;
             _managementToken = enrollment.ManagementToken;
+            _sessionVersion++;
             return new(true, "Credentials verified for this tab.");
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
@@ -100,6 +101,76 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
         catch { return new(false, "Connection cleanup could not be confirmed. Revalidate the account to manage it."); }
     }
+
+    public async Task<IntegrationStatusResult> GetStatusAsync(CancellationToken cancellationToken)
+    {
+        if (_baseUri is null || !HasConnection) return new(false, "Revalidate credentials to view integration status.");
+        var version = _sessionVersion;
+        try
+        {
+            using var request = ManagementRequest(HttpMethod.Get, "status");
+            using var response = await _http.SendAsync(request, cancellationToken);
+            if (!response.IsSuccessStatusCode) return new(false, "Integration status is unavailable. Revalidate credentials if access changed.");
+            var status = await response.Content.ReadFromJsonAsync<StatusPayload>(cancellationToken);
+            if (version != _sessionVersion || status is null || status.DisplayName?.Length > 256 || status.Permissions is null || status.Permissions.Length > 8
+                || status.Permissions.Any(scope => !KnownPermissions.Contains(scope)) || status.CredentialStatus is not ("last_verified" or "repair_needed"))
+                return new(false, "Integration status is unavailable.");
+            return new(true, "Integration status loaded.", status.DisplayName, status.Permissions, status.CredentialStatus, status.LastVerifiedAtUtc, status.LastUsedAtUtc, status.PermissionsTruncated);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
+        catch { return new(false, "Integration status is unavailable."); }
+    }
+
+    public Task<IntegrationLinkResult> RevalidateAsync(HabiticaCredentials credentials, CancellationToken cancellationToken) => EnrollProfileAsync(credentials, cancellationToken);
+    public Task<IntegrationLinkResult> RevokeGrantsAsync(CancellationToken cancellationToken) => ManageAsync(false, cancellationToken);
+    public Task<IntegrationLinkResult> RotateManagementAsync(CancellationToken cancellationToken) => ManageAsync(true, cancellationToken);
+
+    private async Task<IntegrationLinkResult> ManageAsync(bool rotate, CancellationToken cancellationToken)
+    {
+        if (_baseUri is null || !HasConnection) return Unavailable();
+        var version = _sessionVersion;
+        try
+        {
+            using var request = ManagementRequest(HttpMethod.Post, rotate ? "rotate-management" : "revoke-grants");
+            request.Content = JsonContent.Create(new { confirm = rotate ? "rotate-management-token" : "revoke-chatgpt-grants" });
+            using var response = await _http.SendAsync(request, cancellationToken);
+            if (!response.IsSuccessStatusCode)
+            {
+                if (rotate && _sessionVersion == version) ForgetSession();
+                return new(false, "Management change could not be confirmed. Revalidate credentials before retrying.");
+            }
+            var result = await response.Content.ReadFromJsonAsync<ManagementPayload>(cancellationToken);
+            if (_sessionVersion != version) return Unavailable();
+            if (rotate)
+            {
+                if (result?.Rotated != true || !System.Text.RegularExpressions.Regex.IsMatch(result.ManagementToken ?? "", "^[A-Za-z0-9_-]{43}$"))
+                {
+                    ForgetSession();
+                    return new(false, "Management credential may have changed. Revalidate credentials to manage the connection.");
+                }
+                _managementToken = result.ManagementToken;
+                _sessionVersion++;
+                return new(true, "Management credential replaced for this tab. ChatGPT grants and stored credentials are unchanged.");
+            }
+            return result?.Revoked == true
+                ? new(true, result.PendingCleanup ? "ChatGPT access revoked. Provider cleanup is pending; stored credentials and separate Workspace access remain available." : "ChatGPT access revoked. Stored credentials and separate Workspace access remain available.")
+                : new(false, "Grant revocation could not be confirmed. Revalidate credentials before retrying.");
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            if (rotate && _sessionVersion == version) ForgetSession();
+            throw;
+        }
+        catch
+        {
+            if (rotate && _sessionVersion == version) ForgetSession();
+            return new(false, "Management change could not be confirmed. Revalidate credentials before retrying.");
+        }
+    }
+
+    private static readonly string[] KnownPermissions = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute"];
+    private sealed record StatusPayload(string? DisplayName, string[]? Permissions, string? CredentialStatus, DateTimeOffset? LastVerifiedAtUtc, DateTimeOffset? LastUsedAtUtc, bool PermissionsTruncated);
+    private sealed record ManagementPayload(bool Rotated, string? ManagementToken, bool Revoked, bool PendingCleanup);
 
     public void ForgetSession()
     {

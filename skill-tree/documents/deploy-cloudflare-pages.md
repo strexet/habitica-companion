@@ -216,3 +216,7 @@ Auth `CRON_ENABLED` ships false in local, preview and production. The named `Cro
 ## Reviewed Cron deployment boundary
 
 Workspace migration `0006-reviewed-cron-actions.sql` defines typed previews and retained Cron receipts. `AUTH_CRON` binds only Workspace to Auth's private `CronService`; production MCP has no direct Cron binding. Both `CRON_ENABLED` flags remain false in local, preview and production. The existing minute Worker wakeup runs only the separately enabled task executor and never Cron. Applying migrations, setting live flags, deploying and real account/device qualification require separate authorization. Private Cron history is an additional own-data export at `/cron/history`, protected by management authentication.
+
+## Grant revocation management deployment
+
+Apply Auth `0006-grant-revocation.sql` and Workspace `0007-mcp-grant-epoch.sql` before deploying the corresponding management code. Existing credential enrollment remains, while pre-epoch OAuth tokens require relinking. Keep old credential-encryption keys available; grant revocation does not migrate envelopes. Management status uses GET with the existing allowed PWA origin. Grant-only revocation retains credentials and ordinary Workspace/background access; use Workspace disable/disconnect to pause the executor. Provider cleanup is bounded and can report pending cleanup; the D1 epoch denies old tool/token access immediately. Production log checks and real multi-user rollout remain unrun gates.
