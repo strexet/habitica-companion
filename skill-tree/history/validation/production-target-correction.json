@@ -1,0 +1,97 @@
+{
+  "task_id": "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+  "date": "2026-10-16",
+  "result": "pass-production-preparation-only",
+  "selected_environment": "production",
+  "website": "https://habitica-companion.pages.dev",
+  "backend_names": {
+    "chatgpt-auth": "habitica-companion-auth",
+    "chatgpt-mcp": "habitica-companion-mcp",
+    "companion-workspace": "habitica-companion-workspace"
+  },
+  "runtime_environment": "production",
+  "generated_bundle": "deploy/.production",
+  "retained_browser_bindings": {
+    "sync_kv": "8f3984e2aa7c4bff8dc245f3552927e5",
+    "party_d1": "fec1ea40-3502-4b66-9051-c3f566999a03"
+  },
+  "integration_resources": {
+    "oauth_kv": {
+      "id": "cd15636d00ac4be584ef7854a9a98fba",
+      "name": "habitica-companion-oauth"
+    },
+    "auth_d1": {
+      "id": "ada5184c-865d-4c6a-864a-88618f19c06f",
+      "name": "habitica-companion-auth"
+    },
+    "workspace_d1": {
+      "id": "383e0502-7be4-42f9-b818-ee9710f3fa4d",
+      "name": "habitica-companion-workspace"
+    }
+  },
+  "remote_correction": {
+    "worker": {
+      "id": "713b0435b2ce4842a103f8706afc3075",
+      "name": "habitica-companion-auth"
+    },
+    "exposed_profile_key_active_binding_removed": true,
+    "oauth_kv": {
+      "id": "cd15636d00ac4be584ef7854a9a98fba",
+      "title": "habitica-companion-oauth"
+    },
+    "old_databases": {
+      "9ad15b09-0e9c-4f2c-967f-88c104745dd1": {
+        "application_tables": 9,
+        "application_rows": 0
+      },
+      "b6331e3b-ddb8-484b-99c5-f4f2fdeadcd2": {
+        "application_tables": 13,
+        "application_rows": 0
+      }
+    },
+    "secret_names": [],
+    "removed_empty_setup_databases": [
+      {
+        "id": "9ad15b09-0e9c-4f2c-967f-88c104745dd1",
+        "name": "habitica-companion-dev-auth",
+        "verified_application_rows": 0
+      },
+      {
+        "id": "b6331e3b-ddb8-484b-99c5-f4f2fdeadcd2",
+        "name": "habitica-companion-dev-workspace",
+        "verified_application_rows": 0
+      }
+    ],
+    "remaining_worker_secret_names": [],
+    "current_database_names": [
+      "habitica-companion-workspace",
+      "habitica-companion-auth",
+      "habitica-companion-party-sync"
+    ]
+  },
+  "migrations": {
+    "auth": "0001-0007 applied",
+    "workspace": "0001-0007 applied",
+    "existing_party": "unchanged"
+  },
+  "validation": {
+    "focused_configuration_tests": 7,
+    "generated_worker_dry_runs": 3,
+    "pages_functions_compile": "pass",
+    "release_app_build": "pass",
+    "published_frontend_endpoints": "match corrected production targets"
+  },
+  "remote_application_publication": false,
+  "next_owner_action": "Fresh PROFILE_ID_KEY protected entry; no secret values in evidence. CREDENTIAL_KEY_V1/V2 remain missing.",
+  "limitations": [
+    "The exposed setup key active binding was removed. A fresh value must be entered before enrollment.",
+    "No account enrollment, real client/device qualification or cloud game effect occurred.",
+    "Database application emptiness was verified with per-table aggregate counts before removing task-owned setup-only databases.",
+    "Compound aggregate inspection returned HTTP 400; schema inspection and separate per-table counts supplied the required independent proof."
+  ],
+  "source_fingerprints": {
+    "deploy/prepare-dev.mjs": "007494d726b93280bc30d20cef768890f5a204f5ad03295ca353b3cef82bb52c",
+    "tests/Functions/dev-preparation.test.mjs": "281c3889b8d0c7d9506d77cd0a26f25c38872e598dcd3bf797bb712b98943b67",
+    ".gitignore": "7d9dc02f8f8e9c4b220c6e21ce32e9784bf1257acb66da4aad1c778890778183"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "kind": "intermediate-dev-readiness",
   "date": "2026-10-16",
-  "source_commit": "560f0d1 plus recorded existing-Pages preparation source fingerprints",
+  "source_commit": "c2aeddb plus recorded production target correction fingerprints",
   "initial_queue_commit": "2d47b81d^",
   "initial_entries": 37,
   "initial_queues": {
@@ -12,18 +12,18 @@
   "run_id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
   "completed_main_tasks": 10,
   "initial_main_tasks": 11,
-  "completed_task_units": 41,
+  "completed_task_units": 42,
   "current_queues": {
     "Pending Queue": 8,
     "Prioritized Next Changes": 3,
     "Backlog": 12
   },
   "current_task": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-  "launch_readiness": "resources-ready-owner-key-entry-required",
+  "launch_readiness": "production-resources-ready-fresh-key-entry-required",
   "cloudflare_project_inventory": "verified-authenticated-existing-project",
   "remote_deployment_performed": false,
   "local_validation_reference": "skill-tree/history/validation/e14-local-qualification.json",
-  "checklist": "skill-tree/documents/deploy-cloudflare-pages.md#intermediate-dev-launch-readiness",
+  "checklist": "skill-tree/documents/deploy-cloudflare-pages.md#owner-first-launch-readiness",
   "required_first_dev_clients": [
     "ChatGPT",
     "Codex desktop"
@@ -53,8 +53,11 @@
   ],
   "selected_website": "https://habitica-companion.pages.dev",
   "existing_pages_production_branch": "main",
-  "new_dev_resources_created": true,
   "new_database_migrations_applied": true,
-  "latest_preparation_reference": "skill-tree/history/validation/existing-pages-preparation.json",
-  "owner_next_action": "Securely provision three Auth encryption secrets; no resource ID or JSON editing required."
+  "latest_preparation_reference": "skill-tree/history/validation/production-target-correction.json",
+  "owner_next_action": "Fresh PROFILE_ID_KEY protected entry through deploy/.production/chatgpt-auth.json; remaining credential keys follow.",
+  "historical_preparation_reference": "skill-tree/history/validation/existing-pages-preparation.json",
+  "selected_environment": "production",
+  "separate_dev_environment": false,
+  "production_integration_resources_ready": true
 }

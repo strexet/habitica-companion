@@ -29,11 +29,11 @@ export function prepareDev(input,target){
  for(const key of ['pagesKvId','authKvId'])if(!/^[a-f0-9]{32}$/.test(input[key])||/^0+$/.test(input[key]))throw new Error('Invalid dev KV namespace ID.');
  for(const key of ['partyDatabaseId','authDatabaseId','workspaceDatabaseId'])if(!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(input[key])||/^0+-0+-0+-0+-0+$/.test(input[key]))throw new Error('Invalid dev database ID.');
  const configuration={PWA_ORIGIN:input.pwaOrigin,AUTH_ISSUER:input.authOrigin,MCP_RESOURCE:input.mcpOrigin+'/mcp',WORKSPACE_ORIGIN:input.workspaceOrigin};
- const backendPrefix=existing&&!input.pagesProject.endsWith('-dev')?input.pagesProject+'-dev':input.pagesProject;
+ const backendPrefix=input.pagesProject;
  const names={'chatgpt-auth':backendPrefix+'-auth','chatgpt-mcp':backendPrefix+'-mcp','companion-workspace':backendPrefix+'-workspace'};
  const configs={};
  for(const [name,template] of Object.entries(templates)){
-  const c=structuredClone(template);delete c.env;c.account_id=input.accountId;c.name=names[name];c.main=path.relative(target,path.join(root,'workers',name,'src/index.ts'));c.vars={...c.vars,...configuration};c.vars.ENVIRONMENT='preview';
+  const c=structuredClone(template);delete c.env;c.account_id=input.accountId;c.name=names[name];c.main=path.relative(target,path.join(root,'workers',name,'src/index.ts'));c.vars={...c.vars,...configuration};c.vars.ENVIRONMENT=existing?'production':'preview';
   for(const flag of Object.keys(c.vars).filter(k=>k.endsWith('_ENABLED')))c.vars[flag]=['OAUTH_ENABLED','ENROLLMENT_ENABLED','WORKSPACE_ENABLED'].includes(flag);
   if('HABITICA_X_CLIENT_HEADER' in c.vars)c.vars.HABITICA_X_CLIENT_HEADER=input.creatorHeader;
   const serviceOrigin=input[name==='chatgpt-auth'?'authOrigin':name==='chatgpt-mcp'?'mcpOrigin':'workspaceOrigin'];const host=new URL(serviceOrigin).hostname;
@@ -58,9 +58,9 @@ export function writeDev(input,target){
  fs.writeFileSync(path.join(pagesRoot,'wrangler.json'),JSON.stringify(pages,null,2)+'\n');fs.cpSync(path.join(root,'functions'),path.join(pagesRoot,'functions'),{recursive:true});
  fs.writeFileSync(path.join(target,'appsettings.json'),JSON.stringify(result.settings,null,2)+'\n');
  fs.cpSync(path.join(root,'plugin'),path.join(target,'plugin'),{recursive:true});const mcp=read('plugin/mcp.json');mcp.mcpServers['habitica-companion'].url=input.mcpOrigin+'/mcp';mcp.mcpServers['habitica-companion'].extensions={'com.openai':{auth:{type:'oauth',client:{mode:'cimd'}}}};fs.writeFileSync(path.join(target,'plugin/mcp.json'),JSON.stringify(mcp,null,2)+'\n');
- fs.writeFileSync(path.join(target,'deployment-plan.json'),JSON.stringify({environment:'dev',websiteTarget:input.existingPages??{project:input.pagesProject,productionBranch:'develop',storage:'new-dev'},cloudGameEffectsEnabled:false,liveCronEnabled:false,names:result.names,origins:result.configuration,resourceIds:{pagesKv:input.pagesKvId,partyD1:input.partyDatabaseId,oauthKv:input.authKvId,authD1:input.authDatabaseId,workspaceD1:input.workspaceDatabaseId},secretsRequired:['PROFILE_ID_KEY','CREDENTIAL_KEY_V1','CREDENTIAL_KEY_V2'],requiredClients:['ChatGPT','Codex desktop']},null,2)+'\n');return result;
+ fs.writeFileSync(path.join(target,'deployment-plan.json'),JSON.stringify({environment:input.existingPages?'production':'dev',websiteTarget:input.existingPages??{project:input.pagesProject,productionBranch:'develop',storage:'new-dev'},cloudGameEffectsEnabled:false,liveCronEnabled:false,names:result.names,origins:result.configuration,resourceIds:{pagesKv:input.pagesKvId,partyD1:input.partyDatabaseId,oauthKv:input.authKvId,authD1:input.authDatabaseId,workspaceD1:input.workspaceDatabaseId},secretsRequired:['PROFILE_ID_KEY','CREDENTIAL_KEY_V1','CREDENTIAL_KEY_V2'],requiredClients:['ChatGPT','Codex desktop']},null,2)+'\n');return result;
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
- try{if(!process.argv[2])throw new Error('Usage: node deploy/prepare-dev.mjs deploy/dev.local.json [fresh-output-directory]');const target=path.resolve(process.argv[3]||path.join(root,'deploy/.dev'));writeDev(JSON.parse(fs.readFileSync(process.argv[2],'utf8')),target);process.stdout.write('Dev configuration prepared. Review deployment-plan.json before remote operations. No resources were changed.\n');}
+ try{if(!process.argv[2])throw new Error('Usage: node deploy/prepare-dev.mjs <public-config.json> [fresh-output-directory]');const input=JSON.parse(fs.readFileSync(process.argv[2],'utf8'));const target=path.resolve(process.argv[3]||path.join(root,input.existingPages?'deploy/.production':'deploy/.dev'));writeDev(input,target);process.stdout.write((input.existingPages?'Production':'Dev')+' configuration prepared. Review deployment-plan.json before remote operations. No resources were changed.\n');}
  catch(error){process.stderr.write(error instanceof SyntaxError?'Invalid public dev configuration JSON.\n':error.message+'\n');process.exitCode=1;}
 }

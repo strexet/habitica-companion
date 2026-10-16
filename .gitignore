@@ -86,3 +86,7 @@ Thumbs.db
 # Operator-specific dev preparation
 /deploy/.dev/
 /deploy/dev.local.json
+
+# Selected production deployment operator configuration
+/deploy/.production/
+/deploy/production.local.json
