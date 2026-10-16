@@ -1,0 +1,163 @@
+{
+  "task_id": "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
+  "source_commit": "cecccef",
+  "source_css_sha256": "cde25a8ae31a6982380864bd86801416a10e1afbb368a2d739c1fabdd2cc7366",
+  "requested_viewport_widths": [
+    320,
+    390,
+    1024
+  ],
+  "large_text": "200 percent root font; computed body 32px",
+  "measurements": [
+    {
+      "fixture": "canonical-preview",
+      "width": 305,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "minButtonHeight": 32,
+      "rootFont": "16px",
+      "scrollWidth": 305
+    },
+    {
+      "fixture": "canonical-preview",
+      "width": 375,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "minButtonHeight": 32,
+      "rootFont": "16px",
+      "scrollWidth": 375
+    },
+    {
+      "fixture": "canonical-preview",
+      "width": 1009,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "minButtonHeight": 32,
+      "rootFont": "16px",
+      "scrollWidth": 1009
+    },
+    {
+      "fixture": "canonical-preview",
+      "width": 305,
+      "large": true,
+      "bodyFont": "32px",
+      "clipped": [
+        "INPUT"
+      ],
+      "minButtonHeight": 55.5,
+      "rootFont": "32px",
+      "scrollWidth": 379
+    },
+    {
+      "fixture": "integration-management",
+      "width": 305,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "minButtonHeight": 32,
+      "rootFont": "16px",
+      "scrollWidth": 311
+    },
+    {
+      "fixture": "workspace-renewal",
+      "width": 305,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "minButtonHeight": 32,
+      "rootFont": "16px",
+      "scrollWidth": 311
+    },
+    {
+      "fixture": "workspace-operational-status",
+      "width": 305,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "minButtonHeight": 32,
+      "rootFont": "16px",
+      "scrollWidth": 305
+    },
+    {
+      "fixture": "workspace-operational-status",
+      "width": 375,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "minButtonHeight": 32,
+      "rootFont": "16px",
+      "scrollWidth": 375
+    },
+    {
+      "fixture": "workspace-operational-status",
+      "width": 1009,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "minButtonHeight": 32,
+      "rootFont": "16px",
+      "scrollWidth": 1009
+    },
+    {
+      "fixture": "workspace-operational-status",
+      "width": 305,
+      "large": true,
+      "bodyFont": "32px",
+      "clipped": [],
+      "minButtonHeight": 97,
+      "rootFont": "32px",
+      "scrollWidth": 305
+    },
+    {
+      "fixture": "authenticated-party-controls",
+      "width": 305,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "minButtonHeight": 32,
+      "rootFont": "16px",
+      "scrollWidth": 305
+    },
+    {
+      "fixture": "authenticated-party-controls",
+      "width": 375,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "minButtonHeight": 32,
+      "rootFont": "16px",
+      "scrollWidth": 375
+    },
+    {
+      "fixture": "authenticated-party-controls",
+      "width": 1024,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "minButtonHeight": 32,
+      "rootFont": "16px",
+      "scrollWidth": 1024
+    },
+    {
+      "fixture": "authenticated-party-controls",
+      "width": 305,
+      "large": true,
+      "bodyFont": "32px",
+      "clipped": [
+        "Check current party",
+        "Load authenticated queue status",
+        "Save queue permission",
+        "Delete authenticated party planning",
+        "Export my contributions",
+        "Remove my contributions"
+      ],
+      "minButtonHeight": 88,
+      "rootFont": "32px",
+      "scrollWidth": 393
+    }
+  ],
+  "result": "required-failures-observed"
+}

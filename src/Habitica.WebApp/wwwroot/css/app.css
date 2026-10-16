@@ -2789,7 +2789,7 @@ input[type="radio"] {
 .settings-grid {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 }
 
 .task-card-grid {
@@ -4430,3 +4430,17 @@ code {
 .companion-editor small { display: block; overflow-wrap: anywhere; }
 .workspace-restore-field { min-width: 0; }
 .workspace-restore-field input { min-width: 0; max-width: 100%; }
+
+/* Cloud Settings and canonical fields retain readable controls when text grows. */
+.settings-shell,
+.settings-card { grid-template-columns: minmax(0, 1fr); }
+.settings-card { overflow-wrap: anywhere; }
+.settings-card,
+.settings-card > *,
+.settings-card .action-row { min-width: 0; }
+.settings-card .mud-button-root { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.settings-card .mud-button-label { min-width: 0; overflow-wrap: anywhere; }
+.companion-task-form { padding: min(1rem, 3vw); }
+.companion-task-form input,
+.companion-task-form select { min-width: 0; max-width: 100%; }
+.companion-task-form input[type="date"] { padding-inline: min(1rem, 2vw); }

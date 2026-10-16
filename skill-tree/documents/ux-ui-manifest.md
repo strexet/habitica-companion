@@ -614,3 +614,7 @@ The connected Settings card separates status, ChatGPT grant revocation, tab mana
 ## Saved workspace work status
 
 Connected workspace Settings provides a manual saved-work status button. The timestamped result distinguishes pending, waiting over fifteen minutes, uncertain, blocked and expired execution leases; the oldest pending task-command time is optional. The result explains paused uncertainty and absence of retries. No polling, task text or command identifiers appear. Busy state prevents duplicate checks. Failed or throttled reads show unavailable status rather than zero counts. Account/workspace changes hide stored results and discard late responses. Existing source-disabled configuration retains the unavailable state. Component interaction checks and a real-Razor narrow browser fixture qualify local controls independently of hosted/device validation.
+
+## Narrow and enlarged cloud controls
+
+Settings shells/cards use shrinking grid tracks, and nested Settings grids cap minimum tracks at the available width. Card copy and button labels wrap long text without hiding overflow. Canonical command fields cap intrinsic widths; native date controls use narrow padding and a shrinking fieldset. Real Razor fixtures cover 320/390/1024-pixel widths and 200-percent root text at 320 pixels across command review, integration management, workspace renewal/status and party controls. Browser measurements distinguish fitting controls from actual mobile-device and assistive-technology acceptance.

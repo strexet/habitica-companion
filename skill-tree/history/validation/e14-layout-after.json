@@ -1,0 +1,204 @@
+{
+  "task_id": "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
+  "result": "pass",
+  "measurements": [
+    {
+      "fixture": "canonical-preview",
+      "viewportWidth": 320,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "fixture": "canonical-preview",
+      "viewportWidth": 390,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 375,
+      "width": 375
+    },
+    {
+      "fixture": "canonical-preview",
+      "viewportWidth": 1024,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 1009,
+      "width": 1009
+    },
+    {
+      "fixture": "canonical-preview",
+      "viewportWidth": 320,
+      "large": true,
+      "bodyFont": "32px",
+      "clipped": [],
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "fixture": "integration-management",
+      "viewportWidth": 320,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "fixture": "integration-management",
+      "viewportWidth": 390,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 375,
+      "width": 375
+    },
+    {
+      "fixture": "integration-management",
+      "viewportWidth": 1024,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 1009,
+      "width": 1009
+    },
+    {
+      "fixture": "integration-management",
+      "viewportWidth": 320,
+      "large": true,
+      "bodyFont": "32px",
+      "clipped": [],
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "fixture": "workspace-renewal",
+      "viewportWidth": 320,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "fixture": "workspace-renewal",
+      "viewportWidth": 390,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 375,
+      "width": 375
+    },
+    {
+      "fixture": "workspace-renewal",
+      "viewportWidth": 1024,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 1009,
+      "width": 1009
+    },
+    {
+      "fixture": "workspace-renewal",
+      "viewportWidth": 320,
+      "large": true,
+      "bodyFont": "32px",
+      "clipped": [],
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "fixture": "workspace-operational-status",
+      "viewportWidth": 320,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "fixture": "workspace-operational-status",
+      "viewportWidth": 390,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 375,
+      "width": 375
+    },
+    {
+      "fixture": "workspace-operational-status",
+      "viewportWidth": 1024,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 1009,
+      "width": 1009
+    },
+    {
+      "fixture": "workspace-operational-status",
+      "viewportWidth": 320,
+      "large": true,
+      "bodyFont": "32px",
+      "clipped": [],
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "fixture": "authenticated-party-controls",
+      "viewportWidth": 320,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "fixture": "authenticated-party-controls",
+      "viewportWidth": 390,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 375,
+      "width": 375
+    },
+    {
+      "fixture": "authenticated-party-controls",
+      "viewportWidth": 1024,
+      "large": false,
+      "bodyFont": "16px",
+      "clipped": [],
+      "scrollWidth": 1024,
+      "width": 1024
+    },
+    {
+      "fixture": "authenticated-party-controls",
+      "viewportWidth": 320,
+      "large": true,
+      "bodyFont": "32px",
+      "clipped": [],
+      "scrollWidth": 305,
+      "width": 305
+    }
+  ],
+  "native_date": {
+    "viewport": 320,
+    "body_font_px": 32,
+    "width": 251.8125,
+    "client_width": 250,
+    "scroll_width": 250
+  },
+  "limitations": [
+    "Synthetic real-Razor layouts; interactions qualify through component tests. No real mobile-device or OS text-size qualification."
+  ],
+  "checks": {
+    "app_release_publish": "pass",
+    "focused_component_tests": 43,
+    "layout_cases": 20,
+    "horizontal_overflow_cases": 0,
+    "clipped_controls": 0
+  },
+  "before_evidence": "skill-tree/history/validation/e14-layout-before.json"
+}
