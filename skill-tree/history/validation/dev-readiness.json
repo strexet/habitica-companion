@@ -55,7 +55,7 @@
   "existing_pages_production_branch": "main",
   "new_database_migrations_applied": true,
   "latest_preparation_reference": "skill-tree/history/validation/production-target-correction.json",
-  "owner_next_action": "Restart Authenticate in Codex and use a fresh Companion code on the newly opened authorization page; report the connection result.",
+  "owner_next_action": "Refresh ChatGPT tool definitions and authorize once; test separate account/task/account reads and another read after more than ten minutes. Check Codex independently.",
   "historical_preparation_reference": "skill-tree/history/validation/existing-pages-preparation.json",
   "selected_environment": "production",
   "separate_dev_environment": false,
@@ -67,9 +67,10 @@
     "skill-tree/history/validation/sign-in-header.json",
     "skill-tree/history/validation/linking-code-ux.json"
   ],
-  "latest_auth_correction_reference": "skill-tree/history/validation/oauth-callback-browser-repair.json",
-  "auth_source_commit": "893f619ed45bacf07018f5fa9a34f7b75686ff5e",
-  "auth_version_id": "0131fa19-a146-4095-8047-e2282bcd7891",
+  "latest_auth_correction_reference": "skill-tree/history/validation/oauth-request-continuity.json",
+  "auth_source_commit": "49247f094f01f2e04510875f0c7a9ce4641f0f23",
+  "auth_version_id": "178ce0db-dbb8-48b5-97bd-85f72eb97166",
   "owner_observation_reference": "skill-tree/history/validation/oauth-request-continuity.json",
-  "next_owner_action": "Refresh ChatGPT tool definitions and authorize once; test separate account/task/account reads and another read after more than ten minutes. Check Codex independently."
+  "mcp_source_commit": "49247f094f01f2e04510875f0c7a9ce4641f0f23",
+  "mcp_version_id": "7301edd4-9ce7-4cb7-8b39-a49e12d2c926"
 }

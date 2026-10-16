@@ -144,10 +144,50 @@
     "https://github.com/cloudflare/workers-oauth-provider/blob/main/docs/authorization-server.md"
   ],
   "deployment": {
-    "status": "prepared-local-commit-before-publication",
+    "status": "published-existing-production-pilot",
+    "source_commit": "49247f094f01f2e04510875f0c7a9ce4641f0f23",
+    "recorded_at_utc": "2026-10-16T16:38:58.721634+00:00",
+    "workers": {
+      "habitica-companion-auth": {
+        "version_id": "178ce0db-dbb8-48b5-97bd-85f72eb97166",
+        "previous_version_id": "0131fa19-a146-4095-8047-e2282bcd7891"
+      },
+      "habitica-companion-mcp": {
+        "version_id": "7301edd4-9ce7-4cb7-8b39-a49e12d2c926",
+        "previous_version_id": "3b4b2893-4ff1-4143-8308-77eda45212e6"
+      }
+    },
+    "verification": {
+      "configuration_matches_preflight": true,
+      "public_checks": {
+        "auth_health": {
+          "status": 200,
+          "result": "pass"
+        },
+        "mcp_health": {
+          "status": 200,
+          "result": "pass"
+        },
+        "oauth_discovery": {
+          "status": 200,
+          "result": "pass"
+        },
+        "resource_discovery": {
+          "status": 200,
+          "result": "pass"
+        },
+        "anonymous_tools": {
+          "status": 401,
+          "result": "pass"
+        }
+      }
+    },
     "pages_update": false,
     "migrations": false,
-    "secret_changes": false
+    "secret_changes": false,
+    "game_effect_flags": "unchanged; disabled",
+    "live_chatgpt_retest": "pending owner",
+    "live_codex_retest": "pending owner"
   },
   "live_retest": "Required: refresh ChatGPT metadata, authorize once, separate account/task/account reads, a read after more than ten minutes and independent Codex read. No live resolution claim.",
   "remaining_gates": [

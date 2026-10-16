@@ -108,13 +108,14 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Publish reviewed Auth and MCP repair to the existing production pilot and run owner continuity checks.",
+    "next_action": "Follow deploy/README.md ChatGPT reconnect regression check; test independent Codex reads and preserve failed or unrun release gates.",
     "partial_work": [
       "Auth source 893f619 is deployed as version 0131fa19-a146-4095-8047-e2282bcd7891; reviewed resources, secret names and disabled effect flags are retained.",
       "The synthetic browser reproduces the original double-click symptom. Corrected single approval and denial reach the separate client callback. Auth build and eighteen targeted checks pass.",
       "Post-deployment Auth health, MCP-to-Auth reachability and OAuth discovery pass. Wrangler refreshed the expired OAuth login without new permissions or secret disclosure.",
       "Production Pages remains source f94b768. The sign-in header and code-handoff UI improvements remain local commits 0ce97eb and ef72c04 for a later selected website update.",
-      "Real owner client OAuth/plugin, separate workspace consent confirmation, two-account and device checks remain outstanding. No real account grant was performed by the agent."
+      "Real owner client OAuth/plugin, separate workspace consent confirmation, two-account and device checks remain outstanding. No real account grant was performed by the agent.",
+      "OAuth request-continuity source 49247f0 deployed to the existing Auth and MCP Workers; hosted health/discovery and preserved settings pass. Evidence: skill-tree/history/validation/oauth-request-continuity.json. Owner ChatGPT/Codex continuity retests remain open."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -873,7 +874,7 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Local OAuth continuity repairs pass. Backend publication and owner ChatGPT/Codex request and refresh retests remain required; wider release gates remain open."
+    "stop_reason": "OAuth request-continuity repair is deployed to the existing production Auth and MCP Workers. Public health, discovery, anonymous denial and preserved configuration pass. Owner live request/refresh retests and broader release gates remain open."
   },
   "format": "skill-tree-future",
   "source_hash": "1fe257d7ff041e17a1a0919d4b364157862ab5b33bd55ae666f292588ba3d782",
