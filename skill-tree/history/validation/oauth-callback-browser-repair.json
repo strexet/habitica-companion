@@ -128,9 +128,81 @@
     ],
     "authentication_note": "Initial direct API request used an expired token; pinned Wrangler refreshed the existing OAuth login. No new account permissions or credential values were requested."
   },
-  "deployment_status": "pending",
+  "deployment_status": "published",
   "limitations": [
     "Owner client authentication and physical-device checks remain unqualified.",
     "Production Pages remains source f94b768; local sign-in and linking guidance changes are separate."
-  ]
+  ],
+  "auth_source_commit": "893f619ed45bacf07018f5fa9a34f7b75686ff5e",
+  "auth_version_id": "0131fa19-a146-4095-8047-e2282bcd7891",
+  "post_deployment_checks": [
+    {
+      "name": "auth-health",
+      "status": 200,
+      "body": {
+        "service": "auth",
+        "authorization": "enabled"
+      }
+    },
+    {
+      "name": "mcp-health",
+      "status": 200,
+      "body": {
+        "service": "mcp",
+        "authService": "reachable",
+        "authorization": "unavailable"
+      }
+    },
+    {
+      "name": "oauth-metadata",
+      "status": 200,
+      "body": {
+        "issuer": "https://habitica-companion-auth.strexet.workers.dev",
+        "authorization_endpoint": "https://habitica-companion-auth.strexet.workers.dev/authorize",
+        "token_endpoint": "https://habitica-companion-auth.strexet.workers.dev/oauth/token",
+        "protected_resources": [
+          "https://habitica-companion-mcp.strexet.workers.dev/mcp"
+        ],
+        "registration_endpoint": "https://habitica-companion-auth.strexet.workers.dev/oauth/register",
+        "scopes_supported": [
+          "profile:read",
+          "account:read",
+          "tasks:read",
+          "habitica.tasks.write",
+          "party:read",
+          "party.planning.write",
+          "habitica.spells.execute",
+          "habitica.cron.execute"
+        ],
+        "response_types_supported": [
+          "code"
+        ],
+        "response_modes_supported": [
+          "query"
+        ],
+        "grant_types_supported": [
+          "authorization_code",
+          "refresh_token"
+        ],
+        "token_endpoint_auth_methods_supported": [
+          "client_secret_basic",
+          "client_secret_post",
+          "none",
+          "private_key_jwt"
+        ],
+        "token_endpoint_auth_signing_alg_values_supported": [
+          "RS256",
+          "ES256"
+        ],
+        "revocation_endpoint": "https://habitica-companion-auth.strexet.workers.dev/oauth/token",
+        "code_challenge_methods_supported": [
+          "S256"
+        ],
+        "authorization_response_iss_parameter_supported": true,
+        "client_id_metadata_document_supported": true
+      }
+    }
+  ],
+  "post_deployment_bindings_flags_secret_names": "match reviewed production configuration",
+  "real_client_result": "Owner must restart Authenticate and complete a fresh one-time-code flow; no owner grant was performed by the agent."
 }

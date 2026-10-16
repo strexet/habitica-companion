@@ -12,7 +12,7 @@
   "run_id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
   "completed_main_tasks": 10,
   "initial_main_tasks": 11,
-  "completed_task_units": 46,
+  "completed_task_units": 47,
   "current_queues": {
     "Pending Queue": 8,
     "Prioritized Next Changes": 3,
@@ -55,7 +55,7 @@
   "existing_pages_production_branch": "main",
   "new_database_migrations_applied": true,
   "latest_preparation_reference": "skill-tree/history/validation/production-target-correction.json",
-  "owner_next_action": "Authorize Codex and ChatGPT independently using fresh one-time Companion codes; confirm separate cloud workspace consent.",
+  "owner_next_action": "Restart Authenticate in Codex and use a fresh Companion code on the newly opened authorization page; report the connection result.",
   "historical_preparation_reference": "skill-tree/history/validation/existing-pages-preparation.json",
   "selected_environment": "production",
   "separate_dev_environment": false,
@@ -66,5 +66,8 @@
   "next_update_local_references": [
     "skill-tree/history/validation/sign-in-header.json",
     "skill-tree/history/validation/linking-code-ux.json"
-  ]
+  ],
+  "latest_auth_correction_reference": "skill-tree/history/validation/oauth-callback-browser-repair.json",
+  "auth_source_commit": "893f619ed45bacf07018f5fa9a34f7b75686ff5e",
+  "auth_version_id": "0131fa19-a146-4095-8047-e2282bcd7891"
 }
