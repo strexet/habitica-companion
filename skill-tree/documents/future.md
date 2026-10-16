@@ -321,45 +321,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Generate a Pages-compatible account selection
-
-```yaml
-id: T-58907376-21eb-417f-988e-fe65449a0bb7
-priority: 102
-status: Ready
-parent_pending_ids: ["P-7077ec7f-eda9-49b2-b654-e4f6309eeea4"]
-processing_run_id: PR-f319658e-2fac-405a-9bf9-91c651d461c8
-root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
-related_task_id: T-34491faa-090e-4d97-b496-1fe947770688
-relation: blocker
-depends_on: []
-```
-
-Goal:
-- Unblock selected production website publication.
-Current behavior:
-- Generated Pages configuration contains account_id, which Wrangler rejects for Pages.
-Desired behavior:
-- Pages configuration omits unsupported account_id and documented publication supplies CLOUDFLARE_ACCOUNT_ID. Worker account selection remains explicit.
-Touch:
-- deploy/prepare-dev.mjs, focused deployment tests and operator guidance.
-Discovery allowance:
-- Inspect installed Wrangler Pages validation and current official Cloudflare Pages configuration documentation.
-Out of scope:
-- Resource replacement, data changes, new dependencies or account changes.
-Implementation constraints:
-- Preserve reviewed browser bindings and all activation flags. Repair the ignored existing staging configuration without regeneration.
-Questions and required clarifications:
-- None; actual validation and installed CLI identify the incompatibility.
-Validation:
-- Focused deployment tests and successful actual Pages upload using the repaired configuration.
-Acceptance:
-- Generated Pages configuration validates and actual upload targets the reviewed existing Pages project with explicit account environment selection.
-Documentation updates:
-- Record account selection, publication evidence and the discovered validation failure.
-Risks:
-- Uploading to a different account if explicit account environment selection is omitted.
-
 ### Publish the selected production website and verify hosted boundaries
 
 ```yaml

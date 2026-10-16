@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-16",
+  "task_id": "T-58907376-21eb-417f-988e-fe65449a0bb7",
+  "source_commit": "f94b768fc4e0431ce7459a3f3fc25f7c50751e2e",
+  "initial_failure": "Wrangler Pages configuration rejected unsupported account_id before upload.",
+  "repair": "Pages configuration omits account_id; CLOUDFLARE_ACCOUNT_ID selects the reviewed account. Worker configs retain account_id.",
+  "checks": [
+    {
+      "name": "Focused deployment controls",
+      "command": "node --experimental-strip-types --test tests/Functions/dev-preparation.test.mjs",
+      "passed": 7,
+      "failed": 0
+    },
+    {
+      "name": "Actual Pages publication",
+      "result": "pass",
+      "deployment": {
+        "id": "b42d4b4f-4cb4-40e7-9623-607b09091d76",
+        "environment": "production",
+        "url": "https://b42d4b4f.habitica-companion.pages.dev",
+        "aliases": null,
+        "created_on": "2026-10-16T11:49:02.724263Z",
+        "branch": "main",
+        "commit_hash": "f94b768fc4e0431ce7459a3f3fc25f7c50751e2e",
+        "stage": "success"
+      },
+      "account_id": "8c962c94f28f5bdd298024365e0dea40"
+    }
+  ],
+  "test_runner_note": "Plain Node invocation lacked TypeScript stripping; rerun with the existing supported type-stripping flag passed all seven controls. No dependency upgrade was performed."
+}
