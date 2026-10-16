@@ -101,10 +101,10 @@ HABITICA_FRONTEND_SETTINGS_FILE="$PWD/deploy/.production/appsettings.json" ./bui
 Inspect `output/wwwroot/appsettings.json` before website upload. The build merges complete public settings and restores checked-in source defaults after success/failure. Then upload to the exact selected website:
 
 ```sh
-./workers/chatgpt-auth/node_modules/.bin/wrangler --cwd deploy/.production/pages pages deploy "$PWD/output/wwwroot" --project-name habitica-companion --branch main --commit-hash "$(git rev-parse HEAD)"
+CLOUDFLARE_ACCOUNT_ID=8c962c94f28f5bdd298024365e0dea40 ./workers/chatgpt-auth/node_modules/.bin/wrangler --cwd deploy/.production/pages pages deploy "$PWD/output/wwwroot" --project-name habitica-companion --branch main --commit-hash "$(git rev-parse HEAD)"
 ```
 
-The staged directory supplies retained Pages bindings and Functions. No source upload or dashboard editor paste is needed. Record the deployment result and actual source commit. The pre-update deployment identity is `774c03ca-039f-439c-93b2-ac3d26db11d3`. Asset rollback cannot reverse database changes or confirmed Habitica effects.
+Pages uses `CLOUDFLARE_ACCOUNT_ID` for account selection; its configuration does not support `account_id`. Worker configuration retains the account field. The staged directory supplies retained Pages bindings and Functions. No source upload or dashboard editor paste is needed. Record the deployment result and actual source commit. The pre-update deployment identity is `774c03ca-039f-439c-93b2-ac3d26db11d3`. Asset rollback cannot reverse database changes or confirmed Habitica effects.
 
 ## Hosting and privacy checks before enrollment
 

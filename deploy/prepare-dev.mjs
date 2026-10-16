@@ -46,7 +46,7 @@ export function prepareDev(input,target){
   configs[name]=c;
  }
  const settings=frontendSettings(read('src/Habitica.WebApp/wwwroot/appsettings.json'),{ChatGptIntegration:{Enabled:true,AuthBaseUrl:input.authOrigin},CompanionWorkspace:{BaseUrl:input.workspaceOrigin,PartyPlanningEnabled:false}},input.creatorHeader);
- const pagesConfig={name:input.pagesProject,account_id:input.accountId,compatibility_date:'2026-10-12',pages_build_output_dir:path.relative(target,path.join(root,'output/wwwroot')),kv_namespaces:[{binding:'HABITICA_SYNC_KV',id:input.pagesKvId}],d1_databases:[{binding:'HABITICA_PARTY_DB',database_name:existing?.partyDatabaseName??input.pagesProject+'-party',database_id:input.partyDatabaseId,migrations_dir:path.relative(target,path.join(root,'migrations'))}]};
+ const pagesConfig={name:input.pagesProject,compatibility_date:'2026-10-12',pages_build_output_dir:path.relative(target,path.join(root,'output/wwwroot')),kv_namespaces:[{binding:'HABITICA_SYNC_KV',id:input.pagesKvId}],d1_databases:[{binding:'HABITICA_PARTY_DB',database_name:existing?.partyDatabaseName??input.pagesProject+'-party',database_id:input.partyDatabaseId,migrations_dir:path.relative(target,path.join(root,'migrations'))}]};
  return {configs,pages:pagesConfig,settings,names,configuration};
 }
 export function writeDev(input,target){
