@@ -39,9 +39,12 @@ const escape = (value: string) => value.replace(/[&<>"']/g, character => `&#${ch
 function page(title: string, content: string) {
   return `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escape(title)}</title><style>body{font:18px system-ui;max-width:38rem;margin:2rem auto;padding:1rem;line-height:1.5}input,button{font:inherit;padding:.6rem;margin:.3rem}button{cursor:pointer}label{display:block}code{overflow-wrap:anywhere}</style><h1>${escape(title)}</h1>${content}</html>`;
 }
-function consentHeaders(headers: Headers) {
+function consentHeaders(headers: Headers, redirectUri: string) {
+  const callback = new URL(redirectUri);
+  if (!["https:", "http:"].includes(callback.protocol) || /[;*'"\s]/.test(callback.origin)) throw new VaultError("invalid_redirect", 400);
   headers.set("content-type", "text/html; charset=utf-8");
-  headers.set("content-security-policy", "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'");
+  // Chromium also checks form-action when a successful form POST redirects to the client.
+  headers.set("content-security-policy", `default-src 'none'; style-src 'unsafe-inline'; form-action 'self' ${callback.origin}; frame-ancestors 'none'; base-uri 'none'`);
   headers.set("referrer-policy", "same-origin");
   headers.set("cache-control", "no-store");
   return headers;
@@ -59,7 +62,7 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
   const identity = profileLabel ? `<p>Habitica account: <strong>${escape(profileLabel)}</strong></p>` : '<label>One-time Companion code <input name="code" maxlength="16" autocomplete="off" required></label><p>Generate the code from Companion Settings after explicit integration enrollment.</p>';
   const warning = details.redirectIsLoopback ? "<p>This grants access to a local app. Continue only after starting that app's connection flow.</p>" : "";
   const content = `<p>Client: <strong>${escape(details.clientName)}</strong>. ${origin}</p><p>Redirect destination: ${escape(details.redirectHost)}.</p>${warning}${writeNotice}${partyNotice}${spellNotice}${cronNotice}<form method="post"><input type="hidden" name="handle" value="${escape(consent.handle)}">${identity}${scopeInputs}<button name="decision" value="${profileLabel ? 'approve' : 'identify'}">${profileLabel ? 'Allow selected access' : 'Verify code'}</button><button name="decision" value="deny" formnovalidate>Deny</button></form><p>Habitica API tokens are never sent to ChatGPT. Credential storage belongs to the opted-in Companion integration.</p>`;
-  return { consent, response: new Response(page(profileLabel ? "Approve Companion access" : "Link Companion account", content), { headers: consentHeaders(consent.headers) }) };
+  return { consent, response: new Response(page(profileLabel ? "Approve Companion access" : "Link Companion account", content), { headers: consentHeaders(consent.headers, details.redirectUri) }) };
 }
 export async function authorize(request: Request, env: AuthEnv): Promise<Response> {
   const server = authorizationServer(env);

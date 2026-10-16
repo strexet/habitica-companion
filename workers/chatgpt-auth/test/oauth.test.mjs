@@ -137,3 +137,45 @@ test("browser consent preserves same-origin POST and rejects hostile or opaque o
   assert.equal(verified.status, 200);
   assert.ok((await verified.text()).includes("Approve Companion access"));
 });
+
+test("consent CSP permits Auth posts and only the validated callback origin", async t => {
+  const callback = "https://client.example.com/callback?next=ignored;script-src%20*";
+  const clientId = "https://client.example.com/oauth-client.json";
+  const f = await fixture(t, { clientMetadata: { client_id: clientId, client_name: "Callback fixture", redirect_uris: [callback], token_endpoint_auth_method: "none" } });
+  const profile = await enrolled(f);
+  for (const overrides of [{}, { client_id: clientId, redirect_uri: callback }]) {
+    const page = await authPage(f, "profile:read", overrides);
+    const expected = "default-src 'none'; style-src 'unsafe-inline'; form-action 'self' " + new URL(overrides.redirect_uri ?? "http://localhost:9999/callback").origin + "; frame-ancestors 'none'; base-uri 'none'";
+    assert.equal(page.response.status, 200);
+    assert.equal(page.response.headers.get("content-security-policy"), expected);
+    assert.equal(page.response.headers.get("x-frame-options"), "DENY");
+    const firstHtml = await page.response.text();
+    const code = await ticket(f, profile);
+    const identified = await form(f, page, { handle: handle(firstHtml), decision: "identify", code: code.code, scope: "profile:read" });
+    assert.equal(identified.status, 200);
+    assert.equal(identified.headers.get("content-security-policy"), expected);
+    const html = await identified.text();
+    const denied = await form(f, page, { handle: handle(html), decision: "deny" });
+    assert.equal(denied.status, 302);
+    const target = new URL(denied.headers.get("location"));
+    assert.equal(target.origin, new URL(overrides.redirect_uri ?? "http://localhost:9999/callback").origin);
+    assert.equal(target.searchParams.get("error"), "access_denied");
+    assert.equal(target.searchParams.get("state"), "fixture-state");
+    assert.equal(target.searchParams.get("iss"), issuer);
+  }
+  const kv = await f.mf.getKVNamespace("OAUTH_KV", "auth");
+  assert.equal((await kv.list({ prefix: "grant:" })).keys.length, 0);
+});
+
+
+test("consent rejects callback hosts that would add CSP wildcards or directives", async t => {
+  for (const callback of ["https://*.example.com/callback", "https://client.example.com;sandbox/callback"]) {
+    const clientId = "https://client.example.com/oauth-client.json";
+    const f = await fixture(t, { clientMetadata: { client_id: clientId, client_name: "Unsafe CSP fixture", redirect_uris: [callback], token_endpoint_auth_method: "none" } });
+    const page = await authPage(f, "profile:read", { client_id: clientId, redirect_uri: callback });
+    assert.equal(page.response.status, 400);
+    assert.equal((await page.response.json()).reason, "invalid_redirect");
+    const kv = await f.mf.getKVNamespace("OAUTH_KV", "auth");
+    assert.equal((await kv.list({ prefix: "grant:" })).keys.length, 0);
+  }
+});

@@ -191,7 +191,7 @@ Build scripts use Wrangler dry-run. Fixtures use Miniflare with a named `AuthSer
 
 ## Browser consent local qualification
 
-The Auth consent page uses `Referrer-Policy: same-origin` so browser form navigation preserves the exact issuer Origin without disclosing a referrer to another origin. The Auth handler rejects foreign and opaque Origin headers. Provider consent cookies retain Secure and HttpOnly protections. A synthetic account completed code verification in the Codex in-app browser on `http://localhost:8787`; manual HTTP fixture cookies alone do not establish browser compatibility. HTTPS deployment and other browser families require separate rollout qualification.
+The Auth consent page uses `Referrer-Policy: same-origin` so browser form navigation preserves the exact issuer Origin without disclosing a referrer to another origin. The Auth handler rejects foreign and opaque Origin headers. Provider consent cookies retain Secure and HttpOnly protections. Consent form policy allows the Auth origin and the callback origin derived from the provider-validated request, so browser-enforced form redirects can return to the client. Exact registered redirect validation, PKCE, single-use binding, no framing and foreign/opaque Origin refusal remain enforced. Callback origins containing CSP wildcard or directive characters are rejected. A synthetic account completed first-click approval and denial redirects from `http://localhost:8787` to the separate local callback in the Codex in-app browser; manual HTTP fixtures alone do not establish browser compatibility. HTTPS deployment and other browser families require separate rollout qualification.
 
 ## Optional linking configuration
 

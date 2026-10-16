@@ -321,6 +321,45 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
+### Repair browser authorization callback navigation
+
+```yaml
+id: T-8f8f1dba-9d90-4bf0-8958-fea5ede83941
+priority: 101
+status: Ready
+parent_pending_ids: ["P-e0494acc-da19-4d22-bdb3-9b71af18cc7d"]
+processing_run_id: PR-e7cd1f26-c516-4eac-96d4-e306a3f78a46
+root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+related_task_id: T-d76d2a9a-1318-4e63-9bb4-73f620b108cc
+relation: blocker
+depends_on: []
+```
+
+Goal:
+- Unblock the selected live Auth client authorization.
+Current behavior:
+- Consent approval appears stalled and the second click fails. Auth pages limit form-action to self while successful authorization redirects to a different client origin.
+Desired behavior:
+- One valid approval or denial reaches the exact provider-validated client callback; invalid browser bindings, hostile origins and unregistered redirects remain refused.
+Touch:
+- Auth consent headers, OAuth regression checks, browser qualification and deployment evidence.
+Discovery allowance:
+- Use the pinned provider implementation and official documentation; reproduce through disposable local profiles and mocked Habitica responses.
+Out of scope:
+- Real owner grants, credential entry, data resets, dependency upgrades and enabling game effects.
+Implementation constraints:
+- Preserve PKCE, single-use consent cookies, exact registered callback checks and no framing. Derive permitted callback destinations exclusively from the validated authorization request without wildcard form destinations. Retain existing production bindings and disabled effect flags.
+Questions and required clarifications:
+- None for bounded repair of the selected live Auth backend. Per-account consent remains an owner action.
+Validation:
+- Reproduce in an actual browser; build Auth and run focused OAuth controls; verify first-click callback and denial plus invalid binding, hostile Origin and mismatched redirect cases; recheck production targets before a necessary Auth correction.
+Acceptance:
+- First-click browser approval and denial reach the validated callback, required negative authorization checks pass, and the live Auth correction retains reviewed bindings and disabled effect flags.
+Documentation updates:
+- Consent policy, sanitized reproduction and deployment evidence, and owner retry guidance.
+Risks:
+- Permitting destinations beyond the validated client or equating a synthetic grant with real owner qualification.
+
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml
@@ -332,7 +371,7 @@ processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
 root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 relation: subtask
-depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735", "T-29ef8846-6aa7-4255-990d-a8651e689ec2", "T-34491faa-090e-4d97-b496-1fe947770688", "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58", "T-159a415e-0d56-4028-96a4-339a5d5040f8"]
+depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735", "T-29ef8846-6aa7-4255-990d-a8651e689ec2", "T-34491faa-090e-4d97-b496-1fe947770688", "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58", "T-159a415e-0d56-4028-96a4-339a5d5040f8", "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941"]
 ```
 
 Goal:

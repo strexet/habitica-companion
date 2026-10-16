@@ -1,0 +1,136 @@
+{
+  "date": "2026-10-16",
+  "task_id": "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+  "kind": "oauth-callback-browser-repair",
+  "before": {
+    "browser": "A disposable local account reproduces the reported first-click inert page and second-click browser_binding_missing. The client callback is not reached.",
+    "regression_control": "New callback CSP control fails against the original bundle because form-action contains self only.",
+    "failing_control_log_sha256": "e501fc59ea76c19eae748b6662c0b5f851e092b5cef29557b5e16c5f13ab7525"
+  },
+  "repair": "Consent form-action allows self and the callback origin derived from the provider-validated request. Exact server-side redirect validation, PKCE, single-use browser binding and Origin checks remain enforced; CSP wildcard/directive characters in callback origins are refused.",
+  "local_checks": {
+    "auth_build": "pass; pinned type generation, TypeScript and Worker dry-run bundle",
+    "oauth_management_and_connection_continuity": {
+      "passed": 18,
+      "failed": 0
+    },
+    "browser_callback_observations": [
+      {
+        "hasCode": true,
+        "error": null,
+        "stateMatches": true
+      },
+      {
+        "hasCode": false,
+        "error": "access_denied",
+        "stateMatches": true
+      }
+    ],
+    "synthetic_browser": "A single approval reaches the separate loopback callback; denial returns access_denied without a code. Disposable profiles and keys use mocked Habitica responses.",
+    "screenshot": "/tmp/habitica-oauth-callback-proof.png",
+    "introduced_prose_diagnostics": []
+  },
+  "preflight": {
+    "worker": "habitica-companion-auth",
+    "account_id": "8c962c94f28f5bdd298024365e0dea40",
+    "vars": {
+      "ENVIRONMENT": "production",
+      "ENROLLMENT_ENABLED": true,
+      "OAUTH_ENABLED": true,
+      "WORKSPACE_ENABLED": true,
+      "PROJECTION_ENABLED": false,
+      "PARTY_ENABLED": false,
+      "SPELLS_ENABLED": false,
+      "CRON_ENABLED": false,
+      "KEY_OPERATIONS_ENABLED": false,
+      "PWA_ORIGIN": "https://habitica-companion.pages.dev",
+      "AUTH_ISSUER": "https://habitica-companion-auth.strexet.workers.dev",
+      "MCP_RESOURCE": "https://habitica-companion-mcp.strexet.workers.dev/mcp"
+    },
+    "oauth_kv": "cd15636d00ac4be584ef7854a9a98fba",
+    "integration_d1": "ada5184c-865d-4c6a-864a-88618f19c06f",
+    "secret_names": [
+      "CREDENTIAL_KEY_V1",
+      "CREDENTIAL_KEY_V2",
+      "PROFILE_ID_KEY"
+    ],
+    "deployments_before": [
+      {
+        "id": "b80e01b8-73c6-4240-a7d8-359f77e09f05",
+        "created_on": "2026-10-16T11:26:57.722258Z",
+        "versions": [
+          {
+            "version_id": "3f89fa57-d705-48c0-8183-265d17264b7d",
+            "percentage": 100
+          }
+        ]
+      },
+      {
+        "id": "33201b1d-175e-4388-adf0-c9c47781aac9",
+        "created_on": "2026-10-16T11:26:59.209276Z",
+        "versions": [
+          {
+            "version_id": "d7ddd2a1-9bb8-48d4-b86e-fbd10a03ffa1",
+            "percentage": 100
+          }
+        ]
+      },
+      {
+        "id": "463ad5bb-7c20-47f8-98ac-cd3e8b3a08c7",
+        "created_on": "2026-10-16T11:32:53.323711Z",
+        "versions": [
+          {
+            "version_id": "fa43704f-31a3-408e-a456-d6eac121d239",
+            "percentage": 100
+          }
+        ]
+      },
+      {
+        "id": "c9ad5a6a-dbdd-4f24-a8bc-c550c2fe3d84",
+        "created_on": "2026-10-16T11:40:00.162555Z",
+        "versions": [
+          {
+            "version_id": "bc401579-478c-402d-8130-a8e0ad4ceee6",
+            "percentage": 100
+          }
+        ]
+      },
+      {
+        "id": "8ed127d5-d96a-453b-a696-159157720bdc",
+        "created_on": "2026-10-16T11:41:29.078398Z",
+        "versions": [
+          {
+            "version_id": "1f0636ff-e87b-422d-9766-8bca55d9ab84",
+            "percentage": 100
+          }
+        ]
+      },
+      {
+        "id": "7be7ae14-8c7f-45c8-8917-0f8afe939074",
+        "created_on": "2026-10-16T11:42:30.707171Z",
+        "versions": [
+          {
+            "version_id": "c51c45db-b240-45d5-8e45-335b44f1e650",
+            "percentage": 100
+          }
+        ]
+      },
+      {
+        "id": "f4842080-b749-464e-8a35-da3650f1a444",
+        "created_on": "2026-10-16T11:44:40.60259Z",
+        "versions": [
+          {
+            "version_id": "a486e487-3860-462f-843e-751fbecb6fb8",
+            "percentage": 100
+          }
+        ]
+      }
+    ],
+    "authentication_note": "Initial direct API request used an expired token; pinned Wrangler refreshed the existing OAuth login. No new account permissions or credential values were requested."
+  },
+  "deployment_status": "pending",
+  "limitations": [
+    "Owner client authentication and physical-device checks remain unqualified.",
+    "Production Pages remains source f94b768; local sign-in and linking guidance changes are separate."
+  ]
+}
