@@ -1,3 +1,4 @@
+import {keyOperation,purgeKeyJobs} from './key-operations';
 import {managementRoute} from './management';
 import {cronOperation} from './cron';
 import {spellOperation} from './spells';
@@ -35,6 +36,10 @@ export class AuthService extends WorkerEntrypoint<AuthEnv> {
 // This binding belongs only to the Workspace Worker; public routes never dispatch named entrypoints.
 export class WorkspaceIdentityService extends WorkerEntrypoint<AuthEnv> {
   async fetch(request: Request): Promise<Response> { return workspaceIdentity(request, this.env); }
+}
+
+export class CredentialKeyService extends WorkerEntrypoint<AuthEnv> {
+  async fetch(request:Request):Promise<Response>{return keyOperation(request,this.env);}
 }
 
 export class CronService extends WorkerEntrypoint<AuthEnv> {
@@ -82,7 +87,7 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
     return Response.json({ error: "unauthorized" }, { status: 401, headers });
 }
 export default {
-  async scheduled(_event, env): Promise<void> { await purgeProjectionMetadata(env); },
+  async scheduled(_event, env): Promise<void> { await purgeProjectionMetadata(env); await purgeKeyJobs(env); },
   async fetch(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const config = resourceConfiguration(env.ENVIRONMENT);

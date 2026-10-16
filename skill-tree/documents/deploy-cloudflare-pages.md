@@ -220,3 +220,26 @@ Workspace migration `0006-reviewed-cron-actions.sql` defines typed previews and 
 ## Grant revocation management deployment
 
 Apply Auth `0006-grant-revocation.sql` and Workspace `0007-mcp-grant-epoch.sql` before deploying the corresponding management code. Existing credential enrollment remains, while pre-epoch OAuth tokens require relinking. Keep old credential-encryption keys available; grant revocation does not migrate envelopes. Management status uses GET with the existing allowed PWA origin. Grant-only revocation retains credentials and ordinary Workspace/background access; use Workspace disable/disconnect to pause the executor. Provider cleanup is bounded and can report pending cleanup; the D1 epoch denies old tool/token access immediately. Production log checks and real multi-user rollout remain unrun gates.
+
+## Guarded credential encryption-key rotation
+
+Apply Auth `0007-credential-key-jobs.sql` before the operator code. `KEY_OPERATIONS_ENABLED` remains false in local, preview and production. `CredentialKeyService` is a private named entrypoint with no public route and no MCP/Workspace binding. A separately authorized operator environment must supply the reviewed private caller, target/current configuration and required secrets; keys never enter operation bodies. The local implementation does not provision that caller or perform a live migration.
+
+The guarded operator procedure is:
+
+1. Preserve the stable `PROFILE_ID_KEY`. Configure a distinct new credential-encryption key while retaining every referenced old key. Select the new current version for writes and stop old-version writers before removal qualification.
+2. Inspect private `inventory`. Missing referenced keys or unsupported metadata block removal. Start one job with explicit `jobId` and `fromVersion`; repeat the same identity after a lost start acknowledgement.
+3. Invoke bounded `step` calls with the original `jobId` and numeric `limit` from one to twenty-five. Busy ownership requires waiting for the active operator. Unreadable credentials require private diagnosis and repair; error responses never contain plaintext. Resume after interruption using the same job.
+4. Require complete job status, then repeat inventory and `assert-removable` for the old version. Current keys, retained references, unknown inventory or unfinished dependent jobs block a removable verdict. Recheck immediately before separately authorized secret removal. External secret configuration remains an operator responsibility.
+5. Verify retained credentials and normal scoped tool behavior in the separately authorized environment. Preserve only counts/version/job summaries. Inactive job metadata expires after thirty days; expired job history can be replaced with a fresh job because already migrated envelopes no longer match the old version.
+
+Private request shapes contain only operation metadata:
+
+```json
+{"operation":"inventory"}
+{"operation":"start","jobId":"<uuid>","fromVersion":"1"}
+{"operation":"step","jobId":"<same-uuid>","limit":10}
+{"operation":"assert-removable","keyVersion":"1"}
+```
+
+Each line is a separate private request. No scheduler performs key migration. Existing Auth maintenance only removes bounded expired job metadata. Live rotation, key deletion, caller provisioning and deployment remain separate operations.

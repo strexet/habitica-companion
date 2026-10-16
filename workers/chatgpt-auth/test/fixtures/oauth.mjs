@@ -19,7 +19,7 @@ async function fixture(t, options = {}) {
   const mf = new Miniflare(convertV4MiniflareOptions({ log: new CaptureLog(LogLevel.VERBOSE), workers: [
     { name: "auth", modules: true, script: await readFile(new URL("dist/index.js", authRoot), "utf8"),
       compatibilityDate: authConfig.compatibility_date, compatibilityFlags: ["nodejs_compat", "global_fetch_strictly_public"],
-      bindings: { ...authConfig.vars, OAUTH_ENABLED: true, ENROLLMENT_ENABLED: true, WORKSPACE_ENABLED: Boolean(options.workspace), PROJECTION_ENABLED: Boolean(options.projection), PARTY_ENABLED:Boolean(options.party), SPELLS_ENABLED:Boolean(options.spells), CRON_ENABLED:Boolean(options.cron), PROFILE_ID_KEY: key(3), CREDENTIAL_KEY_V1: key(1), CREDENTIAL_KEY_V2: key(2) },
+      bindings: { ...authConfig.vars, OAUTH_ENABLED: true, ENROLLMENT_ENABLED: true, WORKSPACE_ENABLED: Boolean(options.workspace), PROJECTION_ENABLED: Boolean(options.projection), PARTY_ENABLED:Boolean(options.party), SPELLS_ENABLED:Boolean(options.spells), CRON_ENABLED:Boolean(options.cron), KEY_OPERATIONS_ENABLED:Boolean(options.keyOperations), CREDENTIAL_CURRENT_KEY_VERSION:options.currentKeyVersion??authConfig.vars.CREDENTIAL_CURRENT_KEY_VERSION, PROFILE_ID_KEY: key(3), CREDENTIAL_KEY_V1: key(1), CREDENTIAL_KEY_V2: key(2) },
       kvNamespaces: ["OAUTH_KV"], d1Databases: ["HABITICA_INTEGRATION_DB"],
       outboundService: async request => {
         if (request.url.startsWith("https://habitica.com/api/v3/")) {
@@ -33,12 +33,12 @@ async function fixture(t, options = {}) {
     },
     { name: "mcp", modules: true, script: await readFile(new URL("dist/index.js", mcpRoot), "utf8"),
       compatibilityDate: authConfig.compatibility_date, compatibilityFlags: ["nodejs_compat"],
-      bindings: { ENVIRONMENT: "local", OAUTH_ENABLED: true }, serviceBindings: { ...(options.workspace ? { WORKSPACE_SERVER: { name: "workspace", entrypoint: "WorkspaceCommandService" }, AUTH_PROJECTION: { name: "auth", entrypoint: "ProjectionService" }, WORKSPACE_IDENTITY: { name: "auth", entrypoint: "WorkspaceIdentityService" }, AUTH_CRON:{name:"auth",entrypoint:"CronService"}, AUTH_SPELL:{name:"auth",entrypoint:"SpellService"} } : {}), AUTH_SERVER: { name: "auth", entrypoint: "AuthService" } } },
+      bindings: { ENVIRONMENT: "local", OAUTH_ENABLED: true }, serviceBindings: { ...(options.workspace ? { WORKSPACE_SERVER: { name: "workspace", entrypoint: "WorkspaceCommandService" }, AUTH_PROJECTION: { name: "auth", entrypoint: "ProjectionService" }, WORKSPACE_IDENTITY: { name: "auth", entrypoint: "WorkspaceIdentityService" }, AUTH_KEYS:{name:"auth",entrypoint:"CredentialKeyService"}, AUTH_CRON:{name:"auth",entrypoint:"CronService"}, AUTH_SPELL:{name:"auth",entrypoint:"SpellService"} } : {}), AUTH_SERVER: { name: "auth", entrypoint: "AuthService" } } },
     ...(options.workspace ? [{ name: "workspace", modules: true, script: await readFile(new URL("../companion-workspace/dist/index.js", authRoot), "utf8"), compatibilityDate: authConfig.compatibility_date, compatibilityFlags: ["nodejs_compat"], bindings: { ENVIRONMENT: "local", WORKSPACE_ENABLED: true, EXECUTOR_ENABLED: Boolean(options.executor), PARTY_ENABLED:Boolean(options.party), SPELLS_ENABLED:Boolean(options.spells), CRON_ENABLED:Boolean(options.cron) }, d1Databases: ["WORKSPACE_DB"], serviceBindings: { AUTH_CRON:options.cronService??{name:"auth",entrypoint:"CronService"}, AUTH_SPELL:options.spellService??{name:"auth",entrypoint:"SpellService"}, AUTH_PROJECTION: options.projectionService ?? { name: "auth", entrypoint: "ProjectionService" }, AUTH_IDENTITY: options.identity ?? { name: "auth", entrypoint: "WorkspaceIdentityService" }, AUTH_PARTY:{name:"auth",entrypoint:"PartyService"} } }] : []),
   ] }));
   t.after(() => mf.dispose());
   const db = await mf.getD1Database("HABITICA_INTEGRATION_DB", "auth");
-  for (const migration of ["0001-integration-profiles.sql", "0002-linking.sql", "0003-read-state.sql", "0004-management-identity.sql", "0005-projection-gateway.sql","0006-grant-revocation.sql"]) {
+  for (const migration of ["0001-integration-profiles.sql", "0002-linking.sql", "0003-read-state.sql", "0004-management-identity.sql", "0005-projection-gateway.sql","0006-grant-revocation.sql","0007-credential-key-jobs.sql"]) {
     for (const sql of (await readFile(new URL("migrations/" + migration, authRoot), "utf8")).split(';')) if (sql.trim()) await db.prepare(sql).run();
   }
   let workspace, workspaceDb, workspaceIdentity, projection;
