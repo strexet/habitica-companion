@@ -50,7 +50,7 @@ async function connect(request: Request, env: WorkspaceEnv): Promise<Response> {
  const now = new Date().toISOString(); const tag = crypto.randomUUID(); const documentJson = JSON.stringify(emptyWorkspace(workspaceId));
  // Consent never replaces retained canonical data. Reconnection revokes old session epochs.
  await env.WORKSPACE_DB.prepare(`INSERT INTO workspaces(profile_id,workspace_id,connection_id,access_epoch,consent_version,consented_at_utc,document_json,archive_bytes,commit_tag,created_at_utc,updated_at_utc)
- VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(profile_id) DO UPDATE SET connection_id=excluded.connection_id,consent_version=excluded.consent_version,
+ VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(profile_id) DO UPDATE SET mcp_grant_epoch=CASE WHEN workspaces.connection_id=excluded.connection_id THEN workspaces.mcp_grant_epoch ELSE NULL END,connection_id=excluded.connection_id,consent_version=excluded.consent_version,
  consented_at_utc=excluded.consented_at_utc,active=1,access_epoch=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.access_epoch ELSE excluded.access_epoch END,executor_enabled=CASE WHEN workspaces.connection_id=excluded.connection_id AND workspaces.active=1 THEN workspaces.executor_enabled ELSE 0 END,updated_at_utc=excluded.updated_at_utc`)
  .bind(who.profileId, workspaceId, who.connectionId, crypto.randomUUID(), consentVersion, now, documentJson, bytes(documentJson) + 512, tag, now, now).run();
  const row = await env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=?").bind(who.profileId).first<WorkspaceRow>();

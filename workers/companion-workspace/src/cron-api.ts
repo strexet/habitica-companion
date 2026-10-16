@@ -14,6 +14,7 @@ async function current(env:WorkspaceEnv,row:WorkspaceRow){
 async function gateway(env:WorkspaceEnv,row:WorkspaceRow,authorization:string,operation:string,args:unknown,attempt?:Attempt,timeout=55000){
  const response=await env.AUTH_CRON.fetch('https://cron.internal/operation',{method:'POST',headers:{authorization,'content-type':'application/json'},body:JSON.stringify(attempt?{...attempt,operation}:{profileId:row.profile_id,connectionId:row.connection_id,operation,arguments:args}),signal:AbortSignal.timeout(timeout)});
  const data=workspaceObject(await response.json());
+ if(operation==='lookup'&&!response.ok)return {kind:'unknown',code:'receipt_unavailable'};
  if((operation==='status'||operation==='progress')&&!response.ok)throw new WorkspaceError(typeof data.code==='string'?data.code:'cron_unavailable',response.status);
  return data;
 }

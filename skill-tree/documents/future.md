@@ -321,47 +321,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Preserve access and uncertainty across profile re-enrollment
-
-```yaml
-id: T-4dd09108-6149-4ab2-9326-b6f53e05f811
-priority: 105
-status: Ready
-parent_pending_ids: ["P-08a257f2-27ad-4217-b434-3a378c565fc7"]
-processing_run_id: PR-40a21e98-301d-4c24-a3dc-135fee882807
-root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
-related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
-relation: blocker
-depends_on: []
-```
-
-Goal:
-- Preserve retained Workspace access and original gameplay uncertainty across credential-profile deletion and re-enrollment.
-Current behavior:
-- Workspace connect retains the observed OAuth epoch when connection identity changes. New Auth profiles reset the grant epoch. Spell and Cron lookup gateways pass non-success refusal bodies to recovery, while the task executor already treats unsuccessful receipt lookup as unknown.
-Desired behavior:
-- A newly verified connection starts from the new grant authority without losing retained data. Denied or unavailable receipt lookup cannot become proof of original failure or clear unknown effects.
-Touch:
-- Workspace connect, spell/Cron gateway recovery, focused re-enrollment fixtures and testing guidance.
-Discovery allowance:
-- Reuse verified connection identity and the task executor receipt-only response rule; change only the proven lifecycle boundaries.
-Out of scope:
-- Live enrollment, weakening monotonic checks within one connection, replaying accepted effects or automatic uncertainty resolution.
-Implementation constraints:
-- Reset observed grant authority only when the verified connection changes. Preserve accepted history and uncertainty fences. Only successful original-receipt lookup responses can return known applied/refused results; all authorization, storage and transport failures remain unknown.
-Questions and required clarifications:
-- None for local repair and synthetic qualification under standing owner scope.
-Validation:
-- Reproduce retained access failure after profile deletion following grant revocation. Reproduce false Cron/spell uncertainty clearing after credential re-enrollment. Preserve a positive original-refusal lookup control, old-preview rejection, original IDs and zero additional gameplay dispatches.
-Acceptance:
-- Re-enrollment restores the new verified connection grant authority while preserving canonical data and accepted history.
-- Unsuccessful spell/Cron receipt lookup retains uncertainty and gameplay fences without replay or false known failure.
-- Successful original receipt lookup still distinguishes applied and refused outcomes; same-connection epoch rollback and stale previews remain rejected.
-Documentation updates:
-- features.md, technical.md, testing.md and the canonical connection contract.
-Risks:
-- Permanent reconnection denial, false uncertainty resolution and duplicate gameplay effects.
-
 ### Bound integration traffic and expose safe stalled work status
 
 ```yaml

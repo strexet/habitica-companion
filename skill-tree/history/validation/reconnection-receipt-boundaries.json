@@ -1,0 +1,33 @@
+{
+  "task_id": "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
+  "result": "pass",
+  "checks": {
+    "negative_control_commit": "805809f",
+    "unrepaired_controls": {
+      "expected_failures": 3,
+      "positive_control_passed": 1
+    },
+    "repaired_composition_controls": 4,
+    "three_worker_builds": "pass",
+    "auth_tests": 94,
+    "workspace_tests_serial_explicit_files": 81,
+    "app_build": {
+      "warnings": 0,
+      "errors": 0
+    },
+    "dotnet_tests": 536,
+    "default_app_evidence": "skill-tree/history/validation/reconnection-default-settings.jpg"
+  },
+  "coverage": [
+    "Grant revocation followed by profile deletion/re-enrollment restores verified new-connection access to retained canonical tasks",
+    "Observed grant authority resets only for a changed verified connection; existing same-connection monotonic and old-preview controls remain passing",
+    "Inaccessible original Cron/spell receipts remain unknown after credential profile re-enrollment",
+    "Retained unknown actions continue fencing task/spell/Cron effects after private original access disappears",
+    "Successful original-refusal receipt lookup still resolves uncertainty without an upstream dispatch",
+    "No repeated gameplay effects or real account operations"
+  ],
+  "limitations": [
+    "Synthetic local qualification only. Original receipts made inaccessible by credential-profile deletion cannot confirm or clear gameplay uncertainty.",
+    "No automatic uncertainty resolution, replay, live enrollment or deployment."
+  ]
+}

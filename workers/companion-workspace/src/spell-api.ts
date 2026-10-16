@@ -15,6 +15,7 @@ const action=(env:WorkspaceEnv,profile:string,id:string)=>env.WORKSPACE_DB.prepa
 async function gateway(env:WorkspaceEnv,row:WorkspaceRow,authorization:string,operation:string,args:unknown,attempt?:Attempt){
  const response=await env.AUTH_SPELL.fetch('https://spell.internal/operation',{method:'POST',headers:{authorization,'content-type':'application/json'},body:JSON.stringify(attempt?{...attempt,operation}:{profileId:row.profile_id,connectionId:row.connection_id,operation,arguments:args}),signal:AbortSignal.timeout(35000)});
  const data=await response.json<Record<string,unknown>>();
+ if(operation==='lookup'&&!response.ok)return {kind:'unknown',code:'receipt_unavailable'};
  if(operation==='context'&&!response.ok){
   if(response.status===404||data.code==='party_changed')await env.WORKSPACE_DB.batch([env.WORKSPACE_DB.prepare('DELETE FROM authenticated_party_consents WHERE profile_id=?').bind(row.profile_id),env.WORKSPACE_DB.prepare("DELETE FROM prepared_spell_actions WHERE profile_id=? AND status='prepared'").bind(row.profile_id)]);
   throw new WorkspaceError(typeof data.code==='string'?data.code:'spell_unavailable',response.status);

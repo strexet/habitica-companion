@@ -34,7 +34,8 @@
       "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
       "T-b92db026-a8cf-5922-8556-666cbea947ab",
       "T-5737120b-52a5-4a57-9072-fce514adaf33",
-      "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4"
+      "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+      "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -51,6 +52,7 @@
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8": "O-d3de5c55-c4ac-4eb9-9b46-36aa630adf68",
       "T-49eaa44e-5c98-4219-a380-4201e4143494": "O-9f6a3618-fbbf-4d96-b034-bbe5f19e01ca",
       "T-4a1de222-156a-52cf-8966-262a2c8216ed": "O-1be18cd1-6faf-47ff-bc66-14861e6858e4",
+      "T-4dd09108-6149-4ab2-9326-b6f53e05f811": "O-75a3f695-3334-45b4-8000-06045ef1ca34",
       "T-53352a18-54d2-57b6-accc-91f8e6dfad13": "O-02146734-4822-48de-81a5-71f0c7208776",
       "T-5737120b-52a5-4a57-9072-fce514adaf33": "O-53aa48f8-4d3c-4d9a-bb8b-12ec41ed3a60",
       "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4": "O-c907310b-d594-4093-a241-5bff64729b14",
@@ -72,8 +74,8 @@
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b",
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e"
     },
-    "current_task_id": "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
-    "cycle_signature": "09a6d0c96dae7b73373be7d025bcef2f429fae0ae87463a535f432a95a66535f",
+    "current_task_id": "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+    "cycle_signature": "4b782232e6fe79f9cea3cba7ef2f512021aaa695371d5ed081a83e10349b6eff",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
@@ -82,13 +84,9 @@
     "mode": "all",
     "next_action": "implement",
     "partial_work": [
-      "Owner adopted the local Cron contract and selected all implemented tools with live Cron off on 2026-10-16.",
-      "Further contracts inside the initial snapshot and required dependencies are adopted automatically for local implementation and synthetic checks.",
-      "Live activation, real enrollment, device qualification and production secret changes remain separate.",
-      "Private Cron prerequisite completed in 17477c1. Reviewed Workspace/MCP Cron ledger implemented; focused and broad synthetic qualification pending.",
-      "Typed Cron actions use 2-minute previews, one dispatch, a shared 90-second lease and 60-second foreground budget; own-account operation requires no shared planning consent. All live Cron flags remain false.",
-      "Credential key operations implemented with disabled private service, bounded jobs and retention. Final local qualification is running; no real keys changed.",
-      "Static review found required re-enrollment/lookup-boundary defects, captured as P-08a257f2-27ad-4217-b434-3a378c565fc7. Complete independent key qualification, then process and implement the exact captured blocker before further hardening."
+      "Management hardening completed in a373e40 and guarded key operations in 805809f. Required re-enrollment/receipt-boundary repair is qualified and ready for commit.",
+      "Remaining local hardening units are bounded traffic/operational diagnostics and E14 local adoption/recovery qualification.",
+      "Real multi-user/mobile and production-log qualification remains blocked on separately authorized environment, accounts and devices. Live Cron and key operations remain disabled."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -641,7 +639,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "86f1360a5065669a9ae57dcd824f1d0184f32c310d3ce35f4cec5208032dafb4",
+  "source_hash": "7a4a5eb7391e43c7697b9b30682ccdacd729a03d738e53d03f47b36d41325cd0",
   "tasks": [
     {
       "depends_on": [],
@@ -757,24 +755,8 @@
     },
     {
       "depends_on": [],
-      "id": "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
-      "line": 324,
-      "parent_pending_ids": [
-        "P-08a257f2-27ad-4217-b434-3a378c565fc7"
-      ],
-      "priority": 105,
-      "processing_run_id": "PR-40a21e98-301d-4c24-a3dc-135fee882807",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "relation": "blocker",
-      "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "status": "Ready",
-      "title": "Preserve access and uncertainty across profile re-enrollment"
-    },
-    {
-      "depends_on": [],
       "id": "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
-      "line": 365,
+      "line": 324,
       "parent_pending_ids": [
         "P-d724d4bc-ff32-470b-a476-395303dba5b9"
       ],
@@ -794,7 +776,7 @@
         "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca"
       ],
       "id": "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
-      "line": 406,
+      "line": 365,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -812,7 +794,7 @@
         "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 446,
+      "line": 405,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -828,7 +810,7 @@
     {
       "depends_on": [],
       "id": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
-      "line": 486,
+      "line": 445,
       "parent_pending_ids": [
         "P-28d6ece4-a519-44a8-9625-3367479a03c3"
       ],
@@ -852,7 +834,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 525,
+      "line": 484,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -868,7 +850,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 680,
+      "line": 639,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -882,7 +864,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 717,
+      "line": 676,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -896,7 +878,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 754,
+      "line": 713,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -910,7 +892,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 887,
+      "line": 846,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -924,7 +906,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 925,
+      "line": 884,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -938,7 +920,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 959,
+      "line": 918,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -952,7 +934,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 994,
+      "line": 953,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -966,7 +948,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1028,
+      "line": 987,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -980,7 +962,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1066,
+      "line": 1025,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -994,7 +976,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1093,
+      "line": 1052,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1008,7 +990,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1115,
+      "line": 1074,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1022,7 +1004,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1142,
+      "line": 1101,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

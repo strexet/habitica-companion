@@ -113,3 +113,24 @@ test('an old in-flight preview cannot regain authority after a newer grant epoch
  const {mcpEpoch}=await import('../src/mcp-epoch.ts');const env=await s.f.mf.getBindings('workspace'),row=await s.f.workspaceDb.prepare('SELECT * FROM workspaces WHERE profile_id=?').bind(profile.profileId).first();
  await assert.rejects(()=>mcpEpoch(env,row,'legacy'),/unauthorized/);assert.equal((await s.f.workspaceDb.prepare('SELECT mcp_grant_epoch FROM workspaces WHERE profile_id=?').bind(profile.profileId).first()).mcp_grant_epoch,row.mcp_grant_epoch);
 });
+
+test('re-enrollment after grant revocation restores retained Workspace access without old preview authority',async t=>{
+ const {enrolled}=await import('../../chatgpt-auth/test/fixtures/oauth.mjs');const s=await setup(t),p=await s.prepare(),profile=s.profiles[0],before=await(await s.http(0,'/workspace',undefined,'GET')).json(),taskId=crypto.randomUUID();
+ assert.equal((await s.http(0,'/commands',{id:crypto.randomUUID(),workspaceId:before.document.id,expectedRevision:1,operation:'createTodo',taskId,patch:{text:'Retained synthetic Todo'},projectToHabitica:false})).status,201);
+ assert.equal((await s.f.auth.fetch(`http://localhost:8787/profiles/${profile.profileId}/revoke-grants`,{method:'POST',headers:{authorization:'Bearer '+profile.managementToken,'content-type':'application/json'},body:JSON.stringify({confirm:'revoke-chatgpt-grants'})})).status,200);
+ await s.client(0,scope);assert.notEqual((await s.tool(0,'get_cron_status')).isError,true);const oldEpoch=(await s.f.workspaceDb.prepare('SELECT mcp_grant_epoch FROM workspaces WHERE profile_id=?').bind(profile.profileId).first()).mcp_grant_epoch;assert.notEqual(oldEpoch,'legacy');
+ assert.equal((await s.f.auth.fetch(`http://localhost:8787/profiles/${profile.profileId}`,{method:'DELETE',headers:{authorization:'Bearer '+profile.managementToken}})).status,200);s.profiles[0]=await enrolled(s.f);assert.equal(s.profiles[0].profileId,profile.profileId);
+ const connected=await s.http(0,'/connect',{consentVersion:'workspace-v1'},'POST',true);assert.equal(connected.status,201);s.sessions[0]=(await connected.json()).sessionToken;await s.client(0,scope);
+ const result=await s.tool(0,'get_cron_status');assert.notEqual(result.isError,true,JSON.stringify(result));const after=await(await s.http(0,'/workspace',undefined,'GET')).json();assert.equal(after.document.id,before.document.id);assert.ok(after.document.tasks.some(t=>t.id===taskId));assert.equal((await s.execute(p)).isError,true);assert.equal(s.state.posts,0);
+});
+
+test('credential re-enrollment cannot turn an inaccessible original Cron receipt into known failure',async t=>{
+ const {enrolled}=await import('../../chatgpt-auth/test/fixtures/oauth.mjs');const s=await setup(t),p=await s.prepare();s.state.unknown=true;assert.equal((await s.execute(p)).structuredContent.outcomeUnknown,true);const profile=s.profiles[0];
+ assert.equal((await s.f.auth.fetch(`http://localhost:8787/profiles/${profile.profileId}`,{method:'DELETE',headers:{authorization:'Bearer '+profile.managementToken}})).status,200);s.profiles[0]=await enrolled(s.f);const connected=await s.http(0,'/connect',{consentVersion:'workspace-v1'},'POST',true);assert.equal(connected.status,201);s.sessions[0]=(await connected.json()).sessionToken;await s.client(0,scope);
+ const receipt=(await s.tool(0,'get_cron_command',{actionId:p.actionId})).structuredContent;assert.equal(receipt.outcomeUnknown,true);assert.equal(receipt.confirmed,false);assert.equal(receipt.status,'unknownOutcome');assert.equal(receipt.failure,'receipt_unavailable');assert.equal(s.state.posts,1);
+ await s.f.workspaceDb.prepare('UPDATE workspaces SET executor_enabled=1 WHERE profile_id=?').bind(profile.profileId).run();assert.equal(await executeProfile(await s.f.mf.getBindings('workspace'),profile.profileId),'cron_fenced');assert.equal((await s.execute(p)).structuredContent.outcomeUnknown,true);assert.equal(s.state.posts,1);
+});
+
+test('successful original-refusal receipt lookup still resolves an uncertain Cron acknowledgement without dispatch',async t=>{
+ const s=await setup(t),p=await s.prepare();s.state.task.completed=true;s.state.lost=true;assert.equal((await s.execute(p)).structuredContent.outcomeUnknown,true);const receipt=(await s.tool(0,'get_cron_command',{actionId:p.actionId})).structuredContent;assert.equal(receipt.status,'stopped');assert.equal(receipt.outcomeUnknown,false);assert.equal(receipt.failure,'cron_precondition_changed');assert.equal(s.state.posts,0);
+});

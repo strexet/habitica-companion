@@ -111,3 +111,10 @@ test('failed Workspace dispatch persistence stops before calling the private gat
  await s.f.workspaceDb.prepare("CREATE TRIGGER fixture_spell_dispatch_failure BEFORE UPDATE ON prepared_spell_actions WHEN NEW.status='dispatching' BEGIN SELECT RAISE(ABORT,'fixture failure'); END").run();
  const result=await s.execute(p);assert.equal(result.structuredContent.status,'stopped');assert.equal(result.structuredContent.attemptedCount,0);assert.equal(s.state.posts,0);
 });
+
+test('credential re-enrollment cannot turn an inaccessible original spell receipt into known failure',async t=>{
+ const {enrolled}=await import('../../chatgpt-auth/test/fixtures/oauth.mjs');const s=await setup(t),p=await s.prepare();s.state.failAt=1;s.state.unknown=true;assert.equal((await s.execute(p)).structuredContent.outcomeUnknown,true);const profile=s.profiles[0];
+ assert.equal((await s.f.auth.fetch(`http://localhost:8787/profiles/${profile.profileId}`,{method:'DELETE',headers:{authorization:'Bearer '+profile.managementToken}})).status,200);s.profiles[0]=await enrolled(s.f);const connected=await s.http(0,'/connect',{consentVersion:'workspace-v1'},'POST',true);assert.equal(connected.status,201);s.sessions[0]=(await connected.json()).sessionToken;await s.client(0);
+ const receipt=(await s.tool(0,'get_spell_command',{actionId:p.actionId})).structuredContent;assert.equal(receipt.outcomeUnknown,true);assert.equal(receipt.confirmedCount,0);assert.equal(receipt.status,'unknownOutcome');assert.equal(receipt.failure,'receipt_unavailable');assert.equal(s.state.posts,1);
+ await s.f.workspaceDb.prepare('UPDATE workspaces SET executor_enabled=1 WHERE profile_id=?').bind(profile.profileId).run();assert.equal(await executeProfile(await s.f.mf.getBindings('workspace'),profile.profileId),'spell_fenced');await s.consent(0);const next=await s.prepare();assert.equal((await s.execute(next)).isError,true);assert.equal(s.state.posts,1);
+});
