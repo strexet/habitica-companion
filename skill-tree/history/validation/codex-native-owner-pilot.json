@@ -1,0 +1,211 @@
+{
+  "kind": "codex-native-owner-pilot",
+  "local_date": "2026-10-17",
+  "timezone": "Asia/Novosibirsk",
+  "run_id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
+  "release_task_id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+  "client": "Codex desktop native MCP tool surface",
+  "client_version": "not independently captured",
+  "source_commit": "49247f094f01f2e04510875f0c7a9ce4641f0f23",
+  "first_read_utc": "2026-10-16T18:59:50.052Z",
+  "immediate_repeat_utc": "2026-10-16T18:59:57.629Z",
+  "latest_read_utc": "2026-10-16T19:10:07.524Z",
+  "discovered_tools": 25,
+  "successful_read_tools": [
+    "get_profile",
+    "get_account_status",
+    "list_tasks",
+    "get_task",
+    "list_companion_tasks",
+    "get_companion_task"
+  ],
+  "repeated_account_task_account": "pass; consecutive native tool invocations return structured results without an authentication error",
+  "reconnect_ui_observation": "No authentication_required tool result or user-facing reauthentication handoff occurred during the recorded calls. Browser-side protocol exchange was not inspected.",
+  "disabled_context_checks": {
+    "cron": "cron_unavailable",
+    "spells": "spell_unavailable",
+    "execution_attempted": false
+  },
+  "companion_only_write": {
+    "owner_approval": "Explicit approval of the exact preview in this chat",
+    "command_id": "8971e91c-361e-4105-bc7f-0f26c656ca09",
+    "task_id": "a589bce0-06a9-40f0-938b-5683f2a15aa8",
+    "text": "Companion live-test Todo \u2014 2026-10-17",
+    "may_affect_habitica": false,
+    "saved_in_companion": true,
+    "projection_status": "notRequested",
+    "confirmed_projection_count": 0,
+    "outcome_unknown": false,
+    "task_readback_matches": true,
+    "original_receipt_matches": true,
+    "acceptance_calls": 1,
+    "interrupted_acknowledgement_tested": false,
+    "retained_test_task": true,
+    "search_returns_exactly_one_test_task": true
+  },
+  "long_interval_read": {
+    "first_read_utc": "2026-10-16T18:59:50.052Z",
+    "last_read_utc": "2026-10-16T19:10:07.524Z",
+    "elapsed_seconds": 617.472,
+    "account_read_success": true,
+    "stable_profile_identity": true,
+    "no_authentication_handoff": true,
+    "token_refresh_exchange_observed": false
+  },
+  "privacy": "No existing task text/notes, account/profile/party/workspace identifiers, credentials, linking codes or token values retained.",
+  "remaining_gates": [
+    "ChatGPT immediate and long-interval retest",
+    "Codex browser-side protocol details, scoped-write denial and real revocation",
+    "private packaged skills in both clients",
+    "scoped write denial and real revocation",
+    "interrupted original-receipt recovery",
+    "second consenting account and cross-profile checks",
+    "iOS Safari/PWA and Android"
+  ],
+  "operational_log_sample": {
+    "kind": "bounded-live-application-log-inspection",
+    "duration_seconds": 47.23,
+    "worker": "habitica-companion-auth",
+    "transport_envelopes": 4,
+    "application_log_samples": [
+      {
+        "tool": "get_account_status",
+        "status": 200,
+        "field_names": [
+          "correlationId",
+          "durationMs",
+          "rate",
+          "route",
+          "status",
+          "tool"
+        ],
+        "rate_field_names": [
+          "limit",
+          "remaining"
+        ]
+      }
+    ],
+    "unexpected_application_messages": 0,
+    "exception_count": 0,
+    "raw_transport_or_headers_persisted": false,
+    "child_process_exited": true,
+    "graceful_cleanup": true,
+    "exit_code": 0
+  },
+  "live_backend_configuration": {
+    "habitica-companion-auth": {
+      "configuration": {
+        "AUTH_ISSUER": "https://habitica-companion-auth.strexet.workers.dev",
+        "CRON_ENABLED": false,
+        "ENROLLMENT_ENABLED": true,
+        "ENVIRONMENT": "production",
+        "KEY_OPERATIONS_ENABLED": false,
+        "MCP_RESOURCE": "https://habitica-companion-mcp.strexet.workers.dev/mcp",
+        "OAUTH_ENABLED": true,
+        "PARTY_ENABLED": false,
+        "PROJECTION_ENABLED": false,
+        "PWA_ORIGIN": "https://habitica-companion.pages.dev",
+        "SPELLS_ENABLED": false,
+        "WORKSPACE_ENABLED": true
+      },
+      "deployed_versions": [
+        {
+          "version_id": "178ce0db-dbb8-48b5-97bd-85f72eb97166",
+          "percentage": 100
+        }
+      ],
+      "observability": {
+        "enabled": true,
+        "head_sampling_rate": 1,
+        "redact_query_string": false,
+        "logs": {
+          "enabled": true,
+          "head_sampling_rate": 1,
+          "persist": true,
+          "invocation_logs": false
+        },
+        "traces": {
+          "enabled": false,
+          "persist": true,
+          "head_sampling_rate": 1
+        }
+      }
+    },
+    "habitica-companion-mcp": {
+      "configuration": {
+        "AUTH_ISSUER": "https://habitica-companion-auth.strexet.workers.dev",
+        "ENVIRONMENT": "production",
+        "MCP_RESOURCE": "https://habitica-companion-mcp.strexet.workers.dev/mcp",
+        "OAUTH_ENABLED": true,
+        "PWA_ORIGIN": "https://habitica-companion.pages.dev"
+      },
+      "deployed_versions": [
+        {
+          "version_id": "7301edd4-9ce7-4cb7-8b39-a49e12d2c926",
+          "percentage": 100
+        }
+      ],
+      "observability": {
+        "enabled": true,
+        "head_sampling_rate": 1,
+        "redact_query_string": false,
+        "logs": {
+          "enabled": true,
+          "head_sampling_rate": 1,
+          "persist": true,
+          "invocation_logs": false
+        },
+        "traces": {
+          "enabled": false,
+          "persist": true,
+          "head_sampling_rate": 1
+        }
+      }
+    },
+    "habitica-companion-workspace": {
+      "configuration": {
+        "AUTH_ISSUER": "https://habitica-companion-auth.strexet.workers.dev",
+        "CRON_ENABLED": false,
+        "ENVIRONMENT": "production",
+        "EXECUTOR_ENABLED": false,
+        "MCP_RESOURCE": "https://habitica-companion-mcp.strexet.workers.dev/mcp",
+        "PARTY_ENABLED": false,
+        "PWA_ORIGIN": "https://habitica-companion.pages.dev",
+        "SPELLS_ENABLED": false,
+        "WORKSPACE_ENABLED": true
+      },
+      "deployed_versions": [
+        {
+          "version_id": "30beea24-6e50-4154-b246-b2b57b8be0f4",
+          "percentage": 100
+        }
+      ],
+      "observability": {
+        "enabled": true,
+        "head_sampling_rate": 1,
+        "redact_query_string": false,
+        "logs": {
+          "enabled": true,
+          "head_sampling_rate": 1,
+          "persist": true,
+          "invocation_logs": false
+        },
+        "traces": {
+          "enabled": false,
+          "persist": true,
+          "head_sampling_rate": 1
+        }
+      }
+    }
+  },
+  "browser_scope": "The available in-app browser tabs are expired local fixtures; no authenticated production browser session was available for app UI qualification.",
+  "checks": {
+    "live_read_tools": "six pass",
+    "approved_companion_write_and_receipt": "pass",
+    "long_interval_native_continuity": "pass; 617.472 seconds with stable profile identity",
+    "production_log_sample": "pass; bounded successful account-read sample only",
+    "future_document": "strict pass",
+    "repository_documentation": "pass",
+    "introduced_prose_diagnostics": []
+  }
+}

@@ -10,6 +10,8 @@ Auth, Workspace and MCP Workers are published. Production integration OAuth KV a
 
 Hosted public checks establish HTTPS, routed-page refresh, production frontend settings, backend health, OAuth discovery, anonymous-access denial and exact-origin CORS. The signed-out Settings page renders integration disclosures and sign-in requirements. The owner reports initial OAuth completion in ChatGPT and Codex, ChatGPT discovery of 25 tools and two successful reads. ChatGPT requests reconnection on the next request within one minute. Repeat-request and refresh continuity, private packaged skills, multi-user isolation and mobile-device checks remain unqualified.
 
+The [native Codex pilot](../history/validation/codex-native-owner-pilot.json) qualifies all six account/task read tools, immediate account/task/account reuse, a successful read after 617 seconds with stable profile identity and one explicitly approved Companion-only Todo creation with readback, search and original receipt lookup. The live Auth read-log sample contains only the expected operational field schema; raw tail transport envelopes and request headers are discarded before persistence. Live gameplay flags remain disabled. ChatGPT retesting, complete token lifecycle/revocation, interrupted acknowledgement recovery, packaged skills and multi-user/mobile gates remain open.
+
 ### Completed publication prerequisites
 
 - [x] Local traffic/operational protection and E14 adoption/recovery controls pass; [local evidence](../history/validation/e14-local-qualification.json) remains separate from real account qualification.

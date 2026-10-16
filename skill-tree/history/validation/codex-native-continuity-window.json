@@ -1,0 +1,9 @@
+{
+  "first_read_utc": "2026-10-16T18:59:50.052Z",
+  "last_read_utc": "2026-10-16T19:10:07.524Z",
+  "elapsed_seconds": 617.472,
+  "account_read_success": true,
+  "stable_profile_identity": true,
+  "no_authentication_handoff": true,
+  "token_refresh_exchange_observed": false
+}

@@ -338,7 +338,7 @@ depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f4
 Goal:
 - Preserve and execute real multi-user and mobile release qualification before broader availability.
 Current behavior:
-- Local synthetic checks do not prove actual two-account host enrollment, production logs, iOS Safari/PWA or Android behavior. The selected production website and backends are published with public boundary checks; real accounts, client consent and device behavior remain unqualified.
+- Local synthetic checks do not prove actual two-account host enrollment, production logs, iOS Safari/PWA or Android behavior. The selected production website and backends are published with public boundary checks. Native Codex task/account reads and one explicitly approved Companion-only Todo save/read/receipt lookup pass; complete client, multi-user and device qualification remains open.
 Desired behavior:
 - Owner-first checks qualify ChatGPT and Codex desktop independently against the same selected production backend, including OAuth callbacks/refresh, MCP discovery, scoped tools, original receipts and plugin/skill activation. The consenting-teammate stage verifies separate identities and revocation, alongside mobile and production-log evidence.
 Touch:
@@ -350,7 +350,7 @@ Out of scope:
 Implementation constraints:
 - All implemented tools require isolation/revocation qualification; live Cron remains off. Real log inspection verifies absence of secrets with minimum redacted evidence. Missing infrastructure remains a blocker.
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. The owner reports initial OAuth completion in both clients and ChatGPT reads, followed by immediate repeated reconnection. Client continuity, packaged-skill qualification, a second consenting owner and iOS/Android device qualification remain outstanding. Preparation cannot satisfy real release acceptance.
+- [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. The owner reports initial OAuth completion in both clients and ChatGPT reads, followed by immediate repeated reconnection. Native Codex repeated reads and an approved Companion-only save pass. ChatGPT continuity retesting, complete token lifecycle and revocation checks, packaged-skill qualification, a second consenting owner and iOS/Android device qualification remain outstanding. Preparation cannot satisfy real release acceptance.
 Validation:
 - Verify local environment/resource separation and prepare exact owner/teammate/device checks. Maintain independent ChatGPT and Codex desktop results in the plugin client matrix; direct MCP access, packaged skills and optional CLI diagnostics remain distinct checks. Execute real checks only inside separately authorized scope.
 Acceptance:

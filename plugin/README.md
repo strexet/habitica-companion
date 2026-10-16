@@ -20,16 +20,16 @@ ChatGPT and Codex desktop are required owner-pilot clients. Direct MCP qualifica
 
 | Check | ChatGPT | Codex desktop |
 | --- | --- | --- |
-| Private MCP connection, initialization and tool discovery | Owner reports 25 tools and two successful reads | Owner reports authentication completion; discovery unrun |
-| OAuth discovery, PKCE, exact issuer/resource and selected scopes | Owner reports initial completion; detailed protocol checks unrun | Owner reports initial completion; detailed protocol checks unrun |
-| Client-specific callback, consent flow, token refresh and reconnect | Failed: owner reports reconnect on the next request within one minute; repair retest pending | Owner reports callback completion; refresh/reconnect unrun |
-| Read-only access, denied write scope and cross-profile isolation | Two reads owner-reported; negatives and isolation unrun | Unrun |
-| Reviewed canonical task command and original receipt recovery after interruption | Unrun | Unrun |
+| Private MCP connection, initialization and tool discovery | Owner reports 25 tools and two successful reads | Native Codex tool surface exposes 25 tools; account/task reads pass |
+| OAuth discovery, PKCE, exact issuer/resource and selected scopes | Owner reports initial completion; detailed protocol checks unrun | Authenticated native calls pass; detailed PKCE/issuer/scope inspection unrun |
+| Client-specific callback, consent flow, token refresh and reconnect | Failed: owner reports reconnect on the next request within one minute; repair retest pending | Owner reports callback completion; immediate and 617-second native request reuse pass with stable identity; hidden refresh exchange unobserved |
+| Read-only access, denied write scope and cross-profile isolation | Two reads owner-reported; negatives and isolation unrun | All six task/account read tools pass; scoped-write denial and isolation unrun |
+| Reviewed canonical task command and original receipt recovery after interruption | Unrun | Approved Companion-only Todo creation, readback, search and original receipt lookup pass; interruption unrun |
 | Grant revocation denies new access and unaccepted previews | Unrun | Unrun |
 | Private plugin installation and all three bundled skills, explicit and natural invocation | Unrun | Unrun |
-| Live Cron denied; unselected game-effect lanes disabled | Unrun | Unrun |
+| Live Cron denied; unselected game-effect lanes disabled | Unrun | Cron/spell context refuses access and live effect flags are off; execution-denial checks unrun |
 
-Owner observations are self-reported; client versions, granted scopes and independent tool-call traces are not captured. The custom MCP connection does not establish bundled-skill installation.
+ChatGPT observations are owner-reported. [Codex native pilot evidence](../skill-tree/history/validation/codex-native-owner-pilot.json) records independently executed tool calls and one explicitly approved Companion-only test save. Client versions, granted scopes and browser-side protocol exchanges are not independently captured. The custom MCP connection does not establish bundled-skill installation.
 
 Record app/client version, transport, selected permissions, actual callback mode, deployed commit and sanitized evidence per cell. Codex callback checks cover the actual loopback host/path/port and issuer response rather than reusing a ChatGPT redirect. Origin/CORS checks use observed client requests; no blanket origin exception is required by the test plan. Token values, one-time codes and credential-bearing request data remain excluded from evidence. Use [official OpenAI MCP guidance](https://learn.chatgpt.com/docs/extend/mcp?surface=app) and [plugin packaging guidance](https://developers.openai.com/plugins/build/plugins) for client setup.
 

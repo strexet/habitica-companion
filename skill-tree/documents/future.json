@@ -105,17 +105,21 @@
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
+    "history_refs": [
+      "skill-tree/history/validation/codex-native-owner-pilot.json"
+    ],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Follow deploy/README.md ChatGPT reconnect regression check; test independent Codex reads and preserve failed or unrun release gates.",
+    "next_action": "Obtain pending owner ChatGPT retest, consenting tester and device details; complete the remaining release gates without widening the implementation snapshot.",
     "partial_work": [
       "Auth source 893f619 is deployed as version 0131fa19-a146-4095-8047-e2282bcd7891; reviewed resources, secret names and disabled effect flags are retained.",
       "The synthetic browser reproduces the original double-click symptom. Corrected single approval and denial reach the separate client callback. Auth build and eighteen targeted checks pass.",
       "Post-deployment Auth health, MCP-to-Auth reachability and OAuth discovery pass. Wrangler refreshed the expired OAuth login without new permissions or secret disclosure.",
       "Production Pages remains source f94b768. The sign-in header and code-handoff UI improvements remain local commits 0ce97eb and ef72c04 for a later selected website update.",
       "Real owner client OAuth/plugin, separate workspace consent confirmation, two-account and device checks remain outstanding. No real account grant was performed by the agent.",
-      "OAuth request-continuity source 49247f0 deployed to the existing Auth and MCP Workers; hosted health/discovery and preserved settings pass. Evidence: skill-tree/history/validation/oauth-request-continuity.json. Owner ChatGPT/Codex continuity retests remain open."
+      "OAuth request-continuity source 49247f0 deployed to the existing Auth and MCP Workers; hosted health/discovery and preserved settings pass. Evidence: skill-tree/history/validation/oauth-request-continuity.json. Owner ChatGPT/Codex continuity retests remain open.",
+      "Native Codex pilot: 25 tools exposed, six read tools pass, repeated reads after 617 seconds preserve profile identity, and exact owner-approved Companion-only Todo creation/read/search/original receipt pass with zero Habitica effects. Bounded successful Auth log sample contains only allowed operational fields. Evidence: skill-tree/history/validation/codex-native-owner-pilot.json"
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -874,10 +878,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "OAuth request-continuity repair is deployed to the existing production Auth and MCP Workers. Public health, discovery, anonymous denial and preserved configuration pass. Owner live request/refresh retests and broader release gates remain open."
+    "stop_reason": "Native Codex owner-pilot reads, long-interval continuity and approved Companion-only save pass. Complete ChatGPT retesting, client protocol/revocation and interrupted-receipt checks, packaged skills, a second consenting account and real iOS/Android qualification remain required. No other incomplete task belongs to the frozen implementation snapshot."
   },
   "format": "skill-tree-future",
-  "source_hash": "1fe257d7ff041e17a1a0919d4b364157862ab5b33bd55ae666f292588ba3d782",
+  "source_hash": "1055e3741abef1deeb6381575f130ae44d6648519d52682bf6c739fb1b6a6156",
   "tasks": [
     {
       "depends_on": [],

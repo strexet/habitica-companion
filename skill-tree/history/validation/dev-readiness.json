@@ -1,6 +1,6 @@
 {
   "kind": "intermediate-dev-readiness",
-  "date": "2026-10-16",
+  "date": "2026-10-17",
   "source_commit": "f94b768fc4e0431ce7459a3f3fc25f7c50751e2e",
   "initial_queue_commit": "2d47b81d^",
   "initial_entries": 37,
@@ -32,7 +32,7 @@
     "Codex CLI"
   ],
   "client_qualification_matrix": "plugin/README.md#client-qualification-matrix",
-  "client_qualification_status": "owner-reported-initial-success-chatgpt-repeat-request-failure",
+  "client_qualification_status": "codex-native-reads-and-approved-companion-save-pass-chatgpt-retest-required",
   "historical_baseline": {
     "source_commit": "5c2efbd",
     "completed_task_units": 35,
@@ -55,7 +55,7 @@
   "existing_pages_production_branch": "main",
   "new_database_migrations_applied": true,
   "latest_preparation_reference": "skill-tree/history/validation/production-target-correction.json",
-  "owner_next_action": "Refresh ChatGPT tool definitions and authorize once; test separate account/task/account reads and another read after more than ten minutes. Check Codex independently.",
+  "owner_next_action": "Report ChatGPT immediate and eleven-minute retest results; identify a second consenting tester and real iOS/Android devices. Complete packaged-skill, revocation and interrupted-receipt checks.",
   "historical_preparation_reference": "skill-tree/history/validation/existing-pages-preparation.json",
   "selected_environment": "production",
   "separate_dev_environment": false,
@@ -72,5 +72,6 @@
   "auth_version_id": "178ce0db-dbb8-48b5-97bd-85f72eb97166",
   "owner_observation_reference": "skill-tree/history/validation/oauth-request-continuity.json",
   "mcp_source_commit": "49247f094f01f2e04510875f0c7a9ce4641f0f23",
-  "mcp_version_id": "7301edd4-9ce7-4cb7-8b39-a49e12d2c926"
+  "mcp_version_id": "7301edd4-9ce7-4cb7-8b39-a49e12d2c926",
+  "latest_owner_pilot_reference": "skill-tree/history/validation/codex-native-owner-pilot.json"
 }
