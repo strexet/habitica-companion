@@ -1,6 +1,6 @@
 # Habitica Companion plugin
 
-The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamable HTTP MCP declaration and three skills. The selected host is ChatGPT; supported surfaces can import the same portable format. Actual installation, model activation and two-user enrollment remain rollout checks. No plugin is installed or published by repository tests.
+The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamable HTTP MCP declaration and three skills. The selected first-dev clients are ChatGPT and Codex desktop; each client requires independent connection and workflow qualification. Actual installation, model activation and two-user enrollment remain rollout checks. No plugin is installed or published by repository tests.
 
 The committed MCP endpoint uses `.invalid` and cannot connect. The integration Workers and PWA cloud settings also ship disabled. A deployable package requires an approved operator-configured HTTPS endpoint matching the Auth resource/audience and the MCP Worker configuration. Never add authorization headers or Habitica credentials to the package.
 
@@ -13,6 +13,25 @@ The committed MCP endpoint uses `.invalid` and cannot connect. The integration W
 5. Run each scenario below with isolated test profiles before team activation. Verify both explicit skill invocation and ordinary matching requests in a fresh chat. Preserve denied access and uncertain receipts; do not compensate with direct API calls.
 
 The source package contains no registered connector ID, public listing, marketplace installation, hooks or custom UI. A real host registration must use the assigned registration identity; never invent a `.app.json` mapping.
+
+## Client qualification matrix
+
+ChatGPT and Codex desktop are required first-dev clients. Direct MCP qualification uses the same approved dev HTTPS backend with distinct client registrations and grants. Owner-first checks precede the separate two-consenting-account release stage. Codex CLI diagnostics supplement the desktop lane. A successful direct connection does not prove plugin installation or skill activation.
+
+| Check | ChatGPT | Codex desktop |
+| --- | --- | --- |
+| Private MCP connection, initialization and tool discovery | Unrun | Unrun |
+| OAuth discovery, PKCE, exact issuer/resource and selected scopes | Unrun | Unrun |
+| Client-specific callback, consent flow, token refresh and reconnect | Unrun | Unrun |
+| Read-only access, denied write scope and cross-profile isolation | Unrun | Unrun |
+| Reviewed canonical task command and original receipt recovery after interruption | Unrun | Unrun |
+| Grant revocation denies new access and unaccepted previews | Unrun | Unrun |
+| Private plugin installation and all three bundled skills, explicit and natural invocation | Unrun | Unrun |
+| Live Cron denied; unselected game-effect lanes disabled | Unrun | Unrun |
+
+Record app/client version, transport, selected permissions, actual callback mode, deployed commit and sanitized evidence per cell. Codex callback checks cover the actual loopback host/path/port and issuer response rather than reusing a ChatGPT redirect. Origin/CORS checks use observed client requests; no blanket origin exception is required by the test plan. Token values, one-time codes and credential-bearing request data remain excluded from evidence. Use [official OpenAI MCP guidance](https://learn.chatgpt.com/docs/extend/mcp?surface=app) and [plugin packaging guidance](https://developers.openai.com/plugins/build/plugins) for client setup.
+
+All workflow scenarios below apply independently to both clients. Selected real effects require explicit review and test scope; the initial dev lane keeps projection, spells and background execution disabled, with live Cron off. Missing hosted endpoints, host access or per-user consent remain unrun gates.
 
 ## Workflow qualification scenarios
 

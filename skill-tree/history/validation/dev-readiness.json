@@ -23,5 +23,14 @@
   "cloudflare_project_inventory": "unavailable-noninteractive-auth",
   "remote_deployment_performed": false,
   "local_validation_reference": "skill-tree/history/validation/reconnection-receipt-boundaries.json",
-  "checklist": "skill-tree/documents/deploy-cloudflare-pages.md#intermediate-dev-launch-readiness"
+  "checklist": "skill-tree/documents/deploy-cloudflare-pages.md#intermediate-dev-launch-readiness",
+  "required_first_dev_clients": [
+    "ChatGPT",
+    "Codex desktop"
+  ],
+  "supplementary_client_diagnostics": [
+    "Codex CLI"
+  ],
+  "client_qualification_matrix": "plugin/README.md#client-qualification-matrix",
+  "client_qualification_status": "unrun"
 }

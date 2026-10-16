@@ -402,7 +402,7 @@ Documentation updates:
 Risks:
 - Treating synthetic browser checks as device or live account qualification.
 
-### Qualify real multi-user and mobile release gates
+### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml
 id: T-d76d2a9a-1318-4e63-9bb4-73f620b108cc
@@ -421,7 +421,7 @@ Goal:
 Current behavior:
 - Local synthetic checks do not prove actual two-account host enrollment, production logs, iOS Safari/PWA or Android behavior. No live environment or device operation is authorized by local implementation scope.
 Desired behavior:
-- Owner-first and consenting-teammate stages verify separate identities, tools and revocation, alongside mobile and production-log evidence.
+- Owner-first checks qualify ChatGPT and Codex desktop independently against the same dev backend, including OAuth callbacks/refresh, MCP discovery, scoped tools, original receipts and plugin/skill activation. The consenting-teammate stage verifies separate identities and revocation, alongside mobile and production-log evidence.
 Touch:
 - Release qualification matrix and explicitly authorized deployment/account/device lanes when supplied.
 Discovery allowance:
@@ -433,8 +433,9 @@ Implementation constraints:
 Questions and required clarifications:
 - [Unresolved - blocks implementation] Authorized preview endpoints, two consenting account owners, host enrollment and iOS/Android device scope are unavailable. The local run cannot satisfy real release acceptance.
 Validation:
-- Verify local environment/resource separation and prepare exact owner/teammate/device checks. Execute real checks only inside separately authorized scope.
+- Verify local environment/resource separation and prepare exact owner/teammate/device checks. Maintain independent ChatGPT and Codex desktop results in the plugin client matrix; direct MCP access, packaged skills and optional CLI diagnostics remain distinct checks. Execute real checks only inside separately authorized scope.
 Acceptance:
+- ChatGPT and Codex desktop each complete the documented owner-first dev OAuth, scoped-tool, original-receipt, revocation and plugin/skill checks with client/version and sanitized evidence recorded; success in one client never substitutes for the other.
 - Two consenting team accounts complete independent real enrollment, packaged-tool and revocation flows with no cross-profile effects.
 - Real iOS Safari/PWA and Android checks plus redacted production-log inspection qualify release or retain explicit failed gates.
 Documentation updates:

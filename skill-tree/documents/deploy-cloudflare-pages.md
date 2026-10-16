@@ -24,8 +24,11 @@ A browser-only Pages preview can precede cloud enrollment after Pages storage is
 
 ### Hosted smoke checks before owner handoff
 
+Required first-dev clients: ChatGPT and Codex desktop. Both clients use the same dev MCP backend with independent OAuth client registrations and grants. Record each client/version, transport, selected scopes, callback mode and sanitized result in the [client qualification matrix](../../plugin/README.md#client-qualification-matrix). Codex CLI can provide additional diagnostics; CLI success does not replace the desktop check. Account enrollment in one client does not qualify another client. Private plugin installation and skill activation require separate observations from direct MCP connectivity.
+
 - [ ] Publish the release build to dev and verify HTTPS, routed-page refresh, Settings, static configuration and expected disabled controls. Confirm legacy browser data remains intact and cloud adoption requires explicit choice.
-- [ ] Verify OAuth discovery, exact audience, PKCE, consent cookies, CORS and the intended ChatGPT/plugin host against deployed addresses. Complete explicit account enrollment through the consent UI; never import credentials from chat or test fixtures.
+- [ ] Verify OAuth discovery, exact audience, PKCE, consent cookies and Origin/CORS separately for ChatGPT and Codex desktop against deployed addresses. Verify Codex loopback callbacks, selected ports and issuer validation for the actual client registration flow. Complete explicit account enrollment through the consent UI; never import credentials from chat or test fixtures.
+- [ ] Qualify the private plugin and all three bundled skills in both clients, using explicit invocation and matching natural-language requests in fresh chats. Record actual host availability and any failed installation or activation gate.
 - [ ] Save and read a canonical task, recover the original command receipt after an interrupted response, export/restore a backup and exercise revoke/disconnect/delete controls. Verify rejected cross-profile access and retained uncertainty without duplicate effects. Exercise real effects only in selected lanes.
 - [ ] Confirm safe 429/backoff behavior, stalled/unknown status, secret-free logs and the stop/rollback procedure. Record unresolved hosted limitations for the owner test session.
 
