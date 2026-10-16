@@ -31,6 +31,12 @@
                 @GetActiveRefreshText()
             </span>
         }
+        else if (!SessionController.State.IsAuthenticated)
+        {
+            <MudButton Class="sign-in-button" Color="Color.Secondary" Href="/sign-in" id="app-sign-in" Variant="Variant.Filled">
+                Sign in
+            </MudButton>
+        }
         else
         {
             <MudButton Class="refresh-button" Color="Color.Secondary" Disabled="@(!SessionController.State.IsAuthenticated || SessionController.State.IsBusy)" id="app-refresh" OnClick="RefreshAsync" Variant="Variant.Filled">

@@ -1578,6 +1578,7 @@ Current implementation:
 
 - `Sign In`, `Dashboard`, `Tasks`, `Equipment`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, and `Diagnostics` routes;
 - `/` resolves after session initialization, sending authenticated sessions to Dashboard and unauthenticated sessions to Sign In;
+- signed-out pages expose a visible header `Sign in` link to `/sign-in`; authenticated sessions retain the Refresh/status action;
 - saved local credentials are checked before the route body renders, avoiding a sign-in flash for returning authenticated users;
 - authenticated drawer order is `Dashboard`, `Tasks`, `Equipment`, `Pets & Mounts`, `Party`, `Quests`, `Spells`, `Settings`, `Diagnostics`;
 - top app bar with refresh action, active refresh count, cloud sync state, and latest sync timestamp fallback;

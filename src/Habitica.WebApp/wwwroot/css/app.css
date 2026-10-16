@@ -165,6 +165,7 @@ input[type="radio"] {
 }
 
 .refresh-button,
+.sign-in-button,
 .refresh-status {
     flex: 0 0 auto;
     min-height: 2.5rem;
@@ -4298,7 +4299,8 @@ code {
         line-height: 1.1;
     }
 
-    .topbar .refresh-button {
+    .topbar .refresh-button,
+    .topbar .sign-in-button {
         flex: 0 0 auto;
         min-width: 4.35rem;
         min-height: 2.15rem;
@@ -4308,7 +4310,8 @@ code {
         line-height: 1.1;
     }
 
-    .topbar .refresh-button .mud-button-label {
+    .topbar .refresh-button .mud-button-label,
+    .topbar .sign-in-button .mud-button-label {
         white-space: nowrap;
     }
 

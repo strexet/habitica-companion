@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-16",
+  "task_id": "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+  "implementation": "Signed-out header replaces disabled Refresh with a Sign in link to /sign-in; shared sizing covers desktop and narrow phones.",
+  "checks": {
+    "release_build": "pass",
+    "existing_navigation_and_sign_in_tests": {
+      "passed": 14,
+      "failed": 0
+    },
+    "local_browser": "Signed-out Settings exposes #app-sign-in; clicking the link reaches /sign-in and renders the existing credential form. No credentials entered.",
+    "narrow_viewport": {
+      "width": 320,
+      "height": 740,
+      "button_left": 230.609375,
+      "button_right": 300.203125,
+      "visible": true
+    },
+    "preview_note": "Initial simple static server encountered an asset fetch failure; a bounded server with an expanded request queue loaded successfully. No app repair or Cloudflare setting change was needed.",
+    "screenshot": "/tmp/habitica-sign-in-header.png"
+  },
+  "publication": "Local change prepared for the next update; production deployment remains f94b768.",
+  "limitations": [
+    "Authenticated account operations and real client OAuth were not executed by this UI check."
+  ]
+}
