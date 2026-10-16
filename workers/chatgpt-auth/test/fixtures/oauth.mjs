@@ -19,7 +19,7 @@ async function fixture(t, options = {}) {
   const mf = new Miniflare(convertV4MiniflareOptions({ log: new CaptureLog(LogLevel.VERBOSE), workers: [
     { name: "auth", modules: true, script: await readFile(new URL("dist/index.js", authRoot), "utf8"),
       compatibilityDate: authConfig.compatibility_date, compatibilityFlags: ["nodejs_compat", "global_fetch_strictly_public"],
-      bindings: { ...authConfig.vars, OAUTH_ENABLED: true, ENROLLMENT_ENABLED: true, WORKSPACE_ENABLED: Boolean(options.workspace), PROJECTION_ENABLED: Boolean(options.projection), PARTY_ENABLED:Boolean(options.party), SPELLS_ENABLED:Boolean(options.spells), PROFILE_ID_KEY: key(3), CREDENTIAL_KEY_V1: key(1), CREDENTIAL_KEY_V2: key(2) },
+      bindings: { ...authConfig.vars, OAUTH_ENABLED: true, ENROLLMENT_ENABLED: true, WORKSPACE_ENABLED: Boolean(options.workspace), PROJECTION_ENABLED: Boolean(options.projection), PARTY_ENABLED:Boolean(options.party), SPELLS_ENABLED:Boolean(options.spells), CRON_ENABLED:Boolean(options.cron), PROFILE_ID_KEY: key(3), CREDENTIAL_KEY_V1: key(1), CREDENTIAL_KEY_V2: key(2) },
       kvNamespaces: ["OAUTH_KV"], d1Databases: ["HABITICA_INTEGRATION_DB"],
       outboundService: async request => {
         if (request.url.startsWith("https://habitica.com/api/v3/")) {
@@ -33,7 +33,7 @@ async function fixture(t, options = {}) {
     },
     { name: "mcp", modules: true, script: await readFile(new URL("dist/index.js", mcpRoot), "utf8"),
       compatibilityDate: authConfig.compatibility_date, compatibilityFlags: ["nodejs_compat"],
-      bindings: { ENVIRONMENT: "local", OAUTH_ENABLED: true }, serviceBindings: { ...(options.workspace ? { WORKSPACE_SERVER: { name: "workspace", entrypoint: "WorkspaceCommandService" }, AUTH_PROJECTION: { name: "auth", entrypoint: "ProjectionService" }, WORKSPACE_IDENTITY: { name: "auth", entrypoint: "WorkspaceIdentityService" }, AUTH_SPELL:{name:"auth",entrypoint:"SpellService"} } : {}), AUTH_SERVER: { name: "auth", entrypoint: "AuthService" } } },
+      bindings: { ENVIRONMENT: "local", OAUTH_ENABLED: true }, serviceBindings: { ...(options.workspace ? { WORKSPACE_SERVER: { name: "workspace", entrypoint: "WorkspaceCommandService" }, AUTH_PROJECTION: { name: "auth", entrypoint: "ProjectionService" }, WORKSPACE_IDENTITY: { name: "auth", entrypoint: "WorkspaceIdentityService" }, AUTH_CRON:{name:"auth",entrypoint:"CronService"}, AUTH_SPELL:{name:"auth",entrypoint:"SpellService"} } : {}), AUTH_SERVER: { name: "auth", entrypoint: "AuthService" } } },
     ...(options.workspace ? [{ name: "workspace", modules: true, script: await readFile(new URL("../companion-workspace/dist/index.js", authRoot), "utf8"), compatibilityDate: authConfig.compatibility_date, compatibilityFlags: ["nodejs_compat"], bindings: { ENVIRONMENT: "local", WORKSPACE_ENABLED: true, EXECUTOR_ENABLED: Boolean(options.executor), PARTY_ENABLED:Boolean(options.party), SPELLS_ENABLED:Boolean(options.spells) }, d1Databases: ["WORKSPACE_DB"], serviceBindings: { AUTH_SPELL:options.spellService??{name:"auth",entrypoint:"SpellService"}, AUTH_PROJECTION: options.projectionService ?? { name: "auth", entrypoint: "ProjectionService" }, AUTH_IDENTITY: options.identity ?? { name: "auth", entrypoint: "WorkspaceIdentityService" }, AUTH_PARTY:{name:"auth",entrypoint:"PartyService"} } }] : []),
   ] }));
   t.after(() => mf.dispose());

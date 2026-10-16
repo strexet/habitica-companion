@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "scope": "Fixed-offset day key and boundary only. No parity claim for server timezone transitions, Cron eligibility, damage, quest processing or rewards.",
+  "cases": [
+    {
+      "name": "before-utc",
+      "nowUtc": "2026-10-16T03:59:00Z",
+      "dayStart": 4,
+      "timezoneOffset": 0,
+      "day": "2026-10-15",
+      "dayStartUtc": "2026-10-15T04:00:00.000Z"
+    },
+    {
+      "name": "at-utc",
+      "nowUtc": "2026-10-16T04:00:00Z",
+      "dayStart": 4,
+      "timezoneOffset": 0,
+      "day": "2026-10-16",
+      "dayStartUtc": "2026-10-16T04:00:00.000Z"
+    },
+    {
+      "name": "before-east",
+      "nowUtc": "2026-10-15T20:59:00Z",
+      "dayStart": 4,
+      "timezoneOffset": -420,
+      "day": "2026-10-15",
+      "dayStartUtc": "2026-10-14T21:00:00.000Z"
+    },
+    {
+      "name": "at-east",
+      "nowUtc": "2026-10-15T21:00:00Z",
+      "dayStart": 4,
+      "timezoneOffset": -420,
+      "day": "2026-10-16",
+      "dayStartUtc": "2026-10-15T21:00:00.000Z"
+    },
+    {
+      "name": "before-west",
+      "nowUtc": "2026-10-16T08:59:00Z",
+      "dayStart": 4,
+      "timezoneOffset": 300,
+      "day": "2026-10-15",
+      "dayStartUtc": "2026-10-15T09:00:00.000Z"
+    },
+    {
+      "name": "at-west",
+      "nowUtc": "2026-10-16T09:00:00Z",
+      "dayStart": 4,
+      "timezoneOffset": 300,
+      "day": "2026-10-16",
+      "dayStartUtc": "2026-10-16T09:00:00.000Z"
+    },
+    {
+      "name": "quarter-hour",
+      "nowUtc": "2026-10-15T18:15:00Z",
+      "dayStart": 0,
+      "timezoneOffset": -345,
+      "day": "2026-10-16",
+      "dayStartUtc": "2026-10-15T18:15:00.000Z"
+    },
+    {
+      "name": "leap-day",
+      "nowUtc": "2024-03-01T01:00:00Z",
+      "dayStart": 4,
+      "timezoneOffset": 0,
+      "day": "2024-02-29",
+      "dayStartUtc": "2024-02-29T04:00:00.000Z"
+    }
+  ]
+}

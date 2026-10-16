@@ -879,3 +879,9 @@ The foreground loop reserves thirty-five seconds per private call within a fifty
 ## Computed account readiness boundary
 
 `get_account_status` and projection `inspectAccount` normalize the computed top-level `needsCron` from a bounded full-user read. The filtered user-fields route does not return computed readiness. Private raw user data remains outside public read models and attempt receipts. Server Daily projection requires an explicit boolean plus the existing timezone/day verification; the PWA snapshot parser uses the authoritative boolean before the existing inferred fallback.
+
+## Private Cron authorization and replay protection
+
+Auth exports `CronService` as a private named entrypoint. Public routing does not dispatch that class, and production MCP receives no direct Cron binding. The existing operation-discriminated Auth attempt table stores `cron` receipts; task, spell and Cron writes share the same profile/connection lease and unresolved-attempt fence. New Auth migrations are unnecessary. `CRON_ENABLED` ships false in every environment.
+
+Bounded observation reads full UserGet, server-evaluated task due-state for the previous Habitica day and current group quest facts. Relevant task count is limited to two hundred; review truncation above one hundred unfinished due Dailies blocks preparation. Critical data remains private, enters only a bounded canonical fingerprint and is absent from receipts. Original successful acknowledgements alone confirm complete request processing. Private progress reads report later account day evidence without changing receipt state. Post-dispatch failures retain uncertainty even for non-success status codes; pre-dispatch grant/quota/state refusals remain known failures. A unique sixty-second lease and an eleven-second HTTP reserve bound dispatch ownership. Fresh read verification cannot lock out independent Habitica clients.

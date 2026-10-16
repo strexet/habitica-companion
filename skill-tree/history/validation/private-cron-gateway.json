@@ -1,0 +1,29 @@
+{
+  "task_id": "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
+  "result": "pass",
+  "checks": {
+    "three_worker_builds": "pass",
+    "auth_tests": 78,
+    "workspace_tests_serial_explicit_files": 63,
+    "app_build": {
+      "warnings": 0,
+      "errors": 0
+    },
+    "dotnet_tests": 532,
+    "default_app_evidence": "skill-tree/history/validation/refresh-priority-default-settings.jpg"
+  },
+  "coverage": [
+    "Independent OAuth grants and enrolled actor checks",
+    "Fresh authoritative readiness, day/lastCron, account stats/buffs/gear and complete bounded task/checklist/quest fingerprints",
+    "Fixed-offset C#/Worker boundary fixture parity; unresolved timezone transitions refuse preparation",
+    "Durable single dispatch, immutable original receipts, concurrent/replayed attempts and shared task/spell uncertainty fences",
+    "Every dispatched non-success remains unknown, even after observed day advance; lookup never resends",
+    "Quota, storage failure, credential/grant revocation, no-party accounts, absent critical state and disabled flags"
+  ],
+  "limitations": [
+    "Synthetic local qualification only; real multi-user activation remains separate.",
+    "External Habitica clients can race fresh reads.",
+    "Two hundred relevant tasks and one hundred unfinished Daily review capacity; no exact damage/reward formula.",
+    "Parallel Miniflare lifecycle investigation remains separately captured and deferred."
+  ]
+}

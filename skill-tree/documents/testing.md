@@ -90,3 +90,9 @@ Two controlled .NET regressions reproduce the original Background-versus-Visible
 ## UserGet readiness shape regressions
 
 Auth read/projection and plugin/hosted-Daily fixtures model top-level `needsCron` from full UserGet. Cases verify true/false values, contradictory synthetic legacy flags, unknown/malformed values and refusal to score while Cron is pending. Four API parser cases verify server preference and the retained local fallback without using `flags.needsCron`. The broad .NET run exposed a separately repaired refresh-priority race; evidence resides in `refresh-priority.json`. The unrelated parallel Miniflare replacement-session failure remains a captured follow-up; serial file scheduling preserves each test and all explicit in-test concurrency assertions.
+
+## Private Cron gateway qualification
+
+Auth `cron.test.mjs` exercises synthetic OAuth/private bindings, fresh account/day/task/checklist/quest facts, independent scopes, replay/overlap, quota, durable reservation failure, credential/grant revocation and both directions of shared gameplay fencing. A failed response followed by advanced lastCron and needsCron=false remains unknown, fences new task/spell effects and performs no replay. Missing original receipts remain uncertain. Source-shape checks use full top-level readiness, not synthetic flags.
+
+`tests/fixtures/workspace/cron-day-v1.json` is consumed by Domain and Worker cases. The fixture covers before/at boundaries, positive/negative and quarter-hour offsets, and leap-day rollover. Scope is fixed-offset day key/start only, without server timezone-transition, Cron eligibility or effect-formula parity. All three Worker builds, full Auth/Workspace suites and the app build/.NET suites qualify this private milestone. Serial Worker file scheduling preserves every explicit concurrency assertion; the parallel lifecycle fixture investigation remains deferred. Default Cron capability is unavailable. No real Habitica calls occur.

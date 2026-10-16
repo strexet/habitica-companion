@@ -1,3 +1,4 @@
+import {cronOperation} from './cron';
 import {spellOperation} from './spells';
 import {partyProofOperation} from './party';
 import { projectionOperation, clearProjectionContext, purgeProjectionMetadata } from "./projection";
@@ -33,6 +34,10 @@ export class AuthService extends WorkerEntrypoint<AuthEnv> {
 // This binding belongs only to the Workspace Worker; public routes never dispatch named entrypoints.
 export class WorkspaceIdentityService extends WorkerEntrypoint<AuthEnv> {
   async fetch(request: Request): Promise<Response> { return workspaceIdentity(request, this.env); }
+}
+
+export class CronService extends WorkerEntrypoint<AuthEnv> {
+  async fetch(request:Request):Promise<Response>{return cronOperation(request,this.env);}
 }
 
 export class SpellService extends WorkerEntrypoint<AuthEnv> {
