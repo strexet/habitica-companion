@@ -12,7 +12,7 @@ const headers = { "cache-control": "no-store", "x-content-type-options": "nosnif
 
 export default {
   async fetch(request: Request, env: McpEnv, ctx: ExecutionContext): Promise<Response> {
-    resourceConfiguration(env.ENVIRONMENT);
+    resourceConfiguration(env.ENVIRONMENT, env);
     const path = new URL(request.url).pathname;
     if (path === "/health" && request.method === "GET") {
       try {
@@ -26,7 +26,7 @@ export default {
     }
 
     if (Boolean(env.OAUTH_ENABLED)) {
-      const config = resourceConfiguration(env.ENVIRONMENT);
+      const config = resourceConfiguration(env.ENVIRONMENT, env);
       const server = new OAuthResourceServer<McpEnv, AuthProps>({
         resourceMetadata: { resource: config.resource, authorization_servers: [config.issuer] },
         requiredScopes: ["profile:read"],

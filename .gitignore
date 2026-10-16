@@ -82,3 +82,7 @@ Thumbs.db
 !*.env.example
 **/dist-preview/
 **/dist-production/
+
+# Operator-specific dev preparation
+/deploy/.dev/
+/deploy/dev.local.json

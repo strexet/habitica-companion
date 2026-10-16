@@ -32,7 +32,7 @@ export async function spellObservation(env:AuthEnv,who:AuthProps){
 }
 async function grant(env:AuthEnv,request:Request,who:AuthProps,operation:keyof typeof spellScopes){
  const token=request.headers.get('authorization')?.match(/^Bearer (\S+)$/)?.[1];
- const identity=token?await validatedToken(env,resourceConfiguration(env.ENVIRONMENT).resource,token):null;
+ const identity=token?await validatedToken(env,resourceConfiguration(env.ENVIRONMENT, env).resource,token):null;
  if(!identity||identity.props.profileId!==who.profileId||identity.props.connectionId!==who.connectionId)throw new WorkspaceError('unauthorized',401);
  if(spellScopes[operation].some(scope=>!identity.scope?.includes(scope)))throw new WorkspaceError('insufficient_scope',403);
 }

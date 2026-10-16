@@ -227,7 +227,7 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
 }
 export default {
  async fetch(request: Request, env: WorkspaceEnv): Promise<Response> {
-  const url = new URL(request.url); const config = resourceConfiguration(env.ENVIRONMENT); const origin = request.headers.get("origin"); let response: Response;
+  const url = new URL(request.url); const config = resourceConfiguration(env.ENVIRONMENT, env); const origin = request.headers.get("origin"); let response: Response;
   try {
    if (url.protocol !== "https:" && !(env.ENVIRONMENT === "local" && ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname))) throw new WorkspaceError("invalid_transport", 403);
    if (origin && origin !== config.pwaOrigin) throw new WorkspaceError("invalid_origin", 403);

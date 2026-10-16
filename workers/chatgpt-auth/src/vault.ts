@@ -153,7 +153,7 @@ export async function vaultRoute(request: Request, env: AuthEnv, cleanup?: (id: 
   try {
     if (url.protocol !== "https:" && !(env.ENVIRONMENT === "local" && ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname))) throw new VaultError("invalid_transport", 403);
     const origin = request.headers.get("origin");
-    const config = resourceConfiguration(env.ENVIRONMENT);
+    const config = resourceConfiguration(env.ENVIRONMENT, env);
     if (origin && origin !== config.issuer && origin !== config.pwaOrigin) throw new VaultError("invalid_origin", 403);
     return management ? await manage(request, env, management[1], cleanup) : await enroll(request, env);
   } catch (error) {

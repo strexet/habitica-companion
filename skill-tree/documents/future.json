@@ -35,7 +35,8 @@
       "T-b92db026-a8cf-5922-8556-666cbea947ab",
       "T-5737120b-52a5-4a57-9072-fce514adaf33",
       "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
-      "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
+      "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
+      "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -65,6 +66,7 @@
       "T-991d6cf2-7c54-4006-ab58-eda921ae66d6": "O-747dceb1-50c9-4703-9399-b64b2a0ccba6",
       "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9": "O-1289cd22-e42d-43e3-8c68-1c7954321b8a",
       "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f": "O-31dca147-51af-4489-863f-be4aa92285dc",
+      "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08": "O-b7bd034e-ef6e-4d79-9c42-c6e9ea9159fc",
       "T-b883e33b-05a6-53d8-a9a5-d11d7008887f": "O-84147b67-67cd-4c09-80fe-17befff407d7",
       "T-b92db026-a8cf-5922-8556-666cbea947ab": "O-e70ae478-e644-48d6-8451-13f7bbdc4e6a",
       "T-be68f853-9737-4657-a8a4-7aff8dfc497b": "O-2cf7fc6d-d2b2-480c-b190-e9907a73ea5a",
@@ -75,7 +77,7 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e"
     },
     "current_task_id": "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
-    "cycle_signature": "4b782232e6fe79f9cea3cba7ef2f512021aaa695371d5ed081a83e10349b6eff",
+    "cycle_signature": "d5979cbf5496ebe9cdf46557fc380217948513755138bcfb298af0342f5ebbb0",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
@@ -84,10 +86,8 @@
     "mode": "all",
     "next_action": "implement",
     "partial_work": [
-      "Management hardening completed in a373e40, guarded key operations in 805809f and re-enrollment/receipt-boundary repair in 5c2efbd. Local repair qualification is committed.",
-      "Remaining local hardening units are bounded traffic/operational diagnostics and E14 local adoption/recovery qualification.",
-      "Dev readiness checklist resides in deploy-cloudflare-pages.md. Remote account access and deployed bindings remain unverified. Real multi-user/mobile and provider-log qualification remains open; live Cron and key operations remain disabled.",
-      "ChatGPT and Codex desktop are required first-dev clients. Existing release task T-d76d2a9a-1318-4e63-9bb4-73f620b108cc owns both client lanes; plugin README contains the unrun client matrix. No hosted connection is qualified by planning changes."
+      "Owner narrows continuation to dev prerequisites: isolated deployment preparation, bounded traffic/own diagnostics and E14 local recovery qualification. ChatGPT and Codex desktop remain required dev clients.",
+      "Real deployment, per-user enrollment and device qualification require the prepared environment and operator participation. Live Cron remains off."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -116,7 +116,8 @@
       "P-e7108584-78d2-4df6-b60c-f0c47af75aa1",
       "P-d724d4bc-ff32-470b-a476-395303dba5b9",
       "P-29925105-1015-5ced-8844-d56fa47e33c9",
-      "P-08a257f2-27ad-4217-b434-3a378c565fc7"
+      "P-08a257f2-27ad-4217-b434-3a378c565fc7",
+      "P-92e12da3-2559-4bf4-819e-442254c9bd81"
     ],
     "phase": "implement",
     "processing_results": [
@@ -579,6 +580,23 @@
         "task_keys": {
           "reconnection": "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
         }
+      },
+      {
+        "created_ids": [
+          "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08"
+        ],
+        "dispositions": {
+          "P-92e12da3-2559-4bf4-819e-442254c9bd81": {
+            "reason": "Current build/configuration source confirms a required dev-launch deliverable inside local adoption qualification.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-7e8a6174-b52b-43df-902d-9fa8dba26ae6",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-92e12da3-2559-4bf4-819e-442254c9bd81"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -620,7 +638,8 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
       "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
       "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
+      "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
+      "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08"
     ],
     "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "snapshot": [
@@ -640,7 +659,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "4d5ced463accecb547a64326de4c547c805277c73fb82a5f7358ac361a2ff751",
+  "source_hash": "a0353de967069d4f1a71176265577f1086fd2811f2d5e45483c1d9fbcdd10071",
   "tasks": [
     {
       "depends_on": [],
@@ -774,7 +793,8 @@
       "depends_on": [
         "T-5737120b-52a5-4a57-9072-fce514adaf33",
         "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
-        "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca"
+        "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+        "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08"
       ],
       "id": "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
       "line": 365,

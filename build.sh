@@ -13,9 +13,12 @@ cd src/Habitica.WebApp
 npm ci
 npm run sync:vendor
 
-if [ -n "${HABITICA_X_CLIENT_HEADER:-}" ]; then
-    node -e 'const fs = require("fs"); const header = process.env.HABITICA_X_CLIENT_HEADER || ""; fs.writeFileSync("wwwroot/appsettings.json", JSON.stringify({ Habitica: { XClientHeader: header } }, null, 2) + "\n");'
-fi
+# Restore checked-in defaults after success or failure; publish receives the full merged settings.
+FRONTEND_SETTINGS_PATH="$PWD/wwwroot/appsettings.json"
+FRONTEND_SETTINGS_BACKUP="$(mktemp)"
+cp "$FRONTEND_SETTINGS_PATH" "$FRONTEND_SETTINGS_BACKUP"
+trap 'cp "$FRONTEND_SETTINGS_BACKUP" "$FRONTEND_SETTINGS_PATH"; rm -f "$FRONTEND_SETTINGS_BACKUP"' EXIT
+node ../../deploy/frontend-settings.mjs "$FRONTEND_SETTINGS_PATH"
 
 cd ../..
 "$DOTNET_INSTALL_DIR/dotnet" publish src/Habitica.WebApp/Habitica.WebApp.csproj -c Release -o output

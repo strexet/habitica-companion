@@ -10,7 +10,7 @@ import type {AuthProps} from '../../shared/contracts';
 interface Outcome {kind:'applied'|'refused'|'unknown';code:string;retryAtUtc?:string}
 const json=(value:unknown,status=200)=>Response.json(value,{status,headers:{'cache-control':'no-store'}});
 async function grant(env:AuthEnv,request:Request,who:AuthProps,operation:keyof typeof cronScopes){
- const token=request.headers.get('authorization')?.match(/^Bearer (\S+)$/)?.[1];const context=token?await validatedToken(env,resourceConfiguration(env.ENVIRONMENT).resource,token):null;
+ const token=request.headers.get('authorization')?.match(/^Bearer (\S+)$/)?.[1];const context=token?await validatedToken(env,resourceConfiguration(env.ENVIRONMENT, env).resource,token):null;
  if(!context||context.props.profileId!==who.profileId||context.props.connectionId!==who.connectionId)throw new WorkspaceError('unauthorized',401);
  if(cronScopes[operation].some(scope=>!context.scope?.includes(scope)))throw new WorkspaceError('insufficient_scope',403);
 }

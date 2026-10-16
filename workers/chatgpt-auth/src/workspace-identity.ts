@@ -23,7 +23,7 @@ export async function workspaceIdentity(request: Request, env: AuthEnv): Promise
     }
     if (path === "/mcp") {
       const token = request.headers.get("authorization")?.match(/^Bearer (\S+)$/)?.[1];
-      const context = token && token.length <= 4096 ? await validatedToken(env, resourceConfiguration(env.ENVIRONMENT).resource, token) : null;
+      const context = token && token.length <= 4096 ? await validatedToken(env, resourceConfiguration(env.ENVIRONMENT, env).resource, token) : null;
       if (!context) throw new WorkspaceError("unauthorized", 401);
       return Response.json({ profileId: context.props.profileId, connectionId: context.props.connectionId, scopes: context.scope, grantEpoch:context.props.grantEpoch }, { headers: { "cache-control": "no-store" } });
     }

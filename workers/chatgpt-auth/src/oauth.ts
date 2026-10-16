@@ -7,7 +7,7 @@ import { tokenHash } from "./cryptography";
 
 export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute"];
 export function authorizationServer(env: AuthEnv) {
-  const config = resourceConfiguration(env.ENVIRONMENT);
+  const config = resourceConfiguration(env.ENVIRONMENT, env);
   return new OAuthAuthorizationServer<AuthEnv>({
     issuer: config.issuer, resources: [config.resource],
     clientRegistrationEndpoint: "/oauth/register",
@@ -24,7 +24,7 @@ export function authorizationServer(env: AuthEnv) {
   });
 }
 export async function validatedToken(env: AuthEnv, resource: string, token: string) {
-  if (!Boolean(env.OAUTH_ENABLED) || resource !== resourceConfiguration(env.ENVIRONMENT).resource) return null;
+  if (!Boolean(env.OAUTH_ENABLED) || resource !== resourceConfiguration(env.ENVIRONMENT, env).resource) return null;
   const validated = await authorizationServer(env).validateToken<AuthProps>(resource, token, env);
   if (!validated) return null;
   const props = authProps(validated.props);
@@ -65,7 +65,7 @@ export async function authorize(request: Request, env: AuthEnv): Promise<Respons
   const server = authorizationServer(env);
   const oauth = server.getOAuthApi(env);
   try {
-    const config = resourceConfiguration(env.ENVIRONMENT);
+    const config = resourceConfiguration(env.ENVIRONMENT, env);
     if (new URL(request.url).origin !== config.issuer) throw new VaultError("invalid_origin", 400);
     if (request.method === "GET") {
       if (new URL(request.url).searchParams.get("resource") !== config.resource) throw new VaultError("invalid_resource", 400);

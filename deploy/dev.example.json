@@ -1,0 +1,14 @@
+{
+  "accountId": "REPLACE_WITH_CLOUDFLARE_ACCOUNT_ID",
+  "pagesProject": "habitica-companion-dev",
+  "pwaOrigin": "https://habitica-companion-dev.pages.dev",
+  "authOrigin": "https://habitica-auth-dev.example.invalid",
+  "mcpOrigin": "https://habitica-mcp-dev.example.invalid",
+  "workspaceOrigin": "https://habitica-workspace-dev.example.invalid",
+  "pagesKvId": "REPLACE_WITH_DEV_SYNC_KV_ID",
+  "partyDatabaseId": "REPLACE_WITH_DEV_PARTY_D1_ID",
+  "authKvId": "REPLACE_WITH_DEV_OAUTH_KV_ID",
+  "authDatabaseId": "REPLACE_WITH_DEV_AUTH_D1_ID",
+  "workspaceDatabaseId": "REPLACE_WITH_DEV_WORKSPACE_D1_ID",
+  "creatorHeader": "REPLACE_WITH_PUBLIC_CREATOR_APP_HEADER"
+}

@@ -46,7 +46,7 @@ export async function partyProofOperation(request:Request,env:AuthEnv):Promise<R
   // Only the Workspace service owns this binding. OAuth-origin calls also revalidate scope here.
   const authorization=request.headers.get('authorization');
   if(authorization){
-   const token=authorization.match(/^Bearer (\S+)$/)?.[1];const who=token?await validatedToken(env,resourceConfiguration(env.ENVIRONMENT).resource,token):null;
+   const token=authorization.match(/^Bearer (\S+)$/)?.[1];const who=token?await validatedToken(env,resourceConfiguration(env.ENVIRONMENT, env).resource,token):null;
    if(!who||who.props.profileId!==body.profileId||who.props.connectionId!==body.connectionId)throw new WorkspaceError('unauthorized',401);
    if(!who.scope?.includes('profile:read')||!who.scope.includes(partyToolScopes[body.tool as keyof typeof partyToolScopes]))throw new WorkspaceError('insufficient_scope',403);
   }

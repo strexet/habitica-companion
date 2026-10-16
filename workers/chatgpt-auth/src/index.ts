@@ -59,7 +59,7 @@ export class ProjectionService extends WorkerEntrypoint<AuthEnv> {
 }
 
 async function handlePublicRequest(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
-    resourceConfiguration(env.ENVIRONMENT);
+    resourceConfiguration(env.ENVIRONMENT, env);
     const vault = await vaultRoute(request, env, async (id, connectionId) => { if (Boolean(env.OAUTH_ENABLED)) await cleanupProfile(env, id, connectionId); await clearProjectionContext(env,id,connectionId); });
     if (vault) return vault;
     const management=await managementRoute(request,env);if(management)return management;
@@ -73,7 +73,7 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
         if (path === "/oauth/register") await networkAttempts(request, env);
         if (path === "/oauth/token" && request.method === "POST") {
           const input = new URLSearchParams(await boundedText(request.clone(), 16384));
-          if (input.get("resource") !== resourceConfiguration(env.ENVIRONMENT).resource) return Response.json({ error: "invalid_target" }, { status: 400, headers });
+          if (input.get("resource") !== resourceConfiguration(env.ENVIRONMENT, env).resource) return Response.json({ error: "invalid_target" }, { status: 400, headers });
         }
         return authorizationServer(env).fetch(request, env, ctx);
       } catch (error) {
@@ -90,7 +90,7 @@ export default {
   async scheduled(_event, env): Promise<void> { await purgeProjectionMetadata(env); await purgeKeyJobs(env); },
   async fetch(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
-    const config = resourceConfiguration(env.ENVIRONMENT);
+    const config = resourceConfiguration(env.ENVIRONMENT, env);
     const isManagement = url.pathname === "/enroll" || url.pathname.startsWith("/profiles/");
     const origin = request.headers.get("origin");
     if (isManagement && url.protocol !== "https:" && !(env.ENVIRONMENT === "local" && ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname))) return Response.json({ error: "invalid_transport" }, { status: 403, headers });

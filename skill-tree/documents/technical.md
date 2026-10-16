@@ -909,3 +909,7 @@ A D1 transaction conditionally replaces the exact old envelope/generation and up
 Workspace connect clears the observed MCP grant epoch only when the verified Auth connection ID changes. The access epoch changes independently and retained canonical data remains. The next fresh grant initializes observed authority for the replacement connection without allowing old same-connection rollback.
 
 Spell/Cron private gateways normalize every unsuccessful lookup response to `unknown` with `receipt_unavailable`, matching the task executor rule. Authorization or service failure is not a stored original refusal. HTTP-success lookup of an actual stored applied/refused receipt retains the existing recovery behavior. Accepted unknown spell/Cron rows remain fences after old credential access disappears.
+
+## Isolated dev configuration
+
+`deploy/prepare-dev.mjs` validates public environment identities and generates separate dev Worker/Pages configs, frontend settings and a staged plugin. Dedicated dev resources exclude committed normal/preview resource IDs. Runtime integration origins accept only a complete canonical HTTPS origin/resource tuple; partial overrides reject. Source defaults remain disabled. `deploy/frontend-settings.mjs` preserves unrelated settings while the build restores source configuration on success/failure. [The operator checklist](../../deploy/README.md) owns remote setup and client qualification steps.

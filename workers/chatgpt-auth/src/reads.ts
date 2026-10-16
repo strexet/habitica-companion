@@ -103,7 +103,7 @@ export async function readOperation(request: Request, env: AuthEnv): Promise<Res
     if (Object.keys(body).some(key => !["tool", "arguments"].includes(key))) throw new ReadFailure("invalid_request", 400);
     const input = readInput(String(body.tool), body.arguments); tool = body.tool as ReadTool;
     const token = request.headers.get("authorization")?.match(/^Bearer (\S+)$/)?.[1];
-    const context = token ? await validatedToken(env, resourceConfiguration(env.ENVIRONMENT).resource, token) : null;
+    const context = token ? await validatedToken(env, resourceConfiguration(env.ENVIRONMENT, env).resource, token) : null;
     if (!context) throw new ReadFailure("unauthorized", 401);
     if (!context.scope?.includes(readScopes[tool])) throw new ReadFailure("insufficient_scope", 403);
     const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(context.props.profileId));
