@@ -1,0 +1,38 @@
+{
+  "kind": "codex-owner-browser-actions",
+  "date": "2026-10-17",
+  "source_commit": "9ba5295",
+  "client": "Codex in-app browser, production Pages website",
+  "credentials": "Owner-provided session-only sign-in; ignored owner-only local fixture; no credential values in evidence.",
+  "checks": [
+    {
+      "action": "Defensive Stance",
+      "count": 1,
+      "auto_equip": false,
+      "mana_before": 132,
+      "mana_after": 107,
+      "mana_cost": 25,
+      "result": "pass; self-only cast"
+    },
+    {
+      "action": "equip owned Dandy Hat",
+      "result": "pass; displayed loadout and stats updated"
+    },
+    {
+      "action": "restore original Nameless Helm",
+      "result": "pass; original displayed loadout and stats restored"
+    }
+  ],
+  "party_writes": 0,
+  "cron_calls": 0,
+  "shared_spell_casts": 0,
+  "limitations": [
+    "No unequip control exists in the current PWA. Native MCP has no equipment or self-spell tools.",
+    "Results qualify this owner Warrior self spell and two owned head-item changes only.",
+    "ChatGPT and multi-user/device testing remain deferred or open."
+  ],
+  "screenshots": {
+    "/tmp/habitica-owner-spell-live.png": "44dce7cb1804e91f6be70ac6da0573aaf04cf672b9779f50429155a0f1cd40b5",
+    "/tmp/habitica-owner-equipment-live.png": "ffd065adea4bf5a2e87623bc1dc73a3697c49120402f3a5bbe54530917d7fa43"
+  }
+}

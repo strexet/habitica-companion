@@ -1,0 +1,63 @@
+[
+  {
+    "command": {
+      "id": "20000000-0000-4000-8000-000000000001",
+      "workspaceId": "10000000-0000-4000-8000-000000000001",
+      "expectedRevision": 1,
+      "operation": "createDaily",
+      "taskId": "20000000-0000-4000-8000-000000000002",
+      "patch": {
+        "text": "Read \"chapter\" 📚",
+        "notes": "Private\nnotes §",
+        "clearNotes": false,
+        "priority": "high",
+        "deadline": "2026-10-16",
+        "clearDeadline": false,
+        "habiticaDetails": null
+      },
+      "direction": null,
+      "count": 1,
+      "occurrenceDate": null,
+      "projectToHabitica": false
+    },
+    "payloadHash": "b93f2eb9ce459e15ec07ffcf35a490ae580fca5c7ee7d58e2cefaa76c2644aa2"
+  },
+  {
+    "command": {
+      "id": "20000000-0000-4000-8000-000000000001",
+      "workspaceId": "10000000-0000-4000-8000-000000000001",
+      "expectedRevision": 1,
+      "operation": "createHabit",
+      "taskId": "20000000-0000-4000-8000-000000000002",
+      "patch": {
+        "text": "Read \"chapter\" 📚",
+        "notes": "Private\nnotes §",
+        "clearNotes": false,
+        "priority": "high",
+        "deadline": "2026-10-16",
+        "clearDeadline": false,
+        "habiticaDetails": null
+      },
+      "direction": null,
+      "count": 1,
+      "occurrenceDate": null,
+      "projectToHabitica": false
+    },
+    "payloadHash": "5648e9cd9ed4374bdd3692a7340fadff75e73ef1af2fbc0b44865212712f832e"
+  },
+  {
+    "command": {
+      "id": "20000000-0000-4000-8000-000000000001",
+      "workspaceId": "10000000-0000-4000-8000-000000000001",
+      "expectedRevision": 1,
+      "operation": "deleteTask",
+      "taskId": "20000000-0000-4000-8000-000000000002",
+      "patch": null,
+      "direction": null,
+      "count": 1,
+      "occurrenceDate": null,
+      "projectToHabitica": false
+    },
+    "payloadHash": "aad51a2c926c0a2b7f7a77c0c2b210030c8108f049717dfcf5c6720b7d4a038e"
+  }
+]

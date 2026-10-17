@@ -139,3 +139,9 @@ Party tools remain read-only. Party departure is prohibited through Companion wi
 The browser owner-isolated profile disables shared-party sync, party gameplay, task-targeted spells and Start New Day. The profile permits only known self-spell identifiers without another target and owned equipment actions. The low-level API blocks party departure independently of the profile setting. Synthetic transport fixtures can qualify generic endpoint shapes with isolation disabled; the departure prohibition still applies.
 
 Prepared commands retain exact reviewed previews, stable command identities and original receipt recovery. The owner's explicit live-test authorization covers bounded own-account test changes; previews and parameters remain visible before dispatch. Unknown results remain fenced and never authorize replacement intents or blind retries. Native Codex, browser behavior and synthetic checks remain distinct evidence lanes.
+
+## Native lifecycle testing extension
+
+The owner-approved Codex mutation scope includes native Daily/Habit creation, task field edits, dated Daily completion, explicit Habit scores and archival of exact unlinked task IDs. New Dailies remain unscheduled until recurrence editing is implemented. Creation and archival remain Companion-only; no unsupported upstream deletion or recurrence projection is implied. Archive operations retain command and activity history until separate workspace deletion. Party writes and live Cron remain excluded.
+
+Owner-provided Habitica test credentials may persist only in the ignored root `.dev.vars.owner-test` file with owner-only file permissions. Normal builds, CI, exports, logs and deployment must not consume or include that file. Live tests are explicit, opt-in own-account checks; test evidence stores outcomes without credentials.

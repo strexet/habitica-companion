@@ -53,16 +53,14 @@ test('MCP routes canonical preparation and acceptance through Workspace with ste
 
 test('prepared partial updates, Todo and Daily completions, exact-name selection and bounded Habit events remain canonical',async t=>{
  const f=await fixture(t,{workspace:true});const w=await connect(f,await enrolled(f));
- const execute=async(operation,args={})=>{const prep=await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation,...args});assert.equal(prep.status,200,await prep.clone().text());const preview=await prep.json();const tool={createTodo:'create_todo',updateTask:'update_task',completeTask:'complete_task',scoreHabit:'score_habit'}[operation];const result=await call(f,w,tool,{commandId:preview.preparedCommandId});assert.equal(result.status,200,await result.clone().text());return result.json();};
+ const execute=async(operation,args={})=>{const prep=await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation,...args});assert.equal(prep.status,200,await prep.clone().text());const preview=await prep.json();const tool={createTodo:'create_todo',createDaily:'create_daily',createHabit:'create_habit',deleteTask:'delete_task',updateTask:'update_task',completeTask:'complete_task',scoreHabit:'score_habit'}[operation];const result=await call(f,w,tool,{commandId:preview.preparedCommandId});assert.equal(result.status,200,await result.clone().text());return result.json();};
  const a=await execute('createTodo',{patch:{text:'Same label'}});const b=await execute('createTodo',{patch:{text:'Same label'}});
  const matches=await(await call(f,w,'list_companion_tasks',{query:'Same label'})).json();assert.equal(matches.matchedCount,2);assert.notEqual(matches.tasks[0].id,matches.tasks[1].id);
  assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'completeTask',query:'Same label'})).status,400);
  const completed=await execute('completeTask',{taskId:a.taskId});assert.equal(completed.acceptedEventCount,1);assert.equal(completed.totalProjectionCount,0);
  const updated=await execute('updateTask',{taskId:b.taskId,patch:{notes:'A partial note'}});assert.equal(updated.taskText,'Same label');
  const current=await(await call(f,w,'get_companion_task',{taskId:b.taskId.toUpperCase()})).json();assert.equal(current.task.notes,'A partial note');assert.equal(current.task.text,'Same label');
- const snapshot=await(await f.workspace.fetch(origin+'/export',{headers:{authorization:`Bearer ${w.sessionToken}`}})).json();const base=snapshot.document.tasks.find(t=>t.id===b.taskId);const dailyId=crypto.randomUUID();const habitId=crypto.randomUUID();
- snapshot.document.tasks.push({...base,id:dailyId,kind:'daily',recurrence:{frequency:'daily',interval:1,startDate:'2026-10-15',timeZoneId:'UTC',weekdays:[],daysOfMonth:[]}}, {...base,id:habitId,kind:'habit'});
- await f.workspaceDb.prepare('UPDATE workspaces SET document_json=?').bind(JSON.stringify(snapshot.document)).run();
+ const dailyId=(await execute('createDaily',{patch:{text:'Native Daily'}})).taskId;const habitId=(await execute('createHabit',{patch:{text:'Native Habit'}})).taskId;
  assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'completeTask',taskId:habitId})).status,422);
  assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'scoreHabit',taskId:habitId,direction:'up',count:11})).status,422);
  const daily=await execute('completeTask',{taskId:dailyId,occurrenceDate:'2026-10-15'});assert.equal(daily.acceptedEventCount,1);
@@ -110,4 +108,57 @@ test('unaccepted previews cannot survive a disconnected workspace access epoch',
  assert.equal((await call(f,next,'create_todo',{commandId:old.preparedCommandId})).status,409);
  assert.equal((await call(f,next,'prepare_task_command',input)).status,409);
  assert.equal((await f.workspaceDb.prepare('SELECT COUNT(*) AS n FROM workspace_commands').first()).n,0);
+});
+
+
+test('native creation and archival retain exact receipts and history without upstream effects',async t=>{
+ let writes=0;const f=await fixture(t,{workspace:true,habitica:async request=>{
+  if(request.method!=='GET')writes++;
+  return Response.json({success:true,data:{_id:request.headers.get('x-api-user'),profile:{name:'Fixture A'}}});
+ }});const p=await enrolled(f);const w=await connect(f,p);const other=await connect(f,await enrolled(f,accounts[1]));const {client:c}=await client(t,f,p);
+ const tools=(await c.listTools()).tools;
+ for(const name of ['create_daily','create_habit','delete_task'])assert.deepEqual(tools.find(t=>t.name===name)._meta.securitySchemes,[{type:'oauth2',scopes:['profile:read','habitica.tasks.write']}]);
+ assert.equal(tools.find(t=>t.name==='delete_task').annotations.destructiveHint,true);
+ const execute=async(operation,tool,args={})=>{
+  const input={requestId:crypto.randomUUID(),operation,...args};const preview=await c.callTool({name:'prepare_task_command',arguments:input});assert.notEqual(preview.isError,true,JSON.stringify(preview));const prepared=preview.structuredContent;assert.equal(prepared.mayAffectHabitica,false);
+  const again=await c.callTool({name:'prepare_task_command',arguments:input});assert.equal(again.structuredContent.preparedCommandId,prepared.preparedCommandId);
+  const result=await c.callTool({name:tool,arguments:{commandId:prepared.preparedCommandId}});assert.notEqual(result.isError,true,JSON.stringify(result));assert.equal(result.structuredContent.habiticaProjectionStatus,'notRequested');assert.equal(result.structuredContent.totalProjectionCount,0);
+  const duplicate=await c.callTool({name:tool,arguments:{commandId:prepared.preparedCommandId}});assert.deepEqual(duplicate.structuredContent,result.structuredContent);
+  const receipt=await c.callTool({name:'get_task_command',arguments:{commandId:prepared.preparedCommandId}});assert.deepEqual(receipt.structuredContent,result.structuredContent);
+  assert.equal((await call(f,other,tool,{commandId:prepared.preparedCommandId})).status,409);
+  return result.structuredContent;
+ };
+ const daily=await execute('createDaily','create_daily',{patch:{text:'Disposable Daily',deadline:'2026-10-18'}});
+ const habit=await execute('createHabit','create_habit',{patch:{text:'Disposable Habit'}});
+ const read=await(await call(f,w,'get_companion_task',{taskId:daily.taskId})).json();assert.equal(read.task.kind,'daily');assert.equal(read.task.recurrence,null);assert.equal(read.task.deadline,'2026-10-18');
+ await execute('completeTask','complete_task',{taskId:daily.taskId,occurrenceDate:'2026-10-17'});
+ await execute('scoreHabit','score_habit',{taskId:habit.taskId,direction:'down',count:2});
+ for(const operation of ['createDaily','createHabit']){
+  assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation,patch:{text:'Unsupported projection'},projectToHabitica:true})).status,422);
+  assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation,taskId:crypto.randomUUID(),patch:{text:'Caller identity'}})).status,422);
+ }
+ assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'deleteTask',taskId:daily.taskId,expectedRevision:1})).status,409);
+ assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'deleteTask',taskId:daily.taskId,projectToHabitica:true})).status,422);
+ await execute('deleteTask','delete_task',{taskId:daily.taskId});await execute('deleteTask','delete_task',{taskId:habit.taskId});
+ assert.equal((await(await call(f,w,'get_companion_task',{taskId:daily.taskId})).json()).task,null);
+ assert.equal((await(await call(f,w,'list_companion_tasks',{})).json()).tasks.length,0);
+ const exported=await(await f.workspace.fetch(origin+'/export',{headers:{authorization:`Bearer ${w.sessionToken}`}})).json();assert.equal(exported.document.tasks.filter(t=>t.isArchived).length,2);assert.equal(exported.document.completions.length,1);assert.equal(exported.document.habitScores.length,2);assert.equal(exported.commands.length,6);assert.equal(writes,0);
+ assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'updateTask',taskId:daily.taskId,patch:{text:'Resurrect'}})).status,422);
+ const readonly=await client(t,f,p,'profile:read tasks:read');
+ for(const name of ['create_daily','create_habit','delete_task']){
+  const denied=await f.mcp.fetch(resource,{method:'POST',headers:{authorization:`Bearer ${readonly.token}`,'content-type':'application/json',accept:'application/json, text/event-stream'},body:JSON.stringify({jsonrpc:'2.0',id:999,method:'tools/call',params:{name,arguments:{commandId:crypto.randomUUID()}}})});assert.equal(denied.status,403);
+ }
+});
+
+test('archival refuses linked or pending projections and acceptance rechecks fresh revisions',async t=>{
+ const f=await fixture(t,{workspace:true});const w=await connect(f,await enrolled(f));
+ const prepare=async args=>call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),...args});
+ const created=await(await prepare({operation:'createTodo',patch:{text:'Pending projected task'},projectToHabitica:true})).json();
+ await call(f,w,'create_todo',{commandId:created.preparedCommandId});
+ assert.equal((await prepare({operation:'deleteTask',taskId:created.command.taskId})).status,422);
+ const daily=await(await prepare({operation:'createDaily',patch:{text:'Fresh Daily'}})).json();await call(f,w,'create_daily',{commandId:daily.preparedCommandId});
+ const deletion=await(await prepare({operation:'deleteTask',taskId:daily.command.taskId})).json();
+ const edit=await(await prepare({operation:'updateTask',taskId:daily.command.taskId,patch:{notes:'Changed after preview'}})).json();await call(f,w,'update_task',{commandId:edit.preparedCommandId});
+ assert.equal((await call(f,w,'delete_task',{commandId:deletion.preparedCommandId})).status,409);
+ assert.equal((await(await call(f,w,'get_companion_task',{taskId:daily.command.taskId})).json()).task.isArchived,false);
 });

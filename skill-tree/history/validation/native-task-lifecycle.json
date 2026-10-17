@@ -1,0 +1,33 @@
+{
+  "kind": "native-task-lifecycle",
+  "date": "2026-10-17",
+  "task_id": "T-70901e97-738c-42c2-ae50-68dd71417a32",
+  "checks": {
+    "dotnet_tests_passed": 560,
+    "worker_tests_passed": 16,
+    "final_component_tests_passed": 3,
+    "solution_build": "pass; zero warnings/errors",
+    "worker_builds": "pass; Auth, MCP and Workspace type checks and local bundles; production Workspace/MCP dry runs",
+    "release_build": "pass; existing production endpoints and guarded profile",
+    "sdk_runtime": "Typed native creation, dated Daily completion, Habit scores, archival, duplicate receipts, cross-profile/scope denial, unsupported projection and stale acceptance checks pass. No upstream writes in native lifecycle cases.",
+    "command_identity": "New operation neutral fixtures match C# and TypeScript; prior fixtures remain unchanged.",
+    "browser": "Real Razor archive-review fixture shows retained-history and no-Habitica-effect copy. Component tests qualify interactions and editor resets after archive.",
+    "plugin_skill": "Updated instructions validate with Skill Creator and existing SDK package contract.",
+    "credential_scan": "No owner token in tracked or public output files; local ignored fixture permissions 0600.",
+    "docs": "Strict future validation and navigation/checkpoint validation pass; no introduced prose diagnostics. Strict repository prose still reports inherited documentation debt."
+  },
+  "evidence_sha256": {
+    "/tmp/habitica-lifecycle-dotnet-final.txt": "ad653b733ed85d11a889f467c759b86b638dd0c34fe3362dd14b2545ec7c3bf3",
+    "/tmp/habitica-lifecycle-runtime-final.txt": "f19e666c9587ac9349cc4a868960321ebd4d6428561617034a1bd5a7308d1ca0",
+    "/tmp/habitica-lifecycle-ui-final.txt": "14e330c93e26c19f5421e820b0ed5c926d5d0498f00a58159110a65421e33dfe",
+    "/tmp/habitica-lifecycle-release-final.txt": "fcf203e60ba82e5851d271658640f78b92bc6406ea5faf994db1dd927a62153a",
+    "/tmp/habitica-lifecycle-production-dryrun.txt": "002bae99dac7424a2dd74f522c31cf640a281abb187b1a4118d2d80eb8c5a38c",
+    "/tmp/habitica-native-archive-review.png": "6f8a9b3ac20e84e4404fcbb2f164dd669c2cf0b6ad1712b33f73be6c64c17fa6"
+  },
+  "limitations": [
+    "New Dailies have no recurrence schedule.",
+    "Daily/Habit creation and archival remain Companion-only. Archival retains private history and rejects linked tasks.",
+    "Hosted publication and native client metadata refresh are separate from local acceptance.",
+    "Live party/Cron/shared spells and ChatGPT remain outside current owner scope."
+  ]
+}

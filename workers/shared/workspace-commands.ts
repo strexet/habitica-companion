@@ -1,8 +1,9 @@
 import { habiticaDetails, type HabiticaTaskDetails } from "./task-details.ts";
-export type WorkspaceOperation = "createTodo" | "updateTask" | "completeTask" | "scoreHabit";
+export type WorkspaceOperation = "createTodo" | "updateTask" | "completeTask" | "scoreHabit" | "createDaily" | "createHabit" | "deleteTask";
 export interface WorkspacePatch { text: string | null; notes: string | null; clearNotes: boolean; priority: "low" | "normal" | "high" | "urgent" | null; deadline: string | null; clearDeadline: boolean; habiticaDetails?: HabiticaTaskDetails | null }
 export interface WorkspaceCommand { id: string; workspaceId: string; expectedRevision: number; operation: WorkspaceOperation; taskId: string; patch: WorkspacePatch | null; direction: "up" | "down" | null; count: number; occurrenceDate: string | null; projectToHabitica: boolean }
-const operations = ["createTodo", "updateTask", "completeTask", "scoreHabit"];
+const operations = ["createTodo", "updateTask", "completeTask", "scoreHabit", "createDaily", "createHabit", "deleteTask"];
+export function isTaskCreation(operation: unknown): boolean { return ["createTodo", "createDaily", "createHabit"].includes(operation as string); }
 function object(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("invalid_command");
   return value as Record<string, unknown>;
@@ -34,7 +35,7 @@ export function workspaceCommand(value: unknown): WorkspaceCommand {
     if (Object.values(patch).every(value => value === null || value === false)) throw new Error("invalid_command");
   }
   const operation = input.operation as WorkspaceOperation;
-  if (operation === "createTodo" || operation === "updateTask") { if (!patch || operation === "createTodo" && (patch.text === null || /^\p{White_Space}*$/u.test(patch.text))) throw new Error("invalid_command"); }
+  if (isTaskCreation(operation) || operation === "updateTask") { if (!patch || isTaskCreation(operation) && (patch.text === null || /^\p{White_Space}*$/u.test(patch.text))) throw new Error("invalid_command"); }
   else if (patch) throw new Error("invalid_command");
   if (input.direction !== undefined && input.direction !== null && (typeof input.direction !== "string" || !["up", "down"].includes(input.direction))) throw new Error("invalid_command");
   const direction = input.direction as WorkspaceCommand["direction"] ?? null;

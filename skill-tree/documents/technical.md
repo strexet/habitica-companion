@@ -822,6 +822,10 @@ Canonical tasks and partial patches carry nullable `habiticaDetails`; native pri
 
 `WorkspaceCommandIdentity` and shared `commandHash` retain the original version-one payload when details are absent. Version two appends nullable difficulty, attribute, checklist count and ordered item ID/text/completion fields to the length-prefixed UTF-8 payload. An empty checklist and an unspecified checklist have distinct identities. Existing receipts remain valid without rewriting history. IndexedDB normalizes newly introduced null detail properties only for legacy immutable-intent comparisons; real detail edits still fail the comparison.
 
+## Native task creation and archival
+
+Typed operations `createDaily`, `createHabit` and `deleteTask` extend both command engines without changing existing operation values or hash formats. Creation allocates independent task identities and stores nullable recurrence; an unscheduled Daily still requires an explicit occurrence date for completion. Native task deletion uses the existing archive flag and preserves referenced records, immutable snapshots and command receipts. Active reads exclude archived tasks. The new operations reject projection requests and linked-task deletion before acceptance. The same transaction, revision checks, expiry and access epochs apply to all task operations; no database migration is required.
+
 ## Shared reviewed task surface
 
 Workspace migration `0003-prepared-commands.sql` stores profile/request-to-command bindings, access epoch, original input hash, command payload, correlation ID and review expiry. Preparation mutates storage metadata without accepting canonical effects. The preparation transaction increments store version and archive accounting, preventing concurrent canonical acceptance from overwriting preview accounting. Command acceptance includes a database-time expiry predicate and the prepared access epoch in the same transaction as canonical data, journal entry and event insertion. Repeated command IDs return the retained receipt before revision checks.

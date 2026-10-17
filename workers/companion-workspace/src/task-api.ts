@@ -1,5 +1,5 @@
 import { taskToolInput, operationForTool, type TaskTool } from '../../shared/task-tools.ts';
-import { workspaceCommand } from '../../shared/workspace-commands.ts';
+import { workspaceCommand, isTaskCreation } from '../../shared/workspace-commands.ts';
 import { WorkspaceError, workspaceTokenHash, uuid } from '../../shared/workspace-http.ts';
 import type { WorkspaceRow } from './executor.ts';
 import type { CommandEntry } from './commands.ts';
@@ -29,8 +29,8 @@ export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,ar
   if(prepared&&prepared.input_hash!==hash)throw new WorkspaceError('request_id_reused',409);
   if(!prepared){
    // IDs come from the server. Task names and transport request IDs never select mutation targets.
-   let command;try{command=workspaceCommand({id:crypto.randomUUID(),workspaceId:row.workspace_id,expectedRevision:input.expectedRevision??document.revision,operation:input.operation,taskId:input.operation==='createTodo'?crypto.randomUUID():uuid(input.taskId),patch:input.patch,direction:input.direction,count:input.count,occurrenceDate:input.occurrenceDate,projectToHabitica:input.projectToHabitica});}catch(error){if(error instanceof WorkspaceError)throw error;throw new WorkspaceError('invalid_command',422);}
-   if(input.operation==='createTodo'&&input.taskId!==undefined)throw new WorkspaceError('server_task_identity_required',422);
+   let command;try{command=workspaceCommand({id:crypto.randomUUID(),workspaceId:row.workspace_id,expectedRevision:input.expectedRevision??document.revision,operation:input.operation,taskId:isTaskCreation(input.operation)?crypto.randomUUID():uuid(input.taskId),patch:input.patch,direction:input.direction,count:input.count,occurrenceDate:input.occurrenceDate,projectToHabitica:input.projectToHabitica});}catch(error){if(error instanceof WorkspaceError)throw error;throw new WorkspaceError('invalid_command',422);}
+   if(isTaskCreation(input.operation)&&input.taskId!==undefined)throw new WorkspaceError('server_task_identity_required',422);
    await accept(document,command,new Date().toISOString()); // Validate exact canonical state without accepting a command.
    const now=new Date().toISOString();const serialized=JSON.stringify(command);const size=row.archive_bytes+bytes(serialized)+512;
    if(size>8*1024*1024-32768||row.store_version>=Number.MAX_SAFE_INTEGER)throw new WorkspaceError('workspace_capacity',413);

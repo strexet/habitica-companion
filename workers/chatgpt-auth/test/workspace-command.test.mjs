@@ -20,3 +20,11 @@ test('extended task settings have portable identity and reject invalid nested pa
  for(const invalid of [{difficulty:3},{difficulty:'1'},{attribute:'strength'},{attribute:['str']},{checklist:[{id:crypto.randomUUID(),text:'Bad',completed:'false'}]},{checklist:[details.checklist[0],details.checklist[0]]},{checklist:[{...details.checklist[0],text:'x'.repeat(257)}]},{endpoint:'other'},{}])assert.throws(()=>workspaceCommand({...fixture.command,patch:{habiticaDetails:invalid}}));
  const changed=structuredClone(command);changed.patch.habiticaDetails.checklist[0].completed=true;assert.notEqual(await commandHash(changed),fixture.payloadHash);
 });
+
+
+test('native lifecycle hashes match portable fixtures and deletion rejects unused payload fields',async()=>{
+ const rows=JSON.parse(await readFile(new URL('../../../tests/fixtures/workspace/lifecycle-commands.json',import.meta.url),'utf8'));
+ for(const row of rows){const command=workspaceCommand(row.command);assert.equal(await commandHash(command),row.payloadHash);}
+ const deletion=rows.find(row=>row.command.operation==='deleteTask').command;
+ for(const invalid of [{...deletion,patch:{text:'Unexpected'}},{...deletion,count:2},{...deletion,direction:'up'},{...deletion,occurrenceDate:'2026-10-17'}])assert.throws(()=>workspaceCommand(invalid));
+});

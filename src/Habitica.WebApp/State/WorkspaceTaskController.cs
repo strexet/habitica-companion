@@ -61,7 +61,8 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         if (IsReadOnly) throw new InvalidOperationException("This browser copy is frozen or cloud-owned. Select the connected cloud workspace.");
         var current = snapshot.Document.Tasks.FirstOrDefault(task => task.Id == input.TaskId);
         WorkspaceTaskPatch? patch = null;
-        if (input.Operation == WorkspaceOperation.CreateTodo) patch = new(input.Text, input.Notes.Length == 0 ? null : input.Notes, Priority: input.Priority, Deadline: input.Deadline, HabiticaDetails: input.Details);
+        var creating = input.Operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit;
+        if (creating) patch = new(input.Text, input.Notes.Length == 0 ? null : input.Notes, Priority: input.Priority, Deadline: input.Deadline, HabiticaDetails: input.Details);
         if (input.Operation == WorkspaceOperation.UpdateTask)
         {
             if (current is null) throw new InvalidOperationException("Select an exact Companion task.");
@@ -69,7 +70,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
                 input.Notes.Length == 0 && !string.IsNullOrEmpty(current.Notes), input.Priority == current.Priority ? null : input.Priority,
                 input.Deadline == current.Deadline ? null : input.Deadline, input.Deadline is null && current.Deadline is not null, input.Details);
         }
-        return new(Guid.NewGuid(), snapshot.Document.Id, snapshot.Document.Revision, input.Operation, input.Operation == WorkspaceOperation.CreateTodo ? Guid.NewGuid() : input.TaskId ?? Guid.Empty,
+        return new(Guid.NewGuid(), snapshot.Document.Id, snapshot.Document.Revision, input.Operation, creating ? Guid.NewGuid() : input.TaskId ?? Guid.Empty,
             patch, input.Operation == WorkspaceOperation.ScoreHabit ? input.Direction : null, input.Operation == WorkspaceOperation.ScoreHabit ? input.Count : 1,
             input.Operation == WorkspaceOperation.CompleteTask ? input.OccurrenceDate : null, input.ProjectToHabitica);
     }

@@ -49,7 +49,8 @@
       "T-159a415e-0d56-4028-96a4-339a5d5040f8",
       "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
       "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
-      "T-b38dad4c-c3fa-431a-a429-50d6fed97650"
+      "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+      "T-70901e97-738c-42c2-ae50-68dd71417a32"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -77,6 +78,7 @@
       "T-5737120b-52a5-4a57-9072-fce514adaf33": "O-53aa48f8-4d3c-4d9a-bb8b-12ec41ed3a60",
       "T-58907376-21eb-417f-988e-fe65449a0bb7": "O-15ca9c1f-7dba-451c-b982-7e87d361b1a4",
       "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4": "O-c907310b-d594-4093-a241-5bff64729b14",
+      "T-70901e97-738c-42c2-ae50-68dd71417a32": "O-ca50d6a3-b6a2-481b-98d8-349564657bd0",
       "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e": "O-ac3595ee-b36e-4620-acf2-1358e28fec07",
       "T-773bb444-a0e6-45b9-bdcb-18561bb6182f": "O-9d7ad5bd-d5ee-469e-93b0-79c129d87495",
       "T-77d41018-e04b-4a88-b92c-079b3d8ef421": "O-056e3e62-a872-45aa-953d-0452b29a71e3",
@@ -103,25 +105,19 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "f8aa8da1da57ba0877429bebae8c035c760b85600517106cef57f148da50d301",
+    "cycle_signature": "f4066cf61ac7e05e1a2984dbb130ce4d3e3cb23814144ccff59561dd7943e3ba",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
     "history_refs": [
-      "skill-tree/history/validation/codex-native-owner-pilot.json"
+      "skill-tree/history/validation/codex-owner-browser-actions.json"
     ],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
     "next_action": "Select required task or finish root",
     "partial_work": [
-      "Auth source 893f619 is deployed as version 0131fa19-a146-4095-8047-e2282bcd7891; reviewed resources, secret names and disabled effect flags are retained.",
-      "The synthetic browser reproduces the original double-click symptom. Corrected single approval and denial reach the separate client callback. Auth build and eighteen targeted checks pass.",
-      "Post-deployment Auth health, MCP-to-Auth reachability and OAuth discovery pass. Wrangler refreshed the expired OAuth login without new permissions or secret disclosure.",
-      "Production Pages remains source f94b768. The sign-in header and code-handoff UI improvements remain local commits 0ce97eb and ef72c04 for a later selected website update.",
-      "Real owner client OAuth/plugin, separate workspace consent confirmation, two-account and device checks remain outstanding. No real account grant was performed by the agent.",
-      "OAuth request-continuity source 49247f0 deployed to the existing Auth and MCP Workers; hosted health/discovery and preserved settings pass. Evidence: skill-tree/history/validation/oauth-request-continuity.json. Owner ChatGPT/Codex continuity retests remain open.",
-      "Native Codex pilot: 25 tools exposed, six read tools pass, repeated reads after 617 seconds preserve profile identity, and exact owner-approved Companion-only Todo creation/read/search/original receipt pass with zero Habitica effects. Bounded successful Auth log sample contains only allowed operational fields. Evidence: skill-tree/history/validation/codex-native-owner-pilot.json"
+      "Implemented native createDaily/createHabit/deleteTask in mirrored engines, Workspace/MCP and editor. 560 .NET and 16 focused Worker checks pass; final UI reset controls pass. Live owner self-spell and equipment controls pass. Production preflight and dry runs retain disabled shared/gameplay flags."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -162,7 +158,8 @@
       "P-70ff88fd-b14f-4d7c-bff9-6594b4256587",
       "P-e0494acc-da19-4d22-bdb3-9b71af18cc7d",
       "P-2544a5ca-8301-4a81-b027-08c485b1de48",
-      "P-e946d297-2c7c-4347-9bac-7c1cd92488ee"
+      "P-e946d297-2c7c-4347-9bac-7c1cd92488ee",
+      "P-a552907a-6fd8-42b4-842c-96ab7159cd98"
     ],
     "phase": "resume-parent",
     "processing_results": [
@@ -829,6 +826,23 @@
           "P-e946d297-2c7c-4347-9bac-7c1cd92488ee"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-70901e97-738c-42c2-ae50-68dd71417a32"
+        ],
+        "dispositions": {
+          "P-a552907a-6fd8-42b4-842c-96ab7159cd98": {
+            "reason": "Typed command and canonical schema inspection establishes a bounded lifecycle gap; existing transactions, tombstones and receipts can be reused.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-56699395-030d-4dbe-bf13-5fb7bd8a5ede",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-a552907a-6fd8-42b4-842c-96ab7159cd98"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -882,7 +896,8 @@
       "T-159a415e-0d56-4028-96a4-339a5d5040f8",
       "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
       "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
-      "T-b38dad4c-c3fa-431a-a429-50d6fed97650"
+      "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+      "T-70901e97-738c-42c2-ae50-68dd71417a32"
     ],
     "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "snapshot": [
@@ -902,7 +917,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "3da20e26a280f8bd6d94468bc629db3f26727bf14b63861afb333f39983eee4b",
+  "source_hash": "029a6369b1ba3b23ef94c68da42bd3e55d489d7a4d4b454547fa6b70365184f6",
   "tasks": [
     {
       "depends_on": [],
@@ -1026,7 +1041,8 @@
         "T-159a415e-0d56-4028-96a4-339a5d5040f8",
         "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
         "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
-        "T-b38dad4c-c3fa-431a-a429-50d6fed97650"
+        "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+        "T-70901e97-738c-42c2-ae50-68dd71417a32"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
       "line": 324,

@@ -1,6 +1,6 @@
 namespace Habitica.Domain.Workspace;
 
-public enum WorkspaceOperation { CreateTodo, UpdateTask, CompleteTask, ScoreHabit }
+public enum WorkspaceOperation { CreateTodo, UpdateTask, CompleteTask, ScoreHabit, CreateDaily, CreateHabit, DeleteTask }
 public enum ProjectionCommandState { NotRequested, Pending, Leased, Executing, Confirmed, Blocked, UnknownOutcome, Cancelled }
 public enum ProjectionFailure { None, RateLimited, CredentialRepair, Precondition, Permanent, Transient, Ambiguous }
 public enum ProjectionEffectKind { Create, Update, ScoreUp, ScoreDown }
