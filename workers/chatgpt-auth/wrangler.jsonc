@@ -26,7 +26,8 @@
     "PARTY_ENABLED": false,
     "SPELLS_ENABLED": false,
     "CRON_ENABLED": false,
-    "KEY_OPERATIONS_ENABLED": false
+    "KEY_OPERATIONS_ENABLED": false,
+    "ADAPTIVE_PACING_ENABLED": false
   },
   "env": {
     "preview": {
@@ -42,7 +43,8 @@
         "PARTY_ENABLED": false,
         "SPELLS_ENABLED": false,
         "CRON_ENABLED": false,
-        "KEY_OPERATIONS_ENABLED": false
+        "KEY_OPERATIONS_ENABLED": false,
+        "ADAPTIVE_PACING_ENABLED": false
       },
       "kv_namespaces": [
         {
@@ -84,7 +86,8 @@
         "PARTY_ENABLED": false,
         "SPELLS_ENABLED": false,
         "CRON_ENABLED": false,
-        "KEY_OPERATIONS_ENABLED": false
+        "KEY_OPERATIONS_ENABLED": false,
+        "ADAPTIVE_PACING_ENABLED": false
       },
       "kv_namespaces": [
         {

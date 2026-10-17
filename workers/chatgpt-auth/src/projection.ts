@@ -1,4 +1,4 @@
-import {upstreamBudget,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
+import {upstreamBudget,upstreamFetch,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
 import { activeProfile, boundedJson, credentialKeys, VaultError } from "./vault";
 import { decryptCredential } from "./cryptography";
 import { workspaceJson, workspaceObject, uuid, workspaceSessionToken, workspaceTokenHash, WorkspaceError } from "../../shared/workspace-http";
@@ -103,7 +103,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
   const path = operation === "inspectAccount" ? "user" : operation === "inspectDaily" ? "tasks/user?type=dailys&history=false&dueDate="+encodeURIComponent(now) : operation === "create" ? "tasks/user" : `tasks/${encodeURIComponent(target)}${operation === "score" ? `/score/${args.direction}` : ""}`;
   const method = operation === "create" || operation === "score" ? "POST" : operation === "update" ? "PUT" : "GET";
   await activeProfile(env,who.profileId,who.connectionId);
-  const response = await fetch("https://habitica.com/api/v3/"+path,{method,redirect:"manual",headers:{"x-api-user":credential.habiticaUserId,"x-api-key":credential.apiToken,"x-client":env.HABITICA_X_CLIENT_HEADER,accept:"application/json","content-type":"application/json"},body:operation === "create" ? JSON.stringify({...patch,type:"todo",alias:target}) : operation === "update" ? JSON.stringify(patch) : undefined,signal:AbortSignal.timeout(10000)});
+  const response = await upstreamFetch(env,"https://habitica.com/api/v3/"+path,{method,redirect:"manual",headers:{"x-api-user":credential.habiticaUserId,"x-api-key":credential.apiToken,"x-client":env.HABITICA_X_CLIENT_HEADER,accept:"application/json","content-type":"application/json"},body:operation === "create" ? JSON.stringify({...patch,type:"todo",alias:target}) : operation === "update" ? JSON.stringify(patch) : undefined,signal:AbortSignal.timeout(10000)},who.profileId);
   await observeUpstream(env,response,who.profileId);
   const retryAtUtc = await rateState(env,who,response);
   if (!writing) {

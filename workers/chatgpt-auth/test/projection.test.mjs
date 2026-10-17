@@ -4,9 +4,9 @@ import { fixture, enrolled, accounts, issuer } from './fixtures/oauth.mjs';
 const taskId = '90000000-0000-4000-8000-000000000001';
 const alias = 'companion_' + '1'.repeat(32) + '_' + '2'.repeat(32);
 function task(overrides = {}) { return { id: taskId, userId: accounts[0].habiticaUserId, type: 'todo', text: 'Synthetic task', notes: '', priority: 1, attribute: 'str', completed: false, up: true, down: true, checklist: [], group: {}, challenge: {}, ...overrides }; }
-async function setup(t, handler) {
+async function setup(t, handler, options = {}) {
  const requests = [];
- const f = await fixture(t, { workspace: true, projection: true, habitica: async request => {
+ const f = await fixture(t, { workspace: true, projection: true, ...options, habitica: async request => {
   if (request.url.includes('user?userFields=_id,profile')) return Response.json({ success: true, data: { _id: request.headers.get('x-api-user'), profile: { name: 'Synthetic' } } });
   assert.ok(request.url.startsWith('https://habitica.com/api/v3/')); assert.ok(request.headers.get('x-client'));
   requests.push({ method: request.method, url: request.url }); return handler(request);
@@ -52,7 +52,7 @@ test('known scoring receipts never replay and consumed preconditions cannot auth
 });
 
 test('ambiguous scoring pauses later writes and never repeats the uncertain upstream call', async t => {
- const f = await setup(t, request => request.method === 'GET' ? Response.json({ success: true, data: task({ type: 'habit' }) }) : new Response('Synthetic upstream error with private details', { status: 500 }));
+ const f = await setup(t, request => request.method === 'GET' ? Response.json({ success: true, data: task({ type: 'habit' }) }) : new Response('Synthetic upstream error with private details', { status: 500 }), { adaptivePacing: true });
  const inspected = await (await f.call('inspect', { selector: taskId })).json(); const args = { selector: taskId, checkToken: inspected.checkToken, expectedFingerprint: inspected.task.fingerprint, direction: 'up' }; const a = f.attempt();
  assert.deepEqual(await (await f.call('score', args, a)).json(), { kind: 'unknown', code: 'outcome_unknown' });
  assert.deepEqual(await (await f.call('score', args, a)).json(), { kind: 'unknown', code: 'outcome_unknown' });

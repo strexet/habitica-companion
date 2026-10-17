@@ -1,4 +1,4 @@
-import {upstreamBudget,observeUpstream,TrafficLimit,trafficFailure,charge} from './traffic';
+import {upstreamBudget,upstreamFetch,observeUpstream,TrafficLimit,trafficFailure,charge} from './traffic';
 import { deriveProfileId, encryptCredential, decryptCredential, tokenHash, newManagementToken, tokenMatches, validateKeySeparation, type HabiticaCredential } from "./cryptography";
 import { resourceConfiguration } from "../../shared/resources";
 
@@ -63,7 +63,7 @@ export async function activeProfile(env: AuthEnv, id: string, connectionId?: str
 async function verifyHabitica(credential: HabiticaCredential, env: AuthEnv): Promise<string | null> {
   if (!env.HABITICA_X_CLIENT_HEADER) throw new VaultError("integration_unavailable", 503);
   await upstreamBudget(env);
-  const response = await fetch("https://habitica.com/api/v3/user?userFields=_id,profile", {
+  const response = await upstreamFetch(env,"https://habitica.com/api/v3/user?userFields=_id,profile", {
     headers: { "x-api-user": credential.habiticaUserId, "x-api-key": credential.apiToken, "x-client": env.HABITICA_X_CLIENT_HEADER, accept: "application/json" },
     signal: AbortSignal.timeout(10000),
   });

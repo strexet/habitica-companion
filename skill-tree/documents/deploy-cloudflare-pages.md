@@ -293,3 +293,7 @@ The owner retest uses a refreshed ChatGPT tool definition and a fresh authorizat
 ### Active Codex owner-isolated lane
 
 The owner selects Codex-only testing and permits bounded own-account task changes, self spells and equipment checks. ChatGPT testing is deferred. The frontend profile uses `Features:OwnerIsolatedTestingEnabled=true` and `Features:PartySyncEnabled=false`; the reviewed production frontend override bundle retains the same settings. Backend party, live Cron, spells, projection and background-execution flags remain disabled. Real other-user effects and party departure remain outside every test lane.
+
+## Adaptive admission schema
+
+Auth migration `0008-upstream-pacing.sql` defines durable shared/profile admission buckets and an expiry index. Apply the migration before running the corresponding Auth bundle in an authorized deployment lane. Profile rows reference integration profiles with cascading deletion; the schema does not touch party D1 or Workspace records. `ADAPTIVE_PACING_ENABLED` is false in shipped local, preview and production configurations. Enabled local runtime fixtures exercise admission without remote resources. Production activation and real traffic qualification remain release gates. No additional service binding, secret or scheduled trigger is required.

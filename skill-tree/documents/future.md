@@ -292,65 +292,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Coordinate conservative server traffic pacing across profiles
-
-```yaml
-id: T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee
-priority: 100
-status: Ready
-parent_pending_ids: ["P-676c0cb1-82b5-51e1-92c1-74303b58c59d"]
-processing_run_id: PR-3e8b3377-6e54-45e9-b87b-4e8f79303a99
-root_task_id: T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee
-related_task_id: null
-relation: main
-depends_on: ["T-1b792978-7f21-476f-91be-1d7ab3bd10b5"]
-```
-
-Goal:
-- Apply durable proactive upstream pacing and bounded recovery without allowing one profile to consume shared capacity.
-
-Current behavior:
-- Auth traffic.ts applies atomic minute quotas and cooldowns; no proactive remaining/reset pacing or gradual recovery exists across Worker instances.
-
-Desired behavior:
-- Add atomic per-profile and shared-egress admission using current header observations and conservative reserve.
-- Give rejected admission a bounded retry time without holding requests or replaying effects.
-- Keep isolated profile budgets and bounded shared reservations; record anonymous denial and recovery diagnostics.
-
-Touch:
-- workers/chatgpt-auth/src/traffic.ts and upstream dispatch callers
-- Auth migrations when durable state requires schema changes
-- workers/chatgpt-auth/test and deployment/technical/testing docs
-
-Discovery allowance:
-- Inspect affected dispatch callers, source contracts and synthetic tests.
-
-Out of scope:
-- Live calls, deployments, credential use, new automatic action retries and unrelated UI redesign.
-
-Implementation constraints:
-- Preserve separate credential-repair and unknown-effect fences. Background calls retain the official thirty-second minimum.
-- Recheck current source and official API limits before choosing numeric shared policy. Use local synthetic profiles only.
-- No claim of cross-device coordination outside the integration server; no unbounded queues or profile identifiers in diagnostics.
-
-Questions and required clarifications:
-- [Resolved - developer direction] Local code and synthetic validation are authorized; live qualification remains deferred.
-
-Validation:
-- Competing synthetic profiles and Worker instances cannot overspend admission or starve a second profile through repeated denied calls.
-- Header exhaustion, 429, network failure and sustained success exercise bounded recovery and retention cleanup.
-- Run all Worker builds, affected suites and app build.
-
-Acceptance:
-- Durable admission slows before depletion and recovers gradually under synthetic competing-profile load.
-- Admission never replays an uncertain effect or weakens existing scope, revocation and credential-repair checks.
-
-Documentation updates:
-- Document numeric admission policy, privacy limits and schema deployment requirements.
-
-Risks:
-- Quota estimates can diverge across independent clients; explicit server cooldowns and unknown mutation outcomes remain authoritative.
-
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml

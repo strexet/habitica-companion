@@ -1,10 +1,8 @@
 import {deriveProfileId} from './cryptography.ts';
 import {WorkspaceError} from '../../shared/workspace-http.ts';
-export class TrafficLimit extends WorkspaceError {
- readonly retryAtUtc:string;
- readonly retryAfterSeconds:number;
- constructor(retryAfterSeconds:number){super('rate_limited',429);this.retryAfterSeconds=retryAfterSeconds;this.retryAtUtc=new Date(Date.now()+retryAfterSeconds*1000).toISOString();}
-}
+import {TrafficLimit} from './traffic-error.ts';
+import {admitUpstream,observePacing} from './upstream-pacing.ts';
+export {TrafficLimit} from './traffic-error.ts';
 export const trafficLimits={publicGlobal:600,publicNetwork:120,enrollmentGlobal:30,enrollmentNetwork:10,mcpGlobal:600,mcpNetwork:120,mcpProfile:60,workspaceGlobal:600,workspaceNetwork:120,workspaceProfile:120,recovery:20,upstreamGlobal:300,upstreamProfile:60} as const;
 async function metric(env:AuthEnv,name:'local_denied'|'upstream_429',now=Date.now()){
  const day=Math.floor(now/86400000);await env.HABITICA_INTEGRATION_DB.prepare(`INSERT INTO authorization_attempts(bucket,attempts,expires_at_utc) VALUES(?,1,?) ON CONFLICT(bucket) DO UPDATE SET attempts=MIN(attempts+1,2147483647)`).bind('metric:'+name+':'+day,new Date((day+1)*86400000).toISOString()).run();
@@ -27,9 +25,11 @@ export async function upstreamBudget(env:AuthEnv,profileId?:string){
  const row=profileId?await env.HABITICA_INTEGRATION_DB.prepare('SELECT r.blocked_until_utc AS expires_at_utc,r.credential_repair_required FROM integration_read_state r JOIN integration_profiles p ON p.profile_id=r.profile_id AND p.connection_id=r.connection_id WHERE r.profile_id=?').bind(profileId).first<{expires_at_utc:string|null;credential_repair_required:number}>():await env.HABITICA_INTEGRATION_DB.prepare('SELECT expires_at_utc,0 AS credential_repair_required FROM authorization_attempts WHERE bucket=?').bind('cooldown:upstream:enrollment').first<{expires_at_utc:string|null;credential_repair_required:number}>();
  if(row?.credential_repair_required)throw new WorkspaceError('credential_repair_required',401);
  if(row?.expires_at_utc&&Date.parse(row.expires_at_utc)>Date.now())throw new TrafficLimit(Math.max(1,Math.ceil((Date.parse(row.expires_at_utc)-Date.now())/1000)));
+ try{await admitUpstream(env,profileId);}catch(error){if(error instanceof TrafficLimit)await metric(env,'local_denied');throw error;}
  await charge(env,'upstream:global',trafficLimits.upstreamGlobal);if(profileId)await charge(env,'upstream:profile:'+profileId,trafficLimits.upstreamProfile);
 }
 export async function observeUpstream(env:AuthEnv,response:Response,profileId?:string){
+ await observePacing(env,response,profileId);
  if(response.status!==429&&response.headers.get('x-ratelimit-remaining')!=='0')return;
  if(response.status===429)await metric(env,'upstream_429');
  if(profileId)return;
@@ -39,3 +39,9 @@ export async function observeUpstream(env:AuthEnv,response:Response,profileId?:s
 }
 export async function trafficSummary(env:AuthEnv){const rows=await env.HABITICA_INTEGRATION_DB.prepare("SELECT bucket,attempts FROM authorization_attempts WHERE bucket IN (?,?) AND expires_at_utc>?").bind('metric:local_denied:'+Math.floor(Date.now()/86400000),'metric:upstream_429:'+Math.floor(Date.now()/86400000),new Date().toISOString()).all<{bucket:string;attempts:number}>();return {localQuotaDenials:rows.results.find(r=>r.bucket.startsWith('metric:local_denied:'))?.attempts??0,upstream429:rows.results.find(r=>r.bucket.startsWith('metric:upstream_429:'))?.attempts??0};}
 export function trafficFailure(error:unknown):Response|null{return error instanceof TrafficLimit?Response.json({error:error.code,retryAtUtc:error.retryAtUtc},{status:429,headers:{'cache-control':'no-store','retry-after':String(error.retryAfterSeconds)}}):null;}
+
+// One dispatch only. Accounting failures after a mutation remain unknown to callers.
+export async function upstreamFetch(env:AuthEnv,input:string,init:RequestInit,profileId?:string):Promise<Response>{
+ try{return await fetch(input,init);}
+ catch(error){await observePacing(env,null,profileId);throw error;}
+}

@@ -1,4 +1,4 @@
-import {upstreamBudget,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
+import {upstreamBudget,upstreamFetch,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
 import {activeProfile,credentialKeys,boundedJson,VaultError} from './vault';
 import {decryptCredential} from './cryptography';
 import {validatedToken} from './oauth';
@@ -101,7 +101,7 @@ export async function spellOperation(request:Request,env:AuthEnv):Promise<Respon
   const reserved=await env.HABITICA_INTEGRATION_DB.prepare(`INSERT OR IGNORE INTO integration_projection_attempts(profile_id,connection_id,attempt_id,payload_hash,operation,state,created_at_utc) SELECT ?,?,?,?,'spell','dispatched',? FROM integration_projection_state WHERE profile_id=? AND connection_id=? AND lease_token=? AND lease_until_utc>? AND NOT EXISTS(SELECT 1 FROM integration_projection_attempts WHERE profile_id=? AND connection_id=? AND state IN ('unknown','dispatched'))`)
    .bind(who.profileId,who.connectionId,attemptId,hash,new Date().toISOString(),who.profileId,who.connectionId,lease,new Date(Date.now()+11000).toISOString(),who.profileId,who.connectionId).run();
   if(!reserved.meta.changes){const prior=await existing();if(prior)return json(prior);throw new WorkspaceError('spell_busy_or_stale',409);}dispatched=true;
-  const response=await fetch('https://habitica.com/api/v3/user/class/cast/healAll',{method:'POST',redirect:'manual',headers:{'x-api-user':observed.credential.habiticaUserId,'x-api-key':observed.credential.apiToken,'x-client':env.HABITICA_X_CLIENT_HEADER,'content-type':'application/json',accept:'application/json'},body:JSON.stringify({quantity:1}),signal:AbortSignal.timeout(10000)});
+  const response=await upstreamFetch(env,'https://habitica.com/api/v3/user/class/cast/healAll',{method:'POST',redirect:'manual',headers:{'x-api-user':observed.credential.habiticaUserId,'x-api-key':observed.credential.apiToken,'x-client':env.HABITICA_X_CLIENT_HEADER,'content-type':'application/json',accept:'application/json'},body:JSON.stringify({quantity:1}),signal:AbortSignal.timeout(10000)},who!.profileId);
   await observeUpstream(env,response,who!.profileId);
   const retryAtUtc=await rateState(env,who,response,false);
   let outcome:SpellOutcome;

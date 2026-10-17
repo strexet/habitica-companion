@@ -2834,3 +2834,7 @@ Spell and Cron controller guards execute before credential resolution or automat
 ## Foreground API pacing
 
 Foreground Habitica requests slow before the estimated budget approaches exhaustion. Concurrent calls share one dispatch gate, retain cancellation and honor server cooldowns. Failed calls reduce subsequent throughput; sustained success restores throughput gradually. The client exposes anonymous pacing diagnostics and never automatically repeats failed gameplay or task actions. Independent browser devices and server traffic require separate admission coordination.
+
+## Optional server admission
+
+The server contains flag-controlled durable admission for shared and per-profile upstream budgets. Admission slows early, reserves headroom, retains cooldowns and recovers gradually after failures. Rejected requests return a retry deadline before dispatch. The feature remains disabled in shipped configurations; existing quotas and safety fences remain active independently. Local synthetic tests qualify admission and uncertain-effect protection.

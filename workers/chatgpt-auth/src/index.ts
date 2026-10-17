@@ -1,3 +1,4 @@
+import {purgePacing} from './upstream-pacing';
 import {networkBudget,trafficFailure} from './traffic';
 import {trafficOperation} from './traffic-route';
 import {keyOperation,purgeKeyJobs} from './key-operations';
@@ -93,7 +94,7 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
     return Response.json({ error: "unauthorized" }, { status: 401, headers });
 }
 export default {
-  async scheduled(_event, env): Promise<void> { await purgeProjectionMetadata(env); await purgeKeyJobs(env); },
+  async scheduled(_event, env): Promise<void> { await purgeProjectionMetadata(env); await purgeKeyJobs(env); await purgePacing(env); },
   async fetch(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const config = resourceConfiguration(env.ENVIRONMENT, env);

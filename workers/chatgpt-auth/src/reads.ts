@@ -1,4 +1,4 @@
-import {upstreamBudget,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
+import {upstreamBudget,upstreamFetch,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
 import { activeProfile, boundedJson, credentialKeys, VaultError } from "./vault";
 import { decryptCredential } from "./cryptography";
 import { validatedToken } from "./oauth";
@@ -37,7 +37,7 @@ export async function upstream(env: AuthEnv, profileId: string, connectionId: st
   const credential = await decryptCredential(profileId, { ciphertext: profile.credential_ciphertext!, iv: profile.credential_iv!, keyVersion: profile.credential_key_version!, schemaVersion: 1 }, credentialKeys(env));
   if (!env.HABITICA_X_CLIENT_HEADER) throw new ReadFailure("service_unavailable", 503);
   try{await upstreamBudget(env,profileId);}catch(error){if(error instanceof TrafficLimit)throw new ReadFailure("rate_limited",429,{retryAfterSeconds:error.retryAfterSeconds});throw error;}
-  const response = await fetch("https://habitica.com/api/v3/" + path, { method: "GET", redirect: "manual", headers: { "x-api-user": credential.habiticaUserId, "x-api-key": credential.apiToken, "x-client": env.HABITICA_X_CLIENT_HEADER, accept: "application/json" }, signal: AbortSignal.timeout(10000) });
+  const response = await upstreamFetch(env,"https://habitica.com/api/v3/" + path, { method: "GET", redirect: "manual", headers: { "x-api-user": credential.habiticaUserId, "x-api-key": credential.apiToken, "x-client": env.HABITICA_X_CLIENT_HEADER, accept: "application/json" }, signal: AbortSignal.timeout(10000) },profileId);
   await observeUpstream(env,response,profileId);
   const rate = rateMetadata(response);
   const retry = Number(rate.retryAfterSeconds);
