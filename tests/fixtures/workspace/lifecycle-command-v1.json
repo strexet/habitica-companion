@@ -1,0 +1,52 @@
+{
+  "cases": [
+    {
+      "name": "skipOccurrence",
+      "command": {
+        "id": "30000000-0000-4000-8000-000000000001",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 2,
+        "operation": "skipOccurrence",
+        "taskId": "20000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": "2026-10-17",
+        "projectToHabitica": false
+      },
+      "payloadHash": "3ca7f28822fa9587cf57261aa0c9b664c370c801a3709fc8e1112f2fbabe6ffb"
+    },
+    {
+      "name": "pauseTask",
+      "command": {
+        "id": "30000000-0000-4000-8000-000000000002",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 2,
+        "operation": "pauseTask",
+        "taskId": "20000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "b8448bc072bebac1156a12de4bed818741e78c14c435c83a0312188d1f9df67a"
+    },
+    {
+      "name": "resumeTask",
+      "command": {
+        "id": "30000000-0000-4000-8000-000000000003",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 2,
+        "operation": "resumeTask",
+        "taskId": "20000000-0000-4000-8000-000000000002",
+        "patch": null,
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "f581da5b327e7aa8e83817d0a84e7acd118f6cb4e77016caa6112d07c2861534"
+    }
+  ]
+}

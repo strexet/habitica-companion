@@ -56,7 +56,8 @@
       "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
       "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
-      "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
+      "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
+      "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -68,6 +69,7 @@
       "T-16a38176-f2fe-5f7d-a809-546f17357b49": "O-7d50e0cb-ee45-4fe5-bd54-6b38b3b22e6e",
       "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec": "O-1cbc3cfc-9cf0-4922-8317-4c16090d9aa0",
       "T-1b792978-7f21-476f-91be-1d7ab3bd10b5": "O-13bdfdc3-9c04-411d-8284-32577a902250",
+      "T-1d00b09b-ae5b-4003-9ccf-6af865f80879": "O-58322798-8d4a-4aa2-b9e5-ec619163a60a",
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55": "O-fc1d5fd0-432b-43b1-8ae3-51536510411a",
       "T-211d2ac1-5778-47fb-8148-c9e1a320e31a": "O-ee0b74ce-2986-417f-95b7-92a78a6bfe88",
@@ -117,7 +119,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "2f3bc3004b03ac6bf6d94dae7da419f058da669f1708660e237a2e249a99482d",
+    "cycle_signature": "47e0b9a4b9776e10abb0b2861ab0939193e6561a3cec8a4f1a79b2b658f3a8c1",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -127,13 +129,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Research the remaining authorized Pending feature areas and original E11 lifecycle remainder. Keep E01 detailed UI and real release gates open.",
+    "next_action": "Research and promote the next independent local task from the authorized Pending areas.",
     "partial_work": [
-      "Five local implementation units are complete: lifecycle reliability, foreground pacing, durable server pacing, recurrence calendar and reviewed recurrence authoring.",
-      "Latest milestone passes 581 .NET tests, Auth 123, Workspace 164, three Worker builds, app build and packaged task-skill validation.",
-      "P-8a968c91-80a2-46be-9f32-2fb514d3bc22 retains original E11 lifecycle/review/UI work; no complete recurring-workflow claim.",
-      "E01 retains hands-on competitor/mobile usability and owner navigation-feedback gaps despite the checked local prototype.",
-      "No live tests, real credentials, deployments or pushes."
+      "Occurrence lifecycle passed local acceptance and final validation.",
+      "Continue research of original authorized Pending areas; real release qualification remains blocked."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -178,7 +177,8 @@
       "P-a552907a-6fd8-42b4-842c-96ab7159cd98",
       "P-f0f5ebac-0436-4f57-8865-29015a753872",
       "P-d6fb32f0-7125-4544-898a-c1028ca91a2a",
-      "P-8a968c91-80a2-46be-9f32-2fb514d3bc22"
+      "P-8a968c91-80a2-46be-9f32-2fb514d3bc22",
+      "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79"
     ],
     "phase": "processing",
     "processing_results": [
@@ -953,6 +953,25 @@
         "task_keys": {
           "recurrence-authoring": "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
         }
+      },
+      {
+        "created_ids": [
+          "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
+        ],
+        "dispositions": {
+          "P-8a968c91-80a2-46be-9f32-2fb514d3bc22": {
+            "reason": "Existing canonical states and occurrence records permit bounded skip/pause/resume commands. Reviewed schedule replacement supplies restart semantics without a destructive reset. Remaining UI, review, streak and linked-game policy requirements remain separate intake.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-87c6997c-d29d-4c19-aa76-0e504d06e007",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-8a968c91-80a2-46be-9f32-2fb514d3bc22"
+        ],
+        "task_keys": {
+          "occurrence-lifecycle": "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
+        }
       }
     ],
     "required_ids": [
@@ -1013,9 +1032,10 @@
       "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
       "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
-      "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
+      "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
+      "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
     ],
-    "root_task_id": "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
+    "root_task_id": "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1073,6 +1093,16 @@
         "reason": "Decomposition of the originally authorized E11 area; no new feature area or live lane.",
         "remaining_pending_id": "P-8a968c91-80a2-46be-9f32-2fb514d3bc22",
         "researched_remainder": "P-d6fb32f0-7125-4544-898a-c1028ca91a2a"
+      },
+      {
+        "original_pending_id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
+        "owner_direction": "Expand to local tasks and Pending work",
+        "promoted_local_roots": [
+          "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
+        ],
+        "reason": "Further decomposition of the originally authorized E11 local feature area.",
+        "remaining_pending_id": "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79",
+        "researched_remainder": "P-8a968c91-80a2-46be-9f32-2fb514d3bc22"
       }
     ],
     "snapshot": [
@@ -1091,17 +1121,18 @@
       "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
       "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
-      "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
+      "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
+      "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "64deb9629c5ffd382cca5d81aa1377b37149fe333eb6e595d499a45de5e3dc7b",
+  "source_hash": "c0964f29eb6166aa043d380af7dc99fda9de434419fe316bfe381a1cc50018d4",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-8a968c91-80a2-46be-9f32-2fb514d3bc22",
+      "id": "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79",
       "line": 75,
       "parent_pending_ids": [],
       "priority": 100,
@@ -1111,7 +1142,7 @@
       "relation": "main",
       "root_task_id": null,
       "status": "Pending",
-      "title": "E11 Occurrence lifecycle, Habit review and mobile recurrence controls"
+      "title": "E11 Mobile recurrence controls, retained history and Habit review"
     },
     {
       "depends_on": [],

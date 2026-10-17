@@ -155,7 +155,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
     public async Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>> AcceptCommandAsync(WorkspaceCommandPreview preview, CancellationToken cancellationToken)
     {
         if (WorkspaceId != preview.Command.WorkspaceId) return new(false, null, "The workspace connection changed.");
-        var tool = preview.Command.Operation switch { WorkspaceOperation.CreateTodo => "create_todo", WorkspaceOperation.CreateDaily => "create_daily", WorkspaceOperation.CreateHabit => "create_habit", WorkspaceOperation.DeleteTask => "delete_task", WorkspaceOperation.UpdateTask => "update_task", WorkspaceOperation.CompleteTask => "complete_task", WorkspaceOperation.ScoreHabit => "score_habit", _ => throw new InvalidOperationException("Unsupported command.") };
+        var tool = preview.Command.Operation switch { WorkspaceOperation.CreateTodo => "create_todo", WorkspaceOperation.CreateDaily => "create_daily", WorkspaceOperation.CreateHabit => "create_habit", WorkspaceOperation.DeleteTask => "delete_task", WorkspaceOperation.UpdateTask => "update_task", WorkspaceOperation.CompleteTask => "complete_task", WorkspaceOperation.ScoreHabit => "score_habit", WorkspaceOperation.SkipOccurrence => "skip_occurrence", WorkspaceOperation.PauseTask => "pause_task", WorkspaceOperation.ResumeTask => "resume_task", _ => throw new InvalidOperationException("Unsupported command.") };
         var result = await CallTaskAsync<WorkspaceMutationReceipt>(tool, new { commandId = preview.PreparedCommandId }, cancellationToken, preview.PreparedCommandId);
         if (result.Succeeded && result.Value is { } receipt && (receipt.TaskId != preview.Command.TaskId || receipt.Operation != System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(preview.Command.Operation.ToString())))
             return new(false, null, "The command receipt identity did not match. Check the original command before retrying.", true);
@@ -220,6 +220,10 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
                 || receipt.OutcomeUnknown != (receipt.HabiticaProjectionStatus == "UnknownOutcome")
                 || receipt.HabiticaProjectionStatus == "confirmed" && receipt.ConfirmedProjectionCount != receipt.TotalProjectionCount))
                 return new(false, default, "The command receipt could not be validated. Check the original command before retrying.", true);
+            if (value is WorkspaceMutationReceipt lifecycle && lifecycle.Operation is "skipOccurrence" or "pauseTask" or "resumeTask"
+                && (lifecycle.HabiticaProjectionStatus != "notRequested" || lifecycle.TotalProjectionCount != 0 || lifecycle.ConfirmedProjectionCount != 0
+                    || lifecycle.AcceptedEventCount != (lifecycle.Operation == "skipOccurrence" ? 1 : 0)))
+                return new(false, default, "The Companion-only lifecycle receipt was inconsistent. Check the original command.", true);
             return new(true, value, "Workspace command state received.");
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }

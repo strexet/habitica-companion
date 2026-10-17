@@ -23,6 +23,16 @@ public static class WorkspaceJournalValidation
                 || entry.PayloadHash != WorkspaceCommandIdentity.Hash(entry.Command) || entry.AcceptedAtUtc == default || entry.AcceptedAtUtc.Offset != TimeSpan.Zero
                 || !Enum.IsDefined(entry.ProjectionState) || !Enum.IsDefined(entry.Failure) || entry.Effects is null || entry.Effects.Count > 11
                 || entry.Effects.Any(effect => !Enum.IsDefined(effect)) || entry.ConfirmedEffects < 0 || entry.ConfirmedEffects > entry.Effects.Count || entry.Attempts < 0) return false;
+            if (entry.Command.Operation is WorkspaceOperation.SkipOccurrence or WorkspaceOperation.PauseTask or WorkspaceOperation.ResumeTask)
+            {
+                var task = entry.TaskSnapshot;
+                if (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
+                    || entry.Command.Patch is not null || entry.Command.Direction is not null || entry.Command.Count != 1
+                    || task is null || task.Kind is not (CompanionTaskKind.Daily or CompanionTaskKind.Habit)) return false;
+                if (entry.Command.Operation == WorkspaceOperation.SkipOccurrence
+                    ? task.Kind != CompanionTaskKind.Daily || task.State != CompanionTaskState.Active || task.Recurrence is null || entry.Command.OccurrenceDate is null || entry.Command.OccurrenceDate == default(DateOnly)
+                    : entry.Command.OccurrenceDate is not null || task.State != (entry.Command.Operation == WorkspaceOperation.PauseTask ? CompanionTaskState.Paused : CompanionTaskState.Active)) return false;
+            }
             if ((entry.Command.Patch?.Recurrence is not null || entry.Command.Patch?.ClearRecurrence == true)
                 && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
                     || entry.Command.Operation is not (WorkspaceOperation.CreateDaily or WorkspaceOperation.UpdateTask)

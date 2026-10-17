@@ -19,6 +19,11 @@ export async function journal(value:unknown):Promise<Journal>{
   const command=workspaceCommand(row.command);valid(!ids.has(command.id)&&command.workspaceId===document.id&&command.expectedRevision<document.revision&&row.payloadHash===await commandHash(command));ids.add(command.id);
   valid(timestamp(row.acceptedAtUtc)&&states.includes(String(row.projectionState))&&failures.includes(String(row.failure))&&Array.isArray(row.effects)&&row.effects.length<=11&&row.effects.every(v=>['create','update','scoreUp','scoreDown'].includes(v)));
   const effects=row.effects as string[];valid(Number.isInteger(row.confirmedEffects)&&Number(row.confirmedEffects)>=0&&Number(row.confirmedEffects)<=effects.length&&Number.isSafeInteger(row.attempts)&&Number(row.attempts)>=0);
+  if(['skipOccurrence','pauseTask','resumeTask'].includes(command.operation)){
+   valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0&&command.patch===null&&command.direction===null&&command.count===1);
+   const task=object(row.taskSnapshot);valid(['daily','habit'].includes(String(task.kind)));
+   valid(command.operation==='skipOccurrence'?task.kind==='daily'&&task.state==='active'&&task.recurrence!=null&&command.occurrenceDate!==null&&command.occurrenceDate!=='0001-01-01':command.occurrenceDate===null&&task.state===(command.operation==='pauseTask'?'paused':'active'));
+  }
   if(command.patch?.recurrence||command.patch?.clearRecurrence){valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0&&['createDaily','updateTask'].includes(command.operation)&&!(command.operation==='createDaily'&&command.patch.clearRecurrence));const accepted=object(row.taskSnapshot);valid(accepted.kind==='daily');const rule=workspaceRecurrence(accepted.recurrence);valid(command.patch.clearRecurrence?rule===null:JSON.stringify(rule)===JSON.stringify(command.patch.recurrence));}
   valid(row.projectionState==='notRequested'?effects.length===0:effects.length>0);
   if(row.projectionState==='confirmed')valid(row.confirmedEffects===effects.length);

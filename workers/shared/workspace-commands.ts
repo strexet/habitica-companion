@@ -1,9 +1,9 @@
 import { habiticaDetails, type HabiticaTaskDetails } from "./task-details.ts";
 import {workspaceRecurrence,type Recurrence} from './workspace-domain.ts';
-export type WorkspaceOperation = "createTodo" | "updateTask" | "completeTask" | "scoreHabit" | "createDaily" | "createHabit" | "deleteTask";
+export type WorkspaceOperation = "createTodo" | "updateTask" | "completeTask" | "scoreHabit" | "createDaily" | "createHabit" | "deleteTask" | "skipOccurrence" | "pauseTask" | "resumeTask";
 export interface WorkspacePatch { text: string | null; notes: string | null; clearNotes: boolean; priority: "low" | "normal" | "high" | "urgent" | null; deadline: string | null; clearDeadline: boolean; habiticaDetails?: HabiticaTaskDetails | null; recurrence?:Recurrence|null;clearRecurrence?:boolean }
 export interface WorkspaceCommand { id: string; workspaceId: string; expectedRevision: number; operation: WorkspaceOperation; taskId: string; patch: WorkspacePatch | null; direction: "up" | "down" | null; count: number; occurrenceDate: string | null; projectToHabitica: boolean }
-const operations = ["createTodo", "updateTask", "completeTask", "scoreHabit", "createDaily", "createHabit", "deleteTask"];
+const operations = ["createTodo", "updateTask", "completeTask", "scoreHabit", "createDaily", "createHabit", "deleteTask", "skipOccurrence", "pauseTask", "resumeTask"];
 export function isTaskCreation(operation: unknown): boolean { return ["createTodo", "createDaily", "createHabit"].includes(operation as string); }
 function object(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("invalid_command");
@@ -48,7 +48,7 @@ export function workspaceCommand(value: unknown): WorkspaceCommand {
   const count = input.count === undefined ? 1 : input.count;
   if (!Number.isInteger(count) || Number(count) < 1 || Number(count) > 10 || operation !== "scoreHabit" && count !== 1 || (operation === "scoreHabit" ? direction === null : direction !== null)) throw new Error("invalid_command");
   const occurrenceDate = date(input.occurrenceDate);
-  if (operation !== "completeTask" && occurrenceDate !== null) throw new Error("invalid_command");
+  if (!["completeTask","skipOccurrence"].includes(operation) && occurrenceDate !== null) throw new Error("invalid_command");
   return { id: id(input.id), workspaceId: id(input.workspaceId), expectedRevision: Number(input.expectedRevision), operation, taskId: id(input.taskId), patch, direction, count: Number(count), occurrenceDate, projectToHabitica: bool(input.projectToHabitica) };
 }
 export async function commandHash(command: WorkspaceCommand): Promise<string> {

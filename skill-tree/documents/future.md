@@ -72,10 +72,10 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### E11 Occurrence lifecycle, Habit review and mobile recurrence controls
+### E11 Mobile recurrence controls, retained history and Habit review
 
 ```yaml
-id: P-8a968c91-80a2-46be-9f32-2fb514d3bc22
+id: P-59bd9da0-87a5-43c6-83d1-86075c5e4b79
 priority: 100
 status: Pending
 parent_pending_ids: []
@@ -87,16 +87,16 @@ depends_on: []
 ```
 
 Description:
-- Implement skip/pause/resume/restart, retained occurrence and Habit score review, determinable streaks, mobile schedule authoring and Today/calendar integration. Preserve canonical civil dates separately from verified Habitica due-state and Cron day boundaries.
+- Add mobile recurrence/lifecycle controls, Today/calendar integration, retained occurrence and Habit event review, and streaks only when history is sufficient. Define supported linked-schedule and task-type-conversion policies before additional game projection behavior.
 
 Expected behavior:
-- Per-occurrence history survives schedule edits, offline reconnect and delayed projection. Mobile controls follow E01. Unknown game effects stay fenced; skipped or restored canonical state never implies a reversed reward. Define explicit linked-schedule and type-conversion policies before implementing unsupported projections.
+- Mobile workflows follow the E01 navigation/usability gate and preserve skipped/completed history through offline reconnect, travel and delayed sync. Canonical pause, skip, resume and restart never imply a paused Habitica schedule or reversed reward.
 
 Source:
-- Remaining original E11 intent from P-f2bb7e37-6700-58ac-aa56-b537d193c777 and P-d6fb32f0-7125-4544-898a-c1028ca91a2a. Calendar expansion is complete; the prioritized authoring unit covers only reviewed schedule fields and scheduled-date validation.
+- Remaining original E11 intent from P-f2bb7e37-6700-58ac-aa56-b537d193c777, P-d6fb32f0-7125-4544-898a-c1028ca91a2a and P-8a968c91-80a2-46be-9f32-2fb514d3bc22 after calendar, authoring and researched lifecycle decomposition.
 
 Priority rationale:
-- Retain the original E11 feature-area priority.
+- Preserve the original E11 feature-area priority.
 
 ### E01 Competitive UX/IA study and mobile-first product contract
 

@@ -297,3 +297,7 @@ The owner selects Codex-only testing and permits bounded own-account task change
 ## Adaptive admission schema
 
 Auth migration `0008-upstream-pacing.sql` defines durable shared/profile admission buckets and an expiry index. Apply the migration before running the corresponding Auth bundle in an authorized deployment lane. Profile rows reference integration profiles with cascading deletion; the schema does not touch party D1 or Workspace records. `ADAPTIVE_PACING_ENABLED` is false in shipped local, preview and production configurations. Enabled local runtime fixtures exercise admission without remote resources. Production activation and real traffic qualification remain release gates. No additional service binding, secret or scheduled trigger is required.
+
+## Recurring command compatibility
+
+Recurrence intents and Companion-only skip/pause/resume require matching browser, MCP and Workspace bundles. Existing command identities remain valid; older clients can reject extended fields or appended operation names. Update clients alongside the server before using the corresponding tools. Recurrence/lifecycle commands require no additional D1 migration, service binding, secret or enabled background executor. Auth migration requirements, disabled Cron and independent live/client/device release gates remain unchanged.

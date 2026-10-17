@@ -157,3 +157,7 @@ Canonical recurrence uses civil dates in the selected UTC or supported IANA regi
 ## Reviewed recurrence authoring boundary
 
 Local application commands and MCP share reviewed createDaily/updateTask authoring for unlinked Companion Dailies. Explicit schedule clearing retains history. Recurrence intents cannot request Habitica projection or edit a linked/pending/uncertain mapping. Scheduled dates remain civil calendar facts and require separate server due-state/Cron verification before any existing game projection. Default request serialization and legacy command identities remain stable; extended recurrence intents use a distinct versioned hash. The basic PWA editor remains unscheduled until the separate UI gate is satisfied.
+
+## Companion-only occurrence lifecycle
+
+Local skip, pause and resume commands require an unlinked Companion Daily/Habit and explicit reviewed identity. Skip applies only to an active Daily with a supported schedule and a pending occurrence date. Pause blocks new canonical completion/scoring; resume preserves the schedule without automatic backfill. Restart uses a separately reviewed schedule replacement and retains past history. Linked, pending and uncertain mappings are refused; no Habitica penalty, schedule, reward or party state is changed. Lifecycle receipts report accepted canonical records separately from zero game effects.

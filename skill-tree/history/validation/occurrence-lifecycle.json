@@ -1,0 +1,78 @@
+{
+  "task_id": "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
+  "date": "2026-10-17",
+  "scope": "Local application and synthetic MCP/Workers; no live account calls or deployment",
+  "checks": [
+    {
+      "name": "Release app build and three pinned Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET solution",
+      "passed": 589,
+      "failed": 0,
+      "suites": {
+        "api": 54,
+        "application": 97,
+        "domain": 28,
+        "rules": 43,
+        "storage": 21,
+        "webapp": 346
+      }
+    },
+    {
+      "name": "Full Auth suite",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace suite",
+      "passed": 171,
+      "failed": 0
+    },
+    {
+      "name": "Packaged skill validation and changed prose/whitespace review",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Neutral appended-operation fixtures agree across C# and TypeScript; existing operation values remain unchanged.",
+    "Skip records exactly one scheduled occurrence with no completion or Habit score. Duplicated commands recover original receipts; completed/skipped dates reject new skip/completion.",
+    "Pause blocks new Daily completion and Habit scoring; resume preserves the rule. Reviewed schedule replacement retains history and never backfills effects.",
+    "Journal validation and browser adapters reject lifecycle receipts or snapshots that fabricate game effects.",
+    "Synthetic MCP advertises the narrow tools, accepts reviewed intents and returns original receipts. Write scope and profile isolation are enforced at MCP and Workspace boundaries; zero upstream writes occurred.",
+    "Browser controller recovers the original skipped occurrence after a lost commit acknowledgement without a second event."
+  ],
+  "limitations": [
+    "Basic PWA action selectors and mobile recurrence controls remain Pending.",
+    "Linked game lifecycle, actual host discovery and device qualification remain unrun.",
+    "No live tests, deployment or account state changes were performed."
+  ],
+  "source_fingerprints": {
+    "plugin/README.md": "c24e613fe51ffc96319309b40cd8c22e42f68016961d2dfa54d9994d8b08b228",
+    "plugin/skills/habitica-task-management/SKILL.md": "9643fb45e34d13efa55dd0b71047039d9d07704da8384a46ec218f53eefa6ae0",
+    "skill-tree/documents/companion-workspace-contract.md": "ea63ff188dba1c1d37a2ac70b39e2e281f41e354e48fae88b9e62c147f2a6bf2",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "7f5c3ca08efa9c3535395a868756fe2d74dea802dd116aeeb4b86f2466c622c2",
+    "skill-tree/documents/features.md": "cffb09f135d5f9fe2f8014147bab8db6836332bd74559130654fa564451e7f97",
+    "skill-tree/documents/technical.md": "3d787ea433d98a5469ed4525f0e6ea8368da7f1ea0c1841e0c44cef800f0c684",
+    "skill-tree/documents/testing.md": "61b92be864046fb255a41e986d7a48658a68fbea2d78c4566717c1a458f83470",
+    "skill-tree/documents/ux-ui-manifest.md": "99c729d73647706bdc52678f042bbd653ecd06a7c0c9933ff0547c96dec51e57",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "79c2ba3400a4dec325106b15aa07d834f090f5b1781ed604389a5cac574ba94d",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "dd0692588cb55624e6bb1537ca79c96f630133958312ea2f35903f31f5b227b0",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "195494a72a51c4deb5adc7cefe39afc0e7d48935b0f4239870a09ba4c6bb1838",
+    "src/Habitica.WebApp/Components/CompanionTasksPanel.razor": "d576481d4acf17269b09ef48765b117d7961225491ea23fb00914af1c0c352bb",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "ea1681a25e403e72f3747e9e21bda46eb36c67e0a74ba1dac59a89dccd86562c",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "9dcb9c673cbe3e71f5ae9c603922b572c4db536748520abd3ff9bb40da703130",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceTaskClientTests.cs": "b8d2b1695fd733c3db84a5c7f184d9237d19bacd7b3b5881a0ccf814f6850a2a",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs": "f258864e0e862eefb4cf51e8334a648db0d9ba17a64d4763a94dcb51e80e5073",
+    "workers/chatgpt-mcp/src/task-tools.ts": "cf5196044057ff9267b01bcb596cd047919aeaec28275900d0801fea0c7b145b",
+    "workers/companion-workspace/src/commands.ts": "34daadb0c814a25e277238d60040e910fe18dd779543206bd4977785ff49812e",
+    "workers/companion-workspace/src/journal.ts": "5626278eee8274cf852454597c10085a0c67a11c841d20109659a5c16fe11850",
+    "workers/companion-workspace/src/task-api.ts": "ca8e6b6147407ef696f887a8ada914826916a9b42047a003dd846066298c7d02",
+    "workers/shared/task-tools.ts": "5ee1fcfdfc695d1e79b4a66b05f6b0581c2815f6cc71e056959cf4989beb367e",
+    "workers/shared/workspace-commands.ts": "38187d54e491e6396ef3864d3778448a075a44b9397c4114af63be3abfd7b69a",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceOccurrenceLifecycleTests.cs": "859020024906a944d22794b00f44b72822ab501e2c1589475d7c38be4837fa9f",
+    "tests/fixtures/workspace/lifecycle-command-v1.json": "94bd4105ac2aa2f22add55ebd6c91de6a1cd58d55b468c73376f07373dceecc0",
+    "workers/companion-workspace/test/occurrence-lifecycle.test.mjs": "3e402e9fcdc5c3f50c7d5e41d85313599190b84a36b7c27c8365fad1c2bf2546"
+  }
+}

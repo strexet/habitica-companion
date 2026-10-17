@@ -79,4 +79,25 @@ public sealed class WorkspaceTaskClientTests
         Assert.True((await client.AdoptLinkAsync(reviewed.Value, default)).Succeeded); Assert.Equal(2, requests);
         Assert.False((await client.AdoptLinkAsync(reviewed.Value with { PendingCommandCount = 1 }, default)).Succeeded); Assert.Equal(2, requests);
     }
+    [Theory]
+    [InlineData(WorkspaceOperation.SkipOccurrence, "skip_occurrence", "skipOccurrence", 1)]
+    [InlineData(WorkspaceOperation.PauseTask, "pause_task", "pauseTask", 0)]
+    [InlineData(WorkspaceOperation.ResumeTask, "resume_task", "resumeTask", 0)]
+    public async Task LifecycleAdaptersUseExactToolIdentityAndRejectGameEffectReceipts(WorkspaceOperation operation, string tool, string name, int count)
+    {
+        var id = Guid.NewGuid(); var command = new WorkspaceCommand(Guid.NewGuid(), id, 1, operation, Guid.NewGuid(), OccurrenceDate: operation == WorkspaceOperation.SkipOccurrence ? new DateOnly(2026, 10, 17) : null);
+        var preview = new WorkspaceCommandPreview(command.Id, Guid.NewGuid(), DateTimeOffset.UtcNow.AddMinutes(10), false, command, false, false);
+        var receipt = new WorkspaceMutationReceipt(name, command.TaskId, command.Id, preview.CorrelationId, "Companion-only work", true, "notRequested", count, 0, 0, null, "none", null, true, false);
+        var invalid = false;
+        using var vaultHttp = VaultHttp(); using var http = new HttpClient(new Handler(async request =>
+        {
+            if (request.RequestUri!.AbsolutePath == "/connect") return Connection(id);
+            using var body = JsonDocument.Parse(await request.Content!.ReadAsStringAsync());
+            Assert.Equal(tool, body.RootElement.GetProperty("tool").GetString()); Assert.Equal(command.Id, body.RootElement.GetProperty("arguments").GetProperty("commandId").GetGuid());
+            return Json(invalid ? receipt with { HabiticaProjectionStatus = "pending", TotalProjectionCount = 1 } : receipt);
+        }));
+        var client = new WorkspaceCloudClient(http, new ChatGptIntegrationClient(vaultHttp, "https://auth.invalid/", false), "https://workspace.invalid/"); await client.ConnectAsync(Credentials, default);
+        var accepted = await client.AcceptCommandAsync(preview, default); Assert.True(accepted.Succeeded); Assert.Equal(count, accepted.Value!.AcceptedEventCount);
+        invalid = true; var refused = await client.AcceptCommandAsync(preview, default); Assert.False(refused.Succeeded); Assert.True(refused.OutcomeUnknown); Assert.Null(refused.Value);
+    }
 }

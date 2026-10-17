@@ -70,4 +70,23 @@ public sealed class WorkspaceTaskControllerTests
         f.Session.SetState(f.Session.State with { UserId = "00000000-0000-4000-8000-000000000012" }); f.Client.LoadGate.SetResult(); await pending;
         Assert.Null(f.Controller.Snapshot); Assert.Empty(f.Controller.LocalIds); Assert.Null(f.Controller.Preview);
     }
+    [Fact]
+    public async Task LocalSkippedOccurrenceUsesReviewedDateAndRetainsOneReceiptAfterAcknowledgementLoss()
+    {
+        var f = new WorkspaceTaskFixture();
+        var empty = new WorkspaceJournalSnapshot(new WorkspaceDocument { Id = Guid.NewGuid() }, 1, [], []);
+        var id = Guid.NewGuid(); var now = DateTimeOffset.UtcNow;
+        var rule = new RecurrenceRule(RecurrenceFrequency.Daily, 1, new(2026, 10, 17), "UTC", [], []);
+        var created = Habitica.Application.Workspace.WorkspaceCommandEngine.Accept(empty, new(Guid.NewGuid(), empty.Document.Id, 1, WorkspaceOperation.CreateDaily, id, new(Text: "Scheduled local work", Recurrence: rule)), now).Snapshot!;
+        Assert.True(await f.Database.ForScope(WorkspaceTaskFixture.User).TryCommitAsync(0, created, default));
+        await f.Controller.LoadAsync(false, created.Document.Id);
+        await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo() with { Operation = WorkspaceOperation.SkipOccurrence, TaskId = id, OccurrenceDate = new(2026, 10, 17) });
+        Assert.False(f.Controller.Preview!.MayAffectHabitica); Assert.Equal(new DateOnly(2026, 10, 17), f.Controller.Preview.Command.OccurrenceDate);
+        var original = f.Controller.Preview.Command.Id; f.Js.LoseCommitAcknowledgement = true;
+        await f.Controller.ConfirmAsync(); Assert.True(f.Controller.AcceptanceUnknown);
+        await f.Controller.CheckOriginalAsync();
+        Assert.Equal(original, f.Controller.LastReceipt!.CommandId); Assert.Equal(1, f.Controller.LastReceipt.AcceptedEventCount); Assert.Equal(0, f.Controller.LastReceipt.TotalProjectionCount);
+        Assert.Equal(OccurrenceState.Skipped, Assert.Single(f.Controller.Snapshot!.Document.Occurrences).State);
+        Assert.Empty(f.Controller.Snapshot.Document.Completions); Assert.Equal(2, f.Controller.Snapshot.Commands.Count);
+    }
 }

@@ -72,7 +72,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         }
         return new(Guid.NewGuid(), snapshot.Document.Id, snapshot.Document.Revision, input.Operation, creating ? Guid.NewGuid() : input.TaskId ?? Guid.Empty,
             patch, input.Operation == WorkspaceOperation.ScoreHabit ? input.Direction : null, input.Operation == WorkspaceOperation.ScoreHabit ? input.Count : 1,
-            input.Operation == WorkspaceOperation.CompleteTask ? input.OccurrenceDate : null, input.ProjectToHabitica);
+            input.Operation is WorkspaceOperation.CompleteTask or WorkspaceOperation.SkipOccurrence ? input.OccurrenceDate : null, input.ProjectToHabitica);
     }
     public async Task PrepareAsync(WorkspaceTaskInput input, CancellationToken cancellationToken = default)
     {
@@ -177,6 +177,6 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
     public static WorkspaceMutationReceipt Receipt(WorkspaceCommandEntry entry, Guid correlationId) => new(
         System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(entry.Command.Operation.ToString()), entry.Command.TaskId, entry.Command.Id, correlationId, entry.TaskSnapshot?.Text ?? "", true,
         entry.ProjectionState == ProjectionCommandState.UnknownOutcome ? "UnknownOutcome" : entry.ProjectionState is ProjectionCommandState.Leased or ProjectionCommandState.Executing ? "pending" : System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(entry.ProjectionState.ToString()),
-        entry.Command.Operation == WorkspaceOperation.ScoreHabit ? entry.Command.Count : entry.Command.Operation == WorkspaceOperation.CompleteTask ? 1 : 0,
+        entry.Command.Operation == WorkspaceOperation.ScoreHabit ? entry.Command.Count : entry.Command.Operation is WorkspaceOperation.CompleteTask or WorkspaceOperation.SkipOccurrence ? 1 : 0,
         entry.ConfirmedEffects, entry.Effects.Count, entry.Failure == ProjectionFailure.None ? null : entry.ConfirmedEffects + 1, entry.Failure.ToString(), entry.RetryAtUtc, true, entry.ProjectionState == ProjectionCommandState.UnknownOutcome);
 }

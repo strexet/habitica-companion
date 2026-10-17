@@ -949,7 +949,7 @@ Responses and transport failures update durable recovery state. Failure doubles 
 
 Calendar calculations accept UTC and supported IANA region-style timezone identifiers. Unavailable zones, malformed rules and oversized/reversed ranges return explicit failures without partial dates. UTC-instant conversion uses the selected rule timezone across DST and offset boundaries; no device-zone fallback exists. The pinned WebAssembly SDK enables timezone support by default; actual browser integration and mobile-device qualification remain separate checks.
 
-Civil recurrence dates supply no Habitica due-state or reward evidence. Habitica day-start, Cron readiness, private preconditions and original projection receipts remain independent. The calendar kernel allocates no persistent occurrence identity and never backfills scores. Reviewed command authoring uses the calendar kernel; skip/pause/restart, retained occurrence review and UI integration remain queued separately.
+Civil recurrence dates supply no Habitica due-state or reward evidence. Habitica day-start, Cron readiness, private preconditions and original projection receipts remain independent. The calendar kernel allocates no persistent occurrence identity and never backfills scores. Reviewed authoring and occurrence lifecycle commands use the calendar kernel; retained occurrence review and UI integration remain queued separately.
 
 ## Recurrence command identity and portability
 
@@ -958,3 +958,9 @@ WorkspaceTaskPatch adds optional recurrence and clearRecurrence fields. Default 
 Both acceptance engines validate rule structure and local timezone availability before saving. New recurrence intents require a Daily, no game projection and no linked/pending/uncertain mapping. Scheduled completion checks the canonical occurrence date independently of private Habitica due-state and Cron proofs. Schedule clearing retains prior occurrence/completion records and immutable accepted snapshots.
 
 Portable journals validate historical rule structure without requiring the reading device to resolve every timezone. Recurrence intents require a matching Daily snapshot, no projection request and no game effects; contradictory or missing snapshots are rejected. Older clients can reject extended command fields, so coordinated client/Worker release precedes use of v3 intents. Legacy requests and retained v1/v2 receipts preserve the existing protocol.
+
+## Recurring lifecycle commands
+
+SkipOccurrence, PauseTask and ResumeTask append operation values without changing existing enum values or hash encoding. Lifecycle intents have no patch, direction or game projection. Skip requires an explicit matching scheduled date and a pending or absent occurrence; the persisted record uses skipped state without a completion/score event. Pause/resume permits active-to-paused or paused-to-active transitions for unlinked Dailies/Habits. No command backfills occurrences or discards history. Schedule replacement supplies explicit restart semantics independently of resume.
+
+Acceptance checks current mappings and rejects linked, pending or uncertain projections before mutation. Existing paused-state completion/Habit-score guards remain authoritative. Prepared identities, scope checks, access epochs and revision preconditions apply to every lifecycle tool. Portable journals require matching kind/state/date shape and zero game effects. Browser receipt adapters preserve skipped-event counts and reject lifecycle receipts claiming a game projection. No document or D1 schema migration is required.

@@ -626,3 +626,7 @@ Settings shells/cards use shrinking grid tracks, and nested Settings grids cap m
 ## Own-account testing controls
 
 The owner-isolated profile explains the active boundary on Party and Spells. Party invitation/acceptance/start controls and shared or task-targeted spell casting remain disabled; self-spell controls retain normal freshness, mana and level checks. Dashboard and spell-chain Start New Day controls remain disabled with the shared-quest risk explained. Equipment controls remain available for owned gear. UI state never substitutes for the API departure and dispatch guards.
+
+## Canonical lifecycle preview labels
+
+The existing command preview names scheduled occurrence skip, Companion pause and Companion resume explicitly. Occurrence dates and separate zero game-effect state remain visible. The basic action selector does not expose lifecycle controls; mobile lifecycle authoring remains gated separately. Application controller and cloud adapters retain original command identity and skipped-record counts without presenting local pause as a paused Habitica schedule.
