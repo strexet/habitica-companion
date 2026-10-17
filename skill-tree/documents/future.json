@@ -119,10 +119,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Load the updated Codex MCP tools, qualify direct native lifecycle calls, and prepare the owner-scoped background projection check before separate activation. Preserve the deferred ChatGPT/party/Cron boundary.",
+    "next_action": "Apply the selected local scope expansion while preserving current checkpoint and all deferred release gates.",
     "partial_work": [
-      "Own-account self spell and equipment checks passed. Native Daily/Habit lifecycle and retained receipts passed. Todo/Daily/Habit disposable records are archived with history retained. Hosted count correction passes.",
-      "Background executor is implemented and synthetically tested but live projection remains unqualified. Shared account effects and live Cron remain disabled."
+      "Owner closed the current live-testing round. No real account calls, production connector checks, background activation or live browser qualification may run until a new explicit owner request. Local builds and synthetic tests remain authorized.",
+      "The frozen initial snapshot has one unfinished root, whose required release qualification is deferred. Current Ready local follow-up and eight Pending feature areas remain outside that frozen snapshot."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -167,7 +167,7 @@
       "P-a552907a-6fd8-42b4-842c-96ab7159cd98",
       "P-f0f5ebac-0436-4f57-8865-29015a753872"
     ],
-    "phase": "resume-parent",
+    "phase": "await-scope",
     "processing_results": [
       {
         "created_ids": [
@@ -938,10 +938,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Required broader release gates remain open; current native tool schema needs refreshed discovery for new execution tools. Live background activation requires a bounded owner-only qualification and its separate execution opt-in. ChatGPT is owner-deferred; teammate and device gates remain unrun."
+    "stop_reason": "Awaiting owner selection of the requested scope expansion before implementing deferred or newly promoted local work. Existing live release requirements remain open."
   },
   "format": "skill-tree-future",
-  "source_hash": "d4d012efc34f5666b14fa59f3c75b2f3e4058c08a2c2b030f0861375bf36849d",
+  "source_hash": "ebfe41c6f1428a4b3ea373db617a9c21e8bac8ece4eb796f9b5fedcbf0adcea3",
   "tasks": [
     {
       "depends_on": [],

@@ -132,7 +132,7 @@ Own operational status aggregates accepted task/spell/Cron state within the acti
 
 ## Owner-isolated Codex testing
 
-The active owner pilot uses Codex agent testing. ChatGPT validation is deferred until the owner requests another live ChatGPT run or implementation finishes. The owner authorizes destructive changes to the enrolled owner's tasks, Dailies and Habits, self-only spells, and owned equipment for testing. Test records use explicit synthetic labels; ordinary personal records require exact verified identity before mutation.
+Live testing is closed by owner direction. Implementation uses local builds, synthetic credentials and isolated test services. No Habitica requests, authenticated production connector calls, background activation, real-account browser checks or deployment qualification may resume until a new explicit owner request. ChatGPT validation also remains deferred. The bounded owner pilot permits destructive changes to the enrolled owner's tasks, Dailies and Habits, self-only spells and owned equipment only during a separately selected live round. Test records use explicit synthetic labels; ordinary personal records require exact verified identity before mutation.
 
 Party tools remain read-only. Party departure is prohibited through Companion without a feature/profile override. Shared quest actions, other-user spell targets, party spells, party chat effects and live Cron are outside the test scope. Production party, projection, spell and background-executor flags remain disabled until the applicable safe lane is implemented and explicitly selected. Task scoring can record pending own-account quest progress; shared quest processing remains prohibited.
 
