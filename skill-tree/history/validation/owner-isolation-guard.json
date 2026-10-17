@@ -34,7 +34,15 @@
     "https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/spells.js",
     "https://github.com/HabitRPG/habitica/blob/develop/website/common/script/content/spells.js"
   ],
-  "deployment": "prepared for existing Pages site; source commit precedes publication",
+  "deployment": {
+    "status": "published-existing-production-website",
+    "source_commit": "9ba5295",
+    "website": "https://habitica-companion.pages.dev",
+    "deployment_url": "https://99f6bf1b.habitica-companion.pages.dev",
+    "production_frontend_flags_verified": true,
+    "backend_flags_changed": false,
+    "database_changes": false
+  },
   "limitations": [
     "Self-spell and equipment live tests await an authenticated browser session.",
     "MCP Daily/Habit creation and task deletion are not implemented; required follow-up work remains.",
