@@ -106,33 +106,36 @@ test('invalid canonical graphs and malformed commands cannot partially save', as
 });
 
 test('delayed authorized requests cannot reach a deleted and recreated workspace with the same canonical ID', async t => {
- let f, gate;
- f = await fixture(t, { workspace: true, identity: async request => {
-  const response = await f.workspaceIdentity.fetch(request);
-  // Materialize the tiny identity receipt before parking the synthetic binding callback.
-  // Holding its live stream across other Worker requests can stall the fixture bridge.
-  const detached = new Response(response.status === 204 ? null : await response.arrayBuffer(), { status: response.status, headers: new Headers(response.headers) });
-  if (gate && new URL(request.url).pathname === '/epoch') { const held = gate; gate = null; held.enter(); await held.wait; }
-  return detached;
- } });
+ const f = await fixture(t, { workspace: true, identityGate: true });
+ const gate = await f.mf.getWorker('identity-gate');
+ const control = (path, method = 'POST') => gate.fetch('http://gate.test/__gate/' + path, {method});
  const profile = await enrolled(f);
  for (const action of ['command', 'export', 'disconnect', 'delete', 'disconnect-reconnect']) {
-  const w = await connect(f, profile); let enter, release;
-  const entered = new Promise(resolve => { enter = resolve; }); const wait = new Promise(resolve => { release = resolve; }); gate = { enter, wait };
+  const w = await connect(f, profile);
+  assert.equal((await control('arm')).status, 204);
+  const entered = control('entered', 'GET');
   const pending = action === 'command' ? call(f, '/commands', w.sessionToken, command(w.workspaceId))
    : action === 'export' ? call(f, '/export', w.sessionToken)
    : ['disconnect', 'disconnect-reconnect'].includes(action) ? call(f, '/disconnect', w.sessionToken, {})
    : call(f, '/workspace', w.sessionToken, { confirmWorkspaceId: w.workspaceId }, 'DELETE');
-  const early = await Promise.race([entered.then(() => null), pending]);
-  assert.equal(early, null, `${action}: the request returned before the gated identity read`);
   try {
+   const early = await Promise.race([entered.then(response => { assert.equal(response.status, 204); return null; }), pending]);
+   assert.equal(early, null, `${action}: the request returned before the gated identity read`);
    if (action === 'disconnect-reconnect') assert.equal((await call(f, '/disconnect', w.sessionToken, {})).status, 200);
    else assert.equal((await call(f, '/workspace', w.sessionToken, { confirmWorkspaceId: w.workspaceId }, 'DELETE')).status, 200);
    const replacement = await connect(f, profile, w.workspaceId);
-   release(); const stale = await pending;
+   assert.equal((await control('release')).status, 204); const stale = await pending;
    assert.ok([401,409].includes(stale.status), `${action}: a stale request reached replacement data (status ${stale.status})`);
-   const current = await call(f, '/export', replacement.sessionToken); assert.equal(current.status, 200, `${action}: ${await current.clone().text()}`); const data = await current.json(); assert.equal(data.document.tasks.length, 0); assert.equal(data.commands.length, 0);
-  } finally { release(); }
+   const current = await call(f, '/export', replacement.sessionToken);
+   if(current.status!==200){
+    const tokenBytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(replacement.sessionToken));
+    const hash=Array.from(new Uint8Array(tokenBytes),v=>v.toString(16).padStart(2,'0')).join('');
+    const record=await f.workspaceDb.prepare('SELECT s.access_epoch AS session_epoch,s.connection_id AS session_connection,w.access_epoch,w.connection_id,w.active,s.expires_at_utc FROM workspace_sessions s JOIN workspaces w ON w.profile_id=s.profile_id WHERE s.token_hash=?').bind(hash).first();
+    const auth=await f.db.prepare('SELECT connection_id,revoked_at_utc FROM integration_profiles WHERE profile_id=?').bind(profile.profileId).first();
+    t.diagnostic(JSON.stringify({action,status:current.status,sessionExists:Boolean(record),epochMatches:Boolean(record&&record.session_epoch===record.access_epoch),connectionMatches:Boolean(record&&record.session_connection===record.connection_id),active:record?.active===1,notExpired:record?record.expires_at_utc>new Date().toISOString():false,authExists:Boolean(auth),authActive:Boolean(auth&&!auth.revoked_at_utc),authConnectionMatches:Boolean(record&&auth&&record.connection_id===auth.connection_id)}));
+   }
+   assert.equal(current.status, 200, `${action}: ${await current.clone().text()}`); const data = await current.json(); assert.equal(data.document.tasks.length, 0); assert.equal(data.commands.length, 0);
+  } finally { await control('release'); }
  }
 });
 

@@ -1,0 +1,58 @@
+{
+  "task_id": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
+  "date": "2026-10-17",
+  "scope": "Local synthetic qualification only; no deployment or real account calls",
+  "before": {
+    "focused_parallel_runs": 8,
+    "failed_runs": [
+      2,
+      5,
+      8
+    ],
+    "signature": "500 TypeError: fetch failed through ProxyClientBridge.dispatchFetch and Node identity callback",
+    "diagnostics": "Replacement session present, active, not expired; session epoch and connection matched Workspace and Auth records",
+    "full_parallel_suites": "Two Workspace runs passed 84/84; intermittent failure required concurrent focused processes"
+  },
+  "resolution": "Fixture-only native Worker gate replaces nested workerd-to-Node-to-workerd callback; buffered response, shared booleans, request-owned timers, ten-second deadline and finally cleanup",
+  "checks": [
+    {
+      "name": "Eight focused processes, four concurrent, five action variants each",
+      "passed": 8,
+      "failed": 0
+    },
+    {
+      "name": "Full parallel Auth suite",
+      "passed": 115,
+      "failed": 0
+    },
+    {
+      "name": "Full parallel Workspace suite",
+      "passed": 84,
+      "failed": 0
+    },
+    {
+      "name": "Three pinned Worker builds",
+      "result": "pass"
+    },
+    {
+      "name": "Release app build via build.sh",
+      "result": "pass"
+    }
+  ],
+  "unchanged_assertions": [
+    "Original request reaches gated epoch read",
+    "Stale command/export/disconnect/delete/disconnect-reconnect rejected with 401 or 409",
+    "Fresh replacement session exports 200 with empty tasks and command history"
+  ],
+  "limitations": [
+    "The reproduced transport 500 explains the observed nested-proxy failure; the exact origin of every historical 401 is not established.",
+    "Finite stress runs do not prove absence of every future host transport failure.",
+    "No production auth logic, security assertion, compatibility flag or dependency version changed."
+  ],
+  "source_fingerprints": {
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "af17a3b1433cd654b08b1ee860b38a6191f53aa3b84b0219d3b8afa57833462c",
+    "workers/chatgpt-auth/test/fixtures/identity-gate.mjs": "a028559c274df045486e0479f52cddb05947eeb4e6efafd09c54863733bd0833",
+    "workers/companion-workspace/test/workspace.test.mjs": "4a1733d2c3ebe88ca58cb487588f6696470bc2c67a047cc800ab5e30d12e133a",
+    "skill-tree/documents/testing.md": "da375acac8c7ecac7a487a1e046f6128cf4dfdba94cb7807f62ea47d28f8aa0b"
+  }
+}

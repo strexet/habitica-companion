@@ -51,7 +51,8 @@
       "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
       "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
       "T-70901e97-738c-42c2-ae50-68dd71417a32",
-      "T-65810da7-9524-45ce-b280-668d04c86441"
+      "T-65810da7-9524-45ce-b280-668d04c86441",
+      "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -62,6 +63,7 @@
       "T-16a38176-f2fe-5f7d-a809-546f17357b49": "O-7d50e0cb-ee45-4fe5-bd54-6b38b3b22e6e",
       "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec": "O-1cbc3cfc-9cf0-4922-8317-4c16090d9aa0",
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
+      "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55": "O-fc1d5fd0-432b-43b1-8ae3-51536510411a",
       "T-211d2ac1-5778-47fb-8148-c9e1a320e31a": "O-ee0b74ce-2986-417f-95b7-92a78a6bfe88",
       "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d": "O-9ebb8704-9e9e-405c-b175-bec36f05b86c",
       "T-29ef8846-6aa7-4255-990d-a8651e689ec2": "O-8a6c239c-6b80-4210-a2e6-a94e7a8e560b",
@@ -107,10 +109,8 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "47db971106fe9a0bc6bd92332bcd77e0c794a255dd1361b53b10e587a312b980",
-    "deferred_ids": [
-      "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
-    ],
+    "cycle_signature": "3a96fc63fa202cbd2da254172b8b400430ecf710cc8267cfed05df53be71169c",
+    "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
       "skill-tree/history/validation/native-lifecycle-production-check.json",
@@ -119,10 +119,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Apply the selected local scope expansion while preserving current checkpoint and all deferred release gates.",
+    "next_action": "Research the eight owner-authorized Pending areas and append promoted local roots to the amended snapshot. Preserve blocked live release gates.",
     "partial_work": [
-      "Owner closed the current live-testing round. No real account calls, production connector checks, background activation or live browser qualification may run until a new explicit owner request. Local builds and synthetic tests remain authorized.",
-      "The frozen initial snapshot has one unfinished root, whose required release qualification is deferred. Current Ready local follow-up and eight Pending feature areas remain outside that frozen snapshot."
+      "Completed parallel lifecycle reliability with native fixture gate, eight concurrent focused passes, Auth 115/115, Workspace 84/84 and app build pass.",
+      "No live tests or deployments permitted; the live release dependency remains blocked."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -167,7 +167,7 @@
       "P-a552907a-6fd8-42b4-842c-96ab7159cd98",
       "P-f0f5ebac-0436-4f57-8865-29015a753872"
     ],
-    "phase": "await-scope",
+    "phase": "processing",
     "processing_results": [
       {
         "created_ids": [
@@ -921,9 +921,43 @@
       "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
       "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
       "T-70901e97-738c-42c2-ae50-68dd71417a32",
-      "T-65810da7-9524-45ce-b280-668d04c86441"
+      "T-65810da7-9524-45ce-b280-668d04c86441",
+      "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
-    "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "root_task_id": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
+    "scope_amendments": [
+      {
+        "added_roots": [
+          "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
+        ],
+        "authorized_pending_ids": [
+          "P-4f98b2b3-af24-5424-b2f9-066913f7133d",
+          "P-676c0cb1-82b5-51e1-92c1-74303b58c59d",
+          "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
+          "P-c8632138-39c6-5797-8e03-a3414824ee96",
+          "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
+          "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
+          "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
+          "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156"
+        ],
+        "deferred_release_root": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+        "owner_direction": "Expand to local tasks and Pending work; no live tests or deployments.",
+        "prior_snapshot": [
+          "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
+          "T-c6f6b09d-4625-5898-b91c-016c611b60df",
+          "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
+          "T-e33bccdc-22f1-5043-9230-3d12d9e9563d",
+          "T-16a38176-f2fe-5f7d-a809-546f17357b49",
+          "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
+          "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+          "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+          "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+          "T-b92db026-a8cf-5922-8556-666cbea947ab",
+          "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+        ],
+        "recorded_at": "2026-10-17T05:34:11.139211+00:00"
+      }
+    ],
     "snapshot": [
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df",
@@ -935,13 +969,14 @@
       "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
       "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
       "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Awaiting owner selection of the requested scope expansion before implementing deferred or newly promoted local work. Existing live release requirements remain open."
+    "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "ebfe41c6f1428a4b3ea373db617a9c21e8bac8ece4eb796f9b5fedcbf0adcea3",
+  "source_hash": "bb33371a9df7ef25331269948bf74ade3f4e99fff6cdb0ebd855e5d6ef18d7fd",
   "tasks": [
     {
       "depends_on": [],
@@ -1084,22 +1119,6 @@
       "title": "Qualify ChatGPT, Codex, multi-user and mobile release gates"
     },
     {
-      "depends_on": [],
-      "id": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
-      "line": 365,
-      "parent_pending_ids": [
-        "P-28d6ece4-a519-44a8-9625-3367479a03c3"
-      ],
-      "priority": 97,
-      "processing_run_id": "PR-def147f5-3bef-4500-9128-55ff55501a0a",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
-      "relation": "followup",
-      "root_task_id": "T-b92db026-a8cf-5922-8556-666cbea947ab",
-      "status": "Ready",
-      "title": "Investigate parallel Miniflare lifecycle qualification instability"
-    },
-    {
       "depends_on": [
         "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
         "T-5737120b-52a5-4a57-9072-fce514adaf33",
@@ -1110,7 +1129,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 404,
+      "line": 365,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1126,7 +1145,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 559,
+      "line": 520,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1140,7 +1159,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 596,
+      "line": 557,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1154,7 +1173,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 633,
+      "line": 594,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1168,7 +1187,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 766,
+      "line": 727,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1182,7 +1201,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 804,
+      "line": 765,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1196,7 +1215,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 838,
+      "line": 799,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1210,7 +1229,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 873,
+      "line": 834,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1224,7 +1243,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 907,
+      "line": 868,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1238,7 +1257,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 945,
+      "line": 906,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1252,7 +1271,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 972,
+      "line": 933,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1266,7 +1285,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 994,
+      "line": 955,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1280,7 +1299,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1021,
+      "line": 982,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

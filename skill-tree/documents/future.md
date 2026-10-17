@@ -362,45 +362,6 @@ Documentation updates:
 Risks:
 - Exposing live effects or claiming release success from synthetic evidence.
 
-### Investigate parallel Miniflare lifecycle qualification instability
-
-```yaml
-id: T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55
-priority: 97
-status: Ready
-parent_pending_ids: ["P-28d6ece4-a519-44a8-9625-3367479a03c3"]
-processing_run_id: PR-def147f5-3bef-4500-9128-55ff55501a0a
-root_task_id: T-b92db026-a8cf-5922-8556-666cbea947ab
-related_task_id: T-90a73b3c-0a12-4387-a4dd-8fadb6d51995
-relation: followup
-depends_on: []
-```
-
-Goal:
-- Identify the cause of intermittent replacement-session authorization failures during parallel local qualification.
-Current behavior:
-- Fifteen isolated lifecycle repetitions and serial explicit-file qualification pass unchanged security assertions. Parallel execution sometimes returns an unexpected replacement export 401. No production cause is established.
-Desired behavior:
-- Parallel qualification produces reproducible, isolated evidence without weakening stale-epoch or replacement-session checks.
-Touch:
-- Workspace lifecycle synthetic fixtures and local test transport diagnostics.
-Discovery allowance:
-- Add sanitized bounded diagnostics and compare isolated, serial and parallel controls.
-Out of scope:
-- Production auth changes without a reproduced source cause, weaker assertions and live account operations.
-Implementation constraints:
-- Preserve current credential, epoch and profile isolation assertions. Never expose bearer tokens or raw credentials in diagnostics.
-Questions and required clarifications:
-- None for local investigation; implementation remains deferred outside the initial snapshot.
-Validation:
-- Reproduce the failing signature, establish a cause, exercise the unchanged lifecycle case and run the full affected suite.
-Acceptance:
-- The parallel lifecycle failure has an evidence-backed resolution with unchanged security assertions.
-Documentation updates:
-- Record qualification controls and limits in testing.md.
-Risks:
-- Mistaking host transport instability for a production defect.
-
 ### Security Hardening, Revocation, Key Rotation, And Team Rollout
 
 ```yaml
