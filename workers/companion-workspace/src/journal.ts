@@ -1,5 +1,5 @@
 import { habiticaDetails } from "../../shared/task-details.ts";
-import { workspaceDocument, utcTicks, type WorkspaceDocument } from '../../shared/workspace-domain.ts';
+import { workspaceDocument, workspaceRecurrence, utcTicks, type WorkspaceDocument } from '../../shared/workspace-domain.ts';
 import { workspaceCommand, commandHash } from '../../shared/workspace-commands.ts';
 import { workspaceObject as object, uuid, WorkspaceError } from '../../shared/workspace-http.ts';
 import type { CommandEntry, JournalEvent } from './commands.ts';
@@ -19,6 +19,7 @@ export async function journal(value:unknown):Promise<Journal>{
   const command=workspaceCommand(row.command);valid(!ids.has(command.id)&&command.workspaceId===document.id&&command.expectedRevision<document.revision&&row.payloadHash===await commandHash(command));ids.add(command.id);
   valid(timestamp(row.acceptedAtUtc)&&states.includes(String(row.projectionState))&&failures.includes(String(row.failure))&&Array.isArray(row.effects)&&row.effects.length<=11&&row.effects.every(v=>['create','update','scoreUp','scoreDown'].includes(v)));
   const effects=row.effects as string[];valid(Number.isInteger(row.confirmedEffects)&&Number(row.confirmedEffects)>=0&&Number(row.confirmedEffects)<=effects.length&&Number.isSafeInteger(row.attempts)&&Number(row.attempts)>=0);
+  if(command.patch?.recurrence||command.patch?.clearRecurrence){valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0&&['createDaily','updateTask'].includes(command.operation)&&!(command.operation==='createDaily'&&command.patch.clearRecurrence));const accepted=object(row.taskSnapshot);valid(accepted.kind==='daily');const rule=workspaceRecurrence(accepted.recurrence);valid(command.patch.clearRecurrence?rule===null:JSON.stringify(rule)===JSON.stringify(command.patch.recurrence));}
   valid(row.projectionState==='notRequested'?effects.length===0:effects.length>0);
   if(row.projectionState==='confirmed')valid(row.confirmedEffects===effects.length);
   if(['pending','leased','executing','unknownOutcome'].includes(String(row.projectionState)))valid(Number(row.confirmedEffects)<effects.length);
@@ -28,6 +29,7 @@ export async function journal(value:unknown):Promise<Journal>{
   valid(row.retryAtUtc==null||timestamp(row.retryAtUtc));valid(row.dispatchedAtUtc==null||timestamp(row.dispatchedAtUtc));
   if(row.taskSnapshot!=null){const task=object(row.taskSnapshot,['id','revision','isArchived','text','kind','state','priority','createdAtUtc','updatedAtUtc','notes','categoryId','projectId','sectionId','parentTaskId','labelIds','dependsOn','plannedDate','deadline','reviewAfterUtc','staleSinceUtc','recurrence','habiticaDetails']);
    habiticaDetails(task.habiticaDetails);
+   if(task.recurrence!=null){valid(task.kind==='daily');workspaceRecurrence(task.recurrence);}
    valid(task.id===command.taskId&&task.revision===command.expectedRevision+1&&['todo','daily','habit'].includes(String(task.kind))&&['active','paused','completed','waiting','someday','cancelled'].includes(String(task.state))&&['low','normal','high','urgent'].includes(String(task.priority))&&typeof task.text==='string'&&task.text.trim().length>0&&task.text.length<=2048&&(task.notes==null||typeof task.notes==='string'&&task.notes.length<=10000)&&timestamp(task.createdAtUtc)&&timestamp(task.updatedAtUtc)&&utcTicks(task.updatedAtUtc)===utcTicks(row.acceptedAtUtc)&&utcTicks(task.createdAtUtc)<=utcTicks(task.updatedAtUtc));
   }
   commands.push({...row,command} as unknown as CommandEntry);

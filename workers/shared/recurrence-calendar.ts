@@ -17,6 +17,7 @@ export function expandRecurrence(rule:Recurrence|null,from:string,through:string
  if(!first||!last||last<first||(last.getTime()-first.getTime())/dayMs+1>366)return fail('invalid_range');
  const start=date(rule?.startDate);
  if(!rule||!start||rule.startDate==='0001-01-01'||!['daily','weekly','monthly'].includes(rule.frequency)||!Number.isInteger(rule.interval)||rule.interval<1||rule.interval>366
+  ||typeof rule.timeZoneId!=='string'||rule.timeZoneId.length>128||/^\p{White_Space}*$/u.test(rule.timeZoneId)
   ||!Array.isArray(rule.weekdays)||!Array.isArray(rule.daysOfMonth)
   ||rule.weekdays.some(day=>!weekdays.includes(day))||new Set(rule.weekdays).size!==rule.weekdays.length
   ||rule.daysOfMonth.some(day=>!Number.isInteger(day)||day<1||day>31)||new Set(rule.daysOfMonth).size!==rule.daysOfMonth.length

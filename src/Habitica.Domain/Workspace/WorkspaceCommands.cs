@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Habitica.Domain.Workspace;
 
 public enum WorkspaceOperation { CreateTodo, UpdateTask, CompleteTask, ScoreHabit, CreateDaily, CreateHabit, DeleteTask }
@@ -14,7 +16,9 @@ public sealed record WorkspaceTaskPatch(
     CompanionPriority? Priority = null,
     DateOnly? Deadline = null,
     bool ClearDeadline = false,
-    HabiticaTaskDetails? HabiticaDetails = null);
+    HabiticaTaskDetails? HabiticaDetails = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] RecurrenceRule? Recurrence = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool ClearRecurrence = false);
 
 public sealed record WorkspaceCommand(
     Guid Id,

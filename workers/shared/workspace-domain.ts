@@ -48,6 +48,7 @@ function recurrence(value: unknown): Recurrence | null {
     || frequency === "monthly" && daysOfMonth.length === 0 || frequency !== "monthly" && daysOfMonth.length !== 0 || row.startDate === "0001-01-01") return fail();
   return { frequency, interval: integer(row.interval, 1, 366), startDate: date(row.startDate), timeZoneId: named(row.timeZoneId, 128), weekdays, daysOfMonth };
 }
+export { recurrence as workspaceRecurrence };
 export function workspaceDocument(input: unknown): WorkspaceDocument {
   const value = workspaceObject(input, ["schemaVersion", "id", "revision", "categories", "projects", "sections", "labels", "goals", "tasks", "occurrences", "completions", "habitScores", "projections"]);
   if (value.schemaVersion !== 1) return fail(); const revision = integer(value.revision); const id = uuid(value.id);

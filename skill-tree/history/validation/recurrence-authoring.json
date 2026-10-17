@@ -1,0 +1,82 @@
+{
+  "task_id": "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
+  "date": "2026-10-17",
+  "scope": "Local application and synthetic MCP/Workers; no live account calls or deployment",
+  "checks": [
+    {
+      "name": "Release app build",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET solution",
+      "passed": 581,
+      "failed": 0,
+      "suites": {
+        "api": 54,
+        "application": 93,
+        "domain": 28,
+        "rules": 43,
+        "storage": 21,
+        "webapp": 342
+      }
+    },
+    {
+      "name": "Three pinned Worker builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full parallel Auth suite",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full parallel Workspace suite",
+      "passed": 164,
+      "failed": 0
+    },
+    {
+      "name": "Packaged task skill quick validation and changed prose/whitespace review",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Neutral v1/v2 hashes remain unchanged; three v3 fixtures match C# and TypeScript for setting, clearing and combined game detail fields.",
+    "Default recurrence keys remain absent from legacy application serialization and normalized Worker commands.",
+    "Application commands roundtrip schedules, preserve unspecified fields/history and reject wrong kinds, invalid rules and linked/pending/uncertain projection edits.",
+    "Scheduled completion rejects unmatched dates; original command duplication adds no second event. Clearing restores unscheduled completion without erasing past history.",
+    "Portable journal validation rejects recurrence intents with fabricated game effects, missing snapshots and contradictory accepted rules without requiring historical timezone availability.",
+    "Actual local MCP SDK advertises recurrence, reviews/accepts one Daily, reads/reuses original completion receipts and clears the schedule.",
+    "Synthetic MCP workflow records zero upstream writes and denies another profile access to the receipt."
+  ],
+  "limitations": [
+    "The basic PWA editor still creates unscheduled Dailies and has no recurrence authoring controls. UI work remains behind E01.",
+    "Pause/skip/restart, habit review, agenda and saved views remain separate Pending work.",
+    "Actual client/packaged-skill discovery, mobile behavior and live qualification remain unrun.",
+    "Older clients can reject extended command fields; coordinated release precedes use of v3 intents."
+  ],
+  "source_fingerprints": {
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "44d190c8f126fd325ff6c8f0b2f6ef64ecd31141464f5c7838cd597b7887a42e",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "a72331dccbcb3ed47f3960a66b30e04bdff952c5a4be1193a051e938f778278b",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "75bdab32be2e847bda023732a455307fe5737e026e81934ba7a2d46b637e4d1e",
+    "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs": "3aee17ac940c513429d3781bda3d8ca02b566fcc8dbae52bbfaaa190e597701d",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "503c39c0c6aa99b698ed385138138f1ff2ef307e8d68524ce5a03129a9aa5304",
+    "workers/shared/workspace-domain.ts": "bd9a4718c62c46ba02fe03127d25972a10ddb10558114cf6242170590b75fd24",
+    "workers/shared/workspace-commands.ts": "9be4cb70edcb79b1a57d29dcd917e4e95f4d7627f8eb5bc4ce9f879583e0f0cc",
+    "workers/shared/recurrence-calendar.ts": "d8532fef1c71efa8fe8da09af3a40ac4b5cb0edf65e0d9bde593c0fccc6a0c4f",
+    "workers/companion-workspace/src/commands.ts": "f5d0487790d35557769321148f925d1785951706e4d99872bde6a5374e878fa9",
+    "workers/companion-workspace/src/journal.ts": "e3da3307d6dfdc8cc543c7cdfe026f0d40ceedc9bcdc29dc9c89cc6d75605db0",
+    "workers/chatgpt-mcp/src/task-tools.ts": "98fd5161d589cb2e35f5f4efc0dda9f9a55c00942837960481356b5869af5b25",
+    "workers/companion-workspace/test/recurrence-commands.test.mjs": "9b56fd6f4083ea63ddbbaded925249c591c2d9d3dc6a3b9e9f77ca5aa2e9c0b9",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceRecurrenceCommandsTests.cs": "2b7ea1c01afcb17e95f66edec6d213595f1101ce21fa7501010fdf1c966b44d8",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceCommandTests.cs": "2018eab3b43263544466aab576e019c14637a1fbeea4fc8fa2705cabb5577628",
+    "tests/fixtures/workspace/command-v3.json": "3f89a7cd3f8460ee4a19411ecf9e57f04a1e5e6f4fac6c32971d34f764361483",
+    "tests/fixtures/workspace/command-v3-clear.json": "87b9233c692eb28f7db32887ad54fb09c71bfc5f69de0c954c721bd7cafbc314",
+    "tests/fixtures/workspace/command-v3-details.json": "2b2f16372975458f52dbd42a8e0df985a2cc8746898d3ddb6daea4a41a34493a",
+    "tests/fixtures/workspace/recurrence-calendar-v1.json": "09a9efbaf4e6e65bfdbe606a495402504e56144c7045a4409905f16cb0b85c81",
+    "plugin/skills/habitica-task-management/SKILL.md": "a934e86244bf5825bc4a77de4d7d75a2da2660c3f33e98b08a1ef7e7311d048b",
+    "skill-tree/documents/features.md": "5bbad79d817cb4548716aa18bef7272bedf2153b9dba87c7bcb1842c08546ffd",
+    "skill-tree/documents/technical.md": "dadd3909c4f046d7886d86fb2d6a2702847a497245dfc478ad78dcbef81e3689",
+    "skill-tree/documents/testing.md": "57ed1cff7feec940a88b89c1dbe0b1f3b5bcf873903e46582735246a1c512d1a",
+    "skill-tree/documents/companion-workspace-contract.md": "9e8c125cdcb0fdb7c357231c5bea59c33479c57cda4c291cf22a6701f6620833"
+  }
+}

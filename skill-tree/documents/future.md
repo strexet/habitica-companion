@@ -72,31 +72,31 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### E11 Recurrence authoring, lifecycle and mobile review after calendar foundations
+### E11 Occurrence lifecycle, Habit review and mobile recurrence controls
 
 ```yaml
-id: P-d6fb32f0-7125-4544-898a-c1028ca91a2a
+id: P-8a968c91-80a2-46be-9f32-2fb514d3bc22
 priority: 100
 status: Pending
 parent_pending_ids: []
 processing_run_id: null
-root_task_id: T-1396a75f-ba8b-446d-812b-a4b24873cc7a
-related_task_id: T-1396a75f-ba8b-446d-812b-a4b24873cc7a
-relation: followup
+root_task_id: null
+related_task_id: null
+relation: main
 depends_on: []
 ```
 
 Description:
-- Complete Daily recurrence authoring and occurrence lifecycle, skip/pause/restart controls, retained completion/skip history and Habit event review. Preserve the distinction between civil schedules and freshly verified Habitica due-state. Calendar expansion alone does not implement the workflow.
+- Implement skip/pause/resume/restart, retained occurrence and Habit score review, determinable streaks, mobile schedule authoring and Today/calendar integration. Preserve canonical civil dates separately from verified Habitica due-state and Cron day boundaries.
 
 Expected behavior:
-- Manual and MCP commands share canonical validation and receipts; recurring work remains consistent through offline reconnect, timezone travel and delayed projection. Mobile controls and calendar integration follow the E01 navigation/usability gate. Streaks appear only when history supports the result; unknown rewards remain fenced.
+- Per-occurrence history survives schedule edits, offline reconnect and delayed projection. Mobile controls follow E01. Unknown game effects stay fenced; skipped or restored canonical state never implies a reversed reward. Define explicit linked-schedule and type-conversion policies before implementing unsupported projections.
 
 Source:
-- Remaining E11 requirements from P-f2bb7e37-6700-58ac-aa56-b537d193c777 after researched calendar-kernel decomposition. Original requirements include recurring patterns, skip/pause/restart, per-occurrence history, Habit up/down, day-start/Cron reconciliation, safe type conversion policy, delayed sync and optional habit dashboard.
+- Remaining original E11 intent from P-f2bb7e37-6700-58ac-aa56-b537d193c777 and P-d6fb32f0-7125-4544-898a-c1028ca91a2a. Calendar expansion is complete; the prioritized authoring unit covers only reviewed schedule fields and scheduled-date validation.
 
 Priority rationale:
-- Preserve the original owner-selected E11 epic priority.
+- Retain the original E11 feature-area priority.
 
 ### E01 Competitive UX/IA study and mobile-first product contract
 

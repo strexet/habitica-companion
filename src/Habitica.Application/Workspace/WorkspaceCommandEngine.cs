@@ -29,6 +29,8 @@ public static class WorkspaceCommandEngine
                 || patch.Notes?.Length > 10000 || patch.Priority is { } priority && !Enum.IsDefined(priority)
                 || !HabiticaTaskDetails.IsValid(patch.HabiticaDetails) || patch.HabiticaDetails == new HabiticaTaskDetails()
                 || patch.ClearNotes && patch.Notes is not null || patch.ClearDeadline && patch.Deadline is not null
+                || patch.ClearRecurrence && patch.Recurrence is not null
+                || patch.Recurrence is { } rule && !RecurrenceCalendar.Expand(rule, rule.StartDate, rule.StartDate).Succeeded
                 || creating && string.IsNullOrWhiteSpace(patch.Text))
                 return Reject(SubmissionDisposition.Invalid, "invalid_patch");
         }
@@ -45,6 +47,11 @@ public static class WorkspaceCommandEngine
         if (creating ? current is not null : current is null || current.IsArchived)
             return Reject(SubmissionDisposition.Invalid, "task_unavailable");
         var mapping = document.Projections.FirstOrDefault(value => value.TaskId == command.TaskId && !value.IsArchived);
+        var editsRecurrence = patch?.Recurrence is not null || patch?.ClearRecurrence == true;
+        if (editsRecurrence && (creating ? command.Operation != WorkspaceOperation.CreateDaily || patch!.ClearRecurrence : current!.Kind != CompanionTaskKind.Daily))
+            return Reject(SubmissionDisposition.Invalid, "recurrence_requires_daily");
+        if (editsRecurrence && (command.ProjectToHabitica || mapping is not null && (mapping.State != ProjectionState.Unlinked || mapping.HabiticaTaskId is not null)))
+            return Reject(SubmissionDisposition.Invalid, "unsupported_projection");
         if ((command.Operation is WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit or WorkspaceOperation.DeleteTask)
             && (command.ProjectToHabitica || mapping is not null && (mapping.State != ProjectionState.Unlinked || mapping.HabiticaTaskId is not null)))
             return Reject(SubmissionDisposition.Invalid, "unsupported_projection");
@@ -56,19 +63,25 @@ public static class WorkspaceCommandEngine
             return Reject(SubmissionDisposition.Invalid, "occurrence_required");
         if (command.Operation == WorkspaceOperation.CompleteTask && current!.Kind == CompanionTaskKind.Todo && command.OccurrenceDate is not null)
             return Reject(SubmissionDisposition.Invalid, "unexpected_occurrence");
+        if (command.Operation == WorkspaceOperation.CompleteTask && current!.Kind == CompanionTaskKind.Daily && current.Recurrence is { } schedule)
+        {
+            var dates = RecurrenceCalendar.Expand(schedule, command.OccurrenceDate!.Value, command.OccurrenceDate.Value);
+            if (!dates.Succeeded) return Reject(SubmissionDisposition.Invalid, "recurrence_unavailable");
+            if (dates.Dates.Count == 0) return Reject(SubmissionDisposition.Invalid, "occurrence_not_scheduled");
+        }
         if (document.Revision >= WorkspaceDocument.MaxRevision || snapshot.StoreVersion >= WorkspaceDocument.MaxRevision) return Reject(SubmissionDisposition.Invalid, "revision_exhausted");
         var revision = document.Revision + 1;
         var tasks = document.Tasks.ToList(); var completions = document.Completions.ToList();
         var occurrences = document.Occurrences.ToList(); var scores = document.HabitScores.ToList();
         CompanionTask updated;
         if (creating)
-            updated = new(command.TaskId, revision, patch!.Text!, command.Operation == WorkspaceOperation.CreateDaily ? CompanionTaskKind.Daily : command.Operation == WorkspaceOperation.CreateHabit ? CompanionTaskKind.Habit : CompanionTaskKind.Todo, CompanionTaskState.Active, patch.Priority ?? CompanionPriority.Normal, now, now, patch.Notes, Deadline: patch.Deadline, HabiticaDetails: patch.HabiticaDetails);
+            updated = new(command.TaskId, revision, patch!.Text!, command.Operation == WorkspaceOperation.CreateDaily ? CompanionTaskKind.Daily : command.Operation == WorkspaceOperation.CreateHabit ? CompanionTaskKind.Habit : CompanionTaskKind.Todo, CompanionTaskState.Active, patch.Priority ?? CompanionPriority.Normal, now, now, patch.Notes, Deadline: patch.Deadline, Recurrence: patch.Recurrence, HabiticaDetails: patch.HabiticaDetails);
         else
         {
             updated = current! with { Revision = revision, UpdatedAtUtc = now };
             if (command.Operation == WorkspaceOperation.DeleteTask) updated = updated with { IsArchived = true };
             if (command.Operation == WorkspaceOperation.UpdateTask)
-                updated = updated with { Text = patch!.Text ?? updated.Text, Notes = patch.ClearNotes ? null : patch.Notes ?? updated.Notes, Priority = patch.Priority ?? updated.Priority, Deadline = patch.ClearDeadline ? null : patch.Deadline ?? updated.Deadline, HabiticaDetails = HabiticaTaskDetails.Merge(updated.HabiticaDetails, patch.HabiticaDetails) };
+                updated = updated with { Text = patch!.Text ?? updated.Text, Notes = patch.ClearNotes ? null : patch.Notes ?? updated.Notes, Priority = patch.Priority ?? updated.Priority, Deadline = patch.ClearDeadline ? null : patch.Deadline ?? updated.Deadline, Recurrence = patch.ClearRecurrence ? null : patch.Recurrence ?? updated.Recurrence, HabiticaDetails = HabiticaTaskDetails.Merge(updated.HabiticaDetails, patch.HabiticaDetails) };
             if (command.Operation == WorkspaceOperation.CompleteTask)
             {
                 Guid? occurrenceId = null;

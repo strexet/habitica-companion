@@ -1,0 +1,49 @@
+{
+  "command": {
+    "id": "20000000-0000-4000-8000-000000000001",
+    "workspaceId": "10000000-0000-4000-8000-000000000001",
+    "expectedRevision": 1,
+    "operation": "createDaily",
+    "taskId": "20000000-0000-4000-8000-000000000002",
+    "patch": {
+      "text": "Read \"chapter\" \ud83d\udcda",
+      "notes": "Private\nnotes \u00a7",
+      "clearNotes": false,
+      "priority": "high",
+      "deadline": "2026-10-16",
+      "clearDeadline": false,
+      "recurrence": {
+        "frequency": "weekly",
+        "interval": 2,
+        "startDate": "2026-10-17",
+        "timeZoneId": "Asia/Kathmandu",
+        "weekdays": [
+          "monday",
+          "friday"
+        ],
+        "daysOfMonth": []
+      },
+      "habiticaDetails": {
+        "difficulty": 1.5,
+        "attribute": "per",
+        "checklist": [
+          {
+            "id": "30000000-0000-4000-8000-000000000001",
+            "text": "R\u00e9sum\u00e9 \u2615",
+            "completed": false
+          },
+          {
+            "id": "30000000-0000-4000-8000-000000000002",
+            "text": "Review",
+            "completed": true
+          }
+        ]
+      }
+    },
+    "direction": null,
+    "count": 1,
+    "occurrenceDate": null,
+    "projectToHabitica": false
+  },
+  "payloadHash": "8f9b266c3e2b922caf9eb80d12f3fb54ed2c3c74f350b915db83b55d68e0e317"
+}

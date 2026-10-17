@@ -381,6 +381,51 @@
       "through": "2026-10-18",
       "dates": [],
       "failure": "invalid_time_zone"
+    },
+    {
+      "name": "blank timezone metadata",
+      "rule": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-10-17",
+        "timeZoneId": " ",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "from": "2026-10-17",
+      "through": "2026-10-18",
+      "dates": [],
+      "failure": "invalid_recurrence"
+    },
+    {
+      "name": "null timezone metadata",
+      "rule": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-10-17",
+        "timeZoneId": null,
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "from": "2026-10-17",
+      "through": "2026-10-18",
+      "dates": [],
+      "failure": "invalid_recurrence"
+    },
+    {
+      "name": "oversized timezone metadata",
+      "rule": {
+        "frequency": "daily",
+        "interval": 3,
+        "startDate": "2026-10-17",
+        "timeZoneId": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "weekdays": [],
+        "daysOfMonth": []
+      },
+      "from": "2026-10-17",
+      "through": "2026-10-18",
+      "dates": [],
+      "failure": "invalid_recurrence"
     }
   ],
   "localDates": [

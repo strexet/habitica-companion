@@ -1,0 +1,33 @@
+{
+  "command": {
+    "id": "20000000-0000-4000-8000-000000000001",
+    "workspaceId": "10000000-0000-4000-8000-000000000001",
+    "expectedRevision": 1,
+    "operation": "createDaily",
+    "taskId": "20000000-0000-4000-8000-000000000002",
+    "patch": {
+      "text": "Read \"chapter\" \ud83d\udcda",
+      "notes": "Private\nnotes \u00a7",
+      "clearNotes": false,
+      "priority": "high",
+      "deadline": "2026-10-16",
+      "clearDeadline": false,
+      "recurrence": {
+        "frequency": "weekly",
+        "interval": 2,
+        "startDate": "2026-10-17",
+        "timeZoneId": "Asia/Kathmandu",
+        "weekdays": [
+          "monday",
+          "friday"
+        ],
+        "daysOfMonth": []
+      }
+    },
+    "direction": null,
+    "count": 1,
+    "occurrenceDate": null,
+    "projectToHabitica": false
+  },
+  "payloadHash": "8230a0eae8c139408daed4e92de8dad38c904deb7fab79178540c1e9716ce5b4"
+}

@@ -177,6 +177,9 @@ public sealed class WorkspaceCommandTests
     [Theory]
     [InlineData("command-v1.json")]
     [InlineData("command-v2.json")]
+    [InlineData("command-v3.json")]
+    [InlineData("command-v3-clear.json")]
+    [InlineData("command-v3-details.json")]
     public void NeutralCommandFixtureHasPortableUtf8IdentityHash(string filename)
     {
         using var fixture = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "fixtures", filename)));

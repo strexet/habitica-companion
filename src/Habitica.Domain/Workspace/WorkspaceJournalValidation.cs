@@ -18,13 +18,23 @@ public static class WorkspaceJournalValidation
             if (entry is null || entry.Command is null || entry.Command.Id == Guid.Empty || !ids.Add(entry.Command.Id)
                 || entry.Command.WorkspaceId != snapshot.Document.Id || entry.Command.ExpectedRevision < 1 || entry.Command.ExpectedRevision >= snapshot.Document.Revision
                 || !HabiticaTaskDetails.IsValid(entry.Command.Patch?.HabiticaDetails)
+                || entry.Command.Patch?.Recurrence is { } recurrence && !RecurrenceCalendar.IsStructurallyValid(recurrence)
+                || entry.Command.Patch is { ClearRecurrence: true, Recurrence: not null }
                 || entry.PayloadHash != WorkspaceCommandIdentity.Hash(entry.Command) || entry.AcceptedAtUtc == default || entry.AcceptedAtUtc.Offset != TimeSpan.Zero
                 || !Enum.IsDefined(entry.ProjectionState) || !Enum.IsDefined(entry.Failure) || entry.Effects is null || entry.Effects.Count > 11
                 || entry.Effects.Any(effect => !Enum.IsDefined(effect)) || entry.ConfirmedEffects < 0 || entry.ConfirmedEffects > entry.Effects.Count || entry.Attempts < 0) return false;
+            if ((entry.Command.Patch?.Recurrence is not null || entry.Command.Patch?.ClearRecurrence == true)
+                && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
+                    || entry.Command.Operation is not (WorkspaceOperation.CreateDaily or WorkspaceOperation.UpdateTask)
+                    || entry.Command.Operation == WorkspaceOperation.CreateDaily && entry.Command.Patch.ClearRecurrence
+                    || entry.TaskSnapshot?.Kind != CompanionTaskKind.Daily)) return false;
+            if (entry.Command.Patch?.ClearRecurrence == true && entry.TaskSnapshot!.Recurrence is not null) return false;
+            if (entry.Command.Patch?.Recurrence is { } intended && !SameRecurrence(intended, entry.TaskSnapshot!.Recurrence)) return false;
             if (entry.TaskSnapshot is { } accepted && (accepted.Id != entry.Command.TaskId || accepted.Revision != entry.Command.ExpectedRevision + 1
                 || !Enum.IsDefined(accepted.Kind) || !Enum.IsDefined(accepted.State) || !Enum.IsDefined(accepted.Priority)
                 || string.IsNullOrWhiteSpace(accepted.Text) || accepted.Text.Length > 2048 || accepted.Notes?.Length > 10000
                 || !HabiticaTaskDetails.IsValid(accepted.HabiticaDetails)
+                || accepted.Recurrence is { } schedule && (accepted.Kind != CompanionTaskKind.Daily || !RecurrenceCalendar.IsStructurallyValid(schedule))
                 || accepted.CreatedAtUtc == default || accepted.CreatedAtUtc.Offset != TimeSpan.Zero || accepted.UpdatedAtUtc != entry.AcceptedAtUtc || accepted.CreatedAtUtc > accepted.UpdatedAtUtc)) return false;
             if (entry.ProjectionState == ProjectionCommandState.NotRequested ? entry.Effects.Count != 0 : entry.Effects.Count == 0) return false;
             if (entry.ProjectionState == ProjectionCommandState.Confirmed && entry.ConfirmedEffects != entry.Effects.Count) return false;
@@ -44,4 +54,8 @@ public static class WorkspaceJournalValidation
                 || value.Kind == JournalEventKind.Reconciled && string.IsNullOrWhiteSpace(value.EvidenceReference)) return false;
         return true;
     }
+
+    private static bool SameRecurrence(RecurrenceRule intent, RecurrenceRule? accepted) => RecurrenceCalendar.IsStructurallyValid(accepted)
+        && intent.Frequency == accepted.Frequency && intent.Interval == accepted.Interval && intent.StartDate == accepted.StartDate
+        && intent.TimeZoneId == accepted.TimeZoneId && intent.Weekdays.SequenceEqual(accepted.Weekdays) && intent.DaysOfMonth.SequenceEqual(accepted.DaysOfMonth);
 }

@@ -1,0 +1,23 @@
+{
+  "command": {
+    "id": "20000000-0000-4000-8000-000000000001",
+    "workspaceId": "10000000-0000-4000-8000-000000000001",
+    "expectedRevision": 1,
+    "operation": "updateTask",
+    "taskId": "20000000-0000-4000-8000-000000000002",
+    "patch": {
+      "text": "Read \"chapter\" \ud83d\udcda",
+      "notes": "Private\nnotes \u00a7",
+      "clearNotes": false,
+      "priority": "high",
+      "deadline": "2026-10-16",
+      "clearDeadline": false,
+      "clearRecurrence": true
+    },
+    "direction": null,
+    "count": 1,
+    "occurrenceDate": null,
+    "projectToHabitica": false
+  },
+  "payloadHash": "4754194d4435596bad008c2cb52f590b2eb2bb983415e10482727b5bd355240e"
+}

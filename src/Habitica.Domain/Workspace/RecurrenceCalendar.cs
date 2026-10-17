@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Habitica.Domain.Workspace;
 
 public sealed record RecurrenceExpansion(IReadOnlyList<DateOnly> Dates, string? Failure = null)
@@ -14,16 +16,8 @@ public static class RecurrenceCalendar
     {
         RecurrenceExpansion Fail(string code) => new(Array.Empty<DateOnly>(), code);
         if (through < from || through.DayNumber - from.DayNumber + 1 > MaximumRangeDays) return Fail("invalid_range");
-        if (rule is null || !Enum.IsDefined(rule.Frequency) || rule.StartDate == default || rule.Interval is < 1 or > 366
-            || rule.Weekdays is null || rule.DaysOfMonth is null
-            || rule.Weekdays.Any(day => !Enum.IsDefined(day)) || rule.Weekdays.Distinct().Count() != rule.Weekdays.Count
-            || rule.DaysOfMonth.Any(day => day is < 1 or > 31) || rule.DaysOfMonth.Distinct().Count() != rule.DaysOfMonth.Count
-            || rule.Frequency == RecurrenceFrequency.Weekly && rule.Weekdays.Count == 0
-            || rule.Frequency == RecurrenceFrequency.Monthly && rule.DaysOfMonth.Count == 0
-            || rule.Frequency != RecurrenceFrequency.Weekly && rule.Weekdays.Count != 0
-            || rule.Frequency != RecurrenceFrequency.Monthly && rule.DaysOfMonth.Count != 0)
-            return Fail("invalid_recurrence");
-        if (Zone(rule.TimeZoneId) is null) return Fail("invalid_time_zone");
+        if (!IsStructurallyValid(rule)) return Fail("invalid_recurrence");
+        if (Zone(rule!.TimeZoneId) is null) return Fail("invalid_time_zone");
         var dates = new List<DateOnly>();
         var monday = rule.StartDate.DayNumber - ((int)rule.StartDate.DayOfWeek + 6) % 7;
         for (var number = Math.Max(from.DayNumber, rule.StartDate.DayNumber); number <= through.DayNumber; number++)
@@ -40,6 +34,17 @@ public static class RecurrenceCalendar
         }
         return new(dates);
     }
+
+    // Historical journals need structural validation even when a device lacks a zone database.
+    public static bool IsStructurallyValid([NotNullWhen(true)] RecurrenceRule? rule) => !(rule is null || !Enum.IsDefined(rule.Frequency) || rule.StartDate == default || rule.Interval is < 1 or > 366
+            || string.IsNullOrWhiteSpace(rule.TimeZoneId) || rule.TimeZoneId.Length > 128
+            || rule.Weekdays is null || rule.DaysOfMonth is null
+            || rule.Weekdays.Any(day => !Enum.IsDefined(day)) || rule.Weekdays.Distinct().Count() != rule.Weekdays.Count
+            || rule.DaysOfMonth.Any(day => day is < 1 or > 31) || rule.DaysOfMonth.Distinct().Count() != rule.DaysOfMonth.Count
+            || rule.Frequency == RecurrenceFrequency.Weekly && rule.Weekdays.Count == 0
+            || rule.Frequency == RecurrenceFrequency.Monthly && rule.DaysOfMonth.Count == 0
+            || rule.Frequency != RecurrenceFrequency.Weekly && rule.Weekdays.Count != 0
+            || rule.Frequency != RecurrenceFrequency.Monthly && rule.DaysOfMonth.Count != 0);
 
     public static RecurrenceLocalDate LocalDateAt(DateTimeOffset instantUtc, string timeZoneId)
     {

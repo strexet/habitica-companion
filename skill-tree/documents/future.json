@@ -55,7 +55,8 @@
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
       "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
-      "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
+      "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
+      "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -81,6 +82,7 @@
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8": "O-d3de5c55-c4ac-4eb9-9b46-36aa630adf68",
       "T-49eaa44e-5c98-4219-a380-4201e4143494": "O-9f6a3618-fbbf-4d96-b034-bbe5f19e01ca",
       "T-4a1de222-156a-52cf-8966-262a2c8216ed": "O-1be18cd1-6faf-47ff-bc66-14861e6858e4",
+      "T-4c002e27-bb45-4354-ae94-167b7b4b561f": "O-07e41f67-25d8-4040-997f-9c11a4b934be",
       "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2": "O-1213a8c8-f039-463e-a137-ac7f9d6122e0",
       "T-4dd09108-6149-4ab2-9326-b6f53e05f811": "O-75a3f695-3334-45b4-8000-06045ef1ca34",
       "T-53352a18-54d2-57b6-accc-91f8e6dfad13": "O-02146734-4822-48de-81a5-71f0c7208776",
@@ -115,7 +117,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "5db4563a73a0d0bd3d60f07a8a17e06f970abac4e670bb73b3e21f6013e8aa6e",
+    "cycle_signature": "2f3bc3004b03ac6bf6d94dae7da419f058da669f1708660e237a2e249a99482d",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -125,12 +127,13 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Research remaining original E11 authoring/lifecycle work and other approved Pending feature areas. Preserve the E01 detailed-UI gate and live-release gate.",
+    "next_action": "Research the remaining authorized Pending feature areas and original E11 lifecycle remainder. Keep E01 detailed UI and real release gates open.",
     "partial_work": [
-      "Four local implementation units are complete in the expanded run: lifecycle reliability, foreground pacing, durable server pacing and recurrence calendar.",
-      "Navigation research has a checked synthetic prototype, with human/competitor usability still unqualified.",
-      "Remaining original E11 requirements are retained in P-d6fb32f0-7125-4544-898a-c1028ca91a2a; no feature completion is inferred from the calendar kernel.",
-      "No live tests, deployments or real credentials are permitted."
+      "Five local implementation units are complete: lifecycle reliability, foreground pacing, durable server pacing, recurrence calendar and reviewed recurrence authoring.",
+      "Latest milestone passes 581 .NET tests, Auth 123, Workspace 164, three Worker builds, app build and packaged task-skill validation.",
+      "P-8a968c91-80a2-46be-9f32-2fb514d3bc22 retains original E11 lifecycle/review/UI work; no complete recurring-workflow claim.",
+      "E01 retains hands-on competitor/mobile usability and owner navigation-feedback gaps despite the checked local prototype.",
+      "No live tests, real credentials, deployments or pushes."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -174,7 +177,8 @@
       "P-e946d297-2c7c-4347-9bac-7c1cd92488ee",
       "P-a552907a-6fd8-42b4-842c-96ab7159cd98",
       "P-f0f5ebac-0436-4f57-8865-29015a753872",
-      "P-d6fb32f0-7125-4544-898a-c1028ca91a2a"
+      "P-d6fb32f0-7125-4544-898a-c1028ca91a2a",
+      "P-8a968c91-80a2-46be-9f32-2fb514d3bc22"
     ],
     "phase": "processing",
     "processing_results": [
@@ -930,6 +934,25 @@
         "task_keys": {
           "recurrence-calendar": "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
         }
+      },
+      {
+        "created_ids": [
+          "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
+        ],
+        "dispositions": {
+          "P-d6fb32f0-7125-4544-898a-c1028ca91a2a": {
+            "reason": "Command records, hashing, preparation and MCP schemas support a bounded recurrence-authoring extension. Remaining lifecycle, review and UI requirements remain explicit intake rather than inferred from the extension.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-582b3291-2110-4f42-b2f5-7fbb15a0c003",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-d6fb32f0-7125-4544-898a-c1028ca91a2a"
+        ],
+        "task_keys": {
+          "recurrence-authoring": "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
+        }
       }
     ],
     "required_ids": [
@@ -989,9 +1012,10 @@
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
       "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
-      "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
+      "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
+      "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
     ],
-    "root_task_id": "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
+    "root_task_id": "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1039,6 +1063,16 @@
           "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
         ],
         "remaining_pending_id": "P-d6fb32f0-7125-4544-898a-c1028ca91a2a"
+      },
+      {
+        "original_pending_id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
+        "owner_direction": "Expand to local tasks and Pending work",
+        "promoted_local_roots": [
+          "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
+        ],
+        "reason": "Decomposition of the originally authorized E11 area; no new feature area or live lane.",
+        "remaining_pending_id": "P-8a968c91-80a2-46be-9f32-2fb514d3bc22",
+        "researched_remainder": "P-d6fb32f0-7125-4544-898a-c1028ca91a2a"
       }
     ],
     "snapshot": [
@@ -1056,27 +1090,28 @@
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
       "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
-      "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
+      "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
+      "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "66a963763c75ebd6225863d050dcada9cc0ca5e9de9fc11f410d4acb38e61ff1",
+  "source_hash": "64deb9629c5ffd382cca5d81aa1377b37149fe333eb6e595d499a45de5e3dc7b",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-d6fb32f0-7125-4544-898a-c1028ca91a2a",
+      "id": "P-8a968c91-80a2-46be-9f32-2fb514d3bc22",
       "line": 75,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
       "queue": "Pending Queue",
-      "related_task_id": "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
-      "relation": "followup",
-      "root_task_id": "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": null,
       "status": "Pending",
-      "title": "E11 Recurrence authoring, lifecycle and mobile review after calendar foundations"
+      "title": "E11 Occurrence lifecycle, Habit review and mobile recurrence controls"
     },
     {
       "depends_on": [],

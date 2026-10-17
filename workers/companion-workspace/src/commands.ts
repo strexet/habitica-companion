@@ -2,6 +2,7 @@ import { mergeDetails } from "../../shared/task-details.ts";
 import { workspaceDocument, type WorkspaceDocument, type CompanionTask } from "../../shared/workspace-domain.ts";
 import { commandHash, isTaskCreation, type WorkspaceCommand } from "../../shared/workspace-commands.ts";
 import { WorkspaceError } from "../../shared/workspace-http.ts";
+import {expandRecurrence} from '../../shared/recurrence-calendar.ts';
 export interface CommandEntry {
  command: WorkspaceCommand; payloadHash: string; acceptedAtUtc: string;
  projectionState: string; effects: string[]; confirmedEffects: number; failure: string;
@@ -15,19 +16,24 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  if (document.revision === Number.MAX_SAFE_INTEGER) throw new WorkspaceError("revision_exhausted", 409);
  const result = structuredClone(document); const revision = ++result.revision;
  let task = result.tasks.find(task => task.id === command.taskId); const patch = command.patch;
+ if(patch?.recurrence&&expandRecurrence(patch.recurrence,patch.recurrence.startDate,patch.recurrence.startDate).failure)throw new WorkspaceError('invalid_patch',422);
  if (isTaskCreation(command.operation) ? Boolean(task) : !task || task.isArchived) throw new WorkspaceError("task_unavailable", 422);
  const mapping = result.projections.find(row => row.taskId === command.taskId && !row.isArchived);
+ const editsRecurrence=Boolean(patch?.recurrence||patch?.clearRecurrence);
+ if(editsRecurrence&&(isTaskCreation(command.operation)?command.operation!=='createDaily'||patch!.clearRecurrence:task!.kind!=='daily'))throw new WorkspaceError('recurrence_requires_daily',422);
+ if(editsRecurrence&&(command.projectToHabitica||mapping&&(mapping.state!=='unlinked'||mapping.habiticaTaskId!==null)))throw new WorkspaceError('unsupported_projection',422);
  if (["createDaily", "createHabit", "deleteTask"].includes(command.operation) && (command.projectToHabitica || mapping && (mapping.state !== "unlinked" || mapping.habiticaTaskId !== null))) throw new WorkspaceError("unsupported_projection", 422);
  if (command.operation === "completeTask" && (task!.kind === "habit" || ["completed", "cancelled", "paused"].includes(task!.state))) throw new WorkspaceError("task_not_completable", 422);
  if (command.operation === "scoreHabit" && (task!.kind !== "habit" || task!.state !== "active")) throw new WorkspaceError("habit_not_active", 422);
  if (command.operation === "completeTask" && (task!.kind === "daily" ? command.occurrenceDate === null : command.occurrenceDate !== null)) throw new WorkspaceError(task!.kind === "daily" ? "occurrence_required" : "unexpected_occurrence", 422);
+ if(command.operation==='completeTask'&&task!.kind==='daily'&&task!.recurrence){const dates=expandRecurrence(task!.recurrence,command.occurrenceDate!,command.occurrenceDate!);if(dates.failure)throw new WorkspaceError('recurrence_unavailable',422);if(!dates.dates.length)throw new WorkspaceError('occurrence_not_scheduled',422);}
  if (isTaskCreation(command.operation)) {
-  task = { id: command.taskId, revision, isArchived: false, text: patch!.text!, kind: command.operation === "createDaily" ? "daily" : command.operation === "createHabit" ? "habit" : "todo", state: "active", priority: patch!.priority ?? "normal", createdAtUtc: now, updatedAtUtc: now, notes: patch!.notes, categoryId: null, projectId: null, sectionId: null, parentTaskId: null, labelIds: [], dependsOn: [], plannedDate: null, deadline: patch!.deadline, reviewAfterUtc: null, staleSinceUtc: null, recurrence: null, habiticaDetails: patch!.habiticaDetails ?? null } satisfies CompanionTask;
+  task = { id: command.taskId, revision, isArchived: false, text: patch!.text!, kind: command.operation === "createDaily" ? "daily" : command.operation === "createHabit" ? "habit" : "todo", state: "active", priority: patch!.priority ?? "normal", createdAtUtc: now, updatedAtUtc: now, notes: patch!.notes, categoryId: null, projectId: null, sectionId: null, parentTaskId: null, labelIds: [], dependsOn: [], plannedDate: null, deadline: patch!.deadline, reviewAfterUtc: null, staleSinceUtc: null, recurrence: patch!.recurrence ?? null, habiticaDetails: patch!.habiticaDetails ?? null } satisfies CompanionTask;
   result.tasks.push(task);
  } else {
   task!.revision = revision; task!.updatedAtUtc = now;
   if (command.operation === "deleteTask") task!.isArchived = true;
-  if (command.operation === "updateTask") { task!.habiticaDetails=mergeDetails(task!.habiticaDetails,patch!.habiticaDetails); task!.text = patch!.text ?? task!.text; task!.notes = patch!.clearNotes ? null : patch!.notes ?? task!.notes; task!.priority = patch!.priority ?? task!.priority; task!.deadline = patch!.clearDeadline ? null : patch!.deadline ?? task!.deadline; }
+  if (command.operation === "updateTask") { task!.recurrence=patch!.clearRecurrence?null:patch!.recurrence??task!.recurrence; task!.habiticaDetails=mergeDetails(task!.habiticaDetails,patch!.habiticaDetails); task!.text = patch!.text ?? task!.text; task!.notes = patch!.clearNotes ? null : patch!.notes ?? task!.notes; task!.priority = patch!.priority ?? task!.priority; task!.deadline = patch!.clearDeadline ? null : patch!.deadline ?? task!.deadline; }
   if (command.operation === "completeTask") {
    let occurrenceId = null;
    if (task!.kind === "daily") {

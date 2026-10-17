@@ -828,7 +828,7 @@ Canonical tasks and partial patches carry nullable `habiticaDetails`; native pri
 
 ## Native task creation and archival
 
-Typed operations `createDaily`, `createHabit` and `deleteTask` extend both command engines without changing existing operation values or hash formats. Creation allocates independent task identities and stores nullable recurrence; an unscheduled Daily still requires an explicit occurrence date for completion. Native task deletion uses the existing archive flag and preserves referenced records, immutable snapshots and command receipts. Active reads exclude archived tasks. The new operations reject projection requests and linked-task deletion before acceptance. The same transaction, revision checks, expiry and access epochs apply to all task operations; no database migration is required.
+Typed operations `createDaily`, `createHabit` and `deleteTask` extend both command engines without changing existing operation values or v1/v2 payload identities. Creation allocates independent task identities and stores nullable recurrence; an unscheduled Daily still requires an explicit occurrence date for completion. Native task deletion uses the existing archive flag and preserves referenced records, immutable snapshots and command receipts. Active reads exclude archived tasks. The new operations reject projection requests and linked-task deletion before acceptance. The same transaction, revision checks, expiry and access epochs apply to all task operations; no database migration is required.
 
 ## Shared reviewed task surface
 
@@ -949,4 +949,12 @@ Responses and transport failures update durable recovery state. Failure doubles 
 
 Calendar calculations accept UTC and supported IANA region-style timezone identifiers. Unavailable zones, malformed rules and oversized/reversed ranges return explicit failures without partial dates. UTC-instant conversion uses the selected rule timezone across DST and offset boundaries; no device-zone fallback exists. The pinned WebAssembly SDK enables timezone support by default; actual browser integration and mobile-device qualification remain separate checks.
 
-Civil recurrence dates supply no Habitica due-state or reward evidence. Habitica day-start, Cron readiness, private preconditions and original projection receipts remain independent. The calendar kernel allocates no persistent occurrence identity and never backfills scores. Recurrence authoring, skip/pause/restart, retained occurrence review and UI integration remain queued separately.
+Civil recurrence dates supply no Habitica due-state or reward evidence. Habitica day-start, Cron readiness, private preconditions and original projection receipts remain independent. The calendar kernel allocates no persistent occurrence identity and never backfills scores. Reviewed command authoring uses the calendar kernel; skip/pause/restart, retained occurrence review and UI integration remain queued separately.
+
+## Recurrence command identity and portability
+
+WorkspaceTaskPatch adds optional recurrence and clearRecurrence fields. Default fields remain absent from serialized legacy requests and normalized Worker commands. Existing v1/v2 hashes remain unchanged. A v3 prefix covers recurrence edits, explicit detail/rule presence, rule fields and ordered weekday/month-day arrays using the existing length-prefixed UTF-8 encoding. The workspace document already stores recurrence; no D1 migration is required.
+
+Both acceptance engines validate rule structure and local timezone availability before saving. New recurrence intents require a Daily, no game projection and no linked/pending/uncertain mapping. Scheduled completion checks the canonical occurrence date independently of private Habitica due-state and Cron proofs. Schedule clearing retains prior occurrence/completion records and immutable accepted snapshots.
+
+Portable journals validate historical rule structure without requiring the reading device to resolve every timezone. Recurrence intents require a matching Daily snapshot, no projection request and no game effects; contradictory or missing snapshots are rejected. Older clients can reject extended command fields, so coordinated client/Worker release precedes use of v3 intents. Legacy requests and retained v1/v2 receipts preserve the existing protocol.
