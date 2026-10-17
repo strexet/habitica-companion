@@ -104,20 +104,20 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": null,
+    "current_task_id": "T-65810da7-9524-45ce-b280-668d04c86441",
     "cycle_signature": "f4066cf61ac7e05e1a2984dbb130ce4d3e3cb23814144ccff59561dd7943e3ba",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
     "history_refs": [
-      "skill-tree/history/validation/codex-owner-browser-actions.json"
+      "skill-tree/history/validation/native-lifecycle-production-check.json"
     ],
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Select required task or finish root",
+    "next_action": "Commit and publish the count correction, verify hosted artifact/counts, then retain explicit client/background and external release gates.",
     "partial_work": [
-      "Implemented native createDaily/createHabit/deleteTask in mirrored engines, Workspace/MCP and editor. 560 .NET and 16 focused Worker checks pass; final UI reset controls pass. Live owner self-spell and equipment controls pass. Production preflight and dry runs retain disabled shared/gameplay flags."
+      "Archive header shows separate listed and archived counts. Three component cases and release build pass. Hosted native lifecycle and original receipt checks pass; source correction awaits publication."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -159,9 +159,10 @@
       "P-e0494acc-da19-4d22-bdb3-9b71af18cc7d",
       "P-2544a5ca-8301-4a81-b027-08c485b1de48",
       "P-e946d297-2c7c-4347-9bac-7c1cd92488ee",
-      "P-a552907a-6fd8-42b4-842c-96ab7159cd98"
+      "P-a552907a-6fd8-42b4-842c-96ab7159cd98",
+      "P-f0f5ebac-0436-4f57-8865-29015a753872"
     ],
-    "phase": "resume-parent",
+    "phase": "implement",
     "processing_results": [
       {
         "created_ids": [
@@ -843,6 +844,23 @@
           "P-a552907a-6fd8-42b4-842c-96ab7159cd98"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-65810da7-9524-45ce-b280-668d04c86441"
+        ],
+        "dispositions": {
+          "P-f0f5ebac-0436-4f57-8865-29015a753872": {
+            "reason": "Production observation matches the header Tasks.Count expression and the list IsArchived predicate.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-62e1c693-294f-4e2d-8964-364d2094ada2",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-f0f5ebac-0436-4f57-8865-29015a753872"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -897,7 +915,8 @@
       "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
       "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
       "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
-      "T-70901e97-738c-42c2-ae50-68dd71417a32"
+      "T-70901e97-738c-42c2-ae50-68dd71417a32",
+      "T-65810da7-9524-45ce-b280-668d04c86441"
     ],
     "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "snapshot": [
@@ -917,7 +936,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "029a6369b1ba3b23ef94c68da42bd3e55d489d7a4d4b454547fa6b70365184f6",
+  "source_hash": "88cf0df53e9bb9730817bdae9dce043a3c4ef90573175f280a6eaf3fee16d17e",
   "tasks": [
     {
       "depends_on": [],
@@ -1032,6 +1051,22 @@
       "title": "E13 MCP and Skills for Companion-native project/task/goal operations"
     },
     {
+      "depends_on": [],
+      "id": "T-65810da7-9524-45ce-b280-668d04c86441",
+      "line": 324,
+      "parent_pending_ids": [
+        "P-f0f5ebac-0436-4f57-8865-29015a753872"
+      ],
+      "priority": 101,
+      "processing_run_id": "PR-62e1c693-294f-4e2d-8964-364d2094ada2",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "relation": "blocker",
+      "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "status": "Ready",
+      "title": "Distinguish active and archived task counts"
+    },
+    {
       "depends_on": [
         "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
         "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
@@ -1042,10 +1077,11 @@
         "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
         "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
         "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
-        "T-70901e97-738c-42c2-ae50-68dd71417a32"
+        "T-70901e97-738c-42c2-ae50-68dd71417a32",
+        "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 324,
+      "line": 363,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1061,7 +1097,7 @@
     {
       "depends_on": [],
       "id": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
-      "line": 365,
+      "line": 404,
       "parent_pending_ids": [
         "P-28d6ece4-a519-44a8-9625-3367479a03c3"
       ],
@@ -1085,7 +1121,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 404,
+      "line": 443,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1101,7 +1137,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 559,
+      "line": 598,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1115,7 +1151,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 596,
+      "line": 635,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1129,7 +1165,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 633,
+      "line": 672,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1143,7 +1179,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 766,
+      "line": 805,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1157,7 +1193,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 804,
+      "line": 843,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1171,7 +1207,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 838,
+      "line": 877,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1185,7 +1221,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 873,
+      "line": 912,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1199,7 +1235,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 907,
+      "line": 946,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1213,7 +1249,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 945,
+      "line": 984,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1227,7 +1263,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 972,
+      "line": 1011,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1241,7 +1277,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 994,
+      "line": 1033,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1255,7 +1291,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1021,
+      "line": 1060,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

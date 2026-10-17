@@ -24,7 +24,7 @@
         }
         @if (Workspace.Snapshot is { } snapshot)
         {
-            <p><strong>@(Workspace.IsCloud ? "Cloud workspace" : "Browser workspace")</strong> · @snapshot.Document.Tasks.Count tasks · revision @snapshot.Document.Revision</p>
+            <p><strong>@(Workspace.IsCloud ? "Cloud workspace" : "Browser workspace")</strong> · @snapshot.Document.Tasks.Count(task => !task.IsArchived) listed tasks · @snapshot.Document.Tasks.Count(task => task.IsArchived) archived · revision @snapshot.Document.Revision</p>
             @if (Workspace.IsReadOnly) { <p>@(Workspace.RequiresReload ? "Reload current workspace data before editing again." : "This copy is frozen or cloud-owned. Use the cloud workspace for edits, or finish the transfer in Settings.")</p> }
             @if (!Workspace.IsCloud && snapshot.Authority?.Mode == WorkspaceAuthorityMode.Paused) { <p>Execution is paused for this restored copy. Saving canonical changes does not enable game effects.</p> }
             <div class="companion-task-list" aria-label="Companion task selection">

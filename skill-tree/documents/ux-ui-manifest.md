@@ -596,7 +596,7 @@ Local canonical workspace backups have separate listing, export and confirmed re
 
 The Tasks page exposes the canonical editor through an explicit disclosure button. Browser and cloud sources remain visible, with independent workspace selection, a read-only explanation for frozen or stale copies and separate paused-execution status for restored copies. The existing Habitica task dashboard remains separate. Account changes clear the editor's pending content and discard late data.
 
-The editor creates Todos, unscheduled Dailies and Habits. Selected unlinked tasks can be archived through a reviewed command; the review states that history remains in exports and Habitica is unchanged. Unsupported projection controls are absent for native Daily/Habit creation and archiving.
+The editor creates Todos, unscheduled Dailies and Habits. The workspace header separates listed tasks from archived records; completed unarchived tasks remain listed. Selected unlinked tasks can be archived through a reviewed command; the review states that history remains in exports and Habitica is unchanged. Unsupported projection controls are absent for native Daily/Habit creation and archiving.
 
 Every save opens a field-level review before confirmation. Native urgency and game difficulty have separate labels. Checklist replacement requires an explicit checkbox; empty replacement clears the list. Completion and Habit-score previews show the affected occurrence or bounded event count and explain possible game effects. Unknown acceptance preserves the original command ID and replaces ordinary cancellation with receipt checking or an original-command retry. Successful canonical saving and projection progress use separate text labels and a bounded recent-history disclosure.
 

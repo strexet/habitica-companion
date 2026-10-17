@@ -1,0 +1,94 @@
+{
+  "kind": "native-lifecycle-production-check",
+  "date": "2026-10-17",
+  "source_commit": "70c68d375d789fd8975fe6486910d02660ea1b57",
+  "pages_deployment": "https://873b0e82.habitica-companion.pages.dev",
+  "workspace_version": "43b3c4db-2e3e-4186-9dab-ac6e686d7bf9",
+  "mcp_version": "72029709-e8a0-4b52-b84b-181cb75bbc0d",
+  "client": "Codex native MCP plus Codex in-app browser",
+  "new_creation_and_archival": "Hosted PWA review/accept controls; original receipts independently read through native Codex tools.",
+  "native_actions": [
+    {
+      "commandId": "ba9359cf-2016-469d-bf68-21823da8a078",
+      "taskId": "24e19433-8d35-4314-8628-274d7fbffa1f",
+      "operation": "completeTask",
+      "savedInCompanion": true,
+      "acceptedEventCount": 1,
+      "totalProjectionCount": 0
+    },
+    {
+      "commandId": "b901d9c0-a4b4-49c6-8f66-c0b40fd8941d",
+      "taskId": "d94065fd-c8f7-4277-a6b7-0482451e80e2",
+      "operation": "scoreHabit",
+      "savedInCompanion": true,
+      "acceptedEventCount": 1,
+      "totalProjectionCount": 0
+    },
+    {
+      "commandId": "d181a022-621e-49e9-9fd1-643d34e0812e",
+      "taskId": "d94065fd-c8f7-4277-a6b7-0482451e80e2",
+      "operation": "updateTask",
+      "savedInCompanion": true,
+      "acceptedEventCount": 0,
+      "totalProjectionCount": 0
+    }
+  ],
+  "retained_receipts": [
+    {
+      "commandId": "374c3b6b-56a4-4ac8-b80f-ef0047191d43",
+      "taskId": "24e19433-8d35-4314-8628-274d7fbffa1f",
+      "operation": "createDaily",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "totalProjectionCount": 0
+    },
+    {
+      "commandId": "ef1bb397-7bcf-41f8-a541-d37eb7a289d8",
+      "taskId": "d94065fd-c8f7-4277-a6b7-0482451e80e2",
+      "operation": "createHabit",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "totalProjectionCount": 0
+    },
+    {
+      "commandId": "b852a4fc-2191-449f-ae5f-d27c9fbe2d7c",
+      "taskId": "24e19433-8d35-4314-8628-274d7fbffa1f",
+      "operation": "deleteTask",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "totalProjectionCount": 0
+    },
+    {
+      "commandId": "7715238a-22d5-4708-8190-b86ff261caba",
+      "taskId": "d94065fd-c8f7-4277-a6b7-0482451e80e2",
+      "operation": "deleteTask",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "totalProjectionCount": 0
+    },
+    {
+      "commandId": "cba0bc9a-3dff-4c13-a1e9-2ae64ebb15e3",
+      "taskId": "a589bce0-06a9-40f0-938b-5683f2a15aa8",
+      "operation": "deleteTask",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "totalProjectionCount": 0
+    }
+  ],
+  "archived_tasks_hidden": true,
+  "final_workspace_revision": 13,
+  "listed_tasks": 1,
+  "archived_tasks": 3,
+  "ordinary_tasks_untouched": true,
+  "habitica_effects": 0,
+  "party_writes": 0,
+  "live_cron_calls": 0,
+  "production_flags": "Owner-isolated browser profile enabled; shared party sync, backend projection, executor, spells, party and Cron remain disabled.",
+  "limitations": [
+    "Current Codex chat retains the earlier 25-tool schema. The three newly advertised execution tools need updated client discovery for direct native invocation qualification.",
+    "Background execution code is implemented and synthetically tested; live background projection is not qualified or enabled.",
+    "ChatGPT, teammate and physical-device qualification remain deferred or open."
+  ],
+  "finding": "Workspace header conflates retained and listed tasks; required correction T-65810da7-9524-45ce-b280-668d04c86441.",
+  "screenshot": "/tmp/habitica-hosted-lifecycle-history.png"
+}

@@ -321,6 +321,45 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
+### Distinguish active and archived task counts
+
+```yaml
+id: T-65810da7-9524-45ce-b280-668d04c86441
+priority: 101
+status: Ready
+parent_pending_ids: ["P-f0f5ebac-0436-4f57-8865-29015a753872"]
+processing_run_id: PR-62e1c693-294f-4e2d-8964-364d2094ada2
+root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
+related_task_id: T-d76d2a9a-1318-4e63-9bb4-73f620b108cc
+relation: blocker
+depends_on: []
+```
+
+Goal:
+- Make retained archived task counts explicit in the editor header.
+Current behavior:
+- The header counts every canonical record while selection hides archived records.
+Desired behavior:
+- Separate active and archived counts match the visible list and retained history.
+Touch:
+- CompanionTasksPanel, direct component checks and UI documentation.
+Discovery allowance:
+- Inspect the existing archive flag, list filtering and header rendering.
+Out of scope:
+- Changing archive retention, task state, projection or workspace deletion.
+Implementation constraints:
+- Keep the count local to the loaded snapshot; use the same archive predicate as task selection.
+Questions and required clarifications:
+- [Resolved - source evidence] IsArchived controls task-list visibility; task state remains separate.
+Validation:
+- Run focused component checks and build the release app; inspect hosted counts after publication.
+Acceptance:
+- The header reports unarchived and archived counts separately after an archive, and existing review controls pass.
+Documentation updates:
+- Describe task-header count semantics in the UI manifest.
+Risks:
+- The term active refers to archive visibility; completed unarchived tasks still belong to the displayed task count.
+
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml
@@ -332,13 +371,13 @@ processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
 root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 relation: subtask
-depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735", "T-29ef8846-6aa7-4255-990d-a8651e689ec2", "T-34491faa-090e-4d97-b496-1fe947770688", "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58", "T-159a415e-0d56-4028-96a4-339a5d5040f8", "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941", "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108", "T-b38dad4c-c3fa-431a-a429-50d6fed97650", "T-70901e97-738c-42c2-ae50-68dd71417a32"]
+depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735", "T-29ef8846-6aa7-4255-990d-a8651e689ec2", "T-34491faa-090e-4d97-b496-1fe947770688", "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58", "T-159a415e-0d56-4028-96a4-339a5d5040f8", "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941", "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108", "T-b38dad4c-c3fa-431a-a429-50d6fed97650", "T-70901e97-738c-42c2-ae50-68dd71417a32", "T-65810da7-9524-45ce-b280-668d04c86441"]
 ```
 
 Goal:
 - Preserve and execute real multi-user and mobile release qualification before broader availability.
 Current behavior:
-- Local synthetic checks do not prove actual two-account host enrollment, production logs, iOS Safari/PWA or Android behavior. The selected production website and backends are published with public boundary checks. Native Codex task/account reads and one explicitly approved Companion-only Todo save/read/receipt lookup pass; complete client, multi-user and device qualification remains open.
+- Local synthetic checks do not prove actual two-account host enrollment, production logs, iOS Safari/PWA or Android behavior. The selected production website and backends are published with public boundary checks. Native Codex task/account reads, Companion-only Todo lifecycle, dated Daily completion, Habit scoring and field edits pass. Hosted PWA Daily/Habit creation and Todo/Daily/Habit archival retain receipts readable through Codex. Direct native invocation of the three newly advertised execution tools awaits refreshed client discovery; background projection and complete client, multi-user and device qualification remain open.
 Desired behavior:
 - Owner-first checks qualify ChatGPT and Codex desktop independently against the same selected production backend, including OAuth callbacks/refresh, MCP discovery, scoped tools, original receipts and plugin/skill activation. The consenting-teammate stage verifies separate identities and revocation, alongside mobile and production-log evidence.
 Touch:
@@ -350,7 +389,7 @@ Out of scope:
 Implementation constraints:
 - All implemented tools require isolation/revocation qualification; live Cron remains off. Real log inspection verifies absence of secrets with minimum redacted evidence. Missing infrastructure remains a blocker.
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. The owner reports initial OAuth completion in both clients and ChatGPT reads, followed by immediate repeated reconnection. Native Codex repeated reads and an approved Companion-only save pass. ChatGPT qualification is explicitly deferred by owner selection. Active work uses Codex-only own-account testing; complete token lifecycle and revocation checks, packaged-skill qualification, a second consenting owner and iOS/Android device qualification remain broader release requirements. Preparation cannot satisfy real release acceptance.
+- [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. The owner reports initial OAuth completion in both clients and ChatGPT reads, followed by immediate repeated reconnection. Native Codex repeated reads, approved Companion-only lifecycle commands and retained receipt reads pass. ChatGPT qualification is explicitly deferred by owner selection. Active work uses Codex-only own-account testing; complete token lifecycle and revocation checks, packaged-skill qualification, a second consenting owner and iOS/Android device qualification remain broader release requirements. Preparation cannot satisfy real release acceptance.
 Validation:
 - Verify local environment/resource separation and prepare exact owner/teammate/device checks. Maintain independent ChatGPT and Codex desktop results in the plugin client matrix; direct MCP access, packaged skills and optional CLI diagnostics remain distinct checks. Execute real checks only inside separately authorized scope.
 Acceptance:

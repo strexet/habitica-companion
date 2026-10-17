@@ -24,10 +24,12 @@ ChatGPT and Codex desktop are required owner-pilot clients. Direct MCP qualifica
 | OAuth discovery, PKCE, exact issuer/resource and selected scopes | Owner reports initial completion; detailed protocol checks unrun | Authenticated native calls pass; detailed PKCE/issuer/scope inspection unrun |
 | Client-specific callback, consent flow, token refresh and reconnect | Failed: owner reports reconnect on the next request within one minute; repair retest pending | Owner reports callback completion; immediate and 617-second native request reuse pass with stable identity; hidden refresh exchange unobserved |
 | Read-only access, denied write scope and cross-profile isolation | Two reads owner-reported; negatives and isolation unrun | All six task/account read tools pass; scoped-write denial and isolation unrun |
-| Reviewed canonical task command and original receipt recovery after interruption | Unrun | Approved Companion-only Todo creation, readback, search and original receipt lookup pass; interruption unrun |
+| Reviewed canonical task command and original receipt recovery after interruption | Unrun | Todo lifecycle, dated Daily completion, Habit scores/edits and original receipt reads pass; Daily/Habit creation and archival pass through hosted PWA; interruption unrun |
 | Grant revocation denies new access and unaccepted previews | Unrun | Unrun |
 | Private plugin installation and all three bundled skills, explicit and natural invocation | Unrun | Unrun |
 | Live Cron denied; unselected game-effect lanes disabled | Unrun | Cron/spell context refuses access and live effect flags are off; execution-denial checks unrun |
+
+The deployed lifecycle extension advertises three additional execution tools. The current Codex chat retains the earlier 25-tool schema; direct native execution of `create_daily`, `create_habit` and `delete_task` awaits refreshed discovery. [Hosted lifecycle evidence](../skill-tree/history/validation/native-lifecycle-production-check.json) distinguishes browser acceptance from native receipt checks.
 
 ChatGPT observations are owner-reported. [Codex native pilot evidence](../skill-tree/history/validation/codex-native-owner-pilot.json) records independently executed tool calls and one explicitly approved Companion-only test save. Client versions, granted scopes and browser-side protocol exchanges are not independently captured. The custom MCP connection does not establish bundled-skill installation.
 

@@ -62,6 +62,7 @@ public sealed class CompanionTasksPanelTests : BunitContext
         Assert.True(Assert.Single(f.Controller.Snapshot.Document.Tasks).IsArchived);
         Assert.Empty(cut.FindAll($"[data-testid='canonical-task-{task.Id:D}']"));
         Assert.Equal(2, f.Controller.Snapshot.Commands.Count);
+        Assert.Contains("0 listed tasks · 1 archived", cut.Markup);
         Assert.Equal("CreateTodo", cut.Find("[data-testid='canonical-operation']").GetAttribute("value"));
     }
 
