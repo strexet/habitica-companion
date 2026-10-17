@@ -72,6 +72,32 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### E11 Recurrence authoring, lifecycle and mobile review after calendar foundations
+
+```yaml
+id: P-d6fb32f0-7125-4544-898a-c1028ca91a2a
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: T-1396a75f-ba8b-446d-812b-a4b24873cc7a
+related_task_id: T-1396a75f-ba8b-446d-812b-a4b24873cc7a
+relation: followup
+depends_on: []
+```
+
+Description:
+- Complete Daily recurrence authoring and occurrence lifecycle, skip/pause/restart controls, retained completion/skip history and Habit event review. Preserve the distinction between civil schedules and freshly verified Habitica due-state. Calendar expansion alone does not implement the workflow.
+
+Expected behavior:
+- Manual and MCP commands share canonical validation and receipts; recurring work remains consistent through offline reconnect, timezone travel and delayed projection. Mobile controls and calendar integration follow the E01 navigation/usability gate. Streaks appear only when history supports the result; unknown rewards remain fenced.
+
+Source:
+- Remaining E11 requirements from P-f2bb7e37-6700-58ac-aa56-b537d193c777 after researched calendar-kernel decomposition. Original requirements include recurring patterns, skip/pause/restart, per-occurrence history, Habit up/down, day-start/Cron reconciliation, safe type conversion policy, delayed sync and optional habit dashboard.
+
+Priority rationale:
+- Preserve the original owner-selected E11 epic priority.
+
 ### E01 Competitive UX/IA study and mobile-first product contract
 
 ```yaml
@@ -197,38 +223,6 @@ Out of scope:
 
 Expected behavior:
 - A casual user creates a Todo with one field; a power user creates a project with tasks/deadlines/labels and reviews progress from a phone.
-
-### E11 Habits and Dailies as first-class recurring personal workflows
-
-```yaml
-id: P-f2bb7e37-6700-58ac-aa56-b537d193c777
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Current context:
-- `TaskSnapshot` imports Habitica history and due-state; `TasksPage.razor` supports Habit up/down and Daily completion. The canonical workspace defines recurrence rules, occurrence identity, completion records and Habit score history. Full recurrence authoring, skip/pause/restart controls, recurrence-history views and calendar integration require research and implementation.
-
-Source:
-- Companion-first epic `E11` (`P-f2bb7e37-6700-58ac-aa56-b537d193c777`); requirements are intake awaiting current-source research and decomposition.
-
-Description:
-- Make habitual and scheduled work ergonomic in Companion while respecting distinct Habitica Habit/Daily semantics and Cron day boundaries.
-
-Requirements:
-- Recurrence patterns, per-occurrence completion history, skip/pause/restart, streaks where determinable, habit up/down, Daily schedule with Habitica due-state reconciliation, calendar/Today integration, optional dedicated habit dashboard.
-
-Edge cases:
-- Day-start offset, missed Cron, timezone travel, duplicate reward count, skipped occurrence, delayed sync and task type conversion.
-
-Expected behavior:
-- Recurring work remains consistent across date changes and offline reconnect; reward projections never assume scores confirmed before Habitica responds.
 
 ### E12 Powerful search, saved views, reviews and task hygiene
 

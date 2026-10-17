@@ -54,13 +54,15 @@
       "T-65810da7-9524-45ce-b280-668d04c86441",
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
       "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
-      "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee"
+      "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
+      "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
       "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89": "O-2b79fcef-7244-48d6-bad7-16c7b8937eee",
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
       "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735": "O-aa7c4f5f-c42d-48df-806e-bff08b0e1c17",
+      "T-1396a75f-ba8b-446d-812b-a4b24873cc7a": "O-304652a4-7302-40d8-a319-66d8a6eb3ba1",
       "T-159a415e-0d56-4028-96a4-339a5d5040f8": "O-bd86cfe5-e6df-40d4-8d64-25ed8ea68fcb",
       "T-16a38176-f2fe-5f7d-a809-546f17357b49": "O-7d50e0cb-ee45-4fe5-bd54-6b38b3b22e6e",
       "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec": "O-1cbc3cfc-9cf0-4922-8317-4c16090d9aa0",
@@ -113,7 +115,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "d0967df7e21b82f93382c765662183c8dca0fa6c987b3ff4bc520ba9b07e4cec",
+    "cycle_signature": "5db4563a73a0d0bd3d60f07a8a17e06f970abac4e670bb73b3e21f6013e8aa6e",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -123,11 +125,12 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Research canonical recurrence and planning foundations independently of the retained E01 usability gate. No live operations.",
+    "next_action": "Research remaining original E11 authoring/lifecycle work and other approved Pending feature areas. Preserve the E01 detailed-UI gate and live-release gate.",
     "partial_work": [
-      "Lifecycle reliability and both pacing tasks are complete and committed.",
-      "E01 has dated public workflow research and a checked local prototype; human/competitor usability evidence remains unqualified.",
-      "Remaining authorized feature areas retain original requirements in Pending; detailed UI promotion remains gated."
+      "Four local implementation units are complete in the expanded run: lifecycle reliability, foreground pacing, durable server pacing and recurrence calendar.",
+      "Navigation research has a checked synthetic prototype, with human/competitor usability still unqualified.",
+      "Remaining original E11 requirements are retained in P-d6fb32f0-7125-4544-898a-c1028ca91a2a; no feature completion is inferred from the calendar kernel.",
+      "No live tests, deployments or real credentials are permitted."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -170,7 +173,8 @@
       "P-2544a5ca-8301-4a81-b027-08c485b1de48",
       "P-e946d297-2c7c-4347-9bac-7c1cd92488ee",
       "P-a552907a-6fd8-42b4-842c-96ab7159cd98",
-      "P-f0f5ebac-0436-4f57-8865-29015a753872"
+      "P-f0f5ebac-0436-4f57-8865-29015a753872",
+      "P-d6fb32f0-7125-4544-898a-c1028ca91a2a"
     ],
     "phase": "processing",
     "processing_results": [
@@ -907,6 +911,25 @@
           "P-4f98b2b3-af24-5424-b2f9-066913f7133d"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
+        ],
+        "dispositions": {
+          "P-f2bb7e37-6700-58ac-aa56-b537d193c777": {
+            "reason": "Current source supports an independent deterministic calendar kernel. Remaining authoring, lifecycle, projection and UI requirements are retained as explicit follow-up intake rather than accepted from model metadata.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-9e904622-a904-44a9-ae6a-c3c61220382c",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-f2bb7e37-6700-58ac-aa56-b537d193c777"
+        ],
+        "task_keys": {
+          "recurrence-calendar": "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
+        }
       }
     ],
     "required_ids": [
@@ -965,9 +988,10 @@
       "T-65810da7-9524-45ce-b280-668d04c86441",
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
       "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
-      "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee"
+      "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
+      "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
     ],
-    "root_task_id": "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
+    "root_task_id": "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1007,6 +1031,14 @@
           "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
           "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee"
         ]
+      },
+      {
+        "original_pending_id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
+        "owner_direction": "Expand to local tasks and Pending work",
+        "promoted_local_roots": [
+          "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
+        ],
+        "remaining_pending_id": "P-d6fb32f0-7125-4544-898a-c1028ca91a2a"
       }
     ],
     "snapshot": [
@@ -1023,18 +1055,33 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
       "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
-      "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee"
+      "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
+      "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "aae45e7f219e9ba4a52010d83bfeb773e4c76ff622f41b87ed44bd0e33c9632d",
+  "source_hash": "66a963763c75ebd6225863d050dcada9cc0ca5e9de9fc11f410d4acb38e61ff1",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-4f98b2b3-af24-5424-b2f9-066913f7133d",
+      "id": "P-d6fb32f0-7125-4544-898a-c1028ca91a2a",
       "line": 75,
+      "parent_pending_ids": [],
+      "priority": 100,
+      "processing_run_id": null,
+      "queue": "Pending Queue",
+      "related_task_id": "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
+      "relation": "followup",
+      "root_task_id": "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
+      "status": "Pending",
+      "title": "E11 Recurrence authoring, lifecycle and mobile review after calendar foundations"
+    },
+    {
+      "depends_on": [],
+      "id": "P-4f98b2b3-af24-5424-b2f9-066913f7133d",
+      "line": 101,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1048,7 +1095,7 @@
     {
       "depends_on": [],
       "id": "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
-      "line": 111,
+      "line": 137,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1062,7 +1109,7 @@
     {
       "depends_on": [],
       "id": "P-c8632138-39c6-5797-8e03-a3414824ee96",
-      "line": 140,
+      "line": 166,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1076,7 +1123,7 @@
     {
       "depends_on": [],
       "id": "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
-      "line": 172,
+      "line": 198,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1089,22 +1136,8 @@
     },
     {
       "depends_on": [],
-      "id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
-      "line": 201,
-      "parent_pending_ids": [],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E11 Habits and Dailies as first-class recurring personal workflows"
-    },
-    {
-      "depends_on": [],
       "id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
-      "line": 233,
+      "line": 227,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1118,7 +1151,7 @@
     {
       "depends_on": [],
       "id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
-      "line": 262,
+      "line": 256,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1144,7 +1177,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 298,
+      "line": 292,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1168,7 +1201,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 339,
+      "line": 333,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1184,7 +1217,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 494,
+      "line": 488,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1198,7 +1231,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 531,
+      "line": 525,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1212,7 +1245,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 568,
+      "line": 562,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1226,7 +1259,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 701,
+      "line": 695,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1240,7 +1273,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 739,
+      "line": 733,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1254,7 +1287,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 773,
+      "line": 767,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1268,7 +1301,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 808,
+      "line": 802,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1282,7 +1315,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 842,
+      "line": 836,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1296,7 +1329,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 880,
+      "line": 874,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1310,7 +1343,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 907,
+      "line": 901,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1324,7 +1357,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 929,
+      "line": 923,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1338,7 +1371,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 956,
+      "line": 950,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

@@ -1,0 +1,58 @@
+{
+  "task_id": "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
+  "date": "2026-10-17",
+  "checks": [
+    {
+      "name": "Full Domain suite with neutral fixture",
+      "passed": 28,
+      "failed": 0
+    },
+    {
+      "name": "Full parallel Workspace suite, including direct TypeScript and actual workerd calendar cases",
+      "passed": 150,
+      "failed": 0
+    },
+    {
+      "name": "Three pinned Worker builds",
+      "result": "pass"
+    },
+    {
+      "name": "Release app build",
+      "result": "pass"
+    },
+    {
+      "name": "Changed documentation prose and diff whitespace",
+      "result": "pass"
+    }
+  ],
+  "fixture": {
+    "expansion_cases": 22,
+    "utc_local_date_cases": 10,
+    "runtime": "C# desktop Domain, direct TypeScript and actual pinned Miniflare/workerd",
+    "coverage": [
+      "daily/weekly/monthly intervals",
+      "Monday anchors and start bounds",
+      "short-month date skipping",
+      "leap and maximum-year boundaries",
+      "366-day inclusive range",
+      "DST jump and repeated hour",
+      "quarter-hour and negative offsets",
+      "unknown zones, path aliases and embedded controls"
+    ]
+  },
+  "limitations": [
+    "No actual Blazor browser integration or mobile-device qualification; pinned SDK timezone support defaults are inspected separately.",
+    "Calendar expansion is pure; recurrence authoring, lifecycle controls and application views remain separate work.",
+    "Civil dates provide no Habitica due-state, Cron or reward confirmation."
+  ],
+  "source_fingerprints": {
+    "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs": "5aaa999be0e407407b3fe063d6bbf43407db7d747ac60399cacdfb8ef3a5bfe3",
+    "workers/shared/recurrence-calendar.ts": "a3aee4de2ba99d724e2ed00b41ba7c353fc1ef50d7042eb2b5ac6bf3b8a6a380",
+    "tests/Habitica.Domain.Tests/Workspace/RecurrenceCalendarTests.cs": "c1bdf78a84adfbcbc76b014264b9664c8d71c434d700a9ed76bb12584e736d57",
+    "workers/companion-workspace/test/recurrence-calendar.test.mjs": "4448277dad095a160ff23f3919b1c48e4e3b7529109238af6f0fa1522f2357b8",
+    "tests/fixtures/workspace/recurrence-calendar-v1.json": "6dc7303b00edf1ccbe6d5a56a718b752ba16cbffed332c63d52a6985164ecafa",
+    "skill-tree/documents/technical.md": "ef0d22a706ab77043f103a60f4c51b4d64c7e03723ffaa84db10d393b1ffd072",
+    "skill-tree/documents/testing.md": "3cb05898ff63f02cee27fb38878bb8d18725c0989478e523bf27dd26fff24a98",
+    "skill-tree/documents/companion-workspace-contract.md": "904dd69bcd4693983db48e562ac7f6d0e3fd3765cbe0bb62cd9c288de1df9322"
+  }
+}

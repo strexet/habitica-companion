@@ -149,3 +149,7 @@ Owner-provided Habitica test credentials may persist only in the ignored root `.
 ## Adaptive admission boundary
 
 Local adaptive admission uses the existing foreground and background authorization boundaries. The feature flag defaults to false; local synthetic fixtures enable the flag explicitly. Shared and profile estimates use conservative header reconciliation, finite reservations and positive failure jitter. Admission rejection does not authorize action replay, clear unknown outcomes or remove credential repair. Own-profile ceilings preserve capacity for other profiles when a profile repeatedly receives admission denials. Independent browser devices remain outside server coordination.
+
+## Local recurrence calendar contract
+
+Canonical recurrence uses civil dates in the selected UTC or supported IANA region-style timezone. Daily intervals anchor to the start date; weekly intervals use Monday-anchored periods; monthly rules skip missing dates. Expansion has an inclusive maximum of 366 days and produces no persisted occurrences, task mutations or gameplay effects. Unknown timezone support fails explicitly. A calendar occurrence never proves Habitica eligibility, current game day or confirmed scoring. Remaining authoring and lifecycle controls require shared canonical command contracts.
