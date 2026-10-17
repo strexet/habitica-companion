@@ -1,0 +1,66 @@
+{
+  "task_id": "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68",
+  "date": "2026-10-18",
+  "scope": "Local application and synthetic MCP/Workers; no live tests or deployment",
+  "checks": [
+    {
+      "name": "App release build and three pinned Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET solution",
+      "passed": 591,
+      "failed": 0,
+      "suites": {
+        "api": 54,
+        "application": 99,
+        "domain": 28,
+        "rules": 43,
+        "storage": 21,
+        "webapp": 346
+      }
+    },
+    {
+      "name": "Full Auth suite",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace suite",
+      "passed": 174,
+      "failed": 0
+    },
+    {
+      "name": "Packaged task skill, changed prose and whitespace validation",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Thirty neutral query/page cases agree across C#, TypeScript and the actual local Workspace Worker, preserving document order and all-state defaults.",
+    "Combined text/notes and exact metadata filters enforce inclusive civil dates, direct-category precedence, absent-date exclusion and explicit mapping-state limits.",
+    "Unicode cases cover fullwidth normalization, decomposed accents, dotted-character expansion and Greek final sigma without accent stripping.",
+    "Bounded continuation requires the preceding document revision; changed revisions reject explicitly. Both pure services preserve the input document.",
+    "Synthetic MCP advertises read-only combined filters under tasks:read. Missing grants are denied at MCP and the private service; another profile sees no matching task.",
+    "Queries create no commands/preparations and issue zero upstream writes."
+  ],
+  "limitations": [
+    "Saved views, review/staleness policies, reminders, next-action queries and mobile filter UI remain Pending.",
+    "Linked mapping remains distinct from original command effect confirmation.",
+    "Actual host discovery, device qualification and live behavior remain unrun."
+  ],
+  "source_fingerprints": {
+    "plugin/skills/habitica-task-management/SKILL.md": "7fccc28c6a4998a9220893e5717fb433518aea4a11503be4ce20e2badd4501fd",
+    "skill-tree/documents/companion-workspace-contract.md": "902dd6eafe8507c4348dba2b6b9efd4300e23d8a8d8a08c99f8439eb31c01325",
+    "skill-tree/documents/features.md": "8bfc1db85c76ee61d19707ca3e902370aed8237f5095f06a32ab721bb7b38a60",
+    "skill-tree/documents/technical.md": "a785d1b9fb3f89f1c63b0dfbd85d4ac6c7545a4b21f55b61d00d81a0efa755d7",
+    "skill-tree/documents/testing.md": "997b2ad897b27a870959eaae2716e7ea44d9653d7af30996242c4bc95f6df3ef",
+    "workers/chatgpt-mcp/src/task-tools.ts": "788c90a97f3127b91e61582bb552202bc4be5095f9854dc62e37d9f21f4d48c5",
+    "workers/companion-workspace/src/task-api.ts": "37a2bbaa89920b6f34c1fc39f7711baa6d018bbb14b8bc41286b27552a004293",
+    "workers/shared/task-tools.ts": "131c310e0f1ac8187481247b2b89a5438cdb97c6e14ef72e7e982559b6c03ab8",
+    "src/Habitica.Application/Workspace/WorkspaceTaskQuery.cs": "3e003ad7a28e6458ac76fdf74e55f3cfaf0e11414402de4edd1bf92f24cf4281",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceTaskQueryTests.cs": "c2e95e9aa065c4fd31f9ab303d4bf264eff216e80ca574c47cbf19c1f6ae9013",
+    "tests/fixtures/workspace/task-query-v1.json": "193e27286dc773155a84bccd79f8e22e1939dc9774cee60f8b451a223915c0e2",
+    "workers/companion-workspace/test/task-query.test.mjs": "b023a52ecdb9cfe7db8bdc42de924bd5f7e11ee1cd3ed98b67bc148f5e68552e",
+    "workers/shared/task-query.ts": "0511772396843f72ee5977f7b37c8c6848c0a17fd82d1b25d33f3ecbc6eafc9a"
+  }
+}

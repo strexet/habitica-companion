@@ -72,6 +72,32 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### E12 Saved views, review policies and mobile task hygiene
+
+```yaml
+id: P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Persist saved smart lists and provide gentle stale/unreviewed and unblocked-next-action review flows, per-type thresholds and configurable reminders. Integrate the canonical combined query contract into mobile filters.
+
+Expected behavior:
+- Users find stalled work and review backlogs in a few mobile gestures without mandatory status management or punitive wording.
+
+Current context:
+- Canonical text/notes and metadata filters are being implemented separately. Saved views, review policy, next-action eligibility, reminders and mobile integration remain unimplemented.
+
+Source:
+- Original owner-authorized E12 intake P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d; remaining intent after query foundation decomposition.
+
 ### E11 Mobile recurrence controls, retained history and Habit review
 
 ```yaml
@@ -223,35 +249,6 @@ Out of scope:
 
 Expected behavior:
 - A casual user creates a Todo with one field; a power user creates a project with tasks/deadlines/labels and reviews progress from a phone.
-
-### E12 Powerful search, saved views, reviews and task hygiene
-
-```yaml
-id: P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Current context:
-- `TaskListViewModelFactory` already filters cached task text/notes, type and completion state and supports simple sorting. Cross-project queries, saved smart views, review/staleness state and reminders remain outstanding.
-
-Source:
-- Companion-first epic `E12` (`P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d`); requirements are intake awaiting current-source research and decomposition.
-
-Description:
-- Add cross-project filters, saved smart lists, stale/unreviewed tasks, unblocked next actions, and a gentle review flow.
-
-Requirements:
-- Search text, label, project, category, state, planned date, deadline, priority, game sync state; per-type staleness thresholds and exclude waiting/someday/recurring as appropriate; configurable reminders without punitive wording.
-
-Expected behavior:
-- Users can find stalled or forgotten tasks without mandatory status management; backlog review works in a few mobile gestures.
 
 ### E13 MCP and Skills for Companion-native project/task/goal operations
 

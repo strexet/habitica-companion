@@ -4,6 +4,7 @@ import { WorkspaceError, workspaceTokenHash, uuid } from '../../shared/workspace
 import type { WorkspaceRow } from './executor.ts';
 import type { CommandEntry } from './commands.ts';
 import { accept } from './commands.ts';
+import { queryTasks } from '../../shared/task-query.ts';
 interface Preparation {grant_epoch:string;access_epoch:string;request_id:string;command_id:string;input_hash:string;command_json:string;correlation_id:string;expires_at_utc:string}
 const bytes=(value:string)=>new TextEncoder().encode(value).length;
 function stable(value:unknown):string {if(value===null||typeof value!=='object')return JSON.stringify(value);if(Array.isArray(value))return '['+value.map(stable).join(',')+']';return '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+stable((value as Record<string,unknown>)[k])).join(',')+'}';}
@@ -13,10 +14,7 @@ export function mutationResult(entry:CommandEntry,document:{tasks:{id:string;tex
 }
 export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,args:unknown,submit:(command:unknown)=>Promise<Response>):Promise<Record<string,unknown>>{
  const input=taskToolInput(name,args);const document=JSON.parse(row.document_json);
- if(name==='list_companion_tasks'){
-  const query=(input.query as string??'').normalize('NFKC').toLocaleLowerCase('en-US');const matched=document.tasks.filter((t:{isArchived:boolean;kind:string;text:string})=>!t.isArchived&&(!input.kind||t.kind===input.kind)&&t.text.normalize('NFKC').toLocaleLowerCase('en-US').includes(query));
-  const limit=Number(input.limit??50);return {provenance:'companion-canonical',workspaceId:row.workspace_id,revision:document.revision,tasks:matched.slice(0,limit),matchedCount:matched.length,truncated:matched.length>limit};
- }
+ if(name==='list_companion_tasks')return queryTasks(document,input);
  if(name==='get_companion_task'){const task=document.tasks.find((t:{id:string;isArchived:boolean})=>t.id===input.taskId&&!t.isArchived);return {provenance:'companion-canonical',workspaceId:row.workspace_id,revision:document.revision,task:task??null};}
  async function receipt(commandId:string){
   const found=await env.WORKSPACE_DB.prepare('SELECT c.entry_json,p.correlation_id FROM workspace_commands c JOIN workspaces w ON w.profile_id=c.profile_id LEFT JOIN workspace_preparations p ON p.profile_id=c.profile_id AND p.command_id=c.command_id WHERE c.profile_id=? AND c.command_id=? AND w.access_epoch=? AND w.active=1').bind(row.profile_id,commandId,row.access_epoch).first<{entry_json:string;correlation_id:string|null}>();

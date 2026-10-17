@@ -161,3 +161,7 @@ Local application commands and MCP share reviewed createDaily/updateTask authori
 ## Companion-only occurrence lifecycle
 
 Local skip, pause and resume commands require an unlinked Companion Daily/Habit and explicit reviewed identity. Skip applies only to an active Daily with a supported schedule and a pending occurrence date. Pause blocks new canonical completion/scoring; resume preserves the schedule without automatic backfill. Restart uses a separately reviewed schedule replacement and retains past history. Linked, pending and uncertain mappings are refused; no Habitica penalty, schedule, reward or party state is changed. Lifecycle receipts report accepted canonical records separately from zero game effects.
+
+## Combined canonical query direction
+
+The standing local contract direction selects AND filters over existing canonical task fields and bounded pages. Direct task category overrides inherited project category; an archived metadata assignment remains searchable until changed. Civil-date bounds are inclusive and require a stored date. Search includes titles and notes using NFKC/invariant lowercase with explicit U+0130 and final-sigma folding. Mapping state remains distinct from original command effect confirmation. Preserve document order, exclude archived tasks and include other states by default. Continuation requires the preceding revision and unchanged filters; changed revisions require restarting. Local implementation and synthetic checks supply no live activation or mobile UX acceptance.

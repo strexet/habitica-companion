@@ -57,7 +57,8 @@
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
       "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
       "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
-      "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
+      "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
+      "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -115,11 +116,12 @@
       "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00": "O-442f25f5-8685-4fd0-83ce-fd77446a7c77",
       "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17": "O-a050001b-edd5-41b3-ba4e-3a9005c3c5e4",
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b",
+      "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68": "O-d1657c15-4f9e-4ae2-a8f1-9197c0c47839",
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "47e0b9a4b9776e10abb0b2861ab0939193e6561a3cec8a4f1a79b2b658f3a8c1",
+    "cycle_signature": "88ec3bac6e70b388d595f69e4956d0ba94676b9e6bd1e6c1b1139dc0c55aaac9",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -129,10 +131,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Research and promote the next independent local task from the authorized Pending areas.",
+    "next_action": "Research E01 navigation contract readiness and continue the authorized local queue.",
     "partial_work": [
-      "Occurrence lifecycle passed local acceptance and final validation.",
-      "Continue research of original authorized Pending areas; real release qualification remains blocked."
+      "Combined query acceptance passed, including full local builds and regression suites.",
+      "Reassess E01 against original documented-workflow and standing local-contract scope before promoting dependent UI."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -178,7 +180,8 @@
       "P-f0f5ebac-0436-4f57-8865-29015a753872",
       "P-d6fb32f0-7125-4544-898a-c1028ca91a2a",
       "P-8a968c91-80a2-46be-9f32-2fb514d3bc22",
-      "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79"
+      "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79",
+      "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa"
     ],
     "phase": "processing",
     "processing_results": [
@@ -972,6 +975,23 @@
         "task_keys": {
           "occurrence-lifecycle": "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
         }
+      },
+      {
+        "created_ids": [
+          "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68"
+        ],
+        "dispositions": {
+          "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d": {
+            "reason": "Existing fields and own-workspace read boundaries support a portable filter service without UI or upstream changes. Saved views and review policy remain a separate intake.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-7acc8cf4-632f-4e58-a6e1-eb85e44a025c",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -1033,9 +1053,10 @@
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
       "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
       "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
-      "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
+      "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
+      "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68"
     ],
-    "root_task_id": "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
+    "root_task_id": "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1103,6 +1124,15 @@
         "reason": "Further decomposition of the originally authorized E11 local feature area.",
         "remaining_pending_id": "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79",
         "researched_remainder": "P-8a968c91-80a2-46be-9f32-2fb514d3bc22"
+      },
+      {
+        "original_pending_id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
+        "owner_direction": "Expand to local tasks and Pending work",
+        "promoted_local_roots": [
+          "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68"
+        ],
+        "reason": "Decompose the originally authorized E12 local feature area; preserve residual UI and review scope.",
+        "remaining_pending_id": "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa"
       }
     ],
     "snapshot": [
@@ -1122,18 +1152,33 @@
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
       "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
       "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
-      "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
+      "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
+      "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "c0964f29eb6166aa043d380af7dc99fda9de434419fe316bfe381a1cc50018d4",
+  "source_hash": "9d8c843ffa5bb4b35457aa017636f41df7b5030fa3ba4c45c31d8c5d709df085",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79",
+      "id": "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa",
       "line": 75,
+      "parent_pending_ids": [],
+      "priority": 100,
+      "processing_run_id": null,
+      "queue": "Pending Queue",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": null,
+      "status": "Pending",
+      "title": "E12 Saved views, review policies and mobile task hygiene"
+    },
+    {
+      "depends_on": [],
+      "id": "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79",
+      "line": 101,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1147,7 +1192,7 @@
     {
       "depends_on": [],
       "id": "P-4f98b2b3-af24-5424-b2f9-066913f7133d",
-      "line": 101,
+      "line": 127,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1161,7 +1206,7 @@
     {
       "depends_on": [],
       "id": "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
-      "line": 137,
+      "line": 163,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1175,7 +1220,7 @@
     {
       "depends_on": [],
       "id": "P-c8632138-39c6-5797-8e03-a3414824ee96",
-      "line": 166,
+      "line": 192,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1189,7 +1234,7 @@
     {
       "depends_on": [],
       "id": "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
-      "line": 198,
+      "line": 224,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1202,22 +1247,8 @@
     },
     {
       "depends_on": [],
-      "id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
-      "line": 227,
-      "parent_pending_ids": [],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E12 Powerful search, saved views, reviews and task hygiene"
-    },
-    {
-      "depends_on": [],
       "id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
-      "line": 256,
+      "line": 253,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1243,7 +1274,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 292,
+      "line": 289,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1267,7 +1298,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 333,
+      "line": 330,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1283,7 +1314,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 488,
+      "line": 485,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1297,7 +1328,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 525,
+      "line": 522,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1311,7 +1342,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 562,
+      "line": 559,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1325,7 +1356,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 695,
+      "line": 692,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1339,7 +1370,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 733,
+      "line": 730,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1353,7 +1384,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 767,
+      "line": 764,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1367,7 +1398,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 802,
+      "line": 799,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1381,7 +1412,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 836,
+      "line": 833,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1395,7 +1426,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 874,
+      "line": 871,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1409,7 +1440,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 901,
+      "line": 898,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1423,7 +1454,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 923,
+      "line": 920,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1437,7 +1468,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 950,
+      "line": 947,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
