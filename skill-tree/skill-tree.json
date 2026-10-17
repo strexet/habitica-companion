@@ -247,6 +247,11 @@
     },
     {
       "owner": "skill-tree",
+      "path": "skill-tree/documents/navigation-study.md",
+      "role": "canonical"
+    },
+    {
+      "owner": "skill-tree",
       "path": "skill-tree/documents/project.md",
       "role": "canonical"
     },
@@ -308,17 +313,18 @@
   "source_digests": {
     "skill-tree/documents/ai-app-testing.md": "3f96e891260bff1cb34c275ceaf26a965fac4db4cbf623a35e9e161800674154",
     "skill-tree/documents/build-and-release.md": "e528e54e92eb4045b2b1060914c1cfa02015b15aab71e934f91de9ab17c1ca72",
-    "skill-tree/documents/companion-first-mcp-research.md": "0f75a669f02689f539ed29e5f44bae5af68a82a81f18e2e040fde202547bb9b3",
+    "skill-tree/documents/companion-first-mcp-research.md": "6d243cf55a8420052404d7ebf4c7186f76db7f6256e95b47c3918344e4895188",
     "skill-tree/documents/companion-workspace-contract.md": "1fdeef0294ff0e75c02ff49e7e02df72a682cebcd599dbe3dd44ff87525a56bc",
     "skill-tree/documents/cron.md": "918ee03ea0ef68b20de7311b9b5131dda1f5be6e2d87ec9fc35b6e20f6e142f2",
     "skill-tree/documents/dependencies.md": "ef0a360701ccfcc93ec7f725f1b7a90c4dd2d10567ddd26e58d264977cc0d6e1",
     "skill-tree/documents/deploy-cloudflare-pages.md": "c0f03285237e532b9f90029267186e10f8c8c9b3f0667e93b5529181bb7ca3db",
     "skill-tree/documents/documents-snapshot.md": "6f79e4202c9cfc84df57641150d8a2fce2ab5d9670f6efe4d05eec00f89d73c9",
     "skill-tree/documents/features.md": "ca67001a6b8e5afa7128410f41221257562da00319a35240d981826152d6ca53",
-    "skill-tree/documents/future.md": "7eb8205f7f1f57a6232f3cf9e216dc6aeeaee1a7788bef64b64b9d428378b3cf",
+    "skill-tree/documents/future.md": "aae45e7f219e9ba4a52010d83bfeb773e4c76ff622f41b87ed44bd0e33c9632d",
     "skill-tree/documents/habitica-api.md": "9d9c801e1e32b9499c4f76a930e2ac3b9d39e2d584aead8ccd2227ba5d147d97",
     "skill-tree/documents/habitica-deeplinks.md": "37809f11086587ab474caeab319939e444de7701e9ce19301b8e00ebc1bf9fc7",
     "skill-tree/documents/habitica-tool-references.md": "365f6d395422ba7444fdfe3c61304ef0f86f5069be76066ba67f6378d1c0883b",
+    "skill-tree/documents/navigation-study.md": "221a0031731b432c45072c97708ca3eeabe7339e0e0ddc632a7a7c70d70d0f01",
     "skill-tree/documents/project.md": "86fa8e18c37be9336af912c8c5c49020250f412b23b6f7f4c6dd4754518e62ba",
     "skill-tree/documents/repository-map.md": "ceb96bc420dfd52248892e032719177f459460911761c1a7698829ed5321e3fe",
     "skill-tree/documents/rules.md": "7847c47cd88c7fd89ecb3dd61e5ffda7fa8440daa75aaa8c52295a71310fdc1a",

@@ -967,3 +967,7 @@ PWA UI / ChatGPT MCP
 **Operational invariant:** `Companion completion != Habitica award confirmed` until the upstream operation is verified. Permanent errors and unknown non-idempotent outcomes remain persisted and visible; never silently discard failed commands or unknown outcomes. Background completion is available only with a correctly authorized optional hosted executor.
 
 **Next planning action:** Conduct E01, define critical owner decisions for E02/E03/E04/E05/E07, then use `skill-tree-process-future-pending` to split one high-level epic at a time. Only implementation-ready subtasks go into `Prioritized Next Changes`; preserve original OAuth task order but apply revised gates.
+
+## Navigation prototype evidence boundary
+
+The local research prototype resides in `skill-tree/prototypes/mobile-navigation.html`; `navigation-review.html` supplies phone/tablet/desktop frame widths, enlarged text and a short-screen approximation. All records are synthetic and in memory. The prototype has no network or credential integration and supplies no application acceptance evidence. Documented competitor workflows remain distinct from hands-on competitor testing, local prototype checks and owner usability feedback. Detailed production UI promotion still requires the E01 navigation gate in future.md.

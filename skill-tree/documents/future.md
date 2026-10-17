@@ -94,7 +94,7 @@ Description:
 
 Current context:
 - Existing Tasks page is a Habitica task-type list, not a modern daily planner or project workspace.
-- `companion-first-mcp-research.md` contains a documented-capability comparison and proposed design patterns. The reference explicitly excludes hands-on usability findings; screenshot/flow evidence, tested journeys and approved navigation prototypes remain outstanding.
+- `companion-first-mcp-research.md` contains a documented-capability comparison and proposed design patterns. The reference explicitly excludes hands-on competitor usability findings. navigation-study.md records dated public workflows and a locally checked synthetic navigation prototype. Authenticated competitor-app/mobile usability and owner navigation feedback remain outstanding; detailed UI promotion retains the E01 gate.
 
 Requirements:
 - Real screenshots/documented workflows; task capture, planning, project organization, calendar, completed history, recurrence, error/pending states; mobile-first and accessibility criteria; explicit no-corporate-PM scope.
@@ -104,6 +104,9 @@ Suggested implementation:
 
 Expected behavior:
 - Written benchmark with dated links, documented observations vs hypotheses, tested journeys, and approved navigation prototype before detailed UI tickets.
+
+Processing blocker:
+- The dated public-flow inventory and synthetic prototype supply local research evidence. Hands-on competitor/mobile usability and owner navigation feedback remain unavailable; detailed UI promotion retains the E01 gate.
 
 ### E08 Mobile-first task capture, edit, and navigation redesign
 

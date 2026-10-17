@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-17",
+  "pending_id": "P-4f98b2b3-af24-5424-b2f9-066913f7133d",
+  "disposition": "partial research; E01 remains Pending",
+  "public_sources": "Dated official documented workflows; no authenticated competitor usability claims",
+  "local_checks": {
+    "capture": "Title, review, save and explicit Inbox destination",
+    "reschedule": "Separate plan/deadline fields; task moves from Inbox to Upcoming",
+    "history": "Complete, locate in Completed, restore without game effect",
+    "habit": "Positive and negative local counters",
+    "calendar": "October month day 18 selects Tomorrow agenda",
+    "keyboard": "Task-name autofocus, Tab to More options, Save autofocus, Escape closes editor",
+    "responsive": [
+      {
+        "width": 360,
+        "scroll_width": 360,
+        "small_target_count": 0,
+        "capture_clear_of_nav": true
+      },
+      {
+        "width": 390,
+        "scroll_width": 390,
+        "small_target_count": 0,
+        "capture_clear_of_nav": true
+      },
+      {
+        "width": 430,
+        "scroll_width": 430,
+        "small_target_count": 0,
+        "capture_clear_of_nav": true
+      },
+      {
+        "width": 768,
+        "scroll_width": 768,
+        "small_target_count": 0,
+        "capture_clear_of_nav": true
+      },
+      {
+        "width": 1024,
+        "scroll_width": 1024,
+        "small_target_count": 0,
+        "capture_clear_of_nav": true
+      }
+    ],
+    "enlarged_text": {
+      "width": 360,
+      "height": 460,
+      "scale": 2,
+      "scroll_width": 360,
+      "small_target_count": 0,
+      "capture_clear_of_nav": true
+    }
+  },
+  "limitations": [
+    "No actual virtual keyboard, safe area, mobile device or screen-reader qualification.",
+    "No consenting human usability feedback or authenticated competitor app session.",
+    "Prototype persistence, advanced project creation, recurrence authoring and sync error flows are placeholders.",
+    "No application UI task is accepted from prototype evidence."
+  ],
+  "source_fingerprints": {
+    "skill-tree/prototypes/mobile-navigation.html": "8fb2a476bd8c4fa47ca1d4ddb01cb163ea9d42a27aae9a16dc1d04394110b7ec",
+    "skill-tree/prototypes/navigation-review.html": "f9aaf33dbf12e4c9e52bd6738e06b5d395f5d9f1c11a60510c3ed2f798fbb93b",
+    "skill-tree/documents/navigation-study.md": "221a0031731b432c45072c97708ca3eeabe7339e0e0ddc632a7a7c70d70d0f01"
+  }
+}
