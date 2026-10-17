@@ -332,7 +332,7 @@ processing_run_id: PR-a888ac19-1755-417e-8a69-4126028348c3
 root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 related_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
 relation: subtask
-depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735", "T-29ef8846-6aa7-4255-990d-a8651e689ec2", "T-34491faa-090e-4d97-b496-1fe947770688", "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58", "T-159a415e-0d56-4028-96a4-339a5d5040f8", "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941", "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108"]
+depends_on: ["T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e", "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735", "T-29ef8846-6aa7-4255-990d-a8651e689ec2", "T-34491faa-090e-4d97-b496-1fe947770688", "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58", "T-159a415e-0d56-4028-96a4-339a5d5040f8", "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941", "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108", "T-b38dad4c-c3fa-431a-a429-50d6fed97650"]
 ```
 
 Goal:
@@ -350,7 +350,7 @@ Out of scope:
 Implementation constraints:
 - All implemented tools require isolation/revocation qualification; live Cron remains off. Real log inspection verifies absence of secrets with minimum redacted evidence. Missing infrastructure remains a blocker.
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. The owner reports initial OAuth completion in both clients and ChatGPT reads, followed by immediate repeated reconnection. Native Codex repeated reads and an approved Companion-only save pass. ChatGPT continuity retesting, complete token lifecycle and revocation checks, packaged-skill qualification, a second consenting owner and iOS/Android device qualification remain outstanding. Preparation cannot satisfy real release acceptance.
+- [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. The owner reports initial OAuth completion in both clients and ChatGPT reads, followed by immediate repeated reconnection. Native Codex repeated reads and an approved Companion-only save pass. ChatGPT qualification is explicitly deferred by owner selection. Active work uses Codex-only own-account testing; complete token lifecycle and revocation checks, packaged-skill qualification, a second consenting owner and iOS/Android device qualification remain broader release requirements. Preparation cannot satisfy real release acceptance.
 Validation:
 - Verify local environment/resource separation and prepare exact owner/teammate/device checks. Maintain independent ChatGPT and Codex desktop results in the plugin client matrix; direct MCP access, packaged skills and optional CLI diagnostics remain distinct checks. Execute real checks only inside separately authorized scope.
 Acceptance:

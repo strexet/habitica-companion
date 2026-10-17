@@ -47,6 +47,8 @@ public sealed record SessionViewModel(
         TaskSnapshot: null,
         DiagnosticsLogEntries: Array.Empty<DiagnosticsLogEntry>());
 
+    public bool OwnerIsolatedTestingEnabled { get; init; }
+
     public bool HasCachedTasks => TaskSnapshot?.Items.Count > 0;
 
     public bool HasCachedUserSnapshot => UserSnapshot is not null;

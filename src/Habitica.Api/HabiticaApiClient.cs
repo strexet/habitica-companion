@@ -31,6 +31,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
     private readonly HttpClient _httpClient;
     private readonly string _clientHeaderValue;
     private readonly TimeSpan _minRequestSpacing;
+    private readonly bool _ownerIsolatedTesting;
 
     // Adaptive throttle state. This client is used sequentially within a user
     // session (each request is awaited before the next), matching the existing
@@ -52,6 +53,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         }
 
         _clientHeaderValue = options.ClientHeaderValue;
+        _ownerIsolatedTesting = options.OwnerIsolatedTestingEnabled;
         _minRequestSpacing = TimeSpan.FromMilliseconds(Math.Max(0, options.MinRequestSpacingMilliseconds));
     }
 
@@ -346,6 +348,9 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         string? targetId,
         CancellationToken cancellationToken)
     {
+        if (_ownerIsolatedTesting && !OwnerTestingPolicy.AllowsSpell(spellId, targetId))
+            throw new HabiticaApiException(HttpStatusCode.Forbidden, OwnerTestingPolicy.SpellUnavailable);
+
         var path = $"user/class/cast/{Uri.EscapeDataString(spellId)}";
         if (!string.IsNullOrWhiteSpace(targetId))
         {
@@ -504,6 +509,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
     private HttpRequestMessage CreateRequest(HttpMethod method, string relativePath, HabiticaCredentials credentials)
     {
+        HabiticaMutationGuard.Validate(method, relativePath, _ownerIsolatedTesting);
         var request = new HttpRequestMessage(method, relativePath);
         request.Headers.Add("x-api-user", credentials.UserId);
         request.Headers.Add("x-api-key", credentials.ApiToken);

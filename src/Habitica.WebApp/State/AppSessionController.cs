@@ -359,7 +359,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<PartyQuestActionResult> RefreshPartyQuestStateAsync(CancellationToken cancellationToken = default)
     {
-        if (!_featureOptions.PartySyncEnabled)
+        if (!_featureOptions.PartySyncEnabled || _featureOptions.OwnerIsolatedTestingEnabled)
         {
             return PartyQuestActionResult.Failure("Shared party sync is disabled.");
         }
@@ -392,7 +392,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<PartyQuestActionResult> AddPartyQuestToQueueAsync(string questKey, CancellationToken cancellationToken = default)
     {
-        if (!_featureOptions.PartySyncEnabled)
+        if (!_featureOptions.PartySyncEnabled || _featureOptions.OwnerIsolatedTestingEnabled)
         {
             return PartyQuestActionResult.Failure("Shared party sync is disabled.");
         }
@@ -421,7 +421,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<PartyQuestActionResult> TogglePartyQuestVoteAsync(string queueItemId, CancellationToken cancellationToken = default)
     {
-        if (!_featureOptions.PartySyncEnabled)
+        if (!_featureOptions.PartySyncEnabled || _featureOptions.OwnerIsolatedTestingEnabled)
         {
             return PartyQuestActionResult.Failure("Shared party sync is disabled.");
         }
@@ -451,7 +451,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<PartyQuestActionResult> RemovePartyQuestQueueItemAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
     {
-        if (!_featureOptions.PartySyncEnabled)
+        if (!_featureOptions.PartySyncEnabled || _featureOptions.OwnerIsolatedTestingEnabled)
         {
             return PartyQuestActionResult.Failure("Shared party sync is disabled.");
         }
@@ -526,7 +526,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<PartyQuestActionResult> MarkPartyQuestCompletedAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
     {
-        if (!_featureOptions.PartySyncEnabled)
+        if (!_featureOptions.PartySyncEnabled || _featureOptions.OwnerIsolatedTestingEnabled)
         {
             return PartyQuestActionResult.Failure("Shared party sync is disabled.");
         }
@@ -575,6 +575,8 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<PartyQuestActionResult> InvitePartyToQuestAsync(string queueItemId, int version, CancellationToken cancellationToken = default)
     {
+        if (_featureOptions.OwnerIsolatedTestingEnabled)
+            return PartyQuestActionResult.Failure(OwnerTestingPolicy.SharedActionUnavailable);
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         if (credentials is null)
         {
@@ -692,6 +694,8 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<PartyQuestActionResult> StartSelectedPartyQuestAsync(string queueItemId, CancellationToken cancellationToken = default)
     {
+        if (_featureOptions.OwnerIsolatedTestingEnabled)
+            return PartyQuestActionResult.Failure(OwnerTestingPolicy.SharedActionUnavailable);
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         if (credentials is null)
         {
@@ -1519,6 +1523,8 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<SpellActionResult> CastSpellAsync(SpellCastRequest request, CancellationToken cancellationToken = default)
     {
+        if (_featureOptions.OwnerIsolatedTestingEnabled && !OwnerTestingPolicy.AllowsSpell(request.SpellId, request.TargetTaskId))
+            return SpellActionResult.Failure(OwnerTestingPolicy.SpellUnavailable);
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         if (credentials is null)
         {
@@ -1863,6 +1869,8 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<SpellActionResult> StartNewDayAsync(StartNewDayRequest request, CancellationToken cancellationToken = default)
     {
+        if (_featureOptions.OwnerIsolatedTestingEnabled)
+            return SpellActionResult.Failure(OwnerTestingPolicy.SharedActionUnavailable);
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         if (credentials is null)
         {
@@ -3805,7 +3813,7 @@ public sealed class AppSessionController : IAppSessionController
         HabiticaCredentials credentials,
         CancellationToken cancellationToken)
     {
-        if (!_featureOptions.PartySyncEnabled)
+        if (!_featureOptions.PartySyncEnabled || _featureOptions.OwnerIsolatedTestingEnabled)
         {
             return null;
         }
@@ -3841,7 +3849,7 @@ public sealed class AppSessionController : IAppSessionController
         string successMessage,
         CancellationToken cancellationToken)
     {
-        if (!_featureOptions.PartySyncEnabled)
+        if (!_featureOptions.PartySyncEnabled || _featureOptions.OwnerIsolatedTestingEnabled)
         {
             return PartyQuestActionResult.Failure("Shared party sync is disabled.");
         }
@@ -3870,7 +3878,7 @@ public sealed class AppSessionController : IAppSessionController
         string successMessage,
         CancellationToken cancellationToken)
     {
-        if (!_featureOptions.PartySyncEnabled)
+        if (!_featureOptions.PartySyncEnabled || _featureOptions.OwnerIsolatedTestingEnabled)
         {
             return PartySyncInviteProofActionResult.Failure("Shared party sync is disabled.");
         }
@@ -3900,7 +3908,7 @@ public sealed class AppSessionController : IAppSessionController
         string missingClaimMessage,
         CancellationToken cancellationToken)
     {
-        if (!_featureOptions.PartySyncEnabled)
+        if (!_featureOptions.PartySyncEnabled || _featureOptions.OwnerIsolatedTestingEnabled)
         {
             return PartyQuestActionResult.Failure("Shared party sync is disabled.");
         }
@@ -3930,6 +3938,8 @@ public sealed class AppSessionController : IAppSessionController
         string successMessage,
         CancellationToken cancellationToken)
     {
+        if (_featureOptions.OwnerIsolatedTestingEnabled)
+            return PartyQuestActionResult.Failure(OwnerTestingPolicy.SharedActionUnavailable);
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         if (credentials is null)
         {
@@ -5146,7 +5156,8 @@ public sealed class AppSessionController : IAppSessionController
         State = nextState with
         {
             IsAdmin = _featureOptions.IsAdmin(userId),
-            IsPartySyncEnabled = _featureOptions.PartySyncEnabled
+            IsPartySyncEnabled = _featureOptions.PartySyncEnabled && !_featureOptions.OwnerIsolatedTestingEnabled,
+            OwnerIsolatedTestingEnabled = _featureOptions.OwnerIsolatedTestingEnabled
         };
         Changed?.Invoke();
     }

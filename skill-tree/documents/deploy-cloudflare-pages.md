@@ -288,3 +288,8 @@ Each line is a separate private request. No scheduler performs key migration. Ex
 Bootstrap read metadata includes `profile:read` and the operation scope in both security-scheme locations. Refresh requests may inherit the already bound MCP audience when `resource` is omitted; explicit audience mismatches remain denied. Temporary profile-storage failures return a temporary OAuth error without deleting recoverable grants. The access-token lifetime remains ten minutes.
 
 The owner retest uses a refreshed ChatGPT tool definition and a fresh authorization, then separate read-only requests for account status, tasks and account status again. Repeat account status after more than ten minutes to exercise refresh. Check Codex independently while retaining the ChatGPT connection. A repeated reconnect dialog remains a failed gate; record only the failing tool and approximate elapsed time, excluding codes, tokens and account content.
+
+
+### Active Codex owner-isolated lane
+
+The owner selects Codex-only testing and permits bounded own-account task changes, self spells and equipment checks. ChatGPT testing is deferred. The frontend profile uses `Features:OwnerIsolatedTestingEnabled=true` and `Features:PartySyncEnabled=false`; the reviewed production frontend override bundle retains the same settings. Backend party, live Cron, spells, projection and background-execution flags remain disabled. Real other-user effects and party departure remain outside every test lane.

@@ -10,6 +10,10 @@
 @inject ISnackbar Snackbar
 
 <PageTitle>Spells</PageTitle>
+@if (SessionController.State.OwnerIsolatedTestingEnabled)
+{
+    <MudAlert Severity="Severity.Info">Own-account testing: only self spells are available. Party spells and Start New Day are disabled.</MudAlert>
+}
 
 <div class="spells-shell">
     <section class="card-surface dashboard-hero">
@@ -92,11 +96,13 @@
                     var showStatPointContext = viewModel.IsStatAllocationUnlocked
                         && viewModel.UnallocatedStatPoints > 0
                         && spell.HasStatPointContext;
-                    var canSpendAllMana = canMutate
+                    var isolatedSpellBlocked = SessionController.State.OwnerIsolatedTestingEnabled
+                        && !Habitica.Domain.Auth.OwnerTestingPolicy.AllowsSpell(spell.Id);
+                    var canSpendAllMana = !isolatedSpellBlocked && canMutate
                         && !controlsDisabled
                         && spell.IsUnlocked
                         && maxAffordableCasts > 0;
-                    var castDisabled = !canMutate
+                    var castDisabled = isolatedSpellBlocked || !canMutate
                         || controlsDisabled
                         || !spell.IsUnlocked
                         || !hasEnoughMana
@@ -256,7 +262,7 @@
                                     <MudButton Color="Color.Secondary" Disabled="@SessionController.State.IsBusy" OnClick="() => ContinuePendingCastAsync(false)" Variant="Variant.Outlined" data-testid="@($"cast-anyway-{spell.Id}")">
                                         Cast anyway
                                     </MudButton>
-                                    <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="() => ContinuePendingCastAsync(true)" Variant="Variant.Filled" data-testid="@($"start-day-and-cast-{spell.Id}")">
+                                    <MudButton Color="Color.Primary" Disabled="@(SessionController.State.IsBusy || SessionController.State.OwnerIsolatedTestingEnabled)" OnClick="() => ContinuePendingCastAsync(true)" Variant="Variant.Filled" data-testid="@($"start-day-and-cast-{spell.Id}")">
                                         Start New Day and Cast
                                     </MudButton>
                                 </div>

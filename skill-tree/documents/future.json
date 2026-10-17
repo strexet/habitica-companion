@@ -48,7 +48,8 @@
       "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
       "T-159a415e-0d56-4028-96a4-339a5d5040f8",
       "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
-      "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108"
+      "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+      "T-b38dad4c-c3fa-431a-a429-50d6fed97650"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -87,6 +88,7 @@
       "T-991d6cf2-7c54-4006-ab58-eda921ae66d6": "O-747dceb1-50c9-4703-9399-b64b2a0ccba6",
       "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9": "O-1289cd22-e42d-43e3-8c68-1c7954321b8a",
       "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f": "O-31dca147-51af-4489-863f-be4aa92285dc",
+      "T-b38dad4c-c3fa-431a-a429-50d6fed97650": "O-ba1742c1-00fe-4f18-9dea-c829e62f3190",
       "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08": "O-b7bd034e-ef6e-4d79-9c42-c6e9ea9159fc",
       "T-b883e33b-05a6-53d8-a9a5-d11d7008887f": "O-84147b67-67cd-4c09-80fe-17befff407d7",
       "T-b92db026-a8cf-5922-8556-666cbea947ab": "O-e70ae478-e644-48d6-8451-13f7bbdc4e6a",
@@ -101,7 +103,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "457fffd7ee3df4a0e32e340606648ae3a90915c47c677024c49be17c186e1f67",
+    "cycle_signature": "f8aa8da1da57ba0877429bebae8c035c760b85600517106cef57f148da50d301",
     "deferred_ids": [
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
     ],
@@ -111,7 +113,7 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Obtain pending owner ChatGPT retest, consenting tester and device details; complete the remaining release gates without widening the implementation snapshot.",
+    "next_action": "Select required task or finish root",
     "partial_work": [
       "Auth source 893f619 is deployed as version 0131fa19-a146-4095-8047-e2282bcd7891; reviewed resources, secret names and disabled effect flags are retained.",
       "The synthetic browser reproduces the original double-click symptom. Corrected single approval and denial reach the separate client callback. Auth build and eighteen targeted checks pass.",
@@ -159,9 +161,10 @@
       "P-4f9fc663-7bd2-4c13-8e4a-804709937671",
       "P-70ff88fd-b14f-4d7c-bff9-6594b4256587",
       "P-e0494acc-da19-4d22-bdb3-9b71af18cc7d",
-      "P-2544a5ca-8301-4a81-b027-08c485b1de48"
+      "P-2544a5ca-8301-4a81-b027-08c485b1de48",
+      "P-e946d297-2c7c-4347-9bac-7c1cd92488ee"
     ],
-    "phase": "blocked",
+    "phase": "resume-parent",
     "processing_results": [
       {
         "created_ids": [
@@ -809,6 +812,23 @@
           "P-2544a5ca-8301-4a81-b027-08c485b1de48"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-b38dad4c-c3fa-431a-a429-50d6fed97650"
+        ],
+        "dispositions": {
+          "P-e946d297-2c7c-4347-9bac-7c1cd92488ee": {
+            "reason": "Current browser API routes and upstream spell targets establish a concrete isolation gap with bounded negative controls.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-6fbcd543-c4a3-4b1a-9c6f-d0597001d3fe",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-e946d297-2c7c-4347-9bac-7c1cd92488ee"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -861,7 +881,8 @@
       "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
       "T-159a415e-0d56-4028-96a4-339a5d5040f8",
       "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
-      "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108"
+      "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+      "T-b38dad4c-c3fa-431a-a429-50d6fed97650"
     ],
     "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "snapshot": [
@@ -878,10 +899,10 @@
       "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Native Codex owner-pilot reads, long-interval continuity and approved Companion-only save pass. Complete ChatGPT retesting, client protocol/revocation and interrupted-receipt checks, packaged skills, a second consenting account and real iOS/Android qualification remain required. No other incomplete task belongs to the frozen implementation snapshot."
+    "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "1055e3741abef1deeb6381575f130ae44d6648519d52682bf6c739fb1b6a6156",
+  "source_hash": "3da20e26a280f8bd6d94468bc629db3f26727bf14b63861afb333f39983eee4b",
   "tasks": [
     {
       "depends_on": [],
@@ -1004,7 +1025,8 @@
         "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
         "T-159a415e-0d56-4028-96a4-339a5d5040f8",
         "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
-        "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108"
+        "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+        "T-b38dad4c-c3fa-431a-a429-50d6fed97650"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
       "line": 324,

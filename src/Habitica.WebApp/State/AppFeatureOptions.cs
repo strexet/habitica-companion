@@ -2,6 +2,8 @@ namespace Habitica.WebApp.State;
 
 public sealed record AppFeatureOptions
 {
+    public bool OwnerIsolatedTestingEnabled { get; init; }
+
     public bool PartySyncEnabled { get; init; } = true;
 
     // Extra fixed delay added by the controller between Habitica calls. Now that

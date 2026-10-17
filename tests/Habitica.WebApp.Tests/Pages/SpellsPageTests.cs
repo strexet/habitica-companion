@@ -16,6 +16,24 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class SpellsPageTests : BunitContext
 {
     [Fact]
+    public void Owner_isolation_disables_shared_spells_and_keeps_self_spell_available()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        Services.AddMudServices();
+        Services.AddSingleton(new SpellViewModelFactory());
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
+        var state = CreateState();
+        state = state with { OwnerIsolatedTestingEnabled = true, UserSnapshot = state.UserSnapshot! with { Mana = 100m } };
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(state));
+        var cut = Render<SpellsPage>();
+        Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("owner-isolated-spells", cut.Markup);
+        Assert.Contains("only self spells", cut.Markup);
+        Assert.True(cut.Find("[data-testid='cast-spell-earth']").HasAttribute("disabled"));
+        Assert.True(cut.Find("[data-testid='cast-spell-fireball']").HasAttribute("disabled"));
+        Assert.False(cut.Find("[data-testid='cast-spell-frost']").HasAttribute("disabled"));
+    }
+
+    [Fact]
     public void Signed_out_empty_spells_has_sign_in_action()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

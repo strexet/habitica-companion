@@ -18,6 +18,16 @@ namespace Habitica.WebApp.Tests.State;
 public sealed class AppSessionControllerTests
 {
     [Fact]
+    public async Task Owner_isolation_refuses_shared_actions_before_credentials_or_auto_equipment()
+    {
+        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), ownerIsolatedTesting: true);
+        Assert.False((await controller.StartNewDayAsync()).Succeeded);
+        Assert.False((await controller.CastSpellAsync(new SpellCastRequest("healAll", null, 1))).Succeeded);
+        Assert.False((await controller.InvitePartyToQuestAsync("unused", 1)).Succeeded);
+        Assert.False((await controller.StartSelectedPartyQuestAsync("unused")).Succeeded);
+    }
+
+    [Fact]
     public async Task Integration_sends_credentials_only_after_authenticated_explicit_consent_and_forgets_management_on_logout()
     {
         var integration = new IntegrationFixture();
@@ -2217,10 +2227,11 @@ public sealed class AppSessionControllerTests
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
         IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null,
         FakeKeyValueStorage? keyValueStorage = null,
-        IChatGptIntegrationClient? integrationClient = null)
+        IChatGptIntegrationClient? integrationClient = null,
+        bool ownerIsolatedTesting = false)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
-        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient);
+        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting);
     }
 
     private static AppSessionController CreateController(
@@ -2229,7 +2240,8 @@ public sealed class AppSessionControllerTests
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
         IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null,
         FakeKeyValueStorage? keyValueStorage = null,
-        IChatGptIntegrationClient? integrationClient = null)
+        IChatGptIntegrationClient? integrationClient = null,
+        bool ownerIsolatedTesting = false)
     {
         var credentialStore = new FakeCredentialStore();
         var storage = keyValueStorage ?? new FakeKeyValueStorage();
@@ -2265,7 +2277,7 @@ public sealed class AppSessionControllerTests
             diagnosticsLogStore: logStore,
             diagnosticsLogWriter: logWriter,
             snapshotFreshnessPolicy: freshnessPolicy,
-            featureOptions: new AppFeatureOptions { HabiticaRequestDelayMilliseconds = 0 },
+            featureOptions: new AppFeatureOptions { HabiticaRequestDelayMilliseconds = 0, OwnerIsolatedTestingEnabled = ownerIsolatedTesting },
             timeProvider: TimeProvider.System,
             integrationClient: integrationClient);
     }

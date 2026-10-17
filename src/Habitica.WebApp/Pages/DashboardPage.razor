@@ -117,7 +117,7 @@
                 SessionController.State.GearCatalogSnapshot,
                 _startNewDayGearGoal);
             var unfinishedDailies = GetCronUnfinishedDailies();
-            var canStartNewDay = SessionController.State.IsAuthenticated
+            var canStartNewDay = !SessionController.State.OwnerIsolatedTestingEnabled && SessionController.State.IsAuthenticated
                 && !SessionController.State.IsBusy
                 && SessionController.State.UserFreshness == SnapshotFreshnessState.Fresh;
 
@@ -125,6 +125,10 @@
                 <div>
                     <p class="section-label">Habitica day</p>
                     <h2>Start New Day</h2>
+                    @if (SessionController.State.OwnerIsolatedTestingEnabled)
+                    {
+                        <p>Disabled during own-account testing because quest processing can affect party members.</p>
+                    }
                     <p class="panel-copy">
                         Habitica has not processed today for this account yet. Starting a new day uses Habitica's documented daily reset for this account, then refreshes account, tasks, and party data.
                     </p>

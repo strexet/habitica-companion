@@ -1,0 +1,43 @@
+{
+  "kind": "owner-isolation-guard",
+  "date": "2026-10-17",
+  "task_id": "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+  "scope": "Codex-only bounded own-account changes; no live party tools or other-user effects. ChatGPT deferred.",
+  "checks": {
+    "solution_build": "pass; zero warnings and errors",
+    "dotnet_tests_passed": 554,
+    "focused_auth_tests_passed": 10,
+    "release_publish": "pass; existing pinned SDK and production frontend bundle",
+    "browser": "Real Razor synthetic page shows disabled task/party cast buttons and available self-spell buttons. Component tests separately qualify behavior.",
+    "browser_screenshot": "/tmp/habitica-owner-isolation.png",
+    "forbidden_routes": "Party departure including encoded variants has no isolation-profile override. Isolated group/Cron/shared spell/other-target calls produce zero HTTP dispatches. MCP and public/private Auth reject unsupported departure/member operations without upstream traffic.",
+    "own_positive_controls": "Defensive Stance and owned costume equipment transport shape pass. Native test Todo description, deadline, completion and original receipt pass without projection.",
+    "introduced_prose_diagnostics": []
+  },
+  "test_evidence_sha256": {
+    "/tmp/habitica-owner-safety-build.txt": "2638733ed1451fb99bbf8406996b6af476c876a57d8a0e66155ec238f32094ca",
+    "/tmp/habitica-owner-safety-tests.txt": "0e4d4c3b3f878a0c169bb0826f48701b2cd5889cac2f43842545c6f2700cc770",
+    "/tmp/habitica-owner-backend-boundary.txt": "624c9d3ed805dd7a5355326e2a14a468b3240f05b6f0808fbcd6d44024ef84ef",
+    "/tmp/habitica-owner-safety-release.txt": "d4a53316f1989b8e9fdae107546f729b76097bc34c34c5da4da0f23248434983"
+  },
+  "production_frontend_features": {
+    "PartySyncEnabled": false,
+    "HabiticaRequestDelayMilliseconds": 0,
+    "CloudSyncExcludedSections": [
+      "diagnostics"
+    ],
+    "AdminUserIds": [],
+    "OwnerIsolatedTestingEnabled": true
+  },
+  "live_task_reference": "skill-tree/history/validation/codex-owner-task-lifecycle.json",
+  "official_source_checks": [
+    "https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/spells.js",
+    "https://github.com/HabitRPG/habitica/blob/develop/website/common/script/content/spells.js"
+  ],
+  "deployment": "prepared for existing Pages site; source commit precedes publication",
+  "limitations": [
+    "Self-spell and equipment live tests await an authenticated browser session.",
+    "MCP Daily/Habit creation and task deletion are not implemented; required follow-up work remains.",
+    "Broader ChatGPT/team/device qualification remains deferred or open."
+  ]
+}

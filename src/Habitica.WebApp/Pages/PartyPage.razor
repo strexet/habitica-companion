@@ -10,6 +10,10 @@
 @using Habitica.WebApp.Formatting
 
 <PageTitle>@(QuestWorkspaceOnly ? "Quests" : "Party")</PageTitle>
+@if (SessionController.State.OwnerIsolatedTestingEnabled)
+{
+    <MudAlert Severity="Severity.Info">Party actions are read-only during own-account testing. Leaving the party is prohibited.</MudAlert>
+}
 
 <div class="party-shell">
     <section class="card-surface dashboard-hero">
@@ -257,10 +261,10 @@
                         {
                             <MudAlert Dense="true" Severity="Severity.Warning" Variant="Variant.Outlined">
                                 You have not responded to this quest invitation.
-                                <MudButton Color="Color.Primary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RespondToQuestInvitationAsync(true))" Variant="Variant.Filled">
+                                <MudButton Color="Color.Primary" Disabled="@(SessionController.State.IsBusy || SessionController.State.OwnerIsolatedTestingEnabled)" OnClick="@(() => RespondToQuestInvitationAsync(true))" Variant="Variant.Filled">
                                     Accept
                                 </MudButton>
-                                <MudButton Color="Color.Secondary" Disabled="@SessionController.State.IsBusy" OnClick="@(() => RespondToQuestInvitationAsync(false))" Variant="Variant.Outlined">
+                                <MudButton Color="Color.Secondary" Disabled="@(SessionController.State.IsBusy || SessionController.State.OwnerIsolatedTestingEnabled)" OnClick="@(() => RespondToQuestInvitationAsync(false))" Variant="Variant.Outlined">
                                     Reject
                                 </MudButton>
                             </MudAlert>
@@ -2059,6 +2063,7 @@
 
     private string? GetInvitePartyDisabledReason(PartyQuestQueueEntry entry)
     {
+        if (SessionController.State.OwnerIsolatedTestingEnabled) return "Party actions are read-only during own-account testing.";
         if (SessionController.State.PartyFreshness != SnapshotFreshnessState.Fresh)
         {
             return "Refresh party data before inviting.";
@@ -2089,7 +2094,7 @@
 
     private bool CanForceStartSelectedQuest(PartyQuestQueueEntry entry)
     {
-        return IsCurrentUser(entry.OwnerUserId) || IsCurrentUserPartyLeader();
+        return !SessionController.State.OwnerIsolatedTestingEnabled && (IsCurrentUser(entry.OwnerUserId) || IsCurrentUserPartyLeader());
     }
 
     private PartyQuestQueueEntry? GetStartableSelectedQuestEntry(PartyQuestSnapshot quest)

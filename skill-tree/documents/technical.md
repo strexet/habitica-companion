@@ -919,3 +919,10 @@ Spell/Cron private gateways normalize every unsuccessful lookup response to `unk
 `workers/chatgpt-auth/src/traffic.ts` uses the existing authorization counter table for atomic minute quotas and anonymous UTC-day denial/429 metrics. Profile upstream cooldown and credential repair use the existing current-connection read-state record; enrollment cooldown uses an independent bounded counter record. Expiry cleanup removes at most one hundred counter rows per call. Private traffic checks mediate MCP and Workspace ingress without exposing a public quota-control endpoint. Every upstream dispatch consumes capacity before mutation reservation. Operator aggregates exclude profile/network keys.
 
 Workspace operational status performs profile-scoped aggregate queries and rechecks the active connection/access epoch within the D1 batch. App status reads cap the response at eight KiB, require complete count fields and discard stale session/account results. The status snapshot grants no retry or reconciliation authority. [The adopted operational contract](companion-workspace-contract.md#adopted-operational-protection-boundary) owns numeric caps and privacy boundaries.
+
+
+## Owner-isolated API dispatch
+
+`OwnerTestingPolicy` holds the narrow known self-spell allowlist. `HabiticaMutationGuard` validates browser API paths before request construction and credential headers. Party departure has no profile override; owner-isolated dispatch also rejects group mutations and Cron. `HabiticaApiClientOptions` defaults to owner isolation, while generic synthetic transport fixtures explicitly select the broader local shape lane.
+
+App feature configuration and API options share `Features:OwnerIsolatedTestingEnabled`. Session state exposes the profile for disabled controls. The controller refuses shared spells, quest changes and Start New Day before automatic equipment work, and disables shared-party sync during the profile. The active production frontend uses owner isolation and no shared-party sync; backend game-effect flags remain independently disabled.

@@ -1361,7 +1361,7 @@ public sealed class HabiticaApiClientTests
             {
                 BaseAddress = new Uri("https://habitica.com/api/v3/")
             },
-            new HabiticaApiClientOptions("habitica-tool-author-habitica-tool"));
+            new HabiticaApiClientOptions("habitica-tool-author-habitica-tool", OwnerIsolatedTestingEnabled: false));
     }
 
     private static StringContent JsonContent(string json)

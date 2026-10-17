@@ -1,0 +1,24 @@
+{
+  "kind": "codex-owner-isolated-task-lifecycle",
+  "local_date": "2026-10-17",
+  "authorization": "Owner explicitly authorizes destructive own-account testing; party remains read-only and departure is prohibited.",
+  "task_id": "a589bce0-06a9-40f0-938b-5683f2a15aa8",
+  "updated": {
+    "command_id": "9fa95490-977f-4593-a0ef-117a97a0d2b3",
+    "saved": true,
+    "deadline": "2026-10-18",
+    "title": "Companion live-test Todo — edited 2026-10-17",
+    "notes": "Updated by the authorized Codex own-account lifecycle test.",
+    "projection_status": "notRequested"
+  },
+  "completed": {
+    "command_id": "5ad6212a-5b65-47e6-97b3-20fc1b43c617",
+    "saved": true,
+    "state": "completed",
+    "accepted_event_count": 1,
+    "confirmed_habitica_effects": 0,
+    "original_receipt_matches": true
+  },
+  "no_party_tools_called": true,
+  "chatgpt_tested": false
+}
