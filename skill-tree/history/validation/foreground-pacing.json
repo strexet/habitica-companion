@@ -1,0 +1,41 @@
+{
+  "task_id": "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
+  "date": "2026-10-17",
+  "checks": [
+    {
+      "name": "API suite including synthetic 100-dispatch clock load, reserve/cooldown/recovery, cancellation and one-dispatch mutation failures",
+      "passed": 54,
+      "failed": 0
+    },
+    {
+      "name": "Release app build",
+      "result": "pass"
+    },
+    {
+      "name": "Changed documentation prose and diff whitespace",
+      "result": "pass"
+    }
+  ],
+  "decisions": {
+    "reserve": "min(2, limit - 1)",
+    "slowdown": "below half capacity, anticipating next request and remaining/reset horizon",
+    "failure": "multiplicative recovery factor up to 16, positive jitter on later explicit calls",
+    "success": "additive factor recovery 0.125 per successful response",
+    "dispatch": "serialized per client; cancellation before dispatch does not spend token",
+    "retry": "none"
+  },
+  "limitations": [
+    "No shared-egress or cross-device fairness qualification; durable server pacing remains a separate task.",
+    "Local synthetic qualification only; live tests and deployments remain paused."
+  ],
+  "source_fingerprints": {
+    "src/Habitica.Api/HabiticaApiClient.cs": "ed150914e11dc106e7793cb45fb39721f98efcc440cd364d69c3883e36c485a3",
+    "src/Habitica.Api/AdaptiveRequestPacer.cs": "dae032dbcc4b20ac5428f840117627611741812fa849cba66936d6d36a733366",
+    "src/Habitica.Api/Properties/AssemblyInfo.cs": "b0385300f59472ce5cfaeea28006f0aa33b8eb5d8fbde03366bde7bc3f53bb41",
+    "tests/Habitica.Api.Tests/AdaptiveRequestPacerTests.cs": "ce1602e2a94c125cb40b0a72f8a539d1edfcf9a9fb5b4f9afd3f8fbe9f099c29",
+    "skill-tree/documents/technical.md": "2c1a081f2c57c340772512e948af4be9da466fd53b33c48d0e839f8fa5a2e92d",
+    "skill-tree/documents/testing.md": "6082fabf80d7768ee8520551ade26ed9bb291d19a82ca393453353aafb4db0e9",
+    "skill-tree/documents/habitica-api.md": "9d9c801e1e32b9499c4f76a930e2ac3b9d39e2d584aead8ccd2227ba5d147d97",
+    "skill-tree/documents/features.md": "a1a2befae9f7ab6eddc5c5e256ed0fb9be01f4098ad8b0625e794c55e63c3362"
+  }
+}

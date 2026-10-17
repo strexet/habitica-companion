@@ -11,38 +11,18 @@ namespace Habitica.Api;
 
 public sealed class HabiticaApiClient : IHabiticaSyncClient
 {
-    // Habitica's documented contract: 30 requests / 60s per user, regenerating
-    // per second. These are fallbacks until the server's X-RateLimit-* headers
-    // tell us the live numbers, after which we trust the headers.
-    private const double DefaultRateLimit = 30d;
-    private const double RateLimitWindowSeconds = 60d;
-
-    // Token-bucket tuning. While the estimated budget stays above
-    // BurstHeadroomFraction of the limit, requests fire with only the base
-    // spacing (a free burst). Below it, the delay ramps up smoothly toward the
-    // steady refill cadence. ReserveTokens keeps a safety margin so estimate
-    // lag never drives us into an actual 429.
-    private const double BurstHeadroomFraction = 0.5d;
-    private const double RampSteepness = 3.0d;
-    private const double ReserveTokens = 2.0d;
     private const int GoldPurchasableGemBaseCap = 24;
     private const int GoldPurchasableGemMaxCap = 50;
 
     private readonly HttpClient _httpClient;
     private readonly string _clientHeaderValue;
-    private readonly TimeSpan _minRequestSpacing;
     private readonly bool _ownerIsolatedTesting;
+    private readonly TimeProvider _timeProvider;
+    private readonly AdaptiveRequestPacer _pacer;
+    private readonly SemaphoreSlim _dispatchGate = new(1, 1);
+    public HabiticaPacingStatus PacingStatus { get; private set; }
 
-    // Adaptive throttle state. This client is used sequentially within a user
-    // session (each request is awaited before the next), matching the existing
-    // lock-free handling of _rateLimitPauseUntilUtc.
-    private double _rateLimit = DefaultRateLimit;
-    private double _estimatedTokens = DefaultRateLimit; // optimistic: assume a full bucket
-    private DateTimeOffset _tokensUpdatedUtc = DateTimeOffset.UtcNow;
-    private DateTimeOffset _lastRequestUtc = DateTimeOffset.MinValue;
-    private DateTimeOffset? _rateLimitPauseUntilUtc;
-
-    public HabiticaApiClient(HttpClient httpClient, HabiticaApiClientOptions options)
+    public HabiticaApiClient(HttpClient httpClient, HabiticaApiClientOptions options, TimeProvider? timeProvider = null)
     {
         _httpClient = httpClient;
         if (string.IsNullOrWhiteSpace(options.ClientHeaderValue))
@@ -54,7 +34,9 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
         _clientHeaderValue = options.ClientHeaderValue;
         _ownerIsolatedTesting = options.OwnerIsolatedTestingEnabled;
-        _minRequestSpacing = TimeSpan.FromMilliseconds(Math.Max(0, options.MinRequestSpacingMilliseconds));
+        _timeProvider = timeProvider ?? TimeProvider.System;
+        _pacer = new(TimeSpan.FromMilliseconds(Math.Max(0, options.MinRequestSpacingMilliseconds)), _timeProvider.GetUtcNow());
+        PacingStatus = _pacer.Inspect(_timeProvider.GetUtcNow());
     }
 
     public async Task<UserSummary> GetUserAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -520,21 +502,39 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
 
     private async Task<JsonDocument> SendForDocumentAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        await ThrottleAsync(cancellationToken);
-        using var response = await _httpClient.SendAsync(request, cancellationToken);
-        var content = await response.Content.ReadAsStringAsync(cancellationToken);
-        var rateLimit = ExtractRateLimitInfo(response);
-        ReconcileRateLimit(rateLimit);
-
-        if (!response.IsSuccessStatusCode)
+        await _dispatchGate.WaitAsync(cancellationToken);
+        try
         {
-            throw CreateApiException(response, content, rateLimit);
+            // The gate covers dispatch and header reconciliation, so concurrent callers cannot
+            // spend the same estimated token or miss another response's cooldown.
+            PacingStatus = _pacer.Inspect(_timeProvider.GetUtcNow());
+            while (PacingStatus.NextDelay > TimeSpan.Zero)
+            {
+                await Task.Delay(PacingStatus.NextDelay > TimeSpan.FromDays(1) ? TimeSpan.FromDays(1) : PacingStatus.NextDelay, _timeProvider, cancellationToken);
+                PacingStatus = _pacer.Inspect(_timeProvider.GetUtcNow());
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _pacer.Dispatch(_timeProvider.GetUtcNow());
+            HttpResponseMessage response;
+            try { response = await _httpClient.SendAsync(request, cancellationToken); }
+            catch (Exception error) when (error is HttpRequestException || error is OperationCanceledException && !cancellationToken.IsCancellationRequested)
+            {
+                _pacer.Observe(null, false, true, _timeProvider.GetUtcNow(), Random.Shared.NextDouble());
+                PacingStatus = _pacer.Inspect(_timeProvider.GetUtcNow());
+                throw;
+            }
+            using (response)
+            {
+                var rateLimit = ExtractRateLimitInfo(response);
+                _pacer.Observe(rateLimit, response.IsSuccessStatusCode, response.StatusCode == HttpStatusCode.TooManyRequests || (int)response.StatusCode >= 500,
+                    _timeProvider.GetUtcNow(), Random.Shared.NextDouble());
+                PacingStatus = _pacer.Inspect(_timeProvider.GetUtcNow());
+                var content = await response.Content.ReadAsStringAsync(cancellationToken);
+                if (!response.IsSuccessStatusCode) throw CreateApiException(response, content, rateLimit);
+                return JsonDocument.Parse(content, new JsonDocumentOptions { AllowTrailingCommas = true });
+            }
         }
-
-        return JsonDocument.Parse(content, new JsonDocumentOptions
-        {
-            AllowTrailingCommas = true
-        });
+        finally { _dispatchGate.Release(); }
     }
 
     private async Task<IReadOnlyList<PartyMemberSnapshot>> GetPartyMembersAsync(
@@ -1448,11 +1448,11 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             rateLimit);
     }
 
-    private static HabiticaRateLimitInfo? ExtractRateLimitInfo(HttpResponseMessage response)
+    private HabiticaRateLimitInfo? ExtractRateLimitInfo(HttpResponseMessage response)
     {
         var retryAfter = response.Headers.RetryAfter?.Delta
             ?? (response.Headers.RetryAfter?.Date is { } retryAfterDate
-                ? retryAfterDate - DateTimeOffset.UtcNow
+                ? retryAfterDate - _timeProvider.GetUtcNow()
                 : null);
         if (retryAfter is { } retryAfterValue && retryAfterValue < TimeSpan.Zero)
         {
@@ -1466,121 +1466,6 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         return retryAfter is null && limit is null && remaining is null && resetAtUtc is null
             ? null
             : new HabiticaRateLimitInfo(retryAfter, limit, remaining, resetAtUtc);
-    }
-
-    // Adaptive throttle run before every request. Combines a polite base-spacing
-    // floor with a token-bucket estimate so callers can burst while budget is
-    // healthy and slow down smoothly as the rate-limit window drains, instead of
-    // sleeping a flat amount on every call or slamming into a full-window wall.
-    private async Task ThrottleAsync(CancellationToken cancellationToken)
-    {
-        var now = DateTimeOffset.UtcNow;
-
-        // A prior 429 (or a window we drained to zero) wins over everything else.
-        if (_rateLimitPauseUntilUtc is { } pauseUntilUtc)
-        {
-            if (pauseUntilUtc > now)
-            {
-                await Task.Delay(pauseUntilUtc - now, cancellationToken);
-                now = DateTimeOffset.UtcNow;
-            }
-
-            _rateLimitPauseUntilUtc = null;
-        }
-
-        var refillPerSecond = _rateLimit / RateLimitWindowSeconds;
-        RefillTokens(now, refillPerSecond);
-
-        var delay = ComputeAdaptiveDelay(now, refillPerSecond);
-        if (delay > TimeSpan.Zero)
-        {
-            await Task.Delay(delay, cancellationToken);
-            now = DateTimeOffset.UtcNow;
-            RefillTokens(now, refillPerSecond); // credit the refill that happened while waiting
-        }
-
-        // Spend the token for the request we are about to send.
-        _estimatedTokens = Math.Max(0d, _estimatedTokens - 1d);
-        _lastRequestUtc = now;
-    }
-
-    private void RefillTokens(DateTimeOffset now, double refillPerSecond)
-    {
-        var elapsedSeconds = (now - _tokensUpdatedUtc).TotalSeconds;
-        if (elapsedSeconds <= 0d)
-        {
-            return;
-        }
-
-        _estimatedTokens = Math.Min(_rateLimit, _estimatedTokens + elapsedSeconds * refillPerSecond);
-        _tokensUpdatedUtc = now;
-    }
-
-    private TimeSpan ComputeAdaptiveDelay(DateTimeOffset now, double refillPerSecond)
-    {
-        // Base floor: never fire faster than the configured minimum spacing.
-        var floorWait = _minRequestSpacing - (now - _lastRequestUtc);
-        if (floorWait < TimeSpan.Zero)
-        {
-            floorWait = TimeSpan.Zero;
-        }
-
-        // Adaptive ramp: zero while we still have burst headroom, then a smooth
-        // exponential climb toward the steady refill cadence as the bucket nears
-        // the reserve. f(x) = (e^(k·x) − 1) / (e^k − 1) maps x∈[0,1] to [0,1],
-        // staying near zero until x (depletion) is large, then rising sharply.
-        var bucketWait = TimeSpan.Zero;
-        if (_estimatedTokens - ReserveTokens < 1d && refillPerSecond > 0d && _rateLimit > 0d)
-        {
-            var secondsPerToken = 1d / refillPerSecond; // ~2s at 30 req / 60s
-            var fraction = _estimatedTokens / _rateLimit;
-            var depletion = Math.Clamp((BurstHeadroomFraction - fraction) / BurstHeadroomFraction, 0d, 1d);
-            var ramp = (Math.Exp(RampSteepness * depletion) - 1d) / (Math.Exp(RampSteepness) - 1d);
-            bucketWait = TimeSpan.FromSeconds(secondsPerToken * ramp);
-        }
-
-        return floorWait > bucketWait ? floorWait : bucketWait;
-    }
-
-    // Reconcile the local token estimate with the server's authoritative headers
-    // and remember any hard pause the server asked for (429 Retry-After, or a
-    // fully drained window).
-    private void ReconcileRateLimit(HabiticaRateLimitInfo? rateLimit)
-    {
-        if (rateLimit is null)
-        {
-            return;
-        }
-
-        if (rateLimit.Limit is { } limit && limit > 0)
-        {
-            _rateLimit = limit;
-        }
-
-        if (rateLimit.Remaining is { } remaining)
-        {
-            _estimatedTokens = Math.Clamp(remaining, 0d, _rateLimit);
-            _tokensUpdatedUtc = DateTimeOffset.UtcNow;
-        }
-
-        DateTimeOffset? pauseUntilUtc = null;
-        if (rateLimit.RetryAfter is { } retryAfter)
-        {
-            pauseUntilUtc = DateTimeOffset.UtcNow + retryAfter;
-        }
-        else if (rateLimit.Remaining == 0 && rateLimit.ResetAtUtc is { } resetAtUtc)
-        {
-            pauseUntilUtc = resetAtUtc;
-        }
-
-        if (pauseUntilUtc is null)
-        {
-            return;
-        }
-
-        _rateLimitPauseUntilUtc = _rateLimitPauseUntilUtc is { } existing && existing > pauseUntilUtc
-            ? existing
-            : pauseUntilUtc;
     }
 
     private static string BuildRateLimitMessage(HabiticaRateLimitInfo? rateLimit)
@@ -1619,7 +1504,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             : null;
     }
 
-    private static DateTimeOffset? TryGetHeaderDateTimeOffset(HttpResponseMessage response, string headerName)
+    private DateTimeOffset? TryGetHeaderDateTimeOffset(HttpResponseMessage response, string headerName)
     {
         if (!response.Headers.TryGetValues(headerName, out var values))
         {
@@ -1629,8 +1514,9 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         var value = values.FirstOrDefault();
         if (long.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var numericValue))
         {
+            if (numericValue < 0 || numericValue > 253402300799) return null;
             return numericValue < 1_000_000_000
-                ? DateTimeOffset.UtcNow.AddSeconds(Math.Max(0, numericValue))
+                ? _timeProvider.GetUtcNow().AddSeconds(numericValue)
                 : DateTimeOffset.FromUnixTimeSeconds(numericValue);
         }
 

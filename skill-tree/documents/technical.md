@@ -194,6 +194,10 @@ Default behavior:
 - enforce a 350 ms minimum spacing between Habitica API requests unless an explicit `Habitica:MinRequestSpacingMilliseconds` configuration override is supplied;
 - keep feature-specific preparation delays separate from API throttling so UI cancellation windows do not count as rate-limit spacing.
 
+`AdaptiveRequestPacer` accounts for the next foreground request and begins slowing below half of the estimated budget. Remaining/reset headers supply a forward-looking spacing estimate; token replenishment protects a reserve of up to two requests. A per-client dispatch gate covers HTTP completion and header reconciliation, preventing concurrent callers from spending the same estimate. Queued and cooling calls remain cancellable. Server reset and Retry-After deadlines form a hard cooldown independent of recovery.
+
+Transport failures, timeouts, HTTP 429 and server failures double a bounded recovery factor; successful responses lower the factor by one eighth per response. Positive bounded jitter spreads later explicit calls. No failed operation is automatically replayed. `PacingStatus` contains only estimated capacity, reserve, recovery factor, cooldown and next delay. The client clock is injectable for synthetic qualification. Per-client estimates cannot coordinate independent browser devices or server instances.
+
 Do not call Habitica API directly from UI components.
 
 ### 4.6 Local storage

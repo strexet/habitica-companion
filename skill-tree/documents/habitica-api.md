@@ -127,7 +127,9 @@ Client requirements:
 - Add termination conditions for automation loops. Example: stop auto-casting skills when the user no longer has enough mana.
 - Do not poll aggressively for state that can be refreshed manually or obtained through webhooks.
 
-Current app note: `HabiticaApiClient` uses an adaptive token-bucket throttle, honors `Retry-After`, and surfaces non-success responses as `HabiticaApiException`; it does not currently replay failed requests through a generic retry/backoff layer.
+`HabiticaApiClient` serializes foreground dispatch and header reconciliation, begins adaptive pacing below half of estimated capacity and preserves a reserve of up to two requests. Remaining/reset headers influence spacing; server reset and `Retry-After` pauses cannot be shortened by successful responses. Transport/timeouts, 429 and 5xx responses reduce later throughput; sustained success restores throughput gradually. Failed calls surface exceptions without automatic replay. Independent client/device traffic remains outside the local estimate.
+
+The [official API usage guidelines](https://github.com/HabitRPG/habitica/wiki/API-Usage-Guidelines), reviewed 2026-10-17, require a thirty-second delay for automated background calls and describe limits applying to User ID or IP address. Foreground adaptive pacing supplies no background-policy exception or shared-egress coordination guarantee.
 
 Operational note: public tools that enumerate party or guild members can generate many requests. Use pagination, cache immutable content, and expose progress/cancellation in the UI.
 
