@@ -1,0 +1,39 @@
+{
+  "kind": "archive-count-correction",
+  "date": "2026-10-17",
+  "task_id": "T-65810da7-9524-45ce-b280-668d04c86441",
+  "source_commit": "665abbd607b5ead8d9388371195370c501826700",
+  "publication": {
+    "source_commit": "665abbd607b5ead8d9388371195370c501826700",
+    "website": "https://habitica-companion.pages.dev",
+    "deployment_url": "https://acf4000e.habitica-companion.pages.dev"
+  },
+  "checks": {
+    "component_cases_passed": 3,
+    "release_build": "pass",
+    "hosted_artifacts": {
+      "appsettings.json": {
+        "match": true,
+        "sha256": "8d8b54d9341167cd11d78a2ad4ddabc59c220402b574912bd9b96985aed28dc8"
+      },
+      "_framework/Habitica.WebApp.wasm": {
+        "match": true,
+        "sha256": "bd75405aa9f865958ac0e9b2a29a579e73901ef86bf6ab1100fc6ab56a7dd603"
+      }
+    },
+    "hosted_header": "1 listed tasks \u00b7 3 archived \u00b7 revision 13",
+    "archived_test_tasks_absent_from_selection": true,
+    "background_execution": "unavailable; not enabled",
+    "native_lifecycle_reference": "skill-tree/history/validation/native-lifecycle-production-check.json"
+  },
+  "evidence_sha256": {
+    "/tmp/habitica-archive-count-tests.txt": "912b3f4ca08a73214aa89167fcf08c6d3199967b9408851ceedf280b3969fb44",
+    "/tmp/habitica-archive-count-release.txt": "ae4cefeef20cae6c48f245750c6792c9f8caa80880cb677485cf3986009b0de0",
+    "/tmp/habitica-archive-count-pages-deploy.txt": "b664c856f03abf75ab9ffacf5ead65aabc0174d1065a581b8b661e0a83632959",
+    "/tmp/habitica-hosted-archive-counts.png": "d7dacb743c2e0d0da0fc3fce0d16af32e78b52aa207cda64ce5a2d0060934771"
+  },
+  "limitations": [
+    "Current native client discovery retains the older tool schema; new execution-tool invocation qualification remains unrun.",
+    "Live background projection, ChatGPT, teammate and physical-device qualification remain open or deferred."
+  ]
+}

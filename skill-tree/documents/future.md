@@ -321,45 +321,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Distinguish active and archived task counts
-
-```yaml
-id: T-65810da7-9524-45ce-b280-668d04c86441
-priority: 101
-status: Ready
-parent_pending_ids: ["P-f0f5ebac-0436-4f57-8865-29015a753872"]
-processing_run_id: PR-62e1c693-294f-4e2d-8964-364d2094ada2
-root_task_id: T-96866c8f-9554-55d8-a638-6d8b5afaf21c
-related_task_id: T-d76d2a9a-1318-4e63-9bb4-73f620b108cc
-relation: blocker
-depends_on: []
-```
-
-Goal:
-- Make retained archived task counts explicit in the editor header.
-Current behavior:
-- The header counts every canonical record while selection hides archived records.
-Desired behavior:
-- Separate active and archived counts match the visible list and retained history.
-Touch:
-- CompanionTasksPanel, direct component checks and UI documentation.
-Discovery allowance:
-- Inspect the existing archive flag, list filtering and header rendering.
-Out of scope:
-- Changing archive retention, task state, projection or workspace deletion.
-Implementation constraints:
-- Keep the count local to the loaded snapshot; use the same archive predicate as task selection.
-Questions and required clarifications:
-- [Resolved - source evidence] IsArchived controls task-list visibility; task state remains separate.
-Validation:
-- Run focused component checks and build the release app; inspect hosted counts after publication.
-Acceptance:
-- The header reports unarchived and archived counts separately after an archive, and existing review controls pass.
-Documentation updates:
-- Describe task-header count semantics in the UI manifest.
-Risks:
-- The term active refers to archive visibility; completed unarchived tasks still belong to the displayed task count.
-
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml
