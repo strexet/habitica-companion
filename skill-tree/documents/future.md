@@ -72,6 +72,32 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### E01 Hands-on competitor and mobile workflow qualification
+
+```yaml
+id: P-c5795748-6f25-4c0a-a471-fe72c1a85862
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Complete the source research hands-on competitor/mobile workflow qualification and use the findings to refine the adopted navigation baseline before implementation-specific production UI promotion.
+
+Expected behavior:
+- Document actual observed journeys and limitations without presenting public workflow documentation, a synthetic prototype or automatic contract adoption as human/device evidence.
+
+Current context:
+- The dated documented-flow inventory, personas, borrow/adapt/reject matrix and local prototype journeys/layout are complete. The local baseline is adopted under standing direction. Authenticated competitor sessions, human usability, virtual keyboard, safe areas and assistive technology remain unqualified. No live round is authorized.
+
+Source:
+- Remaining E01 intent from P-4f98b2b3-af24-5424-b2f9-066913f7133d and companion-first-mcp-research.md research completion gap; local contract adoption does not waive the explicit hands-on gate.
+
 ### E12 Saved views, review policies and mobile task hygiene
 
 ```yaml
@@ -123,42 +149,6 @@ Source:
 
 Priority rationale:
 - Preserve the original E11 feature-area priority.
-
-### E01 Competitive UX/IA study and mobile-first product contract
-
-```yaml
-id: P-4f98b2b3-af24-5424-b2f9-066913f7133d
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Source:
-- Companion-first epic `E01` (`P-4f98b2b3-af24-5424-b2f9-066913f7133d`); requirements are intake awaiting current-source research and decomposition.
-
-Description:
-- Benchmark Todoist, Things 3, TickTick, Amazing Marvin, Microsoft To Do and selective Asana/Linear/Jira flows. Produce a screenshot/flow inventory, 'borrow/adapt/reject' matrix, mobile IA, core personas and default-vs-advanced rules.
-
-Current context:
-- Existing Tasks page is a Habitica task-type list, not a modern daily planner or project workspace.
-- `companion-first-mcp-research.md` contains a documented-capability comparison and proposed design patterns. The reference explicitly excludes hands-on competitor usability findings. navigation-study.md records dated public workflows and a locally checked synthetic navigation prototype. Authenticated competitor-app/mobile usability and owner navigation feedback remain outstanding; detailed UI promotion retains the E01 gate.
-
-Requirements:
-- Real screenshots/documented workflows; task capture, planning, project organization, calendar, completed history, recurrence, error/pending states; mobile-first and accessibility criteria; explicit no-corporate-PM scope.
-
-Suggested implementation:
-- `skill-tree/documents/ux-ui-manifest.md`, canonical design/research notes under `skill-tree/documents/` and large artifacts under ignored `skill-tree/artifacts/`, low-fidelity mobile prototypes.
-
-Expected behavior:
-- Written benchmark with dated links, documented observations vs hypotheses, tested journeys, and approved navigation prototype before detailed UI tickets.
-
-Processing blocker:
-- The dated public-flow inventory and synthetic prototype supply local research evidence. Hands-on competitor/mobile usability and owner navigation feedback remain unavailable; detailed UI promotion retains the E01 gate.
 
 ### E08 Mobile-first task capture, edit, and navigation redesign
 

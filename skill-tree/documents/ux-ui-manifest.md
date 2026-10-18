@@ -1,5 +1,7 @@
 # UX/UI Manifest
 
+The [adopted navigation study](navigation-study.md) defines the local design baseline for new canonical workspace UI: Today, Inbox, Plan, Projects and More, with global title-first capture and advanced details on demand. The baseline follows the standing local direction; existing production routes described below remain the implementation truth until a corresponding unit is delivered. The separate hands-on E01 gate still governs production UI promotion. The study carries forward required local recovery/accessibility checks and separate real-device/live qualification. No human usability result or authenticated competitor test is claimed.
+
 Last reviewed: 2026-06-09
 
 This manifest records the current UI implementation, what is working, where readability or responsiveness has drifted, and which outside patterns are worth copying. Treat it as product guidance for future UI work, not as a pixel spec.

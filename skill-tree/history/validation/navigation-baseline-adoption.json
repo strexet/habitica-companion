@@ -1,0 +1,39 @@
+{
+  "task_id": "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
+  "date": "2026-10-18",
+  "scope": "Documentation/design baseline only; no production UI or live tests",
+  "checks": [
+    {
+      "name": "Unchanged prototype source fingerprints against prior recorded journey/layout evidence",
+      "result": "pass"
+    },
+    {
+      "name": "Inventory, personas, pattern decisions and default/advanced contract review",
+      "result": "pass"
+    },
+    {
+      "name": "Changed prose, strict future, repository documentation and whitespace checks",
+      "result": "pass"
+    }
+  ],
+  "delivered": [
+    "Adopted the checked Today/Inbox/Plan/Projects/More baseline under standing local contract direction.",
+    "Recorded concrete defaults, recurrence/date semantics and production recovery/accessibility acceptance.",
+    "Separated the completed documented-flow inventory and design baseline from remaining hands-on competitor/mobile qualification."
+  ],
+  "limitations": [
+    "No authenticated competitor session, human usability feedback, mobile keyboard/safe-area or assistive-technology result.",
+    "Production UI promotion retains the explicit hands-on E01 gate. The baseline does not accept any production feature or waive release gates."
+  ],
+  "followup_ids": [
+    "P-c5795748-6f25-4c0a-a471-fe72c1a85862"
+  ],
+  "source_fingerprints": {
+    "skill-tree/documents/navigation-study.md": "a183a18d224a5a1244319ff7487c633ad0d5a9d0636a74f4012982b4eaa7355e",
+    "skill-tree/documents/ux-ui-manifest.md": "843fd8217b6bc5e44f69479954676b9966bd71b377711755e0e2e1daebd4f0f5",
+    "skill-tree/documents/companion-first-mcp-research.md": "1a9310ea95ff1ea471860bc45b88ca203d9134804bafab75ddd99f030fbf1cf0",
+    "skill-tree/prototypes/mobile-navigation.html": "8fb2a476bd8c4fa47ca1d4ddb01cb163ea9d42a27aae9a16dc1d04394110b7ec",
+    "skill-tree/prototypes/navigation-review.html": "f9aaf33dbf12e4c9e52bd6738e06b5d395f5d9f1c11a60510c3ed2f798fbb93b",
+    "skill-tree/history/validation/navigation-prototype-research.json": "f7a387ebda6c2cc80ef8a81b4c1520c56dac6139f79ab9df264c12d3710e969b"
+  }
+}

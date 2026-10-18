@@ -39,7 +39,7 @@ The [research prototype](../prototypes/navigation-review.html) frames the [navig
 
 A casual organizer captures a task and returns later to plan the task. Default entry therefore exposes the title and a short review. Dates, notes, labels and projects remain optional. A personal-project organizer needs projects, sections, labels and progress without mandatory hierarchy. A game-focused owner needs Dashboard, Spells, Equipment, Pets & Mounts, Party and Quests to remain findable. The prototype provides direct named destinations under More; the study does not establish whether frequent game use warrants a primary shortcut.
 
-## Proposed navigation contract
+## Adopted local navigation contract
 
 The prototype uses five primary destinations: Today, Inbox, Plan, Projects and More. Plan contains Upcoming, Week and Month with an agenda. More exposes completed history, search, recurring work, gameplay, connections and settings. Desktop uses the same destinations in a side rail. Task capture remains visible independently of navigation. Phone editors open as scrollable modal sheets and retain labelled manual date controls.
 
@@ -63,8 +63,29 @@ The prototype models the current own-account boundary: party and quest destinati
 
 Responsive measurements cover 360, 390, 430, 768 and 1024 CSS pixels. Each measured document has matching scroll width, no visible control below forty-four pixels in height and no overlap between Add and navigation. A 360-pixel-wide, 460-pixel-high frame with 200% text retains matching scroll width and separate navigation/capture geometry. A shortened frame approximates reduced space; the approximation does not qualify an actual mobile virtual keyboard, safe-area inset, touch reach or assistive technology.
 
-## Remaining gate
+## Adoption and remaining qualification
 
-E01 in future.md remains Pending. Hands-on competitor-app/mobile usability evidence and owner navigation feedback remain unavailable. The local prototype and documented-flow inventory do not silently satisfy those requirements. Detailed production UI tasks remain behind the E01 gate; source-backed canonical domain, command and query work can be researched independently. Existing live release gates retain actual two-account, client and device qualification.
+The owner directed automatic adoption of further local contracts and explicitly included the E01 area in the implementation run. The intake permits screenshots or documented workflows for the inventory. The dated public-flow inventory satisfies that evidence alternative, and the checked prototype is adopted as the local design baseline on 2026-10-18. The source research separately asks for hands-on competitor/mobile qualification; that unperformed deliverable remains Pending. No owner usability feedback, competitor session or real-device result is claimed. Automatic local contract adoption removes a repeated design-approval question; adoption does not qualify hands-on research.
+
+Detailed UI units can be researched against the contract and existing canonical APIs. Implementation-specific production UI promotion retains the repository's hands-on E01 gate. Prototype evidence qualifies the design baseline only. Every production unit requires its own persistence, identity, error recovery, accessibility and local browser checks. Existing live release gates retain actual two-account, client, virtual keyboard, assistive-technology and device qualification. Independent canonical domain/query/command work can continue without claiming UI acceptance.
+
+## Default and advanced behavior
+
+Global Add opens title-first Todo capture. Normal native urgency and Companion-only persistence are defaults; no project, label, date, recurrence or game projection is required. Review precedes acceptance through the existing command contract. The success message names the saved destination. Advanced details expose task type, notes, separate plan/deadline dates, hierarchy and supported recurrence without requiring status administration.
+
+Today combines planned/overdue Todo work and canonical Daily occurrences without treating Habitica due state as a Companion schedule. Plan offers Upcoming, Week and Month with a keyboard-accessible agenda alternative. Inbox contains unplanned Todos without a primary project; Anytime contains otherwise unscheduled actionable work. Projects retain optional hierarchy and Todo-based progress. More provides search, retained history, recurring work, gameplay and connection/settings destinations. A destination becomes a production navigation target only when the target route works; the prototype does not authorize placeholder production screens.
+
+Recurrence produces one task/date occurrence; retained completed/skipped dates override generated pending work. Pause has Companion-only meaning and never promises to pause Habitica penalties. Habit events require an explicit direction. Canonical restore retains history and needs a reviewed domain contract before production exposure; a demo restore supplies no permission to reverse game rewards.
+
+## Production acceptance carried forward
+
+| Area | Required local production behavior | Separate qualification |
+| --- | --- | --- |
+| Save and recovery | Show saving, saved in Companion and game projection separately. Preserve the original command after uncertainty; offer receipt lookup instead of a new action. | Actual client/network behavior remains a live gate. |
+| Unavailable and empty | Distinguish disconnected, offline/stale, failed reads, empty workspace and no filter matches. Preserve editor content on recoverable failures. | Device interruption and background behavior remain unqualified. |
+| Recurrence and dates | Label planned date, deadline, occurrence date and rule timezone separately. No duplicate Daily row or silent date-to-instant conversion. | Device timezone data and actual keyboard/date-picker behavior require qualification. |
+| Touch and layout | Provide visible targets at least forty-four CSS pixels high, wrapping labels, safe-area padding and capture clear of navigation. Check 360/390/430/768/1024 widths and enlarged text. | Short-frame checks approximate reduced space; real keyboard and safe-area checks remain open. |
+| Keyboard and assistance | Keep labelled controls, visible focus, dialog entry/return focus, Escape handling, status announcements and alternatives to drag/swipe. | Full screen-reader and assistive-device checks remain open. |
+| Game and party | Preserve direct named game destinations, resource-spending previews, own-account boundaries and permanent departure prohibition. | Shared-party effects and new live rounds remain excluded. |
 
 Local review uses `python3 -m http.server 5189 --bind 127.0.0.1 --directory skill-tree/prototypes` from the repository root, followed by `http://127.0.0.1:5189/navigation-review.html` in a browser. Stop the review server after the review. No account sign-in is required.
