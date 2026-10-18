@@ -1,6 +1,6 @@
 # Habitica Companion plugin
 
-The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamable HTTP MCP declaration and three skills. The selected owner-pilot clients are ChatGPT and Codex desktop; each client requires independent connection and workflow qualification. Actual installation, model activation and two-user enrollment remain rollout checks. No plugin is installed or published by repository tests.
+The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamable HTTP MCP declaration and four skills. The selected owner-pilot clients are ChatGPT and Codex desktop; each client requires independent connection and workflow qualification. Actual installation, model activation and two-user enrollment remain rollout checks. No plugin is installed or published by repository tests.
 
 The committed MCP endpoint uses `.invalid` and cannot connect. Default Worker templates and PWA settings remain disabled. The ignored reviewed production bundle publishes `https://habitica-companion-mcp.strexet.workers.dev/mcp` and stages a matching package under `deploy/.production/plugin/`. The production endpoint is public and requires OAuth for tools; the owner reports initial ChatGPT custom-MCP authentication and Codex authentication; complete client qualification remains open. A deployable package requires an approved operator-configured HTTPS endpoint matching the Auth resource/audience and the MCP Worker configuration. Never add authorization headers or Habitica credentials to the package.
 
@@ -44,6 +44,7 @@ All workflow scenarios below apply independently to both clients. Selected real 
 | `$habitica-daily-review` | Account status, then legacy Daily list | Due, completed and unknown states stay separate; no write |
 | “What Habitica Dailies should I consider today?” | Daily review by matching description | Truncation and unknown due state remain explicit |
 | `$habitica-account-review` or “How much HP and MP do I have?” | Account review | Only returned stats; no exact reward prediction |
+| `$habitica-activity-review` or “Show retained Habit activity” | Canonical completion/Habit history reads | Exact events and detail provenance; no streak or reward inference |
 | “Create a Companion Todo called Read chapter 2” | Task management | Clarify game projection, prepare, show preview, await approval |
 | “Complete Read” with two canonical matches | Task management | Present candidates; no preparation or acceptance before exact selection |
 | “Complete a Daily” without a date | Task management | Clarify exact target and occurrence date |

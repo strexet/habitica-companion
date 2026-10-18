@@ -1,3 +1,4 @@
+import {habitHistory} from './habit-history.ts';
 import { taskToolInput, operationForTool, type TaskTool } from '../../shared/task-tools.ts';
 import { workspaceCommand, isTaskCreation } from '../../shared/workspace-commands.ts';
 import { WorkspaceError, workspaceTokenHash, uuid } from '../../shared/workspace-http.ts';
@@ -18,6 +19,7 @@ export function mutationResult(entry:CommandEntry,document:{tasks:{id:string;tex
 }
 export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,args:unknown,submit:(command:unknown)=>Promise<Response>):Promise<Record<string,unknown>>{
  const input=taskToolInput(name,args);
+ if(name==='get_habit_history')return habitHistory(env,row,input);
  if(name==='get_completed_history')return completionHistory(env,row,input);
  if(name==='get_task_sync_status')return taskSyncStatus(env,row);
  const document=JSON.parse(row.document_json);

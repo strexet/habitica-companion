@@ -1,0 +1,979 @@
+{
+  "document": {
+    "categories": [],
+    "projects": [],
+    "sections": [],
+    "labels": [],
+    "goals": [],
+    "tasks": [
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "90000000-0000-4000-8000-000000000101",
+        "text": "Renamed İΣ",
+        "kind": "habit",
+        "state": "active",
+        "priority": "low",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "Current-only",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": true,
+        "id": "90000000-0000-4000-8000-000000000102",
+        "text": "Archived Habit",
+        "kind": "habit",
+        "state": "active",
+        "priority": "low",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "Fallback note",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "90000000-0000-4000-8000-000000000103",
+        "text": "Not a Habit",
+        "kind": "todo",
+        "state": "active",
+        "priority": "low",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    ],
+    "occurrences": [],
+    "completions": [],
+    "habitScores": [
+      {
+        "id": "90000000-0000-4000-8000-000000000501",
+        "revision": 5,
+        "taskId": "90000000-0000-4000-8000-000000000101",
+        "commandId": "90000000-0000-4000-8000-000000000701",
+        "direction": "up",
+        "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+        "isArchived": false
+      },
+      {
+        "id": "90000000-0000-4000-8000-000000000502",
+        "revision": 5,
+        "taskId": "90000000-0000-4000-8000-000000000101",
+        "commandId": "90000000-0000-4000-8000-000000000701",
+        "direction": "up",
+        "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+        "isArchived": false
+      },
+      {
+        "id": "90000000-0000-4000-8000-000000000503",
+        "revision": 7,
+        "taskId": "90000000-0000-4000-8000-000000000101",
+        "commandId": "90000000-0000-4000-8000-000000000702",
+        "direction": "down",
+        "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+        "isArchived": false
+      },
+      {
+        "id": "90000000-0000-4000-8000-000000000504",
+        "revision": 6,
+        "taskId": "90000000-0000-4000-8000-000000000101",
+        "commandId": "90000000-0000-4000-8000-000000000703",
+        "direction": "up",
+        "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+        "isArchived": true
+      },
+      {
+        "id": "90000000-0000-4000-8000-000000000505",
+        "revision": 8,
+        "taskId": "90000000-0000-4000-8000-000000000102",
+        "commandId": "90000000-0000-4000-8000-000000000704",
+        "direction": "down",
+        "recordedAtUtc": "2026-10-17T12:00:00.1234568Z",
+        "isArchived": false
+      },
+      {
+        "id": "90000000-0000-4000-8000-000000000506",
+        "revision": 4,
+        "taskId": "90000000-0000-4000-8000-000000000102",
+        "commandId": "90000000-0000-4000-8000-000000000705",
+        "direction": "up",
+        "recordedAtUtc": "2026-10-16T00:00:00Z",
+        "isArchived": true
+      },
+      {
+        "id": "90000000-0000-4000-8000-000000000507",
+        "revision": 9,
+        "taskId": "90000000-0000-4000-8000-000000000101",
+        "commandId": "90000000-0000-4000-8000-000000000706",
+        "direction": "up",
+        "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+        "isArchived": false
+      }
+    ],
+    "projections": [],
+    "schemaVersion": 1,
+    "id": "90000000-0000-4000-8000-000000000001",
+    "revision": 20
+  },
+  "commands": [
+    {
+      "command": {
+        "id": "90000000-0000-4000-8000-000000000701",
+        "workspaceId": "90000000-0000-4000-8000-000000000001",
+        "expectedRevision": 4,
+        "operation": "scoreHabit",
+        "taskId": "90000000-0000-4000-8000-000000000101",
+        "patch": null,
+        "direction": "up",
+        "count": 2,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "c3d54a11e16a1b8c09d29b2444036c3b140fd01f0e5314ac698682c2deb4d2d2",
+      "acceptedAtUtc": "2026-10-17T12:00:00.1234567Z",
+      "projectionState": "notRequested",
+      "effects": [],
+      "confirmedEffects": 0,
+      "failure": "none",
+      "retryAtUtc": null,
+      "lease": null,
+      "dispatchedAtUtc": null,
+      "attempts": 0,
+      "taskSnapshot": {
+        "revision": 5,
+        "isArchived": false,
+        "id": "90000000-0000-4000-8000-000000000101",
+        "text": "Original İΣ Habit",
+        "kind": "habit",
+        "state": "active",
+        "priority": "low",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T12:00:00.1234567Z",
+        "notes": "Old target",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    },
+    {
+      "command": {
+        "id": "90000000-0000-4000-8000-000000000702",
+        "workspaceId": "90000000-0000-4000-8000-000000000001",
+        "expectedRevision": 6,
+        "operation": "scoreHabit",
+        "taskId": "90000000-0000-4000-8000-000000000101",
+        "patch": null,
+        "direction": "down",
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "e1aab84f3e141d799d05ee300ed852617779c1cdbce4760fe433b518d9aabe8e",
+      "acceptedAtUtc": "2026-10-17T12:00:00.1234567Z",
+      "projectionState": "notRequested",
+      "effects": [],
+      "confirmedEffects": 0,
+      "failure": "none",
+      "retryAtUtc": null,
+      "lease": null,
+      "dispatchedAtUtc": null,
+      "attempts": 0,
+      "taskSnapshot": {
+        "revision": 7,
+        "isArchived": false,
+        "id": "90000000-0000-4000-8000-000000000101",
+        "text": "No old note",
+        "kind": "habit",
+        "state": "active",
+        "priority": "low",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T12:00:00.1234567Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    },
+    {
+      "command": {
+        "id": "90000000-0000-4000-8000-000000000706",
+        "workspaceId": "90000000-0000-4000-8000-000000000001",
+        "expectedRevision": 8,
+        "operation": "scoreHabit",
+        "taskId": "90000000-0000-4000-8000-000000000101",
+        "patch": null,
+        "direction": "up",
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "0a4be1726c8bb08ae973a8c763176ba05777965d4d4aa89127ddeb978a9ded6a",
+      "acceptedAtUtc": "2026-10-17T12:00:00.1234567Z",
+      "projectionState": "notRequested",
+      "effects": [],
+      "confirmedEffects": 0,
+      "failure": "none",
+      "retryAtUtc": null,
+      "lease": null,
+      "dispatchedAtUtc": null,
+      "attempts": 0,
+      "taskSnapshot": {
+        "revision": 9,
+        "isArchived": false,
+        "id": "90000000-0000-4000-8000-000000000101",
+        "text": "History Σ",
+        "kind": "habit",
+        "state": "active",
+        "priority": "low",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T12:00:00.1234567Z",
+        "notes": "Ｆｏｌｄ",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    }
+  ],
+  "cases": [
+    {
+      "name": "all retained events in precise stable order",
+      "filter": {},
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000505",
+          "taskId": "90000000-0000-4000-8000-000000000102",
+          "commandId": "90000000-0000-4000-8000-000000000704",
+          "direction": "down",
+          "taskText": "Archived Habit",
+          "notes": "Fallback note",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234568Z",
+          "taskArchived": true,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000507",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000706",
+          "direction": "up",
+          "taskText": "History Σ",
+          "notes": "Ｆｏｌｄ",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000503",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000702",
+          "direction": "down",
+          "taskText": "No old note",
+          "notes": null,
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000504",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000703",
+          "direction": "up",
+          "taskText": "Renamed İΣ",
+          "notes": "Current-only",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": true
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000501",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000502",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000506",
+          "taskId": "90000000-0000-4000-8000-000000000102",
+          "commandId": "90000000-0000-4000-8000-000000000705",
+          "direction": "up",
+          "taskText": "Archived Habit",
+          "notes": "Fallback note",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-16T00:00:00Z",
+          "taskArchived": true,
+          "eventArchived": true
+        }
+      ],
+      "matchedCount": 7,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "up direction preserves batched events",
+      "filter": {
+        "direction": "up"
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000507",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000706",
+          "direction": "up",
+          "taskText": "History Σ",
+          "notes": "Ｆｏｌｄ",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000504",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000703",
+          "direction": "up",
+          "taskText": "Renamed İΣ",
+          "notes": "Current-only",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": true
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000501",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000502",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000506",
+          "taskId": "90000000-0000-4000-8000-000000000102",
+          "commandId": "90000000-0000-4000-8000-000000000705",
+          "direction": "up",
+          "taskText": "Archived Habit",
+          "notes": "Fallback note",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-16T00:00:00Z",
+          "taskArchived": true,
+          "eventArchived": true
+        }
+      ],
+      "matchedCount": 5,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "down direction is an explicit event",
+      "filter": {
+        "direction": "down"
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000505",
+          "taskId": "90000000-0000-4000-8000-000000000102",
+          "commandId": "90000000-0000-4000-8000-000000000704",
+          "direction": "down",
+          "taskText": "Archived Habit",
+          "notes": "Fallback note",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234568Z",
+          "taskArchived": true,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000503",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000702",
+          "direction": "down",
+          "taskText": "No old note",
+          "notes": null,
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        }
+      ],
+      "matchedCount": 2,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "exact archived task",
+      "filter": {
+        "taskId": "90000000-0000-4000-8000-000000000102"
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000505",
+          "taskId": "90000000-0000-4000-8000-000000000102",
+          "commandId": "90000000-0000-4000-8000-000000000704",
+          "direction": "down",
+          "taskText": "Archived Habit",
+          "notes": "Fallback note",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234568Z",
+          "taskArchived": true,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000506",
+          "taskId": "90000000-0000-4000-8000-000000000102",
+          "commandId": "90000000-0000-4000-8000-000000000705",
+          "direction": "up",
+          "taskText": "Archived Habit",
+          "notes": "Fallback note",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-16T00:00:00Z",
+          "taskArchived": true,
+          "eventArchived": true
+        }
+      ],
+      "matchedCount": 2,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "batched historical title",
+      "filter": {
+        "query": "original"
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000501",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000502",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        }
+      ],
+      "matchedCount": 2,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "normalized historical notes",
+      "filter": {
+        "query": "fold"
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000507",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000706",
+          "direction": "up",
+          "taskText": "History Σ",
+          "notes": "Ｆｏｌｄ",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        }
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "folded dotted and sigma title",
+      "filter": {
+        "query": "i̇σ"
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000504",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000703",
+          "direction": "up",
+          "taskText": "Renamed İΣ",
+          "notes": "Current-only",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": true
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000501",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000502",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        }
+      ],
+      "matchedCount": 3,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "historical null note never borrows current notes",
+      "filter": {
+        "query": "current-only"
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000504",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000703",
+          "direction": "up",
+          "taskText": "Renamed İΣ",
+          "notes": "Current-only",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": true
+        }
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "inclusive seven-digit exact bounds",
+      "filter": {
+        "recordedFromUtc": "2026-10-17T12:00:00.1234567Z",
+        "recordedThroughUtc": "2026-10-17T12:00:00.1234567Z"
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000507",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000706",
+          "direction": "up",
+          "taskText": "History Σ",
+          "notes": "Ｆｏｌｄ",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000503",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000702",
+          "direction": "down",
+          "taskText": "No old note",
+          "notes": null,
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000504",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000703",
+          "direction": "up",
+          "taskText": "Renamed İΣ",
+          "notes": "Current-only",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": true
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000501",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000502",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        }
+      ],
+      "matchedCount": 5,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "fraction before exact bounds excludes later tick",
+      "filter": {
+        "recordedThroughUtc": "2026-10-17T12:00:00.1234566Z"
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000506",
+          "taskId": "90000000-0000-4000-8000-000000000102",
+          "commandId": "90000000-0000-4000-8000-000000000705",
+          "direction": "up",
+          "taskText": "Archived Habit",
+          "notes": "Fallback note",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-16T00:00:00Z",
+          "taskArchived": true,
+          "eventArchived": true
+        }
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "combined selectors",
+      "filter": {
+        "taskId": "90000000-0000-4000-8000-000000000101",
+        "direction": "up",
+        "query": "old target",
+        "recordedFromUtc": "2026-10-17T00:00:00Z"
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000501",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000502",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000701",
+          "direction": "up",
+          "taskText": "Original İΣ Habit",
+          "notes": "Old target",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        }
+      ],
+      "matchedCount": 2,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "bounded first page",
+      "filter": {
+        "limit": 2
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000505",
+          "taskId": "90000000-0000-4000-8000-000000000102",
+          "commandId": "90000000-0000-4000-8000-000000000704",
+          "direction": "down",
+          "taskText": "Archived Habit",
+          "notes": "Fallback note",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234568Z",
+          "taskArchived": true,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000507",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000706",
+          "direction": "up",
+          "taskText": "History Σ",
+          "notes": "Ｆｏｌｄ",
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        }
+      ],
+      "matchedCount": 7,
+      "offset": 0,
+      "nextOffset": 2,
+      "truncated": true
+    },
+    {
+      "name": "guarded continuation",
+      "filter": {
+        "limit": 2,
+        "offset": 2,
+        "expectedRevision": 20
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000503",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000702",
+          "direction": "down",
+          "taskText": "No old note",
+          "notes": null,
+          "detailSource": "commandSnapshot",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": false
+        },
+        {
+          "eventId": "90000000-0000-4000-8000-000000000504",
+          "taskId": "90000000-0000-4000-8000-000000000101",
+          "commandId": "90000000-0000-4000-8000-000000000703",
+          "direction": "up",
+          "taskText": "Renamed İΣ",
+          "notes": "Current-only",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-17T12:00:00.1234567Z",
+          "taskArchived": false,
+          "eventArchived": true
+        }
+      ],
+      "matchedCount": 7,
+      "offset": 2,
+      "nextOffset": 4,
+      "truncated": true
+    },
+    {
+      "name": "last guarded page",
+      "filter": {
+        "limit": 2,
+        "offset": 6,
+        "expectedRevision": 20
+      },
+      "items": [
+        {
+          "eventId": "90000000-0000-4000-8000-000000000506",
+          "taskId": "90000000-0000-4000-8000-000000000102",
+          "commandId": "90000000-0000-4000-8000-000000000705",
+          "direction": "up",
+          "taskText": "Archived Habit",
+          "notes": "Fallback note",
+          "detailSource": "currentTask",
+          "recordedAtUtc": "2026-10-16T00:00:00Z",
+          "taskArchived": true,
+          "eventArchived": true
+        }
+      ],
+      "matchedCount": 7,
+      "offset": 6,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "non-Habit exact task gives no activity",
+      "filter": {
+        "taskId": "90000000-0000-4000-8000-000000000103"
+      },
+      "items": [],
+      "matchedCount": 0,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "unknown task gives no activity",
+      "filter": {
+        "taskId": "90000000-0000-4000-8000-000000000999"
+      },
+      "items": [],
+      "matchedCount": 0,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    }
+  ],
+  "invalid": [
+    {
+      "limit": 0
+    },
+    {
+      "limit": 101
+    },
+    {
+      "offset": 1
+    },
+    {
+      "offset": -1
+    },
+    {
+      "offset": 100001,
+      "expectedRevision": 20
+    },
+    {
+      "expectedRevision": 0
+    },
+    {
+      "direction": "complete"
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    {
+      "taskId": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "recordedFromUtc": "2026-10-17T00:00:00+01:00"
+    },
+    {
+      "recordedFromUtc": "0001-01-01T00:00:00Z"
+    },
+    {
+      "recordedFromUtc": "2026-02-30T00:00:00Z"
+    },
+    {
+      "recordedFromUtc": "2026-10-18T00:00:00Z",
+      "recordedThroughUtc": "2026-10-17T00:00:00Z"
+    },
+    {
+      "kind": "habit"
+    },
+    {
+      "profileId": "90000000-0000-4000-8000-000000000001"
+    }
+  ]
+}

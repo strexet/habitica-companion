@@ -67,7 +67,8 @@
       "T-37720737-c1a1-4d37-bb03-7037491fbf05",
       "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2",
       "T-188797a8-cbea-411c-82a5-74257508314b",
-      "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f"
+      "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
+      "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -87,6 +88,7 @@
       "T-211d2ac1-5778-47fb-8148-c9e1a320e31a": "O-ee0b74ce-2986-417f-95b7-92a78a6bfe88",
       "T-23520ce7-554d-4848-b64b-f4be9ed39800": "O-5df6fdca-e0cc-4e99-a578-1bf0abd83951",
       "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d": "O-9ebb8704-9e9e-405c-b175-bec36f05b86c",
+      "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95": "O-39236b38-6b75-49c2-bcd4-70b6839f3fc6",
       "T-29ef8846-6aa7-4255-990d-a8651e689ec2": "O-8a6c239c-6b80-4210-a2e6-a94e7a8e560b",
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee": "O-f879b8e5-0a9a-4c91-b292-993fb19bacb3",
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3": "O-48ebee79-cbbb-4c1c-829c-038c887076e9",
@@ -139,7 +141,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "41b625ce99b2b8a23c2dc282a844c5830c3275d1212799ec775abe2f8fb35dbc",
+    "cycle_signature": "ffb7e80d8ed85d5420660328f27e661941b6801603d360ae1e2f1a8285fb20a5",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -149,9 +151,9 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Research the remaining original E11 Habit activity-history read unit; live release gate remains blocked.",
+    "next_action": "Research the remaining original E12 dependency-aware candidate read; preserve live and mobile gates.",
     "partial_work": [
-      "Reviewed Todo restoration completed; release/app/Worker builds and all 995 local regression tests passed."
+      "Habit activity read and read-only package guidance completed; app/Worker builds and all 1004 local tests passed."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -206,7 +208,8 @@
       "P-a8192b85-62bd-4a16-93d1-30eaa8ce0152",
       "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9",
       "P-f0c7dfe0-a459-4636-af5c-567281e19367",
-      "P-7cb0bb45-a294-404c-b257-136d0f9f3de4"
+      "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
+      "P-346056d8-c254-4a1e-b860-6850c6cb470d"
     ],
     "phase": "process-required",
     "processing_results": [
@@ -1157,6 +1160,23 @@
           "model": "T-188797a8-cbea-411c-82a5-74257508314b",
           "restore": "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f"
         }
+      },
+      {
+        "created_ids": [
+          "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95"
+        ],
+        "dispositions": {
+          "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79": {
+            "reason": "Existing HabitScores and accepted snapshots support bounded retained activity reads. Mobile controls, streak sufficiency, linked schedules and conversion policy remain separate.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-4a24adf5-2ecc-40cc-bbde-9aeb3bb42238",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -1228,9 +1248,10 @@
       "T-37720737-c1a1-4d37-bb03-7037491fbf05",
       "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2",
       "T-188797a8-cbea-411c-82a5-74257508314b",
-      "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f"
+      "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
+      "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95"
     ],
-    "root_task_id": "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
+    "root_task_id": "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1375,6 +1396,16 @@
         "reason": "Resolve original E09 Todo restore with a retained cycle model dependency and native-only exact-event command.",
         "remaining_pending_id": "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
         "researched_remainder": "P-f0c7dfe0-a459-4636-af5c-567281e19367"
+      },
+      {
+        "original_pending_id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
+        "owner_direction": "Expand to local tasks and Pending work; adopt further local contracts",
+        "promoted_local_roots": [
+          "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95"
+        ],
+        "reason": "Decompose retained Habit review into canonical reads while preserving mobile/streak and game policy gates.",
+        "remaining_pending_id": "P-346056d8-c254-4a1e-b860-6850c6cb470d",
+        "researched_remainder": "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79"
       }
     ],
     "snapshot": [
@@ -1403,18 +1434,33 @@
       "T-37720737-c1a1-4d37-bb03-7037491fbf05",
       "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2",
       "T-188797a8-cbea-411c-82a5-74257508314b",
-      "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f"
+      "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
+      "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "b176b7b7382e43976eac4f5fd912aa014212f1788ce954ec78b681be32e42fe0",
+  "source_hash": "7f898d083c7a348bff312e042640b72a8e6d4a75b267c080eb450ebad98b0373",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
+      "id": "P-346056d8-c254-4a1e-b860-6850c6cb470d",
       "line": 75,
+      "parent_pending_ids": [],
+      "priority": 100,
+      "processing_run_id": null,
+      "queue": "Pending Queue",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": null,
+      "status": "Pending",
+      "title": "E11 Mobile recurrence/history controls and streak policies"
+    },
+    {
+      "depends_on": [],
+      "id": "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
+      "line": 101,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1428,7 +1474,7 @@
     {
       "depends_on": [],
       "id": "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9",
-      "line": 101,
+      "line": 127,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1437,12 +1483,12 @@
       "relation": "main",
       "root_task_id": null,
       "status": "Pending",
-      "title": "E13 Organization CRUD, advanced lifecycle/history and packaged workflows"
+      "title": "E13 Organization CRUD, task relationships and packaged workflows"
     },
     {
       "depends_on": [],
       "id": "P-c5795748-6f25-4c0a-a471-fe72c1a85862",
-      "line": 127,
+      "line": 153,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1456,20 +1502,6 @@
     {
       "depends_on": [],
       "id": "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa",
-      "line": 153,
-      "parent_pending_ids": [],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E12 Saved views, review policies and mobile task hygiene"
-    },
-    {
-      "depends_on": [],
-      "id": "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79",
       "line": 179,
       "parent_pending_ids": [],
       "priority": 100,
@@ -1479,7 +1511,7 @@
       "relation": "main",
       "root_task_id": null,
       "status": "Pending",
-      "title": "E11 Mobile recurrence controls, retained history and Habit review"
+      "title": "E12 Saved views, review policies and mobile task hygiene"
     },
     {
       "depends_on": [],

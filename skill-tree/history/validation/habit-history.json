@@ -1,0 +1,53 @@
+{
+  "task_id": "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95",
+  "date": "2026-10-18",
+  "scope": "Local retained Habit activity and packaged read guidance; no live calls or deployment",
+  "checks": [
+    {
+      "name": "Release app and three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 642,
+      "failed": 0,
+      "suites": {
+        "domain": 29,
+        "rules": 43,
+        "storage": 21,
+        "application": 135,
+        "api": 54,
+        "webapp": 360
+      }
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace",
+      "passed": 239,
+      "failed": 0
+    },
+    {
+      "name": "Skill package, changed prose, strict future, repository consistency and whitespace",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Sixteen neutral expected pages agree across C#, shared TypeScript and synthetic Workspace/MCP reads with seven-digit UTC precision, explicit direction, normalized details and guarded paging.",
+    "Archived events/tasks and same-command batch events remain separate. Matching snapshots preserve old wording and null notes; missing snapshots explicitly use current details.",
+    "A forty-seven-event case proves no legacy recent-history limit. Invalid filters, wrong snapshots/operations/directions and mismatched stored command identity fail explicitly.",
+    "D1 reads use the current profile/connection/access-epoch guarded document/snapshot batch; stale pages, corrupted source and lost epochs never become empty history.",
+    "Public/private read grants and profile isolation remain enforced; warmed reads create zero preparations and upstream writes.",
+    "A synthetic canonical score command records three distinct events; repeat of the same command retains exactly three events and the original receipt.",
+    "Four packaged skills pass schema/tool routing; the new activity-review skill uses read-only canonical tools and separates accepted history from game confirmation."
+  ],
+  "limitations": [
+    "Production mobile controls, streak semantics, real host/model activation and live qualification remain separate."
+  ],
+  "repairs": [
+    "The initial neutral journal omitted hashes and matching accepted snapshot timestamps. The fixture now supplies independently computed v1 hashes and consistent timestamps and passes full journal validation."
+  ]
+}

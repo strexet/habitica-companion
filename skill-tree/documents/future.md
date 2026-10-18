@@ -72,6 +72,32 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### E11 Mobile recurrence/history controls and streak policies
+
+```yaml
+id: P-346056d8-c254-4a1e-b860-6850c6cb470d
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Implement mobile recurrence/lifecycle and retained occurrence/Habit activity review controls; research sufficient-history streak semantics, linked schedules and task-type conversion before game behavior changes.
+
+Expected behavior:
+- Mobile review retains canonical history and states unavailable evidence explicitly; lifecycle controls never imply paused Habitica penalties or reversed rewards.
+
+Current context:
+- Canonical recurrence, lifecycle, civil agenda and completion history are implemented. Retained Habit reads are a separate local unit. Production UI retains the E01 hands-on gate; real client/device checks remain separate.
+
+Source:
+- Remaining original E11 intent from P-f2bb7e37-6700-58ac-aa56-b537d193c777 through P-59bd9da0-87a5-43c6-83d1-86075c5e4b79.
+
 ### E09 Mobile planning/history UI and remaining restore policies
 
 ```yaml
@@ -98,7 +124,7 @@ Current context:
 Source:
 - Remaining original E09 intent from P-c8632138-39c6-5797-8e03-a3414824ee96 through P-f0c7dfe0-a459-4636-af5c-567281e19367.
 
-### E13 Organization CRUD, advanced lifecycle/history and packaged workflows
+### E13 Organization CRUD, task relationships and packaged workflows
 
 ```yaml
 id: P-64cd7c9d-4f1b-4772-ba45-adc0535829e9
@@ -113,13 +139,13 @@ depends_on: []
 ```
 
 Description:
-- Implement reviewed category/project/section/label/goal creation/edit/archive commands, advanced task state/hierarchy/dependencies, completed-history/restore tools and corresponding packaged workflows.
+- Implement reviewed category/project/section/label/goal creation/edit/archive commands, advanced task state/hierarchy/dependencies and corresponding project/goal packaged workflows.
 
 Expected behavior:
 - Manual and agent workflows share canonical validation, original receipts and own-profile permissions without generic proxies or invented writes.
 
 Current context:
-- Read surfaces and native-only task placement are separate local foundations. Organization CRUD, lifecycle/history commands, hierarchy/dependency authoring and full skill parity remain unimplemented. UI and real host activation retain separate qualification.
+- Read surfaces and native-only task placement are separate local foundations. Completion/restoration and activity reads are implemented as separate local units. Organization CRUD, advanced state/hierarchy/dependency authoring and project/goal workflow guidance remain unimplemented. UI and real host activation retain separate qualification.
 
 Source:
 - Remaining original E13 intent from P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 through P-e5db46c5-d445-4199-8126-8fb504f7fd38.
@@ -171,36 +197,10 @@ Expected behavior:
 - Users find stalled work and review backlogs in a few mobile gestures without mandatory status management or punitive wording.
 
 Current context:
-- Canonical text/notes and metadata filters are being implemented separately. Saved views, review policy, next-action eligibility, reminders and mobile integration remain unimplemented.
+- Canonical text/notes and metadata filters are implemented. Saved views, review policy, next-action eligibility, reminders and mobile integration remain unimplemented.
 
 Source:
 - Original owner-authorized E12 intake P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d; remaining intent after query foundation decomposition.
-
-### E11 Mobile recurrence controls, retained history and Habit review
-
-```yaml
-id: P-59bd9da0-87a5-43c6-83d1-86075c5e4b79
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Add mobile recurrence/lifecycle controls, Today/calendar integration, retained occurrence and Habit event review, and streaks only when history is sufficient. Define supported linked-schedule and task-type-conversion policies before additional game projection behavior.
-
-Expected behavior:
-- Mobile workflows follow the E01 navigation/usability gate and preserve skipped/completed history through offline reconnect, travel and delayed sync. Canonical pause, skip, resume and restart never imply a paused Habitica schedule or reversed reward.
-
-Source:
-- Remaining original E11 intent from P-f2bb7e37-6700-58ac-aa56-b537d193c777, P-d6fb32f0-7125-4544-898a-c1028ca91a2a and P-8a968c91-80a2-46be-9f32-2fb514d3bc22 after calendar, authoring and researched lifecycle decomposition.
-
-Priority rationale:
-- Preserve the original E11 feature-area priority.
 
 ### E08 Mobile-first task capture, edit, and navigation redesign
 

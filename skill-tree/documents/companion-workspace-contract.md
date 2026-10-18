@@ -187,3 +187,9 @@ The optional data extension preserves default serialization when unused and supp
 ## Exact unlinked Todo restoration direction
 
 Standing local direction selects a reviewed restoreTodo operation for a completed nonarchived Todo with an exact canonical completion ID. Only patch.restoreTodo.completionId is accepted. The referenced completion must belong to the task and remain unrestored. Any retained game identity or nonunlinked mapping blocks restoration, including archived mappings. Acceptance appends one restoration and changes current state to active while retaining metadata, order and all completion cycles. No game effect, reward reversal or Daily/Habit undo occurs. Original command receipts remain recoverable after later cycles. Production controls, archived-task recovery and linked-game policies remain separate.
+
+## Retained Habit activity direction
+
+Standing local direction selects get_habit_history over retained canonical HabitScores. Every up/down event remains distinct, including same-command batches and archived task/event records. Optional exact task, direction, normalized details and inclusive UTC bounds combine with AND. Sorting uses precise UTC time, revision and stable event order. Continuation guards the canonical revision. Matching scoreHabit snapshots supply historical details; missing snapshots explicitly use current details. Present mismatched task, operation, direction or malformed snapshots fail unavailable.
+
+History reports accepted Companion records without inferring streaks, rewards, penalties or confirmed game projection. D1 reads bind the active profile, connection and access epoch in one document/snapshot batch. Read-only tools require tasks:read, create no effects and expose no account selector. Production mobile review and sufficient-history streak semantics remain separate.
