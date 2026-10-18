@@ -1,0 +1,57 @@
+{
+  "task_id": "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
+  "date": "2026-10-18",
+  "scope": "Local native organization engine and store service; no routes, live gameplay or deployment",
+  "checks": [
+    {
+      "name": "Release app and Workspace Worker dry build",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 718,
+      "failed": 0,
+      "suites": {
+        "domain": 32,
+        "application": 158,
+        "rules": 43,
+        "storage": 21,
+        "api": 87,
+        "webapp": 377
+      }
+    },
+    {
+      "name": "Full Workspace final run",
+      "passed": 311,
+      "failed": 0,
+      "wall_seconds": 28.59
+    },
+    {
+      "name": "Independent pinned runtime sequence",
+      "commands": 15,
+      "result": "pass",
+      "outbound_requests": 0
+    }
+  ],
+  "operations": [
+    {
+      "classification": "executed control",
+      "outcome": "Initial focused runs identified two invalid test fixtures: an external task ID and absent projection null defaults. Both fixtures were corrected."
+    },
+    {
+      "classification": "transport uncertainty",
+      "outcome": "Initial full Workspace run reported fetch failed in the unchanged spell epoch test, with 310 passing checks. The exact isolated test passed; full requalification passed all 311 checks."
+    }
+  ],
+  "acceptance_evidence": [
+    "Fifteen independently hashed create/update/archive commands accept all metadata kinds in Application and the pinned Workers runtime while preserving unrelated task order/state, history, mappings and game journals.",
+    "Exact nonarchived references, partial edits, category set/clear, immutable section membership, complete bounded Todo goal replacement and omitted legacy sets remain enforced. Archival never cascades to tasks or related metadata.",
+    "Retained exact command identity recovers the original receipt after later edits, archival or ownership freeze; changed intent and task-command ID collisions fail. Invalid/foreign/stale references and local frozen/cloud authority cannot save.",
+    "Account-bound optimistic stores atomically persist metadata plus native receipts. Conflicts and lost acknowledgements recover the original command; failures remain unknown and cancellation propagates.",
+    "A synthetic D1 store verifies concurrent compare-and-swap, aborting update failure and lost acknowledgement with one native receipt and no gameplay entries."
+  ],
+  "limitations": [
+    "Organization browser/MCP adapters, explicit authorization scope, production controls and actual host qualification remain separate.",
+    "The D1 store is an isolated qualification fixture; no public route or production D1 adapter is supplied by the engine."
+  ]
+}

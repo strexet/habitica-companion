@@ -307,49 +307,6 @@ Documentation updates:
 Risks:
 - Expanding old grants silently, accepting altered previews or misreporting native metadata as gameplay.
 
-### Accept exact native organization edits and archival
-
-```yaml
-id: T-e696791b-de0e-4e74-ac9a-831328ddb97f
-priority: 100
-status: Ready
-parent_pending_ids: ["P-cc70b363-4669-44a4-be9b-1d6cb918d36b"]
-processing_run_id: PR-398af912-54d0-48a8-8f46-72b282f78e22
-root_task_id: T-e696791b-de0e-4e74-ac9a-831328ddb97f
-related_task_id: null
-relation: main
-depends_on: ["T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c"]
-```
-
-Goal:
-- Accept reviewed native organization creation/edit/archive with original receipt recovery and no game effects.
-Current behavior:
-- Canonical organization entities and portable organization history provide the model; no organization acceptance engine exists.
-Desired behavior:
-- Shared C#/Worker acceptance creates, updates or archives exact categories/projects/sections/labels/goals and appends one typed history receipt atomically.
-Touch:
-- Application organization engine/service, shared Worker acceptance and direct portable/atomic-storage tests.
-Discovery allowance:
-- Reuse canonical reference validation, original identity checks and scoped optimistic store commits.
-Out of scope:
-- OAuth/MCP routing, production UI, gameplay, physical deletion or deployment.
-Implementation constraints:
-- Creation requires an unused opaque entity ID and name. Updates/archive require exact existing nonarchived kind/ID; omitted fields remain unchanged.
-- New project category and section project references must be nonarchived. Section project membership is immutable after creation; position/name can change.
-- Goal replacement uses exact nonarchived Todos; omitted legacy task sets remain unchanged. Archival retains references, sections, tasks, progress source history and prior receipts without cascade deletion.
-- Preserve document/task order and all unrelated state/history/mappings. Reject stale revisions, invalid mixed fields/references and frozen/cloud-owned local authority. Duplicate original identity recovers the original receipt before current-state checks; changed intent reuse fails.
-Questions and required clarifications:
-- [Resolved - standing local contract direction] Organization authoring remains native-only, with noncascading archival and existing Todo-based goal progress.
-Validation:
-- All entity kinds/actions, exact references, partial/clear/full replacement, archive retention, original receipts, lost acknowledgements and atomic store conflict/failure cases in both runtimes.
-Acceptance:
-- Exact organization commands preserve unrelated canonical state and recover original native receipts with no game effects.
-- Invalid/stale/foreign or frozen-authority organization commands cannot save partial changes.
-Documentation updates:
-- Describe supported organization edits, archival and remaining transport/UI limitations.
-Risks:
-- Cascading task loss, implicit goal scoring or changed receipt identity.
-
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml

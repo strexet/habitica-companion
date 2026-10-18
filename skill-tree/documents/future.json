@@ -72,7 +72,8 @@
       "T-e3653fbd-2101-4b58-8219-3aa076b56fe6",
       "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
       "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
-      "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c"
+      "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
+      "T-e696791b-de0e-4e74-ac9a-831328ddb97f"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -145,11 +146,12 @@
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b",
       "T-e3653fbd-2101-4b58-8219-3aa076b56fe6": "O-e3c8c194-719a-4bc0-9096-671b5ef256eb",
       "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68": "O-d1657c15-4f9e-4ae2-a8f1-9197c0c47839",
+      "T-e696791b-de0e-4e74-ac9a-831328ddb97f": "O-7494c340-b195-40bb-8f7e-a8173887891d",
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
-    "cycle_signature": "4c8d198c36d617678ce6a82ad9d1b38a328a6624d355ad5f4e8521d3fb345651",
+    "current_task_id": "T-74bb4500-60a6-4917-b654-13e6b5506afd",
+    "cycle_signature": "8118b0a3fe525828a450989c52a0babc35bb7994564f7d41075fe30c16b3c05f",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -159,7 +161,7 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Implement the selected native organization acceptance engine; retain the published production permission fix and closed live gameplay round.",
+    "next_action": "Implement selected scoped organization transport with explicit independent authorization and synthetic adapters; no deployment or live tests.",
     "partial_work": [],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -1577,7 +1579,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "53339e17704cae5daa0c3c315cefe51ac51bdf9f48918ad8b0ed2502e8e80d1d",
+  "source_hash": "39e78740c46625fa243ca2ea0df5b1348adb5895eb9632625caf277791ca1008",
   "tasks": [
     {
       "depends_on": [],
@@ -1697,24 +1699,6 @@
     },
     {
       "depends_on": [
-        "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c"
-      ],
-      "id": "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
-      "line": 310,
-      "parent_pending_ids": [
-        "P-cc70b363-4669-44a4-be9b-1d6cb918d36b"
-      ],
-      "priority": 100,
-      "processing_run_id": "PR-398af912-54d0-48a8-8f46-72b282f78e22",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
-      "status": "Ready",
-      "title": "Accept exact native organization edits and archival"
-    },
-    {
-      "depends_on": [
         "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
         "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
         "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
@@ -1728,7 +1712,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 353,
+      "line": 310,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1752,7 +1736,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 394,
+      "line": 351,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1768,7 +1752,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 549,
+      "line": 506,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1782,7 +1766,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 586,
+      "line": 543,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1796,7 +1780,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 623,
+      "line": 580,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1810,7 +1794,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 756,
+      "line": 713,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1824,7 +1808,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 794,
+      "line": 751,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1838,7 +1822,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 828,
+      "line": 785,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1852,7 +1836,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 863,
+      "line": 820,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1866,7 +1850,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 897,
+      "line": 854,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1880,7 +1864,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 935,
+      "line": 892,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1894,7 +1878,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 962,
+      "line": 919,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1908,7 +1892,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 984,
+      "line": 941,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1922,7 +1906,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1011,
+      "line": 968,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
