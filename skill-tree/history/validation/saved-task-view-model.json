@@ -1,0 +1,51 @@
+{
+  "task_id": "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
+  "date": "2026-10-18",
+  "scope": "Local fixed saved task-view definitions and current-state evaluation; no live tests or deployment",
+  "checks": [
+    {
+      "name": "Release application and all three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 760,
+      "failed": 0
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace",
+      "passed": 351,
+      "failed": 0
+    },
+    {
+      "name": "Focused archived-reference requalification",
+      "passed": 6,
+      "failed": 0
+    },
+    {
+      "name": "Neutral query cases and invalid portable definitions",
+      "query_cases": 13,
+      "invalid_definitions": 18,
+      "result": "pass"
+    },
+    {
+      "name": "Changed prose, strict future, repository consistency and whitespace",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Optional SavedTaskViews retain globally unique identities, revision, name, archive state and fixed source/filter definitions. Missing/null collections preserve unused serialization and explicit empty remains explicit.",
+    "Both runtimes reject unknown sources/predicates, pagination in definitions, incompatible stage/state or candidate overrides, invalid names/ranges/references, duplicate IDs, future revisions and fabricated effect fields. Retained archived category/project/label references remain valid.",
+    "Evaluators reuse current task/candidate semantics with no cached result IDs, immutable predicates and caller paging only. Missing/archived views and stale continuation fail; current state changes immediately affect results without changing saved definitions.",
+    "Scoped IndexedDB, portable journal backup and frozen authority transfer retain saved definitions; no D1 migration, task activity or game effect is introduced."
+  ],
+  "limitations": [
+    "Reviewed authoring commands, transport tools, relative presets, optional reminders and production saved-list controls remain separate units.",
+    "No real host, device, account or gameplay qualification and no deployment."
+  ]
+}

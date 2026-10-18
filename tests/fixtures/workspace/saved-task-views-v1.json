@@ -1,0 +1,1446 @@
+{
+  "document": {
+    "schemaVersion": 1,
+    "id": "60000000-0000-4000-8000-000000000001",
+    "revision": 20,
+    "categories": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000010",
+        "name": "Work"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000011",
+        "name": "Personal"
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000012",
+        "name": "Archived area"
+      }
+    ],
+    "projects": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000020",
+        "name": "Alpha",
+        "categoryId": "60000000-0000-4000-8000-000000000010"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000021",
+        "name": "Beta",
+        "categoryId": "60000000-0000-4000-8000-000000000011"
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000022",
+        "name": "Archived project",
+        "categoryId": "60000000-0000-4000-8000-000000000012"
+      }
+    ],
+    "sections": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000041",
+        "name": "Later",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 1
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000042",
+        "name": "First",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 0
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000043",
+        "name": "Hidden",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 2
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000044",
+        "name": "Other",
+        "projectId": "60000000-0000-4000-8000-000000000021",
+        "position": 0
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000045",
+        "name": "Archived parent",
+        "projectId": "60000000-0000-4000-8000-000000000022",
+        "position": 0
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000046",
+        "name": "Also first",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 0
+      }
+    ],
+    "labels": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000030",
+        "name": "Focus"
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000031",
+        "name": "Archived label"
+      }
+    ],
+    "goals": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000050",
+        "name": "Mixed work",
+        "taskIds": [
+          "60000000-0000-4000-8000-000000000101",
+          "60000000-0000-4000-8000-000000000103",
+          "60000000-0000-4000-8000-000000000104",
+          "60000000-0000-4000-8000-000000000105",
+          "60000000-0000-4000-8000-000000000106",
+          "60000000-0000-4000-8000-000000000109"
+        ]
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000051",
+        "name": "No tasks",
+        "taskIds": []
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000052",
+        "name": "Archived goal",
+        "taskIds": [
+          "60000000-0000-4000-8000-000000000105"
+        ]
+      }
+    ],
+    "tasks": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000101",
+        "text": "Release plan",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "HiddenNeedle Caf\u00e9 \u039f\u03a3 \u0130STANBUL \uff26\uff2f\uff23\uff35\uff33",
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000102",
+        "text": "Release review",
+        "kind": "todo",
+        "state": "waiting",
+        "priority": "high",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": "60000000-0000-4000-8000-000000000011",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-18",
+        "deadline": "2026-10-20",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "next"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000103",
+        "text": "Daily check",
+        "kind": "daily",
+        "state": "active",
+        "priority": "urgent",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "caf\u00e9",
+        "categoryId": "60000000-0000-4000-8000-000000000010",
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": "2026-10-17",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000104",
+        "text": "Habit repeat",
+        "kind": "habit",
+        "state": "paused",
+        "priority": "low",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000105",
+        "text": "Done",
+        "kind": "todo",
+        "state": "completed",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-16",
+        "deadline": "2026-10-16",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "inProgress"
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000106",
+        "text": "Archived HiddenNeedle",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "next"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000107",
+        "text": "Unscheduled",
+        "kind": "todo",
+        "state": "someday",
+        "priority": "urgent",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000021",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "inbox"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000109",
+        "text": "Cancelled work",
+        "kind": "todo",
+        "state": "cancelled",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "HiddenNeedle Caf\u00e9 \u039f\u03a3 \u0130STANBUL \uff26\uff2f\uff23\uff35\uff33",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "next"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000201",
+        "text": "Candidate 201",
+        "kind": "todo",
+        "state": "active",
+        "priority": "urgent",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "OnlyReady \uff26\uff2f\uff23\uff35\uff33",
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000021",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000105"
+        ],
+        "plannedDate": "2026-10-21",
+        "deadline": "2026-10-23",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "next"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000202",
+        "text": "Candidate 202",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000102"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "next"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000203",
+        "text": "Candidate 203",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000104"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "inProgress"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000204",
+        "text": "Candidate 204",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000106"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "inbox"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000205",
+        "text": "Candidate 205",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000109"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "inbox"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000206",
+        "text": "Candidate 206",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000107"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "next"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000207",
+        "text": "Candidate 207",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000101"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "inProgress"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000208",
+        "text": "Candidate 208",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000210"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "inProgress"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000209",
+        "text": "Candidate 209",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000105",
+          "60000000-0000-4000-8000-000000000102"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "next"
+      },
+      {
+        "revision": 20,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000210",
+        "text": "Candidate 210",
+        "kind": "todo",
+        "state": "completed",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "next"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000211",
+        "text": "Candidate 211",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": "60000000-0000-4000-8000-000000000011",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": "60000000-0000-4000-8000-000000000102",
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "inbox"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000212",
+        "text": "Candidate 212",
+        "kind": "todo",
+        "state": "paused",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000105"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null,
+        "executionStage": "next"
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000213",
+        "text": "Candidate 213",
+        "kind": "daily",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000105"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000214",
+        "text": "Candidate 214",
+        "kind": "habit",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000105"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    ],
+    "occurrences": [],
+    "completions": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000300",
+        "taskId": "60000000-0000-4000-8000-000000000105",
+        "commandId": "60000000-0000-4000-8000-000000000301",
+        "completedAtUtc": "2026-10-16T00:00:00Z",
+        "occurrenceId": null
+      },
+      {
+        "id": "60000000-0000-4000-8000-000000000320",
+        "revision": 20,
+        "taskId": "60000000-0000-4000-8000-000000000210",
+        "commandId": "60000000-0000-4000-8000-000000000321",
+        "completedAtUtc": "2026-10-17T00:00:00Z",
+        "occurrenceId": null,
+        "isArchived": true
+      }
+    ],
+    "habitScores": [],
+    "projections": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000400",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "state": "linked",
+        "habiticaTaskId": "60000000-0000-4000-8000-000000000500"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000401",
+        "taskId": "60000000-0000-4000-8000-000000000102",
+        "state": "pending",
+        "habiticaTaskId": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000402",
+        "taskId": "60000000-0000-4000-8000-000000000103",
+        "state": "unknownOutcome",
+        "habiticaTaskId": null
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000404",
+        "taskId": "60000000-0000-4000-8000-000000000104",
+        "state": "linked",
+        "habiticaTaskId": "60000000-0000-4000-8000-000000000504"
+      }
+    ],
+    "savedTaskViews": [
+      {
+        "id": "80000000-0000-4000-8000-000000000001",
+        "revision": 20,
+        "name": "default query retains all nonarchived kinds and states",
+        "isArchived": false,
+        "query": {
+          "source": "tasks",
+          "filter": {}
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000002",
+        "revision": 20,
+        "name": "Inbox includes absent and explicit preference only while active",
+        "isArchived": false,
+        "query": {
+          "source": "tasks",
+          "filter": {
+            "executionStage": "inbox"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000003",
+        "revision": 20,
+        "name": "Next excludes dormant and archived preferences",
+        "isArchived": false,
+        "query": {
+          "source": "tasks",
+          "filter": {
+            "executionStage": "next"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000004",
+        "revision": 20,
+        "name": "InProgress remains independent of dependency state",
+        "isArchived": false,
+        "query": {
+          "source": "tasks",
+          "filter": {
+            "executionStage": "inProgress"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000005",
+        "revision": 20,
+        "name": "stage and kind state urgency combine",
+        "isArchived": false,
+        "query": {
+          "source": "tasks",
+          "filter": {
+            "executionStage": "next",
+            "kind": "todo",
+            "state": "active",
+            "priority": "urgent"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000006",
+        "revision": 20,
+        "name": "stage and text combine",
+        "isArchived": false,
+        "query": {
+          "source": "tasks",
+          "filter": {
+            "executionStage": "inbox",
+            "query": "release"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000007",
+        "revision": 20,
+        "name": "first page preserves canonical order and total",
+        "isArchived": false,
+        "query": {
+          "source": "tasks",
+          "filter": {
+            "executionStage": "next"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000008",
+        "revision": 20,
+        "name": "continued page binds unchanged revision",
+        "isArchived": false,
+        "query": {
+          "source": "tasks",
+          "filter": {
+            "executionStage": "next"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000009",
+        "revision": 20,
+        "name": "Inbox candidates still require every dependency",
+        "isArchived": false,
+        "query": {
+          "source": "unblockedTodos",
+          "filter": {
+            "executionStage": "inbox"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000010",
+        "revision": 20,
+        "name": "Next cannot bypass incomplete prerequisites",
+        "isArchived": false,
+        "query": {
+          "source": "unblockedTodos",
+          "filter": {
+            "executionStage": "next"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000011",
+        "revision": 20,
+        "name": "InProgress allows completed archived dependencies",
+        "isArchived": false,
+        "query": {
+          "source": "unblockedTodos",
+          "filter": {
+            "executionStage": "inProgress"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000012",
+        "revision": 20,
+        "name": "candidate stage and project combine",
+        "isArchived": false,
+        "query": {
+          "source": "unblockedTodos",
+          "filter": {
+            "executionStage": "next",
+            "projectId": "60000000-0000-4000-8000-000000000020"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000013",
+        "revision": 20,
+        "name": "candidate stage and urgency combine",
+        "isArchived": false,
+        "query": {
+          "source": "unblockedTodos",
+          "filter": {
+            "executionStage": "next",
+            "priority": "urgent"
+          }
+        }
+      },
+      {
+        "id": "80000000-0000-4000-8000-000000000099",
+        "revision": 20,
+        "name": "Retained archive",
+        "isArchived": true,
+        "query": {
+          "source": "tasks",
+          "filter": {
+            "projectId": "60000000-0000-4000-8000-000000000022",
+            "categoryId": "60000000-0000-4000-8000-000000000012",
+            "labelId": "60000000-0000-4000-8000-000000000031"
+          }
+        }
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "default query retains all nonarchived kinds and states",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000101",
+        "60000000-0000-4000-8000-000000000102",
+        "60000000-0000-4000-8000-000000000103",
+        "60000000-0000-4000-8000-000000000104",
+        "60000000-0000-4000-8000-000000000105",
+        "60000000-0000-4000-8000-000000000107",
+        "60000000-0000-4000-8000-000000000109",
+        "60000000-0000-4000-8000-000000000201",
+        "60000000-0000-4000-8000-000000000202",
+        "60000000-0000-4000-8000-000000000203",
+        "60000000-0000-4000-8000-000000000204",
+        "60000000-0000-4000-8000-000000000205",
+        "60000000-0000-4000-8000-000000000206",
+        "60000000-0000-4000-8000-000000000207",
+        "60000000-0000-4000-8000-000000000208",
+        "60000000-0000-4000-8000-000000000209",
+        "60000000-0000-4000-8000-000000000211",
+        "60000000-0000-4000-8000-000000000212",
+        "60000000-0000-4000-8000-000000000213",
+        "60000000-0000-4000-8000-000000000214"
+      ],
+      "matchedCount": 20,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000001",
+      "page": {}
+    },
+    {
+      "name": "Inbox includes absent and explicit preference only while active",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000101",
+        "60000000-0000-4000-8000-000000000204",
+        "60000000-0000-4000-8000-000000000205",
+        "60000000-0000-4000-8000-000000000211"
+      ],
+      "matchedCount": 4,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000002",
+      "page": {}
+    },
+    {
+      "name": "Next excludes dormant and archived preferences",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201",
+        "60000000-0000-4000-8000-000000000202",
+        "60000000-0000-4000-8000-000000000206",
+        "60000000-0000-4000-8000-000000000209"
+      ],
+      "matchedCount": 4,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000003",
+      "page": {}
+    },
+    {
+      "name": "InProgress remains independent of dependency state",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000203",
+        "60000000-0000-4000-8000-000000000207",
+        "60000000-0000-4000-8000-000000000208"
+      ],
+      "matchedCount": 3,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000004",
+      "page": {}
+    },
+    {
+      "name": "stage and kind state urgency combine",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201"
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000005",
+      "page": {}
+    },
+    {
+      "name": "stage and text combine",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000101"
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000006",
+      "page": {}
+    },
+    {
+      "name": "first page preserves canonical order and total",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201",
+        "60000000-0000-4000-8000-000000000202"
+      ],
+      "matchedCount": 4,
+      "offset": 0,
+      "nextOffset": 2,
+      "truncated": true,
+      "viewId": "80000000-0000-4000-8000-000000000007",
+      "page": {
+        "limit": 2
+      }
+    },
+    {
+      "name": "continued page binds unchanged revision",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000206",
+        "60000000-0000-4000-8000-000000000209"
+      ],
+      "matchedCount": 4,
+      "offset": 2,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000008",
+      "page": {
+        "limit": 2,
+        "offset": 2,
+        "expectedRevision": 20
+      }
+    },
+    {
+      "name": "Inbox candidates still require every dependency",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000101",
+        "60000000-0000-4000-8000-000000000211"
+      ],
+      "matchedCount": 2,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000009",
+      "page": {}
+    },
+    {
+      "name": "Next cannot bypass incomplete prerequisites",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201"
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000010",
+      "page": {}
+    },
+    {
+      "name": "InProgress allows completed archived dependencies",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000208"
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000011",
+      "page": {}
+    },
+    {
+      "name": "candidate stage and project combine",
+      "taskIds": [],
+      "matchedCount": 0,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000012",
+      "page": {}
+    },
+    {
+      "name": "candidate stage and urgency combine",
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201"
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false,
+      "viewId": "80000000-0000-4000-8000-000000000013",
+      "page": {}
+    }
+  ],
+  "invalid": [
+    {
+      "name": "empty name",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": " ",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "unknown source",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "now",
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "missing query",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false
+        }
+      ]
+    },
+    {
+      "name": "missing filter",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks"
+          }
+        }
+      ]
+    },
+    {
+      "name": "stored paging forbidden",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": {
+              "offset": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "unknown expression forbidden",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": {
+              "expression": "*"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "invalid enum",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": {
+              "state": "Done"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "invalid range",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": {
+              "plannedFrom": "2026-10-20",
+              "plannedTo": "2026-10-19"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "incompatible stage",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": {
+              "executionStage": "next",
+              "state": "waiting"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "candidate override",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "unblockedTodos",
+            "filter": {
+              "kind": "todo"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "missing referenced project",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": {
+              "projectId": "80000000-0000-4000-8000-000000000999"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "duplicate identity",
+      "views": [
+        {
+          "id": "60000000-0000-4000-8000-000000000101",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "future revision",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 21,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "effect fields forbidden",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": {}
+          },
+          "effects": []
+        }
+      ]
+    },
+    {
+      "name": "null view",
+      "views": [
+        null
+      ]
+    },
+    {
+      "name": "missing source",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "filter": {}
+          }
+        }
+      ]
+    },
+    {
+      "name": "null filter",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "zero reference",
+      "views": [
+        {
+          "id": "80000000-0000-4000-8000-000000000001",
+          "revision": 20,
+          "name": "default query retains all nonarchived kinds and states",
+          "isArchived": false,
+          "query": {
+            "source": "tasks",
+            "filter": {
+              "labelId": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

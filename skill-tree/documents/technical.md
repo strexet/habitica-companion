@@ -1079,3 +1079,10 @@ Identity v8 binds extension presence, exact stage and explicit clear intent. Unu
 WorkspaceTaskFilter.ExecutionStage is an optional enum omitted from default serialization. Application and shared task-query validation reject undefined stages and explicitly incompatible kind/state predicates. Evaluation requires active Todo state before comparing the stored preference or Inbox default. Current state dominates dormant metadata. Candidate reads reuse the predicate after full-document dependency eligibility.
 
 MCP list_companion_tasks and get_unblocked_todos advertise the same executionStage selector; shared public/private routes retain existing tasks:read ownership. Filters remain read-only with stable canonical order, matching totals and revision-bound continuation. No persistence schema, write scope, secret or executor change accompanies the selector. Saved query definitions remain separate.
+
+
+## Saved task-view model and evaluation
+
+WorkspaceDocument.SavedTaskViews is an optional collection included in global entity identity and capacity checks. WorkspaceSavedTaskQuery contains an explicit tasks/unblockedTodos source and WorkspaceSavedTaskPredicates with scalar existing query fields. Candidate definitions reject kind/state overrides. Root validation checks source, names, revision, filter enums/ranges and category/project/label references, including retained archived entities. Missing/null extensions remain omitted; strict unsupported clients reject used extensions and require coordinated updates.
+
+Application WorkspaceSavedTaskViews.Evaluate and shared querySavedTaskView reuse canonical task/candidate engines rather than storing result IDs. Caller paging never replaces definition predicates. Current state, stage precedence, dependency eligibility, stable order and guarded continuation remain authoritative. Generic snapshots, scoped IndexedDB, portable backups and frozen authority transfer preserve definitions without D1 table changes. No new write adapter, consent, secret or executor activation is supplied by the model.

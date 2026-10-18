@@ -26,6 +26,16 @@ public sealed class IndexedDbWorkspaceDatabaseTests
     }
 
     [Fact]
+    public async Task SavedTaskViewDefinitionsSurviveScopedStorageAndPortableBackup()
+    {
+        var js=new Runtime();await using var database=new IndexedDbWorkspaceDatabase(js);var scope=database.ForScope("fixture_saved_views");var snapshot=Empty();
+        snapshot=snapshot with {Document=snapshot.Document with {SavedTaskViews=[new(Guid.NewGuid(),1,"Active Inbox",new(WorkspaceSavedTaskSource.Tasks,new(ExecutionStage:TodoExecutionStage.Inbox)))]}};
+        Assert.True(await scope.TryCommitAsync(0,snapshot,default));var loaded=await scope.LoadAsync(snapshot.Document.Id,default);
+        Assert.Equal(WorkspaceJournalJson.Serialize(snapshot),WorkspaceJournalJson.Serialize(loaded!));Assert.Equal(snapshot.Document.SavedTaskViews![0],Assert.Single(loaded!.Document.SavedTaskViews!));
+        Assert.Null(await database.ForScope("fixture_other").LoadAsync(snapshot.Document.Id,default));
+    }
+
+    [Fact]
     public async Task DatabaseClearRemovesCanonicalRowsAndDisposalReleasesTheModule()
     {
         var js = new Runtime(); var database = new IndexedDbWorkspaceDatabase(js);

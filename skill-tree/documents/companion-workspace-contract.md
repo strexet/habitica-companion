@@ -246,3 +246,10 @@ Reviewed setTodoStage accepts only patch.todoStage with an exact stage or explic
 Standing local direction selects optional executionStage inbox/next/inProgress for canonical task and dependency-candidate reads. A selector matches only active nonarchived Todos; absent preference means Inbox. Dormant preferences never match current-stage queries. Explicit incompatible kind/state filters fail. Omitted stage leaves existing results unchanged.
 
 All remaining filters combine with AND. Canonical order, matching totals and revision-bound continuation remain intact. Dependency candidates require every explicit dependency currently Completed regardless of stage; no stage supplies ranking or game permission. Existing own-profile tasks:read authorization remains mandatory. Named saved views, production UI and live qualification remain separate.
+
+
+## Fixed saved task-view direction
+
+Standing local direction selects optional canonical saved task views with exact ID, revision, name, archive state and a complete query definition. Definitions contain source tasks/unblockedTodos and only existing scalar combined predicates, including current active-stage filters. Saved definitions exclude result IDs, paging/revision, account selectors, arbitrary expressions and relative-date presets. Stored civil dates remain fixed; a name never changes date semantics.
+
+Organization filter references must exist, including retained archived metadata. Candidate definitions refuse kind/state overrides and retain full explicit dependency eligibility. Current-state evaluation uses caller paging only with fresh revision guards; missing/archived views fail explicitly. Views share canonical identity/capacity limits and generic backup/storage/handoff. Optional default omission preserves unused older serialization. No read causes task/game effects. Reviewed authoring, public transport, relative dates, optional reminders and production controls remain separate units.

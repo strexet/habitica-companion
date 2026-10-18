@@ -22,7 +22,8 @@ public static class WorkspaceRules
         }
         var all = document.Categories.Cast<WorkspaceEntity>().Concat(document.Projects).Concat(document.Sections)
             .Concat(document.Labels).Concat(document.Goals).Concat(document.Tasks).Concat(document.Occurrences)
-            .Concat(document.Completions).Concat(document.Restorations ?? Array.Empty<TaskRestoration>()).Concat(document.HabitScores).Concat(document.Projections).ToArray();
+            .Concat(document.Completions).Concat(document.Restorations ?? Array.Empty<TaskRestoration>()).Concat(document.HabitScores).Concat(document.Projections)
+            .Concat(document.SavedTaskViews ?? Array.Empty<WorkspaceSavedTaskView>()).ToArray();
         if (all.Any(entity => entity is null)) { errors.Add(new("null_entity")); return errors; }
         if (all.Length + (document.OrganizationHistory?.Count ?? 0) > 100000) { errors.Add(new("workspace_too_large")); return errors; }
         var identities = new HashSet<Guid> { document.Id };
@@ -47,6 +48,15 @@ public static class WorkspaceRules
             if (section.Position < 0) errors.Add(new("invalid_position", section.Id));
         }
         foreach (var label in document.Labels) Name(label.Name, label.Id);
+        foreach(var view in document.SavedTaskViews ?? Array.Empty<WorkspaceSavedTaskView>())
+        {
+            Name(view.Name,view.Id);
+            if(view.Query is null || !view.Query.IsValid()) { errors.Add(new("invalid_saved_task_view",view.Id));continue; }
+            var filter=view.Query.Filter;
+            Reference(filter.CategoryId,filter.CategoryId is {} categoryId && categories.Contains(categoryId),view.Id);
+            Reference(filter.ProjectId,filter.ProjectId is {} projectId && projects.ContainsKey(projectId),view.Id);
+            Reference(filter.LabelId,filter.LabelId is {} labelId && labels.Contains(labelId),view.Id);
+        }
         foreach (var goal in document.Goals)
         {
             Name(goal.Name, goal.Id);

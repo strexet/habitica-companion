@@ -80,6 +80,8 @@ public sealed record WorkspaceDocument
     public IReadOnlyList<WorkspaceSection> Sections { get; init; } = Array.Empty<WorkspaceSection>();
     public IReadOnlyList<WorkspaceLabel> Labels { get; init; } = Array.Empty<WorkspaceLabel>();
     public IReadOnlyList<WorkspaceGoal> Goals { get; init; } = Array.Empty<WorkspaceGoal>();
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<WorkspaceSavedTaskView>? SavedTaskViews { get; init; }
     public IReadOnlyList<CompanionTask> Tasks { get; init; } = Array.Empty<CompanionTask>();
     public IReadOnlyList<TaskOccurrence> Occurrences { get; init; } = Array.Empty<TaskOccurrence>();
     public IReadOnlyList<CompletionEvent> Completions { get; init; } = Array.Empty<CompletionEvent>();

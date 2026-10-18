@@ -10,7 +10,8 @@ public sealed class WorkspaceHandoffTests
     private static WorkspaceJournalSnapshot Accepted()
     {
         var empty = new WorkspaceJournalSnapshot(new WorkspaceDocument { Id = Guid.NewGuid() }, 1, []);
-        return WorkspaceCommandEngine.Accept(empty, new(Guid.NewGuid(), empty.Document.Id, 1, WorkspaceOperation.CreateTodo, Guid.NewGuid(), new(Text: "Transfer intent"), ProjectToHabitica: true), Now).Snapshot!;
+        var accepted=WorkspaceCommandEngine.Accept(empty, new(Guid.NewGuid(), empty.Document.Id, 1, WorkspaceOperation.CreateTodo, Guid.NewGuid(), new(Text: "Transfer intent"), ProjectToHabitica: true), Now).Snapshot!;
+        return accepted with {Document=accepted.Document with {SavedTaskViews=[new(Guid.NewGuid(),accepted.Document.Revision,"Saved native query",new(WorkspaceSavedTaskSource.Tasks,new(ExecutionStage:TodoExecutionStage.Inbox)))]}};
     }
     [Fact]
     public async Task FrozenTransferSurvivesRestartAndLostAcknowledgementWithoutLocalDispatch()
@@ -19,6 +20,7 @@ public sealed class WorkspaceHandoffTests
         var transfer = new WorkspaceHandoffService(store, new Clock(Now));
         var json = await transfer.PrepareAsync(id, default); var frozen = WorkspaceJournalJson.Deserialize(json);
         Assert.Equal(WorkspaceAuthorityMode.Frozen, frozen.Authority!.Mode);
+        Assert.Equal(store.Value.Document.SavedTaskViews![0],Assert.Single(frozen.Document.SavedTaskViews!));
         Assert.False(ProjectionJournal.Acquire(store.Value, frozen.Commands[0].Command.Id, "local", Now, TimeSpan.FromSeconds(30)).Acquired);
         Assert.Equal(json, await new WorkspaceHandoffService(store, new Clock(Now.AddMinutes(1))).PrepareAsync(id, default));
         var edit = new WorkspaceCommand(Guid.NewGuid(), id, frozen.Document.Revision, WorkspaceOperation.UpdateTask, frozen.Commands[0].Command.TaskId, new(Text: "Cannot alter frozen archive"));
