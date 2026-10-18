@@ -72,6 +72,32 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### E13 Advanced organization writes, planning/history tools and skill parity
+
+```yaml
+id: P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Implement reviewed canonical organization/task assignment commands and advanced planning, completed history and sync-status tools with matching packaged workflows.
+
+Expected behavior:
+- Manual and agent workflows use the same canonical command validation, original receipts and per-profile scopes without a generic proxy or invented results.
+
+Current context:
+- Canonical combined task filters, civil agenda and organization reads are local foundations. Category/project/goal/label writes, advanced task planning fields, completed-history/restore tools, queue status detail and corresponding skill workflows remain outstanding. Production UI and actual host activation retain separate qualification.
+
+Source:
+- Remaining original owner-authorized E13 intent P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 after read-only organization decomposition.
+
 ### E09 Mobile planning views, Inbox and retained completed history
 
 ```yaml
@@ -233,38 +259,6 @@ Out of scope:
 
 Expected behavior:
 - A casual user creates a Todo with one field; a power user creates a project with tasks/deadlines/labels and reviews progress from a phone.
-
-### E13 MCP and Skills for Companion-native project/task/goal operations
-
-```yaml
-id: P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Source:
-- Companion-first epic `E13` (`P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156`); requirements are intake awaiting current-source research and decomposition.
-
-Description:
-- Extend the optional OAuth/MCP integration with canonical Companion domain commands for categories, projects, goals, labels, advanced task fields, filters, planning, activity log and queue status.
-
-Current context:
-- Auth/OAuth, plugin packaging, Habitica read tools and reviewed canonical task tools are implemented with local synthetic qualification. `list_companion_tasks`, `prepare_task_command`, `create_todo`, `update_task`, `complete_task`, `score_habit` and command receipts already exist. Advanced category/project/goal, planning/history and queue-status tools remain outside the implemented task surface; hosted enrollment remains unqualified.
-
-Requirements:
-- Narrow tools such as `list_projects`, `create_project`, `list_categories`, `list_goals`, `create_companion_task`, `update_companion_task`, `list_upcoming`, `get_completed_history`, `get_sync_status`; schema-level validation, per-profile auth, confirmation for sensitive actions, no generic API proxy.
-
-Dependencies:
-- Canonical domain, MCP-accessible Workspace, authoritative task commands, projection reconciliation and profile permissions exist as local foundations. Reuse the implemented boundaries; research remaining advanced operations and outstanding hardening/release dependencies before promotion.
-
-Expected behavior:
-- ChatGPT performs the same advanced task workflows as the manual app, sees pending-vs-confirmed game projection, and cannot bypass validation or access another user's workspace.
 
 ## Prioritized Next Changes
 

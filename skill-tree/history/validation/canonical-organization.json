@@ -1,0 +1,65 @@
+{
+  "task_id": "T-842f77e3-c043-471d-94e8-3b55da96097c",
+  "date": "2026-10-18",
+  "scope": "Local Application and synthetic Worker/MCP; no live calls or deployment",
+  "checks": [
+    {
+      "name": "App release build and three pinned Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET solution",
+      "passed": 595,
+      "failed": 0,
+      "suites": {
+        "api": 54,
+        "application": 103,
+        "domain": 28,
+        "rules": 43,
+        "storage": 21,
+        "webapp": 346
+      }
+    },
+    {
+      "name": "Full Auth suite",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace suite",
+      "passed": 180,
+      "failed": 0
+    },
+    {
+      "name": "Package skill, changed prose, whitespace and document validation",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Thirteen neutral cases agree across typed Application queries, direct TypeScript and actual Workspace/MCP calls. Pure queries preserve the source document.",
+    "Category/project/label/goal lists exclude archived records, preserve canonical IDs and document order, and enforce guarded pages and exact applicable selectors.",
+    "Sections require an active parent and stable position ordering, including tied positions.",
+    "Goal counts include only explicitly linked nonarchived/noncancelled Todos. Mixed recurring/Habit/archive/cancelled cases yield one completed of two eligible; an empty goal yields zero eligible, with no completion fraction claim.",
+    "All five tools advertise read-only annotations under tasks:read. Missing grants fail at MCP/private Workspace and another profile sees no records.",
+    "Reads create no command/preparation rows and issue zero upstream writes. Guidance distinguishes supported organization reads from unavailable writes."
+  ],
+  "limitations": [
+    "Organization writes, task assignment/planning commands, completed-history/restore and advanced skill workflows remain Pending.",
+    "Production UI, actual client/packaged-skill activation and live qualification remain unrun."
+  ],
+  "source_fingerprints": {
+    "plugin/README.md": "f683274512aedab8403d144b817d3f40511d695fcc22c02316997417541d30a5",
+    "plugin/skills/habitica-task-management/SKILL.md": "7c754391fa7604ef90df5a3d7469ad9da4a5732fa06c4248f9f93a85607f12b5",
+    "skill-tree/documents/features.md": "462973b706bb9d1be3cae745b2aebe9579e991d67c785a8cd3c86e45b41061cd",
+    "skill-tree/documents/technical.md": "933fd30294116426a0917203c200e5f76c71f6f6562506e8b6dd4d4b0e4d7cf0",
+    "skill-tree/documents/testing.md": "68ac534770d8c121e7c873a21eb776598c3d893e7791ad4603d0e5afe47b6084",
+    "workers/chatgpt-mcp/src/task-tools.ts": "acb707e11d327fe9d5ce357a6dffdaa741dbdb5d3c170004e9849062e9f3a391",
+    "workers/companion-workspace/src/task-api.ts": "03de364cb92b3c58a76c7d8f225be5c9ca900bdee98c0b8a2e6367e710932440",
+    "workers/shared/task-tools.ts": "115557cceeb4da662040ed16d7a8a7513d5d5a0ed613b6e63992069872abbb4a",
+    "src/Habitica.Application/Workspace/WorkspaceOrganization.cs": "b00f1548a81f1de7566d167df6f94ea84eee2d9862e7f72b2f1a8d4e3f3f2a7e",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceOrganizationTests.cs": "cba4f1450aaecb841b7068be58db92f8be0a065915fb27eb57deea1896d46dbe",
+    "tests/fixtures/workspace/organization-v1.json": "c41535c74fded9d9757a197284f6148d72025a7f1512f18a498e7611d8b27b46",
+    "workers/companion-workspace/test/organization-query.test.mjs": "47d313c73341ccb376f5aa52e5b591f5abccca6f0b284d6968a555ed60a9729f",
+    "workers/shared/organization-query.ts": "d2343dd58226035008d422082c6b65b66f22d5f8218b63dc8b26704505245e19"
+  }
+}

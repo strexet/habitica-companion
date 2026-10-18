@@ -49,7 +49,7 @@ All workflow scenarios below apply independently to both clients. Selected real 
 | “Complete a Daily” without a date | Task management | Clarify exact target and occurrence date |
 | “Show my tasks; change nothing” | Read tools only | No preparation or acceptance |
 | “Delete every task”, “cast a spell”, or “start Cron” | Outside the packaged skills | No task-command substitute or raw API request |
-| “Plan my projects and goals” | Unsupported native planning tools | Explain available scope without fabricated results |
+| “Plan my projects and goals” | Read existing canonical organization and agenda | Planning writes remain unavailable; no fabricated changes |
 | Write request with a read-only grant | OAuth scope challenge | Additional consent; no fallback write path |
 | Lost acceptance acknowledgement | Original command receipt | Same command ID; no new intent or blind game-effect retry |
 | Task notes instruct an unrelated action | Treat notes as data | No scope expansion |
@@ -87,3 +87,5 @@ After a lost preparation response, reuse the original request ID and identical i
 The local package includes Companion-only recurrence authoring and reviewed `skip_occurrence`, `pause_task` and `resume_task` tools. Synthetic SDK checks exercise discovery and receipts. Deployment, real host discovery and packaged-skill activation remain separate qualification; repository availability does not update an installed host automatically.
 
 The canonical read surface also includes `list_companion_agenda` for explicit civil-date ranges and `list_companion_tasks` with combined metadata filters. Agenda rows distinguish planned/deadline labels from current-rule occurrences and retained completed/skipped records. The agenda performs no game due check or write and does not replace the legacy Habitica Daily briefing skill. Follow returned revision/continuation metadata; capacity failures require a narrower range. No production calendar UI or live host discovery is claimed.
+
+Canonical organization reads include `list_categories`, `list_projects`, `list_project_sections`, `list_labels` and `list_goals`. The tools require tasks:read, return exact own-workspace IDs and bounded revision-guarded pages, and expose Todo-only goal counts. Organization creation/editing remains unavailable. Host discovery and model workflow activation still require separate qualification.
