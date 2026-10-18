@@ -321,3 +321,7 @@ The existing Pages production slot receives the tested frontend with ordinary us
 ## Todo relationship compatibility
 
 relateTodo adds optional patch.relationships and identity v6 while unused extensions preserve v1-v5. Matching application, MCP, Workspace and task-management package updates are required before use; strict older clients can reject extended journals. No D1 migration, secret or enabled executor is required. Local synthetic qualification does not publish backend tools or production relationship controls. The separately published user-action permission correction remains a frontend-only deployment.
+
+## Native organization-history compatibility
+
+Optional organizationHistory is retained in the existing canonical document and introduces no D1 migration, new binding or secret. Matching application/Worker validators are required before using the extension; strict older clients can reject extended documents. Existing document/archive capacity and consent remain applicable. Model qualification and synthetic handoff tests publish no organization route or backend update. The verified production user-permission artifact remains unchanged by local model work.

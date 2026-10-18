@@ -1,3 +1,4 @@
+import {validateOrganizationHistoryHashes} from '../../shared/workspace-organization.ts';
 import {applyRelationships,relationshipReferencesAvailable} from '../../shared/task-relationships.ts';
 import { mergeDetails } from "../../shared/task-details.ts";
 import { workspaceDocument, type WorkspaceDocument, type CompanionTask } from "../../shared/workspace-domain.ts";
@@ -13,7 +14,9 @@ export interface CommandEntry {
 export interface JournalEvent { id: string; commandId: string; kind: string; atUtc: string; confirmedEffects: number; failure: string; attemptToken: string | null; evidenceReference: string | null }
 export async function accept(document: WorkspaceDocument, command: WorkspaceCommand, now: string): Promise<{ document: WorkspaceDocument; entry: CommandEntry; event: JournalEvent }> {
  document = workspaceDocument(document);
+ await validateOrganizationHistoryHashes(document);
  if (command.workspaceId !== document.id) throw new WorkspaceError("workspace_mismatch", 409);
+ if(document.organizationHistory?.some(entry=>entry.command.id===command.id))throw new WorkspaceError('command_id_reused',409);
  if (command.expectedRevision !== document.revision) throw new WorkspaceError("stale_revision", 409);
  if (document.revision === Number.MAX_SAFE_INTEGER) throw new WorkspaceError("revision_exhausted", 409);
  const result = structuredClone(document); const revision = ++result.revision;

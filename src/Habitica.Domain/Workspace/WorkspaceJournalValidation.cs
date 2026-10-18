@@ -12,11 +12,16 @@ public static class WorkspaceJournalValidation
             || authority.Mode == WorkspaceAuthorityMode.Local && (authority.TransferId is not null || authority.CloudWorkspaceId is not null)
             || authority.Mode == WorkspaceAuthorityMode.Frozen && (authority.TransferId is null || authority.CloudWorkspaceId is not null)
             || authority.Mode == WorkspaceAuthorityMode.Cloud && authority.CloudWorkspaceId != snapshot.Document.Id)) return false;
+        var organizationHistory = snapshot.Document.OrganizationHistory ?? Array.Empty<WorkspaceOrganizationEntry>();
+        if (organizationHistory.Any(entry => entry.PayloadHash != WorkspaceOrganizationCommands.Hash(entry.Command))) return false;
+        var organizationRevisions = organizationHistory.Select(entry => entry.Snapshot.Revision).ToHashSet();
+        var organizationIds = organizationHistory.Select(entry => entry.Command.Id).ToHashSet();
         var ids = new HashSet<Guid>();
         var restorations = (snapshot.Document.Restorations ?? Array.Empty<TaskRestoration>()).ToDictionary(value => value.CommandId);
         foreach (var entry in snapshot.Commands)
         {
             if (entry is null || entry.Command is null || entry.Command.Id == Guid.Empty || !ids.Add(entry.Command.Id)
+                || organizationIds.Contains(entry.Command.Id) || organizationRevisions.Contains(entry.Command.ExpectedRevision + 1)
                 || entry.Command.WorkspaceId != snapshot.Document.Id || entry.Command.ExpectedRevision < 1 || entry.Command.ExpectedRevision >= snapshot.Document.Revision
                 || !HabiticaTaskDetails.IsValid(entry.Command.Patch?.HabiticaDetails)
                 || entry.Command.Patch?.Recurrence is { } recurrence && !RecurrenceCalendar.IsStructurallyValid(recurrence)

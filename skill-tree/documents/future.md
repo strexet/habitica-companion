@@ -72,10 +72,10 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### E13 Organization CRUD, advanced state and project workflow guidance
+### E13 Advanced Todo state and project workflow guidance
 
 ```yaml
-id: P-cc70b363-4669-44a4-be9b-1d6cb918d36b
+id: P-14835d09-6c68-4472-a5fb-622c5500f9b4
 priority: 100
 status: Pending
 parent_pending_ids: []
@@ -87,16 +87,16 @@ depends_on: []
 ```
 
 Description:
-- Implement reviewed category/project/section/label/goal creation/edit/archive commands, remaining Todo workflow state and corresponding project/goal packaged workflows.
+- Implement remaining Todo workflow state and corresponding project/goal packaged workflows after reviewed organization CRUD foundations.
 
 Expected behavior:
-- Manual and agent workflows share exact canonical validation, original receipts and own-profile grants without generic proxies or invented writes.
+- Manual and agent planning share canonical validation and honest state/progress semantics without implicit game changes.
 
 Current context:
-- Canonical organization reads, native placement, history/restoration and candidate reads are implemented. Todo parent/dependency authoring is a separate local unit. Organization CRUD, advanced state and project/goal workflow guidance remain unimplemented; production controls and real clients retain separate gates.
+- Organization reads, native placement, retained history/restoration, candidates and Todo relationships are implemented locally. Organization command history, acceptance and narrow transport are separate required units. Production UI and real client qualification remain gated.
 
 Source:
-- Remaining original E13 intent from P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 through P-64cd7c9d-4f1b-4772-ba45-adc0535829e9.
+- Remaining original E13 intent from P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 through P-cc70b363-4669-44a4-be9b-1d6cb918d36b.
 
 ### E12 Saved views, review policies and mobile task hygiene controls
 
@@ -263,6 +263,92 @@ Expected behavior:
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
+
+### Review organization CRUD through scoped browser and MCP adapters
+
+```yaml
+id: T-74bb4500-60a6-4917-b654-13e6b5506afd
+priority: 100
+status: Ready
+parent_pending_ids: ["P-cc70b363-4669-44a4-be9b-1d6cb918d36b"]
+processing_run_id: PR-398af912-54d0-48a8-8f46-72b282f78e22
+root_task_id: T-74bb4500-60a6-4917-b654-13e6b5506afd
+related_task_id: null
+relation: main
+depends_on: ["T-e696791b-de0e-4e74-ac9a-831328ddb97f"]
+```
+
+Goal:
+- Expose reviewed organization CRUD through narrow own-workspace browser/MCP adapters with explicit authorization.
+Current behavior:
+- Native organization model and acceptance engine provide durable receipts; transport has no organization-write contract.
+Desired behavior:
+- A bounded prepare/accept/original-receipt path binds exact organization intent and preserves profile/connection/grant epochs and own-data controls.
+Touch:
+- Auth scope/consent, shared organization tool schemas, Workspace preparation/receipt routing, MCP registry, browser adapters and packaged project guidance.
+Discovery allowance:
+- Reuse prepared task intent retention, management sessions, epoch guards and canonical unavailable-read recovery.
+Out of scope:
+- Production UI, server gameplay effects, backend deployment, live enrollment and live tests.
+Implementation constraints:
+- Introduce an explicit workspace.organization.write consent scope rather than silently expanding existing task-write grants. Public/private boundaries enforce the exact scope.
+- Server allocates creation entity IDs and prepared command IDs; existing records require exact IDs. Preparation reviews complete intent without accepting metadata changes.
+- Durable original request/command IDs recover receipts after acknowledgement loss. Store acceptance and native history remain one canonical revision/commit; no game executor or upstream request is involved.
+- Account/profile selectors, generic JSON/URL proxies, expired/stale previews and foreign or changed-epoch preparations are rejected. Portable exports retain exact organization history.
+Questions and required clarifications:
+- [Resolved - standing local contract direction] New native organization authorization is independently disclosed; local implementation adds no real grant or deployment.
+Validation:
+- Synthetic SDK preparation/acceptance/recovery, read/write/private binding grants, two-profile isolation, stale/expired/epoch changes, browser intent binding and zero upstream writes. Build app/Workers and run affected suites.
+Acceptance:
+- Authorized exact organization previews accept once and recover original receipts without game effects or cross-profile exposure.
+- Missing grants, stale/foreign preparations and altered native previews cannot bypass transport guards.
+Documentation updates:
+- Describe consent, scope, supported native organization tools, deployment compatibility and real host/UI gates.
+Risks:
+- Expanding old grants silently, accepting altered previews or misreporting native metadata as gameplay.
+
+### Accept exact native organization edits and archival
+
+```yaml
+id: T-e696791b-de0e-4e74-ac9a-831328ddb97f
+priority: 100
+status: Ready
+parent_pending_ids: ["P-cc70b363-4669-44a4-be9b-1d6cb918d36b"]
+processing_run_id: PR-398af912-54d0-48a8-8f46-72b282f78e22
+root_task_id: T-e696791b-de0e-4e74-ac9a-831328ddb97f
+related_task_id: null
+relation: main
+depends_on: ["T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c"]
+```
+
+Goal:
+- Accept reviewed native organization creation/edit/archive with original receipt recovery and no game effects.
+Current behavior:
+- Canonical organization entities and portable organization history provide the model; no organization acceptance engine exists.
+Desired behavior:
+- Shared C#/Worker acceptance creates, updates or archives exact categories/projects/sections/labels/goals and appends one typed history receipt atomically.
+Touch:
+- Application organization engine/service, shared Worker acceptance and direct portable/atomic-storage tests.
+Discovery allowance:
+- Reuse canonical reference validation, original identity checks and scoped optimistic store commits.
+Out of scope:
+- OAuth/MCP routing, production UI, gameplay, physical deletion or deployment.
+Implementation constraints:
+- Creation requires an unused opaque entity ID and name. Updates/archive require exact existing nonarchived kind/ID; omitted fields remain unchanged.
+- New project category and section project references must be nonarchived. Section project membership is immutable after creation; position/name can change.
+- Goal replacement uses exact nonarchived Todos; omitted legacy task sets remain unchanged. Archival retains references, sections, tasks, progress source history and prior receipts without cascade deletion.
+- Preserve document/task order and all unrelated state/history/mappings. Reject stale revisions, invalid mixed fields/references and frozen/cloud-owned local authority. Duplicate original identity recovers the original receipt before current-state checks; changed intent reuse fails.
+Questions and required clarifications:
+- [Resolved - standing local contract direction] Organization authoring remains native-only, with noncascading archival and existing Todo-based goal progress.
+Validation:
+- All entity kinds/actions, exact references, partial/clear/full replacement, archive retention, original receipts, lost acknowledgements and atomic store conflict/failure cases in both runtimes.
+Acceptance:
+- Exact organization commands preserve unrelated canonical state and recover original native receipts with no game effects.
+- Invalid/stale/foreign or frozen-authority organization commands cannot save partial changes.
+Documentation updates:
+- Describe supported organization edits, archival and remaining transport/UI limitations.
+Risks:
+- Cascading task loss, implicit goal scoring or changed receipt identity.
 
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 

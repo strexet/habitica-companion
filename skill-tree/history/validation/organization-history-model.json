@@ -1,0 +1,57 @@
+{
+  "task_id": "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
+  "date": "2026-10-18",
+  "scope": "Local portable organization model; no new acceptance routes, gameplay tests or publication",
+  "checks": [
+    {
+      "name": "Release app and three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET with final Application requalification",
+      "passed": 713,
+      "failed": 0,
+      "suites": {
+        "domain": 32,
+        "application": 153,
+        "rules": 43,
+        "storage": 21,
+        "api": 87,
+        "webapp": 377
+      }
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace plus final added model case",
+      "passed": 290,
+      "failed": 0
+    },
+    {
+      "name": "Independent hash and portable cases",
+      "hashes": 15,
+      "portable_cases": 31,
+      "result": "pass"
+    },
+    {
+      "name": "Pinned Worker runtime and synthetic D1 handoff/retry/export/task acceptance",
+      "result": "pass",
+      "upstream_writes": 0
+    }
+  ],
+  "acceptance_evidence": [
+    "Typed native commands retain exact metadata snapshots and UTC acceptance times without task identities or game outbox entries.",
+    "Independent C# and TypeScript hashes bind every kind/action and exact Unicode patch. Absent/null/empty history defaults and all valid/invalid neutral cases agree with the pinned Workers runtime.",
+    "Unique causal revisions, kind/field/reference validation, exact prior/current snapshots, checksums and cross-role command/event identity fences reject portable corruption. Reversed wall-clock timestamps remain valid.",
+    "Name-only changes retain legacy non-Todo goal references and sets exceeding 100 IDs; new explicit goal replacements remain bounded at 100 IDs.",
+    "Existing task writes and Todo restoration retain organization history while current goal progress reflects current task state. Browser backup/restore and synthetic frozen cloud handoff/retry/export retain complete native history.",
+    "Optional history remains inside the canonical document, preserving existing atomic storage without a D1 schema migration or new secret."
+  ],
+  "limitations": [
+    "Organization command acceptance, browser/MCP adapters, new write consent scope, production controls and real-client qualification remain separate.",
+    "No live gameplay test round or further deployment was run."
+  ]
+}

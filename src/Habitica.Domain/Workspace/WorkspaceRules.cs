@@ -24,7 +24,7 @@ public static class WorkspaceRules
             .Concat(document.Labels).Concat(document.Goals).Concat(document.Tasks).Concat(document.Occurrences)
             .Concat(document.Completions).Concat(document.Restorations ?? Array.Empty<TaskRestoration>()).Concat(document.HabitScores).Concat(document.Projections).ToArray();
         if (all.Any(entity => entity is null)) { errors.Add(new("null_entity")); return errors; }
-        if (all.Length > 100000) { errors.Add(new("workspace_too_large")); return errors; }
+        if (all.Length + (document.OrganizationHistory?.Count ?? 0) > 100000) { errors.Add(new("workspace_too_large")); return errors; }
         var identities = new HashSet<Guid> { document.Id };
         foreach (var entity in all)
         {
@@ -141,6 +141,7 @@ public static class WorkspaceRules
                 || projection.Fingerprint is not null && !System.Text.RegularExpressions.Regex.IsMatch(projection.Fingerprint, "^[a-f0-9]{64}$")
                 || projection.CorrelationAlias is not null && projection.CorrelationAlias != $"companion_{document.Id:N}_{projection.TaskId:N}") errors.Add(new("invalid_projection", projection.Id));
         }
+        if (errors.Count == 0 && !WorkspaceOrganizationHistory.IsValid(document)) errors.Add(new("invalid_organization_history"));
         return errors;
     }
 

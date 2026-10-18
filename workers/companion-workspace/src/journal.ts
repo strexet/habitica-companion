@@ -1,3 +1,4 @@
+import {validateOrganizationHistoryHashes} from '../../shared/workspace-organization.ts';
 import {relationshipsMatch} from '../../shared/task-relationships.ts';
 import {planningMatches} from '../../shared/task-planning.ts';
 import { habiticaDetails } from "../../shared/task-details.ts";
@@ -15,10 +16,12 @@ function timestamp(v:unknown):v is string{try{return utcTicks(v)!==utcTicks('000
 export async function journal(value:unknown):Promise<Journal>{
  const input=object(value,['document','storeVersion','commands','events','authority']);const document=workspaceDocument(input.document);
  valid(Number.isSafeInteger(input.storeVersion)&&Number(input.storeVersion)>=document.revision&&Array.isArray(input.commands));
+ const organizationIds=new Set((document.organizationHistory??[]).map(entry=>entry.command.id)),organizationRevisions=new Set((document.organizationHistory??[]).map(entry=>entry.snapshot.revision));
+ await validateOrganizationHistoryHashes(document);
  const ids=new Set<string>();const commands:CommandEntry[]=[];
  for(const raw of input.commands){
   const row=object(raw,['command','payloadHash','acceptedAtUtc','projectionState','effects','confirmedEffects','failure','retryAtUtc','lease','dispatchedAtUtc','attempts','taskSnapshot']);
-  const command=workspaceCommand(row.command);valid(!ids.has(command.id)&&command.workspaceId===document.id&&command.expectedRevision<document.revision&&row.payloadHash===await commandHash(command));ids.add(command.id);
+  const command=workspaceCommand(row.command);valid(!ids.has(command.id)&&!organizationIds.has(command.id)&&!organizationRevisions.has(command.expectedRevision+1)&&command.workspaceId===document.id&&command.expectedRevision<document.revision&&row.payloadHash===await commandHash(command));ids.add(command.id);
   valid(timestamp(row.acceptedAtUtc)&&states.includes(String(row.projectionState))&&failures.includes(String(row.failure))&&Array.isArray(row.effects)&&row.effects.length<=11&&row.effects.every(v=>['create','update','scoreUp','scoreDown'].includes(v)));
   const effects=row.effects as string[];valid(Number.isInteger(row.confirmedEffects)&&Number(row.confirmedEffects)>=0&&Number(row.confirmedEffects)<=effects.length&&Number.isSafeInteger(row.attempts)&&Number(row.attempts)>=0);
   const restoration=document.restorations?.find(value=>value.commandId===command.id);valid(!restoration||command.operation==='restoreTodo');

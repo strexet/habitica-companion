@@ -41,6 +41,7 @@ public static class WorkspaceCommandEngine
                 return Reject(SubmissionDisposition.Invalid, "invalid_patch");
         }
         else if (patch is not null) return Reject(SubmissionDisposition.Invalid, "unexpected_patch");
+        if (snapshot.Document.OrganizationHistory?.Any(entry => entry.Command.Id == command.Id) == true) return Reject(SubmissionDisposition.IdempotencyConflict,"command_id_reused");
         var hash = Hash(command);
         var existing = snapshot.Commands.FirstOrDefault(entry => entry.Command.Id == command.Id);
         if (existing is not null)

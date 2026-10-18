@@ -84,6 +84,8 @@ public sealed record WorkspaceDocument
     public IReadOnlyList<CompletionEvent> Completions { get; init; } = Array.Empty<CompletionEvent>();
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReadOnlyList<TaskRestoration>? Restorations { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<WorkspaceOrganizationEntry>? OrganizationHistory { get; init; }
     public IReadOnlyList<HabitScoreEvent> HabitScores { get; init; } = Array.Empty<HabitScoreEvent>();
     public IReadOnlyList<HabiticaProjection> Projections { get; init; } = Array.Empty<HabiticaProjection>();
 }

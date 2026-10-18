@@ -1,3 +1,4 @@
+import {organizationHistory,type OrganizationEntry} from './workspace-organization.ts';
 import { habiticaDetails, type HabiticaTaskDetails } from "./task-details.ts";
 import { WorkspaceError, workspaceObject, uuid } from "./workspace-http.ts";
 export interface Entity { id: string; revision: number; isArchived: boolean }
@@ -16,7 +17,7 @@ export interface Completion extends Entity { taskId: string; commandId: string; 
 export interface Restoration extends Entity {taskId:string;completionId:string;commandId:string;restoredAtUtc:string}
 export interface HabitScore extends Entity { taskId: string; commandId: string; recordedAtUtc: string; direction: "up" | "down" }
 export interface Projection extends Entity { taskId: string; state: "unlinked" | "pending" | "linked" | "externalConflict" | "unknownOutcome"; habiticaTaskId: string | null; fingerprint?: string | null; correlationAlias?: string | null }
-export interface WorkspaceDocument { schemaVersion: 1; id: string; revision: number; categories: Category[]; projects: Project[]; sections: Section[]; labels: Category[]; goals: Goal[]; tasks: CompanionTask[]; occurrences: Occurrence[]; completions: Completion[]; restorations?:Restoration[]; habitScores: HabitScore[]; projections: Projection[] }
+export interface WorkspaceDocument { schemaVersion: 1; id: string; revision: number; categories: Category[]; projects: Project[]; sections: Section[]; labels: Category[]; goals: Goal[]; tasks: CompanionTask[]; occurrences: Occurrence[]; completions: Completion[]; restorations?:Restoration[]; organizationHistory?:OrganizationEntry[]; habitScores: HabitScore[]; projections: Projection[] }
 const fail = (): never => { throw new WorkspaceError("invalid_workspace", 422); };
 function named(value: unknown, max = 256, allowEmpty = false): string { if (typeof value !== "string" || value.length > max || !allowEmpty && /^\p{White_Space}*$/u.test(value)) return fail(); return value; }
 function optionalId(value: unknown) { return value === undefined || value === null ? null : uuid(value); }
@@ -51,7 +52,7 @@ function recurrence(value: unknown): Recurrence | null {
 }
 export { recurrence as workspaceRecurrence };
 export function workspaceDocument(input: unknown): WorkspaceDocument {
-  const value = workspaceObject(input, ["schemaVersion", "id", "revision", "categories", "projects", "sections", "labels", "goals", "tasks", "occurrences", "completions", "restorations", "habitScores", "projections"]);
+  const value = workspaceObject(input, ["schemaVersion", "id", "revision", "categories", "projects", "sections", "labels", "goals", "tasks", "occurrences", "completions", "restorations", "organizationHistory", "habitScores", "projections"]);
   if (value.schemaVersion !== 1) return fail(); const revision = integer(value.revision); const id = uuid(value.id);
   const names = (key: string): Category[] => list(value[key]).map(item => { const row = workspaceObject(item, [...baseKeys, "name"]); return { ...entity(row, revision), name: named(row.name) }; });
   const categories = names("categories"); const labels = names("labels");
@@ -72,7 +73,7 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   const habitScores = list(value.habitScores).map(item => { const row = workspaceObject(item, [...baseKeys, "taskId", "commandId", "recordedAtUtc", "direction"]); return { ...entity(row, revision), taskId: uuid(row.taskId), commandId: uuid(row.commandId), recordedAtUtc: utc(row.recordedAtUtc), direction: choice(row.direction, ["up", "down"]) }; });
   const projections = list(value.projections).map(item => { const row = workspaceObject(item, [...baseKeys, "taskId", "state", "habiticaTaskId", "fingerprint", "correlationAlias"]); return { ...entity(row, revision), taskId: uuid(row.taskId), state: choice(row.state, ["unlinked", "pending", "linked", "externalConflict", "unknownOutcome"]), habiticaTaskId: optionalId(row.habiticaTaskId), fingerprint: row.fingerprint === undefined || row.fingerprint === null ? null : typeof row.fingerprint === "string" && /^[a-f0-9]{64}$/.test(row.fingerprint) ? row.fingerprint : fail(), correlationAlias: row.correlationAlias === undefined || row.correlationAlias === null ? null : typeof row.correlationAlias === "string" && /^companion_[a-f0-9]{32}_[a-f0-9]{32}$/.test(row.correlationAlias) ? row.correlationAlias : fail() }; });
   const all = [...categories, ...labels, ...projects, ...sections, ...goals, ...tasks, ...occurrences, ...completions, ...restorations, ...habitScores, ...projections];
-  if (all.length > 100000 || new Set([id, ...all.map(item => item.id)]).size !== all.length + 1) return fail();
+  if (all.length + (Array.isArray(value.organizationHistory)?value.organizationHistory.length:0) > 100000 || new Set([id, ...all.map(item => item.id)]).size !== all.length + 1) return fail();
   const categoryIds = new Set(categories.map(item => item.id)); const projectMap = new Map(projects.map(item => [item.id, item])); const sectionMap = new Map(sections.map(item => [item.id, item])); const taskMap = new Map(tasks.map(item => [item.id, item])); const labelIds = new Set(labels.map(item => item.id)); const occurrenceMap = new Map(occurrences.map(item => [item.id, item]));
   for (const project of projects) if (project.categoryId && !categoryIds.has(project.categoryId)) return fail();
   for (const section of sections) if (!projectMap.has(section.projectId)) return fail();
@@ -110,6 +111,8 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
     if (projection.correlationAlias && projection.correlationAlias !== `companion_${id.replaceAll("-", "")}_${projection.taskId.replaceAll("-", "")}` || !taskMap.has(projection.taskId) || mapped.has(projection.taskId) || projection.state === "linked" && !projection.habiticaTaskId || projection.habiticaTaskId && external.has(projection.habiticaTaskId)) return fail();
     mapped.add(projection.taskId); if (projection.habiticaTaskId) external.add(projection.habiticaTaskId);
   }
-  return { schemaVersion: 1, id, revision, categories, projects, sections, labels, goals, tasks, occurrences, completions, ...(value.restorations==null?{}:{restorations}), habitScores, projections };
+  const document:WorkspaceDocument={ schemaVersion: 1, id, revision, categories, projects, sections, labels, goals, tasks, occurrences, completions, ...(value.restorations==null?{}:{restorations}), habitScores, projections };
+  if(value.organizationHistory!==undefined&&value.organizationHistory!==null){try{document.organizationHistory=organizationHistory(value.organizationHistory,document,utc);}catch{return fail();}}
+  return document;
 }
 export function emptyWorkspace(id = crypto.randomUUID()): WorkspaceDocument { return workspaceDocument({ schemaVersion: 1, id, revision: 1 }); }
