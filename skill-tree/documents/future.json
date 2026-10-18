@@ -61,7 +61,9 @@
       "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68",
       "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
       "T-5b449c17-2968-4a89-9596-bdb037853e75",
-      "T-842f77e3-c043-471d-94e8-3b55da96097c"
+      "T-842f77e3-c043-471d-94e8-3b55da96097c",
+      "T-23520ce7-554d-4848-b64b-f4be9ed39800",
+      "T-a1d24727-18dc-4303-9017-a97906d08e13"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -78,6 +80,7 @@
       "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
       "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55": "O-fc1d5fd0-432b-43b1-8ae3-51536510411a",
       "T-211d2ac1-5778-47fb-8148-c9e1a320e31a": "O-ee0b74ce-2986-417f-95b7-92a78a6bfe88",
+      "T-23520ce7-554d-4848-b64b-f4be9ed39800": "O-5df6fdca-e0cc-4e99-a578-1bf0abd83951",
       "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d": "O-9ebb8704-9e9e-405c-b175-bec36f05b86c",
       "T-29ef8846-6aa7-4255-990d-a8651e689ec2": "O-8a6c239c-6b80-4210-a2e6-a94e7a8e560b",
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee": "O-f879b8e5-0a9a-4c91-b292-993fb19bacb3",
@@ -109,6 +112,7 @@
       "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995": "O-4b7709a5-b2d8-40c2-821c-9e482a57d24b",
       "T-924119e2-17fd-4a06-b332-60839c849ade": "O-23ae7a58-8ca6-44f8-ab06-e245f94fae3d",
       "T-991d6cf2-7c54-4006-ab58-eda921ae66d6": "O-747dceb1-50c9-4703-9399-b64b2a0ccba6",
+      "T-a1d24727-18dc-4303-9017-a97906d08e13": "O-a6319920-170f-4389-afb6-c86115c97a2f",
       "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9": "O-1289cd22-e42d-43e3-8c68-1c7954321b8a",
       "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f": "O-31dca147-51af-4489-863f-be4aa92285dc",
       "T-b38dad4c-c3fa-431a-a429-50d6fed97650": "O-ba1742c1-00fe-4f18-9dea-c829e62f3190",
@@ -127,7 +131,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "99f20d0194cdf0c5cc8a88113d656245642c0546409168f8d95aa508643bb7ae",
+    "cycle_signature": "7286cbbde4b0966cedd2ed368ab7ce080499f8f13a4d3688b229f0c8f6427463",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -137,10 +141,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Research task-only projection queue status using the existing durable command store.",
+    "next_action": "Research a bounded canonical task-planning command unit before implementation.",
     "partial_work": [
-      "Canonical organization read acceptance passed with full local builds/tests.",
-      "Continue the original E13 remainder with a narrow task-only sync-status read; broad UI operations remain gated."
+      "Task-only sync status and required canonical read recovery passed local acceptance and final Worker/app checks.",
+      "Continue originally authorized advanced task planning and organization work; production UI and real release checks retain recorded gates."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -190,7 +194,9 @@
       "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa",
       "P-c5795748-6f25-4c0a-a471-fe72c1a85862",
       "P-2eab4a71-0646-4a9c-a815-84ad69652b79",
-      "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d"
+      "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d",
+      "P-e5db46c5-d445-4199-8126-8fb504f7fd38",
+      "P-a8192b85-62bd-4a16-93d1-30eaa8ce0152"
     ],
     "phase": "processing",
     "processing_results": [
@@ -1052,6 +1058,40 @@
           "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-a1d24727-18dc-4303-9017-a97906d08e13"
+        ],
+        "dispositions": {
+          "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d": {
+            "reason": "The durable command table supports a task-only aggregate without new persistence or broader gameplay scopes. Organization/planning/history writes and corresponding skill parity remain a separate intake.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-5c37525e-fb3c-4c30-87ec-0fed7b78f952",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-23520ce7-554d-4848-b64b-f4be9ed39800"
+        ],
+        "dispositions": {
+          "P-a8192b85-62bd-4a16-93d1-30eaa8ce0152": {
+            "reason": "Inspected shared MCP handler conflates read failures and mutation uncertainty. The repair is required for accurate task-status unavailable responses.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-72801a9d-d256-43ce-9f3a-82ee906cd173",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-a8192b85-62bd-4a16-93d1-30eaa8ce0152"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -1117,9 +1157,11 @@
       "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68",
       "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
       "T-5b449c17-2968-4a89-9596-bdb037853e75",
-      "T-842f77e3-c043-471d-94e8-3b55da96097c"
+      "T-842f77e3-c043-471d-94e8-3b55da96097c",
+      "T-a1d24727-18dc-4303-9017-a97906d08e13",
+      "T-23520ce7-554d-4848-b64b-f4be9ed39800"
     ],
-    "root_task_id": "T-842f77e3-c043-471d-94e8-3b55da96097c",
+    "root_task_id": "T-a1d24727-18dc-4303-9017-a97906d08e13",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1223,6 +1265,16 @@
         ],
         "reason": "Decompose original E13 into existing-model organization reads and remaining advanced write/workflow capabilities.",
         "remaining_pending_id": "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d"
+      },
+      {
+        "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+        "owner_direction": "Expand to local tasks and Pending work",
+        "promoted_local_roots": [
+          "T-a1d24727-18dc-4303-9017-a97906d08e13"
+        ],
+        "reason": "Further decompose original E13 into task-only status and remaining reviewed write/history workflows.",
+        "remaining_pending_id": "P-e5db46c5-d445-4199-8126-8fb504f7fd38",
+        "researched_remainder": "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d"
       }
     ],
     "snapshot": [
@@ -1246,17 +1298,18 @@
       "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68",
       "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
       "T-5b449c17-2968-4a89-9596-bdb037853e75",
-      "T-842f77e3-c043-471d-94e8-3b55da96097c"
+      "T-842f77e3-c043-471d-94e8-3b55da96097c",
+      "T-a1d24727-18dc-4303-9017-a97906d08e13"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "e59501b972f603e0269001cab665732d6bb5325f12703c223ec5747677ed7e32",
+  "source_hash": "9664e6ff334be63eacade7671acf8cd7b094c8bb1b770323292de664fc6fe07b",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d",
+      "id": "P-e5db46c5-d445-4199-8126-8fb504f7fd38",
       "line": 75,
       "parent_pending_ids": [],
       "priority": 100,
@@ -1266,7 +1319,7 @@
       "relation": "main",
       "root_task_id": null,
       "status": "Pending",
-      "title": "E13 Advanced organization writes, planning/history tools and skill parity"
+      "title": "E13 Reviewed organization/planning writes and history skill parity"
     },
     {
       "depends_on": [],

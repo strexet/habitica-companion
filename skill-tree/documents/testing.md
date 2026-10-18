@@ -193,3 +193,13 @@ Synthetic MCP discovers list_companion_agenda with read-only annotations and tas
 The neutral organization-v1.json fixture compares thirteen list/page cases across Application, direct TypeScript and actual local Workspace/MCP calls. Coverage includes archived entities, active-parent section visibility, position ties, exact category filtering, original IDs, guarded pages and mixed/empty Todo goal progress. Invalid input fields, identities and bounds reject explicitly; stale revisions remain conflicts. Pure queries preserve the original document.
 
 Synthetic MCP discovers all five tools with read-only annotations and tasks:read. Every tool rejects missing grants at MCP and the private service, and another profile receives no organization records. Reads create no command/preparation rows and issue zero upstream writes. Package guidance distinguishes supported reads from unavailable organization writes. Actual host activation, production UI and live qualification remain separate.
+
+## Task-only status qualification
+
+Synthetic D1/MCP tests cover all eight durable task projection states, separate requested/confirmed effect totals, partially confirmed entries, empty queues, executor opt-in versus deployment availability and oldest pending acceptance time. Prepared spell/Cron rows do not affect task totals. Status reads retain canonical task rows, executor settings, store version and preparations after the existing authorization epoch is established. A current database snapshot overrides an older in-memory row revision; stale/deleted access epochs fail.
+
+MCP discovery exposes an empty read-only input schema under tasks:read. Extra selectors and executor inputs reject, missing grants fail at both boundaries and another profile receives an empty task queue. Malformed JSON, unknown durable states/effects and inconsistent confirmation counts return unavailable without partial data. No executor dispatch or upstream write occurs. Real host activation and live qualification remain separate.
+
+## Canonical read recovery
+
+Synthetic MCP service-error and unreadable-reply fixtures verify unavailable observations for canonical task, agenda, project, goal, exact-task and original-receipt reads. Read failures retain safe retry metadata without saved-state claims, optimistic counts or a request to recover an action that never occurred. Mutation failures preserve original command receipt guidance and unknown-outcome fields. Missing receipt data still cannot resolve an earlier uncertain action. Normal authorization and party/spell/Cron handling remain separate.

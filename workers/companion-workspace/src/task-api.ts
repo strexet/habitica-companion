@@ -5,6 +5,7 @@ import type { WorkspaceRow } from './executor.ts';
 import type { CommandEntry } from './commands.ts';
 import { accept } from './commands.ts';
 import { queryTasks } from '../../shared/task-query.ts';
+import { taskSyncStatus } from './task-status.ts';
 import { queryAgenda } from '../../shared/task-agenda.ts';
 import { organizationNames, queryOrganization, type OrganizationTool } from '../../shared/organization-query.ts';
 interface Preparation {grant_epoch:string;access_epoch:string;request_id:string;command_id:string;input_hash:string;command_json:string;correlation_id:string;expires_at_utc:string}
@@ -15,7 +16,9 @@ export function mutationResult(entry:CommandEntry,document:{tasks:{id:string;tex
  return {operation:entry.command.operation,taskId:entry.command.taskId,commandId:entry.command.id,correlationId,taskText:entry.taskSnapshot?.text??document.tasks.find(t=>t.id===entry.command.taskId)?.text??'',savedInCompanion:true,habiticaProjectionStatus:unknown?'UnknownOutcome':['notRequested','confirmed','blocked','cancelled'].includes(state)?state:'pending',acceptedEventCount:entry.command.operation==='scoreHabit'?entry.command.count:['completeTask','skipOccurrence'].includes(entry.command.operation)?1:0,confirmedProjectionCount:entry.confirmedEffects,totalProjectionCount:entry.effects.length,failurePosition:entry.failure==='none'?null:entry.confirmedEffects+1,failure:entry.failure,retryAtUtc:entry.retryAtUtc,refreshSucceeded,outcomeUnknown:unknown};
 }
 export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,args:unknown,submit:(command:unknown)=>Promise<Response>):Promise<Record<string,unknown>>{
- const input=taskToolInput(name,args);const document=JSON.parse(row.document_json);
+ const input=taskToolInput(name,args);
+ if(name==='get_task_sync_status')return taskSyncStatus(env,row);
+ const document=JSON.parse(row.document_json);
  if(name==='list_companion_tasks')return queryTasks(document,input);
  if(name==='list_companion_agenda')return queryAgenda(document,input);
  if(organizationNames.includes(name as OrganizationTool))return queryOrganization(document,name as OrganizationTool,input);

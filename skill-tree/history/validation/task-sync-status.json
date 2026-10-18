@@ -1,0 +1,55 @@
+{
+  "task_id": "T-a1d24727-18dc-4303-9017-a97906d08e13",
+  "date": "2026-10-18",
+  "scope": "Synthetic own-workspace task status; no live calls/deployment",
+  "checks": [
+    {
+      "name": "App release build and three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Focused task status and required read-recovery SDK checks",
+      "passed": 5,
+      "failed": 0
+    },
+    {
+      "name": "Full Auth suite",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace suite",
+      "passed": 185,
+      "failed": 0
+    },
+    {
+      "name": "Changed prose, whitespace and document validation",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "A single active-profile/connection/epoch aggregate returns current revision/storeVersion with eight distinct durable command-state counts and separate requested/confirmed effect totals.",
+    "Mixed synthetic task rows yield eight saved commands, eleven requested effects and four confirmed effects; prepared spell/Cron rows do not contribute.",
+    "Executor opt-in and configured availability remain distinct. Status reads leave task rows, executor flags and store version unchanged after existing authorization epoch establishment.",
+    "Older in-memory document state cannot replace the current joined database observation. Stale/deleted epochs reject authorization instead of returning an empty queue.",
+    "Malformed JSON, unsupported states/effects and inconsistent confirmation counts return unavailable without partial data.",
+    "Actual MCP discovery advertises an empty read-only input schema under tasks:read. Extra selectors, missing grants and cross-profile access do not expose the queue; no dispatch or upstream write occurs.",
+    "Required child T-23520ce7-554d-4848-b64b-f4be9ed39800 separates unavailable read recovery from mutation uncertainty."
+  ],
+  "limitations": [
+    "Counts describe durable task receipts, not refreshed game stats or exactly-once rewards.",
+    "Normal MCP authorization epoch maintenance retains existing preparation invalidation behavior; the status function introduces no writes.",
+    "Production UI, live qualification and actual host/model interpretation remain separate."
+  ],
+  "source_fingerprints": {
+    "plugin/README.md": "f91a225bdc7e1a8792bcd774fe68b4de761c9226b4aa7a9443348d73ee38dd7b",
+    "skill-tree/documents/features.md": "82fe7d030042246c4e1acd949a88e18cd2ca619eb2e4fb35dcfe12a909369992",
+    "skill-tree/documents/technical.md": "006036692503c3ee8fc25dfae59250c51648f8e0d8d76836804f774a5513d712",
+    "skill-tree/documents/testing.md": "abdbc0000b4a4ac8165831c0492ed354ef64699c8fff34f0bd1a45f83875eabe",
+    "workers/chatgpt-mcp/src/task-tools.ts": "b545a4666ea6e3f4a3d1e70a1efb79c7a3af5a1ac44680d2db64d3f48fad336b",
+    "workers/companion-workspace/src/task-api.ts": "fac404583106a9246a07f3fd81dcc799f2d7b4616588768a760bdbae9936263d",
+    "workers/shared/task-tools.ts": "7c124a7f20011b045d8215e044fc572cb3871f5a994edef8d61cba8d61781e84",
+    "workers/companion-workspace/src/task-status.ts": "eff46c7060a1fafea2d8a52ea813679b7266c324613d7d70fa45ea743447158b",
+    "workers/companion-workspace/test/task-status.test.mjs": "8dc06983ec3e5533c6c8b2ce135dcc050bcf634f154cdbc99f3c776022dc39f0"
+  }
+}
