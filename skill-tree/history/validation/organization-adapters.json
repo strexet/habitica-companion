@@ -1,0 +1,64 @@
+{
+  "task_id": "T-74bb4500-60a6-4917-b654-13e6b5506afd",
+  "date": "2026-10-18",
+  "scope": "Local reviewed organization browser/MCP adapters; no deployment, real enrollment or gameplay tests",
+  "checks": [
+    {
+      "name": "Release app and all three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 733,
+      "failed": 0,
+      "suites": {
+        "domain": 32,
+        "application": 158,
+        "rules": 43,
+        "storage": 21,
+        "api": 87,
+        "webapp": 392
+      },
+      "wall_seconds": 16.829
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0,
+      "wall_seconds": 19.394
+    },
+    {
+      "name": "Full Workspace",
+      "passed": 317,
+      "failed": 0,
+      "wall_seconds": 33.793
+    },
+    {
+      "name": "Packaged skill validation, added prose, strict future, repository consistency and whitespace",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Synthetic actual SDK discovers the independent organization-write scope and reviews/accepts/replays create, update and archive across all five metadata kinds. Exact native history is retained in export with zero task/gameplay entries and zero upstream writes.",
+    "Separate selectable OAuth disclosure and public/private scope enforcement preserve old task-write grants; a new organization grant can be deselected. Read receipts require tasks:read. Own browser adapters derive identity from the existing authenticated Workspace session.",
+    "Server-issued entity/command IDs and bounded field whitelists reject account/URL/effect selectors, task/native role confusion and client-selected creation identity. Exact revisions, profile/connection/access/grant epochs and expiry fence acceptance. Two profiles cannot accept foreign previews or read native receipts.",
+    "Accepted request/correlation bindings remain after expiry purge or grant changes while unaccepted preparations are removed. Original preview/receipt lookup and duplicate acceptance retain the same accepted metadata snapshot after subsequent edits and archival.",
+    "Synthetic D1 abort leaves document/version/byte accounting unchanged. Retry of the original command returns one native receipt, and capacity refusal creates no extra preparation. No D1 migration, secret, binding or executor activation is introduced.",
+    "Fifteen browser transport tests bind all requested fields, clear flags, targets and snapshots; reject claimed effects/events, mismatched receipts and late-session data; and recover the original native receipt after acknowledgement loss. Only server-issued creation and command IDs are normalized.",
+    "Canonical unavailable-read handling applies to native receipts. The packaged task-management skill routes native metadata work through reviewed organization tools and independent consent."
+  ],
+  "operations": [
+    {
+      "classification": "executed control",
+      "outcome": "Initial type-check identified unknown D1 query-result types; explicit query-row typing repaired the local compilation failure."
+    },
+    {
+      "classification": "executed control",
+      "outcome": "One focused export comparison omitted canonical projection null defaults; normalizing the seed fixture repaired the test mismatch. All final focused and full checks pass."
+    }
+  ],
+  "limitations": [
+    "Production organization controls, real client discovery/grants, publication and owner/multi-user/mobile qualification remain separate.",
+    "No production behavior was changed by the local organization adapter milestone."
+  ]
+}

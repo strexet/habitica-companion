@@ -636,3 +636,8 @@ The existing command preview names scheduled occurrence skip, Companion pause an
 ## Native placement API availability
 
 The command layer and optional MCP expose reviewed native planned-date and category/project/section/label placement. The basic canonical editor still has no placement controls. A future UI must label planned date separately from deadline, expose explicit clearing and full label replacement, and review exact assignments before acceptance. Native placement leaves game effects and lifecycle state unchanged. Existing E01 and production UI qualification requirements remain active.
+
+
+## Native organization authorization disclosure
+
+The authorization page presents native category/project/section/label/goal edits as a separate selectable permission. The disclosure states that archival retains related tasks and history and produces no game effects. Existing task-write permission does not authorize organization edits. Organization authoring controls remain absent from the production UI; local browser adapters require exact reviewed intent and preserve original receipt recovery after uncertain responses.

@@ -217,4 +217,11 @@ Root validation checks typed fields, references, causal order, snapshot transiti
 
 Standing local direction selects exact create/update/archive acceptance for canonical metadata. New category/project references must be nonarchived; section project membership is immutable after creation. New explicit goal references must be nonarchived Todos, with at most 100 IDs per full replacement. Omitted fields and legacy goal references remain intact. Archive retains linked metadata, tasks, histories and source progress without cascading or reversing game effects.
 
-Original hash-bound native receipts precede current-state/revision checks. Changed intent cannot reuse an identity. Local frozen/cloud authority cannot accept fresh edits. One optimistic store commit retains canonical metadata plus native history with no task/gameplay entry. Unknown acknowledgements preserve original command recovery. Scoped browser/MCP access, consent and production UI remain separate.
+Original hash-bound native receipts precede current-state/revision checks. Changed intent cannot reuse an identity. Local frozen/cloud authority cannot accept fresh edits. One optimistic store commit retains canonical metadata plus native history with no task/gameplay entry. Unknown acknowledgements preserve original command recovery. Production UI and live qualification remain separate.
+
+
+## Reviewed native organization access contract
+
+Standing local direction selects independent workspace.organization.write OAuth access for reviewed metadata preparation and acceptance. Existing task-write grants remain unchanged; read receipts require tasks:read. Auth consent names metadata edits and retained related records separately from game effects. The own-data browser adapter uses the existing cloud Workspace session and storage consent, with exact native preview validation before acceptance.
+
+Server-issued creation/command IDs and retained request/correlation bindings recover the original native receipt after uncertainty. Exact canonical revision, profile/connection/access/grant epochs and short expiry bind fresh acceptance. Accepted bindings remain with history after preview cleanup or grant changes. No new account selector, generic proxy, upstream request or gameplay entry is introduced. Production UI, actual grants and publication remain separate.

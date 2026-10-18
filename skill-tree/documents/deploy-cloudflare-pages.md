@@ -325,3 +325,8 @@ relateTodo adds optional patch.relationships and identity v6 while unused extens
 ## Native organization-history compatibility
 
 Optional organizationHistory is retained in the existing canonical document and introduces no D1 migration, new binding or secret. Matching application/Worker validators are required before using the extension; strict older clients can reject extended documents. Existing document/archive capacity and consent remain applicable. Model qualification and synthetic handoff tests publish no organization route or backend update. The verified production user-permission artifact remains unchanged by local model work.
+
+
+## Organization adapter compatibility
+
+Reviewed organization adapters require matching Auth/MCP/Workspace builds and browser code. workspace.organization.write is independently disclosed and selected on reauthorization; existing task-write grants retain the original permissions. Native history and request bindings remain in the existing canonical document and preparation table, requiring no D1 migration, secret, binding or enabled executor. Retention/grant cleanup must include the matching native-history awareness before exposing organization tools. Local synthetic qualification does not publish the adapters, enroll accounts or activate production organization controls.

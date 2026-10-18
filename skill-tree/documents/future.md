@@ -264,49 +264,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Review organization CRUD through scoped browser and MCP adapters
-
-```yaml
-id: T-74bb4500-60a6-4917-b654-13e6b5506afd
-priority: 100
-status: Ready
-parent_pending_ids: ["P-cc70b363-4669-44a4-be9b-1d6cb918d36b"]
-processing_run_id: PR-398af912-54d0-48a8-8f46-72b282f78e22
-root_task_id: T-74bb4500-60a6-4917-b654-13e6b5506afd
-related_task_id: null
-relation: main
-depends_on: ["T-e696791b-de0e-4e74-ac9a-831328ddb97f"]
-```
-
-Goal:
-- Expose reviewed organization CRUD through narrow own-workspace browser/MCP adapters with explicit authorization.
-Current behavior:
-- Native organization model and acceptance engine provide durable receipts; transport has no organization-write contract.
-Desired behavior:
-- A bounded prepare/accept/original-receipt path binds exact organization intent and preserves profile/connection/grant epochs and own-data controls.
-Touch:
-- Auth scope/consent, shared organization tool schemas, Workspace preparation/receipt routing, MCP registry, browser adapters and packaged project guidance.
-Discovery allowance:
-- Reuse prepared task intent retention, management sessions, epoch guards and canonical unavailable-read recovery.
-Out of scope:
-- Production UI, server gameplay effects, backend deployment, live enrollment and live tests.
-Implementation constraints:
-- Introduce an explicit workspace.organization.write consent scope rather than silently expanding existing task-write grants. Public/private boundaries enforce the exact scope.
-- Server allocates creation entity IDs and prepared command IDs; existing records require exact IDs. Preparation reviews complete intent without accepting metadata changes.
-- Durable original request/command IDs recover receipts after acknowledgement loss. Store acceptance and native history remain one canonical revision/commit; no game executor or upstream request is involved.
-- Account/profile selectors, generic JSON/URL proxies, expired/stale previews and foreign or changed-epoch preparations are rejected. Portable exports retain exact organization history.
-Questions and required clarifications:
-- [Resolved - standing local contract direction] New native organization authorization is independently disclosed; local implementation adds no real grant or deployment.
-Validation:
-- Synthetic SDK preparation/acceptance/recovery, read/write/private binding grants, two-profile isolation, stale/expired/epoch changes, browser intent binding and zero upstream writes. Build app/Workers and run affected suites.
-Acceptance:
-- Authorized exact organization previews accept once and recover original receipts without game effects or cross-profile exposure.
-- Missing grants, stale/foreign preparations and altered native previews cannot bypass transport guards.
-Documentation updates:
-- Describe consent, scope, supported native organization tools, deployment compatibility and real host/UI gates.
-Risks:
-- Expanding old grants silently, accepting altered previews or misreporting native metadata as gameplay.
-
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml

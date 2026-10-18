@@ -1,3 +1,4 @@
+import {organizationToolScopes,type OrganizationWriteTool} from '../../shared/organization-tools';
 import {cronToolScopes,type CronTool} from '../../shared/cron-tools';
 import {spellToolScopes,type SpellTool} from '../../shared/spell-tools';
 import {partyToolScopes,type PartyTool} from '../../shared/party-tools';
@@ -50,7 +51,7 @@ export default {
           catch { return Response.json({ error: "invalid_request" }, { status: 400, headers }); }
           const call = body as { method?: string; params?: { name?: string } } | null;
           const name = call?.method === "tools/call" ? call.params?.name : undefined;
-          const quota=await mcpEnv.AUTH_SERVER.fetch("https://auth.internal/traffic",{method:"POST",body:JSON.stringify({lane:"mcp",profileId:context.props.profileId,connectionId:context.props.connectionId,recovery:["get_task_command","get_spell_command","get_cron_command"].includes(name??"")}),signal:AbortSignal.timeout(5000)});
+          const quota=await mcpEnv.AUTH_SERVER.fetch("https://auth.internal/traffic",{method:"POST",body:JSON.stringify({lane:"mcp",profileId:context.props.profileId,connectionId:context.props.connectionId,recovery:["get_task_command","get_organization_command","get_spell_command","get_cron_command"].includes(name??"")}),signal:AbortSignal.timeout(5000)});
           if(!quota.ok)return quota;
           if (name && Object.hasOwn(readScopes, name)) {
             const scope = readScopes[name as keyof typeof readScopes];
@@ -59,6 +60,7 @@ export default {
           if(name&&Object.hasOwn(partyToolScopes,name)&&!context.auth.scope?.includes(partyToolScopes[name as PartyTool]))return insufficientScope(context.auth,["profile:read",partyToolScopes[name as PartyTool]]);
           if(name&&Object.hasOwn(cronToolScopes,name)&&cronToolScopes[name as CronTool].some(scope=>!context.auth.scope?.includes(scope)))return insufficientScope(context.auth,[...cronToolScopes[name as CronTool]]);
           if(name&&Object.hasOwn(spellToolScopes,name)&&spellToolScopes[name as SpellTool].some(scope=>!context.auth.scope?.includes(scope)))return insufficientScope(context.auth,[...spellToolScopes[name as SpellTool]]);
+          if(name&&Object.hasOwn(organizationToolScopes,name)&&!context.auth.scope?.includes(organizationToolScopes[name as OrganizationWriteTool]))return insufficientScope(context.auth,['profile:read',organizationToolScopes[name as OrganizationWriteTool]]);
           if (name && Object.hasOwn(taskToolScopes,name)) {
             const scope=taskToolScopes[name as keyof typeof taskToolScopes];
             if (!context.auth.scope?.includes(scope)) return insufficientScope(context.auth,["profile:read",scope]);

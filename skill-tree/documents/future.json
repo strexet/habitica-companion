@@ -73,7 +73,8 @@
       "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
       "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
       "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
-      "T-e696791b-de0e-4e74-ac9a-831328ddb97f"
+      "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
+      "T-74bb4500-60a6-4917-b654-13e6b5506afd"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -118,6 +119,7 @@
       "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0": "O-5fdb5b52-4bd8-4aa4-ba29-78d7b23a81d6",
       "T-70901e97-738c-42c2-ae50-68dd71417a32": "O-ca50d6a3-b6a2-481b-98d8-349564657bd0",
       "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e": "O-ac3595ee-b36e-4620-acf2-1358e28fec07",
+      "T-74bb4500-60a6-4917-b654-13e6b5506afd": "O-b17954b5-6452-4574-9159-f027ce7ffbe1",
       "T-773bb444-a0e6-45b9-bdcb-18561bb6182f": "O-9d7ad5bd-d5ee-469e-93b0-79c129d87495",
       "T-77d41018-e04b-4a88-b92c-079b3d8ef421": "O-056e3e62-a872-45aa-953d-0452b29a71e3",
       "T-80bb3b80-8a9c-4252-9924-5a100f746f93": "O-93622767-ee19-41ab-bda6-82f140e5b0b3",
@@ -150,8 +152,8 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": "T-74bb4500-60a6-4917-b654-13e6b5506afd",
-    "cycle_signature": "8118b0a3fe525828a450989c52a0babc35bb7994564f7d41075fe30c16b3c05f",
+    "current_task_id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+    "cycle_signature": "50acb01d603c1d7277b71380e6b9a4506a30628df8d6fe1f69f871c983b7f59c",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -161,8 +163,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Implement selected scoped organization transport with explicit independent authorization and synthetic adapters; no deployment or live tests.",
-    "partial_work": [],
+    "next_action": "Retain the release gate until an owner-selected live qualification round; Pending feature areas and Backlog remain unimplemented and no new root starts automatically.",
+    "partial_work": [
+      "Native organization engine and scoped browser/MCP adapters are accepted with exact evidence. Release app and all three Worker dry builds pass; final suites pass 733 .NET, 123 Auth and 317 Workspace checks. Original native receipts, independent consent, isolation, expiry/epochs, storage failure and browser tamper rejection are qualified synthetically. No remaining Ready task exists in the selected snapshot."
+    ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
       "P-23092c14-bc50-42c9-948f-201991e9594f",
@@ -223,7 +227,7 @@
       "P-e8c5af20-15ee-4020-82ea-3560a3a183e7",
       "P-14835d09-6c68-4472-a5fb-622c5500f9b4"
     ],
-    "phase": "implement",
+    "phase": "blocked",
     "processing_results": [
       {
         "created_ids": [
@@ -1343,7 +1347,7 @@
       "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
       "T-74bb4500-60a6-4917-b654-13e6b5506afd"
     ],
-    "root_task_id": "T-74bb4500-60a6-4917-b654-13e6b5506afd",
+    "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1576,10 +1580,10 @@
       "T-74bb4500-60a6-4917-b654-13e6b5506afd"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": null
+    "stop_reason": "Required real-client, multi-user and mobile release qualification remains incomplete; the owner closed the live-test lane and no new deployment or live round is authorized."
   },
   "format": "skill-tree-future",
-  "source_hash": "39e78740c46625fa243ca2ea0df5b1348adb5895eb9632625caf277791ca1008",
+  "source_hash": "35421740cec4785ab7acdb9eb14d715d7c618a53c1c9b9602f6b9fe76b01c998",
   "tasks": [
     {
       "depends_on": [],
@@ -1681,24 +1685,6 @@
     },
     {
       "depends_on": [
-        "T-e696791b-de0e-4e74-ac9a-831328ddb97f"
-      ],
-      "id": "T-74bb4500-60a6-4917-b654-13e6b5506afd",
-      "line": 267,
-      "parent_pending_ids": [
-        "P-cc70b363-4669-44a4-be9b-1d6cb918d36b"
-      ],
-      "priority": 100,
-      "processing_run_id": "PR-398af912-54d0-48a8-8f46-72b282f78e22",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-74bb4500-60a6-4917-b654-13e6b5506afd",
-      "status": "Ready",
-      "title": "Review organization CRUD through scoped browser and MCP adapters"
-    },
-    {
-      "depends_on": [
         "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
         "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
         "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
@@ -1712,7 +1698,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 310,
+      "line": 267,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1736,7 +1722,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 351,
+      "line": 308,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1752,7 +1738,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 506,
+      "line": 463,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1766,7 +1752,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 543,
+      "line": 500,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1780,7 +1766,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 580,
+      "line": 537,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1794,7 +1780,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 713,
+      "line": 670,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1808,7 +1794,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 751,
+      "line": 708,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1822,7 +1808,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 785,
+      "line": 742,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1836,7 +1822,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 820,
+      "line": 777,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1850,7 +1836,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 854,
+      "line": 811,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1864,7 +1850,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 892,
+      "line": 849,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1878,7 +1864,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 919,
+      "line": 876,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1892,7 +1878,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 941,
+      "line": 898,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1906,7 +1892,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 968,
+      "line": 925,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

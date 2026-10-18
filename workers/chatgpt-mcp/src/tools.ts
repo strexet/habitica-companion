@@ -1,3 +1,5 @@
+import {organizationWriteTools} from './organization-tools';
+import {organizationToolScopes,organizationToolInput} from '../../shared/organization-tools';
 import {cronTools,handleCronTool} from './cron-tools';
 import {cronToolScopes,type CronTool} from '../../shared/cron-tools';
 import {spellTools,handleSpellTool} from './spell-tools';
@@ -31,8 +33,8 @@ const descriptions: Record<ReadTool, string> = {
 };
 const bootstrapTools = (Object.keys(readScopes) as ReadTool[]).map(name => ({ name, description: descriptions[name], inputSchema: schemas[name].input, outputSchema: schemas[name].output, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }, securitySchemes: [{ type: "oauth2", scopes: [...new Set(["profile:read", readScopes[name]])] }], _meta: { securitySchemes: [{ type: "oauth2", scopes: [...new Set(["profile:read", readScopes[name]])] }], ...(name === "get_profile" ? { "openai/profile": true } : {}) } })) as Tool[];
 
-export const toolDefinitions=[...bootstrapTools,...canonicalTaskTools,...partyTools,...spellTools,...cronTools];
-const canonicalReadNames=new Set(canonicalTaskTools.filter(tool=>tool.annotations?.readOnlyHint===true).map(tool=>tool.name));
+export const toolDefinitions=[...bootstrapTools,...canonicalTaskTools,...organizationWriteTools,...partyTools,...spellTools,...cronTools];
+const canonicalReadNames=new Set([...canonicalTaskTools,...organizationWriteTools].filter(tool=>tool.annotations?.readOnlyHint===true).map(tool=>tool.name));
 function canonicalReadFailure(result?:Record<string,unknown>){
   return {isError:true,content:[{type:'text' as const,text:'Companion read is unavailable. Check the connection and respect any returned retry delay. No new action was requested.'}],
     structuredContent:{unavailable:true,...(typeof result?.error==='string'?{error:result.error}:{}),...(result?.rate!==undefined?{rate:result.rate}:{}),...(typeof result?.retryAtUtc==='string'?{retryAtUtc:result.retryAtUtc}:{})}};
@@ -45,8 +47,8 @@ export async function handleMcp(request: Request, env: McpEnv, parsedBody: unkno
     const name = call.params.name;
     if(Object.hasOwn(cronToolScopes,name))return handleCronTool(request,env,name as CronTool,call.params.arguments??{});
     if(Object.hasOwn(spellToolScopes,name))return handleSpellTool(request,env,name as SpellTool,call.params.arguments??{});
-    if(Object.hasOwn(taskToolScopes,name)||Object.hasOwn(partyToolScopes,name)){
-      try{if(Object.hasOwn(partyToolScopes,name))partyInput(name,call.params.arguments??{});else taskToolInput(name,call.params.arguments??{});}catch{return {isError:true,content:[{type:"text",text:"Invalid Companion arguments. Use exact IDs and the documented field whitelist; no account selectors are accepted."}]};}
+    if(Object.hasOwn(organizationToolScopes,name)||Object.hasOwn(taskToolScopes,name)||Object.hasOwn(partyToolScopes,name)){
+      try{if(Object.hasOwn(organizationToolScopes,name))organizationToolInput(name,call.params.arguments??{});else if(Object.hasOwn(partyToolScopes,name))partyInput(name,call.params.arguments??{});else taskToolInput(name,call.params.arguments??{});}catch{return {isError:true,content:[{type:"text",text:"Invalid Companion arguments. Use exact IDs and the documented field whitelist; no account selectors are accepted."}]};}
       const isParty=Object.hasOwn(partyToolScopes,name);const partyMutation=isParty&&!name.startsWith("get_");const canonicalRead=canonicalReadNames.has(name);
       try{
         const response=await env.WORKSPACE_SERVER.fetch("https://workspace.internal/tool",{method:"POST",headers:{authorization:request.headers.get("authorization")??"","content-type":"application/json"},body:JSON.stringify({tool:name,arguments:call.params.arguments??{}}),signal:AbortSignal.timeout(Object.hasOwn(partyToolScopes,name)?30000:15000)});
@@ -54,7 +56,7 @@ export async function handleMcp(request: Request, env: McpEnv, parsedBody: unkno
         if(!response.ok&&canonicalRead)return canonicalReadFailure(result);
         if(!response.ok)return {isError:true,content:[{type:"text",text:JSON.stringify({...result,recovery:isParty?(partyMutation?"Keep the original command ID. Check get_party_command after an uncertain response; never create another intent to retry.":"Party data is unavailable. Check connection and consent, and respect any returned retry delay."):"Check the original command receipt. Reuse the same request or command ID; never create a new action to retry an uncertain result."})}],structuredContent:result};
         return {content:[{type:"text",text:JSON.stringify(result)}],structuredContent:result};
-      }catch{if(canonicalRead)return canonicalReadFailure();if(partyMutation)return {isError:true,content:[{type:"text",text:"Party command outcome is unknown. Check get_party_command with the original command ID; never prepare a new intent to retry."}],structuredContent:{commandId:call.params.arguments?.commandId,savedInCompanion:null,outcomeUnknown:true}};if(isParty)return {isError:true,content:[{type:"text",text:"Verified party context is unavailable. No membership or role was inferred."}],structuredContent:{unavailable:true}};return {isError:true,content:[{type:"text",text:"Command outcome is unknown. Check get_task_command using the original command ID. Do not prepare a new command to retry."}],structuredContent:{savedInCompanion:null,outcomeUnknown:true}};}
+      }catch{if(canonicalRead)return canonicalReadFailure();if(partyMutation)return {isError:true,content:[{type:"text",text:"Party command outcome is unknown. Check get_party_command with the original command ID; never prepare a new intent to retry."}],structuredContent:{commandId:call.params.arguments?.commandId,savedInCompanion:null,outcomeUnknown:true}};if(isParty)return {isError:true,content:[{type:"text",text:"Verified party context is unavailable. No membership or role was inferred."}],structuredContent:{unavailable:true}};return {isError:true,content:[{type:"text",text:`Command outcome is unknown. Check the original command ID with ${Object.hasOwn(organizationToolScopes,name)?'get_organization_command':'get_task_command'}. Do not prepare a new command to retry.`}],structuredContent:{savedInCompanion:null,outcomeUnknown:true}};}
     }
     try { readInput(name, call.params.arguments ?? {}); }
     catch { return { isError: true, content: [{ type: "text", text: "Invalid tool arguments. No account selectors are accepted." }] }; }
