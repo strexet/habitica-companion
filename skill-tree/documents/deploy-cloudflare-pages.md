@@ -305,3 +305,7 @@ Recurrence intents and Companion-only skip/pause/resume require matching browser
 ## Native placement compatibility
 
 planTask adds a command operation and optional planning patch using identity v4. Existing commands retain v1/v2/v3 identities, and no D1 migration is required. Older clients can reject new planning journal entries; coordinate application/Worker/package updates before enabling the workflow. The local implementation and dry builds do not deploy the feature or qualify real clients.
+
+## Restoration-cycle data compatibility
+
+The optional restorations document extension retains unused legacy defaults and requires no D1 migration. Strict clients without extension support reject documents that contain restoration data. Coordinate application and Worker updates before using cycle data; compatibility cannot be inferred from a successful dry build. No live activation or migration tooling is included in model qualification.

@@ -177,3 +177,9 @@ Standing local contract adoption selects a separate planTask command for native 
 ## Retained completion read direction
 
 Standing local direction selects retained Todo/Daily completion reads independent of Habitica recent-completed coverage. Original event IDs, UTC completion timestamps, distinct occurrence civil dates and archive flags remain visible. Matching command snapshots supply stored details; missing snapshots explicitly fall back to current task details. Search uses the selected details, with exact task lookup for renamed work. UTC bounds retain seven fractional digits, and pages guard the canonical revision. Reads create no completion, restore or game action. Repeated Todo restore/complete cycles require a separate history-safe model and command contract before implementation.
+
+## Todo restoration-cycle data direction
+
+Standing local direction selects retained TaskRestoration records rather than deletion of completion events. A restoration references one exact Todo completion with a distinct command identity and later causal revision. A new completion requires an intervening restoration; duplicate or overlapping cycles are invalid. Current state matches the latest cycle for tasks with restoration history. Archived events remain causal records. Revision order supplies causality even when clock observations move backward. Goal progress counts current Todo state rather than historical events.
+
+The optional data extension preserves default serialization when unused and supplies explicit history metadata when present. Strict incompatible clients require coordinated updates. Data import retains history and existing paused-authority safeguards without reversing rewards. Reviewed unlinked Todo execution is separate; linked-game, archived-task and recurring recovery remain outside the initial execution contract.

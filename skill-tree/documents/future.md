@@ -72,10 +72,10 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### E09 Mobile planning/history views and history-safe Todo restore
+### E09 Mobile planning/history UI and remaining restore policies
 
 ```yaml
-id: P-f0c7dfe0-a459-4636-af5c-567281e19367
+id: P-7cb0bb45-a294-404c-b257-136d0f9f3de4
 priority: 100
 status: Pending
 parent_pending_ids: []
@@ -87,16 +87,16 @@ depends_on: []
 ```
 
 Description:
-- Implement Today, Inbox, Upcoming, Week/Month, overdue/Anytime and completed-history UI plus a reviewed Todo restore lifecycle that retains repeated completion history without reversing game rewards.
+- Implement mobile Today, Inbox, Upcoming, Week/Month, overdue/Anytime and completed-history controls; research remaining linked-game, archived-task and recurring recovery policies without reward replay.
 
 Expected behavior:
-- Canonical planning and history work on mobile; restore preserves original receipts and history rather than deleting completion events or replaying rewards.
+- Mobile planning uses canonical data and retains history. Recovery operations state exact supported scope and never silently reverse rewards or retry uncertain effects.
 
 Current context:
-- Combined task filters, civil agenda, native placement and retained completion reads are separate local foundations. Production UI retains the E01 hands-on gate. Current uniqueness permits one Todo completion event; repeated restore/complete cycles require explicit history-model design before implementation.
+- Canonical queries, placement, history and unlinked Todo restoration are separate local units. Production UI retains the E01 hands-on gate; linked-game, archived-task and recurring recovery remain outside the initial restore contract.
 
 Source:
-- Remaining original E09 intent from P-c8632138-39c6-5797-8e03-a3414824ee96 through P-2eab4a71-0646-4a9c-a815-84ad69652b79.
+- Remaining original E09 intent from P-c8632138-39c6-5797-8e03-a3414824ee96 through P-f0c7dfe0-a459-4636-af5c-567281e19367.
 
 ### E13 Organization CRUD, advanced lifecycle/history and packaged workflows
 
@@ -263,6 +263,52 @@ Expected behavior:
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
+
+### Review exact unlinked Todo restoration without game effects
+
+```yaml
+id: T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f
+priority: 100
+status: Ready
+parent_pending_ids: ["P-f0c7dfe0-a459-4636-af5c-567281e19367"]
+processing_run_id: PR-f404f1bc-3dcf-4d74-a6ea-372a47431f96
+root_task_id: T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f
+related_task_id: null
+relation: main
+depends_on: ["T-188797a8-cbea-411c-82a5-74257508314b"]
+```
+
+Goal:
+- Expose reviewed restoration of one exact completed unlinked Companion Todo while retaining all completion history.
+Current behavior:
+- Retained history reads identify completion events. Execution requires the explicit restoration-cycle model dependency.
+Desired behavior:
+- Restore an exact currently unrestored completion of a nonarchived completed Todo to active state, adding one restoration record and zero game effects.
+- Subsequent completion creates a new event; original receipts and past restoration/completion records remain immutable.
+Touch:
+- Domain restore patch/identity, Application/Worker acceptance and portable validation, task API/MCP schemas, browser adapters and package guidance.
+Discovery allowance:
+- Inspect restoration-cycle model, reviewed preparation, idempotency and existing native-only lifecycle guards.
+Out of scope:
+- Linked/pending/uncertain game restoration, archived-task recovery, Daily/Habit undo, production controls and live tests.
+Implementation constraints:
+- Append RestoreTodo operation and a restoreTodo-only patch with exact completionId from canonical history. Preserve existing identities/default fields with a new extended hash encoding.
+- Require no projection request and no active linked/pending/uncertain mapping or retained game task identity. Keep other mappings, history and effects unchanged.
+- Reject wrong task/state/kind, already restored or foreign completion, stale revision and mixed native/game patches. Review binds exact task/completion identity.
+- Add one canonical restoration event, preserve task order and existing metadata, and report accepted-event count separately from zero game effects.
+- Original request/command identity survives duplicate execution and lost acknowledgements; portable snapshots cannot fabricate game effects or contradictory restored state.
+Questions and required clarifications:
+- [Resolved - standing local contract direction] Initial restore is Companion-only for unlinked Todos. Linked-game, archived-task and recurring recovery remain separate policy work rather than reversing rewards.
+Validation:
+- Application/Worker repeated completion/restore cycles, original receipt recovery, state/reference guards, v5/legacy identities and portable roundtrip/tampering tests.
+- Actual synthetic MCP preview/acceptance, write grants, own-profile isolation and zero upstream writes. Build app/Workers and run affected suites.
+Acceptance:
+- Reviewed unlinked Todo restore retains repeated completion history, exact identities and original receipts without game effects.
+- Invalid restoration intents, fabricated portable effects and unauthorized or foreign targets cannot bypass acceptance guards.
+Documentation updates:
+- Describe supported restore, accepted-event meaning and remaining linked/archived/recurring/UI limits.
+Risks:
+- Replaying rewards, erasing prior completions or restoring a different historical cycle.
 
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 

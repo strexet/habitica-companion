@@ -63,6 +63,7 @@ public sealed record CompanionTask(
 
 public sealed record TaskOccurrence(Guid Id, long Revision, Guid TaskId, DateOnly Date, OccurrenceState State, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record CompletionEvent(Guid Id, long Revision, Guid TaskId, Guid CommandId, DateTimeOffset CompletedAtUtc, Guid? OccurrenceId = null, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
+public sealed record TaskRestoration(Guid Id, long Revision, Guid TaskId, Guid CompletionId, Guid CommandId, DateTimeOffset RestoredAtUtc, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record HabitScoreEvent(Guid Id, long Revision, Guid TaskId, Guid CommandId, DateTimeOffset RecordedAtUtc, HabitScoreDirection Direction, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record HabiticaProjection(Guid Id, long Revision, Guid TaskId, ProjectionState State, string? HabiticaTaskId = null, bool IsArchived = false, string? Fingerprint = null, string? CorrelationAlias = null) : WorkspaceEntity(Id, Revision, IsArchived);
 
@@ -81,6 +82,8 @@ public sealed record WorkspaceDocument
     public IReadOnlyList<CompanionTask> Tasks { get; init; } = Array.Empty<CompanionTask>();
     public IReadOnlyList<TaskOccurrence> Occurrences { get; init; } = Array.Empty<TaskOccurrence>();
     public IReadOnlyList<CompletionEvent> Completions { get; init; } = Array.Empty<CompletionEvent>();
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<TaskRestoration>? Restorations { get; init; }
     public IReadOnlyList<HabitScoreEvent> HabitScores { get; init; } = Array.Empty<HabitScoreEvent>();
     public IReadOnlyList<HabiticaProjection> Projections { get; init; } = Array.Empty<HabiticaProjection>();
 }

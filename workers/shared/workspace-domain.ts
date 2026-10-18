@@ -13,9 +13,10 @@ export interface CompanionTask extends Entity {
 }
 export interface Occurrence extends Entity { taskId: string; date: string; state: "pending" | "completed" | "skipped" }
 export interface Completion extends Entity { taskId: string; commandId: string; completedAtUtc: string; occurrenceId: string | null }
+export interface Restoration extends Entity {taskId:string;completionId:string;commandId:string;restoredAtUtc:string}
 export interface HabitScore extends Entity { taskId: string; commandId: string; recordedAtUtc: string; direction: "up" | "down" }
 export interface Projection extends Entity { taskId: string; state: "unlinked" | "pending" | "linked" | "externalConflict" | "unknownOutcome"; habiticaTaskId: string | null; fingerprint?: string | null; correlationAlias?: string | null }
-export interface WorkspaceDocument { schemaVersion: 1; id: string; revision: number; categories: Category[]; projects: Project[]; sections: Section[]; labels: Category[]; goals: Goal[]; tasks: CompanionTask[]; occurrences: Occurrence[]; completions: Completion[]; habitScores: HabitScore[]; projections: Projection[] }
+export interface WorkspaceDocument { schemaVersion: 1; id: string; revision: number; categories: Category[]; projects: Project[]; sections: Section[]; labels: Category[]; goals: Goal[]; tasks: CompanionTask[]; occurrences: Occurrence[]; completions: Completion[]; restorations?:Restoration[]; habitScores: HabitScore[]; projections: Projection[] }
 const fail = (): never => { throw new WorkspaceError("invalid_workspace", 422); };
 function named(value: unknown, max = 256, allowEmpty = false): string { if (typeof value !== "string" || value.length > max || !allowEmpty && /^\p{White_Space}*$/u.test(value)) return fail(); return value; }
 function optionalId(value: unknown) { return value === undefined || value === null ? null : uuid(value); }
@@ -50,7 +51,7 @@ function recurrence(value: unknown): Recurrence | null {
 }
 export { recurrence as workspaceRecurrence };
 export function workspaceDocument(input: unknown): WorkspaceDocument {
-  const value = workspaceObject(input, ["schemaVersion", "id", "revision", "categories", "projects", "sections", "labels", "goals", "tasks", "occurrences", "completions", "habitScores", "projections"]);
+  const value = workspaceObject(input, ["schemaVersion", "id", "revision", "categories", "projects", "sections", "labels", "goals", "tasks", "occurrences", "completions", "restorations", "habitScores", "projections"]);
   if (value.schemaVersion !== 1) return fail(); const revision = integer(value.revision); const id = uuid(value.id);
   const names = (key: string): Category[] => list(value[key]).map(item => { const row = workspaceObject(item, [...baseKeys, "name"]); return { ...entity(row, revision), name: named(row.name) }; });
   const categories = names("categories"); const labels = names("labels");
@@ -67,9 +68,10 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   });
   const occurrences = list(value.occurrences).map(item => { const row = workspaceObject(item, [...baseKeys, "taskId", "date", "state"]); if (row.date === "0001-01-01") return fail(); return { ...entity(row, revision), taskId: uuid(row.taskId), date: date(row.date), state: choice(row.state, ["pending", "completed", "skipped"]) }; });
   const completions = list(value.completions).map(item => { const row = workspaceObject(item, [...baseKeys, "taskId", "commandId", "completedAtUtc", "occurrenceId"]); return { ...entity(row, revision), taskId: uuid(row.taskId), commandId: uuid(row.commandId), completedAtUtc: utc(row.completedAtUtc), occurrenceId: optionalId(row.occurrenceId) }; });
+  const restorations=list(value.restorations??undefined).map(item=>{const row=workspaceObject(item,[...baseKeys,'taskId','completionId','commandId','restoredAtUtc']);return {...entity(row,revision),taskId:uuid(row.taskId),completionId:uuid(row.completionId),commandId:uuid(row.commandId),restoredAtUtc:utc(row.restoredAtUtc)};});
   const habitScores = list(value.habitScores).map(item => { const row = workspaceObject(item, [...baseKeys, "taskId", "commandId", "recordedAtUtc", "direction"]); return { ...entity(row, revision), taskId: uuid(row.taskId), commandId: uuid(row.commandId), recordedAtUtc: utc(row.recordedAtUtc), direction: choice(row.direction, ["up", "down"]) }; });
   const projections = list(value.projections).map(item => { const row = workspaceObject(item, [...baseKeys, "taskId", "state", "habiticaTaskId", "fingerprint", "correlationAlias"]); return { ...entity(row, revision), taskId: uuid(row.taskId), state: choice(row.state, ["unlinked", "pending", "linked", "externalConflict", "unknownOutcome"]), habiticaTaskId: optionalId(row.habiticaTaskId), fingerprint: row.fingerprint === undefined || row.fingerprint === null ? null : typeof row.fingerprint === "string" && /^[a-f0-9]{64}$/.test(row.fingerprint) ? row.fingerprint : fail(), correlationAlias: row.correlationAlias === undefined || row.correlationAlias === null ? null : typeof row.correlationAlias === "string" && /^companion_[a-f0-9]{32}_[a-f0-9]{32}$/.test(row.correlationAlias) ? row.correlationAlias : fail() }; });
-  const all = [...categories, ...labels, ...projects, ...sections, ...goals, ...tasks, ...occurrences, ...completions, ...habitScores, ...projections];
+  const all = [...categories, ...labels, ...projects, ...sections, ...goals, ...tasks, ...occurrences, ...completions, ...restorations, ...habitScores, ...projections];
   if (all.length > 100000 || new Set([id, ...all.map(item => item.id)]).size !== all.length + 1) return fail();
   const categoryIds = new Set(categories.map(item => item.id)); const projectMap = new Map(projects.map(item => [item.id, item])); const sectionMap = new Map(sections.map(item => [item.id, item])); const taskMap = new Map(tasks.map(item => [item.id, item])); const labelIds = new Set(labels.map(item => item.id)); const occurrenceMap = new Map(occurrences.map(item => [item.id, item]));
   for (const project of projects) if (project.categoryId && !categoryIds.has(project.categoryId)) return fail();
@@ -90,11 +92,17 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   for (const occurrence of occurrences) { const key = occurrence.taskId + ":" + occurrence.date; if (taskMap.get(occurrence.taskId)?.kind !== "daily" || occurrenceKeys.has(key)) return fail(); occurrenceKeys.add(key); }
   for (const completion of completions) {
     const task = taskMap.get(completion.taskId); const key = completion.taskId + ":" + completion.occurrenceId;
-    if (!task || task.kind === "habit" || completionKeys.has(key) || task.kind === "todo" && completion.occurrenceId !== null
+    if (!task || task.kind === "habit" || task.kind === "daily" && completionKeys.has(key) || task.kind === "todo" && completion.occurrenceId !== null
       || task.kind === "daily" && (!completion.occurrenceId || occurrenceMap.get(completion.occurrenceId)?.taskId !== task.id || occurrenceMap.get(completion.occurrenceId)?.state !== "completed")) return fail();
-    completionKeys.add(key);
+    if(task.kind==='daily')completionKeys.add(key);
   }
-  for (const task of tasks) if (task.kind === "todo" && task.state === "completed" && !completionKeys.has(task.id + ":null")) return fail();
+  const completionMap=new Map(completions.map(value=>[value.id,value])),restoredIds=new Set<string>(),restoreCommands=new Set<string>(),completionCommands=new Set(completions.map(value=>value.commandId));
+  for(const restoration of restorations){const completion=completionMap.get(restoration.completionId);if(taskMap.get(restoration.taskId)?.kind!=='todo'||!completion||completion.taskId!==restoration.taskId||completion.occurrenceId!==null||completionCommands.has(restoration.commandId)||restoreCommands.has(restoration.commandId)||restoration.revision<=completion.revision||restoredIds.has(restoration.completionId))return fail();restoredIds.add(restoration.completionId);restoreCommands.add(restoration.commandId);}
+  const restored=new Map(restorations.map(value=>[value.completionId,value])),restoredTasks=new Set(restorations.map(value=>value.taskId)),groups=new Map<string,Completion[]>();
+  for(const completion of completions)if(taskMap.get(completion.taskId)?.kind==='todo'){let group=groups.get(completion.taskId);if(!group){group=[];groups.set(completion.taskId,group);}group.push(completion);}
+  for(const [taskId,group] of groups){group.sort((a,b)=>a.revision-b.revision);for(let index=1;index<group.length;index++){const restoration=restored.get(group[index-1].id);if(!restoration||restoration.revision>=group[index].revision)return fail();}if(restoredTasks.has(taskId)&&(taskMap.get(taskId)!.state==='completed')!==!restoredIds.has(group[group.length-1].id))return fail();}
+  const completedTodos=new Set(completions.filter(value=>value.occurrenceId===null&&!restoredIds.has(value.id)).map(value=>value.taskId));
+  for (const task of tasks) if (task.kind === "todo" && task.state === "completed" && !completedTodos.has(task.id)) return fail();
   const completedOccurrences = new Set(completions.map(item => item.occurrenceId)); for (const occurrence of occurrences) if (occurrence.state === "completed" && !completedOccurrences.has(occurrence.id)) return fail();
   for (const score of habitScores) if (taskMap.get(score.taskId)?.kind !== "habit") return fail();
   const mapped = new Set<string>(); const external = new Set<string>();
@@ -102,6 +110,6 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
     if (projection.correlationAlias && projection.correlationAlias !== `companion_${id.replaceAll("-", "")}_${projection.taskId.replaceAll("-", "")}` || !taskMap.has(projection.taskId) || mapped.has(projection.taskId) || projection.state === "linked" && !projection.habiticaTaskId || projection.habiticaTaskId && external.has(projection.habiticaTaskId)) return fail();
     mapped.add(projection.taskId); if (projection.habiticaTaskId) external.add(projection.habiticaTaskId);
   }
-  return { schemaVersion: 1, id, revision, categories, projects, sections, labels, goals, tasks, occurrences, completions, habitScores, projections };
+  return { schemaVersion: 1, id, revision, categories, projects, sections, labels, goals, tasks, occurrences, completions, ...(value.restorations==null?{}:{restorations}), habitScores, projections };
 }
 export function emptyWorkspace(id = crypto.randomUUID()): WorkspaceDocument { return workspaceDocument({ schemaVersion: 1, id, revision: 1 }); }

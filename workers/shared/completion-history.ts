@@ -16,6 +16,7 @@ export function queryCompletionHistory(document:WorkspaceDocument,commands:Histo
  const filter=historyFilter(input);if(filter.expectedRevision!==undefined&&filter.expectedRevision!==document.revision)throw new WorkspaceError('stale_revision',409);
  const tasks=new Map(document.tasks.map(task=>[task.id,task])),occurrences=new Map(document.occurrences.map(value=>[value.id,value]));
  const snapshots=new Map(commands.map(command=>[command.commandId,command]));const query=foldTaskText(filter.query??'');
+ const restorations=new Map((document.restorations??[]).map(value=>[value.completionId,value]));
  const rows=[];
  for(let order=0;order<document.completions.length;order++){
   const event=document.completions[order],task=tasks.get(event.taskId)!;const at=utcTicks(event.completedAtUtc);
@@ -24,7 +25,8 @@ export function queryCompletionHistory(document:WorkspaceDocument,commands:Histo
   if(command&&(command.operation!=='completeTask'||command.taskId!==task.id)||accepted&&(accepted.id!==task.id||accepted.kind!==task.kind||typeof accepted.text!=='string'||/^\p{White_Space}*$/u.test(accepted.text)||accepted.text.length>2048||accepted.notes!=null&&(typeof accepted.notes!=='string'||accepted.notes.length>10000)))throw new WorkspaceError('history_unavailable',503);
   const taskText=accepted?.text??task.text,notes=accepted?accepted.notes??null:task.notes;
   if(query&&!foldTaskText(taskText).includes(query)&&!foldTaskText(notes??'').includes(query))continue;
-  rows.push({at,revision:event.revision,order,item:{eventId:event.id,taskId:task.id,commandId:event.commandId,kind:task.kind,taskText,notes,detailSource:accepted?'commandSnapshot':'currentTask',completedAtUtc:event.completedAtUtc,occurrenceId:event.occurrenceId,occurrenceDate:event.occurrenceId?occurrences.get(event.occurrenceId)!.date:null,taskArchived:task.isArchived,eventArchived:event.isArchived}});
+  const restored=restorations.get(event.id);
+  rows.push({at,revision:event.revision,order,item:{eventId:event.id,taskId:task.id,commandId:event.commandId,kind:task.kind,taskText,notes,detailSource:accepted?'commandSnapshot':'currentTask',completedAtUtc:event.completedAtUtc,occurrenceId:event.occurrenceId,occurrenceDate:event.occurrenceId?occurrences.get(event.occurrenceId)!.date:null,taskArchived:task.isArchived,eventArchived:event.isArchived,...(restored?{restoration:{eventId:restored.id,commandId:restored.commandId,restoredAtUtc:restored.restoredAtUtc,isArchived:restored.isArchived}}:{})}});
  }
  rows.sort((a,b)=>a.at>b.at?-1:a.at<b.at?1:b.revision-a.revision||a.order-b.order);
  const items=rows.slice(filter.offset,filter.offset+filter.limit).map(row=>row.item),next=filter.offset+items.length;

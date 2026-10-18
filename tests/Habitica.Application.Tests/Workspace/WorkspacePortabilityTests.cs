@@ -65,6 +65,16 @@ public sealed class WorkspacePortabilityTests
         await Assert.ThrowsAsync<System.Text.Json.JsonException>(() => service.RestoreAsync("{\"document\":null,\"storeVersion\":1,\"commands\":[]}", default));
         Assert.Null(target.Json);
     }
+    [Fact]
+    public async Task RestorationCyclesSurviveBackupRestoreAndFrozenHandoff()
+    {
+        using var fixture=System.Text.Json.JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"fixtures","todo-restoration-cycles-v1.json")));
+        var document=WorkspaceJson.Deserialize(fixture.RootElement.GetProperty("cases").EnumerateArray().Single(value=>value.GetProperty("name").GetString()=="all cycles restored and ready to complete again").GetProperty("document").GetRawText());
+        var original=new WorkspaceJournalSnapshot(document,document.Revision,[],[]);var source=new Store(original);var json=await new WorkspacePortabilityService(source).ExportAsync(document.Id,default);
+        var target=new Store();Assert.Equal(WorkspaceRestoreOutcome.Restored,await new WorkspacePortabilityService(target).RestoreAsync(json!,default));var restored=target.Read()!;
+        Assert.Equal(WorkspaceJson.Serialize(document),WorkspaceJson.Serialize(restored.Document));Assert.Equal(WorkspaceAuthorityMode.Paused,restored.Authority!.Mode);
+        var handoff=WorkspaceJournalJson.Deserialize(await new WorkspaceHandoffService(source).PrepareAsync(document.Id,default));Assert.Equal(WorkspaceAuthorityMode.Frozen,handoff.Authority!.Mode);Assert.Equal(WorkspaceJson.Serialize(document),WorkspaceJson.Serialize(handoff.Document));
+    }
 
     private sealed class Clock(DateTimeOffset value) : TimeProvider { public override DateTimeOffset GetUtcNow() => value; }
     private sealed class Store : ICompanionWorkspaceStore

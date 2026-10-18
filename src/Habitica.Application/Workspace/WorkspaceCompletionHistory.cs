@@ -1,13 +1,16 @@
 using Habitica.Domain.Workspace;
+using System.Text.Json.Serialization;
 
 namespace Habitica.Application.Workspace;
 
 public sealed record WorkspaceHistoryFilter(string? Query = null, Guid? TaskId = null, CompanionTaskKind? Kind = null,
     DateTimeOffset? CompletedFromUtc = null, DateTimeOffset? CompletedThroughUtc = null,
     int Limit = 50, int Offset = 0, long? ExpectedRevision = null);
+public sealed record WorkspaceRestorationDetail(Guid EventId, Guid CommandId, DateTimeOffset RestoredAtUtc, bool IsArchived);
 public sealed record WorkspaceCompletionItem(Guid EventId, Guid TaskId, Guid CommandId, CompanionTaskKind Kind,
     string TaskText, string? Notes, string DetailSource, DateTimeOffset CompletedAtUtc,
-    Guid? OccurrenceId, DateOnly? OccurrenceDate, bool TaskArchived, bool EventArchived);
+    Guid? OccurrenceId, DateOnly? OccurrenceDate, bool TaskArchived, bool EventArchived,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceRestorationDetail? Restoration = null);
 
 public static class WorkspaceCompletionHistory
 {
@@ -22,6 +25,7 @@ public static class WorkspaceCompletionHistory
         if (filter.ExpectedRevision is { } revision && revision != document.Revision) throw new InvalidOperationException("stale_revision");
         if (WorkspaceRules.Validate(document).Count != 0) throw new InvalidOperationException("history_unavailable");
         var tasks = document.Tasks.ToDictionary(task => task.Id); var occurrences = document.Occurrences.ToDictionary(value => value.Id);
+        var restorations = (document.Restorations ?? Array.Empty<TaskRestoration>()).ToDictionary(value => value.CompletionId);
         var commands = snapshot.Commands.ToDictionary(entry => entry.Command.Id); var query = WorkspaceTaskQuery.Fold(filter.Query ?? "");
         var rows = new List<(long Revision,int Order,WorkspaceCompletionItem Item)>();
         for (var index = 0; index < document.Completions.Count; index++)
@@ -39,8 +43,9 @@ public static class WorkspaceCompletionHistory
             }
             var text = accepted?.Text ?? task.Text; var notes = accepted is null ? task.Notes : accepted.Notes;
             if (query.Length > 0 && !WorkspaceTaskQuery.Fold(text).Contains(query,StringComparison.Ordinal) && !WorkspaceTaskQuery.Fold(notes ?? "").Contains(query,StringComparison.Ordinal)) continue;
+            var restoration = restorations.TryGetValue(value.Id,out var restored) ? new WorkspaceRestorationDetail(restored.Id,restored.CommandId,restored.RestoredAtUtc,restored.IsArchived) : null;
             rows.Add((value.Revision,index,new(value.Id,task.Id,value.CommandId,task.Kind,text,notes,accepted is null ? "currentTask" : "commandSnapshot",
-                value.CompletedAtUtc,value.OccurrenceId,value.OccurrenceId is { } occurrenceId ? occurrences[occurrenceId].Date : null,task.IsArchived,value.IsArchived)));
+                value.CompletedAtUtc,value.OccurrenceId,value.OccurrenceId is { } occurrenceId ? occurrences[occurrenceId].Date : null,task.IsArchived,value.IsArchived,restoration)));
         }
         var ordered = rows.OrderByDescending(row => row.Item.CompletedAtUtc).ThenByDescending(row => row.Revision).ThenBy(row => row.Order).ToArray();
         var items = ordered.Skip(filter.Offset).Take(filter.Limit).Select(row => row.Item).ToArray(); var next = filter.Offset + items.Length;

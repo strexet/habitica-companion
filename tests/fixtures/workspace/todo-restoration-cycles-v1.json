@@ -1,0 +1,2244 @@
+{
+  "cases": [
+    {
+      "name": "closed first cycle and current completion",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": true,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "all cycles restored and ready to complete again",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 5,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 5,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T11:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000301",
+            "revision": 5,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000101",
+            "commandId": "90000000-0000-4000-8000-000000000401",
+            "restoredAtUtc": "2026-10-18T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": true,
+      "completedTodos": 0,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "archived restoration still closes the cycle",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": true,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": true,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "archived task retains cycles and leaves goal denominator",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": true,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": true,
+      "completedTodos": 0,
+      "eligibleTodos": 0
+    },
+    {
+      "name": "causal revision survives wall-clock skew",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T09:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": true,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "legacy completion has no extension",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 2,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 2,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": true,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "legacy active history remains accepted",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 2,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 2,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": true,
+      "completedTodos": 0,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "explicit empty extension roundtrips",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 2,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 2,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "habitScores": [],
+        "projections": [],
+        "restorations": []
+      },
+      "valid": true,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "null extension normalizes to legacy defaults",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 2,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 2,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "habitScores": [],
+        "projections": [],
+        "restorations": null
+      },
+      "valid": true,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "second completion without a closed prior cycle",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "restoration before completion revision",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 1,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "restoration not before the next completion",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "duplicate completion restoration reference",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000302",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000402",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "duplicate restoration command identity",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 5,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 5,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T11:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000301",
+            "revision": 5,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000101",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-18T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 0,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "foreign task completion reference",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000011",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000011",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "missing completion reference",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000999",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "completion command cannot also be restoration command",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "unrestored current completion requires completed lifecycle",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 0,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "fully restored task cannot remain completed",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 5,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 5,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T11:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000301",
+            "revision": 5,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000101",
+            "commandId": "90000000-0000-4000-8000-000000000401",
+            "restoredAtUtc": "2026-10-18T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "non UTC restoration timestamp",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00+03:00"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "default restoration timestamp",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "0001-01-01T00:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "restoration IDs join global identity validation",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "restoration cannot exceed current document revision",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 5,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "same revision completions cannot form separate cycles",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "Daily occurrence restoration is outside the Todo model",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 2,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000011",
+            "revision": 2,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "daily",
+            "state": "active",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-17T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [
+          {
+            "id": "90000000-0000-4000-8000-000000000500",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000011",
+            "date": "2026-10-17",
+            "state": "completed"
+          }
+        ],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000501",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000011",
+            "commandId": "90000000-0000-4000-8000-000000000502",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": "90000000-0000-4000-8000-000000000500"
+          }
+        ],
+        "habitScores": [],
+        "projections": [],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000011",
+            "completionId": "90000000-0000-4000-8000-000000000501",
+            "commandId": "90000000-0000-4000-8000-000000000400",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ]
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    },
+    {
+      "name": "restoration command cannot reuse another completion command",
+      "document": {
+        "schemaVersion": 1,
+        "id": "90000000-0000-4000-8000-000000000001",
+        "revision": 4,
+        "categories": [],
+        "projects": [],
+        "sections": [],
+        "labels": [],
+        "goals": [
+          {
+            "id": "90000000-0000-4000-8000-000000000020",
+            "revision": 1,
+            "isArchived": false,
+            "name": "Cycle progress",
+            "taskIds": [
+              "90000000-0000-4000-8000-000000000010"
+            ]
+          }
+        ],
+        "tasks": [
+          {
+            "id": "90000000-0000-4000-8000-000000000010",
+            "revision": 4,
+            "isArchived": false,
+            "text": "Retained Todo",
+            "kind": "todo",
+            "state": "completed",
+            "priority": "normal",
+            "createdAtUtc": "2026-10-15T00:00:00Z",
+            "updatedAtUtc": "2026-10-18T10:00:00Z",
+            "notes": null,
+            "categoryId": null,
+            "projectId": null,
+            "sectionId": null,
+            "parentTaskId": null,
+            "labelIds": [],
+            "dependsOn": [],
+            "plannedDate": null,
+            "deadline": null,
+            "reviewAfterUtc": null,
+            "staleSinceUtc": null,
+            "recurrence": null,
+            "habiticaDetails": null
+          }
+        ],
+        "occurrences": [],
+        "completions": [
+          {
+            "id": "90000000-0000-4000-8000-000000000100",
+            "revision": 2,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000200",
+            "completedAtUtc": "2026-10-17T10:00:00Z",
+            "occurrenceId": null
+          },
+          {
+            "id": "90000000-0000-4000-8000-000000000101",
+            "revision": 4,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "completedAtUtc": "2026-10-18T10:00:00Z",
+            "occurrenceId": null
+          }
+        ],
+        "restorations": [
+          {
+            "id": "90000000-0000-4000-8000-000000000300",
+            "revision": 3,
+            "isArchived": false,
+            "taskId": "90000000-0000-4000-8000-000000000010",
+            "completionId": "90000000-0000-4000-8000-000000000100",
+            "commandId": "90000000-0000-4000-8000-000000000201",
+            "restoredAtUtc": "2026-10-17T11:00:00Z"
+          }
+        ],
+        "habitScores": [],
+        "projections": []
+      },
+      "valid": false,
+      "completedTodos": 1,
+      "eligibleTodos": 1
+    }
+  ]
+}

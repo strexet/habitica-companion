@@ -22,7 +22,7 @@ public static class WorkspaceRules
         }
         var all = document.Categories.Cast<WorkspaceEntity>().Concat(document.Projects).Concat(document.Sections)
             .Concat(document.Labels).Concat(document.Goals).Concat(document.Tasks).Concat(document.Occurrences)
-            .Concat(document.Completions).Concat(document.HabitScores).Concat(document.Projections).ToArray();
+            .Concat(document.Completions).Concat(document.Restorations ?? Array.Empty<TaskRestoration>()).Concat(document.HabitScores).Concat(document.Projections).ToArray();
         if (all.Any(entity => entity is null)) { errors.Add(new("null_entity")); return errors; }
         if (all.Length > 100000) { errors.Add(new("workspace_too_large")); return errors; }
         var identities = new HashSet<Guid> { document.Id };
@@ -97,11 +97,33 @@ public static class WorkspaceRules
         foreach (var completion in document.Completions)
         {
             if (!tasks.TryGetValue(completion.TaskId, out var task) || task.Kind == CompanionTaskKind.Habit || completion.CommandId == Guid.Empty
-                || completion.CompletedAtUtc == default || completion.CompletedAtUtc.Offset != TimeSpan.Zero || !completionKeys.Add((completion.TaskId, completion.OccurrenceId))
+                || completion.CompletedAtUtc == default || completion.CompletedAtUtc.Offset != TimeSpan.Zero
                 || task.Kind == CompanionTaskKind.Daily && (completion.OccurrenceId is not { } occurrenceId || !occurrences.TryGetValue(occurrenceId, out var occurrence) || occurrence.TaskId != task.Id || occurrence.State != OccurrenceState.Completed)
+                || task.Kind == CompanionTaskKind.Daily && !completionKeys.Add((completion.TaskId, completion.OccurrenceId))
                 || task.Kind == CompanionTaskKind.Todo && completion.OccurrenceId is not null) errors.Add(new("invalid_completion", completion.Id));
         }
-        var completedTodos = document.Completions.Where(completion => completion.OccurrenceId is null).Select(completion => completion.TaskId).ToHashSet();
+        var completionMap = document.Completions.GroupBy(value => value.Id).ToDictionary(group => group.Key, group => group.First());
+        var restorationRows = document.Restorations ?? Array.Empty<TaskRestoration>();
+        var completionCommands = document.Completions.Select(value => value.CommandId).ToHashSet();
+        var restoredIds = new HashSet<Guid>(); var restoreCommands = new HashSet<Guid>();
+        foreach (var restoration in restorationRows)
+            if (!tasks.TryGetValue(restoration.TaskId,out var task) || task.Kind != CompanionTaskKind.Todo
+                || !completionMap.TryGetValue(restoration.CompletionId,out var completion) || completion.TaskId != restoration.TaskId || completion.OccurrenceId is not null
+                || restoration.CommandId == Guid.Empty || completionCommands.Contains(restoration.CommandId) || !restoreCommands.Add(restoration.CommandId)
+                || restoration.RestoredAtUtc == default || restoration.RestoredAtUtc.Offset != TimeSpan.Zero
+                || restoration.Revision <= completion.Revision || !restoredIds.Add(restoration.CompletionId)) errors.Add(new("invalid_restoration",restoration.Id));
+        var restored = restorationRows.GroupBy(value => value.CompletionId).ToDictionary(group => group.Key,group => group.First());
+        var restoredTasks = restorationRows.Select(value => value.TaskId).ToHashSet();
+        foreach (var group in document.Completions.Where(value => tasks.TryGetValue(value.TaskId,out var task) && task.Kind == CompanionTaskKind.Todo).GroupBy(value => value.TaskId))
+        {
+            var ordered = group.OrderBy(value => value.Revision).ToArray();
+            for (var index = 1; index < ordered.Length; index++)
+                if (!restored.TryGetValue(ordered[index-1].Id,out var restoration) || restoration.Revision >= ordered[index].Revision)
+                    errors.Add(new("invalid_completion",ordered[index].Id));
+            if (restoredTasks.Contains(group.Key) && (tasks[group.Key].State == CompanionTaskState.Completed) != !restoredIds.Contains(ordered[^1].Id))
+                errors.Add(new("invalid_completion",group.Key));
+        }
+        var completedTodos = document.Completions.Where(completion => completion.OccurrenceId is null && !restoredIds.Contains(completion.Id)).Select(completion => completion.TaskId).ToHashSet();
         var completedOccurrences = document.Completions.Where(completion => completion.OccurrenceId is not null).Select(completion => completion.OccurrenceId!.Value).ToHashSet();
         foreach (var task in document.Tasks.Where(task => task.Kind == CompanionTaskKind.Todo && task.State == CompanionTaskState.Completed))
             if (!completedTodos.Contains(task.Id)) errors.Add(new("missing_completion_event", task.Id));
