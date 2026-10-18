@@ -1,0 +1,41 @@
+{
+  "task_id": "T-23520ce7-554d-4848-b64b-f4be9ed39800",
+  "date": "2026-10-18",
+  "scope": "Local MCP recovery and synthetic service failures; no live requests",
+  "checks": [
+    {
+      "name": "App release build and three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Explicit-error and unreadable-reply SDK cases",
+      "passed": 2,
+      "failed": 0
+    },
+    {
+      "name": "Full Auth suite",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace suite",
+      "passed": 185,
+      "failed": 0
+    }
+  ],
+  "acceptance_evidence": [
+    "Read-only identity derives from existing advertised canonical metadata. Task, agenda, project, goal, exact-task and original-receipt reads return unavailable observations for explicit errors and unreadable replies.",
+    "Read failures preserve safe retry metadata, omit saved/outcome uncertainty fields and return no optimistic data/counts.",
+    "Mutation errors preserve savedInCompanion null, outcomeUnknown true and original command receipt recovery.",
+    "Normal authorization and party/spell/Cron routing remain unchanged."
+  ],
+  "limitations": [
+    "Synthetic SDK handling does not qualify real host/model interpretation or live transport failures.",
+    "Unavailable original receipts still leave earlier action outcomes uncertain."
+  ],
+  "source_fingerprints": {
+    "workers/chatgpt-mcp/src/tools.ts": "57158aecb0d6f7dcb944cf671cd0b4c5d623d6a82c129e5bd4395c633cd7eeed",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "ebc80a27941fc48e549c4f4c42d16be8c8c9910ea53a7bac4a9ca4690eb2fe26",
+    "workers/companion-workspace/test/canonical-read-errors.test.mjs": "dbfbf157710cd1c9c4f5e5126f036920f4407fc6635552da1d6f9fdd4ff7785f"
+  }
+}
