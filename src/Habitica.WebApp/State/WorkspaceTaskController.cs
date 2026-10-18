@@ -5,7 +5,7 @@ using Habitica.Storage;
 namespace Habitica.WebApp.State;
 
 public sealed record WorkspaceTaskInput(WorkspaceOperation Operation, Guid? TaskId, string Text, string Notes, CompanionPriority Priority,
-    DateOnly? Deadline, HabiticaTaskDetails? Details, bool ProjectToHabitica, HabitScoreDirection Direction, int Count, DateOnly? OccurrenceDate, WorkspaceTaskPlanning? Planning = null, WorkspaceTodoRestore? RestoreTodo = null, WorkspaceTaskRelationships? Relationships = null, WorkspaceTodoState? TodoState = null);
+    DateOnly? Deadline, HabiticaTaskDetails? Details, bool ProjectToHabitica, HabitScoreDirection Direction, int Count, DateOnly? OccurrenceDate, WorkspaceTaskPlanning? Planning = null, WorkspaceTodoRestore? RestoreTodo = null, WorkspaceTaskRelationships? Relationships = null, WorkspaceTodoState? TodoState = null, WorkspaceTodoStage? TodoStage = null);
 
 public sealed class WorkspaceTaskController(IAppSessionController session, IWorkspaceCloudClient cloud, IndexedDbWorkspaceDatabase database)
 {
@@ -71,6 +71,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
                 input.Deadline == current.Deadline ? null : input.Deadline, input.Deadline is null && current.Deadline is not null, input.Details);
         }
         if (input.Operation == WorkspaceOperation.PlanTask) patch = new(Planning: input.Planning);
+        if (input.Operation == WorkspaceOperation.SetTodoStage) patch = new(TodoStage:input.TodoStage);
         if (input.Operation == WorkspaceOperation.SetTodoState) patch = new(TodoState: input.TodoState);
         if (input.Operation == WorkspaceOperation.RelateTodo) patch = new(Relationships: input.Relationships);
         if (input.Operation == WorkspaceOperation.RestoreTodo) patch = new(RestoreTodo: input.RestoreTodo);
@@ -99,7 +100,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
             var result = WorkspaceCommandEngine.Accept(Snapshot, _intent, DateTimeOffset.UtcNow);
             if (result.Disposition != SubmissionDisposition.Accepted) { Message = "The preview is invalid or stale. Check the task, field bounds and current revision."; _intent = null; return; }
             Preview = new(_intent.Id, _requestId, DateTimeOffset.UtcNow.AddMinutes(10), false, _intent, result.Entry!.Effects.Count > 0, false);
-            Message = _intent.Operation == WorkspaceOperation.SetTodoState ? "Review the native Todo planning state. Completion history, dependencies and accepted game commands remain unchanged; no new game effect occurs." : _intent.Operation == WorkspaceOperation.RelateTodo ? "Review the exact Todo parent and full dependency replacement. This command changes native relationships only." : _intent.Operation == WorkspaceOperation.RestoreTodo ? "Review the exact Todo completion to restore. Earlier completion history remains; no Habitica effect or reward reversal occurs." : _intent.Operation == WorkspaceOperation.PlanTask ? "Review native planned date and placement. This command changes Companion only." : "Review this command before saving. Local projection effects wait for an explicit ownership transfer and enabled cloud executor.";
+            Message = _intent.Operation == WorkspaceOperation.SetTodoStage ? "Review the active Todo stage preference. Current state, dates, dependencies, history and accepted game commands remain unchanged." : _intent.Operation == WorkspaceOperation.SetTodoState ? "Review the native Todo planning state. Completion history, dependencies and accepted game commands remain unchanged; no new game effect occurs." : _intent.Operation == WorkspaceOperation.RelateTodo ? "Review the exact Todo parent and full dependency replacement. This command changes native relationships only." : _intent.Operation == WorkspaceOperation.RestoreTodo ? "Review the exact Todo completion to restore. Earlier completion history remains; no Habitica effect or reward reversal occurs." : _intent.Operation == WorkspaceOperation.PlanTask ? "Review native planned date and placement. This command changes Companion only." : "Review this command before saving. Local projection effects wait for an explicit ownership transfer and enabled cloud executor.";
         }
     }
     public void CancelPreview()

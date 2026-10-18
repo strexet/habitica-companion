@@ -75,7 +75,8 @@
       "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
       "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
       "T-74bb4500-60a6-4917-b654-13e6b5506afd",
-      "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
+      "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
+      "T-3f472554-56a4-4edf-a163-1b96dc822a06"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -106,6 +107,7 @@
       "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3": "O-f684df86-5cbd-4a55-9f83-286b66f0d3d6",
       "T-3987ba88-f69f-59f1-811e-f51cabfa5978": "O-048b3fa0-28ea-49a0-bec1-a8e537a805f5",
       "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e": "O-9e01fa6a-caa6-4e3c-be17-1e389f562720",
+      "T-3f472554-56a4-4edf-a163-1b96dc822a06": "O-76630a35-f0f9-488e-a3b0-aad446dc1133",
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8": "O-d3de5c55-c4ac-4eb9-9b46-36aa630adf68",
       "T-49eaa44e-5c98-4219-a380-4201e4143494": "O-9f6a3618-fbbf-4d96-b034-bbe5f19e01ca",
       "T-4a1de222-156a-52cf-8966-262a2c8216ed": "O-1be18cd1-6faf-47ff-bc66-14861e6858e4",
@@ -155,7 +157,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "ed6d85a1b7a23cedcc53106eb108f4ee51d2e841e0d0ec0b56c08ad22380dc78",
+    "cycle_signature": "536022343aacc2747c9c6b366f2d011dbe895580b0c68f9ad7fe8c9f0d505c15",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -165,9 +167,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Research the remaining originally authorized E13 local execution-stage contract without live tests; retain release qualification as blocked.",
+    "next_action": "Research the remaining original E12 Pending area and select eligible local foundations within standing expanded scope.",
     "partial_work": [
-      "Native Todo planning-state milestone is accepted with 1193 passing automated checks and release/dry builds. Remaining real release qualification stays open; further originally authorized local Pending areas require scoped processing."
+      "Completed optional active Todo stage milestone with local qualification.",
+      "Live release and production UX gates remain open; original authorized E12 local research remains eligible."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -230,7 +233,7 @@
       "P-14835d09-6c68-4472-a5fb-622c5500f9b4",
       "P-600be12e-fd34-44d8-b992-dca13600ab13"
     ],
-    "phase": "process-required",
+    "phase": "process",
     "processing_results": [
       {
         "created_ids": [
@@ -1289,6 +1292,25 @@
         "task_keys": {
           "todo-state": "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
         }
+      },
+      {
+        "created_ids": [
+          "T-3f472554-56a4-4edf-a163-1b96dc822a06"
+        ],
+        "dispositions": {
+          "P-600be12e-fd34-44d8-b992-dca13600ab13": {
+            "reason": "The adopted source separates execution, dates, organization and game axes; an optional remembered active-stage field can complete local E13 authoring without a production UI or live qualification.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-c640fd49-065c-413d-a7e5-421ce8a97ee7",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-600be12e-fd34-44d8-b992-dca13600ab13"
+        ],
+        "task_keys": {
+          "todo-stage": "T-3f472554-56a4-4edf-a163-1b96dc822a06"
+        }
       }
     ],
     "required_ids": [
@@ -1368,9 +1390,10 @@
       "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
       "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
       "T-74bb4500-60a6-4917-b654-13e6b5506afd",
-      "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
+      "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
+      "T-3f472554-56a4-4edf-a163-1b96dc822a06"
     ],
-    "root_task_id": "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
+    "root_task_id": "T-3f472554-56a4-4edf-a163-1b96dc822a06",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1576,6 +1599,15 @@
         "reason": "Continue local decomposition of the previously authorized E13 feature area while retaining the separate release qualification blocker.",
         "remaining_pending_id": "P-600be12e-fd34-44d8-b992-dca13600ab13",
         "researched_remainder": "P-14835d09-6c68-4472-a5fb-622c5500f9b4"
+      },
+      {
+        "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+        "owner_direction": "Resume Implement All within the previously authorized local Pending areas; publication permitted when needed; no live tests.",
+        "promoted_local_roots": [
+          "T-3f472554-56a4-4edf-a163-1b96dc822a06"
+        ],
+        "reason": "Finish local E13 optional execution-stage foundations while production UI and live release qualification remain separate.",
+        "researched_remainder": "P-600be12e-fd34-44d8-b992-dca13600ab13"
       }
     ],
     "snapshot": [
@@ -1612,32 +1644,19 @@
       "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
       "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
       "T-74bb4500-60a6-4917-b654-13e6b5506afd",
-      "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
+      "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
+      "T-3f472554-56a4-4edf-a163-1b96dc822a06"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "ba065538c2a07d1e672bf1212314b335a174e40a9d2b2c9a0ec8447bc8e42107",
+  "source_hash": "58527e2f89aab4e11c53dd34d82ae0d83cc5d973abbc0d51d5628ed24b0ebda7",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-600be12e-fd34-44d8-b992-dca13600ab13",
-      "line": 75,
-      "parent_pending_ids": [],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E13 Optional Inbox Next and InProgress execution stages"
-    },
-    {
-      "depends_on": [],
       "id": "P-84af82c3-f65b-4981-8f40-e3faaf651314",
-      "line": 101,
+      "line": 75,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1651,7 +1670,7 @@
     {
       "depends_on": [],
       "id": "P-346056d8-c254-4a1e-b860-6850c6cb470d",
-      "line": 127,
+      "line": 101,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1665,7 +1684,7 @@
     {
       "depends_on": [],
       "id": "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
-      "line": 153,
+      "line": 127,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1679,7 +1698,7 @@
     {
       "depends_on": [],
       "id": "P-c5795748-6f25-4c0a-a471-fe72c1a85862",
-      "line": 179,
+      "line": 153,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1693,7 +1712,7 @@
     {
       "depends_on": [],
       "id": "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
-      "line": 205,
+      "line": 179,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1707,7 +1726,7 @@
     {
       "depends_on": [],
       "id": "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
-      "line": 234,
+      "line": 208,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1733,7 +1752,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 267,
+      "line": 241,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1757,7 +1776,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 309,
+      "line": 283,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1773,7 +1792,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 464,
+      "line": 438,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1787,7 +1806,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 501,
+      "line": 475,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1801,7 +1820,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 538,
+      "line": 512,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1815,7 +1834,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 671,
+      "line": 645,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1829,7 +1848,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 709,
+      "line": 683,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1843,7 +1862,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 743,
+      "line": 717,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1857,7 +1876,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 778,
+      "line": 752,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1871,7 +1890,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 812,
+      "line": 786,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1885,7 +1904,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 850,
+      "line": 824,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1899,7 +1918,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 877,
+      "line": 851,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1913,7 +1932,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 899,
+      "line": 873,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1927,7 +1946,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 926,
+      "line": 900,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

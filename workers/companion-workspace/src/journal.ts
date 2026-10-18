@@ -1,3 +1,4 @@
+import {executionStage,todoStageMatches} from '../../shared/todo-stage.ts';
 import {todoStateMatches} from '../../shared/todo-state.ts';
 import {validateOrganizationHistoryHashes} from '../../shared/workspace-organization.ts';
 import {relationshipsMatch} from '../../shared/task-relationships.ts';
@@ -27,6 +28,7 @@ export async function journal(value:unknown):Promise<Journal>{
   const effects=row.effects as string[];valid(Number.isInteger(row.confirmedEffects)&&Number(row.confirmedEffects)>=0&&Number(row.confirmedEffects)<=effects.length&&Number.isSafeInteger(row.attempts)&&Number(row.attempts)>=0);
   const restoration=document.restorations?.find(value=>value.commandId===command.id);valid(!restoration||command.operation==='restoreTodo');
   if(command.operation==='restoreTodo'){const accepted=object(row.taskSnapshot);valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0&&accepted.kind==='todo'&&accepted.state==='active'&&accepted.isArchived!==true&&restoration&&restoration.taskId===command.taskId&&restoration.completionId===command.patch?.restoreTodo?.completionId&&restoration.revision===command.expectedRevision+1&&utcTicks(restoration.restoredAtUtc)===utcTicks(row.acceptedAtUtc));}
+  if(command.operation==='setTodoStage'){valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0);const accepted=object(row.taskSnapshot);valid(command.patch?.todoStage&&todoStageMatches(command.patch.todoStage,accepted as unknown as CompanionTask));}
   if(command.operation==='setTodoState'){valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0);const accepted=object(row.taskSnapshot);valid(command.patch?.todoState&&todoStateMatches(command.patch.todoState,accepted as unknown as CompanionTask));}
   if(command.operation==='relateTodo'){valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0);const accepted=object(row.taskSnapshot);valid(command.patch?.relationships&&accepted.isArchived!==true&&relationshipsMatch(command.patch.relationships,accepted as unknown as CompanionTask));}
   if(command.operation==='planTask'){valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0);const accepted=object(row.taskSnapshot);valid(command.patch?.planning&&planningMatches(command.patch.planning,accepted));}
@@ -43,8 +45,8 @@ export async function journal(value:unknown):Promise<Journal>{
   if(row.lease!=null){const lease=object(row.lease,['owner','token','expiresAtUtc']);uuid(lease.token);valid(typeof lease.owner==='string'&&lease.owner.trim().length>0&&lease.owner.length<=128&&timestamp(lease.expiresAtUtc));}
   if(['executing','unknownOutcome'].includes(String(row.projectionState)))valid(timestamp(row.dispatchedAtUtc)&&Number(row.attempts)>0);
   valid(row.retryAtUtc==null||timestamp(row.retryAtUtc));valid(row.dispatchedAtUtc==null||timestamp(row.dispatchedAtUtc));
-  if(row.taskSnapshot!=null){const task=object(row.taskSnapshot,['id','revision','isArchived','text','kind','state','priority','createdAtUtc','updatedAtUtc','notes','categoryId','projectId','sectionId','parentTaskId','labelIds','dependsOn','plannedDate','deadline','reviewAfterUtc','staleSinceUtc','recurrence','habiticaDetails']);
-   habiticaDetails(task.habiticaDetails);
+  if(row.taskSnapshot!=null){const task=object(row.taskSnapshot,['id','revision','isArchived','text','kind','state','priority','createdAtUtc','updatedAtUtc','notes','categoryId','projectId','sectionId','parentTaskId','labelIds','dependsOn','plannedDate','deadline','reviewAfterUtc','staleSinceUtc','recurrence','habiticaDetails','executionStage']);
+   habiticaDetails(task.habiticaDetails);if(executionStage(task.executionStage)!==null)valid(task.kind==='todo');
    if(task.recurrence!=null){valid(task.kind==='daily');workspaceRecurrence(task.recurrence);}
    valid(task.id===command.taskId&&task.revision===command.expectedRevision+1&&['todo','daily','habit'].includes(String(task.kind))&&['active','paused','completed','waiting','someday','cancelled'].includes(String(task.state))&&['low','normal','high','urgent'].includes(String(task.priority))&&typeof task.text==='string'&&task.text.trim().length>0&&task.text.length<=2048&&(task.notes==null||typeof task.notes==='string'&&task.notes.length<=10000)&&timestamp(task.createdAtUtc)&&timestamp(task.updatedAtUtc)&&utcTicks(task.updatedAtUtc)===utcTicks(row.acceptedAtUtc)&&utcTicks(task.createdAtUtc)<=utcTicks(task.updatedAtUtc));
   }

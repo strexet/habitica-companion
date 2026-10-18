@@ -26,16 +26,17 @@ public static class WorkspaceCommandIdentity
         var restore = patch?.RestoreTodo;
         var relationships = patch?.Relationships;
         var todoState = patch?.TodoState;
-        var body = new StringBuilder(todoState is not null ? "companion-command-v7\n" : relationships is not null ? "companion-command-v6\n" : restore is not null ? "companion-command-v5\n" : planning is not null ? "companion-command-v4\n" : extended ? "companion-command-v3\n" : details is null ? "companion-command-v1\n" : "companion-command-v2\n");
+        var todoStage = patch?.TodoStage;
+        var body = new StringBuilder(todoStage is not null ? "companion-command-v8\n" : todoState is not null ? "companion-command-v7\n" : relationships is not null ? "companion-command-v6\n" : restore is not null ? "companion-command-v5\n" : planning is not null ? "companion-command-v4\n" : extended ? "companion-command-v3\n" : details is null ? "companion-command-v1\n" : "companion-command-v2\n");
         foreach (var field in fields) body.Append(field is null ? "-1:" : Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture) + ":" + field);
-        if (extended || planning is not null || restore is not null || relationships is not null || todoState is not null) body.Append(details is null ? "1:0" : "1:1");
+        if (extended || planning is not null || restore is not null || relationships is not null || todoState is not null || todoStage is not null) body.Append(details is null ? "1:0" : "1:1");
         if (details is not null)
         {
             var extra = new List<string?> { details.Difficulty?.ToString("R", CultureInfo.InvariantCulture), Name(details.Attribute), details.Checklist?.Count.ToString(CultureInfo.InvariantCulture) };
             foreach (var item in details.Checklist ?? Array.Empty<TaskChecklistItem>()) { extra.Add(item.Id.ToString("D")); extra.Add(item.Text); extra.Add(item.Completed ? "1" : "0"); }
             foreach (var field in extra) body.Append(field is null ? "-1:" : Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture) + ":" + field);
         }
-        if (extended || planning is not null || restore is not null || relationships is not null || todoState is not null)
+        if (extended || planning is not null || restore is not null || relationships is not null || todoState is not null || todoStage is not null)
         {
             var rule = patch?.Recurrence;
             var extra = new List<string?> { patch?.ClearRecurrence == true ? "1" : "0", rule is null ? "0" : "1",
@@ -45,7 +46,7 @@ public static class WorkspaceCommandIdentity
             foreach (var day in rule?.DaysOfMonth ?? Array.Empty<int>()) extra.Add(day.ToString(CultureInfo.InvariantCulture));
             foreach (var field in extra) body.Append(field is null ? "-1:" : Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture) + ":" + field);
         }
-        if (restore is not null || relationships is not null || todoState is not null) body.Append(planning is null ? "1:0" : "1:1");
+        if (restore is not null || relationships is not null || todoState is not null || todoStage is not null) body.Append(planning is null ? "1:0" : "1:1");
         if (planning is not null)
         {
             var extra = new List<string?> { planning.PlannedDate?.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture), planning.ClearPlannedDate ? "1" : "0",
@@ -54,7 +55,7 @@ public static class WorkspaceCommandIdentity
             foreach (var id in planning.LabelIds ?? Array.Empty<Guid>()) extra.Add(id.ToString("D"));
             foreach (var field in extra) body.Append(field is null ? "-1:" : Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture) + ":" + field);
         }
-        if (relationships is not null || todoState is not null) body.Append(restore is null ? "1:0" : "1:1");
+        if (relationships is not null || todoState is not null || todoStage is not null) body.Append(restore is null ? "1:0" : "1:1");
         if (restore is not null)
         {
             var id = restore.CompletionId.ToString("D"); body.Append(Encoding.UTF8.GetByteCount(id).ToString(CultureInfo.InvariantCulture)).Append(':').Append(id);
@@ -65,10 +66,15 @@ public static class WorkspaceCommandIdentity
             foreach (var id in relationships.DependsOn ?? Array.Empty<Guid>()) extra.Add(id.ToString("D"));
             foreach (var field in extra) body.Append(field is null ? "-1:" : Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture) + ":" + field);
         }
+        if (todoState is not null || todoStage is not null) body.Append(relationships is null ? "1:0" : "1:1");
         if (todoState is not null)
         {
-            body.Append(relationships is null ? "1:0" : "1:1");
             var state = Name<CompanionTaskState>(todoState.State)!;body.Append(Encoding.UTF8.GetByteCount(state).ToString(CultureInfo.InvariantCulture)).Append(':').Append(state);
+        }
+        if (todoStage is not null)
+        {
+            body.Append(todoState is null ? "1:0" : "1:1");
+            var stage=Name(todoStage.Stage);body.Append(stage is null ? "-1:" : Encoding.UTF8.GetByteCount(stage).ToString(CultureInfo.InvariantCulture)+":"+stage).Append(todoStage.ClearStage?"1:1":"1:0");
         }
         return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(body.ToString()))).ToLowerInvariant();
     }

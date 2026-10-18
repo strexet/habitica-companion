@@ -87,6 +87,7 @@ public sealed class WorkspaceTaskClientTests
     [InlineData(WorkspaceOperation.RestoreTodo, "restore_todo", "restoreTodo", 1)]
     [InlineData(WorkspaceOperation.RelateTodo, "relate_todo", "relateTodo", 0)]
     [InlineData(WorkspaceOperation.SetTodoState, "set_todo_state", "setTodoState", 0)]
+    [InlineData(WorkspaceOperation.SetTodoStage, "set_todo_stage", "setTodoStage", 0)]
     public async Task LifecycleAdaptersUseExactToolIdentityAndRejectGameEffectReceipts(WorkspaceOperation operation, string tool, string name, int count)
     {
         var id = Guid.NewGuid(); var command = new WorkspaceCommand(Guid.NewGuid(), id, 1, operation, Guid.NewGuid(), OccurrenceDate: operation == WorkspaceOperation.SkipOccurrence ? new DateOnly(2026, 10, 17) : null);
@@ -174,6 +175,15 @@ public sealed class WorkspaceTaskClientTests
             var command=intent with {Id=Guid.NewGuid(),Patch=wrong?new(TodoState:new(CompanionTaskState.Active)):intent.Patch};return Json(new WorkspaceCommandPreview(command.Id,Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(10),false,command,false,false));
         }));var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
         Assert.True((await client.PrepareCommandAsync(Guid.NewGuid(),intent,default)).Succeeded);wrong=true;var result=await client.PrepareCommandAsync(Guid.NewGuid(),intent,default);Assert.False(result.Succeeded);Assert.True(result.OutcomeUnknown);
+    }
+
+    [Theory]
+    [InlineData(false)][InlineData(true)]
+    public async Task NativeTodoStagePreviewBindsExactStageOrClear(bool clear)
+    {
+        var id=Guid.NewGuid();var intent=new WorkspaceCommand(Guid.NewGuid(),id,1,WorkspaceOperation.SetTodoStage,Guid.NewGuid(),new(TodoStage:clear?new(ClearStage:true):new(TodoExecutionStage.Next)));var wrong=false;
+        using var vault=VaultHttp();using var http=new HttpClient(new Handler(request=>Task.FromResult(request.RequestUri!.AbsolutePath=="/connect"?Connection(id):Json(new WorkspaceCommandPreview(Guid.Parse("00000000-0000-4000-8000-000000000099"),Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(10),false,intent with {Id=Guid.Parse("00000000-0000-4000-8000-000000000099"),Patch=wrong?new(TodoStage:new(TodoExecutionStage.InProgress)):intent.Patch},false,false)))));
+        var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);Assert.True((await client.PrepareCommandAsync(Guid.NewGuid(),intent,default)).Succeeded);wrong=true;var result=await client.PrepareCommandAsync(Guid.NewGuid(),intent,default);Assert.False(result.Succeeded);Assert.True(result.OutcomeUnknown);
     }
 
 }

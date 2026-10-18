@@ -54,6 +54,7 @@ public static class WorkspaceRules
         }
         foreach (var task in document.Tasks)
         {
+            if (task.ExecutionStage is {} stage && (task.Kind != CompanionTaskKind.Todo || !Enum.IsDefined(stage))) errors.Add(new("invalid_execution_stage",task.Id));
             if (!HabiticaTaskDetails.IsValid(task.HabiticaDetails)) errors.Add(new("invalid_habitica_details", task.Id));
             if (string.IsNullOrWhiteSpace(task.Text) || task.Text.Length > 2048 || task.Notes?.Length > 10000) errors.Add(new("invalid_task_text", task.Id));
             if (!Enum.IsDefined(task.Kind) || !Enum.IsDefined(task.State) || !Enum.IsDefined(task.Priority)) errors.Add(new("invalid_task_enum", task.Id));

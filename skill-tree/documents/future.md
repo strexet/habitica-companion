@@ -72,32 +72,6 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### E13 Optional Inbox Next and InProgress execution stages
-
-```yaml
-id: P-600be12e-fd34-44d8-b992-dca13600ab13
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Research distinct lightweight execution stages and corresponding manual/agent project workflows beyond the existing native active/waiting/someday/cancelled state contract.
-
-Expected behavior:
-- Execution-stage semantics remain distinct from organization, civil planning dates, current completion history and game projection without duplicate or contradictory status.
-
-Current context:
-- Canonical organization CRUD, placement, dependencies, history and native planning-state foundations remain separate accepted or selected local units. Production UI retains the hands-on research gate.
-
-Source:
-- Remaining original E13 intent P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 through P-14835d09-6c68-4472-a5fb-622c5500f9b4.
-
 ### E12 Saved views, review policies and mobile task hygiene controls
 
 ```yaml

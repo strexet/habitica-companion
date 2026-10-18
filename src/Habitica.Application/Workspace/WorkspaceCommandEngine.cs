@@ -22,7 +22,7 @@ public static class WorkspaceCommandEngine
             return Reject(SubmissionDisposition.Invalid, "unexpected_occurrence");
         var creating = command.Operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit;
         var patch = command.Patch;
-        if (creating || command.Operation is WorkspaceOperation.UpdateTask or WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo or WorkspaceOperation.RelateTodo or WorkspaceOperation.SetTodoState)
+        if (creating || command.Operation is WorkspaceOperation.UpdateTask or WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo or WorkspaceOperation.RelateTodo or WorkspaceOperation.SetTodoState or WorkspaceOperation.SetTodoStage)
         {
             if (patch is null || patch == new WorkspaceTaskPatch()
                 || patch.Text is not null && (string.IsNullOrWhiteSpace(patch.Text) || patch.Text.Length > 2048)
@@ -39,6 +39,8 @@ public static class WorkspaceCommandEngine
                 || command.Operation == WorkspaceOperation.RelateTodo && (patch.Relationships is null || (patch with { Relationships = null }) != new WorkspaceTaskPatch())
                 || patch.TodoState is { } todoState && (!todoState.IsValid() || command.Operation != WorkspaceOperation.SetTodoState)
                 || command.Operation == WorkspaceOperation.SetTodoState && (patch.TodoState is null || (patch with { TodoState = null }) != new WorkspaceTaskPatch())
+                || patch.TodoStage is {} todoStage && (!todoStage.IsValid() || command.Operation != WorkspaceOperation.SetTodoStage)
+                || command.Operation == WorkspaceOperation.SetTodoStage && (patch.TodoStage is null || (patch with {TodoStage=null}) != new WorkspaceTaskPatch())
                 || creating && string.IsNullOrWhiteSpace(patch.Text))
                 return Reject(SubmissionDisposition.Invalid, "invalid_patch");
         }
@@ -79,6 +81,11 @@ public static class WorkspaceCommandEngine
         {
             if (command.ProjectToHabitica) return Reject(SubmissionDisposition.Invalid,"unsupported_projection");
             if (current!.Kind != CompanionTaskKind.Todo || current.State == CompanionTaskState.Completed) return Reject(SubmissionDisposition.Invalid,"todo_state_unavailable");
+        }
+        if (command.Operation == WorkspaceOperation.SetTodoStage)
+        {
+            if (command.ProjectToHabitica) return Reject(SubmissionDisposition.Invalid,"unsupported_projection");
+            if (current!.Kind != CompanionTaskKind.Todo || current.State != CompanionTaskState.Active) return Reject(SubmissionDisposition.Invalid,"active_todo_required");
         }
         var lifecycle = command.Operation is WorkspaceOperation.SkipOccurrence or WorkspaceOperation.PauseTask or WorkspaceOperation.ResumeTask;
         if (lifecycle)
@@ -129,6 +136,7 @@ public static class WorkspaceCommandEngine
         {
             updated = current! with { Revision = revision, UpdatedAtUtc = now };
             if (command.Operation == WorkspaceOperation.PlanTask) updated = patch!.Planning!.Apply(updated);
+            if (command.Operation == WorkspaceOperation.SetTodoStage) updated = updated with {ExecutionStage=patch!.TodoStage!.ClearStage?null:patch.TodoStage.Stage};
             if (command.Operation == WorkspaceOperation.SetTodoState) updated = updated with { State=patch!.TodoState!.State };
             if (command.Operation == WorkspaceOperation.RelateTodo) updated = patch!.Relationships!.Apply(updated);
             if (command.Operation == WorkspaceOperation.RestoreTodo)
@@ -164,11 +172,11 @@ public static class WorkspaceCommandEngine
             }
             if (command.Operation == WorkspaceOperation.ScoreHabit)
                 for (var index = 0; index < command.Count; index++) scores.Add(new(Guid.NewGuid(), revision, updated.Id, command.Id, now, command.Direction!.Value));
-            if (command.Operation is WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo or WorkspaceOperation.RelateTodo or WorkspaceOperation.SetTodoState) tasks[tasks.FindIndex(task => task.Id == updated.Id)] = updated;
+            if (command.Operation is WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo or WorkspaceOperation.RelateTodo or WorkspaceOperation.SetTodoState or WorkspaceOperation.SetTodoStage) tasks[tasks.FindIndex(task => task.Id == updated.Id)] = updated;
             else tasks.RemoveAll(task => task.Id == updated.Id);
         }
-        if (command.Operation is not (WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo or WorkspaceOperation.RelateTodo or WorkspaceOperation.SetTodoState)) tasks.Add(updated);
-        var requested = command.Operation is not (WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo or WorkspaceOperation.RelateTodo or WorkspaceOperation.SetTodoState) && (command.ProjectToHabitica || mapping is not null && mapping.State != ProjectionState.Unlinked);
+        if (command.Operation is not (WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo or WorkspaceOperation.RelateTodo or WorkspaceOperation.SetTodoState or WorkspaceOperation.SetTodoStage)) tasks.Add(updated);
+        var requested = command.Operation is not (WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo or WorkspaceOperation.RelateTodo or WorkspaceOperation.SetTodoState or WorkspaceOperation.SetTodoStage) && (command.ProjectToHabitica || mapping is not null && mapping.State != ProjectionState.Unlinked);
         var effects = new List<ProjectionEffectKind>();
         if (requested)
         {

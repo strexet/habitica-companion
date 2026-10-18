@@ -30,6 +30,7 @@ public static class WorkspaceJournalValidation
                 || entry.Command.Patch?.RestoreTodo is { } restore && (restore.CompletionId == Guid.Empty || entry.Command.Operation != WorkspaceOperation.RestoreTodo)
                 || entry.Command.Patch?.Relationships is { } relationships && (!relationships.IsValid() || entry.Command.Operation != WorkspaceOperation.RelateTodo)
                 || entry.Command.Patch?.TodoState is { } todoState && (!todoState.IsValid() || entry.Command.Operation != WorkspaceOperation.SetTodoState)
+                || entry.Command.Patch?.TodoStage is {} todoStage && (!todoStage.IsValid() || entry.Command.Operation != WorkspaceOperation.SetTodoStage)
                 || restorations.ContainsKey(entry.Command.Id) && entry.Command.Operation != WorkspaceOperation.RestoreTodo
                 || entry.PayloadHash != WorkspaceCommandIdentity.Hash(entry.Command) || entry.AcceptedAtUtc == default || entry.AcceptedAtUtc.Offset != TimeSpan.Zero
                 || !Enum.IsDefined(entry.ProjectionState) || !Enum.IsDefined(entry.Failure) || entry.Effects is null || entry.Effects.Count > 11
@@ -49,6 +50,11 @@ public static class WorkspaceJournalValidation
                     || entry.Command.Direction is not null || entry.Command.Count != 1 || entry.Command.OccurrenceDate is not null
                     || entry.Command.Patch is not { Planning: { } plan } planningPatch || (planningPatch with { Planning = null }) != new WorkspaceTaskPatch()
                     || !plan.Matches(entry.TaskSnapshot))) return false;
+            if (entry.Command.Operation == WorkspaceOperation.SetTodoStage
+                && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
+                    || entry.Command.Direction is not null || entry.Command.Count != 1 || entry.Command.OccurrenceDate is not null
+                    || entry.Command.Patch is not {TodoStage:{} stage} stagePatch || (stagePatch with {TodoStage=null}) != new WorkspaceTaskPatch()
+                    || !stage.Matches(entry.TaskSnapshot))) return false;
             if (entry.Command.Operation == WorkspaceOperation.SetTodoState
                 && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
                     || entry.Command.Direction is not null || entry.Command.Count != 1 || entry.Command.OccurrenceDate is not null
@@ -76,6 +82,7 @@ public static class WorkspaceJournalValidation
             if (entry.TaskSnapshot is { } accepted && (accepted.Id != entry.Command.TaskId || accepted.Revision != entry.Command.ExpectedRevision + 1
                 || !Enum.IsDefined(accepted.Kind) || !Enum.IsDefined(accepted.State) || !Enum.IsDefined(accepted.Priority)
                 || string.IsNullOrWhiteSpace(accepted.Text) || accepted.Text.Length > 2048 || accepted.Notes?.Length > 10000
+                || accepted.ExecutionStage is {} executionStage && (accepted.Kind != CompanionTaskKind.Todo || !Enum.IsDefined(executionStage))
                 || !HabiticaTaskDetails.IsValid(accepted.HabiticaDetails)
                 || accepted.Recurrence is { } schedule && (accepted.Kind != CompanionTaskKind.Daily || !RecurrenceCalendar.IsStructurallyValid(schedule))
                 || accepted.CreatedAtUtc == default || accepted.CreatedAtUtc.Offset != TimeSpan.Zero || accepted.UpdatedAtUtc != entry.AcceptedAtUtc || accepted.CreatedAtUtc > accepted.UpdatedAtUtc)) return false;

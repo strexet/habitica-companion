@@ -59,7 +59,8 @@ public sealed record CompanionTask(
     DateTimeOffset? StaleSinceUtc = null,
     RecurrenceRule? Recurrence = null,
     bool IsArchived = false,
-    HabiticaTaskDetails? HabiticaDetails = null) : WorkspaceEntity(Id, Revision, IsArchived);
+    HabiticaTaskDetails? HabiticaDetails = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] TodoExecutionStage? ExecutionStage = null) : WorkspaceEntity(Id, Revision, IsArchived);
 
 public sealed record TaskOccurrence(Guid Id, long Revision, Guid TaskId, DateOnly Date, OccurrenceState State, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record CompletionEvent(Guid Id, long Revision, Guid TaskId, Guid CommandId, DateTimeOffset CompletedAtUtc, Guid? OccurrenceId = null, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);

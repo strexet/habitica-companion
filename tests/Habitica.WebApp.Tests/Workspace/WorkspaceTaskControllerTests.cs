@@ -133,4 +133,12 @@ public sealed class WorkspaceTaskControllerTests
         Assert.Equal(original,f.Controller.LastReceipt!.CommandId);Assert.Equal(0,f.Controller.LastReceipt.AcceptedEventCount);Assert.Equal(0,f.Controller.LastReceipt.TotalProjectionCount);var saved=Assert.Single(f.Controller.Snapshot!.Document.Tasks);Assert.Equal(CompanionTaskState.Waiting,saved.State);Assert.Equal(task.Text,saved.Text);Assert.Equal(task.Notes,saved.Notes);Assert.Empty(f.Controller.Snapshot.Document.Completions);
     }
 
+    [Fact]
+    public async Task NativeTodoStageRecoversTheOriginalPreferenceAfterLostAcknowledgement()
+    {
+        var f=new WorkspaceTaskFixture();await f.Controller.CreateLocalAsync();await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo());await f.Controller.ConfirmAsync();var task=Assert.Single(f.Controller.Snapshot!.Document.Tasks);
+        await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo() with {Operation=WorkspaceOperation.SetTodoStage,TaskId=task.Id,TodoStage=new(TodoExecutionStage.Next)});var id=f.Controller.Preview!.Command.Id;Assert.False(f.Controller.Preview.MayAffectHabitica);f.Js.LoseCommitAcknowledgement=true;await f.Controller.ConfirmAsync();Assert.True(f.Controller.AcceptanceUnknown);await f.Controller.CheckOriginalAsync();
+        Assert.Equal(id,f.Controller.LastReceipt!.CommandId);Assert.Equal(0,f.Controller.LastReceipt.AcceptedEventCount);Assert.Equal(0,f.Controller.LastReceipt.TotalProjectionCount);var saved=Assert.Single(f.Controller.Snapshot!.Document.Tasks);Assert.Equal(TodoExecutionStage.Next,saved.ExecutionStage);Assert.Equal(task.State,saved.State);Assert.Equal(task.Notes,saved.Notes);
+    }
+
 }

@@ -1,0 +1,71 @@
+{
+  "task_id": "T-3f472554-56a4-4edf-a163-1b96dc822a06",
+  "date": "2026-10-18",
+  "scope": "Local optional active Todo stages; no live tests or deployment",
+  "checks": [
+    {
+      "name": "Release application and all three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 754,
+      "failed": 0,
+      "suites": {
+        "domain": 32,
+        "rules": 43,
+        "storage": 21,
+        "application": 172,
+        "api": 87,
+        "webapp": 399
+      }
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace final",
+      "passed": 333,
+      "failed": 0,
+      "wall_seconds": 28.931
+    },
+    {
+      "name": "Archive preservation .NET focused recheck",
+      "passed": 6,
+      "failed": 0
+    },
+    {
+      "name": "Independent v8 hashes",
+      "cases": 4,
+      "result": "pass"
+    },
+    {
+      "name": "Stage and mapping combinations in both runtimes",
+      "cases_per_runtime": 15,
+      "result": "pass"
+    },
+    {
+      "name": "Packaged skill, changed prose, strict future, repository consistency and whitespace",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Optional Todo-only executionStage survives portable copies, explicit clear, state transitions, completion, exact restoration and native unlinked archival. Missing or cleared stage means Inbox only while active; native state dominates dormant metadata.",
+    "Exact stage-only commands preserve order, native state, metadata, dates, dependencies, histories and all game mappings; effects and accepted task activity remain zero.",
+    "Invalid enum values, mixed patches, non-Todo/inactive/closed targets, projection requests, stale revisions and snapshot/effect tampering fail. v8 binds exact intent while unused previous hashes and enum values remain unchanged.",
+    "Synthetic SDK/browser paths enforce task-write grants and profile ownership, reject altered previews and recover original request/command receipts after acknowledgement loss with zero real upstream writes.",
+    "Canonical contracts and packaged planning guidance explain defaults, dormant preferences and separate state/restoration flows without claiming production UI or client qualification."
+  ],
+  "operations": [
+    {
+      "classification": "executed control",
+      "outcome": "An added archival check initially used a linked fixture and correctly failed unsupported_projection. The fixture now uses an unlinked native task; full Worker and focused .NET requalification pass."
+    }
+  ],
+  "limitations": [
+    "Production board controls, stage filters, actual hosts/devices and live gameplay remain outside the local milestone.",
+    "No deployment was needed for local implementation."
+  ]
+}

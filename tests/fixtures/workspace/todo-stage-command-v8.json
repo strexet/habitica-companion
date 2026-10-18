@@ -1,0 +1,84 @@
+{
+  "cases": [
+    {
+      "name": "inbox",
+      "command": {
+        "id": "c0000000-0000-4000-8000-000000000900",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "setTodoStage",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "todoStage": {
+            "stage": "inbox"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "c253132d2c7b9dde8094d9b8eac4c6aa6b180db92e76b58a47912c497cc67b01"
+    },
+    {
+      "name": "next",
+      "command": {
+        "id": "c0000000-0000-4000-8000-000000000901",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "setTodoStage",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "todoStage": {
+            "stage": "next"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "b669cb59c06691d66a585131073265aeea3d0c2427300cd826be35d3258bee92"
+    },
+    {
+      "name": "inProgress",
+      "command": {
+        "id": "c0000000-0000-4000-8000-000000000902",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "setTodoStage",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "todoStage": {
+            "stage": "inProgress"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "f95810ada46f326ed52d264cad34701fe4d2e9a2417fc0d47ff9746ab9665ee2"
+    },
+    {
+      "name": "clear",
+      "command": {
+        "id": "c0000000-0000-4000-8000-000000000903",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "setTodoStage",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "todoStage": {
+            "clearStage": true
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "bc1e8d773193c94019cb29186f04103bae73d28fb998154497392ecd3cf8a68f"
+    }
+  ]
+}
