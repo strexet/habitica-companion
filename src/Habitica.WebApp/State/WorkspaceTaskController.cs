@@ -5,7 +5,7 @@ using Habitica.Storage;
 namespace Habitica.WebApp.State;
 
 public sealed record WorkspaceTaskInput(WorkspaceOperation Operation, Guid? TaskId, string Text, string Notes, CompanionPriority Priority,
-    DateOnly? Deadline, HabiticaTaskDetails? Details, bool ProjectToHabitica, HabitScoreDirection Direction, int Count, DateOnly? OccurrenceDate);
+    DateOnly? Deadline, HabiticaTaskDetails? Details, bool ProjectToHabitica, HabitScoreDirection Direction, int Count, DateOnly? OccurrenceDate, WorkspaceTaskPlanning? Planning = null);
 
 public sealed class WorkspaceTaskController(IAppSessionController session, IWorkspaceCloudClient cloud, IndexedDbWorkspaceDatabase database)
 {
@@ -70,6 +70,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
                 input.Notes.Length == 0 && !string.IsNullOrEmpty(current.Notes), input.Priority == current.Priority ? null : input.Priority,
                 input.Deadline == current.Deadline ? null : input.Deadline, input.Deadline is null && current.Deadline is not null, input.Details);
         }
+        if (input.Operation == WorkspaceOperation.PlanTask) patch = new(Planning: input.Planning);
         return new(Guid.NewGuid(), snapshot.Document.Id, snapshot.Document.Revision, input.Operation, creating ? Guid.NewGuid() : input.TaskId ?? Guid.Empty,
             patch, input.Operation == WorkspaceOperation.ScoreHabit ? input.Direction : null, input.Operation == WorkspaceOperation.ScoreHabit ? input.Count : 1,
             input.Operation is WorkspaceOperation.CompleteTask or WorkspaceOperation.SkipOccurrence ? input.OccurrenceDate : null, input.ProjectToHabitica);
@@ -95,7 +96,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
             var result = WorkspaceCommandEngine.Accept(Snapshot, _intent, DateTimeOffset.UtcNow);
             if (result.Disposition != SubmissionDisposition.Accepted) { Message = "The preview is invalid or stale. Check the task, field bounds and current revision."; _intent = null; return; }
             Preview = new(_intent.Id, _requestId, DateTimeOffset.UtcNow.AddMinutes(10), false, _intent, result.Entry!.Effects.Count > 0, false);
-            Message = "Review this command before saving. Local projection effects wait for an explicit ownership transfer and enabled cloud executor.";
+            Message = _intent.Operation == WorkspaceOperation.PlanTask ? "Review native planned date and placement. This command changes Companion only." : "Review this command before saving. Local projection effects wait for an explicit ownership transfer and enabled cloud executor.";
         }
     }
     public void CancelPreview()

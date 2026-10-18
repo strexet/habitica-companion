@@ -22,7 +22,7 @@ public static class WorkspaceCommandEngine
             return Reject(SubmissionDisposition.Invalid, "unexpected_occurrence");
         var creating = command.Operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit;
         var patch = command.Patch;
-        if (creating || command.Operation == WorkspaceOperation.UpdateTask)
+        if (creating || command.Operation is WorkspaceOperation.UpdateTask or WorkspaceOperation.PlanTask)
         {
             if (patch is null || patch == new WorkspaceTaskPatch()
                 || patch.Text is not null && (string.IsNullOrWhiteSpace(patch.Text) || patch.Text.Length > 2048)
@@ -31,6 +31,8 @@ public static class WorkspaceCommandEngine
                 || patch.ClearNotes && patch.Notes is not null || patch.ClearDeadline && patch.Deadline is not null
                 || patch.ClearRecurrence && patch.Recurrence is not null
                 || patch.Recurrence is { } rule && !RecurrenceCalendar.Expand(rule, rule.StartDate, rule.StartDate).Succeeded
+                || patch.Planning is not null && (!patch.Planning.IsValid() || command.Operation != WorkspaceOperation.PlanTask)
+                || command.Operation == WorkspaceOperation.PlanTask && (patch.Planning is null || (patch with { Planning = null }) != new WorkspaceTaskPatch())
                 || creating && string.IsNullOrWhiteSpace(patch.Text))
                 return Reject(SubmissionDisposition.Invalid, "invalid_patch");
         }
@@ -47,6 +49,11 @@ public static class WorkspaceCommandEngine
         if (creating ? current is not null : current is null || current.IsArchived)
             return Reject(SubmissionDisposition.Invalid, "task_unavailable");
         var mapping = document.Projections.FirstOrDefault(value => value.TaskId == command.TaskId && !value.IsArchived);
+        if (command.Operation == WorkspaceOperation.PlanTask)
+        {
+            if (command.ProjectToHabitica) return Reject(SubmissionDisposition.Invalid,"unsupported_projection");
+            if (!patch!.Planning!.ReferencesAvailable(document,current!)) return Reject(SubmissionDisposition.Invalid,"invalid_planning_reference");
+        }
         var lifecycle = command.Operation is WorkspaceOperation.SkipOccurrence or WorkspaceOperation.PauseTask or WorkspaceOperation.ResumeTask;
         if (lifecycle)
         {
@@ -94,6 +101,7 @@ public static class WorkspaceCommandEngine
         else
         {
             updated = current! with { Revision = revision, UpdatedAtUtc = now };
+            if (command.Operation == WorkspaceOperation.PlanTask) updated = patch!.Planning!.Apply(updated);
             if (command.Operation == WorkspaceOperation.PauseTask) updated = updated with { State = CompanionTaskState.Paused };
             if (command.Operation == WorkspaceOperation.ResumeTask) updated = updated with { State = CompanionTaskState.Active };
             if (command.Operation == WorkspaceOperation.SkipOccurrence)
@@ -122,10 +130,11 @@ public static class WorkspaceCommandEngine
             }
             if (command.Operation == WorkspaceOperation.ScoreHabit)
                 for (var index = 0; index < command.Count; index++) scores.Add(new(Guid.NewGuid(), revision, updated.Id, command.Id, now, command.Direction!.Value));
-            tasks.RemoveAll(task => task.Id == updated.Id);
+            if (command.Operation == WorkspaceOperation.PlanTask) tasks[tasks.FindIndex(task => task.Id == updated.Id)] = updated;
+            else tasks.RemoveAll(task => task.Id == updated.Id);
         }
-        tasks.Add(updated);
-        var requested = command.ProjectToHabitica || mapping is not null && mapping.State != ProjectionState.Unlinked;
+        if (command.Operation != WorkspaceOperation.PlanTask) tasks.Add(updated);
+        var requested = command.Operation != WorkspaceOperation.PlanTask && (command.ProjectToHabitica || mapping is not null && mapping.State != ProjectionState.Unlinked);
         var effects = new List<ProjectionEffectKind>();
         if (requested)
         {

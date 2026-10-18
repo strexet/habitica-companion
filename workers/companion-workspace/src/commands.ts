@@ -3,6 +3,7 @@ import { workspaceDocument, type WorkspaceDocument, type CompanionTask } from ".
 import { commandHash, isTaskCreation, type WorkspaceCommand } from "../../shared/workspace-commands.ts";
 import { WorkspaceError } from "../../shared/workspace-http.ts";
 import {expandRecurrence} from '../../shared/recurrence-calendar.ts';
+import {applyPlanning,planningReferencesAvailable} from '../../shared/task-planning.ts';
 export interface CommandEntry {
  command: WorkspaceCommand; payloadHash: string; acceptedAtUtc: string;
  projectionState: string; effects: string[]; confirmedEffects: number; failure: string;
@@ -19,6 +20,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  if(patch?.recurrence&&expandRecurrence(patch.recurrence,patch.recurrence.startDate,patch.recurrence.startDate).failure)throw new WorkspaceError('invalid_patch',422);
  if (isTaskCreation(command.operation) ? Boolean(task) : !task || task.isArchived) throw new WorkspaceError("task_unavailable", 422);
  const mapping = result.projections.find(row => row.taskId === command.taskId && !row.isArchived);
+ if(command.operation==='planTask'){if(command.projectToHabitica)throw new WorkspaceError('unsupported_projection',422);if(!planningReferencesAvailable(result,task!,patch!.planning!))throw new WorkspaceError('invalid_planning_reference',422);}
  const lifecycle=['skipOccurrence','pauseTask','resumeTask'].includes(command.operation);
  if(lifecycle){
   if(command.projectToHabitica||mapping&&(mapping.state!=='unlinked'||mapping.habiticaTaskId!==null))throw new WorkspaceError('unsupported_projection',422);
@@ -43,6 +45,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
   result.tasks.push(task);
  } else {
   task!.revision = revision; task!.updatedAtUtc = now;
+  if(command.operation==='planTask'){const planned=applyPlanning(task!,patch!.planning!);Object.assign(task!,planned);}
   if(command.operation==='pauseTask')task!.state='paused';
   if(command.operation==='resumeTask')task!.state='active';
   if(command.operation==='skipOccurrence'){
@@ -65,7 +68,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
   }
   if (command.operation === "scoreHabit") for (let i = 0; i < command.count; i++) result.habitScores.push({ id: crypto.randomUUID(), revision, taskId: task!.id, commandId: command.id, recordedAtUtc: now, direction: command.direction!, isArchived: false });
  }
- const requested = command.projectToHabitica || Boolean(mapping && mapping.state !== "unlinked");
+ const requested = command.operation!=='planTask'&&(command.projectToHabitica || Boolean(mapping && mapping.state !== "unlinked"));
  const effects: string[] = [];
  if (requested) {
   if (!mapping?.habiticaTaskId) effects.push("create");

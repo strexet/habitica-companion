@@ -203,3 +203,9 @@ MCP discovery exposes an empty read-only input schema under tasks:read. Extra se
 ## Canonical read recovery
 
 Synthetic MCP service-error and unreadable-reply fixtures verify unavailable observations for canonical task, agenda, project, goal, exact-task and original-receipt reads. Read failures retain safe retry metadata without saved-state claims, optimistic counts or a request to recover an action that never occurred. Mutation failures preserve original command receipt guidance and unknown-outcome fields. Missing receipt data still cannot resolve an earlier uncertain action. Normal authorization and party/spell/Cron handling remain separate.
+
+## Native placement qualification
+
+Neutral planning-command-v4.json cases compare set, clear/full-label replacement and partial-date hashes across C# and TypeScript. Legacy command fixtures and default-key checks remain unchanged. Application/Worker cases cover task order, partial preservation, explicit clears, active metadata references, project/section consistency, invalid/mixed payloads, original identities, portable snapshot tampering and zero game effects across linked/pending/uncertain mappings. Daily, paused Habit and completed Todo placement retains lifecycle state.
+
+Controller checks recover the original local plan receipt after a lost acknowledgement. Cloud adapters validate exact plan_task routing and refuse altered native previews or fabricated effects. Synthetic MCP discovers the planning schema, reviews native placement on a linked task, reuses the original prepared/accepted identity and reads one no-effect receipt. Exported history/mappings remain unchanged; write-grant and profile isolation remain enforced. Production editor controls, real host behavior and live qualification remain separate.

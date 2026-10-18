@@ -1,0 +1,82 @@
+{
+  "task_id": "T-37720737-c1a1-4d37-bb03-7037491fbf05",
+  "date": "2026-10-18",
+  "scope": "Local application/browser adapters and synthetic Worker/MCP; no live calls or deployment",
+  "checks": [
+    {
+      "name": "App release build and three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET solution",
+      "passed": 614,
+      "failed": 0,
+      "suites": {
+        "api": 54,
+        "application": 115,
+        "domain": 28,
+        "rules": 43,
+        "storage": 21,
+        "webapp": 353
+      }
+    },
+    {
+      "name": "Full Auth suite",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace suite",
+      "passed": 192,
+      "failed": 0
+    },
+    {
+      "name": "Packaged task skill, changed prose, whitespace and document validation",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Three independently encoded neutral v4 cases match C#/TypeScript set, clear/label replacement and partial-date hashes. Existing hashes, operation values and legacy default serialization remain unchanged.",
+    "Native planning preserves canonical task order, game fields, lifecycle and history while applying only requested date/category/project/section/label fields. Partial edits and explicit clears retain original receipts.",
+    "Invalid/archived/missing references, incompatible sections, empty/contradictory/mixed patches, duplicate IDs and stale revisions refuse acceptance.",
+    "Linked, pending, conflicted and unknown mappings remain untouched; no effect, completion or Habit score is enqueued. Daily/paused-Habit/completed-Todo placement retains kind/state.",
+    "Portable journals reject missing or contradictory planning snapshots and fabricated game effects.",
+    "Controller receipt recovery retains one accepted plan after lost acknowledgement. Cloud previews reject changed targets/native fields/game fields or proposed effects; receipts reject contradictory projections.",
+    "Synthetic MCP advertises the narrow write tool, previews native placement on a linked task, reuses one original acceptance/receipt and preserves exported history/order/mappings. Write grants and tenant isolation hold; zero upstream writes occur."
+  ],
+  "limitations": [
+    "The basic PWA editor has no placement controls. Organization CRUD and state/hierarchy/dependency authoring remain Pending.",
+    "Native planned date remains separate from deadline and game due state; the command cannot change game-facing fields.",
+    "Actual host/model activation, mobile behavior and live qualification remain unrun."
+  ],
+  "source_fingerprints": {
+    "plugin/README.md": "23a6e38c5bf50815e7b94762973060a2c46887ad05c504f7146c6fdc050707e7",
+    "plugin/skills/habitica-task-management/SKILL.md": "2f542c1ada6c772475d96613833d2006a3f7bdad6a9f563faf60825affb6aa79",
+    "skill-tree/documents/companion-workspace-contract.md": "8062bde93d703dfa46cc202de47ff6cc28cb2ede2192414694d0a718229f9635",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "ead97d5052f80a0ab80801bbd1e140af7978b105db5509c672626a0a3143c406",
+    "skill-tree/documents/features.md": "0cc959674b7e6c23177e9ab9770ffc83b4af7427790d7837ebf70bcaeb2b00f1",
+    "skill-tree/documents/technical.md": "d1e3e3b8345775b644b27847f30179f380af5bcf79985bc36cbc80dbe51cc834",
+    "skill-tree/documents/testing.md": "37dd387eb99d3bdd71d538ac62384c21417f4e48c4dd5f965902ff5acfb0e011",
+    "skill-tree/documents/ux-ui-manifest.md": "eb9f076a60bb7145b874247ec32b982c1e19aab05e6844282159715348b3719a",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "179218a6c8f028688a1c1abb0be61cce933ac348dc279844ec5bf119630fa05a",
+    "src/Habitica.Domain/Workspace/WorkspaceCommandIdentity.cs": "2955fea6ce65344859addbdd29ae780b3b5394029ca6581da903de956d113383",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "2f4c57fe37781edb16f44fa1813cd9e51493b35f16bee30c9191bd80c56aa090",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "7de736fac9b62751f6d03d67afd355d8f8cff21d006f73b0e229a37f08a7bba9",
+    "src/Habitica.WebApp/Components/CompanionTasksPanel.razor": "a0852ca3fe8a7d0980a807bb4d7acae135ac3475d8fa46585a8760220888e635",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "59bbce3bf2d610677bd4c331edd04f28fa77b0fe2f234e4e073c8f01e0d579c6",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "4ca5731d0fd98034b067c36cea695e58fc55bdb20472dd53451c3ab3a09410d5",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceTaskClientTests.cs": "29ae2f2c7a7779ac721792d6ffbe1819f3eadf80c9a2bc1c77ee5d1c88af7d8e",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceTaskControllerTests.cs": "448a4927455fa415260a461ebf8e00aa0509b731217de43d1b448b9e0e164fcc",
+    "workers/chatgpt-mcp/src/task-tools.ts": "f6ee8e53d50d10bd72a40ee92577e4f39f2beb97eb27ab5fdf922fdf05517f1c",
+    "workers/companion-workspace/src/commands.ts": "d7d7a8a9ef72c607d8c6da239bc232b7a49fd0d5db116ff92d56fadcca39fb29",
+    "workers/companion-workspace/src/journal.ts": "2efbfebd347ec4d88e669157db1974517af1c70acb2202e43702245f3821c71e",
+    "workers/companion-workspace/src/task-api.ts": "cc43c130951460aec262d38622add00c9fffe3fb10d634e5a490b9184566a1d8",
+    "workers/shared/task-tools.ts": "e73dc940557b3af2ddf467eba2e81abbda10ce6f3c89c91a65edfb3f1493ffdc",
+    "workers/shared/workspace-commands.ts": "758fda1b45ca55c4305a3e8c416475212afc4de7a75400b34ec039f5c007008b",
+    "src/Habitica.Domain/Workspace/WorkspaceTaskPlanning.cs": "44fedee98b4516d27ee83a710e596a48d1e19828076ce95f4302c73c345f815f",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceTaskPlanningTests.cs": "feb8001c4407b30b11a683ad6a69438f1a80f67b1c8745e1bb128f20a54b24dc",
+    "tests/fixtures/workspace/planning-command-v4.json": "2cfdceb0521a029efd5f47e389347253c4ba0677df2795100cf27a24fa3759f6",
+    "workers/companion-workspace/test/task-planning.test.mjs": "d5ae5a889e0b356e3dd039e5d837e3ba9814893c32112da928c6861670f1f788",
+    "workers/shared/task-planning.ts": "4066fc69301cc4709b3318d83751049ea77db085f74928dc83d1cf20c32c8bcb"
+  }
+}

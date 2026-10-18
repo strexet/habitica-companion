@@ -1,3 +1,4 @@
+import {planningMatches} from '../../shared/task-planning.ts';
 import { habiticaDetails } from "../../shared/task-details.ts";
 import { workspaceDocument, workspaceRecurrence, utcTicks, type WorkspaceDocument } from '../../shared/workspace-domain.ts';
 import { workspaceCommand, commandHash } from '../../shared/workspace-commands.ts';
@@ -19,6 +20,7 @@ export async function journal(value:unknown):Promise<Journal>{
   const command=workspaceCommand(row.command);valid(!ids.has(command.id)&&command.workspaceId===document.id&&command.expectedRevision<document.revision&&row.payloadHash===await commandHash(command));ids.add(command.id);
   valid(timestamp(row.acceptedAtUtc)&&states.includes(String(row.projectionState))&&failures.includes(String(row.failure))&&Array.isArray(row.effects)&&row.effects.length<=11&&row.effects.every(v=>['create','update','scoreUp','scoreDown'].includes(v)));
   const effects=row.effects as string[];valid(Number.isInteger(row.confirmedEffects)&&Number(row.confirmedEffects)>=0&&Number(row.confirmedEffects)<=effects.length&&Number.isSafeInteger(row.attempts)&&Number(row.attempts)>=0);
+  if(command.operation==='planTask'){valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0);const accepted=object(row.taskSnapshot);valid(command.patch?.planning&&planningMatches(command.patch.planning,accepted));}
   if(['skipOccurrence','pauseTask','resumeTask'].includes(command.operation)){
    valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0&&command.patch===null&&command.direction===null&&command.count===1);
    const task=object(row.taskSnapshot);valid(['daily','habit'].includes(String(task.kind)));

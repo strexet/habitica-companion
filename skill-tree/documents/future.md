@@ -72,10 +72,10 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### E13 Reviewed organization/planning writes and history skill parity
+### E13 Organization CRUD, advanced lifecycle/history and packaged workflows
 
 ```yaml
-id: P-e5db46c5-d445-4199-8126-8fb504f7fd38
+id: P-64cd7c9d-4f1b-4772-ba45-adc0535829e9
 priority: 100
 status: Pending
 parent_pending_ids: []
@@ -87,16 +87,16 @@ depends_on: []
 ```
 
 Description:
-- Implement reviewed canonical organization and advanced task assignment/planning commands, completed-history/restore tools and matching packaged workflows.
+- Implement reviewed category/project/section/label/goal creation/edit/archive commands, advanced task state/hierarchy/dependencies, completed-history/restore tools and corresponding packaged workflows.
 
 Expected behavior:
-- Agent/manual workflows share canonical validation, original receipts and per-profile permissions without a generic proxy. Read availability never fabricates an unsupported write.
+- Manual and agent workflows share canonical validation, original receipts and own-profile permissions without generic proxies or invented writes.
 
 Current context:
-- Organization, combined task, agenda and task-only status reads are separate local units. Advanced write commands and completed-history lifecycle remain unimplemented; production UI and actual host activation retain separate qualification.
+- Read surfaces and native-only task placement are separate local foundations. Organization CRUD, lifecycle/history commands, hierarchy/dependency authoring and full skill parity remain unimplemented. UI and real host activation retain separate qualification.
 
 Source:
-- Remaining E13 intent from original P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 through P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d.
+- Remaining original E13 intent from P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 through P-e5db46c5-d445-4199-8126-8fb504f7fd38.
 
 ### E09 Mobile planning views, Inbox and retained completed history
 

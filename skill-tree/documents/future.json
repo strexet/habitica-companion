@@ -63,7 +63,8 @@
       "T-5b449c17-2968-4a89-9596-bdb037853e75",
       "T-842f77e3-c043-471d-94e8-3b55da96097c",
       "T-23520ce7-554d-4848-b64b-f4be9ed39800",
-      "T-a1d24727-18dc-4303-9017-a97906d08e13"
+      "T-a1d24727-18dc-4303-9017-a97906d08e13",
+      "T-37720737-c1a1-4d37-bb03-7037491fbf05"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -86,6 +87,7 @@
       "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee": "O-f879b8e5-0a9a-4c91-b292-993fb19bacb3",
       "T-2f23b014-4b4d-46e5-8986-49abb1066bf3": "O-48ebee79-cbbb-4c1c-829c-038c887076e9",
       "T-34491faa-090e-4d97-b496-1fe947770688": "O-038739b4-83cf-4f3a-a2b1-970281d2d9dd",
+      "T-37720737-c1a1-4d37-bb03-7037491fbf05": "O-a6e44a66-46bb-4fc6-a2c6-e6c68f7ac0c3",
       "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3": "O-f684df86-5cbd-4a55-9f83-286b66f0d3d6",
       "T-3987ba88-f69f-59f1-811e-f51cabfa5978": "O-048b3fa0-28ea-49a0-bec1-a8e537a805f5",
       "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e": "O-9e01fa6a-caa6-4e3c-be17-1e389f562720",
@@ -131,7 +133,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "7286cbbde4b0966cedd2ed368ab7ce080499f8f13a4d3688b229f0c8f6427463",
+    "cycle_signature": "f0ab564807de8643d26208dc52291ee8e10675a99c3b0e9d281753106b543eef",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -141,10 +143,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Research a bounded canonical task-planning command unit before implementation.",
+    "next_action": "Research the original E09 completed-history and restore remainder.",
     "partial_work": [
-      "Task-only sync status and required canonical read recovery passed local acceptance and final Worker/app checks.",
-      "Continue originally authorized advanced task planning and organization work; production UI and real release checks retain recorded gates."
+      "Native placement acceptance passed with all local builds and 929 regression tests.",
+      "Continue research of retained completion history and restore semantics before further implementation; no live or UI gate is waived."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -196,7 +198,8 @@
       "P-2eab4a71-0646-4a9c-a815-84ad69652b79",
       "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d",
       "P-e5db46c5-d445-4199-8126-8fb504f7fd38",
-      "P-a8192b85-62bd-4a16-93d1-30eaa8ce0152"
+      "P-a8192b85-62bd-4a16-93d1-30eaa8ce0152",
+      "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9"
     ],
     "phase": "processing",
     "processing_results": [
@@ -1092,6 +1095,23 @@
           "P-a8192b85-62bd-4a16-93d1-30eaa8ce0152"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-37720737-c1a1-4d37-bb03-7037491fbf05"
+        ],
+        "dispositions": {
+          "P-e5db46c5-d445-4199-8126-8fb504f7fd38": {
+            "reason": "Existing canonical fields and organization read IDs support a separate native-only task placement command. Organization CRUD and history/lifecycle workflows remain separate.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-ec75020e-f929-443d-96a4-fe1f93096a47",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-e5db46c5-d445-4199-8126-8fb504f7fd38"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -1159,9 +1179,10 @@
       "T-5b449c17-2968-4a89-9596-bdb037853e75",
       "T-842f77e3-c043-471d-94e8-3b55da96097c",
       "T-a1d24727-18dc-4303-9017-a97906d08e13",
-      "T-23520ce7-554d-4848-b64b-f4be9ed39800"
+      "T-23520ce7-554d-4848-b64b-f4be9ed39800",
+      "T-37720737-c1a1-4d37-bb03-7037491fbf05"
     ],
-    "root_task_id": "T-a1d24727-18dc-4303-9017-a97906d08e13",
+    "root_task_id": "T-37720737-c1a1-4d37-bb03-7037491fbf05",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1275,6 +1296,16 @@
         "reason": "Further decompose original E13 into task-only status and remaining reviewed write/history workflows.",
         "remaining_pending_id": "P-e5db46c5-d445-4199-8126-8fb504f7fd38",
         "researched_remainder": "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d"
+      },
+      {
+        "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+        "owner_direction": "Expand to local tasks and Pending work",
+        "promoted_local_roots": [
+          "T-37720737-c1a1-4d37-bb03-7037491fbf05"
+        ],
+        "reason": "Further decompose original E13 into native-only placement and remaining organization/lifecycle workflows.",
+        "remaining_pending_id": "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9",
+        "researched_remainder": "P-e5db46c5-d445-4199-8126-8fb504f7fd38"
       }
     ],
     "snapshot": [
@@ -1299,17 +1330,18 @@
       "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
       "T-5b449c17-2968-4a89-9596-bdb037853e75",
       "T-842f77e3-c043-471d-94e8-3b55da96097c",
-      "T-a1d24727-18dc-4303-9017-a97906d08e13"
+      "T-a1d24727-18dc-4303-9017-a97906d08e13",
+      "T-37720737-c1a1-4d37-bb03-7037491fbf05"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "9664e6ff334be63eacade7671acf8cd7b094c8bb1b770323292de664fc6fe07b",
+  "source_hash": "771460c3141e7590555ef62591c457ebcc7ee7e9ea17d4681bef2507baba9108",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-e5db46c5-d445-4199-8126-8fb504f7fd38",
+      "id": "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9",
       "line": 75,
       "parent_pending_ids": [],
       "priority": 100,
@@ -1319,7 +1351,7 @@
       "relation": "main",
       "root_task_id": null,
       "status": "Pending",
-      "title": "E13 Reviewed organization/planning writes and history skill parity"
+      "title": "E13 Organization CRUD, advanced lifecycle/history and packaged workflows"
     },
     {
       "depends_on": [],

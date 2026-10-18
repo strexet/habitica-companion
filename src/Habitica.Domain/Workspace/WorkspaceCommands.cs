@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Habitica.Domain.Workspace;
 
-public enum WorkspaceOperation { CreateTodo, UpdateTask, CompleteTask, ScoreHabit, CreateDaily, CreateHabit, DeleteTask, SkipOccurrence, PauseTask, ResumeTask }
+public enum WorkspaceOperation { CreateTodo, UpdateTask, CompleteTask, ScoreHabit, CreateDaily, CreateHabit, DeleteTask, SkipOccurrence, PauseTask, ResumeTask, PlanTask }
 public enum ProjectionCommandState { NotRequested, Pending, Leased, Executing, Confirmed, Blocked, UnknownOutcome, Cancelled }
 public enum ProjectionFailure { None, RateLimited, CredentialRepair, Precondition, Permanent, Transient, Ambiguous }
 public enum ProjectionEffectKind { Create, Update, ScoreUp, ScoreDown }
@@ -18,7 +18,8 @@ public sealed record WorkspaceTaskPatch(
     bool ClearDeadline = false,
     HabiticaTaskDetails? HabiticaDetails = null,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] RecurrenceRule? Recurrence = null,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool ClearRecurrence = false);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool ClearRecurrence = false,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceTaskPlanning? Planning = null);
 
 public sealed record WorkspaceCommand(
     Guid Id,

@@ -83,6 +83,7 @@ public sealed class WorkspaceTaskClientTests
     [InlineData(WorkspaceOperation.SkipOccurrence, "skip_occurrence", "skipOccurrence", 1)]
     [InlineData(WorkspaceOperation.PauseTask, "pause_task", "pauseTask", 0)]
     [InlineData(WorkspaceOperation.ResumeTask, "resume_task", "resumeTask", 0)]
+    [InlineData(WorkspaceOperation.PlanTask, "plan_task", "planTask", 0)]
     public async Task LifecycleAdaptersUseExactToolIdentityAndRejectGameEffectReceipts(WorkspaceOperation operation, string tool, string name, int count)
     {
         var id = Guid.NewGuid(); var command = new WorkspaceCommand(Guid.NewGuid(), id, 1, operation, Guid.NewGuid(), OccurrenceDate: operation == WorkspaceOperation.SkipOccurrence ? new DateOnly(2026, 10, 17) : null);
@@ -99,5 +100,26 @@ public sealed class WorkspaceTaskClientTests
         var client = new WorkspaceCloudClient(http, new ChatGptIntegrationClient(vaultHttp, "https://auth.invalid/", false), "https://workspace.invalid/"); await client.ConnectAsync(Credentials, default);
         var accepted = await client.AcceptCommandAsync(preview, default); Assert.True(accepted.Succeeded); Assert.Equal(count, accepted.Value!.AcceptedEventCount);
         invalid = true; var refused = await client.AcceptCommandAsync(preview, default); Assert.False(refused.Succeeded); Assert.True(refused.OutcomeUnknown); Assert.Null(refused.Value);
+    }
+    [Theory]
+    [InlineData("none")] [InlineData("effect")] [InlineData("target")] [InlineData("field")] [InlineData("gameField")]
+    public async Task NativePlanningPreviewMustMatchTheRequestedTargetAndFields(string change)
+    {
+        var id=Guid.NewGuid();var intent=new WorkspaceCommand(Guid.NewGuid(),id,1,WorkspaceOperation.PlanTask,Guid.NewGuid(),new(Planning:new(PlannedDate:new(2026,10,20))));
+        var command=intent with { Id=Guid.NewGuid() };
+        if(change=="target")command=command with { TaskId=Guid.NewGuid() };
+        if(change=="field")command=command with { Patch=new(Planning:new(PlannedDate:new(2026,10,21))) };
+        if(change=="gameField")command=command with { Patch=command.Patch! with { Text="Unexpected game field" } };
+        var preview=new WorkspaceCommandPreview(command.Id,Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(10),false,command,change=="effect",false);
+        using var vaultHttp=VaultHttp();using var http=new HttpClient(new Handler(async request=>
+        {
+            if(request.RequestUri!.AbsolutePath=="/connect")return Connection(id);
+            using var body=JsonDocument.Parse(await request.Content!.ReadAsStringAsync());Assert.Equal("prepare_task_command",body.RootElement.GetProperty("tool").GetString());
+            var args=body.RootElement.GetProperty("arguments");Assert.Equal(intent.TaskId,args.GetProperty("taskId").GetGuid());Assert.Equal("2026-10-20",args.GetProperty("patch").GetProperty("planning").GetProperty("plannedDate").GetString());
+            return Json(preview);
+        }));
+        var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vaultHttp,"https://auth.invalid/",false),"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
+        var result=await client.PrepareCommandAsync(Guid.NewGuid(),intent,default);Assert.Equal(change=="none",result.Succeeded);
+        if(change!="none"){Assert.True(result.OutcomeUnknown);Assert.Null(result.Value);}
     }
 }

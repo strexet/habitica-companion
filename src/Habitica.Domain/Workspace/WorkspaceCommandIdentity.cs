@@ -22,16 +22,17 @@ public static class WorkspaceCommandIdentity
         };
         var details = patch?.HabiticaDetails;
         var extended = patch?.Recurrence is not null || patch?.ClearRecurrence == true;
-        var body = new StringBuilder(extended ? "companion-command-v3\n" : details is null ? "companion-command-v1\n" : "companion-command-v2\n");
+        var planning = patch?.Planning;
+        var body = new StringBuilder(planning is not null ? "companion-command-v4\n" : extended ? "companion-command-v3\n" : details is null ? "companion-command-v1\n" : "companion-command-v2\n");
         foreach (var field in fields) body.Append(field is null ? "-1:" : Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture) + ":" + field);
-        if (extended) body.Append(details is null ? "1:0" : "1:1");
+        if (extended || planning is not null) body.Append(details is null ? "1:0" : "1:1");
         if (details is not null)
         {
             var extra = new List<string?> { details.Difficulty?.ToString("R", CultureInfo.InvariantCulture), Name(details.Attribute), details.Checklist?.Count.ToString(CultureInfo.InvariantCulture) };
             foreach (var item in details.Checklist ?? Array.Empty<TaskChecklistItem>()) { extra.Add(item.Id.ToString("D")); extra.Add(item.Text); extra.Add(item.Completed ? "1" : "0"); }
             foreach (var field in extra) body.Append(field is null ? "-1:" : Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture) + ":" + field);
         }
-        if (extended)
+        if (extended || planning is not null)
         {
             var rule = patch?.Recurrence;
             var extra = new List<string?> { patch?.ClearRecurrence == true ? "1" : "0", rule is null ? "0" : "1",
@@ -39,6 +40,14 @@ public static class WorkspaceCommandIdentity
                 rule?.TimeZoneId, rule?.Weekdays?.Count.ToString(CultureInfo.InvariantCulture), rule?.DaysOfMonth?.Count.ToString(CultureInfo.InvariantCulture) };
             foreach (var day in rule?.Weekdays ?? Array.Empty<DayOfWeek>()) extra.Add(Name<DayOfWeek>(day));
             foreach (var day in rule?.DaysOfMonth ?? Array.Empty<int>()) extra.Add(day.ToString(CultureInfo.InvariantCulture));
+            foreach (var field in extra) body.Append(field is null ? "-1:" : Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture) + ":" + field);
+        }
+        if (planning is not null)
+        {
+            var extra = new List<string?> { planning.PlannedDate?.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture), planning.ClearPlannedDate ? "1" : "0",
+                planning.CategoryId?.ToString("D"),planning.ClearCategory ? "1" : "0",planning.ProjectId?.ToString("D"),planning.ClearProject ? "1" : "0",
+                planning.SectionId?.ToString("D"),planning.ClearSection ? "1" : "0",planning.LabelIds?.Count.ToString(CultureInfo.InvariantCulture) };
+            foreach (var id in planning.LabelIds ?? Array.Empty<Guid>()) extra.Add(id.ToString("D"));
             foreach (var field in extra) body.Append(field is null ? "-1:" : Encoding.UTF8.GetByteCount(field).ToString(CultureInfo.InvariantCulture) + ":" + field);
         }
         return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(body.ToString()))).ToLowerInvariant();

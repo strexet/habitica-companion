@@ -632,3 +632,7 @@ The owner-isolated profile explains the active boundary on Party and Spells. Par
 ## Canonical lifecycle preview labels
 
 The existing command preview names scheduled occurrence skip, Companion pause and Companion resume explicitly. Occurrence dates and separate zero game-effect state remain visible. The basic action selector does not expose lifecycle controls; mobile lifecycle authoring remains gated separately. Application controller and cloud adapters retain original command identity and skipped-record counts without presenting local pause as a paused Habitica schedule.
+
+## Native placement API availability
+
+The command layer and optional MCP expose reviewed native planned-date and category/project/section/label placement. The basic canonical editor still has no placement controls. A future UI must label planned date separately from deadline, expose explicit clearing and full label replacement, and review exact assignments before acceptance. Native placement leaves game effects and lifecycle state unchanged. Existing E01 and production UI qualification requirements remain active.

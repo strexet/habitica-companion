@@ -89,4 +89,15 @@ public sealed class WorkspaceTaskControllerTests
         Assert.Equal(OccurrenceState.Skipped, Assert.Single(f.Controller.Snapshot!.Document.Occurrences).State);
         Assert.Empty(f.Controller.Snapshot.Document.Completions); Assert.Equal(2, f.Controller.Snapshot.Commands.Count);
     }
+    [Fact]
+    public async Task NativePlanningKeepsTheOriginalReceiptAfterAcknowledgementLoss()
+    {
+        var f=new WorkspaceTaskFixture();await f.Controller.CreateLocalAsync();await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo());await f.Controller.ConfirmAsync();
+        var task=Assert.Single(f.Controller.Snapshot!.Document.Tasks);
+        await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo() with { Operation=WorkspaceOperation.PlanTask,TaskId=task.Id,Planning=new(PlannedDate:new(2026,10,20)) });
+        Assert.False(f.Controller.Preview!.MayAffectHabitica);var original=f.Controller.Preview.Command.Id;f.Js.LoseCommitAcknowledgement=true;
+        await f.Controller.ConfirmAsync();Assert.True(f.Controller.AcceptanceUnknown);await f.Controller.CheckOriginalAsync();
+        Assert.Equal(original,f.Controller.LastReceipt!.CommandId);Assert.Equal(0,f.Controller.LastReceipt.AcceptedEventCount);Assert.Equal(0,f.Controller.LastReceipt.TotalProjectionCount);
+        var saved=Assert.Single(f.Controller.Snapshot!.Document.Tasks);Assert.Equal(new DateOnly(2026,10,20),saved.PlannedDate);Assert.Equal(task.Text,saved.Text);Assert.Equal(2,f.Controller.Snapshot.Commands.Count);
+    }
 }

@@ -301,3 +301,7 @@ Auth migration `0008-upstream-pacing.sql` defines durable shared/profile admissi
 ## Recurring command compatibility
 
 Recurrence intents and Companion-only skip/pause/resume require matching browser, MCP and Workspace bundles. Existing command identities remain valid; older clients can reject extended fields or appended operation names. Update clients alongside the server before using the corresponding tools. Recurrence/lifecycle commands require no additional D1 migration, service binding, secret or enabled background executor. Auth migration requirements, disabled Cron and independent live/client/device release gates remain unchanged.
+
+## Native placement compatibility
+
+planTask adds a command operation and optional planning patch using identity v4. Existing commands retain v1/v2/v3 identities, and no D1 migration is required. Older clients can reject new planning journal entries; coordinate application/Worker/package updates before enabling the workflow. The local implementation and dry builds do not deploy the feature or qualify real clients.

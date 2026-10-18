@@ -91,3 +91,5 @@ The canonical read surface also includes `list_companion_agenda` for explicit ci
 Canonical organization reads include `list_categories`, `list_projects`, `list_project_sections`, `list_labels` and `list_goals`. The tools require tasks:read, return exact own-workspace IDs and bounded revision-guarded pages, and expose Todo-only goal counts. Organization creation/editing remains unavailable. Host discovery and model workflow activation still require separate qualification.
 
 `get_task_sync_status` reads task-only durable state/effect counts and separate executor opt-in/availability. The empty-input read starts no execution, excludes prepared gameplay actions and does not refresh Habitica. Unknown outcomes still require original command receipts; status counts do not authorize retries.
+
+Reviewed `plan_task` edits native planned dates and existing category/project/section/label assignments without game effects, including linked tasks. The operation uses a separate planning-only preview; organization CRUD and production editor controls remain unavailable.

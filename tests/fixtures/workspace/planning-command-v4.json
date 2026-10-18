@@ -1,0 +1,75 @@
+{
+  "cases": [
+    {
+      "name": "set placement",
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000900",
+        "workspaceId": "80000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "planTask",
+        "taskId": "80000000-0000-4000-8000-000000000101",
+        "patch": {
+          "planning": {
+            "plannedDate": "2026-10-20",
+            "categoryId": "80000000-0000-4000-8000-000000000010",
+            "projectId": "80000000-0000-4000-8000-000000000020",
+            "sectionId": "80000000-0000-4000-8000-000000000040",
+            "labelIds": [
+              "80000000-0000-4000-8000-000000000030",
+              "80000000-0000-4000-8000-000000000032"
+            ]
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "6bda00a7abf9d9c6646f4469923ad131b227b3ccc49114c9da195795945d3ef1"
+    },
+    {
+      "name": "clear placement and labels",
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000901",
+        "workspaceId": "80000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "planTask",
+        "taskId": "80000000-0000-4000-8000-000000000101",
+        "patch": {
+          "planning": {
+            "clearPlannedDate": true,
+            "clearCategory": true,
+            "clearProject": true,
+            "clearSection": true,
+            "labelIds": []
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "3a6412901e9228825ac77628f4efd49983e93b1ddfa4fcfdacc92f9e9b7a04c5"
+    },
+    {
+      "name": "partial planned date",
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000902",
+        "workspaceId": "80000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "planTask",
+        "taskId": "80000000-0000-4000-8000-000000000101",
+        "patch": {
+          "planning": {
+            "plannedDate": "2026-10-22"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "a9c0979ef2a35a5e769565072e49c3fa4d9e070d77dd39fa06be6826edc67ff5"
+    }
+  ]
+}

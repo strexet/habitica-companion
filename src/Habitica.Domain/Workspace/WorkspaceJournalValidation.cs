@@ -20,6 +20,7 @@ public static class WorkspaceJournalValidation
                 || !HabiticaTaskDetails.IsValid(entry.Command.Patch?.HabiticaDetails)
                 || entry.Command.Patch?.Recurrence is { } recurrence && !RecurrenceCalendar.IsStructurallyValid(recurrence)
                 || entry.Command.Patch is { ClearRecurrence: true, Recurrence: not null }
+                || entry.Command.Patch?.Planning is { } planning && (!planning.IsValid() || entry.Command.Operation != WorkspaceOperation.PlanTask)
                 || entry.PayloadHash != WorkspaceCommandIdentity.Hash(entry.Command) || entry.AcceptedAtUtc == default || entry.AcceptedAtUtc.Offset != TimeSpan.Zero
                 || !Enum.IsDefined(entry.ProjectionState) || !Enum.IsDefined(entry.Failure) || entry.Effects is null || entry.Effects.Count > 11
                 || entry.Effects.Any(effect => !Enum.IsDefined(effect)) || entry.ConfirmedEffects < 0 || entry.ConfirmedEffects > entry.Effects.Count || entry.Attempts < 0) return false;
@@ -33,6 +34,11 @@ public static class WorkspaceJournalValidation
                     ? task.Kind != CompanionTaskKind.Daily || task.State != CompanionTaskState.Active || task.Recurrence is null || entry.Command.OccurrenceDate is null || entry.Command.OccurrenceDate == default(DateOnly)
                     : entry.Command.OccurrenceDate is not null || task.State != (entry.Command.Operation == WorkspaceOperation.PauseTask ? CompanionTaskState.Paused : CompanionTaskState.Active)) return false;
             }
+            if (entry.Command.Operation == WorkspaceOperation.PlanTask
+                && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
+                    || entry.Command.Direction is not null || entry.Command.Count != 1 || entry.Command.OccurrenceDate is not null
+                    || entry.Command.Patch is not { Planning: { } plan } planningPatch || (planningPatch with { Planning = null }) != new WorkspaceTaskPatch()
+                    || !plan.Matches(entry.TaskSnapshot))) return false;
             if ((entry.Command.Patch?.Recurrence is not null || entry.Command.Patch?.ClearRecurrence == true)
                 && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
                     || entry.Command.Operation is not (WorkspaceOperation.CreateDaily or WorkspaceOperation.UpdateTask)
