@@ -1,0 +1,847 @@
+{
+  "document": {
+    "schemaVersion": 1,
+    "id": "60000000-0000-4000-8000-000000000001",
+    "revision": 10,
+    "categories": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000010",
+        "name": "Work"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000011",
+        "name": "Personal"
+      }
+    ],
+    "projects": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000020",
+        "name": "Alpha",
+        "categoryId": "60000000-0000-4000-8000-000000000010"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000021",
+        "name": "Beta",
+        "categoryId": "60000000-0000-4000-8000-000000000011"
+      }
+    ],
+    "sections": [],
+    "labels": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000030",
+        "name": "Focus"
+      }
+    ],
+    "goals": [],
+    "tasks": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000101",
+        "text": "Release plan",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "HiddenNeedle Café ΟΣ İSTANBUL ＦＯＣＵＳ",
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000102",
+        "text": "Release review",
+        "kind": "todo",
+        "state": "waiting",
+        "priority": "high",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": "60000000-0000-4000-8000-000000000011",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-18",
+        "deadline": "2026-10-20",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000103",
+        "text": "Daily check",
+        "kind": "daily",
+        "state": "active",
+        "priority": "urgent",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "café",
+        "categoryId": "60000000-0000-4000-8000-000000000010",
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": "2026-10-17",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": {
+          "frequency": "daily",
+          "interval": 1,
+          "startDate": "2026-10-19",
+          "timeZoneId": "UTC",
+          "weekdays": [],
+          "daysOfMonth": []
+        },
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000104",
+        "text": "Habit repeat",
+        "kind": "habit",
+        "state": "paused",
+        "priority": "low",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-18",
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000105",
+        "text": "Done",
+        "kind": "todo",
+        "state": "completed",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-16",
+        "deadline": "2026-10-16",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000106",
+        "text": "Archived HiddenNeedle",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-17",
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000107",
+        "text": "Unscheduled",
+        "kind": "todo",
+        "state": "someday",
+        "priority": "urgent",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000021",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000108",
+        "text": "Paused Daily",
+        "kind": "daily",
+        "state": "paused",
+        "priority": "urgent",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "café",
+        "categoryId": "60000000-0000-4000-8000-000000000010",
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": {
+          "frequency": "daily",
+          "interval": 1,
+          "startDate": "2026-10-19",
+          "timeZoneId": "UTC",
+          "weekdays": [],
+          "daysOfMonth": []
+        },
+        "habiticaDetails": null
+      }
+    ],
+    "occurrences": [
+      {
+        "id": "60000000-0000-4000-8000-000000000601",
+        "revision": 10,
+        "isArchived": false,
+        "taskId": "60000000-0000-4000-8000-000000000103",
+        "date": "2026-10-17",
+        "state": "completed"
+      },
+      {
+        "id": "60000000-0000-4000-8000-000000000602",
+        "revision": 10,
+        "isArchived": false,
+        "taskId": "60000000-0000-4000-8000-000000000103",
+        "date": "2026-10-18",
+        "state": "skipped"
+      },
+      {
+        "id": "60000000-0000-4000-8000-000000000603",
+        "revision": 10,
+        "isArchived": false,
+        "taskId": "60000000-0000-4000-8000-000000000103",
+        "date": "2026-10-20",
+        "state": "pending"
+      },
+      {
+        "id": "60000000-0000-4000-8000-000000000604",
+        "revision": 10,
+        "isArchived": false,
+        "taskId": "60000000-0000-4000-8000-000000000103",
+        "date": "2026-10-16",
+        "state": "pending"
+      },
+      {
+        "id": "60000000-0000-4000-8000-000000000605",
+        "revision": 10,
+        "isArchived": false,
+        "taskId": "60000000-0000-4000-8000-000000000108",
+        "date": "2026-10-19",
+        "state": "skipped"
+      },
+      {
+        "id": "60000000-0000-4000-8000-000000000606",
+        "revision": 10,
+        "isArchived": true,
+        "taskId": "60000000-0000-4000-8000-000000000103",
+        "date": "2026-10-21",
+        "state": "pending"
+      }
+    ],
+    "completions": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000300",
+        "taskId": "60000000-0000-4000-8000-000000000105",
+        "commandId": "60000000-0000-4000-8000-000000000301",
+        "completedAtUtc": "2026-10-16T00:00:00Z",
+        "occurrenceId": null
+      },
+      {
+        "id": "60000000-0000-4000-8000-000000000610",
+        "revision": 10,
+        "isArchived": false,
+        "taskId": "60000000-0000-4000-8000-000000000103",
+        "commandId": "60000000-0000-4000-8000-000000000611",
+        "completedAtUtc": "2026-10-17T00:00:00Z",
+        "occurrenceId": "60000000-0000-4000-8000-000000000601"
+      }
+    ],
+    "habitScores": [],
+    "projections": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000400",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "state": "linked",
+        "habiticaTaskId": "60000000-0000-4000-8000-000000000500"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000401",
+        "taskId": "60000000-0000-4000-8000-000000000102",
+        "state": "pending",
+        "habiticaTaskId": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000402",
+        "taskId": "60000000-0000-4000-8000-000000000103",
+        "state": "unknownOutcome",
+        "habiticaTaskId": null
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000404",
+        "taskId": "60000000-0000-4000-8000-000000000104",
+        "state": "linked",
+        "habiticaTaskId": "60000000-0000-4000-8000-000000000504"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "retained history override, paused work and coalesced labels",
+      "filter": {
+        "from": "2026-10-17",
+        "through": "2026-10-20"
+      },
+      "items": [
+        {
+          "taskId": "60000000-0000-4000-8000-000000000101",
+          "text": "Release plan",
+          "kind": "todo",
+          "taskState": "active",
+          "date": "2026-10-17",
+          "planned": true,
+          "deadline": false,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000103",
+          "text": "Daily check",
+          "kind": "daily",
+          "taskState": "active",
+          "date": "2026-10-17",
+          "planned": false,
+          "deadline": true,
+          "occurrenceState": "completed",
+          "occurrenceId": "60000000-0000-4000-8000-000000000601",
+          "ruleTimeZoneId": "UTC"
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000102",
+          "text": "Release review",
+          "kind": "todo",
+          "taskState": "waiting",
+          "date": "2026-10-18",
+          "planned": true,
+          "deadline": false,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000103",
+          "text": "Daily check",
+          "kind": "daily",
+          "taskState": "active",
+          "date": "2026-10-18",
+          "planned": false,
+          "deadline": false,
+          "occurrenceState": "skipped",
+          "occurrenceId": "60000000-0000-4000-8000-000000000602",
+          "ruleTimeZoneId": "UTC"
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000104",
+          "text": "Habit repeat",
+          "kind": "habit",
+          "taskState": "paused",
+          "date": "2026-10-18",
+          "planned": true,
+          "deadline": false,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000101",
+          "text": "Release plan",
+          "kind": "todo",
+          "taskState": "active",
+          "date": "2026-10-19",
+          "planned": false,
+          "deadline": true,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000103",
+          "text": "Daily check",
+          "kind": "daily",
+          "taskState": "active",
+          "date": "2026-10-19",
+          "planned": false,
+          "deadline": false,
+          "occurrenceState": "pending",
+          "occurrenceId": null,
+          "ruleTimeZoneId": "UTC"
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000108",
+          "text": "Paused Daily",
+          "kind": "daily",
+          "taskState": "paused",
+          "date": "2026-10-19",
+          "planned": false,
+          "deadline": false,
+          "occurrenceState": "skipped",
+          "occurrenceId": "60000000-0000-4000-8000-000000000605",
+          "ruleTimeZoneId": "UTC"
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000102",
+          "text": "Release review",
+          "kind": "todo",
+          "taskState": "waiting",
+          "date": "2026-10-20",
+          "planned": false,
+          "deadline": true,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000103",
+          "text": "Daily check",
+          "kind": "daily",
+          "taskState": "active",
+          "date": "2026-10-20",
+          "planned": false,
+          "deadline": false,
+          "occurrenceState": "pending",
+          "occurrenceId": "60000000-0000-4000-8000-000000000603",
+          "ruleTimeZoneId": "UTC"
+        }
+      ],
+      "matchedCount": 10,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "inclusive one-day start",
+      "filter": {
+        "from": "2026-10-17",
+        "through": "2026-10-17"
+      },
+      "items": [
+        {
+          "taskId": "60000000-0000-4000-8000-000000000101",
+          "text": "Release plan",
+          "kind": "todo",
+          "taskState": "active",
+          "date": "2026-10-17",
+          "planned": true,
+          "deadline": false,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000103",
+          "text": "Daily check",
+          "kind": "daily",
+          "taskState": "active",
+          "date": "2026-10-17",
+          "planned": false,
+          "deadline": true,
+          "occurrenceState": "completed",
+          "occurrenceId": "60000000-0000-4000-8000-000000000601",
+          "ruleTimeZoneId": "UTC"
+        }
+      ],
+      "matchedCount": 2,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "middle day",
+      "filter": {
+        "from": "2026-10-19",
+        "through": "2026-10-19"
+      },
+      "items": [
+        {
+          "taskId": "60000000-0000-4000-8000-000000000101",
+          "text": "Release plan",
+          "kind": "todo",
+          "taskState": "active",
+          "date": "2026-10-19",
+          "planned": false,
+          "deadline": true,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000103",
+          "text": "Daily check",
+          "kind": "daily",
+          "taskState": "active",
+          "date": "2026-10-19",
+          "planned": false,
+          "deadline": false,
+          "occurrenceState": "pending",
+          "occurrenceId": null,
+          "ruleTimeZoneId": "UTC"
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000108",
+          "text": "Paused Daily",
+          "kind": "daily",
+          "taskState": "paused",
+          "date": "2026-10-19",
+          "planned": false,
+          "deadline": false,
+          "occurrenceState": "skipped",
+          "occurrenceId": "60000000-0000-4000-8000-000000000605",
+          "ruleTimeZoneId": "UTC"
+        }
+      ],
+      "matchedCount": 3,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "inclusive end",
+      "filter": {
+        "from": "2026-10-20",
+        "through": "2026-10-20"
+      },
+      "items": [
+        {
+          "taskId": "60000000-0000-4000-8000-000000000102",
+          "text": "Release review",
+          "kind": "todo",
+          "taskState": "waiting",
+          "date": "2026-10-20",
+          "planned": false,
+          "deadline": true,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000103",
+          "text": "Daily check",
+          "kind": "daily",
+          "taskState": "active",
+          "date": "2026-10-20",
+          "planned": false,
+          "deadline": false,
+          "occurrenceState": "pending",
+          "occurrenceId": "60000000-0000-4000-8000-000000000603",
+          "ruleTimeZoneId": "UTC"
+        }
+      ],
+      "matchedCount": 2,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "first page",
+      "filter": {
+        "from": "2026-10-17",
+        "through": "2026-10-20",
+        "limit": 3,
+        "expectedRevision": 10
+      },
+      "items": [
+        {
+          "taskId": "60000000-0000-4000-8000-000000000101",
+          "text": "Release plan",
+          "kind": "todo",
+          "taskState": "active",
+          "date": "2026-10-17",
+          "planned": true,
+          "deadline": false,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000103",
+          "text": "Daily check",
+          "kind": "daily",
+          "taskState": "active",
+          "date": "2026-10-17",
+          "planned": false,
+          "deadline": true,
+          "occurrenceState": "completed",
+          "occurrenceId": "60000000-0000-4000-8000-000000000601",
+          "ruleTimeZoneId": "UTC"
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000102",
+          "text": "Release review",
+          "kind": "todo",
+          "taskState": "waiting",
+          "date": "2026-10-18",
+          "planned": true,
+          "deadline": false,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        }
+      ],
+      "matchedCount": 10,
+      "offset": 0,
+      "nextOffset": 3,
+      "truncated": true
+    },
+    {
+      "name": "middle page",
+      "filter": {
+        "from": "2026-10-17",
+        "through": "2026-10-20",
+        "limit": 3,
+        "offset": 3,
+        "expectedRevision": 10
+      },
+      "items": [
+        {
+          "taskId": "60000000-0000-4000-8000-000000000103",
+          "text": "Daily check",
+          "kind": "daily",
+          "taskState": "active",
+          "date": "2026-10-18",
+          "planned": false,
+          "deadline": false,
+          "occurrenceState": "skipped",
+          "occurrenceId": "60000000-0000-4000-8000-000000000602",
+          "ruleTimeZoneId": "UTC"
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000104",
+          "text": "Habit repeat",
+          "kind": "habit",
+          "taskState": "paused",
+          "date": "2026-10-18",
+          "planned": true,
+          "deadline": false,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        },
+        {
+          "taskId": "60000000-0000-4000-8000-000000000101",
+          "text": "Release plan",
+          "kind": "todo",
+          "taskState": "active",
+          "date": "2026-10-19",
+          "planned": false,
+          "deadline": true,
+          "occurrenceState": null,
+          "occurrenceId": null,
+          "ruleTimeZoneId": null
+        }
+      ],
+      "matchedCount": 10,
+      "offset": 3,
+      "nextOffset": 6,
+      "truncated": true
+    },
+    {
+      "name": "last page",
+      "filter": {
+        "from": "2026-10-17",
+        "through": "2026-10-20",
+        "limit": 3,
+        "offset": 9,
+        "expectedRevision": 10
+      },
+      "items": [
+        {
+          "taskId": "60000000-0000-4000-8000-000000000103",
+          "text": "Daily check",
+          "kind": "daily",
+          "taskState": "active",
+          "date": "2026-10-20",
+          "planned": false,
+          "deadline": false,
+          "occurrenceState": "pending",
+          "occurrenceId": "60000000-0000-4000-8000-000000000603",
+          "ruleTimeZoneId": "UTC"
+        }
+      ],
+      "matchedCount": 10,
+      "offset": 9,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "past end",
+      "filter": {
+        "from": "2026-10-17",
+        "through": "2026-10-20",
+        "offset": 100,
+        "expectedRevision": 10
+      },
+      "items": [],
+      "matchedCount": 10,
+      "offset": 100,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "archived occurrence cannot reappear as pending",
+      "filter": {
+        "from": "2026-10-21",
+        "through": "2026-10-21"
+      },
+      "items": [],
+      "matchedCount": 0,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "old pending outside replacement rule stays hidden",
+      "filter": {
+        "from": "2026-10-16",
+        "through": "2026-10-16"
+      },
+      "items": [],
+      "matchedCount": 0,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    }
+  ],
+  "invalid": [
+    {},
+    {
+      "from": null,
+      "through": "2026-10-20"
+    },
+    {
+      "from": "2026-02-30",
+      "through": "2026-03-01"
+    },
+    {
+      "from": "0001-01-01",
+      "through": "0001-01-02"
+    },
+    {
+      "from": "2026-10-20",
+      "through": "2026-10-17"
+    },
+    {
+      "from": "2026-01-01",
+      "through": "2027-01-02"
+    },
+    {
+      "from": "2026-10-17",
+      "through": "2026-10-20",
+      "limit": 0
+    },
+    {
+      "from": "2026-10-17",
+      "through": "2026-10-20",
+      "limit": 101
+    },
+    {
+      "from": "2026-10-17",
+      "through": "2026-10-20",
+      "offset": 1
+    },
+    {
+      "from": "2026-10-17",
+      "through": "2026-10-20",
+      "offset": 10001
+    },
+    {
+      "from": "2026-10-17",
+      "through": "2026-10-20",
+      "expectedRevision": 0
+    },
+    {
+      "from": "2026-10-17",
+      "through": "2026-10-20",
+      "expectedRevision": 9007199254740992
+    },
+    {
+      "from": "2026-10-17",
+      "through": "2026-10-20",
+      "profileId": "60000000-0000-4000-8000-000000000001"
+    }
+  ]
+}

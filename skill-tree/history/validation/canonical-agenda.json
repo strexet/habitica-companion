@@ -1,0 +1,66 @@
+{
+  "task_id": "T-5b449c17-2968-4a89-9596-bdb037853e75",
+  "date": "2026-10-18",
+  "scope": "Local Application and synthetic Worker/MCP; no live calls or deployment",
+  "checks": [
+    {
+      "name": "App release build and three pinned Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET solution after archived-occurrence repair",
+      "passed": 593,
+      "failed": 0,
+      "suites": {
+        "api": 54,
+        "application": 101,
+        "domain": 28,
+        "rules": 43,
+        "storage": 21,
+        "webapp": 346
+      }
+    },
+    {
+      "name": "Full Auth suite",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace suite after repair",
+      "passed": 177,
+      "failed": 0
+    },
+    {
+      "name": "Changed prose, whitespace and document checks",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Ten neutral ordered cases agree across Application, TypeScript and actual local Workspace Worker; one task/date row combines explicit reasons and retained occurrence identity.",
+    "Retained completed/skipped dates survive current rule replacement and pause. Unscheduled work produces no inferred occurrence; stale pending records outside the current rule remain hidden.",
+    "A regression reproduced archived occurrence dates returning as virtual pending work. Both runtimes now suppress the occupied dates; the repaired full suites pass.",
+    "Invalid ranges, unavailable active rules, stale continuations, row capacity and rule-evaluation capacity reject without partial data; one 366-day rule remains valid.",
+    "Synthetic MCP advertises list_companion_agenda as read-only under tasks:read. Missing grants fail at MCP/private Workspace; another profile receives no matching rows.",
+    "Actual Worker capacity failure returns only agenda_capacity. Queries create no command/preparation rows and issue zero upstream writes."
+  ],
+  "limitations": [
+    "Production planning/calendar UI, Inbox, completed Todo history/restore and mobile qualification remain Pending.",
+    "ruleTimeZoneId identifies only the current rule; occurrence history contains no original timezone.",
+    "No Habitica due proof, instant conversion, live client/device qualification or automatic persisted occurrence is supplied."
+  ],
+  "source_fingerprints": {
+    "plugin/README.md": "436c8414415fc58808e458729661844676c14142f7e5d90d351f1731fe568727",
+    "skill-tree/documents/companion-workspace-contract.md": "e953dbd35a2d62b1f3208603ede127cb8c81d22f4e7c8d27791ef06e927a251f",
+    "skill-tree/documents/features.md": "0ae495510964ff0b7d7ad0ca6ececd3b0be1cda33795aa7db6d1b5f0571700b8",
+    "skill-tree/documents/technical.md": "e09cf55b8f2a770a04327b60950fc45ee9e06137c10f2ce5831437c14513a0f9",
+    "skill-tree/documents/testing.md": "8320ec591b71079959988c29a2fbb380b14e779ba13442526e5d8877e7d26acf",
+    "workers/chatgpt-mcp/src/task-tools.ts": "c7e940888573ca77edb8ec728b43aeef46fa8ddf1614015e8ee2fc3868209311",
+    "workers/companion-workspace/src/task-api.ts": "ffab203e2c32c72e68c20e4a780ec5cfef20f27e5d9d0c1bb13392a338956171",
+    "workers/shared/task-tools.ts": "27820c0428dd19d4976c9d6cc9e8833bdb76c616e45a5ce94b858614a603a9fc",
+    "src/Habitica.Application/Workspace/WorkspaceAgenda.cs": "082c8ee236f6fe26a083b2aae3c89696635411ec249aa3ac06fb486f31a0a762",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceAgendaTests.cs": "9e9d3a4fc93f8a6de515d3170af6e78790df8bcd4d0b5191f6e52d50298bbf4c",
+    "tests/fixtures/workspace/agenda-v1.json": "5d759ba860dcdabb53761d9d4bd3519c8435e003450a37aba751ce831de37a04",
+    "workers/companion-workspace/test/task-agenda.test.mjs": "63feaa9b25c2c36df9575c66e1468f75e2d27d52bd66295e97ac5feda6f3294f",
+    "workers/shared/task-agenda.ts": "3663a945ff6343b1f665dc0d3ca59cbffc5c0b677bf5323f5734a8a2ab016e0f"
+  }
+}

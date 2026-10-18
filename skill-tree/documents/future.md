@@ -72,6 +72,32 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### E09 Mobile planning views, Inbox and retained completed history
+
+```yaml
+id: P-2eab4a71-0646-4a9c-a815-84ad69652b79
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Implement Today, Inbox, Upcoming, Week/Month agenda, overdue/Anytime and searchable completed history with reviewed restore semantics. Preserve explicit dates, recurrence identity and actual persisted completion history.
+
+Expected behavior:
+- Mobile planning uses canonical data, retains completed work after Habitica removes records and distinguishes civil dates, game due state and completion timestamps.
+
+Current context:
+- Combined canonical task filters and a bounded civil-date agenda are separate local foundations. Production UI retains the E01 hands-on gate; completed Todo restoration needs a reviewed history-safe lifecycle contract before implementation.
+
+Source:
+- Remaining original owner-authorized E09 intent P-c8632138-39c6-5797-8e03-a3414824ee96 after agenda foundation decomposition.
+
 ### E01 Hands-on competitor and mobile workflow qualification
 
 ```yaml
@@ -178,38 +204,6 @@ Requirements:
 
 Expected behavior:
 - Common capture/completion/reschedule flows need few interactions on a narrow phone; no core task property requires desktop; WCAG/touch/keyboard tests and mobile usability review.
-
-### E09 Today, Upcoming, Calendar, Inbox and Completed/Logbook views
-
-```yaml
-id: P-c8632138-39c6-5797-8e03-a3414824ee96
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Current context:
-- `TasksPage.razor` already exposes cached completed/open toggles, due-pressure counts and history charts. The controls use the latest Habitica snapshot. Canonical workspace completion records exist; agenda/calendar/Inbox views and a searchable completed-history surface remain outstanding.
-
-Source:
-- Companion-first epic `E09` (`P-c8632138-39c6-5797-8e03-a3414824ee96`); requirements are intake awaiting current-source research and decomposition.
-
-Description:
-- Add a unified agenda/planning surface and durable completed history, not just the current Habitica task-type grouping.
-
-Requirements:
-- Today planner, Inbox, near-term Upcoming, Week/Month + agenda calendar, overdue, unscheduled/Anytime, completed history and restore, explicit occurrence/recurrence handling.
-
-Data behavior:
-- Distinguish all-day date/time, planned date/deadline, game Daily due-state and completion timestamp; calendar uses Companion records, not API-only recent completed limit.
-
-Expected behavior:
-- Fully usable on mobile; accurate date boundary across time zones/DST; no duplicate recurring Dailies; completed items remain visible/searchable after Habitica removes completed items.
 
 ### E10 Categories, goals, projects, progress and lightweight workflows UX
 

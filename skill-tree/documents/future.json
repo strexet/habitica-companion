@@ -59,7 +59,8 @@
       "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
       "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
       "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68",
-      "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d"
+      "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
+      "T-5b449c17-2968-4a89-9596-bdb037853e75"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -93,6 +94,7 @@
       "T-53352a18-54d2-57b6-accc-91f8e6dfad13": "O-02146734-4822-48de-81a5-71f0c7208776",
       "T-5737120b-52a5-4a57-9072-fce514adaf33": "O-53aa48f8-4d3c-4d9a-bb8b-12ec41ed3a60",
       "T-58907376-21eb-417f-988e-fe65449a0bb7": "O-15ca9c1f-7dba-451c-b982-7e87d361b1a4",
+      "T-5b449c17-2968-4a89-9596-bdb037853e75": "O-33459721-4755-4af3-ae08-c103d0b0cd4e",
       "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4": "O-c907310b-d594-4093-a241-5bff64729b14",
       "T-65810da7-9524-45ce-b280-668d04c86441": "O-33a5eda4-5cb2-4c4a-8f16-12553960765a",
       "T-70901e97-738c-42c2-ae50-68dd71417a32": "O-ca50d6a3-b6a2-481b-98d8-349564657bd0",
@@ -123,7 +125,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "1dbd4e6e56ad329ec875d8311470ebeddfba6428b3f7d7e57e24d1a745e93aeb",
+    "cycle_signature": "da73d99e47fa34f4fc334c9a3a61fef317e42c35096d90e78026d06e46b2e0e6",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -133,10 +135,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Research a bounded E09 canonical agenda unit.",
+    "next_action": "Research narrow canonical category/project/label/goal reads.",
     "partial_work": [
-      "Documented navigation baseline and default/advanced rules adopted; separate hands-on E01 qualification remains Pending.",
-      "Continue independent canonical planning and command foundations without promoting gated production UI."
+      "Canonical agenda passes final repaired acceptance and local builds/tests.",
+      "Continue original E13 canonical organization read parity; UI and live qualification remain separate."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -184,7 +186,8 @@
       "P-8a968c91-80a2-46be-9f32-2fb514d3bc22",
       "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79",
       "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa",
-      "P-c5795748-6f25-4c0a-a471-fe72c1a85862"
+      "P-c5795748-6f25-4c0a-a471-fe72c1a85862",
+      "P-2eab4a71-0646-4a9c-a815-84ad69652b79"
     ],
     "phase": "processing",
     "processing_results": [
@@ -1012,6 +1015,23 @@
           "P-4f98b2b3-af24-5424-b2f9-066913f7133d"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-5b449c17-2968-4a89-9596-bdb037853e75"
+        ],
+        "dispositions": {
+          "P-c8632138-39c6-5797-8e03-a3414824ee96": {
+            "reason": "Existing civil calendar and retained occurrence records support an independent agenda query. Production views and durable history/restore workflows remain a separate intake.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-ae395f79-840f-4cef-93c5-6391e4431172",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-c8632138-39c6-5797-8e03-a3414824ee96"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -1075,9 +1095,10 @@
       "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
       "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
       "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68",
-      "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d"
+      "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
+      "T-5b449c17-2968-4a89-9596-bdb037853e75"
     ],
-    "root_task_id": "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
+    "root_task_id": "T-5b449c17-2968-4a89-9596-bdb037853e75",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1163,6 +1184,15 @@
         ],
         "reason": "Finalize the original E01 documented design baseline; retain hands-on qualification separately.",
         "remaining_pending_id": "P-c5795748-6f25-4c0a-a471-fe72c1a85862"
+      },
+      {
+        "original_pending_id": "P-c8632138-39c6-5797-8e03-a3414824ee96",
+        "owner_direction": "Expand to local tasks and Pending work",
+        "promoted_local_roots": [
+          "T-5b449c17-2968-4a89-9596-bdb037853e75"
+        ],
+        "reason": "Decompose original E09 into an independent canonical agenda and remaining view/history work.",
+        "remaining_pending_id": "P-2eab4a71-0646-4a9c-a815-84ad69652b79"
       }
     ],
     "snapshot": [
@@ -1184,18 +1214,33 @@
       "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
       "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
       "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68",
-      "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d"
+      "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
+      "T-5b449c17-2968-4a89-9596-bdb037853e75"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "26d8da7a5b222e06a48e56f59813b68eb16428949fa9ab69b782f35bac6b182a",
+  "source_hash": "0188fc3fd6ea4e9b05ef143aaf9a97bdc0a9c1819f10489934d897e7a060bdfe",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-c5795748-6f25-4c0a-a471-fe72c1a85862",
+      "id": "P-2eab4a71-0646-4a9c-a815-84ad69652b79",
       "line": 75,
+      "parent_pending_ids": [],
+      "priority": 100,
+      "processing_run_id": null,
+      "queue": "Pending Queue",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": null,
+      "status": "Pending",
+      "title": "E09 Mobile planning views, Inbox and retained completed history"
+    },
+    {
+      "depends_on": [],
+      "id": "P-c5795748-6f25-4c0a-a471-fe72c1a85862",
+      "line": 101,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1209,7 +1254,7 @@
     {
       "depends_on": [],
       "id": "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa",
-      "line": 101,
+      "line": 127,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1223,7 +1268,7 @@
     {
       "depends_on": [],
       "id": "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79",
-      "line": 127,
+      "line": 153,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1237,7 +1282,7 @@
     {
       "depends_on": [],
       "id": "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
-      "line": 153,
+      "line": 179,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1250,22 +1295,8 @@
     },
     {
       "depends_on": [],
-      "id": "P-c8632138-39c6-5797-8e03-a3414824ee96",
-      "line": 182,
-      "parent_pending_ids": [],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E09 Today, Upcoming, Calendar, Inbox and Completed/Logbook views"
-    },
-    {
-      "depends_on": [],
       "id": "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
-      "line": 214,
+      "line": 208,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1279,7 +1310,7 @@
     {
       "depends_on": [],
       "id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
-      "line": 243,
+      "line": 237,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1305,7 +1336,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 279,
+      "line": 273,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1329,7 +1360,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 320,
+      "line": 314,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1345,7 +1376,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 475,
+      "line": 469,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1359,7 +1390,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 512,
+      "line": 506,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1373,7 +1404,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 549,
+      "line": 543,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1387,7 +1418,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 682,
+      "line": 676,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1401,7 +1432,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 720,
+      "line": 714,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1415,7 +1446,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 754,
+      "line": 748,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1429,7 +1460,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 789,
+      "line": 783,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1443,7 +1474,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 823,
+      "line": 817,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1457,7 +1488,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 861,
+      "line": 855,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1471,7 +1502,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 888,
+      "line": 882,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1485,7 +1516,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 910,
+      "line": 904,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1499,7 +1530,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 937,
+      "line": 931,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
