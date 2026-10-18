@@ -45,6 +45,7 @@ All workflow scenarios below apply independently to both clients. Selected real 
 | “What Habitica Dailies should I consider today?” | Daily review by matching description | Truncation and unknown due state remain explicit |
 | `$habitica-account-review` or “How much HP and MP do I have?” | Account review | Only returned stats; no exact reward prediction |
 | `$habitica-activity-review` or “Show retained Habit activity” | Canonical completion/Habit history reads | Exact events and detail provenance; no streak or reward inference |
+| “Which active Todos have completed dependencies?” | Canonical unblocked candidates | Full-document dependency checks; no automatic priority or gameplay inference |
 | “Create a Companion Todo called Read chapter 2” | Task management | Clarify game projection, prepare, show preview, await approval |
 | “Complete Read” with two canonical matches | Task management | Present candidates; no preparation or acceptance before exact selection |
 | “Complete a Daily” without a date | Task management | Clarify exact target and occurrence date |

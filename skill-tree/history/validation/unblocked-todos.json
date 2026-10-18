@@ -1,0 +1,53 @@
+{
+  "task_id": "T-e3653fbd-2101-4b58-8219-3aa076b56fe6",
+  "date": "2026-10-18",
+  "scope": "Local dependency-aware candidate reads only; no live tests, deployment or game effects",
+  "checks": [
+    {
+      "name": "Release app and three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 645,
+      "failed": 0,
+      "suites": {
+        "domain": 29,
+        "rules": 43,
+        "storage": 21,
+        "application": 138,
+        "api": 54,
+        "webapp": 360
+      }
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace",
+      "passed": 244,
+      "failed": 0
+    },
+    {
+      "name": "Skill, changed prose, strict future, repository consistency and whitespace",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Sixteen neutral pages agree across C#, TypeScript and actual synthetic Workspace/MCP reads, preserving document order and complete combined-filter counts.",
+    "All explicit dependency states are checked in the full validated document before metadata/date/text filters and pagination; completed archived records satisfy dependency completion while archived incomplete/cancelled/paused/waiting/someday/active records do not.",
+    "Only nonarchived active Todos qualify; parent links do not imply dependency inheritance and game mapping does not imply gameplay permission.",
+    "Native restore blocks a dependant while exposing the restored Todo as active work; recompletion restores dependant eligibility without scoring dependants.",
+    "Current D1 reads reject stale revisions, malformed source/graph and changed access epochs. MCP unavailable reads invent neither empty tasks nor mutation uncertainty.",
+    "Public/private read grants and profile isolation hold; warmed reads create zero commands, preparations or upstream writes."
+  ],
+  "limitations": [
+    "Saved views, review/reminder policies, automatic ranking, production controls and live qualification remain separate."
+  ],
+  "repairs": [
+    "The initial archived completed-dependency fixture omitted a required completion event. An explicit retained archived completion now makes the fixture valid.",
+    "A candidate-count expectation omitted the newly active dependency. Assertions now verify dependant exclusion, restored-parent inclusion and the resulting unchanged count."
+  ]
+}

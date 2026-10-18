@@ -72,6 +72,32 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### E12 Saved views, review policies and mobile task hygiene controls
+
+```yaml
+id: P-84af82c3-f65b-4981-8f40-e3faaf651314
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Persist saved smart lists, define stale/unreviewed thresholds and configurable reminders, and integrate dependency-aware candidates with mobile review and next-action policies.
+
+Expected behavior:
+- Review flows reveal stalled work with gentle optional policies and preserve explicit uncertainty, avoiding mandatory status rituals or punitive wording.
+
+Current context:
+- Combined canonical filters are implemented. Unblocked active Todo reads are a separate local unit; saved views, review/reminder persistence and mobile integration remain unimplemented. Production UI retains the E01 hands-on gate.
+
+Source:
+- Remaining original E12 intent P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d through P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa.
+
 ### E11 Mobile recurrence/history controls and streak policies
 
 ```yaml
@@ -175,32 +201,6 @@ Current context:
 
 Source:
 - Remaining E01 intent from P-4f98b2b3-af24-5424-b2f9-066913f7133d and companion-first-mcp-research.md research completion gap; local contract adoption does not waive the explicit hands-on gate.
-
-### E12 Saved views, review policies and mobile task hygiene
-
-```yaml
-id: P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Persist saved smart lists and provide gentle stale/unreviewed and unblocked-next-action review flows, per-type thresholds and configurable reminders. Integrate the canonical combined query contract into mobile filters.
-
-Expected behavior:
-- Users find stalled work and review backlogs in a few mobile gestures without mandatory status management or punitive wording.
-
-Current context:
-- Canonical text/notes and metadata filters are implemented. Saved views, review policy, next-action eligibility, reminders and mobile integration remain unimplemented.
-
-Source:
-- Original owner-authorized E12 intake P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d; remaining intent after query foundation decomposition.
 
 ### E08 Mobile-first task capture, edit, and navigation redesign
 

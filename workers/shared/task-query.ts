@@ -25,7 +25,7 @@ export function taskFilter(input:unknown):TaskFilter {
 const fold=(value:string)=>value.normalize('NFKC').replaceAll('\u0130','i\u0307').toLowerCase().replaceAll('\u03c2','\u03c3');
 export {fold as foldTaskText};
 const within=(value:string|null,from?:string,to?:string)=>from===undefined&&to===undefined||value!==null&&(from===undefined||value>=from)&&(to===undefined||value<=to);
-export function queryTasks(document:WorkspaceDocument,input:unknown){
+export function queryTasks(document:WorkspaceDocument,input:unknown,eligible?:(task:CompanionTask)=>boolean){
  const filter=taskFilter(input);
  if(filter.expectedRevision!==undefined&&filter.expectedRevision!==document.revision)throw new WorkspaceError('stale_revision',409);
  const projects=new Map(document.projects.map(project=>[project.id,project]));
@@ -33,7 +33,7 @@ export function queryTasks(document:WorkspaceDocument,input:unknown){
  const query=fold(filter.query??'');const offset=filter.offset??0,limit=filter.limit??50;
  const tasks:CompanionTask[]=[];let matchedCount=0;
  for(const task of document.tasks){
-  if(task.isArchived||filter.kind!==undefined&&task.kind!==filter.kind||filter.state!==undefined&&task.state!==filter.state
+  if(task.isArchived||eligible!==undefined&&!eligible(task)||filter.kind!==undefined&&task.kind!==filter.kind||filter.state!==undefined&&task.state!==filter.state
    ||filter.priority!==undefined&&task.priority!==filter.priority||filter.projectId!==undefined&&task.projectId!==filter.projectId
    ||filter.labelId!==undefined&&!task.labelIds.includes(filter.labelId)
    ||!within(task.plannedDate,filter.plannedFrom,filter.plannedTo)||!within(task.deadline,filter.deadlineFrom,filter.deadlineTo))continue;

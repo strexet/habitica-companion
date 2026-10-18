@@ -14,7 +14,9 @@ public sealed record WorkspaceTaskPage(Guid WorkspaceId, long Revision, IReadOnl
 
 public static class WorkspaceTaskQuery
 {
-    public static WorkspaceTaskPage Evaluate(WorkspaceDocument document, WorkspaceTaskFilter filter)
+    public static WorkspaceTaskPage Evaluate(WorkspaceDocument document, WorkspaceTaskFilter filter) => Evaluate(document, filter, null);
+
+    internal static WorkspaceTaskPage Evaluate(WorkspaceDocument document, WorkspaceTaskFilter filter, Func<CompanionTask,bool>? eligible)
     {
         if (filter.Query?.Length > 256 || filter.Kind is { } kind && !Enum.IsDefined(kind)
             || filter.State is { } state && !Enum.IsDefined(state) || filter.Priority is { } priority && !Enum.IsDefined(priority)
@@ -33,7 +35,7 @@ public static class WorkspaceTaskQuery
         var page = new List<CompanionTask>(); var matched = 0;
         foreach (var task in document.Tasks)
         {
-            if (task.IsArchived || filter.Kind is { } k && task.Kind != k || filter.State is { } s && task.State != s
+            if (task.IsArchived || eligible is not null && !eligible(task) || filter.Kind is { } k && task.Kind != k || filter.State is { } s && task.State != s
                 || filter.Priority is { } p && task.Priority != p || filter.ProjectId is { } project && task.ProjectId != project
                 || filter.LabelId is { } label && !(task.LabelIds?.Contains(label) ?? false)
                 || !Within(task.PlannedDate, filter.PlannedFrom, filter.PlannedTo) || !Within(task.Deadline, filter.DeadlineFrom, filter.DeadlineTo)) continue;

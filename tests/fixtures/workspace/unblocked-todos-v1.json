@@ -1,0 +1,1038 @@
+{
+  "document": {
+    "schemaVersion": 1,
+    "id": "60000000-0000-4000-8000-000000000001",
+    "revision": 20,
+    "categories": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000010",
+        "name": "Work"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000011",
+        "name": "Personal"
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000012",
+        "name": "Archived area"
+      }
+    ],
+    "projects": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000020",
+        "name": "Alpha",
+        "categoryId": "60000000-0000-4000-8000-000000000010"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000021",
+        "name": "Beta",
+        "categoryId": "60000000-0000-4000-8000-000000000011"
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000022",
+        "name": "Archived project",
+        "categoryId": "60000000-0000-4000-8000-000000000012"
+      }
+    ],
+    "sections": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000041",
+        "name": "Later",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 1
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000042",
+        "name": "First",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 0
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000043",
+        "name": "Hidden",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 2
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000044",
+        "name": "Other",
+        "projectId": "60000000-0000-4000-8000-000000000021",
+        "position": 0
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000045",
+        "name": "Archived parent",
+        "projectId": "60000000-0000-4000-8000-000000000022",
+        "position": 0
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000046",
+        "name": "Also first",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 0
+      }
+    ],
+    "labels": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000030",
+        "name": "Focus"
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000031",
+        "name": "Archived label"
+      }
+    ],
+    "goals": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000050",
+        "name": "Mixed work",
+        "taskIds": [
+          "60000000-0000-4000-8000-000000000101",
+          "60000000-0000-4000-8000-000000000103",
+          "60000000-0000-4000-8000-000000000104",
+          "60000000-0000-4000-8000-000000000105",
+          "60000000-0000-4000-8000-000000000106",
+          "60000000-0000-4000-8000-000000000109"
+        ]
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000051",
+        "name": "No tasks",
+        "taskIds": []
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000052",
+        "name": "Archived goal",
+        "taskIds": [
+          "60000000-0000-4000-8000-000000000105"
+        ]
+      }
+    ],
+    "tasks": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000101",
+        "text": "Release plan",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "HiddenNeedle Café ΟΣ İSTANBUL ＦＯＣＵＳ",
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000102",
+        "text": "Release review",
+        "kind": "todo",
+        "state": "waiting",
+        "priority": "high",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": "60000000-0000-4000-8000-000000000011",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-18",
+        "deadline": "2026-10-20",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000103",
+        "text": "Daily check",
+        "kind": "daily",
+        "state": "active",
+        "priority": "urgent",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "café",
+        "categoryId": "60000000-0000-4000-8000-000000000010",
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": "2026-10-17",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000104",
+        "text": "Habit repeat",
+        "kind": "habit",
+        "state": "paused",
+        "priority": "low",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000105",
+        "text": "Done",
+        "kind": "todo",
+        "state": "completed",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-16",
+        "deadline": "2026-10-16",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000106",
+        "text": "Archived HiddenNeedle",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000107",
+        "text": "Unscheduled",
+        "kind": "todo",
+        "state": "someday",
+        "priority": "urgent",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000021",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000109",
+        "text": "Cancelled work",
+        "kind": "todo",
+        "state": "cancelled",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "HiddenNeedle Café ΟΣ İSTANBUL ＦＯＣＵＳ",
+        "categoryId": null,
+        "projectId": null,
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000201",
+        "text": "Candidate 201",
+        "kind": "todo",
+        "state": "active",
+        "priority": "urgent",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "OnlyReady ＦＯＣＵＳ",
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000021",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000105"
+        ],
+        "plannedDate": "2026-10-21",
+        "deadline": "2026-10-23",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000202",
+        "text": "Candidate 202",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000102"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000203",
+        "text": "Candidate 203",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000104"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000204",
+        "text": "Candidate 204",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000106"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000205",
+        "text": "Candidate 205",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000109"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000206",
+        "text": "Candidate 206",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000107"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000207",
+        "text": "Candidate 207",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000101"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000208",
+        "text": "Candidate 208",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000210"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000209",
+        "text": "Candidate 209",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000105",
+          "60000000-0000-4000-8000-000000000102"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000210",
+        "text": "Candidate 210",
+        "kind": "todo",
+        "state": "completed",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000211",
+        "text": "Candidate 211",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": "60000000-0000-4000-8000-000000000011",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": "60000000-0000-4000-8000-000000000102",
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000212",
+        "text": "Candidate 212",
+        "kind": "todo",
+        "state": "paused",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000105"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000213",
+        "text": "Candidate 213",
+        "kind": "daily",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000105"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 20,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000214",
+        "text": "Candidate 214",
+        "kind": "habit",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [
+          "60000000-0000-4000-8000-000000000105"
+        ],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    ],
+    "occurrences": [],
+    "completions": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000300",
+        "taskId": "60000000-0000-4000-8000-000000000105",
+        "commandId": "60000000-0000-4000-8000-000000000301",
+        "completedAtUtc": "2026-10-16T00:00:00Z",
+        "occurrenceId": null
+      },
+      {
+        "id": "60000000-0000-4000-8000-000000000320",
+        "revision": 20,
+        "taskId": "60000000-0000-4000-8000-000000000210",
+        "commandId": "60000000-0000-4000-8000-000000000321",
+        "completedAtUtc": "2026-10-17T00:00:00Z",
+        "occurrenceId": null,
+        "isArchived": true
+      }
+    ],
+    "habitScores": [],
+    "projections": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000400",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "state": "linked",
+        "habiticaTaskId": "60000000-0000-4000-8000-000000000500"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000401",
+        "taskId": "60000000-0000-4000-8000-000000000102",
+        "state": "pending",
+        "habiticaTaskId": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000402",
+        "taskId": "60000000-0000-4000-8000-000000000103",
+        "state": "unknownOutcome",
+        "habiticaTaskId": null
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000404",
+        "taskId": "60000000-0000-4000-8000-000000000104",
+        "state": "linked",
+        "habiticaTaskId": "60000000-0000-4000-8000-000000000504"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "only active unarchived Todos with completed explicit dependencies",
+      "filter": {},
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000101",
+        "60000000-0000-4000-8000-000000000201",
+        "60000000-0000-4000-8000-000000000208",
+        "60000000-0000-4000-8000-000000000211"
+      ],
+      "matchedCount": 4,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "unlinked candidates remain native",
+      "filter": {
+        "projectionState": "unlinked"
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201",
+        "60000000-0000-4000-8000-000000000208",
+        "60000000-0000-4000-8000-000000000211"
+      ],
+      "matchedCount": 3,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "linked candidate is no game authorization",
+      "filter": {
+        "projectionState": "linked"
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000101"
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "full-document dependency survives project filter",
+      "filter": {
+        "projectId": "60000000-0000-4000-8000-000000000021"
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201"
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "effective inherited and explicit category",
+      "filter": {
+        "categoryId": "60000000-0000-4000-8000-000000000011"
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201",
+        "60000000-0000-4000-8000-000000000211"
+      ],
+      "matchedCount": 2,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "label filter",
+      "filter": {
+        "labelId": "60000000-0000-4000-8000-000000000030"
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000101",
+        "60000000-0000-4000-8000-000000000208",
+        "60000000-0000-4000-8000-000000000211"
+      ],
+      "matchedCount": 3,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "normalized title or notes",
+      "filter": {
+        "query": "focus"
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000101",
+        "60000000-0000-4000-8000-000000000201"
+      ],
+      "matchedCount": 2,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "one exact urgency",
+      "filter": {
+        "priority": "urgent"
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201"
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "inclusive planned dates",
+      "filter": {
+        "plannedFrom": "2026-10-21",
+        "plannedTo": "2026-10-21"
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201"
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "inclusive deadlines",
+      "filter": {
+        "deadlineFrom": "2026-10-20"
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201"
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "AND across filters",
+      "filter": {
+        "query": "onlyready",
+        "projectId": "60000000-0000-4000-8000-000000000021",
+        "priority": "urgent",
+        "deadlineTo": "2026-10-23"
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000201"
+      ],
+      "matchedCount": 1,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "filter cannot revive blocked task",
+      "filter": {
+        "query": "Candidate 202"
+      },
+      "taskIds": [],
+      "matchedCount": 0,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "guarded first page",
+      "filter": {
+        "limit": 2
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000101",
+        "60000000-0000-4000-8000-000000000201"
+      ],
+      "matchedCount": 4,
+      "offset": 0,
+      "nextOffset": 2,
+      "truncated": true
+    },
+    {
+      "name": "guarded next page",
+      "filter": {
+        "limit": 2,
+        "offset": 2,
+        "expectedRevision": 20
+      },
+      "taskIds": [
+        "60000000-0000-4000-8000-000000000208",
+        "60000000-0000-4000-8000-000000000211"
+      ],
+      "matchedCount": 4,
+      "offset": 2,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "beyond guarded page",
+      "filter": {
+        "offset": 8,
+        "expectedRevision": 20
+      },
+      "taskIds": [],
+      "matchedCount": 4,
+      "offset": 8,
+      "nextOffset": null,
+      "truncated": false
+    },
+    {
+      "name": "unknown organization is empty",
+      "filter": {
+        "projectId": "60000000-0000-4000-8000-000000000999"
+      },
+      "taskIds": [],
+      "matchedCount": 0,
+      "offset": 0,
+      "nextOffset": null,
+      "truncated": false
+    }
+  ],
+  "invalid": [
+    {
+      "kind": "todo"
+    },
+    {
+      "state": "active"
+    },
+    {
+      "profileId": "60000000-0000-4000-8000-000000000001"
+    },
+    {
+      "limit": 0
+    },
+    {
+      "limit": 101
+    },
+    {
+      "offset": 1
+    },
+    {
+      "expectedRevision": 0
+    },
+    {
+      "plannedFrom": "2026-02-30"
+    },
+    {
+      "deadlineFrom": "2026-10-20",
+      "deadlineTo": "2026-10-19"
+    },
+    {
+      "categoryId": "00000000-0000-0000-0000-000000000000"
+    }
+  ]
+}
