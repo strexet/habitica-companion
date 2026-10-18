@@ -1,6 +1,7 @@
+import {relationshipsMatch} from '../../shared/task-relationships.ts';
 import {planningMatches} from '../../shared/task-planning.ts';
 import { habiticaDetails } from "../../shared/task-details.ts";
-import { workspaceDocument, workspaceRecurrence, utcTicks, type WorkspaceDocument } from '../../shared/workspace-domain.ts';
+import { workspaceDocument, workspaceRecurrence, utcTicks, type WorkspaceDocument, type CompanionTask } from '../../shared/workspace-domain.ts';
 import { workspaceCommand, commandHash } from '../../shared/workspace-commands.ts';
 import { workspaceObject as object, uuid, WorkspaceError } from '../../shared/workspace-http.ts';
 import type { CommandEntry, JournalEvent } from './commands.ts';
@@ -22,6 +23,7 @@ export async function journal(value:unknown):Promise<Journal>{
   const effects=row.effects as string[];valid(Number.isInteger(row.confirmedEffects)&&Number(row.confirmedEffects)>=0&&Number(row.confirmedEffects)<=effects.length&&Number.isSafeInteger(row.attempts)&&Number(row.attempts)>=0);
   const restoration=document.restorations?.find(value=>value.commandId===command.id);valid(!restoration||command.operation==='restoreTodo');
   if(command.operation==='restoreTodo'){const accepted=object(row.taskSnapshot);valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0&&accepted.kind==='todo'&&accepted.state==='active'&&accepted.isArchived!==true&&restoration&&restoration.taskId===command.taskId&&restoration.completionId===command.patch?.restoreTodo?.completionId&&restoration.revision===command.expectedRevision+1&&utcTicks(restoration.restoredAtUtc)===utcTicks(row.acceptedAtUtc));}
+  if(command.operation==='relateTodo'){valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0);const accepted=object(row.taskSnapshot);valid(command.patch?.relationships&&accepted.isArchived!==true&&relationshipsMatch(command.patch.relationships,accepted as unknown as CompanionTask));}
   if(command.operation==='planTask'){valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0);const accepted=object(row.taskSnapshot);valid(command.patch?.planning&&planningMatches(command.patch.planning,accepted));}
   if(['skipOccurrence','pauseTask','resumeTask'].includes(command.operation)){
    valid(!command.projectToHabitica&&row.projectionState==='notRequested'&&effects.length===0&&command.patch===null&&command.direction===null&&command.count===1);

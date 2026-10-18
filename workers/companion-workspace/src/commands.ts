@@ -1,3 +1,4 @@
+import {applyRelationships,relationshipReferencesAvailable} from '../../shared/task-relationships.ts';
 import { mergeDetails } from "../../shared/task-details.ts";
 import { workspaceDocument, type WorkspaceDocument, type CompanionTask } from "../../shared/workspace-domain.ts";
 import { commandHash, isTaskCreation, type WorkspaceCommand } from "../../shared/workspace-commands.ts";
@@ -21,6 +22,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  if (isTaskCreation(command.operation) ? Boolean(task) : !task || task.isArchived) throw new WorkspaceError("task_unavailable", 422);
  const mapping = result.projections.find(row => row.taskId === command.taskId && !row.isArchived);
  if(command.operation==='planTask'){if(command.projectToHabitica)throw new WorkspaceError('unsupported_projection',422);if(!planningReferencesAvailable(result,task!,patch!.planning!))throw new WorkspaceError('invalid_planning_reference',422);}
+ if(command.operation==='relateTodo'){if(command.projectToHabitica)throw new WorkspaceError('unsupported_projection',422);if(!relationshipReferencesAvailable(result,task!,patch!.relationships!))throw new WorkspaceError('invalid_relationship_reference',422);}
  if(command.operation==='restoreTodo'){
   const retained=result.projections.find(row=>row.taskId===command.taskId);
   if(command.projectToHabitica||retained&&(retained.state!=='unlinked'||retained.habiticaTaskId!==null))throw new WorkspaceError('unsupported_projection',422);
@@ -54,6 +56,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  } else {
   task!.revision = revision; task!.updatedAtUtc = now;
   if(command.operation==='planTask'){const planned=applyPlanning(task!,patch!.planning!);Object.assign(task!,planned);}
+  if(command.operation==='relateTodo')Object.assign(task!,applyRelationships(task!,patch!.relationships!));
   if(command.operation==='restoreTodo'){task!.state='active';result.restorations??=[];result.restorations.push({id:crypto.randomUUID(),revision,taskId:task!.id,completionId:patch!.restoreTodo!.completionId,commandId:command.id,restoredAtUtc:now,isArchived:false});}
   if(command.operation==='pauseTask')task!.state='paused';
   if(command.operation==='resumeTask')task!.state='active';
@@ -77,7 +80,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
   }
   if (command.operation === "scoreHabit") for (let i = 0; i < command.count; i++) result.habitScores.push({ id: crypto.randomUUID(), revision, taskId: task!.id, commandId: command.id, recordedAtUtc: now, direction: command.direction!, isArchived: false });
  }
- const requested = !['planTask','restoreTodo'].includes(command.operation)&&(command.projectToHabitica || Boolean(mapping && mapping.state !== "unlinked"));
+ const requested = !['planTask','restoreTodo','relateTodo'].includes(command.operation)&&(command.projectToHabitica || Boolean(mapping && mapping.state !== "unlinked"));
  const effects: string[] = [];
  if (requested) {
   if (!mapping?.habiticaTaskId) effects.push("create");

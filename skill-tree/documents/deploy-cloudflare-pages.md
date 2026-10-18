@@ -317,3 +317,7 @@ restoreTodo and optional patch.restoreTodo use identity v5 while unused extensio
 ## Production user-action correction
 
 The existing Pages production slot receives the tested frontend with ordinary user settings and preserved browser-sync/party bindings. The public settings and application asset hashes are verified against the release artifact. The correction requires no Worker publication, database migration, secret change, background activation or real Habitica mutation. Sanitized evidence resides in skill-tree/history/validation/production-user-actions.json. Existing automatic Git deployment can replace a manual artifact later; the source defaults and generator retain ordinary user permissions for subsequent builds.
+
+## Todo relationship compatibility
+
+relateTodo adds optional patch.relationships and identity v6 while unused extensions preserve v1-v5. Matching application, MCP, Workspace and task-management package updates are required before use; strict older clients can reject extended journals. No D1 migration, secret or enabled executor is required. Local synthetic qualification does not publish backend tools or production relationship controls. The separately published user-action permission correction remains a frontend-only deployment.

@@ -1,0 +1,91 @@
+{
+  "cases": [
+    {
+      "name": "set parent and dependencies",
+      "command": {
+        "id": "60000000-0000-4000-8000-000000000900",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "relateTodo",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "relationships": {
+            "parentTaskId": "60000000-0000-4000-8000-000000000102",
+            "dependsOn": [
+              "60000000-0000-4000-8000-000000000105"
+            ]
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "df54bd9275a4fcb3a77a4f15092268637b4ae0d3b11fe07aa1c4f1d891a1b59c"
+    },
+    {
+      "name": "clear parent and dependencies",
+      "command": {
+        "id": "60000000-0000-4000-8000-000000000900",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "relateTodo",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "relationships": {
+            "clearParentTask": true,
+            "dependsOn": []
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "0944a8ae0b785cfe97ff21993f474be623b798b054ff45664e8b20772817d6bd"
+    },
+    {
+      "name": "replace dependencies only",
+      "command": {
+        "id": "60000000-0000-4000-8000-000000000900",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "relateTodo",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "relationships": {
+            "dependsOn": [
+              "60000000-0000-4000-8000-000000000105",
+              "60000000-0000-4000-8000-000000000107"
+            ]
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "ed7c380cc80bd6fe814a6f77f76633668dc6fc662be29e2c91b0c6fe745e078c"
+    },
+    {
+      "name": "set parent only",
+      "command": {
+        "id": "60000000-0000-4000-8000-000000000900",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "relateTodo",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "relationships": {
+            "parentTaskId": "60000000-0000-4000-8000-000000000107"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "d109045ac3e913796a5168c1d2e824e568eabe1098e04ad2f7b555b3fbac6eb6"
+    }
+  ]
+}

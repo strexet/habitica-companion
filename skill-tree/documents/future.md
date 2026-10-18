@@ -264,51 +264,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Review native Todo parent and dependency relationships
-
-```yaml
-id: T-984d414d-69d0-45f0-a6aa-7065dc5cdcea
-priority: 100
-status: Ready
-parent_pending_ids: ["P-64cd7c9d-4f1b-4772-ba45-adc0535829e9"]
-processing_run_id: PR-90507fff-91d6-4f69-8907-e68e83cdc4d0
-root_task_id: T-984d414d-69d0-45f0-a6aa-7065dc5cdcea
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Author exact native Todo parent/dependency relationships through reviewed commands without changing task state or game effects.
-Current behavior:
-- Canonical Todo parent and dependency identities are validated as an acyclic combined graph. MCP can read candidate eligibility but cannot author relationships.
-Desired behavior:
-- Review a relateTodo command with only patch.relationships: optional exact parentTaskId or clearParentTask, and an optional complete dependsOn replacement including an explicit empty list.
-Touch:
-- Domain patch/identity/validation, Application/Worker acceptance, MCP/task API, browser adapters, packaged task guidance and direct tests.
-Discovery allowance:
-- Reuse native placement review, original receipts, graph invariants and zero-effect portable validation.
-Out of scope:
-- Non-Todo relationship authoring, task state/type changes, organization CRUD, implicit project inheritance, cascade completion, production UI and live tests.
-Implementation constraints:
-- Existing target must be a nonarchived Todo. Requested parent and dependency identities must be distinct nonarchived Todos; preserve omitted historical references and reject self/missing/duplicate references.
-- Accept at most 100 replacement dependencies. Existing combined parent/dependency graph validation rejects cycles. Changing parent never moves projects, changes task state or completes children.
-- Preserve task order, metadata, mappings, history and existing unknown-outcome fences. Any projection request is rejected; linked/pending/uncertain mappings remain unchanged and enqueue zero effects.
-- Append an operation and optional relationships-only patch with identity v6 while preserving unused legacy encodings and wire defaults. Portable snapshots match exact relationships and cannot fabricate effects.
-- Concrete review binds exact target, parent and complete dependency replacement. Original preparation/acceptance and receipt identities survive retries and lost acknowledgements.
-Questions and required clarifications:
-- [Resolved - standing local contract direction] Initial authoring covers Todo relationships only, using existing graph semantics and nonarchived references without inheritance or game effects.
-Validation:
-- Independent v6/legacy identities, partial/clear/full replacement, exact kinds/references, combined cycles, archived/missing targets, metadata/order/history preservation and portable tampering cases.
-- Browser lost-ack recovery, native preview/effect guards and synthetic SDK authorization/isolation/zero-write checks. Build app/Workers and run affected suites.
-Acceptance:
-- Reviewed Todo relationships preserve canonical metadata and original receipts while updating exact acyclic relationships with zero game effects.
-- Invalid references, mixed patches, cycles, altered previews and unauthorized or foreign commands cannot bypass native acceptance guards.
-Documentation updates:
-- Describe supported parent/dependency authoring and retained organization/state/UI limits.
-Risks:
-- Creating graph cycles, silently replacing relationships, propagating project/state changes or dispatching game effects.
-
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml

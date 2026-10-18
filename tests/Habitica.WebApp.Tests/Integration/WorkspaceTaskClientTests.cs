@@ -85,6 +85,7 @@ public sealed class WorkspaceTaskClientTests
     [InlineData(WorkspaceOperation.ResumeTask, "resume_task", "resumeTask", 0)]
     [InlineData(WorkspaceOperation.PlanTask, "plan_task", "planTask", 0)]
     [InlineData(WorkspaceOperation.RestoreTodo, "restore_todo", "restoreTodo", 1)]
+    [InlineData(WorkspaceOperation.RelateTodo, "relate_todo", "relateTodo", 0)]
     public async Task LifecycleAdaptersUseExactToolIdentityAndRejectGameEffectReceipts(WorkspaceOperation operation, string tool, string name, int count)
     {
         var id = Guid.NewGuid(); var command = new WorkspaceCommand(Guid.NewGuid(), id, 1, operation, Guid.NewGuid(), OccurrenceDate: operation == WorkspaceOperation.SkipOccurrence ? new DateOnly(2026, 10, 17) : null);
@@ -141,6 +142,25 @@ public sealed class WorkspaceTaskClientTests
         }));
         var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vaultHttp,"https://auth.invalid/",false),"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
         var result=await client.PrepareCommandAsync(Guid.NewGuid(),intent,default);Assert.Equal(change=="none",result.Succeeded);if(change!="none"){Assert.True(result.OutcomeUnknown);Assert.Null(result.Value);}
+    }
+
+    [Theory]
+    [InlineData("none")] [InlineData("effect")] [InlineData("target")] [InlineData("parent")] [InlineData("dependencies")] [InlineData("mixed")]
+    public async Task RelationshipPreviewBindsExactNativeReferences(string change)
+    {
+        var id=Guid.NewGuid();var intent=new WorkspaceCommand(Guid.NewGuid(),id,10,WorkspaceOperation.RelateTodo,Guid.NewGuid(),new(Relationships:new(ParentTaskId:Guid.NewGuid(),DependsOn:[Guid.NewGuid()])));
+        var command=intent with { Id=Guid.NewGuid() };
+        if(change=="target")command=command with { TaskId=Guid.NewGuid() };
+        if(change=="parent")command=command with { Patch=new(Relationships:intent.Patch!.Relationships! with { ParentTaskId=Guid.NewGuid() }) };
+        if(change=="dependencies")command=command with { Patch=new(Relationships:intent.Patch!.Relationships! with { DependsOn=[] }) };
+        if(change=="mixed")command=command with { Patch=command.Patch! with { Text="Unexpected" } };
+        var preview=new WorkspaceCommandPreview(command.Id,Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(10),false,command,change=="effect",false);
+        using var vaultHttp=VaultHttp();using var http=new HttpClient(new Handler(async request=>
+        {
+            if(request.RequestUri!.AbsolutePath=="/connect")return Connection(id);
+            using var body=JsonDocument.Parse(await request.Content!.ReadAsStringAsync());var args=body.RootElement.GetProperty("arguments");Assert.Equal(intent.TaskId,args.GetProperty("taskId").GetGuid());Assert.Equal(intent.Patch!.Relationships!.ParentTaskId,args.GetProperty("patch").GetProperty("relationships").GetProperty("parentTaskId").GetGuid());return Json(preview);
+        }));
+        var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vaultHttp,"https://auth.invalid/",false),"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);var result=await client.PrepareCommandAsync(Guid.NewGuid(),intent,default);Assert.Equal(change=="none",result.Succeeded);if(change!="none"){Assert.True(result.OutcomeUnknown);Assert.Null(result.Value);}
     }
 
 }

@@ -1028,3 +1028,9 @@ Workspace unblockedTodos selects the current active profile/connection/access-ep
 ## Explicit agent test profile boundary
 
 OwnerIsolatedTestingEnabled defaults false in source frontend configuration, API options and browser API construction. Deployment generation selects false explicitly and retains PartySyncEnabled true. Test isolation is an opt-in execution profile, never the ordinary user permission model. An explicit test profile still fences party-management routes and manual Cron; spell casting relies on the existing class/unlock, mana, target, freshness and sequential execution logic without a separate test whitelist. Party departure remains denied by the unconditional low-level mutation guard. No backend gameplay flag, storage schema or credential changes accompany the frontend correction.
+
+## Native Todo relationship command boundary
+
+The appended RelateTodo operation accepts only optional WorkspaceTaskRelationships on patch.relationships. Domain/shared parsers enforce explicit parent clearing, bounded complete dependency replacement, exact nonarchived Todo references and self-reference refusal. Existing full graph validation covers parent/dependency cycles. Acceptance preserves task order, state, metadata and history while bypassing game effect generation regardless of mapping state.
+
+Identity v6 retains the existing base, details and recurrence encoding, explicit planning/restore presence markers and parent/clear/dependency fields. Unused relationships preserve v1-v5 hashes and default serialization. Portable validation matches the exact accepted native snapshot and rejects effects. Cloud preview comparison normalizes only the server-issued command ID. MCP/public/private authorization uses the existing task write grant and original prepared command receipt path. No D1 migration, new secret or executor activation is introduced.

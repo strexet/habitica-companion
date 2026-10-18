@@ -113,4 +113,14 @@ public sealed class WorkspaceTaskControllerTests
         Assert.Equal(original,f.Controller.LastReceipt!.CommandId);Assert.Equal(1,f.Controller.LastReceipt.AcceptedEventCount);Assert.Equal(0,f.Controller.LastReceipt.TotalProjectionCount);
         Assert.Single(f.Controller.Snapshot!.Document.Completions);Assert.Single(f.Controller.Snapshot.Document.Restorations!);Assert.Equal(CompanionTaskState.Active,f.Controller.Snapshot.Document.Tasks[0].State);Assert.Equal(3,f.Controller.Snapshot.Commands.Count);
     }
+    [Fact]
+    public async Task TodoRelationshipsRecoverTheOriginalNativeReceiptWithoutChangingParentState()
+    {
+        var f=new WorkspaceTaskFixture();await f.Controller.CreateLocalAsync();await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo("Parent"));await f.Controller.ConfirmAsync();var parent=Assert.Single(f.Controller.Snapshot!.Document.Tasks);
+        await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo("Child"));await f.Controller.ConfirmAsync();var child=f.Controller.Snapshot!.Document.Tasks.Single(task=>task.Text=="Child");
+        await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo() with { Operation=WorkspaceOperation.RelateTodo,TaskId=child.Id,Relationships=new(ParentTaskId:parent.Id,DependsOn:[]) });
+        var original=f.Controller.Preview!.Command.Id;Assert.False(f.Controller.Preview.MayAffectHabitica);Assert.Equal(parent.Id,f.Controller.Preview.Command.Patch!.Relationships!.ParentTaskId);
+        f.Js.LoseCommitAcknowledgement=true;await f.Controller.ConfirmAsync();Assert.True(f.Controller.AcceptanceUnknown);await f.Controller.CheckOriginalAsync();
+        Assert.Equal(original,f.Controller.LastReceipt!.CommandId);Assert.Equal(0,f.Controller.LastReceipt.AcceptedEventCount);Assert.Equal(0,f.Controller.LastReceipt.TotalProjectionCount);Assert.Equal(parent.Id,f.Controller.Snapshot!.Document.Tasks.Single(task=>task.Id==child.Id).ParentTaskId);Assert.Equal(parent,f.Controller.Snapshot.Document.Tasks.Single(task=>task.Id==parent.Id));Assert.Equal(3,f.Controller.Snapshot.Commands.Count);
+    }
 }

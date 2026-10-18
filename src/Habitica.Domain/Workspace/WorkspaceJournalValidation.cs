@@ -23,6 +23,7 @@ public static class WorkspaceJournalValidation
                 || entry.Command.Patch is { ClearRecurrence: true, Recurrence: not null }
                 || entry.Command.Patch?.Planning is { } planning && (!planning.IsValid() || entry.Command.Operation != WorkspaceOperation.PlanTask)
                 || entry.Command.Patch?.RestoreTodo is { } restore && (restore.CompletionId == Guid.Empty || entry.Command.Operation != WorkspaceOperation.RestoreTodo)
+                || entry.Command.Patch?.Relationships is { } relationships && (!relationships.IsValid() || entry.Command.Operation != WorkspaceOperation.RelateTodo)
                 || restorations.ContainsKey(entry.Command.Id) && entry.Command.Operation != WorkspaceOperation.RestoreTodo
                 || entry.PayloadHash != WorkspaceCommandIdentity.Hash(entry.Command) || entry.AcceptedAtUtc == default || entry.AcceptedAtUtc.Offset != TimeSpan.Zero
                 || !Enum.IsDefined(entry.ProjectionState) || !Enum.IsDefined(entry.Failure) || entry.Effects is null || entry.Effects.Count > 11
@@ -42,6 +43,11 @@ public static class WorkspaceJournalValidation
                     || entry.Command.Direction is not null || entry.Command.Count != 1 || entry.Command.OccurrenceDate is not null
                     || entry.Command.Patch is not { Planning: { } plan } planningPatch || (planningPatch with { Planning = null }) != new WorkspaceTaskPatch()
                     || !plan.Matches(entry.TaskSnapshot))) return false;
+            if (entry.Command.Operation == WorkspaceOperation.RelateTodo
+                && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
+                    || entry.Command.Direction is not null || entry.Command.Count != 1 || entry.Command.OccurrenceDate is not null
+                    || entry.Command.Patch is not { Relationships: { } relation } relationPatch || (relationPatch with { Relationships = null }) != new WorkspaceTaskPatch()
+                    || !relation.Matches(entry.TaskSnapshot))) return false;
             if (entry.Command.Operation == WorkspaceOperation.RestoreTodo
                 && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
                     || entry.Command.Direction is not null || entry.Command.Count != 1 || entry.Command.OccurrenceDate is not null

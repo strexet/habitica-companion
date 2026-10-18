@@ -1,0 +1,50 @@
+{
+  "task_id": "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
+  "date": "2026-10-18",
+  "scope": "Local reviewed Todo relationship authoring; no production backend update or gameplay tests",
+  "checks": [
+    {
+      "name": "Release app and three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 707,
+      "failed": 0,
+      "suites": {
+        "domain": 29,
+        "rules": 43,
+        "storage": 21,
+        "application": 150,
+        "api": 87,
+        "webapp": 377
+      }
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace",
+      "passed": 253,
+      "failed": 0
+    },
+    {
+      "name": "Skill package, changed prose, strict future, repository consistency and whitespace",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Four independent v6 hash fixtures agree across runtimes; legacy v1-v5 fixtures and absent extension serialization remain unchanged.",
+    "Exact Todo references, self/missing/archived references, full replacement bounds, mixed patches and combined parent/dependency cycles cannot bypass validation.",
+    "Partial edits, explicit clearing and complete dependency replacement preserve task order/state/project/metadata/history and all game mappings with zero effects.",
+    "Completed/cancelled Todo state remains unchanged. Omitted historical references persist; a parent may also be an explicit dependency without implicit project or completion inheritance.",
+    "Original command/request identity survives duplicate acceptance and lost acknowledgement while rejecting changed intent reuse.",
+    "Portable validation rejects altered relationship snapshots and fabricated effects; browser/cloud adapters bind exact native preview fields and recover original receipts.",
+    "Synthetic MCP SDK discovers the write schema and executes on an existing linked Todo, retaining exported mappings/history and enforcing public/private grants and profile isolation with zero upstream writes."
+  ],
+  "limitations": [
+    "Organization CRUD, advanced state/non-Todo authoring, production controls and actual host/model qualification remain separate."
+  ]
+}
