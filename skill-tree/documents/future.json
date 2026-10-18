@@ -76,7 +76,8 @@
       "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
       "T-74bb4500-60a6-4917-b654-13e6b5506afd",
       "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
-      "T-3f472554-56a4-4edf-a163-1b96dc822a06"
+      "T-3f472554-56a4-4edf-a163-1b96dc822a06",
+      "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -148,6 +149,7 @@
       "T-c754c836-f4b7-413c-9733-35f18a0db6a6": "O-1f71b9d7-7b0f-4c7f-b63e-81b5b0b683e0",
       "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00": "O-442f25f5-8685-4fd0-83ce-fd77446a7c77",
       "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17": "O-a050001b-edd5-41b3-ba4e-3a9005c3c5e4",
+      "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb": "O-17aadbf8-9bc4-49ac-993d-8154a2d88fc6",
       "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2": "O-4ccf3fa4-fb60-41c8-b7cb-8c503a3f3f13",
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b",
       "T-e3653fbd-2101-4b58-8219-3aa076b56fe6": "O-e3c8c194-719a-4bc0-9096-671b5ef256eb",
@@ -157,7 +159,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "536022343aacc2747c9c6b366f2d011dbe895580b0c68f9ad7fe8c9f0d505c15",
+    "cycle_signature": "f6ea19ed0da06d384cd73380eeaff7f5b2e51061e734b04590f60c227ec1c622",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -167,10 +169,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Research the remaining original E12 Pending area and select eligible local foundations within standing expanded scope.",
+    "next_action": "Research saved task-view persistence under the existing local Pending scope.",
     "partial_work": [
-      "Completed optional active Todo stage milestone with local qualification.",
-      "Live release and production UX gates remain open; original authorized E12 local research remains eligible."
+      "Completed active-stage canonical read milestone.",
+      "Original authorized E12 saved-view and review persistence remains eligible; no live qualification."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -231,7 +233,8 @@
       "P-cc70b363-4669-44a4-be9b-1d6cb918d36b",
       "P-e8c5af20-15ee-4020-82ea-3560a3a183e7",
       "P-14835d09-6c68-4472-a5fb-622c5500f9b4",
-      "P-600be12e-fd34-44d8-b992-dca13600ab13"
+      "P-600be12e-fd34-44d8-b992-dca13600ab13",
+      "P-d269235a-351a-4341-b622-22d0b5038153"
     ],
     "phase": "process",
     "processing_results": [
@@ -1311,6 +1314,25 @@
         "task_keys": {
           "todo-stage": "T-3f472554-56a4-4edf-a163-1b96dc822a06"
         }
+      },
+      {
+        "created_ids": [
+          "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb"
+        ],
+        "dispositions": {
+          "P-84af82c3-f65b-4981-8f40-e3faaf651314": {
+            "reason": "Current stage metadata requires an explicit query predicate before saved smart-list definitions; researched local read filtering is independent of production UI and live qualification.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-c8399388-01ee-4915-abe3-6fe8810f1e30",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-84af82c3-f65b-4981-8f40-e3faaf651314"
+        ],
+        "task_keys": {
+          "stage-filter": "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb"
+        }
       }
     ],
     "required_ids": [
@@ -1391,9 +1413,10 @@
       "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
       "T-74bb4500-60a6-4917-b654-13e6b5506afd",
       "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
-      "T-3f472554-56a4-4edf-a163-1b96dc822a06"
+      "T-3f472554-56a4-4edf-a163-1b96dc822a06",
+      "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb"
     ],
-    "root_task_id": "T-3f472554-56a4-4edf-a163-1b96dc822a06",
+    "root_task_id": "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1608,6 +1631,16 @@
         ],
         "reason": "Finish local E13 optional execution-stage foundations while production UI and live release qualification remain separate.",
         "researched_remainder": "P-600be12e-fd34-44d8-b992-dca13600ab13"
+      },
+      {
+        "original_pending_id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
+        "owner_direction": "Continue original authorized local Pending work under Implement All; publication permitted when needed; no live tests.",
+        "promoted_local_roots": [
+          "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb"
+        ],
+        "reason": "Implement stage-aware reads required by named smart lists; retain saved-view/review/reminder persistence and E01 UI gates.",
+        "researched_remainder": "P-84af82c3-f65b-4981-8f40-e3faaf651314",
+        "retained_remainder": "P-d269235a-351a-4341-b622-22d0b5038153"
       }
     ],
     "snapshot": [
@@ -1645,17 +1678,18 @@
       "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
       "T-74bb4500-60a6-4917-b654-13e6b5506afd",
       "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
-      "T-3f472554-56a4-4edf-a163-1b96dc822a06"
+      "T-3f472554-56a4-4edf-a163-1b96dc822a06",
+      "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "58527e2f89aab4e11c53dd34d82ae0d83cc5d973abbc0d51d5628ed24b0ebda7",
+  "source_hash": "a02e35bdaf3b0892bca560718de24fc9bd20036bef58d9af2fde0207d64d2a25",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-84af82c3-f65b-4981-8f40-e3faaf651314",
+      "id": "P-d269235a-351a-4341-b622-22d0b5038153",
       "line": 75,
       "parent_pending_ids": [],
       "priority": 100,
@@ -1665,7 +1699,7 @@
       "relation": "main",
       "root_task_id": null,
       "status": "Pending",
-      "title": "E12 Saved views, review policies and mobile task hygiene controls"
+      "title": "E12 Persist saved views and optional review/reminder policies"
     },
     {
       "depends_on": [],

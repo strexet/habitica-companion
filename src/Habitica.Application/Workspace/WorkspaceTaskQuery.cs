@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using Habitica.Domain.Workspace;
 
 namespace Habitica.Application.Workspace;
@@ -7,7 +8,8 @@ public sealed record WorkspaceTaskFilter(string? Query = null, CompanionTaskKind
     CompanionTaskState? State = null, CompanionPriority? Priority = null, Guid? ProjectId = null,
     Guid? CategoryId = null, Guid? LabelId = null, DateOnly? PlannedFrom = null, DateOnly? PlannedTo = null,
     DateOnly? DeadlineFrom = null, DateOnly? DeadlineTo = null, ProjectionState? ProjectionState = null,
-    int Limit = 50, int Offset = 0, long? ExpectedRevision = null);
+    int Limit = 50, int Offset = 0, long? ExpectedRevision = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] TodoExecutionStage? ExecutionStage = null);
 
 public sealed record WorkspaceTaskPage(Guid WorkspaceId, long Revision, IReadOnlyList<CompanionTask> Tasks,
     int MatchedCount, bool Truncated, int Offset, int? NextOffset);
@@ -21,6 +23,9 @@ public static class WorkspaceTaskQuery
         if (filter.Query?.Length > 256 || filter.Kind is { } kind && !Enum.IsDefined(kind)
             || filter.State is { } state && !Enum.IsDefined(state) || filter.Priority is { } priority && !Enum.IsDefined(priority)
             || filter.ProjectionState is { } projection && !Enum.IsDefined(projection)
+            || filter.ExecutionStage is { } stage && (!Enum.IsDefined(stage)
+                || filter.Kind is { } stageKind && stageKind != CompanionTaskKind.Todo
+                || filter.State is { } stageState && stageState != CompanionTaskState.Active)
             || filter.ProjectId == Guid.Empty || filter.CategoryId == Guid.Empty || filter.LabelId == Guid.Empty
             || filter.Limit is < 1 or > 100 || filter.Offset is < 0 or > 100000
             || filter.ExpectedRevision is < 1 or > WorkspaceDocument.MaxRevision
@@ -36,6 +41,8 @@ public static class WorkspaceTaskQuery
         foreach (var task in document.Tasks)
         {
             if (task.IsArchived || eligible is not null && !eligible(task) || filter.Kind is { } k && task.Kind != k || filter.State is { } s && task.State != s
+                || filter.ExecutionStage is { } executionStage && (task.Kind != CompanionTaskKind.Todo || task.State != CompanionTaskState.Active
+                    || (task.ExecutionStage ?? TodoExecutionStage.Inbox) != executionStage)
                 || filter.Priority is { } p && task.Priority != p || filter.ProjectId is { } project && task.ProjectId != project
                 || filter.LabelId is { } label && !(task.LabelIds?.Contains(label) ?? false)
                 || !Within(task.PlannedDate, filter.PlannedFrom, filter.PlannedTo) || !Within(task.Deadline, filter.DeadlineFrom, filter.DeadlineTo)) continue;

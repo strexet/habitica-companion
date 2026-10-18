@@ -72,10 +72,10 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### E12 Saved views, review policies and mobile task hygiene controls
+### E12 Persist saved views and optional review/reminder policies
 
 ```yaml
-id: P-84af82c3-f65b-4981-8f40-e3faaf651314
+id: P-d269235a-351a-4341-b622-22d0b5038153
 priority: 100
 status: Pending
 parent_pending_ids: []
@@ -87,16 +87,16 @@ depends_on: []
 ```
 
 Description:
-- Persist saved smart lists, define stale/unreviewed thresholds and configurable reminders, and integrate dependency-aware candidates with mobile review and next-action policies.
+- Persist named task queries and optional review/reminder policies, then integrate saved lists and dependency-aware candidates with mobile hygiene controls.
 
 Expected behavior:
-- Review flows reveal stalled work with gentle optional policies and preserve explicit uncertainty, avoiding mandatory status rituals or punitive wording.
+- Saved views remain portable and explicitly scoped; optional review identifies stalled work without mandatory rituals or inferred game penalties.
 
 Current context:
-- Combined canonical filters and unblocked active Todo reads are implemented; saved views, review/reminder persistence and mobile integration remain unimplemented. Production UI retains the E01 hands-on gate.
+- Combined canonical filters, dependency-aware candidates and optional active Todo stages are implemented. Stage-aware task and dependency-candidate filtering is implemented with local synthetic qualification. Saved-view and review/reminder storage and authoring remain absent; production UI retains the E01 hands-on gate.
 
 Source:
-- Remaining original E12 intent P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d through P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa.
+- Remaining original E12 intent P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d through P-84af82c3-f65b-4981-8f40-e3faaf651314.
 
 ### E11 Mobile recurrence/history controls and streak policies
 

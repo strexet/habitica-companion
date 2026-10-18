@@ -1,4 +1,5 @@
 import type { CompanionTask, WorkspaceDocument } from './workspace-domain.ts';
+import type { TodoExecutionStage } from './todo-stage.ts';
 import { WorkspaceError, workspaceObject, uuid } from './workspace-http.ts';
 
 export interface TaskFilter {
@@ -6,8 +7,9 @@ export interface TaskFilter {
  projectId?:string; categoryId?:string; labelId?:string; plannedFrom?:string; plannedTo?:string;
  deadlineFrom?:string; deadlineTo?:string; projectionState?:'unlinked'|'pending'|'linked'|'externalConflict'|'unknownOutcome';
  limit?:number; offset?:number; expectedRevision?:number;
+ executionStage?:TodoExecutionStage;
 }
-export const taskFilterKeys=['query','kind','state','priority','projectId','categoryId','labelId','plannedFrom','plannedTo','deadlineFrom','deadlineTo','projectionState','limit','offset','expectedRevision'];
+export const taskFilterKeys=['query','kind','state','priority','projectId','categoryId','labelId','plannedFrom','plannedTo','deadlineFrom','deadlineTo','projectionState','limit','offset','expectedRevision','executionStage'];
 const invalid=():never=>{throw new WorkspaceError('invalid_filter',422);};
 export function taskFilter(input:unknown):TaskFilter {
  const value={...workspaceObject(input,taskFilterKeys)};
@@ -20,6 +22,7 @@ export function taskFilter(input:unknown):TaskFilter {
   if(value[key]!==undefined&&(!Number.isSafeInteger(value[key])||Number(value[key])<min||Number(value[key])>max))invalid();
  if(Number(value.offset??0)>0&&value.expectedRevision===undefined)invalid();
  for(const [from,to] of [['plannedFrom','plannedTo'],['deadlineFrom','deadlineTo']])if(value[from]!==undefined&&value[to]!==undefined&&String(value[from])>String(value[to]))invalid();
+ if(value.executionStage!==undefined&&(typeof value.executionStage!=='string'||!['inbox','next','inProgress'].includes(value.executionStage)||value.kind!==undefined&&value.kind!=='todo'||value.state!==undefined&&value.state!=='active'))invalid();
  return value as TaskFilter;
 }
 const fold=(value:string)=>value.normalize('NFKC').replaceAll('\u0130','i\u0307').toLowerCase().replaceAll('\u03c2','\u03c3');
@@ -34,6 +37,7 @@ export function queryTasks(document:WorkspaceDocument,input:unknown,eligible?:(t
  const tasks:CompanionTask[]=[];let matchedCount=0;
  for(const task of document.tasks){
   if(task.isArchived||eligible!==undefined&&!eligible(task)||filter.kind!==undefined&&task.kind!==filter.kind||filter.state!==undefined&&task.state!==filter.state
+   ||filter.executionStage!==undefined&&(task.kind!=='todo'||task.state!=='active'||(task.executionStage??'inbox')!==filter.executionStage)
    ||filter.priority!==undefined&&task.priority!==filter.priority||filter.projectId!==undefined&&task.projectId!==filter.projectId
    ||filter.labelId!==undefined&&!task.labelIds.includes(filter.labelId)
    ||!within(task.plannedDate,filter.plannedFrom,filter.plannedTo)||!within(task.deadline,filter.deadlineFrom,filter.deadlineTo))continue;

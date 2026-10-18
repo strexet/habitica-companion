@@ -1,0 +1,46 @@
+{
+  "task_id": "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb",
+  "date": "2026-10-18",
+  "scope": "Local canonical read predicates; no live tests or deployment",
+  "checks": [
+    {
+      "name": "Release application and all three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 756,
+      "failed": 0
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace",
+      "passed": 348,
+      "failed": 0
+    },
+    {
+      "name": "Shared neutral cases",
+      "cases": 13,
+      "result": "pass"
+    },
+    {
+      "name": "Packaged skill, changed prose, strict future, repository consistency and whitespace",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Task and candidate reads match only active nonarchived Todos for optional executionStage inbox/next/inProgress. Missing preference matches Inbox; dormant stage preferences never match. Omitted stage preserves existing all-state/kind behavior.",
+    "Other predicates combine with AND and retain original rows, canonical ordering, totals and revision-bound pages. Next and InProgress never satisfy incomplete explicit dependencies.",
+    "Unknown stages, incompatible explicit kind/state and stale pages fail. Candidate routes continue refusing caller kind/state overrides.",
+    "Synthetic SDK and browser reads exercise all shared cases and preserve canonical documents, commands and preparations. Public/private grants and other-profile isolation hold with zero upstream writes.",
+    "Updated canonical contracts and packaged project guidance distinguish active predicates from dormant metadata and future saved-view persistence."
+  ],
+  "limitations": [
+    "Named query persistence, review/reminder policies and production UI remain separate.",
+    "No real host, device, account or gameplay qualification and no deployment."
+  ]
+}
