@@ -264,50 +264,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Restore production user actions and opt-in test isolation
-
-```yaml
-id: T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0
-priority: 110
-status: Ready
-parent_pending_ids: ["P-e8c5af20-15ee-4020-82ea-3560a3a183e7"]
-processing_run_id: PR-3c3d0af7-9693-4330-884f-a9c9b931b23a
-root_task_id: T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Restore ordinary production user actions without inheriting the agent test profile.
-Current behavior:
-- Default/source and production override settings activate owner isolation, disable shared sync and block party/task spells in three layers.
-Desired behavior:
-- Production and normal client defaults disable test isolation and restore existing party sync. Supported class spells remain available under normal mana/unlock/target/freshness checks even in an explicit agent test profile.
-Touch:
-- API options/test spell guard, application controller, spell UI, frontend settings/deployment generator, direct tests, current docs and existing Pages production artifact.
-Discovery allowance:
-- Inspect current production public configuration, existing Pages resources, local CLI help and official publication documentation.
-Out of scope:
-- Party departure, new cloud gameplay tool activation, background executor/Cron activation, real gameplay test rounds, user credential changes or a new website.
-Implementation constraints:
-- Preserve permanent party-departure denial. Keep party-management and Start New Day restrictions only in explicit agent test profiles; normal users retain existing actions.
-- Remove the spell whitelist test restriction rather than weakening normal game eligibility, rate limits, sequential execution or confirmations.
-- Publish the tested frontend to the existing habitica-companion.pages.dev production slot with retained bindings. No new backend flags, schema changes or service deployment is required.
-- Verify public hosted settings/assets after publication without real Habitica mutations or authenticated account tests.
-Questions and required clarifications:
-- [Resolved - owner request] Production correction and public verification are authorized. The owner permits all supported spells in agent tests; a new live gameplay round remains unselected.
-Validation:
-- API/controller/component regressions for self, party and task-target spells; explicit test profile still blocks party management/Cron and every profile blocks party departure.
-- Full relevant app suites, frontend settings/generator checks and release artifact build. Verify production deployment identity, public configuration and asset hashes.
-Acceptance:
-- Production users retain normal existing spell and action controls while agent-test isolation is opt-in and permits supported spells.
-- The tested correction is published to the existing production website with permanent party-departure protection and no real gameplay effects.
-Documentation updates:
-- Describe user versus agent test scope and record sanitized publication evidence.
-Risks:
-- Reusing stale production overrides, deploying to a preview branch or accidentally changing backend/gameplay activation.
-
 ### Review native Todo parent and dependency relationships
 
 ```yaml

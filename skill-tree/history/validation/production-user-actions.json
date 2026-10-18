@@ -1,0 +1,176 @@
+{
+  "task_id": "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
+  "date": "2026-10-18",
+  "source_commit": "a36b8ff485568f5c488880ec71a172395d122a83",
+  "deployment_id": "ab58a24f-a440-49a4-a1fa-86c609b623b6",
+  "previous_deployment_id": "acf4000e-48f2-4380-b770-ab8239751cd3",
+  "environment": "production",
+  "pages_project": "habitica-companion",
+  "branch": "main",
+  "scope": "Pages frontend only; no backend flags, schema or secrets changed",
+  "operator_preflight": {
+    "expected_account_verified": true,
+    "pages_write_scope_verified": true,
+    "retained_bindings_verified": true,
+    "staged_functions_match_repository": true
+  },
+  "checks": [
+    {
+      "name": "Release production frontend artifact",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 687,
+      "failed": 0,
+      "suites": {
+        "domain": 29,
+        "storage": 21,
+        "rules": 43,
+        "application": 138,
+        "api": 87,
+        "webapp": 369
+      }
+    },
+    {
+      "name": "Frontend configuration/generator",
+      "passed": 8,
+      "failed": 0
+    },
+    {
+      "name": "Changed prose, future/repository consistency and whitespace",
+      "result": "pass"
+    }
+  ],
+  "public_verification": [
+    {
+      "origin": "https://ab58a24f.habitica-companion.pages.dev",
+      "normal_user_settings": {
+        "OwnerIsolatedTestingEnabled": false,
+        "PartySyncEnabled": true
+      },
+      "assets": [
+        {
+          "path": "appsettings.json",
+          "sha256": "2585e9cfdb64df8d5a7678538545ad8cfb19aefedea433314ce587b56dfc6c9b",
+          "matches_release_artifact": true
+        },
+        {
+          "path": "_framework/blazor.boot.json",
+          "sha256": "02d63ca786f47c28280398744f5346bd1ea6ab45667de7f5a835e8475e3d24c8",
+          "matches_release_artifact": true
+        },
+        {
+          "path": "_framework/Habitica.WebApp.wasm",
+          "sha256": "45eeb5c4994fca5d765f8abef1570a4bbbd1e2fe2ce437282983b9e34489b505",
+          "matches_release_artifact": true
+        },
+        {
+          "path": "_framework/Habitica.Api.wasm",
+          "sha256": "58b0f984d06f7329c38369a261d80900ef3f105ae8eb7c9280cd9f0cc7112092",
+          "matches_release_artifact": true
+        },
+        {
+          "path": "_framework/Habitica.Domain.wasm",
+          "sha256": "726fd48bc929a1c05563ef6988a49ce7facc1dc19a02fd51baff639706a08315",
+          "matches_release_artifact": true
+        },
+        {
+          "path": "service-worker-assets.js",
+          "sha256": "f63892f6e06c9912f27d2972ff5bb7f9a0640dcce61fbe731a6aa8db7b92347e",
+          "matches_release_artifact": true
+        }
+      ],
+      "routes": [
+        {
+          "path": "/spells",
+          "status": 200,
+          "qualification": "Public shell only; no authenticated account behavior"
+        },
+        {
+          "path": "/party",
+          "status": 200,
+          "qualification": "Public shell only; no authenticated account behavior"
+        },
+        {
+          "path": "/dashboard",
+          "status": 200,
+          "qualification": "Public shell only; no authenticated account behavior"
+        }
+      ]
+    },
+    {
+      "origin": "https://habitica-companion.pages.dev",
+      "normal_user_settings": {
+        "OwnerIsolatedTestingEnabled": false,
+        "PartySyncEnabled": true
+      },
+      "assets": [
+        {
+          "path": "appsettings.json",
+          "sha256": "2585e9cfdb64df8d5a7678538545ad8cfb19aefedea433314ce587b56dfc6c9b",
+          "matches_release_artifact": true
+        },
+        {
+          "path": "_framework/blazor.boot.json",
+          "sha256": "02d63ca786f47c28280398744f5346bd1ea6ab45667de7f5a835e8475e3d24c8",
+          "matches_release_artifact": true
+        },
+        {
+          "path": "_framework/Habitica.WebApp.wasm",
+          "sha256": "45eeb5c4994fca5d765f8abef1570a4bbbd1e2fe2ce437282983b9e34489b505",
+          "matches_release_artifact": true
+        },
+        {
+          "path": "_framework/Habitica.Api.wasm",
+          "sha256": "58b0f984d06f7329c38369a261d80900ef3f105ae8eb7c9280cd9f0cc7112092",
+          "matches_release_artifact": true
+        },
+        {
+          "path": "_framework/Habitica.Domain.wasm",
+          "sha256": "726fd48bc929a1c05563ef6988a49ce7facc1dc19a02fd51baff639706a08315",
+          "matches_release_artifact": true
+        },
+        {
+          "path": "service-worker-assets.js",
+          "sha256": "f63892f6e06c9912f27d2972ff5bb7f9a0640dcce61fbe731a6aa8db7b92347e",
+          "matches_release_artifact": true
+        }
+      ],
+      "routes": [
+        {
+          "path": "/spells",
+          "status": 200,
+          "qualification": "Public shell only; no authenticated account behavior"
+        },
+        {
+          "path": "/party",
+          "status": 200,
+          "qualification": "Public shell only; no authenticated account behavior"
+        },
+        {
+          "path": "/dashboard",
+          "status": 200,
+          "qualification": "Public shell only; no authenticated account behavior"
+        }
+      ]
+    }
+  ],
+  "behavior_evidence": [
+    "All sixteen supported spells reach synthetic API transport under normal and explicit test profiles.",
+    "Every class retains unlocked spell controls in both profiles; targeted and party controller paths preserve normal checks and sequential execution.",
+    "Explicit agent profiles retain party-management/Cron guards and every profile retains permanent party-departure denial.",
+    "Ordinary source/client/generator defaults and production overrides select normal user settings."
+  ],
+  "live_gameplay_tests_run": false,
+  "habitica_requests": 0,
+  "limitations": [
+    "Public shells and hashes verify publication; account gameplay and real host/multi-user qualification remain separate."
+  ],
+  "cloudflare_production_metadata": {
+    "environment": "Production",
+    "branch": "main",
+    "source": "a36b8ff",
+    "deployment_url": "https://ab58a24f.habitica-companion.pages.dev"
+  }
+}

@@ -69,7 +69,8 @@
       "T-188797a8-cbea-411c-82a5-74257508314b",
       "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
       "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95",
-      "T-e3653fbd-2101-4b58-8219-3aa076b56fe6"
+      "T-e3653fbd-2101-4b58-8219-3aa076b56fe6",
+      "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -110,6 +111,7 @@
       "T-5b449c17-2968-4a89-9596-bdb037853e75": "O-33459721-4755-4af3-ae08-c103d0b0cd4e",
       "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4": "O-c907310b-d594-4093-a241-5bff64729b14",
       "T-65810da7-9524-45ce-b280-668d04c86441": "O-33a5eda4-5cb2-4c4a-8f16-12553960765a",
+      "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0": "O-5fdb5b52-4bd8-4aa4-ba29-78d7b23a81d6",
       "T-70901e97-738c-42c2-ae50-68dd71417a32": "O-ca50d6a3-b6a2-481b-98d8-349564657bd0",
       "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e": "O-ac3595ee-b36e-4620-acf2-1358e28fec07",
       "T-773bb444-a0e6-45b9-bdcb-18561bb6182f": "O-9d7ad5bd-d5ee-469e-93b0-79c129d87495",
@@ -142,8 +144,8 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
-    "cycle_signature": "b81044896307259542f6d997fc2fa7ff08001c1855427bb09f944fb809b7151d",
+    "current_task_id": "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
+    "cycle_signature": "eb4dc68f7c8096e5c214ac0f7bd2ba4dd00eb36dc659c1963af62580ed259bd1",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -153,9 +155,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Publish the reviewed source artifact to existing Pages main production slot, then verify public configuration and asset hashes without gameplay.",
+    "next_action": "implement",
     "partial_work": [
-      "Normal user defaults and production overrides verified; all 687 .NET tests and eight configuration/generator checks passed. The production release artifact builds successfully with normal-user settings and unchanged staged Functions/bindings. Existing public site still reports test isolation true and party sync false. Source correction is ready for publication."
+      "Production user-action correction completed and published as deployment ab58a24f-a440-49a4-a1fa-86c609b623b6. All 687 .NET and eight configuration tests passed; public assets/settings verified with zero gameplay requests.",
+      "Resume the previously promoted local Todo parent/dependency authoring unit. Real gameplay tests and backend activation remain unselected."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -1310,7 +1313,7 @@
       "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
       "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0"
     ],
-    "root_task_id": "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
+    "root_task_id": "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1531,7 +1534,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "be26c622c7574fba1ab000283db7123e43a3fc8f02ada26b6e8e236c2e6ba7dd",
+  "source_hash": "49c5a91e608838f7baa16302d2919a729c8588b0231cb85881e45c545bf74a82",
   "tasks": [
     {
       "depends_on": [],
@@ -1633,24 +1636,8 @@
     },
     {
       "depends_on": [],
-      "id": "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
-      "line": 267,
-      "parent_pending_ids": [
-        "P-e8c5af20-15ee-4020-82ea-3560a3a183e7"
-      ],
-      "priority": 110,
-      "processing_run_id": "PR-3c3d0af7-9693-4330-884f-a9c9b931b23a",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
-      "status": "Ready",
-      "title": "Restore production user actions and opt-in test isolation"
-    },
-    {
-      "depends_on": [],
       "id": "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
-      "line": 311,
+      "line": 267,
       "parent_pending_ids": [
         "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9"
       ],
@@ -1678,7 +1665,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 356,
+      "line": 312,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1702,7 +1689,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 397,
+      "line": 353,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1718,7 +1705,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 552,
+      "line": 508,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1732,7 +1719,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 589,
+      "line": 545,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1746,7 +1733,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 626,
+      "line": 582,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1760,7 +1747,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 759,
+      "line": 715,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1774,7 +1761,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 797,
+      "line": 753,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1788,7 +1775,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 831,
+      "line": 787,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1802,7 +1789,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 866,
+      "line": 822,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1816,7 +1803,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 900,
+      "line": 856,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1830,7 +1817,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 938,
+      "line": 894,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1844,7 +1831,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 965,
+      "line": 921,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1858,7 +1845,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 987,
+      "line": 943,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1872,7 +1859,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1014,
+      "line": 970,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
