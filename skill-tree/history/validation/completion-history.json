@@ -1,0 +1,70 @@
+{
+  "task_id": "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2",
+  "date": "2026-10-18",
+  "scope": "Local Application and synthetic Worker/MCP completion reads; no live tests/deployment",
+  "checks": [
+    {
+      "name": "App release build and three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET solution",
+      "passed": 617,
+      "failed": 0,
+      "suites": {
+        "api": 54,
+        "application": 118,
+        "domain": 28,
+        "rules": 43,
+        "storage": 21,
+        "webapp": 353
+      }
+    },
+    {
+      "name": "Full Auth suite",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace suite",
+      "passed": 197,
+      "failed": 0
+    },
+    {
+      "name": "Changed prose, whitespace and document validation",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Sixteen neutral cases agree across Application, TypeScript and actual Workspace/MCP history, preserving original IDs, archive flags and separate completion/occurrence dates.",
+    "Matching command snapshots supply stored text/notes. Missing snapshots explicitly select current-task details, including historical null notes without borrowing current notes.",
+    "Normalized detail search, inclusive seven-digit UTC fraction bounds, timestamp/revision/stable ordering and guarded pages match both runtimes.",
+    "A forty-one-record query retains all canonical records rather than inheriting the legacy recent-completed limit.",
+    "The active epoch-guarded document/snapshot batch returns current revisions; stale pages, changed/deleted epochs, malformed sources and mismatched snapshots fail without partial or optimistic empty data.",
+    "MCP discovery advertises tasks:read and read-only behavior. Missing grants fail at both boundaries, another profile sees no history and reads preserve command/store state after authorization epoch establishment.",
+    "Zero upstream writes occur; no completion, restore, projection or reward is changed."
+  ],
+  "limitations": [
+    "Restore commands, repeated Todo completion-cycle modeling, Habit activity history and production history UI remain Pending.",
+    "Current-task fallback describes current details rather than proven original text; exact task IDs support renamed-task lookup.",
+    "Real host/model behavior, mobile accessibility and live qualification remain unrun."
+  ],
+  "source_fingerprints": {
+    "plugin/README.md": "ca8bd15cf12dbe5086f864e77272f11d62bada332edec1a1cfdd1ebe92801df4",
+    "skill-tree/documents/companion-workspace-contract.md": "900570320350981ffc79263dbbfefa70a0b018c876b5fd14ac59907a9064d034",
+    "skill-tree/documents/features.md": "0e0c9e08058e64bc4b746375e58b5dae5a0aeb7211ff30a9e9bb5bed32509238",
+    "skill-tree/documents/technical.md": "937c1f6080a9a17b6b7010b6508adecddb0e9deea2c4329638bd76e45bb98135",
+    "skill-tree/documents/testing.md": "de146ce8b024093c2c6c43831b9d31aef99394fcc0a4a44f703a81eb3188cd00",
+    "src/Habitica.Application/Workspace/WorkspaceTaskQuery.cs": "1d3af6c1127b97fe4dd9475e7e9b96b5b038cdd8cd4883c7f3c789680513cd7f",
+    "workers/chatgpt-mcp/src/task-tools.ts": "238119d5ffac86d2b3bf22545501113ba5c2cf53bd4623961d0bc69ffc79b33e",
+    "workers/companion-workspace/src/task-api.ts": "332a542ec879346ca68df86f7c59da3faa470be05a11b139cdf2a6c8e885c0d4",
+    "workers/shared/task-query.ts": "2d9a51cd0c2bdeb8f03a44fbc6b35a40484d249f56665940278ce1b0451f6f0f",
+    "workers/shared/task-tools.ts": "e274f08a026721d1590fe6f1ba5765d2fc1b25145c9ea909d6ba6d0e7cfadf25",
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "3f356e1274bd8ef0bc9e7c58545cb9e032f173d66116bda42811f4f3f6634fb0",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceCompletionHistoryTests.cs": "befc16eb994c442b60cc333110e9d7e7dee053aa71c6fa2a1a613f7e6e97351f",
+    "tests/fixtures/workspace/completion-history-v1.json": "86904159780ade4aeedd5dd5e5c5ead8ef2975736195b0f39f435d3d86f690cd",
+    "workers/companion-workspace/src/completion-history.ts": "0b9e3ecc35d1c57359f97d9ee0964dfb1faae1d79ef45e81f2ef9cf5f0e0db15",
+    "workers/companion-workspace/test/completion-history.test.mjs": "f110f8e6454d614b59fb90b6275ceafce89abc014b43290723205f2736d536f2",
+    "workers/shared/completion-history.ts": "31bdd80fc67dff3f3128250742dcace9ae462b5b7b3e8e0d370279f666ef1d7d"
+  }
+}

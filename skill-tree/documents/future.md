@@ -72,6 +72,32 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### E09 Mobile planning/history views and history-safe Todo restore
+
+```yaml
+id: P-f0c7dfe0-a459-4636-af5c-567281e19367
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Implement Today, Inbox, Upcoming, Week/Month, overdue/Anytime and completed-history UI plus a reviewed Todo restore lifecycle that retains repeated completion history without reversing game rewards.
+
+Expected behavior:
+- Canonical planning and history work on mobile; restore preserves original receipts and history rather than deleting completion events or replaying rewards.
+
+Current context:
+- Combined task filters, civil agenda, native placement and retained completion reads are separate local foundations. Production UI retains the E01 hands-on gate. Current uniqueness permits one Todo completion event; repeated restore/complete cycles require explicit history-model design before implementation.
+
+Source:
+- Remaining original E09 intent from P-c8632138-39c6-5797-8e03-a3414824ee96 through P-2eab4a71-0646-4a9c-a815-84ad69652b79.
+
 ### E13 Organization CRUD, advanced lifecycle/history and packaged workflows
 
 ```yaml
@@ -97,32 +123,6 @@ Current context:
 
 Source:
 - Remaining original E13 intent from P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 through P-e5db46c5-d445-4199-8126-8fb504f7fd38.
-
-### E09 Mobile planning views, Inbox and retained completed history
-
-```yaml
-id: P-2eab4a71-0646-4a9c-a815-84ad69652b79
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Implement Today, Inbox, Upcoming, Week/Month agenda, overdue/Anytime and searchable completed history with reviewed restore semantics. Preserve explicit dates, recurrence identity and actual persisted completion history.
-
-Expected behavior:
-- Mobile planning uses canonical data, retains completed work after Habitica removes records and distinguishes civil dates, game due state and completion timestamps.
-
-Current context:
-- Combined canonical task filters and a bounded civil-date agenda are separate local foundations. Production UI retains the E01 hands-on gate; completed Todo restoration needs a reviewed history-safe lifecycle contract before implementation.
-
-Source:
-- Remaining original owner-authorized E09 intent P-c8632138-39c6-5797-8e03-a3414824ee96 after agenda foundation decomposition.
 
 ### E01 Hands-on competitor and mobile workflow qualification
 

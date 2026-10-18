@@ -173,3 +173,7 @@ Standing local contract adoption selects explicit all-day date ranges and one ca
 ## Native placement direction
 
 Standing local contract adoption selects a separate planTask command for native planned date and exact category/project/section/label assignments. The command edits existing tasks only, preserves omitted metadata and task order, and requires explicit clearing or full label replacement. New references are active canonical entities; changing project cannot silently clear an incompatible section. Deadline, recurrence, urgency, text and game details remain outside the planning patch. Existing linked/pending/uncertain mappings and previous command fences remain untouched, and no game effect is enqueued. Organization CRUD, lifecycle/hierarchy authoring, production controls and live qualification remain separate work.
+
+## Retained completion read direction
+
+Standing local direction selects retained Todo/Daily completion reads independent of Habitica recent-completed coverage. Original event IDs, UTC completion timestamps, distinct occurrence civil dates and archive flags remain visible. Matching command snapshots supply stored details; missing snapshots explicitly fall back to current task details. Search uses the selected details, with exact task lookup for renamed work. UTC bounds retain seven fractional digits, and pages guard the canonical revision. Reads create no completion, restore or game action. Repeated Todo restore/complete cycles require a separate history-safe model and command contract before implementation.

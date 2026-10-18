@@ -5,6 +5,7 @@ import type { WorkspaceRow } from './executor.ts';
 import type { CommandEntry } from './commands.ts';
 import { accept } from './commands.ts';
 import { queryTasks } from '../../shared/task-query.ts';
+import {completionHistory} from './completion-history.ts';
 import { taskSyncStatus } from './task-status.ts';
 import { queryAgenda } from '../../shared/task-agenda.ts';
 import { organizationNames, queryOrganization, type OrganizationTool } from '../../shared/organization-query.ts';
@@ -17,6 +18,7 @@ export function mutationResult(entry:CommandEntry,document:{tasks:{id:string;tex
 }
 export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,args:unknown,submit:(command:unknown)=>Promise<Response>):Promise<Record<string,unknown>>{
  const input=taskToolInput(name,args);
+ if(name==='get_completed_history')return completionHistory(env,row,input);
  if(name==='get_task_sync_status')return taskSyncStatus(env,row);
  const document=JSON.parse(row.document_json);
  if(name==='list_companion_tasks')return queryTasks(document,input);

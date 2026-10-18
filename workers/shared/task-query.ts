@@ -23,6 +23,7 @@ export function taskFilter(input:unknown):TaskFilter {
  return value as TaskFilter;
 }
 const fold=(value:string)=>value.normalize('NFKC').replaceAll('\u0130','i\u0307').toLowerCase().replaceAll('\u03c2','\u03c3');
+export {fold as foldTaskText};
 const within=(value:string|null,from?:string,to?:string)=>from===undefined&&to===undefined||value!==null&&(from===undefined||value>=from)&&(to===undefined||value<=to);
 export function queryTasks(document:WorkspaceDocument,input:unknown){
  const filter=taskFilter(input);

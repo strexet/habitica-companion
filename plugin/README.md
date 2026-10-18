@@ -93,3 +93,5 @@ Canonical organization reads include `list_categories`, `list_projects`, `list_p
 `get_task_sync_status` reads task-only durable state/effect counts and separate executor opt-in/availability. The empty-input read starts no execution, excludes prepared gameplay actions and does not refresh Habitica. Unknown outcomes still require original command receipts; status counts do not authorize retries.
 
 Reviewed `plan_task` edits native planned dates and existing category/project/section/label assignments without game effects, including linked tasks. The operation uses a separate planning-only preview; organization CRUD and production editor controls remain unavailable.
+
+`get_completed_history` reads retained canonical Todo/Daily completions with explicit snapshot/current-detail provenance, archive flags and UTC timestamp filters. Daily occurrence dates stay separate. Use exact taskId for renamed work. The tool restores no task, reverses no reward and does not replace the separate legacy Habitica briefing.
