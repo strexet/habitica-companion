@@ -1,0 +1,84 @@
+{
+  "cases": [
+    {
+      "name": "active",
+      "command": {
+        "id": "b0000000-0000-4000-8000-000000000900",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "setTodoState",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "todoState": {
+            "state": "active"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "6b3c831c6327744e6ab8bc3b0d85fa95c7583cba113587178d997b51f30a6bf0"
+    },
+    {
+      "name": "waiting",
+      "command": {
+        "id": "b0000000-0000-4000-8000-000000000901",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "setTodoState",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "todoState": {
+            "state": "waiting"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "06a654b45978816b4d2372413fc809242673ca6e4ff3048f80d32f45d15fa985"
+    },
+    {
+      "name": "someday",
+      "command": {
+        "id": "b0000000-0000-4000-8000-000000000902",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "setTodoState",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "todoState": {
+            "state": "someday"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "b89ede3c51d39e05ee41cfe4f2b3dacf554e44706cd727151e0cb9c6ccaca69a"
+    },
+    {
+      "name": "cancelled",
+      "command": {
+        "id": "b0000000-0000-4000-8000-000000000903",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "setTodoState",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "patch": {
+          "todoState": {
+            "state": "cancelled"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "204c4558c0f29bcc8c69d61275f205dd5948e11e434c4deac8a5a7a61e8ff153"
+    }
+  ]
+}

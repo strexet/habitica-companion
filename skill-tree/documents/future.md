@@ -72,10 +72,10 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### E13 Advanced Todo state and project workflow guidance
+### E13 Optional Inbox Next and InProgress execution stages
 
 ```yaml
-id: P-14835d09-6c68-4472-a5fb-622c5500f9b4
+id: P-600be12e-fd34-44d8-b992-dca13600ab13
 priority: 100
 status: Pending
 parent_pending_ids: []
@@ -87,16 +87,16 @@ depends_on: []
 ```
 
 Description:
-- Implement remaining Todo workflow state and corresponding project/goal packaged workflows after reviewed organization CRUD foundations.
+- Research distinct lightweight execution stages and corresponding manual/agent project workflows beyond the existing native active/waiting/someday/cancelled state contract.
 
 Expected behavior:
-- Manual and agent planning share canonical validation and honest state/progress semantics without implicit game changes.
+- Execution-stage semantics remain distinct from organization, civil planning dates, current completion history and game projection without duplicate or contradictory status.
 
 Current context:
-- Organization reads, native placement, retained history/restoration, candidates and Todo relationships are implemented locally. Organization command history, acceptance and narrow transport are separate required units. Production UI and real client qualification remain gated.
+- Canonical organization CRUD, placement, dependencies, history and native planning-state foundations remain separate accepted or selected local units. Production UI retains the hands-on research gate.
 
 Source:
-- Remaining original E13 intent from P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 through P-cc70b363-4669-44a4-be9b-1d6cb918d36b.
+- Remaining original E13 intent P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 through P-14835d09-6c68-4472-a5fb-622c5500f9b4.
 
 ### E12 Saved views, review policies and mobile task hygiene controls
 
@@ -119,7 +119,7 @@ Expected behavior:
 - Review flows reveal stalled work with gentle optional policies and preserve explicit uncertainty, avoiding mandatory status rituals or punitive wording.
 
 Current context:
-- Combined canonical filters are implemented. Unblocked active Todo reads are a separate local unit; saved views, review/reminder persistence and mobile integration remain unimplemented. Production UI retains the E01 hands-on gate.
+- Combined canonical filters and unblocked active Todo reads are implemented; saved views, review/reminder persistence and mobile integration remain unimplemented. Production UI retains the E01 hands-on gate.
 
 Source:
 - Remaining original E12 intent P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d through P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa.
@@ -145,7 +145,7 @@ Expected behavior:
 - Mobile review retains canonical history and states unavailable evidence explicitly; lifecycle controls never imply paused Habitica penalties or reversed rewards.
 
 Current context:
-- Canonical recurrence, lifecycle, civil agenda and completion history are implemented. Retained Habit reads are a separate local unit. Production UI retains the E01 hands-on gate; real client/device checks remain separate.
+- Canonical recurrence, lifecycle, civil agenda and completion history are implemented. Retained Habit activity reads are implemented. Production UI retains the E01 hands-on gate; real client/device checks remain separate.
 
 Source:
 - Remaining original E11 intent from P-f2bb7e37-6700-58ac-aa56-b537d193c777 through P-59bd9da0-87a5-43c6-83d1-86075c5e4b79.
@@ -171,7 +171,7 @@ Expected behavior:
 - Mobile planning uses canonical data and retains history. Recovery operations state exact supported scope and never silently reverse rewards or retry uncertain effects.
 
 Current context:
-- Canonical queries, placement, history and unlinked Todo restoration are separate local units. Production UI retains the E01 hands-on gate; linked-game, archived-task and recurring recovery remain outside the initial restore contract.
+- Canonical queries, placement, history and unlinked Todo restoration are implemented locally. Production UI retains the E01 hands-on gate; linked-game, archived-task and recurring recovery remain outside the initial restore contract.
 
 Source:
 - Remaining original E09 intent from P-c8632138-39c6-5797-8e03-a3414824ee96 through P-f0c7dfe0-a459-4636-af5c-567281e19367.
@@ -289,11 +289,12 @@ Touch:
 Discovery allowance:
 - Prepare concrete reviewable runbooks and inspect local environment separation without publishing or enrolling.
 Out of scope:
-- Automatic deployment, real enrollment, secret changes, real Cron, messages or device execution without separate authorization.
+- Real enrollment, secret changes, real Cron, messages and device execution remain outside the current no-live-test lane.
 Implementation constraints:
+- Owner authorization permits publication when needed without opening the live-test lane.
 - All implemented tools require isolation/revocation qualification; live Cron remains off. Real log inspection verifies absence of secrets with minimum redacted evidence. Missing infrastructure remains a blocker.
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. The owner reports initial OAuth completion in both clients and ChatGPT reads, followed by immediate repeated reconnection. Native Codex repeated reads, approved Companion-only lifecycle commands and retained receipt reads pass. All live qualification is deferred by owner selection until a new explicit live-testing request. Implementation and validation remain local and synthetic. Complete token lifecycle and revocation checks, native discovery of the added tools, background projection, packaged-skill qualification, a second consenting owner and iOS/Android device qualification remain broader release requirements. Preparation cannot satisfy real release acceptance.
+- [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. The owner reports initial OAuth completion in both clients and ChatGPT reads, followed by immediate repeated reconnection. Native Codex repeated reads, approved Companion-only lifecycle commands and retained receipt reads pass. All live qualification is deferred by owner selection until a new explicit live-testing request. Implementation and validation remain local and synthetic; publication is separately allowed when needed. Complete token lifecycle and revocation checks, native discovery of the added tools, background projection, packaged-skill qualification, a second consenting owner and iOS/Android device qualification remain broader release requirements. Preparation cannot satisfy real release acceptance.
 Validation:
 - Verify local environment/resource separation and prepare exact owner/teammate/device checks. Maintain independent ChatGPT and Codex desktop results in the plugin client matrix; direct MCP access, packaged skills and optional CLI diagnostics remain distinct checks. Execute real checks only inside separately authorized scope.
 Acceptance:

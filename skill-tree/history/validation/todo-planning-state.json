@@ -1,0 +1,74 @@
+{
+  "task_id": "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
+  "date": "2026-10-18",
+  "scope": "Local reviewed Todo planning-state commands and packaged project/goal workflow; live tests remain prohibited; publication permitted when needed",
+  "checks": [
+    {
+      "name": "Release application and three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 744,
+      "failed": 0,
+      "suites": {
+        "domain": 32,
+        "rules": 43,
+        "storage": 21,
+        "application": 166,
+        "api": 87,
+        "webapp": 395
+      },
+      "wall_seconds": 23.346
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0,
+      "wall_seconds": 22.135
+    },
+    {
+      "name": "Full Workspace final",
+      "passed": 326,
+      "failed": 0,
+      "wall_seconds": 30.035
+    },
+    {
+      "name": "Independent v7 hashes",
+      "cases": 4,
+      "result": "pass"
+    },
+    {
+      "name": "Native source/desired/mapping matrices",
+      "cases_per_runtime": 100,
+      "result": "pass"
+    },
+    {
+      "name": "Packaged skill, changed prose, strict future, repository consistency and whitespace",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Only active/waiting/someday/cancelled desired states accept on exact existing nonarchived noncompleted Todos. Mixed patches, direct completion, paused desired state, missing/archived/non-Todo targets, projection and stale revisions fail.",
+    "Canonical state edits preserve task order/details, organization, dates, dependencies, completion/restoration/metadata history and every retained game mapping with zero accepted task activity events and game effects. Existing accepted game commands remain independent.",
+    "Current goal eligibility and active dependency candidates reflect native state; cancellation neither completes a task nor satisfies a prerequisite. Separate completion and exact-event restoration retain history ownership.",
+    "Portable validation rejects altered desired-state snapshots and fabricated completion/effect fields. v7 hashes bind exact state while prior encodings/defaults and enum values remain stable.",
+    "Actual synthetic SDK accepts all four desired states, preserves the original waiting snapshot after later changes, recovers original request/command receipts and enforces public/private grants and profile isolation with zero upstream writes.",
+    "Browser controller acknowledgement-loss recovery and client preview/effect guards retain exact original state/target intent.",
+    "A packaged synthetic project/goal journey composes native organization creation, task placement, dependency assignment, cancellation/reactivation and separate native completion; pending game effects are never cancelled or retried."
+  ],
+  "operations": [
+    {
+      "classification": "executed control",
+      "outcome": "Initial focused checks identified fixture-only mismatches: collection reference equality, query result property and workspace identity inconsistent with retained history. Repaired focused checks pass."
+    },
+    {
+      "classification": "executed control",
+      "outcome": "The first full Worker run hit the existing Cron file 30-second deadline. The complete isolated Cron file passed 17 checks in 13.349 seconds; full Worker requalification passed all 326 checks."
+    }
+  ],
+  "limitations": [
+    "Production authoring controls, optional separate execution stages, actual host/client/device qualification and real gameplay remain outside this local milestone.",
+    "No deployment was needed for local implementation or synthetic qualification."
+  ]
+}

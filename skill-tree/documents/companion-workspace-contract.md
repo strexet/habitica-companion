@@ -225,3 +225,10 @@ Original hash-bound native receipts precede current-state/revision checks. Chang
 Standing local direction selects independent workspace.organization.write OAuth access for reviewed metadata preparation and acceptance. Existing task-write grants remain unchanged; read receipts require tasks:read. Auth consent names metadata edits and retained related records separately from game effects. The own-data browser adapter uses the existing cloud Workspace session and storage consent, with exact native preview validation before acceptance.
 
 Server-issued creation/command IDs and retained request/correlation bindings recover the original native receipt after uncertainty. Exact canonical revision, profile/connection/access/grant epochs and short expiry bind fresh acceptance. Accepted bindings remain with history after preview cleanup or grant changes. No new account selector, generic proxy, upstream request or gameplay entry is introduced. Production UI, actual grants and publication remain separate.
+
+
+## Native Todo planning state contract
+
+Standing local direction selects setTodoState with only patch.todoState.state and an exact existing nonarchived noncompleted Todo. Desired states are active, waiting, someday and cancelled. Completion remains owned by completeTask and completed-work reopening remains owned by exact-event restoreTodo. Daily/Habit lifecycle, archiving and optional Inbox/Next/InProgress stages remain separate.
+
+Native state changes preserve task order/details, planning, dependencies, organization, completion/restoration history and all game mappings. Projection requests fail; accepted task activity and game-effect counts remain zero. Existing accepted game commands are neither cancelled nor retried by native state changes. Current goal/candidate rules use the selected native state; cancelled tasks are excluded from goal eligibility but never counted as completed. Exact preview approval, original command recovery and existing task-write scope remain mandatory. Production UI and actual client qualification remain separate.

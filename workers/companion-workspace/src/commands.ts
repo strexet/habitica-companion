@@ -24,6 +24,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  if(patch?.recurrence&&expandRecurrence(patch.recurrence,patch.recurrence.startDate,patch.recurrence.startDate).failure)throw new WorkspaceError('invalid_patch',422);
  if (isTaskCreation(command.operation) ? Boolean(task) : !task || task.isArchived) throw new WorkspaceError("task_unavailable", 422);
  const mapping = result.projections.find(row => row.taskId === command.taskId && !row.isArchived);
+ if(command.operation==='setTodoState'){if(command.projectToHabitica)throw new WorkspaceError('unsupported_projection',422);if(task!.kind!=='todo'||task!.state==='completed')throw new WorkspaceError('todo_state_unavailable',422);}
  if(command.operation==='planTask'){if(command.projectToHabitica)throw new WorkspaceError('unsupported_projection',422);if(!planningReferencesAvailable(result,task!,patch!.planning!))throw new WorkspaceError('invalid_planning_reference',422);}
  if(command.operation==='relateTodo'){if(command.projectToHabitica)throw new WorkspaceError('unsupported_projection',422);if(!relationshipReferencesAvailable(result,task!,patch!.relationships!))throw new WorkspaceError('invalid_relationship_reference',422);}
  if(command.operation==='restoreTodo'){
@@ -59,6 +60,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  } else {
   task!.revision = revision; task!.updatedAtUtc = now;
   if(command.operation==='planTask'){const planned=applyPlanning(task!,patch!.planning!);Object.assign(task!,planned);}
+  if(command.operation==='setTodoState')task!.state=patch!.todoState!.state;
   if(command.operation==='relateTodo')Object.assign(task!,applyRelationships(task!,patch!.relationships!));
   if(command.operation==='restoreTodo'){task!.state='active';result.restorations??=[];result.restorations.push({id:crypto.randomUUID(),revision,taskId:task!.id,completionId:patch!.restoreTodo!.completionId,commandId:command.id,restoredAtUtc:now,isArchived:false});}
   if(command.operation==='pauseTask')task!.state='paused';
@@ -83,7 +85,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
   }
   if (command.operation === "scoreHabit") for (let i = 0; i < command.count; i++) result.habitScores.push({ id: crypto.randomUUID(), revision, taskId: task!.id, commandId: command.id, recordedAtUtc: now, direction: command.direction!, isArchived: false });
  }
- const requested = !['planTask','restoreTodo','relateTodo'].includes(command.operation)&&(command.projectToHabitica || Boolean(mapping && mapping.state !== "unlinked"));
+ const requested = !['planTask','restoreTodo','relateTodo','setTodoState'].includes(command.operation)&&(command.projectToHabitica || Boolean(mapping && mapping.state !== "unlinked"));
  const effects: string[] = [];
  if (requested) {
   if (!mapping?.habiticaTaskId) effects.push("create");

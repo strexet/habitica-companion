@@ -330,3 +330,8 @@ Optional organizationHistory is retained in the existing canonical document and 
 ## Organization adapter compatibility
 
 Reviewed organization adapters require matching Auth/MCP/Workspace builds and browser code. workspace.organization.write is independently disclosed and selected on reauthorization; existing task-write grants retain the original permissions. Native history and request bindings remain in the existing canonical document and preparation table, requiring no D1 migration, secret, binding or enabled executor. Retention/grant cleanup must include the matching native-history awareness before exposing organization tools. Local synthetic qualification does not publish the adapters, enroll accounts or activate production organization controls.
+
+
+## Todo planning-state compatibility
+
+setTodoState uses optional patch.todoState and identity v7 with coordinated application/MCP/Workspace updates. Old clients can reject used extensions and require matching validators before state authoring. Unused extensions preserve earlier encodings. No D1 migration, secret, new OAuth grant or executor flag is required. Deployment permission does not qualify live account behavior; unrun release and mobile gates remain open.

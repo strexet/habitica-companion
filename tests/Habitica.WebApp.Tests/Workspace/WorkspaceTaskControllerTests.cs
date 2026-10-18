@@ -123,4 +123,14 @@ public sealed class WorkspaceTaskControllerTests
         f.Js.LoseCommitAcknowledgement=true;await f.Controller.ConfirmAsync();Assert.True(f.Controller.AcceptanceUnknown);await f.Controller.CheckOriginalAsync();
         Assert.Equal(original,f.Controller.LastReceipt!.CommandId);Assert.Equal(0,f.Controller.LastReceipt.AcceptedEventCount);Assert.Equal(0,f.Controller.LastReceipt.TotalProjectionCount);Assert.Equal(parent.Id,f.Controller.Snapshot!.Document.Tasks.Single(task=>task.Id==child.Id).ParentTaskId);Assert.Equal(parent,f.Controller.Snapshot.Document.Tasks.Single(task=>task.Id==parent.Id));Assert.Equal(3,f.Controller.Snapshot.Commands.Count);
     }
+    [Fact]
+    public async Task NativeTodoStateRetainsOriginalReceiptAndMetadataAfterLostAcknowledgement()
+    {
+        var f=new WorkspaceTaskFixture();await f.Controller.CreateLocalAsync();await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo());await f.Controller.ConfirmAsync();var task=Assert.Single(f.Controller.Snapshot!.Document.Tasks);
+        await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo() with {Operation=WorkspaceOperation.SetTodoState,TaskId=task.Id,TodoState=new(CompanionTaskState.Waiting)});
+        var original=f.Controller.Preview!.Command.Id;Assert.False(f.Controller.Preview.MayAffectHabitica);Assert.Equal(CompanionTaskState.Waiting,f.Controller.Preview.Command.Patch!.TodoState!.State);
+        f.Js.LoseCommitAcknowledgement=true;await f.Controller.ConfirmAsync();Assert.True(f.Controller.AcceptanceUnknown);await f.Controller.CheckOriginalAsync();
+        Assert.Equal(original,f.Controller.LastReceipt!.CommandId);Assert.Equal(0,f.Controller.LastReceipt.AcceptedEventCount);Assert.Equal(0,f.Controller.LastReceipt.TotalProjectionCount);var saved=Assert.Single(f.Controller.Snapshot!.Document.Tasks);Assert.Equal(CompanionTaskState.Waiting,saved.State);Assert.Equal(task.Text,saved.Text);Assert.Equal(task.Notes,saved.Notes);Assert.Empty(f.Controller.Snapshot.Document.Completions);
+    }
+
 }

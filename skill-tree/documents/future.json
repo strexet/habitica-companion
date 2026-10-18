@@ -74,11 +74,13 @@
       "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
       "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
       "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
-      "T-74bb4500-60a6-4917-b654-13e6b5506afd"
+      "T-74bb4500-60a6-4917-b654-13e6b5506afd",
+      "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
       "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89": "O-2b79fcef-7244-48d6-bad7-16c7b8937eee",
+      "T-07f64b74-b8f1-48d9-b090-b949efbbf83b": "O-b89c9b81-4457-4f68-9bb3-f8a65b7330f4",
       "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
       "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735": "O-aa7c4f5f-c42d-48df-806e-bff08b0e1c17",
       "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c": "O-3c8bda73-dc3e-458b-850d-9e17fce4b230",
@@ -152,8 +154,8 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-    "cycle_signature": "50acb01d603c1d7277b71380e6b9a4506a30628df8d6fe1f69f871c983b7f59c",
+    "current_task_id": null,
+    "cycle_signature": "ed6d85a1b7a23cedcc53106eb108f4ee51d2e841e0d0ec0b56c08ad22380dc78",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -163,9 +165,9 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Retain the release gate until an owner-selected live qualification round; Pending feature areas and Backlog remain unimplemented and no new root starts automatically.",
+    "next_action": "Research the remaining originally authorized E13 local execution-stage contract without live tests; retain release qualification as blocked.",
     "partial_work": [
-      "Native organization engine and scoped browser/MCP adapters are accepted with exact evidence. Release app and all three Worker dry builds pass; final suites pass 733 .NET, 123 Auth and 317 Workspace checks. Original native receipts, independent consent, isolation, expiry/epochs, storage failure and browser tamper rejection are qualified synthetically. No remaining Ready task exists in the selected snapshot."
+      "Native Todo planning-state milestone is accepted with 1193 passing automated checks and release/dry builds. Remaining real release qualification stays open; further originally authorized local Pending areas require scoped processing."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -225,9 +227,10 @@
       "P-84af82c3-f65b-4981-8f40-e3faaf651314",
       "P-cc70b363-4669-44a4-be9b-1d6cb918d36b",
       "P-e8c5af20-15ee-4020-82ea-3560a3a183e7",
-      "P-14835d09-6c68-4472-a5fb-622c5500f9b4"
+      "P-14835d09-6c68-4472-a5fb-622c5500f9b4",
+      "P-600be12e-fd34-44d8-b992-dca13600ab13"
     ],
-    "phase": "blocked",
+    "phase": "process-required",
     "processing_results": [
       {
         "created_ids": [
@@ -1267,6 +1270,25 @@
           "model": "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
           "transport": "T-74bb4500-60a6-4917-b654-13e6b5506afd"
         }
+      },
+      {
+        "created_ids": [
+          "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
+        ],
+        "dispositions": {
+          "P-14835d09-6c68-4472-a5fb-622c5500f9b4": {
+            "reason": "Existing canonical states and query/progress rules support an independent native state command; completion, restoration and game effects retain separate ownership.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-5b3fc202-46d3-4059-b3a2-f7848e0f85fc",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-14835d09-6c68-4472-a5fb-622c5500f9b4"
+        ],
+        "task_keys": {
+          "todo-state": "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
+        }
       }
     ],
     "required_ids": [
@@ -1345,9 +1367,10 @@
       "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
       "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
       "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
-      "T-74bb4500-60a6-4917-b654-13e6b5506afd"
+      "T-74bb4500-60a6-4917-b654-13e6b5506afd",
+      "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
     ],
-    "root_task_id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "root_task_id": "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1542,6 +1565,17 @@
         "reason": "Decompose native organization history, acceptance and explicitly scoped reviewed transport without gameplay or production UI.",
         "remaining_pending_id": "P-14835d09-6c68-4472-a5fb-622c5500f9b4",
         "researched_remainder": "P-cc70b363-4669-44a4-be9b-1d6cb918d36b"
+      },
+      {
+        "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+        "owner_direction": "Resume Implement All; live publication permitted when needed; live tests remain prohibited.",
+        "promoted_local_roots": [
+          "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
+        ],
+        "publication_scope": "Publication permitted if implementation requires updates; no live test round or gameplay activation.",
+        "reason": "Continue local decomposition of the previously authorized E13 feature area while retaining the separate release qualification blocker.",
+        "remaining_pending_id": "P-600be12e-fd34-44d8-b992-dca13600ab13",
+        "researched_remainder": "P-14835d09-6c68-4472-a5fb-622c5500f9b4"
       }
     ],
     "snapshot": [
@@ -1577,17 +1611,18 @@
       "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
       "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
       "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
-      "T-74bb4500-60a6-4917-b654-13e6b5506afd"
+      "T-74bb4500-60a6-4917-b654-13e6b5506afd",
+      "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Required real-client, multi-user and mobile release qualification remains incomplete; the owner closed the live-test lane and no new deployment or live round is authorized."
+    "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "35421740cec4785ab7acdb9eb14d715d7c618a53c1c9b9602f6b9fe76b01c998",
+  "source_hash": "ba065538c2a07d1e672bf1212314b335a174e40a9d2b2c9a0ec8447bc8e42107",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-14835d09-6c68-4472-a5fb-622c5500f9b4",
+      "id": "P-600be12e-fd34-44d8-b992-dca13600ab13",
       "line": 75,
       "parent_pending_ids": [],
       "priority": 100,
@@ -1597,7 +1632,7 @@
       "relation": "main",
       "root_task_id": null,
       "status": "Pending",
-      "title": "E13 Advanced Todo state and project workflow guidance"
+      "title": "E13 Optional Inbox Next and InProgress execution stages"
     },
     {
       "depends_on": [],
@@ -1722,7 +1757,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 308,
+      "line": 309,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1738,7 +1773,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 463,
+      "line": 464,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1752,7 +1787,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 500,
+      "line": 501,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1766,7 +1801,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 537,
+      "line": 538,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1780,7 +1815,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 670,
+      "line": 671,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1794,7 +1829,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 708,
+      "line": 709,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1808,7 +1843,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 742,
+      "line": 743,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1822,7 +1857,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 777,
+      "line": 778,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1836,7 +1871,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 811,
+      "line": 812,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1850,7 +1885,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 849,
+      "line": 850,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1864,7 +1899,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 876,
+      "line": 877,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1878,7 +1913,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 898,
+      "line": 899,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1892,7 +1927,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 925,
+      "line": 926,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

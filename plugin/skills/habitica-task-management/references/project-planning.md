@@ -1,0 +1,13 @@
+# Project and goal planning
+
+Discover current schemas and granted permissions. Project/goal creation requires independent workspace.organization.write access; task edits require habitica.tasks.write. Read current categories, projects, sections, goals and canonical tasks before suggesting duplicates. Resolve exact IDs; ambiguous names require selection. A combined project request authorizes only the requested records and links. Concrete preview approval remains required for each acceptance; no multi-command atomic transaction is implied.
+
+For a new project, review and accept the native organization create command, then retain the returned project entity ID. Create only requested Todos through reviewed task commands. Assign project/section/category/labels through planTask with exact IDs, preserving omitted fields. Use relateTodo for explicitly requested parent/dependency links; complete dependency replacements must be reviewed. Parent assignment does not inherit project membership or complete children.
+
+Optional goals link the complete reviewed set of exact nonarchived Todo IDs through native organization commands. Goal progress counts current eligible Todos and completed Todos, without granting game rewards. Cancelled tasks are excluded from eligibility and remain retained; cancellation does not mean completion. Restoring a completed Todo changes current progress while preserving earlier completion history.
+
+Use setTodoState for explicit native active/waiting/someday/cancelled choices on noncompleted Todos. No state assignment creates completion or scoring events, cancels already accepted game commands or changes Habitica. Complete work through completeTask, choosing game projection only from explicit user intent. Reopen completed work through exact-event restoreTodo under the supported mapping contract. Daily/Habit lifecycle uses separate tools.
+
+Read get_unblocked_todos for active Todo candidates whose explicit dependencies are currently completed. Waiting/someday/cancelled tasks are not active candidates. Parent status and project membership do not supply implicit completion or eligibility. A cancelled prerequisite remains incomplete, so dependent work stays blocked. Changing the prerequisite back to active does not satisfy the dependency; a separately accepted completion is required.
+
+Retain original organization/task request and command IDs across partial multi-step progress. After uncertain acceptance, inspect the original receipt before continuing or preparing another action. Report saved records and unfinished steps separately; preserve completed steps without automatic rollback or duplicate creation. Optional execution stages beyond the existing states and production project-board controls remain separate.
