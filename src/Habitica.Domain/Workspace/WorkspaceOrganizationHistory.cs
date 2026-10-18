@@ -8,7 +8,7 @@ public static class WorkspaceOrganizationHistory
         var ids=new HashSet<Guid>();var latest=new Dictionary<Guid,WorkspaceOrganizationSnapshot>();long previousRevision=0;
         var taskCommands=document.Completions.Select(row=>row.CommandId).Concat(document.HabitScores.Select(row=>row.CommandId)).Concat((document.Restorations??Array.Empty<TaskRestoration>()).Select(row=>row.CommandId)).ToHashSet();
         var activityRevisions=document.Completions.Select(row=>row.Revision).Concat(document.HabitScores.Select(row=>row.Revision)).Concat((document.Restorations??Array.Empty<TaskRestoration>()).Select(row=>row.Revision)).ToHashSet();
-        var categories=document.Categories.Select(row=>row.Id).ToHashSet();var projects=document.Projects.Select(row=>row.Id).ToHashSet();var tasks=document.Tasks.Select(row=>row.Id).ToHashSet();
+        var categories=document.Categories.Select(row=>row.Id).ToHashSet();var projects=document.Projects.Select(row=>row.Id).ToHashSet();var tasks=document.Tasks.Select(row=>row.Id).ToHashSet();var labels=document.Labels.Select(row=>row.Id).ToHashSet();
         foreach(var entry in document.OrganizationHistory)
         {
             if(entry is null||entry.Command is null||entry.Snapshot is null)return false;
@@ -22,6 +22,11 @@ public static class WorkspaceOrganizationHistory
             if(snapshot.Kind!=WorkspaceOrganizationKind.Project&&snapshot.CategoryId is not null||snapshot.CategoryId is {} category&&!categories.Contains(category)
                 ||snapshot.Kind!=WorkspaceOrganizationKind.Section&&(snapshot.ProjectId is not null||snapshot.Position!=0)
                 ||snapshot.Kind==WorkspaceOrganizationKind.Section&&(snapshot.ProjectId is not {} project||!projects.Contains(project))
+                ||snapshot.Kind!=WorkspaceOrganizationKind.SavedTaskView&&snapshot.Query is not null
+                ||snapshot.Kind==WorkspaceOrganizationKind.SavedTaskView&&(snapshot.Query is null||!snapshot.Query.IsValid()
+                    ||snapshot.Query.Filter.CategoryId is {} viewCategory&&!categories.Contains(viewCategory)
+                    ||snapshot.Query.Filter.ProjectId is {} viewProject&&!projects.Contains(viewProject)
+                    ||snapshot.Query.Filter.LabelId is {} viewLabel&&!labels.Contains(viewLabel))
                 ||snapshot.Kind!=WorkspaceOrganizationKind.Goal&&snapshot.TaskIds is not null
                 ||snapshot.Kind==WorkspaceOrganizationKind.Goal&&(snapshot.TaskIds is null||snapshot.TaskIds.Count>100000||snapshot.TaskIds.Distinct().Count()!=snapshot.TaskIds.Count||snapshot.TaskIds.Any(id=>!tasks.Contains(id))))return false;
             if(latest.TryGetValue(snapshot.Id,out var prior))
@@ -34,6 +39,7 @@ public static class WorkspaceOrganizationHistory
             }
             else if(command.Operation==WorkspaceOrganizationOperation.Archive ? !snapshot.IsArchived : snapshot.IsArchived
                 ||patch!.Name is not null&&patch.Name!=snapshot.Name||patch.CategoryId is not null&&patch.CategoryId!=snapshot.CategoryId||patch.ClearCategory&&snapshot.CategoryId is not null
+                ||patch.Query is not null&&patch.Query!=snapshot.Query
                 ||patch.Position is not null&&patch.Position!=snapshot.Position||patch.TaskIds is not null&&(snapshot.TaskIds is null||!patch.TaskIds.SequenceEqual(snapshot.TaskIds)))return false;
             latest[snapshot.Id]=snapshot;
         }

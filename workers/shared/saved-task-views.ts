@@ -16,3 +16,5 @@ export function savedTaskViews(input:unknown,revision:number):SavedTaskView[]{
  if(!Array.isArray(input)||input.length>100000)return invalid();
  return input.map(item=>{const row=workspaceObject(item,['id','revision','isArchived','name','query']);if(!Number.isSafeInteger(row.revision)||Number(row.revision)<1||Number(row.revision)>revision||row.isArchived!==undefined&&typeof row.isArchived!=='boolean'||typeof row.name!=='string'||row.name.length>256||/^\p{White_Space}*$/u.test(row.name))return invalid();return {id:uuid(row.id),revision:Number(row.revision),isArchived:row.isArchived===true,name:row.name,query:savedTaskQuery(row.query)};});
 }
+export function savedTaskQueryFields(query:SavedTaskQuery):(string|null)[]{return [query.source,...savedTaskPredicateKeys.map(key=>query.filter[key as keyof SavedTaskPredicates]??null)];}
+export function savedTaskQueriesEqual(left:SavedTaskQuery|undefined,right:SavedTaskQuery|undefined):boolean{if(left===undefined)return right===undefined;if(right===undefined)return false;const a=savedTaskQueryFields(left),b=savedTaskQueryFields(right);return a.every((value,index)=>value===b[index]);}

@@ -33,6 +33,9 @@ public static class WorkspaceOrganizationEngine
         var patch=command.Patch;
         if(patch?.CategoryId is {} category&&!document.Categories.Any(row=>row.Id==category&&!row.IsArchived)
             ||patch?.ProjectId is {} project&&!document.Projects.Any(row=>row.Id==project&&!row.IsArchived)
+            ||patch?.Query is {} query&&(query.Filter.CategoryId is {} viewCategory&&!document.Categories.Any(row=>row.Id==viewCategory)
+                ||query.Filter.ProjectId is {} viewProject&&!document.Projects.Any(row=>row.Id==viewProject)
+                ||query.Filter.LabelId is {} viewLabel&&!document.Labels.Any(row=>row.Id==viewLabel))
             ||patch?.TaskIds is {} tasks&&tasks.Any(id=>!document.Tasks.Any(task=>task.Id==id&&!task.IsArchived&&task.Kind==CompanionTaskKind.Todo)))
             return Reject(SubmissionDisposition.Invalid,"invalid_organization_reference");
         var accepted=WorkspaceOrganizationCommands.Apply(command,current);
@@ -45,6 +48,7 @@ public static class WorkspaceOrganizationEngine
             WorkspaceOrganizationKind.Section=>document with { Sections=Replace(document.Sections,new WorkspaceSection(accepted.Id,accepted.Revision,accepted.Name,accepted.ProjectId!.Value,accepted.Position,accepted.IsArchived),create) },
             WorkspaceOrganizationKind.Label=>document with { Labels=Replace(document.Labels,new WorkspaceLabel(accepted.Id,accepted.Revision,accepted.Name,accepted.IsArchived),create) },
             WorkspaceOrganizationKind.Goal=>document with { Goals=Replace(document.Goals,new WorkspaceGoal(accepted.Id,accepted.Revision,accepted.Name,accepted.TaskIds!,accepted.IsArchived),create) },
+            WorkspaceOrganizationKind.SavedTaskView=>document with { SavedTaskViews=Replace(document.SavedTaskViews??[],new WorkspaceSavedTaskView(accepted.Id,accepted.Revision,accepted.Name,accepted.Query!,accepted.IsArchived),create) },
             _=>throw new InvalidOperationException()
         };
         var entry=new WorkspaceOrganizationEntry(command,hash,now,accepted);

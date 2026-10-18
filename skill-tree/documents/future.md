@@ -281,49 +281,6 @@ Documentation updates:
 Risks:
 - Treating a named view as authorization to mutate results or reading another profile through a supplied selector.
 
-### Review native saved task-view commands
-
-```yaml
-id: T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4
-priority: 100
-status: Ready
-parent_pending_ids: ["P-d269235a-351a-4341-b622-22d0b5038153"]
-processing_run_id: PR-0a8e4466-b540-448d-b262-84d6b72682ab
-root_task_id: T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4
-related_task_id: null
-relation: main
-depends_on: ["T-fc9ca6a7-dac6-4239-9847-eff405c9ed61"]
-```
-
-Goal:
-- Create, replace query/name and archive saved task views through reviewed native commands with original receipts.
-Current behavior:
-- Portable saved-view definitions and evaluation require an authoring path; native organization commands already retain exact typed metadata receipts.
-Desired behavior:
-- Append savedTaskView to native organization kinds and reuse atomic create/update/archive service with optional full query replacement and zero task/game effects.
-Touch:
-- Domain native command/snapshot/hash/history validation, application native command engine/service, mirrored Worker implementation and synthetic persistence tests.
-Discovery allowance:
-- Reuse separate native OrganizationHistory and canonical saved-view definitions without introducing another outbox.
-Out of scope:
-- Transport changes, production UI, relative presets, reminders, live tests and game effects.
-Implementation constraints:
-- Append the kind without renumbering old values. Creation requires name and full query; update accepts name and/or complete query replacement; archive accepts no patch and retains definitions/history.
-- Validate exact existing organization references, allowing retained archived filter targets. Reject incompatible fields, stale revisions, archived edits, ID collisions and mixed task intents.
-- Native v2 identity binds the complete saved query and source while old-kind encodings/default serialization retain v1. Typed snapshots retain exact old definitions and reject altered history/hash/effect fields.
-- Atomically retain document and native history without task activities, projection entries or game dispatch. Original receipts precede fresh-state checks, changed intent cannot reuse identity and unknown acknowledgements preserve original recovery.
-Questions and required clarifications:
-- [Resolved - standing local adoption and current query contract] Initial saved views persist explicit fixed filter predicates and source tasks/unblockedTodos. Pagination, account selectors, now-relative presets, notification delivery and game actions are excluded. Native authoring requires full query replacement when supplied; omitted query remains unchanged.
-Validation:
-- Independent hashes, strict kind/shape guards, create/replace/rename/archive, preserved task history/mappings, original retries/conflicts, portable tampering and atomic service persistence across uncertainty. Build app/Workers and run affected suites.
-Acceptance:
-- Native saved-view authoring retains exact definitions and original receipts atomically without task or gameplay effects.
-- Invalid, stale, conflicting or altered saved-view intents and portable histories fail while legacy native metadata behavior remains compatible.
-Documentation updates:
-- Describe saved-view edit/archive semantics, original recovery and remaining transport/UI qualification.
-Risks:
-- Partial query merge changing intent or new hash fields invalidating old native receipts.
-
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml

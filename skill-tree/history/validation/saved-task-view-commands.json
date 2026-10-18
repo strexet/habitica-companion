@@ -1,0 +1,46 @@
+{
+  "task_id": "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
+  "date": "2026-10-19",
+  "scope": "Local native saved-view authoring and retained receipts; no live tests or deployment",
+  "checks": [
+    {
+      "name": "Release application and all three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 764,
+      "failed": 0
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace",
+      "passed": 361,
+      "failed": 0
+    },
+    {
+      "name": "Independent native v2 hash fixtures",
+      "cases": 6,
+      "result": "pass"
+    },
+    {
+      "name": "Changed prose, strict future, repository consistency and whitespace",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "SavedTaskView appends native kind 5. Create requires complete query and name; rename retains query, complete replacement removes old predicates and archive retains the last definition and every original receipt.",
+    "Native v2 identity binds exact source and fixed ordered scalar predicates. JSON property order does not affect semantic identity/equality; older kind commands retain v1 hash fixtures and unused Query serialization.",
+    "Atomic document/native history changes preserve all tasks, mappings, completion/restoration/Habit/occurrence history, task commands and activity events. No game entry or effect is created.",
+    "Both runtimes reject incompatible fields/kinds, missing or invalid query, unknown references, duplicate entity identities, stale revisions and archived fresh edits. Retained archived organization filter references remain valid.",
+    "Typed history and journal validation reject altered query snapshots, hashes and effect fields. Original retries recover exact earlier query receipts after replacement/archive and acknowledgement loss; changed intent fails identity reuse."
+  ],
+  "limitations": [
+    "Scoped transport and browser query validation remain the next unit.",
+    "Relative presets, reminders, production UI and real host/device/account qualification remain separate."
+  ]
+}

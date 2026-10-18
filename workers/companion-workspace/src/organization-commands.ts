@@ -21,6 +21,7 @@ async function acceptOwnedOrganization(value:Journal,input:unknown,now:string,ow
  if(command.operation==='create'?current!==null:current===null||current.isArchived)return result('invalid',state,null,'organization_unavailable');
  if(patch?.categoryId&&!document.categories.some(row=>row.id===patch.categoryId&&!row.isArchived)
     ||patch?.projectId&&!document.projects.some(row=>row.id===patch.projectId&&!row.isArchived)
+    ||patch?.query&&(patch.query.filter.categoryId&&!document.categories.some(row=>row.id===patch.query!.filter.categoryId)||patch.query.filter.projectId&&!document.projects.some(row=>row.id===patch.query!.filter.projectId)||patch.query.filter.labelId&&!document.labels.some(row=>row.id===patch.query!.filter.labelId))
     ||patch?.taskIds?.some(id=>!document.tasks.some(task=>task.id===id&&!task.isArchived&&task.kind==='todo')))return result('invalid',state,null,'invalid_organization_reference');
  const accepted=applyOrganizationSnapshot(command,current),entry:OrganizationEntry={command,payloadHash,acceptedAtUtc:now,snapshot:accepted},next=structuredClone(state),d=next.document;
  const create=command.operation==='create';
@@ -31,6 +32,7 @@ async function acceptOwnedOrganization(value:Journal,input:unknown,now:string,ow
   case 'project':d.projects=replace(d.projects,{...base,categoryId:accepted.categoryId});break;
   case 'section':d.sections=replace(d.sections,{...base,projectId:accepted.projectId!,position:accepted.position});break;
   case 'label':d.labels=replace(d.labels,base);break;
+  case 'savedTaskView':d.savedTaskViews=replace(d.savedTaskViews??[],{...base,query:accepted.query!});break;
   case 'goal':d.goals=replace(d.goals,{...base,taskIds:accepted.taskIds!});break;
  }
  d.revision=accepted.revision;d.organizationHistory=[...(d.organizationHistory??[]),entry];next.storeVersion++;

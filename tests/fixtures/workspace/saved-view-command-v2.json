@@ -1,0 +1,123 @@
+{
+  "cases": [
+    {
+      "name": "create empty fixed task query",
+      "command": {
+        "id": "90000000-0000-4000-8000-000000000001",
+        "workspaceId": "90000000-0000-4000-8000-000000000100",
+        "expectedRevision": 20,
+        "kind": "savedTaskView",
+        "operation": "create",
+        "entityId": "90000000-0000-4000-8000-000000000200",
+        "patch": {
+          "name": "Inbox",
+          "query": {
+            "source": "tasks",
+            "filter": {}
+          }
+        }
+      },
+      "payloadHash": "993351ce5e01279f39ce2d52110a226703cbcb94e8a455d2400d21f09fe82ad6"
+    },
+    {
+      "name": "create complete fixed predicate query",
+      "command": {
+        "id": "90000000-0000-4000-8000-000000000002",
+        "workspaceId": "90000000-0000-4000-8000-000000000100",
+        "expectedRevision": 20,
+        "kind": "savedTaskView",
+        "operation": "create",
+        "entityId": "90000000-0000-4000-8000-000000000200",
+        "patch": {
+          "name": "Review café — 今日",
+          "query": {
+            "source": "tasks",
+            "filter": {
+              "query": "Review café — 今日",
+              "kind": "todo",
+              "state": "active",
+              "priority": "high",
+              "projectId": "90000000-0000-4000-8000-000000000020",
+              "categoryId": "90000000-0000-4000-8000-000000000010",
+              "labelId": "90000000-0000-4000-8000-000000000030",
+              "plannedFrom": "2026-10-18",
+              "plannedTo": "2026-10-19",
+              "deadlineFrom": "2026-10-20",
+              "deadlineTo": "2026-10-21",
+              "projectionState": "unknownOutcome",
+              "executionStage": "next"
+            }
+          }
+        }
+      },
+      "payloadHash": "06f99bae14b53e749369480462a16d487a297753b55c560a93d739d5b2a1dbe3"
+    },
+    {
+      "name": "replace candidate definition",
+      "command": {
+        "id": "90000000-0000-4000-8000-000000000003",
+        "workspaceId": "90000000-0000-4000-8000-000000000100",
+        "expectedRevision": 20,
+        "kind": "savedTaskView",
+        "operation": "update",
+        "entityId": "90000000-0000-4000-8000-000000000200",
+        "patch": {
+          "query": {
+            "source": "unblockedTodos",
+            "filter": {
+              "executionStage": "inbox",
+              "priority": "urgent"
+            }
+          }
+        }
+      },
+      "payloadHash": "edca40bc26f08adeaf3135c61d2a2fccce354d4d129ff9134d513aea0d595cdf"
+    },
+    {
+      "name": "rename without changing query",
+      "command": {
+        "id": "90000000-0000-4000-8000-000000000004",
+        "workspaceId": "90000000-0000-4000-8000-000000000100",
+        "expectedRevision": 20,
+        "kind": "savedTaskView",
+        "operation": "update",
+        "entityId": "90000000-0000-4000-8000-000000000200",
+        "patch": {
+          "name": "Renamed"
+        }
+      },
+      "payloadHash": "c6b5b75607d082ea8d6b791f531fe09628e8afac50d4182ddae641ca50ec6409"
+    },
+    {
+      "name": "archive keeps existing query",
+      "command": {
+        "id": "90000000-0000-4000-8000-000000000005",
+        "workspaceId": "90000000-0000-4000-8000-000000000100",
+        "expectedRevision": 20,
+        "kind": "savedTaskView",
+        "operation": "archive",
+        "entityId": "90000000-0000-4000-8000-000000000200",
+        "patch": null
+      },
+      "payloadHash": "c41766c2170fbf62c08812448dcd8d7d4f2f328910a9b48369699dacbbdf3c0d"
+    },
+    {
+      "name": "replace with empty filter",
+      "command": {
+        "id": "90000000-0000-4000-8000-000000000006",
+        "workspaceId": "90000000-0000-4000-8000-000000000100",
+        "expectedRevision": 20,
+        "kind": "savedTaskView",
+        "operation": "update",
+        "entityId": "90000000-0000-4000-8000-000000000200",
+        "patch": {
+          "query": {
+            "source": "tasks",
+            "filter": {}
+          }
+        }
+      },
+      "payloadHash": "11b918855689a7f322e3bd5297e1b0a00a230d16b56defa94319084d935165de"
+    }
+  ]
+}
