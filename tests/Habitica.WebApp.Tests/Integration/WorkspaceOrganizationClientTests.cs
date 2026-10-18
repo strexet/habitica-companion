@@ -34,6 +34,21 @@ public sealed class WorkspaceOrganizationClientTests
         var recovered=await client.ReadOrganizationAsync(preview.PreparedCommandId,default);Assert.True(recovered.Succeeded);Assert.True(recovered.Value!.SavedInCompanion);Assert.Equal(0,recovered.Value.ConfirmedEffectCount);Assert.Equal(3,calls);
     }
     [Theory]
+    [InlineData("none")][InlineData("command")][InlineData("snapshot")][InlineData("receipt")]
+    public async Task Saved_view_previews_bind_the_complete_query_and_original_native_receipt(string mutation)
+    {
+        var id=Guid.NewGuid();var query=new WorkspaceSavedTaskQuery(WorkspaceSavedTaskSource.UnblockedTodos,new(ExecutionStage:TodoExecutionStage.Next));
+        var intent=new WorkspaceOrganizationCommand(Guid.NewGuid(),id,1,WorkspaceOrganizationKind.SavedTaskView,WorkspaceOrganizationOperation.Update,Guid.NewGuid(),new(Query:query));
+        var command=intent with {Id=Guid.NewGuid()};var current=new WorkspaceOrganizationSnapshot(WorkspaceOrganizationKind.SavedTaskView,intent.EntityId,1,"View",Query:new(WorkspaceSavedTaskSource.Tasks,new()));
+        var preview=new WorkspaceOrganizationPreview(command.Id,Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(10),false,command,WorkspaceOrganizationCommands.Apply(command,current),false,false);var other=new WorkspaceSavedTaskQuery(WorkspaceSavedTaskSource.Tasks,new());
+        if(mutation=="command")preview=preview with {Command=command with {Patch=new(Query:other)}};
+        if(mutation=="snapshot")preview=preview with {Snapshot=preview.Snapshot with {Query=other}};
+        if(mutation=="receipt")preview=preview with {SavedInCompanion=true,Receipt=Receipt(preview) with {Entry=Receipt(preview).Entry with {Snapshot=preview.Snapshot with {Query=other}}}};
+        using var vault=Vault();using var http=new HttpClient(new Handler(request=>Task.FromResult(request.RequestUri!.AbsolutePath=="/connect"?Connection(id):Json(preview))));var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
+        var result=await client.PrepareOrganizationAsync(Guid.NewGuid(),intent,default);Assert.Equal(mutation=="none",result.Succeeded);if(mutation!="none"){Assert.True(result.OutcomeUnknown);Assert.Null(result.Value);}
+    }
+
+    [Theory]
     [InlineData("command")][InlineData("snapshot")][InlineData("effects")][InlineData("revision")][InlineData("clear")][InlineData("target")][InlineData("receipt")]
     public async Task Altered_native_previews_cannot_replace_reviewed_partial_intent(string mutation)
     {

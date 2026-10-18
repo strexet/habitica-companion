@@ -11,3 +11,5 @@ Show the complete server preview and obtain approval before accept_organization_
 Use the original command ID with get_organization_command after uncertain acceptance. Never prepare a replacement to retry the same intent. Missing receipts remain uncertain. Expired/stale/changed-epoch previews require original receipt review and a freshly reviewed preview before another acceptance. Report exact entity/command IDs and savedInCompanion from the actual native receipt; game effects and accepted task events remain zero. Unavailable reads require connection recovery and any returned delay, not an automatic write retry.
 
 Missing independent organization permission requires normal reauthorization. Never request API credentials in chat, provide profile/account selectors, construct generic JSON/URL proxies, or infer grant expansion from existing task permission.
+
+SavedTaskView is another native organization kind with complete source/filter definitions. Follow the [saved-view workflow](saved-task-views.md) for exact discovery, replacement and archive semantics. Existing task-write access never grants saved-view editing.

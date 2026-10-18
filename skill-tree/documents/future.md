@@ -93,7 +93,7 @@ Expected behavior:
 - Optional review identifies stalled work without mandatory rituals, false lateness or game penalties; saved lists clearly distinguish fixed dates from relative dates.
 
 Current context:
-- Combined canonical filters, active-stage predicates and dependency candidates are implemented locally. Portable named fixed-filter views and reviewed authoring/access are being decomposed. Review/reminder storage and production saved-list controls remain absent; production UI retains the E01 hands-on gate.
+- Combined canonical filters, active-stage predicates and dependency candidates are implemented locally. Portable named fixed-filter views, reviewed native edits and scoped read/write adapters are implemented locally. Review/reminder storage and production saved-list controls remain absent; production UI retains the E01 hands-on gate.
 
 Source:
 - Remaining original E12 intent P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d through P-d269235a-351a-4341-b622-22d0b5038153.
@@ -237,49 +237,6 @@ Expected behavior:
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
-
-### Expose scoped saved task-view workflows
-
-```yaml
-id: T-edd2f444-7dab-4847-9db0-21651c6f5c37
-priority: 100
-status: Ready
-parent_pending_ids: ["P-d269235a-351a-4341-b622-22d0b5038153"]
-processing_run_id: PR-0a8e4466-b540-448d-b262-84d6b72682ab
-root_task_id: T-edd2f444-7dab-4847-9db0-21651c6f5c37
-related_task_id: null
-relation: main
-depends_on: ["T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4"]
-```
-
-Goal:
-- Expose scoped reviewed saved-view authoring and current-state reads to browser adapters and MCP.
-Current behavior:
-- Canonical saved-view definitions, evaluation and native edits require public/private transport integration and packaged workflow guidance.
-Desired behavior:
-- Existing native organization preparation/acceptance supports savedTaskView under workspace.organization.write. tasks:read lists nonarchived views and evaluates an exact view with caller paging only.
-Touch:
-- Shared tool registries and schemas, Auth consent wording, Worker task/native routes, browser adapters, packaged planning guidance and synthetic SDK/browser qualification.
-Discovery allowance:
-- Reuse original native prepared bindings, exact preview/receipt checks, current authorized canonical reads and page guards.
-Out of scope:
-- Production list controls, relative presets, notification delivery, actual enrollment, live tests and game dispatch.
-Implementation constraints:
-- Saved queries and names remain untrusted data. Read arguments select exact view ID and paging only, never override predicates or supply an account. Current profile/connection/access/grant epochs remain mandatory.
-- Private and public routes enforce tasks:read for reads and independent workspace.organization.write for native edits. Old task-write grants do not gain saved-view editing.
-- Server-issued entity/command IDs, exact query previews and original request/correlation bindings survive lost acknowledgements and later edits/archival. Unknown outcomes never authorize replacement retries.
-- Read results expose canonical provenance/revision, stable totals and stale-page errors. Missing/archived views fail, unsupported sources fail unavailable and no read changes tasks/history/effects.
-Questions and required clarifications:
-- [Resolved - standing local adoption and current query contract] Initial saved views persist explicit fixed filter predicates and source tasks/unblockedTodos. Pagination, account selectors, now-relative presets, notification delivery and game actions are excluded. Native authoring requires full query replacement when supplied; omitted query remains unchanged.
-Validation:
-- Actual synthetic SDK/browser journeys create a view, evaluate current tasks/dependencies, replace/rename/archive, recover original receipts and retain export history. Verify schema discovery, public/private scope/profile isolation, stale pages and zero upstream writes. Build app/Workers and run affected suites.
-Acceptance:
-- Browser/MCP adapters support reviewed saved-view edits and current-state read/evaluation with exact intent and original receipt recovery.
-- Scoped reads/edits preserve profile isolation, reject invalid overrides/stale pages and create no task or gameplay effects.
-Documentation updates:
-- Document fixed-filter view workflows, permission split, exact recovery and remaining mobile/relative/reminder qualification.
-Risks:
-- Treating a named view as authorization to mutate results or reading another profile through a supplied selector.
 
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 

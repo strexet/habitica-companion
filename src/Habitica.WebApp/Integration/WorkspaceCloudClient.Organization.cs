@@ -47,11 +47,13 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceOrganizationApi
             ||snapshot.Kind!=WorkspaceOrganizationKind.Project&&snapshot.CategoryId is not null||snapshot.CategoryId==Guid.Empty
             ||snapshot.Kind!=WorkspaceOrganizationKind.Section&&(snapshot.ProjectId is not null||snapshot.Position!=0)
             ||snapshot.Kind==WorkspaceOrganizationKind.Section&&(snapshot.ProjectId is null||snapshot.ProjectId==Guid.Empty||snapshot.Position<0)
+            ||snapshot.Kind!=WorkspaceOrganizationKind.SavedTaskView&&snapshot.Query is not null
+            ||snapshot.Kind==WorkspaceOrganizationKind.SavedTaskView&&(snapshot.Query is null||!snapshot.Query.IsValid())
             ||snapshot.Kind!=WorkspaceOrganizationKind.Goal&&snapshot.TaskIds is not null
             ||snapshot.Kind==WorkspaceOrganizationKind.Goal&&(snapshot.TaskIds is null||snapshot.TaskIds.Count>100000||snapshot.TaskIds.Any(id=>id==Guid.Empty)||snapshot.TaskIds.Distinct().Count()!=snapshot.TaskIds.Count))return false;
         if(command.Operation==WorkspaceOrganizationOperation.Create)return WorkspaceOrganizationCommands.Apply(command,null).Equivalent(snapshot);
         var patch=command.Patch;return patch is null||
-            (patch.Name is null||patch.Name==snapshot.Name)&&(patch.CategoryId is null||patch.CategoryId==snapshot.CategoryId)&&(!patch.ClearCategory||snapshot.CategoryId is null)
+            (patch.Query is null||patch.Query==snapshot.Query)&&(patch.Name is null||patch.Name==snapshot.Name)&&(patch.CategoryId is null||patch.CategoryId==snapshot.CategoryId)&&(!patch.ClearCategory||snapshot.CategoryId is null)
             &&(patch.Position is null||patch.Position==snapshot.Position)&&(patch.TaskIds is null||snapshot.TaskIds is not null&&patch.TaskIds.SequenceEqual(snapshot.TaskIds));
     }
     private async Task<WorkspaceTaskResponse<T>> CallOrganizationAsync<T>(string tool,object args,CancellationToken cancellationToken,Guid? expectedId=null)

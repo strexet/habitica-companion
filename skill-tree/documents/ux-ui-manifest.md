@@ -641,3 +641,5 @@ The command layer and optional MCP expose reviewed native planned-date and categ
 ## Native organization authorization disclosure
 
 The authorization page presents native category/project/section/label/goal edits as a separate selectable permission. The disclosure states that archival retains related tasks and history and produces no game effects. Existing task-write permission does not authorize organization edits. Organization authoring controls remain absent from the production UI; local browser adapters require exact reviewed intent and preserve original receipt recovery after uncertain responses.
+
+Cloud workspace storage disclosure includes saved task-view definitions. Saved-view read errors report unavailable data without claiming a task change. Detailed saved-list controls remain behind the existing navigation qualification gate.

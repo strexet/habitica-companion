@@ -79,7 +79,8 @@
       "T-3f472554-56a4-4edf-a163-1b96dc822a06",
       "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb",
       "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
-      "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4"
+      "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
+      "T-edd2f444-7dab-4847-9db0-21651c6f5c37"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -158,12 +159,13 @@
       "T-e3653fbd-2101-4b58-8219-3aa076b56fe6": "O-e3c8c194-719a-4bc0-9096-671b5ef256eb",
       "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68": "O-d1657c15-4f9e-4ae2-a8f1-9197c0c47839",
       "T-e696791b-de0e-4e74-ac9a-831328ddb97f": "O-7494c340-b195-40bb-8f7e-a8173887891d",
+      "T-edd2f444-7dab-4847-9db0-21651c6f5c37": "O-29c5ccd9-3796-48a6-8865-0f5f79a878bf",
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
       "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61": "O-fc6f4e76-63c3-41d9-b7d2-5455eb45164b",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
-    "cycle_signature": "4ddcae3d9e014a090ebfeedde467d5b12bcc0e499dea18a2fba435b91270b4b0",
+    "current_task_id": null,
+    "cycle_signature": "82b5514161b9d2f318309c0972fb70dfe0814cb5bd0881c6de5ee1e4d05a574e",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -173,11 +175,12 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Keep release qualification open. Resume the selected controller after owner reopens the required live lane or explicitly selects further Pending research.",
     "partial_work": [
-      "Implemented appended native saved-view kind with full query replacement, native v2 identity and exact typed history validation.",
-      "Independent hashes and focused native/service tests pass in both runtimes, including lost acknowledgement and zero task/game effects.",
-      "Release app build passes; final Worker builds and full regressions are running. No live tests or deployment."
+      "Completed native Todo planning state, optional active stages, stage-aware canonical reads and saved-view model/native commands/scoped adapters.",
+      "All currently promoted local implementation units are accepted; full latest local regression passes 779 .NET, 123 Auth and 363 Workspace checks.",
+      "Required release qualification remains incomplete under the owner no-live-test direction. Production UX retains the explicit E01 hands-on gate. Remaining review/reminder/relative-date and mobile/streak/recovery work remains Pending, with Backlog unselected.",
+      "No live tests or deployment ran. Production remains on the previously published source."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -242,7 +245,7 @@
       "P-d269235a-351a-4341-b622-22d0b5038153",
       "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb"
     ],
-    "phase": "implement",
+    "phase": "blocked",
     "processing_results": [
       {
         "created_ids": [
@@ -1729,10 +1732,10 @@
       "T-edd2f444-7dab-4847-9db0-21651c6f5c37"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": null
+    "stop_reason": "Required live client, multi-user and mobile release qualification remains closed by owner direction; no additional eligible scoped Ready local implementation unit remains."
   },
   "format": "skill-tree-future",
-  "source_hash": "39e0018361ce449e7471f118d3ec5810b23705c7166b55e8f63a8e08ba4604b7",
+  "source_hash": "4a6d2f1e5c3b6cec5753d10d59c6bb507e7b0f64cc977b37c4248ff896589d66",
   "tasks": [
     {
       "depends_on": [],
@@ -1820,24 +1823,6 @@
     },
     {
       "depends_on": [
-        "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4"
-      ],
-      "id": "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
-      "line": 241,
-      "parent_pending_ids": [
-        "P-d269235a-351a-4341-b622-22d0b5038153"
-      ],
-      "priority": 100,
-      "processing_run_id": "PR-0a8e4466-b540-448d-b262-84d6b72682ab",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
-      "status": "Ready",
-      "title": "Expose scoped saved task-view workflows"
-    },
-    {
-      "depends_on": [
         "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
         "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
         "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
@@ -1851,7 +1836,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 284,
+      "line": 241,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1875,7 +1860,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 326,
+      "line": 283,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1891,7 +1876,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 481,
+      "line": 438,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1905,7 +1890,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 518,
+      "line": 475,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1919,7 +1904,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 555,
+      "line": 512,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1933,7 +1918,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 688,
+      "line": 645,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1947,7 +1932,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 726,
+      "line": 683,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1961,7 +1946,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 760,
+      "line": 717,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1975,7 +1960,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 795,
+      "line": 752,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1989,7 +1974,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 829,
+      "line": 786,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2003,7 +1988,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 867,
+      "line": 824,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2017,7 +2002,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 894,
+      "line": 851,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2031,7 +2016,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 916,
+      "line": 873,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2045,7 +2030,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 943,
+      "line": 900,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

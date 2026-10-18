@@ -1,0 +1,67 @@
+{
+  "task_id": "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
+  "date": "2026-10-19",
+  "scope": "Local scoped browser/MCP saved-view workflows; no live tests or deployment",
+  "checks": [
+    {
+      "name": "Release application and all three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 779,
+      "failed": 0,
+      "suites": {
+        "domain": 33,
+        "rules": 43,
+        "storage": 22,
+        "application": 180,
+        "api": 87,
+        "webapp": 414
+      }
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace after stored identity guard",
+      "passed": 363,
+      "failed": 0
+    },
+    {
+      "name": "Focused original grant receipt recovery requalification",
+      "passed": 2,
+      "failed": 0
+    },
+    {
+      "name": "Focused native command nullability requalification",
+      "passed": 4,
+      "failed": 0
+    },
+    {
+      "name": "Packaged skill, changed prose, strict future, repository consistency and whitespace",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "New canonical list_saved_task_views/query_saved_task_view reads advertise and enforce tasks:read on public/private routes. Exact view ID plus paging cannot override saved predicates or supply account identity. Canonical read errors expose unavailable without fabricated counts or mutation uncertainty.",
+    "Fresh document reads bind profile, connection and access epoch and verify stored workspace identity. Unsupported/malformed definitions or wrong workspace documents fail unavailable; missing/archived views and stale pages fail explicitly.",
+    "Native savedTaskView creation/update/archive uses independent workspace.organization.write. Existing task-write grants cannot edit saved views. Schemas, OAuth consent and browser storage disclosures name view definitions.",
+    "Actual synthetic SDK and browser API exercise create, current task/dependency evaluation, stable pages, native state changes, rename, complete query replacement, archive and original receipts. Browser-style nullable filter serialization normalizes to the same exact intent.",
+    "Original accepted query snapshots and correlation IDs survive later edits/archive and a new read-only grant. Export retains all native view history; no view action creates a task/game entry or upstream write.",
+    "Browser clients reject altered query previews/receipts, wrong provenance/profile/view/revision, inconsistent totals/continuation, malformed definitions and changed sessions. Read errors never imply an uncertain mutation.",
+    "Packaged saved-view guidance distinguishes fixed dates, active stage defaults, predicate replacement and separate action approval. A named view never grants mutation permission over matched tasks."
+  ],
+  "operations": [
+    {
+      "classification": "executed control",
+      "outcome": "Initial complete local regression passed. Final source review added an explicit stored workspace-ID guard and a synthetic mismatched-document control. The affected full Worker suite passed again; original receipt recovery across grant changes passed a final focused recheck."
+    }
+  ],
+  "limitations": [
+    "Production saved-list controls, relative presets, optional review/reminder policy and actual host/device/account qualification remain separate.",
+    "No live test round or deployment ran; production remains on the previously published source."
+  ]
+}

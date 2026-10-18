@@ -1,3 +1,4 @@
+import {savedTaskReads} from './saved-task-reads.ts';
 import {unblockedTodos} from './unblocked-todos.ts';
 import {habitHistory} from './habit-history.ts';
 import { taskToolInput, operationForTool, type TaskTool } from '../../shared/task-tools.ts';
@@ -20,6 +21,7 @@ export function mutationResult(entry:CommandEntry,document:{tasks:{id:string;tex
 }
 export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,args:unknown,submit:(command:unknown)=>Promise<Response>):Promise<Record<string,unknown>>{
  const input=taskToolInput(name,args);
+ if(name==='list_saved_task_views'||name==='query_saved_task_view')return savedTaskReads(env,row,name,input);
  if(name==='get_unblocked_todos')return unblockedTodos(env,row,input);
  if(name==='get_habit_history')return habitHistory(env,row,input);
  if(name==='get_completed_history')return completionHistory(env,row,input);
