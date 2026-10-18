@@ -1,0 +1,84 @@
+{
+  "cases": [
+    {
+      "name": "restore exact completion",
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000900",
+        "workspaceId": "80000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "restoreTodo",
+        "taskId": "80000000-0000-4000-8000-000000000101",
+        "patch": {
+          "restoreTodo": {
+            "completionId": "80000000-0000-4000-8000-000000000201"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "6662c6fab063f82e76430c45c9b4a2857e148129b9cb80e19a87fc48f71f0924"
+    },
+    {
+      "name": "different completion",
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000900",
+        "workspaceId": "80000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "restoreTodo",
+        "taskId": "80000000-0000-4000-8000-000000000101",
+        "patch": {
+          "restoreTodo": {
+            "completionId": "80000000-0000-4000-8000-000000000202"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "0242c0d0ed14c382794b81574e14963922ec3fd39258ae66b8f9ea019be77e82"
+    },
+    {
+      "name": "later revision",
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000900",
+        "workspaceId": "80000000-0000-4000-8000-000000000001",
+        "expectedRevision": 11,
+        "operation": "restoreTodo",
+        "taskId": "80000000-0000-4000-8000-000000000101",
+        "patch": {
+          "restoreTodo": {
+            "completionId": "80000000-0000-4000-8000-000000000201"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "69cd7e141c66f91e19af55d70b16675a5e48eb3767e13758c33811fa7f65b5e5"
+    },
+    {
+      "name": "different task",
+      "command": {
+        "id": "80000000-0000-4000-8000-000000000900",
+        "workspaceId": "80000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "operation": "restoreTodo",
+        "taskId": "80000000-0000-4000-8000-000000000102",
+        "patch": {
+          "restoreTodo": {
+            "completionId": "80000000-0000-4000-8000-000000000201"
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": false
+      },
+      "payloadHash": "7bf0654599f180e1c8fa5a2ee0a860f14a6aa7314e40d8c9401a9400f10316cf"
+    }
+  ]
+}

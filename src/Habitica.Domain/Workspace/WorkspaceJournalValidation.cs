@@ -13,6 +13,7 @@ public static class WorkspaceJournalValidation
             || authority.Mode == WorkspaceAuthorityMode.Frozen && (authority.TransferId is null || authority.CloudWorkspaceId is not null)
             || authority.Mode == WorkspaceAuthorityMode.Cloud && authority.CloudWorkspaceId != snapshot.Document.Id)) return false;
         var ids = new HashSet<Guid>();
+        var restorations = (snapshot.Document.Restorations ?? Array.Empty<TaskRestoration>()).ToDictionary(value => value.CommandId);
         foreach (var entry in snapshot.Commands)
         {
             if (entry is null || entry.Command is null || entry.Command.Id == Guid.Empty || !ids.Add(entry.Command.Id)
@@ -21,6 +22,8 @@ public static class WorkspaceJournalValidation
                 || entry.Command.Patch?.Recurrence is { } recurrence && !RecurrenceCalendar.IsStructurallyValid(recurrence)
                 || entry.Command.Patch is { ClearRecurrence: true, Recurrence: not null }
                 || entry.Command.Patch?.Planning is { } planning && (!planning.IsValid() || entry.Command.Operation != WorkspaceOperation.PlanTask)
+                || entry.Command.Patch?.RestoreTodo is { } restore && (restore.CompletionId == Guid.Empty || entry.Command.Operation != WorkspaceOperation.RestoreTodo)
+                || restorations.ContainsKey(entry.Command.Id) && entry.Command.Operation != WorkspaceOperation.RestoreTodo
                 || entry.PayloadHash != WorkspaceCommandIdentity.Hash(entry.Command) || entry.AcceptedAtUtc == default || entry.AcceptedAtUtc.Offset != TimeSpan.Zero
                 || !Enum.IsDefined(entry.ProjectionState) || !Enum.IsDefined(entry.Failure) || entry.Effects is null || entry.Effects.Count > 11
                 || entry.Effects.Any(effect => !Enum.IsDefined(effect)) || entry.ConfirmedEffects < 0 || entry.ConfirmedEffects > entry.Effects.Count || entry.Attempts < 0) return false;
@@ -39,6 +42,13 @@ public static class WorkspaceJournalValidation
                     || entry.Command.Direction is not null || entry.Command.Count != 1 || entry.Command.OccurrenceDate is not null
                     || entry.Command.Patch is not { Planning: { } plan } planningPatch || (planningPatch with { Planning = null }) != new WorkspaceTaskPatch()
                     || !plan.Matches(entry.TaskSnapshot))) return false;
+            if (entry.Command.Operation == WorkspaceOperation.RestoreTodo
+                && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
+                    || entry.Command.Direction is not null || entry.Command.Count != 1 || entry.Command.OccurrenceDate is not null
+                    || entry.Command.Patch is not { RestoreTodo: { } target } restorePatch || (restorePatch with { RestoreTodo = null }) != new WorkspaceTaskPatch()
+                    || entry.TaskSnapshot is not { Kind: CompanionTaskKind.Todo, State: CompanionTaskState.Active, IsArchived: false }
+                    || !restorations.TryGetValue(entry.Command.Id,out var restoration) || restoration.TaskId != entry.Command.TaskId
+                    || restoration.CompletionId != target.CompletionId || restoration.Revision != entry.Command.ExpectedRevision+1 || restoration.RestoredAtUtc != entry.AcceptedAtUtc)) return false;
             if ((entry.Command.Patch?.Recurrence is not null || entry.Command.Patch?.ClearRecurrence == true)
                 && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
                     || entry.Command.Operation is not (WorkspaceOperation.CreateDaily or WorkspaceOperation.UpdateTask)

@@ -1,0 +1,53 @@
+{
+  "task_id": "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
+  "date": "2026-10-18",
+  "scope": "Local native Todo restore; no live tests, deployment or upstream mutation",
+  "checks": [
+    {
+      "name": "Release app and three Worker dry builds",
+      "result": "pass"
+    },
+    {
+      "name": "Full .NET",
+      "passed": 639,
+      "failed": 0,
+      "suites": {
+        "domain": 29,
+        "rules": 43,
+        "storage": 21,
+        "application": 132,
+        "api": 54,
+        "webapp": 360
+      }
+    },
+    {
+      "name": "Full Auth",
+      "passed": 123,
+      "failed": 0
+    },
+    {
+      "name": "Full Workspace after fixture normalization repair",
+      "passed": 233,
+      "failed": 0
+    },
+    {
+      "name": "Changed prose, strict future, repository documentation, skill package and whitespace",
+      "result": "pass"
+    }
+  ],
+  "acceptance_evidence": [
+    "Independent v5 hashes agree across runtimes; legacy v1-v4 fixtures and absent extension wire defaults remain unchanged.",
+    "Exact completion identity, current state, retained game mappings including archived identities and mixed patch guards reject unsupported restore.",
+    "Repeated native completion/restore retains task metadata/order and causal history, with one restoration event and zero game effects.",
+    "Original preparation/acceptance and browser lost-ack receipt recovery preserve command identities across later cycles.",
+    "Portable validation rejects altered snapshots, timestamps, counts and fabricated game effects.",
+    "Synthetic MCP SDK enforces write scope at public/private boundaries and profile isolation; exported journal retains every cycle with zero upstream writes."
+  ],
+  "limitations": [
+    "Production editor controls, linked-game or archived-task recovery, Daily/Habit undo and real client qualification remain separate."
+  ],
+  "repairs": [
+    "A C# fixture used a GUID where the projection identifier requires a string; the fixture was corrected.",
+    "A newly added Worker assertion compared canonical mappings against unnormalized fixture defaults; expected mappings now use the canonical parser. Fresh full Workspace validation passed."
+  ]
+}

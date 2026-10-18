@@ -22,7 +22,7 @@ public static class WorkspaceCommandEngine
             return Reject(SubmissionDisposition.Invalid, "unexpected_occurrence");
         var creating = command.Operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit;
         var patch = command.Patch;
-        if (creating || command.Operation is WorkspaceOperation.UpdateTask or WorkspaceOperation.PlanTask)
+        if (creating || command.Operation is WorkspaceOperation.UpdateTask or WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo)
         {
             if (patch is null || patch == new WorkspaceTaskPatch()
                 || patch.Text is not null && (string.IsNullOrWhiteSpace(patch.Text) || patch.Text.Length > 2048)
@@ -33,6 +33,8 @@ public static class WorkspaceCommandEngine
                 || patch.Recurrence is { } rule && !RecurrenceCalendar.Expand(rule, rule.StartDate, rule.StartDate).Succeeded
                 || patch.Planning is not null && (!patch.Planning.IsValid() || command.Operation != WorkspaceOperation.PlanTask)
                 || command.Operation == WorkspaceOperation.PlanTask && (patch.Planning is null || (patch with { Planning = null }) != new WorkspaceTaskPatch())
+                || patch.RestoreTodo is { } restore && (restore.CompletionId == Guid.Empty || command.Operation != WorkspaceOperation.RestoreTodo)
+                || command.Operation == WorkspaceOperation.RestoreTodo && (patch.RestoreTodo is null || (patch with { RestoreTodo = null }) != new WorkspaceTaskPatch())
                 || creating && string.IsNullOrWhiteSpace(patch.Text))
                 return Reject(SubmissionDisposition.Invalid, "invalid_patch");
         }
@@ -49,6 +51,15 @@ public static class WorkspaceCommandEngine
         if (creating ? current is not null : current is null || current.IsArchived)
             return Reject(SubmissionDisposition.Invalid, "task_unavailable");
         var mapping = document.Projections.FirstOrDefault(value => value.TaskId == command.TaskId && !value.IsArchived);
+        if (command.Operation == WorkspaceOperation.RestoreTodo)
+        {
+            var retained = document.Projections.FirstOrDefault(value => value.TaskId == command.TaskId);
+            if (command.ProjectToHabitica || retained is not null && (retained.State != ProjectionState.Unlinked || retained.HabiticaTaskId is not null)) return Reject(SubmissionDisposition.Invalid,"unsupported_projection");
+            if (current!.Kind != CompanionTaskKind.Todo || current.State != CompanionTaskState.Completed) return Reject(SubmissionDisposition.Invalid,"todo_not_completed");
+            var completion = document.Completions.FirstOrDefault(value => value.Id == patch!.RestoreTodo!.CompletionId);
+            if (completion is null || completion.TaskId != current.Id || completion.OccurrenceId is not null) return Reject(SubmissionDisposition.Invalid,"completion_unavailable");
+            if (document.Restorations?.Any(value => value.CompletionId == completion.Id) == true) return Reject(SubmissionDisposition.Invalid,"completion_already_restored");
+        }
         if (command.Operation == WorkspaceOperation.PlanTask)
         {
             if (command.ProjectToHabitica) return Reject(SubmissionDisposition.Invalid,"unsupported_projection");
@@ -95,6 +106,7 @@ public static class WorkspaceCommandEngine
         var revision = document.Revision + 1;
         var tasks = document.Tasks.ToList(); var completions = document.Completions.ToList();
         var occurrences = document.Occurrences.ToList(); var scores = document.HabitScores.ToList();
+        var restorations = document.Restorations?.ToList();
         CompanionTask updated;
         if (creating)
             updated = new(command.TaskId, revision, patch!.Text!, command.Operation == WorkspaceOperation.CreateDaily ? CompanionTaskKind.Daily : command.Operation == WorkspaceOperation.CreateHabit ? CompanionTaskKind.Habit : CompanionTaskKind.Todo, CompanionTaskState.Active, patch.Priority ?? CompanionPriority.Normal, now, now, patch.Notes, Deadline: patch.Deadline, Recurrence: patch.Recurrence, HabiticaDetails: patch.HabiticaDetails);
@@ -102,6 +114,11 @@ public static class WorkspaceCommandEngine
         {
             updated = current! with { Revision = revision, UpdatedAtUtc = now };
             if (command.Operation == WorkspaceOperation.PlanTask) updated = patch!.Planning!.Apply(updated);
+            if (command.Operation == WorkspaceOperation.RestoreTodo)
+            {
+                updated = updated with { State = CompanionTaskState.Active };
+                restorations ??= []; restorations.Add(new(Guid.NewGuid(),revision,updated.Id,patch!.RestoreTodo!.CompletionId,command.Id,now));
+            }
             if (command.Operation == WorkspaceOperation.PauseTask) updated = updated with { State = CompanionTaskState.Paused };
             if (command.Operation == WorkspaceOperation.ResumeTask) updated = updated with { State = CompanionTaskState.Active };
             if (command.Operation == WorkspaceOperation.SkipOccurrence)
@@ -130,11 +147,11 @@ public static class WorkspaceCommandEngine
             }
             if (command.Operation == WorkspaceOperation.ScoreHabit)
                 for (var index = 0; index < command.Count; index++) scores.Add(new(Guid.NewGuid(), revision, updated.Id, command.Id, now, command.Direction!.Value));
-            if (command.Operation == WorkspaceOperation.PlanTask) tasks[tasks.FindIndex(task => task.Id == updated.Id)] = updated;
+            if (command.Operation is WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo) tasks[tasks.FindIndex(task => task.Id == updated.Id)] = updated;
             else tasks.RemoveAll(task => task.Id == updated.Id);
         }
-        if (command.Operation != WorkspaceOperation.PlanTask) tasks.Add(updated);
-        var requested = command.Operation != WorkspaceOperation.PlanTask && (command.ProjectToHabitica || mapping is not null && mapping.State != ProjectionState.Unlinked);
+        if (command.Operation is not (WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo)) tasks.Add(updated);
+        var requested = command.Operation is not (WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo) && (command.ProjectToHabitica || mapping is not null && mapping.State != ProjectionState.Unlinked);
         var effects = new List<ProjectionEffectKind>();
         if (requested)
         {
@@ -149,7 +166,7 @@ public static class WorkspaceCommandEngine
         var entry = new WorkspaceCommandEntry(command, hash, now, state, effects, Failure: state == ProjectionCommandState.Blocked ? ProjectionFailure.Precondition : ProjectionFailure.None, TaskSnapshot: updated);
         var projections = document.Projections.ToList();
         if (requested && mapping is null) projections.Add(new(Guid.NewGuid(), revision, updated.Id, ProjectionState.Pending));
-        var result = document with { Revision = revision, Tasks = tasks, Completions = completions, Occurrences = occurrences, HabitScores = scores, Projections = projections };
+        var result = document with { Revision = revision, Tasks = tasks, Completions = completions, Restorations = restorations, Occurrences = occurrences, HabitScores = scores, Projections = projections };
         if (WorkspaceRules.Validate(result).Count != 0) return Reject(SubmissionDisposition.Invalid, "invalid_result");
         return new(SubmissionDisposition.Accepted, new(result, snapshot.StoreVersion + 1, snapshot.Commands.Append(entry).ToArray(), (snapshot.Events ?? Array.Empty<WorkspaceJournalEvent>()).Append(new(Guid.NewGuid(), command.Id, JournalEventKind.Accepted, now, 0, entry.Failure)).ToArray(), snapshot.Authority), entry);
     }

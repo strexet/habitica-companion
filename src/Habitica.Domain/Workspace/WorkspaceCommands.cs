@@ -2,12 +2,13 @@ using System.Text.Json.Serialization;
 
 namespace Habitica.Domain.Workspace;
 
-public enum WorkspaceOperation { CreateTodo, UpdateTask, CompleteTask, ScoreHabit, CreateDaily, CreateHabit, DeleteTask, SkipOccurrence, PauseTask, ResumeTask, PlanTask }
+public enum WorkspaceOperation { CreateTodo, UpdateTask, CompleteTask, ScoreHabit, CreateDaily, CreateHabit, DeleteTask, SkipOccurrence, PauseTask, ResumeTask, PlanTask, RestoreTodo }
 public enum ProjectionCommandState { NotRequested, Pending, Leased, Executing, Confirmed, Blocked, UnknownOutcome, Cancelled }
 public enum ProjectionFailure { None, RateLimited, CredentialRepair, Precondition, Permanent, Transient, Ambiguous }
 public enum ProjectionEffectKind { Create, Update, ScoreUp, ScoreDown }
 public enum JournalEventKind { Accepted, LeaseAcquired, LeaseExpired, Dispatched, ResultKnown, UnknownDetected, Reconciled, Cancelled }
 public enum SubmissionDisposition { Accepted, Duplicate, RevisionConflict, IdempotencyConflict, Invalid, Unavailable }
+public sealed record WorkspaceTodoRestore([property: JsonRequired] Guid CompletionId);
 
 public sealed record WorkspaceTaskPatch(
     string? Text = null,
@@ -19,7 +20,8 @@ public sealed record WorkspaceTaskPatch(
     HabiticaTaskDetails? HabiticaDetails = null,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] RecurrenceRule? Recurrence = null,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool ClearRecurrence = false,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceTaskPlanning? Planning = null);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceTaskPlanning? Planning = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceTodoRestore? RestoreTodo = null);
 
 public sealed record WorkspaceCommand(
     Guid Id,

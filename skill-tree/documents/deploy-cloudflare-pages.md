@@ -309,3 +309,7 @@ planTask adds a command operation and optional planning patch using identity v4.
 ## Restoration-cycle data compatibility
 
 The optional restorations document extension retains unused legacy defaults and requires no D1 migration. Strict clients without extension support reject documents that contain restoration data. Coordinate application and Worker updates before using cycle data; compatibility cannot be inferred from a successful dry build. No live activation or migration tooling is included in model qualification.
+
+## Reviewed Todo restoration compatibility
+
+restoreTodo and optional patch.restoreTodo use identity v5 while unused extensions preserve existing hashes. Matching application, MCP, Workspace and task-management package updates are required before use; strict older clients can reject extended journal commands. No D1 migration, new secret or enabled background executor is needed. Dry builds and synthetic tests supply local evidence only; deployment and real client qualification remain separate.

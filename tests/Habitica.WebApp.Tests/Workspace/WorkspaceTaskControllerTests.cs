@@ -100,4 +100,17 @@ public sealed class WorkspaceTaskControllerTests
         Assert.Equal(original,f.Controller.LastReceipt!.CommandId);Assert.Equal(0,f.Controller.LastReceipt.AcceptedEventCount);Assert.Equal(0,f.Controller.LastReceipt.TotalProjectionCount);
         var saved=Assert.Single(f.Controller.Snapshot!.Document.Tasks);Assert.Equal(new DateOnly(2026,10,20),saved.PlannedDate);Assert.Equal(task.Text,saved.Text);Assert.Equal(2,f.Controller.Snapshot.Commands.Count);
     }
+    [Fact]
+    public async Task TodoRestorationReviewsExactHistoryAndRecoversOneEventAfterLostAcknowledgement()
+    {
+        var f=new WorkspaceTaskFixture();await f.Controller.CreateLocalAsync();await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo());await f.Controller.ConfirmAsync();
+        var task=Assert.Single(f.Controller.Snapshot!.Document.Tasks);
+        await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo() with { Operation=WorkspaceOperation.CompleteTask,TaskId=task.Id });await f.Controller.ConfirmAsync();
+        var completion=Assert.Single(f.Controller.Snapshot!.Document.Completions);
+        await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo() with { Operation=WorkspaceOperation.RestoreTodo,TaskId=task.Id,RestoreTodo=new(completion.Id) });
+        Assert.False(f.Controller.Preview!.MayAffectHabitica);Assert.Equal(completion.Id,f.Controller.Preview.Command.Patch!.RestoreTodo!.CompletionId);Assert.Contains("no Habitica effect",f.Controller.Message);
+        var original=f.Controller.Preview.Command.Id;f.Js.LoseCommitAcknowledgement=true;await f.Controller.ConfirmAsync();Assert.True(f.Controller.AcceptanceUnknown);await f.Controller.CheckOriginalAsync();
+        Assert.Equal(original,f.Controller.LastReceipt!.CommandId);Assert.Equal(1,f.Controller.LastReceipt.AcceptedEventCount);Assert.Equal(0,f.Controller.LastReceipt.TotalProjectionCount);
+        Assert.Single(f.Controller.Snapshot!.Document.Completions);Assert.Single(f.Controller.Snapshot.Document.Restorations!);Assert.Equal(CompanionTaskState.Active,f.Controller.Snapshot.Document.Tasks[0].State);Assert.Equal(3,f.Controller.Snapshot.Commands.Count);
+    }
 }

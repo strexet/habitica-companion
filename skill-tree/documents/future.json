@@ -66,7 +66,8 @@
       "T-a1d24727-18dc-4303-9017-a97906d08e13",
       "T-37720737-c1a1-4d37-bb03-7037491fbf05",
       "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2",
-      "T-188797a8-cbea-411c-82a5-74257508314b"
+      "T-188797a8-cbea-411c-82a5-74257508314b",
+      "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -124,6 +125,7 @@
       "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08": "O-b7bd034e-ef6e-4d79-9c42-c6e9ea9159fc",
       "T-b883e33b-05a6-53d8-a9a5-d11d7008887f": "O-84147b67-67cd-4c09-80fe-17befff407d7",
       "T-b92db026-a8cf-5922-8556-666cbea947ab": "O-e70ae478-e644-48d6-8451-13f7bbdc4e6a",
+      "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f": "O-9869121a-58e8-4254-8ef2-ac51110bd98b",
       "T-be68f853-9737-4657-a8a4-7aff8dfc497b": "O-2cf7fc6d-d2b2-480c-b190-e9907a73ea5a",
       "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58": "O-73471b3d-a79c-4f29-b7fb-2c5512696896",
       "T-c6f6b09d-4625-5898-b91c-016c611b60df": "O-ed64ce15-7bea-467d-8a8b-06a3494a05fd",
@@ -136,8 +138,8 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
-    "cycle_signature": "1f6bd4564eb42f5926b4056213b2f5b0f2b4570dc68c55f4c851eebc60adbe3a",
+    "current_task_id": null,
+    "cycle_signature": "41b625ce99b2b8a23c2dc282a844c5830c3275d1212799ec775abe2f8fb35dbc",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -147,10 +149,9 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Implement the selected reviewed RestoreTodo command with exact completion identity.",
+    "next_action": "Research the remaining original E11 Habit activity-history read unit; live release gate remains blocked.",
     "partial_work": [
-      "Restoration-cycle model dependency is complete with all local builds and 970 regression tests.",
-      "Implement exact-event unlinked Todo restoration next; preserve all prior completion/restoration records and zero game effects."
+      "Reviewed Todo restoration completed; release/app/Worker builds and all 995 local regression tests passed."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -207,7 +208,7 @@
       "P-f0c7dfe0-a459-4636-af5c-567281e19367",
       "P-7cb0bb45-a294-404c-b257-136d0f9f3de4"
     ],
-    "phase": "implement",
+    "phase": "process-required",
     "processing_results": [
       {
         "created_ids": [
@@ -1408,7 +1409,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "1c54ef3cea460e2c5eb49fce017cbf9e5cf7a1f3ad885515c7b6137f5f998c28",
+  "source_hash": "b176b7b7382e43976eac4f5fd912aa014212f1788ce954ec78b681be32e42fe0",
   "tasks": [
     {
       "depends_on": [],
@@ -1510,24 +1511,6 @@
     },
     {
       "depends_on": [
-        "T-188797a8-cbea-411c-82a5-74257508314b"
-      ],
-      "id": "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
-      "line": 267,
-      "parent_pending_ids": [
-        "P-f0c7dfe0-a459-4636-af5c-567281e19367"
-      ],
-      "priority": 100,
-      "processing_run_id": "PR-f404f1bc-3dcf-4d74-a6ea-372a47431f96",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
-      "status": "Ready",
-      "title": "Review exact unlinked Todo restoration without game effects"
-    },
-    {
-      "depends_on": [
         "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
         "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
         "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
@@ -1541,7 +1524,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 313,
+      "line": 267,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1565,7 +1548,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 354,
+      "line": 308,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1581,7 +1564,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 509,
+      "line": 463,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1595,7 +1578,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 546,
+      "line": 500,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1609,7 +1592,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 583,
+      "line": 537,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1623,7 +1606,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 716,
+      "line": 670,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1637,7 +1620,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 754,
+      "line": 708,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1651,7 +1634,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 788,
+      "line": 742,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1665,7 +1648,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 823,
+      "line": 777,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1679,7 +1662,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 857,
+      "line": 811,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1693,7 +1676,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 895,
+      "line": 849,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1707,7 +1690,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 922,
+      "line": 876,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1721,7 +1704,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 944,
+      "line": 898,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1735,7 +1718,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 971,
+      "line": 925,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
