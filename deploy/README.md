@@ -105,3 +105,7 @@ The owner reports initial authentication in both clients and two successful Chat
 ## Stop and recover
 
 Stop new cloud access by disabling enrollment/OAuth and Workspace flags in the matching generated production configs and redeploying the affected Workers. Keep all game-effect/executor/Cron flags false. Per-account disconnect/deletion controls remain separate. Retain accepted histories and unknown-effect fences. Never delete established browser data or retry unknown gameplay effects to repair a connection. Restore only verified backups with compatible schemas.
+
+## Ordinary production user controls
+
+Production frontend settings use Features:OwnerIsolatedTestingEnabled=false and Features:PartySyncEnabled=true. The same normal defaults apply to source/client construction and generated bundles. Test isolation requires an explicit agent profile; party management and Start New Day remain restricted only in that profile. Supported class spells retain ordinary game checks in both profiles. Party departure remains prohibited everywhere. The frontend permission correction does not activate any optional backend gameplay flag or launch another live test round. Public publication evidence resides in skill-tree/history/validation/production-user-actions.json.

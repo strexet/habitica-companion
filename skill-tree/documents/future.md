@@ -72,6 +72,32 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### E13 Organization CRUD, advanced state and project workflow guidance
+
+```yaml
+id: P-cc70b363-4669-44a4-be9b-1d6cb918d36b
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Implement reviewed category/project/section/label/goal creation/edit/archive commands, remaining Todo workflow state and corresponding project/goal packaged workflows.
+
+Expected behavior:
+- Manual and agent workflows share exact canonical validation, original receipts and own-profile grants without generic proxies or invented writes.
+
+Current context:
+- Canonical organization reads, native placement, history/restoration and candidate reads are implemented. Todo parent/dependency authoring is a separate local unit. Organization CRUD, advanced state and project/goal workflow guidance remain unimplemented; production controls and real clients retain separate gates.
+
+Source:
+- Remaining original E13 intent from P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 through P-64cd7c9d-4f1b-4772-ba45-adc0535829e9.
+
 ### E12 Saved views, review policies and mobile task hygiene controls
 
 ```yaml
@@ -149,32 +175,6 @@ Current context:
 
 Source:
 - Remaining original E09 intent from P-c8632138-39c6-5797-8e03-a3414824ee96 through P-f0c7dfe0-a459-4636-af5c-567281e19367.
-
-### E13 Organization CRUD, task relationships and packaged workflows
-
-```yaml
-id: P-64cd7c9d-4f1b-4772-ba45-adc0535829e9
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Implement reviewed category/project/section/label/goal creation/edit/archive commands, advanced task state/hierarchy/dependencies and corresponding project/goal packaged workflows.
-
-Expected behavior:
-- Manual and agent workflows share canonical validation, original receipts and own-profile permissions without generic proxies or invented writes.
-
-Current context:
-- Read surfaces and native-only task placement are separate local foundations. Completion/restoration and activity reads are implemented as separate local units. Organization CRUD, advanced state/hierarchy/dependency authoring and project/goal workflow guidance remain unimplemented. UI and real host activation retain separate qualification.
-
-Source:
-- Remaining original E13 intent from P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156 through P-e5db46c5-d445-4199-8126-8fb504f7fd38.
 
 ### E01 Hands-on competitor and mobile workflow qualification
 
@@ -263,6 +263,95 @@ Expected behavior:
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
+
+### Restore production user actions and opt-in test isolation
+
+```yaml
+id: T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0
+priority: 110
+status: Ready
+parent_pending_ids: ["P-e8c5af20-15ee-4020-82ea-3560a3a183e7"]
+processing_run_id: PR-3c3d0af7-9693-4330-884f-a9c9b931b23a
+root_task_id: T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Restore ordinary production user actions without inheriting the agent test profile.
+Current behavior:
+- Default/source and production override settings activate owner isolation, disable shared sync and block party/task spells in three layers.
+Desired behavior:
+- Production and normal client defaults disable test isolation and restore existing party sync. Supported class spells remain available under normal mana/unlock/target/freshness checks even in an explicit agent test profile.
+Touch:
+- API options/test spell guard, application controller, spell UI, frontend settings/deployment generator, direct tests, current docs and existing Pages production artifact.
+Discovery allowance:
+- Inspect current production public configuration, existing Pages resources, local CLI help and official publication documentation.
+Out of scope:
+- Party departure, new cloud gameplay tool activation, background executor/Cron activation, real gameplay test rounds, user credential changes or a new website.
+Implementation constraints:
+- Preserve permanent party-departure denial. Keep party-management and Start New Day restrictions only in explicit agent test profiles; normal users retain existing actions.
+- Remove the spell whitelist test restriction rather than weakening normal game eligibility, rate limits, sequential execution or confirmations.
+- Publish the tested frontend to the existing habitica-companion.pages.dev production slot with retained bindings. No new backend flags, schema changes or service deployment is required.
+- Verify public hosted settings/assets after publication without real Habitica mutations or authenticated account tests.
+Questions and required clarifications:
+- [Resolved - owner request] Production correction and public verification are authorized. The owner permits all supported spells in agent tests; a new live gameplay round remains unselected.
+Validation:
+- API/controller/component regressions for self, party and task-target spells; explicit test profile still blocks party management/Cron and every profile blocks party departure.
+- Full relevant app suites, frontend settings/generator checks and release artifact build. Verify production deployment identity, public configuration and asset hashes.
+Acceptance:
+- Production users retain normal existing spell and action controls while agent-test isolation is opt-in and permits supported spells.
+- The tested correction is published to the existing production website with permanent party-departure protection and no real gameplay effects.
+Documentation updates:
+- Describe user versus agent test scope and record sanitized publication evidence.
+Risks:
+- Reusing stale production overrides, deploying to a preview branch or accidentally changing backend/gameplay activation.
+
+### Review native Todo parent and dependency relationships
+
+```yaml
+id: T-984d414d-69d0-45f0-a6aa-7065dc5cdcea
+priority: 100
+status: Ready
+parent_pending_ids: ["P-64cd7c9d-4f1b-4772-ba45-adc0535829e9"]
+processing_run_id: PR-90507fff-91d6-4f69-8907-e68e83cdc4d0
+root_task_id: T-984d414d-69d0-45f0-a6aa-7065dc5cdcea
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Author exact native Todo parent/dependency relationships through reviewed commands without changing task state or game effects.
+Current behavior:
+- Canonical Todo parent and dependency identities are validated as an acyclic combined graph. MCP can read candidate eligibility but cannot author relationships.
+Desired behavior:
+- Review a relateTodo command with only patch.relationships: optional exact parentTaskId or clearParentTask, and an optional complete dependsOn replacement including an explicit empty list.
+Touch:
+- Domain patch/identity/validation, Application/Worker acceptance, MCP/task API, browser adapters, packaged task guidance and direct tests.
+Discovery allowance:
+- Reuse native placement review, original receipts, graph invariants and zero-effect portable validation.
+Out of scope:
+- Non-Todo relationship authoring, task state/type changes, organization CRUD, implicit project inheritance, cascade completion, production UI and live tests.
+Implementation constraints:
+- Existing target must be a nonarchived Todo. Requested parent and dependency identities must be distinct nonarchived Todos; preserve omitted historical references and reject self/missing/duplicate references.
+- Accept at most 100 replacement dependencies. Existing combined parent/dependency graph validation rejects cycles. Changing parent never moves projects, changes task state or completes children.
+- Preserve task order, metadata, mappings, history and existing unknown-outcome fences. Any projection request is rejected; linked/pending/uncertain mappings remain unchanged and enqueue zero effects.
+- Append an operation and optional relationships-only patch with identity v6 while preserving unused legacy encodings and wire defaults. Portable snapshots match exact relationships and cannot fabricate effects.
+- Concrete review binds exact target, parent and complete dependency replacement. Original preparation/acceptance and receipt identities survive retries and lost acknowledgements.
+Questions and required clarifications:
+- [Resolved - standing local contract direction] Initial authoring covers Todo relationships only, using existing graph semantics and nonarchived references without inheritance or game effects.
+Validation:
+- Independent v6/legacy identities, partial/clear/full replacement, exact kinds/references, combined cycles, archived/missing targets, metadata/order/history preservation and portable tampering cases.
+- Browser lost-ack recovery, native preview/effect guards and synthetic SDK authorization/isolation/zero-write checks. Build app/Workers and run affected suites.
+Acceptance:
+- Reviewed Todo relationships preserve canonical metadata and original receipts while updating exact acyclic relationships with zero game effects.
+- Invalid references, mixed patches, cycles, altered previews and unauthorized or foreign commands cannot bypass native acceptance guards.
+Documentation updates:
+- Describe supported parent/dependency authoring and retained organization/state/UI limits.
+Risks:
+- Creating graph cycles, silently replacing relationships, propagating project/state changes or dispatching game effects.
 
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 

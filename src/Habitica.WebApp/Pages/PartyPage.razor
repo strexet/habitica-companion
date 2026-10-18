@@ -12,7 +12,7 @@
 <PageTitle>@(QuestWorkspaceOnly ? "Quests" : "Party")</PageTitle>
 @if (SessionController.State.OwnerIsolatedTestingEnabled)
 {
-    <MudAlert Severity="Severity.Info">Party actions are read-only during own-account testing. Leaving the party is prohibited.</MudAlert>
+    <MudAlert Severity="Severity.Info">Party management is read-only in agent test mode. Leaving the party is prohibited.</MudAlert>
 }
 
 <div class="party-shell">
@@ -2063,7 +2063,7 @@
 
     private string? GetInvitePartyDisabledReason(PartyQuestQueueEntry entry)
     {
-        if (SessionController.State.OwnerIsolatedTestingEnabled) return "Party actions are read-only during own-account testing.";
+        if (SessionController.State.OwnerIsolatedTestingEnabled) return "Party management is read-only in agent test mode.";
         if (SessionController.State.PartyFreshness != SnapshotFreshnessState.Fresh)
         {
             return "Refresh party data before inviting.";

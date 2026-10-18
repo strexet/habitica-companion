@@ -625,9 +625,9 @@ Connected workspace Settings provides a manual saved-work status button. The tim
 Settings shells/cards use shrinking grid tracks, and nested Settings grids cap minimum tracks at the available width. Card copy and button labels wrap long text without hiding overflow. Canonical command fields cap intrinsic widths; native date controls use narrow padding and a shrinking fieldset. Real Razor fixtures cover 320/390/1024-pixel widths and 200-percent root text at 320 pixels across command review, integration management, workspace renewal/status and party controls. Browser measurements distinguish fitting controls from actual mobile-device and assistive-technology acceptance.
 
 
-## Own-account testing controls
+## Ordinary user and agent test controls
 
-The owner-isolated profile explains the active boundary on Party and Spells. Party invitation/acceptance/start controls and shared or task-targeted spell casting remain disabled; self-spell controls retain normal freshness, mana and level checks. Dashboard and spell-chain Start New Day controls remain disabled with the shared-quest risk explained. Equipment controls remain available for owned gear. UI state never substitutes for the API departure and dispatch guards.
+Normal users see existing spell, party and manual Start New Day controls without an agent-test banner or test-only disable reason. Class/unlock, mana, selected target, fresh data, permission and confirmation checks remain visible. All supported spell target kinds remain available in an explicit agent profile. Agent test mode displays the separate party-management/Start New Day restriction; spell controls do not inherit that restriction. Equipment controls remain available for owned gear. Party departure is prohibited in every profile, independently of UI state.
 
 ## Canonical lifecycle preview labels
 

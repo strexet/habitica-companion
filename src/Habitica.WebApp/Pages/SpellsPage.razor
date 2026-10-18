@@ -12,7 +12,7 @@
 <PageTitle>Spells</PageTitle>
 @if (SessionController.State.OwnerIsolatedTestingEnabled)
 {
-    <MudAlert Severity="Severity.Info">Own-account testing: only self spells are available. Party spells and Start New Day are disabled.</MudAlert>
+    <MudAlert Severity="Severity.Info">Agent test mode: spells are available. Start New Day remains disabled.</MudAlert>
 }
 
 <div class="spells-shell">
@@ -96,13 +96,11 @@
                     var showStatPointContext = viewModel.IsStatAllocationUnlocked
                         && viewModel.UnallocatedStatPoints > 0
                         && spell.HasStatPointContext;
-                    var isolatedSpellBlocked = SessionController.State.OwnerIsolatedTestingEnabled
-                        && !Habitica.Domain.Auth.OwnerTestingPolicy.AllowsSpell(spell.Id);
-                    var canSpendAllMana = !isolatedSpellBlocked && canMutate
+                    var canSpendAllMana = canMutate
                         && !controlsDisabled
                         && spell.IsUnlocked
                         && maxAffordableCasts > 0;
-                    var castDisabled = isolatedSpellBlocked || !canMutate
+                    var castDisabled = !canMutate
                         || controlsDisabled
                         || !spell.IsUnlocked
                         || !hasEnoughMana

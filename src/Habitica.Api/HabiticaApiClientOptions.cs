@@ -7,4 +7,4 @@ public sealed record HabiticaApiClientOptions(
     // Habitica dislikes rapid-fire traffic, so we keep a polite floor regardless of
     // how much rate-limit budget is left.
     int MinRequestSpacingMilliseconds = 350,
-    bool OwnerIsolatedTestingEnabled = true);
+    bool OwnerIsolatedTestingEnabled = false);

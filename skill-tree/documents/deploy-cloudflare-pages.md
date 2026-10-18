@@ -292,7 +292,7 @@ The owner retest uses a refreshed ChatGPT tool definition and a fresh authorizat
 
 ### Active Codex owner-isolated lane
 
-The owner selects Codex-only testing and permits bounded own-account task changes, self spells and equipment checks. ChatGPT testing is deferred. The frontend profile uses `Features:OwnerIsolatedTestingEnabled=true` and `Features:PartySyncEnabled=false`; the reviewed production frontend override bundle retains the same settings. Backend party, live Cron, spells, projection and background-execution flags remain disabled. Real other-user effects and party departure remain outside every test lane.
+Normal source/client defaults and the reviewed production frontend override use `Features:OwnerIsolatedTestingEnabled=false` and `Features:PartySyncEnabled=true`. Agent isolation requires an explicit test profile and restricts party management/Start New Day only; supported class spells retain normal eligibility in both profiles. Party departure remains prohibited in every profile. The owner authorizes the frontend permission correction and public asset/settings verification; no new gameplay test round is selected. Backend party, live Cron, spells, projection and background-execution flags remain disabled under separate activation gates.
 
 ## Adaptive admission schema
 
@@ -313,3 +313,7 @@ The optional restorations document extension retains unused legacy defaults and 
 ## Reviewed Todo restoration compatibility
 
 restoreTodo and optional patch.restoreTodo use identity v5 while unused extensions preserve existing hashes. Matching application, MCP, Workspace and task-management package updates are required before use; strict older clients can reject extended journal commands. No D1 migration, new secret or enabled background executor is needed. Dry builds and synthetic tests supply local evidence only; deployment and real client qualification remain separate.
+
+## Production user-action correction
+
+The existing Pages production slot receives the tested frontend with ordinary user settings and preserved browser-sync/party bindings. The public settings and application asset hashes are verified against the release artifact. The correction requires no Worker publication, database migration, secret change, background activation or real Habitica mutation. Sanitized evidence resides in skill-tree/history/validation/production-user-actions.json. Existing automatic Git deployment can replace a manual artifact later; the source defaults and generator retain ordinary user permissions for subsequent builds.

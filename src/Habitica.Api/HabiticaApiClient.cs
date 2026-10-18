@@ -330,9 +330,6 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         string? targetId,
         CancellationToken cancellationToken)
     {
-        if (_ownerIsolatedTesting && !OwnerTestingPolicy.AllowsSpell(spellId, targetId))
-            throw new HabiticaApiException(HttpStatusCode.Forbidden, OwnerTestingPolicy.SpellUnavailable);
-
         var path = $"user/class/cast/{Uri.EscapeDataString(spellId)}";
         if (!string.IsNullOrWhiteSpace(targetId))
         {

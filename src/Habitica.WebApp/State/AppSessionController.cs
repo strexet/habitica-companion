@@ -1523,8 +1523,6 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task<SpellActionResult> CastSpellAsync(SpellCastRequest request, CancellationToken cancellationToken = default)
     {
-        if (_featureOptions.OwnerIsolatedTestingEnabled && !OwnerTestingPolicy.AllowsSpell(request.SpellId, request.TargetTaskId))
-            return SpellActionResult.Failure(OwnerTestingPolicy.SpellUnavailable);
         var credentials = await ResolveCredentialsAsync(cancellationToken);
         if (credentials is null)
         {

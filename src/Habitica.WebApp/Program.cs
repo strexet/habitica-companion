@@ -68,6 +68,6 @@ builder.Services.AddScoped<IHabiticaSyncClient>(_ => new HabiticaApiClient(
     new HabiticaApiClientOptions(
         builder.Configuration["Habitica:XClientHeader"],
         MinRequestSpacingMilliseconds: builder.Configuration.GetValue("Habitica:MinRequestSpacingMilliseconds", 350),
-        OwnerIsolatedTestingEnabled: builder.Configuration.GetValue("Features:OwnerIsolatedTestingEnabled", true))));
+        OwnerIsolatedTestingEnabled: builder.Configuration.GetValue("Features:OwnerIsolatedTestingEnabled", false))));
 
 await builder.Build().RunAsync();

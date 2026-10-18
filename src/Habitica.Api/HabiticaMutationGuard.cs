@@ -22,6 +22,6 @@ public static class HabiticaMutationGuard
 
         if (method == HttpMethod.Get || method == HttpMethod.Head || !ownerIsolatedTesting) return;
         if (groupIndex >= 0 || path.Equals("/api/v3/cron", StringComparison.OrdinalIgnoreCase))
-            throw new HabiticaApiException(HttpStatusCode.Forbidden, "Party changes and Start New Day are disabled during own-account testing.");
+            throw new HabiticaApiException(HttpStatusCode.Forbidden, "Party management and Start New Day are disabled in agent test mode.");
     }
 }

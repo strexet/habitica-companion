@@ -15,22 +15,24 @@ namespace Habitica.WebApp.Tests.Pages;
 
 public sealed class SpellsPageTests : BunitContext
 {
-    [Fact]
-    public void Owner_isolation_disables_shared_spells_and_keeps_self_spell_available()
+    [Theory]
+    [InlineData("wizard", false)] [InlineData("wizard", true)]
+    [InlineData("warrior", false)] [InlineData("warrior", true)]
+    [InlineData("rogue", false)] [InlineData("rogue", true)]
+    [InlineData("healer", false)] [InlineData("healer", true)]
+    public void Normal_and_agent_test_profiles_keep_all_unlocked_class_spells_available(string className,bool isolated)
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
         Services.AddMudServices();
         Services.AddSingleton(new SpellViewModelFactory());
         Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage());
         var state = CreateState();
-        state = state with { OwnerIsolatedTestingEnabled = true, UserSnapshot = state.UserSnapshot! with { Mana = 100m } };
+        state = state with { OwnerIsolatedTestingEnabled = isolated, UserSnapshot = state.UserSnapshot! with { ClassName=className,Mana = 100m } };
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(state));
         var cut = Render<SpellsPage>();
-        Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("owner-isolated-spells", cut.Markup);
-        Assert.Contains("only self spells", cut.Markup);
-        Assert.True(cut.Find("[data-testid='cast-spell-earth']").HasAttribute("disabled"));
-        Assert.True(cut.Find("[data-testid='cast-spell-fireball']").HasAttribute("disabled"));
-        Assert.False(cut.Find("[data-testid='cast-spell-frost']").HasAttribute("disabled"));
+        var buttons=cut.FindAll("[data-testid^='cast-spell-']");Assert.Equal(4,buttons.Count);Assert.All(buttons,button=>Assert.False(button.HasAttribute("disabled")));
+        Assert.DoesNotContain("only self spells",cut.Markup);
+        Assert.Equal(isolated,cut.Markup.Contains("Start New Day remains disabled"));
     }
 
     [Fact]

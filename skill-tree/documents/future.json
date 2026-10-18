@@ -142,7 +142,7 @@
       "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": null,
+    "current_task_id": "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
     "cycle_signature": "b81044896307259542f6d997fc2fa7ff08001c1855427bb09f944fb809b7151d",
     "deferred_ids": [],
     "history_refs": [
@@ -153,9 +153,9 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Research the remaining original E13 reviewed Todo parent/dependency authoring unit; preserve live and mobile gates.",
+    "next_action": "Publish the reviewed source artifact to existing Pages main production slot, then verify public configuration and asset hashes without gameplay.",
     "partial_work": [
-      "Unblocked Todo candidate reads completed; app/Worker builds and all 1012 local regression tests passed."
+      "Normal user defaults and production overrides verified; all 687 .NET tests and eight configuration/generator checks passed. The production release artifact builds successfully with normal-user settings and unchanged staged Functions/bindings. Existing public site still reports test isolation true and party sync false. Source correction is ready for publication."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -212,9 +212,11 @@
       "P-f0c7dfe0-a459-4636-af5c-567281e19367",
       "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
       "P-346056d8-c254-4a1e-b860-6850c6cb470d",
-      "P-84af82c3-f65b-4981-8f40-e3faaf651314"
+      "P-84af82c3-f65b-4981-8f40-e3faaf651314",
+      "P-cc70b363-4669-44a4-be9b-1d6cb918d36b",
+      "P-e8c5af20-15ee-4020-82ea-3560a3a183e7"
     ],
-    "phase": "process-required",
+    "phase": "implement",
     "processing_results": [
       {
         "created_ids": [
@@ -1197,6 +1199,40 @@
           "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea"
+        ],
+        "dispositions": {
+          "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9": {
+            "reason": "Existing native-only command review and canonical acyclic Todo graph validation support exact parent/dependency authoring. Organization CRUD and advanced state remain separate.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-90507fff-91d6-4f69-8907-e68e83cdc4d0",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0"
+        ],
+        "dispositions": {
+          "P-e8c5af20-15ee-4020-82ea-3560a3a183e7": {
+            "reason": "Source/UI/controller/API and production overrides confirm that owner-test restrictions leaked into normal user settings. Explicit publication targets the existing Pages frontend.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-3c3d0af7-9693-4330-884f-a9c9b931b23a",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-e8c5af20-15ee-4020-82ea-3560a3a183e7"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -1270,9 +1306,11 @@
       "T-188797a8-cbea-411c-82a5-74257508314b",
       "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
       "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95",
-      "T-e3653fbd-2101-4b58-8219-3aa076b56fe6"
+      "T-e3653fbd-2101-4b58-8219-3aa076b56fe6",
+      "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
+      "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0"
     ],
-    "root_task_id": "T-e3653fbd-2101-4b58-8219-3aa076b56fe6",
+    "root_task_id": "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1437,6 +1475,24 @@
         "reason": "Decompose dependency-aware candidate reads from remaining saved-view/review/mobile policy.",
         "remaining_pending_id": "P-84af82c3-f65b-4981-8f40-e3faaf651314",
         "researched_remainder": "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa"
+      },
+      {
+        "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+        "owner_direction": "Expand to local tasks and Pending work; adopt further local contracts",
+        "promoted_local_roots": [
+          "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea"
+        ],
+        "reason": "Decompose native Todo relationship authoring from remaining organization and advanced state workflow.",
+        "remaining_pending_id": "P-cc70b363-4669-44a4-be9b-1d6cb918d36b",
+        "researched_remainder": "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9"
+      },
+      {
+        "owner_direction": "Fix production user restrictions; permit all supported spells in agent tests",
+        "promoted_local_roots": [
+          "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0"
+        ],
+        "publication_scope": "Existing Pages frontend only; no backend activation or gameplay test round",
+        "reason": "Prioritize the explicit production bug while retaining the queued Todo relationship unit."
       }
     ],
     "snapshot": [
@@ -1467,18 +1523,34 @@
       "T-188797a8-cbea-411c-82a5-74257508314b",
       "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
       "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95",
-      "T-e3653fbd-2101-4b58-8219-3aa076b56fe6"
+      "T-e3653fbd-2101-4b58-8219-3aa076b56fe6",
+      "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
+      "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "67e25ba810bae3058fb5a0afd916a72d925458a497cad3738abbf7db9abd3e6b",
+  "source_hash": "be26c622c7574fba1ab000283db7123e43a3fc8f02ada26b6e8e236c2e6ba7dd",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-84af82c3-f65b-4981-8f40-e3faaf651314",
+      "id": "P-cc70b363-4669-44a4-be9b-1d6cb918d36b",
       "line": 75,
+      "parent_pending_ids": [],
+      "priority": 100,
+      "processing_run_id": null,
+      "queue": "Pending Queue",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": null,
+      "status": "Pending",
+      "title": "E13 Organization CRUD, advanced state and project workflow guidance"
+    },
+    {
+      "depends_on": [],
+      "id": "P-84af82c3-f65b-4981-8f40-e3faaf651314",
+      "line": 101,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1492,7 +1564,7 @@
     {
       "depends_on": [],
       "id": "P-346056d8-c254-4a1e-b860-6850c6cb470d",
-      "line": 101,
+      "line": 127,
       "parent_pending_ids": [],
       "priority": 100,
       "processing_run_id": null,
@@ -1506,20 +1578,6 @@
     {
       "depends_on": [],
       "id": "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
-      "line": 127,
-      "parent_pending_ids": [],
-      "priority": 100,
-      "processing_run_id": null,
-      "queue": "Pending Queue",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": null,
-      "status": "Pending",
-      "title": "E09 Mobile planning/history UI and remaining restore policies"
-    },
-    {
-      "depends_on": [],
-      "id": "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9",
       "line": 153,
       "parent_pending_ids": [],
       "priority": 100,
@@ -1529,7 +1587,7 @@
       "relation": "main",
       "root_task_id": null,
       "status": "Pending",
-      "title": "E13 Organization CRUD, task relationships and packaged workflows"
+      "title": "E09 Mobile planning/history UI and remaining restore policies"
     },
     {
       "depends_on": [],
@@ -1574,6 +1632,38 @@
       "title": "E10 Categories, goals, projects, progress and lightweight workflows UX"
     },
     {
+      "depends_on": [],
+      "id": "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
+      "line": 267,
+      "parent_pending_ids": [
+        "P-e8c5af20-15ee-4020-82ea-3560a3a183e7"
+      ],
+      "priority": 110,
+      "processing_run_id": "PR-3c3d0af7-9693-4330-884f-a9c9b931b23a",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
+      "status": "Ready",
+      "title": "Restore production user actions and opt-in test isolation"
+    },
+    {
+      "depends_on": [],
+      "id": "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
+      "line": 311,
+      "parent_pending_ids": [
+        "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-90507fff-91d6-4f69-8907-e68e83cdc4d0",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
+      "status": "Ready",
+      "title": "Review native Todo parent and dependency relationships"
+    },
+    {
       "depends_on": [
         "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
         "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
@@ -1588,7 +1678,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 267,
+      "line": 356,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1612,7 +1702,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 308,
+      "line": 397,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1628,7 +1718,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 463,
+      "line": 552,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1642,7 +1732,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 500,
+      "line": 589,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1656,7 +1746,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 537,
+      "line": 626,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1670,7 +1760,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 670,
+      "line": 759,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1684,7 +1774,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 708,
+      "line": 797,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1698,7 +1788,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 742,
+      "line": 831,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1712,7 +1802,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 777,
+      "line": 866,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1726,7 +1816,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 811,
+      "line": 900,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1740,7 +1830,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 849,
+      "line": 938,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1754,7 +1844,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 876,
+      "line": 965,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1768,7 +1858,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 898,
+      "line": 987,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1782,7 +1872,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 925,
+      "line": 1014,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

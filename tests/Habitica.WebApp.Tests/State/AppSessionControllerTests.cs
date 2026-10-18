@@ -22,7 +22,6 @@ public sealed class AppSessionControllerTests
     {
         var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), ownerIsolatedTesting: true);
         Assert.False((await controller.StartNewDayAsync()).Succeeded);
-        Assert.False((await controller.CastSpellAsync(new SpellCastRequest("healAll", null, 1))).Succeeded);
         Assert.False((await controller.InvitePartyToQuestAsync("unused", 1)).Succeeded);
         Assert.False((await controller.StartSelectedPartyQuestAsync("unused")).Succeeded);
     }
@@ -631,12 +630,13 @@ public sealed class AppSessionControllerTests
         Assert.Contains((EquipmentSetKind.Battle, "eyewear_special_1"), syncClient.EquipCalls);
     }
 
-    [Fact]
-    public async Task CastSpellAsync_casts_sequentially_refreshes_snapshots_and_writes_log()
+    [Theory]
+    [InlineData(false)] [InlineData(true)]
+    public async Task CastSpellAsync_casts_sequentially_refreshes_snapshots_and_writes_log(bool isolated)
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot() with { RetrievedAtUtc = DateTimeOffset.UtcNow }, CreateTaskSnapshot(), CreatePartySnapshot());
-        var controller = CreateController(logStore, syncClient);
+        var controller = CreateController(logStore, syncClient, ownerIsolatedTesting: isolated);
         await controller.SignInAsync(new SignInRequest
         {
             ApiToken = "api-token",
@@ -696,12 +696,13 @@ public sealed class AppSessionControllerTests
             && entry.Metadata["stage"] == "preparation");
     }
 
-    [Fact]
-    public async Task CastSpellAsync_refreshes_party_snapshot_after_party_targeted_spell()
+    [Theory]
+    [InlineData(false)] [InlineData(true)]
+    public async Task CastSpellAsync_refreshes_party_snapshot_after_party_targeted_spell(bool isolated)
     {
         var logStore = new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>());
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot() with { RetrievedAtUtc = DateTimeOffset.UtcNow }, CreateTaskSnapshot(), CreatePartySnapshot());
-        var controller = CreateController(logStore, syncClient);
+        var controller = CreateController(logStore, syncClient, ownerIsolatedTesting: isolated);
         await controller.SignInAsync(new SignInRequest
         {
             ApiToken = "api-token",
