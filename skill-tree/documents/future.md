@@ -102,46 +102,6 @@ Source:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Distinguish server connections from tab management access
-
-```yaml
-id: T-a7dca938-7c13-4878-9363-04862fbfa04d
-priority: 101
-status: Ready
-parent_pending_ids: ["P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-a7dca938-7c13-4878-9363-04862fbfa04d
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Stop presenting missing local management access as disabled server enrollment.
-Current behavior:
-- SettingsPage.HasChatGptConnection and WorkspaceSettingsPanel.CloudWorkspaceId depend on in-memory clients. Closing a tab forgets credentials; the first-connection form appears again. Existing authenticated status, explicit revalidation and workspace renewal are available.
-Desired behavior:
-- Connection cards distinguish unverified account state, current-tab management access, confirmed server enrollment and executor enabled/paused state. Explicit recovery retains server data and existing consent decisions.
-Touch:
-- SettingsPage, WorkspaceSettingsPanel, ChatGptIntegrationClient, WorkspaceCloudClient, WorkspaceDataController, integration/status tests and privacy/connection docs.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Absent management access means unknown until explicit verification, never a fabricated disabled state. Reuse supported consented revalidation/renewal; no automatic credential upload, persistent management-token sync, permission grant, background opt-in, profile deletion or token rotation. Reread executor state after connection recovery and explicit status refresh rather than trusting stale local booleans. Explain pending work paused by missing executor consent without retrying commands.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Independent client instances simulate lost-tab access, retained enrollment, executor state changed elsewhere, failed status, expired session and account switch. Component tests verify clear recovery actions and separate consent.
-Acceptance:
-- Fresh-tab connection UI reports unknown/unverified management access and offers explicit recovery without implying account disconnection.
-- Successful verification displays actual enrollment/executor state while failures and account changes cannot show stale success or grant new access.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Align Settings session action cards
 
 ```yaml
