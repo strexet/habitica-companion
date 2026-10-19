@@ -102,46 +102,6 @@ Source:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Repair shared readable text and enlarged layouts
-
-```yaml
-id: T-4b82019b-e1fa-4238-8629-05111e9dcc88
-priority: 101
-status: Ready
-parent_pending_ids: ["P-7ec29335-56c7-40cc-8fbe-bbf71277be3f"]
-processing_run_id: PR-2ec772f6-125e-4180-9ac0-c92f9cc8c8f4
-root_task_id: T-6122dded-900d-4d92-8739-bbc344e15ea0
-related_task_id: T-6122dded-900d-4d92-8739-bbc344e15ea0
-relation: blocker
-depends_on: []
-```
-
-Goal:
-- Repair shared readability and enlarged-layout defects exposed by actual browser qualification.
-Current behavior:
-- Accent/status text uses fill colors without a surface readability guard. Default filled controls can be 34 pixels high. The Tasks stat-grid minimum can exceed a narrow enlarged viewport. Trust-strip foregrounds reference shell colors over card surfaces.
-Desired behavior:
-- Shared semantic foregrounds remain readable on supported normal surfaces. Default primary targets reach 44 pixels, long labels wrap, and task grids shrink within the viewport.
-Touch:
-- Shared app.css, derived on-surface theme variables, theme regression tests and feature/testing/UX documentation.
-Discovery allowance:
-- Inspect rendered samples, current semantic tokens, palette generation and affected shared layout primitives.
-Out of scope:
-- New product features, log command behavior, palette redesign, hosted deployment and live account mutation.
-Implementation constraints:
-- Keep fill/border semantic colors and saved theme data. Derive transient foreground tokens with authored-color preservation where contrast qualifies. Avoid fixed text heights, hidden overflow and blanket black/white page restyling. Use existing dependencies and preserve disabled-state semantics. Intentional scroll containers require distinct evidence rather than false page overflow claims.
-Questions and required clarifications:
-- [Resolved - current browser evidence] Existing adopted normal-theme and responsive contracts define expected repairs.
-Validation:
-- Node contrast canaries, affected component regressions, Release publish and rendered default/generated samples including enlarged Tasks, Settings and sign-in. Verify normal and 200-percent text with known narrow widths.
-Acceptance:
-- Shared semantic text and primary controls satisfy scoped normal-theme contrast and target checks without changing saved theme data.
-- Enlarged Tasks and sign-in content remains within the narrow viewport without clipping primary actions.
-Documentation updates:
-- Update feature, testing and UX contracts with derived tokens and scoped geometry evidence.
-Risks:
-- Foreground polarity changes, unmeasured custom surfaces or incorrect treatment of intentional scrolling.
-
 ### Complete safe project retirement and agent project lifecycle
 
 ```yaml
@@ -541,46 +501,6 @@ Documentation updates:
 - Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
-### Add reusable page layout and theme qualification
-
-```yaml
-id: T-6122dded-900d-4d92-8739-bbc344e15ea0
-priority: 100
-status: Ready
-parent_pending_ids: ["P-24ec4579-ff37-44c6-9085-56fefe830888"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-6122dded-900d-4d92-8739-bbc344e15ea0
-related_task_id: null
-relation: main
-depends_on: ["T-2bf91411-423e-483b-95a7-92b9fdc69445", "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1", "T-4b82019b-e1fa-4238-8629-05111e9dcc88"]
-```
-
-Goal:
-- Make new-page acceptance include rendered layout, behavior and normal-theme readability.
-Current behavior:
-- UX rules and component/token tests exist; WorkspaceLayoutEvidence can render real Razor fixtures. No unified page/state/theme matrix proves all new pages or baseline contrast.
-Desired behavior:
-- A reusable synthetic-data workflow produces checkable geometry, contrast, screenshots and interaction results for each changed page and shared control.
-Touch:
-- Existing WebApp tests/fixture helpers, theme tests, browser qualification harness assets, testing.md, rules.md and ux-ui-manifest.md.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Use existing test infrastructure and pinned dependencies. Define a route/state coverage inventory including forms, navigation, dialogs, tables, charts, logs and disabled/error/loading states. Check 360/390/430/768/1024/1200 widths, 200% text, long content, focus and at least 44-pixel primary targets under the adopted app contract. Baseline text targets are 4.5:1 normal and 3:1 large, evaluated on actual rendered/composited surfaces; do not claim disabled-control WCAG thresholds. Test normal built-in themes and deterministic calm/moderate generated palettes; separate opt-in extreme chaos. Add negative controls proving geometry/contrast failures are detected. Actual devices/assistive technology remain unqualified by frames.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Run meaningful harness negative controls and existing component regressions; build and inspect representative current pages with shared CSS. Record exact coverage and omitted states. Official references: https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html and https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html; the app 44-pixel target is a stronger product rule, not a claimed WCAG AA minimum.
-Acceptance:
-- Reusable checks detect seeded overlap/overflow and contrast regressions and produce actual browser evidence with a page/state/theme coverage inventory.
-- Implementation workflow requires changed-page interaction and rendered qualification; missing human/device evidence remains explicit.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
 
 ### Redact and cover new feature diagnostics
 
