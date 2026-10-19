@@ -98,32 +98,6 @@ Current context:
 Source:
 - Owner request on 2026-10-19; InventoryPage.razor equipment-optimizer-goal control and _optimizationGoal default.
 
-### Serialize concurrent local diagnostic history writes
-
-```yaml
-id: P-15da69d1-68cb-47d2-b8ae-2edca2436137
-priority: 99
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: T-d007ac44-f38c-4069-9b70-e66adbc64bf0
-related_task_id: T-d007ac44-f38c-4069-9b70-e66adbc64bf0
-relation: followup
-depends_on: []
-```
-
-Description:
-- DiagnosticsLogStore.AppendAsync reads the current array and later writes a replacement without coordination. Overlapping asynchronous append operations can overwrite an earlier appended event; a concurrent clear can also be overwritten.
-
-Expected behavior:
-- Serialize append and clear mutations for the scoped local diagnostic store, preserve the existing retention cap and read behavior, and prove the interleaving with deterministic storage gates. Diagnostic storage remains supplementary and cannot change original command results.
-
-Current context:
-- Independent nonblocking store reliability work; safe command receipts and log sanitization remain authoritative for the selected root acceptance.
-
-Source:
-- Static inspection of src/Habitica.Storage/DiagnosticsLogStore.cs GetRecentAsync, AppendAsync and ClearAsync during new diagnostic boundary coverage.
-
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
@@ -527,46 +501,6 @@ Documentation updates:
 - Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
-### Redact and cover new feature diagnostics
-
-```yaml
-id: T-d007ac44-f38c-4069-9b70-e66adbc64bf0
-priority: 100
-status: Ready
-parent_pending_ids: ["P-6b10f9d7-280d-40d5-a212-8e0f44173f5d"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-d007ac44-f38c-4069-9b70-e66adbc64bf0
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Provide safe correlated diagnostic events for the newer application paths.
-Current behavior:
-- DiagnosticsLogWriter stores caller-provided strings/metadata in a bounded local store. Workspace controllers and cloud adapters do not directly use the writer; native journals and backend operational receipts are separate evidence.
-Desired behavior:
-- A documented coverage matrix maps new sync, connection, canonical task, organization, saved-view and recovery paths to safe events or explicit justified omissions.
-Touch:
-- DiagnosticsLogWriter/model/store, WorkspaceTaskController, WorkspaceDataController, cloud integration boundaries, sync/theme operations and diagnostic tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Use allowlisted structured fields and safe error codes rather than raw responses, headers, credential values, management/OAuth/linking tokens or task/note text. Centralize redaction for writing and exported legacy entries. Include operation, UTC time, result category, bounded duration/counts and non-secret correlation/command IDs where needed. Preserve the bounded local store and default diagnostics-sync exclusion. Logging failures cannot change command acceptance or trigger retries; cancellation stays cancellation. Read-only rendering need not emit an event per row.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Synthetic success/failure/unknown/cancellation and account-switch tests plus secret-canary scans across local writes and exports. Verify bounded retention and no duplicate command dispatch when logging fails.
-Acceptance:
-- New-feature diagnostic coverage is explicitly mapped and appropriate execution/recovery boundaries emit correlated safe results.
-- Log writes and exports redact secret canaries and unnecessary user content while logging failures leave original command semantics unchanged.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
 
 ### Render compact copyable diagnostic rows
 
@@ -1170,6 +1104,46 @@ Documentation updates:
 - Deployment and release qualification matrix; preserve unrun gates in future.md.
 Risks:
 - Exposing live effects or claiming release success from synthetic evidence.
+
+### Serialize scoped diagnostic append and clear operations
+
+```yaml
+id: T-13c008e0-2062-4846-ab4b-0f331a280f0b
+priority: 99
+status: Ready
+parent_pending_ids: ["P-15da69d1-68cb-47d2-b8ae-2edca2436137"]
+processing_run_id: PR-aa6ec1c6-4a91-4619-8193-5ef4f8d8a54a
+root_task_id: T-d007ac44-f38c-4069-9b70-e66adbc64bf0
+related_task_id: T-d007ac44-f38c-4069-9b70-e66adbc64bf0
+relation: followup
+depends_on: []
+```
+
+Goal:
+- Prevent overlapping scoped diagnostic mutations from losing committed local events.
+Current behavior:
+- DiagnosticsLogStore uses awaited read/modify/write append and an independent clear operation. Program.cs registers one scoped store per WebApp instance; no mutation coordinator exists.
+Desired behavior:
+- Append and clear mutations within the same scoped instance execute in a deterministic order, retaining the configured capacity and cancellation behavior.
+Touch:
+- src/Habitica.Storage/DiagnosticsLogStore.cs and deterministic storage/interleaving tests.
+Discovery allowance:
+- Inspect IndexedDbStorageAdapter and existing async coordination before selecting a minimal primitive.
+Out of scope:
+- Canonical command behavior, remote telemetry, cross-device synchronization and a cross-tab atomicity guarantee.
+Implementation constraints:
+- Use async coordination with release in finally; never block the UI thread. Preserve default capacity, newest-first order, clear semantics and cancellation. Logging remains best effort and cannot authorize replay. State explicitly whether cross-tab atomicity remains unavailable; an in-process semaphore cannot establish a database transaction across browser instances.
+Questions and required clarifications:
+- [Resolved - inspected DI scope and source] The selected correction covers concurrent calls to the same scoped store. Cross-tab coordination requires a separately verified storage contract.
+Validation:
+- Storage gates force two overlapping append operations and an append/clear interleaving. Verify no scoped lost update, deterministic clear order, bounded retention and cancellation before acquisition and during storage work.
+Acceptance:
+- Concurrent scoped append and clear operations preserve ordered committed history without exceeding configured retention.
+- Coordination does not block the UI thread, leak the gate after cancellation or change original command behavior.
+Documentation updates:
+- Update testing.md and the diagnostic coverage contract with the exact coordination scope.
+Risks:
+- A local lock can be misrepresented as cross-tab atomicity; retain the explicit boundary.
 
 ### Prepare reproducible task UX and device qualification evidence
 
