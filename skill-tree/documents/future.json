@@ -81,7 +81,8 @@
       "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
       "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
       "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
-      "T-cd38c727-430a-4565-a264-f33d9b81bca3"
+      "T-cd38c727-430a-4565-a264-f33d9b81bca3",
+      "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -113,6 +114,7 @@
       "T-3987ba88-f69f-59f1-811e-f51cabfa5978": "O-048b3fa0-28ea-49a0-bec1-a8e537a805f5",
       "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e": "O-9e01fa6a-caa6-4e3c-be17-1e389f562720",
       "T-3f472554-56a4-4edf-a163-1b96dc822a06": "O-76630a35-f0f9-488e-a3b0-aad446dc1133",
+      "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48": "O-f4f1917f-a14b-4e1a-b14d-8aa140b48f17",
       "T-4971181f-827f-4945-af27-4f4bc8ded5c8": "O-d3de5c55-c4ac-4eb9-9b46-36aa630adf68",
       "T-49eaa44e-5c98-4219-a380-4201e4143494": "O-9f6a3618-fbbf-4d96-b034-bbe5f19e01ca",
       "T-4a1de222-156a-52cf-8966-262a2c8216ed": "O-1be18cd1-6faf-47ff-bc66-14861e6858e4",
@@ -167,7 +169,7 @@
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
     "current_task_id": null,
-    "cycle_signature": "849a60b613cd6c8150cf05468ad863c34561e7c44e01e63c10a6841c19bd5324",
+    "cycle_signature": "f13db422afbaf8a0ecf49fde9f7420a2d30263d14a60fb95654366aa87bdd4bf",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -177,10 +179,9 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Promote bounded mobile saved-view controls from the selected E12 remainder; retain review/reminder policy and broad release evidence.",
+    "next_action": "Commit and publish the reviewed frontend-only list milestone; retain broader release and Pending feature scope.",
     "partial_work": [
-      "Development publication and bounded owner checks complete.",
-      "Research the remaining originally selected local Pending areas under the owner development qualification boundary."
+      "Canonical list controls pass 419 web tests, release build and ten responsive fixture checks."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -244,9 +245,10 @@
       "P-600be12e-fd34-44d8-b992-dca13600ab13",
       "P-d269235a-351a-4341-b622-22d0b5038153",
       "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb",
-      "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1"
+      "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1",
+      "P-580e55b1-e10a-4891-bd89-fdbd5c39a627"
     ],
-    "phase": "research",
+    "phase": "publish",
     "processing_results": [
       {
         "created_ids": [
@@ -1385,6 +1387,25 @@
         "task_keys": {
           "dev-unlock": "T-cd38c727-430a-4565-a264-f33d9b81bca3"
         }
+      },
+      {
+        "created_ids": [
+          "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
+        ],
+        "dispositions": {
+          "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb": {
+            "reason": "Current source provides canonical fixed query evaluation and account-bound loaded documents. A bounded readonly mobile list component is ready independently of reminder policy and saved-view authoring.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-da18176e-4720-4f55-97ca-aabcbab9c5b5",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb"
+        ],
+        "task_keys": {
+          "mobile-lists": "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
+        }
       }
     ],
     "required_ids": [
@@ -1470,9 +1491,10 @@
       "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
       "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
       "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
-      "T-cd38c727-430a-4565-a264-f33d9b81bca3"
+      "T-cd38c727-430a-4565-a264-f33d9b81bca3",
+      "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
     ],
-    "root_task_id": "T-cd38c727-430a-4565-a264-f33d9b81bca3",
+    "root_task_id": "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1717,6 +1739,16 @@
           "T-cd38c727-430a-4565-a264-f33d9b81bca3"
         ],
         "test_scope": "Own-account Codex tasks and previously permitted spells/equipment. Party tools read-only; departure prohibited; no Start New Day test or real key operation."
+      },
+      {
+        "original_pending_id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
+        "owner_direction": "Continue originally selected Pending areas; development implementation allowed before broad release evidence.",
+        "promoted_local_roots": [
+          "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
+        ],
+        "reason": "Expose existing canonical readonly filters and saved definitions in the editor; retain policy and authoring work.",
+        "remaining_pending_id": "P-580e55b1-e10a-4891-bd89-fdbd5c39a627",
+        "researched_remainder": "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb"
       }
     ],
     "snapshot": [
@@ -1759,17 +1791,18 @@
       "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
       "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
       "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
-      "T-cd38c727-430a-4565-a264-f33d9b81bca3"
+      "T-cd38c727-430a-4565-a264-f33d9b81bca3",
+      "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "9dbb7c1c474ea7cbd84bb442741124cf2859055a1bf648844cef9ec62eabe2b7",
+  "source_hash": "aad7662f2e5df11b05a0b86d490b0fca5d9c7d201bbaa795cdaea1bf9e01e47b",
   "tasks": [
     {
       "depends_on": [],
-      "id": "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb",
+      "id": "P-580e55b1-e10a-4891-bd89-fdbd5c39a627",
       "line": 75,
       "parent_pending_ids": [],
       "priority": 100,
@@ -1779,7 +1812,7 @@
       "relation": "main",
       "root_task_id": null,
       "status": "Pending",
-      "title": "E12 Optional review reminders and mobile saved-list controls"
+      "title": "E12 Optional review policies and saved-list authoring"
     },
     {
       "depends_on": [],

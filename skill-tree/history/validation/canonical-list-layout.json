@@ -1,0 +1,86 @@
+{
+  "fixture": "Real Razor component markup with application styles; synthetic data, frame widths only",
+  "measurements": [
+    {
+      "title": "canonical-saved-list 360",
+      "width": 345,
+      "scrollWidth": 345,
+      "minControlHeight": 44,
+      "labels": true,
+      "overflows": 0
+    },
+    {
+      "title": "canonical-saved-list 390",
+      "width": 390,
+      "scrollWidth": 390,
+      "minControlHeight": 44,
+      "labels": true,
+      "overflows": 0
+    },
+    {
+      "title": "canonical-saved-list 430",
+      "width": 430,
+      "scrollWidth": 430,
+      "minControlHeight": 44,
+      "labels": true,
+      "overflows": 0
+    },
+    {
+      "title": "canonical-saved-list 768",
+      "width": 768,
+      "scrollWidth": 768,
+      "minControlHeight": 44,
+      "labels": true,
+      "overflows": 0
+    },
+    {
+      "title": "canonical-saved-list 1024",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "minControlHeight": 44,
+      "labels": true,
+      "overflows": 0
+    },
+    {
+      "title": "canonical-filter-disabled 360",
+      "width": 345,
+      "scrollWidth": 345,
+      "minControlHeight": 44,
+      "labels": true,
+      "overflows": 0
+    },
+    {
+      "title": "canonical-filter-disabled 390",
+      "width": 375,
+      "scrollWidth": 375,
+      "minControlHeight": 44,
+      "labels": true,
+      "overflows": 0
+    },
+    {
+      "title": "canonical-filter-disabled 430",
+      "width": 415,
+      "scrollWidth": 415,
+      "minControlHeight": 44,
+      "labels": true,
+      "overflows": 0
+    },
+    {
+      "title": "canonical-filter-disabled 768",
+      "width": 753,
+      "scrollWidth": 753,
+      "minControlHeight": 44,
+      "labels": true,
+      "overflows": 0
+    },
+    {
+      "title": "canonical-filter-disabled 1024",
+      "width": 1024,
+      "scrollWidth": 1024,
+      "minControlHeight": 44,
+      "labels": true,
+      "overflows": 0
+    }
+  ],
+  "realDevicesQualified": false
+}

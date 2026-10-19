@@ -1,0 +1,109 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+
+<section class="companion-task-browser" aria-label="Find Companion tasks">
+    <fieldset class="companion-task-form" disabled="@Disabled">
+        <legend>Find tasks</legend>
+        <label>Saved list<select class="app-input" @bind="_view" @bind:after="ResetPage" data-testid="canonical-saved-list">
+            <option value="">Custom filters</option>
+            @foreach (var view in Document.SavedTaskViews ?? [])
+            {
+                @if (!view.IsArchived) { <option value="@view.Id">@view.Name</option> }
+            }
+        </select></label>
+        @if (_view.Length == 0)
+        {
+            <label>Search task names and notes<input class="app-input" maxlength="256" @bind="_query" @bind:after="ResetPage" data-testid="canonical-search" /></label>
+            <div class="companion-filter-grid">
+                <label>Task type<select class="app-input" @bind="_kind" @bind:after="FilterChanged" data-testid="canonical-filter-kind"><option value="">All types</option>@foreach (var value in Enum.GetValues<CompanionTaskKind>()) { <option value="@value">@value</option> }</select></label>
+                <label>Task state<select class="app-input" @bind="_state" @bind:after="FilterChanged" data-testid="canonical-filter-state"><option value="">All states</option>@foreach (var value in Enum.GetValues<CompanionTaskState>()) { <option value="@value">@value</option> }</select></label>
+                <label>Urgency<select class="app-input" @bind="_priority" @bind:after="ResetPage" data-testid="canonical-filter-priority"><option value="">All urgencies</option>@foreach (var value in Enum.GetValues<CompanionPriority>()) { <option value="@value">@value</option> }</select></label>
+                <label>Active Todo stage<select class="app-input" disabled="@(!StageCompatible)" @bind="_stage" @bind:after="ResetPage" data-testid="canonical-filter-stage"><option value="">All stages</option><option value="Inbox">Inbox</option><option value="Next">Next</option><option value="InProgress">In progress</option></select></label>
+            </div>
+            @if (!StageCompatible) { <p>Stage filters apply to active Todos. Choose All types or Todo and All states or Active to use a stage.</p> }
+        }
+        else if (_error is null && SelectedView is { } selected)
+        {
+            <details open class="companion-saved-definition"><summary>Saved list filters</summary><ul>@foreach (var line in Describe(selected.Query)) { <li>@line</li> }</ul></details>
+        }
+        <button type="button" class="secondary-action-button" @onclick="Clear" data-testid="canonical-clear-filters">Show all tasks</button>
+    </fieldset>
+    @if (_error is not null)
+    {
+        <p role="alert">@_error</p>
+    }
+    else if (_page is { } result)
+    {
+        <p role="status" data-testid="canonical-match-count">@result.MatchedCount matching tasks · showing @(result.Tasks.Count == 0 ? 0 : result.Offset + 1)–@(result.Offset + result.Tasks.Count)</p>
+        @if (result.Tasks.Count == 0) { <p>No tasks match this list. Show all tasks or adjust the filters.</p> }
+        <div class="companion-task-list" aria-label="Companion task selection">
+            @foreach (var task in result.Tasks)
+            {
+                <button type="button" class="secondary-action-button" disabled="@Disabled" @onclick="@(() => OnSelect.InvokeAsync(task))" data-testid="@($"canonical-task-{task.Id:D}")"><strong>@task.Text</strong><span>@task.Kind · @task.State · @task.Priority</span></button>
+            }
+        </div>
+        <div class="action-row" aria-label="Task list pages">
+            <button type="button" class="secondary-action-button" disabled="@(Disabled || _offset == 0)" @onclick="Previous" data-testid="canonical-previous-page">Previous</button>
+            <button type="button" class="secondary-action-button" disabled="@(Disabled || result.NextOffset is null)" @onclick="Next" data-testid="canonical-next-page">Next</button>
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter, EditorRequired] public WorkspaceDocument Document { get; set; } = default!;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public EventCallback<CompanionTask> OnSelect { get; set; }
+    private const int PageSize = 20;
+    private Guid _workspace;
+    private long _revision;
+    private string _view = "", _query = "", _kind = "", _state = "", _priority = "", _stage = "";
+    private int _offset;
+    private string? _error;
+    private WorkspaceTaskPage? _page;
+    private WorkspaceSavedTaskView? SelectedView => Guid.TryParse(_view, out var id) ? Document.SavedTaskViews?.SingleOrDefault(view => view.Id == id && !view.IsArchived) : null;
+    private bool StageCompatible => (_kind.Length == 0 || _kind == nameof(CompanionTaskKind.Todo)) && (_state.Length == 0 || _state == nameof(CompanionTaskState.Active));
+    protected override void OnParametersSet()
+    {
+        if (_workspace != Document.Id) { _workspace = Document.Id; _view = _query = _kind = _state = _priority = _stage = ""; _offset = 0; }
+        if (_revision != Document.Revision) { _revision = Document.Revision; _offset = 0; }
+        Evaluate();
+    }
+    private void ResetPage() { _offset = 0; Evaluate(); }
+    private void FilterChanged() { if (!StageCompatible) _stage = ""; ResetPage(); }
+    private void Clear() { _view = _query = _kind = _state = _priority = _stage = ""; ResetPage(); }
+    private void Previous() { _offset = Math.Max(0, _offset - PageSize); Evaluate(); }
+    private void Next() { if (_page?.NextOffset is { } next) { _offset = next; Evaluate(); } }
+    private static T? Choice<T>(string value) where T : struct, Enum => value.Length == 0 ? null : Enum.Parse<T>(value);
+    private void Evaluate()
+    {
+        _error = null; _page = null;
+        try
+        {
+            _page = _view.Length > 0
+                ? WorkspaceSavedTaskViews.Evaluate(Document, Guid.Parse(_view), new(Limit: PageSize, Offset: _offset, ExpectedRevision: _revision))
+                : WorkspaceTaskQuery.Evaluate(Document, new(Query: _query, Kind: Choice<CompanionTaskKind>(_kind), State: Choice<CompanionTaskState>(_state), Priority: Choice<CompanionPriority>(_priority), Limit: PageSize, Offset: _offset, ExpectedRevision: _revision, ExecutionStage: Choice<TodoExecutionStage>(_stage)));
+        }
+        catch (Exception error) when (error is ArgumentException or InvalidOperationException or FormatException)
+        {
+            _error = "This list is unavailable in the loaded workspace. Reload the workspace or choose Show all tasks.";
+        }
+    }
+    private IEnumerable<string> Describe(WorkspaceSavedTaskQuery query)
+    {
+        yield return query.Source == WorkspaceSavedTaskSource.UnblockedTodos ? "Unblocked active Todos; every prerequisite must be completed." : "Companion tasks";
+        var f = query.Filter;
+        if (f.Query is { Length: > 0 }) yield return $"Search: {f.Query}";
+        if (f.Kind is { } kind) yield return $"Type: {kind}";
+        if (f.State is { } state) yield return $"State: {state}";
+        if (f.Priority is { } priority) yield return $"Urgency: {priority}";
+        if (f.ExecutionStage is { } stage) yield return $"Active Todo stage: {stage}";
+        if (f.ProjectId is { } project) yield return $"Project: {Document.Projects.First(value => value.Id == project).Name}";
+        if (f.CategoryId is { } category) yield return $"Category: {Document.Categories.First(value => value.Id == category).Name}";
+        if (f.LabelId is { } label) yield return $"Label: {Document.Labels.First(value => value.Id == label).Name}";
+        if (f.ProjectionState is { } projection) yield return $"Habitica projection: {projection}";
+        if (f.PlannedFrom is { } plannedFrom) yield return $"Planned from (fixed date): {plannedFrom:yyyy-MM-dd}";
+        if (f.PlannedTo is { } plannedTo) yield return $"Planned through (fixed date): {plannedTo:yyyy-MM-dd}";
+        if (f.DeadlineFrom is { } deadlineFrom) yield return $"Deadline from (fixed date): {deadlineFrom:yyyy-MM-dd}";
+        if (f.DeadlineTo is { } deadlineTo) yield return $"Deadline through (fixed date): {deadlineTo:yyyy-MM-dd}";
+    }
+}

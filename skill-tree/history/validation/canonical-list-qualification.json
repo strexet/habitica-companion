@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-19",
+  "task_id": "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48",
+  "checks": {
+    "web_tests": 419,
+    "failed": 0,
+    "release_build": "pass",
+    "layout": "skill-tree/history/validation/canonical-list-layout.json"
+  },
+  "scenarios": [
+    "Combined Unicode search/type/state/urgency and active-stage filters",
+    "Twenty-row pages and reset on query/revision/workspace change",
+    "Current saved fixed-date and dependency eligibility",
+    "Missing/archived/malformed definitions fail without all-task fallback",
+    "Untrusted names remain text",
+    "Pending-command control lock and retained selection",
+    "Existing parent preview/acceptance/archive and account sign-out regressions"
+  ],
+  "limits": [
+    "Layout frames contain synthetic real-component markup; interactions run in component tests.",
+    "No human, assistive technology, actual mobile keyboard or device qualification.",
+    "Saved-view authoring, relative presets and review/reminder policy remain Pending."
+  ]
+}

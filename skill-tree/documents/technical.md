@@ -1105,3 +1105,9 @@ Native organization schemas include savedTaskView and explicit complete source/f
 ## Development rollout versus release qualification
 
 Owner selection on 2026-10-19 permits the existing site to expose implemented development capabilities before broader client/device and E01 hands-on acceptance. Missing observations remain unverified. deploy/prepare-dev.mjs accepts optional featureProfile pilot/development and maps known capability flags explicitly; omission remains pilot. Unknown enabled-flag names require a reviewed mapping. The development profile exposes product availability and adaptive pacing while preserving resource identities, protected secrets, account consent, prepared previews, private service boundaries and unknown-outcome fences. Aggregate executor preflight and Auth migration 0008 precede activation.
+
+## Snapshot-bound task list presentation
+
+CompanionTaskList receives the current WorkspaceDocument from the account-bound WorkspaceTaskController. WorkspaceTaskQuery and WorkspaceSavedTaskViews remain the only filter evaluators; UI state contains selectors and an offset rather than copied task data. Page size twenty and the current document revision guard every evaluation. Document identity clears filters; changed revision resets the offset. Missing/archived definitions remain explicit errors until reset or reload. Saved definition descriptions render only after successful canonical validation.
+
+The component emits an exact selected CompanionTask to the existing editor. No new remote transport, persistence field, permission or mutation path is added. Pending task intent disables list controls through the parent. The parent removes account data on sign-out/account change, recreating child selection state for the next loaded document. Cloud snapshot refresh and original command recovery stay owned by the existing controller.

@@ -1,6 +1,6 @@
 # UX/UI Manifest
 
-The [adopted navigation study](navigation-study.md) defines the local design baseline for new canonical workspace UI: Today, Inbox, Plan, Projects and More, with global title-first capture and advanced details on demand. The baseline follows the standing local direction; existing production routes described below remain the implementation truth until a corresponding unit is delivered. The separate hands-on E01 gate still governs production UI promotion. The study carries forward required local recovery/accessibility checks and separate real-device/live qualification. No human usability result or authenticated competitor test is claimed.
+The [adopted navigation study](navigation-study.md) defines the local design baseline for new canonical workspace UI: Today, Inbox, Plan, Projects and More, with global title-first capture and advanced details on demand. Existing production routes described below remain the implementation truth until a corresponding unit is delivered. Owner selection on 2026-10-19 permits development implementation and exposure before E01 hands-on qualification; broader release retains the separate gate. Required local recovery/accessibility checks and real-device qualification remain distinct. No human usability result or authenticated competitor test is claimed.
 
 Last reviewed: 2026-06-09
 
@@ -131,6 +131,14 @@ Responsive verification for image work:
 - Confirm fallback text remains readable and does not overlap adjacent labels, pills, meters, or buttons.
 
 ## Current Implementation
+
+### Canonical task filters and saved lists
+
+The Companion editor uses labelled search, task type, native state, urgency and active Todo stage controls above a bounded list. Filters combine through the canonical query engine. An incompatible type/state clears and disables the stage filter with an explanation. All-task reset and Previous/Next controls remain visible; results announce matching counts and the displayed range, including empty results.
+
+Saved-list selection evaluates the retained definition against the loaded workspace and shows the source, predicates and exact fixed dates. Fixed dates never acquire a Today label. Named lists preserve dependency eligibility and do not copy tasks. Missing, archived or invalid definitions show unavailable with a reset/reload action rather than unrelated fallback results. This surface reads definitions; authoring remains separate.
+
+Workspace changes clear filters; revision/query changes return to the first twenty records. Pending command recovery disables list controls and keeps the original preview. Labels and long names wrap in responsive grids, native keyboard controls retain visible focus and list/form targets have a minimum forty-four-pixel height. Component and local layout checks remain separate from actual phone keyboard, assistive technology and human usability qualification.
 
 ### App Shell
 

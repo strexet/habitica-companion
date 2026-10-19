@@ -27,12 +27,7 @@
             <p><strong>@(Workspace.IsCloud ? "Cloud workspace" : "Browser workspace")</strong> · @snapshot.Document.Tasks.Count(task => !task.IsArchived) listed tasks · @snapshot.Document.Tasks.Count(task => task.IsArchived) archived · revision @snapshot.Document.Revision</p>
             @if (Workspace.IsReadOnly) { <p>@(Workspace.RequiresReload ? "Reload current workspace data before editing again." : "This copy is frozen or cloud-owned. Use the cloud workspace for edits, or finish the transfer in Settings.")</p> }
             @if (!Workspace.IsCloud && snapshot.Authority?.Mode == WorkspaceAuthorityMode.Paused) { <p>Execution is paused for this restored copy. Saving canonical changes does not enable game effects.</p> }
-            <div class="companion-task-list" aria-label="Companion task selection">
-                @foreach (var task in snapshot.Document.Tasks.Where(task => !task.IsArchived))
-                {
-                    <button class="secondary-action-button" disabled="@(_busy || Workspace.HasPendingIntent)" @onclick="@(() => SelectTask(task))" data-testid="@($"canonical-task-{task.Id:D}")"><strong>@task.Text</strong><span>@task.Kind · @task.State</span></button>
-                }
-            </div>
+            <CompanionTaskList Document="snapshot.Document" Disabled="@(_busy || Workspace.HasPendingIntent)" OnSelect="SelectTask" />
             @if (!Workspace.IsReadOnly)
             {
                 <MudButton Disabled="@(_busy || Workspace.HasPendingIntent)" OnClick="NewTodo" Variant="Variant.Text">New task</MudButton>

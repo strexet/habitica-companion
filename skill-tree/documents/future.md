@@ -72,10 +72,10 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### E12 Optional review reminders and mobile saved-list controls
+### E12 Optional review policies and saved-list authoring
 
 ```yaml
-id: P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb
+id: P-580e55b1-e10a-4891-bd89-fdbd5c39a627
 priority: 100
 status: Pending
 parent_pending_ids: []
@@ -87,16 +87,16 @@ depends_on: []
 ```
 
 Description:
-- Persist optional review/reminder policy and meaningful review history; research relative-date smart-list presets and integrate named views with mobile hygiene controls.
+- Persist optional review/reminder policy and meaningful review history; research relative-date presets and add reviewed mobile saved-list authoring and hygiene controls.
 
 Expected behavior:
-- Optional review identifies stalled work without mandatory rituals, false lateness or game penalties; saved lists clearly distinguish fixed dates from relative dates.
+- Optional review identifies stalled work without mandatory rituals, false lateness or game penalties; users author named lists with explicit fixed/relative semantics.
 
 Current context:
-- Combined canonical filters, active-stage predicates and dependency candidates are implemented locally. Portable named fixed-filter views, reviewed native edits and scoped read/write adapters are implemented locally. Review/reminder storage and production saved-list controls remain absent; production UI retains the E01 hands-on gate.
+- Portable fixed definitions, reviewed commands and scoped adapters exist. Readonly editor filter and saved-list selection is selected separately; reminder policy, relative presets and mobile authoring remain outstanding.
 
 Source:
-- Remaining original E12 intent P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d through P-d269235a-351a-4341-b622-22d0b5038153.
+- Remaining original E12 intent from P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb and P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d.
 
 ### E11 Mobile recurrence/history controls and streak policies
 

@@ -4427,6 +4427,11 @@ code {
 .companion-task-form details { display: grid; gap: .75rem; }
 .companion-task-list { display: grid; gap: .5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
 .companion-task-list button { text-align: left; display: grid; gap: .35rem; min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+.companion-task-browser { display: grid; gap: .75rem; min-width: 0; }
+.companion-filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: .75rem; min-width: 0; }
+.companion-task-browser button, .companion-task-browser input, .companion-task-browser select, .companion-task-browser summary { min-height: 44px; }
+.companion-task-browser button { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.companion-saved-definition { overflow-wrap: anywhere; }
 .companion-command-preview { border: 1px solid var(--card-border); border-radius: .65rem; padding: 1rem; min-width: 0; }
 .companion-command-preview dl { display: grid; grid-template-columns: minmax(6rem, 1fr) minmax(0, 3fr); gap: .5rem; }
 .companion-command-preview dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
