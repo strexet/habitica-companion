@@ -2793,6 +2793,16 @@ input[type="radio"] {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 }
 
+
+.settings-session-actions > .action-card {
+    grid-template-rows: auto 1fr auto;
+    align-content: stretch;
+}
+
+.settings-session-actions > .action-card > .mud-button-root {
+    min-height: var(--control-height);
+}
+
 .task-card-grid {
     display: flex;
     flex-direction: column;

@@ -334,8 +334,10 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.FromResult(LocalDataResult with { JsonText = jsonText });
     }
 
+    public int LogoutCalls { get; private set; }
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
+        LogoutCalls++;
         return Task.CompletedTask;
     }
 

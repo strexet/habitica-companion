@@ -31,6 +31,23 @@ public sealed class SettingsPageTests : BunitContext
     }
 
     [Fact]
+    public void Session_actions_keep_signout_and_checks_routes_with_keyboard_native_controls()
+    {
+        var (session, cut) = ConnectionPage();
+        var logout = cut.Find("[data-testid='settings-sign-out']");
+        Assert.Equal("BUTTON", logout.TagName);
+        Assert.False(logout.HasAttribute("disabled"));
+        Assert.Equal("/live-tests", cut.Find("[data-testid='settings-open-checks']").GetAttribute("href"));
+        Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("settings-actions", cut.Find("[data-testid='settings-session-actions']").OuterHtml);
+        var paragraphs = cut.FindAll(".settings-session-actions p");
+        paragraphs[0].TextContent += " Long translated description with additional browser-session details, retained private data and sign-in information. This text must wrap without a fixed height.";
+        Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("settings-actions-long", cut.Find("[data-testid='settings-session-actions']").OuterHtml);
+        logout.Click();
+        Assert.Equal(1, session.LogoutCalls);
+        Assert.EndsWith("/", Services.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>().Uri);
+    }
+
+    [Fact]
     public void Fresh_tab_shows_unknown_server_state_and_requires_consent_to_restore_access()
     {
         var (session,cut)=ConnectionPage();

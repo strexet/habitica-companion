@@ -664,3 +664,8 @@ Appearance saves report local persistence independently from encrypted-cloud ava
 A fresh authenticated Settings tab displays unknown server connection state until explicit verification. Missing tab management access never labels server enrollment disconnected or background execution disabled. Integration recovery and workspace recovery retain separate disclosures and unchecked consent. Copy identifies encrypted server storage and possible profile creation. Intentional linking-code generation remains distinct from restoring management access.
 
 Workspace recovery and manual status refresh reread actual executor availability and opt-in. Unknown status hides execution mutations; verified paused state explains retained pending commands and separate enablement. Verification failures clear earlier success displays. Account replacement clears consent, status and pending actions; responses owned by a previous account cannot repopulate the page. Existing wrapping action rows, shared controls and theme tokens remain in use. Synthetic Razor/browser frames qualify narrow and desktop layout separately from real device and hosted authorization checks.
+
+
+## Settings session action rows
+
+Related session cards use heading, flexible description and action grid rows. Bottom actions align within a wider shared row; descriptions have no fixed height. Narrow cards stack through the existing adaptive Settings grid. Session actions retain native button/link keyboard semantics, shared focus/theme tokens and a 44-pixel minimum target. Scope remains limited to settings-session-actions rather than every action-card.

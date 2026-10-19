@@ -1,5 +1,57 @@
 {
-  "active_run": null,
+  "active_run": {
+    "completed_ids": [],
+    "current_task_id": "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+    "deferred_ids": [],
+    "id": "WR-a15f65d2-715f-4df3-94ef-500448f93f24",
+    "limits": {
+      "operation_deadline_seconds": 300
+    },
+    "mode": "all",
+    "next_action": "implement",
+    "partial_work": [],
+    "pending_ids": [],
+    "phase": "implement",
+    "processing_results": [],
+    "required_ids": [
+      "T-2bf91411-423e-483b-95a7-92b9fdc69445"
+    ],
+    "root_task_id": "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+    "snapshot": [
+      "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+      "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+      "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+      "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
+      "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
+      "T-9f465413-725a-440e-a464-cb5c555cb87d",
+      "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+      "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
+      "T-fb41407b-58d3-4dca-b389-e80bbe517831",
+      "T-54623cea-9c8f-4819-b33f-b6552c82df55",
+      "T-574a6ba2-741e-4d13-b798-b909c24de93d",
+      "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+      "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+      "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+      "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
+      "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+      "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+      "T-06336249-6901-4d10-8df1-229ca9bcad6b",
+      "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+      "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+      "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+      "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+      "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
+      "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
+      "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+    ],
+    "started_at": "2026-10-19T09:34:44.454742+00:00",
+    "stop_reason": null
+  },
   "format": "skill-tree-future",
   "source_hash": "2e6140f22742f869f6b690a570b54917cd0bf44f312a44beb0d4a9dd497aec4c",
   "tasks": [

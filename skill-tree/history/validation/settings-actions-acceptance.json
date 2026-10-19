@@ -1,0 +1,42 @@
+{
+  "task_id": "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+  "component_tests": {
+    "passed": 12,
+    "failed": 0
+  },
+  "release_publish": {
+    "exit_code": 0
+  },
+  "browser": {
+    "fixed_frames": 24,
+    "baseline_frames": 2,
+    "baseline_offset_px": 49.59375,
+    "fixed_offset_px": 0,
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "themes": [
+      "gryphy-light",
+      "gryphy-dark"
+    ],
+    "text_percent": [
+      100,
+      200
+    ],
+    "overflow": 0,
+    "minimum_action_height": 44,
+    "keyboard": "Enter activates both native controls; Tab moves to checks link with solid visible outline. Synthetic click listeners record activation; component test verifies actual logout delegate and href."
+  },
+  "limitations": [
+    "Synthetic frames do not qualify physical devices or assistive technology. General rendered-contrast qualification belongs to the next snapshot task."
+  ],
+  "evidence": [
+    "skill-tree/history/validation/settings-actions-browser.json",
+    "skill-tree/history/validation/settings-actions-aligned.png"
+  ]
+}

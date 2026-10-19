@@ -293,3 +293,8 @@ Browser qualification uses synthetic Razor output and the production colorScheme
 WorkspaceCloudClient.ConnectionStatusTests and ChatGptIntegrationClientTests cover independent fresh clients, explicit recovery without linking/grant creation, retained server state, expired management access, missing executor flags, malformed identity and late session replies. SettingsPageTests and WorkspaceOperationsTests cover consent gating, unknown status copy, failed refresh clearing prior success, recovered executor state, read-only checks and account replacement. AppSessionControllerTests verifies direct account replacement forgets tab management without reenrollment. These checks use synthetic HTTP/component fixtures and contain no live credentials.
 
 Synthetic real-Razor output is exported through HABITICA_BROWSER_EVIDENCE for published CSS and light/dark layout inspection. Such frames qualify rendering separately from component event tests; actual Mac/iOS, hosted enrollment and background dispatch remain outside this root validation.
+
+
+## Settings session action geometry
+
+SettingsPageTests exports real session-action Razor markup with original and extended descriptions and verifies logout dispatch plus diagnostics routing. Synthetic browser checks compare existing layout with the scoped flexible-row layout at 360/390/430/768/1024/1200 CSS pixels, default light/dark schemes and 200-percent root text. Measurements include action baselines, horizontal bounds and control heights. Native keyboard activation is observed separately from component delegate assertions. Frames do not establish physical-device or assistive-technology acceptance.

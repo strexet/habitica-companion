@@ -21,17 +21,17 @@
             If the app keeps showing an old version, clear this site's browser data and refresh the page once.
         </MudAlert>
 
-        <div class="settings-grid">
+        <div class="settings-grid settings-session-actions" data-testid="settings-session-actions">
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Sign out for this tab</h2>
                 <p>Ends the current sign-in session without deleting saved app data in this browser.</p>
-                <MudButton Color="Color.Primary" OnClick="HandleLogoutAsync" Variant="Variant.Filled">Sign Out</MudButton>
+                <MudButton data-testid="settings-sign-out" Color="Color.Primary" OnClick="HandleLogoutAsync" Variant="Variant.Filled">Sign Out</MudButton>
             </MudPaper>
 
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Check app connections</h2>
                 <p>Open safe connection checks and the optional reversible gear check.</p>
-                <MudButton Color="Color.Secondary" Href="/live-tests" Variant="Variant.Filled">Open Checks</MudButton>
+                <MudButton data-testid="settings-open-checks" Color="Color.Secondary" Href="/live-tests" Variant="Variant.Filled">Open Checks</MudButton>
             </MudPaper>
 
         </div>
