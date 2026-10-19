@@ -11,6 +11,7 @@ using Habitica.Domain.User;
 using Habitica.Storage;
 using Habitica.WebApp.Sync;
 using Habitica.WebApp.State;
+using Habitica.WebApp.Theme;
 using System.Text.Json;
 
 namespace Habitica.WebApp.Tests.State;
@@ -2223,16 +2224,123 @@ public sealed class AppSessionControllerTests
         Assert.Equal(new[] { "100 XP" }, completion.RewardSummary);
     }
 
+    [Fact]
+    public async Task Automatic_cloud_import_notifies_appearance_service_without_an_open_panel()
+    {
+        using var context = new Bunit.BunitContext();
+        context.JSInterop.Mode = Bunit.JSRuntimeMode.Loose;
+        var storage = new FakeKeyValueStorage();
+        var portability = new LocalUserDataPortabilityService(storage, TimeProvider.System);
+        var theme = new ColorSchemeService(storage, context.JSInterop.JSRuntime, portability);
+        await theme.LoadAsync();
+        var preferences = new ColorSchemePreferences(ColorSchemeCatalog.DefaultDarkSchemeId, [], DateTimeOffset.UtcNow);
+        var remote = new FakeRemoteUserDataSyncProvider { SectionKeys = ["color-schemes"] };
+        remote.SectionSnapshots["color-schemes"] = new RemoteUserDataSnapshot(JsonSerializer.Serialize(preferences, new JsonSerializerOptions(JsonSerializerDefaults.Web)), preferences.SelectedAtUtc);
+        var imported = new TaskCompletionSource<ColorSchemeState>(TaskCreationOptions.RunContinuationsAsynchronously);
+        theme.Imported += state => { imported.TrySetResult(state); return Task.CompletedTask; };
+        var controller = CreateController(new FakeDiagnosticsLogStore([]), remoteUserDataSyncProvider: remote,
+            keyValueStorage: storage, ownerIsolatedTesting: true, colorSchemeService: theme, portability: portability);
+        await controller.SignInAsync(new SignInRequest { UserId = "user-id", ApiToken = "synthetic" });
+        Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, (await imported.Task.WaitAsync(TimeSpan.FromSeconds(3))).ActiveScheme.Id);
+        await WaitForConditionAsync(() => !controller.State.IsCloudSyncing && remote.SectionUploadCount > 0);
+        var call = context.JSInterop.Invocations.Last(call => call.Identifier == "HabiticaColorScheme.applyAndStore");
+        Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, ((ColorSchemeDefinition)call.Arguments[0]!).Id);
+        Assert.Equal(preferences.SelectedAtUtc, ((ColorSchemePreferences)call.Arguments[1]!).SelectedAtUtc);
+    }
+
+    [Fact]
+    public async Task Theme_section_save_merges_newer_remote_selection_and_custom_edit_before_upload()
+    {
+        var storage = new FakeKeyValueStorage();
+        var remote = new FakeRemoteUserDataSyncProvider();
+        var controller = CreateController(new FakeDiagnosticsLogStore([]), remoteUserDataSyncProvider: remote, keyValueStorage: storage, ownerIsolatedTesting: true);
+        await controller.SignInAsync(new SignInRequest { UserId = "user-id", ApiToken = "synthetic" });
+        await WaitForConditionAsync(() => !controller.State.IsCloudSyncing && remote.SectionUploadCount > 0);
+        var before = DateTimeOffset.UtcNow.AddMinutes(-2);
+        var custom = ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.DefaultDark, "Remote edit") with { UpdatedAtUtc = before.AddMinutes(1) };
+        await storage.SetAsync(StorageKeys.ColorSchemePreferences,
+            new ColorSchemePreferences(ColorSchemeCatalog.DefaultLightSchemeId, [custom with { Name = "Old edit", UpdatedAtUtc = before }], before), CancellationToken.None);
+        var newer = new ColorSchemePreferences(custom.Id, [custom], before.AddMinutes(1));
+        remote.SectionSnapshots["color-schemes"] = new RemoteUserDataSnapshot(JsonSerializer.Serialize(newer, new JsonSerializerOptions(JsonSerializerDefaults.Web)), before.AddMinutes(1));
+        remote.ClearUploads();
+
+        var result = await controller.SyncAppDataSectionAsync(CloudSyncSection.ColorSchemes);
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(new[] { "color-schemes", "sync-metadata" }, remote.UploadedSectionKeys);
+        var uploaded = JsonSerializer.Deserialize<ColorSchemePreferences>(remote.UploadedSections["color-schemes"], new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
+        Assert.Equal(custom.Id, uploaded.SelectedSchemeId);
+        Assert.Equal(newer.SelectedAtUtc, uploaded.SelectedAtUtc);
+        Assert.Equal("Remote edit", Assert.Single(uploaded.CustomSchemes).Name);
+    }
+
+    [Fact]
+    public async Task Theme_sync_and_full_sync_share_one_transport_lane()
+    {
+        var storage = new FakeKeyValueStorage();
+        var remote = new FakeRemoteUserDataSyncProvider();
+        var controller = CreateController(new FakeDiagnosticsLogStore([]), remoteUserDataSyncProvider: remote, keyValueStorage: storage, ownerIsolatedTesting: true);
+        await controller.SignInAsync(new SignInRequest { UserId = "user-id", ApiToken = "synthetic" });
+        await WaitForConditionAsync(() => !controller.State.IsCloudSyncing && remote.SectionUploadCount > 0);
+        await storage.SetAsync(StorageKeys.ColorSchemePreferences, new ColorSchemePreferences(ColorSchemeCatalog.DefaultDarkSchemeId, [], DateTimeOffset.UtcNow), CancellationToken.None);
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        remote.BeforeSectionUpload = async (key, token) =>
+        {
+            if (key == "color-schemes") { entered.TrySetResult(); await release.Task.WaitAsync(token); }
+        };
+        var full = controller.PushCloudSyncAsync();
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(3));
+        var narrow = controller.SyncAppDataSectionAsync(CloudSyncSection.ColorSchemes);
+        Assert.False(narrow.IsCompleted);
+        Assert.Equal(0, remote.SectionDownloadCount);
+        release.SetResult();
+        Assert.True((await full.WaitAsync(TimeSpan.FromSeconds(3))).Succeeded);
+        Assert.True((await narrow.WaitAsync(TimeSpan.FromSeconds(3))).Succeeded);
+        Assert.Equal(1, remote.SectionDownloadCount);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Late_theme_download_cannot_import_or_upload_after_logout_or_account_change(bool changeAccount)
+    {
+        var storage = new FakeKeyValueStorage();
+        var remote = new FakeRemoteUserDataSyncProvider();
+        var controller = CreateController(new FakeDiagnosticsLogStore([]), remoteUserDataSyncProvider: remote, keyValueStorage: storage, ownerIsolatedTesting: true);
+        await controller.SignInAsync(new SignInRequest { UserId = "user-id", ApiToken = "synthetic" });
+        await WaitForConditionAsync(() => !controller.State.IsCloudSyncing && remote.SectionUploadCount > 0);
+        var original = new ColorSchemePreferences(ColorSchemeCatalog.DefaultLightSchemeId, [], DateTimeOffset.UtcNow);
+        await storage.SetAsync(StorageKeys.ColorSchemePreferences, original, CancellationToken.None);
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var response = new TaskCompletionSource<RemoteUserDataSnapshot?>(TaskCreationOptions.RunContinuationsAsynchronously);
+        remote.SectionDownload = () => { entered.TrySetResult(); return response.Task; }; // Deliberately ignores cancellation.
+        var pending = controller.SyncAppDataSectionAsync(CloudSyncSection.ColorSchemes);
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(3));
+        await controller.LogoutAsync();
+        Assert.False(controller.State.IsCloudSyncing);
+        Assert.Empty(controller.State.CloudSyncStatuses);
+        if (changeAccount) await controller.SignInAsync(new SignInRequest { UserId = "other-user", ApiToken = "synthetic-other" });
+        response.SetResult(new RemoteUserDataSnapshot(JsonSerializer.Serialize(original with { SelectedSchemeId = ColorSchemeCatalog.DefaultDarkSchemeId, SelectedAtUtc = DateTimeOffset.UtcNow.AddDays(1) }, new JsonSerializerOptions(JsonSerializerDefaults.Web)), null));
+        Assert.False((await pending.WaitAsync(TimeSpan.FromSeconds(3))).Succeeded);
+        var saved = await storage.GetAsync<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences, CancellationToken.None);
+        Assert.Equal(original.SelectedSchemeId, saved!.SelectedSchemeId);
+        Assert.Equal(original.SelectedAtUtc, saved.SelectedAtUtc);
+        Assert.DoesNotContain(controller.State.CloudSyncStatuses, status => status.Section == CloudSyncSection.ColorSchemes && status.Status == CloudSyncSectionStatusKind.Failed);
+    }
+
     private static AppSessionController CreateController(
         FakeDiagnosticsLogStore logStore,
         IRemoteUserDataSyncProvider? remoteUserDataSyncProvider = null,
         IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null,
         FakeKeyValueStorage? keyValueStorage = null,
         IChatGptIntegrationClient? integrationClient = null,
-        bool ownerIsolatedTesting = false)
+        bool ownerIsolatedTesting = false,
+        ColorSchemeService? colorSchemeService = null,
+        LocalUserDataPortabilityService? portability = null)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
-        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting);
+        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting, colorSchemeService, portability);
     }
 
     private static AppSessionController CreateController(
@@ -2242,7 +2350,9 @@ public sealed class AppSessionControllerTests
         IRemotePartyDataSyncProvider? remotePartyDataSyncProvider = null,
         FakeKeyValueStorage? keyValueStorage = null,
         IChatGptIntegrationClient? integrationClient = null,
-        bool ownerIsolatedTesting = false)
+        bool ownerIsolatedTesting = false,
+        ColorSchemeService? colorSchemeService = null,
+        LocalUserDataPortabilityService? portability = null)
     {
         var credentialStore = new FakeCredentialStore();
         var storage = keyValueStorage ?? new FakeKeyValueStorage();
@@ -2269,7 +2379,7 @@ public sealed class AppSessionControllerTests
             gearCatalogStore: gearCatalogStore,
             partyCronHistoryStore: partyCronHistoryStore,
             partySnapshotStore: partySnapshotStore,
-            localUserDataPortabilityService: new LocalUserDataPortabilityService(storage, TimeProvider.System),
+            localUserDataPortabilityService: portability ?? new LocalUserDataPortabilityService(storage, TimeProvider.System),
             refreshCoordinator: refreshCoordinator,
             remotePartyDataSyncProvider: remotePartyDataSyncProvider ?? new FakeRemotePartyDataSyncProvider(),
             remoteUserDataSyncProvider: remoteUserDataSyncProvider ?? new FakeRemoteUserDataSyncProvider(),
@@ -2280,7 +2390,8 @@ public sealed class AppSessionControllerTests
             snapshotFreshnessPolicy: freshnessPolicy,
             featureOptions: new AppFeatureOptions { HabiticaRequestDelayMilliseconds = 0, OwnerIsolatedTestingEnabled = ownerIsolatedTesting },
             timeProvider: TimeProvider.System,
-            integrationClient: integrationClient);
+            integrationClient: integrationClient,
+            colorSchemeService: colorSchemeService);
     }
 
     private static async Task WaitForConditionAsync(Func<bool> condition)
@@ -2355,6 +2466,9 @@ public sealed class AppSessionControllerTests
 
     private sealed class FakeRemoteUserDataSyncProvider : IRemoteUserDataSyncProvider
     {
+        public int SectionDownloadCount { get; private set; }
+        public Func<Task<RemoteUserDataSnapshot?>>? SectionDownload { get; set; }
+        public Func<string, CancellationToken, Task>? BeforeSectionUpload { get; set; }
         public int DownloadCount { get; private set; }
 
         public int UploadCount { get; private set; }
@@ -2396,20 +2510,22 @@ public sealed class AppSessionControllerTests
 
         public Task<RemoteUserDataSnapshot?> DownloadSectionAsync(HabiticaCredentials credentials, string sectionKey, CancellationToken cancellationToken)
         {
-            return Task.FromResult(SectionSnapshots.GetValueOrDefault(sectionKey));
+            SectionDownloadCount++;
+            return SectionDownload?.Invoke() ?? Task.FromResult(SectionSnapshots.GetValueOrDefault(sectionKey));
         }
 
-        public Task<SectionUploadResult> UploadSectionAsync(HabiticaCredentials credentials, string sectionKey, string plainTextJson, CancellationToken cancellationToken)
+        public async Task<SectionUploadResult> UploadSectionAsync(HabiticaCredentials credentials, string sectionKey, string plainTextJson, CancellationToken cancellationToken)
         {
+            if (BeforeSectionUpload is not null) await BeforeSectionUpload(sectionKey, cancellationToken);
             SectionUploadCount++;
             UploadedSectionKeys.Add(sectionKey);
             if (FailedSectionKeys.Contains(sectionKey))
             {
-                return Task.FromResult(new SectionUploadResult(false, "Upload failed."));
+                return new SectionUploadResult(false, "Upload failed.");
             }
 
             UploadedSections[sectionKey] = plainTextJson;
-            return Task.FromResult(new SectionUploadResult(true));
+            return new SectionUploadResult(true);
         }
 
         public Task<IReadOnlyList<RemoteUserDataSnapshot?>> DownloadAllSectionsAsync(HabiticaCredentials credentials, IReadOnlyList<string> sectionKeys, CancellationToken cancellationToken)

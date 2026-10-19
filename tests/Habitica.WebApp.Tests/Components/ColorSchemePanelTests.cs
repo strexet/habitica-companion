@@ -279,7 +279,7 @@ public sealed class ColorSchemePanelTests : BunitContext
 
         Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.SelectedSchemeId);
         Assert.Contains("Using Gryphy (Dark).", cut.Markup);
-        Assert.DoesNotContain("Cloud sync failed.", cut.Markup);
+        Assert.Contains("Saved on this device. Cloud sync failed.", cut.Markup);
         Assert.Equal(new[] { CloudSyncSection.ColorSchemes }, sessionController.SyncAppDataSectionCalls);
     }
 
@@ -297,7 +297,8 @@ public sealed class ColorSchemePanelTests : BunitContext
 
         Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.SelectedSchemeId);
         Assert.Contains("Using Gryphy (Dark).", cut.Markup);
-        Assert.DoesNotContain("Cloud sync skipped", cut.Markup);
+        Assert.Contains("Cloud sync skipped", cut.Find("[data-testid='theme-sync-status']").TextContent);
+        Assert.DoesNotContain("danger-pill", cut.Find("[data-testid='theme-sync-status']").ClassName);
     }
 
     [Fact]
@@ -347,6 +348,150 @@ public sealed class ColorSchemePanelTests : BunitContext
         Assert.True(Assert.Single(stored.CustomSchemes).IsDark);
     }
 
+    [Fact]
+    public async Task Import_updates_open_panel_fast_cache_and_reload_without_restamping_selection()
+    {
+        var storage = new FakeKeyValueStorage();
+        var cut = RenderPanel(storage, compact: true);
+        var remote = ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.DefaultDark, "Synced palette") with { UpdatedAtUtc = DateTimeOffset.UtcNow.AddMinutes(-1) };
+        var preferences = new ColorSchemePreferences(remote.Id, [remote], DateTimeOffset.UtcNow.AddMinutes(-1));
+        await ImportThemeAsync(storage, preferences);
+
+        cut.WaitForAssertion(() => Assert.Equal(remote.Id, cut.Find("select").GetAttribute("value")));
+        var applied = JSInterop.Invocations.Last(call => call.Identifier == "HabiticaColorScheme.applyAndStore");
+        Assert.Equal(remote.Id, ((ColorSchemeDefinition)applied.Arguments[0]!).Id);
+        Assert.Equal(preferences.SelectedAtUtc, ((ColorSchemePreferences)applied.Arguments[1]!).SelectedAtUtc);
+        Assert.Equal(true, applied.Arguments[2]);
+        var reloaded = await Services.GetRequiredService<ColorSchemeService>().LoadAsync();
+        Assert.Equal(remote.Id, reloaded.ActiveScheme.Id);
+        Assert.Equal(preferences.SelectedAtUtc, storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.SelectedAtUtc);
+        Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("theme-import", cut.Markup);
+        var evidenceDirectory = Environment.GetEnvironmentVariable("HABITICA_BROWSER_EVIDENCE");
+        if (!string.IsNullOrEmpty(evidenceDirectory))
+            File.WriteAllText(Path.Combine(evidenceDirectory, "theme-data.json"), JsonSerializer.Serialize(new
+            {
+                before = ColorSchemeCatalog.DefaultLight,
+                imported = remote,
+                preferences,
+                preview = ColorSchemeCatalog.GenerateRandomTheme(new Random(42), 0.2)
+            }, new JsonSerializerOptions(JsonSerializerDefaults.Web)));
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task Import_preserves_unsaved_editor_and_requires_an_explicit_choice(bool useSynced)
+    {
+        var storage = new FakeKeyValueStorage();
+        var session = new FakeAppSessionController(SessionViewModel.Empty);
+        var cut = RenderPanel(storage, sessionController: session);
+        cut.Find("[data-testid='custom-scheme-name']").Change("My unsaved draft");
+        await ImportThemeAsync(storage, new ColorSchemePreferences(ColorSchemeCatalog.DefaultDarkSchemeId, [], DateTimeOffset.UtcNow));
+        cut.WaitForAssertion(() => Assert.NotNull(cut.Find("[data-testid='theme-import-conflict']")));
+        Assert.Equal("My unsaved draft", cut.Find("[data-testid='custom-scheme-name']").GetAttribute("value"));
+        Assert.True(cut.Find("[data-testid='save-custom-scheme']").HasAttribute("disabled"));
+        Assert.Empty(session.SyncAppDataSectionCalls);
+        Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("theme-conflict", cut.Markup);
+        cut.Find(useSynced ? "[data-testid='use-synced-theme']" : "[data-testid='keep-theme-edit']").Click();
+        Assert.Empty(cut.FindAll("[data-testid='theme-import-conflict']"));
+        if (useSynced)
+        {
+            Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, cut.Find("select").GetAttribute("value"));
+            Assert.NotEqual("My unsaved draft", cut.Find("[data-testid='custom-scheme-name']").GetAttribute("value"));
+            Assert.Empty(session.SyncAppDataSectionCalls);
+        }
+        else
+        {
+            Assert.Equal("My unsaved draft", cut.Find("[data-testid='custom-scheme-name']").GetAttribute("value"));
+            cut.Find("[data-testid='save-custom-scheme']").Click();
+            Assert.Equal("My unsaved draft", Assert.Single(storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.CustomSchemes).Name);
+            Assert.Single(session.SyncAppDataSectionCalls);
+        }
+    }
+
+    [Fact]
+    public async Task Import_keeps_random_preview_transient_but_caches_the_synced_selection()
+    {
+        var storage = new FakeKeyValueStorage();
+        var session = new FakeAppSessionController(SessionViewModel.Empty);
+        var cut = RenderPanel(storage, sessionController: session);
+        cut.Find("[data-testid='random-theme-scheme']").Click();
+        await ImportThemeAsync(storage, new ColorSchemePreferences(ColorSchemeCatalog.DefaultDarkSchemeId, [], DateTimeOffset.UtcNow));
+        cut.WaitForAssertion(() => Assert.Equal(ColorSchemeCatalog.RandomSchemeId, cut.Find("select").GetAttribute("value")));
+        var cached = JSInterop.Invocations.Last(call => call.Identifier == "HabiticaColorScheme.applyAndStore");
+        Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, ((ColorSchemeDefinition)cached.Arguments[0]!).Id);
+        Assert.Equal(false, cached.Arguments[2]);
+        Assert.Empty(session.SyncAppDataSectionCalls);
+        cut.Find("[data-testid='use-synced-theme']").Click();
+        Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, cut.Find("select").GetAttribute("value"));
+        Assert.False(Services.GetRequiredService<ColorSchemeService>().RandomActive);
+    }
+
+    [Fact]
+    public void Failed_theme_upload_reports_local_save_and_cloud_failure()
+    {
+        var storage = new FakeKeyValueStorage();
+        var session = new FakeAppSessionController(SessionViewModel.Empty) { LocalDataResult = LocalDataActionResult.Failure("Upload failed.") };
+        var cut = RenderPanel(storage, sessionController: session);
+        cut.Find("select").Change(ColorSchemeCatalog.DefaultDarkSchemeId);
+        Assert.Equal(ColorSchemeCatalog.DefaultDarkSchemeId, storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.SelectedSchemeId);
+        Assert.Contains("Saved on this device. Upload failed.", cut.Find("[data-testid='theme-sync-status']").TextContent);
+    }
+
+    [Fact]
+    public async Task Two_independent_device_stores_converge_without_creating_selection_timestamps_on_read()
+    {
+        var a = new FakeKeyValueStorage();
+        var b = new FakeKeyValueStorage();
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        var pa = new LocalUserDataPortabilityService(a, TimeProvider.System);
+        var pb = new LocalUserDataPortabilityService(b, TimeProvider.System);
+        var ta = new ColorSchemeService(a, JSInterop.JSRuntime, pa);
+        var tb = new ColorSchemeService(b, JSInterop.JSRuntime, pb);
+        await ta.SelectAsync(ColorSchemeCatalog.DefaultDarkSchemeId);
+        var selected = a.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!;
+        await pb.ImportSectionAsync((await pa.ExportSectionAsync(StorageKeys.ColorSchemePreferences, CancellationToken.None))!, LocalDataImportMode.Merge, CancellationToken.None);
+        await tb.RefreshAfterImportAsync();
+        Assert.Equal(selected.SelectedAtUtc, b.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.SelectedAtUtc);
+        Assert.Equal(selected.SelectedSchemeId, (await tb.LoadAsync()).ActiveScheme.Id);
+        await tb.SelectAsync(ColorSchemeCatalog.DefaultLightSchemeId);
+        await pa.ImportSectionAsync((await pb.ExportSectionAsync(StorageKeys.ColorSchemePreferences, CancellationToken.None))!, LocalDataImportMode.Merge, CancellationToken.None);
+        await ta.RefreshAfterImportAsync();
+        Assert.Equal(ColorSchemeCatalog.DefaultLightSchemeId, (await ta.LoadAsync()).ActiveScheme.Id);
+        Assert.Equal(b.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.SelectedAtUtc, a.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!.SelectedAtUtc);
+    }
+
+    [Fact]
+    public async Task Local_save_waits_for_import_storage_write_and_preserves_imported_custom_schemes()
+    {
+        var storage = new FakeKeyValueStorage();
+        var cut = RenderPanel(storage, compact: true);
+        var custom = ColorSchemeCatalog.CreateCustomCopy(ColorSchemeCatalog.DefaultDark, "Other device");
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        storage.BeforeRawWrite = async () => { entered.TrySetResult(); await release.Task; };
+        var preferences = new ColorSchemePreferences(custom.Id, [custom], DateTimeOffset.UtcNow.AddMinutes(-1));
+        var importer = Services.GetRequiredService<LocalUserDataPortabilityService>().ImportSectionAsync(
+            new LocalUserDataRecord(StorageKeys.ColorSchemePreferences, JsonSerializer.Serialize(preferences, new JsonSerializerOptions(JsonSerializerDefaults.Web))), LocalDataImportMode.Merge, CancellationToken.None);
+        await entered.Task.WaitAsync(TimeSpan.FromSeconds(3));
+        var saving = Services.GetRequiredService<ColorSchemeService>().SelectAsync(ColorSchemeCatalog.DefaultLightSchemeId);
+        Assert.False(saving.IsCompleted);
+        release.SetResult();
+        await importer.WaitAsync(TimeSpan.FromSeconds(3));
+        await saving.WaitAsync(TimeSpan.FromSeconds(3));
+        var actual = storage.Get<ColorSchemePreferences>(StorageKeys.ColorSchemePreferences)!;
+        Assert.Equal(custom.Id, Assert.Single(actual.CustomSchemes).Id);
+        Assert.Equal(ColorSchemeCatalog.DefaultLightSchemeId, actual.SelectedSchemeId);
+    }
+
+    private async Task ImportThemeAsync(FakeKeyValueStorage storage, ColorSchemePreferences preferences)
+    {
+        var portability = Services.GetRequiredService<LocalUserDataPortabilityService>();
+        await portability.ImportSectionAsync(new LocalUserDataRecord(StorageKeys.ColorSchemePreferences,
+            JsonSerializer.Serialize(preferences, new JsonSerializerOptions(JsonSerializerDefaults.Web))), LocalDataImportMode.Merge, CancellationToken.None);
+        await Services.GetRequiredService<ColorSchemeService>().RefreshAfterImportAsync();
+    }
+
     private IRenderedComponent<ColorSchemePanel> RenderPanel(
         FakeKeyValueStorage storage,
         bool compact = false,
@@ -356,6 +501,7 @@ public sealed class ColorSchemePanelTests : BunitContext
         Services.AddMudServices();
         Services.AddSingleton<IKeyValueStorage>(storage);
         Services.AddSingleton<IAppSessionController>(sessionController ?? new FakeAppSessionController(SessionViewModel.Empty));
+        Services.AddSingleton(new LocalUserDataPortabilityService(storage, TimeProvider.System));
         Services.AddScoped<ColorSchemeService>();
         return Render<ColorSchemePanel>(parameters => parameters.Add(p => p.Compact, compact));
     }
@@ -394,10 +540,12 @@ public sealed class ColorSchemePanelTests : BunitContext
             return Task.CompletedTask;
         }
 
-        public Task SetRawJsonAsync(string key, string jsonText, CancellationToken cancellationToken)
+        public Func<Task>? BeforeRawWrite { get; set; }
+        public async Task SetRawJsonAsync(string key, string jsonText, CancellationToken cancellationToken)
         {
+            if (BeforeRawWrite is not null) await BeforeRawWrite();
+            cancellationToken.ThrowIfCancellationRequested();
             _values[key] = jsonText;
-            return Task.CompletedTask;
         }
     }
 }

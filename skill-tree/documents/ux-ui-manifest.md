@@ -651,3 +651,9 @@ The command layer and optional MCP expose reviewed native planned-date and categ
 The authorization page presents native category/project/section/label/goal edits as a separate selectable permission. The disclosure states that archival retains related tasks and history and produces no game effects. Existing task-write permission does not authorize organization edits. Organization authoring controls remain absent from the production UI; local browser adapters require exact reviewed intent and preserve original receipt recovery after uncertain responses.
 
 Cloud workspace storage disclosure includes saved task-view definitions. Saved-view read errors report unavailable data without claiming a task change. Detailed saved-list controls remain behind the existing navigation qualification gate.
+
+## Appearance sync feedback and draft recovery
+
+Saved theme imports update the mounted picker, semantic CSS and reload cache. Unsaved editor fields and generated previews remain local. A sync conflict presents explicit actions to apply the synced appearance or retain the draft for continued editing. Saving a retained draft requires the conflict choice first. Cancelling an editor restores the latest saved appearance without uploading a preview or changing selection time.
+
+Appearance saves report local persistence independently from encrypted-cloud availability. Cloud failures remain visible near the theme controls and in existing sync diagnostics. Task filters, page folds and disclosure state remain device-local; missing tab management access does not establish server disconnection.

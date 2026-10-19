@@ -1,3 +1,4 @@
+@implements IDisposable
 @using Habitica.Application.Sync
 @using Habitica.WebApp.State
 @using Habitica.WebApp.Theme
@@ -114,7 +115,7 @@
                                data-testid="random-scheme-name"
                                value="@_randomSaveName"
                                @onchange="eventArgs => _randomSaveName = eventArgs.Value?.ToString()?.Trim() ?? string.Empty" />
-                        <MudButton Color="Color.Primary" Size="Size.Small" data-testid="save-random-scheme" OnClick="SaveRandomSchemeAsync" Variant="Variant.Filled">
+                        <MudButton Color="Color.Primary" Size="Size.Small" data-testid="save-random-scheme" Disabled="@_importConflict" OnClick="SaveRandomSchemeAsync" Variant="Variant.Filled">
                             Save
                         </MudButton>
                     </div>
@@ -217,7 +218,7 @@
                         </div>
                     }
                     <div class="action-row">
-                        <MudButton Color="Color.Primary" Size="@ControlSize" data-testid="save-custom-scheme" OnClick="SaveCustomSchemeAsync" Variant="Variant.Filled">
+                        <MudButton Color="Color.Primary" Size="@ControlSize" data-testid="save-custom-scheme" Disabled="@_importConflict" OnClick="SaveCustomSchemeAsync" Variant="Variant.Filled">
                             Save Scheme
                         </MudButton>
                         <MudButton Color="Color.Secondary" Size="@ControlSize" OnClick="CancelCustomSchemeEdit" Variant="Variant.Outlined">
@@ -235,6 +236,20 @@
         </div>
     }
 
+    @if (_importConflict)
+    {
+        <div class="import-status" role="status" data-testid="theme-import-conflict">
+            <p>Saved appearance changed during sync. Your unsaved edit stays on this device.</p>
+            <div class="action-row">
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="UseSyncedThemeAsync" data-testid="use-synced-theme">Use synced theme</MudButton>
+                <MudButton Color="Color.Secondary" Variant="Variant.Outlined" OnClick="KeepEditing" data-testid="keep-theme-edit">Keep editing</MudButton>
+            </div>
+        </div>
+    }
+    @if (!string.IsNullOrWhiteSpace(_cloudSyncMessage))
+    {
+        <p class="@($"import-status {(_cloudSyncSucceeded ? "" : "danger-pill")}")" role="status" data-testid="theme-sync-status">@_cloudSyncMessage</p>
+    }
     @if (!PresetsOnly && !string.IsNullOrWhiteSpace(_colorSchemeMessage))
     {
         <div class="@($"import-status {(_colorSchemeSucceeded ? "success-pill" : "danger-pill")}")" data-testid="color-scheme-message">
@@ -266,6 +281,47 @@
     private bool _randomActive;
     private string _randomSaveName = string.Empty;
     private double _chaos;
+    private bool _disposed;
+    private bool _importConflict;
+    private string? _editorBaseline;
+    private string? _cloudSyncMessage;
+    private bool _cloudSyncSucceeded = true;
+    private bool HasUnsavedEdit => _randomActive || (_colorSchemeEditor is not null
+        && ReadableSchemeParser.Serialize(_colorSchemeEditor.ToScheme()) != _editorBaseline)
+        || (_showPasteFallback && !string.IsNullOrWhiteSpace(_pasteFallbackText));
+
+    private void SetEditor(ColorSchemeEditorModel? editor)
+    {
+        _colorSchemeEditor = editor;
+        _editorBaseline = editor is null ? null : ReadableSchemeParser.Serialize(editor.ToScheme());
+    }
+
+    private Task OnImportedAsync(ColorSchemeState state) => InvokeAsync(() =>
+    {
+        if (_disposed) return;
+        var dirty = HasUnsavedEdit;
+        _colorSchemeState = state;
+        if (dirty) _importConflict = true;
+        else if (_colorSchemeEditor is not null) SetEditor(CreateEditorForActive());
+        StateHasChanged();
+    });
+
+    private async Task UseSyncedThemeAsync()
+    {
+        _colorSchemeState = await ColorSchemeService.UseSavedAsync();
+        _randomActive = false;
+        _importConflict = false;
+        CancelPasteFallback();
+        SetEditor(CreateEditorForActive());
+    }
+
+    private void KeepEditing() => _importConflict = false;
+
+    public void Dispose()
+    {
+        _disposed = true;
+        ColorSchemeService.Imported -= OnImportedAsync;
+    }
 
     // Each label reads on its own (no "Chaos" prefix) as an escalating intensity from calm to mad.
     private string ChaosLabel => _chaos switch
@@ -338,6 +394,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        ColorSchemeService.Imported += OnImportedAsync;
         _colorSchemeState = await ColorSchemeService.LoadAsync();
         _randomScheme = ColorSchemeService.PendingRandomScheme;
         if (_randomScheme is not null && ColorSchemeService.RandomActive)
@@ -383,20 +440,22 @@
             return;
         }
 
+        _importConflict = false;
         _colorSchemeState = await ColorSchemeService.SelectAsync(schemeId);
         _randomActive = false;
-        _colorSchemeEditor = CreateEditorForActive();
-        SyncColorSchemes();
+        SetEditor(CreateEditorForActive());
+        await SyncColorSchemesAsync();
         SetColorSchemeMessage($"Using {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
     private async Task RandomPresetAsync()
     {
         var preset = ColorSchemeCatalog.PickRandomPreset(_colorSchemeState.CustomSchemes, _colorSchemeState.ActiveScheme.Id);
+        _importConflict = false;
         _colorSchemeState = await ColorSchemeService.SelectAsync(preset.Id);
         _randomActive = false;
-        _colorSchemeEditor = CreateEditorForActive();
-        SyncColorSchemes();
+        SetEditor(CreateEditorForActive());
+        await SyncColorSchemesAsync();
         SetColorSchemeMessage($"Random preset: {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
@@ -431,7 +490,7 @@
     {
         _randomScheme = await ColorSchemeService.ApplyRandomThemeAsync(_chaos);
         _randomActive = true;
-        _colorSchemeEditor = null;
+        SetEditor(null);
         _randomSaveName = string.Empty;
         _showAdvanced = true;
     }
@@ -445,7 +504,7 @@
 
         await ColorSchemeService.ReapplyPendingRandomAsync();
         _randomActive = true;
-        _colorSchemeEditor = null;
+        SetEditor(null);
         SetColorSchemeMessage("Showing the last random theme.", true);
     }
 
@@ -466,8 +525,8 @@
         }
 
         _randomActive = false;
-        _colorSchemeEditor = ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme);
-        SyncColorSchemes();
+        SetEditor(ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme));
+        await SyncColorSchemesAsync();
         SetColorSchemeMessage($"Saved {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
@@ -485,7 +544,7 @@
     {
         if (!_randomActive)
         {
-            _colorSchemeEditor ??= CreateEditorForActive();
+            if (_colorSchemeEditor is null) SetEditor(CreateEditorForActive());
         }
     }
 
@@ -493,9 +552,10 @@
     {
         CancelPasteFallback();
         // Restore the previously applied scheme so a live-pasted preview is rolled back when the
-        // user cancels without saving. PreviewAsync is transient — no preferences are written.
-        await ColorSchemeService.PreviewAsync(_colorSchemeState.ActiveScheme);
-        _colorSchemeEditor = CreateEditorForActive();
+        // user cancels without saving. Loading saved preferences does not stamp a selection.
+        _colorSchemeState = await ColorSchemeService.UseSavedAsync();
+        _importConflict = false;
+        SetEditor(CreateEditorForActive());
         SetColorSchemeMessage("Custom scheme edit cancelled.", true);
     }
 
@@ -550,8 +610,8 @@
             return;
         }
 
-        _colorSchemeEditor = ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme);
-        SyncColorSchemes();
+        SetEditor(ColorSchemeEditorModel.FromScheme(_colorSchemeState.ActiveScheme));
+        await SyncColorSchemesAsync();
         SetColorSchemeMessage($"Saved {_colorSchemeState.ActiveScheme.Name}.", true);
     }
 
@@ -564,14 +624,26 @@
 
         var deletedName = _colorSchemeState.ActiveScheme.Name;
         _colorSchemeState = await ColorSchemeService.DeleteCustomAsync(_colorSchemeState.ActiveScheme.Id);
-        _colorSchemeEditor = null;
-        SyncColorSchemes();
+        SetEditor(null);
+        await SyncColorSchemesAsync();
         SetColorSchemeMessage($"Deleted {deletedName}.", true);
     }
 
-    private void SyncColorSchemes()
+    private async Task SyncColorSchemesAsync()
     {
-        _ = SessionController.SyncAppDataSectionAsync(CloudSyncSection.ColorSchemes);
+        try
+        {
+            var result = await SessionController.SyncAppDataSectionAsync(CloudSyncSection.ColorSchemes);
+            if (_disposed) return;
+            _cloudSyncSucceeded = result.Succeeded;
+            _cloudSyncMessage = result.Succeeded ? result.Message : $"Saved on this device. {result.Message}";
+        }
+        catch (Exception)
+        {
+            if (_disposed) return;
+            _cloudSyncSucceeded = false;
+            _cloudSyncMessage = "Saved on this device. Cloud sync is unavailable; try syncing again in Settings.";
+        }
     }
 
     private void SetColorSchemeMessage(string message, bool succeeded)

@@ -1,4 +1,6 @@
 using Habitica.Storage;
+using Habitica.Application.Sync;
+using System.Text.Json;
 using Microsoft.JSInterop;
 
 namespace Habitica.WebApp.Theme;
@@ -8,17 +10,28 @@ public sealed class ColorSchemeService
     private readonly IKeyValueStorage _keyValueStorage;
     private readonly IJSRuntime _jsRuntime;
 
-    public ColorSchemeService(IKeyValueStorage keyValueStorage, IJSRuntime jsRuntime)
+    private readonly SemaphoreSlim _preferencesLock;
+    private string? _loadedPreferences;
+    private bool _previewActive;
+    public event Func<ColorSchemeState, Task>? Imported;
+
+    public ColorSchemeService(IKeyValueStorage keyValueStorage, IJSRuntime jsRuntime,
+        LocalUserDataPortabilityService? portability = null)
     {
         _keyValueStorage = keyValueStorage;
         _jsRuntime = jsRuntime;
+        _preferencesLock = portability?.MutationLock ?? new SemaphoreSlim(1, 1);
     }
 
-    public async Task<ColorSchemeState> LoadAsync(CancellationToken cancellationToken = default)
+    public Task<ColorSchemeState> LoadAsync(CancellationToken cancellationToken = default)
+        => WithPreferencesLockAsync(() => LoadAsyncCore(cancellationToken), cancellationToken);
+
+    private async Task<ColorSchemeState> LoadAsyncCore(CancellationToken cancellationToken = default)
     {
         var preferences = await LoadPreferencesAsync(cancellationToken);
         var activeScheme = ColorSchemeCatalog.Resolve(preferences.SelectedSchemeId, preferences.CustomSchemes);
-        await PersistFastSchemeAsync(activeScheme, preferences);
+        await PersistFastSchemeAsync(activeScheme, preferences, !RandomActive && !_previewActive, cancellationToken);
+        _loadedPreferences = JsonSerializer.Serialize(preferences);
         return new ColorSchemeState(activeScheme, ColorSchemeCatalog.BuiltInSchemes, preferences.CustomSchemes);
     }
 
@@ -85,16 +98,23 @@ public sealed class ColorSchemeService
     /// draft. The stored preferences and selected scheme are left untouched until the user saves.
     /// </summary>
     public Task PreviewAsync(ColorSchemeDefinition scheme, CancellationToken cancellationToken = default)
-        => ApplyTransientAsync(scheme);
+    {
+        _previewActive = true;
+        return ApplyTransientAsync(scheme);
+    }
 
     private async Task ApplyTransientAsync(ColorSchemeDefinition scheme)
     {
         await _jsRuntime.InvokeVoidAsync("HabiticaColorScheme.applyColorScheme", scheme);
     }
 
-    public async Task<ColorSchemeState> SelectAsync(string schemeId, CancellationToken cancellationToken = default)
+    public Task<ColorSchemeState> SelectAsync(string schemeId, CancellationToken cancellationToken = default)
+        => WithPreferencesLockAsync(() => SelectAsyncCore(schemeId, cancellationToken), cancellationToken);
+
+    private async Task<ColorSchemeState> SelectAsyncCore(string schemeId, CancellationToken cancellationToken = default)
     {
         RandomActive = false;
+        _previewActive = false;
         var preferences = await LoadPreferencesAsync(cancellationToken);
         var activeScheme = ColorSchemeCatalog.Resolve(schemeId, preferences.CustomSchemes);
         // Stamp the selection change so cross-device merge knows which device chose more recently.
@@ -107,7 +127,10 @@ public sealed class ColorSchemeService
         return new ColorSchemeState(activeScheme, ColorSchemeCatalog.BuiltInSchemes, updated.CustomSchemes);
     }
 
-    public async Task<(ColorSchemeState State, IReadOnlyList<string> Errors)> SaveCustomAsync(
+    public Task<(ColorSchemeState State, IReadOnlyList<string> Errors)> SaveCustomAsync(ColorSchemeDefinition scheme, bool select, CancellationToken cancellationToken = default)
+        => WithPreferencesLockAsync(() => SaveCustomAsyncCore(scheme, select, cancellationToken), cancellationToken);
+
+    private async Task<(ColorSchemeState State, IReadOnlyList<string> Errors)> SaveCustomAsyncCore(
         ColorSchemeDefinition scheme,
         bool select,
         CancellationToken cancellationToken = default)
@@ -123,12 +146,13 @@ public sealed class ColorSchemeService
         var errors = ColorSchemeCatalog.Validate(customScheme);
         if (errors.Count > 0)
         {
-            return (await LoadAsync(cancellationToken), errors);
+            return (await LoadAsyncCore(cancellationToken), errors);
         }
 
         if (select)
         {
             RandomActive = false;
+            _previewActive = false;
         }
 
         var preferences = await LoadPreferencesAsync(cancellationToken);
@@ -149,9 +173,13 @@ public sealed class ColorSchemeService
         return (new ColorSchemeState(activeScheme, ColorSchemeCatalog.BuiltInSchemes, customSchemes), Array.Empty<string>());
     }
 
-    public async Task<ColorSchemeState> DeleteCustomAsync(string schemeId, CancellationToken cancellationToken = default)
+    public Task<ColorSchemeState> DeleteCustomAsync(string schemeId, CancellationToken cancellationToken = default)
+        => WithPreferencesLockAsync(() => DeleteCustomAsyncCore(schemeId, cancellationToken), cancellationToken);
+
+    private async Task<ColorSchemeState> DeleteCustomAsyncCore(string schemeId, CancellationToken cancellationToken = default)
     {
         RandomActive = false;
+        _previewActive = false;
         var preferences = await LoadPreferencesAsync(cancellationToken);
         var deletedScheme = preferences.CustomSchemes.FirstOrDefault(
             scheme => string.Equals(scheme.Id, schemeId, StringComparison.Ordinal));
@@ -189,7 +217,7 @@ public sealed class ColorSchemeService
         if (NeedsMigrationPersistence(preferences, normalized))
         {
             var activeScheme = ColorSchemeCatalog.Resolve(normalized.SelectedSchemeId, normalized.CustomSchemes);
-            await PersistFastSchemeAsync(activeScheme, normalized);
+            await PersistFastSchemeAsync(activeScheme, normalized, !RandomActive && !_previewActive, cancellationToken);
             await _keyValueStorage.SetAsync(StorageKeys.ColorSchemePreferences, normalized, cancellationToken);
         }
 
@@ -202,13 +230,45 @@ public sealed class ColorSchemeService
         CancellationToken cancellationToken)
     {
         var normalized = NormalizePreferences(preferences);
-        await PersistFastSchemeAsync(activeScheme, normalized);
         await _keyValueStorage.SetAsync(StorageKeys.ColorSchemePreferences, normalized, cancellationToken);
+        await PersistFastSchemeAsync(activeScheme, normalized, !RandomActive && !_previewActive, cancellationToken);
+        _loadedPreferences = JsonSerializer.Serialize(normalized);
     }
 
-    private async Task PersistFastSchemeAsync(ColorSchemeDefinition activeScheme, ColorSchemePreferences preferences)
+    private async Task PersistFastSchemeAsync(ColorSchemeDefinition activeScheme, ColorSchemePreferences preferences, bool apply = true, CancellationToken cancellationToken = default)
     {
-        await _jsRuntime.InvokeVoidAsync("HabiticaColorScheme.applyAndStore", activeScheme, preferences);
+        cancellationToken.ThrowIfCancellationRequested();
+        await _jsRuntime.InvokeVoidAsync("HabiticaColorScheme.applyAndStore", cancellationToken, activeScheme, preferences, apply);
+    }
+
+    public async Task RefreshAfterImportAsync(CancellationToken cancellationToken = default)
+    {
+        var state = await WithPreferencesLockAsync(async () =>
+        {
+            var preferences = await LoadPreferencesAsync(cancellationToken);
+            var serialized = JsonSerializer.Serialize(preferences);
+            if (_loadedPreferences == serialized) return null;
+            var active = ColorSchemeCatalog.Resolve(preferences.SelectedSchemeId, preferences.CustomSchemes);
+            await PersistFastSchemeAsync(active, preferences, !RandomActive && !_previewActive, cancellationToken);
+            _loadedPreferences = serialized;
+            return new ColorSchemeState(active, ColorSchemeCatalog.BuiltInSchemes, preferences.CustomSchemes);
+        }, cancellationToken);
+        if (state is not null && Imported is not null)
+            foreach (Func<ColorSchemeState, Task> handler in Imported.GetInvocationList()) await handler(state);
+    }
+
+    public async Task<ColorSchemeState> UseSavedAsync(CancellationToken cancellationToken = default)
+    {
+        RandomActive = false;
+        _previewActive = false;
+        return await LoadAsync(cancellationToken);
+    }
+
+    private async Task<T> WithPreferencesLockAsync<T>(Func<Task<T>> operation, CancellationToken cancellationToken)
+    {
+        await _preferencesLock.WaitAsync(cancellationToken);
+        try { return await operation(); }
+        finally { _preferencesLock.Release(); }
     }
 
     private async Task<ColorSchemePreferences?> LoadFastPreferencesAsync()

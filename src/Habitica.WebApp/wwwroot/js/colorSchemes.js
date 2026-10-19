@@ -305,13 +305,13 @@
     }
   }
 
-  function applyAndStore(scheme, preferences) {
+  function applyAndStore(scheme, preferences, apply = true) {
     const normalized = normalizeScheme(scheme);
     if (!normalized) {
       return;
     }
 
-    applyColorScheme(normalized);
+    if (apply) applyColorScheme(normalized);
     try {
       window.localStorage.setItem(selectedKey, normalized.id);
       window.localStorage.setItem(activeKey, JSON.stringify(normalized));

@@ -1,0 +1,110 @@
+{
+  "task_id": "T-31fbbe84-a4ab-4bc7-9509-647666e6e017",
+  "kind": "local-implementation-acceptance",
+  "date": "2026-10-19",
+  "checks": {
+    "debug_build": {
+      "exit": 0,
+      "warnings": 0,
+      "errors": 0
+    },
+    "release_publish": {
+      "exit": 0,
+      "output": "Temporary local publication directory only; no remote publication.",
+      "limitation": "wasm-tools unavailable; SDK publishes without optional size optimizations."
+    },
+    "solution_tests": {
+      "exit": 0,
+      "passed": 796,
+      "failed": 0,
+      "projects": 6
+    },
+    "javascript_tests": {
+      "exit": 0,
+      "passed": 4,
+      "failed": 0
+    },
+    "negative_control": {
+      "mutation": "Bypass the ColorSchemes merge-before-upload branch.",
+      "result": "The remote-selection/custom-edit regression fails on unequal selection IDs; production source restored before final build and tests."
+    },
+    "browser": {
+      "source": "Synthetic real Razor output plus published production colorSchemes.js and app.css.",
+      "checks": [
+        "Saved import changes rendered CSS and cache.",
+        "Transient preview remains rendered while imported saved preferences update the fast cache.",
+        "Reload applies imported saved selection instead of the transient preview.",
+        "Conflict actions remain separate and reachable at 390 and 1280 CSS-pixel frame widths.",
+        "Button color measurements wait for CSS transitions to finish."
+      ],
+      "measurements": [
+        {
+          "fixture": true,
+          "width": 390,
+          "contentWidth": 375,
+          "controls": [
+            {
+              "label": "Use synced theme",
+              "x": 33,
+              "y": 1096.890625,
+              "width": 309,
+              "height": 44,
+              "color": "rgb(20, 10, 32)",
+              "background": "rgb(167, 101, 226)"
+            },
+            {
+              "label": "Keep editing",
+              "x": 33,
+              "y": 1152.890625,
+              "width": 309,
+              "height": 44,
+              "color": "color(srgb 0.881569 0.766667 0.448627)",
+              "background": "rgba(0, 0, 0, 0)"
+            }
+          ],
+          "primary": "#a765e2",
+          "gradient": "#a765e2"
+        },
+        {
+          "fixture": true,
+          "width": 1280,
+          "contentWidth": 1265,
+          "controls": [
+            {
+              "label": "Use synced theme",
+              "x": 115.5,
+              "y": 738.09375,
+              "width": 166,
+              "height": 44,
+              "color": "rgb(20, 10, 32)",
+              "background": "rgb(167, 101, 226)"
+            },
+            {
+              "label": "Keep editing",
+              "x": 293.5,
+              "y": 738.09375,
+              "width": 123.859375,
+              "height": 44,
+              "color": "color(srgb 0.881569 0.766667 0.448627)",
+              "background": "rgba(0, 0, 0, 0)"
+            }
+          ],
+          "primary": "#a765e2",
+          "gradient": "#a765e2"
+        }
+      ],
+      "screenshot": "skill-tree/history/validation/theme-sync-phone.png"
+    }
+  },
+  "limitations": [
+    "Actual independent Mac/iOS transport and mobile-device qualification remain release work.",
+    "Timestamp ties preserve local selection; KV synchronization has no global compare-and-swap guarantee.",
+    "No live account requests, gameplay effects, remote deployment or permission changes occurred."
+  ],
+  "commands": [
+    "dotnet build src/Habitica.WebApp/Habitica.WebApp.csproj --no-restore -m:1 -nodeReuse:false",
+    "dotnet publish src/Habitica.WebApp/Habitica.WebApp.csproj -c Release --no-restore -m:1 -nodeReuse:false -o <temporary-directory>",
+    "dotnet test Habitica.sln --no-restore -m:1 -nodeReuse:false",
+    "node --test tests/Functions/color-schemes.test.mjs"
+  ]
+}

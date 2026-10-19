@@ -18,6 +18,7 @@ using Habitica.Domain.User;
 using Habitica.Rules.Spells;
 using Habitica.Storage;
 using Habitica.WebApp.Sync;
+using Habitica.WebApp.Theme;
 
 namespace Habitica.WebApp.State;
 
@@ -54,6 +55,9 @@ public sealed class AppSessionController : IAppSessionController
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
     private HabiticaCredentials? _currentCredentials;
     private readonly HashSet<CloudSyncSection> _cloudSyncExcludedSections;
+    private readonly ColorSchemeService? _colorSchemeService;
+    private readonly SemaphoreSlim _cloudSyncSemaphore = new(1, 1);
+    private CancellationTokenSource _privateSyncCancellation = new();
     private readonly SemaphoreSlim _partySyncSemaphore = new(1, 1);
     private CancellationTokenSource? _activeSpellCastCancellation;
     private bool _includeStalePartyMembersInQuestForecasts;
@@ -83,8 +87,10 @@ public sealed class AppSessionController : IAppSessionController
         TimeProvider timeProvider,
         IChatGptIntegrationClient? integrationClient = null,
         IWorkspaceCloudClient? workspaceClient = null,
-        IndexedDbWorkspaceDatabase? workspaceDatabase = null)
+        IndexedDbWorkspaceDatabase? workspaceDatabase = null,
+        ColorSchemeService? colorSchemeService = null)
     {
+        _colorSchemeService = colorSchemeService;
         _integrationClient = integrationClient;
         _workspaceClient = workspaceClient;
         _workspaceDatabase = workspaceDatabase;
@@ -2814,8 +2820,10 @@ public sealed class AppSessionController : IAppSessionController
 
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
+        BeginRefreshView();
         _integrationClient?.ForgetSession();
         _workspaceClient?.ForgetSession();
+        ResetPrivateSyncSession();
         _currentCredentials = null;
         var cachedUserSnapshot = State.UserSnapshot;
 
@@ -2825,7 +2833,10 @@ public sealed class AppSessionController : IAppSessionController
             ClassName = cachedUserSnapshot?.ClassName,
             ErrorMessage = null,
             IsAuthenticated = false,
-            Level = cachedUserSnapshot?.Level
+            Level = cachedUserSnapshot?.Level,
+            CloudSyncSectionStatuses = Array.Empty<CloudSyncSectionStatus>(),
+            DomainStates = State.DomainStates?.Where(pair => pair.Key != RefreshDomain.CloudSync)
+                .ToDictionary(pair => pair.Key, pair => pair.Value)
         });
 
         return Task.CompletedTask;
@@ -2835,6 +2846,7 @@ public sealed class AppSessionController : IAppSessionController
     {
         _integrationClient?.ForgetSession();
         _workspaceClient?.ForgetSession();
+        ResetPrivateSyncSession();
         _currentCredentials = null;
         _persistLocally = false;
 
@@ -3023,6 +3035,10 @@ public sealed class AppSessionController : IAppSessionController
 
             return LocalDataActionResult.Success(
                 message);
+        }
+        catch (OperationCanceledException) when (!IsCurrentCloudAccount(credentials))
+        {
+            return LocalDataActionResult.Failure("Cloud sync stopped because the signed-in session changed.");
         }
         catch (Exception exception)
         {
@@ -3266,16 +3282,25 @@ public sealed class AppSessionController : IAppSessionController
         CancellationToken cancellationToken,
         RefreshReason reason = RefreshReason.MutationCompleted)
     {
+        if (!IsCurrentCloudAccount(credentials)) return null;
         try
         {
             SetCloudSyncFetching(true, reason);
             var report = await MergeAndUploadCloudSyncSectionsAsync(credentials, cancellationToken);
-            SetCloudSyncFetching(false, reason);
+            if (IsCurrentCloudAccount(credentials)) SetCloudSyncFetching(false, reason);
             return report;
+        }
+        catch (OperationCanceledException) when (!IsCurrentCloudAccount(credentials))
+        {
+            return null;
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
             throw;
+        }
+        catch (Exception) when (!IsCurrentCloudAccount(credentials))
+        {
+            return null;
         }
         catch (Exception exception)
         {
@@ -3302,20 +3327,43 @@ public sealed class AppSessionController : IAppSessionController
         CancellationToken cancellationToken,
         RefreshReason reason = RefreshReason.MutationCompleted)
     {
+        if (!IsCurrentCloudAccount(credentials)) return null;
         try
         {
-            SetCloudSyncFetching(true, reason);
-            var report = await UploadCloudSyncSectionsAsync(
-                credentials,
-                new[] { section },
-                mergedRemoteData: false,
-                cancellationToken);
-            SetCloudSyncFetching(false, reason);
+            var report = await RunPrivateSyncAsync(credentials, async token =>
+            {
+                SetCloudSyncFetching(true, reason);
+                var merged = false;
+                if (section == CloudSyncSection.ColorSchemes && !_cloudSyncExcludedSections.Contains(section))
+                {
+                    var snapshot = await _remoteUserDataSyncProvider.DownloadSectionAsync(
+                        credentials, CloudSyncSectionMapping.KvSuffix(section), token);
+                    token.ThrowIfCancellationRequested();
+                    if (!string.IsNullOrWhiteSpace(snapshot?.PlainTextJson))
+                    {
+                        await _localUserDataPortabilityService.ImportSectionAsync(
+                            new LocalUserDataRecord(StorageKeys.ColorSchemePreferences, snapshot.PlainTextJson),
+                            LocalDataImportMode.Merge, token);
+                        if (_colorSchemeService is not null) await _colorSchemeService.RefreshAfterImportAsync(token);
+                        merged = true;
+                    }
+                }
+                return await UploadCloudSyncSectionsAsync(credentials, new[] { section }, merged, token);
+            }, cancellationToken);
+            if (IsCurrentCloudAccount(credentials)) SetCloudSyncFetching(false, reason);
             return report;
+        }
+        catch (OperationCanceledException) when (!IsCurrentCloudAccount(credentials))
+        {
+            return null;
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
             throw;
+        }
+        catch (Exception) when (!IsCurrentCloudAccount(credentials))
+        {
+            return null;
         }
         catch (Exception exception)
         {
@@ -3337,12 +3385,45 @@ public sealed class AppSessionController : IAppSessionController
         }
     }
 
-    private async Task<CloudSyncUploadReport> MergeAndUploadCloudSyncSectionsAsync(
+    private Task<CloudSyncUploadReport> MergeAndUploadCloudSyncSectionsAsync(
+        HabiticaCredentials credentials, CancellationToken cancellationToken)
+        => RunPrivateSyncAsync(credentials,
+            token => MergeAndUploadCloudSyncSectionsCoreAsync(credentials, token), cancellationToken);
+
+    private async Task<T> RunPrivateSyncAsync<T>(HabiticaCredentials credentials,
+        Func<CancellationToken, Task<T>> operation, CancellationToken cancellationToken)
+    {
+        using var linked = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _privateSyncCancellation.Token);
+        await _cloudSyncSemaphore.WaitAsync(linked.Token);
+        try
+        {
+            linked.Token.ThrowIfCancellationRequested();
+            if (!IsCurrentCloudAccount(credentials)) throw new OperationCanceledException(linked.Token);
+            var result = await operation(linked.Token);
+            linked.Token.ThrowIfCancellationRequested();
+            return result;
+        }
+        finally { _cloudSyncSemaphore.Release(); }
+    }
+
+    private bool IsCurrentCloudAccount(HabiticaCredentials credentials)
+        => State.IsAuthenticated && ReferenceEquals(_currentCredentials, credentials)
+            && string.Equals(State.UserId, credentials.UserId, StringComparison.Ordinal);
+
+    private void ResetPrivateSyncSession()
+    {
+        _privateSyncCancellation.Cancel();
+        _privateSyncCancellation.Dispose();
+        _privateSyncCancellation = new CancellationTokenSource();
+    }
+
+    private async Task<CloudSyncUploadReport> MergeAndUploadCloudSyncSectionsCoreAsync(
         HabiticaCredentials credentials,
         CancellationToken cancellationToken)
     {
         var mergedRemoteData = false;
         var remoteSections = await _remoteUserDataSyncProvider.ListSectionsAsync(credentials, cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
 
         if (remoteSections.Count == 0)
         {
@@ -3369,6 +3450,7 @@ public sealed class AppSessionController : IAppSessionController
         var sectionResults = new List<CloudSyncSectionResult>();
         foreach (var section in sections)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             if (section == CloudSyncSection.SyncMetadata)
             {
                 continue;
@@ -3455,6 +3537,7 @@ public sealed class AppSessionController : IAppSessionController
                 payloadJson,
                 cancellationToken);
 
+            cancellationToken.ThrowIfCancellationRequested();
             sectionResults.Add(new CloudSyncSectionResult(
                 section,
                 kvSuffix,
@@ -3479,6 +3562,7 @@ public sealed class AppSessionController : IAppSessionController
             CloudSyncSectionMapping.KvSuffix(CloudSyncSection.SyncMetadata),
             metadataJson,
             cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
         UpdateCloudSyncSectionStatus(
             CloudSyncSection.SyncMetadata,
             CloudSyncDirection.Metadata,
@@ -3745,6 +3829,7 @@ public sealed class AppSessionController : IAppSessionController
         CancellationToken cancellationToken)
     {
         var legacySnapshot = await _remoteUserDataSyncProvider.DownloadAsync(credentials, cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
         if (legacySnapshot is null || string.IsNullOrWhiteSpace(legacySnapshot.PlainTextJson))
         {
             return false;
@@ -3775,9 +3860,11 @@ public sealed class AppSessionController : IAppSessionController
             dataSectionKeys,
             cancellationToken);
 
+        cancellationToken.ThrowIfCancellationRequested();
         var merged = false;
         for (var i = 0; i < dataSectionKeys.Length; i++)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var snapshot = i < remoteSnapshots.Count ? remoteSnapshots[i] : null;
             if (snapshot is null || string.IsNullOrWhiteSpace(snapshot.PlainTextJson))
             {
@@ -4403,6 +4490,7 @@ public sealed class AppSessionController : IAppSessionController
         string? userId,
         CancellationToken cancellationToken)
     {
+        if (_colorSchemeService is not null) await _colorSchemeService.RefreshAfterImportAsync(cancellationToken);
         if (string.IsNullOrWhiteSpace(userId))
         {
             return;
@@ -4534,6 +4622,7 @@ public sealed class AppSessionController : IAppSessionController
         try
         {
             var credentials = new HabiticaCredentials(request.UserId.Trim(), request.ApiToken.Trim());
+            ResetPrivateSyncSession();
             _currentCredentials = credentials;
             _persistLocally = request.PersistLocally;
 

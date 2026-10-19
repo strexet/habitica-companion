@@ -21,6 +21,10 @@ public sealed class LocalUserDataPortabilityService
         _timeProvider = timeProvider;
     }
 
+    // Shared by appearance saves and imports so an awaited storage write cannot overwrite
+    // a newer in-process edit between the merge read and write.
+    public SemaphoreSlim MutationLock { get; } = new(1, 1);
+
     public async Task<LocalUserDataBundle> ExportAsync(string? userId, CancellationToken cancellationToken)
     {
         var records = new List<LocalUserDataRecord>();
@@ -56,7 +60,14 @@ public sealed class LocalUserDataPortabilityService
             ConflictingKeys: conflicts);
     }
 
-    public async Task<LocalUserDataImportResult> ImportAsync(
+    public async Task<LocalUserDataImportResult> ImportAsync(LocalUserDataBundle bundle, LocalDataImportMode mode, CancellationToken cancellationToken)
+    {
+        await MutationLock.WaitAsync(cancellationToken);
+        try { return await ImportAsyncCore(bundle, mode, cancellationToken); }
+        finally { MutationLock.Release(); }
+    }
+
+    private async Task<LocalUserDataImportResult> ImportAsyncCore(
         LocalUserDataBundle bundle,
         LocalDataImportMode mode,
         CancellationToken cancellationToken)
@@ -115,7 +126,14 @@ public sealed class LocalUserDataPortabilityService
         return string.IsNullOrWhiteSpace(json) ? null : new LocalUserDataRecord(storageKey, json);
     }
 
-    public async Task ImportSectionAsync(
+    public async Task ImportSectionAsync(LocalUserDataRecord record, LocalDataImportMode mode, CancellationToken cancellationToken)
+    {
+        await MutationLock.WaitAsync(cancellationToken);
+        try { await ImportSectionAsyncCore(record, mode, cancellationToken); }
+        finally { MutationLock.Release(); }
+    }
+
+    private async Task ImportSectionAsyncCore(
         LocalUserDataRecord record,
         LocalDataImportMode mode,
         CancellationToken cancellationToken)
