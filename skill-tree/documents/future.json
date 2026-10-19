@@ -179,9 +179,12 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Commit and publish the reviewed frontend-only list milestone; retain broader release and Pending feature scope.",
+    "next_action": "Process exact E12 remainder P-580e55b1-e10a-4891-bd89-fdbd5c39a627 against current source within the originally authorized development area; preserve broad release gaps.",
     "partial_work": [
-      "Canonical list controls pass 419 web tests, release build and ten responsive fixture checks."
+      "Published development availability and matching backends from aab2b87; owner task receipts and self-spell/equipment checks passed.",
+      "Published canonical filters and readonly saved-list controls from d48fae1; 419 web tests, release build and responsive fixtures passed.",
+      "Default advance still reaches the unqualified broad-release dependency T-d76d2a9a-1318-4e63-9bb4-73f620b108cc. The owner-selected development scope remains independent.",
+      "Remaining E12 review/authoring, E11 recurrence/history UI, E09 planning/recovery UI, E08 capture/navigation, E10 project UX and E01 hands-on evidence remain open."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -248,7 +251,7 @@
       "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1",
       "P-580e55b1-e10a-4891-bd89-fdbd5c39a627"
     ],
-    "phase": "publish",
+    "phase": "research",
     "processing_results": [
       {
         "created_ids": [
@@ -1798,7 +1801,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "aad7662f2e5df11b05a0b86d490b0fca5d9c7d201bbaa795cdaea1bf9e01e47b",
+  "source_hash": "05369b36bf78bb1b55edfd163271170e00387f9754626381568d5eebba1f670e",
   "tasks": [
     {
       "depends_on": [],

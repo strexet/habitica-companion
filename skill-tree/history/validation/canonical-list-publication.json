@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-19",
+  "website": "https://habitica-companion.pages.dev",
+  "immutable_url": "https://d6b3abce.habitica-companion.pages.dev",
+  "source_commit": "d48fae13e76522b5e5a5bd02865cdad50eb007ba",
+  "source_branch": "develop",
+  "hosting_slot": "main",
+  "change": "Canonical task list controls; frontend and retained Pages Functions only",
+  "backends": "Unchanged from development-publication.json",
+  "checks": {
+    "appsettings.json": {
+      "status": 200,
+      "sha256": "8ae3e4d461c52716ddd47757882d9a9fe75bca967ee9ca0538746d6b265f082e",
+      "matches_release_artifact": true
+    },
+    "_framework/blazor.boot.json": {
+      "status": 200,
+      "sha256": "a315e8b3017c34ec75f9b66737e34f3df6f48f7c58f166df02a6a1bbbf3b14c0",
+      "matches_release_artifact": true
+    },
+    "service-worker-assets.js": {
+      "status": 200,
+      "sha256": "ab6e45fd4579a510ee6176e758864fc3ca6e40ee9b80f2dea5041cfe18753717",
+      "matches_release_artifact": true
+    },
+    "css/app.css": {
+      "status": 200,
+      "sha256": "e466d6690920153ffb3d499c2f408346433f7a8817321383d92b4294e1e57b8d",
+      "matches_release_artifact": true
+    }
+  }
+}

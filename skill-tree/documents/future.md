@@ -119,7 +119,7 @@ Expected behavior:
 - Mobile review retains canonical history and states unavailable evidence explicitly; lifecycle controls never imply paused Habitica penalties or reversed rewards.
 
 Current context:
-- Canonical recurrence, lifecycle, civil agenda and completion history are implemented. Retained Habit activity reads are implemented. Production UI retains the E01 hands-on gate; real client/device checks remain separate.
+- Canonical recurrence, lifecycle, civil agenda and completion history are implemented. Retained Habit activity reads are implemented. Mobile recurrence/history controls remain outstanding; owner development implementation may proceed before E01 hands-on qualification, while broader release and real client/device checks remain separate.
 
 Source:
 - Remaining original E11 intent from P-f2bb7e37-6700-58ac-aa56-b537d193c777 through P-59bd9da0-87a5-43c6-83d1-86075c5e4b79.
@@ -145,7 +145,7 @@ Expected behavior:
 - Mobile planning uses canonical data and retains history. Recovery operations state exact supported scope and never silently reverse rewards or retry uncertain effects.
 
 Current context:
-- Canonical queries, placement, history and unlinked Todo restoration are implemented locally. Production UI retains the E01 hands-on gate; linked-game, archived-task and recurring recovery remain outside the initial restore contract.
+- Canonical queries, placement, history and unlinked Todo restoration are implemented. Mobile planning/history controls remain outstanding; owner development implementation may proceed before E01 hands-on qualification. Linked-game, archived-task and recurring recovery remain outside the initial restore contract.
 
 Source:
 - Remaining original E09 intent from P-c8632138-39c6-5797-8e03-a3414824ee96 through P-f0c7dfe0-a459-4636-af5c-567281e19367.
@@ -165,7 +165,7 @@ depends_on: []
 ```
 
 Description:
-- Complete the source research hands-on competitor/mobile workflow qualification and use the findings to refine the adopted navigation baseline before implementation-specific production UI promotion.
+- Complete the source research hands-on competitor/mobile workflow qualification and use the findings to refine the adopted navigation baseline before broader release. Owner-selected development implementation and exposure may proceed before qualification.
 
 Expected behavior:
 - Document actual observed journeys and limitations without presenting public workflow documentation, a synthetic prototype or automatic contract adoption as human/device evidence.
