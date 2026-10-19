@@ -298,3 +298,6 @@ Synthetic real-Razor output is exported through HABITICA_BROWSER_EVIDENCE for pu
 ## Settings session action geometry
 
 SettingsPageTests exports real session-action Razor markup with original and extended descriptions and verifies logout dispatch plus diagnostics routing. Synthetic browser checks compare existing layout with the scoped flexible-row layout at 360/390/430/768/1024/1200 CSS pixels, default light/dark schemes and 200-percent root text. Measurements include action baselines, horizontal bounds and control heights. Native keyboard activation is observed separately from component delegate assertions. Frames do not establish physical-device or assistive-technology acceptance.
+
+
+Derived-foreground regression canaries exercise gold and mid-tone base surfaces through the production theme API, retaining exact authored colors when readable. Existing live-appearance, preview and saved-cache checks run with the contrast assertions. Rendered measurements and gradient coverage remain owned by the page qualification workflow.

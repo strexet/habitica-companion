@@ -102,6 +102,46 @@ Source:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
+### Correct shared foreground contrast fallback
+
+```yaml
+id: T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1
+priority: 101
+status: Ready
+parent_pending_ids: ["P-ea1a29a0-35f4-4434-84f5-9792f2085b6e"]
+processing_run_id: PR-cb9b75ad-e3db-4d68-9db3-5ec891905782
+root_task_id: T-6122dded-900d-4d92-8739-bbc344e15ea0
+related_task_id: T-6122dded-900d-4d92-8739-bbc344e15ea0
+relation: blocker
+depends_on: []
+```
+
+Goal:
+- Correct derived shared foreground contrast in normal themes.
+Current behavior:
+- readableTextFor uses a fixed luminance threshold after rejecting an insufficient authored foreground. The default-light accent receives pale text with measured contrast 2.2356:1.
+Desired behavior:
+- Derived foreground selection compares actual candidate contrast rather than assuming light/dark polarity from a luminance cutoff.
+Touch:
+- colorSchemes.js, color-schemes.test.mjs and feature/testing documentation.
+Discovery allowance:
+- Inspect current derived tokens, production CSS surfaces and official W3C contrast guidance.
+Out of scope:
+- Palette redesign, changes to saved appearance preferences, extreme-chaos guarantees or live account operations.
+Implementation constraints:
+- Preserve qualifying authored text colors and keep transient preview/cache behavior. No new dependencies. Record gradient measurement limits separately.
+Questions and required clarifications:
+- [Resolved - current browser evidence] Existing normal-theme readability contract requires a contrast correction.
+Validation:
+- Synthetic golden/mid-tone canaries, existing theme regressions and rendered default-light/default-dark shared actions. Official contrast context: https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html.
+Acceptance:
+- Derived fallback foregrounds pass normal text contrast on the reported accent and representative solid mid-tone surfaces.
+- Existing authored readable colors and saved/preview behavior retain passing regressions.
+Documentation updates:
+- Record actual derived-foreground behavior and validation limits in feature/testing documentation.
+Risks:
+- Changed foreground polarity or unsupported gradient contrast assumptions.
+
 ### Add reusable page layout and theme qualification
 
 ```yaml
@@ -113,7 +153,7 @@ processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
 root_task_id: T-6122dded-900d-4d92-8739-bbc344e15ea0
 related_task_id: null
 relation: main
-depends_on: ["T-2bf91411-423e-483b-95a7-92b9fdc69445"]
+depends_on: ["T-2bf91411-423e-483b-95a7-92b9fdc69445", "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1"]
 ```
 
 Goal:

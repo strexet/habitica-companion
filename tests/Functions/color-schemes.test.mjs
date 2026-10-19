@@ -55,3 +55,24 @@ test('unavailable localStorage does not prevent live appearance application', ()
   page.api.applyAndStore(saved, preferences);
   assert.equal(page.properties.get('--bg'), '#12091e');
 });
+
+
+test('derived foreground uses measured contrast on gold and middle-tone surfaces', () => {
+  const luminance = hex => {
+    const channels = hex.replace('#', '').match(/../g).map(v => parseInt(v, 16) / 255)
+      .map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4);
+    return channels.reduce((sum, v, i) => sum + v * [.2126, .7152, .0722][i], 0);
+  };
+  const ratio = (a,b) => (Math.max(luminance(a), luminance(b)) + .05) / (Math.min(luminance(a), luminance(b)) + .05);
+  for (const background of ['#f0a400','#d99416','#777777','#899099','#7334bd','#12081f']) {
+    const page = browser();
+    page.api.applyColorScheme({id:'contrast-canary',tokens:{primary:background,accent:background,danger:background,success:background,appBarBackground:background,primaryButtonText:'#aaaaaa'}});
+    for (const key of ['--button-text','--button-text-accent','--button-text-danger','--button-text-success','--appbar-text'])
+      assert.ok(ratio(background,page.properties.get(key)) >= 4.5, `${background} ${key} ${page.properties.get(key)}`);
+  }
+});
+test('a qualifying authored foreground stays unchanged', () => {
+  const page = browser();
+  page.api.applyColorScheme({id:'authored',tokens:{primary:'#12081f',primaryButtonText:'#fff7ff'}});
+  assert.equal(page.properties.get('--button-text'),'#fff7ff');
+});

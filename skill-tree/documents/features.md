@@ -3031,3 +3031,8 @@ Workspace status validates document identity, store version and explicit executo
 ## Settings session action alignment
 
 Status: Implemented in SettingsPage and narrowly scoped settings-session-actions CSS. Sign-out and diagnostics links retain existing controller/routing behavior. Each card uses an expanding description row between the heading and bottom action, with shared minimum control height. Text wraps naturally and stacked phone cards retain independent content height. No API, storage or Habitica mutation behavior changes. Local synthetic component and rendered geometry checks qualify baseline themes, enlarged text and long descriptions; real device/assistive-technology qualification remains separate.
+
+
+## Derived foreground fallback
+
+Status: Implemented in colorSchemes.js for shared derived button, drawer and app-bar foregrounds. Qualifying authored foregrounds remain selected. An insufficient foreground falls back to the higher-contrast black or white candidate based on the actual base surface rather than a fixed luminance cutoff. No saved theme, preview or cache format changes occur. Node regressions cover gold/mid-tone surfaces and authored colors. Solid-surface qualification does not establish every custom gradient or extreme-chaos palette.

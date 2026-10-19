@@ -1,0 +1,20 @@
+{
+  "task_id": "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1",
+  "node_tests": {
+    "passed": 6,
+    "failed": 0
+  },
+  "release_publish": {
+    "exit_code": 0
+  },
+  "rendered_cases": 48,
+  "before_accent_contrast": 2.235611057529586,
+  "after_errors": 0,
+  "after_unqualified_surfaces": 0,
+  "evidence": [
+    "skill-tree/history/validation/foreground-contrast-browser.json"
+  ],
+  "limits": [
+    "Base-surface fallback does not guarantee arbitrary authored gradients or extreme-chaos palettes. Physical device qualification remains separate."
+  ]
+}

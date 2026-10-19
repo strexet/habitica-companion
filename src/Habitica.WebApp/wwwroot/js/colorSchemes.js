@@ -107,7 +107,10 @@
       return preferredTextValue;
     }
 
-    return luminance(background) > 0.46 ? "#162423" : "#f5efe2";
+    const candidates = ["#000000", "#ffffff"];
+    return candidates.reduce((best, candidate) =>
+      contrastRatio(background, parseColor(candidate)) > contrastRatio(background, parseColor(best))
+        ? candidate : best);
   }
 
   function applyDerivedVariables(root, tokens) {
