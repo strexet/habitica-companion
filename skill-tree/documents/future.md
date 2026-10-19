@@ -72,10 +72,10 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### Define optional review reminders and relative saved-list policy
+### Default the equipment optimizer to Intelligence for every class
 
 ```yaml
-id: P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78
+id: P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e
 priority: 100
 status: Pending
 parent_pending_ids: []
@@ -87,141 +87,20 @@ depends_on: []
 ```
 
 Description:
-- Research optional review/reminder scheduling and meaningful review history plus relative-date saved-view presets beyond the supported fixed-query saved-list editor.
+- Use Intelligence as the initial equipment optimization goal in the inventory Gear Planning / Equipment optimizer section for every character class.
 
 Expected behavior:
-- A researched native contract defines voluntary review state/history and exact relative-clock/date semantics without mandatory rituals, false lateness or game penalties; notification delivery requires an explicit supported scope.
+- Opening the optimizer recommends an Intelligence-focused set by default. Explicit user-selected goals and spell-specific equipment choices remain available; selecting a default never equips gear automatically.
 
 Current context:
-- ReviewAfterUtc/StaleSinceUtc fields do not define review-event history, reset rules or notification delivery. Portable saved definitions currently retain fixed dates only. Processing blocker: distinguish manual review cues, browser reminders and server notification scope, and define relative-view timezone/clock/evaluation semantics before persistence changes. Reuse the separate Today agenda rather than create duplicate date logic. Fixed saved-list authoring is promoted separately.
+- InventoryPage initializes _optimizationGoal and invalid-selection fallback to Balanced. The owner prefers Intelligence for routine gameplay across classes and different equipment only for explicit spell workflows. Formula claims and the exact handling of remembered goals require Process Pending research.
 
 Source:
-- Remaining intent from processed P-580e55b1-e10a-4891-bd89-fdbd5c39a627 and original E12 P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d; source-backed decomposition on 2026-10-19.
-
-### Define streak coverage linked schedules and task conversion
-
-```yaml
-id: P-438c79fe-385d-4657-be24-85fad9a49c31
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Research sufficient-history streak semantics, Habitica-linked recurrence and task-type conversion beyond the supported native Daily schedule and activity-review UI.
-
-Expected behavior:
-- A researched contract distinguishes known history coverage from unknown gaps and defines safe linked schedule/type conversion without duplicated occurrences, scores or invented streaks.
-
-Current context:
-- Retained score/completion reads contain accepted events but no complete-history coverage anchor or streak policy. Existing recurrence authoring is canonical Daily-only; native lifecycle does not alter Habitica penalties. Processing blocker: establish coverage/reset/timezone rules and exact linked mapping/conversion semantics before implementation. Known recurring/editor/history controls are promoted separately.
-
-Source:
-- Remaining intent from processed P-346056d8-c254-4a1e-b860-6850c6cb470d and original E11 P-f2bb7e37-6700-58ac-aa56-b537d193c777; source-backed decomposition on 2026-10-19.
-
-### Define linked archived and recurring recovery policies
-
-```yaml
-id: P-64d1995c-f862-498c-9437-e867117f2129
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Research the remaining E09 recovery scope for Habitica-linked work, archived tasks and recurring occurrences after the supported native unlinked Todo restore UI.
-
-Expected behavior:
-- A researched recovery contract names exact supported operations, retained history and game-effect boundaries; uncertain upstream outcomes never authorize reward reversal or replay.
-
-Current context:
-- Current restoreTodo only reopens an exact completed nonarchived unlinked Todo. Linked-game recovery, archived-task restoration and recurring undo lack accepted behavior and sufficient upstream reconciliation evidence. Known mobile planning/history work is promoted separately. Processing blocker: define supported recovery semantics and upstream evidence requirements before implementing additional recovery operations.
-
-Source:
-- Remaining intent from processed P-7cb0bb45-a294-404c-b257-136d0f9f3de4 and original E09 P-c8632138-39c6-5797-8e03-a3414824ee96; source-backed decomposition on 2026-10-19.
-
-### E01 Hands-on competitor and mobile workflow qualification
-
-```yaml
-id: P-c5795748-6f25-4c0a-a471-fe72c1a85862
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Complete the source research hands-on competitor/mobile workflow qualification and use the findings to refine the adopted navigation baseline before broader release. Owner-selected development implementation and exposure may proceed before qualification.
-
-Expected behavior:
-- Document actual observed journeys and limitations without presenting public workflow documentation, a synthetic prototype or automatic contract adoption as human/device evidence.
-
-Current context:
-- The dated documented-flow inventory, personas, borrow/adapt/reject matrix and local prototype journeys/layout are complete. The local baseline is adopted under standing direction. Authenticated competitor sessions, human usability, virtual keyboard, safe areas and assistive technology remain unqualified. Owner-only Codex live testing is reopened; authenticated competitor sessions and real human/device usability remain unqualified.
-
-Source:
-- Remaining E01 intent from P-4f98b2b3-af24-5424-b2f9-066913f7133d and companion-first-mcp-research.md research completion gap; local contract adoption does not waive the explicit hands-on gate.
-
-Processing blocker:
-- Documented competitor workflows and the local baseline exist, but authenticated competitor journeys, human usability, actual mobile keyboard/safe-area and assistive-technology observations are absent. Actual selected sessions/testers/device evidence is required; source inspection or resized fixtures cannot complete the deliverable. Development UI work remains independent under the owner boundary.
+- Owner request on 2026-10-19; InventoryPage.razor equipment-optimizer-goal control and _optimizationGoal default.
 
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
-
-### Converge saved themes across device sync
-
-```yaml
-id: T-31fbbe84-a4ab-4bc7-9509-647666e6e017
-priority: 101
-status: Ready
-parent_pending_ids: ["P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-31fbbe84-a4ab-4bc7-9509-647666e6e017
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Make saved appearance converge and apply after encrypted app-data sync.
-Current behavior:
-- ColorSchemePanel loads on initialization and fires section uploads without exposing failures. Full sync merges storage through LocalUserDataPortabilityService; no imported-theme application notification reaches the open panel or fast cache. Section-only uploads bypass the full merge path.
-Desired behavior:
-- A newer saved selection/custom edit reaches independent browser stores, updates current controls and document styling, and survives reload without stale fast-cache replacement.
-Touch:
-- ColorSchemeService, ColorSchemePanel, AppSessionController sync methods, LocalUserDataPortabilityService, colorSchemes.js and existing theme/sync tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Reuse timestamp-based merge and serialized account-bound sync. Inspect concurrent whole/section uploads and merge newer remote preferences before replacing the remote section. Do not stamp a new selection merely by reading, sync transient random previews, copy credentials or claim globally atomic KV convergence. Inventory task-view/fold preferences as explicitly local versus portable without silently changing the portability contract. Discard late account results; preserve unsaved edits with an explicit conflict choice.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Two independent local stores and controlled transport test remote import while a panel is open, competing edits, stale cache, sign-out, upload failure and transient previews. Browser checks exercise current theme application and reload; actual Mac/iOS evidence remains a release check.
-Acceptance:
-- Saved theme import updates rendered appearance, current selector and fast cache without a new user edit or unrelated action.
-- Concurrent and failed sync preserves account boundaries, documented merge semantics and explicit failure state; transient previews remain local.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
 
 ### Distinguish server connections from tab management access
 
@@ -973,17 +852,469 @@ Implementation constraints:
 - Owner authorization permits the explicit development capability rollout and bounded own-account Codex tests. Broader qualification remains separate from development availability.
 - All implemented tools require isolation/revocation qualification. The owner development profile exposes reviewed manual Cron availability; real Start New Day tests remain excluded. Real log inspection verifies absence of secrets with minimum redacted evidence. Missing infrastructure remains a blocker.
 Questions and required clarifications:
+- [Unresolved - blocks implementation] E01 source P-c5795748-6f25-4c0a-a471-fe72c1a85862 requires developer-selected existing competitor sessions and actual device/human participation. The prepared local journey pack is not authenticated competitor or physical-device evidence. Retain the exact unrun checks until actual observations exist.
 - [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. The owner reports initial OAuth completion in both clients and ChatGPT reads, followed by immediate repeated reconnection. Native Codex repeated reads, approved Companion-only lifecycle commands and retained receipt reads pass. The owner explicitly reopened bounded own-account Codex tests and selected implemented development capability publication on 2026-10-19. Agent party mutations, real Start New Day tests and real key operations remain excluded. Development implementation and availability may proceed while ChatGPT, independent consenting-account, device and human usability gates remain unverified. Complete token lifecycle and revocation checks, native discovery of the added tools, background projection, packaged-skill qualification, a second consenting owner and iOS/Android device qualification remain broader release requirements. Preparation cannot satisfy real release acceptance.
 Validation:
 - Verify local environment/resource separation and prepare exact owner/teammate/device checks. Maintain independent ChatGPT and Codex desktop results in the plugin client matrix; direct MCP access, packaged skills and optional CLI diagnostics remain distinct checks. Execute real checks only inside separately authorized scope.
 Acceptance:
 - ChatGPT and Codex desktop each complete the documented owner-first pilot OAuth, scoped-tool, original-receipt, revocation and plugin/skill checks with client/version and sanitized evidence recorded; success in one client never substitutes for the other.
 - Two consenting team accounts complete independent real enrollment, packaged-tool and revocation flows with no cross-profile effects.
-- Real iOS Safari/PWA and Android checks plus redacted production-log inspection qualify release or retain explicit failed gates.
+- Real iOS Safari/PWA, Android, virtual keyboard, safe-area, screen-reader and authenticated competitor task-flow checks plus redacted production-log inspection qualify release or retain explicit failed gates.
 Documentation updates:
 - Deployment and release qualification matrix; preserve unrun gates in future.md.
 Risks:
 - Exposing live effects or claiming release success from synthetic evidence.
+
+### Prepare reproducible task UX and device qualification evidence
+
+```yaml
+id: T-06336249-6901-4d10-8df1-229ca9bcad6b
+priority: 99
+status: Ready
+parent_pending_ids: ["P-c5795748-6f25-4c0a-a471-fe72c1a85862"]
+processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+root_task_id: T-06336249-6901-4d10-8df1-229ca9bcad6b
+related_task_id: null
+relation: main
+depends_on: ["T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
+```
+
+Goal:
+- Make the remaining E01 practical checks executable against the implemented Todo routes without treating preparation as completed human research.
+Current behavior:
+- navigation-study.md records public competitor flows and prototype evidence; current E01 lacks authenticated journeys and actual device/assistive-technology results.
+Desired behavior:
+- Provide exact task journeys, synthetic setup, observation forms and a traceable local run. Keep authenticated competitor and real-device acceptance in the existing blocked release gate.
+Touch:
+- navigation-study.md, ai-app-testing.md, release qualification matrix, current Razor routes and existing synthetic browser fixtures.
+Discovery allowance:
+- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
+Out of scope:
+- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
+Implementation constraints:
+- Replace superseded prototype navigation with the owner Todo/Today/Habits/Dailies/Tasks structure. Reuse Todoist and Things official flow references as documented evidence only. Cover capture, dates, complete/restore, recurrence, projects, sync and diagnostic recovery. Record route, viewport, theme, keyboard/focus, result and evidence provenance. Define real iOS Safari/PWA, Android, virtual keyboard, safe-area, screen-reader and authenticated competitor checks with explicit unrun status and required owner/session inputs. Do not create third-party accounts, buy software or mark the release gate passed from fixtures.
+- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
+Validation:
+- Execute the available synthetic browser journeys and negative layout/interaction controls after dependent pages exist. Check both normal theme variants and phone/desktop geometry. Review the real-device handoff checklist without claiming actual device execution.
+Acceptance:
+- A reproducible current-route journey pack and actual local browser evidence cover the named task flows with explicit coverage limits.
+- Authenticated competitor, human and physical-device requirements remain traceable in T-d76d2a9a-1318-4e63-9bb4-73f620b108cc with missing inputs and no fabricated pass.
+Documentation updates:
+- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
+Risks:
+- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
+
+### Restore archived tasks and correct native Daily occurrences
+
+```yaml
+id: T-2355607b-ba77-46c0-9495-aae61e16a8f0
+priority: 99
+status: Ready
+parent_pending_ids: ["P-64d1995c-f862-498c-9437-e867117f2129"]
+processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+root_task_id: T-2355607b-ba77-46c0-9495-aae61e16a8f0
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Extend retained native recovery beyond completed unlinked Todos.
+Current behavior:
+- DeleteTask sets IsArchived; RestoreTodo rejects archived, linked and non-Todo records. Occurrence states have no retained correction operation.
+Desired behavior:
+- Separate unarchive from completion undo. Unarchive preserves task state; an exact unlinked Daily occurrence correction records a new causal event while preserving the original completion/skip.
+Touch:
+- WorkspaceCommands, WorkspaceCommandIdentity, WorkspaceRules, WorkspaceCommandEngine, history/portable validation, shared Worker commands/schema, Workspace task API and neutral fixtures.
+Discovery allowance:
+- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
+Out of scope:
+- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
+Implementation constraints:
+- Use explicit typed unarchive and occurrence-correction operations with unique command IDs, expected revision and exact target event/occurrence. No history deletion, reward reversal, automatic next occurrence or changed schedule. Archived references remain valid and previous organization is restored only while references remain available. Invalid references require an explicit repair preview. Reject linked corrections, pending/unknown game effects and unsupported Habit inverse events; the separate linked-recovery task owns upstream unchecking.
+- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
+Validation:
+- Cross-runtime fixtures cover completed/skipped/archived cases, duplicate and concurrent corrections, archive-before-undo, missing references, stale revision, imports, exact zero-effect receipts and rejection of linked/uncertain work.
+Acceptance:
+- Unarchive and native occurrence correction retain original identities/history and produce exactly one validated causal correction without game effects.
+- Malformed, stale, duplicate and linked/uncertain requests cannot delete history, dispatch effects or silently repair relationships.
+Documentation updates:
+- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
+Risks:
+- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
+
+### Add reviewed own-task Habitica unchecking and reconciliation
+
+```yaml
+id: T-0a2f12ac-6df6-498f-b090-f69c2a526b2a
+priority: 99
+status: Ready
+parent_pending_ids: ["P-64d1995c-f862-498c-9437-e867117f2129"]
+processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+root_task_id: T-0a2f12ac-6df6-498f-b090-f69c2a526b2a
+related_task_id: null
+relation: main
+depends_on: ["T-2355607b-ba77-46c0-9495-aae61e16a8f0"]
+```
+
+Goal:
+- Support explicit recovery of a confirmed linked Todo or current eligible Daily without claiming exact reward reversal.
+Current behavior:
+- Auth projection accepts non-Habit score up only; canonical RestoreTodo rejects linked records. Official Habitica scoreTask.js implements non-Cron down operations with resource/history changes.
+Desired behavior:
+- A separately reviewed linked-recovery command binds the exact upstream completed state and original confirmed Companion completion, dispatches at most once and records native recovery only from the original successful receipt.
+Touch:
+- Auth projection preconditions/receipts, Workspace command engine and task API, C# browser command adapters, MCP definitions, shared task fixtures and Habitica API contract.
+Discovery allowance:
+- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
+Out of scope:
+- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
+Implementation constraints:
+- Own non-shared tasks only; reject group/challenge tasks, missing mappings, unsupported prior-day Daily recovery, needsCron/unknown day state and overlapping pending/unknown effects. Bind current account, task type/id/fingerprint, exact completion and eligible Daily date/checklist to an expiring single-use preview. Show estimated resource fields as unknown when exact reversal is unavailable; never call the action a guaranteed refund. Keep original history and add a causal recovery event. Lost acknowledgement uses receipt lookup only; no replacement dispatch or inferred success from later task state. Existing scopes, consent, quotas and cross-tool uncertainty fences remain mandatory. Daily skip correction stays native-only. Implement and test locally without a real score or Cron call.
+- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
+Validation:
+- Synthetic Auth/Workspace composition plus neutral C# fixtures cover confirmed/unknown/partial outcomes, repeated requests, same-day versus expired-day Daily state, account/revocation changes, shared-task denial, persistence failures and no retry. Recheck official score/controller semantics before implementation.
+Acceptance:
+- Exact reviewed linked recovery confirms at most one own-task dispatch and retains the original receipt plus causal native recovery.
+- Unknown, stale, shared, prior-day or unverified recovery remains explicit and cannot replay, grant a refund claim or affect party management.
+Documentation updates:
+- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
+Risks:
+- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
+
+### Expose extended recovery actions in task history
+
+```yaml
+id: T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985
+priority: 99
+status: Ready
+parent_pending_ids: ["P-64d1995c-f862-498c-9437-e867117f2129"]
+processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+root_task_id: T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985
+related_task_id: null
+relation: main
+depends_on: ["T-2355607b-ba77-46c0-9495-aae61e16a8f0", "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a", "T-54623cea-9c8f-4819-b33f-b6552c82df55", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
+```
+
+Goal:
+- Make supported recovery discoverable without hiding the operation meaning.
+Current behavior:
+- The planned history surface exposes only the existing unlinked Todo restore; archive and linked/occurrence recovery need separate controls.
+Desired behavior:
+- History and archived-task views offer exact unarchive, occurrence correction and linked-uncheck actions with supported-state reasons and original receipts.
+Touch:
+- Workspace history controllers, browser/native-cloud command adapters, history UI, task details and MCP recovery tool descriptions.
+Discovery allowance:
+- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
+Out of scope:
+- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
+Implementation constraints:
+- Use separate labels for unarchive, native correction and Habitica uncheck. Show the task/occurrence, original completion, native changes and possible game resource effects before acceptance. Never replace an unknown command, silently convert an action to an unlinked copy or erase old history. Preserve filters, focus, source identity, accessible touch targets and normal-theme readability.
+- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
+Validation:
+- Component/transport fixtures cover every supported action, refusal explanation, lost acknowledgement, restored filters/focus and receipt lookup. Render phone/desktop normal themes through the shared UI checks.
+Acceptance:
+- Supported recovery actions are reachable from history and execute only the exact reviewed operation with a visible original receipt.
+- Unsupported or uncertain recovery displays a concrete reason and preserves history, draft state and command identity.
+Documentation updates:
+- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
+Risks:
+- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
+
+### Retain trustworthy task activity and schedule coverage
+
+```yaml
+id: T-aa82feee-97b1-4f14-8b5a-d642cca014e3
+priority: 99
+status: Ready
+parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31"]
+processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+root_task_id: T-aa82feee-97b1-4f14-8b5a-d642cca014e3
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Establish evidence for history completeness before calculating streaks.
+Current behavior:
+- Completion/Habit reads retain accepted events but lack a coverage anchor, gap intervals or historical schedule epochs.
+Desired behavior:
+- Portable workspace coverage records identify known intervals and schedule/state history; imported or incomplete periods remain unknown.
+Touch:
+- WorkspaceDocument, journal validation/serialization, command engine, recurrence/lifecycle commands, Worker schema/commands and neutral portable fixtures.
+Discovery allowance:
+- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
+Out of scope:
+- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
+Implementation constraints:
+- Coverage is recorded from actual retained causal journal evidence, not inferred from task creation time or a paginated response. Legacy/imported snapshots default to unknown unless a validated coverage record proves completeness. Retain effective-dated recurrence/timezone/pause/resume changes. Query clocks never mutate coverage. Gap, retention, import and correction records cannot invent missing scores. Add compatible optional data with explicit validators; no migration tooling is required for early development.
+- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
+Validation:
+- C# and Worker fixtures cover new complete journals, legacy unknown histories, missing revisions, schedule edits, pause intervals, archive/restore, export/import and corrupted coverage assertions.
+Acceptance:
+- Activity coverage and historical schedule intervals round-trip with causal validation and remain unknown across unproven gaps.
+- No read or import can manufacture complete history from timestamps, page counts or current recurrence settings.
+Documentation updates:
+- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
+Risks:
+- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
+
+### Show coverage-aware Daily and Habit activity streaks
+
+```yaml
+id: T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f
+priority: 99
+status: Ready
+parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31"]
+processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+root_task_id: T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f
+related_task_id: null
+relation: main
+depends_on: ["T-aa82feee-97b1-4f14-8b5a-d642cca014e3", "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02"]
+```
+
+Goal:
+- Present useful streak statistics with explicit limits and no invented lifetime records.
+Current behavior:
+- Retained completion/Habit event reads exist; statistics and history UI are planned, but current history cannot establish contiguous completeness.
+Desired behavior:
+- Bounded streak reads and statistics distinguish verified scheduled-day Daily runs, positive-Habit calendar-day runs and unknown/lower-bound history.
+Touch:
+- Workspace activity queries, shared recurrence/calendar helpers, MCP read definitions, statistics/history view models and browser components.
+Discovery allowance:
+- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
+Out of scope:
+- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
+Implementation constraints:
+- Use explicit UTC as-of plus the displayed IANA timezone. Habit days with at least one positive event count once; negative events remain separate and do not erase a positive day. Negative-only habits display activity frequency rather than a positive streak. Daily streaks count scheduled dates; skipped/paused intervals are neutral and missing eligible dates break a run only inside proven coverage. Current unfinished days retain the previous run until the local day closes. Historical schedules/corrections determine prior dates. Label lower bounds and refuse lifetime-best claims without complete coverage; no game effects or synthetic backfill.
+- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
+Validation:
+- Neutral cross-runtime cases cover DST/day boundaries, monthly gaps, positive/negative events, duplicate completions, pauses/skips/corrections, history gaps and paging. Component checks verify unknown and lower-bound labels plus normal-theme chart readability.
+Acceptance:
+- Daily/Habit statistics match the explicit schedule/day rules and distinguish verified, lower-bound and unavailable results.
+- Missing history, current-day grace or negative-only activity cannot produce fabricated complete-history or lifetime streak claims.
+Documentation updates:
+- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
+Risks:
+- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
+
+### Edit supported linked Daily schedules with explicit reconciliation
+
+```yaml
+id: T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9
+priority: 99
+status: Ready
+parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31"]
+processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+root_task_id: T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9
+related_task_id: null
+relation: main
+depends_on: ["T-aa82feee-97b1-4f14-8b5a-d642cca014e3", "T-68cb7da7-62e9-4136-b5c5-07da20f97c30"]
+```
+
+Goal:
+- Make linked recurrence authoring available where the current Habitica schedule has a lossless supported mapping.
+Current behavior:
+- Canonical Daily recurrence and native authoring exist; HabiticaTaskDetails contains difficulty/attribute/checklist only, and lifecycle edits reject linked work.
+Desired behavior:
+- A reviewed linked Daily schedule edit displays separate Companion and Habitica semantics and records fresh verified schedule normalization.
+Touch:
+- Habitica task schedule parsing, Auth update allowlist/preconditions, Workspace projection engine, schedule history, recurrence editor, MCP contracts and shared fixtures.
+Discovery allowance:
+- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
+Out of scope:
+- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
+Implementation constraints:
+- Support only losslessly represented daily/weekly/monthly day-of-month rules. Bind fresh account timezone/dayStart and upstream frequency/everyX/repeat/startDate/daysOfMonth facts; unsupported yearly, weeks-of-month and mixed rules remain explicitly read-only rather than discarded. Preserve actual Habitica normalized fields and record schedule epochs. Preview current/next dates and warn that native pause/skip does not pause Habitica penalties. Do not change native-only pause into an upstream resting setting, auto-score past dates, run Cron or dispatch while outcome is unknown. Revalidate official controller/update semantics before editing the allowlist.
+- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
+Validation:
+- Synthetic gateway and cross-runtime fixtures cover supported round trips, default weekdays, monthly gaps, timezone/dayStart differences, external edits, stale previews, unsupported fields, lost acknowledgement and absence of score/Cron effects.
+Acceptance:
+- Supported exact linked schedule edits preserve representable rules and retain original receipts plus effective-dated schedule facts.
+- Unsupported or uncertain schedules remain clearly unavailable without field loss, penalty promises, backfilled scores or implicit account changes.
+Documentation updates:
+- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
+Risks:
+- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
+
+### Convert task types through reviewed linked copies
+
+```yaml
+id: T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528
+priority: 99
+status: Ready
+parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31"]
+processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+root_task_id: T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528
+related_task_id: null
+relation: main
+depends_on: ["T-2355607b-ba77-46c0-9495-aae61e16a8f0", "T-ea3c2df0-7c13-4a77-a920-1451801b9946"]
+```
+
+Goal:
+- Offer task-type changes without corrupting retained event semantics or Habitica mappings.
+Current behavior:
+- Current commands create explicit kinds and history validation compares accepted snapshot kind with current task kind; in-place conversion would invalidate prior activity.
+Desired behavior:
+- Conversion creates a new native target-kind task with explicit lineage and a preview of copied/reset fields. The original remains intact unless a separate supported native archive is selected.
+Touch:
+- Workspace typed commands/identity, portable lineage validation, command engine and Worker parity, browser capture/editor and MCP descriptions.
+Discovery allowance:
+- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
+Out of scope:
+- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
+Implementation constraints:
+- Default to a new unlinked copy; never rewrite historical task kind, transfer mappings/history, create a Habitica task automatically or silently archive linked work. Copy name/notes/priority and valid chosen organization; require explicit target Daily recurrence, reset kind-specific state/stage/occurrence fields, and show all losses. The optional native archive is allowed only with available references and no unresolved effects. One reviewed atomic command binds source revision, target identity and field choices; repeated acceptance retains the same target. Original Habitica records remain unchanged and separate explicit linking remains available.
+- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
+Validation:
+- Domain/Worker/bUnit cases cover all Todo/Daily/Habit pairs, historical and linked sources, invalid recurrence, organization references, stale source, uncertain commands, duplicate acceptance and export/import lineage.
+Acceptance:
+- Type conversion creates exactly one reviewed native target with retained lineage and an accurate copied/reset-field preview.
+- Original history/kind/mappings and upstream records remain intact; stale or uncertain acceptance cannot duplicate the target or silently archive linked work.
+Documentation updates:
+- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
+Risks:
+- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
+
+### Add voluntary review scheduling and retained review history
+
+```yaml
+id: T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd
+priority: 99
+status: Ready
+parent_pending_ids: ["P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"]
+processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+root_task_id: T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd
+related_task_id: null
+relation: main
+depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946"]
+```
+
+Goal:
+- Turn existing review/stale fields into an optional, auditable task workflow.
+Current behavior:
+- ReviewAfterUtc/StaleSinceUtc exist in the task model but have no complete command, review-event or reset contract.
+Desired behavior:
+- Explicit set/snooze/clear review cues and mark-reviewed commands retain history without requiring completion or a mandatory review routine.
+Touch:
+- WorkspaceTaskPatch/identity, review events and validators, C# command/query services, Worker task API/schema, task editor and MCP tools.
+Discovery allowance:
+- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
+Out of scope:
+- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
+Implementation constraints:
+- Review cues use explicit UTC instants with a displayed timezone. Mark reviewed records one causal review event and clears the consumed review cue; another review date requires an explicit chosen value. Snooze changes the cue without claiming a review. StaleSince is a manual flag, not inferred lateness from inactivity or device clock. No automatic task-state, priority, planned-date, deadline or game change. Exact native preview/receipt ownership and late-session rejection apply; old snapshots without review events remain valid.
+- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
+Validation:
+- Cross-runtime and component tests cover due/future cues, clear/snooze/review distinctions, repeat/idempotent commands, stale revision, imported legacy fields, timezone display, missing refs and zero game effects.
+Acceptance:
+- Voluntary review actions produce exact retained review/cue state with independent snooze, clear and mark-reviewed semantics.
+- Review reads and actions never imply task completion, mandatory ritual, deadline failure, automatic priority or gameplay mutation.
+Documentation updates:
+- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
+Risks:
+- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
+
+### Evaluate saved lists with explicit relative-date predicates
+
+```yaml
+id: T-916deee7-8be7-44aa-9cd2-b9d86e90e56d
+priority: 99
+status: Ready
+parent_pending_ids: ["P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"]
+processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+root_task_id: T-916deee7-8be7-44aa-9cd2-b9d86e90e56d
+related_task_id: null
+relation: main
+depends_on: ["T-66aec83d-1d40-4c42-87ec-6566e1ac3769"]
+```
+
+Goal:
+- Keep Today/overdue/upcoming saved lists useful after dates advance.
+Current behavior:
+- SavedTaskPredicates stores fixed DateOnly ranges; saved-view evaluation delegates the fixed query to canonical filters.
+Desired behavior:
+- Optional typed relative predicates evaluate from one explicit clock/timezone context per query and return the evaluated bounds.
+Touch:
+- WorkspaceSavedTaskView models/validators, query identity, organization save/history, C#/Worker read evaluators, saved-list editor and MCP read results.
+Discovery allowance:
+- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
+Out of scope:
+- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
+Implementation constraints:
+- Adopt presets Today, BeforeToday, NextSevenDays inclusive of today, ThisWeek Monday through Sunday and NoDate. Planned and deadline predicates remain separate and cannot silently override an absolute range on the same field. Store relative intent, not a frozen date. Capture one UTC as-of and explicit IANA timezone; bind pagination to the document revision and evaluation-day context. Clock/day changes invalidate old cursors. Reads remain side-effect free and unavailable timezones fail explicitly. Existing absolute saved lists remain unchanged.
+- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
+Validation:
+- Neutral C#/Worker fixtures cover midnight, DST, leap dates, week/year boundaries, absent dates, conflicting filters, day-changed paging, identity/export and no read mutations. Editor checks show interpreted date ranges.
+Acceptance:
+- Relative saved definitions retain intent across reload and evaluate matching bounded results with an explicit clock/timezone context.
+- Invalid combinations, unsupported timezone and stale evaluation cursors fail without changing definitions or duplicating canonical tasks.
+Documentation updates:
+- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
+Risks:
+- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
+
+### Deliver explicit in-app and foreground browser reminder cues
+
+```yaml
+id: T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2
+priority: 99
+status: Ready
+parent_pending_ids: ["P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"]
+processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+root_task_id: T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2
+related_task_id: null
+relation: main
+depends_on: ["T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd", "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae", "T-c0bf3f10-141f-464c-bc1e-53040d67e61c"]
+```
+
+Goal:
+- Provide useful optional reminders with honest delivery limits.
+Current behavior:
+- Today grouping and review metadata do not schedule notification delivery; the PWA has no accepted reminder permission or push-subscription contract.
+Desired behavior:
+- An opt-in task cue appears in the app and can notify while the app is running after a separate user permission action. Missed cues remain visible after reopening.
+Touch:
+- Workspace reminder intent/receipts, Today and Todo settings, browser reminder service/interop, service-worker capability labels and synthetic notification fixtures.
+Discovery allowance:
+- Inspect the named current modules, shared fixtures and official references before editing. Capture newly required dependencies rather than widening the task silently.
+Out of scope:
+- Unrelated refactors, implicit enrollment or notification permission, remote publication and real-account/device operations outside applicable owner authorization.
+Implementation constraints:
+- Reuse the reviewed cue time and canonical Today/review queries. In-app cues work without browser permission; permission is requested only from an explicit browser-notification action. Dedupe by account, task/cue identity and schedule revision; permission denial, unsupported devices, clock changes, snooze and account changes remain visible. No periodic upstream polling or task/game effects. Foreground timers are best effort and never promise delivery from a closed tab. Background push is explicitly unavailable under the initial contract and remains part of the existing Background Automation backlog; do not silently enroll a push subscription or store notification endpoints.
+- Priority 99 preserves the owner order: current sync/layout/diagnostics defects and the initial Todo interface precede advanced extensions.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the explicit bounded defaults below for local implementation and synthetic tests. Per-user consent and actual release qualification remain independent.
+Validation:
+- Fake-clock/browser permission fixtures verify foreground delivery, duplicate suppression, reopen catch-up, denied/unavailable permission, cross-account cleanup and no upstream/network effect. Component and rendered checks verify delivery-limit wording and accessible cue actions.
+Acceptance:
+- Opt-in in-app/foreground cues obey exact schedule identity and preserve missed-cue visibility without duplicate notifications.
+- Denied permissions, closed-app limits and background unavailability remain explicit; reminders never grant consent, send credentials, poll Habitica or mutate tasks automatically.
+Documentation updates:
+- Update features.md, testing.md and the relevant workspace/UX contract; record actual source coverage and unavailable live/device evidence separately.
+Risks:
+- Incorrect historical coverage, changed task identity or stale account/revision could misrepresent recovery or trigger an unintended game effect. Preserve exact command identity and reject uncertainty.
 
 ### Security Hardening, Revocation, Key Rotation, And Team Rollout
 

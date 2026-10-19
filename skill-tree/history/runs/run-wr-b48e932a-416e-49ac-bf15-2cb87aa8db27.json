@@ -1,0 +1,39 @@
+{
+  "completed_ids": [
+    "T-31fbbe84-a4ab-4bc7-9509-647666e6e017"
+  ],
+  "completion_refs": {
+    "T-31fbbe84-a4ab-4bc7-9509-647666e6e017": "O-c109b92e-d5d6-4f25-b63a-abdaf0157c95"
+  },
+  "current_task_id": null,
+  "cycle_signature": "d39652c64e6ef31afba141b2779ad3f2306c47aa3d93e5a9b7c6868cd8735821",
+  "deferred_ids": [],
+  "finished_at": "2026-10-19T08:57:07.187343+00:00",
+  "history_refs": [
+    "skill-tree/history/validation/theme-sync-acceptance.json"
+  ],
+  "id": "WR-b48e932a-416e-49ac-bf15-2cb87aa8db27",
+  "limits": {
+    "operation_deadline_seconds": 300
+  },
+  "mode": "next",
+  "next_action": null,
+  "partial_work": [
+    "Saved appearance imports refresh rendered CSS, mounted controls and reload cache.",
+    "Shared local mutation lock and serialized account-bound sync preserve remote timestamps, drafts and transient previews.",
+    "Release publication and 796 .NET plus four JavaScript tests pass; the seeded merge bypass fails the regression.",
+    "Synthetic browser frames at 390 and 1280 pixels verify actual controls; real device transport remains separate."
+  ],
+  "pending_ids": [],
+  "phase": "completed",
+  "processing_results": [],
+  "required_ids": [
+    "T-31fbbe84-a4ab-4bc7-9509-647666e6e017"
+  ],
+  "root_task_id": "T-31fbbe84-a4ab-4bc7-9509-647666e6e017",
+  "snapshot": [
+    "T-31fbbe84-a4ab-4bc7-9509-647666e6e017"
+  ],
+  "started_at": "2026-10-19T05:07:01.091029+00:00",
+  "stop_reason": null
+}

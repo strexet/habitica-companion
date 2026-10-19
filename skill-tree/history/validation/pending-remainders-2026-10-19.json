@@ -1,0 +1,113 @@
+{
+  "kind": "scoped-pending-research",
+  "date": "2026-10-19",
+  "processing_receipt": {
+    "id": "PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed",
+    "selected_ids": [
+      "P-c5795748-6f25-4c0a-a471-fe72c1a85862",
+      "P-64d1995c-f862-498c-9437-e867117f2129",
+      "P-438c79fe-385d-4657-be24-85fad9a49c31",
+      "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
+    ],
+    "created_ids": [
+      "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
+      "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
+      "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+      "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+      "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+      "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+      "T-06336249-6901-4d10-8df1-229ca9bcad6b"
+    ],
+    "reused_ids": [],
+    "task_keys": {
+      "reminders": "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
+      "relative-views": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
+      "review": "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
+      "conversion": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
+      "linked-schedule": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "streaks": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
+      "history-coverage": "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
+      "recovery-surfaces": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+      "linked-recovery": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
+      "native-recovery": "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
+      "mobile-pack": "T-06336249-6901-4d10-8df1-229ca9bcad6b"
+    },
+    "dispositions": {
+      "P-c5795748-6f25-4c0a-a471-fe72c1a85862": {
+        "status": "promoted",
+        "reason": "Source-backed decomposition establishes explicit local defaults under standing owner contract adoption. Ready implementation units preserve exact provenance; actual competitor, human and device evidence remains a requirement of the existing blocked release gate rather than an unprocessed duplicate intake."
+      },
+      "P-64d1995c-f862-498c-9437-e867117f2129": {
+        "status": "promoted",
+        "reason": "Source-backed decomposition establishes explicit local defaults under standing owner contract adoption. Ready implementation units preserve exact provenance; actual competitor, human and device evidence remains a requirement of the existing blocked release gate rather than an unprocessed duplicate intake."
+      },
+      "P-438c79fe-385d-4657-be24-85fad9a49c31": {
+        "status": "promoted",
+        "reason": "Source-backed decomposition establishes explicit local defaults under standing owner contract adoption. Ready implementation units preserve exact provenance; actual competitor, human and device evidence remains a requirement of the existing blocked release gate rather than an unprocessed duplicate intake."
+      },
+      "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78": {
+        "status": "promoted",
+        "reason": "Source-backed decomposition establishes explicit local defaults under standing owner contract adoption. Ready implementation units preserve exact provenance; actual competitor, human and device evidence remains a requirement of the existing blocked release gate rather than an unprocessed duplicate intake."
+      }
+    }
+  },
+  "priority_reason": "Advanced extensions use 99; existing sync/layout/diagnostic defects and initial Todo UI retain precedence.",
+  "findings": [
+    "Ready describes an executable contract; acceptance evidence is collected during implementation rather than required before promotion.",
+    "In-place kind conversion contradicts current accepted-snapshot history validation; a reviewed lineage copy preserves the source.",
+    "Habitica non-Cron unchecking changes resources and differs from native restoration; exact refunds cannot be promised.",
+    "Current Auth projection rejects non-Habit down scoring and lacks linked recurrence fields.",
+    "Current fixed saved views and review timestamps provide foundations but no relative-clock or reminder delivery semantics."
+  ],
+  "choices": [
+    "Use retained archive/occurrence corrections and exact single-use linked recovery receipts.",
+    "Use explicit history coverage and dated schedule facts before streak claims.",
+    "Use reviewed native copies for type changes; preserve original mappings/history.",
+    "Use voluntary reviews, explicit relative-date/timezone context and opt-in foreground cues.",
+    "Keep background push unavailable under the initial reminder contract; existing Background Automation backlog retains future delivery work.",
+    "Prepare local E01 journeys; preserve actual competitor/human/device acceptance and missing inputs in T-d76d2a9a-1318-4e63-9bb4-73f620b108cc."
+  ],
+  "sources": [
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs",
+    "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs",
+    "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs",
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs",
+    "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs",
+    "src/Habitica.Application/Workspace/WorkspaceSavedTaskViews.cs",
+    "workers/companion-workspace/src/commands.ts",
+    "workers/chatgpt-auth/src/projection.ts",
+    "skill-tree/documents/navigation-study.md"
+  ],
+  "source_fingerprints": {
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "75bf8f9d9f6de312b23daf097ec90f45037a1e5ae4a9c14aa555457f9a903066",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "de16729e8f2136af92731e5ae10859fe9bd74237fa642625b069a7c128224b6c",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "0a241ad4d801a9c4f815b4a645f6aa15e58f451081687eb4d0612930c071d038",
+    "src/Habitica.Domain/Workspace/WorkspaceSavedTaskView.cs": "e396d33a21cd6cc12d3a250a73760586e72316a75556bf88db84040968955ef6",
+    "src/Habitica.Domain/Workspace/RecurrenceCalendar.cs": "3aee17ac940c513429d3781bda3d8ca02b566fcc8dbae52bbfaaa190e597701d",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "52795b00bd5125420d420ff3f293215e983d3d866614783edd81441199fe7011",
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "3dc52560917f01a446540246ad429d4fc2b2c477ce3da7822c680cd79be4f679",
+    "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs": "c2164eb0c2df671855caf4c9b976cca1da022c103cba3a964a2b9bf3af5d7a08",
+    "src/Habitica.Application/Workspace/WorkspaceSavedTaskViews.cs": "b22f0e3e766fbf7a098e3eccab9884a2b4823af1b0f96a3b81650f4cfb9e055c",
+    "workers/companion-workspace/src/commands.ts": "8f096f5ef605f3b529589d00b124284548c5e5e5f7cb0e8868bf141026408bfb",
+    "workers/chatgpt-auth/src/projection.ts": "1f3901759c5aeca894959598b5c81273c4acbb1c89a3a52996b627df3b8d5f09",
+    "skill-tree/documents/navigation-study.md": "5f2c5624593c9f9bea8a2be235de7f94bcad198c20bdc86a3a1bd083763a0f60"
+  },
+  "official_references": [
+    "https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/common/script/ops/scoreTask.js",
+    "https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/server/controllers/api-v3/tasks.js",
+    "https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/common/script/ops/updateTask.js",
+    "https://www.todoist.com/help/todoist/features/complete-a-task-with-a-recurring-date-dmI6SVqdP",
+    "https://culturedcode.com/things/support/articles/2803579/",
+    "https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API",
+    "https://developer.mozilla.org/en-US/docs/Web/API/Push_API"
+  ],
+  "validation_boundary": "Research and planning only. No advanced feature implementation, application tests, live account actions or deployment performed for the processing stage.",
+  "new_intake_excluded_from_selection": "P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e"
+}
