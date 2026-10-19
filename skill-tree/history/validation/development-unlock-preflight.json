@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-19",
+  "task_id": "T-cd38c727-430a-4565-a264-f33d9b81bca3",
+  "target": "https://habitica-companion.pages.dev",
+  "feature_profile": "development",
+  "phase": "reviewed prepublication",
+  "local_checks": {
+    "dotnet": 779,
+    "auth": 123,
+    "workspace": 363,
+    "functions": 26,
+    "failed": 0
+  },
+  "builds": [
+    "Release frontend with complete selected public settings",
+    "Auth exact-profile dry build",
+    "Workspace exact-profile dry build",
+    "MCP exact-profile dry build"
+  ],
+  "remote_preflight": {
+    "secret_names_present": [
+      "PROFILE_ID_KEY",
+      "CREDENTIAL_KEY_V1",
+      "CREDENTIAL_KEY_V2"
+    ],
+    "secret_values_read": false,
+    "auth_migration_applied": "0008-upstream-pacing.sql",
+    "workspace_pending_migrations": 0,
+    "workspaces": 1,
+    "active_executor_opt_ins": 0,
+    "opted_in_effect_queue": [],
+    "retained_binding_comparison": "pass",
+    "previous_pages_deployment": "ab58a24f-a440-49a4-a1fa-86c609b623b6",
+    "previous_worker_versions": {
+      "chatgpt-auth": "178ce0db-dbb8-48b5-97bd-85f72eb97166",
+      "companion-workspace": "43b3c4db-2e3e-4186-9dab-ac6e686d7bf9",
+      "chatgpt-mcp": "72029709-e8a0-4b52-b84b-181cb75bbc0d"
+    }
+  },
+  "authorization": "Owner requested unlocked development capabilities, publication and own-account Codex live tests.",
+  "preserved_boundaries": [
+    "Separate per-account executor/planning consent and OAuth grants",
+    "Exact foreground previews and original receipts",
+    "Permanent party-departure prohibition",
+    "Agent party tools read-only; no Start New Day or real key operation tests",
+    "Broader client, independent account, device and human usability qualification remains unverified"
+  ]
+}

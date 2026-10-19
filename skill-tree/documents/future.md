@@ -32,7 +32,7 @@ Task definitions reside in `skill-tree/documents/future.md`; `future.json` conta
 - The remaining prioritized contracts below carry explicit dependencies and blockers. `Ready` means the task contract has no unanswered blocking question; unfinished prerequisites remain in `depends_on` and must complete before execution. `Implement next` must not skip a blocked highest-ranked task.
 - Once Companion-owned task/project/goal storage is established, Habitica is a game projection. No parallel direct-to-Habitica MCP write path is allowed.
 - Persist accepted application commands, but do **not** promise exactly-once remote rewards when Habitica reports a timeout without upstream idempotency. Preserve unknown outcomes for reconciliation.
-- Conduct hands-on competitor/mobile usability work in E01 before implementation-specific UI tasks are promoted.
+- Conduct hands-on competitor/mobile usability work in E01 before broader release of redesigned UI. Owner selection on 2026-10-19 permits development implementation and feature exposure using the adopted local baseline before human/device qualification; missing observations remain unverified.
 
 
 ## Pending Task Format
@@ -171,7 +171,7 @@ Expected behavior:
 - Document actual observed journeys and limitations without presenting public workflow documentation, a synthetic prototype or automatic contract adoption as human/device evidence.
 
 Current context:
-- The dated documented-flow inventory, personas, borrow/adapt/reject matrix and local prototype journeys/layout are complete. The local baseline is adopted under standing direction. Authenticated competitor sessions, human usability, virtual keyboard, safe areas and assistive technology remain unqualified. No live round is authorized.
+- The dated documented-flow inventory, personas, borrow/adapt/reject matrix and local prototype journeys/layout are complete. The local baseline is adopted under standing direction. Authenticated competitor sessions, human usability, virtual keyboard, safe areas and assistive technology remain unqualified. Owner-only Codex live testing is reopened; authenticated competitor sessions and real human/device usability remain unqualified.
 
 Source:
 - Remaining E01 intent from P-4f98b2b3-af24-5424-b2f9-066913f7133d and companion-first-mcp-research.md research completion gap; local contract adoption does not waive the explicit hands-on gate.
@@ -238,6 +238,50 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
+### Publish unlocked development capabilities and owner checks
+
+```yaml
+id: T-cd38c727-430a-4565-a264-f33d9b81bca3
+priority: 101
+status: Ready
+parent_pending_ids: ["P-e3df2434-4167-41d7-9ad4-4c57d886b5a1"]
+processing_run_id: PR-634bec08-2883-4463-b879-c4b2447e6f53
+root_task_id: T-cd38c727-430a-4565-a264-f33d9b81bca3
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Publish implemented capabilities for owner development on the existing website without presenting incomplete release qualification as complete.
+Current behavior:
+- Existing deployment uses pilot flags. Current source contains newer canonical task/organization/query behavior; adaptive pacing needs Auth migration 0008 before activation.
+Desired behavior:
+- A named development capability profile explicitly enables implemented product flags and authenticated planning UI, preserves per-account consent and exposes matching website/Worker/package versions.
+Touch:
+- Deployment generator/profile tests, current public operator input and generated bundle, release/operator docs, workflow checkpoint and sanitized publication/live evidence.
+Discovery allowance:
+- Read current remote migration state, secret names, public deployment metadata and aggregate executor/queue counts. Reuse existing account, resources, domain and protected credentials without logging secrets.
+Out of scope:
+- Party departure or agent party mutations, real Start New Day tests, real key rotation/deletion, second-account consent, public plugin submission and fabricated client/device/usability evidence.
+Implementation constraints:
+- Retain the existing habitica-companion.pages.dev target without a dev suffix. Preserve resource bindings, source develop branch and private secrets; update matching Auth/Workspace/MCP/browser bundles.
+- Default generation remains the existing pilot profile. An explicit development profile enables only recognized implemented availability flags; new unknown flags fail closed. Account-level executor/planning consent and reviewed foreground game actions remain mandatory.
+- Inspect executor consent and pending effects before enabling availability. Do not dispatch existing unrelated work as a smoke test or clear unknown-outcome fences.
+- Apply only required unapplied database migrations after reviewing SQL. No destructive data reset, secret value read, credential rotation or schema bypass.
+- Owner development exposure may precede broader client/device and E01 hands-on qualification. Preserve failed/unrun gates as unverified; development availability does not count as acceptance evidence.
+Questions and required clarifications:
+- [Resolved - owner request and explicit answer] Publication and own-account Codex gameplay tests are authorized. Standing party read-only testing and permanent departure prohibition remain. Start New Day testing, ChatGPT/multi-user/device qualification and real key operations remain outside the selected test sequence.
+Validation:
+- Profile generation/default/isolation tests, public settings and app/Worker builds, applicable local regressions, required migration/binding/secret-name checks, hosted asset/health checks and bounded own-account task/receipt tests with sanitized evidence.
+Acceptance:
+- Explicit development profile publishes matching current capabilities on the existing selected website while consent, previews, privacy, identity isolation and departure protections remain intact.
+- Bounded own-account Codex checks record actual outcomes and original receipts without agent party mutations, Start New Day testing or secret disclosure; missing broader release evidence remains open.
+Documentation updates:
+- Record selected development capability profile, publication identities, authorized testing scope and unrun broader release requirements. Resume the existing controller with owner scope amendment.
+Risks:
+- Mistaking availability for user consent, scheduled dispatch of old pending effects or claiming release completion from an owner-only pilot.
+
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml
@@ -263,12 +307,12 @@ Touch:
 Discovery allowance:
 - Prepare concrete reviewable runbooks and inspect local environment separation without publishing or enrolling.
 Out of scope:
-- Real enrollment, secret changes, real Cron, messages and device execution remain outside the current no-live-test lane.
+- New enrollment of another account, secret changes, real Start New Day tests, messages and device execution remain outside the selected owner Codex test sequence.
 Implementation constraints:
-- Owner authorization permits publication when needed without opening the live-test lane.
-- All implemented tools require isolation/revocation qualification; live Cron remains off. Real log inspection verifies absence of secrets with minimum redacted evidence. Missing infrastructure remains a blocker.
+- Owner authorization permits the explicit development capability rollout and bounded own-account Codex tests. Broader qualification remains separate from development availability.
+- All implemented tools require isolation/revocation qualification. The owner development profile exposes reviewed manual Cron availability; real Start New Day tests remain excluded. Real log inspection verifies absence of secrets with minimum redacted evidence. Missing infrastructure remains a blocker.
 Questions and required clarifications:
-- [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. The owner reports initial OAuth completion in both clients and ChatGPT reads, followed by immediate repeated reconnection. Native Codex repeated reads, approved Companion-only lifecycle commands and retained receipt reads pass. All live qualification is deferred by owner selection until a new explicit live-testing request. Implementation and validation remain local and synthetic; publication is separately allowed when needed. Complete token lifecycle and revocation checks, native discovery of the added tools, background projection, packaged-skill qualification, a second consenting owner and iOS/Android device qualification remain broader release requirements. Preparation cannot satisfy real release acceptance.
+- [Unresolved - blocks implementation] Existing-site resources, protected secret provisioning and Worker/Pages publication are complete. The owner reports initial OAuth completion in both clients and ChatGPT reads, followed by immediate repeated reconnection. Native Codex repeated reads, approved Companion-only lifecycle commands and retained receipt reads pass. The owner explicitly reopened bounded own-account Codex tests and selected implemented development capability publication on 2026-10-19. Agent party mutations, real Start New Day tests and real key operations remain excluded. Development implementation and availability may proceed while ChatGPT, independent consenting-account, device and human usability gates remain unverified. Complete token lifecycle and revocation checks, native discovery of the added tools, background projection, packaged-skill qualification, a second consenting owner and iOS/Android device qualification remain broader release requirements. Preparation cannot satisfy real release acceptance.
 Validation:
 - Verify local environment/resource separation and prepare exact owner/teammate/device checks. Maintain independent ChatGPT and Codex desktop results in the plugin client matrix; direct MCP access, packaged skills and optional CLI diagnostics remain distinct checks. Execute real checks only inside separately authorized scope.
 Acceptance:
@@ -389,7 +433,7 @@ Implementation constraints:
 - Credential encryption-key rotation and stable profile-ID key rotation require separate procedures.
 
 Questions and required clarifications:
-- [Resolved - owner decision] The owner selected all implemented tools with live Cron off on 2026-10-16. Record every included capability as a required T- dependency before hardening and rollout validation. E14 adoption and migration gates remain mandatory. The concrete choices and required dependency units reside in `companion-workspace-contract.md#proposed-hardening-and-release-scope`.
+- [Resolved - owner decision] The owner selected all implemented tools with live Cron off on 2026-10-16, then selected development capability availability on 2026-10-19; real Start New Day tests remain excluded. Record every included capability as a required T- dependency before hardening and rollout validation. E14 adoption and migration gates remain mandatory. The concrete choices and required dependency units reside in `companion-workspace-contract.md#proposed-hardening-and-release-scope`.
 - [Resolved - owner decision] Local qualification covers all implemented tools; live rollout remains separately scoped.
   Recommendation: Owner first, one trusted teammate second, then an expanded opt-in group.
   Rationale: Verify revocation, privacy, isolation and rate-limit behavior before expanding.

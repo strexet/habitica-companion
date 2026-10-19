@@ -89,4 +89,5 @@ Thumbs.db
 
 # Selected production deployment operator configuration
 /deploy/.production/
+/deploy/.production-*/
 /deploy/production.local.json

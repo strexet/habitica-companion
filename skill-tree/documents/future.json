@@ -164,7 +164,7 @@
       "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61": "O-fc6f4e76-63c3-41d9-b7d2-5455eb45164b",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": null,
+    "current_task_id": "T-cd38c727-430a-4565-a264-f33d9b81bca3",
     "cycle_signature": "82b5514161b9d2f318309c0972fb70dfe0814cb5bd0881c6de5ee1e4d05a574e",
     "deferred_ids": [],
     "history_refs": [
@@ -175,12 +175,12 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Keep release qualification open. Resume the selected controller after owner reopens the required live lane or explicitly selects further Pending research.",
+    "next_action": "Commit reviewed source, publish Auth then Workspace then MCP then Pages, verify public metadata/assets and run bounded owner Codex checks.",
     "partial_work": [
-      "Completed native Todo planning state, optional active stages, stage-aware canonical reads and saved-view model/native commands/scoped adapters.",
-      "All currently promoted local implementation units are accepted; full latest local regression passes 779 .NET, 123 Auth and 363 Workspace checks.",
-      "Required release qualification remains incomplete under the owner no-live-test direction. Production UX retains the explicit E01 hands-on gate. Remaining review/reminder/relative-date and mobile/streak/recovery work remains Pending, with Backlog unselected.",
-      "No live tests or deployment ran. Production remains on the previously published source."
+      "All local checks pass: 779 .NET, 123 Auth, 363 Workspace and 26 Functions tests. Release app and all three exact-profile dry builds pass.",
+      "Remote Auth 0008 applied; previous versions recorded, required secret names retained and every D1/KV/service identity matches the existing deployment.",
+      "Built public frontend settings match the complete selected development bundle; source defaults restored.",
+      "Zero active executor opt-ins and no opted-in queue before activation. No live account test has run during this resumed sequence yet."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -243,9 +243,10 @@
       "P-14835d09-6c68-4472-a5fb-622c5500f9b4",
       "P-600be12e-fd34-44d8-b992-dca13600ab13",
       "P-d269235a-351a-4341-b622-22d0b5038153",
-      "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb"
+      "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb",
+      "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1"
     ],
-    "phase": "blocked",
+    "phase": "publish",
     "processing_results": [
       {
         "created_ids": [
@@ -1365,6 +1366,25 @@
           "saved-commands": "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
           "saved-model": "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61"
         }
+      },
+      {
+        "created_ids": [
+          "T-cd38c727-430a-4565-a264-f33d9b81bca3"
+        ],
+        "dispositions": {
+          "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1": {
+            "reason": "Owner explicitly selects development capability publication and reopens own-account testing; existing profile/default behavior and deployment resources provide a bounded implementation and qualification path.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-634bec08-2883-4463-b879-c4b2447e6f53",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1"
+        ],
+        "task_keys": {
+          "dev-unlock": "T-cd38c727-430a-4565-a264-f33d9b81bca3"
+        }
       }
     ],
     "required_ids": [
@@ -1449,9 +1469,10 @@
       "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb",
       "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
       "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
-      "T-edd2f444-7dab-4847-9db0-21651c6f5c37"
+      "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
+      "T-cd38c727-430a-4565-a264-f33d9b81bca3"
     ],
-    "root_task_id": "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
+    "root_task_id": "T-cd38c727-430a-4565-a264-f33d9b81bca3",
     "scope_amendments": [
       {
         "added_roots": [
@@ -1688,6 +1709,14 @@
         "reason": "Implement fixed named query portability, native edits and scoped adapters; retain optional review/reminder/relative-date and E01 production UI gates.",
         "researched_remainder": "P-d269235a-351a-4341-b622-22d0b5038153",
         "retained_remainder": "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb"
+      },
+      {
+        "development_qualification_boundary": "Enable implemented capabilities and continue development before broader client/device/human qualification; preserve unrun evidence.",
+        "owner_direction": "Unlock all development features, continue and explicitly resume own-account live tests.",
+        "selected_roots": [
+          "T-cd38c727-430a-4565-a264-f33d9b81bca3"
+        ],
+        "test_scope": "Own-account Codex tasks and previously permitted spells/equipment. Party tools read-only; departure prohibited; no Start New Day test or real key operation."
       }
     ],
     "snapshot": [
@@ -1729,13 +1758,14 @@
       "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb",
       "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
       "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
-      "T-edd2f444-7dab-4847-9db0-21651c6f5c37"
+      "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
+      "T-cd38c727-430a-4565-a264-f33d9b81bca3"
     ],
     "started_at": "2026-10-14T17:19:17.413840+00:00",
-    "stop_reason": "Required live client, multi-user and mobile release qualification remains closed by owner direction; no additional eligible scoped Ready local implementation unit remains."
+    "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "4a6d2f1e5c3b6cec5753d10d59c6bb507e7b0f64cc977b37c4248ff896589d66",
+  "source_hash": "38bf99fb5cc9d87573f357cdf05e84138f9a447227d2ac6404816f5512eb983e",
   "tasks": [
     {
       "depends_on": [],
@@ -1822,6 +1852,22 @@
       "title": "E10 Categories, goals, projects, progress and lightweight workflows UX"
     },
     {
+      "depends_on": [],
+      "id": "T-cd38c727-430a-4565-a264-f33d9b81bca3",
+      "line": 241,
+      "parent_pending_ids": [
+        "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1"
+      ],
+      "priority": 101,
+      "processing_run_id": "PR-634bec08-2883-4463-b879-c4b2447e6f53",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-cd38c727-430a-4565-a264-f33d9b81bca3",
+      "status": "Ready",
+      "title": "Publish unlocked development capabilities and owner checks"
+    },
+    {
       "depends_on": [
         "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
         "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
@@ -1836,7 +1882,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 241,
+      "line": 285,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1860,7 +1906,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 283,
+      "line": 327,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1876,7 +1922,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 438,
+      "line": 482,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1890,7 +1936,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 475,
+      "line": 519,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1904,7 +1950,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 512,
+      "line": 556,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1918,7 +1964,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 645,
+      "line": 689,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1932,7 +1978,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 683,
+      "line": 727,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1946,7 +1992,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 717,
+      "line": 761,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1960,7 +2006,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 752,
+      "line": 796,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1974,7 +2020,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 786,
+      "line": 830,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1988,7 +2034,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 824,
+      "line": 868,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2002,7 +2048,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 851,
+      "line": 895,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2016,7 +2062,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 873,
+      "line": 917,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2030,7 +2076,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 900,
+      "line": 944,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

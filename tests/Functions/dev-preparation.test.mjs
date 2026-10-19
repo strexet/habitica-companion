@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {execFileSync} from 'node:child_process';
-import {frontendSettings} from '../../deploy/frontend-settings.mjs';import {prepareDev,writeDev} from '../../deploy/prepare-dev.mjs';
+import {frontendSettings} from '../../deploy/frontend-settings.mjs';import {prepareDev,writeDev,deploymentFlags} from '../../deploy/prepare-dev.mjs';
 const root=path.resolve(import.meta.dirname,'../..');
 const input=()=>({accountId:'a'.repeat(32),pagesProject:'companion-test-dev',pwaOrigin:'https://companion-test-dev.pages.dev',authOrigin:'https://auth.dev.example.org',mcpOrigin:'https://mcp.dev.example.org',workspaceOrigin:'https://workspace.dev.example.org',pagesKvId:'b'.repeat(32),partyDatabaseId:'11111111-2222-4333-8444-555555555555',authKvId:'c'.repeat(32),authDatabaseId:'22222222-2222-4333-8444-555555555555',workspaceDatabaseId:'33333333-2222-4333-8444-555555555555',creatorHeader:'creator-companion-dev'});
 test('public overrides retain unrelated settings and reject credential or URL leakage',()=>{
@@ -49,3 +49,20 @@ for(const fail of [false,true])test('actual Pages build preserves full settings 
 });
 
 test('normal app source defaults never inherit agent test restrictions',()=>{const settings=JSON.parse(fs.readFileSync(new URL('../../src/Habitica.WebApp/wwwroot/appsettings.json',import.meta.url),'utf8'));assert.equal(settings.Features.OwnerIsolatedTestingEnabled,false);assert.equal(settings.Features.PartySyncEnabled,true);});
+
+test('explicit development profile enables implemented availability while retaining identities and consent boundaries',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'companion-development-'));try{
+  const selected={...input(),featureProfile:'development'},result=writeDev(selected,path.join(dir,'generated'));
+  for(const config of Object.values(result.configs))for(const [flag,value] of Object.entries(config.vars))if(flag.endsWith('_ENABLED'))assert.equal(value,true,flag);
+  assert.equal(result.settings.CompanionWorkspace.PartyPlanningEnabled,true);assert.equal(result.settings.Features.OwnerIsolatedTestingEnabled,false);assert.equal(result.settings.Features.PartySyncEnabled,true);
+  assert.equal(result.configs['chatgpt-auth'].vars.CREDENTIAL_CURRENT_KEY_VERSION,'1');assert.equal(result.configs['chatgpt-auth'].d1_databases[0].database_id,input().authDatabaseId);
+  const plan=JSON.parse(fs.readFileSync(path.join(dir,'generated/deployment-plan.json')));assert.equal(plan.featureProfile,'development');assert.equal(plan.cloudGameEffectsEnabled,true);assert.equal(plan.liveCronEnabled,true);assert.equal(plan.perAccountExecutorConsentRequired,true);
+  assert.equal(prepareDev(input(),path.join(dir,'pilot')).featureProfile,'pilot');assert.throws(()=>prepareDev({...input(),featureProfile:'all'},path.join(dir,'invalid')));
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
+test('new capability flags require explicit mapping and never gain accidental development activation',()=>{
+ assert.throws(()=>deploymentFlags({FUTURE_DESTRUCTIVE_ENABLED:false},'development'));
+ assert.throws(()=>deploymentFlags({OAUTH_ENABLED:false},'unknown'));
+ assert.deepEqual(deploymentFlags({OAUTH_ENABLED:false,EXECUTOR_ENABLED:true},'pilot'),{OAUTH_ENABLED:true,EXECUTOR_ENABLED:false});
+ assert.deepEqual(deploymentFlags({OAUTH_ENABLED:false,EXECUTOR_ENABLED:false},'development'),{OAUTH_ENABLED:true,EXECUTOR_ENABLED:true});
+});

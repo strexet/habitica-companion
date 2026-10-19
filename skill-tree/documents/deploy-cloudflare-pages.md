@@ -335,3 +335,10 @@ Reviewed organization adapters require matching Auth/MCP/Workspace builds and br
 ## Todo planning-state compatibility
 
 setTodoState uses optional patch.todoState and identity v7 with coordinated application/MCP/Workspace updates. Old clients can reject used extensions and require matching validators before state authoring. Unused extensions preserve earlier encodings. No D1 migration, secret, new OAuth grant or executor flag is required. Deployment permission does not qualify live account behavior; unrun release and mobile gates remain open.
+
+
+## Selected owner development activation — 2026-10-19
+
+The owner selected featureProfile development for the existing website and reopened own-account Codex tests. Matching Auth/Workspace/MCP/application bundles expose implemented capabilities before broader release qualification. Earlier disabled-flag statements describe template/pilot defaults; explicit development generation enables recognized capability flags and frontend authenticated planning. Per-account opt-ins, OAuth grants and reviewed actions remain mandatory. Existing profile/encryption keys and current key version remain unchanged. Guarded private key availability does not provision a caller or run a migration.
+
+Auth migration 0008 supplies adaptive pacing before activation. Remote preflight checks migration state, secret names, retained bindings and aggregate opted-in executors/queue counts without reading secret values or account content. Party departure remains prohibited; agent party mutations, real Start New Day tests and key operations remain excluded. ChatGPT, independent accounts, mobile/device and human usability evidence remain unverified and do not block owner-selected development exposure. Sanitized publication and bounded owner-test evidence retain actual version identities and observations.

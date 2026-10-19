@@ -172,7 +172,7 @@ Do not implement fire-and-forget macro execution, bulk selling, gear switching, 
 
 ## Optional integration approval boundary
 
-The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) defines the candidate server-side trust boundary. Current PWA sign-in and sync grant no remote credential-storage consent. The repository owner approved local backend/vault implementation and tests of the concrete proposal. Real enrollment requires separate explicit per-user consent and applicable owner scope; deployment remains separate.
+The [proposed ChatGPT enrollment, privacy and retention contract](companion-first-mcp-research.md#proposed-chatgpt-enrollment-privacy-and-retention-contract) defines the candidate server-side trust boundary. Current PWA sign-in and sync grant no remote credential-storage consent. The repository owner approved the backend/vault contract and selected development capability publication plus bounded own-account Codex live tests on 2026-10-19. Real enrollment retains explicit per-user consent. Party departure remains prohibited; agent party mutations, real Start New Day tests, key operations and independent-user/device qualification remain outside the selected sequence.
 
 ## 10. Security rules
 

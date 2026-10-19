@@ -4,12 +4,20 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import {frontendSettings} from './frontend-settings.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const read=relative=>JSON.parse(fs.readFileSync(path.join(root,relative),'utf8'));
+const pilotFlags=new Set(['OAUTH_ENABLED','ENROLLMENT_ENABLED','WORKSPACE_ENABLED']);
+const developmentFlags=new Set([...pilotFlags,'PROJECTION_ENABLED','PARTY_ENABLED','SPELLS_ENABLED','CRON_ENABLED','KEY_OPERATIONS_ENABLED','ADAPTIVE_PACING_ENABLED','EXECUTOR_ENABLED']);
+export function deploymentFlags(vars,profile='pilot'){
+ if(!['pilot','development'].includes(profile))throw new Error('Unknown capability profile; use pilot or development.');
+ const result={...vars};for(const flag of Object.keys(result).filter(key=>key.endsWith('_ENABLED'))){if(!developmentFlags.has(flag))throw new Error('Unrecognized capability flag requires an explicit profile mapping.');result[flag]=(profile==='development'?developmentFlags:pilotFlags).has(flag);}
+ return result;
+}
 const fields=['accountId','pagesProject','pwaOrigin','authOrigin','mcpOrigin','workspaceOrigin','pagesKvId','partyDatabaseId','authKvId','authDatabaseId','workspaceDatabaseId','creatorHeader'];
 function origin(value){let url;try{url=new URL(value);}catch{throw new Error('A dev HTTPS origin is missing or invalid.');}
  if(url.protocol!=='https:'||url.username||url.password||url.search||url.hash||url.pathname!=='/'||!url.hostname.includes('.')||url.hostname.endsWith('.invalid')||url.hostname==='localhost')throw new Error('Dev addresses must be canonical HTTPS origins.');
  if(url.origin!==value)throw new Error('Dev origins must omit trailing slashes and paths.');return value;}
 export function prepareDev(input,target){
- if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!fields.includes(k)&&k!=='existingPages')||fields.some(k=>typeof input[k]!=='string'||!input[k]))throw new Error('Use exactly the public fields from dev.example.json; secrets are forbidden.');
+ if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!fields.includes(k)&&!['existingPages','featureProfile'].includes(k))||fields.some(k=>typeof input[k]!=='string'||!input[k]))throw new Error('Use exactly the public fields from dev.example.json; secrets are forbidden.');
+ const featureProfile=input.featureProfile??'pilot';if(!['pilot','development'].includes(featureProfile))throw new Error('Unknown capability profile; use pilot or development.');
  const existing=input.existingPages;
  if(existing!==undefined){
   const keys=['project','origin','kvNamespaceId','partyDatabaseId','partyDatabaseName','productionBranch','previousDeploymentId'];
@@ -34,7 +42,7 @@ export function prepareDev(input,target){
  const configs={};
  for(const [name,template] of Object.entries(templates)){
   const c=structuredClone(template);delete c.env;c.account_id=input.accountId;c.name=names[name];c.main=path.relative(target,path.join(root,'workers',name,'src/index.ts'));c.vars={...c.vars,...configuration};c.vars.ENVIRONMENT=existing?'production':'preview';
-  for(const flag of Object.keys(c.vars).filter(k=>k.endsWith('_ENABLED')))c.vars[flag]=['OAUTH_ENABLED','ENROLLMENT_ENABLED','WORKSPACE_ENABLED'].includes(flag);
+  c.vars=deploymentFlags(c.vars,featureProfile);
   if('HABITICA_X_CLIENT_HEADER' in c.vars)c.vars.HABITICA_X_CLIENT_HEADER=input.creatorHeader;
   const serviceOrigin=input[name==='chatgpt-auth'?'authOrigin':name==='chatgpt-mcp'?'mcpOrigin':'workspaceOrigin'];const host=new URL(serviceOrigin).hostname;
   c.workers_dev=host.endsWith('.workers.dev');c.preview_urls=false;
@@ -45,9 +53,9 @@ export function prepareDev(input,target){
   if(c.services)c.services=c.services.map(v=>({...v,service:v.service.includes('companion-workspace')?names['companion-workspace']:names['chatgpt-auth']}));
   configs[name]=c;
  }
- const settings=frontendSettings(read('src/Habitica.WebApp/wwwroot/appsettings.json'),{Features:{PartySyncEnabled:true,OwnerIsolatedTestingEnabled:false},ChatGptIntegration:{Enabled:true,AuthBaseUrl:input.authOrigin},CompanionWorkspace:{BaseUrl:input.workspaceOrigin,PartyPlanningEnabled:false}},input.creatorHeader);
+ const settings=frontendSettings(read('src/Habitica.WebApp/wwwroot/appsettings.json'),{Features:{PartySyncEnabled:true,OwnerIsolatedTestingEnabled:false},ChatGptIntegration:{Enabled:true,AuthBaseUrl:input.authOrigin},CompanionWorkspace:{BaseUrl:input.workspaceOrigin,PartyPlanningEnabled:featureProfile==='development'}},input.creatorHeader);
  const pagesConfig={name:input.pagesProject,compatibility_date:'2026-10-12',pages_build_output_dir:path.relative(target,path.join(root,'output/wwwroot')),kv_namespaces:[{binding:'HABITICA_SYNC_KV',id:input.pagesKvId}],d1_databases:[{binding:'HABITICA_PARTY_DB',database_name:existing?.partyDatabaseName??input.pagesProject+'-party',database_id:input.partyDatabaseId,migrations_dir:path.relative(target,path.join(root,'migrations'))}]};
- return {configs,pages:pagesConfig,settings,names,configuration};
+ return {configs,pages:pagesConfig,settings,names,configuration,featureProfile};
 }
 export function writeDev(input,target){
  const result=prepareDev(input,target);if(fs.existsSync(target))throw new Error('Dev output already exists; select a fresh directory.');
@@ -58,7 +66,7 @@ export function writeDev(input,target){
  fs.writeFileSync(path.join(pagesRoot,'wrangler.json'),JSON.stringify(pages,null,2)+'\n');fs.cpSync(path.join(root,'functions'),path.join(pagesRoot,'functions'),{recursive:true});
  fs.writeFileSync(path.join(target,'appsettings.json'),JSON.stringify(result.settings,null,2)+'\n');
  fs.cpSync(path.join(root,'plugin'),path.join(target,'plugin'),{recursive:true});const mcp=read('plugin/mcp.json');mcp.mcpServers['habitica-companion'].url=input.mcpOrigin+'/mcp';mcp.mcpServers['habitica-companion'].extensions={'com.openai':{auth:{type:'oauth',client:{mode:'cimd'}}}};fs.writeFileSync(path.join(target,'plugin/mcp.json'),JSON.stringify(mcp,null,2)+'\n');
- fs.writeFileSync(path.join(target,'deployment-plan.json'),JSON.stringify({environment:input.existingPages?'production':'dev',websiteTarget:input.existingPages??{project:input.pagesProject,productionBranch:'develop',storage:'new-dev'},cloudGameEffectsEnabled:false,liveCronEnabled:false,names:result.names,origins:result.configuration,resourceIds:{pagesKv:input.pagesKvId,partyD1:input.partyDatabaseId,oauthKv:input.authKvId,authD1:input.authDatabaseId,workspaceD1:input.workspaceDatabaseId},secretsRequired:['PROFILE_ID_KEY','CREDENTIAL_KEY_V1','CREDENTIAL_KEY_V2'],requiredClients:['ChatGPT','Codex desktop']},null,2)+'\n');return result;
+ fs.writeFileSync(path.join(target,'deployment-plan.json'),JSON.stringify({environment:input.existingPages?'production':'dev',websiteTarget:input.existingPages??{project:input.pagesProject,productionBranch:'develop',storage:'new-dev'},featureProfile:result.featureProfile,cloudGameEffectsEnabled:result.featureProfile==='development',liveCronEnabled:result.featureProfile==='development',perAccountExecutorConsentRequired:true,names:result.names,origins:result.configuration,resourceIds:{pagesKv:input.pagesKvId,partyD1:input.partyDatabaseId,oauthKv:input.authKvId,authD1:input.authDatabaseId,workspaceD1:input.workspaceDatabaseId},secretsRequired:['PROFILE_ID_KEY','CREDENTIAL_KEY_V1','CREDENTIAL_KEY_V2'],requiredClients:['ChatGPT','Codex desktop']},null,2)+'\n');return result;
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
  try{if(!process.argv[2])throw new Error('Usage: node deploy/prepare-dev.mjs <public-config.json> [fresh-output-directory]');const input=JSON.parse(fs.readFileSync(process.argv[2],'utf8'));const target=path.resolve(process.argv[3]||path.join(root,input.existingPages?'deploy/.production':'deploy/.dev'));writeDev(input,target);process.stdout.write((input.existingPages?'Production':'Dev')+' configuration prepared. Review deployment-plan.json before remote operations. No resources were changed.\n');}
