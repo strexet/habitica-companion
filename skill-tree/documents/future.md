@@ -502,46 +502,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Render compact copyable diagnostic rows
-
-```yaml
-id: T-3f71047d-22a7-4e85-a356-d41f1c99f82e
-priority: 100
-status: Ready
-parent_pending_ids: ["P-6b10f9d7-280d-40d5-a212-8e0f44173f5d"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-3f71047d-22a7-4e85-a356-d41f1c99f82e
-related_task_id: null
-relation: main
-depends_on: ["T-d007ac44-f38c-4069-9b70-e66adbc64bf0"]
-```
-
-Goal:
-- Replace overlapping per-message boxes with compact readable log rows.
-Current behavior:
-- LiveTestsPage renders framed diagnostics-log-item buttons; click selects a preview, while copy/download operate on the filtered batch. CSS applies per-card padding and hover translation.
-Desired behavior:
-- Readable timestamp/severity/operation/message rows support per-entry click/tap/keyboard copy with feedback and optional detail disclosure.
-Touch:
-- LiveTestsPage, diagnostics CSS, diagnosticsExport.js and LiveTestsPageTests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Remove individual boxes and movement effects without hiding important message data. Reuse the redacted export representation; preserve filters, batch copy/download, visible selection/focus and safe details. Clipboard failure reports a recoverable error. Long metadata wraps without overlapping adjacent rows.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component tests cover exact copied entry, filters, keyboard and clipboard failures; browser layout checks include many multiline entries, narrow widths, enlarged text and normal themes.
-Acceptance:
-- Diagnostic rows remain compact and readable without overlap or separate frames, with details available on demand.
-- Per-entry and filtered-batch copying uses the redacted representation and reports clipboard success/failure correctly.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Expose on-demand diagnostic bundles to agents
 
 ```yaml
