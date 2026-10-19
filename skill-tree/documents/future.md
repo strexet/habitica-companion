@@ -102,46 +102,6 @@ Source:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Align Settings session action cards
-
-```yaml
-id: T-2bf91411-423e-483b-95a7-92b9fdc69445
-priority: 100
-status: Ready
-parent_pending_ids: ["P-24ec4579-ff37-44c6-9085-56fefe830888"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-2bf91411-423e-483b-95a7-92b9fdc69445
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Repair uneven Settings action placement shown in the owner screenshot.
-Current behavior:
-- settings-grid stretches action-card elements, but grid/align-content:start and margin-top:auto do not provide a shared expanding description row; wrapped descriptions place buttons at different heights.
-Desired behavior:
-- Related cards align headings and bottom actions across a row while descriptions wrap naturally and phone cards stack cleanly.
-Touch:
-- SettingsPage session-action markup, narrowly scoped action-card/settings CSS, SettingsPageTests and synthetic layout fixtures.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Reproduce the screenshot geometry before selecting a minimal layout fix. Do not force fixed text heights or change unrelated card layouts. Preserve theme tokens, labels, focus, sign-out behavior and diagnostics routing.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component interaction checks and real rendered geometry at 360/390/430/768/1024/1200 widths, long descriptions and 200% text. Verify both actions remain reachable and compare baseline light/dark.
-Acceptance:
-- Wider Settings cards align primary action baselines despite unequal description lengths, without clipping or artificial fixed-height text.
-- Phone stacking, keyboard operation, theme styling and original action behavior pass scoped browser/component checks.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Add reusable page layout and theme qualification
 
 ```yaml
