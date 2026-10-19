@@ -1,0 +1,99 @@
+{
+  "source_task_id": "c3765653-711e-4532-be37-0ba41f0954b3",
+  "source_task_revision": 26,
+  "source_workspace_revision": 27,
+  "meaning": "Checklist completion acknowledges capture into Pending, not product implementation.",
+  "entries": [
+    {
+      "id": "P-203bd87e-c49c-447b-913d-b322d6bdf0b2",
+      "priority": 100,
+      "status": "Pending",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "title": "Remove redundant agent task confirmations",
+      "source_checklist_id": "51b3e3fd-5832-485b-9ec5-a4d15111802f"
+    },
+    {
+      "id": "P-c565f05b-622d-450d-8b0f-6c5917163d7e",
+      "priority": 100,
+      "status": "Pending",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "title": "Support arbitrary-depth task hierarchy",
+      "source_checklist_id": "ddb24e50-d2bd-4fcf-996f-5847e614e327"
+    },
+    {
+      "id": "P-02b78b3e-3fe9-4871-b019-c6baebafe810",
+      "priority": 100,
+      "status": "Pending",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "title": "Qualify installable iPhone PWA behavior",
+      "source_checklist_id": "b73b600d-b5f6-46aa-b523-1fb1232c70c4"
+    },
+    {
+      "id": "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63",
+      "priority": 100,
+      "status": "Pending",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "title": "Research service-initiated messages to the originating agent chat",
+      "source_checklist_id": "c8de1857-1016-4fc3-910e-cf894e677d18"
+    },
+    {
+      "id": "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036",
+      "priority": 100,
+      "status": "Pending",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "title": "Deliver opt-in iPhone PWA push reminders",
+      "source_checklist_id": "e2be8db5-203f-4f83-a682-795bcac14291"
+    },
+    {
+      "id": "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11",
+      "priority": 100,
+      "status": "Pending",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "title": "Research automatic Companion selection in ChatGPT conversations",
+      "source_checklist_id": "d925d574-5f28-42f8-b93e-2b70f57b55ca"
+    },
+    {
+      "id": "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85",
+      "priority": 100,
+      "status": "Pending",
+      "parent_pending_ids": [],
+      "processing_run_id": null,
+      "root_task_id": null,
+      "related_task_id": null,
+      "relation": "main",
+      "depends_on": [],
+      "title": "Complete first-class projects across browser and agent tools",
+      "source_checklist_id": "17584d02-4a46-4d1d-87a3-f623dd52091f"
+    }
+  ]
+}

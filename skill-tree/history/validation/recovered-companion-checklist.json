@@ -1,0 +1,24 @@
+{
+  "commandId": "6c95a327-33f3-4ae1-b9b2-018be5a3e429",
+  "sourceTaskId": "c3765653-711e-4532-be37-0ba41f0954b3",
+  "meaning": "Seven checklist flags acknowledge successful Pending capture, not product implementation.",
+  "verifiedWorkspaceRevision": 28,
+  "allSevenChecked": true,
+  "receipt": {
+    "operation": "updateTask",
+    "taskId": "c3765653-711e-4532-be37-0ba41f0954b3",
+    "commandId": "6c95a327-33f3-4ae1-b9b2-018be5a3e429",
+    "correlationId": "9b091d37-d0de-45ed-9c44-3ccd9e9a4a8a",
+    "taskText": "Разработка Habitica Companion",
+    "savedInCompanion": true,
+    "habiticaProjectionStatus": "confirmed",
+    "acceptedEventCount": 0,
+    "confirmedProjectionCount": 1,
+    "totalProjectionCount": 1,
+    "failurePosition": null,
+    "failure": "none",
+    "retryAtUtc": null,
+    "refreshSucceeded": true,
+    "outcomeUnknown": false
+  }
+}

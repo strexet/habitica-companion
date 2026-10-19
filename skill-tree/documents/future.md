@@ -102,6 +102,446 @@ Source:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
+### Repair shared readable text and enlarged layouts
+
+```yaml
+id: T-4b82019b-e1fa-4238-8629-05111e9dcc88
+priority: 101
+status: Ready
+parent_pending_ids: ["P-7ec29335-56c7-40cc-8fbe-bbf71277be3f"]
+processing_run_id: PR-2ec772f6-125e-4180-9ac0-c92f9cc8c8f4
+root_task_id: T-6122dded-900d-4d92-8739-bbc344e15ea0
+related_task_id: T-6122dded-900d-4d92-8739-bbc344e15ea0
+relation: blocker
+depends_on: []
+```
+
+Goal:
+- Repair shared readability and enlarged-layout defects exposed by actual browser qualification.
+Current behavior:
+- Accent/status text uses fill colors without a surface readability guard. Default filled controls can be 34 pixels high. The Tasks stat-grid minimum can exceed a narrow enlarged viewport. Trust-strip foregrounds reference shell colors over card surfaces.
+Desired behavior:
+- Shared semantic foregrounds remain readable on supported normal surfaces. Default primary targets reach 44 pixels, long labels wrap, and task grids shrink within the viewport.
+Touch:
+- Shared app.css, derived on-surface theme variables, theme regression tests and feature/testing/UX documentation.
+Discovery allowance:
+- Inspect rendered samples, current semantic tokens, palette generation and affected shared layout primitives.
+Out of scope:
+- New product features, log command behavior, palette redesign, hosted deployment and live account mutation.
+Implementation constraints:
+- Keep fill/border semantic colors and saved theme data. Derive transient foreground tokens with authored-color preservation where contrast qualifies. Avoid fixed text heights, hidden overflow and blanket black/white page restyling. Use existing dependencies and preserve disabled-state semantics. Intentional scroll containers require distinct evidence rather than false page overflow claims.
+Questions and required clarifications:
+- [Resolved - current browser evidence] Existing adopted normal-theme and responsive contracts define expected repairs.
+Validation:
+- Node contrast canaries, affected component regressions, Release publish and rendered default/generated samples including enlarged Tasks, Settings and sign-in. Verify normal and 200-percent text with known narrow widths.
+Acceptance:
+- Shared semantic text and primary controls satisfy scoped normal-theme contrast and target checks without changing saved theme data.
+- Enlarged Tasks and sign-in content remains within the narrow viewport without clipping primary actions.
+Documentation updates:
+- Update feature, testing and UX contracts with derived tokens and scoped geometry evidence.
+Risks:
+- Foreground polarity changes, unmeasured custom surfaces or incorrect treatment of intentional scrolling.
+
+### Complete safe project retirement and agent project lifecycle
+
+```yaml
+id: T-264e3162-adc3-45f0-943e-a55feccc9d8e
+priority: 100
+status: Ready
+parent_pending_ids: ["P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"]
+processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
+root_task_id: T-264e3162-adc3-45f0-943e-a55feccc9d8e
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Close project lifecycle gaps without deleting contained tasks.
+Current behavior:
+- Independent WorkspaceProject records and native create/update/archive organization commands already exist with organization-write scopes and no task cascade. Project deletion is absent; client-exposed tool discovery may be stale. Planned browser project workflows already cover creation, rename, placement and archive.
+Desired behavior:
+- Expose the existing project lifecycle consistently to agent clients and add a reviewed safe logical deletion/removal command with retained task/history references.
+Touch:
+- Organization models/commands and history validation in C#/TypeScript, Workspace organization API, MCP schemas/package contracts, project task queries and shared fixtures.
+Discovery allowance:
+- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
+Out of scope:
+- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
+Implementation constraints:
+- Reuse existing exact project identities and independent organization-write scope. Adopt logical deletion with retained audit tombstone rather than destructive row removal. Explicit deletion review lists affected project/section references and preserves every task, completion, receipt and Habitica mapping. Define a consistent Unassigned presentation without silently completing/moving descendants. Preserve one primary project, cross-project section validity and arbitrary-depth parent links. No cascading deletion or upstream project object.
+Questions and required clarifications:
+- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
+Validation:
+- C#/TypeScript shared command/history fixtures cover create/read/rename/archive/remove, task reassignment, original receipts, missing/stale IDs, cross-account denial, existing sections and parent links, tombstone export/import and zero Habitica effects. MCP discovery tests enumerate actual supported project commands.
+Acceptance:
+- Agent clients can discover and execute exact authorized first-class project lifecycle commands with original receipt recovery.
+- Reviewed project removal preserves tasks, hierarchy, history and game mappings with passing parity/isolation tests.
+Documentation updates:
+- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
+Risks:
+- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+
+### Qualify automatic Companion discovery and invocation
+
+```yaml
+id: T-9dce9211-4c9d-478a-952c-12adba3e013f
+priority: 100
+status: Ready
+parent_pending_ids: ["P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11"]
+processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
+root_task_id: T-9dce9211-4c9d-478a-952c-12adba3e013f
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Determine realistic automatic selection behavior in ChatGPT.
+Current behavior:
+- Current local MCP task/project schemas and installed client discovery differ; official OpenAI metadata guidance describes direct/indirect/negative prompt evaluation rather than guaranteed invocation in every conversation.
+Desired behavior:
+- Document installation, authorization, discovery and tool selection separately; build a reproducible prompt set and improve exact tool metadata/skill routing where supported.
+Touch:
+- MCP tool descriptions, plugin package/skills, integration setup/research docs and synthetic discovery fixtures.
+Discovery allowance:
+- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
+Out of scope:
+- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
+Implementation constraints:
+- Use https://developers.openai.com/plugins/guides/optimize-metadata and current official client guidance. Include new/existing chats, explicit product names, natural task intent and negative unrelated prompts. Do not confuse reconnect/token failures with selection. Do not force global app access, spoof read-only annotations or promise all-chat invocation. Live ChatGPT tests require a separately selected host session; synthetic checks must remain labeled.
+Questions and required clarifications:
+- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
+Validation:
+- Metadata/schema regression fixtures plus a documented host evaluation table record selection, available tools, arguments, permissions and result. Provide manual app selection and connection-repair alternatives where automatic selection is unavailable.
+Acceptance:
+- A sourced capability decision and reproducible direct/indirect/negative prompt set define automatic selection limits.
+- Supported metadata/package improvements preserve honest tool annotations and authorization; live host outcomes remain distinct from synthetic results.
+Documentation updates:
+- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
+Risks:
+- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+
+### Expose iPhone PWA reminder setup and recovery
+
+```yaml
+id: T-1f1eb5fd-febd-44fc-b475-69121e11400a
+priority: 100
+status: Ready
+parent_pending_ids: ["P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"]
+processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
+root_task_id: T-1f1eb5fd-febd-44fc-b475-69121e11400a
+related_task_id: null
+relation: main
+depends_on: ["T-ce099b7b-f9cc-49b8-aadd-04b5623b1094", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
+```
+
+Goal:
+- Make push reminder permissions, schedules and delivery limits understandable.
+Current behavior:
+- No task-level push editor, per-device subscription settings or notification-click handler exists.
+Desired behavior:
+- Provide task reminder creation/edit/cancel, device subscribe/unsubscribe and clear iPhone installation/permission recovery with safe task deep links.
+Touch:
+- Todo settings, task reminder UI, notification interop, service-worker push and notificationclick handlers and rendered fixtures.
+Discovery allowance:
+- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
+Out of scope:
+- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
+Implementation constraints:
+- Reuse canonical reminder/subscription state. Explain denied permission and standalone prerequisites without repeated prompts. Show per-device state and delivery limits; disabled schedules remain visible. Keep task bodies out of lock-screen defaults. Notification clicks validate same-origin routes and reauthenticate before revealing private task content. No background gameplay or silently enabled subscriptions.
+Questions and required clarifications:
+- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
+Validation:
+- Component/browser fixtures cover grant/deny/unsupported, one-time/repeat edits, subscribe/unsubscribe, schedule failure/recovery, offline click/login and focus return. Qualify mobile/200-percent/theme cases. Track actual physical iPhone closed-app delivery in release qualification.
+Acceptance:
+- Users can explicitly configure and revoke task/device push reminders with accurate prerequisites and delivery state.
+- Notification-click routing stays same-origin and authenticated; denied/offline/mobile states pass synthetic interaction and layout checks.
+Documentation updates:
+- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
+Risks:
+- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+
+### Dispatch durable scheduled Web Push reminders
+
+```yaml
+id: T-ce099b7b-f9cc-49b8-aadd-04b5623b1094
+priority: 100
+status: Ready
+parent_pending_ids: ["P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"]
+processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
+root_task_id: T-ce099b7b-f9cc-49b8-aadd-04b5623b1094
+related_task_id: null
+relation: main
+depends_on: ["T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b", "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2"]
+```
+
+Goal:
+- Deliver opted-in reminder intents while the app is closed.
+Current behavior:
+- Foreground reminder cues are planned; no persisted push schedule/delivery ledger or server sender exists.
+Desired behavior:
+- Persist one-time and repeating civil-time reminder intents, dispatch through a bounded server scheduler and retain delivery outcomes independently of task state.
+Touch:
+- Workspace reminder model, D1 migration and scheduling/dispatch module, Web Push signing/encryption integration, quota/error handling and deployment instructions.
+Discovery allowance:
+- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
+Out of scope:
+- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
+Implementation constraints:
+- Depend on explicit valid subscriptions. Reuse task/review cue identities, explicit timezone rules and DST policy; record schedule revision and occurrence identity. Dedupe application dispatch intent, expire stale cues, stop revoked subscriptions, handle 404/410 removal and 429/Retry-After with bounded retries. Distinguish accepted-by-push-service from shown/read; no exactly-once guarantee or automatic Habitica action. No timer-based upstream polling. Keep live scheduler activation and VAPID provisioning explicit.
+Questions and required clarifications:
+- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
+Validation:
+- Fake-clock and push-transport tests cover closed-app schedule dispatch, one-time/repeating/DST boundaries, duplicate scheduler invocations, changed/cancelled schedules, revoked profiles/devices, expired cues, cooldowns, failed acknowledgements and bounded retry.
+Acceptance:
+- Durable one-time and recurring reminder dispatch obeys consent, timezone, schedule revision, dedupe and quota controls.
+- Receipts distinguish scheduled, dispatched, accepted, refused and unknown delivery without task/game mutation or a false delivered/read guarantee.
+Documentation updates:
+- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
+Risks:
+- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+
+### Persist explicit account-bound Web Push subscriptions
+
+```yaml
+id: T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b
+priority: 100
+status: Ready
+parent_pending_ids: ["P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"]
+processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
+root_task_id: T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b
+related_task_id: null
+relation: main
+depends_on: ["T-51ce8719-0131-46d3-882a-4219d1bef929"]
+```
+
+Goal:
+- Establish an opt-in private Web Push subscription lifecycle.
+Current behavior:
+- The PWA has a service worker but no push handler, accepted subscription API or stored push permission contract. Foreground reminder work explicitly excludes background push.
+Desired behavior:
+- Provide authenticated own-account subscribe/status/unsubscribe, per-device identity, minimal encrypted endpoint/key storage and independent reminder consent.
+Touch:
+- Existing Workspace Worker API/storage migrations, C# client/notification adapter, browser service worker, secret configuration and privacy contract.
+Discovery allowance:
+- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
+Out of scope:
+- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
+Implementation constraints:
+- Use supported installed iOS/iPadOS Home Screen PWA capability detection, explicit browser gesture and userVisibleOnly. Notification consent is separate from cloud workspace and ChatGPT enrollment. Do not place endpoints, keys or task text in operational logs. Validate bounded HTTPS public push destinations and refuse redirects/private endpoints. Provision VAPID secrets outside source. Adopt task-neutral default notification text; opening the app resolves private task details. Support revocation and account/device isolation without deleting tasks.
+Questions and required clarifications:
+- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
+Validation:
+- Synthetic authenticated API/storage and browser PushManager fixtures cover grant/deny/unsupported states, duplicate subscription identity, account mismatch, endpoint/SSRF rejection, expired/revoked subscriptions, redaction and unsubscribe. Verify migration and portable data/export/deletion behavior.
+Acceptance:
+- Explicit per-device Web Push subscription lifecycle preserves account isolation and separate consent with safe storage and endpoint validation.
+- No permission request occurs on page load and no notification endpoint/key enters logs or source-controlled configuration.
+Documentation updates:
+- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
+Risks:
+- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+
+### Determine supported originating-chat reminder delivery
+
+```yaml
+id: T-6a8db6be-b721-4b88-b62b-c6566d759080
+priority: 100
+status: Ready
+parent_pending_ids: ["P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63"]
+processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
+root_task_id: T-6a8db6be-b721-4b88-b62b-c6566d759080
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Establish a supported path for service-initiated Companion reminders in agent clients.
+Current behavior:
+- Companion MCP uses the installed SDK and has no event subscription dispatcher or verified conversation callback mapping. Official OpenAI MCP Events now documents discovery/subscription/signed webhook delivery; Codex app-server provides authenticated thread resume and turn start, without proving access to an existing desktop-owned thread.
+Desired behavior:
+- Produce a current capability matrix and bounded synthetic prototype for supported host events or an explicit sourced limitation with a PWA notification/in-app alternative.
+Touch:
+- Integration research documentation, plugin/MCP capability schemas, local protocol fixtures and optional prototype module isolated from live dispatch.
+Discovery allowance:
+- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
+Out of scope:
+- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
+Implementation constraints:
+- Inspect official https://developers.openai.com/plugins/build/mcp-events and https://learn.chatgpt.com/docs/app-server . Distinguish an event accepted by a host from a rendered reply in the originating chat. Verify subscription owner, conversation binding exposure, callback challenge/signature, endpoint security, expiry, revocation and dedupe. Never invent a chat ID, expose a local app-server publicly, scrape private APIs or send messages to actual chats during synthetic research. Capture supported implementation as a separately bounded task.
+Questions and required clarifications:
+- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
+Validation:
+- Record source dates and exact supported/unsupported client features; exercise local fake subscription/event or app-server binding only where a documented contract exists. Include forged owner, invalid endpoint/signature, expired subscription and duplicate-event cases in a supported prototype.
+Acceptance:
+- A sourced ChatGPT/Codex capability matrix distinguishes host event delivery, originating-chat binding and actual message rendering.
+- A reproducible local prototype or documented platform limitation includes security requirements and an actionable UX alternative.
+Documentation updates:
+- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
+Risks:
+- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+
+### Complete iPhone PWA installation and relaunch support
+
+```yaml
+id: T-51ce8719-0131-46d3-882a-4219d1bef929
+priority: 100
+status: Ready
+parent_pending_ids: ["P-02b78b3e-3fe9-4871-b019-c6baebafe810"]
+processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
+root_task_id: T-51ce8719-0131-46d3-882a-4219d1bef929
+related_task_id: null
+relation: main
+depends_on: ["T-6122dded-900d-4d92-8739-bbc344e15ea0"]
+```
+
+Goal:
+- Make existing PWA packaging and installation discoverable and correct.
+Current behavior:
+- manifest.webmanifest already declares standalone, id/start_url and 192/512 icons but uses Habitica.WebApp naming. index.html has apple-touch icons; published service worker caches application assets. AppSessionController reloads explicitly persisted credentials.
+Desired behavior:
+- Use Companion product identity, valid install assets and visible Safari installation instructions. Preserve existing credential persistence choice and route/session recovery on standalone relaunch.
+Touch:
+- PWA manifest, index.html and icons, published service worker, installation guidance surface, AppSessionController and packaging/session tests.
+Discovery allowance:
+- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
+Out of scope:
+- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
+Implementation constraints:
+- Do not introduce another application shell or assume Safari tab storage transfers to a standalone installation. Require explicit sign-in when storage/session is absent; never silently persist session-only credentials. Check service-worker navigation against auth/privacy/api routes and retain network-only sensitive traffic. Real iPhone installation, safe-area/keyboard, offline/relaunch and session behavior remain separate release evidence.
+Questions and required clarifications:
+- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
+Validation:
+- Release packaging assertions validate manifest/icon dimensions/registration and sensitive-route cache boundaries. Synthetic navigation/session tests cover persisted and session-only choices, signed-out relaunch and unavailable storage. Add reproducible physical iPhone steps without claiming a fixture proves device behavior.
+Acceptance:
+- Companion install metadata, icon assets and Safari Add to Home Screen guidance pass packaging and interaction checks.
+- Synthetic relaunch and cache-boundary tests preserve explicit credential choices; actual iPhone qualification remains visibly tracked by the release gate.
+Documentation updates:
+- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
+Risks:
+- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+
+### Build accessible nested Todo task editing
+
+```yaml
+id: T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a
+priority: 100
+status: Ready
+parent_pending_ids: ["P-c565f05b-622d-450d-8b0f-6c5917163d7e"]
+processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
+root_task_id: T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a
+related_task_id: null
+relation: main
+depends_on: ["T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
+```
+
+Goal:
+- Make complete descendant tasks usable from task and project views.
+Current behavior:
+- Canonical parent relationships exist, but current task lists and the planned organization surface do not supply a complete expandable tree journey.
+Desired behavior:
+- Create and edit descendants, move or detach exact tasks, expand/collapse levels and navigate back to the parent from phone and keyboard.
+Touch:
+- Todo task components, project workspace, workspace task controller/query adapters and browser qualification fixtures.
+Discovery allowance:
+- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
+Out of scope:
+- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
+Implementation constraints:
+- Reuse hierarchy-query coverage and existing create/edit commands. Preserve independent status, notes and dates per descendant. Limit visible rows/render work without a fixed schema depth restriction; avoid increasing indentation beyond usable mobile width. Provide explicit move actions, cycle feedback, parent context for filtered/paged results and non-drag alternatives. No cascading completion, deletion or implicit project move.
+Questions and required clarifications:
+- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
+Validation:
+- Component journeys cover multi-level creation/edit/move/collapse, keyboard focus, same names, cycles, hidden/paged descendants and partial failure. Qualify narrow widths, long labels, 200-percent text and readable themes.
+Acceptance:
+- Tasks and Projects expose working arbitrary-depth descendant journeys with usable mobile and keyboard controls.
+- Tree operations preserve independent task lifecycle and original receipts with passing interaction and layout evidence.
+Documentation updates:
+- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
+Risks:
+- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+
+### Expose stable arbitrary-depth Todo hierarchy queries
+
+```yaml
+id: T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856
+priority: 100
+status: Ready
+parent_pending_ids: ["P-c565f05b-622d-450d-8b0f-6c5917163d7e"]
+processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
+root_task_id: T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Reuse native task parent relationships for complete task hierarchies.
+Current behavior:
+- ParentTaskId, relateTodo, per-task lifecycle and iterative combined cycle validation already exist in C# and TypeScript. Flat queries expose records; no dedicated tree read or complete subtree move contract exists.
+Desired behavior:
+- Provide account-bound hierarchy read/traversal and exact reparenting using existing independent task identities, without a fixed product depth restriction.
+Touch:
+- WorkspaceTaskRelationships.cs, WorkspaceRules.cs, workers/shared/workspace-domain.ts and task command/query modules, MCP schemas and shared hierarchy fixtures.
+Discovery allowance:
+- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
+Out of scope:
+- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
+Implementation constraints:
+- Use iterative traversal and explicit workload/pagination limits; arbitrary depth does not imply unbounded response size. Todo hierarchy remains separate from checklist and dependency completion. Return parent links, depth and pagination coverage without orphaning omitted ancestors. Reparenting never completes descendants or moves project membership implicitly. Missing/archived references retain clear status. Keep existing combined parent/dependency cycle rejection and unrelated task kinds unchanged.
+Questions and required clarifications:
+- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
+Validation:
+- C#/TypeScript parity fixtures cover at least 2000 parent levels, pagination boundaries, cycles/self-parent, missing or archived parents, reparent/detach, same-name tasks, cross-account isolation and lost response recovery.
+Acceptance:
+- Hierarchy queries and exact reparent commands support deep Todo chains without recursive stack exhaustion or a fixed depth cap.
+- Hierarchy changes preserve task history, task identity, project membership, dependency semantics and zero implicit game effects.
+Documentation updates:
+- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
+Risks:
+- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+
+### Execute explicitly requested task edits without redundant agent approval
+
+```yaml
+id: T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c
+priority: 100
+status: Ready
+parent_pending_ids: ["P-203bd87e-c49c-447b-913d-b322d6bdf0b2"]
+processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
+root_task_id: T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Remove redundant conversational approval for explicit ordinary task create/edit intent.
+Current behavior:
+- MCP task descriptions mandate a second explicit preview approval for every create/update; durable prepared commands and request identity already exist in task-tools.ts and task-api.ts.
+Desired behavior:
+- Preserve internal prepare/accept validation while allowing the initiating explicit create/edit request to authorize the exact ordinary task action. Return saved state plus independent projection receipt.
+Touch:
+- workers/chatgpt-mcp/src/task-tools.ts, shared task-tool contracts, Companion agent skill/package guidance, Workspace prepared-command tests and integration documentation.
+Discovery allowance:
+- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
+Out of scope:
+- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
+Implementation constraints:
+- Do not relabel writes as read-only or remove authorization, independent scopes, revision checks or durable previews. The initial request covers only matching fields and task identity. Ambiguity requires clarification. Deletion, scoring, completion, spells, Cron, bulk operations and unexpected game effects retain applicable review. Host UI safeguards cannot be overridden or guaranteed absent. Reuse the original command after unknown acceptance; never recreate the task.
+Questions and required clarifications:
+- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
+Validation:
+- Synthetic MCP explicit-create/edit journeys cover accepted and duplicate commands, unchanged scope enforcement, ambiguous names, stale revisions, lost acknowledgement and independent saved/projection status. Metadata/guidance fixtures assert ordinary intent versus consequential-action boundaries.
+Acceptance:
+- Explicit ordinary task create/edit guidance permits one initiating request without a mandatory additional agent approval exchange.
+- Original command identity, scope/revision validation, failure recovery and consequential-action boundaries remain covered by passing tests.
+Documentation updates:
+- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
+Risks:
+- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
+
 ### Add reusable page layout and theme qualification
 
 ```yaml
@@ -113,7 +553,7 @@ processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
 root_task_id: T-6122dded-900d-4d92-8739-bbc344e15ea0
 related_task_id: null
 relation: main
-depends_on: ["T-2bf91411-423e-483b-95a7-92b9fdc69445", "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1"]
+depends_on: ["T-2bf91411-423e-483b-95a7-92b9fdc69445", "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1", "T-4b82019b-e1fa-4238-8629-05111e9dcc88"]
 ```
 
 Goal:
@@ -508,12 +948,12 @@ Risks:
 id: T-fd2c633c-7b39-4776-a364-dacb83abaff7
 priority: 100
 status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0529505a-68be-5308-a805-44a2f4ddd6a9"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
+parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0529505a-68be-5308-a805-44a2f4ddd6a9", "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"]
+processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
 root_task_id: T-fd2c633c-7b39-4776-a364-dacb83abaff7
 related_task_id: null
 relation: main
-depends_on: ["T-574a6ba2-741e-4d13-b798-b909c24de93d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
+depends_on: ["T-574a6ba2-741e-4d13-b798-b909c24de93d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0", "T-264e3162-adc3-45f0-943e-a55feccc9d8e", "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a"]
 ```
 
 Goal:

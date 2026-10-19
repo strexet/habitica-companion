@@ -1,0 +1,70 @@
+{
+  "id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+  "selected_ids": [
+    "P-203bd87e-c49c-447b-913d-b322d6bdf0b2",
+    "P-c565f05b-622d-450d-8b0f-6c5917163d7e",
+    "P-02b78b3e-3fe9-4871-b019-c6baebafe810",
+    "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63",
+    "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036",
+    "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11",
+    "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"
+  ],
+  "created_ids": [
+    "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+    "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+    "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+    "T-51ce8719-0131-46d3-882a-4219d1bef929",
+    "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+    "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+    "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+    "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+    "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+    "T-264e3162-adc3-45f0-943e-a55feccc9d8e"
+  ],
+  "reused_ids": [
+    "T-fd2c633c-7b39-4776-a364-dacb83abaff7"
+  ],
+  "task_keys": {
+    "agent-task-intent": "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+    "hierarchy-read": "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+    "hierarchy-ui": "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+    "iphone-pwa": "T-51ce8719-0131-46d3-882a-4219d1bef929",
+    "chat-delivery-research": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+    "push-subscription": "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+    "push-dispatch": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+    "push-ui": "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+    "automatic-discovery": "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+    "project-retirement": "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
+    "project-browser": "T-fd2c633c-7b39-4776-a364-dacb83abaff7"
+  },
+  "dispositions": {
+    "P-203bd87e-c49c-447b-913d-b322d6bdf0b2": {
+      "status": "promoted",
+      "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance."
+    },
+    "P-c565f05b-622d-450d-8b0f-6c5917163d7e": {
+      "status": "promoted",
+      "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance."
+    },
+    "P-02b78b3e-3fe9-4871-b019-c6baebafe810": {
+      "status": "promoted",
+      "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance."
+    },
+    "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63": {
+      "status": "promoted",
+      "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance."
+    },
+    "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036": {
+      "status": "promoted",
+      "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance."
+    },
+    "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11": {
+      "status": "promoted",
+      "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance."
+    },
+    "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85": {
+      "status": "promoted",
+      "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance."
+    }
+  }
+}

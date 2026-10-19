@@ -8,20 +8,47 @@
       "T-2bf91411-423e-483b-95a7-92b9fdc69445": "O-d3ff5efb-3d67-4f1d-a36d-12d6df027654",
       "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1": "O-1d1d6944-6f01-4383-8ee5-95116e6b6275"
     },
-    "current_task_id": "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+    "current_task_id": "T-4b82019b-e1fa-4238-8629-05111e9dcc88",
     "cycle_signature": "6beaabc9f4a14920347234400e52c97f0afeb5d6c1f9a085b04b78cad17c171d",
-    "deferred_ids": [],
+    "deferred_ids": [
+      "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+      "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+      "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+      "T-51ce8719-0131-46d3-882a-4219d1bef929",
+      "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+      "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+      "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+      "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+      "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
+      "T-fd2c633c-7b39-4776-a364-dacb83abaff7"
+    ],
+    "history_refs": [
+      "skill-tree/history/validation/recovered-companion-intake.json",
+      "skill-tree/history/validation/recovered-companion-checklist.json",
+      "skill-tree/history/validation/recovered-companion-processing.json",
+      "skill-tree/history/validation/recovered-companion-research.md"
+    ],
     "id": "WR-a15f65d2-715f-4df3-94ef-500448f93f24",
     "limits": {
       "operation_deadline_seconds": 300
     },
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Repair remaining scoped geometry and qualify the current required task; preserve newly promoted main work for the explicitly requested subsequent snapshot.",
     "partial_work": [
-      "Page qualification harness and real-Razor coverage inventory are in progress; local tests pass. Browser measurement identifies default-light secondary contrast 2.2356:1. Required foreground fallback blocker captured and processed; existing parent work remains in the working tree."
+      "Recovered seven explicitly selected Companion checklist items into Pending and processed exact IDs into ten new Ready contracts plus one reused project UI contract. All seven service checklist flags are checked; original command 6c95a327-33f3-4ae1-b9b2-018be5a3e429 confirms one Habitica update. The original Implement All snapshot remains intact. The developer explicitly requests the next refreshed Implement All snapshot after valid completion of the active run.",
+      "Required shared UI repair remains in progress. Synthetic .NET suite passes 815 tests; 12 Node checks pass and Release publish succeeds. Latest browser matrix has 504 cases with 186 remaining overflow/control-bounds observations and no contrast or harness errors. Investigate remaining geometry before acceptance; no task completion is claimed."
     ],
     "pending_ids": [
-      "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e"
+      "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e",
+      "P-7ec29335-56c7-40cc-8fbe-bbf71277be3f",
+      "P-203bd87e-c49c-447b-913d-b322d6bdf0b2",
+      "P-c565f05b-622d-450d-8b0f-6c5917163d7e",
+      "P-02b78b3e-3fe9-4871-b019-c6baebafe810",
+      "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63",
+      "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036",
+      "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11",
+      "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"
     ],
     "phase": "implement",
     "processing_results": [
@@ -41,12 +68,100 @@
           "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-4b82019b-e1fa-4238-8629-05111e9dcc88"
+        ],
+        "dispositions": {
+          "P-7ec29335-56c7-40cc-8fbe-bbf71277be3f": {
+            "reason": "Shared source and rendered measurements establish a bounded required contrast/geometry repair.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-2ec772f6-125e-4180-9ac0-c92f9cc8c8f4",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-7ec29335-56c7-40cc-8fbe-bbf71277be3f"
+        ],
+        "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+          "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+          "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+          "T-51ce8719-0131-46d3-882a-4219d1bef929",
+          "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+          "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+          "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+          "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+          "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+          "T-264e3162-adc3-45f0-943e-a55feccc9d8e"
+        ],
+        "dispositions": {
+          "P-02b78b3e-3fe9-4871-b019-c6baebafe810": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-203bd87e-c49c-447b-913d-b322d6bdf0b2": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-c565f05b-622d-450d-8b0f-6c5917163d7e": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          },
+          "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036": {
+            "reason": "Repository source, relevant tests and current official platform references establish bounded implementation or research contracts; compatible existing browser/release tasks retain provenance.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+        "reused_ids": [
+          "T-fd2c633c-7b39-4776-a364-dacb83abaff7"
+        ],
+        "selected_ids": [
+          "P-203bd87e-c49c-447b-913d-b322d6bdf0b2",
+          "P-c565f05b-622d-450d-8b0f-6c5917163d7e",
+          "P-02b78b3e-3fe9-4871-b019-c6baebafe810",
+          "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63",
+          "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036",
+          "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11",
+          "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"
+        ],
+        "task_keys": {
+          "agent-task-intent": "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+          "automatic-discovery": "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+          "chat-delivery-research": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+          "hierarchy-read": "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+          "hierarchy-ui": "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+          "iphone-pwa": "T-51ce8719-0131-46d3-882a-4219d1bef929",
+          "project-browser": "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+          "project-retirement": "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
+          "push-dispatch": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+          "push-subscription": "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+          "push-ui": "T-1f1eb5fd-febd-44fc-b475-69121e11400a"
+        }
       }
     ],
     "required_ids": [
       "T-2bf91411-423e-483b-95a7-92b9fdc69445",
       "T-6122dded-900d-4d92-8739-bbc344e15ea0",
-      "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1"
+      "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1",
+      "T-4b82019b-e1fa-4238-8629-05111e9dcc88"
     ],
     "root_task_id": "T-6122dded-900d-4d92-8739-bbc344e15ea0",
     "snapshot": [
@@ -85,7 +200,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "57df056fe2898fca61e6332dce4f0d87e6c6126d340c959b6229f9ec191c457e",
+  "source_hash": "3c389a3041f25a4acbdc9aef5998782f1c39b4cd186334f045031699c885f256",
   "tasks": [
     {
       "depends_on": [],
@@ -102,12 +217,204 @@
       "title": "Default the equipment optimizer to Intelligence for every class"
     },
     {
+      "depends_on": [],
+      "id": "T-4b82019b-e1fa-4238-8629-05111e9dcc88",
+      "line": 105,
+      "parent_pending_ids": [
+        "P-7ec29335-56c7-40cc-8fbe-bbf71277be3f"
+      ],
+      "priority": 101,
+      "processing_run_id": "PR-2ec772f6-125e-4180-9ac0-c92f9cc8c8f4",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+      "relation": "blocker",
+      "root_task_id": "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+      "status": "Ready",
+      "title": "Repair shared readable text and enlarged layouts"
+    },
+    {
+      "depends_on": [],
+      "id": "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
+      "line": 145,
+      "parent_pending_ids": [
+        "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
+      "status": "Ready",
+      "title": "Complete safe project retirement and agent project lifecycle"
+    },
+    {
+      "depends_on": [],
+      "id": "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+      "line": 185,
+      "parent_pending_ids": [
+        "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-9dce9211-4c9d-478a-952c-12adba3e013f",
+      "status": "Ready",
+      "title": "Qualify automatic Companion discovery and invocation"
+    },
+    {
+      "depends_on": [
+        "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+        "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
+      ],
+      "id": "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+      "line": 225,
+      "parent_pending_ids": [
+        "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
+      "status": "Ready",
+      "title": "Expose iPhone PWA reminder setup and recovery"
+    },
+    {
+      "depends_on": [
+        "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+        "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2"
+      ],
+      "id": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+      "line": 265,
+      "parent_pending_ids": [
+        "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
+      "status": "Ready",
+      "title": "Dispatch durable scheduled Web Push reminders"
+    },
+    {
+      "depends_on": [
+        "T-51ce8719-0131-46d3-882a-4219d1bef929"
+      ],
+      "id": "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+      "line": 305,
+      "parent_pending_ids": [
+        "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
+      "status": "Ready",
+      "title": "Persist explicit account-bound Web Push subscriptions"
+    },
+    {
+      "depends_on": [],
+      "id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "line": 345,
+      "parent_pending_ids": [
+        "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
+      "status": "Ready",
+      "title": "Determine supported originating-chat reminder delivery"
+    },
+    {
+      "depends_on": [
+        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
+      ],
+      "id": "T-51ce8719-0131-46d3-882a-4219d1bef929",
+      "line": 385,
+      "parent_pending_ids": [
+        "P-02b78b3e-3fe9-4871-b019-c6baebafe810"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-51ce8719-0131-46d3-882a-4219d1bef929",
+      "status": "Ready",
+      "title": "Complete iPhone PWA installation and relaunch support"
+    },
+    {
+      "depends_on": [
+        "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+        "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
+      ],
+      "id": "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+      "line": 425,
+      "parent_pending_ids": [
+        "P-c565f05b-622d-450d-8b0f-6c5917163d7e"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+      "status": "Ready",
+      "title": "Build accessible nested Todo task editing"
+    },
+    {
+      "depends_on": [],
+      "id": "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+      "line": 465,
+      "parent_pending_ids": [
+        "P-c565f05b-622d-450d-8b0f-6c5917163d7e"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
+      "status": "Ready",
+      "title": "Expose stable arbitrary-depth Todo hierarchy queries"
+    },
+    {
+      "depends_on": [],
+      "id": "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+      "line": 505,
+      "parent_pending_ids": [
+        "P-203bd87e-c49c-447b-913d-b322d6bdf0b2"
+      ],
+      "priority": 100,
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
+      "status": "Ready",
+      "title": "Execute explicitly requested task edits without redundant agent approval"
+    },
+    {
       "depends_on": [
         "T-2bf91411-423e-483b-95a7-92b9fdc69445",
-        "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1"
+        "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1",
+        "T-4b82019b-e1fa-4238-8629-05111e9dcc88"
       ],
       "id": "T-6122dded-900d-4d92-8739-bbc344e15ea0",
-      "line": 105,
+      "line": 545,
       "parent_pending_ids": [
         "P-24ec4579-ff37-44c6-9085-56fefe830888"
       ],
@@ -123,7 +430,7 @@
     {
       "depends_on": [],
       "id": "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
-      "line": 145,
+      "line": 585,
       "parent_pending_ids": [
         "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d"
       ],
@@ -141,7 +448,7 @@
         "T-d007ac44-f38c-4069-9b70-e66adbc64bf0"
       ],
       "id": "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
-      "line": 185,
+      "line": 625,
       "parent_pending_ids": [
         "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d"
       ],
@@ -159,7 +466,7 @@
         "T-d007ac44-f38c-4069-9b70-e66adbc64bf0"
       ],
       "id": "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
-      "line": 225,
+      "line": 665,
       "parent_pending_ids": [
         "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d"
       ],
@@ -177,7 +484,7 @@
         "T-a7dca938-7c13-4878-9363-04862fbfa04d"
       ],
       "id": "T-9f465413-725a-440e-a464-cb5c555cb87d",
-      "line": 265,
+      "line": 705,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
@@ -200,7 +507,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
-      "line": 305,
+      "line": 745,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-0ddc8784-c740-5a23-819c-b17db8f6829f"
@@ -221,7 +528,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
-      "line": 345,
+      "line": 785,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
@@ -243,7 +550,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-fb41407b-58d3-4dca-b389-e80bbe517831",
-      "line": 385,
+      "line": 825,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-7cb0bb45-a294-404c-b257-136d0f9f3de4"
@@ -264,7 +571,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-54623cea-9c8f-4819-b33f-b6552c82df55",
-      "line": 425,
+      "line": 865,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
@@ -284,7 +591,7 @@
         "T-9f465413-725a-440e-a464-cb5c555cb87d"
       ],
       "id": "T-574a6ba2-741e-4d13-b798-b909c24de93d",
-      "line": 465,
+      "line": 905,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
@@ -303,16 +610,19 @@
       "depends_on": [
         "T-574a6ba2-741e-4d13-b798-b909c24de93d",
         "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
-        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
+        "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+        "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
+        "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a"
       ],
       "id": "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
-      "line": 505,
+      "line": 945,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
-        "P-0529505a-68be-5308-a805-44a2f4ddd6a9"
+        "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
+        "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"
       ],
       "priority": 100,
-      "processing_run_id": "PR-adf01381-8475-4309-abe9-2c6d4369a2ac",
+      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
       "queue": "Prioritized Next Changes",
       "related_task_id": null,
       "relation": "main",
@@ -327,7 +637,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
-      "line": 545,
+      "line": 985,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
@@ -348,7 +658,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
-      "line": 585,
+      "line": 1025,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-580e55b1-e10a-4891-bd89-fdbd5c39a627"
@@ -369,7 +679,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
-      "line": 625,
+      "line": 1065,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-346056d8-c254-4a1e-b860-6850c6cb470d",
@@ -392,7 +702,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
-      "line": 665,
+      "line": 1105,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d",
@@ -421,7 +731,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
-      "line": 705,
+      "line": 1145,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-0ddc8784-c740-5a23-819c-b17db8f6829f"
@@ -450,7 +760,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 745,
+      "line": 1185,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -469,7 +779,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-06336249-6901-4d10-8df1-229ca9bcad6b",
-      "line": 788,
+      "line": 1228,
       "parent_pending_ids": [
         "P-c5795748-6f25-4c0a-a471-fe72c1a85862"
       ],
@@ -485,7 +795,7 @@
     {
       "depends_on": [],
       "id": "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
-      "line": 829,
+      "line": 1269,
       "parent_pending_ids": [
         "P-64d1995c-f862-498c-9437-e867117f2129"
       ],
@@ -503,7 +813,7 @@
         "T-2355607b-ba77-46c0-9495-aae61e16a8f0"
       ],
       "id": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
-      "line": 870,
+      "line": 1310,
       "parent_pending_ids": [
         "P-64d1995c-f862-498c-9437-e867117f2129"
       ],
@@ -524,7 +834,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
-      "line": 911,
+      "line": 1351,
       "parent_pending_ids": [
         "P-64d1995c-f862-498c-9437-e867117f2129"
       ],
@@ -540,7 +850,7 @@
     {
       "depends_on": [],
       "id": "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
-      "line": 952,
+      "line": 1392,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -559,7 +869,7 @@
         "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02"
       ],
       "id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
-      "line": 993,
+      "line": 1433,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -578,7 +888,7 @@
         "T-68cb7da7-62e9-4136-b5c5-07da20f97c30"
       ],
       "id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
-      "line": 1034,
+      "line": 1474,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -597,7 +907,7 @@
         "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
       ],
       "id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
-      "line": 1075,
+      "line": 1515,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -616,7 +926,7 @@
         "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
       ],
       "id": "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
-      "line": 1116,
+      "line": 1556,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -634,7 +944,7 @@
         "T-66aec83d-1d40-4c42-87ec-6566e1ac3769"
       ],
       "id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
-      "line": 1157,
+      "line": 1597,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -654,7 +964,7 @@
         "T-c0bf3f10-141f-464c-bc1e-53040d67e61c"
       ],
       "id": "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
-      "line": 1198,
+      "line": 1638,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -678,7 +988,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 1239,
+      "line": 1679,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -694,7 +1004,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1394,
+      "line": 1834,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -708,7 +1018,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1431,
+      "line": 1871,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -722,7 +1032,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1468,
+      "line": 1908,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -736,7 +1046,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1601,
+      "line": 2041,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -750,7 +1060,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1639,
+      "line": 2079,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -764,7 +1074,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1673,
+      "line": 2113,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -778,7 +1088,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1708,
+      "line": 2148,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -792,7 +1102,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1742,
+      "line": 2182,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -806,7 +1116,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1780,
+      "line": 2220,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -820,7 +1130,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1807,
+      "line": 2247,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -834,7 +1144,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1829,
+      "line": 2269,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -848,7 +1158,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1856,
+      "line": 2296,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
