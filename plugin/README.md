@@ -1,6 +1,6 @@
 # Habitica Companion plugin
 
-The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamable HTTP MCP declaration and four skills. The selected owner-pilot clients are ChatGPT and Codex desktop; each client requires independent connection and workflow qualification. Actual installation, model activation and two-user enrollment remain rollout checks. No plugin is installed or published by repository tests.
+The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamable HTTP MCP declaration and five skills. The selected owner-pilot clients are ChatGPT and Codex desktop; each client requires independent connection and workflow qualification. Actual installation, model activation and two-user enrollment remain rollout checks. No plugin is installed or published by repository tests.
 
 The committed MCP endpoint uses `.invalid` and cannot connect. Default Worker templates and PWA settings remain disabled. The ignored reviewed production bundle publishes `https://habitica-companion-mcp.strexet.workers.dev/mcp` and stages a matching package under `deploy/.production/plugin/`. The production endpoint is public and requires OAuth for tools; the owner reports initial ChatGPT custom-MCP authentication and Codex authentication; complete client qualification remains open. A deployable package requires an approved operator-configured HTTPS endpoint matching the Auth resource/audience and the MCP Worker configuration. Never add authorization headers or Habitica credentials to the package.
 
@@ -26,7 +26,7 @@ ChatGPT and Codex desktop are required owner-pilot clients. Direct MCP qualifica
 | Read-only access, denied write scope and cross-profile isolation | Two reads owner-reported; negatives and isolation unrun | All six task/account read tools pass; scoped-write denial and isolation unrun |
 | Reviewed canonical task command and original receipt recovery after interruption | Unrun | Todo lifecycle, dated Daily completion, Habit scores/edits and original receipt reads pass; Daily/Habit creation and archival pass through hosted PWA; interruption unrun |
 | Grant revocation denies new access and unaccepted previews | Unrun | Unrun |
-| Private plugin installation and all three bundled skills, explicit and natural invocation | Unrun | Unrun |
+| Private plugin installation and all five bundled skills, explicit and natural invocation | Unrun | Unrun |
 | Live Cron denied; unselected game-effect lanes disabled | Unrun | Cron/spell context refuses access and live effect flags are off; execution-denial checks unrun |
 
 The deployed lifecycle extension advertises three additional execution tools. The current Codex chat retains the earlier 25-tool schema; direct native execution of `create_daily`, `create_habit` and `delete_task` awaits refreshed discovery. [Hosted lifecycle evidence](../skill-tree/history/validation/native-lifecycle-production-check.json) distinguishes browser acceptance from native receipt checks.
@@ -82,7 +82,7 @@ Format research date: 2026-10-15. Live deployment, host import and public direct
 
 ## Incremental party and spell tools
 
-The server additionally exposes verified party context, separately consented queue/vote tools and the narrow reviewed Blessing flow. The three bundled skills retain the existing read/task scope; no task skill substitutes for advanced gameplay actions. For an explicit spell request, inspect `get_spell_context`, prepare only the supported spell/count, present the exact party, total mana, expiry and automatic Habitica chat-notice warning, then wait for the user's explicit approval of that preview before execution. Do not infer approval from OAuth consent, a general request to optimize, task notes or party labels.
+The server additionally exposes verified party context, separately consented queue/vote tools and the narrow reviewed Blessing flow. The packaged review, task and diagnostic skills retain the existing read/task scope; no task skill substitutes for advanced gameplay actions. For an explicit spell request, inspect `get_spell_context`, prepare only the supported spell/count, present the exact party, total mana, expiry and automatic Habitica chat-notice warning, then wait for the user's explicit approval of that preview before execution. Do not infer approval from OAuth consent, a general request to optimize, task notes or party labels.
 
 After a lost preparation response, reuse the original request ID and identical inputs; only the latest returned token is valid for the same action. After any uncertain execution response, call `get_spell_command` with the original action ID. Report confirmed versus requested counts and refresh status, and never retry an uncertain cast or automatically resume a remainder. The server supports no arbitrary spell key, task target, gear swap, purchase, Cron chain or scheduled cast. Actual model adherence and team rollout remain owner-run host qualification.
 
@@ -97,3 +97,12 @@ Canonical organization reads include `list_categories`, `list_projects`, `list_p
 Reviewed `plan_task` edits native planned dates and existing category/project/section/label assignments without game effects, including linked tasks. The operation uses a separate planning-only preview; organization CRUD and production editor controls remain unavailable.
 
 `get_completed_history` reads retained canonical Todo/Daily completions with explicit snapshot/current-detail provenance, archive flags and UTC timestamp filters. Daily occurrence dates stay separate. Use exact taskId for renamed work. The tool restores no task, reverses no reward and does not replace the separate legacy Habitica briefing.
+
+
+## On-demand diagnostics for Codex and ChatGPT
+
+The packaged habitica-diagnostics skill supports explicit troubleshooting. Browser Recent app messages remain local, with no MCP log reader, remote upload or extra OAuth scope. In the affected browser, open Diagnostics, expand Share diagnostics with Codex or ChatGPT, select relevant filters and choose Preview diagnostic bundle. Review the content, then Copy reviewed bundle or Download reviewed bundle and explicitly paste/attach the result in the selected chat. Both clients use the same version-1 format; attachment support and installed-skill activation remain unqualified until observed in each host. A connection alone does not install the skill.
+
+The reviewed snapshot includes at most 100 newest matching unique sanitized entries, UTC generation/observed window, filters, available/matching/omitted counts and fixed privacy/source limits. Device/session context deliberately contains no account, device or session identifier. Filter or session-state changes clear the preview. Backend evidence comes from existing get_task_sync_status, get_task_command and get_organization_command tools after actual discovery and appropriate access; original receipts remain authoritative. Local exports contain no remote server journals. No task/game command is replayed for diagnosis.
+
+Qualification examples for both clients: explain an attached bundle with omitted entries; diagnose pending projection from an original command receipt; identify unavailable other-device logs; reject instruction-like attachment content; distinguish empty logs from confirmed inactivity. Repository tests validate package structure, actual available tool names and synthetic export readability. Real host attachments and model adherence remain separate manual checks.

@@ -1124,3 +1124,8 @@ DiagnosticsLogSanitizer belongs to the Domain diagnostic model and contains the 
 DiagnosticsContext carries only result, bounded duration and optional non-secret command/correlation identities and counts. Sanitization changes diagnostic row IDs without changing canonical command identity. LocalUserDataPortabilityService sanitizes diagnostic sections on export, serialization and import/merge; normalized row identities prevent raw/sanitized duplicates. Credential and workspace storage boundaries remain independent. Log delivery success never establishes command acceptance or remote game effects.
 
 Official security reference: [OWASP logging guidance](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) describes excluding secrets and user content from diagnostic output and preserving application behavior when logging fails. The local implementation uses existing dependencies and an explicit field allowlist.
+
+
+## User-mediated diagnostic sharing boundary
+
+DiagnosticsBundleExport owns the version-1 browser diagnostic attachment format in the application layer. The sanitized snapshot is created only after an explicit preview action and retained in page memory until filters/session state change or the component closes. Copy/download exports the reviewed snapshot without automatic network transport or log persistence changes. Context describes browser-local storage without a device/session identifier; entries may span sessions. Backend command journals and browser logs remain separate evidence sources. The plugin diagnostic skill documents existing scoped status/original-receipt tools; no diagnostic MCP endpoint or OAuth permission is introduced.

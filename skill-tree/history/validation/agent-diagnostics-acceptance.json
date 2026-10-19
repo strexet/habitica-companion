@@ -1,0 +1,46 @@
+{
+  "task_id": "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
+  "checks": {
+    "dotnetPassed": 831,
+    "dotnetFailed": 0,
+    "compileWarnings": 0,
+    "finalTargetTestsPassed": 7,
+    "releasePublish": "pass",
+    "workerBuilds": [
+      "chatgpt-auth",
+      "chatgpt-mcp",
+      "companion-workspace"
+    ],
+    "pluginSdkTestsPassed": 2,
+    "skillValidator": "pass in isolated temporary environment",
+    "renderedCases": 216,
+    "renderedErrors": 0
+  },
+  "asset_fingerprints": {
+    "app.css": "b7ed5d51315aef50212f43ba8d734efb669f4ea9b94475a002a1c9c59c17b86c",
+    "colorSchemes.js": "8462ddaa89004ccf1c99ba78fc909d3d0474291d80187deed343b0c18905c387",
+    "schemes.json": "4088181304e6be006bb7a4cae9e690d77b41e026b4c1885da5b28a338b88ad49",
+    "qualification-frame.mjs": "b7476ce6f6e5766f604e53a0ecdf19cb68dc775a911c8a2276fdf8a3e22d0bd2",
+    "diagnostics-agent-bundle.html": "0444186cdeed46f1a408743df566122cf4ce320b30c8786b8c41a37d6053e269",
+    "diagnostics-compact-many.html": "70d8d7754f51c366368068ad3ae1cc216c7b70bf78eb50d5948e23b1e4ec184f",
+    "diagnostics-compact-details.html": "bdd7d1a76afc73cbbb89683089e3871ce605409ae9ead24c5f2119faf8b9f51c"
+  },
+  "evidence": [
+    "tests/Habitica.Application.Tests/Diagnostics/DiagnosticsBundleTests.cs",
+    "tests/Habitica.WebApp.Tests/Pages/LiveTestsPageTests.cs",
+    "workers/companion-workspace/test/plugin.test.mjs",
+    "plugin/skills/habitica-diagnostics/SKILL.md",
+    "skill-tree/history/validation/agent-diagnostics-browser.json"
+  ],
+  "results": [
+    "Version-1 bundles round-trip as readable typed JSON with sanitized records, bounded newest-first selection, filters, counts and nonidentifying source/session context.",
+    "No copy or download action exists before preview; exact reviewed snapshot reaches clipboard/download helper and filter/session changes remove the snapshot.",
+    "Packaged skill tool references match actual SDK discovery; no browser-log MCP reader, automatic upload, replay or widened scope is claimed.",
+    "Expanded bundle and compact collapsed/expanded logs pass six widths, six schemes and 100/200-percent root text."
+  ],
+  "limitations": [
+    "Real Codex/ChatGPT file attachment, model adherence, installed skill activation and physical devices remain unqualified.",
+    "Bundle observations remain distinct from server receipts; exports contain no server journal or other-device local history.",
+    "One final 72-case bundle pass refreshes generated timestamp evidence after the final targeted test capture; identical compact fixture results remain retained."
+  ]
+}

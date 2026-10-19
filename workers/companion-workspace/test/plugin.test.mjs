@@ -17,7 +17,7 @@ test('portable plugin and MCP configuration validate against pinned upstream sch
  }
  const mcp=await json('plugin/mcp.json');const server=mcp.mcpServers['habitica-companion'];
  assert.equal(server.type,'streamable-http');assert.equal(new URL(server.url).pathname,'/mcp');assert.ok(new URL(server.url).hostname.endsWith('.invalid'));assert.equal(server.headers,undefined);
- assert.deepEqual((await readdir(new URL('plugin/skills',root))).sort(),['habitica-account-review','habitica-activity-review','habitica-daily-review','habitica-task-management']);
+ assert.deepEqual((await readdir(new URL('plugin/skills',root))).sort(),['habitica-account-review','habitica-activity-review','habitica-daily-review','habitica-diagnostics','habitica-task-management']);
 });
 async function client(t,f,p,scope){
  const response=await exchange(f,await authorization(f,p,scope));assert.equal(response.status,200);const token=(await response.json()).access_token;

@@ -137,7 +137,7 @@
             <div class="diagnostics-filter-row">
                 <label class="field-row compact">
                     <span>Feature</span>
-                    <select class="app-input" @bind="_featureFilter">
+                    <select class="app-input" @bind="_featureFilter" @bind:after="ClearBundlePreview">
                         <option value="">All features</option>
                         @foreach (var feature in FeatureFilters)
                         {
@@ -148,7 +148,7 @@
 
                 <label class="field-row compact">
                     <span>Severity</span>
-                    <select class="app-input" @bind="_severityFilter">
+                    <select class="app-input" @bind="_severityFilter" @bind:after="ClearBundlePreview">
                         <option value="">All severities</option>
                         @foreach (var severity in SeverityFilters)
                         {
@@ -159,7 +159,7 @@
 
                 <label class="field-row compact">
                     <span>Mode</span>
-                    <select class="app-input" @bind="_modeFilter">
+                    <select class="app-input" @bind="_modeFilter" @bind:after="ClearBundlePreview">
                         <option value="">All modes</option>
                         @foreach (var mode in ModeFilters)
                         {
@@ -168,6 +168,23 @@
                     </select>
                 </label>
             </div>
+
+            <details class="diagnostics-bundle">
+                <summary>Share diagnostics with Codex or ChatGPT</summary>
+                <div class="diagnostics-bundle-content">
+                <p class="panel-copy">Preview up to 100 filtered messages, then copy or download the reviewed bundle. Attach it to Codex or ChatGPT only when needed. Nothing is uploaded automatically; logs from other devices and server receipts are separate.</p>
+                <MudButton HtmlTag="button" data-layout-primary="true" data-testid="preview-diagnostics-bundle" Variant="Variant.Text" OnClick="PreviewBundle">Preview diagnostic bundle</MudButton>
+                @if (_bundleJson is not null)
+                {
+                    <p class="panel-copy">Review the content below before sharing. Changing filters or app messages clears this preview.</p>
+                    <pre class="diagnostics-bundle-preview" tabindex="0" data-testid="diagnostics-bundle-preview">@_bundleJson</pre>
+                    <div class="action-row">
+                        <MudButton HtmlTag="button" data-layout-primary="true" data-testid="copy-diagnostics-bundle" Variant="Variant.Text" OnClick="CopyBundleAsync">Copy reviewed bundle</MudButton>
+                        <MudButton HtmlTag="button" data-layout-primary="true" data-testid="download-diagnostics-bundle" Variant="Variant.Text" OnClick="DownloadBundleAsync">Download reviewed bundle</MudButton>
+                    </div>
+                }
+                </div>
+            </details>
 
             <p class="diagnostics-copy-hint">Click or tap a message to copy it. Open Details to inspect.</p>
             @if (_copyStatus is not null)
@@ -218,6 +235,33 @@
     private string _modeFilter = string.Empty;
     private bool? _messagesRefreshed;
     private string? _copyStatus;
+    private string? _bundleJson;
+
+    private void ClearBundlePreview() => _bundleJson = null;
+
+    private void PreviewBundle()
+    {
+        static T? ParseFilter<T>(string value) where T : struct, Enum => Enum.TryParse<T>(value, out var parsed) ? parsed : null;
+        var filters = new DiagnosticsBundleFilters(ParseFilter<Habitica.Domain.Diagnostics.DiagnosticsFeatureArea>(_featureFilter),
+            ParseFilter<Habitica.Domain.Diagnostics.DiagnosticsSeverity>(_severityFilter), ParseFilter<Habitica.Domain.Diagnostics.DiagnosticsMode>(_modeFilter));
+        _bundleJson = DiagnosticsBundleExport.Serialize(DiagnosticsBundleExport.Create(
+            SessionController.State.DiagnosticsLogEntries ?? Array.Empty<Habitica.Domain.Diagnostics.DiagnosticsLogEntry>(), filters, DateTimeOffset.UtcNow));
+    }
+
+    private Task CopyBundleAsync() => _bundleJson is null ? Task.CompletedTask : CopyAsync(_bundleJson, "Reviewed bundle copied. Attach it only when needed.");
+
+    private async Task DownloadBundleAsync()
+    {
+        var reviewed = _bundleJson;
+        if (reviewed is null) return;
+        try
+        {
+            var module = await GetExportModuleAsync();
+            await module.InvokeVoidAsync("downloadTextFile", $"habitica-companion-diagnostics-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}.json", reviewed, "application/json;charset=utf-8");
+            _copyStatus = "Reviewed bundle downloaded. Attach it only when needed.";
+        }
+        catch { _copyStatus = "Download failed. Copy the reviewed bundle instead."; }
+    }
 
     protected override void OnInitialized()
     {
@@ -273,6 +317,7 @@
     private async Task ClearLogsAsync()
     {
         _selectedEntry = null;
+        ClearBundlePreview();
         await SessionController.ClearDiagnosticsLogsAsync();
     }
 
@@ -362,6 +407,7 @@
 
     private void HandleStateChanged()
     {
+        ClearBundlePreview();
         if (_selectedEntry is not null && !FilteredEntries.Any(entry => entry.Id == _selectedEntry.Id))
         {
             _selectedEntry = null;

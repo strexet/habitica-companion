@@ -688,3 +688,8 @@ Recent app messages read bounded local history on page entry. An unavailable loc
 ### Compact diagnostic rows
 
 Recent app messages use a bounded scrolling list with single row separators, no per-message frame and no movement on hover. Each row shows local timestamp, textual severity, operation, safe summary and feature/source. Click, tap, Enter or Space copies the sanitized entry; visible selection and a polite status message report the result. Details remains a separate native disclosure with selectable wrapped metadata and JSON for inspection or manual copy after clipboard refusal. The copy target retains the shared primary minimum height, and inset focus remains visible inside the scroller. Filters and batch copy/download remain above the list.
+
+
+### Explicit agent diagnostic sharing
+
+The collapsed Share diagnostics with Codex or ChatGPT disclosure keeps optional export guidance outside the normal log-reading path. Preview diagnostic bundle creates a bounded filtered snapshot in a selectable wrapping preview. Copy reviewed bundle and Download reviewed bundle appear only after preview. Guidance states the explicit attachment step, local-browser scope and separate server receipts. Filter or session-state changes remove the preview and export actions. Copy/download status uses the existing polite message region and fixed recoverable errors.

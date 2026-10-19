@@ -36,3 +36,6 @@ Native Todo planning state uses setTodoState with only patch.todoState.state: ac
 Optional active Todo preference uses setTodoStage with only patch.todoStage containing stage inbox/next/inProgress or clearStage true. Review one exact nonarchived active Todo before `set_todo_stage` acceptance. Missing or cleared preference means Inbox while active. Waiting, Someday, Completed, Cancelled and Paused current states dominate presentation; retained stage metadata remains dormant until explicit reactivation. A stage edit never reopens work, sets dates, satisfies dependencies or dispatches game effects. State, history and game mappings stay unchanged. Use the separate state or restoration flow before editing an inactive target.
 
 For named saved task views, follow the [saved-view workflow](references/saved-task-views.md). Read access never authorizes editing the definition or mutating matched tasks. Fixed stored dates remain fixed; view names never supply relative-date semantics.
+
+
+For a reported connection, synchronization or uncertain-command problem, use the [on-demand diagnostic workflow](../habitica-diagnostics/SKILL.md). Browser logs require explicit user-shared bundles; routine reviews need no log collection.

@@ -324,3 +324,8 @@ LiveTestsPageTests verify sanitized copied/downloaded JSONL and fresh local-read
 
 
 Compact diagnostic console checks cover twelve mixed-severity rows, collapsed and expanded multiline details, exact per-entry JSON, six-entry filtered JSONL, private-data exclusion, clipboard refusal and successful retry. diagnostics-export.test.mjs exercises the actual JavaScript helper with successful, missing and denied clipboard implementations. Real-browser native Enter/Space activation and disclosure focus remain distinct from component event assertions. Synthetic fixtures never write the system clipboard or qualify physical devices. Native summary controls participate in shared geometry checks.
+
+
+## Diagnostic bundle and agent guidance qualification
+
+DiagnosticsBundleTests validate version-1 JSON round-trip readability, newest-first 100-record bounds, deduplication, combined filters, empty UTC windows, omitted counts, invalid enum rejection and credential/note/instruction canaries. LiveTestsPageTests assert no export before preview, exact reviewed copy/download content, JSON media type and preview invalidation after filter changes. The package fixture validates all five skill folders against the manifest contract and verifies each referenced tool name through the actual SDK inventory with isolated synthetic profiles. Skill validation runs in a temporary Python environment without changing repository packages. Rendered Diagnostics states cover the expanded bundle and compact list/disclosure states; real Codex/ChatGPT attachments, installed activation, physical devices and assistive technologies remain separately unqualified.

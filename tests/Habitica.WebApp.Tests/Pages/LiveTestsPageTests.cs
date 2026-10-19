@@ -18,6 +18,40 @@ public sealed class LiveTestsPageTests : BunitContext
     }
 
     [Fact]
+    public async Task Agent_bundle_requires_preview_exports_exact_reviewed_copy_and_clears_after_filter_change()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        var module = JSInterop.SetupModule("./js/diagnosticsExport.js");
+        module.SetupVoid("copyText", _ => true).SetVoidResult();
+        module.SetupVoid("downloadTextFile", _ => true).SetVoidResult();
+        Services.AddMudServices();
+        var entry = new DiagnosticsLogEntry("secret-canary", DateTimeOffset.Parse("2026-10-19T12:00:00Z"), DiagnosticsFeatureArea.Workspace,
+            "workspace-task-accept", DiagnosticsSeverity.Warning, DiagnosticsMode.Local, "private-name secret-canary", new Dictionary<string, string>());
+        var session = new FakeAppSessionController(SessionViewModel.Empty with { DiagnosticsLogEntries = [entry] });
+        Services.AddSingleton<IAppSessionController>(session);
+        var cut = Render<LiveTestsPage>();
+        Assert.Empty(cut.FindAll("[data-testid='copy-diagnostics-bundle']"));
+        Assert.Empty(module.Invocations);
+        cut.Find("[data-testid='preview-diagnostics-bundle']").Click();
+        var reviewed = cut.Find("[data-testid='diagnostics-bundle-preview']").TextContent;
+        Assert.Contains("browser-local-store", reviewed); Assert.DoesNotContain("secret-canary", reviewed);
+        Qualification.PageLayoutEvidence.Save("diagnostics-agent-bundle", cut.Markup.Replace("<details class=\"diagnostics-bundle\"", "<details open class=\"diagnostics-bundle\""), "/diagnostics", "reviewed-agent-bundle", ["logs", "filters"], nameof(Agent_bundle_requires_preview_exports_exact_reviewed_copy_and_clears_after_filter_change));
+        cut.Find("[data-testid='copy-diagnostics-bundle']").Click();
+        cut.Find("[data-testid='download-diagnostics-bundle']").Click();
+        Assert.Equal(reviewed, Assert.Single(module.Invocations, call => call.Identifier == "copyText").Arguments[0]);
+        var download = Assert.Single(module.Invocations, call => call.Identifier == "downloadTextFile");
+        Assert.Equal(reviewed, download.Arguments[1]); Assert.Equal("application/json;charset=utf-8", download.Arguments[2]);
+        Assert.Equal(0, System.Text.Json.JsonDocument.Parse(reviewed).RootElement.GetProperty("omittedMatchingCount").GetInt32());
+        cut.FindAll(".diagnostics-filter-row select")[0].Change("Workspace");
+        Assert.Empty(cut.FindAll("[data-testid='diagnostics-bundle-preview']"));
+        Assert.Empty(cut.FindAll("[data-testid='copy-diagnostics-bundle']"));
+        cut.Find("[data-testid='preview-diagnostics-bundle']").Click();
+        Assert.Single(cut.FindAll("[data-testid='diagnostics-bundle-preview']"));
+        await cut.InvokeAsync(() => session.SetState(SessionViewModel.Empty));
+        Assert.Empty(cut.FindAll("[data-testid='diagnostics-bundle-preview']"));
+    }
+
+    [Fact]
     public void Compact_rows_copy_exact_redacted_entry_and_filtered_batch_with_recoverable_failures()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;

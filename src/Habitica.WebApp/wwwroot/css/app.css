@@ -2306,6 +2306,12 @@ input[type="radio"] {
 .diagnostics-copy-status { margin: 0; font-size: 0.85rem; overflow-wrap: anywhere; }
 .diagnostics-copy-hint { color: var(--text-muted, var(--ink)); }
 .diagnostics-copy-status { color: var(--text-primary, var(--ink)); }
+.diagnostics-bundle { min-width: 0; }
+.diagnostics-bundle > summary { min-height: var(--control-height); padding-block: 0.5rem; cursor: pointer; overflow-wrap: anywhere; }
+.diagnostics-bundle-content { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.4rem; }
+.diagnostics-bundle > summary:focus-visible { outline: 2px solid var(--focus); }
+.diagnostics-bundle-preview { max-height: 18rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; padding: 0.5rem; background: var(--surface); color: var(--ink); font-size: 0.8rem; }
+.diagnostics-bundle-preview:focus-visible { outline: 2px solid var(--focus); }
 .diagnostics-console [data-layout-primary] { min-height: var(--control-height); }
 .diagnostics-log-list {
     display: grid;
