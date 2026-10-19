@@ -1,5 +1,30 @@
 {
-  "active_run": null,
+  "active_run": {
+    "completed_ids": [],
+    "current_task_id": "T-a7dca938-7c13-4878-9363-04862fbfa04d",
+    "deferred_ids": [],
+    "id": "WR-86fd1e44-f726-49a9-9fbe-a87516f4329a",
+    "limits": {
+      "operation_deadline_seconds": 300
+    },
+    "mode": "next",
+    "next_action": "Commit reviewed implementation, record exact acceptance and finish the selected root.",
+    "partial_work": [
+      "Implementation and final review complete. All 813 synthetic .NET tests pass; Release publish succeeds. The stale-status negative control fails as expected and restored controls pass. Sixteen light/dark phone/desktop Razor frames fit without control overlap. Acceptance evidence saved in skill-tree/history/validation/connection-state-acceptance.json."
+    ],
+    "pending_ids": [],
+    "phase": "implement",
+    "processing_results": [],
+    "required_ids": [
+      "T-a7dca938-7c13-4878-9363-04862fbfa04d"
+    ],
+    "root_task_id": "T-a7dca938-7c13-4878-9363-04862fbfa04d",
+    "snapshot": [
+      "T-a7dca938-7c13-4878-9363-04862fbfa04d"
+    ],
+    "started_at": "2026-10-19T09:08:16.388113+00:00",
+    "stop_reason": null
+  },
   "format": "skill-tree-future",
   "source_hash": "99a7b228766b3e6dd04a903695fd564a42348679a335baada0db8239a4415f0f",
   "tasks": [

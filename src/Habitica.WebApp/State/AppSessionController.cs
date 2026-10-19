@@ -122,8 +122,9 @@ public sealed class AppSessionController : IAppSessionController
         if (!consentAcknowledged || !State.IsAuthenticated || State.IsBusy || _workspaceClient is null)
             return new(false, "Sign in and acknowledge the cloud workspace disclosure first.");
         var credentials = await ResolveCredentialsAsync(cancellationToken);
-        if (credentials is null) return new(false, "Sign in before connecting cloud data.");
-        return await _workspaceClient.ConnectAsync(credentials, cancellationToken);
+        if (credentials is null || !IsCurrentCloudAccount(credentials)) return new(false, "Sign in before connecting cloud data.");
+        var result = await _workspaceClient.ConnectAsync(credentials, cancellationToken);
+        return IsCurrentCloudAccount(credentials) ? result : new(false, "The account changed; the connection result was discarded.");
     }
 
     public bool IsChatGptIntegrationAvailable => _integrationClient?.IsAvailable == true;
@@ -134,8 +135,9 @@ public sealed class AppSessionController : IAppSessionController
         if (!consentAcknowledged || !State.IsAuthenticated || State.IsBusy || _integrationClient is null || !IsChatGptIntegrationAvailable)
             return new(false, "Sign in and acknowledge the integration disclosure before enabling access.");
         var credentials = await ResolveCredentialsAsync(cancellationToken);
-        if (credentials is null) return new(false, "Sign in before enabling integration access.");
+        if (credentials is null || !IsCurrentCloudAccount(credentials)) return new(false, "Sign in before enabling integration access.");
         var result = await _integrationClient.EnrollAsync(credentials, cancellationToken);
+        if (!IsCurrentCloudAccount(credentials)) return new(false, "The account changed; the integration result was discarded.");
         Changed?.Invoke();
         return result;
     }
@@ -161,8 +163,9 @@ public sealed class AppSessionController : IAppSessionController
     {
         if (_integrationClient is null || !IsChatGptIntegrationAvailable || !State.IsAuthenticated || State.IsBusy) return new(false, "Sign in to revalidate credentials.");
         var credentials = await ResolveCredentialsAsync(cancellationToken);
-        if (credentials is null) return new(false, "Sign in to revalidate credentials.");
+        if (credentials is null || !IsCurrentCloudAccount(credentials)) return new(false, "Sign in to revalidate credentials.");
         var result = await _integrationClient.RevalidateAsync(credentials, cancellationToken);
+        if (!IsCurrentCloudAccount(credentials)) return new(false, "The account changed; the integration result was discarded.");
         Changed?.Invoke();
         return result;
     }
@@ -4623,6 +4626,11 @@ public sealed class AppSessionController : IAppSessionController
         {
             var credentials = new HabiticaCredentials(request.UserId.Trim(), request.ApiToken.Trim());
             ResetPrivateSyncSession();
+            if (!string.Equals(_currentCredentials?.UserId, credentials.UserId, StringComparison.Ordinal))
+            {
+                _integrationClient?.ForgetSession();
+                _workspaceClient?.ForgetSession();
+            }
             _currentCredentials = credentials;
             _persistLocally = request.PersistLocally;
 

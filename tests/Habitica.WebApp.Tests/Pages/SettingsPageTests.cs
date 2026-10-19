@@ -20,6 +20,60 @@ public sealed class SettingsPageTests : BunitContext
         Services.AddScoped<WorkspaceDataController>();
     }
 
+    private (FakeAppSessionController Session, IRenderedComponent<SettingsPage> View) ConnectionPage(bool tabAccess = false)
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose; Services.AddMudServices();
+        Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage()); Services.AddScoped<ColorSchemeService>();
+        var session = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated=true,UserId="synthetic-owner" })
+            {IsChatGptIntegrationAvailable=true,HasChatGptConnection=tabAccess};
+        Services.AddSingleton<IAppSessionController>(session);
+        return (session,Render<SettingsPage>());
+    }
+
+    [Fact]
+    public void Fresh_tab_shows_unknown_server_state_and_requires_consent_to_restore_access()
+    {
+        var (session,cut)=ConnectionPage();
+        Assert.Contains("unverified",cut.Find("[data-testid='integration-unverified']").TextContent);
+        Assert.Contains("does not disable",cut.Find("[data-testid='integration-unverified']").TextContent);
+        Assert.True(cut.Find("[data-testid='integration-restore-access']").HasAttribute("disabled"));
+        Assert.Equal(0,session.ChatGptEnrollCalls);Assert.Equal(0,session.ChatGptRevalidateCalls);Assert.Equal(0,session.ChatGptStatusCalls);
+        Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("connection-fresh-tab",cut.Markup);
+        cut.Find("[data-testid='integration-consent']").Change(true);
+        cut.Find("[data-testid='integration-restore-access']").Click();
+        Assert.Equal(1,session.ChatGptRevalidateCalls);Assert.Equal(0,session.ChatGptEnrollCalls);Assert.Equal(1,session.ChatGptStatusCalls);
+        Assert.Contains("Fixture account",cut.Find("[data-testid='integration-status-details']").TextContent);
+        Assert.Empty(cut.FindAll("[data-testid='integration-link-code']"));
+    }
+
+    [Fact]
+    public void Failed_refresh_hides_the_previous_verified_status()
+    {
+        var (session,cut)=ConnectionPage(true);
+        cut.Find("[data-testid='integration-status']").Click();Assert.NotNull(cut.Find("[data-testid='integration-status-details']"));
+        session.IntegrationStatusAction=()=>Task.FromResult(new Habitica.Application.Integration.IntegrationStatusResult(false,"Synthetic status unavailable"));
+        cut.Find("[data-testid='integration-status']").Click();
+        Assert.Empty(cut.FindAll("[data-testid='integration-status-details']"));
+        Assert.NotNull(cut.Find("[data-testid='integration-status-unverified']"));
+    }
+
+    [Fact]
+    public async Task Account_replacement_discards_late_integration_status_and_clears_consent()
+    {
+        var (session,cut)=ConnectionPage(true);
+        var response=new TaskCompletionSource<Habitica.Application.Integration.IntegrationStatusResult>(TaskCreationOptions.RunContinuationsAsynchronously);
+        session.IntegrationStatusAction=()=>response.Task;
+        var action=cut.InvokeAsync(()=>cut.Find("[data-testid='integration-status']").Click());
+        await Task.Yield();
+        session.HasChatGptConnection=false;
+        await cut.InvokeAsync(()=>session.SetState(session.State with {IsAuthenticated=false}));
+        await cut.InvokeAsync(()=>session.SetState(session.State with {IsAuthenticated=true,UserId="replacement-owner"}));
+        response.SetResult(new(true,"Loaded","Private old account",["tasks:read"],"last_verified"));
+        await action.WaitAsync(TimeSpan.FromSeconds(3));
+        cut.WaitForAssertion(()=>Assert.DoesNotContain("Private old account",cut.Markup));
+        Assert.True(cut.Find("[data-testid='integration-restore-access']").HasAttribute("disabled"));
+    }
+
     [Fact]
     public void ConnectedWorkspaceRenewalRequiresExplicitDataConsent()
     {
@@ -51,7 +105,8 @@ public sealed class SettingsPageTests : BunitContext
     private sealed class ExecutorCloud : Habitica.Application.Workspace.IWorkspaceCloudClient
     {
         public bool IsAvailable => true;
-        public Guid? WorkspaceId => Guid.NewGuid();
+        public Guid? WorkspaceId { get; } = Guid.NewGuid();
+        public bool ConnectionStatusVerified => true;
         public bool ExecutorEnabled { get; private set; }
         public bool ExecutorAvailable => true;
         public int Calls { get; private set; }

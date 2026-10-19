@@ -1,0 +1,74 @@
+{
+  "task_id": "T-a7dca938-7c13-4878-9363-04862fbfa04d",
+  "recorded_at": "2026-10-19T09:22:58.358292+00:00",
+  "scope": "Local implementation and synthetic qualification only",
+  "behavior": [
+    "Fresh tabs identify missing management access as unknown server state.",
+    "Explicit consented recovery retains grants and workspace state; status checks never prepare or execute commands.",
+    "Verified executor controls require explicit server flags and matching workspace identity.",
+    "Failures clear verified status; account changes discard late results and forget tab management."
+  ],
+  "checks": {
+    "solution_tests": {
+      "command": "dotnet test Habitica.sln --no-restore -m:1 -nodeReuse:false --logger trx;LogFileName=connection-final.trx",
+      "passed": 813,
+      "failed": 0,
+      "projects": 6
+    },
+    "release": {
+      "command": "dotnet publish src/Habitica.WebApp/Habitica.WebApp.csproj -c Release --no-restore -m:1 -nodeReuse:false -o /tmp/habitica-connection-publish",
+      "exit_code": 0
+    },
+    "negative_control": {
+      "mutation": "Temporarily omit verification invalidation at the start of server status refresh.",
+      "result": "ServiceUnavailable stale-status assertion fails; Unauthorized still clears access.",
+      "restored_assertions_passed": 2,
+      "source_restored": true
+    },
+    "browser": {
+      "evidence": "skill-tree/history/validation/connection-state-browser.json",
+      "screenshot": "skill-tree/history/validation/connection-state-phone.png",
+      "frames": 16,
+      "widths": [
+        390,
+        1280
+      ],
+      "themes": [
+        "gryphy-light",
+        "gryphy-dark"
+      ],
+      "fixtures": [
+        "connection-fresh-tab",
+        "workspace-fresh-tab",
+        "workspace-recovered",
+        "workspace-status-unavailable"
+      ],
+      "overflow": 0,
+      "button_overlap": 0,
+      "method": "Actual Razor output with published CSS and production colorSchemes.js. Component events qualified independently by bUnit."
+    },
+    "documentation": {
+      "strict_future": true,
+      "repository_documentation": true,
+      "warning": "Existing historical audit is stale.",
+      "added_prose_lint": true
+    },
+    "diff_review": "Changed source, tests and documentation reviewed; no unresolved issue found."
+  },
+  "official_context": [
+    "https://learn.microsoft.com/en-us/aspnet/core/blazor/components/synchronization-context",
+    "https://github.com/dotnet/AspNetCore.Docs/blob/main/aspnetcore/blazor/components/component-disposal.md"
+  ],
+  "limitations": [
+    "No production publication or live account mutation ran for this root.",
+    "Synthetic fixtures do not qualify real Mac/iOS device transport, Safari or hosted enrollment.",
+    "Release publishing retains the existing optional wasm-tools optimization warning."
+  ],
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "ea09e41ce9b781ae260e9d075e0d359ad85620a98c9f05284fa8298806b505ae",
+    "src/Habitica.WebApp/Components/WorkspaceSettingsPanel.razor": "de4494e76deb09cebe18a9d691ed0d991a5446455d45d5c48bf6ee489525cf4c",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "ddb3bd63f499d4b872a42c22bfeba3379875ca30cb9e91a0afd7875acd8a65aa",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "d59bc561ea34b9a390540ab8349c6c6e6177b92b67307ae52ff1c6a840c61cb3",
+    "src/Habitica.WebApp/State/WorkspaceDataController.cs": "c7b1b451ef7e631ae2b2e95795e4c89687d1e590773e5b0b86d7140d3acdf199"
+  }
+}

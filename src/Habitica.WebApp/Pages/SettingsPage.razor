@@ -1,4 +1,5 @@
 @page "/settings"
+@implements IDisposable
 @using System.Text.Json
 @using Habitica.Application.Sync
 @using Habitica.Application.Integration
@@ -75,15 +76,22 @@
         }
         else if (!SessionController.HasChatGptConnection)
         {
+            <p role="status" data-testid="integration-unverified">@(_integrationDisconnected ? "Disconnected from this tab. Verify the account before checking current server status." : "Server connection status is unverified in this tab. Closing another tab or using another device does not disable the server connection.")</p>
+            <p>Verify the account to restore management access. Verification sends the current Habitica credentials to the integration server and can create an encrypted profile if none exists. Existing ChatGPT permissions are retained; verification grants no new permissions.</p>
             <label class="checkbox-row">
                 <input data-testid="integration-consent" type="checkbox" @bind="_integrationConsent" />
                 <span>I consent to sending my Habitica credentials to the Companion integration server for encrypted storage and the lifecycle described above.</span>
             </label>
+            <MudButton Color="Color.Secondary" data-testid="integration-restore-access" Disabled="@(!_integrationConsent || _integrationBusy || SessionController.State.IsBusy)" OnClick="RestoreIntegrationAsync" Variant="Variant.Filled">Verify account and restore access</MudButton>
             <MudButton data-testid="integration-enroll" Disabled="@(!_integrationConsent || _integrationBusy || SessionController.State.IsBusy)" OnClick="EnableIntegrationAsync" Variant="Variant.Filled">Enable ChatGPT linking</MudButton>
         }
         else
         {
-            <p>Connection management is available in this tab. Signing out or closing the tab forgets the local management credential; revalidate Habitica credentials to manage the connection again.</p>
+            <p data-testid="integration-tab-access">A management credential is present in this tab. Signing out or closing the tab forgets local access without disconnecting the server account.</p>
+            @if (_integrationStatus?.Succeeded != true)
+            {
+                <p role="status" data-testid="integration-status-unverified">Server permissions and credential status are unverified. Check integration status or revalidate stored credentials.</p>
+            }
             <p>Revoke ChatGPT access keeps stored credentials and separate Workspace/background access. Disconnect or disable the Workspace separately to pause its executor. To replace a Habitica API token, update the browser sign-in credentials, then revalidate.</p>
             <div class="action-row">
                 <MudButton data-testid="integration-status" Disabled="@_integrationBusy" OnClick="LoadIntegrationStatusAsync" Variant="Variant.Outlined">Check integration status</MudButton>
@@ -305,60 +313,123 @@
 
 @code {
     private bool _appearanceCollapsed = true;
-    private bool _integrationConsent;
-    private bool _integrationBusy;
+    private bool _integrationConsent, _integrationBusy, _integrationDisconnected, _disposed;
     private bool? _integrationCleanup;
     private IntegrationLinkResult? _integrationResult;
     private IntegrationStatusResult? _integrationStatus;
     private string? _integrationManagementAction;
+    private (bool Authenticated, string? UserId) _integrationOwner;
+    private int _integrationGeneration;
+
+    protected override void OnInitialized()
+    {
+        _integrationOwner = (SessionController.State.IsAuthenticated, SessionController.State.UserId);
+        SessionController.Changed += OnSessionChanged;
+    }
+
+    private void OnSessionChanged()
+    {
+        if (_disposed) return;
+        var owner = (SessionController.State.IsAuthenticated, SessionController.State.UserId);
+        if (owner != _integrationOwner)
+        {
+            _integrationOwner = owner;
+            _integrationGeneration++;
+            _integrationConsent = _integrationBusy = _integrationDisconnected = false;
+            _integrationCleanup = null; _integrationResult = null; _integrationStatus = null; _integrationManagementAction = null;
+        }
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private bool CurrentIntegration(int generation) => !_disposed && generation == _integrationGeneration
+        && SessionController.State.IsAuthenticated
+        && _integrationOwner == (SessionController.State.IsAuthenticated, SessionController.State.UserId);
+
+    public void Dispose()
+    {
+        _disposed = true;
+        SessionController.Changed -= OnSessionChanged;
+    }
 
     private async Task LoadIntegrationStatusAsync()
     {
-        if (_integrationBusy) return;
-        _integrationBusy = true;
-        _integrationStatus = null;
-        try { _integrationStatus = await SessionController.GetChatGptStatusAsync(); }
-        finally { _integrationBusy = false; }
+        if (_integrationBusy || !SessionController.State.IsAuthenticated) return;
+        var generation = _integrationGeneration;
+        _integrationBusy = true; _integrationStatus = null;
+        try
+        {
+            var result = await SessionController.GetChatGptStatusAsync();
+            if (CurrentIntegration(generation)) _integrationStatus = result;
+        }
+        catch { if (CurrentIntegration(generation)) _integrationStatus = new(false, "Integration status is unavailable. Verify the account before trying again."); }
+        finally { if (CurrentIntegration(generation)) _integrationBusy = false; }
+    }
+
+    private async Task RunIntegrationAsync(Func<Task<IntegrationLinkResult>> action, bool readStatus = false)
+    {
+        if (_integrationBusy || !SessionController.State.IsAuthenticated) return;
+        var generation = _integrationGeneration;
+        _integrationBusy = true; _integrationStatus = null; _integrationResult = null;
+        try
+        {
+            var result = await action();
+            if (!CurrentIntegration(generation)) return;
+            _integrationResult = result;
+            if (result.Succeeded && SessionController.HasChatGptConnection)
+            {
+                _integrationDisconnected = false;
+                if (readStatus)
+                {
+                    var status = await SessionController.GetChatGptStatusAsync();
+                    if (CurrentIntegration(generation)) _integrationStatus = status;
+                }
+            }
+        }
+        catch { if (CurrentIntegration(generation)) _integrationResult = new(false, "The integration action could not be confirmed. Verify account access before trying again."); }
+        finally { if (CurrentIntegration(generation)) _integrationBusy = false; }
     }
 
     private async Task ConfirmIntegrationManagementAsync()
     {
-        if (_integrationBusy || _integrationManagementAction is null) return;
-        _integrationBusy = true;
-        _integrationStatus = null;
-        _integrationResult = null;
-        try
+        if (_integrationBusy || _integrationManagementAction is not { } action) return;
+        var generation = _integrationGeneration;
+        await RunIntegrationAsync(() => action switch
         {
-            _integrationResult = _integrationManagementAction switch
-            {
-                "revoke" => await SessionController.RevokeChatGptGrantsAsync(),
-                "rotate" => await SessionController.RotateChatGptManagementAsync(),
-                _ => await SessionController.RevalidateChatGptAsync()
-            };
-        }
-        finally { _integrationBusy = false; _integrationManagementAction = null; }
+            "revoke" => SessionController.RevokeChatGptGrantsAsync(),
+            "rotate" => SessionController.RotateChatGptManagementAsync(),
+            _ => SessionController.RevalidateChatGptAsync()
+        }, action == "revalidate");
+        if (CurrentIntegration(generation)) _integrationManagementAction = null;
     }
 
     private async Task EnableIntegrationAsync()
     {
         if (!_integrationConsent || _integrationBusy) return;
-        _integrationBusy = true;
-        try { _integrationResult = await SessionController.EnrollChatGptAsync(_integrationConsent); }
-        finally { _integrationBusy = false; }
+        var generation = _integrationGeneration;
+        await RunIntegrationAsync(() => SessionController.EnrollChatGptAsync(true), true);
+        if (CurrentIntegration(generation)) _integrationConsent = false;
     }
-    private async Task NewIntegrationCodeAsync()
+
+    private async Task RestoreIntegrationAsync()
     {
-        if (_integrationBusy) return;
-        _integrationBusy = true;
-        try { _integrationResult = await SessionController.CreateChatGptLinkAsync(); }
-        finally { _integrationBusy = false; }
+        if (!_integrationConsent || _integrationBusy) return;
+        var generation = _integrationGeneration;
+        await RunIntegrationAsync(() => SessionController.RevalidateChatGptAsync(), true);
+        if (CurrentIntegration(generation)) _integrationConsent = false;
     }
+
+    private Task NewIntegrationCodeAsync() => RunIntegrationAsync(() => SessionController.CreateChatGptLinkAsync());
+
     private async Task ConfirmIntegrationCleanupAsync()
     {
-        if (_integrationCleanup is null || _integrationBusy) return;
-        _integrationBusy = true;
-        try { _integrationResult = await SessionController.DisconnectChatGptAsync(_integrationCleanup.Value); }
-        finally { _integrationBusy = false; _integrationCleanup = null; }
+        if (_integrationCleanup is not { } delete || _integrationBusy) return;
+        var generation = _integrationGeneration;
+        await RunIntegrationAsync(() => SessionController.DisconnectChatGptAsync(delete));
+        if (CurrentIntegration(generation))
+        {
+            _integrationDisconnected = _integrationResult?.Succeeded == true;
+            _integrationCleanup = null;
+        }
     }
 
     private const long ImportFileLimitBytes = 4 * 1024 * 1024;

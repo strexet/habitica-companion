@@ -22,10 +22,28 @@ public sealed class WorkspaceDataController(IAppSessionController session, IWork
     }
     public bool IsAvailable => cloud.IsAvailable;
     public Guid? CloudWorkspaceId => cloud.WorkspaceId;
+    public bool ConnectionStatusVerified => session.State.IsAuthenticated && cloud.ConnectionStatusVerified;
     public bool ExecutorEnabled => cloud.ExecutorEnabled;
     public bool ExecutorAvailable => cloud.ExecutorAvailable;
     public Task<WorkspaceActionResult> SetExecutorAsync(bool enabled, CancellationToken cancellationToken = default) => cloud.SetExecutorAsync(enabled, cancellationToken);
-    public Task<WorkspaceActionResult> ConnectAsync(bool consent, CancellationToken cancellationToken = default) => session.ConnectWorkspaceAsync(consent, cancellationToken);
+    public async Task<WorkspaceActionResult> ConnectAsync(bool consent, CancellationToken cancellationToken = default)
+    {
+        var user = session.State.UserId;
+        var result = await session.ConnectWorkspaceAsync(consent, cancellationToken);
+        if (!Current(user)) return new(false, "The account changed; the connection result was discarded.");
+        if (!result.Succeeded) return result;
+        var status = await RefreshConnectionStatusAsync(cancellationToken);
+        return Current(user) ? new(true, result.Message + " " + status.Message)
+            : new(false, "The account changed; the connection result was discarded.");
+    }
+    public async Task<WorkspaceActionResult> RefreshConnectionStatusAsync(CancellationToken cancellationToken = default)
+    {
+        if (!session.State.IsAuthenticated) return new(false, "Sign in before verifying cloud status.");
+        var user = session.State.UserId;
+        var result = await cloud.RefreshConnectionStatusAsync(cancellationToken);
+        return Current(user) ? result : new(false, "The account changed; status was discarded.");
+    }
+    private bool Current(string? user) => session.State.IsAuthenticated && session.State.UserId == user;
     public Task<WorkspaceActionResult> ExportCloudAsync(CancellationToken cancellationToken = default) => cloud.ExportAsync(cancellationToken);
     public Task<WorkspaceActionResult> DisconnectAsync(bool delete, CancellationToken cancellationToken = default) => cloud.DisconnectAsync(delete, cancellationToken);
     private string Scope => session.State.IsAuthenticated && Guid.TryParse(session.State.UserId, out var userId) ? userId.ToString("D") : throw new InvalidOperationException("Sign in to manage local workspaces.");
@@ -33,6 +51,7 @@ public sealed class WorkspaceDataController(IAppSessionController session, IWork
     public async Task<WorkspaceActionResult> TransferAsync(Guid id, CancellationToken cancellationToken = default)
     {
         if (cloud.WorkspaceId is null) return new(false, "Connect the cloud workspace first.");
+        if (!cloud.ConnectionStatusVerified) return new(false, "Verify server execution status before transferring a local workspace.");
         if (cloud.ExecutorEnabled) return new(false, "Pause cloud execution before transferring a local workspace.");
         var scope = Scope;
         try

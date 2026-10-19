@@ -19,13 +19,16 @@
     }
     else if (Workspace.CloudWorkspaceId is null)
     {
+        <p role="status" data-testid="workspace-unverified">Server workspace status is unverified in this tab. Missing tab access does not mean the workspace is disconnected or background execution is disabled.</p>
+        <p>Verify or reconnect after accepting the workspace disclosure. Verification sends current Habitica credentials to the integration server and can create a profile/workspace if none exists. Retained tasks and executor consent are preserved for an active connection; verification does not opt in to background execution.</p>
         <label class="checkbox-row"><input type="checkbox" @bind="_consent" data-testid="workspace-consent" /><span>I consent to encrypted server credential storage and server-readable workspace data with the retention described above.</span></label>
-        <MudButton data-testid="workspace-connect" Disabled="@(!_consent || _busy || Session.State.IsBusy)" OnClick="ConnectAsync" Variant="Variant.Filled">Connect cloud workspace</MudButton>
+        <MudButton data-testid="workspace-connect" Disabled="@(!_consent || _busy || Session.State.IsBusy)" OnClick="ConnectAsync" Variant="Variant.Filled">Verify or connect cloud workspace</MudButton>
     }
     else
     {
-        <p>Cloud workspace access is available for this tab. Signing out or closing this tab forgets its access token.</p>
-        <MudButton Disabled="@_busy" OnClick="CheckOperationsAsync" Variant="Variant.Outlined" data-testid="workspace-check-status">Check saved work status</MudButton>
+        <p>Cloud workspace management access is present in this tab. Signing out or closing this tab forgets local access without disconnecting the server workspace.</p>
+        <p role="status" data-testid="workspace-connection-state">@(Workspace.ConnectionStatusVerified ? "Server workspace access verified." : "Server workspace and background execution status are unverified. Check status or renew access.")</p>
+        <MudButton Disabled="@_busy" OnClick="CheckOperationsAsync" Variant="Variant.Outlined" data-testid="workspace-check-status">Check connection and saved work status</MudButton>
         @if (_operations is { } operations && _operationsAccount == Session.State.UserId && _operationsWorkspace == Workspace.CloudWorkspaceId)
         {
             <div role="status" data-testid="workspace-operations">
@@ -44,16 +47,22 @@
         </div>
         <h3>Background task execution</h3>
         <p>When enabled, the server can project accepted commands to Habitica while this tab is closed. Calls run sequentially at least thirty seconds apart. Unknown outcomes pause new effects for review. Pausing prevents new calls; an already transmitted effect can still finish.</p>
-        @if (Workspace.ExecutorEnabled)
+        @if (!Workspace.ConnectionStatusVerified)
         {
+            <p role="status" data-testid="workspace-executor-unverified">Background execution status is unknown. Verify server status before changing execution settings.</p>
+        }
+        else if (Workspace.ExecutorEnabled)
+        {
+            <p role="status" data-testid="workspace-executor-state">@(Workspace.ExecutorAvailable ? "Background execution is enabled on the server." : "Executor opt-in is enabled, but execution is unavailable on this server.")</p>
             <MudButton Disabled="@_busy" OnClick="@(() => SetExecutorAsync(false))" Variant="Variant.Outlined" data-testid="workspace-executor-pause">Pause background execution</MudButton>
         }
         else if (Workspace.ExecutorAvailable)
         {
+            <p role="status" data-testid="workspace-executor-state">Background execution is paused. Pending task commands remain saved until execution is explicitly enabled; checking status does not retry an action.</p>
             <label class="checkbox-row"><input type="checkbox" @bind="_executorConsent" data-testid="workspace-executor-consent" /><span>I enable background execution of accepted commands, including Habitica effects, while the app is closed.</span></label>
             <MudButton Disabled="@(_busy || !_executorConsent)" OnClick="@(() => SetExecutorAsync(true))" Variant="Variant.Filled" data-testid="workspace-executor-enable">Enable background execution</MudButton>
         }
-        else { <p>Background execution is unavailable on this server.</p> }
+        else { <p data-testid="workspace-executor-state">Background execution is unavailable on this server. The saved executor opt-in is off.</p> }
         @if (_cleanup is not null)
         {
             <p>@(_cleanup.Value ? "Permanently delete all cloud tasks, notes and command history? Export a backup first." : "Disconnect every workspace session and pause execution? Cloud tasks and history will remain stored.")</p>
@@ -90,6 +99,28 @@
 </section>
 
 @code {
+    private bool _disposed;
+    private int _viewGeneration;
+    private (bool Authenticated, string? UserId) _owner;
+    protected override void OnInitialized()
+    {
+        _owner = (Session.State.IsAuthenticated, Session.State.UserId);
+        Session.Changed += SessionChanged;
+    }
+    private void SessionChanged()
+    {
+        if (_disposed) return;
+        var owner = (Session.State.IsAuthenticated, Session.State.UserId);
+        if (owner != _owner)
+        {
+            _owner = owner; _viewGeneration++;
+            _consent = _executorConsent = _renewConsent = _busy = false;
+            _operations = null; _cleanup = null; _transferId = null; _message = _restoreJson = null; _localIds = Array.Empty<Guid>();
+        }
+        _ = InvokeAsync(StateHasChanged);
+    }
+    private bool Current(int generation) => !_disposed && generation == _viewGeneration
+        && Session.State.IsAuthenticated && _owner == (Session.State.IsAuthenticated, Session.State.UserId);
     private WorkspaceOperationalStatus? _operations;
     private string? _operationsAccount;
     private Guid? _operationsWorkspace;
@@ -102,41 +133,50 @@
     private async Task RunAsync(Func<Task<WorkspaceActionResult>> action)
     {
         if (_busy) return;
+        var generation = _viewGeneration;
         _busy = true; _operations = null;
         try
         {
-            var result = await action(); _message = result.Message;
+            var result = await action();
+            if (!Current(generation)) return;
+            _message = result.Message;
             if (result.Succeeded && result.Json is not null)
             {
                 _exportModule ??= await Js.InvokeAsync<IJSObjectReference>("import", "./js/diagnosticsExport.js");
+                if (!Current(generation)) return;
                 await _exportModule.InvokeVoidAsync("downloadTextFile", $"companion-workspace-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}.json", result.Json, "application/json;charset=utf-8");
             }
         }
-        catch { _message = "The workspace action could not be confirmed. Check the connection before trying again."; }
-        finally { _busy = false; }
+        catch { if (Current(generation)) _message = "The workspace action could not be confirmed. Check the connection before trying again."; }
+        finally { if (Current(generation)) _busy = false; }
     }
     private async Task CheckOperationsAsync()
     {
         if (_busy) return;
         _busy = true; _operations = null;
+        var generation = _viewGeneration;
         var account = Session.State.UserId; var workspace = Workspace.CloudWorkspaceId;
         try
         {
+            var connection = await Workspace.RefreshConnectionStatusAsync();
+            if (!Current(generation)) return;
+            _message = connection.Message;
+            if (!connection.Succeeded) return;
             var result = await Workspace.ReadOperationalStatusAsync();
-            if (account != Session.State.UserId || workspace != Workspace.CloudWorkspaceId) return;
+            if (!Current(generation) || account != Session.State.UserId || workspace != Workspace.CloudWorkspaceId) return;
             _message = result.Message;
             if (result.Succeeded) { _operations = result.Status; _operationsAccount = account; _operationsWorkspace = workspace; }
         }
-        catch { _message = "Saved work status is unavailable. No action was retried."; }
-        finally { _busy = false; }
+        catch { if (Current(generation)) _message = "Saved work status is unavailable. No action was retried."; }
+        finally { if (Current(generation)) _busy = false; }
     }
     private Task ConnectAsync() => RunAsync(() => Workspace.ConnectAsync(_consent));
-    private async Task RenewAsync() { await RunAsync(() => Workspace.ConnectAsync(_renewConsent)); _renewConsent = false; }
-    private async Task SetExecutorAsync(bool enabled) { await RunAsync(() => Workspace.SetExecutorAsync(enabled)); _executorConsent = false; }
-    private async Task TransferAsync() { if (_transferId is not { } id) return; await RunAsync(() => Workspace.TransferAsync(id)); _transferId = null; }
+    private async Task RenewAsync() { var generation = _viewGeneration; await RunAsync(() => Workspace.ConnectAsync(_renewConsent)); if (Current(generation)) _renewConsent = false; }
+    private async Task SetExecutorAsync(bool enabled) { var generation = _viewGeneration; await RunAsync(() => Workspace.SetExecutorAsync(enabled)); if (Current(generation)) _executorConsent = false; }
+    private async Task TransferAsync() { if (_transferId is not { } id) return; var generation = _viewGeneration; await RunAsync(() => Workspace.TransferAsync(id)); if (Current(generation)) _transferId = null; }
     private Task ExportCloudAsync() => RunAsync(() => Workspace.ExportCloudAsync());
     private Task ExportLocalAsync(Guid id) => RunAsync(() => Workspace.ExportLocalAsync(id));
-    private async Task CleanupAsync() { if (_cleanup is null) return; await RunAsync(() => Workspace.DisconnectAsync(_cleanup.Value)); _cleanup = null; }
+    private async Task CleanupAsync() { if (_cleanup is null) return; var generation = _viewGeneration; await RunAsync(() => Workspace.DisconnectAsync(_cleanup.Value)); if (Current(generation)) _cleanup = null; }
     private async Task RefreshLocalAsync()
     {
         try { _localIds = await Workspace.ListLocalAsync(); _message = _localIds.Count == 0 ? "No local workspace backups are saved for this account." : null; }
@@ -159,5 +199,9 @@
         var json = _restoreJson; _restoreJson = null;
         await RunAsync(() => Workspace.RestoreLocalAsync(json)); var message = _message; await RefreshLocalAsync(); _message = message;
     }
-    public async ValueTask DisposeAsync() { if (_exportModule is not null) await _exportModule.DisposeAsync(); }
+    public async ValueTask DisposeAsync()
+    {
+        _disposed = true; Session.Changed -= SessionChanged;
+        if (_exportModule is not null) await _exportModule.DisposeAsync();
+    }
 }

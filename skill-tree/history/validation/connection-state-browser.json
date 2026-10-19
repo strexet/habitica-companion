@@ -1,0 +1,258 @@
+[
+  {
+    "fixture": "/workspace-fresh-tab.html",
+    "theme": "light",
+    "width": 390,
+    "scrollWidth": 375,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-unverified",
+        "text": "Server workspace status is unverified in this tab. Missing tab access does not mean the workspace is disconnected or background execution is disabled.",
+        "color": "rgb(32, 17, 54)"
+      }
+    ],
+    "background": "rgb(247, 241, 255)"
+  },
+  {
+    "fixture": "/workspace-fresh-tab.html",
+    "theme": "dark",
+    "width": 390,
+    "scrollWidth": 375,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-unverified",
+        "text": "Server workspace status is unverified in this tab. Missing tab access does not mean the workspace is disconnected or background execution is disabled.",
+        "color": "rgb(255, 247, 255)"
+      }
+    ],
+    "background": "rgb(18, 8, 31)"
+  },
+  {
+    "fixture": "/workspace-recovered.html",
+    "theme": "light",
+    "width": 390,
+    "scrollWidth": 375,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-executor-state",
+        "text": "Executor opt-in is enabled, but execution is unavailable on this server.",
+        "color": "rgb(32, 17, 54)"
+      }
+    ],
+    "background": "rgb(247, 241, 255)"
+  },
+  {
+    "fixture": "/workspace-recovered.html",
+    "theme": "dark",
+    "width": 390,
+    "scrollWidth": 375,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-executor-state",
+        "text": "Executor opt-in is enabled, but execution is unavailable on this server.",
+        "color": "rgb(255, 247, 255)"
+      }
+    ],
+    "background": "rgb(18, 8, 31)"
+  },
+  {
+    "fixture": "/workspace-status-unavailable.html",
+    "theme": "light",
+    "width": 390,
+    "scrollWidth": 375,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-executor-unverified",
+        "text": "Background execution status is unknown. Verify server status before changing execution settings.",
+        "color": "rgb(32, 17, 54)"
+      }
+    ],
+    "background": "rgb(247, 241, 255)"
+  },
+  {
+    "fixture": "/workspace-status-unavailable.html",
+    "theme": "dark",
+    "width": 390,
+    "scrollWidth": 375,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-executor-unverified",
+        "text": "Background execution status is unknown. Verify server status before changing execution settings.",
+        "color": "rgb(255, 247, 255)"
+      }
+    ],
+    "background": "rgb(18, 8, 31)"
+  },
+  {
+    "fixture": "/workspace-fresh-tab.html",
+    "theme": "light",
+    "width": 1280,
+    "scrollWidth": 1265,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-unverified",
+        "text": "Server workspace status is unverified in this tab. Missing tab access does not mean the workspace is disconnected or background execution is disabled.",
+        "color": "rgb(32, 17, 54)"
+      }
+    ],
+    "background": "rgb(247, 241, 255)"
+  },
+  {
+    "fixture": "/workspace-fresh-tab.html",
+    "theme": "dark",
+    "width": 1280,
+    "scrollWidth": 1265,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-unverified",
+        "text": "Server workspace status is unverified in this tab. Missing tab access does not mean the workspace is disconnected or background execution is disabled.",
+        "color": "rgb(255, 247, 255)"
+      }
+    ],
+    "background": "rgb(18, 8, 31)"
+  },
+  {
+    "fixture": "/workspace-recovered.html",
+    "theme": "light",
+    "width": 1280,
+    "scrollWidth": 1265,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-executor-state",
+        "text": "Executor opt-in is enabled, but execution is unavailable on this server.",
+        "color": "rgb(32, 17, 54)"
+      }
+    ],
+    "background": "rgb(247, 241, 255)"
+  },
+  {
+    "fixture": "/workspace-recovered.html",
+    "theme": "dark",
+    "width": 1280,
+    "scrollWidth": 1265,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-executor-state",
+        "text": "Executor opt-in is enabled, but execution is unavailable on this server.",
+        "color": "rgb(255, 247, 255)"
+      }
+    ],
+    "background": "rgb(18, 8, 31)"
+  },
+  {
+    "fixture": "/workspace-status-unavailable.html",
+    "theme": "light",
+    "width": 1280,
+    "scrollWidth": 1265,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-executor-unverified",
+        "text": "Background execution status is unknown. Verify server status before changing execution settings.",
+        "color": "rgb(32, 17, 54)"
+      }
+    ],
+    "background": "rgb(247, 241, 255)"
+  },
+  {
+    "fixture": "/workspace-status-unavailable.html",
+    "theme": "dark",
+    "width": 1280,
+    "scrollWidth": 1265,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "workspace-executor-unverified",
+        "text": "Background execution status is unknown. Verify server status before changing execution settings.",
+        "color": "rgb(255, 247, 255)"
+      }
+    ],
+    "background": "rgb(18, 8, 31)"
+  },
+  {
+    "fixture": "/connection-fresh-tab.html",
+    "theme": "light",
+    "width": 390,
+    "scrollWidth": 375,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "integration-unverified",
+        "text": "Server connection status is unverified in this tab. Closing another tab or using another device does not disable the server connection.",
+        "color": "rgb(32, 17, 54)"
+      }
+    ],
+    "background": "rgb(247, 241, 255)"
+  },
+  {
+    "fixture": "/connection-fresh-tab.html",
+    "theme": "dark",
+    "width": 390,
+    "scrollWidth": 375,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "integration-unverified",
+        "text": "Server connection status is unverified in this tab. Closing another tab or using another device does not disable the server connection.",
+        "color": "rgb(255, 247, 255)"
+      }
+    ],
+    "background": "rgb(18, 8, 31)"
+  },
+  {
+    "fixture": "/connection-fresh-tab.html",
+    "theme": "light",
+    "width": 1280,
+    "scrollWidth": 1265,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "integration-unverified",
+        "text": "Server connection status is unverified in this tab. Closing another tab or using another device does not disable the server connection.",
+        "color": "rgb(32, 17, 54)"
+      }
+    ],
+    "background": "rgb(247, 241, 255)"
+  },
+  {
+    "fixture": "/connection-fresh-tab.html",
+    "theme": "dark",
+    "width": 1280,
+    "scrollWidth": 1265,
+    "outside": [],
+    "overlap": [],
+    "state": [
+      {
+        "id": "integration-unverified",
+        "text": "Server connection status is unverified in this tab. Closing another tab or using another device does not disable the server connection.",
+        "color": "rgb(255, 247, 255)"
+      }
+    ],
+    "background": "rgb(18, 8, 31)"
+  }
+]

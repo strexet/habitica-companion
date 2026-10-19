@@ -42,6 +42,19 @@ public sealed class AppSessionControllerTests
         await controller.LogoutAsync();
         Assert.False(controller.HasChatGptConnection);
     }
+    [Fact]
+    public async Task Direct_account_replacement_forgets_tab_management_without_reenrollment()
+    {
+        var integration = new IntegrationFixture();
+        var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), integrationClient: integration);
+        await controller.SignInAsync(new SignInRequest { UserId = "fixture-user", ApiToken = "fixture-token" });
+        await controller.EnrollChatGptAsync(true);
+        Assert.True(controller.HasChatGptConnection);
+        await controller.SignInAsync(new SignInRequest { UserId = "replacement-user", ApiToken = "replacement-token" });
+        Assert.False(controller.HasChatGptConnection);
+        Assert.Equal(1, integration.EnrollCalls);
+    }
+
     private sealed class IntegrationFixture : IChatGptIntegrationClient
     {
         public bool IsAvailable => true;

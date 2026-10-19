@@ -13,7 +13,8 @@ namespace Habitica.WebApp.Tests;
 internal sealed class FakeAppSessionController : IAppSessionController
 {
     public int WorkspaceConnectCalls { get; private set; }
-    public Task<Habitica.Application.Workspace.WorkspaceActionResult> ConnectWorkspaceAsync(bool consentAcknowledged, CancellationToken cancellationToken = default) { WorkspaceConnectCalls++; return Task.FromResult(new Habitica.Application.Workspace.WorkspaceActionResult(false, "Unavailable")); }
+    public Func<Task<Habitica.Application.Workspace.WorkspaceActionResult>>? WorkspaceConnectAction { get; set; }
+    public Task<Habitica.Application.Workspace.WorkspaceActionResult> ConnectWorkspaceAsync(bool consentAcknowledged, CancellationToken cancellationToken = default) { WorkspaceConnectCalls++; return WorkspaceConnectAction?.Invoke() ?? Task.FromResult(new Habitica.Application.Workspace.WorkspaceActionResult(false, "Unavailable")); }
 
     public bool IsChatGptIntegrationAvailable { get; set; }
     public bool HasChatGptConnection { get; set; }
@@ -28,10 +29,14 @@ internal sealed class FakeAppSessionController : IAppSessionController
     public Task<IntegrationLinkResult> CreateChatGptLinkAsync(CancellationToken cancellationToken = default) => Task.FromResult(new IntegrationLinkResult(true, "Fixture linked", "0123456789AB", DateTimeOffset.UtcNow.AddMinutes(10)));
     public int ChatGptRevokeCalls { get; private set; }
     public int ChatGptRotateCalls { get; private set; }
-    public Task<IntegrationStatusResult> GetChatGptStatusAsync(CancellationToken cancellationToken = default) => Task.FromResult(new IntegrationStatusResult(true, "Loaded", "Fixture account", ["profile:read"], "last_verified"));
+    public Func<Task<IntegrationStatusResult>>? IntegrationStatusAction { get; set; }
+    public int ChatGptStatusCalls { get; private set; }
+    public Task<IntegrationStatusResult> GetChatGptStatusAsync(CancellationToken cancellationToken = default) { ChatGptStatusCalls++; return IntegrationStatusAction?.Invoke() ?? Task.FromResult(new IntegrationStatusResult(true, "Loaded", "Fixture account", ["profile:read"], "last_verified")); }
     public Task<IntegrationLinkResult> RevokeChatGptGrantsAsync(CancellationToken cancellationToken = default) { ChatGptRevokeCalls++; return Task.FromResult(new IntegrationLinkResult(true, "Access revoked")); }
     public Task<IntegrationLinkResult> RotateChatGptManagementAsync(CancellationToken cancellationToken = default) { ChatGptRotateCalls++; return Task.FromResult(new IntegrationLinkResult(true, "Management replaced")); }
-    public Task<IntegrationLinkResult> RevalidateChatGptAsync(CancellationToken cancellationToken = default) => Task.FromResult(new IntegrationLinkResult(true, "Revalidated"));
+    public int ChatGptRevalidateCalls { get; private set; }
+    public Task<IntegrationLinkResult> RevalidateChatGptAsync(CancellationToken cancellationToken = default)
+    { ChatGptRevalidateCalls++; HasChatGptConnection = true; return Task.FromResult(new IntegrationLinkResult(true, "Revalidated")); }
 
     public Task<IntegrationLinkResult> DisconnectChatGptAsync(bool deleteProfile, CancellationToken cancellationToken = default)
     {

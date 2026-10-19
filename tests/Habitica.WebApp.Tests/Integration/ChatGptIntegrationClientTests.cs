@@ -66,6 +66,28 @@ public sealed class ChatGptIntegrationClientTests
     }
 
     [Fact]
+    public async Task Fresh_tab_status_is_unknown_until_explicit_revalidation_without_a_new_link_ticket()
+    {
+        var enrollment = 0; var tickets = 0; var statuses = 0;
+        using var http = new HttpClient(new Handler((request, _) =>
+        {
+            var path = request.RequestUri!.AbsolutePath;
+            if (path == "/enroll") { enrollment++; return Task.FromResult(Json(new { profileId = ProfileId, managementToken = ManagementToken }, HttpStatusCode.Created)); }
+            if (path.EndsWith("linking-ticket")) { tickets++; return Task.FromResult(Ticket()); }
+            Assert.Equal(HttpMethod.Get,request.Method); Assert.EndsWith("/status",path); statuses++;
+            return Task.FromResult(Json(new { displayName="Retained account",permissions=new[]{"tasks:read"},credentialStatus="last_verified" }));
+        }));
+        var a = new ChatGptIntegrationClient(http,"https://auth.invalid/");
+        await a.EnrollAsync(new HabiticaCredentials("fixture-user","fixture-token"),default);
+        var b = new ChatGptIntegrationClient(http,"https://auth.invalid/");
+        Assert.False(b.HasConnection);Assert.False((await b.GetStatusAsync(default)).Succeeded);Assert.Equal(0,statuses);
+        Assert.True((await b.RevalidateAsync(new HabiticaCredentials("fixture-user","fixture-token"),default)).Succeeded);
+        var status = await b.GetStatusAsync(default);
+        Assert.True(status.Succeeded);Assert.Equal("Retained account",status.DisplayName);Assert.Equal(new[]{"tasks:read"},status.Permissions);
+        Assert.Equal(2,enrollment);Assert.Equal(1,tickets);Assert.Equal(1,statuses);
+    }
+
+    [Fact]
     public async Task Error_responses_never_copy_secret_bearing_bodies_into_user_messages()
     {
         using var http = new HttpClient(new Handler((_, _) => Task.FromResult(Json(new { error = "fixture-private-token" }, HttpStatusCode.BadRequest))));

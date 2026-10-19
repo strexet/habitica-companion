@@ -70,8 +70,13 @@ internal sealed class WorkspaceTaskFixture
         public List<Guid> AcceptedIds { get; } = [];
         public bool IsAvailable => true;
         public Guid? WorkspaceId => Connected ? State.Document.Id : null;
-        public bool ExecutorEnabled => false;
-        public bool ExecutorAvailable => false;
+        public bool ConnectionStatusVerified { get; set; } = true;
+        public int ConnectionStatusReads { get; private set; }
+        public Func<Task<WorkspaceActionResult>>? ConnectionStatusAction { get; set; }
+        public Task<WorkspaceActionResult> RefreshConnectionStatusAsync(CancellationToken token)
+        { ConnectionStatusReads++; return ConnectionStatusAction?.Invoke() ?? Task.FromResult(new WorkspaceActionResult(true, "Synthetic server status verified.")); }
+        public bool ExecutorEnabled { get; set; }
+        public bool ExecutorAvailable { get; set; }
         public async Task<WorkspaceJournalSnapshot?> LoadWorkspaceAsync(CancellationToken token) { LoadEntered?.TrySetResult(); if (LoadGate is not null) await LoadGate.Task; return FailLoads ? null : State; }
         public Task<WorkspaceTaskResponse<WorkspaceCommandPreview>> PrepareCommandAsync(Guid requestId, WorkspaceCommand intent, CancellationToken token)
         {

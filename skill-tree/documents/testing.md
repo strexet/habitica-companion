@@ -286,3 +286,10 @@ Current goal/candidate checks distinguish native cancellation from completion an
 ColorSchemePanelTests checks two independent device stores, imported selection/custom-edit timestamps, mounted selector and JS cache updates, reload selection, unsaved-draft choices, transient random previews, local-save versus cloud-failure feedback and serialized local-save/import storage writes. AppSessionControllerTests checks remote appearance merge before narrow upload, serialization against whole-data sync and rejection of noncooperative late downloads after logout/account replacement. Default fixtures contain synthetic data only.
 
 Browser qualification uses synthetic Razor output and the production colorSchemes.js implementation to inspect actual CSS application, preview preservation, cached selection and reload at desktop and phone widths. Component tests qualify interactive draft decisions separately. Local frames do not establish actual Mac/iOS cross-device transport, Safari keyboard, assistive technology or globally atomic KV convergence.
+
+
+## Tab connection recovery regression controls
+
+WorkspaceCloudClient.ConnectionStatusTests and ChatGptIntegrationClientTests cover independent fresh clients, explicit recovery without linking/grant creation, retained server state, expired management access, missing executor flags, malformed identity and late session replies. SettingsPageTests and WorkspaceOperationsTests cover consent gating, unknown status copy, failed refresh clearing prior success, recovered executor state, read-only checks and account replacement. AppSessionControllerTests verifies direct account replacement forgets tab management without reenrollment. These checks use synthetic HTTP/component fixtures and contain no live credentials.
+
+Synthetic real-Razor output is exported through HABITICA_BROWSER_EVIDENCE for published CSS and light/dark layout inspection. Such frames qualify rendering separately from component event tests; actual Mac/iOS, hosted enrollment and background dispatch remain outside this root validation.

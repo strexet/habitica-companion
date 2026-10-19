@@ -196,7 +196,7 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
         return request;
     }
 
-    private static IntegrationLinkResult Unavailable() => new(false, "ChatGPT linking is unavailable. The current browser session has not enabled a connection.");
+    private static IntegrationLinkResult Unavailable() => new(false, "Management access is unavailable in this tab. Verify the account to check server connection status.");
     private sealed record CleanupResult(bool PendingCleanup, bool? Deleted, bool? Disconnected);
     private sealed record Enrollment(string? ProfileId, string? ManagementToken);
     private sealed record LinkTicket(string? Code, DateTimeOffset ExpiresAtUtc);

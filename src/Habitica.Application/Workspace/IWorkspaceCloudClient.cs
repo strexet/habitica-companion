@@ -10,6 +10,8 @@ public sealed record WorkspaceStatusResult(bool Succeeded, string Message, Works
 public interface IWorkspaceCloudClient
 {
     Task<WorkspaceStatusResult> ReadOperationalStatusAsync(CancellationToken cancellationToken) => Task.FromResult(new WorkspaceStatusResult(false, "Workspace status is unavailable."));
+    bool ConnectionStatusVerified => false;
+    Task<WorkspaceActionResult> RefreshConnectionStatusAsync(CancellationToken cancellationToken) => Task.FromResult(new WorkspaceActionResult(false, "Cloud connection status is unavailable."));
     bool IsAvailable { get; }
     bool PartyPlanningAvailable => false;
     Task<PartyPlanningResult> ManagePartyAsync(PartyPlanningRequest request, CancellationToken cancellationToken) => Task.FromResult(new PartyPlanningResult(false, "Authenticated party planning is unavailable."));

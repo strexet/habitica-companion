@@ -657,3 +657,10 @@ Cloud workspace storage disclosure includes saved task-view definitions. Saved-v
 Saved theme imports update the mounted picker, semantic CSS and reload cache. Unsaved editor fields and generated previews remain local. A sync conflict presents explicit actions to apply the synced appearance or retain the draft for continued editing. Saving a retained draft requires the conflict choice first. Cancelling an editor restores the latest saved appearance without uploading a preview or changing selection time.
 
 Appearance saves report local persistence independently from encrypted-cloud availability. Cloud failures remain visible near the theme controls and in existing sync diagnostics. Task filters, page folds and disclosure state remain device-local; missing tab management access does not establish server disconnection.
+
+
+## Unknown connection state and explicit recovery
+
+A fresh authenticated Settings tab displays unknown server connection state until explicit verification. Missing tab management access never labels server enrollment disconnected or background execution disabled. Integration recovery and workspace recovery retain separate disclosures and unchecked consent. Copy identifies encrypted server storage and possible profile creation. Intentional linking-code generation remains distinct from restoring management access.
+
+Workspace recovery and manual status refresh reread actual executor availability and opt-in. Unknown status hides execution mutations; verified paused state explains retained pending commands and separate enablement. Verification failures clear earlier success displays. Account replacement clears consent, status and pending actions; responses owned by a previous account cannot repopulate the page. Existing wrapping action rows, shared controls and theme tokens remain in use. Synthetic Razor/browser frames qualify narrow and desktop layout separately from real device and hosted authorization checks.
