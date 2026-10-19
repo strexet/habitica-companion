@@ -1,0 +1,1930 @@
+{
+  "completed_ids": [
+    "T-1dd173f5-440f-4416-8a9b-221e1028aae7",
+    "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
+    "T-c6f6b09d-4625-5898-b91c-016c611b60df",
+    "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
+    "T-e33bccdc-22f1-5043-9230-3d12d9e9563d",
+    "T-2f23b014-4b4d-46e5-8986-49abb1066bf3",
+    "T-16a38176-f2fe-5f7d-a809-546f17357b49",
+    "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
+    "T-924119e2-17fd-4a06-b332-60839c849ade",
+    "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+    "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+    "T-77d41018-e04b-4a88-b92c-079b3d8ef421",
+    "T-80bb3b80-8a9c-4252-9924-5a100f746f93",
+    "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+    "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
+    "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
+    "T-49eaa44e-5c98-4219-a380-4201e4143494",
+    "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e",
+    "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89",
+    "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+    "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+    "T-991d6cf2-7c54-4006-ab58-eda921ae66d6",
+    "T-eee74da1-053f-494e-8589-0e1b660e2367",
+    "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3",
+    "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d",
+    "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f",
+    "T-05547c12-8391-4d20-a0cb-0371361d6cd7",
+    "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+    "T-211d2ac1-5778-47fb-8148-c9e1a320e31a",
+    "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
+    "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
+    "T-b92db026-a8cf-5922-8556-666cbea947ab",
+    "T-5737120b-52a5-4a57-9072-fce514adaf33",
+    "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+    "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
+    "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08",
+    "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+    "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
+    "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2",
+    "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+    "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
+    "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+    "T-58907376-21eb-417f-988e-fe65449a0bb7",
+    "T-34491faa-090e-4d97-b496-1fe947770688",
+    "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+    "T-159a415e-0d56-4028-96a4-339a5d5040f8",
+    "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+    "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+    "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+    "T-70901e97-738c-42c2-ae50-68dd71417a32",
+    "T-65810da7-9524-45ce-b280-668d04c86441",
+    "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
+    "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
+    "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
+    "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
+    "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
+    "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
+    "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68",
+    "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
+    "T-5b449c17-2968-4a89-9596-bdb037853e75",
+    "T-842f77e3-c043-471d-94e8-3b55da96097c",
+    "T-23520ce7-554d-4848-b64b-f4be9ed39800",
+    "T-a1d24727-18dc-4303-9017-a97906d08e13",
+    "T-37720737-c1a1-4d37-bb03-7037491fbf05",
+    "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2",
+    "T-188797a8-cbea-411c-82a5-74257508314b",
+    "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
+    "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95",
+    "T-e3653fbd-2101-4b58-8219-3aa076b56fe6",
+    "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
+    "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
+    "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
+    "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
+    "T-74bb4500-60a6-4917-b654-13e6b5506afd",
+    "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
+    "T-3f472554-56a4-4edf-a163-1b96dc822a06",
+    "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb",
+    "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
+    "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
+    "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
+    "T-cd38c727-430a-4565-a264-f33d9b81bca3",
+    "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
+  ],
+  "completion_refs": {
+    "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
+    "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89": "O-2b79fcef-7244-48d6-bad7-16c7b8937eee",
+    "T-07f64b74-b8f1-48d9-b090-b949efbbf83b": "O-b89c9b81-4457-4f68-9bb3-f8a65b7330f4",
+    "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e": "O-e2da7485-b820-448b-9e56-ecfde28fe04d",
+    "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735": "O-aa7c4f5f-c42d-48df-806e-bff08b0e1c17",
+    "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c": "O-3c8bda73-dc3e-458b-850d-9e17fce4b230",
+    "T-1396a75f-ba8b-446d-812b-a4b24873cc7a": "O-304652a4-7302-40d8-a319-66d8a6eb3ba1",
+    "T-159a415e-0d56-4028-96a4-339a5d5040f8": "O-bd86cfe5-e6df-40d4-8d64-25ed8ea68fcb",
+    "T-16a38176-f2fe-5f7d-a809-546f17357b49": "O-7d50e0cb-ee45-4fe5-bd54-6b38b3b22e6e",
+    "T-188797a8-cbea-411c-82a5-74257508314b": "O-dc090414-a43b-41eb-aae7-82ec82b8c698",
+    "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec": "O-1cbc3cfc-9cf0-4922-8317-4c16090d9aa0",
+    "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d": "O-31ce5766-d6d8-4ee9-ae54-015b71d05286",
+    "T-1b792978-7f21-476f-91be-1d7ab3bd10b5": "O-13bdfdc3-9c04-411d-8284-32577a902250",
+    "T-1d00b09b-ae5b-4003-9ccf-6af865f80879": "O-58322798-8d4a-4aa2-b9e5-ec619163a60a",
+    "T-1dd173f5-440f-4416-8a9b-221e1028aae7": "O-7666e5dd-aa11-4f55-98ed-1bda98d83eb6",
+    "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55": "O-fc1d5fd0-432b-43b1-8ae3-51536510411a",
+    "T-211d2ac1-5778-47fb-8148-c9e1a320e31a": "O-ee0b74ce-2986-417f-95b7-92a78a6bfe88",
+    "T-23520ce7-554d-4848-b64b-f4be9ed39800": "O-5df6fdca-e0cc-4e99-a578-1bf0abd83951",
+    "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d": "O-9ebb8704-9e9e-405c-b175-bec36f05b86c",
+    "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95": "O-39236b38-6b75-49c2-bcd4-70b6839f3fc6",
+    "T-29ef8846-6aa7-4255-990d-a8651e689ec2": "O-8a6c239c-6b80-4210-a2e6-a94e7a8e560b",
+    "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee": "O-f879b8e5-0a9a-4c91-b292-993fb19bacb3",
+    "T-2f23b014-4b4d-46e5-8986-49abb1066bf3": "O-48ebee79-cbbb-4c1c-829c-038c887076e9",
+    "T-34491faa-090e-4d97-b496-1fe947770688": "O-038739b4-83cf-4f3a-a2b1-970281d2d9dd",
+    "T-37720737-c1a1-4d37-bb03-7037491fbf05": "O-a6e44a66-46bb-4fc6-a2c6-e6c68f7ac0c3",
+    "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3": "O-f684df86-5cbd-4a55-9f83-286b66f0d3d6",
+    "T-3987ba88-f69f-59f1-811e-f51cabfa5978": "O-048b3fa0-28ea-49a0-bec1-a8e537a805f5",
+    "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e": "O-9e01fa6a-caa6-4e3c-be17-1e389f562720",
+    "T-3f472554-56a4-4edf-a163-1b96dc822a06": "O-76630a35-f0f9-488e-a3b0-aad446dc1133",
+    "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48": "O-f4f1917f-a14b-4e1a-b14d-8aa140b48f17",
+    "T-4971181f-827f-4945-af27-4f4bc8ded5c8": "O-d3de5c55-c4ac-4eb9-9b46-36aa630adf68",
+    "T-49eaa44e-5c98-4219-a380-4201e4143494": "O-9f6a3618-fbbf-4d96-b034-bbe5f19e01ca",
+    "T-4a1de222-156a-52cf-8966-262a2c8216ed": "O-1be18cd1-6faf-47ff-bc66-14861e6858e4",
+    "T-4c002e27-bb45-4354-ae94-167b7b4b561f": "O-07e41f67-25d8-4040-997f-9c11a4b934be",
+    "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2": "O-1213a8c8-f039-463e-a137-ac7f9d6122e0",
+    "T-4dd09108-6149-4ab2-9326-b6f53e05f811": "O-75a3f695-3334-45b4-8000-06045ef1ca34",
+    "T-53352a18-54d2-57b6-accc-91f8e6dfad13": "O-02146734-4822-48de-81a5-71f0c7208776",
+    "T-5737120b-52a5-4a57-9072-fce514adaf33": "O-53aa48f8-4d3c-4d9a-bb8b-12ec41ed3a60",
+    "T-58907376-21eb-417f-988e-fe65449a0bb7": "O-15ca9c1f-7dba-451c-b982-7e87d361b1a4",
+    "T-5b449c17-2968-4a89-9596-bdb037853e75": "O-33459721-4755-4af3-ae08-c103d0b0cd4e",
+    "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4": "O-c907310b-d594-4093-a241-5bff64729b14",
+    "T-65810da7-9524-45ce-b280-668d04c86441": "O-33a5eda4-5cb2-4c4a-8f16-12553960765a",
+    "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0": "O-5fdb5b52-4bd8-4aa4-ba29-78d7b23a81d6",
+    "T-70901e97-738c-42c2-ae50-68dd71417a32": "O-ca50d6a3-b6a2-481b-98d8-349564657bd0",
+    "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e": "O-ac3595ee-b36e-4620-acf2-1358e28fec07",
+    "T-74bb4500-60a6-4917-b654-13e6b5506afd": "O-b17954b5-6452-4574-9159-f027ce7ffbe1",
+    "T-773bb444-a0e6-45b9-bdcb-18561bb6182f": "O-9d7ad5bd-d5ee-469e-93b0-79c129d87495",
+    "T-77d41018-e04b-4a88-b92c-079b3d8ef421": "O-056e3e62-a872-45aa-953d-0452b29a71e3",
+    "T-80bb3b80-8a9c-4252-9924-5a100f746f93": "O-93622767-ee19-41ab-bda6-82f140e5b0b3",
+    "T-842f77e3-c043-471d-94e8-3b55da96097c": "O-5b4da303-cfde-4c11-84a4-a524fda25181",
+    "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108": "O-47e8cb8a-fa05-4e7f-bf62-842c0f09a339",
+    "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941": "O-f47ae9c9-bdbf-4622-a685-4cfc7c91068e",
+    "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995": "O-4b7709a5-b2d8-40c2-821c-9e482a57d24b",
+    "T-924119e2-17fd-4a06-b332-60839c849ade": "O-23ae7a58-8ca6-44f8-ab06-e245f94fae3d",
+    "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea": "O-98c49379-79f9-4119-9f72-63e31608ed7a",
+    "T-991d6cf2-7c54-4006-ab58-eda921ae66d6": "O-747dceb1-50c9-4703-9399-b64b2a0ccba6",
+    "T-a1d24727-18dc-4303-9017-a97906d08e13": "O-a6319920-170f-4389-afb6-c86115c97a2f",
+    "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9": "O-1289cd22-e42d-43e3-8c68-1c7954321b8a",
+    "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f": "O-31dca147-51af-4489-863f-be4aa92285dc",
+    "T-b38dad4c-c3fa-431a-a429-50d6fed97650": "O-ba1742c1-00fe-4f18-9dea-c829e62f3190",
+    "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08": "O-b7bd034e-ef6e-4d79-9c42-c6e9ea9159fc",
+    "T-b883e33b-05a6-53d8-a9a5-d11d7008887f": "O-84147b67-67cd-4c09-80fe-17befff407d7",
+    "T-b92db026-a8cf-5922-8556-666cbea947ab": "O-e70ae478-e644-48d6-8451-13f7bbdc4e6a",
+    "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f": "O-9869121a-58e8-4254-8ef2-ac51110bd98b",
+    "T-be68f853-9737-4657-a8a4-7aff8dfc497b": "O-2cf7fc6d-d2b2-480c-b190-e9907a73ea5a",
+    "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58": "O-73471b3d-a79c-4f29-b7fb-2c5512696896",
+    "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4": "O-7e6f1ee5-cb95-4d1a-885a-cd035da34c6e",
+    "T-c6f6b09d-4625-5898-b91c-016c611b60df": "O-ed64ce15-7bea-467d-8a8b-06a3494a05fd",
+    "T-c754c836-f4b7-413c-9733-35f18a0db6a6": "O-1f71b9d7-7b0f-4c7f-b63e-81b5b0b683e0",
+    "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00": "O-442f25f5-8685-4fd0-83ce-fd77446a7c77",
+    "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17": "O-a050001b-edd5-41b3-ba4e-3a9005c3c5e4",
+    "T-cd38c727-430a-4565-a264-f33d9b81bca3": "O-54e53c89-a344-4a7c-874f-4c2aa508c481",
+    "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb": "O-17aadbf8-9bc4-49ac-993d-8154a2d88fc6",
+    "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2": "O-4ccf3fa4-fb60-41c8-b7cb-8c503a3f3f13",
+    "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b",
+    "T-e3653fbd-2101-4b58-8219-3aa076b56fe6": "O-e3c8c194-719a-4bc0-9096-671b5ef256eb",
+    "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68": "O-d1657c15-4f9e-4ae2-a8f1-9197c0c47839",
+    "T-e696791b-de0e-4e74-ac9a-831328ddb97f": "O-7494c340-b195-40bb-8f7e-a8173887891d",
+    "T-edd2f444-7dab-4847-9db0-21651c6f5c37": "O-29c5ccd9-3796-48a6-8865-0f5f79a878bf",
+    "T-eee74da1-053f-494e-8589-0e1b660e2367": "O-b3684481-34df-48a5-bf05-702a8a6e675e",
+    "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61": "O-fc6f4e76-63c3-41d9-b7d2-5455eb45164b",
+    "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
+  },
+  "current_task_id": null,
+  "cycle_signature": "f13db422afbaf8a0ecf49fde9f7420a2d30263d14a60fb95654366aa87bdd4bf",
+  "deferred_ids": [
+    "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+    "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
+    "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+    "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+    "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+    "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+    "T-574a6ba2-741e-4d13-b798-b909c24de93d",
+    "T-54623cea-9c8f-4819-b33f-b6552c82df55",
+    "T-fb41407b-58d3-4dca-b389-e80bbe517831",
+    "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
+    "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+    "T-9f465413-725a-440e-a464-cb5c555cb87d",
+    "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
+    "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
+    "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+    "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+    "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+    "T-a7dca938-7c13-4878-9363-04862fbfa04d",
+    "T-31fbbe84-a4ab-4bc7-9509-647666e6e017"
+  ],
+  "history_refs": [
+    "skill-tree/history/validation/archive-count-correction.json",
+    "skill-tree/history/validation/native-lifecycle-production-check.json",
+    "skill-tree/history/validation/codex-owner-browser-actions.json",
+    "skill-tree/history/validation/pending-processing-2026-10-19.json"
+  ],
+  "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
+  "limits": {},
+  "mode": "all",
+  "next_action": "Preserved incomplete Implement All checkpoint; owner selected a separate Work Through Next root after standalone processing.",
+  "partial_work": [
+    "Published development availability and matching backends from aab2b87; owner task receipts and self-spell/equipment checks passed.",
+    "Published canonical filters and readonly saved-list controls from d48fae1; 419 web tests, release build and responsive fixtures passed.",
+    "Default advance still reaches the unqualified broad-release dependency T-d76d2a9a-1318-4e63-9bb4-73f620b108cc. The owner-selected development scope remains independent.",
+    "Standalone Process Pending researched ten selected entries and produced nineteen Ready units with exact provenance and dependency edges.",
+    "Human/device qualification and three advanced policy remainders stay Pending. No implementation, validation run, deployment or new root/controller selection occurred."
+  ],
+  "pending_ids": [
+    "P-801f3457-265f-404e-95a5-9cf33aa923bf",
+    "P-23092c14-bc50-42c9-948f-201991e9594f",
+    "P-9d3fb820-05c3-525b-8769-85c5423d2f53",
+    "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035",
+    "P-bbb755c5-37d7-5637-862d-17faa8e12f99",
+    "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178",
+    "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07",
+    "P-b9215ddd-d598-4c25-abb2-7a6d9a1d7845",
+    "P-6ea76a88-a928-4235-aa55-c80466e20b54",
+    "P-642949f7-826f-45aa-8e6f-9d9ffabbea97",
+    "P-6aae2186-4693-4f67-9cf5-71e9a89d0de3",
+    "P-ff948539-db7d-43b1-bc7e-957f26b6903a",
+    "P-92427ffc-b96b-4dab-82f4-57f3861a6ad2",
+    "P-112ddb0c-2e2b-4fc3-84f7-ad3e2cb8b64f",
+    "P-084f4079-44b9-4799-8b43-9a7ee012b93b",
+    "P-e26d8c99-365e-49bf-9345-fa5e7cbbb61f",
+    "P-f4cf9801-4310-4923-b210-826b1c227e3a",
+    "P-d34a0b07-32a5-48dc-acdd-7da4d17f9d4e",
+    "P-00657a7e-98a7-4fd9-b6be-b0fdb427feb4",
+    "P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1",
+    "P-74e56de7-49ae-4791-bcce-a596f758d362",
+    "P-28d6ece4-a519-44a8-9625-3367479a03c3",
+    "P-bab5e0c9-8f97-4cd9-a4a1-aa9f39aa506f",
+    "P-e7108584-78d2-4df6-b60c-f0c47af75aa1",
+    "P-d724d4bc-ff32-470b-a476-395303dba5b9",
+    "P-29925105-1015-5ced-8844-d56fa47e33c9",
+    "P-08a257f2-27ad-4217-b434-3a378c565fc7",
+    "P-92e12da3-2559-4bf4-819e-442254c9bd81",
+    "P-39328781-1536-468d-9e1c-3c0bad9c5cb3",
+    "P-287005d4-1e7f-446d-a802-9f78aeca7e72",
+    "P-b04d7a62-5b9e-4347-8028-4561c51891e2",
+    "P-8f3991ad-372e-4ca5-a6f8-ced1ffeaf263",
+    "P-f7230fa1-ddc2-4070-bc06-0d327c058990",
+    "P-7077ec7f-eda9-49b2-b654-e4f6309eeea4",
+    "P-4f9fc663-7bd2-4c13-8e4a-804709937671",
+    "P-70ff88fd-b14f-4d7c-bff9-6594b4256587",
+    "P-e0494acc-da19-4d22-bdb3-9b71af18cc7d",
+    "P-2544a5ca-8301-4a81-b027-08c485b1de48",
+    "P-e946d297-2c7c-4347-9bac-7c1cd92488ee",
+    "P-a552907a-6fd8-42b4-842c-96ab7159cd98",
+    "P-f0f5ebac-0436-4f57-8865-29015a753872",
+    "P-d6fb32f0-7125-4544-898a-c1028ca91a2a",
+    "P-8a968c91-80a2-46be-9f32-2fb514d3bc22",
+    "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79",
+    "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa",
+    "P-c5795748-6f25-4c0a-a471-fe72c1a85862",
+    "P-2eab4a71-0646-4a9c-a815-84ad69652b79",
+    "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d",
+    "P-e5db46c5-d445-4199-8126-8fb504f7fd38",
+    "P-a8192b85-62bd-4a16-93d1-30eaa8ce0152",
+    "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9",
+    "P-f0c7dfe0-a459-4636-af5c-567281e19367",
+    "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
+    "P-346056d8-c254-4a1e-b860-6850c6cb470d",
+    "P-84af82c3-f65b-4981-8f40-e3faaf651314",
+    "P-cc70b363-4669-44a4-be9b-1d6cb918d36b",
+    "P-e8c5af20-15ee-4020-82ea-3560a3a183e7",
+    "P-14835d09-6c68-4472-a5fb-622c5500f9b4",
+    "P-600be12e-fd34-44d8-b992-dca13600ab13",
+    "P-d269235a-351a-4341-b622-22d0b5038153",
+    "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb",
+    "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1",
+    "P-580e55b1-e10a-4891-bd89-fdbd5c39a627",
+    "P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11",
+    "P-26753fc0-29e0-46be-8677-36725314b31a",
+    "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d",
+    "P-24ec4579-ff37-44c6-9085-56fefe830888",
+    "P-64d1995c-f862-498c-9437-e867117f2129",
+    "P-438c79fe-385d-4657-be24-85fad9a49c31",
+    "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
+  ],
+  "phase": "suspended-owner-selected-root",
+  "processing_results": [
+    {
+      "created_ids": [
+        "T-1dd173f5-440f-4416-8a9b-221e1028aae7"
+      ],
+      "dispositions": {
+        "P-801f3457-265f-404e-95a5-9cf33aa923bf": {
+          "reason": "Browser observation and Razor source identify the literal format suffix; existing diagnostics rendering and component checks bound the repair.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-0aaf52c4-3e96-491e-8cef-89c74cf47540",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-801f3457-265f-404e-95a5-9cf33aa923bf"
+      ],
+      "task_keys": {
+        "diagnostic-time": "T-1dd173f5-440f-4416-8a9b-221e1028aae7"
+      }
+    },
+    {
+      "created_ids": [
+        "T-2f23b014-4b4d-46e5-8986-49abb1066bf3"
+      ],
+      "dispositions": {
+        "P-23092c14-bc50-42c9-948f-201991e9594f": {
+          "reason": "Browser response identifies the strict Origin failure; source and Fetch policy research bound a privacy-header repair without weakening authentication.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-13b2de0d-9602-4e8e-83b7-3ed05195921f",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-23092c14-bc50-42c9-948f-201991e9594f"
+      ],
+      "task_keys": {
+        "browser-consent": "T-2f23b014-4b4d-46e5-8986-49abb1066bf3"
+      }
+    },
+    {
+      "created_ids": [],
+      "dispositions": {
+        "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07": {
+          "reason": "Executor opt-in, dedicated workspace storage and lease ownership require owner selection from companion-workspace-contract.md.",
+          "status": "retained"
+        },
+        "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178": {
+          "reason": "Command conflicts and unknown-outcome execution policy require owner selection from companion-workspace-contract.md before journal decomposition.",
+          "status": "retained"
+        },
+        "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035": {
+          "reason": "Cloud audience, server-readable data, storage authority and history retention require owner selection from companion-workspace-contract.md.",
+          "status": "retained"
+        },
+        "P-9d3fb820-05c3-525b-8769-85c5423d2f53": {
+          "reason": "Canonical relationships and goal progress require owner selection from companion-workspace-contract.md before executable domain decomposition.",
+          "status": "retained"
+        },
+        "P-bbb755c5-37d7-5637-862d-17faa8e12f99": {
+          "reason": "Projection adoption and external deletion policies require owner selection from companion-workspace-contract.md before reconciliation implementation.",
+          "status": "retained"
+        }
+      },
+      "id": "PR-4f28c8f2-2e5a-4ec4-959a-a165198c38f1",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-9d3fb820-05c3-525b-8769-85c5423d2f53",
+        "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035",
+        "P-bbb755c5-37d7-5637-862d-17faa8e12f99",
+        "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178",
+        "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-924119e2-17fd-4a06-b332-60839c849ade",
+        "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+        "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+        "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+        "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
+        "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9"
+      ],
+      "dispositions": {
+        "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07": {
+          "reason": "Owner adopted the concrete workspace defaults; inspected source supports the dependency decomposition.",
+          "status": "promoted"
+        },
+        "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178": {
+          "reason": "Owner adopted the concrete workspace defaults; inspected source supports the dependency decomposition.",
+          "status": "promoted"
+        },
+        "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035": {
+          "reason": "Owner adopted the concrete workspace defaults; inspected source supports the dependency decomposition.",
+          "status": "promoted"
+        },
+        "P-9d3fb820-05c3-525b-8769-85c5423d2f53": {
+          "reason": "Owner adopted the concrete workspace defaults; inspected source supports the dependency decomposition.",
+          "status": "promoted"
+        },
+        "P-bbb755c5-37d7-5637-862d-17faa8e12f99": {
+          "reason": "Owner adopted the concrete workspace defaults; inspected source supports the dependency decomposition.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-be6457c2-7735-441f-a88c-ad66e73c0004",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-9d3fb820-05c3-525b-8769-85c5423d2f53",
+        "P-4f954f5a-1084-5c87-8e26-1bfc5fd95035",
+        "P-bbb755c5-37d7-5637-862d-17faa8e12f99",
+        "P-4779d03b-eecc-5d86-a4d0-4dfba9ee9178",
+        "P-2dcaca70-8d94-55b1-aaee-7e7262e60f07"
+      ],
+      "task_keys": {
+        "cloud-workspace": "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+        "domain": "T-924119e2-17fd-4a06-b332-60839c849ade",
+        "executor": "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
+        "journal": "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+        "local-storage": "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+        "projection": "T-773bb444-a0e6-45b9-bdcb-18561bb6182f"
+      }
+    },
+    {
+      "created_ids": [
+        "T-77d41018-e04b-4a88-b92c-079b3d8ef421"
+      ],
+      "dispositions": {
+        "P-b9215ddd-d598-4c25-abb2-7a6d9a1d7845": {
+          "reason": "A synthetic OAuth fixture confirms session invalidation during unchanged verified enrollment.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-3581988f-8de3-4ea8-b4d0-b4e4a00b9068",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-b9215ddd-d598-4c25-abb2-7a6d9a1d7845"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-80bb3b80-8a9c-4252-9924-5a100f746f93"
+      ],
+      "dispositions": {
+        "P-6ea76a88-a928-4235-aa55-c80466e20b54": {
+          "reason": "Storage predicates can match a replacement row after deletion, including when canonical IDs are retained.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-31366fdf-479e-4b64-aac4-0de0c7d5c8d6",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-6ea76a88-a928-4235-aa55-c80466e20b54"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-49eaa44e-5c98-4219-a380-4201e4143494"
+      ],
+      "dispositions": {
+        "P-642949f7-826f-45aa-8e6f-9d9ffabbea97": {
+          "reason": "Inspected canonical and projection contracts establish a bounded required field gap; the existing upstream whitelist defines supported values.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-18fc209d-54d0-43d7-8866-722a49af1c3b",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-642949f7-826f-45aa-8e6f-9d9ffabbea97"
+      ],
+      "task_keys": {
+        "task-fields": "T-49eaa44e-5c98-4219-a380-4201e4143494"
+      }
+    },
+    {
+      "created_ids": [
+        "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89"
+      ],
+      "dispositions": {
+        "P-6aae2186-4693-4f67-9cf5-71e9a89d0de3": {
+          "reason": "Connected Settings and typed client source establish the renewal gap; existing generation guards and durable receipts define the bounded repair.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-bd3e1004-5d10-48a0-95b3-aba3e356af25",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-6aae2186-4693-4f67-9cf5-71e9a89d0de3"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e"
+      ],
+      "dispositions": {
+        "P-ff948539-db7d-43b1-bc7e-957f26b6903a": {
+          "reason": "Rendered bounds isolate the unstyled restore control as the authenticated grid minimum; a shared-input and shrinkage repair is bounded.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-a6f020b8-77a0-4041-8a9b-16a643f88931",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-ff948539-db7d-43b1-bc7e-957f26b6903a"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-991d6cf2-7c54-4006-ab58-eda921ae66d6"
+      ],
+      "dispositions": {
+        "P-92427ffc-b96b-4dab-82f4-57f3861a6ad2": {
+          "reason": "Inspected OAuth, vault, private binding and upstream group source establish the bounded read-only proof contract.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-1d4a1919-e34e-4588-8e2b-8caaca44f123",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-92427ffc-b96b-4dab-82f4-57f3861a6ad2"
+      ],
+      "task_keys": {
+        "party-context": "T-991d6cf2-7c54-4006-ab58-eda921ae66d6"
+      }
+    },
+    {
+      "created_ids": [
+        "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d"
+      ],
+      "dispositions": {
+        "P-112ddb0c-2e2b-4fc3-84f7-ad3e2cb8b64f": {
+          "reason": "Verified party proof, owner-selected permissions and current typed-journal/CAS source define the separate planning store and bounded controls.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-c9b4cdd6-f97a-47fd-a91d-7cb7f9f83a60",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-112ddb0c-2e2b-4fc3-84f7-ad3e2cb8b64f"
+      ],
+      "task_keys": {
+        "party-planning": "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d"
+      }
+    },
+    {
+      "created_ids": [
+        "T-eee74da1-053f-494e-8589-0e1b660e2367"
+      ],
+      "dispositions": {
+        "P-084f4079-44b9-4799-8b43-9a7ee012b93b": {
+          "reason": "The executed synthetic control and inspected pre-read-only workspace lookup establish a bounded lifecycle repair.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-4a466c6b-1f79-4439-97d3-1ecf42479ac6",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-084f4079-44b9-4799-8b43-9a7ee012b93b"
+      ],
+      "task_keys": {
+        "party-read-race": "T-eee74da1-053f-494e-8589-0e1b660e2367"
+      }
+    },
+    {
+      "created_ids": [
+        "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3"
+      ],
+      "dispositions": {
+        "P-e26d8c99-365e-49bf-9345-fa5e7cbbb61f": {
+          "reason": "Captured gate-release stalls and twenty passing materialized-response controls establish a bounded test-transport repair without changing authorization behavior.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-54fe9d25-5d66-41e0-be81-e983129ca243",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-e26d8c99-365e-49bf-9345-fa5e7cbbb61f"
+      ],
+      "task_keys": {
+        "identity-fixture": "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3"
+      }
+    },
+    {
+      "created_ids": [
+        "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f"
+      ],
+      "dispositions": {
+        "P-f4cf9801-4310-4923-b210-826b1c227e3a": {
+          "reason": "Current official spell metadata, cast response behavior, C# rules and Auth generic gameplay attempt/lease source establish the narrow private gateway and safety fixtures.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-f5ddafa2-c2a7-493d-bcb1-5ea70f89ca55",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-f4cf9801-4310-4923-b210-826b1c227e3a"
+      ],
+      "task_keys": {
+        "spell-gateway": "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f"
+      }
+    },
+    {
+      "created_ids": [
+        "T-05547c12-8391-4d20-a0cb-0371361d6cd7"
+      ],
+      "dispositions": {
+        "P-d34a0b07-32a5-48dc-acdd-7da4d17f9d4e": {
+          "reason": "Accepted private gateway plus current Workspace runtime, planning and MCP source define the exact reviewed ledger and recovery boundary.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-4450a7b5-468b-4047-ae00-5120c40f728f",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-d34a0b07-32a5-48dc-acdd-7da4d17f9d4e"
+      ],
+      "task_keys": {
+        "reviewed-spells": "T-05547c12-8391-4d20-a0cb-0371361d6cd7"
+      }
+    },
+    {
+      "created_ids": [
+        "T-c754c836-f4b7-413c-9733-35f18a0db6a6"
+      ],
+      "dispositions": {
+        "P-00657a7e-98a7-4fd9-b6be-b0fdb427feb4": {
+          "reason": "The approved conservative contract and current Auth/C# source define the private single-dispatch boundary and required synthetic cases.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-8580ede7-422b-4ccd-aab8-5565fe1f16f0",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-00657a7e-98a7-4fd9-b6be-b0fdb427feb4"
+      ],
+      "task_keys": {
+        "private-cron": "T-c754c836-f4b7-413c-9733-35f18a0db6a6"
+      }
+    },
+    {
+      "created_ids": [
+        "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995"
+      ],
+      "dispositions": {
+        "P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1": {
+          "reason": "Current upstream source proves the top-level computed field and the filtered-read mismatch; the fix is required for the Cron gateway and existing Daily projection.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-119edc02-2ff9-44cd-9dbf-bbd7bb9f6bcb",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-b80ff1f4-29df-4da6-ab1c-a18ee4287ee1"
+      ],
+      "task_keys": {
+        "readiness-shape": "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995"
+      }
+    },
+    {
+      "created_ids": [
+        "T-211d2ac1-5778-47fb-8148-c9e1a320e31a"
+      ],
+      "dispositions": {
+        "P-74e56de7-49ae-4791-bcce-a596f758d362": {
+          "reason": "Source proves both stale metadata paths behind the observed page-priority regression; a controlled test can qualify the repair.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-1a33dcce-10f9-4a1c-83eb-e17a63076baf",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-74e56de7-49ae-4791-bcce-a596f758d362"
+      ],
+      "task_keys": {
+        "refresh-priority": "T-211d2ac1-5778-47fb-8148-c9e1a320e31a"
+      }
+    },
+    {
+      "created_ids": [
+        "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
+      ],
+      "dispositions": {
+        "P-28d6ece4-a519-44a8-9625-3367479a03c3": {
+          "reason": "Serial and isolated controls establish a bounded parallel qualification investigation with no demonstrated production source defect.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-def147f5-3bef-4500-9128-55ff55501a0a",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-28d6ece4-a519-44a8-9625-3367479a03c3"
+      ],
+      "task_keys": {
+        "parallel-lifecycle": "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
+      }
+    },
+    {
+      "created_ids": [
+        "T-5737120b-52a5-4a57-9072-fce514adaf33",
+        "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+        "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+        "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+        "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc"
+      ],
+      "dispositions": {
+        "P-29925105-1015-5ced-8844-d56fa47e33c9": {
+          "reason": "Current source and the selected local hardening contract define independently verifiable controls, E14 local evidence and separate mandatory real release gates.",
+          "status": "promoted"
+        },
+        "P-bab5e0c9-8f97-4cd9-a4a1-aa9f39aa506f": {
+          "reason": "Current source and the selected local hardening contract define independently verifiable controls, E14 local evidence and separate mandatory real release gates.",
+          "status": "promoted"
+        },
+        "P-d724d4bc-ff32-470b-a476-395303dba5b9": {
+          "reason": "Current source and the selected local hardening contract define independently verifiable controls, E14 local evidence and separate mandatory real release gates.",
+          "status": "promoted"
+        },
+        "P-e7108584-78d2-4df6-b60c-f0c47af75aa1": {
+          "reason": "Current source and the selected local hardening contract define independently verifiable controls, E14 local evidence and separate mandatory real release gates.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-a888ac19-1755-417e-8a69-4126028348c3",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-bab5e0c9-8f97-4cd9-a4a1-aa9f39aa506f",
+        "P-e7108584-78d2-4df6-b60c-f0c47af75aa1",
+        "P-d724d4bc-ff32-470b-a476-395303dba5b9",
+        "P-29925105-1015-5ced-8844-d56fa47e33c9"
+      ],
+      "task_keys": {
+        "e14-local": "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+        "keys": "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+        "management": "T-5737120b-52a5-4a57-9072-fce514adaf33",
+        "operations": "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+        "release": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc"
+      }
+    },
+    {
+      "created_ids": [
+        "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
+      ],
+      "dispositions": {
+        "P-08a257f2-27ad-4217-b434-3a378c565fc7": {
+          "reason": "Inspected connect and gateway source prove the required reconnection and receipt-access boundaries; the task executor supplies the existing conservative lookup response rule.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-40a21e98-301d-4c24-a3dc-135fee882807",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-08a257f2-27ad-4217-b434-3a378c565fc7"
+      ],
+      "task_keys": {
+        "reconnection": "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
+      }
+    },
+    {
+      "created_ids": [
+        "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08"
+      ],
+      "dispositions": {
+        "P-92e12da3-2559-4bf4-819e-442254c9bd81": {
+          "reason": "Current build/configuration source confirms a required dev-launch deliverable inside local adoption qualification.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-7e8a6174-b52b-43df-902d-9fa8dba26ae6",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-92e12da3-2559-4bf4-819e-442254c9bd81"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00"
+      ],
+      "dispositions": {
+        "P-39328781-1536-468d-9e1c-3c0bad9c5cb3": {
+          "reason": "Measured browser overflow is a required local accessibility failure inside E14 qualification.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-931e59e1-7d45-4344-8395-222c8178647b",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-39328781-1536-468d-9e1c-3c0bad9c5cb3"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2"
+      ],
+      "dispositions": {
+        "P-287005d4-1e7f-446d-a802-9f78aeca7e72": {
+          "reason": "The failing scope-upgrade control demonstrates a required client-consent defect in the selected E14 scope.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-0cfc7f55-6e98-494f-b0e5-654ea4cd2fd7",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-287005d4-1e7f-446d-a802-9f78aeca7e72"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735"
+      ],
+      "dispositions": {
+        "P-b04d7a62-5b9e-4347-8028-4561c51891e2": {
+          "reason": "Current authenticated account/project inventory and explicit owner target selection define a bounded preparation change.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-0a3bf1c2-0342-4d67-860a-7e6c387f424e",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-b04d7a62-5b9e-4347-8028-4561c51891e2"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-29ef8846-6aa7-4255-990d-a8651e689ec2"
+      ],
+      "dispositions": {
+        "P-8f3991ad-372e-4ca5-a6f8-ced1ffeaf263": {
+          "reason": "Explicit owner naming correction and verified setup-only resource/secret inventory establish the required bounded repair.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-c3ff290b-5b5f-4b42-90f4-5306fc385ece",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-8f3991ad-372e-4ca5-a6f8-ced1ffeaf263"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-34491faa-090e-4d97-b496-1fe947770688"
+      ],
+      "dispositions": {
+        "P-f7230fa1-ddc2-4070-bc06-0d327c058990": {
+          "reason": "Owner publication scope and all protected secret-name prerequisites are supplied; the prepared production plan defines exact bounded targets.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-fa5639d7-7b15-4e36-9349-27e340b923ed",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-f7230fa1-ddc2-4070-bc06-0d327c058990"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-58907376-21eb-417f-988e-fe65449a0bb7"
+      ],
+      "dispositions": {
+        "P-7077ec7f-eda9-49b2-b654-e4f6309eeea4": {
+          "reason": "Actual Wrangler validation establishes an independently actionable generator fix within the selected publication scope.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-f319658e-2fac-405a-9bf9-91c651d461c8",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-7077ec7f-eda9-49b2-b654-e4f6309eeea4"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58"
+      ],
+      "dispositions": {
+        "P-4f9fc663-7bd2-4c13-8e4a-804709937671": {
+          "reason": "Source inspection confirms the missing global signed-out entry point; the existing route supplies a bounded implementation.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-cdb960f6-cb3b-4b7d-949a-4b30bce04f60",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-4f9fc663-7bd2-4c13-8e4a-804709937671"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-159a415e-0d56-4028-96a4-339a5d5040f8"
+      ],
+      "dispositions": {
+        "P-70ff88fd-b14f-4d7c-bff9-6594b4256587": {
+          "reason": "Current Settings and authorization-page source confirm the missing handoff and exact destination labels.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-50a891f5-badd-4262-b442-36f758911fd4",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-70ff88fd-b14f-4d7c-bff9-6594b4256587"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941"
+      ],
+      "dispositions": {
+        "P-e0494acc-da19-4d22-bdb3-9b71af18cc7d": {
+          "reason": "A reported live blocker and inspected consent code establish a bounded repair with disposable browser qualification.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-e7cd1f26-c516-4eac-96d4-e306a3f78a46",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-e0494acc-da19-4d22-bdb3-9b71af18cc7d"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108"
+      ],
+      "dispositions": {
+        "P-2544a5ca-8301-4a81-b027-08c485b1de48": {
+          "reason": "Pinned provider and MCP enforcement establish bounded source defects with synthetic regression paths.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-4f70800b-b9e8-47fc-96ab-3c1510deee5c",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-2544a5ca-8301-4a81-b027-08c485b1de48"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-b38dad4c-c3fa-431a-a429-50d6fed97650"
+      ],
+      "dispositions": {
+        "P-e946d297-2c7c-4347-9bac-7c1cd92488ee": {
+          "reason": "Current browser API routes and upstream spell targets establish a concrete isolation gap with bounded negative controls.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-6fbcd543-c4a3-4b1a-9c6f-d0597001d3fe",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-e946d297-2c7c-4347-9bac-7c1cd92488ee"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-70901e97-738c-42c2-ae50-68dd71417a32"
+      ],
+      "dispositions": {
+        "P-a552907a-6fd8-42b4-842c-96ab7159cd98": {
+          "reason": "Typed command and canonical schema inspection establishes a bounded lifecycle gap; existing transactions, tombstones and receipts can be reused.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-56699395-030d-4dbe-bf13-5fb7bd8a5ede",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-a552907a-6fd8-42b4-842c-96ab7159cd98"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-65810da7-9524-45ce-b280-668d04c86441"
+      ],
+      "dispositions": {
+        "P-f0f5ebac-0436-4f57-8865-29015a753872": {
+          "reason": "Production observation matches the header Tasks.Count expression and the list IsArchived predicate.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-62e1c693-294f-4e2d-8964-364d2094ada2",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-f0f5ebac-0436-4f57-8865-29015a753872"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
+        "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee"
+      ],
+      "dispositions": {
+        "P-676c0cb1-82b5-51e1-92c1-74303b58c59d": {
+          "reason": "Source inspection confirms late browser slowdown and fixed server quotas. Separate local units preserve dispatch safety and shared-admission dependencies.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-3e8b3377-6e54-45e9-b87b-4e8f79303a99",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-676c0cb1-82b5-51e1-92c1-74303b58c59d"
+      ],
+      "task_keys": {
+        "browser-pacing": "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
+        "server-pacing": "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee"
+      }
+    },
+    {
+      "created_ids": [],
+      "dispositions": {
+        "P-4f98b2b3-af24-5424-b2f9-066913f7133d": {
+          "reason": "The dated public-flow inventory and synthetic prototype supply local research evidence. Hands-on competitor/mobile usability and owner navigation feedback remain unavailable; detailed UI promotion retains the E01 gate.",
+          "status": "retained"
+        }
+      },
+      "id": "PR-7f4404d2-32b4-45fb-9256-aacec0eedb13",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-4f98b2b3-af24-5424-b2f9-066913f7133d"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
+      ],
+      "dispositions": {
+        "P-f2bb7e37-6700-58ac-aa56-b537d193c777": {
+          "reason": "Current source supports an independent deterministic calendar kernel. Remaining authoring, lifecycle, projection and UI requirements are retained as explicit follow-up intake rather than accepted from model metadata.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-9e904622-a904-44a9-ae6a-c3c61220382c",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-f2bb7e37-6700-58ac-aa56-b537d193c777"
+      ],
+      "task_keys": {
+        "recurrence-calendar": "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
+      }
+    },
+    {
+      "created_ids": [
+        "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
+      ],
+      "dispositions": {
+        "P-d6fb32f0-7125-4544-898a-c1028ca91a2a": {
+          "reason": "Command records, hashing, preparation and MCP schemas support a bounded recurrence-authoring extension. Remaining lifecycle, review and UI requirements remain explicit intake rather than inferred from the extension.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-582b3291-2110-4f42-b2f5-7fbb15a0c003",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-d6fb32f0-7125-4544-898a-c1028ca91a2a"
+      ],
+      "task_keys": {
+        "recurrence-authoring": "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
+      }
+    },
+    {
+      "created_ids": [
+        "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
+      ],
+      "dispositions": {
+        "P-8a968c91-80a2-46be-9f32-2fb514d3bc22": {
+          "reason": "Existing canonical states and occurrence records permit bounded skip/pause/resume commands. Reviewed schedule replacement supplies restart semantics without a destructive reset. Remaining UI, review, streak and linked-game policy requirements remain separate intake.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-87c6997c-d29d-4c19-aa76-0e504d06e007",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-8a968c91-80a2-46be-9f32-2fb514d3bc22"
+      ],
+      "task_keys": {
+        "occurrence-lifecycle": "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
+      }
+    },
+    {
+      "created_ids": [
+        "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68"
+      ],
+      "dispositions": {
+        "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d": {
+          "reason": "Existing fields and own-workspace read boundaries support a portable filter service without UI or upstream changes. Saved views and review policy remain a separate intake.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-7acc8cf4-632f-4e58-a6e1-eb85e44a025c",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d"
+      ],
+      "dispositions": {
+        "P-4f98b2b3-af24-5424-b2f9-066913f7133d": {
+          "reason": "The original E01 task permits documented workflows. Existing dated primary-source inventory and unchanged local prototype evidence support adopting the baseline under the standing local contract direction. Human/device qualification remains separate.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-c345cfea-c92c-445a-a22f-e0f9e14ad5d4",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-4f98b2b3-af24-5424-b2f9-066913f7133d"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-5b449c17-2968-4a89-9596-bdb037853e75"
+      ],
+      "dispositions": {
+        "P-c8632138-39c6-5797-8e03-a3414824ee96": {
+          "reason": "Existing civil calendar and retained occurrence records support an independent agenda query. Production views and durable history/restore workflows remain a separate intake.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-ae395f79-840f-4cef-93c5-6391e4431172",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-c8632138-39c6-5797-8e03-a3414824ee96"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-842f77e3-c043-471d-94e8-3b55da96097c"
+      ],
+      "dispositions": {
+        "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156": {
+          "reason": "Canonical metadata and Domain goal progress already exist; narrow read parity can be delivered independently of organization writes and production UI.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-9e6a4640-1f4a-4fc8-94f6-5e1a9e6e147e",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-a1d24727-18dc-4303-9017-a97906d08e13"
+      ],
+      "dispositions": {
+        "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d": {
+          "reason": "The durable command table supports a task-only aggregate without new persistence or broader gameplay scopes. Organization/planning/history writes and corresponding skill parity remain a separate intake.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-5c37525e-fb3c-4c30-87ec-0fed7b78f952",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-23520ce7-554d-4848-b64b-f4be9ed39800"
+      ],
+      "dispositions": {
+        "P-a8192b85-62bd-4a16-93d1-30eaa8ce0152": {
+          "reason": "Inspected shared MCP handler conflates read failures and mutation uncertainty. The repair is required for accurate task-status unavailable responses.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-72801a9d-d256-43ce-9f3a-82ee906cd173",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-a8192b85-62bd-4a16-93d1-30eaa8ce0152"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-37720737-c1a1-4d37-bb03-7037491fbf05"
+      ],
+      "dispositions": {
+        "P-e5db46c5-d445-4199-8126-8fb504f7fd38": {
+          "reason": "Existing canonical fields and organization read IDs support a separate native-only task placement command. Organization CRUD and history/lifecycle workflows remain separate.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-ec75020e-f929-443d-96a4-fe1f93096a47",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-e5db46c5-d445-4199-8126-8fb504f7fd38"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2"
+      ],
+      "dispositions": {
+        "P-2eab4a71-0646-4a9c-a815-84ad69652b79": {
+          "reason": "Canonical completion events and accepted snapshots support independent retained-history reads. The existing D1 export transaction pattern supports a coherent guarded query; restore and production views remain separate.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-a0378438-273b-4d44-b4a4-35c7181092f4",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-2eab4a71-0646-4a9c-a815-84ad69652b79"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-188797a8-cbea-411c-82a5-74257508314b",
+        "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f"
+      ],
+      "dispositions": {
+        "P-f0c7dfe0-a459-4636-af5c-567281e19367": {
+          "reason": "Current uniqueness cannot support repeated Todo completion after a state flip. An optional retained restoration model and a separate exact-event native restore command resolve that local workflow without game effects; remaining UI/game recovery stays separate.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-f404f1bc-3dcf-4d74-a6ea-372a47431f96",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-f0c7dfe0-a459-4636-af5c-567281e19367"
+      ],
+      "task_keys": {
+        "model": "T-188797a8-cbea-411c-82a5-74257508314b",
+        "restore": "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f"
+      }
+    },
+    {
+      "created_ids": [
+        "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95"
+      ],
+      "dispositions": {
+        "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79": {
+          "reason": "Existing HabitScores and accepted snapshots support bounded retained activity reads. Mobile controls, streak sufficiency, linked schedules and conversion policy remain separate.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-4a24adf5-2ecc-40cc-bbde-9aeb3bb42238",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-e3653fbd-2101-4b58-8219-3aa076b56fe6"
+      ],
+      "dispositions": {
+        "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa": {
+          "reason": "Validated dependency identities and current task states support a bounded read-only candidate query. Saved views, review/reminder policy and mobile controls remain separate.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-abec15c4-f693-410e-9a1c-09ce6fdd90a8",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea"
+      ],
+      "dispositions": {
+        "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9": {
+          "reason": "Existing native-only command review and canonical acyclic Todo graph validation support exact parent/dependency authoring. Organization CRUD and advanced state remain separate.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-90507fff-91d6-4f69-8907-e68e83cdc4d0",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0"
+      ],
+      "dispositions": {
+        "P-e8c5af20-15ee-4020-82ea-3560a3a183e7": {
+          "reason": "Source/UI/controller/API and production overrides confirm that owner-test restrictions leaked into normal user settings. Explicit publication targets the existing Pages frontend.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-3c3d0af7-9693-4330-884f-a9c9b931b23a",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-e8c5af20-15ee-4020-82ea-3560a3a183e7"
+      ],
+      "task_keys": {}
+    },
+    {
+      "created_ids": [
+        "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
+        "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
+        "T-74bb4500-60a6-4917-b654-13e6b5506afd"
+      ],
+      "dispositions": {
+        "P-cc70b363-4669-44a4-be9b-1d6cb918d36b": {
+          "reason": "Existing canonical metadata and atomic document storage support native-only organization history and acceptance. A separate organization scope prevents silently expanding task grants; advanced state and UI remain separate.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-398af912-54d0-48a8-8f46-72b282f78e22",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-cc70b363-4669-44a4-be9b-1d6cb918d36b"
+      ],
+      "task_keys": {
+        "engine": "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
+        "model": "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
+        "transport": "T-74bb4500-60a6-4917-b654-13e6b5506afd"
+      }
+    },
+    {
+      "created_ids": [
+        "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
+      ],
+      "dispositions": {
+        "P-14835d09-6c68-4472-a5fb-622c5500f9b4": {
+          "reason": "Existing canonical states and query/progress rules support an independent native state command; completion, restoration and game effects retain separate ownership.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-5b3fc202-46d3-4059-b3a2-f7848e0f85fc",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-14835d09-6c68-4472-a5fb-622c5500f9b4"
+      ],
+      "task_keys": {
+        "todo-state": "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
+      }
+    },
+    {
+      "created_ids": [
+        "T-3f472554-56a4-4edf-a163-1b96dc822a06"
+      ],
+      "dispositions": {
+        "P-600be12e-fd34-44d8-b992-dca13600ab13": {
+          "reason": "The adopted source separates execution, dates, organization and game axes; an optional remembered active-stage field can complete local E13 authoring without a production UI or live qualification.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-c640fd49-065c-413d-a7e5-421ce8a97ee7",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-600be12e-fd34-44d8-b992-dca13600ab13"
+      ],
+      "task_keys": {
+        "todo-stage": "T-3f472554-56a4-4edf-a163-1b96dc822a06"
+      }
+    },
+    {
+      "created_ids": [
+        "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb"
+      ],
+      "dispositions": {
+        "P-84af82c3-f65b-4981-8f40-e3faaf651314": {
+          "reason": "Current stage metadata requires an explicit query predicate before saved smart-list definitions; researched local read filtering is independent of production UI and live qualification.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-c8399388-01ee-4915-abe3-6fe8810f1e30",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-84af82c3-f65b-4981-8f40-e3faaf651314"
+      ],
+      "task_keys": {
+        "stage-filter": "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb"
+      }
+    },
+    {
+      "created_ids": [
+        "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
+        "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
+        "T-edd2f444-7dab-4847-9db0-21651c6f5c37"
+      ],
+      "dispositions": {
+        "P-d269235a-351a-4341-b622-22d0b5038153": {
+          "reason": "Current source supports fixed named query definitions as three verifiable local units: portability/evaluation, native authoring and scoped adapters. Relative presets, review/reminder policy and production UI retain separate intake.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-0a8e4466-b540-448d-b262-84d6b72682ab",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-d269235a-351a-4341-b622-22d0b5038153"
+      ],
+      "task_keys": {
+        "saved-access": "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
+        "saved-commands": "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
+        "saved-model": "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61"
+      }
+    },
+    {
+      "created_ids": [
+        "T-cd38c727-430a-4565-a264-f33d9b81bca3"
+      ],
+      "dispositions": {
+        "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1": {
+          "reason": "Owner explicitly selects development capability publication and reopens own-account testing; existing profile/default behavior and deployment resources provide a bounded implementation and qualification path.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-634bec08-2883-4463-b879-c4b2447e6f53",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1"
+      ],
+      "task_keys": {
+        "dev-unlock": "T-cd38c727-430a-4565-a264-f33d9b81bca3"
+      }
+    },
+    {
+      "created_ids": [
+        "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
+      ],
+      "dispositions": {
+        "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb": {
+          "reason": "Current source provides canonical fixed query evaluation and account-bound loaded documents. A bounded readonly mobile list component is ready independently of reminder policy and saved-view authoring.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-da18176e-4720-4f55-97ca-aabcbab9c5b5",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb"
+      ],
+      "task_keys": {
+        "mobile-lists": "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
+      }
+    },
+    {
+      "created_ids": [
+        "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+        "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
+        "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+        "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+        "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+        "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+        "T-574a6ba2-741e-4d13-b798-b909c24de93d",
+        "T-54623cea-9c8f-4819-b33f-b6552c82df55",
+        "T-fb41407b-58d3-4dca-b389-e80bbe517831",
+        "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
+        "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+        "T-9f465413-725a-440e-a464-cb5c555cb87d",
+        "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
+        "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
+        "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+        "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+        "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+        "T-a7dca938-7c13-4878-9363-04862fbfa04d",
+        "T-31fbbe84-a4ab-4bc7-9509-647666e6e017"
+      ],
+      "dispositions": {
+        "P-0529505a-68be-5308-a805-44a2f4ddd6a9": {
+          "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately.",
+          "status": "promoted"
+        },
+        "P-0ddc8784-c740-5a23-819c-b17db8f6829f": {
+          "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately.",
+          "status": "promoted"
+        },
+        "P-24ec4579-ff37-44c6-9085-56fefe830888": {
+          "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately.",
+          "status": "promoted"
+        },
+        "P-26753fc0-29e0-46be-8677-36725314b31a": {
+          "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately.",
+          "status": "promoted"
+        },
+        "P-346056d8-c254-4a1e-b860-6850c6cb470d": {
+          "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately.",
+          "status": "promoted"
+        },
+        "P-580e55b1-e10a-4891-bd89-fdbd5c39a627": {
+          "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately.",
+          "status": "promoted"
+        },
+        "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d": {
+          "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately.",
+          "status": "promoted"
+        },
+        "P-7cb0bb45-a294-404c-b257-136d0f9f3de4": {
+          "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately.",
+          "status": "promoted"
+        },
+        "P-c5795748-6f25-4c0a-a471-fe72c1a85862": {
+          "reason": "Documented competitor workflows and the local baseline exist, but authenticated competitor journeys, human usability, actual mobile keyboard/safe-area and assistive-technology observations are absent. Actual selected sessions/testers/device evidence is required; source inspection or resized fixtures cannot complete the deliverable. Development UI work remains independent under the owner boundary.",
+          "status": "retained"
+        },
+        "P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11": {
+          "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately.",
+          "status": "promoted"
+        }
+      },
+      "id": "PR-adf01381-8475-4309-abe9-2c6d4369a2ac",
+      "reused_ids": [],
+      "selected_ids": [
+        "P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11",
+        "P-24ec4579-ff37-44c6-9085-56fefe830888",
+        "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d",
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-580e55b1-e10a-4891-bd89-fdbd5c39a627",
+        "P-346056d8-c254-4a1e-b860-6850c6cb470d",
+        "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
+        "P-c5795748-6f25-4c0a-a471-fe72c1a85862",
+        "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
+        "P-0529505a-68be-5308-a805-44a2f4ddd6a9"
+      ],
+      "task_keys": {
+        "connection-state": "T-a7dca938-7c13-4878-9363-04862fbfa04d",
+        "diagnostic-access": "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
+        "diagnostic-core": "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+        "diagnostic-ui": "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
+        "history-ui": "T-54623cea-9c8f-4819-b33f-b6552c82df55",
+        "organization-controller": "T-574a6ba2-741e-4d13-b798-b909c24de93d",
+        "planning-ui": "T-fb41407b-58d3-4dca-b389-e80bbe517831",
+        "projects-ui": "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+        "recurrence-ui": "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+        "saved-view-ui": "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+        "settings-layout": "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+        "statistics-ui": "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+        "theme-sync": "T-31fbbe84-a4ab-4bc7-9509-647666e6e017",
+        "today": "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
+        "todo-capture": "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+        "todo-navigation": "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+        "todo-source": "T-9f465413-725a-440e-a464-cb5c555cb87d",
+        "todo-sync-ui": "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
+        "ui-checks": "T-6122dded-900d-4d92-8739-bbc344e15ea0"
+      }
+    }
+  ],
+  "required_ids": [
+    "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
+    "T-1dd173f5-440f-4416-8a9b-221e1028aae7",
+    "T-c6f6b09d-4625-5898-b91c-016c611b60df",
+    "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
+    "T-e33bccdc-22f1-5043-9230-3d12d9e9563d",
+    "T-16a38176-f2fe-5f7d-a809-546f17357b49",
+    "T-2f23b014-4b4d-46e5-8986-49abb1066bf3",
+    "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
+    "T-924119e2-17fd-4a06-b332-60839c849ade",
+    "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17",
+    "T-4971181f-827f-4945-af27-4f4bc8ded5c8",
+    "T-be68f853-9737-4657-a8a4-7aff8dfc497b",
+    "T-773bb444-a0e6-45b9-bdcb-18561bb6182f",
+    "T-a5243cdf-dfc9-438b-ae11-2a3d865608b9",
+    "T-77d41018-e04b-4a88-b92c-079b3d8ef421",
+    "T-80bb3b80-8a9c-4252-9924-5a100f746f93",
+    "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+    "T-49eaa44e-5c98-4219-a380-4201e4143494",
+    "T-06eb8ad9-f3a2-4cd5-b15d-b3ddfd057c89",
+    "T-72c315ce-4eac-4884-bcf8-9ef1a3bee27e",
+    "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+    "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+    "T-991d6cf2-7c54-4006-ab58-eda921ae66d6",
+    "T-24b2e4e6-6e1b-4358-abb0-3d9a4c3b3d2d",
+    "T-eee74da1-053f-494e-8589-0e1b660e2367",
+    "T-38bbfdb5-31f4-45d4-aa5c-9682a2935cd3",
+    "T-a7c8aca3-f68e-4f7b-8681-aab511e7487f",
+    "T-05547c12-8391-4d20-a0cb-0371361d6cd7",
+    "T-b92db026-a8cf-5922-8556-666cbea947ab",
+    "T-c754c836-f4b7-413c-9733-35f18a0db6a6",
+    "T-90a73b3c-0a12-4387-a4dd-8fadb6d51995",
+    "T-211d2ac1-5778-47fb-8148-c9e1a320e31a",
+    "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "T-5737120b-52a5-4a57-9072-fce514adaf33",
+    "T-642c474f-619b-41e0-bc07-d1c72fbcf4d4",
+    "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca",
+    "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
+    "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
+    "T-4dd09108-6149-4ab2-9326-b6f53e05f811",
+    "T-b4f5c85a-cdba-43d7-9c71-f979ce0fab08",
+    "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00",
+    "T-4cc84b2a-7aa8-41a2-88aa-db47d5bac7c2",
+    "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
+    "T-29ef8846-6aa7-4255-990d-a8651e689ec2",
+    "T-34491faa-090e-4d97-b496-1fe947770688",
+    "T-58907376-21eb-417f-988e-fe65449a0bb7",
+    "T-bf42656d-57e8-4a20-98b6-cb1b01aafd58",
+    "T-159a415e-0d56-4028-96a4-339a5d5040f8",
+    "T-8f8f1dba-9d90-4bf0-8958-fea5ede83941",
+    "T-88a59bd6-a8d4-4cb2-9c0b-e32fecc96108",
+    "T-b38dad4c-c3fa-431a-a429-50d6fed97650",
+    "T-70901e97-738c-42c2-ae50-68dd71417a32",
+    "T-65810da7-9524-45ce-b280-668d04c86441",
+    "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
+    "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
+    "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
+    "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
+    "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
+    "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
+    "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68",
+    "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
+    "T-5b449c17-2968-4a89-9596-bdb037853e75",
+    "T-842f77e3-c043-471d-94e8-3b55da96097c",
+    "T-a1d24727-18dc-4303-9017-a97906d08e13",
+    "T-23520ce7-554d-4848-b64b-f4be9ed39800",
+    "T-37720737-c1a1-4d37-bb03-7037491fbf05",
+    "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2",
+    "T-188797a8-cbea-411c-82a5-74257508314b",
+    "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
+    "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95",
+    "T-e3653fbd-2101-4b58-8219-3aa076b56fe6",
+    "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
+    "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
+    "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
+    "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
+    "T-74bb4500-60a6-4917-b654-13e6b5506afd",
+    "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
+    "T-3f472554-56a4-4edf-a163-1b96dc822a06",
+    "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb",
+    "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
+    "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
+    "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
+    "T-cd38c727-430a-4565-a264-f33d9b81bca3",
+    "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
+  ],
+  "root_task_id": "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48",
+  "scope_amendments": [
+    {
+      "added_roots": [
+        "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55"
+      ],
+      "authorized_pending_ids": [
+        "P-4f98b2b3-af24-5424-b2f9-066913f7133d",
+        "P-676c0cb1-82b5-51e1-92c1-74303b58c59d",
+        "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
+        "P-c8632138-39c6-5797-8e03-a3414824ee96",
+        "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
+        "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
+        "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
+        "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156"
+      ],
+      "deferred_release_root": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+      "owner_direction": "Expand to local tasks and Pending work; no live tests or deployments.",
+      "prior_snapshot": [
+        "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
+        "T-c6f6b09d-4625-5898-b91c-016c611b60df",
+        "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
+        "T-e33bccdc-22f1-5043-9230-3d12d9e9563d",
+        "T-16a38176-f2fe-5f7d-a809-546f17357b49",
+        "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
+        "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+        "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+        "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+        "T-b92db026-a8cf-5922-8556-666cbea947ab",
+        "T-96866c8f-9554-55d8-a638-6d8b5afaf21c"
+      ],
+      "recorded_at": "2026-10-17T05:34:11.139211+00:00"
+    },
+    {
+      "owner_direction": "Expand to local tasks and Pending work",
+      "processing_receipt": "PR-3e8b3377-6e54-45e9-b87b-4e8f79303a99",
+      "promoted_local_roots": [
+        "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
+        "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee"
+      ]
+    },
+    {
+      "original_pending_id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
+      "owner_direction": "Expand to local tasks and Pending work",
+      "promoted_local_roots": [
+        "T-1396a75f-ba8b-446d-812b-a4b24873cc7a"
+      ],
+      "remaining_pending_id": "P-d6fb32f0-7125-4544-898a-c1028ca91a2a"
+    },
+    {
+      "original_pending_id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
+      "owner_direction": "Expand to local tasks and Pending work",
+      "promoted_local_roots": [
+        "T-4c002e27-bb45-4354-ae94-167b7b4b561f"
+      ],
+      "reason": "Decomposition of the originally authorized E11 area; no new feature area or live lane.",
+      "remaining_pending_id": "P-8a968c91-80a2-46be-9f32-2fb514d3bc22",
+      "researched_remainder": "P-d6fb32f0-7125-4544-898a-c1028ca91a2a"
+    },
+    {
+      "original_pending_id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
+      "owner_direction": "Expand to local tasks and Pending work",
+      "promoted_local_roots": [
+        "T-1d00b09b-ae5b-4003-9ccf-6af865f80879"
+      ],
+      "reason": "Further decomposition of the originally authorized E11 local feature area.",
+      "remaining_pending_id": "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79",
+      "researched_remainder": "P-8a968c91-80a2-46be-9f32-2fb514d3bc22"
+    },
+    {
+      "original_pending_id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
+      "owner_direction": "Expand to local tasks and Pending work",
+      "promoted_local_roots": [
+        "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68"
+      ],
+      "reason": "Decompose the originally authorized E12 local feature area; preserve residual UI and review scope.",
+      "remaining_pending_id": "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa"
+    },
+    {
+      "original_pending_id": "P-4f98b2b3-af24-5424-b2f9-066913f7133d",
+      "owner_direction": "Expand to local tasks and Pending work; adopt further local contracts",
+      "promoted_local_roots": [
+        "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d"
+      ],
+      "reason": "Finalize the original E01 documented design baseline; retain hands-on qualification separately.",
+      "remaining_pending_id": "P-c5795748-6f25-4c0a-a471-fe72c1a85862"
+    },
+    {
+      "original_pending_id": "P-c8632138-39c6-5797-8e03-a3414824ee96",
+      "owner_direction": "Expand to local tasks and Pending work",
+      "promoted_local_roots": [
+        "T-5b449c17-2968-4a89-9596-bdb037853e75"
+      ],
+      "reason": "Decompose original E09 into an independent canonical agenda and remaining view/history work.",
+      "remaining_pending_id": "P-2eab4a71-0646-4a9c-a815-84ad69652b79"
+    },
+    {
+      "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+      "owner_direction": "Expand to local tasks and Pending work",
+      "promoted_local_roots": [
+        "T-842f77e3-c043-471d-94e8-3b55da96097c"
+      ],
+      "reason": "Decompose original E13 into existing-model organization reads and remaining advanced write/workflow capabilities.",
+      "remaining_pending_id": "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d"
+    },
+    {
+      "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+      "owner_direction": "Expand to local tasks and Pending work",
+      "promoted_local_roots": [
+        "T-a1d24727-18dc-4303-9017-a97906d08e13"
+      ],
+      "reason": "Further decompose original E13 into task-only status and remaining reviewed write/history workflows.",
+      "remaining_pending_id": "P-e5db46c5-d445-4199-8126-8fb504f7fd38",
+      "researched_remainder": "P-6c8728b6-a1ad-49f8-99a3-290ac17dab7d"
+    },
+    {
+      "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+      "owner_direction": "Expand to local tasks and Pending work",
+      "promoted_local_roots": [
+        "T-37720737-c1a1-4d37-bb03-7037491fbf05"
+      ],
+      "reason": "Further decompose original E13 into native-only placement and remaining organization/lifecycle workflows.",
+      "remaining_pending_id": "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9",
+      "researched_remainder": "P-e5db46c5-d445-4199-8126-8fb504f7fd38"
+    },
+    {
+      "original_pending_id": "P-c8632138-39c6-5797-8e03-a3414824ee96",
+      "owner_direction": "Expand to local tasks and Pending work",
+      "promoted_local_roots": [
+        "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2"
+      ],
+      "reason": "Further decompose original E09 into retained history reads and remaining history-safe restore/mobile workflows.",
+      "remaining_pending_id": "P-f0c7dfe0-a459-4636-af5c-567281e19367",
+      "researched_remainder": "P-2eab4a71-0646-4a9c-a815-84ad69652b79"
+    },
+    {
+      "original_pending_id": "P-c8632138-39c6-5797-8e03-a3414824ee96",
+      "owner_direction": "Expand to local tasks and Pending work; adopt further local contracts",
+      "promoted_local_roots": [
+        "T-188797a8-cbea-411c-82a5-74257508314b",
+        "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f"
+      ],
+      "reason": "Resolve original E09 Todo restore with a retained cycle model dependency and native-only exact-event command.",
+      "remaining_pending_id": "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
+      "researched_remainder": "P-f0c7dfe0-a459-4636-af5c-567281e19367"
+    },
+    {
+      "original_pending_id": "P-f2bb7e37-6700-58ac-aa56-b537d193c777",
+      "owner_direction": "Expand to local tasks and Pending work; adopt further local contracts",
+      "promoted_local_roots": [
+        "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95"
+      ],
+      "reason": "Decompose retained Habit review into canonical reads while preserving mobile/streak and game policy gates.",
+      "remaining_pending_id": "P-346056d8-c254-4a1e-b860-6850c6cb470d",
+      "researched_remainder": "P-59bd9da0-87a5-43c6-83d1-86075c5e4b79"
+    },
+    {
+      "original_pending_id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
+      "owner_direction": "Expand to local tasks and Pending work; adopt further local contracts",
+      "promoted_local_roots": [
+        "T-e3653fbd-2101-4b58-8219-3aa076b56fe6"
+      ],
+      "reason": "Decompose dependency-aware candidate reads from remaining saved-view/review/mobile policy.",
+      "remaining_pending_id": "P-84af82c3-f65b-4981-8f40-e3faaf651314",
+      "researched_remainder": "P-a40bb7cc-bc71-4647-aff7-ecf69b9e23aa"
+    },
+    {
+      "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+      "owner_direction": "Expand to local tasks and Pending work; adopt further local contracts",
+      "promoted_local_roots": [
+        "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea"
+      ],
+      "reason": "Decompose native Todo relationship authoring from remaining organization and advanced state workflow.",
+      "remaining_pending_id": "P-cc70b363-4669-44a4-be9b-1d6cb918d36b",
+      "researched_remainder": "P-64cd7c9d-4f1b-4772-ba45-adc0535829e9"
+    },
+    {
+      "owner_direction": "Fix production user restrictions; permit all supported spells in agent tests",
+      "promoted_local_roots": [
+        "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0"
+      ],
+      "publication_scope": "Existing Pages frontend only; no backend activation or gameplay test round",
+      "reason": "Prioritize the explicit production bug while retaining the queued Todo relationship unit."
+    },
+    {
+      "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+      "owner_direction": "Expand to local tasks and Pending work; adopt further local contracts",
+      "promoted_local_roots": [
+        "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
+        "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
+        "T-74bb4500-60a6-4917-b654-13e6b5506afd"
+      ],
+      "reason": "Decompose native organization history, acceptance and explicitly scoped reviewed transport without gameplay or production UI.",
+      "remaining_pending_id": "P-14835d09-6c68-4472-a5fb-622c5500f9b4",
+      "researched_remainder": "P-cc70b363-4669-44a4-be9b-1d6cb918d36b"
+    },
+    {
+      "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+      "owner_direction": "Resume Implement All; live publication permitted when needed; live tests remain prohibited.",
+      "promoted_local_roots": [
+        "T-07f64b74-b8f1-48d9-b090-b949efbbf83b"
+      ],
+      "publication_scope": "Publication permitted if implementation requires updates; no live test round or gameplay activation.",
+      "reason": "Continue local decomposition of the previously authorized E13 feature area while retaining the separate release qualification blocker.",
+      "remaining_pending_id": "P-600be12e-fd34-44d8-b992-dca13600ab13",
+      "researched_remainder": "P-14835d09-6c68-4472-a5fb-622c5500f9b4"
+    },
+    {
+      "original_pending_id": "P-5bb5cb9e-47d4-51dc-bf9b-0086175ed156",
+      "owner_direction": "Resume Implement All within the previously authorized local Pending areas; publication permitted when needed; no live tests.",
+      "promoted_local_roots": [
+        "T-3f472554-56a4-4edf-a163-1b96dc822a06"
+      ],
+      "reason": "Finish local E13 optional execution-stage foundations while production UI and live release qualification remain separate.",
+      "researched_remainder": "P-600be12e-fd34-44d8-b992-dca13600ab13"
+    },
+    {
+      "original_pending_id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
+      "owner_direction": "Continue original authorized local Pending work under Implement All; publication permitted when needed; no live tests.",
+      "promoted_local_roots": [
+        "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb"
+      ],
+      "reason": "Implement stage-aware reads required by named smart lists; retain saved-view/review/reminder persistence and E01 UI gates.",
+      "researched_remainder": "P-84af82c3-f65b-4981-8f40-e3faaf651314",
+      "retained_remainder": "P-d269235a-351a-4341-b622-22d0b5038153"
+    },
+    {
+      "original_pending_id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
+      "owner_direction": "Continue original authorized local Pending work under Implement All; publication permitted when needed; no live tests.",
+      "promoted_local_roots": [
+        "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
+        "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
+        "T-edd2f444-7dab-4847-9db0-21651c6f5c37"
+      ],
+      "reason": "Implement fixed named query portability, native edits and scoped adapters; retain optional review/reminder/relative-date and E01 production UI gates.",
+      "researched_remainder": "P-d269235a-351a-4341-b622-22d0b5038153",
+      "retained_remainder": "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb"
+    },
+    {
+      "development_qualification_boundary": "Enable implemented capabilities and continue development before broader client/device/human qualification; preserve unrun evidence.",
+      "owner_direction": "Unlock all development features, continue and explicitly resume own-account live tests.",
+      "selected_roots": [
+        "T-cd38c727-430a-4565-a264-f33d9b81bca3"
+      ],
+      "test_scope": "Own-account Codex tasks and previously permitted spells/equipment. Party tools read-only; departure prohibited; no Start New Day test or real key operation."
+    },
+    {
+      "original_pending_id": "P-0018dcbc-f179-5b27-b0a8-8d57cf2fcb4d",
+      "owner_direction": "Continue originally selected Pending areas; development implementation allowed before broad release evidence.",
+      "promoted_local_roots": [
+        "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
+      ],
+      "reason": "Expose existing canonical readonly filters and saved definitions in the editor; retain policy and authoring work.",
+      "remaining_pending_id": "P-580e55b1-e10a-4891-bd89-fdbd5c39a627",
+      "researched_remainder": "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb"
+    }
+  ],
+  "snapshot": [
+    "T-09f1fa5d-fa07-592d-9a2d-7ef12705cf5e",
+    "T-c6f6b09d-4625-5898-b91c-016c611b60df",
+    "T-b883e33b-05a6-53d8-a9a5-d11d7008887f",
+    "T-e33bccdc-22f1-5043-9230-3d12d9e9563d",
+    "T-16a38176-f2fe-5f7d-a809-546f17357b49",
+    "T-53352a18-54d2-57b6-accc-91f8e6dfad13",
+    "T-4a1de222-156a-52cf-8966-262a2c8216ed",
+    "T-3987ba88-f69f-59f1-811e-f51cabfa5978",
+    "T-1a84d40a-f7e3-50f9-9601-daf3b101c7ec",
+    "T-b92db026-a8cf-5922-8556-666cbea947ab",
+    "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
+    "T-1de22cfb-f46b-4e8a-bee6-a90c3b444f55",
+    "T-1b792978-7f21-476f-91be-1d7ab3bd10b5",
+    "T-2b2f2c03-8085-4ff0-ba49-f735c04dfeee",
+    "T-1396a75f-ba8b-446d-812b-a4b24873cc7a",
+    "T-4c002e27-bb45-4354-ae94-167b7b4b561f",
+    "T-1d00b09b-ae5b-4003-9ccf-6af865f80879",
+    "T-e5667fef-f0f8-4171-b06e-7b1de21a8e68",
+    "T-1b0f99f1-d2ad-4d5b-a859-1da2fcd2892d",
+    "T-5b449c17-2968-4a89-9596-bdb037853e75",
+    "T-842f77e3-c043-471d-94e8-3b55da96097c",
+    "T-a1d24727-18dc-4303-9017-a97906d08e13",
+    "T-37720737-c1a1-4d37-bb03-7037491fbf05",
+    "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2",
+    "T-188797a8-cbea-411c-82a5-74257508314b",
+    "T-bc51e9bd-b06f-494a-b1d3-bdc7c4a5f23f",
+    "T-2557fab0-7f9c-49d9-8e10-28c3ad874e95",
+    "T-e3653fbd-2101-4b58-8219-3aa076b56fe6",
+    "T-984d414d-69d0-45f0-a6aa-7065dc5cdcea",
+    "T-6c0792bf-3fee-43aa-a850-12bf02e2dbf0",
+    "T-1149e6ef-ac3a-4b4e-836c-cbe4a7a1a78c",
+    "T-e696791b-de0e-4e74-ac9a-831328ddb97f",
+    "T-74bb4500-60a6-4917-b654-13e6b5506afd",
+    "T-07f64b74-b8f1-48d9-b090-b949efbbf83b",
+    "T-3f472554-56a4-4edf-a163-1b96dc822a06",
+    "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb",
+    "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
+    "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
+    "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
+    "T-cd38c727-430a-4565-a264-f33d9b81bca3",
+    "T-3ff47ffd-257f-4cd0-a275-5c1ab33c2f48"
+  ],
+  "started_at": "2026-10-14T17:19:17.413840+00:00",
+  "stop_reason": null
+}

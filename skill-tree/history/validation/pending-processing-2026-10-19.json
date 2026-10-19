@@ -1,0 +1,439 @@
+{
+  "kind": "static processing research",
+  "date": "2026-10-19",
+  "selected_pending_ids": [
+    "P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11",
+    "P-24ec4579-ff37-44c6-9085-56fefe830888",
+    "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d",
+    "P-26753fc0-29e0-46be-8677-36725314b31a",
+    "P-580e55b1-e10a-4891-bd89-fdbd5c39a627",
+    "P-346056d8-c254-4a1e-b860-6850c6cb470d",
+    "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
+    "P-c5795748-6f25-4c0a-a471-fe72c1a85862",
+    "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
+    "P-0529505a-68be-5308-a805-44a2f4ddd6a9"
+  ],
+  "source_hash": "492102f72836aaf9d30cdf82db77478e34897d8c3d509842ad38dc73bab8d1cb",
+  "planned_units": [
+    {
+      "key": "theme-sync",
+      "title": "Converge saved themes across device sync",
+      "parents": [
+        "P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11"
+      ],
+      "depends_on": []
+    },
+    {
+      "key": "connection-state",
+      "title": "Distinguish server connections from tab management access",
+      "parents": [
+        "P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11"
+      ],
+      "depends_on": []
+    },
+    {
+      "key": "settings-layout",
+      "title": "Align Settings session action cards",
+      "parents": [
+        "P-24ec4579-ff37-44c6-9085-56fefe830888"
+      ],
+      "depends_on": []
+    },
+    {
+      "key": "ui-checks",
+      "title": "Add reusable page layout and theme qualification",
+      "parents": [
+        "P-24ec4579-ff37-44c6-9085-56fefe830888"
+      ],
+      "depends_on": [
+        "@settings-layout"
+      ]
+    },
+    {
+      "key": "diagnostic-core",
+      "title": "Redact and cover new feature diagnostics",
+      "parents": [
+        "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d"
+      ],
+      "depends_on": []
+    },
+    {
+      "key": "diagnostic-ui",
+      "title": "Render compact copyable diagnostic rows",
+      "parents": [
+        "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d"
+      ],
+      "depends_on": [
+        "@diagnostic-core"
+      ]
+    },
+    {
+      "key": "diagnostic-access",
+      "title": "Expose on-demand diagnostic bundles to agents",
+      "parents": [
+        "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d"
+      ],
+      "depends_on": [
+        "@diagnostic-core"
+      ]
+    },
+    {
+      "key": "todo-source",
+      "title": "Unify account-bound Todo workspace presentation",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
+        "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
+        "P-346056d8-c254-4a1e-b860-6850c6cb470d",
+        "P-0529505a-68be-5308-a805-44a2f4ddd6a9"
+      ],
+      "depends_on": [
+        "@connection-state"
+      ]
+    },
+    {
+      "key": "todo-capture",
+      "title": "Build direct title-first task capture and editing",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-0ddc8784-c740-5a23-819c-b17db8f6829f"
+      ],
+      "depends_on": [
+        "@todo-source",
+        "@ui-checks"
+      ]
+    },
+    {
+      "key": "today",
+      "title": "Build schedule-aware Today task groups",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
+        "P-346056d8-c254-4a1e-b860-6850c6cb470d"
+      ],
+      "depends_on": [
+        "@todo-source",
+        "@todo-capture",
+        "@ui-checks"
+      ]
+    },
+    {
+      "key": "planning-ui",
+      "title": "Expose Inbox and calendar planning views",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-7cb0bb45-a294-404c-b257-136d0f9f3de4"
+      ],
+      "depends_on": [
+        "@today",
+        "@todo-capture",
+        "@ui-checks"
+      ]
+    },
+    {
+      "key": "history-ui",
+      "title": "Expose retained task history and safe Todo restore",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
+        "P-346056d8-c254-4a1e-b860-6850c6cb470d"
+      ],
+      "depends_on": [
+        "@todo-source",
+        "@todo-capture",
+        "@ui-checks"
+      ]
+    },
+    {
+      "key": "organization-controller",
+      "title": "Add reviewed browser organization workflows",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
+        "P-580e55b1-e10a-4891-bd89-fdbd5c39a627"
+      ],
+      "depends_on": [
+        "@todo-source"
+      ]
+    },
+    {
+      "key": "projects-ui",
+      "title": "Expose projects goals and optional task organization",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-0529505a-68be-5308-a805-44a2f4ddd6a9"
+      ],
+      "depends_on": [
+        "@organization-controller",
+        "@todo-capture",
+        "@ui-checks"
+      ]
+    },
+    {
+      "key": "recurrence-ui",
+      "title": "Expose recurring schedules and occurrence lifecycle",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
+        "P-346056d8-c254-4a1e-b860-6850c6cb470d"
+      ],
+      "depends_on": [
+        "@todo-source",
+        "@todo-capture",
+        "@ui-checks"
+      ]
+    },
+    {
+      "key": "saved-view-ui",
+      "title": "Expose reviewed saved-list authoring",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-580e55b1-e10a-4891-bd89-fdbd5c39a627"
+      ],
+      "depends_on": [
+        "@organization-controller",
+        "@ui-checks"
+      ]
+    },
+    {
+      "key": "statistics-ui",
+      "title": "Move task analytics to a dedicated statistics page",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-346056d8-c254-4a1e-b860-6850c6cb470d",
+        "P-0529505a-68be-5308-a805-44a2f4ddd6a9"
+      ],
+      "depends_on": [
+        "@todo-source",
+        "@history-ui",
+        "@ui-checks"
+      ]
+    },
+    {
+      "key": "todo-sync-ui",
+      "title": "Create dedicated Todo sync and task settings",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d",
+        "P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11"
+      ],
+      "depends_on": [
+        "@connection-state",
+        "@todo-source",
+        "@diagnostic-core",
+        "@ui-checks"
+      ]
+    },
+    {
+      "key": "todo-navigation",
+      "title": "Compose the always-open Todo navigation and task pages",
+      "parents": [
+        "P-26753fc0-29e0-46be-8677-36725314b31a",
+        "P-0ddc8784-c740-5a23-819c-b17db8f6829f"
+      ],
+      "depends_on": [
+        "@todo-capture",
+        "@today",
+        "@planning-ui",
+        "@history-ui",
+        "@projects-ui",
+        "@recurrence-ui",
+        "@saved-view-ui",
+        "@statistics-ui",
+        "@todo-sync-ui",
+        "@ui-checks"
+      ]
+    }
+  ],
+  "findings": [
+    "Theme section upload bypasses full merge; imported preferences do not notify the active theme component or update its fast cache through the inspected import path.",
+    "Connection-management state is tab-local; missing local access cannot establish disabled server enrollment.",
+    "Settings action-card grid has no shared expanding description row; compact diagnostic rows and explicit copy feedback are absent.",
+    "Diagnostics is browser-local and excluded from default encrypted sync. Native journal receipts are separate from app logs; current MCP has no browser-log reader.",
+    "Existing canonical query/agenda/history/organization/recurrence engines and scoped adapters support bounded UI promotion without inventing new game contracts."
+  ],
+  "choices": [
+    "Keep the owner Todo/Today/Dailies structure and reuse related E08-E12 requirements rather than duplicate implementations.",
+    "Use bounded user-mediated redacted diagnostic export as the requested equivalent sharing path; no automatic log transport or new OAuth scope.",
+    "Preserve independent release, real-device and human gates; unsupported advanced recovery/streak/reminder policies retain Pending work."
+  ],
+  "sources": [
+    "src/Habitica.WebApp/Pages/SettingsPage.razor",
+    "src/Habitica.WebApp/Pages/TasksPage.razor",
+    "src/Habitica.WebApp/Pages/LiveTestsPage.razor",
+    "src/Habitica.WebApp/State/AppSessionController.cs",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs",
+    "src/Habitica.WebApp/State/WorkspaceDataController.cs",
+    "src/Habitica.WebApp/Components/ColorSchemePanel.razor",
+    "src/Habitica.WebApp/Theme/ColorSchemeService.cs",
+    "src/Habitica.WebApp/Integration/ChatGptIntegrationClient.cs",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Organization.cs",
+    "src/Habitica.Application/Sync/LocalUserDataPortabilityService.cs",
+    "src/Habitica.Application/Workspace/WorkspaceAgenda.cs",
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs",
+    "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs",
+    "src/Habitica.Application/Workspace/WorkspaceOrganizationService.cs",
+    "src/Habitica.Application/Diagnostics/DiagnosticsLogWriter.cs",
+    "src/Habitica.Storage/StorageKeys.cs",
+    "src/Habitica.WebApp/wwwroot/css/app.css",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs",
+    "tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceLayoutEvidence.cs"
+  ],
+  "official_references": [
+    "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+    "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+    "https://www.todoist.com/help/todoist/get-started/get-started-with-todoist-OgNNJR"
+  ],
+  "validation_boundary": "No application implementation, builds, tests, live account calls or deployment performed. Source/test inspection and documentation consistency only.",
+  "source_fingerprints": {
+    "src/Habitica.WebApp/Pages/SettingsPage.razor": "eec9a135d8d60c60dc13468f28de097bdd00fcdca7afcabd8758aa049c3eec9b",
+    "src/Habitica.WebApp/Pages/TasksPage.razor": "86c1508752094d1ada571fd88fca22c5ccfb55498978f42aa1165edd6deac579",
+    "src/Habitica.WebApp/Pages/LiveTestsPage.razor": "76baf8f1d006e22a879256529bfed820ac311863fd720dffab79fe96bbddb1f2",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "99d1dadcf13447ee781c460c4787f3b5d6f46eb8bbf792bd15f749d1417346d4",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "a6bb16c9640efd7560d2b9782bd2f69b18296ac28e343cb565638d48acfbdaa7",
+    "src/Habitica.WebApp/State/WorkspaceDataController.cs": "60d53b3ef2e32b7d4162ee374f2ec0c9d9d66aba244418873a5e3be0bf6a3a76",
+    "src/Habitica.WebApp/Components/ColorSchemePanel.razor": "53c1cfdf8724bdb8beaca6f73cac6d3349e278dc04b637b6148dd3ac30ffb3bb",
+    "src/Habitica.WebApp/Theme/ColorSchemeService.cs": "9f81d360b616d01ea8e37699c6b7191ee2231a22fbe38e31e4a688cd1c31dda8",
+    "src/Habitica.WebApp/Integration/ChatGptIntegrationClient.cs": "f2f2fc5ca5c4e9c9ae0eaee5c81bd9644bc9c85bf70f4a3ddc7fe5f3a8d6ec48",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.cs": "1008442a966692c749f59506d99eadcf18f1ba3dcad7a67246b49ed007c41f91",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Organization.cs": "28eafaef4af2d170a49abe221b0bddca3b637a5a0bd7b93e46ee7a3be68df68f",
+    "src/Habitica.Application/Sync/LocalUserDataPortabilityService.cs": "5d2fb904242d263438458eeb3d5d666f647dede28f21efbb443b48fa455ef129",
+    "src/Habitica.Application/Workspace/WorkspaceAgenda.cs": "082c8ee236f6fe26a083b2aae3c89696635411ec249aa3ac06fb486f31a0a762",
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "3dc52560917f01a446540246ad429d4fc2b2c477ce3da7822c680cd79be4f679",
+    "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs": "c2164eb0c2df671855caf4c9b976cca1da022c103cba3a964a2b9bf3af5d7a08",
+    "src/Habitica.Application/Workspace/WorkspaceOrganizationService.cs": "7c47a2201b796b14af959c3d61b33b2e1d05d6c69579ce918f2a3dda16bc4dbd",
+    "src/Habitica.Application/Diagnostics/DiagnosticsLogWriter.cs": "6bfd7e49751586c470ab4e8c3fcbed30211ee70d1fdbb0a3409afc5453871e14",
+    "src/Habitica.Storage/StorageKeys.cs": "0d7573bfe765a2d1204e6589fcb77c54e3fcb6f6eddddad03175c01ab7d104b7",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e466d6690920153ffb3d499c2f408346433f7a8817321383d92b4294e1e57b8d",
+    "tests/Habitica.WebApp.Tests/Pages/SettingsPageTests.cs": "59e196730b18dfca3a24f3b5ec4ff335e25d467f112dd80a7e3501cba8a3259e",
+    "tests/Habitica.WebApp.Tests/Theme/ColorSchemeCatalogTests.cs": "02dc7f3482198fee2f50ab731de4067d435b552f281bfc85e4ae08ebf2a57324",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceLayoutEvidence.cs": "34219a215d9251b0a350df0c83aadd0095a49cb0d1cc47e2a9ecf8c37ded2124"
+  },
+  "processing_receipt": {
+    "id": "PR-adf01381-8475-4309-abe9-2c6d4369a2ac",
+    "selected_ids": [
+      "P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11",
+      "P-24ec4579-ff37-44c6-9085-56fefe830888",
+      "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d",
+      "P-26753fc0-29e0-46be-8677-36725314b31a",
+      "P-580e55b1-e10a-4891-bd89-fdbd5c39a627",
+      "P-346056d8-c254-4a1e-b860-6850c6cb470d",
+      "P-7cb0bb45-a294-404c-b257-136d0f9f3de4",
+      "P-c5795748-6f25-4c0a-a471-fe72c1a85862",
+      "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
+      "P-0529505a-68be-5308-a805-44a2f4ddd6a9"
+    ],
+    "created_ids": [
+      "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+      "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
+      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+      "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+      "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+      "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+      "T-574a6ba2-741e-4d13-b798-b909c24de93d",
+      "T-54623cea-9c8f-4819-b33f-b6552c82df55",
+      "T-fb41407b-58d3-4dca-b389-e80bbe517831",
+      "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
+      "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+      "T-9f465413-725a-440e-a464-cb5c555cb87d",
+      "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
+      "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
+      "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+      "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+      "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+      "T-a7dca938-7c13-4878-9363-04862fbfa04d",
+      "T-31fbbe84-a4ab-4bc7-9509-647666e6e017"
+    ],
+    "reused_ids": [],
+    "task_keys": {
+      "todo-navigation": "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+      "todo-sync-ui": "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
+      "statistics-ui": "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+      "saved-view-ui": "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+      "recurrence-ui": "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+      "projects-ui": "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+      "organization-controller": "T-574a6ba2-741e-4d13-b798-b909c24de93d",
+      "history-ui": "T-54623cea-9c8f-4819-b33f-b6552c82df55",
+      "planning-ui": "T-fb41407b-58d3-4dca-b389-e80bbe517831",
+      "today": "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
+      "todo-capture": "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+      "todo-source": "T-9f465413-725a-440e-a464-cb5c555cb87d",
+      "diagnostic-access": "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
+      "diagnostic-ui": "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
+      "diagnostic-core": "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+      "ui-checks": "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+      "settings-layout": "T-2bf91411-423e-483b-95a7-92b9fdc69445",
+      "connection-state": "T-a7dca938-7c13-4878-9363-04862fbfa04d",
+      "theme-sync": "T-31fbbe84-a4ab-4bc7-9509-647666e6e017"
+    },
+    "dispositions": {
+      "P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11": {
+        "status": "promoted",
+        "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately."
+      },
+      "P-24ec4579-ff37-44c6-9085-56fefe830888": {
+        "status": "promoted",
+        "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately."
+      },
+      "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d": {
+        "status": "promoted",
+        "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately."
+      },
+      "P-26753fc0-29e0-46be-8677-36725314b31a": {
+        "status": "promoted",
+        "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately."
+      },
+      "P-580e55b1-e10a-4891-bd89-fdbd5c39a627": {
+        "status": "promoted",
+        "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately."
+      },
+      "P-346056d8-c254-4a1e-b860-6850c6cb470d": {
+        "status": "promoted",
+        "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately."
+      },
+      "P-7cb0bb45-a294-404c-b257-136d0f9f3de4": {
+        "status": "promoted",
+        "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately."
+      },
+      "P-c5795748-6f25-4c0a-a471-fe72c1a85862": {
+        "status": "retained",
+        "reason": "Documented competitor workflows and the local baseline exist, but authenticated competitor journeys, human usability, actual mobile keyboard/safe-area and assistive-technology observations are absent. Actual selected sessions/testers/device evidence is required; source inspection or resized fixtures cannot complete the deliverable. Development UI work remains independent under the owner boundary."
+      },
+      "P-0ddc8784-c740-5a23-819c-b17db8f6829f": {
+        "status": "promoted",
+        "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately."
+      },
+      "P-0529505a-68be-5308-a805-44a2f4ddd6a9": {
+        "status": "promoted",
+        "reason": "Inspected current canonical services, browser adapters, UI and tests. Decompose supported local work into bounded contracts with explicit dependencies and retained provenance; preserve remaining advanced policy gaps separately."
+      }
+    }
+  },
+  "retained_original_pending_ids": [
+    "P-c5795748-6f25-4c0a-a471-fe72c1a85862"
+  ],
+  "retained_remainder_ids": [
+    "P-64d1995c-f862-498c-9437-e867117f2129",
+    "P-438c79fe-385d-4657-be24-85fad9a49c31",
+    "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
+  ],
+  "documentation_checks": {
+    "future_strict": {
+      "ok": true,
+      "errors": []
+    },
+    "repository_documentation": {
+      "ok": true,
+      "warnings": [
+        "Latest recorded audit is stale; historical verdicts remain unchanged"
+      ]
+    },
+    "diff_whitespace": {
+      "ok": true
+    },
+    "active_snapshot_and_completed_ids_preserved": true,
+    "dependency_graph": "Nineteen new units form an acyclic graph; all referenced IDs exist in task index or retained outcomes."
+  }
+}
