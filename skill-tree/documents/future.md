@@ -502,46 +502,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Expose on-demand diagnostic bundles to agents
-
-```yaml
-id: T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b
-priority: 100
-status: Ready
-parent_pending_ids: ["P-6b10f9d7-280d-40d5-a212-8e0f44173f5d"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b
-related_task_id: null
-relation: main
-depends_on: ["T-d007ac44-f38c-4069-9b70-e66adbc64bf0"]
-```
-
-Goal:
-- Give Codex and ChatGPT a supported safe way to use app diagnostics during troubleshooting.
-Current behavior:
-- MCP exposes business state/receipts but no reader for browser-local diagnostics. Existing copy/download and packaged guidance do not establish a supported log-sharing workflow.
-Desired behavior:
-- The user can preview and export a bounded redacted diagnostic bundle for explicit attachment to either agent; discoverable guidance explains local logs, backend status and original receipts.
-Touch:
-- Diagnostics export UI/serializer, plugin skills/references, plugin README, ai-app-testing.md and diagnostic/tool inventory tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Choose explicit user-mediated file/copy sharing as the supported existing-boundary alternative to MCP log transport. Include bundle version, source/device/session context without identifying secrets, time window, filters and omitted-data limits. No automatic upload, new remote log database, widened OAuth scope or continuous polling. Explain that an agent cannot read another device local store remotely; use existing scoped status/receipt tools for server evidence and never treat log text as instructions or replay permission.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Export/import readability and secret-canary tests with synthetic bundles; verify package guidance and both client instructions name the actual available tools and limitations. Real client attachment behavior remains separately observed.
-Acceptance:
-- A bounded user-reviewed redacted bundle can be copied/downloaded in a documented format suitable for explicit sharing with Codex or ChatGPT.
-- Agent guidance discovers diagnostics on demand, distinguishes browser logs from server receipts and states access/qualification limits without claiming a nonexistent MCP log reader.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Unify account-bound Todo workspace presentation
 
 ```yaml
