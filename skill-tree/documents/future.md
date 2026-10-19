@@ -238,50 +238,6 @@ Expected behavior:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Publish unlocked development capabilities and owner checks
-
-```yaml
-id: T-cd38c727-430a-4565-a264-f33d9b81bca3
-priority: 101
-status: Ready
-parent_pending_ids: ["P-e3df2434-4167-41d7-9ad4-4c57d886b5a1"]
-processing_run_id: PR-634bec08-2883-4463-b879-c4b2447e6f53
-root_task_id: T-cd38c727-430a-4565-a264-f33d9b81bca3
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Publish implemented capabilities for owner development on the existing website without presenting incomplete release qualification as complete.
-Current behavior:
-- Existing deployment uses pilot flags. Current source contains newer canonical task/organization/query behavior; adaptive pacing needs Auth migration 0008 before activation.
-Desired behavior:
-- A named development capability profile explicitly enables implemented product flags and authenticated planning UI, preserves per-account consent and exposes matching website/Worker/package versions.
-Touch:
-- Deployment generator/profile tests, current public operator input and generated bundle, release/operator docs, workflow checkpoint and sanitized publication/live evidence.
-Discovery allowance:
-- Read current remote migration state, secret names, public deployment metadata and aggregate executor/queue counts. Reuse existing account, resources, domain and protected credentials without logging secrets.
-Out of scope:
-- Party departure or agent party mutations, real Start New Day tests, real key rotation/deletion, second-account consent, public plugin submission and fabricated client/device/usability evidence.
-Implementation constraints:
-- Retain the existing habitica-companion.pages.dev target without a dev suffix. Preserve resource bindings, source develop branch and private secrets; update matching Auth/Workspace/MCP/browser bundles.
-- Default generation remains the existing pilot profile. An explicit development profile enables only recognized implemented availability flags; new unknown flags fail closed. Account-level executor/planning consent and reviewed foreground game actions remain mandatory.
-- Inspect executor consent and pending effects before enabling availability. Do not dispatch existing unrelated work as a smoke test or clear unknown-outcome fences.
-- Apply only required unapplied database migrations after reviewing SQL. No destructive data reset, secret value read, credential rotation or schema bypass.
-- Owner development exposure may precede broader client/device and E01 hands-on qualification. Preserve failed/unrun gates as unverified; development availability does not count as acceptance evidence.
-Questions and required clarifications:
-- [Resolved - owner request and explicit answer] Publication and own-account Codex gameplay tests are authorized. Standing party read-only testing and permanent departure prohibition remain. Start New Day testing, ChatGPT/multi-user/device qualification and real key operations remain outside the selected test sequence.
-Validation:
-- Profile generation/default/isolation tests, public settings and app/Worker builds, applicable local regressions, required migration/binding/secret-name checks, hosted asset/health checks and bounded own-account task/receipt tests with sanitized evidence.
-Acceptance:
-- Explicit development profile publishes matching current capabilities on the existing selected website while consent, previews, privacy, identity isolation and departure protections remain intact.
-- Bounded own-account Codex checks record actual outcomes and original receipts without agent party mutations, Start New Day testing or secret disclosure; missing broader release evidence remains open.
-Documentation updates:
-- Record selected development capability profile, publication identities, authorized testing scope and unrun broader release requirements. Resume the existing controller with owner scope amendment.
-Risks:
-- Mistaking availability for user consent, scheduled dispatch of old pending effects or claiming release completion from an owner-only pilot.
-
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml

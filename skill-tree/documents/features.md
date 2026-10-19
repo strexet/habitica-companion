@@ -3004,4 +3004,6 @@ Independent workspace.organization.write grants reviewed savedTaskView create/up
 
 ## Explicit development capability profile
 
+Current availability: the explicit development profile was published on 2026-10-19 from source aab2b87 to the existing site. Earlier disabled-by-default statements describe templates and pilot defaults. [Current evidence](../history/validation/development-publication.json) records enabled availability separately from account consent and actual live checks. Background consent remains separate; no scheduler casts spells or starts a Habitica day. Broad release/client/device qualification remains open.
+
 Status: implemented public configuration generation. Owner: deploy/prepare-dev.mjs. Default pilot generation preserves disabled game-effect availability. Explicit featureProfile development enables only recognized implemented backend flags and authenticated frontend party-planning controls; unknown profile/flag mappings fail closed. Normal user controls retain existing defaults. No generated setting supplies OAuth grants, account planning/executor consent, prepared action approval, key-operation callers or credential values. Publication uses the selected existing website and matching current bundles. Real qualification and publication evidence remain separate from generation tests.

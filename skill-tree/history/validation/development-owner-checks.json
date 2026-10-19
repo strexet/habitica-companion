@@ -1,0 +1,204 @@
+{
+  "date": "2026-10-19",
+  "client": "Existing Codex native MCP OAuth grant",
+  "scope": "Disposable own-account native tasks and browser self-spell/equipment",
+  "commands": [
+    {
+      "test": "todo",
+      "stage": "created",
+      "operation": "createTodo",
+      "taskId": "ebe16c8f-391c-44a8-a28a-0c5601b06f57",
+      "commandId": "a055163b-437e-45ba-b5b6-0189c93b9f08",
+      "correlationId": "847c1c39-e9da-4075-8355-c2235b2b4c4c",
+      "taskText": "Companion dev check — 2026-10-19",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "acceptedEventCount": 0,
+      "confirmedProjectionCount": 0,
+      "totalProjectionCount": 0,
+      "failurePosition": null,
+      "failure": "none",
+      "retryAtUtc": null,
+      "refreshSucceeded": true,
+      "outcomeUnknown": false,
+      "originalReceiptMatches": true
+    },
+    {
+      "test": "todo",
+      "stage": "updated",
+      "operation": "updateTask",
+      "taskId": "ebe16c8f-391c-44a8-a28a-0c5601b06f57",
+      "commandId": "25e75af6-195f-49d5-ba30-e98a659d92c5",
+      "correlationId": "474a1c73-a989-4604-8d17-2e6374c3345f",
+      "taskText": "Companion dev check — 2026-10-19",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "acceptedEventCount": 0,
+      "confirmedProjectionCount": 0,
+      "totalProjectionCount": 0,
+      "failurePosition": null,
+      "failure": "none",
+      "retryAtUtc": null,
+      "refreshSucceeded": true,
+      "outcomeUnknown": false,
+      "originalReceiptMatches": true
+    },
+    {
+      "test": "todo",
+      "stage": "completed",
+      "operation": "completeTask",
+      "taskId": "ebe16c8f-391c-44a8-a28a-0c5601b06f57",
+      "commandId": "5e4ae11e-b713-42a3-8602-3090d4ce6c99",
+      "correlationId": "29c8d3fb-1710-4d58-b34c-c36c2310036f",
+      "taskText": "Companion dev check — 2026-10-19",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "acceptedEventCount": 1,
+      "confirmedProjectionCount": 0,
+      "totalProjectionCount": 0,
+      "failurePosition": null,
+      "failure": "none",
+      "retryAtUtc": null,
+      "refreshSucceeded": true,
+      "outcomeUnknown": false,
+      "originalReceiptMatches": true
+    },
+    {
+      "test": "todo",
+      "stage": "deleted",
+      "operation": "deleteTask",
+      "taskId": "ebe16c8f-391c-44a8-a28a-0c5601b06f57",
+      "commandId": "68db5cc1-47be-4c60-9373-7ea587f977f1",
+      "correlationId": "fcdff895-79ac-45ff-9406-25e2f065d4f4",
+      "taskText": "Companion dev check — 2026-10-19",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "acceptedEventCount": 0,
+      "confirmedProjectionCount": 0,
+      "totalProjectionCount": 0,
+      "failurePosition": null,
+      "failure": "none",
+      "retryAtUtc": null,
+      "refreshSucceeded": true,
+      "outcomeUnknown": false,
+      "originalReceiptMatches": true
+    },
+    {
+      "test": "daily",
+      "stage": "created",
+      "operation": "createDaily",
+      "taskId": "c8260efa-71b2-4f48-9126-79968aeb72a9",
+      "commandId": "7451240c-6d5f-4dee-9352-5d090788c029",
+      "correlationId": "27ab7675-3a5c-4afe-a55e-c394cfbe5536",
+      "taskText": "Companion dev Daily check — 2026-10-19",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "acceptedEventCount": 0,
+      "confirmedProjectionCount": 0,
+      "totalProjectionCount": 0,
+      "failurePosition": null,
+      "failure": "none",
+      "retryAtUtc": null,
+      "refreshSucceeded": true,
+      "outcomeUnknown": false,
+      "originalReceiptMatches": true
+    },
+    {
+      "test": "daily",
+      "stage": "completed",
+      "operation": "completeTask",
+      "taskId": "c8260efa-71b2-4f48-9126-79968aeb72a9",
+      "commandId": "9659a4e0-d3ba-4f28-b2a2-e16d8aa37dd7",
+      "correlationId": "467b7e8f-18f2-4c70-ab29-5c837cc219ae",
+      "taskText": "Companion dev Daily check — 2026-10-19",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "acceptedEventCount": 1,
+      "confirmedProjectionCount": 0,
+      "totalProjectionCount": 0,
+      "failurePosition": null,
+      "failure": "none",
+      "retryAtUtc": null,
+      "refreshSucceeded": true,
+      "outcomeUnknown": false,
+      "originalReceiptMatches": true
+    },
+    {
+      "test": "daily",
+      "stage": "deleted",
+      "operation": "deleteTask",
+      "taskId": "c8260efa-71b2-4f48-9126-79968aeb72a9",
+      "commandId": "d3fe1311-d2de-4872-a211-da8233e0a40e",
+      "correlationId": "5c19c2c6-f9de-498f-8767-3439958519b9",
+      "taskText": "Companion dev Daily check — 2026-10-19",
+      "savedInCompanion": true,
+      "habiticaProjectionStatus": "notRequested",
+      "acceptedEventCount": 0,
+      "confirmedProjectionCount": 0,
+      "totalProjectionCount": 0,
+      "failurePosition": null,
+      "failure": "none",
+      "retryAtUtc": null,
+      "refreshSucceeded": true,
+      "outcomeUnknown": false,
+      "originalReceiptMatches": true
+    }
+  ],
+  "archived": [
+    {
+      "kind": "todo",
+      "taskHidden": true
+    },
+    {
+      "kind": "daily",
+      "taskHidden": true
+    }
+  ],
+  "reads": {
+    "profile": true,
+    "accountStatus": true
+  },
+  "browser": {
+    "signIn": true,
+    "rememberCredentials": false,
+    "selfSpell": {
+      "skill": "defensiveStance",
+      "count": 1,
+      "manaBefore": 225,
+      "manaAfter": 200,
+      "autoEquip": false,
+      "successText": "Cast defensiveStance 1 time(s)."
+    },
+    "equipment": {
+      "temporary": "Dandy Hat",
+      "restored": "Nameless Helm",
+      "originalStats": [
+        27,
+        94,
+        27,
+        2
+      ],
+      "restoredStats": [
+        27,
+        94,
+        27,
+        2
+      ]
+    },
+    "screenshots": [
+      "skill-tree/history/validation/development-self-spell.png",
+      "skill-tree/history/validation/development-equipment-restored.png"
+    ]
+  },
+  "unrun": [
+    "ChatGPT retest",
+    "New native tools after client discovery refresh",
+    "Background effect dispatch",
+    "Start New Day",
+    "Party mutations",
+    "Real key operations",
+    "Second-account isolation",
+    "Mobile devices",
+    "Private skill activation"
+  ]
+}

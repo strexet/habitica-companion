@@ -80,7 +80,8 @@
       "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb",
       "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61",
       "T-bf7da0ac-7ee6-4c79-a0e8-e37e9e5d31b4",
-      "T-edd2f444-7dab-4847-9db0-21651c6f5c37"
+      "T-edd2f444-7dab-4847-9db0-21651c6f5c37",
+      "T-cd38c727-430a-4565-a264-f33d9b81bca3"
     ],
     "completion_refs": {
       "T-05547c12-8391-4d20-a0cb-0371361d6cd7": "O-3255b134-6c54-4fe0-ba90-d997145cc193",
@@ -153,6 +154,7 @@
       "T-c754c836-f4b7-413c-9733-35f18a0db6a6": "O-1f71b9d7-7b0f-4c7f-b63e-81b5b0b683e0",
       "T-c8b4977c-8056-4d3d-9867-0d7c003c4c00": "O-442f25f5-8685-4fd0-83ce-fd77446a7c77",
       "T-cab1c5ac-78c1-4293-bf88-c72fb60d4f17": "O-a050001b-edd5-41b3-ba4e-3a9005c3c5e4",
+      "T-cd38c727-430a-4565-a264-f33d9b81bca3": "O-54e53c89-a344-4a7c-874f-4c2aa508c481",
       "T-d8b85219-8fe4-4f3b-b68f-a1768cb47ceb": "O-17aadbf8-9bc4-49ac-993d-8154a2d88fc6",
       "T-e0fc168b-49d9-48ee-a6d2-c075e35852b2": "O-4ccf3fa4-fb60-41c8-b7cb-8c503a3f3f13",
       "T-e33bccdc-22f1-5043-9230-3d12d9e9563d": "O-91cb8eae-3dec-4b94-b45b-dcdeeb72f11b",
@@ -164,8 +166,8 @@
       "T-fc9ca6a7-dac6-4239-9847-eff405c9ed61": "O-fc6f4e76-63c3-41d9-b7d2-5455eb45164b",
       "T-fd23e672-62b7-4dac-b0c4-d8ba321aa2ca": "O-cee482d5-3499-4e41-be3b-ebf181723600"
     },
-    "current_task_id": "T-cd38c727-430a-4565-a264-f33d9b81bca3",
-    "cycle_signature": "82b5514161b9d2f318309c0972fb70dfe0814cb5bd0881c6de5ee1e4d05a574e",
+    "current_task_id": null,
+    "cycle_signature": "849a60b613cd6c8150cf05468ad863c34561e7c44e01e63c10a6841c19bd5324",
     "deferred_ids": [],
     "history_refs": [
       "skill-tree/history/validation/archive-count-correction.json",
@@ -175,12 +177,10 @@
     "id": "WR-58676666-0043-43fa-b934-02eff3e3ead6",
     "limits": {},
     "mode": "all",
-    "next_action": "Commit reviewed source, publish Auth then Workspace then MCP then Pages, verify public metadata/assets and run bounded owner Codex checks.",
+    "next_action": "Promote bounded mobile saved-view controls from the selected E12 remainder; retain review/reminder policy and broad release evidence.",
     "partial_work": [
-      "All local checks pass: 779 .NET, 123 Auth, 363 Workspace and 26 Functions tests. Release app and all three exact-profile dry builds pass.",
-      "Remote Auth 0008 applied; previous versions recorded, required secret names retained and every D1/KV/service identity matches the existing deployment.",
-      "Built public frontend settings match the complete selected development bundle; source defaults restored.",
-      "Zero active executor opt-ins and no opted-in queue before activation. No live account test has run during this resumed sequence yet."
+      "Development publication and bounded owner checks complete.",
+      "Research the remaining originally selected local Pending areas under the owner development qualification boundary."
     ],
     "pending_ids": [
       "P-801f3457-265f-404e-95a5-9cf33aa923bf",
@@ -246,7 +246,7 @@
       "P-89b4d49c-9f52-41e6-af2f-b0107c3b87bb",
       "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1"
     ],
-    "phase": "publish",
+    "phase": "research",
     "processing_results": [
       {
         "created_ids": [
@@ -1765,7 +1765,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "38bf99fb5cc9d87573f357cdf05e84138f9a447227d2ac6404816f5512eb983e",
+  "source_hash": "9dbb7c1c474ea7cbd84bb442741124cf2859055a1bf648844cef9ec62eabe2b7",
   "tasks": [
     {
       "depends_on": [],
@@ -1852,22 +1852,6 @@
       "title": "E10 Categories, goals, projects, progress and lightweight workflows UX"
     },
     {
-      "depends_on": [],
-      "id": "T-cd38c727-430a-4565-a264-f33d9b81bca3",
-      "line": 241,
-      "parent_pending_ids": [
-        "P-e3df2434-4167-41d7-9ad4-4c57d886b5a1"
-      ],
-      "priority": 101,
-      "processing_run_id": "PR-634bec08-2883-4463-b879-c4b2447e6f53",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-cd38c727-430a-4565-a264-f33d9b81bca3",
-      "status": "Ready",
-      "title": "Publish unlocked development capabilities and owner checks"
-    },
-    {
       "depends_on": [
         "T-3afa6af6-cc43-4ba9-818e-5cbd48bcf17e",
         "T-0b3a2a66-56a8-4b0b-8f47-9fb2853d3735",
@@ -1882,7 +1866,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 285,
+      "line": 241,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -1906,7 +1890,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 327,
+      "line": 283,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -1922,7 +1906,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 482,
+      "line": 438,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1936,7 +1920,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 519,
+      "line": 475,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1950,7 +1934,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 556,
+      "line": 512,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1964,7 +1948,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 689,
+      "line": 645,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1978,7 +1962,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 727,
+      "line": 683,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1992,7 +1976,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 761,
+      "line": 717,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2006,7 +1990,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 796,
+      "line": 752,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2020,7 +2004,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 830,
+      "line": 786,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2034,7 +2018,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 868,
+      "line": 824,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2048,7 +2032,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 895,
+      "line": 851,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2062,7 +2046,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 917,
+      "line": 873,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -2076,7 +2060,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 944,
+      "line": 900,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

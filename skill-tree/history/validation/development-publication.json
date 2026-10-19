@@ -1,0 +1,99 @@
+{
+  "source_commit": "aab2b871e9175775aab745b749f8bb2238bda770",
+  "workers": {
+    "chatgpt-auth": "a7fd180f-3feb-40dd-8440-66ef9fc34ad1",
+    "companion-workspace": "07f04ca4-d4a3-45ec-b4a4-4ae2e81b059a",
+    "chatgpt-mcp": "e15a2de7-5c93-4cf4-83d2-b0c467641eb7"
+  },
+  "pages_url": "https://747d86d9.habitica-companion.pages.dev",
+  "date": "2026-10-19",
+  "website": "https://habitica-companion.pages.dev",
+  "source_branch": "develop",
+  "hosting_slot": "main",
+  "feature_profile": "development",
+  "hosted_checks": {
+    "appsettings.json": {
+      "status": 200,
+      "sha256": "8ae3e4d461c52716ddd47757882d9a9fe75bca967ee9ca0538746d6b265f082e",
+      "matches_release_artifact": true
+    },
+    "_framework/blazor.boot.json": {
+      "status": 200,
+      "sha256": "abbbac21f5f6327d8a51e78e413aaad134f90dc0ed01bffcb6ebf90bf56e1572",
+      "matches_release_artifact": true
+    },
+    "service-worker-assets.js": {
+      "status": 200,
+      "sha256": "75098b98b5e6b7e6bbafb398973dd8ab1c3aed98bcac6acb8b2dc2451a36f8de",
+      "matches_release_artifact": true
+    },
+    "/settings": {
+      "status": 200
+    },
+    "/tasks": {
+      "status": 200
+    },
+    "/spells": {
+      "status": 200
+    },
+    "/privacy": {
+      "status": 200
+    },
+    "auth": {
+      "status": 200,
+      "body": {
+        "service": "auth",
+        "authorization": "enabled"
+      }
+    },
+    "workspace": {
+      "status": 200,
+      "body": {
+        "service": "workspace",
+        "enabled": true
+      }
+    },
+    "mcp": {
+      "status": 200,
+      "body": {
+        "service": "mcp",
+        "authService": "reachable",
+        "authorization": "unavailable"
+      }
+    },
+    "mcp_unauthenticated": {
+      "status": 401,
+      "challenge": true
+    }
+  },
+  "deployed_flags": {
+    "chatgpt-auth": {
+      "ENROLLMENT_ENABLED": true,
+      "OAUTH_ENABLED": true,
+      "WORKSPACE_ENABLED": true,
+      "PROJECTION_ENABLED": true,
+      "PARTY_ENABLED": true,
+      "SPELLS_ENABLED": true,
+      "CRON_ENABLED": true,
+      "KEY_OPERATIONS_ENABLED": true,
+      "ADAPTIVE_PACING_ENABLED": true
+    },
+    "companion-workspace": {
+      "WORKSPACE_ENABLED": true,
+      "EXECUTOR_ENABLED": true,
+      "PARTY_ENABLED": true,
+      "SPELLS_ENABLED": true,
+      "CRON_ENABLED": true
+    },
+    "chatgpt-mcp": {
+      "OAUTH_ENABLED": true
+    }
+  },
+  "preflight_evidence": "skill-tree/history/validation/development-unlock-preflight.json",
+  "live_evidence": "skill-tree/history/validation/development-owner-checks.json",
+  "existing_bindings_retained": true,
+  "secret_values_read": false,
+  "credential_key_version": 1,
+  "per_account_consent_unchanged": true,
+  "release_qualification_complete": false
+}
