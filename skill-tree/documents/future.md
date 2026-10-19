@@ -98,6 +98,32 @@ Current context:
 Source:
 - Owner request on 2026-10-19; InventoryPage.razor equipment-optimizer-goal control and _optimizationGoal default.
 
+### Serialize concurrent local diagnostic history writes
+
+```yaml
+id: P-15da69d1-68cb-47d2-b8ae-2edca2436137
+priority: 99
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: T-d007ac44-f38c-4069-9b70-e66adbc64bf0
+related_task_id: T-d007ac44-f38c-4069-9b70-e66adbc64bf0
+relation: followup
+depends_on: []
+```
+
+Description:
+- DiagnosticsLogStore.AppendAsync reads the current array and later writes a replacement without coordination. Overlapping asynchronous append operations can overwrite an earlier appended event; a concurrent clear can also be overwritten.
+
+Expected behavior:
+- Serialize append and clear mutations for the scoped local diagnostic store, preserve the existing retention cap and read behavior, and prove the interleaving with deterministic storage gates. Diagnostic storage remains supplementary and cannot change original command results.
+
+Current context:
+- Independent nonblocking store reliability work; safe command receipts and log sanitization remain authoritative for the selected root acceptance.
+
+Source:
+- Static inspection of src/Habitica.Storage/DiagnosticsLogStore.cs GetRecentAsync, AppendAsync and ClearAsync during new diagnostic boundary coverage.
+
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.

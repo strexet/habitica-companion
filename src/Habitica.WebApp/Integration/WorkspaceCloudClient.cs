@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using Habitica.Application.Workspace;
 using Habitica.Domain.Auth;
 using Habitica.Domain.Workspace;
+using Habitica.Application.Diagnostics;
 
 namespace Habitica.WebApp.Integration;
 
@@ -14,6 +15,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
     private string? _token;
     private int _generation;
     private readonly bool _partyEnabled;
+    private readonly DiagnosticsLogWriter? _diagnostics;
     public bool PartyPlanningAvailable => _partyEnabled && IsAvailable;
     public Guid? WorkspaceId { get; private set; }
     public bool ConnectionStatusVerified { get; private set; }
@@ -21,9 +23,9 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
     public bool ExecutorAvailable { get; private set; }
     public bool IsAvailable => _baseUri is not null && _vault.IsVaultAvailable;
 
-    public WorkspaceCloudClient(HttpClient http, ChatGptIntegrationClient vault, string? baseUrl, bool partyEnabled = false)
+    public WorkspaceCloudClient(HttpClient http, ChatGptIntegrationClient vault, string? baseUrl, bool partyEnabled = false, DiagnosticsLogWriter? diagnostics = null)
     {
-        _http = http; _vault = vault; _partyEnabled = partyEnabled;
+        _http = http; _vault = vault; _partyEnabled = partyEnabled; _diagnostics = diagnostics;
         if (Uri.TryCreate(baseUrl, UriKind.Absolute, out var uri)
             && (uri.Scheme == "https" || uri.Scheme == "http" && uri.IsLoopback)
             && uri.AbsolutePath == "/" && string.IsNullOrEmpty(uri.UserInfo) && string.IsNullOrEmpty(uri.Query) && string.IsNullOrEmpty(uri.Fragment)) _baseUri = uri;

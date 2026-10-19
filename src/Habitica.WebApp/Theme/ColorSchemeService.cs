@@ -1,5 +1,7 @@
 using Habitica.Storage;
 using Habitica.Application.Sync;
+using Habitica.Application.Diagnostics;
+using Habitica.Domain.Diagnostics;
 using System.Text.Json;
 using Microsoft.JSInterop;
 
@@ -9,6 +11,7 @@ public sealed class ColorSchemeService
 {
     private readonly IKeyValueStorage _keyValueStorage;
     private readonly IJSRuntime _jsRuntime;
+    private readonly DiagnosticsLogWriter? _diagnostics;
 
     private readonly SemaphoreSlim _preferencesLock;
     private string? _loadedPreferences;
@@ -16,12 +19,17 @@ public sealed class ColorSchemeService
     public event Func<ColorSchemeState, Task>? Imported;
 
     public ColorSchemeService(IKeyValueStorage keyValueStorage, IJSRuntime jsRuntime,
-        LocalUserDataPortabilityService? portability = null)
+        LocalUserDataPortabilityService? portability = null, DiagnosticsLogWriter? diagnostics = null)
     {
         _keyValueStorage = keyValueStorage;
         _jsRuntime = jsRuntime;
+        _diagnostics = diagnostics;
         _preferencesLock = portability?.MutationLock ?? new SemaphoreSlim(1, 1);
     }
+
+    private Task<T> ObserveAppearanceAsync<T>(string operation, Func<Task<T>> action, Func<T, bool> succeeded) => _diagnostics is null
+        ? action() : _diagnostics.ObserveAsync(DiagnosticsFeatureArea.Sync, operation, action,
+            value => new(succeeded(value) ? DiagnosticsResult.Success : DiagnosticsResult.Refused));
 
     public Task<ColorSchemeState> LoadAsync(CancellationToken cancellationToken = default)
         => WithPreferencesLockAsync(() => LoadAsyncCore(cancellationToken), cancellationToken);
@@ -109,7 +117,7 @@ public sealed class ColorSchemeService
     }
 
     public Task<ColorSchemeState> SelectAsync(string schemeId, CancellationToken cancellationToken = default)
-        => WithPreferencesLockAsync(() => SelectAsyncCore(schemeId, cancellationToken), cancellationToken);
+        => ObserveAppearanceAsync("appearance-select", () => WithPreferencesLockAsync(() => SelectAsyncCore(schemeId, cancellationToken), cancellationToken), _ => true);
 
     private async Task<ColorSchemeState> SelectAsyncCore(string schemeId, CancellationToken cancellationToken = default)
     {
@@ -128,7 +136,7 @@ public sealed class ColorSchemeService
     }
 
     public Task<(ColorSchemeState State, IReadOnlyList<string> Errors)> SaveCustomAsync(ColorSchemeDefinition scheme, bool select, CancellationToken cancellationToken = default)
-        => WithPreferencesLockAsync(() => SaveCustomAsyncCore(scheme, select, cancellationToken), cancellationToken);
+        => ObserveAppearanceAsync("appearance-save", () => WithPreferencesLockAsync(() => SaveCustomAsyncCore(scheme, select, cancellationToken), cancellationToken), value => value.Errors.Count == 0);
 
     private async Task<(ColorSchemeState State, IReadOnlyList<string> Errors)> SaveCustomAsyncCore(
         ColorSchemeDefinition scheme,
@@ -174,7 +182,7 @@ public sealed class ColorSchemeService
     }
 
     public Task<ColorSchemeState> DeleteCustomAsync(string schemeId, CancellationToken cancellationToken = default)
-        => WithPreferencesLockAsync(() => DeleteCustomAsyncCore(schemeId, cancellationToken), cancellationToken);
+        => ObserveAppearanceAsync("appearance-delete", () => WithPreferencesLockAsync(() => DeleteCustomAsyncCore(schemeId, cancellationToken), cancellationToken), _ => true);
 
     private async Task<ColorSchemeState> DeleteCustomAsyncCore(string schemeId, CancellationToken cancellationToken = default)
     {
@@ -253,6 +261,8 @@ public sealed class ColorSchemeService
             _loadedPreferences = serialized;
             return new ColorSchemeState(active, ColorSchemeCatalog.BuiltInSchemes, preferences.CustomSchemes);
         }, cancellationToken);
+        if (state is not null && _diagnostics is not null)
+            await _diagnostics.ObserveAsync(DiagnosticsFeatureArea.Sync, "appearance-import", () => Task.FromResult(true), _ => new(DiagnosticsResult.Success));
         if (state is not null && Imported is not null)
             foreach (Func<ColorSchemeState, Task> handler in Imported.GetInvocationList()) await handler(state);
     }

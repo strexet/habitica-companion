@@ -130,7 +130,8 @@ public sealed class AppSessionController : IAppSessionController
     public bool IsChatGptIntegrationAvailable => _integrationClient?.IsAvailable == true;
     public bool HasChatGptConnection => _integrationClient?.HasConnection == true;
 
-    public async Task<IntegrationLinkResult> EnrollChatGptAsync(bool consentAcknowledged, CancellationToken cancellationToken = default)
+    public Task<IntegrationLinkResult> EnrollChatGptAsync(bool consentAcknowledged, CancellationToken cancellationToken = default) => ObserveIntegrationAsync("integration-enroll", () => EnrollChatGptCoreAsync(consentAcknowledged, cancellationToken), value => value.Succeeded);
+    private async Task<IntegrationLinkResult> EnrollChatGptCoreAsync(bool consentAcknowledged, CancellationToken cancellationToken = default)
     {
         if (!consentAcknowledged || !State.IsAuthenticated || State.IsBusy || _integrationClient is null || !IsChatGptIntegrationAvailable)
             return new(false, "Sign in and acknowledge the integration disclosure before enabling access.");
@@ -142,7 +143,8 @@ public sealed class AppSessionController : IAppSessionController
         return result;
     }
 
-    public async Task<IntegrationLinkResult> CreateChatGptLinkAsync(CancellationToken cancellationToken = default)
+    public Task<IntegrationLinkResult> CreateChatGptLinkAsync(CancellationToken cancellationToken = default) => ObserveIntegrationAsync("integration-link", () => CreateChatGptLinkCoreAsync(cancellationToken), value => value.Succeeded);
+    private async Task<IntegrationLinkResult> CreateChatGptLinkCoreAsync(CancellationToken cancellationToken = default)
     {
         if (_integrationClient is null || !State.IsAuthenticated) return new(false, "Sign in to manage the integration.");
         var result = await _integrationClient.CreateLinkAsync(cancellationToken);
@@ -150,16 +152,14 @@ public sealed class AppSessionController : IAppSessionController
         return result;
     }
 
-    public Task<IntegrationStatusResult> GetChatGptStatusAsync(CancellationToken cancellationToken = default) =>
-        _integrationClient is not null && State.IsAuthenticated ? _integrationClient.GetStatusAsync(cancellationToken) : Task.FromResult(new IntegrationStatusResult(false, "Sign in to manage the integration."));
+    public Task<IntegrationStatusResult> GetChatGptStatusAsync(CancellationToken cancellationToken = default) => ObserveIntegrationAsync("integration-status", () => _integrationClient is not null && State.IsAuthenticated ? _integrationClient.GetStatusAsync(cancellationToken) : Task.FromResult(new IntegrationStatusResult(false, "Sign in to manage the integration.")), value => value.Succeeded);
 
-    public Task<IntegrationLinkResult> RevokeChatGptGrantsAsync(CancellationToken cancellationToken = default) =>
-        _integrationClient is not null && State.IsAuthenticated ? _integrationClient.RevokeGrantsAsync(cancellationToken) : Task.FromResult(new IntegrationLinkResult(false, "Sign in to manage the integration."));
+    public Task<IntegrationLinkResult> RevokeChatGptGrantsAsync(CancellationToken cancellationToken = default) => ObserveIntegrationAsync("integration-revoke", () => _integrationClient is not null && State.IsAuthenticated ? _integrationClient.RevokeGrantsAsync(cancellationToken) : Task.FromResult(new IntegrationLinkResult(false, "Sign in to manage the integration.")), value => value.Succeeded);
 
-    public Task<IntegrationLinkResult> RotateChatGptManagementAsync(CancellationToken cancellationToken = default) =>
-        _integrationClient is not null && State.IsAuthenticated ? _integrationClient.RotateManagementAsync(cancellationToken) : Task.FromResult(new IntegrationLinkResult(false, "Sign in to manage the integration."));
+    public Task<IntegrationLinkResult> RotateChatGptManagementAsync(CancellationToken cancellationToken = default) => ObserveIntegrationAsync("integration-management", () => _integrationClient is not null && State.IsAuthenticated ? _integrationClient.RotateManagementAsync(cancellationToken) : Task.FromResult(new IntegrationLinkResult(false, "Sign in to manage the integration.")), value => value.Succeeded);
 
-    public async Task<IntegrationLinkResult> RevalidateChatGptAsync(CancellationToken cancellationToken = default)
+    public Task<IntegrationLinkResult> RevalidateChatGptAsync(CancellationToken cancellationToken = default) => ObserveIntegrationAsync("integration-revalidate", () => RevalidateChatGptCoreAsync(cancellationToken), value => value.Succeeded);
+    private async Task<IntegrationLinkResult> RevalidateChatGptCoreAsync(CancellationToken cancellationToken = default)
     {
         if (_integrationClient is null || !IsChatGptIntegrationAvailable || !State.IsAuthenticated || State.IsBusy) return new(false, "Sign in to revalidate credentials.");
         var credentials = await ResolveCredentialsAsync(cancellationToken);
@@ -170,12 +170,22 @@ public sealed class AppSessionController : IAppSessionController
         return result;
     }
 
-    public async Task<IntegrationLinkResult> DisconnectChatGptAsync(bool deleteProfile, CancellationToken cancellationToken = default)
+    public Task<IntegrationLinkResult> DisconnectChatGptAsync(bool deleteProfile, CancellationToken cancellationToken = default) => ObserveIntegrationAsync("integration-disconnect", () => DisconnectChatGptCoreAsync(deleteProfile, cancellationToken), value => value.Succeeded);
+    private async Task<IntegrationLinkResult> DisconnectChatGptCoreAsync(bool deleteProfile, CancellationToken cancellationToken = default)
     {
         if (_integrationClient is null || !State.IsAuthenticated) return new(false, "Sign in to manage the integration.");
         var result = await _integrationClient.DisconnectAsync(deleteProfile, cancellationToken);
         Changed?.Invoke();
         return result;
+    }
+
+    private Task<T> ObserveIntegrationAsync<T>(string operation, Func<Task<T>> action, Func<T, bool> succeeded)
+    {
+        var user = State.UserId; var authenticated = State.IsAuthenticated;
+        return _diagnosticsLogWriter.ObserveAsync(DiagnosticsFeatureArea.Auth, operation, action,
+            value => new(succeeded(value) ? DiagnosticsResult.Success : DiagnosticsResult.Unavailable),
+            () => State.IsAuthenticated == authenticated && State.UserId == user,
+            operation == "integration-status" ? DiagnosticsMode.LiveRead : DiagnosticsMode.LiveMutation);
     }
 
     public event Action? Changed;
@@ -1096,6 +1106,25 @@ public sealed class AppSessionController : IAppSessionController
     {
         await _diagnosticsLogStore.ClearAsync(cancellationToken);
         await LoadCachedStateAsync(cancellationToken);
+    }
+
+    public async Task<bool> RefreshDiagnosticsAsync(CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        var generation = Interlocked.Read(ref _refreshViewGeneration);
+        var user = State.UserId; var authenticated = State.IsAuthenticated;
+        try
+        {
+            using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            deadline.CancelAfter(TimeSpan.FromSeconds(1));
+            var entries = await _diagnosticsLogStore.GetRecentAsync(deadline.Token).WaitAsync(deadline.Token);
+            cancellationToken.ThrowIfCancellationRequested();
+            if (generation != Interlocked.Read(ref _refreshViewGeneration) || State.UserId != user || State.IsAuthenticated != authenticated) return false;
+            SetState(State with { DiagnosticsLogEntries = entries.Select(DiagnosticsLogSanitizer.Sanitize).ToArray() });
+            return true;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
+        catch { return false; }
     }
 
     public async Task<InventoryActionResult> SaveEquipmentPresetAsync(

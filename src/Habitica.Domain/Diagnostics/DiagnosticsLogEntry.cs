@@ -8,7 +8,13 @@ public sealed record DiagnosticsLogEntry(
     DiagnosticsSeverity Severity,
     DiagnosticsMode Mode,
     string Message,
-    IReadOnlyDictionary<string, string> Metadata);
+    IReadOnlyDictionary<string, string> Metadata,
+    DiagnosticsContext? Context = null);
+
+public enum DiagnosticsResult { Success, Refused, Unavailable, Unknown, Cancelled, AccountChanged, Observed }
+
+public sealed record DiagnosticsContext(DiagnosticsResult Result, long DurationMs = 0, Guid? CorrelationId = null,
+    Guid? CommandId = null, int? AcceptedCount = null, int? ConfirmedCount = null, int? RequestedCount = null);
 
 public enum DiagnosticsFeatureArea
 {
@@ -19,7 +25,8 @@ public enum DiagnosticsFeatureArea
     Party,
     Diagnostics,
     Equipment,
-    Skills
+    Skills,
+    Workspace
 }
 
 public enum DiagnosticsSeverity

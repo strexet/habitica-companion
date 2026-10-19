@@ -1,0 +1,65 @@
+{
+  "task_id": "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
+  "checks": {
+    "dotnetPassed": 828,
+    "dotnetFailed": 0,
+    "compileWarnings": 0,
+    "releasePublish": "pass",
+    "renderedCases": 144,
+    "renderedErrors": 0
+  },
+  "coverage": {
+    "diagnostics-multiline": {
+      "file": "diagnostics-multiline.html",
+      "route": "/diagnostics",
+      "state": "multiline-logs",
+      "surfaces": [
+        "logs",
+        "filters",
+        "disabled-controls"
+      ],
+      "interactionTest": "Diagnostics_console_keeps_long_metadata_in_dedicated_wrapping_block",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    },
+    "diagnostics-read-unavailable": {
+      "file": "diagnostics-read-unavailable.html",
+      "route": "/diagnostics",
+      "state": "local-log-read-unavailable",
+      "surfaces": [
+        "logs",
+        "error",
+        "disabled-controls"
+      ],
+      "interactionTest": "Opening_diagnostics_requests_local_messages_once_and_exposes_unavailable_refresh",
+      "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+    }
+  },
+  "asset_fingerprints": {
+    "app.css": "9709d74528f5c7c7ceb7eb4c449219ed63215b3255987666410a9bffb10fd696",
+    "colorSchemes.js": "8462ddaa89004ccf1c99ba78fc909d3d0474291d80187deed343b0c18905c387",
+    "schemes.json": "4088181304e6be006bb7a4cae9e690d77b41e026b4c1885da5b28a338b88ad49",
+    "qualification-frame.mjs": "e2cabefdd87ff2bdd8ed769e6cc42eb662cf46ee37eff41b27977db3e87d98f6",
+    "diagnostics-multiline.html": "c6d300bbb9188f80c1b9fc3a1cf9099c2f84f9c80c618ae71fe5715faec532f9",
+    "diagnostics-read-unavailable.html": "0805a4c2106a785312c6ba1824c723f8b08104cf87c4728608904bc294011f6c"
+  },
+  "evidence": [
+    "tests/Habitica.Application.Tests/Diagnostics/DiagnosticsLogWriterTests.cs",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceDiagnosticsTests.cs",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceOrganizationClientTests.cs",
+    "tests/Habitica.WebApp.Tests/Pages/LiveTestsPageTests.cs",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs",
+    "skill-tree/history/validation/diagnostic-safety-browser.json"
+  ],
+  "results": [
+    "Secret and note canaries are excluded from diagnostic writes, display, JSONL and portable/section exports.",
+    "Original command/correlation identities and bounded counts survive unknown acceptance and original recovery without extra dispatch.",
+    "Broken, stalled or failed diagnostic formatting/storage cannot replace original accepted results or exceptions.",
+    "Account and connection changes discard old command context; cancellation remains cancellation.",
+    "Diagnostic page entry reads local records without upstream refresh and reports unavailable local history."
+  ],
+  "limitations": [
+    "Native server receipts remain separate from browser diagnostics. Agent diagnostic bundle tools remain a separate queue contract.",
+    "Physical devices, hosted clients, server logs and assistive technologies remain unqualified.",
+    "Concurrent local append/clear coordination remains captured nonblocking Pending P-15da69d1-68cb-47d2-b8ae-2edca2436137."
+  ]
+}

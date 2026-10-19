@@ -15,7 +15,7 @@ internal sealed class WorkspaceTaskFixture
     public Cloud Client { get; } = new();
     public IndexedDbWorkspaceDatabase Database { get; }
     public WorkspaceTaskController Controller { get; }
-    public WorkspaceTaskFixture() { Database = new(Js); Controller = new(Session, Client, Database); }
+    public WorkspaceTaskFixture(Habitica.Application.Diagnostics.DiagnosticsLogWriter? diagnostics = null) { Database = new(Js); Controller = new(Session, Client, Database, diagnostics); }
     public static WorkspaceTaskInput Todo(string text = "Synthetic Companion task") => new(WorkspaceOperation.CreateTodo, null, text, "Private synthetic notes", CompanionPriority.High, null, null, false, HabitScoreDirection.Up, 1, null);
     internal sealed class Runtime : IJSRuntime, IJSObjectReference
     {

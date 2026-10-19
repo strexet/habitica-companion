@@ -19,6 +19,18 @@ namespace Habitica.WebApp.Tests.State;
 public sealed class AppSessionControllerTests
 {
     [Fact]
+    public async Task RefreshDiagnostics_reads_local_entries_safely_without_sign_in_or_snapshot_refresh()
+    {
+        var entry = new DiagnosticsLogEntry("credential-canary", DateTimeOffset.UtcNow, DiagnosticsFeatureArea.Tasks, "task-score",
+            DiagnosticsSeverity.Warning, DiagnosticsMode.Local, "private-note-canary", new Dictionary<string,string> { ["apiToken"] = "credential-canary" });
+        var controller = CreateController(new FakeDiagnosticsLogStore([entry]));
+        Assert.True(await controller.RefreshDiagnosticsAsync());
+        var json = System.Text.Json.JsonSerializer.Serialize(controller.State.DiagnosticsLogEntries);
+        Assert.DoesNotContain("credential-canary", json); Assert.DoesNotContain("private-note-canary", json);
+        Assert.False(controller.State.IsAuthenticated); Assert.Null(controller.State.LastSyncedAtUtc); Assert.Null(controller.State.TaskSnapshot);
+    }
+
+    [Fact]
     public async Task Owner_isolation_refuses_shared_actions_before_credentials_or_auto_equipment()
     {
         var controller = CreateController(new FakeDiagnosticsLogStore(Array.Empty<DiagnosticsLogEntry>()), ownerIsolatedTesting: true);
@@ -169,7 +181,7 @@ public sealed class AppSessionControllerTests
         Assert.Contains(logStore.Entries, entry =>
             entry.FeatureArea == DiagnosticsFeatureArea.Inventory
             && entry.Operation == "inventory-save-preset"
-            && entry.Metadata["presetName"] == "Casting");
+            && !entry.Metadata.ContainsKey("presetName"));
     }
 
     [Fact]
@@ -542,8 +554,8 @@ public sealed class AppSessionControllerTests
         Assert.Contains(logStore.Entries, entry =>
             entry.FeatureArea == DiagnosticsFeatureArea.Inventory
             && entry.Operation == "inventory-rename-preset"
-            && entry.Metadata["presetId"] == preset.Id
-            && entry.Metadata["presetName"] == "Focused Casting");
+            && !entry.Metadata.ContainsKey("presetId")
+            && !entry.Metadata.ContainsKey("presetName"));
     }
 
     [Fact]
@@ -1154,7 +1166,7 @@ public sealed class AppSessionControllerTests
             entry.FeatureArea == DiagnosticsFeatureArea.Inventory
             && entry.Operation == "inventory-bulk-sell"
             && entry.Metadata["itemType"] == "Egg"
-            && entry.Metadata["itemKey"] == "Wolf"
+            && !entry.Metadata.ContainsKey("itemKey")
             && entry.Metadata["completed"] == "3"
             && entry.Metadata["requestCount"] == "4");
     }

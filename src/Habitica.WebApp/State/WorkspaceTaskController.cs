@@ -1,4 +1,6 @@
 using Habitica.Application.Workspace;
+using Habitica.Application.Diagnostics;
+using Habitica.Domain.Diagnostics;
 using Habitica.Domain.Workspace;
 using Habitica.Storage;
 
@@ -7,7 +9,7 @@ namespace Habitica.WebApp.State;
 public sealed record WorkspaceTaskInput(WorkspaceOperation Operation, Guid? TaskId, string Text, string Notes, CompanionPriority Priority,
     DateOnly? Deadline, HabiticaTaskDetails? Details, bool ProjectToHabitica, HabitScoreDirection Direction, int Count, DateOnly? OccurrenceDate, WorkspaceTaskPlanning? Planning = null, WorkspaceTodoRestore? RestoreTodo = null, WorkspaceTaskRelationships? Relationships = null, WorkspaceTodoState? TodoState = null, WorkspaceTodoStage? TodoStage = null);
 
-public sealed class WorkspaceTaskController(IAppSessionController session, IWorkspaceCloudClient cloud, IndexedDbWorkspaceDatabase database)
+public sealed class WorkspaceTaskController(IAppSessionController session, IWorkspaceCloudClient cloud, IndexedDbWorkspaceDatabase database, DiagnosticsLogWriter? diagnostics = null)
 {
     private string? _scope;
     private WorkspaceJournalSnapshot? _snapshot;
@@ -27,13 +29,42 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
     public bool IsReadOnly => RequiresReload || !IsCloud && Snapshot?.Authority?.Mode is WorkspaceAuthorityMode.Frozen or WorkspaceAuthorityMode.Cloud;
     private string? CurrentScope => session.State.IsAuthenticated && Guid.TryParse(session.State.UserId, out var id) ? id.ToString("D") : null;
 
+    private Task ObserveAsync(string operation, Func<Task> action, bool? cloudSource = null)
+    {
+        if (diagnostics is null) return action();
+        var scope = CurrentScope;
+        var priorPreview = Preview;
+        var mode = !(cloudSource ?? IsCloud) ? DiagnosticsMode.Local
+            : operation is "workspace-load" or "workspace-task-recover" or "workspace-link-preview" ? DiagnosticsMode.LiveRead : DiagnosticsMode.LiveMutation;
+        return diagnostics.ObserveAsync(DiagnosticsFeatureArea.Workspace, operation,
+            async () => { await action(); return true; }, _ => Describe(), () => scope == CurrentScope, mode);
+
+        DiagnosticsContext Describe()
+        {
+            var receipt = operation is "workspace-task-accept" or "workspace-task-recover" or "workspace-task-prepare" ? LastReceipt : null;
+            var result = AcceptanceUnknown || operation == "workspace-task-recover" && receipt is null ? DiagnosticsResult.Unknown
+                : receipt is not null ? DiagnosticsResult.Success
+                : RequiresReload ? DiagnosticsResult.Unavailable
+                : operation == "workspace-task-prepare" && Preview is null ? IsCloud ? DiagnosticsResult.Unknown : DiagnosticsResult.Refused
+                : operation == "workspace-task-accept" && LastReceipt is null ? DiagnosticsResult.Refused
+                : operation == "workspace-task-prepare" && ReferenceEquals(priorPreview, Preview) ? DiagnosticsResult.Observed
+                : operation == "workspace-link-preview" && LinkPreview is null ? DiagnosticsResult.Refused
+                : operation == "workspace-link-adopt" ? DiagnosticsResult.Observed
+                : DiagnosticsResult.Success;
+            return new(result, CorrelationId: receipt?.CorrelationId ?? Preview?.CorrelationId,
+                CommandId: receipt?.CommandId ?? Preview?.PreparedCommandId ?? _intent?.Id,
+                AcceptedCount: receipt?.AcceptedEventCount, ConfirmedCount: receipt?.ConfirmedProjectionCount, RequestedCount: receipt?.TotalProjectionCount);
+        }
+    }
+
     public void Forget()
     {
         _scope = null; _snapshot = null; _intent = null; Preview = null; LinkPreview = null; LastReceipt = null; LocalIds = []; AcceptanceUnknown = false; RequiresReload = false; Message = null;
     }
     private string Account() => CurrentScope ?? throw new InvalidOperationException("Sign in before managing Companion tasks.");
     private bool StillCurrent(string scope) { if (scope == CurrentScope) return true; Forget(); Message = "The account changed. Reload workspace data."; return false; }
-    public async Task LoadAsync(bool cloudSource, Guid? localId = null, CancellationToken cancellationToken = default)
+    public Task LoadAsync(bool cloudSource, Guid? localId = null, CancellationToken cancellationToken = default) => ObserveAsync("workspace-load", () => LoadCoreAsync(cloudSource, localId, cancellationToken), cloudSource);
+    private async Task LoadCoreAsync(bool cloudSource, Guid? localId = null, CancellationToken cancellationToken = default)
     {
         var scope = Account();
         if (_intent is not null && (cloudSource != IsCloud || localId is not null && localId != _snapshot?.Document.Id)) throw new InvalidOperationException("Resolve or cancel the current preview before switching workspaces.");
@@ -47,7 +78,8 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         Message = snapshot is null ? cloudSource ? "Cloud data is unavailable. Reconnect in Settings or try again later." : "Create a local workspace to start saving Companion tasks." : null;
         if (retainOriginal) Message = cloudSource ? "Workspace access is unavailable. The original command reference remains available; renew cloud access in Settings before checking its receipt." : "Browser storage is unavailable. The original command reference remains available; restore storage access before checking its receipt.";
     }
-    public async Task CreateLocalAsync(CancellationToken cancellationToken = default)
+    public Task CreateLocalAsync(CancellationToken cancellationToken = default) => ObserveAsync("workspace-create-local", () => CreateLocalCoreAsync(cancellationToken));
+    private async Task CreateLocalCoreAsync(CancellationToken cancellationToken = default)
     {
         if (_intent is not null) throw new InvalidOperationException("Resolve the current preview first.");
         var scope = Account(); var snapshot = new WorkspaceJournalSnapshot(new WorkspaceDocument { Id = Guid.NewGuid() }, 1, [], []);
@@ -79,7 +111,8 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
             patch, input.Operation == WorkspaceOperation.ScoreHabit ? input.Direction : null, input.Operation == WorkspaceOperation.ScoreHabit ? input.Count : 1,
             input.Operation is WorkspaceOperation.CompleteTask or WorkspaceOperation.SkipOccurrence ? input.OccurrenceDate : null, input.ProjectToHabitica);
     }
-    public async Task PrepareAsync(WorkspaceTaskInput input, CancellationToken cancellationToken = default)
+    public Task PrepareAsync(WorkspaceTaskInput input, CancellationToken cancellationToken = default) => ObserveAsync("workspace-task-prepare", () => PrepareCoreAsync(input, cancellationToken));
+    private async Task PrepareCoreAsync(WorkspaceTaskInput input, CancellationToken cancellationToken = default)
     {
         var scope = Account(); if (scope != _scope || Snapshot is null) throw new InvalidOperationException("Reload the current account workspace.");
         LinkPreview = null;
@@ -108,7 +141,8 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         if (AcceptanceUnknown) throw new InvalidOperationException("Check the original receipt before leaving an uncertain acceptance.");
         _intent = null; Preview = null; Message = null;
     }
-    public async Task ConfirmAsync(CancellationToken cancellationToken = default)
+    public Task ConfirmAsync(CancellationToken cancellationToken = default) => ObserveAsync("workspace-task-accept", () => ConfirmCoreAsync(cancellationToken));
+    private async Task ConfirmCoreAsync(CancellationToken cancellationToken = default)
     {
         var scope = Account(); var preview = Preview ?? throw new InvalidOperationException("Prepare a command first.");
         if (scope != _scope || preview.Command.WorkspaceId != Snapshot?.Document.Id) throw new InvalidOperationException("Reload the current workspace.");
@@ -130,7 +164,8 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
             else Message = AcceptanceUnknown ? "Local acceptance is unknown. Check the original command receipt before retrying." : "The command was not saved. Reload current state and review a new preview.";
         }
     }
-    public async Task CheckOriginalAsync(CancellationToken cancellationToken = default)
+    public Task CheckOriginalAsync(CancellationToken cancellationToken = default) => ObserveAsync("workspace-task-recover", () => CheckOriginalCoreAsync(cancellationToken));
+    private async Task CheckOriginalCoreAsync(CancellationToken cancellationToken = default)
     {
         var scope = Account(); if (IsCloud && Preview is null) throw new InvalidOperationException("Recover the original preview before checking the command receipt."); var id = Preview?.PreparedCommandId ?? _intent?.Id ?? throw new InvalidOperationException("No original command is available.");
         if (IsCloud)
@@ -160,7 +195,8 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         if (scope == CurrentScope && !refreshed) { RequiresReload = true; LastReceipt = receipt with { RefreshSucceeded = false }; Message = "The command was saved, but workspace refresh failed. Reload before another edit."; }
         if (scope == CurrentScope && refreshed) Message = $"Saved in Companion. Habitica projection: {receipt.HabiticaProjectionStatus}. Confirmed effects: {receipt.ConfirmedProjectionCount}/{receipt.TotalProjectionCount}.";
     }
-    public async Task PreviewLinkAsync(Guid taskId, Guid externalId, CancellationToken cancellationToken = default)
+    public Task PreviewLinkAsync(Guid taskId, Guid externalId, CancellationToken cancellationToken = default) => ObserveAsync("workspace-link-preview", () => PreviewLinkCoreAsync(taskId, externalId, cancellationToken));
+    private async Task PreviewLinkCoreAsync(Guid taskId, Guid externalId, CancellationToken cancellationToken = default)
     {
         var scope = Account();
         if (!IsCloud || Snapshot?.Document.Id != cloud.WorkspaceId || HasPendingIntent) throw new InvalidOperationException("Load the cloud workspace and resolve the current command before linking.");
@@ -168,7 +204,8 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         if (!StillCurrent(scope)) return;
         LinkPreview = result.Succeeded ? result.Value : null; Message = result.Message;
     }
-    public async Task AdoptLinkAsync(CancellationToken cancellationToken = default)
+    public Task AdoptLinkAsync(CancellationToken cancellationToken = default) => ObserveAsync("workspace-link-adopt", () => AdoptLinkCoreAsync(cancellationToken));
+    private async Task AdoptLinkCoreAsync(CancellationToken cancellationToken = default)
     {
         var scope = Account(); var preview = LinkPreview ?? throw new InvalidOperationException("Review a link preview first.");
         if (!IsCloud || Snapshot?.Document.Id != preview.WorkspaceId || HasPendingIntent) throw new InvalidOperationException("Reload and review the current cloud workspace before linking.");

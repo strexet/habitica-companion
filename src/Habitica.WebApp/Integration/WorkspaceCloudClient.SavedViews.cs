@@ -3,7 +3,8 @@ using Habitica.Domain.Workspace;
 namespace Habitica.WebApp.Integration;
 public sealed partial class WorkspaceCloudClient : IWorkspaceSavedTaskViewApi
 {
-    public Task<WorkspaceTaskResponse<WorkspaceSavedViewList>> ListSavedTaskViewsAsync(WorkspaceReadFilter page,CancellationToken cancellationToken)
+    public Task<WorkspaceTaskResponse<WorkspaceSavedViewList>> ListSavedTaskViewsAsync(WorkspaceReadFilter page,CancellationToken cancellationToken) => ObserveResponseAsync("workspace-saved-list", () => ListSavedTaskViewsCoreAsync(page,cancellationToken));
+    private Task<WorkspaceTaskResponse<WorkspaceSavedViewList>> ListSavedTaskViewsCoreAsync(WorkspaceReadFilter page,CancellationToken cancellationToken)
     {
         if(!ValidSavedPage(page))return Task.FromResult(new WorkspaceTaskResponse<WorkspaceSavedViewList>(false,null,"Invalid saved-view page."));
         return ReadSavedAsync<WorkspaceSavedViewList>("list_saved_task_views",SavedPageArgs(page),value=>value.Items is {} rows
@@ -12,7 +13,8 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceSavedTaskViewApi
                 &&!string.IsNullOrWhiteSpace(row.Name)&&row.Name.Length<=256&&row.Query is not null&&row.Query.IsValid())
             &&rows.Select(row=>row.Id).Distinct().Count()==rows.Count,cancellationToken);
     }
-    public Task<WorkspaceTaskResponse<WorkspaceSavedViewTaskPage>> QuerySavedTaskViewAsync(Guid viewId,WorkspaceReadFilter page,CancellationToken cancellationToken)
+    public Task<WorkspaceTaskResponse<WorkspaceSavedViewTaskPage>> QuerySavedTaskViewAsync(Guid viewId,WorkspaceReadFilter page,CancellationToken cancellationToken) => ObserveResponseAsync("workspace-saved-query", () => QuerySavedTaskViewCoreAsync(viewId,page,cancellationToken));
+    private Task<WorkspaceTaskResponse<WorkspaceSavedViewTaskPage>> QuerySavedTaskViewCoreAsync(Guid viewId,WorkspaceReadFilter page,CancellationToken cancellationToken)
     {
         if(viewId==Guid.Empty||!ValidSavedPage(page))return Task.FromResult(new WorkspaceTaskResponse<WorkspaceSavedViewTaskPage>(false,null,"Invalid saved-view identity or page."));
         var args=SavedPageArgs(page);args["viewId"]=viewId;

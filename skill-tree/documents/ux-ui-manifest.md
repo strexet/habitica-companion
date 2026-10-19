@@ -678,3 +678,8 @@ Every new or materially changed page requires synthetic interaction assertions a
 ## Shared readable foregrounds and primary geometry
 
 Colored labels, statuses, links, outlined actions and muted copy consume derived on-surface foreground tokens. Qualifying authored colors remain intact; insufficient colors move toward readable ink across common card/body/input surfaces and sampled theme stops. Semantic fills and borders retain original colors. Trust messages on sign-in use card surfaces and ink rather than shell foregrounds. Default-size filled actions and navigation links have the shared 44-pixel minimum; long labels wrap. Tasks root tracks and stat columns shrink for enlarged narrow layouts without hiding overflow.
+
+
+## Diagnostic message freshness and private detail
+
+Recent app messages read bounded local history on page entry. An unavailable local read retains the previous view and states the refresh limitation. Opening Diagnostics creates no Habitica refresh or gameplay request. Message summaries use fixed operation/result text; copied and downloaded details preserve safe context and counters while excluding task text, account identifiers and credentials. Command receipt lookup remains the source for accepted tasks and game effects; diagnostics cannot imply success from missing logs.

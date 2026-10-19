@@ -42,6 +42,7 @@ public interface IAppSessionController
     Task<DiagnosticsPresetRunResult> RunDiagnosticsPresetAsync(DiagnosticsPreset preset, CancellationToken cancellationToken = default);
 
     Task ClearDiagnosticsLogsAsync(CancellationToken cancellationToken = default);
+    Task<bool> RefreshDiagnosticsAsync(CancellationToken cancellationToken = default);
 
     Task<InventoryActionResult> SaveEquipmentPresetAsync(EquipmentSetKind kind, string name, CancellationToken cancellationToken = default);
 

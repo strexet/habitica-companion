@@ -1115,3 +1115,12 @@ The component emits an exact selected CompanionTask to the existing editor. No n
 ## Synthetic rendered qualification ownership
 
 The WebApp bUnit suite owns PageLayoutEvidence captures and route/state metadata. tests/browser-qualification owns dependency-free staging, pure measurement functions and browser fixtures using existing published assets. Node tests qualify calculation canaries; an actual browser qualifies CSS compositing, geometry and seeded failures. Component interaction tests remain the source of delegate/command behavior evidence. The preparation script serves only synthetic captures on loopback with a bounded lifetime. Browser automation uses the available authorized browser tool; no new browser runtime or package is installed.
+
+
+## Diagnostic privacy and observation boundaries
+
+DiagnosticsLogSanitizer belongs to the Domain diagnostic model and contains the shared finite operation/metadata policy plus legacy serialization guard. Application DiagnosticsLogWriter owns nonfatal bounded writes and operation observation. WebApp controllers and validated organization/saved-view adapters provide typed outcomes rather than raw response text. Optional constructor injection preserves isolated test setup; production registrations supply the existing scoped writer. No package, database or remote telemetry service is added.
+
+DiagnosticsContext carries only result, bounded duration and optional non-secret command/correlation identities and counts. Sanitization changes diagnostic row IDs without changing canonical command identity. LocalUserDataPortabilityService sanitizes diagnostic sections on export, serialization and import/merge; normalized row identities prevent raw/sanitized duplicates. Credential and workspace storage boundaries remain independent. Log delivery success never establishes command acceptance or remote game effects.
+
+Official security reference: [OWASP logging guidance](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html) describes excluding secrets and user content from diagnostic output and preserving application behavior when logging fails. The local implementation uses existing dependencies and an explicit field allowlist.

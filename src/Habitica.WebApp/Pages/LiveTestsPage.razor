@@ -130,6 +130,10 @@
                 </div>
             </div>
 
+            @if (_messagesRefreshed == false)
+            {
+                <p class="panel-copy" role="status">Recent messages could not be refreshed. Showing the last available copy.</p>
+            }
             <div class="diagnostics-filter-row">
                 <label class="field-row compact">
                     <span>Feature</span>
@@ -210,11 +214,14 @@
     private string _featureFilter = string.Empty;
     private string _severityFilter = string.Empty;
     private string _modeFilter = string.Empty;
+    private bool? _messagesRefreshed;
 
     protected override void OnInitialized()
     {
         SessionController.Changed += HandleStateChanged;
     }
+
+    protected override async Task OnInitializedAsync() => _messagesRefreshed = await SessionController.RefreshDiagnosticsAsync();
 
     private IReadOnlyList<string> FeatureFilters =>
         SessionController.State.DiagnosticsLogEntries?
@@ -239,6 +246,7 @@
 
     private IReadOnlyList<Habitica.Domain.Diagnostics.DiagnosticsLogEntry> FilteredEntries =>
         SessionController.State.DiagnosticsLogEntries?
+            .Select(Habitica.Domain.Diagnostics.DiagnosticsLogSanitizer.Sanitize)
             .Where(entry => string.IsNullOrWhiteSpace(_featureFilter) || string.Equals(entry.FeatureArea.ToString(), _featureFilter, StringComparison.Ordinal))
             .Where(entry => string.IsNullOrWhiteSpace(_severityFilter) || string.Equals(entry.Severity.ToString(), _severityFilter, StringComparison.Ordinal))
             .Where(entry => string.IsNullOrWhiteSpace(_modeFilter) || string.Equals(entry.Mode.ToString(), _modeFilter, StringComparison.Ordinal))
@@ -313,7 +321,7 @@
 
     private static string FormatEntryJson(Habitica.Domain.Diagnostics.DiagnosticsLogEntry entry)
     {
-        return JsonSerializer.Serialize(entry, JsonOptions);
+        return JsonSerializer.Serialize(Habitica.Domain.Diagnostics.DiagnosticsLogSanitizer.Sanitize(entry), JsonOptions);
     }
 
     private static string FormatMetadataCompact(Habitica.Domain.Diagnostics.DiagnosticsLogEntry entry)
@@ -325,7 +333,7 @@
 
     private static string FormatEntriesJsonl(IReadOnlyList<Habitica.Domain.Diagnostics.DiagnosticsLogEntry> entries)
     {
-        return string.Join(Environment.NewLine, entries.Select(entry => JsonSerializer.Serialize(entry, JsonOptions)));
+        return string.Join(Environment.NewLine, entries.Select(entry => JsonSerializer.Serialize(Habitica.Domain.Diagnostics.DiagnosticsLogSanitizer.Sanitize(entry), JsonOptions)));
     }
 
     private async Task<IJSObjectReference> GetExportModuleAsync()

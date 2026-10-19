@@ -5,7 +5,8 @@ namespace Habitica.WebApp.Integration;
 
 public sealed partial class WorkspaceCloudClient : IWorkspaceOrganizationApi
 {
-    public async Task<WorkspaceTaskResponse<WorkspaceOrganizationPreview>> PrepareOrganizationAsync(Guid requestId,WorkspaceOrganizationCommand intent,CancellationToken cancellationToken)
+    public Task<WorkspaceTaskResponse<WorkspaceOrganizationPreview>> PrepareOrganizationAsync(Guid requestId,WorkspaceOrganizationCommand intent,CancellationToken cancellationToken) => ObserveResponseAsync("workspace-organization-prepare", () => PrepareOrganizationCoreAsync(requestId,intent,cancellationToken), correlationId: requestId);
+    private async Task<WorkspaceTaskResponse<WorkspaceOrganizationPreview>> PrepareOrganizationCoreAsync(Guid requestId,WorkspaceOrganizationCommand intent,CancellationToken cancellationToken)
     {
         if(requestId==Guid.Empty||WorkspaceId!=intent.WorkspaceId||!WorkspaceOrganizationCommands.IsValid(intent))return new(false,null,"The organization intent is invalid or the connection changed.");
         var value=WorkspaceTaskApiJson.Element(intent);var args=new Dictionary<string,object?> { ["requestId"]=requestId,["kind"]=value.GetProperty("kind"),["operation"]=value.GetProperty("operation"),["expectedRevision"]=intent.ExpectedRevision,["patch"]=intent.Patch };
@@ -20,7 +21,8 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceOrganizationApi
             return new(false,null,"The native organization preview did not match the requested intent. Keep the original request ID.",true);
         return result;
     }
-    public async Task<WorkspaceTaskResponse<WorkspaceOrganizationReceipt>> AcceptOrganizationAsync(WorkspaceOrganizationPreview preview,CancellationToken cancellationToken)
+    public Task<WorkspaceTaskResponse<WorkspaceOrganizationReceipt>> AcceptOrganizationAsync(WorkspaceOrganizationPreview preview,CancellationToken cancellationToken) => ObserveResponseAsync("workspace-organization-accept", () => AcceptOrganizationCoreAsync(preview,cancellationToken), preview.PreparedCommandId, preview.CorrelationId);
+    private async Task<WorkspaceTaskResponse<WorkspaceOrganizationReceipt>> AcceptOrganizationCoreAsync(WorkspaceOrganizationPreview preview,CancellationToken cancellationToken)
     {
         if(preview.Command is null||WorkspaceId!=preview.Command.WorkspaceId||preview.PreparedCommandId!=preview.Command.Id||preview.MayAffectHabitica
             ||preview.CorrelationId==Guid.Empty||!WorkspaceOrganizationCommands.IsValid(preview.Command)||!ValidSnapshot(preview.Command,preview.Snapshot))return new(false,null,"Review an exact organization preview first.");
@@ -30,7 +32,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceOrganizationApi
             return new(false,null,"The original organization receipt did not match the reviewed intent.",true);
         return result;
     }
-    public Task<WorkspaceTaskResponse<WorkspaceOrganizationReceipt>> ReadOrganizationAsync(Guid commandId,CancellationToken cancellationToken)=>CallOrganizationAsync<WorkspaceOrganizationReceipt>("get_organization_command",new { commandId },cancellationToken,commandId);
+    public Task<WorkspaceTaskResponse<WorkspaceOrganizationReceipt>> ReadOrganizationAsync(Guid commandId,CancellationToken cancellationToken)=>ObserveResponseAsync("workspace-organization-recover", () => CallOrganizationAsync<WorkspaceOrganizationReceipt>("get_organization_command",new { commandId },cancellationToken,commandId), commandId);
     private bool ValidReceipt(WorkspaceOrganizationReceipt receipt,Guid? expectedId)
     {
         var entry=receipt.Entry;var command=entry?.Command;

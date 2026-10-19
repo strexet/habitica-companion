@@ -174,6 +174,11 @@ internal sealed class FakeAppSessionController : IAppSessionController
         return Task.CompletedTask;
     }
 
+    public int DiagnosticsRefreshCalls { get; private set; }
+    public bool DiagnosticsRefreshSucceeded { get; set; } = true;
+    public Task<bool> RefreshDiagnosticsAsync(CancellationToken cancellationToken = default)
+    { DiagnosticsRefreshCalls++; return Task.FromResult(DiagnosticsRefreshSucceeded); }
+
     public Task<InventoryActionResult> EquipEquipmentPresetAsync(string presetId, CancellationToken cancellationToken = default)
     {
         EquipPresetCalls.Add(presetId);

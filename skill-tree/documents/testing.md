@@ -314,3 +314,10 @@ Official reference context: [contrast minimum](https://www.w3.org/WAI/WCAG22/Und
 
 
 Shared surface-text canaries cover gold/status/muted colors, transparent authored text, exact retention of readable foregrounds and unchanged preferences. Actual browser qualification distinguishes surface text from filled-button labels and includes default/generated palettes, enlarged Tasks grids, sign-in trust messages and primary target geometry. Decorative fill colors remain independent from derived text colors.
+
+
+## Diagnostic safety and feature coverage
+
+DiagnosticsLogWriterTests exercise secret/note canaries, safe legacy serialization, bounded counters, UTC/correlation fields, failed or stalled storage, failed formatters, original exceptions, cancellation and account-change context removal. WorkspaceDiagnosticsTests exercise real local command acceptance, lost cloud acknowledgement and original recovery without extra dispatch, late account results, cancellation, bounded retention, private backup/section redaction and appearance emission without per-render flooding. WorkspaceOrganizationClientTests verify validated organization outcomes and original correlation after uncertainty. AppSessionControllerTests verify local diagnostic refresh without sign-in or snapshot refresh.
+
+LiveTestsPageTests verify sanitized copied/downloaded JSONL and fresh local-read invocation, with an explicit unavailable message when local storage cannot refresh. Representative normal and unavailable Diagnostics Razor states belong to the rendered route inventory. Existing sync, connection, theme and command regressions retain primary behavior assertions; removed user-defined metadata receives explicit non-disclosure assertions. Synthetic checks do not qualify live server logs, agent log RPC access, actual hosted clients or physical devices.

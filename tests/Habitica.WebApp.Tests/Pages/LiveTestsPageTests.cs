@@ -12,6 +12,18 @@ namespace Habitica.WebApp.Tests.Pages;
 public sealed class LiveTestsPageTests : BunitContext
 {
     [Fact]
+    public void Opening_diagnostics_requests_local_messages_once_and_exposes_unavailable_refresh()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose; Services.AddMudServices();
+        var session = new FakeAppSessionController(SessionViewModel.Empty) { DiagnosticsRefreshSucceeded = false };
+        Services.AddSingleton<IAppSessionController>(session);
+        var cut = Render<LiveTestsPage>();
+        Assert.Equal(1, session.DiagnosticsRefreshCalls);
+        Assert.Contains("Recent messages could not be refreshed", cut.Markup);
+        Qualification.PageLayoutEvidence.Save("diagnostics-read-unavailable", cut.Markup, "/diagnostics", "local-log-read-unavailable", ["logs", "error", "disabled-controls"], nameof(Opening_diagnostics_requests_local_messages_once_and_exposes_unavailable_refresh));
+    }
+
+    [Fact]
     public void Renders_diagnostics_sections_preset_runner_and_console()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -52,13 +64,16 @@ public sealed class LiveTestsPageTests : BunitContext
         Assert.Contains("Check account", cut.Markup);
         Assert.Contains("Run safe live tests", cut.Markup);
         Assert.Contains("Run reversible gear test", cut.Markup);
-        Assert.Contains("Completed safe diagnostics suite.", cut.Markup);
+        Assert.Contains("safe live tests: Success.", cut.Markup);
     }
 
     [Fact]
     public void Diagnostics_console_exports_filtered_entries_as_jsonl()
     {
         JSInterop.Mode = JSRuntimeMode.Loose;
+        var module = JSInterop.SetupModule("./js/diagnosticsExport.js");
+        module.SetupVoid("copyText", _ => true).SetVoidResult();
+        module.SetupVoid("downloadTextFile", _ => true).SetVoidResult();
         Services.AddMudServices();
         Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(
             new SessionViewModel(
@@ -78,10 +93,11 @@ public sealed class LiveTestsPageTests : BunitContext
                         "inventory-equip-item",
                         DiagnosticsSeverity.Success,
                         DiagnosticsMode.LiveMutation,
-                        "Equipped Wizard Wand.",
+                        "private-task-canary credential-canary",
                         new Dictionary<string, string>
                         {
-                            ["itemKey"] = "weapon_wizard_5"
+                            ["itemKey"] = "credential-canary",
+                            ["requestCount"] = "1"
                         })
                 })));
 
@@ -93,7 +109,17 @@ public sealed class LiveTestsPageTests : BunitContext
         var invocations = JSInterop.Invocations.Select(invocation => invocation.Identifier).ToArray();
         Assert.Contains("import", invocations);
         Assert.Contains("inventory-equip-item", cut.Markup);
-        Assert.Contains("itemKey", cut.Markup);
+        Assert.DoesNotContain("itemKey", cut.Markup);
+        Assert.DoesNotContain("credential-canary", cut.Markup);
+        Assert.DoesNotContain("private-task-canary", cut.Markup);
+        var exported = module.Invocations.Where(call => call.Identifier is "copyText" or "downloadTextFile")
+            .Select(call => Assert.IsType<string>(call.Arguments.Last())).ToArray();
+        Assert.Equal(2, exported.Length);
+        foreach (var json in exported)
+        {
+            Assert.Contains("requestCount", json);
+            Assert.DoesNotContain("credential-canary", json); Assert.DoesNotContain("private-task-canary", json);
+        }
     }
 
     [Fact]

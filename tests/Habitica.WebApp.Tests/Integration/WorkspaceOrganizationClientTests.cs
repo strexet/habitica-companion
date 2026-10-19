@@ -22,16 +22,22 @@ public sealed class WorkspaceOrganizationClientTests
     public async Task Creation_binds_all_intent_fields_and_recovers_original_native_receipt_after_lost_acknowledgement()
     {
         var id=Guid.NewGuid();var intent=Intent(id);var preview=Preview(intent with {Id=Guid.NewGuid(),EntityId=Guid.NewGuid()});var requestId=Guid.NewGuid();var calls=0;
+        var logs = new Habitica.Storage.DiagnosticsLogStore(new InMemoryKeyValueStorage());
+        var diagnostics = new Habitica.Application.Diagnostics.DiagnosticsLogWriter(logs, TimeProvider.System);
         using var vault=Vault();using var http=new HttpClient(new Handler(async request=>{
             if(request.RequestUri!.AbsolutePath=="/connect")return Connection(id);
             Assert.Equal("/organization-api",request.RequestUri.AbsolutePath);Assert.Equal(Session,request.Headers.Authorization!.Parameter);var text=await request.Content!.ReadAsStringAsync();Assert.DoesNotContain(Credentials.ApiToken,text);using var body=JsonDocument.Parse(text);var tool=body.RootElement.GetProperty("tool").GetString();var args=body.RootElement.GetProperty("arguments");calls++;
             if(tool=="prepare_organization_command"){Assert.Equal(requestId,args.GetProperty("requestId").GetGuid());Assert.False(args.TryGetProperty("entityId",out _));Assert.Equal("Reviewed area",args.GetProperty("patch").GetProperty("name").GetString());return Json(preview);}
             Assert.Equal(preview.PreparedCommandId,args.GetProperty("commandId").GetGuid());if(tool=="accept_organization_command")throw new HttpRequestException("Synthetic secret-bearing failure");Assert.Equal("get_organization_command",tool);return Json(Receipt(preview));
         }));
-        var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/");Assert.True((await client.ConnectAsync(Credentials,default)).Succeeded);
+        var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/", diagnostics: diagnostics);Assert.True((await client.ConnectAsync(Credentials,default)).Succeeded);
         var prepared=await client.PrepareOrganizationAsync(requestId,intent,default);Assert.True(prepared.Succeeded);Assert.Equal(preview.PreparedCommandId,prepared.Value!.PreparedCommandId);
         var uncertain=await client.AcceptOrganizationAsync(prepared.Value,default);Assert.False(uncertain.Succeeded);Assert.True(uncertain.OutcomeUnknown);Assert.DoesNotContain("secret-bearing",uncertain.Message);
         var recovered=await client.ReadOrganizationAsync(preview.PreparedCommandId,default);Assert.True(recovered.Succeeded);Assert.True(recovered.Value!.SavedInCompanion);Assert.Equal(0,recovered.Value.ConfirmedEffectCount);Assert.Equal(3,calls);
+        var events = await logs.GetRecentAsync(default); Assert.Equal(3, events.Count);
+        Assert.Contains(events, row => row.Operation == "workspace-organization-accept" && row.Context!.Result == Habitica.Domain.Diagnostics.DiagnosticsResult.Unknown && row.Context.CommandId == preview.PreparedCommandId && row.Context.CorrelationId == preview.CorrelationId);
+        Assert.Contains(events, row => row.Operation == "workspace-organization-recover" && row.Context!.CommandId == preview.PreparedCommandId);
+        Assert.DoesNotContain("Reviewed area", JsonSerializer.Serialize(events)); Assert.DoesNotContain("secret-bearing", JsonSerializer.Serialize(events)); Assert.DoesNotContain(Credentials.ApiToken, JsonSerializer.Serialize(events));
     }
     [Theory]
     [InlineData("none")][InlineData("command")][InlineData("snapshot")][InlineData("receipt")]

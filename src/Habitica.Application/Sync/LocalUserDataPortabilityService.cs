@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Habitica.Storage;
+using Habitica.Domain.Diagnostics;
 
 namespace Habitica.Application.Sync;
 
@@ -33,7 +34,7 @@ public sealed class LocalUserDataPortabilityService
             var json = await _keyValueStorage.GetRawJsonAsync(key, cancellationToken);
             if (!string.IsNullOrWhiteSpace(json))
             {
-                records.Add(new LocalUserDataRecord(key, json));
+                records.Add(new LocalUserDataRecord(key, ExportSafeJson(key, json)));
             }
         }
 
@@ -100,6 +101,7 @@ public sealed class LocalUserDataPortabilityService
             var nextJson = mode == LocalDataImportMode.Merge && !string.IsNullOrWhiteSpace(localJson)
                 ? MergeJson(record.Key, localJson!, record.Value)
                 : record.Value;
+            nextJson = ExportSafeJson(record.Key, nextJson);
 
             if (IsEmptyTaskOrderPreferences(record.Key, nextJson))
             {
@@ -123,7 +125,7 @@ public sealed class LocalUserDataPortabilityService
     public async Task<LocalUserDataRecord?> ExportSectionAsync(string storageKey, CancellationToken cancellationToken)
     {
         var json = await _keyValueStorage.GetRawJsonAsync(storageKey, cancellationToken);
-        return string.IsNullOrWhiteSpace(json) ? null : new LocalUserDataRecord(storageKey, json);
+        return string.IsNullOrWhiteSpace(json) ? null : new LocalUserDataRecord(storageKey, ExportSafeJson(storageKey, json));
     }
 
     public async Task ImportSectionAsync(LocalUserDataRecord record, LocalDataImportMode mode, CancellationToken cancellationToken)
@@ -153,6 +155,7 @@ public sealed class LocalUserDataPortabilityService
         var nextJson = mode == LocalDataImportMode.Merge && !string.IsNullOrWhiteSpace(localJson)
             ? MergeJson(record.Key, localJson!, record.JsonText)
             : record.JsonText;
+        nextJson = ExportSafeJson(record.Key, nextJson);
 
         if (IsEmptyTaskOrderPreferences(record.Key, nextJson))
         {
@@ -170,8 +173,11 @@ public sealed class LocalUserDataPortabilityService
 
     public string Serialize(LocalUserDataBundle bundle)
     {
-        return JsonSerializer.Serialize(bundle, JsonOptions);
+        return JsonSerializer.Serialize(bundle with { Records = bundle.Records.Select(record => record with { JsonText = ExportSafeJson(record.Key, record.JsonText) }).ToArray() }, JsonOptions);
     }
+
+    private static string ExportSafeJson(string key, string json) => key == StorageKeys.DiagnosticsLogEntries
+        ? DiagnosticsLogSanitizer.SanitizeJson(json) : json;
 
     public LocalUserDataBundle Deserialize(string jsonText)
     {
@@ -229,7 +235,7 @@ public sealed class LocalUserDataPortabilityService
         return key switch
         {
             StorageKeys.EquipmentPresets => MergeArrayByProperty(localJson, incomingJson, "id"),
-            StorageKeys.DiagnosticsLogEntries => MergeArrayByProperty(localJson, incomingJson, "id"),
+            StorageKeys.DiagnosticsLogEntries => MergeArrayByProperty(DiagnosticsLogSanitizer.SanitizeJson(localJson), DiagnosticsLogSanitizer.SanitizeJson(incomingJson), "id"),
             StorageKeys.PartyCronHistory => MergePartyCronHistory(localJson, incomingJson),
             StorageKeys.TaskOrderPreferences => MergeTaskOrderPreferences(localJson, incomingJson),
             StorageKeys.ColorSchemePreferences => MergeColorSchemes(localJson, incomingJson),
