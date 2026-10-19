@@ -421,7 +421,7 @@ Files: `src/Habitica.WebApp/Pages/LiveTestsPage.razor`
 
 Current pattern:
 
-- Safe checks, guarded reversible gear check, quick account reads, recent app messages, filters, JSON preview, copy/download actions.
+- Safe checks, guarded reversible gear check, quick account reads and compact filterable recent app messages with per-entry Details and copy/download feedback.
 - Diagnostic timestamps use local short date and time formatting inside the Razor expression.
 
 What works:
@@ -433,11 +433,11 @@ What works:
 Drift:
 
 - The button cluster in the diagnostics console can become visually busy.
-- JSON preview is useful for developers but heavy for normal users.
+- Quick account previews retain technical payloads for diagnostic use.
 
 Improvement:
 
-- Keep JSON available but collapse it behind "Details" by default after a successful check.
+- Keep detailed app-message JSON collapsed behind native Details controls.
 - Split app-message actions into an overflow menu or secondary row.
 
 ### Settings
@@ -683,3 +683,8 @@ Colored labels, statuses, links, outlined actions and muted copy consume derived
 ## Diagnostic message freshness and private detail
 
 Recent app messages read bounded local history on page entry. An unavailable local read retains the previous view and states the refresh limitation. Opening Diagnostics creates no Habitica refresh or gameplay request. Message summaries use fixed operation/result text; copied and downloaded details preserve safe context and counters while excluding task text, account identifiers and credentials. Command receipt lookup remains the source for accepted tasks and game effects; diagnostics cannot imply success from missing logs.
+
+
+### Compact diagnostic rows
+
+Recent app messages use a bounded scrolling list with single row separators, no per-message frame and no movement on hover. Each row shows local timestamp, textual severity, operation, safe summary and feature/source. Click, tap, Enter or Space copies the sanitized entry; visible selection and a polite status message report the result. Details remains a separate native disclosure with selectable wrapped metadata and JSON for inspection or manual copy after clipboard refusal. The copy target retains the shared primary minimum height, and inset focus remains visible inside the scroller. Filters and batch copy/download remain above the list.

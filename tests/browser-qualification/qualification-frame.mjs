@@ -70,7 +70,7 @@ async function inspect(){
   }
   await document.fonts.ready;await new Promise(requestAnimationFrame);
   await Promise.allSettled(document.getAnimations().filter(a=>Number.isFinite(a.effect?.getComputedTiming().endTime)).map(a=>a.finished));
-  const elements=[...document.querySelectorAll('button,a,input,select,textarea,[role="button"]')].filter(visible);
+  const elements=[...document.querySelectorAll('button,a,input,select,textarea,summary,[role="button"]')].filter(visible);
   const controls=elements.map((el,i)=>{const r=el.getBoundingClientRect();return {id:el.dataset.testid||el.id||el.tagName+'-'+i,element:el,left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,primary:el.matches('[data-layout-primary],.mud-button-filled:not(.mud-button-filled-size-small),.mud-nav-link')};});
   for(const a of controls)a.contains=controls.filter(b=>a!==b&&a.element.contains(b.element)).map(b=>b.id);
   for(const a of controls){

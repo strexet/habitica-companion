@@ -11,6 +11,59 @@ namespace Habitica.WebApp.Tests.Pages;
 
 public sealed class LiveTestsPageTests : BunitContext
 {
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing) { DisposeAsync().AsTask().GetAwaiter().GetResult(); return; }
+        base.Dispose(disposing);
+    }
+
+    [Fact]
+    public void Compact_rows_copy_exact_redacted_entry_and_filtered_batch_with_recoverable_failures()
+    {
+        JSInterop.Mode = JSRuntimeMode.Loose;
+        var module = JSInterop.SetupModule("./js/diagnosticsExport.js");
+        var copy = module.SetupVoid("copyText", _ => true);
+        copy.SetVoidResult();
+        Services.AddMudServices();
+        var entries = Enumerable.Range(0, 12).Select(i => new DiagnosticsLogEntry(
+            "entry-" + i, DateTimeOffset.Parse("2026-10-19T12:00:00Z").AddSeconds(-i),
+            i % 2 == 0 ? DiagnosticsFeatureArea.Sync : DiagnosticsFeatureArea.Inventory,
+            i % 2 == 0 ? "cloud-sync-upload" : "inventory-equip-item",
+            i % 2 == 0 ? DiagnosticsSeverity.Warning : DiagnosticsSeverity.Success,
+            DiagnosticsMode.Local, "private-name\nprivate-credential", new Dictionary<string, string>
+            {
+                ["sectionStatuses"] = "user-profile:Success,tasks-current:Success,inventory-current:Success,party-current:Success,diagnostics:Skipped",
+                ["requestCount"] = "1"
+            })).ToArray();
+        Services.AddSingleton<IAppSessionController>(new FakeAppSessionController(SessionViewModel.Empty with { DiagnosticsLogEntries = entries }));
+        var cut = Render<LiveTestsPage>();
+        Assert.Equal(12, cut.FindAll(".diagnostics-log-row").Count);
+        Assert.All(cut.FindAll(".diagnostics-log-item"), button => Assert.Equal("button", button.GetAttribute("type")));
+        Assert.All(cut.FindAll("details"), details => Assert.False(details.HasAttribute("open")));
+        Qualification.PageLayoutEvidence.Save("diagnostics-compact-many", cut.Markup, "/diagnostics", "twelve-compact-rows", ["logs", "filters"], nameof(Compact_rows_copy_exact_redacted_entry_and_filtered_batch_with_recoverable_failures));
+        Qualification.PageLayoutEvidence.Save("diagnostics-compact-details", cut.Markup.Replace("<details class=\"diagnostics-log-details\"", "<details open class=\"diagnostics-log-details\""), "/diagnostics", "twelve-expanded-redacted-details", ["logs", "filters"], nameof(Compact_rows_copy_exact_redacted_entry_and_filtered_batch_with_recoverable_failures));
+        var expected = cut.Find(".diagnostics-log-details pre").TextContent;
+        cut.Find(".diagnostics-log-item").Click();
+        Assert.Equal(expected, Assert.Single(module.Invocations, x => x.Identifier == "copyText").Arguments[0]);
+        Assert.Equal("true", cut.Find(".diagnostics-log-item").GetAttribute("data-selected"));
+        Assert.Contains("Message copied.", cut.Find(".diagnostics-copy-status").TextContent);
+        cut.FindAll(".diagnostics-filter-row select")[0].Change("Sync");
+        Assert.Equal(6, cut.FindAll(".diagnostics-log-row").Count);
+        cut.Find("[data-testid='copy-diagnostics-jsonl']").Click();
+        var batch = Assert.IsType<string>(module.Invocations.Last(x => x.Identifier == "copyText").Arguments[0]);
+        Assert.Equal(6, batch.Split('\n', StringSplitOptions.RemoveEmptyEntries).Length);
+        Assert.DoesNotContain("inventory-equip-item", batch);
+        Assert.DoesNotContain("private-", batch);
+        Assert.Contains("Filtered messages copied.", cut.Find(".diagnostics-copy-status").TextContent);
+        copy.SetException(new Microsoft.JSInterop.JSException("private-credential clipboard denied"));
+        cut.Find(".diagnostics-log-item").Click();
+        Assert.Contains("Copy failed.", cut.Find(".diagnostics-copy-status").TextContent);
+        Assert.DoesNotContain("private-", cut.Markup);
+        copy.SetVoidResult();
+        cut.Find(".diagnostics-log-item").Click();
+        Assert.Contains("Message copied.", cut.Find(".diagnostics-copy-status").TextContent);
+    }
+
     [Fact]
     public void Opening_diagnostics_requests_local_messages_once_and_exposes_unavailable_refresh()
     {
@@ -156,7 +209,7 @@ public sealed class LiveTestsPageTests : BunitContext
 
         var cut = Render<LiveTestsPage>();
 
-        var metadata = cut.Find(".diagnostics-log-item .diagnostics-metadata-inline");
+        var metadata = cut.Find(".diagnostics-log-details .diagnostics-metadata-inline");
         Assert.Contains("sectionStatuses", metadata.TextContent);
         Assert.Contains("diagnostics:Skipped", metadata.TextContent);
         Qualification.PageLayoutEvidence.Save("diagnostics-multiline", cut.Markup, "/diagnostics", "multiline-logs", ["logs", "filters", "disabled-controls"], nameof(Diagnostics_console_keeps_long_metadata_in_dedicated_wrapping_block));

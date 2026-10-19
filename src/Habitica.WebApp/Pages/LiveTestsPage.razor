@@ -1,7 +1,7 @@
 @page "/diagnostics"
 @page "/live-tests"
 @using System.Text.Json
-@implements IDisposable
+@implements IAsyncDisposable
 @inject IAppSessionController SessionController
 @inject IJSRuntime JsRuntime
 
@@ -124,8 +124,8 @@
                     <h2>Recent app messages</h2>
                 </div>
                 <div class="action-row">
-                    <MudButton HtmlTag="button" data-testid="copy-diagnostics-jsonl" Color="Color.Default" OnClick="CopyLogsAsync" Variant="Variant.Text">Copy all messages</MudButton>
-                    <MudButton HtmlTag="button" data-testid="download-diagnostics-jsonl" Color="Color.Default" OnClick="DownloadLogsAsync" Variant="Variant.Text">Download messages</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" data-testid="copy-diagnostics-jsonl" Color="Color.Default" OnClick="CopyLogsAsync" Variant="Variant.Text">Copy all messages</MudButton>
+                    <MudButton HtmlTag="button" data-layout-primary="true" data-testid="download-diagnostics-jsonl" Color="Color.Default" OnClick="DownloadLogsAsync" Variant="Variant.Text">Download messages</MudButton>
                     <MudButton Color="Color.Default" OnClick="ClearLogsAsync" Variant="Variant.Text">Clear messages</MudButton>
                 </div>
             </div>
@@ -169,7 +169,12 @@
                 </label>
             </div>
 
-            <div class="diagnostics-log-list">
+            <p class="diagnostics-copy-hint">Click or tap a message to copy it. Open Details to inspect.</p>
+            @if (_copyStatus is not null)
+            {
+                <p class="diagnostics-copy-status" role="status" aria-live="polite">@_copyStatus</p>
+            }
+            <div class="diagnostics-log-list" aria-label="Recent app messages">
                 @if (FilteredEntries.Count == 0)
                 {
                     <p class="panel-copy">No app messages match the current filters.</p>
@@ -178,30 +183,27 @@
                 {
                     @foreach (var entry in FilteredEntries)
                     {
-                        <button class="diagnostics-log-item" type="button" @onclick="@(() => _selectedEntry = entry)">
-                            <div class="task-group-header">
-                                <strong>@entry.Operation</strong>
-                                <span class="ui-pill @(GetSeverityPillClass(entry.Severity))">@entry.Severity</span>
-                            </div>
-                            <span>@entry.Message</span>
-                            <span class="dashboard-stat-note">@entry.FeatureArea • @entry.Mode • @entry.OccurredAtUtc.ToLocalTime().ToString("g")</span>
-                            <code class="diagnostics-metadata-inline">@FormatMetadataCompact(entry)</code>
-                        </button>
+                        <div class="diagnostics-log-row" @key="entry.Id">
+                            <button class="diagnostics-log-item" type="button" data-layout-primary="true" data-selected="@(_selectedEntry?.Id == entry.Id ? "true" : "false")"
+                                    title="Copy message" @onclick="() => CopyEntryAsync(entry)">
+                                <span class="diagnostics-log-heading">
+                                    <time datetime="@entry.OccurredAtUtc.ToString("O")">@entry.OccurredAtUtc.ToLocalTime().ToString("g")</time>
+                                    <span class="diagnostics-log-severity @GetSeverityPillClass(entry.Severity)">@entry.Severity</span>
+                                    <strong>@entry.Operation</strong>
+                                </span>
+                                <span>@entry.Message</span>
+                                <span class="diagnostics-log-context">@entry.FeatureArea · @entry.Mode</span>
+                            </button>
+                            <details class="diagnostics-log-details">
+                                <summary>Details</summary>
+                                <code class="diagnostics-metadata-inline">@FormatMetadataCompact(entry)</code>
+                                <pre>@FormatEntryJson(entry)</pre>
+                            </details>
+                        </div>
                     }
                 }
             </div>
 
-            @if (_selectedEntry is not null)
-            {
-                <div class="diagnostics-preview">
-                    <div class="task-group-header">
-                        <strong>@_selectedEntry.Operation</strong>
-                        <span class="ui-pill count-pill">@_selectedEntry.FeatureArea</span>
-                    </div>
-                    <p class="panel-copy">@_selectedEntry.Message</p>
-                    <pre>@FormatEntryJson(_selectedEntry)</pre>
-                </div>
-            }
         </aside>
     </section>
 </div>
@@ -215,6 +217,7 @@
     private string _severityFilter = string.Empty;
     private string _modeFilter = string.Empty;
     private bool? _messagesRefreshed;
+    private string? _copyStatus;
 
     protected override void OnInitialized()
     {
@@ -273,19 +276,34 @@
         await SessionController.ClearDiagnosticsLogsAsync();
     }
 
-    private async Task CopyLogsAsync()
+    private async Task CopyEntryAsync(Habitica.Domain.Diagnostics.DiagnosticsLogEntry entry)
     {
-        var module = await GetExportModuleAsync();
-        await module.InvokeVoidAsync("copyText", FormatEntriesJsonl(FilteredEntries));
+        _selectedEntry = entry;
+        await CopyAsync(FormatEntryJson(entry), "Message copied.");
+    }
+
+    private Task CopyLogsAsync() => CopyAsync(FormatEntriesJsonl(FilteredEntries), "Filtered messages copied.");
+
+    private async Task CopyAsync(string json, string success)
+    {
+        try
+        {
+            var module = await GetExportModuleAsync();
+            await module.InvokeVoidAsync("copyText", json);
+            _copyStatus = success;
+        }
+        catch { _copyStatus = "Copy failed. Open Details to copy manually, or try again."; }
     }
 
     private async Task DownloadLogsAsync()
     {
-        var module = await GetExportModuleAsync();
-        await module.InvokeVoidAsync(
-            "downloadTextFile",
-            $"habitica-tool-diagnostics-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}.jsonl",
-            FormatEntriesJsonl(FilteredEntries));
+        try
+        {
+            var module = await GetExportModuleAsync();
+            await module.InvokeVoidAsync("downloadTextFile", $"habitica-tool-diagnostics-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}.jsonl", FormatEntriesJsonl(FilteredEntries));
+            _copyStatus = "Messages downloaded.";
+        }
+        catch { _copyStatus = "Download failed. Copy the filtered messages instead."; }
     }
 
     private static string GetStatusLabel(LiveTestStatus status)
@@ -352,9 +370,14 @@
         _ = InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
         SessionController.Changed -= HandleStateChanged;
+        if (_exportModule is not null)
+        {
+            try { await _exportModule.DisposeAsync(); }
+            catch (JSDisconnectedException) { }
+        }
     }
 
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)

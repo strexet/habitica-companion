@@ -1,4 +1,5 @@
 export async function copyText(text) {
+  if (!navigator.clipboard?.writeText) throw new Error("clipboard_unavailable");
   await navigator.clipboard.writeText(text);
 }
 

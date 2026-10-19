@@ -1,0 +1,39 @@
+{
+  "task_id": "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
+  "checks": {
+    "dotnetPassed": 829,
+    "dotnetFailed": 0,
+    "finalTargetTestsPassed": 6,
+    "finalTargetWarnings": 0,
+    "nodePassed": 13,
+    "releasePublish": "pass",
+    "renderedCases": 144,
+    "renderedErrors": 0
+  },
+  "keyboard": {
+    "EnterNativeClicks": 1,
+    "SpaceNativeClicks": 1,
+    "focusOutline": "2px solid",
+    "TabTarget": "SUMMARY",
+    "EnterDisclosure": "opened and closed"
+  },
+  "asset_fingerprints": {
+    "app.css": "075caf18c3c6b93118d0e8d319f96f0d841d0d35ddb4731340fe8449faeffdf1",
+    "colorSchemes.js": "8462ddaa89004ccf1c99ba78fc909d3d0474291d80187deed343b0c18905c387",
+    "schemes.json": "4088181304e6be006bb7a4cae9e690d77b41e026b4c1885da5b28a338b88ad49",
+    "qualification-frame.mjs": "b7476ce6f6e5766f604e53a0ecdf19cb68dc775a911c8a2276fdf8a3e22d0bd2",
+    "diagnostics-compact-many.html": "72cf51ac4db51222e5b5371afcee93db69539ea955096072b9c2c99e9a4813d5",
+    "diagnostics-compact-details.html": "50a9b1c85e187450aa735f06a080b089536fb19994677698d8b58853af633865"
+  },
+  "results": [
+    "Exact redacted row JSON equals displayed Details JSON.",
+    "Filtered copy contains only six matching rows; private canaries remain absent.",
+    "Clipboard refusal presents fixed recovery copy and retry succeeds.",
+    "Collapsed and expanded twelve-row fixtures pass six widths, six deterministic themes and two text sizes."
+  ],
+  "limitations": [
+    "Static Razor fixtures do not execute Blazor handlers; component and JavaScript helper assertions establish separate delegation behavior.",
+    "Physical devices, assistive technologies and hosted clients remain unqualified.",
+    "Full solution run contained one test-analyzer warning; corrected assertion and final targeted rebuild contain no warnings."
+  ]
+}
