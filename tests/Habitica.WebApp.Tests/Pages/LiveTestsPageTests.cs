@@ -133,6 +133,7 @@ public sealed class LiveTestsPageTests : BunitContext
         var metadata = cut.Find(".diagnostics-log-item .diagnostics-metadata-inline");
         Assert.Contains("sectionStatuses", metadata.TextContent);
         Assert.Contains("diagnostics:Skipped", metadata.TextContent);
+        Qualification.PageLayoutEvidence.Save("diagnostics-multiline", cut.Markup, "/diagnostics", "multiline-logs", ["logs", "filters", "disabled-controls"], nameof(Diagnostics_console_keeps_long_metadata_in_dedicated_wrapping_block));
     }
 
     [Fact]

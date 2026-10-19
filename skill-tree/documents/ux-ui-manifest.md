@@ -669,3 +669,12 @@ Workspace recovery and manual status refresh reread actual executor availability
 ## Settings session action rows
 
 Related session cards use heading, flexible description and action grid rows. Bottom actions align within a wider shared row; descriptions have no fixed height. Narrow cards stack through the existing adaptive Settings grid. Session actions retain native button/link keyboard semantics, shared focus/theme tokens and a 44-pixel minimum target. Scope remains limited to settings-session-actions rather than every action-card.
+
+## Changed-page qualification contract
+
+Every new or materially changed page requires synthetic interaction assertions and actual rendered evidence. Route/state coverage names forms, navigation, inline confirmations or modal dialogs, tables, charts, logs, long content and disabled/error/loading states as applicable. Missing categories receive explicit explanations. The shared browser matrix checks the documented six widths, enlarged text, normal themes, deterministic calm/moderate output, primary target dimensions and sampled composited text contrast. Keyboard reachability and visible focus require an observed journey. Seeded overlap/overflow and unreadable-text examples qualify the detector. Extreme chaos and real-device/assistive-technology results remain separate.
+
+
+## Shared readable foregrounds and primary geometry
+
+Colored labels, statuses, links, outlined actions and muted copy consume derived on-surface foreground tokens. Qualifying authored colors remain intact; insufficient colors move toward readable ink across common card/body/input surfaces and sampled theme stops. Semantic fills and borders retain original colors. Trust messages on sign-in use card surfaces and ink rather than shell foregrounds. Default-size filled actions and navigation links have the shared 44-pixel minimum; long labels wrap. Tasks root tracks and stat columns shrink for enlarged narrow layouts without hiding overflow.

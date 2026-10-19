@@ -8,10 +8,10 @@ const saved = { id: 'saved-dark', tokens: { background: '#12091e', primary: '#a5
 const preview = { id: 'transient', tokens: { background: '#e8e7de', primary: '#345678' } };
 const preferences = { selectedSchemeId: saved.id, selectedAtUtc: '2026-10-19T00:00:00Z', customSchemes: [saved] };
 
-function browser(storage = new Map(), unavailable = false) {
+function browser(storage = new Map(), unavailable = false, cards = []) {
   const properties = new Map();
-  const root = { style: { setProperty: (name, value) => properties.set(name, value) }, dataset: {} };
-  const context = { document: { documentElement: root, querySelector: () => null }, window: { localStorage: {
+  const root = { style: { setProperty: (name, value) => properties.set(name, value), getPropertyValue: name => properties.get(name)??"" }, dataset: {} };
+  const context = { getComputedStyle: element => element === root ? {getPropertyValue: name=>properties.get(name)??""} : {backgroundColor:element.background}, document: { documentElement: root, querySelector: () => null, querySelectorAll: () => cards }, window: { localStorage: {
     getItem: key => storage.get(key) ?? null,
     setItem: (key, value) => { if (unavailable) throw new Error('Storage unavailable'); storage.set(key, value); },
     removeItem: key => storage.delete(key),
@@ -75,4 +75,36 @@ test('a qualifying authored foreground stays unchanged', () => {
   const page = browser();
   page.api.applyColorScheme({id:'authored',tokens:{primary:'#12081f',primaryButtonText:'#fff7ff'}});
   assert.equal(page.properties.get('--button-text'),'#fff7ff');
+});
+
+
+test('surface text derives readable gold, status and muted colors without changing preferences', () => {
+  const page = browser();
+  const before = [...page.storage];
+  page.api.applyColorScheme({id:'surface-canary',tokens:{background:'#ffffff',cardBackground:'#ffffff',surface:'#ffffff',surfaceStrong:'#ffffff',inputBackground:'#ffffff',ink:'#201136',primary:'#7b2dd6',accent:'#f0a400',danger:'#d94768',success:'#1f9f7a',muted:'#aaaaaa'}});
+  const parse = value => value.startsWith('#') ? value.slice(1).match(/../g).map(v=>parseInt(v,16)) : value.match(/[\d.]+/g).slice(0,3).map(Number);
+  const lum = rgb => rgb.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
+  for (const name of ['primary','accent','danger','success','muted']) {
+    const foreground = lum(parse(page.properties.get('--text-'+name)));
+    assert.ok((1.05)/(foreground+.05)>=4.5,name);
+  }
+  assert.notEqual(page.properties.get('--text-accent'),'#f0a400');
+  assert.deepEqual([...page.storage],before);
+});
+test('readable surface authoring stays exact while transparent pale text is repaired', () => {
+  const page = browser();
+  page.api.applyColorScheme({id:'surface-alpha',tokens:{background:'#ffffff',ink:'#111111',primary:'#333333',muted:'rgba(0,0,0,0.05)'}});
+  assert.equal(page.properties.get('--text-primary'),'#333333');
+  assert.notEqual(page.properties.get('--text-muted'),'rgba(0,0,0,0.05)');
+});
+
+
+test('task foreground follows actual task color on theme application and explicit rerender refresh', () => {
+  const values = new Map();
+  const card = {background:'rgb(42, 105, 64)',style:{getPropertyValue:key=>values.get(key)??'',setProperty:(key,value)=>values.set(key,value)}};
+  const page=browser(new Map(),false,[card]);
+  page.api.applyColorScheme({id:'task-contrast',tokens:{background:'#ffffff',ink:'#162423'}});
+  assert.equal(values.get('--task-readable-ink'),'#ffffff');
+  card.background='rgb(255, 240, 240)';page.api.refreshTaskContrast();
+  assert.equal(values.get('--task-readable-ink'),'#162423');
 });

@@ -46,6 +46,15 @@ public sealed class SignInPageTests : BunitContext
         Assert.Contains("Color scheme", cut.Markup);
         Assert.NotNull(cut.Find("[data-testid='color-scheme-select']"));
         Assert.Empty(cut.FindAll("[data-testid='random-theme-scheme']"));
+        Qualification.PageLayoutEvidence.Save("sign-in-empty", cut.Markup, "/sign-in", "signed-out-empty", ["form", "navigation", "disabled-controls"], nameof(Renders_credential_help_and_safety_copy));
+        var session = (FakeAppSessionController)Services.GetRequiredService<IAppSessionController>();
+        session.SetState(session.State with { IsBusy = true }); cut.Render();
+        Assert.NotEmpty(cut.FindAll("button:disabled"));
+        Qualification.PageLayoutEvidence.Save("sign-in-loading", cut.Markup, "/sign-in", "loading", ["form", "disabled-controls", "loading"], nameof(Renders_credential_help_and_safety_copy));
+        session.SetState(session.State with { IsBusy = false }); cut.Render();
+        cut.Find("form").Submit();
+        Assert.Contains("Enter both Habitica User ID and API Token before signing in.", cut.Markup);
+        Qualification.PageLayoutEvidence.Save("sign-in-error", cut.Markup, "/sign-in", "credential-validation-error", ["form", "error"], nameof(Renders_credential_help_and_safety_copy));
     }
 
     [Fact]

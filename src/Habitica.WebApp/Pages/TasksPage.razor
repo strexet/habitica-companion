@@ -276,7 +276,7 @@
                                                            OnClick="() => ScoreTaskAsync(item, TaskScoreDirection.Up)"
                                                            Size="Size.Small"
                                                            Variant="Variant.Filled"
-                                                           data-testid="@($"score-task-up-{item.Id}")">
+                                                           data-layout-primary="true" data-testid="@($"score-task-up-{item.Id}")">
                                                     Score +@GetHabitScoreCount(item.Id)
                                                 </MudButton>
 
@@ -285,7 +285,7 @@
                                                            OnClick="() => ScoreTaskAsync(item, TaskScoreDirection.Down)"
                                                            Size="Size.Small"
                                                            Variant="Variant.Outlined"
-                                                           data-testid="@($"score-task-down-{item.Id}")">
+                                                           data-layout-primary="true" data-testid="@($"score-task-down-{item.Id}")">
                                                     Score -@GetHabitScoreCount(item.Id)
                                                 </MudButton>
                                             }
@@ -297,7 +297,7 @@
                                                            OnClick="() => ScoreTaskAsync(item, direction)"
                                                            Size="Size.Small"
                                                            Variant="Variant.Filled"
-                                                           data-testid="@($"score-task-{item.Id}")">
+                                                           data-layout-primary="true" data-testid="@($"score-task-{item.Id}")">
                                                     @(item.IsCompleted ? "Uncomplete" : "Complete")
                                                 </MudButton>
                                             }
@@ -444,6 +444,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await JsRuntime.InvokeVoidAsync("HabiticaColorScheme.refreshTaskContrast");
         if (!firstRender)
         {
             return;

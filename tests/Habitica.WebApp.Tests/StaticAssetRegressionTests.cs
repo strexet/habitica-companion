@@ -137,7 +137,7 @@ public sealed class StaticAssetRegressionTests
         Assert.Contains(".topbar-copy span", stylesheet);
         Assert.Contains("display: none;", stylesheet);
         Assert.Contains(".topbar .sync-chip--warning", stylesheet);
-        Assert.Contains("color-mix(in srgb, var(--accent) 70%, var(--ink))", stylesheet);
+        Assert.Contains("color: var(--text-accent, var(--ink))", stylesheet);
     }
 
     [Fact]

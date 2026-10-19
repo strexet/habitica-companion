@@ -288,6 +288,7 @@ public sealed class TasksPageTests : BunitContext
 
         cut.Find("[data-testid='task-analysis-period']").Change("Month");
         Assert.Contains("Last 30 days", cut.Markup);
+        Qualification.PageLayoutEvidence.Save("tasks-charts", cut.Markup, "/tasks", "cached-month-statistics", ["charts", "tasks", "filters"], nameof(Task_statistics_render_history_charts_for_selected_period));
 
         cut.FindAll("button").Single(button => button.TextContent.Contains("Details", StringComparison.Ordinal)).Click();
         Assert.Contains("Task value history", cut.Markup);

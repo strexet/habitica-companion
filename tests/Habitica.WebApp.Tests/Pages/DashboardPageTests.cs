@@ -181,6 +181,7 @@ public sealed class DashboardPageTests : BunitContext
         Assert.Contains("Equipment", cut.Markup);
         Assert.Contains("Effective", cut.Markup);
         Assert.Contains("STR", cut.Markup);
+        Qualification.PageLayoutEvidence.Save("dashboard-stats-table", cut.Markup, "/dashboard", "cached-account-stat-table", ["tables", "navigation", "actions"], nameof(Renders_cached_user_snapshot_cards_and_freshness_state));
     }
 
     [Fact]

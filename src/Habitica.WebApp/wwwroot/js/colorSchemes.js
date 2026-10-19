@@ -113,7 +113,64 @@
         ? candidate : best);
   }
 
+  function colorAlpha(value) {
+    if (!value) return 1;
+    const rgba = value.match(/^rgba\(([^)]+)\)$/i);
+    if (rgba) {
+      const alpha = Number(rgba[1].split(",")[3]);
+      return Number.isFinite(alpha) ? Math.max(0, Math.min(1, alpha)) : 1;
+    }
+    const hex = value.trim().replace(/^#/, "");
+    if (/^[0-9a-f]{8}$/i.test(hex)) return Number.parseInt(hex.slice(6), 16) / 255;
+    if (/^[0-9a-f]{4}$/i.test(hex)) return Number.parseInt(hex[3] + hex[3], 16) / 255;
+    return 1;
+  }
+
+  function surfaceColors(tokens) {
+    const base = parseColor(readToken(tokens, "background")) || { red: 255, green: 255, blue: 255 };
+    const over = (value, under) => {
+      const parsed = parseColor(value);
+      if (!parsed) return under;
+      const alpha = colorAlpha(value);
+      return Object.fromEntries(["red", "green", "blue"].map(key => [key, parsed[key] * alpha + under[key] * (1 - alpha)]));
+    };
+    const stops = name => Object.values(readToken(tokens, name) || {}).filter(value => typeof value === "string");
+    const backgrounds = [base, ...stops("backgroundGradient").map(value => over(value, base))];
+    const samples = backgrounds.flatMap(background => [background,
+      ...["cardBackground", "surface", "surfaceStrong", "inputBackground"].map(name => over(readToken(tokens, name) || "", background)),
+      ...stops("cardGradient").map(value => over(value, background))]);
+    return samples.flatMap(surface => [surface, ...["primary", "accent", "danger", "success"].flatMap(name => {
+      const tint = parseColor(readToken(tokens, name));
+      return tint ? [.08, .16].map(alpha => Object.fromEntries(["red", "green", "blue"].map(key => [key, tint[key] * alpha + surface[key] * (1 - alpha)]))) : [];
+    })]);
+  }
+
+  function readableSurfaceText(preferredValue, inkValue, samples) {
+    const levels = samples.map(luminance);
+    const score = (candidate, alpha = 1) => {
+      const level = luminance(candidate);
+      return Math.min(...levels.map((other, index) => {
+        const foreground = alpha === 1 ? level : luminance(Object.fromEntries(["red", "green", "blue"].map(key => [key, candidate[key] * alpha + samples[index][key] * (1 - alpha)])));
+        return (Math.max(foreground, other) + .05) / (Math.min(foreground, other) + .05);
+      }));
+    };
+    const preferred = parseColor(preferredValue), ink = parseColor(inkValue);
+    if (preferred && score(preferred, colorAlpha(preferredValue)) >= 4.5) return preferredValue;
+    if (preferred && ink) {
+      for (let step = 1; step <= 10; step++) {
+        const mixed = Object.fromEntries(["red", "green", "blue"].map(key => [key, Math.round(preferred[key] * (1 - step / 10) + ink[key] * step / 10)]));
+        if (score(mixed) >= 4.5) return `rgb(${mixed.red}, ${mixed.green}, ${mixed.blue})`;
+      }
+    }
+    const candidates = [inkValue, "#000000", "#ffffff"].filter(value => parseColor(value));
+    return candidates.reduce((best, value) => score(parseColor(value), colorAlpha(value)) > score(parseColor(best), colorAlpha(best)) ? value : best);
+  }
+
   function applyDerivedVariables(root, tokens) {
+    const samples = surfaceColors(tokens);
+    for (const name of ["primary", "accent", "danger", "success", "muted"]) {
+      root.style.setProperty(`--text-${name}`, readableSurfaceText(readToken(tokens, name), readToken(tokens, "ink"), samples));
+    }
     const drawerBackground = readToken(tokens, "drawerBackground");
     const drawerText = readToken(tokens, "drawerText");
     const inputBackground = parseColor(readToken(tokens, "inputBackground"));
@@ -245,6 +302,27 @@
     root.style.setProperty("--drawer-text-shadow", readToken(tokens, "drawerTextShadow") || "none");
   }
 
+  let taskColorContext;
+  function refreshTaskContrast() {
+    if (!document.querySelectorAll || typeof getComputedStyle !== "function") return;
+    const ink = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim();
+    const updates = [];
+    for (const card of document.querySelectorAll(".task-card")) {
+      let backgroundValue = getComputedStyle(card).backgroundColor;
+      if (!parseColor(backgroundValue)) {
+        taskColorContext ??= document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+        taskColorContext.clearRect(0, 0, 1, 1);
+        taskColorContext.fillStyle = backgroundValue; taskColorContext.fillRect(0, 0, 1, 1);
+        const rgb = taskColorContext.getImageData(0, 0, 1, 1).data;
+        backgroundValue = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+      }
+      const foreground = readableTextFor(backgroundValue, ink);
+      if (foreground && card.style.getPropertyValue("--task-readable-ink") !== foreground)
+        updates.push([card, foreground]);
+    }
+    for (const [card, foreground] of updates) card.style.setProperty("--task-readable-ink", foreground);
+  }
+
   function applyColorScheme(scheme) {
     const normalized = normalizeScheme(scheme);
     if (!normalized) {
@@ -263,6 +341,7 @@
     }
     applyGradientVariables(root, normalized.tokens);
     applyDerivedVariables(root, normalized.tokens);
+    refreshTaskContrast();
 
     root.dataset.colorScheme = normalized.id;
     const themeColor = readToken(normalized.tokens, "primary") || readToken(normalized.tokens, "background");
@@ -328,6 +407,7 @@
 
   window.HabiticaColorScheme = {
     applyColorScheme,
+    refreshTaskContrast,
     applyStoredColorScheme,
     getPreferences,
     applyAndStore

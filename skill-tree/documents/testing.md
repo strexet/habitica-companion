@@ -301,3 +301,16 @@ SettingsPageTests exports real session-action Razor markup with original and ext
 
 
 Derived-foreground regression canaries exercise gold and mid-tone base surfaces through the production theme API, retaining exact authored colors when readable. Existing live-appearance, preview and saved-cache checks run with the contrast assertions. Rendered measurements and gradient coverage remain owned by the page qualification workflow.
+
+## Reusable rendered page qualification
+
+PageLayoutEvidence exports actual Razor output, route/state/surface inventory and exact interaction-test names when HABITICA_BROWSER_EVIDENCE is set. Existing WorkspaceLayoutEvidence forwards captures without introducing a browser dependency into default tests. Gryphy light/dark, Toxic Swamp, Boss Battle and seeded calm/moderate generated schemes are serialized from ColorSchemeCatalog. Extreme chaos remains an explicit separate choice.
+
+The browser-qualification preparation script stages published CSS, production colorSchemes.js and fixture assets. The generated route inventory lists captured and omitted routes, forms, navigation, inline confirmations, tables, charts, logs and disabled/error/loading states. Changed routes require captures through --changed-route. Component event assertions remain independent of static fixture rendering. The matrix runs 360/390/430/768/1024/1200-pixel frames at 100/200-percent root text, with five-second case deadlines and a 300-second matrix deadline. Case identities discard late replies. Asset fingerprints identify measured inputs.
+
+Geometry checks detect page overflow, out-of-bounds controls, intersecting peer controls and primary targets below the app 44-pixel rule. Text checks use computed foregrounds, alpha compositing through ancestor backgrounds and sampled generated PNG/vertical linear gradients. Normal/large text thresholds remain unrounded. Disabled text is excluded from contrast thresholds and counted. Unsupported paint is explicitly unqualified, never silently passing. Seeded geometry and equal-color text controls must fail. Screenshots and keyboard/focus observations complement automated samples. SVG graphics, pseudo-elements, modal-overlay lifecycle, actual assistive technology and physical devices require separate evidence. Sampled CSS checks establish bounded regressions rather than complete WCAG conformance.
+
+Official reference context: [contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) defines normal/large text thresholds and inactive-control exceptions; [target size minimum](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) remains distinct from the stronger app 44-pixel primary-target contract.
+
+
+Shared surface-text canaries cover gold/status/muted colors, transparent authored text, exact retention of readable foregrounds and unchanged preferences. Actual browser qualification distinguishes surface text from filled-button labels and includes default/generated palettes, enlarged Tasks grids, sign-in trust messages and primary target geometry. Decorative fill colors remain independent from derived text colors.

@@ -1,0 +1,59 @@
+[
+  {
+    "caseId": "505",
+    "fixture": "/settings-actions.html",
+    "theme": "gryphy-light",
+    "textPercent": 100,
+    "seed": "geometry",
+    "width": 390,
+    "clientWidth": 375,
+    "scrollWidth": 2000,
+    "controls": 4,
+    "scrollableControls": [],
+    "primaryControls": 2,
+    "textSamples": 9,
+    "minimumMeasuredContrast": 6.234847702178141,
+    "disabledSkipped": 0,
+    "errors": [
+      {
+        "kind": "overflow",
+        "width": 375,
+        "scrollWidth": 2000
+      },
+      {
+        "kind": "overlap",
+        "ids": [
+          "BUTTON-2",
+          "BUTTON-3"
+        ]
+      }
+    ],
+    "unqualifiedSurfaces": []
+  },
+  {
+    "caseId": "506",
+    "fixture": "/settings-actions.html",
+    "theme": "gryphy-light",
+    "textPercent": 100,
+    "seed": "contrast",
+    "width": 390,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "controls": 2,
+    "scrollableControls": [],
+    "primaryControls": 2,
+    "textSamples": 8,
+    "minimumMeasuredContrast": 1,
+    "disabledSkipped": 0,
+    "errors": [
+      {
+        "kind": "contrast",
+        "id": "contrast-canary",
+        "text": "Seeded unreadable contrast canary",
+        "ratio": 1,
+        "minimum": 4.5
+      }
+    ],
+    "unqualifiedSurfaces": []
+  }
+]

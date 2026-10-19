@@ -316,3 +316,16 @@ Keep final report short:
 - whether build/tests were run
 - exact build/test commands for user to run
 - suggested commit message when repo files changed
+
+## Local synthetic qualification workflow
+
+Authorized UI implementation uses synthetic captures for layout and component tests for interaction behavior. Build before running the component suite and staging the browser matrix:
+
+```sh
+dotnet publish src/Habitica.WebApp/Habitica.WebApp.csproj -c Release --no-restore -m:1 -nodeReuse:false -o /tmp/habitica-ui-publish
+HABITICA_BROWSER_EVIDENCE=/tmp/habitica-ui-evidence dotnet test Habitica.sln --no-restore -m:1 -nodeReuse:false
+node --test tests/Functions/page-qualification.test.mjs tests/Functions/color-schemes.test.mjs
+python3 tests/browser-qualification/prepare.py --fixtures /tmp/habitica-ui-evidence --published /tmp/habitica-ui-publish/wwwroot --changed-route /settings --serve-seconds 300
+```
+
+Use a fresh evidence directory for each acceptance run. Open the printed local matrix entry point through the authorized browser tool. Select each changed page/state and run the matrix; save raw measurements, route inventory and asset fingerprints. Large inventories use bounded selected batches within the matrix deadline; captured fixtures without final rendered results remain explicitly unqualified. Run seeded failures separately and verify overlap/overflow and contrast detection. Inspect screenshots and native keyboard/focus behavior, preserving exact interaction-test references. Record unsupported surfaces and failed cases without converting missing evidence into success. Extend changed-route arguments and captures for new pages. Tables, charts and modal states need representative fixtures when introduced. The harness contains no account session; static fixture actions cannot qualify real command dispatch or remote access.

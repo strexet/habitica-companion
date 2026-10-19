@@ -1,0 +1,1264 @@
+{
+  "cases": 1104,
+  "fixtures": [
+    {
+      "fixture": "/workspace-fresh-tab.html",
+      "cases": 48,
+      "errorCounts": {
+        "contrast": 54,
+        "primary-target": 20
+      },
+      "examples": [
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Companion workspace",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Find local workspaces",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "primary-target",
+          "id": "workspace-connect",
+          "height": 34,
+          "width": 304.203125
+        }
+      ]
+    },
+    {
+      "fixture": "/sign-in-empty.html",
+      "cases": 48,
+      "errorCounts": {
+        "contrast": 204,
+        "overflow": 20,
+        "control-bounds": 104
+      },
+      "examples": [
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Connect this browser",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Session-only by default",
+          "ratio": 1.015856912708882,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "No export includes credentials",
+          "ratio": 1.015856912708882,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Saved credentials are optional",
+          "ratio": 1.015856912708882,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Safety model",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Your API Token is a password. Keep it private.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Sign in sends credentials only to Habitica for account data.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Sign in and refresh read data; Habitica-changing actions are explicit.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Session-only sign-in is the default.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Remembering credentials is optional and stored only in this browser.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Credentials are never saved in exports, app messages, or device sync.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "overflow",
+          "width": 345,
+          "scrollWidth": 606
+        }
+      ]
+    },
+    {
+      "fixture": "/tasks-charts.html",
+      "cases": 48,
+      "errorCounts": {
+        "contrast": 264,
+        "overflow": 12,
+        "control-bounds": 96
+      },
+      "examples": [
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Task workspace",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Task statistics",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "1 visible",
+          "ratio": 3.810140956079086,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "1",
+          "ratio": 3.729397663574422,
+          "minimum": 4.5
+        },
+        {
+          "kind": "overflow",
+          "width": 345,
+          "scrollWidth": 507
+        },
+        {
+          "kind": "control-bounds",
+          "id": "INPUT-0"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "SELECT-1"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "task-analysis-period"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "canonical-editor-toggle"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "rearrange-tasks-Todo"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "BUTTON-9"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "score-task-todo-history"
+        }
+      ]
+    },
+    {
+      "fixture": "/workspace-operational-status.html",
+      "cases": 48,
+      "errorCounts": {
+        "contrast": 126
+      },
+      "examples": [
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Companion workspace",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Check connection and saved work status",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Export cloud workspace",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Disconnect cloud workspace",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Delete cloud workspace",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Find local workspaces",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/canonical-archive-preview.html",
+      "cases": 48,
+      "errorCounts": {
+        "primary-target": 48,
+        "contrast": 18
+      },
+      "examples": [
+        {
+          "kind": "primary-target",
+          "id": "canonical-preview",
+          "height": 34,
+          "width": 289.40625
+        },
+        {
+          "kind": "primary-target",
+          "id": "canonical-confirm",
+          "height": 34,
+          "width": 237.703125
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Cancel preview",
+          "ratio": 4.078594466974049,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/workspace-status-unavailable.html",
+      "cases": 48,
+      "errorCounts": {
+        "contrast": 126
+      },
+      "examples": [
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Companion workspace",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Check connection and saved work status",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Export cloud workspace",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Disconnect cloud workspace",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Delete cloud workspace",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Find local workspaces",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/workspace-recovered.html",
+      "cases": 48,
+      "errorCounts": {
+        "contrast": 144
+      },
+      "examples": [
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Companion workspace",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Check connection and saved work status",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Export cloud workspace",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Disconnect cloud workspace",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Delete cloud workspace",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Pause background execution",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Find local workspaces",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/authenticated-party-controls.html",
+      "cases": 48,
+      "errorCounts": {
+        "contrast": 144
+      },
+      "examples": [
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Optional shared planning",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Check current party",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Load authenticated queue status",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Save queue permission",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Delete authenticated party planning",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Export my contributions",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Remove my contributions",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/canonical-preview.html",
+      "cases": 48,
+      "errorCounts": {
+        "overlap": 56,
+        "primary-target": 48,
+        "contrast": 18
+      },
+      "examples": [
+        {
+          "kind": "overlap",
+          "ids": [
+            "SELECT-17",
+            "canonical-preview"
+          ]
+        },
+        {
+          "kind": "primary-target",
+          "id": "canonical-preview",
+          "height": 34,
+          "width": 289.40625
+        },
+        {
+          "kind": "primary-target",
+          "id": "canonical-confirm",
+          "height": 34,
+          "width": 237.703125
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Cancel preview",
+          "ratio": 4.078594466974049,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/theme-import.html",
+      "cases": 48,
+      "errorCounts": {
+        "contrast": 18
+      },
+      "examples": [
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Customize",
+          "ratio": 4.078594466974049,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/integration-management.html",
+      "cases": 48,
+      "errorCounts": {
+        "primary-target": 48,
+        "contrast": 384
+      },
+      "examples": [
+        {
+          "kind": "primary-target",
+          "id": "export-local-data",
+          "height": 34,
+          "width": 235.40625
+        },
+        {
+          "kind": "primary-target",
+          "id": "clear-local-data",
+          "height": 34,
+          "width": 235.40625
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Session controls",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Appearance",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Optional connection",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Companion workspace",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Optional shared planning",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Portable app data",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Removes saved credentials, saved Habitica data, party history, app mes",
+          "ratio": 4.385366869174793,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Customize theme",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Check integration status",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Revoke ChatGPT access",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/workspace-renewal.html",
+      "cases": 48,
+      "errorCounts": {
+        "primary-target": 72,
+        "contrast": 330
+      },
+      "examples": [
+        {
+          "kind": "primary-target",
+          "id": "workspace-executor-enable",
+          "height": 34,
+          "width": 274.203125
+        },
+        {
+          "kind": "primary-target",
+          "id": "export-local-data",
+          "height": 34,
+          "width": 235.40625
+        },
+        {
+          "kind": "primary-target",
+          "id": "clear-local-data",
+          "height": 34,
+          "width": 235.40625
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Session controls",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Appearance",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Optional connection",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Companion workspace",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Optional shared planning",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Portable app data",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Removes saved credentials, saved Habitica data, party history, app mes",
+          "ratio": 4.385366869174793,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Customize theme",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Check connection and saved work status",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/diagnostics-multiline.html",
+      "cases": 48,
+      "errorCounts": {
+        "primary-target": 48,
+        "contrast": 366,
+        "overflow": 12,
+        "control-bounds": 156
+      },
+      "examples": [
+        {
+          "kind": "primary-target",
+          "id": "BUTTON-0",
+          "height": 34,
+          "width": 271
+        },
+        {
+          "kind": "primary-target",
+          "id": "BUTTON-2",
+          "height": 34,
+          "width": 271
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Diagnostics",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Overview",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Safe checks",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Guarded tests",
+          "ratio": 2.2065172578437138,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "This reversible check temporarily changes equipped battle gear, verifi",
+          "ratio": 4.462506867854397,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "I understand this temporarily changes equipped battle gear during the ",
+          "ratio": 4.462506867854397,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Quick account reads",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "App messages",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Warning",
+          "ratio": 3.8278113303904346,
+          "minimum": 4.5
+        },
+        {
+          "kind": "overflow",
+          "width": 345,
+          "scrollWidth": 511
+        }
+      ]
+    },
+    {
+      "fixture": "/theme-conflict.html",
+      "cases": 48,
+      "errorCounts": {
+        "overlap": 6460,
+        "contrast": 330,
+        "overflow": 12,
+        "control-bounds": 600
+      },
+      "examples": [
+        {
+          "kind": "overlap",
+          "ids": [
+            "INPUT-5",
+            "copy-custom-scheme"
+          ]
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Paste preset",
+          "ratio": 4.1156070588826905,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Cancel",
+          "ratio": 4.1156070588826905,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Keep editing",
+          "ratio": 3.806706199263328,
+          "minimum": 4.5
+        },
+        {
+          "kind": "overflow",
+          "width": 345,
+          "scrollWidth": 507
+        },
+        {
+          "kind": "control-bounds",
+          "id": "color-scheme-select"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "random-preset-scheme"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "random-theme-scheme"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "custom-scheme-name"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "INPUT-6"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "INPUT-7"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "INPUT-8"
+        }
+      ]
+    },
+    {
+      "fixture": "/canonical-filter-disabled.html",
+      "cases": 48,
+      "errorCounts": {},
+      "examples": []
+    },
+    {
+      "fixture": "/connection-fresh-tab.html",
+      "cases": 48,
+      "errorCounts": {
+        "primary-target": 96,
+        "contrast": 258
+      },
+      "examples": [
+        {
+          "kind": "primary-target",
+          "id": "integration-restore-access",
+          "height": 34,
+          "width": 274.203125
+        },
+        {
+          "kind": "primary-target",
+          "id": "integration-enroll",
+          "height": 34,
+          "width": 274.203125
+        },
+        {
+          "kind": "primary-target",
+          "id": "export-local-data",
+          "height": 34,
+          "width": 235.40625
+        },
+        {
+          "kind": "primary-target",
+          "id": "clear-local-data",
+          "height": 34,
+          "width": 235.40625
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Session controls",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Appearance",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Optional connection",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Companion workspace",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Optional shared planning",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Portable app data",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Removes saved credentials, saved Habitica data, party history, app mes",
+          "ratio": 4.385366869174793,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Customize theme",
+          "ratio": 4.234277067335955,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/canonical-saved-list.html",
+      "cases": 48,
+      "errorCounts": {
+        "contrast": 54
+      },
+      "examples": [
+        {
+          "kind": "contrast",
+          "id": "canonical-clear-filters",
+          "text": "Show all tasks",
+          "ratio": 3.320962926252546,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "STRONG",
+          "text": "Dependent <script>text</script>",
+          "ratio": 3.320962926252546,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Todo \u00b7 Active \u00b7 Normal",
+          "ratio": 3.320962926252546,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/settings-actions.html",
+      "cases": 48,
+      "errorCounts": {},
+      "examples": []
+    },
+    {
+      "fixture": "/settings-actions-long.html",
+      "cases": 48,
+      "errorCounts": {},
+      "examples": []
+    },
+    {
+      "fixture": "/shared-navigation.html",
+      "cases": 48,
+      "errorCounts": {},
+      "examples": []
+    },
+    {
+      "fixture": "/dashboard-stats-table.html",
+      "cases": 48,
+      "errorCounts": {
+        "control-bounds": 284,
+        "primary-target": 72,
+        "contrast": 618,
+        "overflow": 12
+      },
+      "examples": [
+        {
+          "kind": "control-bounds",
+          "id": "allocate-str-plus"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "allocate-int-plus"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "allocate-con-plus"
+        },
+        {
+          "kind": "control-bounds",
+          "id": "allocate-per-plus"
+        },
+        {
+          "kind": "primary-target",
+          "id": "apply-stat-allocation",
+          "height": 34,
+          "width": 271
+        },
+        {
+          "kind": "primary-target",
+          "id": "BUTTON-15",
+          "height": 34,
+          "width": 135.046875
+        },
+        {
+          "kind": "primary-target",
+          "id": "buy-gems-with-gold",
+          "height": 34,
+          "width": 103.78125
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Account overview",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Appearance",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "STRONG",
+          "text": "Account",
+          "ratio": 2.892934499369488,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "updated 4/25/2026 3:00\u202fPM",
+          "ratio": 2.892934499369488,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "STRONG",
+          "text": "Gear",
+          "ratio": 2.892934499369488,
+          "minimum": 4.5
+        }
+      ]
+    },
+    {
+      "fixture": "/sign-in-loading.html",
+      "cases": 48,
+      "errorCounts": {
+        "contrast": 204,
+        "overflow": 20,
+        "control-bounds": 104
+      },
+      "examples": [
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Connect this browser",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Session-only by default",
+          "ratio": 1.015856912708882,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "No export includes credentials",
+          "ratio": 1.015856912708882,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Saved credentials are optional",
+          "ratio": 1.015856912708882,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Safety model",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Your API Token is a password. Keep it private.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Sign in sends credentials only to Habitica for account data.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Sign in and refresh read data; Habitica-changing actions are explicit.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Session-only sign-in is the default.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Remembering credentials is optional and stored only in this browser.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Credentials are never saved in exports, app messages, or device sync.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "overflow",
+          "width": 345,
+          "scrollWidth": 606
+        }
+      ]
+    },
+    {
+      "fixture": "/sign-in-error.html",
+      "cases": 48,
+      "errorCounts": {
+        "contrast": 204,
+        "overflow": 20,
+        "control-bounds": 104
+      },
+      "examples": [
+        {
+          "kind": "contrast",
+          "id": "P",
+          "text": "Connect this browser",
+          "ratio": 2.5032279729737166,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Session-only by default",
+          "ratio": 1.015856912708882,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "No export includes credentials",
+          "ratio": 1.015856912708882,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Saved credentials are optional",
+          "ratio": 1.015856912708882,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "SPAN",
+          "text": "Safety model",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Your API Token is a password. Keep it private.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Sign in sends credentials only to Habitica for account data.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Sign in and refresh read data; Habitica-changing actions are explicit.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Session-only sign-in is the default.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Remembering credentials is optional and stored only in this browser.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "contrast",
+          "id": "LI",
+          "text": "Credentials are never saved in exports, app messages, or device sync.",
+          "ratio": 4.482208127181578,
+          "minimum": 4.5
+        },
+        {
+          "kind": "overflow",
+          "width": 345,
+          "scrollWidth": 606
+        }
+      ]
+    }
+  ],
+  "status": "Initial detector output before visibility and intentional-scroll review; counts are observations rather than confirmed defects.",
+  "limits": [
+    "Closed native details produced false overlap samples before explicit visibility filtering.",
+    "Contained horizontal tables require distinct scroll/focus evidence."
+  ]
+}

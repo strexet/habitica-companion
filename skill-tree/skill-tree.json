@@ -311,7 +311,7 @@
   },
   "role": "target",
   "source_digests": {
-    "skill-tree/documents/ai-app-testing.md": "9a30ea3fe6d78c123ffc84e8ddcb54a8492683ce7e1e1fc291c78f51c78ed142",
+    "skill-tree/documents/ai-app-testing.md": "f9a6334d0846c9646350b6e38975323b123fc906b77779437950ff9d90a9e0f7",
     "skill-tree/documents/build-and-release.md": "e528e54e92eb4045b2b1060914c1cfa02015b15aab71e934f91de9ab17c1ca72",
     "skill-tree/documents/companion-first-mcp-research.md": "1a9310ea95ff1ea471860bc45b88ca203d9134804bafab75ddd99f030fbf1cf0",
     "skill-tree/documents/companion-workspace-contract.md": "9fe9eb5bbbe7c9808eef0ef5ad4e80e7a24bdb8baaebd43e4681e7b84ca5060c",
@@ -319,7 +319,7 @@
     "skill-tree/documents/dependencies.md": "ef0a360701ccfcc93ec7f725f1b7a90c4dd2d10567ddd26e58d264977cc0d6e1",
     "skill-tree/documents/deploy-cloudflare-pages.md": "dcdb6b7f5ec6b3e1af96475aacd5391d6d55901db2ebf5238d8a48d5bcf4fd31",
     "skill-tree/documents/documents-snapshot.md": "6f79e4202c9cfc84df57641150d8a2fce2ab5d9670f6efe4d05eec00f89d73c9",
-    "skill-tree/documents/features.md": "7375f603172016e6b83acee9c21cd02b4f9305eee3fa3dadb9acfb817ec720e0",
+    "skill-tree/documents/features.md": "5d91d5fb1b8e84f7fce2f397e0ea31ab52cc0a057100366e7e071955eeb45c59",
     "skill-tree/documents/future.md": "3c389a3041f25a4acbdc9aef5998782f1c39b4cd186334f045031699c885f256",
     "skill-tree/documents/habitica-api.md": "9d9c801e1e32b9499c4f76a930e2ac3b9d39e2d584aead8ccd2227ba5d147d97",
     "skill-tree/documents/habitica-deeplinks.md": "37809f11086587ab474caeab319939e444de7701e9ce19301b8e00ebc1bf9fc7",

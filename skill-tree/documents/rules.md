@@ -209,6 +209,8 @@ Required test areas:
 - credential redaction;
 - snapshot serialization.
 
+UI/page changes require changed-route/state fixture coverage, meaningful component interaction assertions and rendered geometry/theme qualification under testing.md and ux-ui-manifest.md. Qualification includes the documented responsive widths, 200-percent text, long content, visible keyboard focus, primary target sizing and normal-theme contrast. Missing physical-device, assistive-technology or unsupported-rendering evidence remains explicit. Static markup or token tests alone do not establish rendered acceptance.
+
 Default tests must not require live Habitica credentials.
 
 Live Habitica API tests must be opt-in and clearly separated from normal CI.

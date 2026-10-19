@@ -1,0 +1,313 @@
+{
+  "scope": "Synthetic rendered samples, independent component interaction tests, published assets and observed keyboard focus.",
+  "rendered": {
+    "cases": 504,
+    "fixtures": {
+      "dashboard-stats-table": {
+        "file": "dashboard-stats-table.html",
+        "route": "/dashboard",
+        "state": "cached-account-stat-table",
+        "surfaces": [
+          "tables",
+          "navigation",
+          "actions"
+        ],
+        "interactionTest": "Renders_cached_user_snapshot_cards_and_freshness_state",
+        "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+      },
+      "diagnostics-multiline": {
+        "file": "diagnostics-multiline.html",
+        "route": "/diagnostics",
+        "state": "multiline-logs",
+        "surfaces": [
+          "logs",
+          "filters",
+          "disabled-controls"
+        ],
+        "interactionTest": "Diagnostics_console_keeps_long_metadata_in_dedicated_wrapping_block",
+        "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+      },
+      "settings-actions": {
+        "file": "settings-actions.html",
+        "route": "/settings",
+        "state": "settings-actions",
+        "surfaces": [
+          "form",
+          "actions",
+          "disclosure"
+        ],
+        "interactionTest": "Session_actions_keep_signout_and_checks_routes_with_keyboard_native_controls",
+        "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+      },
+      "shared-navigation": {
+        "file": "shared-navigation.html",
+        "route": "shared-navigation",
+        "state": "authenticated",
+        "surfaces": [
+          "navigation"
+        ],
+        "interactionTest": "Authenticated_navigation_retains_real_routes_and_drawer_surface",
+        "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+      },
+      "sign-in-empty": {
+        "file": "sign-in-empty.html",
+        "route": "/sign-in",
+        "state": "signed-out-empty",
+        "surfaces": [
+          "form",
+          "navigation",
+          "disabled-controls"
+        ],
+        "interactionTest": "Renders_credential_help_and_safety_copy",
+        "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+      },
+      "tasks-charts": {
+        "file": "tasks-charts.html",
+        "route": "/tasks",
+        "state": "cached-month-statistics",
+        "surfaces": [
+          "charts",
+          "tasks",
+          "filters"
+        ],
+        "interactionTest": "Task_statistics_render_history_charts_for_selected_period",
+        "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+      },
+      "theme-conflict": {
+        "file": "theme-conflict.html",
+        "route": "/settings",
+        "state": "theme-conflict",
+        "surfaces": [
+          "form",
+          "actions",
+          "disclosure"
+        ],
+        "interactionTest": "Import_preserves_unsaved_editor_and_requires_an_explicit_choice",
+        "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+      }
+    },
+    "themes": [
+      "boss-battle",
+      "generated-calm",
+      "generated-moderate",
+      "gryphy-dark",
+      "gryphy-light",
+      "toxic-swamp"
+    ],
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "textPercent": [
+      100,
+      200
+    ],
+    "errors": 0,
+    "harnessErrors": 0,
+    "unqualifiedSurfaces": 0,
+    "rawEvidence": "skill-tree/history/validation/shared-layout-browser.json",
+    "capturedButNotFinallyRendered": [
+      "authenticated-party-controls",
+      "canonical-archive-preview",
+      "canonical-filter-disabled",
+      "canonical-preview",
+      "canonical-saved-list",
+      "connection-fresh-tab",
+      "integration-management",
+      "settings-actions-long",
+      "sign-in-error",
+      "sign-in-loading",
+      "theme-import",
+      "workspace-fresh-tab",
+      "workspace-operational-status",
+      "workspace-recovered",
+      "workspace-renewal",
+      "workspace-status-unavailable"
+    ]
+  },
+  "validation": {
+    "dotnetPassed": 815,
+    "dotnetFailed": 0,
+    "nodePassed": 12,
+    "releasePublish": "pass",
+    "optionalBuildWarning": "Existing wasm-tools optimization workload remains unavailable; no toolchain upgrade performed.",
+    "negativeControls": "Seeded overlap/overflow and equal-color contrast fail as expected.",
+    "keyboardFocus": "Tab from Sign Out reaches Open Checks with a solid 2px outline.",
+    "changedRoute": "/tasks"
+  },
+  "assetFingerprints": {
+    "app.css": "9709d74528f5c7c7ceb7eb4c449219ed63215b3255987666410a9bffb10fd696",
+    "mud.css": "e14e158cddb262e4afd212568dfacfb3d89216c6795b46225d1e004271642c64",
+    "colorSchemes.js": "8462ddaa89004ccf1c99ba78fc909d3d0474291d80187deed343b0c18905c387",
+    "qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "qualification-frame.mjs": "e2cabefdd87ff2bdd8ed769e6cc42eb662cf46ee37eff41b27977db3e87d98f6",
+    "schemes.json": "4088181304e6be006bb7a4cae9e690d77b41e026b4c1885da5b28a338b88ad49",
+    "dashboard-stats-table.html": "ab73f9747fa3cdb5ab774430afd9bf6339fdefd2de3500d8533f259bfd0d18f1",
+    "diagnostics-multiline.html": "2c316dcc681141471a88e2a039e2def48d448c8ef8173e878525ffdc7f5111f7",
+    "settings-actions.html": "23b1f61fd58e4e427bec8f470cc0d1dfaeaf1b114a2a5ca0cea1e41b4c678538",
+    "shared-navigation.html": "215818801b4e95ff0a082a0ec8a9a2ba9c119114ba11cf159dba7621ad7aa54c",
+    "sign-in-empty.html": "8c5434e191bbb54f27cc188cdf38540faa25cf41844c3fdc483c7f0a389cc7c7",
+    "tasks-charts.html": "e466a30ef497d9d0bbb3a314775cf56c2ca175ddab6327c14df9d0eceea73885",
+    "theme-conflict.html": "24e06bf194391bf7b2d7b2fb6b8f06d6b3c54dc2c85d3b66d5357c7cf31f95ea"
+  },
+  "coverageInventory": {
+    "routes": {
+      "/": {
+        "fixtures": [],
+        "qualification": "not captured"
+      },
+      "/dashboard": {
+        "fixtures": [
+          "dashboard-stats-table"
+        ],
+        "qualification": "captured synthetic states only"
+      },
+      "/diagnostics": {
+        "fixtures": [
+          "diagnostics-multiline"
+        ],
+        "qualification": "captured synthetic states only"
+      },
+      "/inventory": {
+        "fixtures": [],
+        "qualification": "not captured"
+      },
+      "/live-tests": {
+        "fixtures": [],
+        "qualification": "not captured"
+      },
+      "/party": {
+        "fixtures": [],
+        "qualification": "not captured"
+      },
+      "/pets-mounts": {
+        "fixtures": [],
+        "qualification": "not captured"
+      },
+      "/privacy": {
+        "fixtures": [],
+        "qualification": "not captured"
+      },
+      "/quests": {
+        "fixtures": [],
+        "qualification": "not captured"
+      },
+      "/settings": {
+        "fixtures": [
+          "workspace-fresh-tab",
+          "workspace-operational-status",
+          "workspace-status-unavailable",
+          "workspace-recovered",
+          "authenticated-party-controls",
+          "theme-import",
+          "integration-management",
+          "workspace-renewal",
+          "theme-conflict",
+          "connection-fresh-tab",
+          "settings-actions",
+          "settings-actions-long"
+        ],
+        "qualification": "captured synthetic states only"
+      },
+      "/sign-in": {
+        "fixtures": [
+          "sign-in-empty",
+          "sign-in-loading",
+          "sign-in-error"
+        ],
+        "qualification": "captured synthetic states only"
+      },
+      "/signin": {
+        "fixtures": [],
+        "qualification": "not captured"
+      },
+      "/spells": {
+        "fixtures": [],
+        "qualification": "not captured"
+      },
+      "/tasks": {
+        "fixtures": [
+          "tasks-charts",
+          "canonical-archive-preview",
+          "canonical-preview",
+          "canonical-filter-disabled",
+          "canonical-saved-list"
+        ],
+        "qualification": "captured synthetic states only"
+      }
+    },
+    "surfaces": {
+      "form": [
+        "authenticated-party-controls",
+        "canonical-archive-preview",
+        "canonical-filter-disabled",
+        "canonical-preview",
+        "canonical-saved-list",
+        "connection-fresh-tab",
+        "integration-management",
+        "settings-actions",
+        "settings-actions-long",
+        "sign-in-empty",
+        "sign-in-error",
+        "sign-in-loading",
+        "theme-conflict",
+        "theme-import",
+        "workspace-fresh-tab",
+        "workspace-operational-status",
+        "workspace-recovered",
+        "workspace-renewal",
+        "workspace-status-unavailable"
+      ],
+      "navigation": [
+        "dashboard-stats-table",
+        "shared-navigation",
+        "sign-in-empty"
+      ],
+      "confirmation": [
+        "canonical-archive-preview",
+        "canonical-preview"
+      ],
+      "tables": [
+        "dashboard-stats-table"
+      ],
+      "charts": [
+        "tasks-charts"
+      ],
+      "logs": [
+        "diagnostics-multiline"
+      ],
+      "disabled-controls": [
+        "canonical-filter-disabled",
+        "connection-fresh-tab",
+        "diagnostics-multiline",
+        "sign-in-empty",
+        "sign-in-loading",
+        "workspace-fresh-tab"
+      ],
+      "error": [
+        "sign-in-error",
+        "workspace-status-unavailable"
+      ],
+      "loading": [
+        "sign-in-loading"
+      ]
+    },
+    "omitted": [
+      "Modal overlay lifecycle is not represented by inline confirmation fixtures.",
+      "SVG graphics, decorative images and pseudo-elements require separate visual review.",
+      "CSS sampling covers supported solid, generated PNG and vertical linear backgrounds; unsupported paint is explicitly unqualified.",
+      "Physical devices, assistive technologies, hosted login and actual background execution remain unqualified."
+    ],
+    "primaryTargetRule": "44 pixels for marked primary actions, default-size filled controls and navigation links; auxiliary small controls remain separately reviewed."
+  },
+  "limitations": [
+    "Captured-only states have no final rendered pass claim.",
+    "Native modal overlay lifecycle, SVG graphics and pseudo-elements require separate visual coverage.",
+    "Physical iPhone/Android and assistive technologies remain unqualified.",
+    "Synthetic fixtures execute no real account or gameplay operation."
+  ]
+}
