@@ -72,6 +72,32 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### Verify recovery of the reported production party publication error
+
+```yaml
+id: P-9abc8d93-7bd8-4d8e-944d-698892fe7f11
+priority: 102
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- The atomic owner-pool replacement and HTTP-bearing client error are published, but the original Party quest action failed stack has no response status. The initial invocation-limit explanation is unverified because SQL statements and batch binding calls must not be conflated.
+
+Expected behavior:
+- Establish whether the reported failure recurs and diagnose any remaining server failure using an owner-supplied fresh HTTP error or authorized read-only telemetry. Preserve atomic replacement and prohibit agent party mutation tests.
+
+Current context:
+- Error-only tail saw no event; no live party publication was replayed. Awaiting owner answer to the fresh HTTP-error question. This verification is outside the frozen All snapshot and does not block independent local Todo implementation.
+
+Source:
+- Owner production error request on 2026-10-20; follow-up diagnostic qualification after deployment ccfd1384.
+
 ### Default the equipment optimizer to Intelligence for every class
 
 ```yaml

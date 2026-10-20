@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-20",
+  "qualification": "Correction of the initial query-limit inference; atomicity and deployed artifact evidence remain valid.",
+  "verified": [
+    "An insertion failure rolls back the owner replacement in actual local D1.",
+    "Synthetic 52/300-type fixtures use 22 SQL statements for the complete handler.",
+    "The prior handler fails the artificial per-statement guard and the real rollback assertion; only rollback is a reproduced database defect.",
+    "Official batch documentation says multiple SQL statements are sent in one binding call. A per-statement fixture guard is not proof of production invocation-limit behavior.",
+    "Remote D1 Insights returned query statistics for the last day; the top 20 query groups total 9391 written rows in this database. This is not complete account-wide quota evidence.",
+    "A bounded 55-second error-only production tail observed no error event; no request was generated. Absence of events does not qualify the reported failure as resolved."
+  ],
+  "unverified": [
+    "Original HTTP status and server exception",
+    "Account tier and effective invocation/quota meter",
+    "Owner flow recovery after publication; owner was asked for a new HTTP-bearing error if it recurs"
+  ],
+  "references": [
+    "https://developers.cloudflare.com/d1/worker-api/d1-database/",
+    "https://developers.cloudflare.com/d1/reference/faq/",
+    "https://developers.cloudflare.com/d1/observability/metrics-analytics/"
+  ],
+  "privacy": "No party action replay, raw request logs, query text, account credentials or private row contents retained."
+}

@@ -430,7 +430,7 @@ async function publishQuestPool(db, env, partyId, access, payload, nowIso) {
   }
 
   // Keep replacement atomic and independent of the number of owned scroll types.
-  // One statement per entry exceeds Free D1's invocation query allowance.
+  // Expand bound data in one insert rather than preparing a statement for every entry.
   await db.batch([
     db.prepare("DELETE FROM party_quest_pool_entries WHERE party_id = ? AND owner_user_id = ?")
       .bind(partyId, access.userId),
