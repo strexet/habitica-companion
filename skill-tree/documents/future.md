@@ -102,46 +102,6 @@ Source:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Complete safe project retirement and agent project lifecycle
-
-```yaml
-id: T-264e3162-adc3-45f0-943e-a55feccc9d8e
-priority: 100
-status: Ready
-parent_pending_ids: ["P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-264e3162-adc3-45f0-943e-a55feccc9d8e
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Close project lifecycle gaps without deleting contained tasks.
-Current behavior:
-- Independent WorkspaceProject records and native create/update/archive organization commands already exist with organization-write scopes and no task cascade. Project deletion is absent; client-exposed tool discovery may be stale. Planned browser project workflows already cover creation, rename, placement and archive.
-Desired behavior:
-- Expose the existing project lifecycle consistently to agent clients and add a reviewed safe logical deletion/removal command with retained task/history references.
-Touch:
-- Organization models/commands and history validation in C#/TypeScript, Workspace organization API, MCP schemas/package contracts, project task queries and shared fixtures.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Reuse existing exact project identities and independent organization-write scope. Adopt logical deletion with retained audit tombstone rather than destructive row removal. Explicit deletion review lists affected project/section references and preserves every task, completion, receipt and Habitica mapping. Define a consistent Unassigned presentation without silently completing/moving descendants. Preserve one primary project, cross-project section validity and arbitrary-depth parent links. No cascading deletion or upstream project object.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- C#/TypeScript shared command/history fixtures cover create/read/rename/archive/remove, task reassignment, original receipts, missing/stale IDs, cross-account denial, existing sections and parent links, tombstone export/import and zero Habitica effects. MCP discovery tests enumerate actual supported project commands.
-Acceptance:
-- Agent clients can discover and execute exact authorized first-class project lifecycle commands with original receipt recovery.
-- Reviewed project removal preserves tasks, hierarchy, history and game mappings with passing parity/isolation tests.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
 ### Qualify automatic Companion discovery and invocation
 
 ```yaml
