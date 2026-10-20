@@ -112,6 +112,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
         return RunAsync(() => _commands.PrepareAsync(input, token), token);
     }
     public Task ConfirmAsync(CancellationToken token = default) => RunAsync(() => _commands.ConfirmAsync(token), token);
+    public Task RetryOriginalPreviewAsync(CancellationToken token = default) => RunAsync(() => _commands.RetryOriginalPreviewAsync(token), token);
     public Task CheckOriginalAsync(CancellationToken token = default) => RunAsync(() => _commands.CheckOriginalAsync(token), token);
     public void CancelPreview() { if (IsBusy) throw new InvalidOperationException("Wait for the current operation."); _commands.CancelPreview(); Changed?.Invoke(); }
 

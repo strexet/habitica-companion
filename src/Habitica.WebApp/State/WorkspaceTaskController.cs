@@ -132,11 +132,16 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
             input.Operation is WorkspaceOperation.CompleteTask or WorkspaceOperation.SkipOccurrence ? input.OccurrenceDate : null, input.ProjectToHabitica);
     }
     public Task PrepareAsync(WorkspaceTaskInput input, CancellationToken cancellationToken = default) => ObserveAsync("workspace-task-prepare", () => PrepareCoreAsync(input, cancellationToken));
-    private async Task PrepareCoreAsync(WorkspaceTaskInput input, CancellationToken cancellationToken = default)
+    public Task RetryOriginalPreviewAsync(CancellationToken cancellationToken = default)
+    {
+        if (_intent is null) throw new InvalidOperationException("No original preparation is available.");
+        return ObserveAsync("workspace-task-prepare", () => PrepareCoreAsync(null, cancellationToken));
+    }
+    private async Task PrepareCoreAsync(WorkspaceTaskInput? input, CancellationToken cancellationToken = default)
     {
         var scope = Account(); var generation = _generation; if (scope != _scope || Snapshot is null) throw new InvalidOperationException("Reload the current account workspace.");
         LinkPreview = null;
-        if (_intent is null) { _intent = Intent(input); _requestId = Guid.NewGuid(); LastReceipt = null; }
+        if (_intent is null) { _intent = Intent(input ?? throw new InvalidOperationException("No original preparation is available.")); _requestId = Guid.NewGuid(); LastReceipt = null; }
         if (IsCloud)
         {
             var result = await cloud.PrepareCommandAsync(_requestId, _intent, cancellationToken);

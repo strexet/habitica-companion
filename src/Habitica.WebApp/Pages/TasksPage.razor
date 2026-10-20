@@ -16,10 +16,11 @@
 <PageTitle>Tasks</PageTitle>
 
 <div class="tasks-shell" @ref="_tasksRoot">
+    <TodoTaskPanel ShowKindSelector="true" />
     <section class="card-surface tasks-header">
         <div>
             <p class="section-label">Task workspace</p>
-            <h1>Tasks</h1>
+            <h1>Habitica tasks</h1>
             <p class="panel-copy">
                 Browse and score the latest Habitica tasks saved on this device. Mutations require fresh data and refresh account/task state after completion.
             </p>
@@ -64,13 +65,6 @@
                 }
             </div>
         </div>
-    </section>
-
-    <section class="card-surface companion-tasks-section">
-        <h2>Companion tasks</h2>
-        <p>Save and review independent Companion tasks and commands. Cloud projection has separate controls in Settings.</p>
-        <MudButton OnClick="@(() => _showCompanionTasks = !_showCompanionTasks)" Variant="Variant.Outlined" data-testid="canonical-editor-toggle">@(_showCompanionTasks ? "Close Companion editor" : "Manage Companion tasks")</MudButton>
-        @if (_showCompanionTasks) { <CompanionTasksPanel /> }
     </section>
 
     @if (SessionController.State.TaskSnapshot is null)
@@ -393,7 +387,6 @@
 </div>
 
 @code {
-    private bool _showCompanionTasks;
     private readonly Dictionary<TaskType, bool> _foldedCategories = new();
     private readonly Dictionary<TaskType, bool> _showCompletedCategories = new();
     private readonly Dictionary<TaskType, bool> _rearrangingCategories = new();

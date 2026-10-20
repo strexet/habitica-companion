@@ -64,6 +64,8 @@ internal sealed class WorkspaceTaskFixture
         public Func<Task<WorkspaceStatusResult>> StatusAction { get; set; } = () => Task.FromResult(new WorkspaceStatusResult(false, "Unavailable"));
         public Task<WorkspaceStatusResult> ReadOperationalStatusAsync(CancellationToken token) { StatusReads++; return StatusAction(); }
         public bool LoseAcceptance { get; set; }
+        public bool LosePreparation { get; set; }
+        private readonly Dictionary<Guid, WorkspaceCommandPreview> _previews = [];
         public bool FailLoads { get; set; }
         public TaskCompletionSource? LoadGate { get; set; }
         public TaskCompletionSource? LoadEntered { get; set; }
@@ -82,8 +84,14 @@ internal sealed class WorkspaceTaskFixture
         public async Task<WorkspaceJournalSnapshot?> LoadWorkspaceAsync(CancellationToken token) { if (LoadAction is not null) return await LoadAction(token); LoadEntered?.TrySetResult(); if (LoadGate is not null) await LoadGate.Task; return FailLoads ? null : State; }
         public Task<WorkspaceTaskResponse<WorkspaceCommandPreview>> PrepareCommandAsync(Guid requestId, WorkspaceCommand intent, CancellationToken token)
         {
-            PreparationIds.Add(requestId); var command = intent with { Id = Guid.NewGuid(), TaskId = intent.Operation == WorkspaceOperation.CreateTodo ? Guid.NewGuid() : intent.TaskId };
-            var preview = new WorkspaceCommandPreview(command.Id, requestId, DateTimeOffset.UtcNow.AddMinutes(10), false, command, true, false);
+            PreparationIds.Add(requestId);
+            if (!_previews.TryGetValue(requestId, out var preview))
+            {
+                var command = intent with { Id = Guid.NewGuid(), TaskId = intent.Operation == WorkspaceOperation.CreateTodo ? Guid.NewGuid() : intent.TaskId };
+                preview = new WorkspaceCommandPreview(command.Id, requestId, DateTimeOffset.UtcNow.AddMinutes(10), false, command, intent.ProjectToHabitica, false);
+                _previews[requestId] = preview;
+            }
+            if (LosePreparation) { LosePreparation = false; return Task.FromResult(new WorkspaceTaskResponse<WorkspaceCommandPreview>(false, null, "Synthetic lost preparation", true)); }
             return Task.FromResult(new WorkspaceTaskResponse<WorkspaceCommandPreview>(true, preview, "Synthetic preview"));
         }
         public Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>> AcceptCommandAsync(WorkspaceCommandPreview preview, CancellationToken token)

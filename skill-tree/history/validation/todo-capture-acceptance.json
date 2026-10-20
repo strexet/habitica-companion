@@ -1,0 +1,42 @@
+{
+  "task_id": "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+  "date": "2026-10-20",
+  "checks": {
+    "release_publish": "pass; optional wasm-tools absent",
+    "dotnet_suite": {
+      "passed": 854,
+      "failed": 0,
+      "web_tests": 484
+    },
+    "capture_fixture_regressions": 28,
+    "rendered_cases": 432,
+    "geometry_contrast_harness_errors": 0,
+    "unqualified_sampled_surfaces": 0,
+    "seeded_negative_controls": "2 detected overflow/overlap and contrast",
+    "screenshot": "skill-tree/history/validation/todo-capture-browser.png",
+    "interaction_tests": [
+      "title-only native save, review and focus request",
+      "Todo/Daily/Habit primary actions",
+      "explicit occurrence identity and retained dates",
+      "advanced fields, invalid dates and separate planning",
+      "cancelled drafts and source/account changes",
+      "stale revision and explicit reload",
+      "unknown preparation/acceptance original-ID recovery across navigation",
+      "archive/history review and explicit projection without dispatch"
+    ]
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "ce6ef4a0ba7335d770d711cd04982158132006dafbdae06a276469d912e82d63",
+    "src/Habitica.WebApp/State/TodoTaskDraftStore.cs": "50104102a28ba65db83befaa27fff29f9f822346b858421590248d77b7462066",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "01d4356621f65ad62b0d3818c3e33bcf3ad2884b4760498e7ccbb1cab8c6431f",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "61520048215e49a1b0d04eaa452378caccff2ed502ac92b590d06c80d5a6b6f7",
+    "src/Habitica.WebApp/Pages/TasksPage.razor": "452447e5f1d3a4fec51a49d0311d10f4f6ad86941216f1c32152354c63b60c7e",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "0f12213e29c9d16c4f401c9d1518842b8a86b105560cd797b92d59c996f713d6",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "a3a4da98b2e3c09b5c447eb7017a522a4b5f310ae1e550fe8137dbbda85f810a"
+  },
+  "limits": [
+    "No production publication or real account mutation for this unit.",
+    "Broader Todo navigation, Today, projects and recurrence editing remain separate units.",
+    "Browser keyboard probe observes native submit and prevents static navigation; it does not simulate Blazor dispatch."
+  ]
+}

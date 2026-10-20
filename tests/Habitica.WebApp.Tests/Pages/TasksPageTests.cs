@@ -16,6 +16,16 @@ namespace Habitica.WebApp.Tests.Pages;
 
 public sealed class TasksPageTests : BunitContext
 {
+    public TasksPageTests()
+    {
+        var workspace = new Workspace.WorkspaceTaskFixture();
+        Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(workspace.Client);
+        Services.AddSingleton(workspace.Database);
+        Services.AddScoped<WorkspaceTaskController>();
+        Services.AddScoped<TodoWorkspacePresentation>();
+        Services.AddScoped<TodoTaskDraftStore>();
+    }
+
     [Fact]
     public void Signed_out_empty_tasks_has_sign_in_action()
     {

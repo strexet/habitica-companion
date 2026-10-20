@@ -4513,6 +4513,29 @@ code {
 
 .task-card-actions > [data-layout-primary] { min-height: var(--control-height); }
 
+.todo-task-panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.8rem; min-width: 0; padding: 1.25rem; }
+.todo-task-panel h2, .todo-task-panel h3 { margin: 0; }
+.todo-task-panel [data-layout-primary], .todo-task-panel summary { min-height: var(--control-height); }
+.todo-task-panel button { white-space: normal; overflow-wrap: anywhere; }
+.todo-task-panel fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.todo-source-controls, .todo-capture-primary, .todo-editor-fields { display: grid; grid-template-columns: minmax(0, 1fr); align-items: end; gap: 0.7rem; }
+.todo-capture-primary { grid-template-columns: minmax(0, 1fr) auto auto; }
+.todo-source-picker summary, .todo-advanced summary { cursor: pointer; padding-block: 0.6rem; overflow-wrap: anywhere; }
+.todo-advanced { margin-top: 0.5rem; }
+.todo-task-panel :is(input,select,textarea) { min-width: 0; max-width: 100%; }
+.todo-task-panel summary:focus-visible, .todo-task-panel h3:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.todo-task-panel p, .todo-task-panel strong, .todo-task-panel span { min-width: 0; overflow-wrap: anywhere; }
+.todo-direct-list { display: grid; grid-template-columns: minmax(0, 1fr); }
+.todo-direct-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.75rem; padding-block: 0.8rem; border-bottom: 1px solid var(--card-border); }
+.todo-row-content { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.2rem; align-content: start; }
+.todo-row-content p { white-space: pre-wrap; margin: 0; }
+.todo-row-actions { display: flex; flex-wrap: wrap; align-items: end; align-content: start; gap: 0.5rem; max-width: 25rem; }
+.todo-command-review { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.5rem; padding: 0.8rem; border: 1px solid var(--card-border); background: var(--surface); color: var(--ink); border-radius: 0.75rem; }
+.todo-command-review p { margin: 0; white-space: pre-wrap; }
+.todo-task-panel [role="alert"] { color: var(--text-danger, var(--ink)); }
+@media (min-width: 900px) { .todo-source-controls { grid-template-columns: minmax(0, 1fr) auto auto auto; } .todo-editor-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 650px) { .todo-capture-primary, .todo-direct-row { grid-template-columns: minmax(0, 1fr); } .todo-row-actions { max-width: 100%; } }
+
 .dashboard-shell,
 .diagnostics-shell,
 .inventory-shell,
