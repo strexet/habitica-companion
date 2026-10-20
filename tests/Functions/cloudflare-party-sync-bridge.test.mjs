@@ -12,6 +12,7 @@ globalThis.window = {
 
 const {
   activatePartySyncInviteProof,
+  publishQuestPool,
   partySyncBridgeTestHooks,
 } = await import("../../src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js");
 
@@ -52,3 +53,22 @@ test("browser bridge uses local claims for manager recovery actions", () => {
   assert.equal(headers["x-party-sync-proof-version"], "local-claim-v1");
   assert.equal(headers["x-party-sync-proof-token"], undefined);
 });
+
+for (const status of [403, 429, 500]) {
+  test(`quest publication reports HTTP ${status} without replaying the write`, async t => {
+    partySyncBridgeTestHooks.clearPartySyncInviteProof(claim.partyId);
+    const originalFetch = globalThis.fetch;
+    t.after(() => { globalThis.fetch = originalFetch; });
+    let calls = 0;
+    globalThis.fetch = async () => {
+      calls++;
+      return new Response(status >= 500 ? "private database infrastructure detail" : "", { status });
+    };
+    await assert.rejects(publishQuestPool(claim, []), error => {
+      assert.ok(error.message.includes(`HTTP ${status}`));
+      assert.ok(!error.message.includes("private database"));
+      return true;
+    });
+    assert.equal(calls, 1);
+  });
+}

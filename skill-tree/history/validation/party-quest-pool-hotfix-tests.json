@@ -1,0 +1,46 @@
+{
+  "task_id": "T-fb0d9494-1838-4f0a-a8f2-1a6bc2c2c5ed",
+  "date": "2026-10-20",
+  "scope": "Synthetic local D1 and browser bridge; remote SELECT-only preflight",
+  "checks": {
+    "node_command": "node --experimental-strip-types --test tests/Functions/*.test.mjs",
+    "tests": 46,
+    "passed": 46,
+    "failed": 0,
+    "large_pools": [
+      52,
+      300
+    ],
+    "complete_handler_statement_count": 22,
+    "query_guard": 50,
+    "rollback_trigger": "pass: prior owner pool and other owner preserved",
+    "empty_and_duplicate_key_semantics": "pass",
+    "oversize_before_delete": "pass",
+    "http_status_and_no_5xx_body_leak_or_retry": "403,429,500: pass",
+    "negative_control": "Production source 8adb4c3 fails both large-pool query guard and rollback preservation assertions"
+  },
+  "remote_preflight": {
+    "migrations": "0001-0008 applied",
+    "aggregate_owner_groups": 3,
+    "largest_pool_entries": 52,
+    "rows_written": 0,
+    "prior_production_deployment": "d06b3032-a927-45e9-8de3-a3ae7cfb39d9",
+    "prior_source": "8adb4c3"
+  },
+  "limits": [
+    "The historic exception and account plan are unverified; the supplied stack has no HTTP status.",
+    "No production party action was replayed.",
+    "The query cap is a fixture guard around actual local D1 statements; transaction rollback executes in local D1."
+  ],
+  "sources": {
+    "functions/api/party-sync/[partyId].js": "ac4b63b591e730a86d7203e909905ccec888c9e50ec63b861da8faf2816456c2",
+    "src/Habitica.WebApp/wwwroot/js/sync/cloudflarePartySync.js": "d035291fb3bcd59cc2a0a3e400476e476b6ae1d89a90f37a0b6eb4a5d384adf9",
+    "tests/Functions/party-quest-pool.test.mjs": "9aa6a92722b54c8a18455a8092aea985688cf0dc4dda4948b898cbefb7d88970",
+    "tests/Functions/cloudflare-party-sync-bridge.test.mjs": "b61993279efb052a7f1010adf0ba76fb806589e903868b269f6bba012a7a4815"
+  },
+  "references": [
+    "https://developers.cloudflare.com/d1/platform/limits/",
+    "https://developers.cloudflare.com/d1/worker-api/d1-database/",
+    "https://developers.cloudflare.com/d1/sql-api/query-json/"
+  ]
+}

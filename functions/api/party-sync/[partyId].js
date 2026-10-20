@@ -413,24 +413,39 @@ async function readRecentlyCompleted(db, partyId) {
 
 async function publishQuestPool(db, env, partyId, access, payload, nowIso) {
   const entries = Array.isArray(payload.entries) ? payload.entries.filter(isValidPoolEntry) : [];
-  await db
-    .prepare("DELETE FROM party_quest_pool_entries WHERE party_id = ? AND owner_user_id = ?")
-    .bind(partyId, access.userId)
-    .run();
+  const rows = entries.map(entry => [
+    partyId,
+    entry.questKey,
+    entry.questName ?? entry.questKey,
+    access.userId,
+    entry.ownerDisplayName ?? access.displayName ?? access.userId,
+    entry.questType ?? "Unknown",
+    JSON.stringify(entry.rewardSummary ?? []),
+    Math.max(1, Number(entry.availableCount ?? 1)),
+    nowIso,
+  ]);
+  const rowsJson = JSON.stringify(rows);
+  if (new TextEncoder().encode(rowsJson).byteLength > 1_900_000) {
+    return textResponse("Party quest pool is too large.", 413);
+  }
 
-  if (entries.length > 0) {
-    await db.batch(entries.map(entry => db.prepare(`
+  // Keep replacement atomic and independent of the number of owned scroll types.
+  // One statement per entry exceeds Free D1's invocation query allowance.
+  await db.batch([
+    db.prepare("DELETE FROM party_quest_pool_entries WHERE party_id = ? AND owner_user_id = ?")
+      .bind(partyId, access.userId),
+    db.prepare(`
       INSERT INTO party_quest_pool_entries (
-        party_id,
-        quest_key,
-        quest_name,
-        owner_user_id,
-        owner_display_name,
-        quest_type,
-        reward_summary_json,
-        available_count,
-        last_seen_at_utc
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        party_id, quest_key, quest_name, owner_user_id, owner_display_name,
+        quest_type, reward_summary_json, available_count, last_seen_at_utc
+      )
+      SELECT json_extract(value, '$[0]'), json_extract(value, '$[1]'),
+             json_extract(value, '$[2]'), json_extract(value, '$[3]'),
+             json_extract(value, '$[4]'), json_extract(value, '$[5]'),
+             json_extract(value, '$[6]'), json_extract(value, '$[7]'),
+             json_extract(value, '$[8]')
+      FROM json_each(?) WHERE true
+      ORDER BY CAST(key AS INTEGER)
       ON CONFLICT(party_id, quest_key, owner_user_id) DO UPDATE SET
         quest_name = excluded.quest_name,
         owner_display_name = excluded.owner_display_name,
@@ -438,18 +453,8 @@ async function publishQuestPool(db, env, partyId, access, payload, nowIso) {
         reward_summary_json = excluded.reward_summary_json,
         available_count = excluded.available_count,
         last_seen_at_utc = excluded.last_seen_at_utc
-    `).bind(
-      partyId,
-      entry.questKey,
-      entry.questName ?? entry.questKey,
-      access.userId,
-      entry.ownerDisplayName ?? access.displayName ?? access.userId,
-      entry.questType ?? "Unknown",
-      JSON.stringify(entry.rewardSummary ?? []),
-      Math.max(1, Number(entry.availableCount ?? 1)),
-      nowIso,
-    )));
-  }
+    `).bind(rowsJson),
+  ]);
 
   await cleanupQueueState(db, partyId, nowIso);
   return jsonResponse({

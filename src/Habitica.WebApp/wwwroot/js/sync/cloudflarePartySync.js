@@ -286,7 +286,10 @@ async function postPartyAction(claim, body, options = {}) {
   }, options);
 
   if (!response.ok) {
-    throw new Error(await readError(response, "Party quest action failed."));
+    const fallback = `Party quest action failed (HTTP ${response.status}).`;
+    throw new Error(response.status >= 500
+      ? `${fallback} The server could not confirm the action. Refresh shared data before trying again.`
+      : await readError(response, fallback));
   }
 
   return await readJsonResponse(
