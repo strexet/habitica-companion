@@ -1129,3 +1129,10 @@ Official security reference: [OWASP logging guidance](https://cheatsheetseries.o
 ## User-mediated diagnostic sharing boundary
 
 DiagnosticsBundleExport owns the version-1 browser diagnostic attachment format in the application layer. The sanitized snapshot is created only after an explicit preview action and retained in page memory until filters/session state change or the component closes. Copy/download exports the reviewed snapshot without automatic network transport or log persistence changes. Context describes browser-local storage without a device/session identifier; entries may span sessions. Backend command journals and browser logs remain separate evidence sources. The plugin diagnostic skill documents existing scoped status/original-receipt tools; no diagnostic MCP endpoint or OAuth permission is introduced.
+
+
+## Shared Todo workspace presentation boundary
+
+TodoWorkspacePresentation owns scoped source selection, discovery availability and read-model routing for canonical task pages. Razor consumers use the facade rather than raw API/storage. WorkspaceTaskController remains the task intent/receipt owner; page disposal never forgets a pending command. Account changes clear scoped state, increment generation and discard late results, including same-account sign-in cycles. A monotonically increasing load version rejects superseded source loads. Pending intents prevent a delayed read from replacing command-owned workspace identity.
+
+The facade validates canonical snapshots before routing query, agenda, history, organization or saved-list reads to existing engines. Unavailable data throws an explicit read error rather than returning an empty page. Mapping provenance retains separate canonical/Habitica identities. Browser/cloud ownership rules remain authoritative, and source discovery grants no connection or effects. Scoped registration preserves selection across navigation. Remaining Todo UI composition is defined by the task queue.

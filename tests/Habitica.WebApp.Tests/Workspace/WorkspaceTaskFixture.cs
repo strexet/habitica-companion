@@ -23,12 +23,13 @@ internal sealed class WorkspaceTaskFixture
         public bool LoseCommitAcknowledgement { get; set; }
         public bool FailReadAfterCommit { get; set; }
         public bool FailReads { get; set; }
+        public bool FailLists { get; set; }
         public ValueTask<T> InvokeAsync<T>(string name, object?[]? args) => InvokeAsync<T>(name, default, args);
         public ValueTask<T> InvokeAsync<T>(string name, CancellationToken token, object?[]? args)
         {
             token.ThrowIfCancellationRequested(); object? result = null;
             if (name == "import") result = this;
-            else if (name == "listWorkspaces") result = Rows.Keys.Where(key => key.Scope == (string)args![0]!).Select(key => key.Id).ToArray();
+            else if (name == "listWorkspaces") { if (FailLists) throw new JSException("Synthetic list failure"); result = Rows.Keys.Where(key => key.Scope == (string)args![0]!).Select(key => key.Id).ToArray(); }
             else if (name == "getWorkspace")
             {
                 if (FailReads) throw new JSException("Synthetic read failure");
@@ -66,6 +67,7 @@ internal sealed class WorkspaceTaskFixture
         public bool FailLoads { get; set; }
         public TaskCompletionSource? LoadGate { get; set; }
         public TaskCompletionSource? LoadEntered { get; set; }
+        public Func<CancellationToken, Task<WorkspaceJournalSnapshot?>>? LoadAction { get; set; }
         public List<Guid> PreparationIds { get; } = [];
         public List<Guid> AcceptedIds { get; } = [];
         public bool IsAvailable => true;
@@ -77,7 +79,7 @@ internal sealed class WorkspaceTaskFixture
         { ConnectionStatusReads++; return ConnectionStatusAction?.Invoke() ?? Task.FromResult(new WorkspaceActionResult(true, "Synthetic server status verified.")); }
         public bool ExecutorEnabled { get; set; }
         public bool ExecutorAvailable { get; set; }
-        public async Task<WorkspaceJournalSnapshot?> LoadWorkspaceAsync(CancellationToken token) { LoadEntered?.TrySetResult(); if (LoadGate is not null) await LoadGate.Task; return FailLoads ? null : State; }
+        public async Task<WorkspaceJournalSnapshot?> LoadWorkspaceAsync(CancellationToken token) { if (LoadAction is not null) return await LoadAction(token); LoadEntered?.TrySetResult(); if (LoadGate is not null) await LoadGate.Task; return FailLoads ? null : State; }
         public Task<WorkspaceTaskResponse<WorkspaceCommandPreview>> PrepareCommandAsync(Guid requestId, WorkspaceCommand intent, CancellationToken token)
         {
             PreparationIds.Add(requestId); var command = intent with { Id = Guid.NewGuid(), TaskId = intent.Operation == WorkspaceOperation.CreateTodo ? Guid.NewGuid() : intent.TaskId };

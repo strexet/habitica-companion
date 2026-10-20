@@ -16,6 +16,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
     private WorkspaceCommand? _intent;
     private Guid _requestId;
     private long _generation;
+    private long _loadVersion;
     public WorkspaceJournalSnapshot? Snapshot => CurrentScope == _scope ? _snapshot : null;
     public bool IsCloud { get; private set; }
     public bool CloudConnected => cloud.WorkspaceId is not null;
@@ -33,12 +34,12 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
     private Task ObserveAsync(string operation, Func<Task> action, bool? cloudSource = null)
     {
         if (diagnostics is null) return action();
-        var scope = CurrentScope;
+        var scope = CurrentScope; var generation = _generation;
         var priorPreview = Preview;
         var mode = !(cloudSource ?? IsCloud) ? DiagnosticsMode.Local
             : operation is "workspace-load" or "workspace-task-recover" or "workspace-link-preview" ? DiagnosticsMode.LiveRead : DiagnosticsMode.LiveMutation;
         return diagnostics.ObserveAsync(DiagnosticsFeatureArea.Workspace, operation,
-            async () => { await action(); return true; }, _ => Describe(), () => scope == CurrentScope, mode);
+            async () => { await action(); return true; }, _ => Describe(), () => scope == CurrentScope && generation == _generation, mode);
 
         DiagnosticsContext Describe()
         {
@@ -74,9 +75,10 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
     {
         var scope = Account(); var generation = _generation;
         if (_intent is not null && (cloudSource != IsCloud || localId is not null && localId != _snapshot?.Document.Id)) throw new InvalidOperationException("Resolve or cancel the current preview before switching workspaces.");
+        var loadVersion = ++_loadVersion;
         LinkPreview = null;
         var ids = cloudSource ? LocalIds : await database.ListAsync(scope, cancellationToken);
-        if (!StillCurrent(scope, generation)) return;
+        if (!StillCurrent(scope, generation) || loadVersion != _loadVersion) return;
         if (!cloudSource && localId is null && (Snapshot is null || IsCloud) && ids.Count > 1)
         {
             _scope = scope; _snapshot = null; LocalIds = ids; IsCloud = false; RequiresReload = true;
@@ -84,8 +86,13 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         }
         var id = localId ?? (Snapshot is not null && !IsCloud ? Snapshot.Document.Id : ids.FirstOrDefault());
         var snapshot = cloudSource ? await cloud.LoadWorkspaceAsync(cancellationToken) : id == Guid.Empty ? null : await database.ForScope(scope).LoadAsync(id, cancellationToken);
-        if (!StillCurrent(scope, generation)) return;
+        if (!StillCurrent(scope, generation) || loadVersion != _loadVersion) return;
         cancellationToken.ThrowIfCancellationRequested();
+        if (_intent is not null && (cloudSource != IsCloud || snapshot is not null && snapshot.Document.Id != _snapshot?.Document.Id))
+        {
+            Message = "The original command now owns the selected workspace. Resolve the command before switching sources.";
+            return;
+        }
         var retainOriginal = snapshot is null && _intent is not null && _scope == scope && IsCloud == cloudSource;
         _scope = scope; _snapshot = retainOriginal ? _snapshot : snapshot; LocalIds = ids; IsCloud = cloudSource; RequiresReload = snapshot is null;
         Message = snapshot is null ? cloudSource ? "Cloud data is unavailable. Reconnect in Settings or try again later." : "Create a local workspace to start saving Companion tasks." : null;

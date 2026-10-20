@@ -55,6 +55,7 @@ builder.Services.AddSingleton(builder.Configuration.GetSection("Features").Get<A
 builder.Services.AddScoped<IndexedDbWorkspaceDatabase>();
 builder.Services.AddScoped<WorkspaceDataController>();
 builder.Services.AddScoped<WorkspaceTaskController>();
+builder.Services.AddScoped<TodoWorkspacePresentation>();
 builder.Services.AddScoped<ChatGptIntegrationClient>(_ => new ChatGptIntegrationClient(
     new HttpClient { Timeout = TimeSpan.FromSeconds(15) }, builder.Configuration["ChatGptIntegration:AuthBaseUrl"], builder.Configuration.GetValue("ChatGptIntegration:Enabled", false)));
 builder.Services.AddScoped<IChatGptIntegrationClient>(sp => sp.GetRequiredService<ChatGptIntegrationClient>());
