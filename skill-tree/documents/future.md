@@ -502,46 +502,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Expose retained task history and safe Todo restore
-
-```yaml
-id: T-54623cea-9c8f-4819-b33f-b6552c82df55
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-7cb0bb45-a294-404c-b257-136d0f9f3de4", "P-346056d8-c254-4a1e-b860-6850c6cb470d"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-54623cea-9c8f-4819-b33f-b6552c82df55
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Make completion and Habit activity review available with supported exact Todo restoration.
-Current behavior:
-- WorkspaceCompletionHistory, WorkspaceHabitHistory and restoreTodo already retain exact events and native-only restoration cycles. The editor lacks complete history/restore controls.
-Desired behavior:
-- History surfaces filter and page retained activity, label historical versus current fallback text and offer restoration only for supported exact unlinked Todo completions.
-Touch:
-- Todo history components/routes, shared read facade, existing history engines, WorkspaceTaskController restore inputs and tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Keep canonical completion/score acceptance separate from confirmed game effects. Preserve archived-history flags and UTC event versus civil occurrence date labels. Restore requires the exact unrestored completion and an unlinked nonarchived Todo; linked, archived-task or recurring undo stays explicitly unsupported pending separate policy. No deletion of history, negative reward, inferred streak or replay of uncertain actions.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component tests for historical snapshots/fallback, filters/paging, archive flags, multiple cycles, restore review, unsupported targets, lost acknowledgement and no reward changes; rendered UI checks.
-Acceptance:
-- Users can review retained Todo/Daily completion and Habit activity with accurate source/time/history labels and bounded filtering.
-- Only a supported exact native Todo restoration is offered and accepted; original history and every game-effect fence remain intact.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Add reviewed browser organization workflows
 
 ```yaml
