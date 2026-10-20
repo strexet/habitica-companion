@@ -502,46 +502,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Unify account-bound Todo workspace presentation
-
-```yaml
-id: T-9f465413-725a-440e-a464-cb5c555cb87d
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0ddc8784-c740-5a23-819c-b17db8f6829f", "P-7cb0bb45-a294-404c-b257-136d0f9f3de4", "P-346056d8-c254-4a1e-b860-6850c6cb470d", "P-0529505a-68be-5308-a805-44a2f4ddd6a9"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-9f465413-725a-440e-a464-cb5c555cb87d
-related_task_id: null
-relation: main
-depends_on: ["T-a7dca938-7c13-4878-9363-04862fbfa04d"]
-```
-
-Goal:
-- Provide one source-aware application boundary for new task pages.
-Current behavior:
-- AppSessionController serves cached Habitica data while WorkspaceTaskController loads browser/cloud canonical snapshots and preserves task intents. New pages need consistent source selection, current revisions and recovery without direct storage/API logic in Razor.
-Desired behavior:
-- Shared presentation loads an already selected source, identifies browser/cloud/Habitica provenance, exposes canonical read models and retains original task-command ownership across page navigation.
-Touch:
-- WorkspaceTaskController and new small application/presentation facade, existing canonical query/agenda/history/organization services, scoped storage and client tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Reuse current canonical engines on validated snapshots. Retain one deliberate choice when multiple workspaces exist; never silently merge independent IDs or reinterpret Habitica IDs as canonical IDs. Linked tasks retain explicit mapping/provenance and cannot be counted twice as one combined record. Read loading grants no connection, transfer, executor or game effect. Preserve original requests after uncertainty and block unsafe source switching; account changes discard late results. Expose unavailable versus empty distinctly.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Controller/facade tests cover source load, multiple workspaces, offline browser copy, frozen/cloud ownership, stale revision, mapping provenance, pending intents and sign-out/account change.
-Acceptance:
-- Todo presentation exposes current source/revision and canonical reads without duplicating identities or bypassing existing command/controller boundaries.
-- Source changes, unavailable loads and account switches preserve original command recovery and prevent stale account data or implicit effects.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Build direct title-first task capture and editing
 
 ```yaml
