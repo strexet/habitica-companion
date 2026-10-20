@@ -1,11 +1,22 @@
 using System.Text.Json;
 using Habitica.WebApp.Theme;
+using AngleSharp.Html.Parser;
 
 namespace Habitica.WebApp.Tests.Qualification;
 
 internal static class PageLayoutEvidence
 {
     private static readonly object Gate = new();
+    internal static string NormalizeBoundFields(string markup)
+    {
+        var document = new HtmlParser().ParseDocument(markup);
+        foreach (var textarea in document.QuerySelectorAll("textarea[value]"))
+        {
+            textarea.TextContent = textarea.GetAttribute("value") ?? "";
+            textarea.RemoveAttribute("value");
+        }
+        return document.Body!.InnerHtml;
+    }
     public static void Save(string name, string markup, string route, string state, string[] surfaces, string interactionTest)
     {
         var directory = Environment.GetEnvironmentVariable("HABITICA_BROWSER_EVIDENCE");
@@ -13,7 +24,7 @@ internal static class PageLayoutEvidence
         Directory.CreateDirectory(directory);
         var options = new JsonSerializerOptions(JsonSerializerDefaults.Web) { WriteIndented = true };
         var filename = name + ".html";
-        File.WriteAllText(Path.Combine(directory, filename), "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Synthetic " + name + "</title><link rel=\"stylesheet\" href=\"/mud.css\"><link rel=\"stylesheet\" href=\"/app.css\"></head><body><main style=\"padding:16px;max-width:1100px;margin:auto\"><p>Synthetic Razor output. Component interactions are qualified separately.</p>" + markup + "</main><script src=\"/colorSchemes.js\"></script><script type=\"module\" src=\"/qualification-frame.mjs\"></script></body></html>");
+        File.WriteAllText(Path.Combine(directory, filename), "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Synthetic " + name + "</title><link rel=\"stylesheet\" href=\"/mud.css\"><link rel=\"stylesheet\" href=\"/app.css\"></head><body><main style=\"padding:16px;max-width:1100px;margin:auto\"><p>Synthetic Razor output. Component interactions are qualified separately.</p>" + NormalizeBoundFields(markup) + "</main><script src=\"/colorSchemes.js\"></script><script type=\"module\" src=\"/qualification-frame.mjs\"></script></body></html>");
         lock (Gate)
         {
             var path = Path.Combine(directory, "coverage.json");
