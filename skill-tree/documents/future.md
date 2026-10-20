@@ -408,46 +408,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Expose reviewed saved-list authoring
-
-```yaml
-id: T-66aec83d-1d40-4c42-87ec-6566e1ac3769
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-580e55b1-e10a-4891-bd89-fdbd5c39a627"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-66aec83d-1d40-4c42-87ec-6566e1ac3769
-related_task_id: null
-relation: main
-depends_on: ["T-574a6ba2-741e-4d13-b798-b909c24de93d", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Add complete browser authoring for existing fixed-query saved task views.
-Current behavior:
-- CompanionTaskList selects current fixed definitions; the domain/native engine and scoped adapters support reviewed create/update/archive, but authoring controls are missing.
-Desired behavior:
-- Users name, inspect, edit and archive a saved query with explicit fixed-date/source/filter semantics and original native receipts.
-Touch:
-- Saved-list editor, organization controller, canonical query predicates and existing saved-view tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Use existing tasks/unblockedTodos sources, exact organization references and full query replacement. Fixed dates remain fixed; no Today-relative inference or arbitrary expression language. Stage filters remain active-Todo-only and dependency candidates remain unblocked-only. Archived definitions retain history and cannot silently fall back to all tasks. Use independent organization-write cloud grants where applicable; task-write does not supply metadata permission.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component journeys cover create/name/filter/update/clear/archive, unsupported filter combinations, stale references, query results, account changes and lost acceptance; reusable UI checks.
-Acceptance:
-- Saved lists have reviewed native browser create/update/archive controls and current query evaluation with no task duplication.
-- Definition replacement, fixed dates, scope boundaries and original receipt recovery remain correct across invalid/stale/unknown outcomes.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Move task analytics to a dedicated statistics page
 
 ```yaml
