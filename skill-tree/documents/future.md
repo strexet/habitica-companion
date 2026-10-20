@@ -382,46 +382,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Expose stable arbitrary-depth Todo hierarchy queries
-
-```yaml
-id: T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856
-priority: 100
-status: Ready
-parent_pending_ids: ["P-c565f05b-622d-450d-8b0f-6c5917163d7e"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Reuse native task parent relationships for complete task hierarchies.
-Current behavior:
-- ParentTaskId, relateTodo, per-task lifecycle and iterative combined cycle validation already exist in C# and TypeScript. Flat queries expose records; no dedicated tree read or complete subtree move contract exists.
-Desired behavior:
-- Provide account-bound hierarchy read/traversal and exact reparenting using existing independent task identities, without a fixed product depth restriction.
-Touch:
-- WorkspaceTaskRelationships.cs, WorkspaceRules.cs, workers/shared/workspace-domain.ts and task command/query modules, MCP schemas and shared hierarchy fixtures.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Use iterative traversal and explicit workload/pagination limits; arbitrary depth does not imply unbounded response size. Todo hierarchy remains separate from checklist and dependency completion. Return parent links, depth and pagination coverage without orphaning omitted ancestors. Reparenting never completes descendants or moves project membership implicitly. Missing/archived references retain clear status. Keep existing combined parent/dependency cycle rejection and unrelated task kinds unchanged.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- C#/TypeScript parity fixtures cover at least 2000 parent levels, pagination boundaries, cycles/self-parent, missing or archived parents, reparent/detach, same-name tasks, cross-account isolation and lost response recovery.
-Acceptance:
-- Hierarchy queries and exact reparent commands support deep Todo chains without recursive stack exhaustion or a fixed depth cap.
-- Hierarchy changes preserve task history, task identity, project membership, dependency semantics and zero implicit game effects.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
 ### Execute explicitly requested task edits without redundant agent approval
 
 ```yaml
