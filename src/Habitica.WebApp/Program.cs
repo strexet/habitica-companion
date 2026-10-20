@@ -55,6 +55,7 @@ builder.Services.AddSingleton(builder.Configuration.GetSection("Features").Get<A
 builder.Services.AddScoped<IndexedDbWorkspaceDatabase>();
 builder.Services.AddScoped<WorkspaceDataController>();
 builder.Services.AddScoped<WorkspaceTaskController>();
+builder.Services.AddScoped<WorkspaceOrganizationController>();
 builder.Services.AddScoped<TodoWorkspacePresentation>();
 builder.Services.AddScoped<TodoTaskDraftStore>();
 builder.Services.AddScoped<ChatGptIntegrationClient>(_ => new ChatGptIntegrationClient(
