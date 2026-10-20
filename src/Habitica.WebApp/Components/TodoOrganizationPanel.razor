@@ -17,6 +17,7 @@
         <section class="todo-command-review" aria-label="Review organization change" data-testid="organization-review">
             <h2 tabindex="-1" @ref="_reviewHeading">Review @preview.Command.Operation.ToString().ToLowerInvariant() · @preview.Command.Kind</h2>
             <p><strong>@preview.Snapshot.Name</strong> · @preview.Command.EntityId</p>
+            @if (preview.Command.Kind==WorkspaceOrganizationKind.SavedTaskView && preview.Snapshot.Query is { } savedQuery) { <TodoSavedQuerySummary Query="savedQuery" /> }
             @if (preview.Command.Patch is { } patch)
             {
                 @if (patch.CategoryId is { } category || patch.ClearCategory) { <p>Category: @(patch.ClearCategory ? "Clear category" : MetadataName(WorkspaceOrganizationKind.Category,patch.CategoryId!.Value))</p> }

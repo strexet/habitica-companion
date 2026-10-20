@@ -1,0 +1,26 @@
+@using Habitica.Domain.Workspace
+@inject TodoWorkspacePresentation Todo
+
+<ul class="todo-saved-query" aria-label="Complete saved query">
+    <li>Source: @(Query.Source==WorkspaceSavedTaskSource.UnblockedTodos ? "Unblocked active Todos; all prerequisites completed" : "Tasks")</li>
+    <li>Search title and notes: @(string.IsNullOrEmpty(Query.Filter.Query) ? "Any text" : Query.Filter.Query)</li>
+    <li>Type: @(Query.Filter.Kind?.ToString()??"Any type permitted by source")</li>
+    <li>State: @(Query.Filter.State?.ToString()??"Any state permitted by source")</li>
+    <li>Urgency: @(Query.Filter.Priority?.ToString()??"Any urgency")</li>
+    <li>Active Todo stage: @(Query.Filter.ExecutionStage?.ToString()??"Any stage")</li>
+    <li>Project: @Reference("project",Query.Filter.ProjectId)</li>
+    <li>Category: @Reference("category",Query.Filter.CategoryId)</li>
+    <li>Label: @Reference("label",Query.Filter.LabelId)</li>
+    <li>Habitica mapping: @(Query.Filter.ProjectionState?.ToString()??"Any mapping state")</li>
+    <li>Planned from (fixed): @Date(Query.Filter.PlannedFrom) · through (fixed): @Date(Query.Filter.PlannedTo)</li>
+    <li>Deadline from (fixed): @Date(Query.Filter.DeadlineFrom) · through (fixed): @Date(Query.Filter.DeadlineTo)</li>
+</ul>
+
+@code {
+    [Parameter,EditorRequired] public WorkspaceSavedTaskQuery Query { get; set; } = default!;
+    private static string Date(DateOnly? value)=>value?.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture)??"Unbounded";
+    private string Reference(string kind,Guid? id)
+    {
+        if(id is null)return "Any "+kind;var doc=Todo.Snapshot?.Document;var name=kind switch{"project"=>doc?.Projects.FirstOrDefault(row=>row.Id==id)?.Name,"category"=>doc?.Categories.FirstOrDefault(row=>row.Id==id)?.Name,_=>doc?.Labels.FirstOrDefault(row=>row.Id==id)?.Name};return $"{name??"Retained "+kind} · {id}";
+    }
+}

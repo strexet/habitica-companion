@@ -1,0 +1,30 @@
+{
+  "task_id": "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
+  "date": "2026-10-20",
+  "checks": {
+    "dotnet": "961 full solution tests pass: 582 Web,194 Application,87 API,33 Domain,43 Rules,22 Storage. Final source-control layout repair and expanded capture pass all 19 affected saved-list/direct-panel cases, including ten saved-list cases.",
+    "release_publish": "Final current-source Release publish passes; optional wasm-tools absent.",
+    "definitions": "Reviewed create, name-only update with omitted query, full fixed-query replacement, explicit filter clearing and archive retain exact native query history. Shared summary renders full query in Saved lists and Projects recovery.",
+    "evaluation": "Current canonical tasks, dependency eligibility and active stage semantics remain authoritative. No task duplication or task-API preparation. Definition/results paging is bounded to twenty; duplicate names retain exact references. Fixed civil dates remain fixed after task changes.",
+    "validation": "Unsupported source/enums, incompatible stage/type/state, malformed/reversed dates, oversized search, missing references and no-op replacements fail before native preparation. Retained archived organization references remain valid.",
+    "ownership_recovery": "Source/revision/account fences, stale reload, local/cloud lost acceptance and cloud lost preparation preserve original identities and native history. Confirmed native saves remain confirmed after failed task refresh without fabricated empty results.",
+    "layout": "864 unique current rendered cases across twelve states, six widths, six themes and 100/200 percent text pass geometry, sampled contrast and target checks. One raw startup timeout is retained and the exact missing case passes an independent bounded control. Seeded failures detected; baseline light/dark keyboard focus observed.",
+    "authorization_diagnostics": "Existing tasks:read and independent organization-write scope remain unchanged. Task-write alone grants no native organization write. Existing sanitized native prepare/accept/recover diagnostics remain; no new raw API/storage or game dispatch.",
+    "docs": "Changed English prose lint and structural manifest/index validation pass; historical audit warning only."
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoSavedListPanel.razor": "e3a681c5806fc55a3fb2c95a0b1ea5440fd573bd3766be39802dec8ee28cf3ab",
+    "src/Habitica.WebApp/Components/TodoSavedQuerySummary.razor": "3636249b5b9bf40d9488757601b855a50ac30c7ccd1ea56ffb5e13f44089184e",
+    "src/Habitica.WebApp/Pages/TodoSavedListsPage.razor": "e41e991df12a24385e634f96c2fce159e6cef97917315a6b2de1d784cecc1e12",
+    "src/Habitica.WebApp/State/TodoSavedListDraft.cs": "975150442cd5ba3df1777dcac027ac9e48b92dafb5bc0c21734d921861494c2e",
+    "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor": "c3e49b5be5c17af08f3e8d41804e16d94267d77eca238c867ba901d8af91f30c",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "7db4f7b4a434b5cbd532a150125eff406c8032b18c840b52d687eb9ee16d8f63",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "a9cca0dd73c7d346b569b4f9c42055095bab1e4c0ef33bbef3c732699057e442",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoSavedListPanelTests.cs": "88a8ccf6f68b8635d07d46c537094692964951f2af51d42d50c85c93bf7efb2f"
+  },
+  "limitations": [
+    "No deployment, live account or party mutation, physical-device, assistive-technology or hosted-client qualification.",
+    "Only fixed canonical predicates are authored; relative dates, reminders and broader Todo navigation remain separate tasks.",
+    "The frozen All snapshot remains unfinished. Owner explicitly selected completion of the current saved-list root followed by a stop."
+  ]
+}

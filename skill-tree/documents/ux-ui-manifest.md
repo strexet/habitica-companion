@@ -136,7 +136,7 @@ Responsive verification for image work:
 
 The Companion editor uses labelled search, task type, native state, urgency and active Todo stage controls above a bounded list. Filters combine through the canonical query engine. An incompatible type/state clears and disables the stage filter with an explanation. All-task reset and Previous/Next controls remain visible; results announce matching counts and the displayed range, including empty results.
 
-Saved-list selection evaluates the retained definition against the loaded workspace and shows the source, predicates and exact fixed dates. Fixed dates never acquire a Today label. Named lists preserve dependency eligibility and do not copy tasks. Missing, archived or invalid definitions show unavailable with a reset/reload action rather than unrelated fallback results. This surface reads definitions; authoring remains separate.
+Saved-list selection evaluates the retained definition against the loaded workspace and shows the source, predicates and exact fixed dates. Fixed dates never acquire a Today label. Named lists preserve dependency eligibility and do not copy tasks. Missing, archived or invalid definitions show unavailable with a reset/reload action rather than unrelated fallback results. The compact task surface reads definitions; /todo/lists supplies reviewed authoring.
 
 Workspace changes clear filters; revision/query changes return to the first twenty records. Pending command recovery disables list controls and keeps the original preview. Labels and long names wrap in responsive grids, native keyboard controls retain visible focus and list/form targets have a minimum forty-four-pixel height. Component and local layout checks remain separate from actual phone keyboard, assistive technology and human usability qualification.
 
@@ -648,9 +648,9 @@ The command layer and optional MCP expose reviewed native planned-date and categ
 
 ## Native organization authorization disclosure
 
-The authorization page presents native category/project/section/label/goal edits as a separate selectable permission. The disclosure states that archival retains related tasks and history and produces no game effects. Existing task-write permission does not authorize organization edits. Organization authoring controls remain absent from the production UI; local browser adapters require exact reviewed intent and preserve original receipt recovery after uncertain responses.
+The authorization page presents native category/project/section/label/goal edits as a separate selectable permission. The disclosure states that archival retains related tasks and history and produces no game effects. Existing task-write permission does not authorize organization edits. Local Projects and Saved lists controls require exact reviewed intent and preserve original receipt recovery after uncertain responses. Hosted and device qualification remains separate.
 
-Cloud workspace storage disclosure includes saved task-view definitions. Saved-view read errors report unavailable data without claiming a task change. Detailed saved-list controls remain behind the existing navigation qualification gate.
+Cloud workspace storage disclosure includes saved task-view definitions. Saved-view read errors report unavailable data without claiming a task change. The dedicated local Saved lists page presents complete fixed filters and exact review; broader Todo navigation qualification remains separate.
 
 ## Appearance sync feedback and draft recovery
 
@@ -737,3 +737,12 @@ Project removal lists twenty affected references per page and requires acknowled
 Daily rows expose Schedule / occurrences; Habit rows expose Pause / resume without Daily recurrence fields. Opening the editor moves keyboard focus to the heading. Typing preserves focus. Native labeled fields present only applicable weekly or monthly choices. Full schedule replacement, clearing, exact occurrence completion/skip and pause/resume have separate explicit reviews. New Dailies stay unscheduled until a saved-task schedule is reviewed.
 
 Loaded schedule and task state remain visible. Exact date readiness uses the loaded rule, shows the named rule timezone and distinguishes retained records, unscheduled work, unavailable timezone and inactive state. The schedule-zone current-day shortcut does not use the device timezone; unscheduled work has an explicitly labeled device-date shortcut. Retained history is paged and disclaims historical timezone provenance. Stale context disables fresh changes and offers explicit reload. Pending and uncertain operations retain original recovery controls above the editor. A retained game mapping explains the native-editor limit and points to the separate main completion/effect review. Companion pause copy explicitly disclaims pausing Habitica penalties. Shared theme colors, wrapping content, native keyboard controls and primary target dimensions apply.
+
+
+## Saved-list editor and current results
+
+The dedicated /todo/lists page has one primary heading, a compact explicit workspace/source selector and labelled full-definition fields. Direct task capture links to Saved lists. Results remain a selection of existing tasks, with separate definition and matching-task pagination. Empty matches, unavailable reads and archived definitions have distinct copy. Mapping state never establishes successful game effects. Fixed dates retain explicit fixed labels and never become relative Today filters.
+
+Changing to Unblocked active Todos clears and disables the redundant type/state fields with an explanation. Stage compatibility and exact organization references validate before review. The complete resulting query appears in the saved-list review and in cross-page Projects recovery. Name-only updates preserve prior filters; clearing filters is explicit. Unknown outcomes retain original recovery controls and prevent replacement edits. Confirmed saves retain the original receipt when refresh fails.
+
+Source/account changes clear private editing and selection; revised data requires explicit editor reload before replacement. Opening a definition, editing and reviewing request focus at the relevant heading. Long names, exact references and action rows wrap using shared theme tokens and forty-four-pixel primary targets. Expanded workspace controls use wrapping grid tracks so enlarged text cannot force the source picker across adjacent buttons. Synthetic responsive and keyboard observations remain separate from physical-device and assistive-technology qualification.

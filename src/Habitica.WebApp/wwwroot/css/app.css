@@ -4533,7 +4533,7 @@ code {
 .todo-command-review { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.5rem; padding: 0.8rem; border: 1px solid var(--card-border); background: var(--surface); color: var(--ink); border-radius: 0.75rem; }
 .todo-command-review p { margin: 0; white-space: pre-wrap; }
 .todo-task-panel [role="alert"] { color: var(--text-danger, var(--ink)); }
-@media (min-width: 900px) { .todo-source-controls { grid-template-columns: minmax(0, 1fr) auto auto auto; } .todo-editor-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 900px) { .todo-source-controls { grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); } .todo-editor-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 650px) { .todo-capture-primary, .todo-direct-row { grid-template-columns: minmax(0, 1fr); } .todo-row-actions { max-width: 100%; } }
 
 .dashboard-shell,
@@ -4616,3 +4616,9 @@ code {
 .todo-recurring-editor fieldset { display: grid; gap: 0.75rem; }
 .todo-recurring-editor .recurring-weekdays { grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); }
 .todo-recurring-editor li { overflow-wrap: anywhere; }
+
+.todo-saved-list-panel fieldset { display: grid; gap: 0.75rem; }
+.todo-saved-list-panel .saved-filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 0.75rem; }
+.todo-saved-list-panel .todo-direct-row { grid-template-columns: minmax(0, 1fr); }
+.todo-saved-list-panel .todo-row-actions { max-width: 100%; }
+.todo-saved-query li { min-width: 0; overflow-wrap: anywhere; }

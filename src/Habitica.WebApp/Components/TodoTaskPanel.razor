@@ -9,7 +9,7 @@
     @if (ShowCapture)
     {
     <div class="task-group-header">
-        <div><p class="section-label">Companion workspace</p><h2>@KindLabel(_kind)</h2>@if (_kind == CompanionTaskKind.Todo) { <a href="/todo/tasks" data-layout-primary="true">Tasks and subtasks</a> }</div>
+        <div><p class="section-label">Companion workspace</p><h2>@KindLabel(_kind)</h2>@if (_kind == CompanionTaskKind.Todo) { <a href="/todo/tasks" data-layout-primary="true">Tasks and subtasks</a> <a href="/todo/lists" data-layout-primary="true">Saved lists</a> }</div>
         @if (ShowKindSelector)
         {
             <label class="field-row compact">Task type<select class="app-input" value="@_kind" @onchange="ChangeKind" disabled="@Busy" data-testid="todo-kind">
