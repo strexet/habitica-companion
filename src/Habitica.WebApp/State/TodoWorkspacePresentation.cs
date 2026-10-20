@@ -117,6 +117,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
     public void CancelPreview() { if (IsBusy) throw new InvalidOperationException("Wait for the current operation."); _commands.CancelPreview(); Changed?.Invoke(); }
 
     public WorkspaceTaskPage Tasks(WorkspaceTaskFilter filter) => WorkspaceTaskQuery.Evaluate(RequireSnapshot().Document, filter);
+    public WorkspaceTaskPage Planning(WorkspacePlanningList list, DateOnly day, int offset = 0) => WorkspacePlanningQuery.Evaluate(RequireSnapshot().Document, list, day, offset: offset, expectedRevision: Revision);
     public WorkspaceAgendaPage Agenda(WorkspaceAgendaFilter filter) => WorkspaceAgenda.Evaluate(RequireSnapshot().Document, filter);
     public WorkspaceReadPage<WorkspaceCompletionItem> History(WorkspaceHistoryFilter filter) => WorkspaceCompletionHistory.Evaluate(RequireSnapshot(), filter);
     public WorkspaceReadPage<WorkspaceCategory> Categories(WorkspaceReadFilter filter) => WorkspaceOrganization.Categories(RequireSnapshot().Document, filter);

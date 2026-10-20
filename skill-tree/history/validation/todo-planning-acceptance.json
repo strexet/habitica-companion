@@ -1,0 +1,44 @@
+{
+  "task_id": "T-fb41407b-58d3-4dca-b389-e80bbe517831",
+  "date": "2026-10-20",
+  "checks": {
+    "release_publish": "pass; optional wasm-tools absent",
+    "dotnet_suite": {
+      "passed": 871,
+      "web": 499,
+      "application": 187,
+      "failed": 0
+    },
+    "new_planning_cases": 10,
+    "unique_rendered_cases": 504,
+    "rendered_errors": 0,
+    "read_membership": "Canonical Inbox/Anytime/Overdue before paging; weekly/monthly/upcoming civil ranges and zone failures; no commands from reads",
+    "placement": "Exact source/task/revision, set and clear, project/section/category/label replacement, stale draft refusal, original receipt recovery",
+    "preservation": "Linked mapping and dated Daily schedule/occurrence/completion unchanged; no new effects or duplicate task identity",
+    "prose": "Changed prose passes; whole-file lint retains pre-existing legacy errors outside this unit",
+    "documentation_index": "pass; historical audit warning only"
+  },
+  "sources": {
+    "src/Habitica.Application/Workspace/WorkspacePlanningQuery.cs": "950a0d99b0f39403f3fb1221a88303425d0a931364591c3d01de67e7ee8e0f44",
+    "src/Habitica.WebApp/State/TodoPlanningRange.cs": "b1f03f4172a61ad0dba4b337d46f38844b8282bf1be99d01f0a1d140a11eab48",
+    "src/Habitica.WebApp/Components/TodoPlanningPanel.razor": "58771733de4f45d7acba397648aa645bcfc8db6556c483a709ffad549a0b61d2",
+    "src/Habitica.WebApp/Components/TodoPlanEditor.razor": "4c1ffca427909654adce89a2f06d184b4c49a010c8ff4b47d9a653b50842031c",
+    "src/Habitica.WebApp/Components/TodoPlacementPicker.razor": "08b0e056fc267ad51cbceff85ccd2e51e1ffe8654a7628e5321bfadd024d8abb",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "6a60aa44f898af186f0875d5f2acc0148805ea4f718a3d1b9f5660b0ecfb583b",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "57e8c83d2f74fce215a5c2322c70986ec538b71974c0306f38b0db9dfd4e40d6",
+    "src/Habitica.WebApp/Pages/TodoInboxPage.razor": "3c5d7c575ec44411565b60a2f316a1024d5b5f2fea74f427262f7b56021e7bc9",
+    "src/Habitica.WebApp/Pages/TodoPlanPage.razor": "34f531dc49b2421d79970376e36df64c42f0093fceefc849f0385f15ad77b11e",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "94d71b66743c5ed1d7e7c06283f98b72a14aa9094b317d2c0cbd3864c9faa1fa",
+    "tests/Habitica.Application.Tests/Workspace/WorkspacePlanningQueryTests.cs": "5bb4e74eb4ce740c426019593ccbce2472d13fcd3f1b307724a895c1dde8cfc8",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoPlanningPanelTests.cs": "121eab178215d697df3e0d9989c64a7ab757d71a9a07ec61ef47c930277b4fa4"
+  },
+  "evidence": [
+    "skill-tree/history/validation/todo-planning-layout.json",
+    "skill-tree/history/validation/todo-planning-browser.png"
+  ],
+  "limitations": [
+    "Two initial matrix Inbox measurements exceeded five seconds; retained as gaps. The exact missing 360/light/100 case passes separately in 65 milliseconds with the same detector and unchanged five-second deadline. The matrix initial-frame cause remains unproven.",
+    "Synthetic Razor and published CSS only; physical devices, screen readers and hosted task mutations unqualified.",
+    "No planning deployment or live mutation. General navigation composition and organization creation remain separate roots."
+  ]
+}

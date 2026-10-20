@@ -701,3 +701,10 @@ TodoTaskPanel places title and Add together before task rows; Enter in the title
 ## Today day groups
 
 Today places the civil-day input, a device-date shortcut and Add task before a compact workspace/review panel. Ordinary scheduled and planned rows stay outside disclosures. Each row labels planned date, deadline, schedule zone and retained occurrence state as applicable; duplicate date reasons share one row. Scheduled Dailies, already recorded occurrences and inactive work have separate headings. Empty data and unavailable evaluation remain distinct. Revision-bound pagination uses visible Previous/Next day rows controls. Native date input and the shared review heading retain keyboard focus; a closed successful/cancelled review returns focus to the day input. All rows use the shared responsive grid and semantic theme tokens.
+
+
+## Inbox and accessible planning agenda
+
+Inbox and Plan expose a labelled native view selector, reference-day input and visible Add task link. Upcoming, Week and Month use chronological agenda rows and Previous/Next period buttons, with explicit inclusive range labels and Monday week boundaries. A manual date input provides keyboard navigation without dragging or a timed calendar. Inbox, Anytime and Overdue explain membership; overdue rows distinguish earlier planning from missed deadlines. Plan / move stays visible beside each row.
+
+The placement editor opens above results and receives heading focus. Planned day remains separate from deadline and recurrence. Existing category/project/section choices use bounded native selectors with visible page controls; selected off-page values remain visible. Labels use an optional disclosure with explicit add/remove controls. Review moves focus to the shared command heading; confirmation/cancellation returns focus to the placement heading. A stale editor retains the draft and offers explicit reload. Close returns focus to the view selector. Rows and placement fields share semantic colors, wrapping layouts and primary touch targets across themes.

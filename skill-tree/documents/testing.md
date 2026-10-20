@@ -337,3 +337,10 @@ TodoWorkspacePresentationTests cover independent browser choices without merging
 
 
 Synthetic Razor captures normalize bound textarea value attributes into escaped textarea text content through the existing AngleSharp parser. Static browser fixtures therefore display the same initial multiline value as the bound Blazor field. Source component markup and production binding remain unchanged. BoundFieldEvidenceTests preserve ordinary unbound fields and verify escaped closing-tag/script canaries; a real-browser value read confirms literal text without an injected script.
+
+
+## Inbox and planning qualification
+
+WorkspacePlanningQueryTests cover eligibility before paging, stage-independent Inbox membership, deadlines distinct from planning, deduplicated overdue tasks, exclusions, immutable reads, bounds and stale revision refusal. TodoPlanningPanelTests cover all six views, Monday week and leap-month boundaries, period changes, twenty-row pages, exact reviewed set/clear, original receipt recovery, retained mapping and history with no game effects, paged project selection, category/section/label changes, stale editor retention and explicit reload, empty/unavailable states and unavailable-zone whole-agenda refusal. Component fixtures validate canonical documents before rendering.
+
+Rendered synthetic Inbox, Week, placement editor/review and unavailable/empty states use the shared browser matrix. Native controls provide keyboard navigation; component handlers and focus requests are qualified separately from static Razor rendering. Physical devices, screen readers, production publication and live task mutation remain outside local planning acceptance.

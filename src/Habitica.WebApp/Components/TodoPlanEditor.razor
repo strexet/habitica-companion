@@ -1,0 +1,84 @@
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TodoWorkspacePresentation Todo
+
+<section class="card-surface todo-plan-editor" aria-label="Plan task" data-testid="plan-editor">
+    <h2 tabindex="-1" @ref="_heading">Plan: @_original?.Text</h2>
+    <p>Companion placement only. Deadline, Daily recurrence, Habitica schedules and rewards remain unchanged.</p>
+    @if (Stale) { <p role="status">Task data changed. The draft has not been saved. Reload the current placement before another review.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.Commands.HasPendingIntent" OnClick="Reload" Variant="Variant.Outlined" data-testid="plan-reload">Reload placement</MudButton> }
+    @if (_error is not null) { <p role="alert">@_error</p> }
+    <form @onsubmit="Review" @onsubmit:preventDefault>
+        <fieldset disabled="@Disabled">
+            <label class="field-row">Planned day (leave empty to clear)<input class="app-input" type="date" value="@_date" @onchange="args => _date = args.Value?.ToString() ?? string.Empty" data-testid="plan-date" /></label>
+            <div class="todo-placement-grid">
+                <TodoPlacementPicker Kind="Category" Caption="Task category" Value="_category" ValueChanged="value => _category = value" Disabled="Disabled" />
+                <TodoPlacementPicker Kind="Project" Caption="Primary project" Value="_project" ValueChanged="ChangeProject" Disabled="Disabled" />
+                <TodoPlacementPicker Kind="Section" Caption="Project section" ProjectId="_project" Value="_section" ValueChanged="value => _section = value" Disabled="@(Disabled || _project is null)" />
+            </div>
+            <p class="panel-copy">Changing the primary project clears the old section. An unset task category can inherit the project category.</p>
+            <details><summary>Labels (@_labels.Count)</summary>
+                <ul class="todo-plan-labels">@foreach (var id in _labels) { <li @key="id"><span>@LabelName(id)</span><MudButton HtmlTag="button" OnClick="() => _labels.Remove(id)" Disabled="@Disabled" Variant="Variant.Text" aria-label="@($"Remove label {LabelName(id)}")">Remove</MudButton></li> }</ul>
+                <TodoPlacementPicker Kind="Label" Caption="Add label" EmptyLabel="Choose label" Value="_labelToAdd" ValueChanged="value => _labelToAdd = value" Disabled="Disabled" />
+                <MudButton HtmlTag="button" Disabled="@(Disabled || _labelToAdd is null || _labels.Contains(_labelToAdd.Value))" OnClick="AddLabel" Variant="Variant.Outlined">Add selected label</MudButton>
+            </details>
+            <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Disabled" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled" data-testid="plan-review">Review placement</MudButton>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Todo.Commands.HasPendingIntent" OnClick="Close" Variant="Variant.Text">Close editor</MudButton></div>
+        </fieldset>
+    </form>
+    @if (Stale) { <MudButton HtmlTag="button" Disabled="@Todo.Commands.HasPendingIntent" OnClick="Close" Variant="Variant.Text">Close stale editor</MudButton> }
+</section>
+
+@code {
+    [Parameter] public Guid TaskId { get; set; }
+    [Parameter] public EventCallback<TodoPlacementReview> Reviewed { get; set; }
+    [Parameter] public EventCallback Closed { get; set; }
+    private CompanionTask? _original;
+    private TodoWorkspaceSelection? _source;
+    private long? _revision;
+    private Guid? _category, _project, _section, _labelToAdd;
+    private List<Guid> _labels = [];
+    private string _date = "";
+    private string? _error;
+    private ElementReference _heading;
+    private bool _focus;
+    private bool Stale => _source != Todo.Selection || _revision != Todo.Revision || Todo.Snapshot?.Document.Tasks.FirstOrDefault(row => row.Id == TaskId) != _original;
+    private bool Disabled => _original is null || Stale || Todo.IsBusy || Todo.IsReadOnly || Todo.Commands.HasPendingIntent;
+    protected override void OnParametersSet() { if (_original?.Id != TaskId) Reload(); }
+    protected override async Task OnAfterRenderAsync(bool firstRender) { if (_focus) { _focus = false; await FocusAsync(); } }
+    public async Task FocusAsync() { try { await _heading.FocusAsync(); } catch (JSException) { } }
+    private void Reload()
+    {
+        if (Todo.Commands.HasPendingIntent) return;
+        _original = Todo.Snapshot?.Document.Tasks.FirstOrDefault(row => row.Id == TaskId && !row.IsArchived);
+        _source = Todo.Selection; _revision = Todo.Revision; _error = null; _focus = true;
+        _date = _original?.PlannedDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) ?? "";
+        _category = _original?.CategoryId; _project = _original?.ProjectId; _section = _original?.SectionId;
+        _labels = _original?.LabelIds?.ToList() ?? []; _labelToAdd = null;
+    }
+    private void ChangeProject(Guid? value) { if (_project != value) _section = null; _project = value; }
+    private void AddLabel() { if (_labelToAdd is { } id && !_labels.Contains(id)) _labels.Add(id); _labelToAdd = null; }
+    private string LabelName(Guid id)
+    {
+        var label = Todo.Snapshot?.Document.Labels.FirstOrDefault(row => row.Id == id);
+        return label is null ? "Unavailable label" : label.Name + (label.IsArchived ? " (archived; remove before replacing labels)" : "");
+    }
+    private async Task Review()
+    {
+        if (Disabled || _original is not { } task) return;
+        try
+        {
+            var date = TodoTaskDraft.Date(_date);
+            var labelsChanged = !_labels.SequenceEqual(task.LabelIds ?? []);
+            var plan = new WorkspaceTaskPlanning(date != task.PlannedDate ? date : null, date is null && task.PlannedDate is not null,
+                _category != task.CategoryId ? _category : null, _category is null && task.CategoryId is not null,
+                _project != task.ProjectId ? _project : null, _project is null && task.ProjectId is not null,
+                _section != task.SectionId ? _section : null, _section is null && task.SectionId is not null,
+                labelsChanged ? _labels.ToArray() : null);
+            if (!plan.IsValid()) throw new InvalidOperationException("Change the planned day or placement before reviewing.");
+            if (!plan.ReferencesAvailable(Todo.Snapshot!.Document, task)) throw new InvalidOperationException("Choose available placement records. Remove archived labels before replacing the label selection.");
+            _error = null; await Reviewed.InvokeAsync(new(TaskId, _source!, _revision!.Value, plan));
+        }
+        catch (InvalidOperationException error) { _error = error.Message; }
+    }
+    private Task Close() => Closed.InvokeAsync();
+}

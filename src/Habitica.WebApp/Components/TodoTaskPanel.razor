@@ -57,7 +57,16 @@
                     @if (patch.Priority is { } priority) { <p>Urgency: @priority</p> }
                     @if (patch.Deadline is { } deadline) { <p>Deadline: @deadline.ToString("yyyy-MM-dd")</p> }
                     @if (patch.ClearDeadline) { <p>Clear deadline</p> }
-                    @if (patch.Planning is { } planning) { <p>Planned date: @(planning.ClearPlannedDate ? "Clear planned date" : planning.PlannedDate?.ToString("yyyy-MM-dd"))</p> }
+                    @if (patch.Planning is { } planning)
+                    {
+                        <p>Task: @Todo.Snapshot?.Document.Tasks.FirstOrDefault(row => row.Id == preview.Command.TaskId)?.Text · @preview.Command.TaskId</p>
+                        @if (planning.PlannedDate is not null || planning.ClearPlannedDate) { <p>Planned date: @(planning.ClearPlannedDate ? "Clear planned date" : planning.PlannedDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))</p> }
+                        @if (planning.CategoryId is not null || planning.ClearCategory) { <p>Task category: @(planning.ClearCategory ? "Clear category (project inheritance applies)" : PlacementName("Category", planning.CategoryId))</p> }
+                        @if (planning.ProjectId is not null || planning.ClearProject) { <p>Primary project: @(planning.ClearProject ? "Clear primary project" : PlacementName("Project", planning.ProjectId))</p> }
+                        @if (planning.SectionId is not null || planning.ClearSection) { <p>Project section: @(planning.ClearSection ? "Clear section" : PlacementName("Section", planning.SectionId))</p> }
+                        @if (planning.LabelIds is { } labels) { <p>Replace labels (@labels.Count): @(labels.Count == 0 ? "Clear all labels" : string.Join("; ", labels.Select(id => PlacementName("Label", id))))</p> }
+                        <p>Deadline and recurrence unchanged. No Habitica schedule or reward changes.</p>
+                    }
                     @if (patch.HabiticaDetails is { } details) { <p>Game difficulty: @(details.Difficulty?.ToString(CultureInfo.InvariantCulture) ?? "unchanged"); attribute: @(details.Attribute?.ToString() ?? "unchanged")</p>@if (details.Checklist is not null) { <p>Replace checklist (@details.Checklist.Count items)</p><ul>@foreach (var item in details.Checklist) { <li>@item.Text @(item.Completed ? "(completed)" : "")</li> }</ul> } }
                 }
                 @if (preview.Command.Operation == WorkspaceOperation.DeleteTask) { <p>Archive this task and retain history. Habitica records remain unchanged.</p> }
@@ -220,6 +229,19 @@
         await ActAsync(task, task.Kind == CompanionTaskKind.Habit ? WorkspaceOperation.ScoreHabit : WorkspaceOperation.CompleteTask, direction, occurrenceDate);
         await InvokeAsync(StateHasChanged);
     }
+    public async Task ReviewPlacementAsync(Guid taskId, long revision, WorkspaceTaskPlanning planning)
+    {
+        if (ActionsDisabled || Todo.Revision != revision) throw new InvalidOperationException("Task data changed. Reload placement before reviewing.");
+        var task = Todo.Snapshot?.Document.Tasks.FirstOrDefault(row => row.Id == taskId && !row.IsArchived) ?? throw new InvalidOperationException("The selected task is unavailable.");
+        await RunAsync(async () => { await Todo.PrepareAsync(ActionInput(task, WorkspaceOperation.PlanTask) with { Planning = planning }); _focusReview = Todo.Commands.Preview is not null; });
+        await InvokeAsync(StateHasChanged);
+    }
+    private string PlacementName(string kind, Guid? id)
+    {
+        var doc = Todo.Snapshot?.Document;
+        var name = kind switch { "Category" => doc?.Categories.FirstOrDefault(row => row.Id == id)?.Name, "Project" => doc?.Projects.FirstOrDefault(row => row.Id == id)?.Name, "Section" => doc?.Sections.FirstOrDefault(row => row.Id == id)?.Name, _ => doc?.Labels.FirstOrDefault(row => row.Id == id)?.Name };
+        return $"{name ?? "Unavailable record"} · {id}";
+    }
     private Task ActAsync(CompanionTask task, WorkspaceOperation operation, HabitScoreDirection direction = HabitScoreDirection.Up, DateOnly? explicitOccurrence = null) => RunAsync(async () =>
     {
         var date = operation == WorkspaceOperation.CompleteTask && task.Kind == CompanionTaskKind.Daily ? explicitOccurrence ?? TodoTaskDraft.Date(Drafts.OccurrenceDate(Todo.Selection!, task.Id)) : null;
@@ -253,7 +275,7 @@
     {
         WorkspaceOperation.CreateTodo => "Create Todo", WorkspaceOperation.CreateDaily => "Create unscheduled Daily", WorkspaceOperation.CreateHabit => "Create Habit",
         WorkspaceOperation.UpdateTask => "Update task", WorkspaceOperation.CompleteTask => "Record completion", WorkspaceOperation.ScoreHabit => "Record Habit event",
-        WorkspaceOperation.PlanTask => "Change planned date", WorkspaceOperation.DeleteTask => "Archive task", _ => "Task command"
+        WorkspaceOperation.PlanTask => "Change native placement", WorkspaceOperation.DeleteTask => "Archive task", _ => "Task command"
     };
     private static string SourceValue(TodoWorkspaceSelection? source) => source is null ? "" : $"{source.Source}|{source.WorkspaceId:D}";
     private static string SourceLabel(TodoWorkspaceSelection source) => $"{(source.Source == TodoWorkspaceSource.Cloud ? "Cloud" : "Browser")} · {source.WorkspaceId:D}";
