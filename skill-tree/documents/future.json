@@ -18,7 +18,8 @@
       "T-574a6ba2-741e-4d13-b798-b909c24de93d",
       "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
       "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
-      "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a"
+      "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+      "T-fd2c633c-7b39-4776-a364-dacb83abaff7"
     ],
     "completion_refs": {
       "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07": "O-0290ffdb-d797-48bc-81ae-80e396e7493e",
@@ -38,10 +39,11 @@
       "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1": "O-1d1d6944-6f01-4383-8ee5-95116e6b6275",
       "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a": "O-e8032833-ce3f-4caf-b55e-b52811839a4a",
       "T-fb0d9494-1838-4f0a-a8f2-1a6bc2c2c5ed": "O-c4e174e9-3c2a-43c6-853c-1f9a97357717",
-      "T-fb41407b-58d3-4dca-b389-e80bbe517831": "O-4d7de679-01bf-4608-85d1-2b5898fddbdc"
+      "T-fb41407b-58d3-4dca-b389-e80bbe517831": "O-4d7de679-01bf-4608-85d1-2b5898fddbdc",
+      "T-fd2c633c-7b39-4776-a364-dacb83abaff7": "O-44cae1ad-5351-4f4d-b51f-2bc886cd16c6"
     },
-    "current_task_id": "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
-    "cycle_signature": "a00125e5fe6be8872cbf1650ad90a4e9fb9b17e9448afe78727928a21ead523f",
+    "current_task_id": "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+    "cycle_signature": "0aad0593474d77d0256ff9a3839b9af7eee3625d1077bfc992134e4fa5781d89",
     "deferred_ids": [
       "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
       "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
@@ -69,7 +71,7 @@
       "operation_deadline_seconds": 300
     },
     "mode": "all",
-    "next_action": "Finish current-source rendered qualification, write root evidence/docs and commit. Complete root then automatically advance the frozen All run.",
+    "next_action": "implement",
     "partial_work": [
       "Final root source passes all 936 solution tests (557 Web). Release publish passes. Added same-revision source-change pagination regression and repaired reusable plan-editor primary target sizing.",
       "Initial rendered metadata matrix 432 passed. Workflow matrix found plan-reload 32px target in 36 cases; repaired CSS selector. Final fresh fixture set and source-matched production assets staged at 127.0.0.1:5132, 900-second server deadline; rerun full 20-state matrix with unchanged 300/5-second deadlines."
@@ -298,9 +300,10 @@
       "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
       "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
       "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
-      "T-fd2c633c-7b39-4776-a364-dacb83abaff7"
+      "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+      "T-68cb7da7-62e9-4136-b5c5-07da20f97c30"
     ],
-    "root_task_id": "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+    "root_task_id": "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
     "snapshot": [
       "T-2bf91411-423e-483b-95a7-92b9fdc69445",
       "T-6122dded-900d-4d92-8739-bbc344e15ea0",
@@ -337,7 +340,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "bfe9e4592570b7b114d442463ece44bbf013f1f0b73caf54224b5d1c96dd731d",
+  "source_hash": "21b609c5500883972cdbf0df10f6fea80d9a21b09c571529223804008b0a839e",
   "tasks": [
     {
       "depends_on": [],
@@ -478,36 +481,12 @@
     },
     {
       "depends_on": [
-        "T-574a6ba2-741e-4d13-b798-b909c24de93d",
-        "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
-        "T-6122dded-900d-4d92-8739-bbc344e15ea0",
-        "T-264e3162-adc3-45f0-943e-a55feccc9d8e",
-        "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a"
-      ],
-      "id": "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
-      "line": 385,
-      "parent_pending_ids": [
-        "P-26753fc0-29e0-46be-8677-36725314b31a",
-        "P-0529505a-68be-5308-a805-44a2f4ddd6a9",
-        "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"
-      ],
-      "priority": 100,
-      "processing_run_id": "PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
-      "status": "Ready",
-      "title": "Expose projects goals and optional task organization"
-    },
-    {
-      "depends_on": [
         "T-9f465413-725a-440e-a464-cb5c555cb87d",
         "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
-      "line": 425,
+      "line": 385,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-0ddc8784-c740-5a23-819c-b17db8f6829f",
@@ -528,7 +507,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-66aec83d-1d40-4c42-87ec-6566e1ac3769",
-      "line": 465,
+      "line": 425,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-580e55b1-e10a-4891-bd89-fdbd5c39a627"
@@ -549,7 +528,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
-      "line": 505,
+      "line": 465,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-346056d8-c254-4a1e-b860-6850c6cb470d",
@@ -572,7 +551,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
-      "line": 545,
+      "line": 505,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d",
@@ -601,7 +580,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
-      "line": 585,
+      "line": 545,
       "parent_pending_ids": [
         "P-26753fc0-29e0-46be-8677-36725314b31a",
         "P-0ddc8784-c740-5a23-819c-b17db8f6829f"
@@ -630,7 +609,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 625,
+      "line": 585,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -646,7 +625,7 @@
     {
       "depends_on": [],
       "id": "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25",
-      "line": 668,
+      "line": 628,
       "parent_pending_ids": [
         "P-b38ebae7-6756-4941-a3af-dad37e3c7666"
       ],
@@ -662,7 +641,7 @@
     {
       "depends_on": [],
       "id": "T-13c008e0-2062-4846-ab4b-0f331a280f0b",
-      "line": 708,
+      "line": 668,
       "parent_pending_ids": [
         "P-15da69d1-68cb-47d2-b8ae-2edca2436137"
       ],
@@ -681,7 +660,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-06336249-6901-4d10-8df1-229ca9bcad6b",
-      "line": 748,
+      "line": 708,
       "parent_pending_ids": [
         "P-c5795748-6f25-4c0a-a471-fe72c1a85862"
       ],
@@ -697,7 +676,7 @@
     {
       "depends_on": [],
       "id": "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
-      "line": 789,
+      "line": 749,
       "parent_pending_ids": [
         "P-64d1995c-f862-498c-9437-e867117f2129"
       ],
@@ -715,7 +694,7 @@
         "T-2355607b-ba77-46c0-9495-aae61e16a8f0"
       ],
       "id": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
-      "line": 830,
+      "line": 790,
       "parent_pending_ids": [
         "P-64d1995c-f862-498c-9437-e867117f2129"
       ],
@@ -736,7 +715,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
-      "line": 871,
+      "line": 831,
       "parent_pending_ids": [
         "P-64d1995c-f862-498c-9437-e867117f2129"
       ],
@@ -752,7 +731,7 @@
     {
       "depends_on": [],
       "id": "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
-      "line": 912,
+      "line": 872,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -771,7 +750,7 @@
         "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02"
       ],
       "id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
-      "line": 953,
+      "line": 913,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -790,7 +769,7 @@
         "T-68cb7da7-62e9-4136-b5c5-07da20f97c30"
       ],
       "id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
-      "line": 994,
+      "line": 954,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -809,7 +788,7 @@
         "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
       ],
       "id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
-      "line": 1035,
+      "line": 995,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -828,7 +807,7 @@
         "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
       ],
       "id": "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
-      "line": 1076,
+      "line": 1036,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -846,7 +825,7 @@
         "T-66aec83d-1d40-4c42-87ec-6566e1ac3769"
       ],
       "id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
-      "line": 1117,
+      "line": 1077,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -866,7 +845,7 @@
         "T-c0bf3f10-141f-464c-bc1e-53040d67e61c"
       ],
       "id": "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
-      "line": 1158,
+      "line": 1118,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -890,7 +869,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 1199,
+      "line": 1159,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -906,7 +885,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1354,
+      "line": 1314,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -920,7 +899,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1391,
+      "line": 1351,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -934,7 +913,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1428,
+      "line": 1388,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -948,7 +927,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1561,
+      "line": 1521,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -962,7 +941,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1599,
+      "line": 1559,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -976,7 +955,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1633,
+      "line": 1593,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -990,7 +969,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1668,
+      "line": 1628,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1004,7 +983,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1702,
+      "line": 1662,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1018,7 +997,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1740,
+      "line": 1700,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1032,7 +1011,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1767,
+      "line": 1727,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1046,7 +1025,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1789,
+      "line": 1749,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -1060,7 +1039,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1816,
+      "line": 1776,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

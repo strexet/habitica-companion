@@ -382,46 +382,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Expose projects goals and optional task organization
-
-```yaml
-id: T-fd2c633c-7b39-4776-a364-dacb83abaff7
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0529505a-68be-5308-a805-44a2f4ddd6a9", "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-fd2c633c-7b39-4776-a364-dacb83abaff7
-related_task_id: null
-relation: main
-depends_on: ["T-574a6ba2-741e-4d13-b798-b909c24de93d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0", "T-264e3162-adc3-45f0-943e-a55feccc9d8e", "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a"]
-```
-
-Goal:
-- Make existing organization and lightweight task workflows usable from a phone.
-Current behavior:
-- Canonical categories/projects/sections/labels/goals, Todo progress, placement, relationships, states and active stages exist, with no dedicated project workspace UI.
-Desired behavior:
-- A working Projects surface supports optional organization CRUD/archive, project sections/task placement and goal progress; advanced task controls expose relationships and stages without mandatory hierarchy.
-Touch:
-- Projects page/components, organization controller, task edit components and canonical organization/query/progress services.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Reuse flat categories, one primary project and Todo-based goal progress. Cancelled/archived/ineligible work must not inflate progress; empty progress is unavailable rather than a fabricated percentage. Exact parent/dependency edits retain cycle validation and full-replacement review. Waiting/someday/current state dominates dormant Inbox/Next/InProgress stage preferences. Project board is optional with keyboard/list alternatives and no staff monitoring metrics. Native organization/state edits never imply completion or game permission.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component journeys cover simple unassigned capture, project/section/goal creation, placement/move/archive, labels, dependency/cycle rejection, progress updates, stages and original recovery; reusable UI checks.
-Acceptance:
-- Projects, categories, sections, labels and goals have working optional browser controls with correct canonical progress and task placement.
-- Relationship/state/stage controls retain exact review, domain validation and accessible list alternatives without mandatory workflow administration or game effects.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Expose recurring schedules and occurrence lifecycle
 
 ```yaml
