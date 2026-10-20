@@ -502,46 +502,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Add reviewed browser organization workflows
-
-```yaml
-id: T-574a6ba2-741e-4d13-b798-b909c24de93d
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0529505a-68be-5308-a805-44a2f4ddd6a9", "P-580e55b1-e10a-4891-bd89-fdbd5c39a627"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-574a6ba2-741e-4d13-b798-b909c24de93d
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d"]
-```
-
-Goal:
-- Provide reusable account-bound native organization command state for browser UI.
-Current behavior:
-- WorkspaceOrganizationService/Engine and IWorkspaceOrganizationApi exist, but no organization controller owns browser preview/acceptance/unknown-receipt recovery for pages.
-Desired behavior:
-- A reusable controller supports local/cloud create/update/archive for existing organization kinds using exact previews and original receipts.
-Touch:
-- New focused organization controller, WorkspaceOrganizationService, IWorkspaceOrganizationApi, scoped local store and adapter tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Follow existing task-controller ownership semantics without mixing native organization receipts with task/game receipts. Preserve exact request/command IDs across preparation loss, unknown acceptance, expiry and stale revision. Local changes use optimistic native journal commits; cloud changes use existing scoped organization-api. No arbitrary fields, credentials, silent relationship deletion or implicit executor effects. Source/account changes discard late results and preserve unresolved original intent.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Controller tests cover all native organization kinds, local/cloud parity, no-op/invalid edits, lost preview/acceptance, original recovery, authority restrictions and account changes.
-Acceptance:
-- Browser organization actions use one validated local/cloud preview-acceptance-recovery controller with independent exact identities.
-- Native history/relationships and zero new game effects remain valid through stale revisions, unknown outcomes and account/source changes.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Expose projects goals and optional task organization
 
 ```yaml
