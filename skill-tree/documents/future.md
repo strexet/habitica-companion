@@ -502,46 +502,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Build direct title-first task capture and editing
-
-```yaml
-id: T-ea3c2df0-7c13-4a77-a920-1451801b9946
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0ddc8784-c740-5a23-819c-b17db8f6829f"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-ea3c2df0-7c13-4a77-a920-1451801b9946
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-6122dded-900d-4d92-8739-bbc344e15ea0", "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07"]
-```
-
-Goal:
-- Make capture and ordinary task edits immediately usable without opening a management console.
-Current behavior:
-- CompanionTasksPanel contains create/edit commands but is hidden behind Manage Companion tasks and exposes many fields at once. WorkspaceTaskInput and the canonical engine already support reviewed basic task operations.
-Desired behavior:
-- A reusable category-aware capture/editor starts with a title and exposes advanced fields on demand; completion and Habit scoring remain direct visible actions.
-Touch:
-- Reusable task rows/editor components, WorkspaceTaskController inputs, existing command previews and component tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Default to native Companion persistence with explicit source and no requested game projection. Support Todo/Daily/Habit creation with clear kind labels, notes, urgency, separate planned date/deadline and relevant game details. Preserve exact reviewed command fields, original IDs, draft state, receipt recovery, keyboard entry/return focus and unavailable reasons. Optional advanced details must not hide the primary create/complete/score action. Destructive archival and requested game effects retain concrete review; no implicit live dispatch.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component tests cover title-only creation, category-specific actions, advanced edits, cancellation, invalid dates, uncertainty/recovery, source change and focus; apply the reusable rendered UI matrix.
-Acceptance:
-- Category capture and existing-task primary actions are reachable without a management disclosure and use the existing exact canonical review/acceptance contract.
-- Drafts, account ownership, original receipts and clear saved-versus-projected feedback survive failure/navigation with passing interaction/layout checks.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Build schedule-aware Today task groups
 
 ```yaml
