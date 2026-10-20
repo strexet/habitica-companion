@@ -342,46 +342,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Build accessible nested Todo task editing
-
-```yaml
-id: T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a
-priority: 100
-status: Ready
-parent_pending_ids: ["P-c565f05b-622d-450d-8b0f-6c5917163d7e"]
-processing_run_id: PR-9dcb5ed6-4676-4f0b-b5d6-e63ed857e0cd
-root_task_id: T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a
-related_task_id: null
-relation: main
-depends_on: ["T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Make complete descendant tasks usable from task and project views.
-Current behavior:
-- Canonical parent relationships exist, but current task lists and the planned organization surface do not supply a complete expandable tree journey.
-Desired behavior:
-- Create and edit descendants, move or detach exact tasks, expand/collapse levels and navigate back to the parent from phone and keyboard.
-Touch:
-- Todo task components, project workspace, workspace task controller/query adapters and browser qualification fixtures.
-Discovery allowance:
-- Inspect affected implementation, fixtures, owned documentation and current official platform references; capture required additional work before changing unrelated contracts.
-Out of scope:
-- Unrelated refactors, implicit user consent, real account mutations, production publication and device qualification outside explicit owner scope.
-Implementation constraints:
-- Reuse hierarchy-query coverage and existing create/edit commands. Preserve independent status, notes and dates per descendant. Limit visible rows/render work without a fixed schema depth restriction; avoid increasing indentation beyond usable mobile width. Provide explicit move actions, cycle feedback, parent context for filtered/paged results and non-drag alternatives. No cascading completion, deletion or implicit project move.
-Questions and required clarifications:
-- [Resolved - developer request and repository evidence] Adopt the bounded behavior described in the selected contract. Platform-owned permission and selection controls remain authoritative.
-Validation:
-- Component journeys cover multi-level creation/edit/move/collapse, keyboard focus, same names, cycles, hidden/paged descendants and partial failure. Qualify narrow widths, long labels, 200-percent text and readable themes.
-Acceptance:
-- Tasks and Projects expose working arbitrary-depth descendant journeys with usable mobile and keyboard controls.
-- Tree operations preserve independent task lifecycle and original receipts with passing interaction and layout evidence.
-Documentation updates:
-- Update features.md, testing.md and applicable technical.md, UX and agent integration contracts; preserve explicit unverified host/device limitations.
-Risks:
-- Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
-
 ### Execute explicitly requested task edits without redundant agent approval
 
 ```yaml
