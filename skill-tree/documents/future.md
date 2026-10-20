@@ -72,6 +72,32 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### Add account-bound Markdown notes with agent workflows
+
+```yaml
+id: P-314450c7-4cb3-4604-a872-27d0f2d189b9
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Add a dedicated Notes section for user-owned Markdown information, separate from task notes. Content can include clothing sizes and body measurements, family names, birthdays, observations, travel journals and other personal documents.
+
+Expected behavior:
+- Users can create, read, edit, find and delete personal notes. Authorized Codex and ChatGPT agents can discover relevant notes and answer questions using related stored facts, such as clothing size plus useful measurements. Explicit requests to remember information, add notes through @habitica-companion, or use "add to habitica notes" save a new note or update an appropriate existing topic and report the exact information saved. Generated .md documents can be saved as notes. Later requests to update an existing document preserve the intended note identity, verify the resulting changes and report the additions or other differences; browser editing and deletion remain available.
+
+Current context:
+- Existing task notes do not supply an independent personal knowledge section. Storage, authorization/privacy, safe Markdown rendering, topic discovery, update conflicts and change-verification details require Process Pending research. Notes is independent new work outside the current frozen Implement All snapshot.
+
+Source:
+- Owner request in chat on 2026-10-20; scenarios cover fact retrieval, explicit memory capture into Companion notes, Markdown document storage and later document revision with a change summary.
+
 ### Default the equipment optimizer to Intelligence for every class
 
 ```yaml
