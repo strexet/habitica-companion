@@ -502,46 +502,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Expose Inbox and calendar planning views
-
-```yaml
-id: T-fb41407b-58d3-4dca-b389-e80bbe517831
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-7cb0bb45-a294-404c-b257-136d0f9f3de4"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-fb41407b-58d3-4dca-b389-e80bbe517831
-related_task_id: null
-relation: main
-depends_on: ["T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Expose implemented native planning through accessible list and agenda controls.
-Current behavior:
-- Canonical query/agenda/PlanTask contracts exist, but Inbox, Upcoming, Week/Month, overdue/Anytime and placement controls lack dedicated production UI.
-Desired behavior:
-- Planning surfaces provide date/list navigation, clear planned/deadline labels and exact reviewed rescheduling/clearing without duplicating tasks.
-Touch:
-- Todo planning components/routes, shared source facade, WorkspaceAgenda/TaskQuery and WorkspaceTaskController PlanTask inputs.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Adopt documented Inbox/unplanned, Anytime and agenda semantics from navigation-study.md while respecting the owner Todo section. Keep a keyboard/list alternative to calendars; no drag-only operation. Use existing date-range/page limits, revision resets and explicit timezone errors. Completed history is separate. Plans/placement create no new reward or implicit projection; linked upstream schedules are unchanged unless an existing reviewed game command explicitly covers a field.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Query/placement and component tests for view membership, range changes, date clearing, stale pages, empty/error states and keyboard navigation; reusable UI matrix.
-Acceptance:
-- Inbox and upcoming/week/month/overdue/Anytime access uses explicit canonical membership and date semantics with stable bounded reads.
-- Reviewed rescheduling and clearing preserve task identity/history and do not silently change game rewards or upstream schedules.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Expose retained task history and safe Todo restore
 
 ```yaml
