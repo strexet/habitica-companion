@@ -1,0 +1,40 @@
+{
+  "task_id": "T-fb0d9494-1838-4f0a-a8f2-1a6bc2c2c5ed",
+  "date": "2026-10-20",
+  "production_origin": "https://habitica-companion.pages.dev",
+  "deployment": {
+    "Id": "ccfd1384-dac7-4454-9d41-0ac71ff6075c",
+    "Environment": "Production",
+    "Branch": "main",
+    "Source": "cb1aa5a",
+    "Deployment": "https://ccfd1384.habitica-companion.pages.dev",
+    "Status": "17 seconds ago",
+    "Build": "https://dash.cloudflare.com/8c962c94f28f5bdd298024365e0dea40/pages/view/habitica-companion/ccfd1384-dac7-4454-9d41-0ac71ff6075c"
+  },
+  "source_commit": "cb1aa5ac5c870c0fabb36b801a425ae9b8f39540",
+  "previous_deployment": "d06b3032-a927-45e9-8de3-a3ae7cfb39d9",
+  "previous_source": "8adb4c3",
+  "build": {
+    "isolated_git_archive": true,
+    "unfinished_todo_excluded": true,
+    "reviewed_production_settings_merged": true,
+    "release_publish": "pass; optional wasm-tools not installed",
+    "dotnet_tests_passed": 845,
+    "dotnet_test_projects": 6,
+    "node_tests_passed": 46,
+    "functions_bundle": "pass",
+    "service_worker_bridge_hash": "pass"
+  },
+  "bindings": "Existing Pages KV and party D1 retained from deploy/.production/pages/wrangler.json; no new resources or migrations",
+  "artifacts": {
+    "js/sync/cloudflarePartySync.js": "d035291fb3bcd59cc2a0a3e400476e476b6ae1d89a90f37a0b6eb4a5d384adf9",
+    "service-worker-assets.js": "b8a12331f78e2243f0031496bbf884de82dba67a2fffadd18a4db0dcad2a8b4d",
+    "appsettings.json": "8ae3e4d461c52716ddd47757882d9a9fe75bca967ee9ca0538746d6b265f082e"
+  },
+  "qualification_limits": [
+    "No real party write, quest action, membership change or gameplay call executed.",
+    "Public artifact GET returned HTTP 403; browser navigation reported ERR_BLOCKED_BY_CLIENT. No live artifact-body or party-flow qualification is claimed.",
+    "Deployment metadata confirms the production slot and source; local artifact hashes and Functions bundling were checked before upload.",
+    "Historic root exception and account tier remain unverified; fixed query-limit failure was reproduced with synthetic local D1."
+  ]
+}

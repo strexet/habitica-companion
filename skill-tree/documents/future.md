@@ -102,50 +102,6 @@ Source:
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Repair production party quest pool publication
-
-```yaml
-id: T-fb0d9494-1838-4f0a-a8f2-1a6bc2c2c5ed
-priority: 102
-status: Ready
-parent_pending_ids: ["P-232f91e7-9704-411d-9342-c51444115de8"]
-processing_run_id: PR-ab100cd5-5a0d-4d59-8905-f47de3a75d65
-root_task_id: T-fb0d9494-1838-4f0a-a8f2-1a6bc2c2c5ed
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Repair production browser quest-pool publication without changing real party state during qualification.
-Current behavior:
-- The endpoint deletes an owner pool before inserting one statement per entry. Aggregate production SELECT found a 52-entry pool; this exceeds the 50-query Free D1 invocation allowance before response queries. Migrations are current. The supplied stack has no HTTP status, so the exact historic exception remains unverified.
-Desired behavior:
-- Replace the owner pool atomically using a constant number of parameterized statements. Preserve other owners and previous data on failure. Keep existing successful response and access semantics.
-- Include HTTP status in the client failure fallback, without automatic replay or raw infrastructure error disclosure.
-Touch:
-- functions/api/party-sync/[partyId].js; browser party-sync bridge; focused Function tests; current sync/deployment documentation and validation evidence.
-Discovery allowance:
-- Inspect existing migrations, binding configuration, local D1 runtime and reviewed deployment metadata.
-Out of scope:
-- Party membership or quest gameplay mutations, real party publication tests, schema changes, Worker deployments, unfinished Todo UI publication.
-Implementation constraints:
-- Existing pins and claim/access rules remain. Bind JSON as data; no dynamic SQL from records. Build the completed committed source in an isolated directory, excluding the unfinished Todo edits, with the reviewed production frontend configuration. Preserve rollback identity and pending Todo edits.
-Questions and required clarifications:
-- [Resolved - owner request] Fix and publish now, then continue the active All run. Party writes remain prohibited for agent testing.
-Validation:
-- Synthetic local D1 coverage for 52 and larger pools, complete response under a 50-query guard, owner isolation, empty replacement, duplicate keys and transaction rollback. Browser bridge failures retain HTTP status and do not replay writes.
-- Existing Function suite and production packaging checks; read-only deployed artifact verification. Record any live write qualification limitation.
-Acceptance:
-- Large pool publication completes using constant query count below the Free invocation allowance.
-- Failed replacement preserves the previous owner pool, and successful replacement leaves other owners untouched.
-- Browser failures identify HTTP status without automatic mutation replay or leaking infrastructure details.
-- The isolated hotfix is deployed to the existing production site with rollback identity and artifact checks recorded.
-Documentation updates:
-- Update current sync behavior and operational deployment evidence with the implemented replacement and verification limits.
-Risks:
-- D1 errors after a successful replacement can still make the response uncertain; do not silently retry mutations. Historic exception is not retrievable from the supplied stack alone.
-
 ### Complete safe project retirement and agent project lifecycle
 
 ```yaml
