@@ -46,7 +46,7 @@ public static class WorkspaceTaskQuery
                 || filter.Priority is { } p && task.Priority != p || filter.ProjectId is { } project && task.ProjectId != project
                 || filter.LabelId is { } label && !(task.LabelIds?.Contains(label) ?? false)
                 || !Within(task.PlannedDate, filter.PlannedFrom, filter.PlannedTo) || !Within(task.Deadline, filter.DeadlineFrom, filter.DeadlineTo)) continue;
-            var category = task.CategoryId ?? (task.ProjectId is { } projectId && projects.TryGetValue(projectId, out var owner) ? owner.CategoryId : null);
+            var category = task.CategoryId ?? (task.ProjectId is { } projectId && projects.TryGetValue(projectId, out var owner) && !owner.IsRemoved ? owner.CategoryId : null);
             var mapping = mappings.TryGetValue(task.Id, out var value) ? value.State : ProjectionState.Unlinked;
             if (filter.CategoryId is { } c && category != c || filter.ProjectionState is { } m && mapping != m
                 || query.Length > 0 && !Fold(task.Text).Contains(query, StringComparison.Ordinal) && !Fold(task.Notes ?? "").Contains(query, StringComparison.Ordinal)) continue;

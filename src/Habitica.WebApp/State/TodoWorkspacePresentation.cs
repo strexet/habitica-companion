@@ -124,6 +124,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
     public WorkspaceReadPage<WorkspaceCategory> Categories(WorkspaceReadFilter filter) => WorkspaceOrganization.Categories(RequireSnapshot().Document, filter);
     public WorkspaceReadPage<WorkspaceProject> Projects(WorkspaceReadFilter filter, Guid? categoryId = null) => WorkspaceOrganization.Projects(RequireSnapshot().Document, filter, categoryId);
     public WorkspaceReadPage<WorkspaceSection> Sections(WorkspaceReadFilter filter, Guid projectId) => WorkspaceOrganization.Sections(RequireSnapshot().Document, filter, projectId);
+    public WorkspaceProjectRemovalImpact ProjectRemoval(Guid projectId, long? expectedRevision = null) => WorkspaceProjectRemovalQuery.Evaluate(RequireSnapshot().Document, projectId, expectedRevision);
     public WorkspaceReadPage<WorkspaceLabel> Labels(WorkspaceReadFilter filter) => WorkspaceOrganization.Labels(RequireSnapshot().Document, filter);
     public WorkspaceReadPage<WorkspaceGoalSummary> Goals(WorkspaceReadFilter filter) => WorkspaceOrganization.Goals(RequireSnapshot().Document, filter);
     public WorkspaceTaskPage SavedView(Guid viewId, WorkspaceReadFilter filter) => WorkspaceSavedTaskViews.Evaluate(RequireSnapshot().Document, viewId, filter);

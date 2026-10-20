@@ -111,6 +111,23 @@ public sealed class WorkspaceOrganizationControllerTests
         Assert.NotNull(c.Snapshot.Document.SavedTaskViews!.Single().Query);
     }
 
+    [Theory]
+    [InlineData(false)] [InlineData(true)]
+    public async Task Project_removal_requires_exact_impact_and_recovers_one_native_tombstone(bool cloud)
+    {
+        using var f=new Fixture();if(cloud)await f.Cloud();else await f.Local();var c=f.Controller;
+        await c.PrepareAsync(Create(WorkspaceOrganizationKind.Project));await c.ConfirmAsync();var project=c.LastReceipt!.EntityId;
+        await c.PrepareAsync(Create(WorkspaceOrganizationKind.Section,patch:new(Name:"Retained section",ProjectId:project)));await c.ConfirmAsync();
+        await c.PrepareAsync(new(WorkspaceOrganizationKind.Project,WorkspaceOrganizationOperation.Remove,project,new(Removal:new([],[]))));Assert.False(c.HasPendingIntent);
+        var before=c.Snapshot!;var impact=WorkspaceProjectRemovalQuery.Evaluate(before.Document,project,before.Document.Revision);
+        await c.PrepareAsync(new(WorkspaceOrganizationKind.Project,WorkspaceOrganizationOperation.Remove,project,new(Removal:impact.Removal)));var preview=c.Preview!;
+        Assert.True(preview.Snapshot.IsRemoved);Assert.False(preview.MayAffectHabitica);Assert.Single(preview.Command.Patch!.Removal!.SectionIds);
+        if(cloud)f.Api.LoseAcceptance=true;else f.Task.Js.LoseCommitAcknowledgement=true;
+        await c.ConfirmAsync();Assert.True(c.AcceptanceUnknown);await c.CheckOriginalAsync();Assert.False(c.HasPendingIntent);Assert.Equal(preview.PreparedCommandId,c.LastReceipt!.CommandId);
+        Assert.True(c.Snapshot!.Document.Projects.Single().IsRemoved);Assert.Equal(WorkspaceTaskApiJson.Serialize(before.Document.Tasks),WorkspaceTaskApiJson.Serialize(c.Snapshot.Document.Tasks));
+        Assert.Equal(before.Document.Sections,c.Snapshot.Document.Sections);Assert.Equal(WorkspaceTaskApiJson.Serialize(before.Commands),WorkspaceTaskApiJson.Serialize(c.Snapshot.Commands));Assert.Single(c.Snapshot.Document.OrganizationHistory!,row=>row.Command.Operation==WorkspaceOrganizationOperation.Remove);
+    }
+
     [Fact]
     public async Task Cloud_preview_loss_reuses_request_and_server_assigned_identity_then_recovers_original_acceptance()
     {

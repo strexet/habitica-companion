@@ -1,5 +1,5 @@
 import {journal,type Journal} from './journal.ts';
-import {organizationCommand,organizationCommandHash,currentOrganizationSnapshot,applyOrganizationSnapshot,type OrganizationCommand,type OrganizationEntry} from '../../shared/workspace-organization.ts';
+import {organizationCommand,organizationCommandHash,removalMatches,currentOrganizationSnapshot,applyOrganizationSnapshot,type OrganizationCommand,type OrganizationEntry} from '../../shared/workspace-organization.ts';
 import {utcTicks} from '../../shared/workspace-domain.ts';
 export type OrganizationDisposition='accepted'|'duplicate'|'revisionConflict'|'idempotencyConflict'|'invalid'|'unavailable';
 export interface OrganizationSubmission {disposition:OrganizationDisposition;snapshot:Journal|null;entry:OrganizationEntry|null;errorCode:string|null;savedInCompanion:boolean|null}
@@ -18,7 +18,8 @@ async function acceptOwnedOrganization(value:Journal,input:unknown,now:string,ow
  if(command.expectedRevision!==document.revision)return result('revisionConflict',state,null,'stale_revision');
  if(document.revision>=Number.MAX_SAFE_INTEGER||state.storeVersion>=Number.MAX_SAFE_INTEGER)return result('invalid',state,null,'revision_exhausted');
  const current=currentOrganizationSnapshot(document,command.kind,command.entityId),patch=command.patch;
- if(command.operation==='create'?current!==null:current===null||current.isArchived)return result('invalid',state,null,'organization_unavailable');
+ if(command.operation==='create'?current!==null:current===null||current.isRemoved||current.isArchived&&command.operation!=='remove')return result('invalid',state,null,'organization_unavailable');
+ if(command.operation==='remove'&&!removalMatches(document,command.entityId,patch!.removal!))return result('invalid',state,null,'project_removal_impact_changed');
  if(patch?.categoryId&&!document.categories.some(row=>row.id===patch.categoryId&&!row.isArchived)
     ||patch?.projectId&&!document.projects.some(row=>row.id===patch.projectId&&!row.isArchived)
     ||patch?.query&&(patch.query.filter.categoryId&&!document.categories.some(row=>row.id===patch.query!.filter.categoryId)||patch.query.filter.projectId&&!document.projects.some(row=>row.id===patch.query!.filter.projectId)||patch.query.filter.labelId&&!document.labels.some(row=>row.id===patch.query!.filter.labelId))
@@ -29,7 +30,7 @@ async function acceptOwnedOrganization(value:Journal,input:unknown,now:string,ow
  const base={id:accepted.id,revision:accepted.revision,name:accepted.name,isArchived:accepted.isArchived};
  switch(command.kind){
   case 'category':d.categories=replace(d.categories,base);break;
-  case 'project':d.projects=replace(d.projects,{...base,categoryId:accepted.categoryId});break;
+  case 'project':d.projects=replace(d.projects,{...base,categoryId:accepted.categoryId,...(accepted.isRemoved?{isRemoved:true}:{})});break;
   case 'section':d.sections=replace(d.sections,{...base,projectId:accepted.projectId!,position:accepted.position});break;
   case 'label':d.labels=replace(d.labels,base);break;
   case 'savedTaskView':d.savedTaskViews=replace(d.savedTaskViews??[],{...base,query:accepted.query!});break;

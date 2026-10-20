@@ -28,9 +28,10 @@ public static class WorkspaceOrganizationEngine
         if(document.Revision>=WorkspaceDocument.MaxRevision||snapshot.StoreVersion>=WorkspaceDocument.MaxRevision)
             return Reject(SubmissionDisposition.Invalid,"revision_exhausted");
         var current=WorkspaceOrganizationSnapshot.From(document,command.Kind,command.EntityId);
-        if(command.Operation==WorkspaceOrganizationOperation.Create ? current is not null : current is null||current.IsArchived)
+        if(command.Operation==WorkspaceOrganizationOperation.Create ? current is not null : current is null||current.IsRemoved||current.IsArchived&&command.Operation!=WorkspaceOrganizationOperation.Remove)
             return Reject(SubmissionDisposition.Invalid,"organization_unavailable");
         var patch=command.Patch;
+        if(command.Operation==WorkspaceOrganizationOperation.Remove&&!patch!.Removal!.Matches(document,command.EntityId))return Reject(SubmissionDisposition.Invalid,"project_removal_impact_changed");
         if(patch?.CategoryId is {} category&&!document.Categories.Any(row=>row.Id==category&&!row.IsArchived)
             ||patch?.ProjectId is {} project&&!document.Projects.Any(row=>row.Id==project&&!row.IsArchived)
             ||patch?.Query is {} query&&(query.Filter.CategoryId is {} viewCategory&&!document.Categories.Any(row=>row.Id==viewCategory)
@@ -44,7 +45,7 @@ public static class WorkspaceOrganizationEngine
         var result=command.Kind switch
         {
             WorkspaceOrganizationKind.Category=>document with { Categories=Replace(document.Categories,new WorkspaceCategory(accepted.Id,accepted.Revision,accepted.Name,accepted.IsArchived),create) },
-            WorkspaceOrganizationKind.Project=>document with { Projects=Replace(document.Projects,new WorkspaceProject(accepted.Id,accepted.Revision,accepted.Name,accepted.CategoryId,accepted.IsArchived),create) },
+            WorkspaceOrganizationKind.Project=>document with { Projects=Replace(document.Projects,new WorkspaceProject(accepted.Id,accepted.Revision,accepted.Name,accepted.CategoryId,accepted.IsArchived,accepted.IsRemoved),create) },
             WorkspaceOrganizationKind.Section=>document with { Sections=Replace(document.Sections,new WorkspaceSection(accepted.Id,accepted.Revision,accepted.Name,accepted.ProjectId!.Value,accepted.Position,accepted.IsArchived),create) },
             WorkspaceOrganizationKind.Label=>document with { Labels=Replace(document.Labels,new WorkspaceLabel(accepted.Id,accepted.Revision,accepted.Name,accepted.IsArchived),create) },
             WorkspaceOrganizationKind.Goal=>document with { Goals=Replace(document.Goals,new WorkspaceGoal(accepted.Id,accepted.Revision,accepted.Name,accepted.TaskIds!,accepted.IsArchived),create) },

@@ -63,11 +63,12 @@
       "operation_deadline_seconds": 300
     },
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Add TypeScript parity and actual synthetic Worker/MCP tests, qualify transport/client/package behavior and UI label changes, then document, commit and complete the exact dependency.",
     "partial_work": [
-      "Completed Inbox/planning (1c9fc3c,14b5e0b) and retained task history (484fa94,757b478); final history baseline is 876 tests and 504 clean rendered cases.",
-      "Current root T-574a6ba2-741e-4d13-b798-b909c24de93d: standalone scoped organization controller and DI registration added. Build passes; 13 initial controller tests pass after correcting serialized collection comparison.",
-      "Additional source-change and sanitized diagnostic checks are running. The controller retains original per-account requests in scoped memory, fences late responses and bounds operations to fifteen seconds. No new UI, deployment or live account mutation."
+      "Organization controller completed (1daf1de,3a28831): 892 tests and Release publish pass.",
+      "Current dependency T-264e3162-adc3-45f0-943e-a55feccc9d8e under Projects root T-fd2c633c-7b39-4776-a364-dacb83abaff7: logical project Remove operation/tombstone added to C#/TS models, exact ordered task/section approval bound in v3 hash, no task/hierarchy/history cascade.",
+      "Added get_project_removal_impact read discovery and removed-project Unassigned presentation while retaining canonical references. Four Application removal tests pass; C# build and Workspace TS type-check pass.",
+      "Organization and private MCP JSON wait/read boundaries are bounded at one MiB for complete removal approvals; direct task API remains 64 KiB. Need runtime size/isolation/parity tests and current docs before acceptance. No deployment or live mutation."
     ],
     "pending_ids": [
       "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e",

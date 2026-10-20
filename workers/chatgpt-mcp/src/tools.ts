@@ -70,10 +70,10 @@ export async function handleMcp(request: Request, env: McpEnv, parsedBody: unkno
       return { content: [{ type: "text", text: JSON.stringify(result.data) }], structuredContent: result.data, _meta: { correlationId: result.correlationId, rate: result.rate ?? {} } };
     } catch { return { isError: true, content: [{ type: "text", text: "Companion authorization service is unavailable." }] }; }
   });
-  const transport = new WebStandardStreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true, maxRequestBodySize: 65536 });
+  const transport = new WebStandardStreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true, maxRequestBodySize: 1024*1024 });
   try { await server.connect(transport); return await transport.handleRequest(request, { parsedBody }); }
   finally { await server.close(); }
 }
 export async function requestBody(request: Request): Promise<unknown> {
-  return workspaceJson(request,65536);
+  return workspaceJson(request,1024*1024);
 }

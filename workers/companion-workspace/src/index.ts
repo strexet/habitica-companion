@@ -164,7 +164,8 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  if (path === "/workspace" && request.method === "GET") return json({ document: JSON.parse(row.document_json), storeVersion: row.store_version, executorEnabled: Boolean(row.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED) });
  if (path === "/export" && request.method === "GET") return snapshot(env, row);
  if(path==='/organization-api'&&request.method==='POST'){
-  const body=workspaceObject(await workspaceJson(request,65536),['tool','arguments']);return json(await organizationApi(env,row,body.tool as OrganizationWriteTool,body.arguments));
+  // Exact removal approvals can list every reference in the bounded one-MiB cloud document.
+  const body=workspaceObject(await workspaceJson(request,1024*1024),['tool','arguments']);return json(await organizationApi(env,row,body.tool as OrganizationWriteTool,body.arguments));
  }
  if (path === "/task-api" && request.method === "POST") {
   const body=workspaceObject(await workspaceJson(request,65536),["tool","arguments"]);
@@ -218,7 +219,7 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
  async fetch(request:Request):Promise<Response>{
   try{
    if(!this.env.WORKSPACE_ENABLED||request.method!=="POST")throw new WorkspaceError("workspace_unavailable",503);
-   const body=workspaceObject(await workspaceJson(request,65536),["tool","arguments"]);
+   const body=workspaceObject(await workspaceJson(request,1024*1024),["tool","arguments"]);
    if(typeof body.tool!=="string"||!Object.hasOwn(organizationToolScopes,body.tool)&&!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool)&&!Object.hasOwn(spellToolScopes,body.tool)&&!Object.hasOwn(cronToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
    const verified=await this.env.AUTH_IDENTITY.fetch("https://identity.internal/mcp",{method:"POST",headers:{authorization:request.headers.get("authorization")??""},signal:AbortSignal.timeout(5000)});
    if(!verified.ok)throw new WorkspaceError("unauthorized",401);

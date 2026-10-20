@@ -1,6 +1,6 @@
 ---
 name: habitica-task-management
-description: Create, edit, relate Todo parents/dependencies, plan native task placement, schedule Daily recurrence, skip occurrences, pause/resume recurring work, complete, restore completed unlinked Todos or archive Companion tasks, set native Todo state or optional active-work stage, record Habit up/down events, or create/edit/archive native organization and saved task views through reviewed commands. Use for task or organization changes, not read-only reviews, spells or Cron.
+description: Create, edit, relate Todo parents/dependencies, plan native task placement, schedule Daily recurrence, skip occurrences, pause/resume recurring work, complete, restore completed unlinked Todos or archive Companion tasks, set native Todo state or optional active-work stage, record Habit up/down events, or create/edit/archive native organization and saved task views and logically remove projects through reviewed commands. Use for task or organization changes, not read-only reviews, spells or Cron.
 ---
 
 Use only the Habitica Companion MCP tools; never construct Habitica HTTP requests. Discover the connected tool names and schemas before tool calls. The server enforces authorization and validation independently of this skill.

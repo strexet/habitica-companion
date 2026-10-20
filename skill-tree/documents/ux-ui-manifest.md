@@ -715,3 +715,7 @@ The placement editor opens above results and receives heading focus. Planned day
 Task history keeps activity type and retained-text search visible at the top. More filters contains labelled UTC-day bounds and the Habit direction filter; active filters keep the disclosure open. Rows show event kind, recorded UTC time, optional Daily civil date, historical/current detail provenance and archival flags in text. Notes and original event/task/command references use native disclosures with wrapping content. A supported Restore Todo action stays visible beside the event; unsupported rows explain the specific reason.
 
 Restoration opens the shared exact-command review and moves focus to the review heading. Confirmation or cancellation returns focus to retained-text search. Original uncertain acceptance remains visible with receipt recovery and blocks another restoration. Shared semantic tokens, responsive rows and primary touch targets apply across themes.
+
+## Removed project presentation
+
+Removed projects stay out of active placement choices. A retained assignment displays Unassigned with a removed-project reference notice; selected metadata retains the exact ID until explicit reassignment. Inbox includes otherwise eligible unscheduled Todos whose former project is removed. Logical removal never completes, moves or hides descendants through a cascading task change. Browser project lifecycle controls remain a separate implementation unit.

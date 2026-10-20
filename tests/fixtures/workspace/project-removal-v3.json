@@ -1,0 +1,467 @@
+{
+  "document": {
+    "schemaVersion": 1,
+    "id": "60000000-0000-4000-8000-000000000001",
+    "revision": 10,
+    "categories": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000010",
+        "name": "Work"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000011",
+        "name": "Personal"
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000012",
+        "name": "Archived area"
+      }
+    ],
+    "projects": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000020",
+        "name": "Alpha",
+        "categoryId": "60000000-0000-4000-8000-000000000010"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000021",
+        "name": "Beta",
+        "categoryId": "60000000-0000-4000-8000-000000000011"
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000022",
+        "name": "Archived project",
+        "categoryId": "60000000-0000-4000-8000-000000000012"
+      },
+      {
+        "id": "60000000-0000-4000-8000-000000000023",
+        "revision": 10,
+        "name": "Empty project",
+        "categoryId": null,
+        "isArchived": false
+      }
+    ],
+    "sections": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000041",
+        "name": "Later",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 1
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000042",
+        "name": "First",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 0
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000043",
+        "name": "Hidden",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 2
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000044",
+        "name": "Other",
+        "projectId": "60000000-0000-4000-8000-000000000021",
+        "position": 0
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000045",
+        "name": "Archived parent",
+        "projectId": "60000000-0000-4000-8000-000000000022",
+        "position": 0
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000046",
+        "name": "Also first",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "position": 0
+      }
+    ],
+    "labels": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000030",
+        "name": "Focus"
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000031",
+        "name": "Archived label"
+      }
+    ],
+    "goals": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000050",
+        "name": "Mixed work",
+        "taskIds": [
+          "60000000-0000-4000-8000-000000000101",
+          "60000000-0000-4000-8000-000000000103",
+          "60000000-0000-4000-8000-000000000104",
+          "60000000-0000-4000-8000-000000000105",
+          "60000000-0000-4000-8000-000000000106",
+          "60000000-0000-4000-8000-000000000109"
+        ]
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000051",
+        "name": "No tasks",
+        "taskIds": []
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000052",
+        "name": "Archived goal",
+        "taskIds": [
+          "60000000-0000-4000-8000-000000000105"
+        ]
+      }
+    ],
+    "tasks": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000101",
+        "text": "Release plan",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "HiddenNeedle Caf\u00e9 \u039f\u03a3 \u0130STANBUL \uff26\uff2f\uff23\uff35\uff33",
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [
+          "60000000-0000-4000-8000-000000000030"
+        ],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000102",
+        "text": "Release review",
+        "kind": "todo",
+        "state": "waiting",
+        "priority": "high",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": "60000000-0000-4000-8000-000000000011",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": "60000000-0000-4000-8000-000000000101",
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-18",
+        "deadline": "2026-10-20",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000103",
+        "text": "Daily check",
+        "kind": "daily",
+        "state": "active",
+        "priority": "urgent",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "caf\u00e9",
+        "categoryId": "60000000-0000-4000-8000-000000000010",
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": "2026-10-17",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000104",
+        "text": "Habit repeat",
+        "kind": "habit",
+        "state": "paused",
+        "priority": "low",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000105",
+        "text": "Done",
+        "kind": "todo",
+        "state": "completed",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": "60000000-0000-4000-8000-000000000106",
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-16",
+        "deadline": "2026-10-16",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000106",
+        "text": "Archived HiddenNeedle",
+        "kind": "todo",
+        "state": "active",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": "60000000-0000-4000-8000-000000000102",
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000107",
+        "text": "Unscheduled",
+        "kind": "todo",
+        "state": "someday",
+        "priority": "urgent",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": null,
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000021",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": null,
+        "deadline": null,
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000109",
+        "text": "Cancelled work",
+        "kind": "todo",
+        "state": "cancelled",
+        "priority": "normal",
+        "createdAtUtc": "2026-10-01T00:00:00Z",
+        "updatedAtUtc": "2026-10-17T00:00:00Z",
+        "notes": "HiddenNeedle Caf\u00e9 \u039f\u03a3 \u0130STANBUL \uff26\uff2f\uff23\uff35\uff33",
+        "categoryId": null,
+        "projectId": "60000000-0000-4000-8000-000000000020",
+        "sectionId": null,
+        "parentTaskId": null,
+        "labelIds": [],
+        "dependsOn": [],
+        "plannedDate": "2026-10-17",
+        "deadline": "2026-10-19",
+        "reviewAfterUtc": null,
+        "staleSinceUtc": null,
+        "recurrence": null,
+        "habiticaDetails": null
+      }
+    ],
+    "occurrences": [],
+    "completions": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000300",
+        "taskId": "60000000-0000-4000-8000-000000000105",
+        "commandId": "60000000-0000-4000-8000-000000000301",
+        "completedAtUtc": "2026-10-16T00:00:00Z",
+        "occurrenceId": null
+      }
+    ],
+    "habitScores": [],
+    "projections": [
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000400",
+        "taskId": "60000000-0000-4000-8000-000000000101",
+        "state": "unknownOutcome",
+        "habiticaTaskId": "60000000-0000-4000-8000-000000000500"
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000401",
+        "taskId": "60000000-0000-4000-8000-000000000102",
+        "state": "pending",
+        "habiticaTaskId": null
+      },
+      {
+        "revision": 10,
+        "isArchived": false,
+        "id": "60000000-0000-4000-8000-000000000402",
+        "taskId": "60000000-0000-4000-8000-000000000103",
+        "state": "unknownOutcome",
+        "habiticaTaskId": null
+      },
+      {
+        "revision": 10,
+        "isArchived": true,
+        "id": "60000000-0000-4000-8000-000000000404",
+        "taskId": "60000000-0000-4000-8000-000000000104",
+        "state": "linked",
+        "habiticaTaskId": "60000000-0000-4000-8000-000000000504"
+      }
+    ]
+  },
+  "hashes": [
+    {
+      "name": "assigned-project",
+      "command": {
+        "id": "66000000-0000-4000-8000-000000000090",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "kind": "project",
+        "operation": "remove",
+        "entityId": "60000000-0000-4000-8000-000000000020",
+        "patch": {
+          "removal": {
+            "taskIds": [
+              "60000000-0000-4000-8000-000000000101",
+              "60000000-0000-4000-8000-000000000102",
+              "60000000-0000-4000-8000-000000000103",
+              "60000000-0000-4000-8000-000000000104",
+              "60000000-0000-4000-8000-000000000105",
+              "60000000-0000-4000-8000-000000000106",
+              "60000000-0000-4000-8000-000000000109"
+            ],
+            "sectionIds": [
+              "60000000-0000-4000-8000-000000000041",
+              "60000000-0000-4000-8000-000000000042",
+              "60000000-0000-4000-8000-000000000043",
+              "60000000-0000-4000-8000-000000000046"
+            ]
+          }
+        }
+      },
+      "payloadHash": "dcc4db380d760a9a61dbe509bd2ea8efe51009fcff8271d556cc0a26a60a63e0"
+    },
+    {
+      "name": "archived-project",
+      "command": {
+        "id": "66000000-0000-4000-8000-000000000091",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "kind": "project",
+        "operation": "remove",
+        "entityId": "60000000-0000-4000-8000-000000000022",
+        "patch": {
+          "removal": {
+            "taskIds": [],
+            "sectionIds": [
+              "60000000-0000-4000-8000-000000000045"
+            ]
+          }
+        }
+      },
+      "payloadHash": "1b88b675bd13c3a7ac79b863568468e84efc03ac6634eae803c639667e8e5873"
+    },
+    {
+      "name": "empty-project",
+      "command": {
+        "id": "66000000-0000-4000-8000-000000000092",
+        "workspaceId": "60000000-0000-4000-8000-000000000001",
+        "expectedRevision": 10,
+        "kind": "project",
+        "operation": "remove",
+        "entityId": "60000000-0000-4000-8000-000000000023",
+        "patch": {
+          "removal": {
+            "taskIds": [],
+            "sectionIds": []
+          }
+        }
+      },
+      "payloadHash": "b1ae140ece65260f69f9e229d6039c6b5edfa1b01c9dc44f1662ff6e300655a3"
+    }
+  ]
+}

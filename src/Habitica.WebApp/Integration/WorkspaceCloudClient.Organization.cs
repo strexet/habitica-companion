@@ -45,7 +45,8 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceOrganizationApi
     private static bool ValidSnapshot(WorkspaceOrganizationCommand command,WorkspaceOrganizationSnapshot? snapshot)
     {
         if(snapshot is null||snapshot.Id!=command.EntityId||snapshot.Kind!=command.Kind||snapshot.Revision!=command.ExpectedRevision+1
-            ||string.IsNullOrWhiteSpace(snapshot.Name)||snapshot.Name.Length>256||snapshot.IsArchived!=(command.Operation==WorkspaceOrganizationOperation.Archive)
+            ||string.IsNullOrWhiteSpace(snapshot.Name)||snapshot.Name.Length>256||snapshot.IsArchived!=(command.Operation is WorkspaceOrganizationOperation.Archive or WorkspaceOrganizationOperation.Remove)
+            ||snapshot.IsRemoved!=(command.Operation==WorkspaceOrganizationOperation.Remove)
             ||snapshot.Kind!=WorkspaceOrganizationKind.Project&&snapshot.CategoryId is not null||snapshot.CategoryId==Guid.Empty
             ||snapshot.Kind!=WorkspaceOrganizationKind.Section&&(snapshot.ProjectId is not null||snapshot.Position!=0)
             ||snapshot.Kind==WorkspaceOrganizationKind.Section&&(snapshot.ProjectId is null||snapshot.ProjectId==Guid.Empty||snapshot.Position<0)

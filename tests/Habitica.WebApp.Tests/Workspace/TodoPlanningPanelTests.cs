@@ -151,4 +151,23 @@ public sealed class TodoPlanningPanelTests : BunitContext
         Assert.Contains("Clear all labels", cut.Find("[data-testid='todo-review']").TextContent); cut.Find("[data-testid='todo-confirm']").Click();
         var saved = f.Controller.Snapshot!.Document.Tasks[0]; Assert.Null(saved.ProjectId); Assert.Null(saved.CategoryId); Assert.Empty(saved.LabelIds!);
     }
+
+    [Fact]
+    public async Task Removed_project_tasks_appear_as_unassigned_while_the_exact_project_and_section_references_remain_retained()
+    {
+        var project = new WorkspaceProject(Guid.NewGuid(), 1, new string('P', 90) + " removed project");
+        var section = new WorkspaceSection(Guid.NewGuid(), 1, "Retained section", project.Id);
+        var task = Task("Retained task") with { ProjectId = project.Id, SectionId = section.Id };
+        var doc = Doc(task) with { Projects = [project], Sections = [section] };
+        var removed = WorkspaceOrganizationEngine.Accept(new(doc, 10, [], []), new(Guid.NewGuid(), doc.Id, 10, WorkspaceOrganizationKind.Project,
+            WorkspaceOrganizationOperation.Remove, project.Id, new(Removal: WorkspaceProjectRemoval.From(doc, project.Id))), Now);
+        Assert.Equal(SubmissionDisposition.Accepted, removed.Disposition);
+        var (f, _) = await Setup(removed.Snapshot!.Document); var cut = Render<TodoPlanningPanel>(p => p.Add(x => x.View, TodoPlanningView.Inbox).Add(x => x.Day, Day));
+        Assert.Single(cut.FindAll("[data-testid^='plan-row-']")); Assert.Contains("Unassigned · removed project reference retained", cut.Markup);
+        cut.Find($"[data-testid='plan-edit-{task.Id:D}']").Click(); Assert.Contains("Unassigned (removed project:", cut.Markup);
+        Assert.Equal(project.Id.ToString(), cut.Find("[data-testid='plan-project']").GetAttribute("value"));
+        Assert.Equal(project.Id, f.Controller.Snapshot!.Document.Tasks[0].ProjectId); Assert.Equal(section.Id, f.Controller.Snapshot.Document.Tasks[0].SectionId);
+        Assert.Empty(f.Client.PreparationIds); Assert.Empty(f.Client.AcceptedIds);
+        Save("todo-plan-removed-project", cut.Markup, "removed-project-unassigned-retained-placement", nameof(Removed_project_tasks_appear_as_unassigned_while_the_exact_project_and_section_references_remain_retained), "/todo/inbox");
+    }
 }

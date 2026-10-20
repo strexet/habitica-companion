@@ -34,6 +34,7 @@
                     <article class="todo-direct-row" @key="(row.Task.Id, row.Day)" data-testid="@($"plan-row-{row.Task.Id:D}")">
                         <div class="todo-row-content"><strong>@row.Task.Text</strong><span>@row.Task.Kind · @row.Task.State</span>
                             <span>Planned: @(row.Task.PlannedDate is { } planned ? Iso(planned) : "Not planned") · Deadline: @(row.Task.Deadline is { } deadline ? Iso(deadline) : "None")</span>
+                            @if (row.Task.ProjectId is { } projectId && Todo.Snapshot?.Document.Projects.Any(project => project.Id == projectId && project.IsRemoved) == true) { <span>Unassigned · removed project reference retained</span> }
                             @if (_view == TodoPlanningView.Overdue && ValidDay is { } day) { <span>@(row.Task.PlannedDate < day ? "Planned earlier. " : "")@(row.Task.Deadline < day ? "Deadline overdue." : "")</span> }
                             @if (row.Occurrence is { } occurrence) { <span>Daily occurrence: @occurrence · @row.Zone</span> }
                         </div>
@@ -72,7 +73,7 @@
     private DateOnly? ValidDay => DateOnly.TryParseExact(_date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var day) && day != default ? day : null;
     private bool IsAgenda => _view is TodoPlanningView.Upcoming or TodoPlanningView.Week or TodoPlanningView.Month;
     private bool CanEdit => !Todo.IsBusy && !Todo.IsReadOnly && !Todo.Commands.HasPendingIntent;
-    private string Description => _view switch { TodoPlanningView.Inbox => "Inbox: active Todos without a planned day or primary project. A deadline alone does not remove a task from Inbox.", TodoPlanningView.Anytime => "Anytime: all active Todos without a planned day, including Inbox and project tasks. Deadlines remain visible.", TodoPlanningView.Overdue => "Overdue: active Todos planned before the reference day or with an earlier deadline. Each task appears once.", TodoPlanningView.Week => "Week agenda, Monday–Sunday containing the reference day.", TodoPlanningView.Month => "Month agenda containing the reference day.", _ => "Upcoming agenda: reference day and the next 29 days." };
+    private string Description => _view switch { TodoPlanningView.Inbox => "Inbox: active Todos without a planned day and without an assigned project. Removed project references count as Unassigned. A deadline alone does not remove a task from Inbox.", TodoPlanningView.Anytime => "Anytime: all active Todos without a planned day, including Inbox and project tasks. Deadlines remain visible.", TodoPlanningView.Overdue => "Overdue: active Todos planned before the reference day or with an earlier deadline. Each task appears once.", TodoPlanningView.Week => "Week agenda, Monday–Sunday containing the reference day.", TodoPlanningView.Month => "Month agenda containing the reference day.", _ => "Upcoming agenda: reference day and the next 29 days." };
     protected override void OnInitialized() { Todo.Changed += Changed; _date = Iso(Day ?? DateOnly.FromDateTime(Clock.GetLocalNow().DateTime)); }
     protected override void OnParametersSet()
     {

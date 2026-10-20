@@ -55,6 +55,32 @@ public sealed class WorkspaceOrganizationClientTests
     }
 
     [Theory]
+    [InlineData("none")][InlineData("approval")][InlineData("tombstone")][InlineData("archive")]
+    public async Task Project_removal_binds_exact_approval_and_tombstone_and_recovers_original_receipt(string mutation)
+    {
+        var id=Guid.NewGuid();var current=new WorkspaceOrganizationSnapshot(WorkspaceOrganizationKind.Project,Guid.NewGuid(),1,"Retained project",true);
+        var intent=new WorkspaceOrganizationCommand(Guid.NewGuid(),id,1,WorkspaceOrganizationKind.Project,WorkspaceOrganizationOperation.Remove,current.Id,new(Removal:new([Guid.NewGuid()],[Guid.NewGuid()])));
+        var command=intent with {Id=Guid.NewGuid()};var preview=new WorkspaceOrganizationPreview(command.Id,Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(10),false,command,WorkspaceOrganizationCommands.Apply(command,current),false,false);
+        preview=mutation switch {"approval"=>preview with {Command=command with {Patch=new(Removal:new([],[]))}},"tombstone"=>preview with {Snapshot=preview.Snapshot with {IsRemoved=false}},"archive"=>preview with {Snapshot=preview.Snapshot with {IsArchived=false}},_=>preview};
+        var originalReceipt=Receipt(preview);
+        using var vault=Vault();using var http=new HttpClient(new Handler(async request=>{
+            if(request.RequestUri!.AbsolutePath=="/connect")return Connection(id);
+            using var body=JsonDocument.Parse(await request.Content!.ReadAsStringAsync());
+            if(body.RootElement.GetProperty("tool").GetString()=="prepare_organization_command")
+            {
+                var args=body.RootElement.GetProperty("arguments");Assert.Equal(current.Id,args.GetProperty("entityId").GetGuid());Assert.Equal(1,args.GetProperty("expectedRevision").GetInt32());
+                Assert.Equal(intent.Patch!.Removal!.TaskIds[0],args.GetProperty("patch").GetProperty("removal").GetProperty("taskIds")[0].GetGuid());return Json(preview);
+            }
+            return Json(originalReceipt);
+        }));
+        var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
+        var prepared=await client.PrepareOrganizationAsync(Guid.NewGuid(),intent,default);Assert.Equal(mutation=="none",prepared.Succeeded);
+        if(mutation!="none"){Assert.True(prepared.OutcomeUnknown);Assert.Null(prepared.Value);return;}
+        var saved=await client.AcceptOrganizationAsync(prepared.Value!,default);Assert.True(saved.Succeeded);Assert.True(saved.Value!.Entry.Snapshot.IsRemoved);Assert.Equal(0,saved.Value.AcceptedEventCount);
+        var original=await client.ReadOrganizationAsync(preview.PreparedCommandId,default);Assert.True(original.Succeeded);Assert.Equal(WorkspaceTaskApiJson.Serialize(saved.Value),WorkspaceTaskApiJson.Serialize(original.Value));
+    }
+
+    [Theory]
     [InlineData("command")][InlineData("snapshot")][InlineData("effects")][InlineData("revision")][InlineData("clear")][InlineData("target")][InlineData("receipt")]
     public async Task Altered_native_previews_cannot_replace_reviewed_partial_intent(string mutation)
     {
