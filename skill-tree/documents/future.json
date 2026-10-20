@@ -69,11 +69,10 @@
       "operation_deadline_seconds": 300
     },
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Finish current-source rendered qualification, write root evidence/docs and commit. Complete root then automatically advance the frozen All run.",
     "partial_work": [
-      "Project removal and deep hierarchy query dependencies completed (1d9595d,0386c8c,b5c4ed7,156927b). Latest full solution 906 tests and Release publish pass; three Worker dry runs pass.",
-      "Selected nested Todo UI T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a under Projects root. Use bounded focused-branch navigation with direct-child expansion/collapse and optional paged subtree, exact parent context and capped indentation. Projects surface selects project-assigned tasks then opens full independent branch context.",
-      "Existing createTodo cannot set parent atomically. Reuse two explicit reviewed commands: create independent Todo, then attach exact created ID with relateTodo. Clearly disclose partial success and retain created-task identity; never recreate after attachment failure. Existing shared task review owns uncertainty and original receipts."
+      "Final root source passes all 936 solution tests (557 Web). Release publish passes. Added same-revision source-change pagination regression and repaired reusable plan-editor primary target sizing.",
+      "Initial rendered metadata matrix 432 passed. Workflow matrix found plan-reload 32px target in 36 cases; repaired CSS selector. Final fresh fixture set and source-matched production assets staged at 127.0.0.1:5132, 900-second server deadline; rerun full 20-state matrix with unchanged 300/5-second deadlines."
     ],
     "pending_ids": [
       "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e",

@@ -45,6 +45,7 @@
         @if (Todo.Commands.LastReceipt is { } receipt)
         { <p role="status" data-testid="todo-receipt">Saved in Companion: @(receipt.SavedInCompanion ? "Yes" : "No") · Habitica: @receipt.HabiticaProjectionStatus · confirmed effects: @receipt.ConfirmedProjectionCount/@receipt.TotalProjectionCount · refresh: @(receipt.RefreshSucceeded ? "complete" : "reload required"). Command: @receipt.CommandId</p> }
         @if (_error is not null) { <p role="alert">@_error</p> }
+        @if (Todo.OrganizationBlockReason is { } organizationReason) { <p role="status">@organizationReason <a href="/todo/projects">Open Projects</a></p> }
         @if (Todo.Message is not null) { <p role="status">@Todo.Message</p> }
         @if (Todo.Commands.Preview is { } preview)
         {
@@ -75,9 +76,13 @@
                     @if (patch.Relationships is { } relationships)
                     {
                         <p>Exact Todo: @Todo.Snapshot?.Document.Tasks.FirstOrDefault(row => row.Id == preview.Command.TaskId)?.Text · @preview.Command.TaskId</p>
-                        <p>Parent: @(relationships.ClearParentTask ? "Detach from parent" : $"{Todo.Snapshot?.Document.Tasks.FirstOrDefault(row => row.Id == relationships.ParentTaskId)?.Text} · {relationships.ParentTaskId}")</p>
-                        <p>Project membership, independent task status, dates, checklist and dependency edges remain unchanged. No descendant is moved or completed.</p>
+                        @if (relationships.ParentTaskId is not null || relationships.ClearParentTask) { <p>Parent: @(relationships.ClearParentTask ? "Detach from parent" : $"{Todo.Snapshot?.Document.Tasks.FirstOrDefault(row => row.Id == relationships.ParentTaskId)?.Text} · {relationships.ParentTaskId}")</p> }
+                        @if (relationships.DependsOn is { } dependencies) { <p>Replace all dependencies (@dependencies.Count):</p><ul>@foreach (var dependency in dependencies) { <li>@Todo.Snapshot?.Document.Tasks.FirstOrDefault(row=>row.Id==dependency)?.Text · @dependency</li> }</ul><p>Parent link unchanged unless explicitly shown above.</p> }
+                        else { <p>Dependency edges remain unchanged.</p> }
+                        <p>Project membership, independent task status, dates and checklist remain unchanged. No descendant is moved or completed.</p>
                     }
+                    @if (patch.TodoState is { } todoState) { <p>Set current Todo state: @todoState.State. Completion history and saved stage remain unchanged; inactive state takes precedence.</p> }
+                    @if (patch.TodoStage is { } todoStage) { <p>Set active Todo stage: @(todoStage.ClearStage ? "Default Inbox" : todoStage.Stage==TodoExecutionStage.InProgress ? "In progress" : todoStage.Stage?.ToString()). Independent task state and completion history remain unchanged.</p> }
                     @if (patch.HabiticaDetails is { } details) { <p>Game difficulty: @(details.Difficulty?.ToString(CultureInfo.InvariantCulture) ?? "unchanged"); attribute: @(details.Attribute?.ToString() ?? "unchanged")</p>@if (details.Checklist is not null) { <p>Replace checklist (@details.Checklist.Count items)</p><ul>@foreach (var item in details.Checklist) { <li>@item.Text @(item.Completed ? "(completed)" : "")</li> }</ul> } }
                 }
                 @if (preview.Command.Operation == WorkspaceOperation.DeleteTask) { <p>Archive this task and retain history. Habitica records remain unchanged.</p> }
@@ -247,6 +252,18 @@
             ?? throw new InvalidOperationException("The selected Todo is unavailable.");
         _kind = CompanionTaskKind.Todo; Edit(task); await InvokeAsync(StateHasChanged);
     }
+    public async Task ReviewWorkflowAsync(TodoWorkflowReview review)
+    {
+        if (ActionsDisabled || review.Source != Todo.Selection || review.Revision != Todo.Revision || review.Input.TaskId is not { } taskId || review.Input.ProjectToHabitica)
+            throw new InvalidOperationException("Reload the exact task workflow context before reviewing.");
+        if (review.Input.Operation == WorkspaceOperation.RelateTodo) { await ReviewRelationshipsAsync(taskId, review.Revision, review.Input.Relationships ?? throw new InvalidOperationException("Choose exact dependencies.")); return; }
+        if (review.Input.Operation is not (WorkspaceOperation.SetTodoState or WorkspaceOperation.SetTodoStage)) throw new InvalidOperationException("Choose a supported task workflow action.");
+        var snapshot = Todo.Snapshot!;
+        var patch = review.Input.Operation == WorkspaceOperation.SetTodoState ? new WorkspaceTaskPatch(TodoState: review.Input.TodoState) : new WorkspaceTaskPatch(TodoStage: review.Input.TodoStage);
+        var simulated = WorkspaceCommandEngine.Accept(snapshot with { Authority = null }, new(Guid.NewGuid(), snapshot.Document.Id, review.Revision, review.Input.Operation, taskId, patch), DateTimeOffset.UtcNow);
+        if (simulated.Disposition != SubmissionDisposition.Accepted) throw new InvalidOperationException("The selected task state or active stage is unavailable. Reload the current task.");
+        await RunAsync(async () => { await Todo.PrepareAsync(review.Input); _focusReview = Todo.Commands.Preview is not null; }); await InvokeAsync(StateHasChanged);
+    }
     public async Task ReviewNewTodoAsync(WorkspaceTaskInput input, long revision)
     {
         if (ActionsDisabled || Todo.Revision != revision || input.Operation != WorkspaceOperation.CreateTodo || input.ProjectToHabitica)
@@ -264,7 +281,7 @@
         var probe = new WorkspaceCommand(Guid.NewGuid(), snapshot.Document.Id, revision, WorkspaceOperation.RelateTodo, taskId, new(Relationships: relationships));
         var simulated = WorkspaceCommandEngine.Accept(snapshot with { Authority = null }, probe, DateTimeOffset.UtcNow);
         if (simulated.Disposition != SubmissionDisposition.Accepted)
-            throw new InvalidOperationException("Parent change unavailable. Check missing or archived parents, self-parenting and combined dependency cycles before reviewing.");
+            throw new InvalidOperationException("Relationship change unavailable. Check missing or archived Todo references, self-links and combined dependency cycles before reviewing.");
         await RunAsync(async () => { await Todo.PrepareAsync(ActionInput(task, WorkspaceOperation.RelateTodo) with { Relationships = relationships }); _focusReview = Todo.Commands.Preview is not null; });
         await InvokeAsync(StateHasChanged);
     }
@@ -323,7 +340,7 @@
     {
         WorkspaceOperation.CreateTodo => "Create Todo", WorkspaceOperation.CreateDaily => "Create unscheduled Daily", WorkspaceOperation.CreateHabit => "Create Habit",
         WorkspaceOperation.UpdateTask => "Update task", WorkspaceOperation.CompleteTask => "Record completion", WorkspaceOperation.ScoreHabit => "Record Habit event",
-        WorkspaceOperation.RelateTodo => "Change exact Todo parent", WorkspaceOperation.PlanTask => "Change native placement", WorkspaceOperation.RestoreTodo => "Restore exact completed Todo", WorkspaceOperation.DeleteTask => "Archive task", _ => "Task command"
+        WorkspaceOperation.SetTodoState => "Change Todo state", WorkspaceOperation.SetTodoStage => "Change active Todo stage", WorkspaceOperation.RelateTodo => "Change exact Todo relationships", WorkspaceOperation.PlanTask => "Change native placement", WorkspaceOperation.RestoreTodo => "Restore exact completed Todo", WorkspaceOperation.DeleteTask => "Archive task", _ => "Task command"
     };
     private static string SourceValue(TodoWorkspaceSelection? source) => source is null ? "" : $"{source.Source}|{source.WorkspaceId:D}";
     private static string SourceLabel(TodoWorkspaceSelection source) => $"{(source.Source == TodoWorkspaceSource.Cloud ? "Cloud" : "Browser")} · {source.WorkspaceId:D}";

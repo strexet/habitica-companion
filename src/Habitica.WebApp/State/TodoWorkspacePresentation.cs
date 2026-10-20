@@ -19,15 +19,17 @@ public sealed class TodoWorkspacePresentation : IDisposable
     private readonly IWorkspaceCloudClient _cloud;
     private readonly IndexedDbWorkspaceDatabase _database;
     private readonly WorkspaceTaskController _commands;
+    private readonly WorkspaceOrganizationController? _organization;
     private string? _account;
     private long _generation;
     private bool _unavailable;
     private bool _loading;
     private WorkspaceJournalSnapshot? _validated;
     public TodoWorkspacePresentation(IAppSessionController session, IWorkspaceCloudClient cloud,
-        IndexedDbWorkspaceDatabase database, WorkspaceTaskController commands)
+        IndexedDbWorkspaceDatabase database, WorkspaceTaskController commands, WorkspaceOrganizationController? organization = null)
     {
-        _session = session; _cloud = cloud; _database = database; _commands = commands;
+        _session = session; _cloud = cloud; _database = database; _commands = commands; _organization = organization;
+        if (_organization is not null) _organization.Changed += OrganizationChanged;
         _account = Account; AdoptLoadedSelection(); _session.Changed += SessionChanged;
     }
 
@@ -37,7 +39,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
     public bool? BrowserSourcesAvailable { get; private set; }
     public bool IsBusy { get; private set; }
     public string? Message { get; private set; }
-    public bool CanSwitchSource => !IsBusy && !_commands.HasPendingIntent;
+    public bool CanSwitchSource => !IsBusy && !_commands.HasPendingIntent && _organization?.HasPendingIntent != true && _organization?.IsBusy != true;
     public WorkspaceTaskController Commands => _commands;
     private string? Account => _session.State.IsAuthenticated && Guid.TryParse(_session.State.UserId, out var id) ? id.ToString("D") : null;
     public TodoWorkspaceAvailability Availability => Account is null ? TodoWorkspaceAvailability.SignedOut
@@ -59,7 +61,13 @@ public sealed class TodoWorkspacePresentation : IDisposable
         }
     }
     public long? Revision => Snapshot?.Document.Revision;
-    public bool IsReadOnly => Snapshot is null || _commands.IsReadOnly;
+    public string? OrganizationBlockReason => _organization?.HasPendingIntent == true
+        ? "Resolve the original organization command in Projects before editing tasks."
+        : _organization?.IsBusy == true ? "Wait for the current organization operation before editing tasks."
+        : Selection is { } source && _organization?.LastReceipt is { SavedInCompanion: true } receipt
+            && receipt.WorkspaceId == source.WorkspaceId && _organization.IsCloud == (source.Source == TodoWorkspaceSource.Cloud)
+            && Revision < receipt.Entry.Snapshot.Revision ? "Organization changes were saved. Reload the selected workspace before editing tasks." : null;
+    public bool IsReadOnly => Snapshot is null || _commands.IsReadOnly || OrganizationBlockReason is not null;
     public TodoHabiticaCacheContext HabiticaCache => new("Separate Habitica cache; not merged into Companion tasks",
         Account is null ? SnapshotFreshnessState.Missing : _session.State.TaskFreshness,
         Account is null ? null : _session.State.TaskSnapshot?.RetrievedAtUtc);
@@ -109,12 +117,55 @@ public sealed class TodoWorkspacePresentation : IDisposable
     public Task PrepareAsync(WorkspaceTaskInput input, CancellationToken token = default)
     {
         _ = RequireSnapshot();
+        if (OrganizationBlockReason is { } reason) throw new InvalidOperationException(reason);
         return RunAsync(() => _commands.PrepareAsync(input, token), token);
     }
     public Task ConfirmAsync(CancellationToken token = default) => RunAsync(() => _commands.ConfirmAsync(token), token);
     public Task RetryOriginalPreviewAsync(CancellationToken token = default) => RunAsync(() => _commands.RetryOriginalPreviewAsync(token), token);
     public Task CheckOriginalAsync(CancellationToken token = default) => RunAsync(() => _commands.CheckOriginalAsync(token), token);
     public void CancelPreview() { if (IsBusy) throw new InvalidOperationException("Wait for the current operation."); _commands.CancelPreview(); Changed?.Invoke(); }
+
+    public Task LoadOrganizationAsync(CancellationToken token = default) => RunOrganizationAsync(async organization =>
+    {
+        var source = Selection ?? throw new InvalidOperationException("Select the workspace before loading organization data.");
+        await organization.LoadAsync(source.Source == TodoWorkspaceSource.Cloud, source.Source == TodoWorkspaceSource.Browser ? source.WorkspaceId : null, token);
+    }, token);
+    public Task PrepareOrganizationAsync(WorkspaceOrganizationInput input, CancellationToken token = default) => RunOrganizationAsync(async organization =>
+    {
+        _ = RequireSnapshot();
+        if (organization.HasPendingIntent) throw new InvalidOperationException("Resolve the original organization command before preparing another change.");
+        var source = Selection!; var scope = Account!; var generation = _generation; var revision = Revision;
+        await organization.LoadAsync(source.Source == TodoWorkspaceSource.Cloud, source.Source == TodoWorkspaceSource.Browser ? source.WorkspaceId : null, token);
+        if (!Current(scope, generation) || source != Selection) return;
+        if (organization.Snapshot?.Document.Revision != revision)
+            throw new InvalidOperationException("Workspace data changed. Reload the selected workspace and editor context before reviewing.");
+        await organization.PrepareAsync(input, token);
+    }, token);
+    public Task ConfirmOrganizationAsync(CancellationToken token = default) => RunOrganizationAsync(organization => organization.ConfirmAsync(token), token, true);
+    public Task RetryOrganizationPreviewAsync(CancellationToken token = default) => RunOrganizationAsync(organization => organization.RetryOriginalPreviewAsync(token), token, true);
+    public Task RecoverOrganizationAsync(CancellationToken token = default) => RunOrganizationAsync(organization => organization.CheckOriginalAsync(token), token, true);
+    public void CancelOrganizationPreview()
+    {
+        if (IsBusy || _commands.HasPendingIntent) throw new InvalidOperationException("Wait for the original task operation.");
+        (_organization ?? throw new InvalidOperationException("Organization management is unavailable.")).CancelPreview();
+    }
+    private Task RunOrganizationAsync(Func<WorkspaceOrganizationController, Task> action, CancellationToken token, bool refresh = false)
+    {
+        var organization = _organization ?? throw new InvalidOperationException("Organization management is unavailable.");
+        if (_commands.HasPendingIntent) throw new InvalidOperationException("Resolve the original task command before changing organization.");
+        var scope = Account; var generation = _generation; var selected = Selection;
+        return RunAsync(async () =>
+        {
+            if (selected is null) throw new InvalidOperationException("Select a workspace before changing organization.");
+            if (organization.HasPendingIntent && (organization.WorkspaceId != selected.WorkspaceId || organization.IsCloud != (selected.Source == TodoWorkspaceSource.Cloud)))
+                throw new InvalidOperationException("Recover the original organization source before changing another workspace.");
+            await action(organization);
+            if (!refresh || scope is null || !Current(scope, generation) || selected != Selection) return;
+            if (organization.LastReceipt is { SavedInCompanion: true } receipt && receipt.WorkspaceId == selected.WorkspaceId)
+                await _commands.LoadAsync(selected.Source == TodoWorkspaceSource.Cloud, selected.Source == TodoWorkspaceSource.Browser ? selected.WorkspaceId : null, token);
+        }, token);
+    }
+    private void OrganizationChanged() { if (Account == _account) AdoptLoadedSelection(); Changed?.Invoke(); }
 
     public WorkspaceHierarchyPage Hierarchy(WorkspaceHierarchyFilter filter) => WorkspaceTodoHierarchy.Evaluate(RequireSnapshot().Document, filter);
     public WorkspaceTaskPage Tasks(WorkspaceTaskFilter filter) => WorkspaceTaskQuery.Evaluate(RequireSnapshot().Document, filter);
@@ -141,7 +192,9 @@ public sealed class TodoWorkspacePresentation : IDisposable
     private bool Current(string scope, long generation) => generation == _generation && scope == Account;
     private void AdoptLoadedSelection(bool replace = false)
     {
-        if ((replace || Selection is null) && _commands.Snapshot is { } snapshot)
+        if (Selection is null && _organization is { HasPendingIntent: true, WorkspaceId: { } originalId })
+            Selection = new(_organization.IsCloud ? TodoWorkspaceSource.Cloud : TodoWorkspaceSource.Browser, originalId);
+        else if ((replace || Selection is null) && _commands.Snapshot is { } snapshot)
             Selection = new(_commands.IsCloud ? TodoWorkspaceSource.Cloud : TodoWorkspaceSource.Browser, snapshot.Document.Id);
     }
     private async Task RunAsync(Func<Task> action, CancellationToken token, bool loading = false, bool preserveUnavailable = false)
@@ -170,8 +223,10 @@ public sealed class TodoWorkspacePresentation : IDisposable
         {
             _account = Account; _generation++; _commands.Forget(); Selection = null; Sources = []; BrowserSourcesAvailable = null;
             _validated = null; _unavailable = false; _loading = false; IsBusy = false; Message = null;
+            // Consumers clear account-private drafts before an original source can be restored, even for reused workspace IDs.
+            Changed?.Invoke(); AdoptLoadedSelection();
         }
         Changed?.Invoke();
     }
-    public void Dispose() => _session.Changed -= SessionChanged;
+    public void Dispose() { _session.Changed -= SessionChanged; if (_organization is not null) _organization.Changed -= OrganizationChanged; }
 }

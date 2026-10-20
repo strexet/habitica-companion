@@ -1,0 +1,38 @@
+{
+  "task_id": "T-fd2c633c-7b39-4776-a364-dacb83abaff7",
+  "date": "2026-10-20",
+  "checks": {
+    "dotnet": "936 full solution tests passed: 557 Web,194 Application,87 API,33 Domain,43 Rules,22 Storage. Final section edit/order assertions pass in all 7 metadata component tests.",
+    "release_publish": "Current-source Release publish passes; optional wasm-tools absent.",
+    "interaction_cases": 19,
+    "metadata": "Optional categories, projects, immutable-project sections, labels and goals support reviewed create/update/archive; explicit category clear and retained archived references; progress excludes ineligible work and reports empty coverage unavailable.",
+    "removal": "Every paged task/section reference acknowledged before fresh logical removal; task identities, hierarchy, history and game mappings retained; original uncertain receipt recovery remains possible.",
+    "workflow": "Independent state, active stage and complete dependency reviews; combined-cycle refusal, retained references, duplicates, dormant stage precedence, exact project/section/label/day placement and displayed section assignment.",
+    "coordination": "Task/native pending exclusion; account/source/revision/generation guards; same-revision source pagination reset; stale rebase refusal; original local/cloud lost preparation/acceptance recovery and failed refresh keep ownership. Reused workspace identity transition clears private drafts.",
+    "focus": "Component tests retain editor/review heading focus requests and account clearing; rendered matrix includes shared focus/target/contrast checks.",
+    "layout": "1440 unique rendered cases across 20 states, six widths, six deterministic themes and 100/200 percent text; zero geometry/contrast/target errors or unqualified sampled surfaces. Seeded defects detected.",
+    "diagnostics": "Existing sanitized native/task command preparation, acceptance and original recovery diagnostics retained.",
+    "docs": "Added prose lint and structural repository validator pass; historical audit warning remains."
+  },
+  "sources": {
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "00c0fd6492fe49b363d52c82da5141e0728281032fa4dd7702a7087987ea247d",
+    "src/Habitica.WebApp/State/TodoWorkflowReview.cs": "0888dbee54ec3551f08388e983b668a707dda0a0800eac7b947e164eabd4f83e",
+    "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor": "a86996781602bfde433ebf2e9b334390d4bc58278d36cb1fd4d13c5e40b49aca",
+    "src/Habitica.WebApp/Components/TodoTaskWorkflowEditor.razor": "a708625d9b40ee3932a82c48e07e102819477296d4b255a822af9b164d7bbac0",
+    "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "5aac6a634121e1c238d93cba59749d6d43fe5ed7709fb14943c5a0bb176773e0",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "7bb21c81e7a702e708ba313b9094f49aa34a6ff3127a43af8e8afc11cafb5fdd",
+    "src/Habitica.WebApp/Components/TodoPlacementPicker.razor": "3b67d84dbce755ca50b1c1947458779e683661fcec9d73f6d7b50262822be58e",
+    "src/Habitica.WebApp/Pages/TodoProjectsPage.razor": "ec56d59a5f1411c979299e174b05d16ba57dc65b29cb50e97de39c8191707b83",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "e8359ddc71c4e0ceacc1968dbfc22788973d4b6402286456601e8171261055a2",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationFixture.cs": "b5a3c3e84eef0fa770b424fe9962740f435eae1477ba1c300b75288c09369fc5",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationPanelTests.cs": "1dbeafeb0949b5315e799edc5f0b9beb282712ad23df99b11a0aa73514de3c1f",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoOrganizationCoordinationTests.cs": "5e3f38fd512584dc122f57bcbf05b918c1e7e4ee709abd273cef63bba4940701",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskWorkflowTests.cs": "906ebe627a7390f8ce2fe5f45aa1b2cf2953ac27a5e0f17a721577f72fec3e98"
+  },
+  "limitations": [
+    "No deployment, live account/party mutation, hosted client, physical-device or assistive-technology qualification.",
+    "Organization and task edits use exact existing contracts; no schema, API, database or dependency-pin change.",
+    "Logical project removal backend/client dependencies remain local and require coordinated publication before live use.",
+    "Browser channel transport interruption recovered with documented kernel reset before rendered controls; no app failure or bypass."
+  ]
+}
