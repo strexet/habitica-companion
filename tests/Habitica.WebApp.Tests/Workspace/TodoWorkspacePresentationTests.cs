@@ -45,6 +45,8 @@ public sealed class TodoWorkspacePresentationTests
         using var presentation = Presentation(f); await presentation.RefreshSourcesAsync();
         await presentation.SelectAsync(new(TodoWorkspaceSource.Cloud, document.Id));
         Assert.Equal(id, Assert.Single(presentation.Tasks(new()).Tasks).Id);
+        Assert.Equal(id, Assert.Single(presentation.Hierarchy(new()).Items).Task.Id);
+        Assert.Throws<InvalidOperationException>(() => presentation.Hierarchy(new(TaskId: external)));
         Assert.Equal(external.ToString("D"), presentation.Provenance(id).HabiticaTaskId);
         Assert.Throws<InvalidOperationException>(() => presentation.Provenance(external));
         Assert.Equal(1, Assert.Single(presentation.Goals(new()).Items).EligibleTodos);
@@ -79,6 +81,7 @@ public sealed class TodoWorkspacePresentationTests
         await presentation.SelectAsync(presentation.Sources.Single());
         Assert.Equal(TodoWorkspaceAvailability.Unavailable, presentation.Availability);
         Assert.Null(presentation.Revision); Assert.Throws<InvalidOperationException>(() => presentation.Tasks(new()));
+        Assert.Throws<InvalidOperationException>(() => presentation.Hierarchy(new()));
         Assert.Empty(f.Client.AcceptedIds);
     }
 
@@ -135,6 +138,7 @@ public sealed class TodoWorkspacePresentationTests
         await Assert.ThrowsAnyAsync<Exception>(() => presentation.LoadSelectedAsync());
         Assert.Equal(TodoWorkspaceAvailability.Unavailable, presentation.Availability);
         Assert.Throws<InvalidOperationException>(() => presentation.Tasks(new()));
+        Assert.Throws<InvalidOperationException>(() => presentation.Hierarchy(new()));
         await presentation.RefreshSourcesAsync();
         Assert.Equal(TodoWorkspaceAvailability.Unavailable, presentation.Availability);
         f.Js.FailReads = false; await presentation.LoadSelectedAsync();

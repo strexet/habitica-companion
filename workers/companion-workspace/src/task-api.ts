@@ -1,3 +1,4 @@
+import {queryTodoHierarchy} from '../../shared/todo-hierarchy.ts';
 import {savedTaskReads} from './saved-task-reads.ts';
 import {unblockedTodos} from './unblocked-todos.ts';
 import {habitHistory} from './habit-history.ts';
@@ -27,6 +28,7 @@ export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,ar
  if(name==='get_completed_history')return completionHistory(env,row,input);
  if(name==='get_task_sync_status')return taskSyncStatus(env,row);
  const document=JSON.parse(row.document_json);
+ if(name==='get_todo_hierarchy')return queryTodoHierarchy(document,input);
  if(name==='list_companion_tasks')return queryTasks(document,input);
  if(name==='list_companion_agenda')return queryAgenda(document,input);
  if(organizationNames.includes(name as OrganizationTool))return queryOrganization(document,name as OrganizationTool,input);

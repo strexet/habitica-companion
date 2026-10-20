@@ -116,6 +116,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
     public Task CheckOriginalAsync(CancellationToken token = default) => RunAsync(() => _commands.CheckOriginalAsync(token), token);
     public void CancelPreview() { if (IsBusy) throw new InvalidOperationException("Wait for the current operation."); _commands.CancelPreview(); Changed?.Invoke(); }
 
+    public WorkspaceHierarchyPage Hierarchy(WorkspaceHierarchyFilter filter) => WorkspaceTodoHierarchy.Evaluate(RequireSnapshot().Document, filter);
     public WorkspaceTaskPage Tasks(WorkspaceTaskFilter filter) => WorkspaceTaskQuery.Evaluate(RequireSnapshot().Document, filter);
     public WorkspaceTaskPage Planning(WorkspacePlanningList list, DateOnly day, int offset = 0) => WorkspacePlanningQuery.Evaluate(RequireSnapshot().Document, list, day, offset: offset, expectedRevision: Revision);
     public WorkspaceAgendaPage Agenda(WorkspaceAgendaFilter filter) => WorkspaceAgenda.Evaluate(RequireSnapshot().Document, filter);

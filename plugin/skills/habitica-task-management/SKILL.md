@@ -39,3 +39,5 @@ For named saved task views, follow the [saved-view workflow](references/saved-ta
 
 
 For a reported connection, synchronization or uncertain-command problem, use the [on-demand diagnostic workflow](../habitica-diagnostics/SKILL.md). Browser logs require explicit user-shared bundles; routine reviews need no log collection.
+
+For native parent/descendant context, discover `get_todo_hierarchy` and follow the [hierarchy workflow](references/todo-hierarchy.md). Checklist items and dependency edges remain separate from full descendant tasks.

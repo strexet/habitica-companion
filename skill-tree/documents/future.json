@@ -65,12 +65,11 @@
       "operation_deadline_seconds": 300
     },
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Implement C#/TypeScript hierarchy query and MCP/facade discovery, shared parity and deep-chain fixtures, then qualify actual SDK isolation/reparent recovery.",
     "partial_work": [
-      "Organization controller completed (1daf1de,3a28831): 892 tests and Release publish pass.",
-      "Current dependency T-264e3162-adc3-45f0-943e-a55feccc9d8e under Projects root T-fd2c633c-7b39-4776-a364-dacb83abaff7: logical project Remove operation/tombstone added to C#/TS models, exact ordered task/section approval bound in v3 hash, no task/hierarchy/history cascade.",
-      "Added get_project_removal_impact read discovery and removed-project Unassigned presentation while retaining canonical references. Four Application removal tests pass; C# build and Workspace TS type-check pass.",
-      "Organization and private MCP JSON wait/read boundaries are bounded at one MiB for complete removal approvals; direct task API remains 64 KiB. Need runtime size/isolation/parity tests and current docs before acceptance. No deployment or live mutation."
+      "Project removal completed and committed (1d9595d,0386c8c): 903 .NET cases, affected Worker regressions and 72 rendered cases qualified.",
+      "Selected hierarchy query dependency T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856. Existing relateTodo already uses exact IDs, separate task-write permission, combined iterative cycle checks and no implicit project/game effects.",
+      "Implement a bounded iterative get_todo_hierarchy read with subtree, direct children and ancestor modes. Include all retained Todo lifecycle/archive states, absolute depth, direct child count and explicit parent page/selection coverage. Revision-bound pages retain exact parent IDs; omitted ancestors remain navigable through ancestor queries. Existing reparent/detach command remains unchanged."
     ],
     "pending_ids": [
       "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e",
