@@ -8,9 +8,11 @@
       "T-d007ac44-f38c-4069-9b70-e66adbc64bf0",
       "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
       "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
-      "T-9f465413-725a-440e-a464-cb5c555cb87d"
+      "T-9f465413-725a-440e-a464-cb5c555cb87d",
+      "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07"
     ],
     "completion_refs": {
+      "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07": "O-0290ffdb-d797-48bc-81ae-80e396e7493e",
       "T-2bf91411-423e-483b-95a7-92b9fdc69445": "O-d3ff5efb-3d67-4f1d-a36d-12d6df027654",
       "T-3f71047d-22a7-4e85-a356-d41f1c99f82e": "O-446d6827-c20f-4198-9509-1f70226eb683",
       "T-4b82019b-e1fa-4238-8629-05111e9dcc88": "O-3dd34583-87c7-446a-8b44-713130030d3a",
@@ -21,7 +23,7 @@
       "T-eb28e35c-80f3-4e42-b16a-815cbf82bfa1": "O-1d1d6944-6f01-4383-8ee5-95116e6b6275"
     },
     "current_task_id": "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
-    "cycle_signature": "c3ea2bda0eadcf704374f7e6cfd473501264085c2fca42cd2bd6b907edb02a6c",
+    "cycle_signature": "015cf34b8eb7bc768bc08fefc22e3cbe764dfb294ee8c45703fc966e1eb3f564",
     "deferred_ids": [
       "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
       "T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856",
@@ -47,10 +49,10 @@
       "operation_deadline_seconds": 300
     },
     "mode": "all",
-    "next_action": "Implement direct category-aware title-first task capture/editor with existing reviewed command ownership.",
+    "next_action": "Validate direct task capture states through the rendered matrix and complete the parent acceptance.",
     "partial_work": [
-      "Account-bound Todo presentation is complete with 13 synthetic presentation cases, 474 final WebApp tests and a passing Release publish.",
-      "Shared diagnostics and recovered service intake remain committed; initial Implement All snapshot boundaries remain unchanged."
+      "Required bound-textarea fixture normalization is complete and observed in a real local browser.",
+      "Direct category-aware capture, scoped drafts and original preview retry remain under parent acceptance; nine component journeys and full solution validation are running or ready for rendered checks."
     ],
     "pending_ids": [
       "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e",
@@ -62,7 +64,8 @@
       "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036",
       "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11",
       "P-cea6ca25-8602-4b3a-8a4c-4a9c348dff85",
-      "P-15da69d1-68cb-47d2-b8ae-2edca2436137"
+      "P-15da69d1-68cb-47d2-b8ae-2edca2436137",
+      "P-2a780804-7b8b-4109-b462-3a9d152735f0"
     ],
     "phase": "implement",
     "processing_results": [
@@ -186,6 +189,23 @@
           "P-15da69d1-68cb-47d2-b8ae-2edca2436137"
         ],
         "task_keys": {}
+      },
+      {
+        "created_ids": [
+          "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07"
+        ],
+        "dispositions": {
+          "P-2a780804-7b8b-4109-b462-3a9d152735f0": {
+            "reason": "A captured bound-value attribute establishes a reproducible qualification gap. Existing AngleSharp parsing can normalize synthetic textarea content without production changes.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-20820d75-3a2d-41f6-8120-1769bab0ae81",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-2a780804-7b8b-4109-b462-3a9d152735f0"
+        ],
+        "task_keys": {}
       }
     ],
     "required_ids": [
@@ -197,7 +217,8 @@
       "T-3f71047d-22a7-4e85-a356-d41f1c99f82e",
       "T-7aed32a0-e0b2-4f25-bdca-ebbed8e2a92b",
       "T-9f465413-725a-440e-a464-cb5c555cb87d",
-      "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
+      "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
+      "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07"
     ],
     "root_task_id": "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
     "snapshot": [
@@ -236,7 +257,7 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "2bde794a0eaf1e5cf558e064f27638c5e92ca808e7f614cb6c9e469f5a9c8393",
+  "source_hash": "f25130d7aa3270097788d34d25f5b5dc13fb0e578c6dcbf4df18ed92c2f87498",
   "tasks": [
     {
       "depends_on": [],
@@ -430,7 +451,8 @@
     {
       "depends_on": [
         "T-9f465413-725a-440e-a464-cb5c555cb87d",
-        "T-6122dded-900d-4d92-8739-bbc344e15ea0"
+        "T-6122dded-900d-4d92-8739-bbc344e15ea0",
+        "T-2562b775-dd9b-43b4-b66f-9de9ee5eee07"
       ],
       "id": "T-ea3c2df0-7c13-4a77-a920-1451801b9946",
       "line": 505,
