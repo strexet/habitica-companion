@@ -382,46 +382,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Expose recurring schedules and occurrence lifecycle
-
-```yaml
-id: T-68cb7da7-62e9-4136-b5c5-07da20f97c30
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0ddc8784-c740-5a23-819c-b17db8f6829f", "P-346056d8-c254-4a1e-b860-6850c6cb470d"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-68cb7da7-62e9-4136-b5c5-07da20f97c30
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Expose the already implemented Daily recurrence and native lifecycle contracts.
-Current behavior:
-- Canonical Daily schedule replacement, dated completion/skip and pause/resume exist; WorkspaceTaskInput and the visible editor do not expose the complete recurrence/lifecycle workflow.
-Desired behavior:
-- Daily editor supports explicit daily/weekly/monthly schedules and timezone, occurrence review and Companion pause/resume with retained history.
-Touch:
-- Daily editor/occurrence controls, typed controller inputs and existing recurrence/calendar/lifecycle validation.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Expose existing interval/start/weekday/month-day/timezone fields, supported clearing and limits. Review schedule replacement and retained completion/skip precedence. Pause is Companion-only and never promises to stop Habitica penalties. New native Dailies may remain explicitly unscheduled. No implicit type conversion, linked schedule authoring, completion-based recurrence or reward undo; unsupported controls explain the limitation.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component and command-input tests cover daily/weekly/monthly, invalid rules/timezones, DST/date boundaries, occurrence completion/skip, pause/resume, replacement and acknowledgement loss; reusable UI matrix.
-Acceptance:
-- Users author/review supported Daily schedules and exact occurrence/lifecycle actions through the existing canonical contract.
-- History, schedule/due provenance and native-only pause semantics remain correct; unsupported game schedule/type conversions cannot run.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Expose reviewed saved-list authoring
 
 ```yaml
