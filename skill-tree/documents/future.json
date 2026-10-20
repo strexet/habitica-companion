@@ -71,10 +71,12 @@
       "operation_deadline_seconds": 300
     },
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Qualify recurring UI geometry/theme/focus states, review and commit acceptance, complete task then advance frozen All run.",
     "partial_work": [
-      "Final root source passes all 936 solution tests (557 Web). Release publish passes. Added same-revision source-change pagination regression and repaired reusable plan-editor primary target sizing.",
-      "Initial rendered metadata matrix 432 passed. Workflow matrix found plan-reload 32px target in 36 cases; repaired CSS selector. Final fresh fixture set and source-matched production assets staged at 127.0.0.1:5132, 900-second server deadline; rerun full 20-state matrix with unchanged 300/5-second deadlines."
+      "Recurring editor and narrow source/revision-bound review implemented. Typed recurrence creation/update input rejects unsupported operations, conflicts, invalid schedules/timezones before preparation.",
+      "All 951 full solution tests pass; 15 new recurring cases qualify Daily/Weekly/Monthly, DST shortcut, exact skip/complete, history preservation, pause/resume, unavailable and stale contexts, local/cloud original recovery and Habit pause. Current Release publish passes.",
+      "Test revealed canonical active mapping participation requests scoring independently of ProjectToHabitica; Companion-only recurring editor fences retained game mappings while leaving existing game-aware main completion available. No engine/API/schema changes.",
+      "Current-source 13-state rendered matrix staged at 127.0.0.1:5133 with 900-second server, 300-second matrix and 5-second frame deadlines. No deployment or live mutation."
     ],
     "pending_ids": [
       "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e",

@@ -7,7 +7,7 @@ using Habitica.Storage;
 namespace Habitica.WebApp.State;
 
 public sealed record WorkspaceTaskInput(WorkspaceOperation Operation, Guid? TaskId, string Text, string Notes, CompanionPriority Priority,
-    DateOnly? Deadline, HabiticaTaskDetails? Details, bool ProjectToHabitica, HabitScoreDirection Direction, int Count, DateOnly? OccurrenceDate, WorkspaceTaskPlanning? Planning = null, WorkspaceTodoRestore? RestoreTodo = null, WorkspaceTaskRelationships? Relationships = null, WorkspaceTodoState? TodoState = null, WorkspaceTodoStage? TodoStage = null);
+    DateOnly? Deadline, HabiticaTaskDetails? Details, bool ProjectToHabitica, HabitScoreDirection Direction, int Count, DateOnly? OccurrenceDate, WorkspaceTaskPlanning? Planning = null, WorkspaceTodoRestore? RestoreTodo = null, WorkspaceTaskRelationships? Relationships = null, WorkspaceTodoState? TodoState = null, WorkspaceTodoStage? TodoStage = null, RecurrenceRule? Recurrence = null, bool ClearRecurrence = false);
 
 public sealed class WorkspaceTaskController(IAppSessionController session, IWorkspaceCloudClient cloud, IndexedDbWorkspaceDatabase database, DiagnosticsLogWriter? diagnostics = null)
 {
@@ -113,15 +113,22 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         var snapshot = Snapshot ?? throw new InvalidOperationException("Load a workspace first.");
         if (IsReadOnly) throw new InvalidOperationException("This browser copy is frozen or cloud-owned. Select the connected cloud workspace.");
         var current = snapshot.Document.Tasks.FirstOrDefault(task => task.Id == input.TaskId);
+        if (input.Recurrence is not null || input.ClearRecurrence)
+        {
+            if (input.Operation != WorkspaceOperation.CreateDaily && (input.Operation != WorkspaceOperation.UpdateTask || current?.Kind != CompanionTaskKind.Daily)
+                || input.ClearRecurrence && (input.Recurrence is not null || input.Operation == WorkspaceOperation.CreateDaily)
+                || input.Recurrence is { } rule && !RecurrenceCalendar.Expand(rule, rule.StartDate, rule.StartDate).Succeeded)
+                throw new InvalidOperationException("Choose a valid complete Daily recurrence replacement or explicit clearing on an existing Daily.");
+        }
         WorkspaceTaskPatch? patch = null;
         var creating = input.Operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit;
-        if (creating) patch = new(input.Text, input.Notes.Length == 0 ? null : input.Notes, Priority: input.Priority, Deadline: input.Deadline, HabiticaDetails: input.Details);
+        if (creating) patch = new(input.Text, input.Notes.Length == 0 ? null : input.Notes, Priority: input.Priority, Deadline: input.Deadline, HabiticaDetails: input.Details, Recurrence: input.Recurrence, ClearRecurrence: input.ClearRecurrence);
         if (input.Operation == WorkspaceOperation.UpdateTask)
         {
             if (current is null) throw new InvalidOperationException("Select an exact Companion task.");
             patch = new(input.Text == current.Text ? null : input.Text, input.Notes == (current.Notes ?? "") || input.Notes.Length == 0 ? null : input.Notes,
                 input.Notes.Length == 0 && !string.IsNullOrEmpty(current.Notes), input.Priority == current.Priority ? null : input.Priority,
-                input.Deadline == current.Deadline ? null : input.Deadline, input.Deadline is null && current.Deadline is not null, input.Details);
+                input.Deadline == current.Deadline ? null : input.Deadline, input.Deadline is null && current.Deadline is not null, input.Details, input.Recurrence, input.ClearRecurrence);
         }
         if (input.Operation == WorkspaceOperation.PlanTask) patch = new(Planning: input.Planning);
         if (input.Operation == WorkspaceOperation.SetTodoStage) patch = new(TodoStage:input.TodoStage);

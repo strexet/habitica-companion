@@ -319,7 +319,7 @@
     "skill-tree/documents/dependencies.md": "ef0a360701ccfcc93ec7f725f1b7a90c4dd2d10567ddd26e58d264977cc0d6e1",
     "skill-tree/documents/deploy-cloudflare-pages.md": "f7bc79f1b1f720b4eeaf403b40a5607401edf976199f51c44bff314f36d9f597",
     "skill-tree/documents/documents-snapshot.md": "6f79e4202c9cfc84df57641150d8a2fce2ab5d9670f6efe4d05eec00f89d73c9",
-    "skill-tree/documents/features.md": "93760873306b4ea8069d22a39abc8e9f650fbd96cd37ed81de0cae549f31e6ff",
+    "skill-tree/documents/features.md": "e763de7da708bc7da3bfc7d5a7d7e0f7ab6c543eb0ee44ac84e591830bc107b1",
     "skill-tree/documents/future.md": "21b609c5500883972cdbf0df10f6fea80d9a21b09c571529223804008b0a839e",
     "skill-tree/documents/habitica-api.md": "9d9c801e1e32b9499c4f76a930e2ac3b9d39e2d584aead8ccd2227ba5d147d97",
     "skill-tree/documents/habitica-deeplinks.md": "37809f11086587ab474caeab319939e444de7701e9ce19301b8e00ebc1bf9fc7",
@@ -329,9 +329,9 @@
     "skill-tree/documents/repository-map.md": "ceb96bc420dfd52248892e032719177f459460911761c1a7698829ed5321e3fe",
     "skill-tree/documents/rules.md": "133c5c6b5b49f07f69ddbe6400e1b7fe8aa9c23668461a8cbdf453ea51b955d0",
     "skill-tree/documents/skill-tree-workflow-proposals.md": "35d9e950e9cc7a22e2b1765db8c2e00355be5cda6be170f9e249ab7e6c5440d1",
-    "skill-tree/documents/technical.md": "aac845f3f3dd7379e8c451b854dd732dc5346ed4513ffafef111900ec81e22ee",
-    "skill-tree/documents/testing.md": "b97cc2b96db2e9384bcfe4715c58e66329d85a63f58e011820a5f36eb3bd1c6f",
-    "skill-tree/documents/ux-ui-manifest.md": "9b74a8a71a1ae2e4ae287a0953edf0cf46e1ee360b5556e335b5d7cff8c9a5c7"
+    "skill-tree/documents/technical.md": "6a5488479e8c051efabe5860944f24a55803c2760856597fd74fa0664e01da44",
+    "skill-tree/documents/testing.md": "8d9214ae96aeebb730d146d39418ee473d41696179afd5a5f0c221745a64ade6",
+    "skill-tree/documents/ux-ui-manifest.md": "0bf38e4b7408bc0512f42a0c4909cbea9ab512f91971ba637b986e97c5799ae0"
   },
   "state": "skill-tree/documents/future.json",
   "validation_commands": [

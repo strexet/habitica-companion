@@ -4612,3 +4612,7 @@ code {
 :is(.todo-hierarchy-branches,.todo-organization-panel) button { min-inline-size: 44px; max-inline-size: 100%; }
 
 .todo-organization-panel li, .todo-command-review li { min-width: 0; overflow-wrap: anywhere; }
+
+.todo-recurring-editor fieldset { display: grid; gap: 0.75rem; }
+.todo-recurring-editor .recurring-weekdays { grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); }
+.todo-recurring-editor li { overflow-wrap: anywhere; }

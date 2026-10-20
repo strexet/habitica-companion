@@ -1,0 +1,29 @@
+{
+  "task_id": "T-68cb7da7-62e9-4136-b5c5-07da20f97c30",
+  "date": "2026-10-20",
+  "checks": {
+    "dotnet": "951 full solution tests passed: 572 Web,194 Application,87 API,33 Domain,43 Rules,22 Storage. Final exact-target review markup and capture changes pass all 24 affected recurring/direct-panel cases, including all 15 new recurring cases.",
+    "release_publish": "Final current-source Release publish passes; optional wasm-tools absent.",
+    "recurrence": "Daily/weekly/monthly complete replacement, UTC/IANA zone, interval/start/weekday/month-date bounds, explicit clearing, empty/invalid/no-op refusal and typed Daily creation. Existing canonical schema/engine/API unchanged.",
+    "occurrences": "Saved-rule due provenance, non-due weekly/monthly refusal, Europe/Paris DST current-day shortcut, exact dated completion/skip and archived/completed/skipped precedence. No fabricated due state on unavailable zones. Unscheduled completion remains explicit and skip unavailable.",
+    "lifecycle_history": "Native Daily/Habit pause/resume retains rules/history and creates no automatic event or reward. Schedule clearing preserves completion/skip records. Retained history paged twenty rows, expanded rendered states, available UTC completion time, historical-zone limitation explicit.",
+    "ownership_recovery": "Exact source/revision/task review; stale requires reload, account/source switch clears editor. Local/cloud lost acceptance and cloud lost preparation recover originals without duplicate commands/events. Pending actions fenced.",
+    "game_boundary": "Any retained game mapping excludes Companion-only controls, including archived/uncertain mappings. Existing main task/game-aware completion remains separate. Canonical mapping participation can request scoring independently of new ProjectToHabitica, verified by inspected engine and repaired test.",
+    "layout": "936 unique current rendered cases across 13 states, six widths, six deterministic themes and 100/200 percent text. No geometry/contrast/target errors or unqualified sampled surfaces. Seeded geometry/contrast failures detected. Baseline light/dark keyboard tab focus and screenshots observed.",
+    "diagnostics": "Existing sanitized task prepare/accept/recover diagnostics retained; calendar reads do not add per-row logging.",
+    "docs": "Changed English prose lint and structural manifest/index validation pass; historical audit warning only."
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "5b75d910b97869d779274a8cc70ee306941cff97d0b14290ff9dacf74d3b404b",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "cabdc8c87aa923aa05a79f4ea8b29be066941348f643e6eade5af71c5634bba4",
+    "src/Habitica.WebApp/State/TodoRecurringReview.cs": "c9554cb778efdf36032e9e95e24cd6d9259b2dc78d441d41d4d4f4f38fa2b833",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "319204eb4a231c2327007d4f10b1df637332189be457a02d27da5f3f90a0067a",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "44f17978e782bf4bd4d352ef5e4ffabdce98e71c93460ed335ae885cc2b09de3",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "d36e3a224a8501384f31be4ea78e0479ad7427777b4928a95352ca47e700197f"
+  },
+  "limitations": [
+    "No deployment, live account/party mutation, physical-device, assistive-technology or hosted-client qualification.",
+    "New Dailies are initially unscheduled; saved tasks expose explicit schedule authoring. No linked schedule editing, type conversion or reward undo.",
+    "Current schedule timezone does not establish original historical timezone."
+  ]
+}
