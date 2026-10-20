@@ -340,3 +340,7 @@ Version 1 carries browser-local source, nonidentifying device/session scope, UTC
 ## Direct Todo capture qualification
 
 TodoTaskPanelTests captures title-first ready, long-name review, advanced edit, Daily occurrence and unknown-acceptance states for /tasks. These fixtures contain synthetic data only. Component tests establish handlers, exact intent/receipt ownership and requested focus transitions; static browser fixtures establish native form/disclosure behavior, rendered geometry and readable themes. A static fixture cannot prove Blazor event dispatch or actual production service behavior. Physical touch/assistive technology, hosted credentials and real game effects remain separate qualification.
+
+## Today qualification
+
+TodoTodayPanelTests captures grouped planned/due/recorded/inactive work, exact occurrence review, an empty selected day and unavailable time-zone evaluation for /todo/today. Tests verify device civil date near a DST boundary, weekly/monthly expansion, distinct date reasons without duplicates, unscheduled and paused behavior, original receipt recovery, Todo completion, Habit scores, pagination and sign-out clearing. Browser qualification covers those four states plus the existing direct-capture surface. Static fixtures prove geometry and native controls; exact command dispatch and requested focus remain component-test evidence. No test replays a production party action or creates a live occurrence.

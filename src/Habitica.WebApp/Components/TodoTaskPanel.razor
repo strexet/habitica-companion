@@ -5,7 +5,9 @@
 @inject TodoTaskDraftStore Drafts
 @implements IDisposable
 
-<section class="card-surface todo-task-panel" data-testid="todo-direct-panel">
+<section class="card-surface todo-task-panel @(!ShowCapture ? "todo-task-panel--compact" : null)" data-testid="todo-direct-panel">
+    @if (ShowCapture)
+    {
     <div class="task-group-header">
         <div><p class="section-label">Companion workspace</p><h2>@KindLabel(_kind)</h2></div>
         @if (ShowKindSelector)
@@ -15,6 +17,7 @@
             </select></label>
         }
     </div>
+    }
     @if (Todo.Availability == TodoWorkspaceAvailability.SignedOut)
     {
         <p>Sign in to use account-bound Companion tasks. Saved Habitica data remains separate.</p>
@@ -32,9 +35,9 @@
             @if (Todo.Selection is not null) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="ReloadAsync" Variant="Variant.Text">Reload selected workspace</MudButton> }
         </div>
         </details>
-        @if (Todo.Selection is { } selected)
+        @if (Todo.Selection is { } selected && (ShowCapture || Todo.Snapshot is null))
         {
-            <p class="panel-copy">@(selected.Source == TodoWorkspaceSource.Cloud ? "Cloud workspace" : "Browser workspace") · @(Todo.Revision is { } revision ? $"revision {revision}" : "current data unavailable"). Companion IDs and Habitica mappings remain separate.</p>
+            <p class="panel-copy">@(selected.Source == TodoWorkspaceSource.Cloud ? "Cloud workspace" : "Browser workspace") · @(Todo.Revision is { } revision ? $"revision {revision}" : "current data unavailable"). @(ShowCapture ? "Companion IDs and Habitica mappings remain separate." : "")</p>
         }
         @if (Todo.BrowserSourcesAvailable == false) { <p role="status">Browser workspaces could not be listed. Cloud access remains separate.</p> }
         @if (Todo.Availability is TodoWorkspaceAvailability.NeedsSelection or TodoWorkspaceAvailability.Unavailable)
@@ -74,6 +77,8 @@
         @if (Todo.Snapshot is { } snapshot && Draft is { } draft)
         {
             @if (Todo.IsReadOnly) { <p role="status">This workspace copy is read only. Use the cloud owner or reload current data before editing.</p> }
+            @if (ShowCapture)
+            {
             <form class="todo-capture" @onsubmit="PrepareBasicAsync" @onsubmit:preventDefault>
                 <fieldset disabled="@(Busy || Todo.IsReadOnly || Todo.Commands.HasPendingIntent)">
                     <div class="todo-capture-primary">
@@ -108,6 +113,9 @@
                     </details>
                 </fieldset>
             </form>
+            }
+            @if (ShowTaskList)
+            {
             var taskPage = Todo.Tasks(new(Kind: _kind, Limit: 20, Offset: _offset, ExpectedRevision: snapshot.Document.Revision));
             <div class="todo-direct-list" aria-label="@KindLabel(_kind)">
                 @if (taskPage.Tasks.Count == 0) { <p>No @(KindLabel(_kind).ToLowerInvariant()) in this workspace.</p> }
@@ -140,6 +148,7 @@
                 <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || _offset == 0)" OnClick="Previous" Variant="Variant.Text">Previous</MudButton>
                 <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || taskPage.NextOffset is null)" OnClick="Next" Variant="Variant.Text">Next</MudButton>
             </div>
+            }
         }
     }
 </section>
@@ -147,6 +156,9 @@
 @code {
     [Parameter] public CompanionTaskKind Kind { get; set; } = CompanionTaskKind.Todo;
     [Parameter] public bool ShowKindSelector { get; set; }
+    [Parameter] public bool ShowTaskList { get; set; } = true;
+    [Parameter] public bool ShowCapture { get; set; } = true;
+    [Parameter] public EventCallback ReviewClosed { get; set; }
     private CompanionTaskKind _kind;
     private Guid? _editId;
     private TodoWorkspaceSelection? _seenSelection;
@@ -162,7 +174,7 @@
     private IEnumerable<TodoWorkspaceSelection> AvailableSources => Todo.Sources.Concat(Todo.Selection is { } selected ? [selected] : Array.Empty<TodoWorkspaceSelection>()).Distinct();
     protected override void OnInitialized() { _kind = Kind; _seenSelection = Todo.Selection; RestoreEditing(); Todo.Changed += Changed; }
     protected override async Task OnInitializedAsync() { if (Todo.Availability != TodoWorkspaceAvailability.SignedOut) await RunAsync(() => Todo.RefreshSourcesAsync()); }
-    protected override async Task OnAfterRenderAsync(bool firstRender) { if (_focusReview && Todo.Commands.Preview is not null) { _focusReview = false; try { await _reviewTitle.FocusAsync(); } catch (JSException) { } } else if (_focusTitle && Draft is not null && !ActionsDisabled) { _focusTitle = false; try { await _title.FocusAsync(); } catch (JSException) { } } }
+    protected override async Task OnAfterRenderAsync(bool firstRender) { if (_focusReview && Todo.Commands.Preview is not null) { _focusReview = false; try { await _reviewTitle.FocusAsync(); } catch (JSException) { } } else if (_focusTitle && !ShowCapture) { _focusTitle = false; await ReviewClosed.InvokeAsync(); } else if (_focusTitle && Draft is not null && !ActionsDisabled) { _focusTitle = false; try { await _title.FocusAsync(); } catch (JSException) { } } }
     private void Changed()
     {
         if (_seenSelection != Todo.Selection) { _seenSelection = Todo.Selection; RestoreEditing(); _error = null; _offset = 0; }
@@ -200,9 +212,17 @@
         await Todo.PrepareAsync(ActionInput(current, WorkspaceOperation.PlanTask) with { Planning = new(PlannedDate: date, ClearPlannedDate: date is null) }); TrackDraft();
     });
     private Task ArchiveAsync() => Editing is { } task ? ActAsync(task, WorkspaceOperation.DeleteTask) : Task.CompletedTask;
-    private Task ActAsync(CompanionTask task, WorkspaceOperation operation, HabitScoreDirection direction = HabitScoreDirection.Up) => RunAsync(async () =>
+    public async Task ReviewPrimaryAsync(Guid taskId, DateOnly? occurrenceDate = null, HabitScoreDirection direction = HabitScoreDirection.Up)
     {
-        var date = operation == WorkspaceOperation.CompleteTask && task.Kind == CompanionTaskKind.Daily ? TodoTaskDraft.Date(Drafts.OccurrenceDate(Todo.Selection!, task.Id)) : null;
+        if (ActionsDisabled) throw new InvalidOperationException("Resolve the original command or reload writable task data first.");
+        var task = Todo.Snapshot?.Document.Tasks.FirstOrDefault(task => task.Id == taskId && !task.IsArchived)
+            ?? throw new InvalidOperationException("The selected task is unavailable.");
+        await ActAsync(task, task.Kind == CompanionTaskKind.Habit ? WorkspaceOperation.ScoreHabit : WorkspaceOperation.CompleteTask, direction, occurrenceDate);
+        await InvokeAsync(StateHasChanged);
+    }
+    private Task ActAsync(CompanionTask task, WorkspaceOperation operation, HabitScoreDirection direction = HabitScoreDirection.Up, DateOnly? explicitOccurrence = null) => RunAsync(async () =>
+    {
+        var date = operation == WorkspaceOperation.CompleteTask && task.Kind == CompanionTaskKind.Daily ? explicitOccurrence ?? TodoTaskDraft.Date(Drafts.OccurrenceDate(Todo.Selection!, task.Id)) : null;
         if (operation == WorkspaceOperation.CompleteTask && task.Kind == CompanionTaskKind.Daily && date is null) throw new InvalidOperationException("Choose the exact Daily occurrence date before completing.");
         await Todo.PrepareAsync(ActionInput(task, operation) with { Direction = direction, OccurrenceDate = date }); _focusReview = Todo.Commands.Preview is not null;
     });

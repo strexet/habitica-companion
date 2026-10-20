@@ -311,7 +311,7 @@
   },
   "role": "target",
   "source_digests": {
-    "skill-tree/documents/ai-app-testing.md": "be9f8cbbb83e1ac98903f8325b5a93a556d0de2a5be1b8d1fee377285703e881",
+    "skill-tree/documents/ai-app-testing.md": "474b9acecdacb6ae1173768c40b97ff1b634edb1971dc2648f72fdd514b0910e",
     "skill-tree/documents/build-and-release.md": "e528e54e92eb4045b2b1060914c1cfa02015b15aab71e934f91de9ab17c1ca72",
     "skill-tree/documents/companion-first-mcp-research.md": "1a9310ea95ff1ea471860bc45b88ca203d9134804bafab75ddd99f030fbf1cf0",
     "skill-tree/documents/companion-workspace-contract.md": "9fe9eb5bbbe7c9808eef0ef5ad4e80e7a24bdb8baaebd43e4681e7b84ca5060c",
@@ -319,7 +319,7 @@
     "skill-tree/documents/dependencies.md": "ef0a360701ccfcc93ec7f725f1b7a90c4dd2d10567ddd26e58d264977cc0d6e1",
     "skill-tree/documents/deploy-cloudflare-pages.md": "f7bc79f1b1f720b4eeaf403b40a5607401edf976199f51c44bff314f36d9f597",
     "skill-tree/documents/documents-snapshot.md": "6f79e4202c9cfc84df57641150d8a2fce2ab5d9670f6efe4d05eec00f89d73c9",
-    "skill-tree/documents/features.md": "432d14e46b87d3573a3ab0a369d15bd0e145148e8146d60d23c70ab1c78a5364",
+    "skill-tree/documents/features.md": "b4072a6b5b172a032ef071e7d2359f48e7db9656978056f0d5fe8e4bcb524998",
     "skill-tree/documents/future.md": "63b941774b992dd74ba561351567b06fa9c41396cd524c957fba83ae36a5bc69",
     "skill-tree/documents/habitica-api.md": "9d9c801e1e32b9499c4f76a930e2ac3b9d39e2d584aead8ccd2227ba5d147d97",
     "skill-tree/documents/habitica-deeplinks.md": "37809f11086587ab474caeab319939e444de7701e9ce19301b8e00ebc1bf9fc7",
@@ -329,9 +329,9 @@
     "skill-tree/documents/repository-map.md": "ceb96bc420dfd52248892e032719177f459460911761c1a7698829ed5321e3fe",
     "skill-tree/documents/rules.md": "133c5c6b5b49f07f69ddbe6400e1b7fe8aa9c23668461a8cbdf453ea51b955d0",
     "skill-tree/documents/skill-tree-workflow-proposals.md": "35d9e950e9cc7a22e2b1765db8c2e00355be5cda6be170f9e249ab7e6c5440d1",
-    "skill-tree/documents/technical.md": "e1718beb45bc897c904c90ba316d9fe1489390bc300c41da2880faf5dc6597da",
+    "skill-tree/documents/technical.md": "02e9baef30423487f4a7dcf78dac3aea70dfe8ffb6daf99c012a836610441117",
     "skill-tree/documents/testing.md": "48af5b63218d10823129f6c65881e3cae689da1a230f2271216f16ef1c52bbe2",
-    "skill-tree/documents/ux-ui-manifest.md": "e08da91fe77cbb392158e5abb35339fba5f551811932e7224c13fc7446ae9b56"
+    "skill-tree/documents/ux-ui-manifest.md": "868cecf6308583683d84d7849f53d54e1dca7d6b66cd0f601194217d4980f153"
   },
   "state": "skill-tree/documents/future.json",
   "validation_commands": [

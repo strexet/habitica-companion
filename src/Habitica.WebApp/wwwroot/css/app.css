@@ -4567,3 +4567,18 @@ code {
 @media (max-width: 960px) {
     .diagnostics-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+.todo-today { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; min-width: 0; }
+.todo-today-header, .todo-today-groups { padding: 1.25rem; min-width: 0; overflow-wrap: anywhere; }
+.todo-today h1, .todo-today h2 { margin-top: 0; }
+.todo-today [data-layout-primary] { min-height: var(--control-height); white-space: normal; overflow-wrap: anywhere; }
+.todo-today [role="alert"] { color: var(--text-danger, var(--ink)); }
+.todo-today .todo-direct-row { min-width: 0; }
+
+.todo-day-title { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+.todo-day-title h1 { margin: 0; }
+.todo-day-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 0.75rem; }
+.todo-day-controls .app-input { min-width: 0; max-width: 100%; }
+.todo-today-header { display: grid; gap: 0.65rem; padding: 1rem; }
+.todo-task-panel--compact { padding: 0.5rem 1rem; gap: 0.25rem; }
+.todo-task-panel--compact > .panel-copy { margin: 0; }

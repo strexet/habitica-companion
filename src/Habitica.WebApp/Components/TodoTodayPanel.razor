@@ -1,0 +1,99 @@
+@using Habitica.Domain.Workspace
+@using System.Globalization
+@inject TodoWorkspacePresentation Todo
+@inject TimeProvider Clock
+@implements IDisposable
+
+<div class="todo-today" data-testid="todo-today">
+    <section class="card-surface todo-today-header">
+        <div class="todo-day-title"><h1>Today</h1><MudButton Href="/tasks" data-layout-primary="true" Color="Color.Primary" Variant="Variant.Filled">Add task</MudButton></div>
+        <div class="todo-day-controls">
+            <label class="field-row">Day<input class="app-input" type="date" value="@_date" @onchange="ChangeDate" data-testid="today-date" @ref="_dayInput" /></label>
+            <MudButton HtmlTag="button" data-layout-primary="true" OnClick="UseToday" Variant="Variant.Outlined" aria-label="Use today's device date">Today</MudButton>
+        </div>
+    </section>
+    <TodoTaskPanel @ref="_editor" ShowTaskList="false" ShowCapture="false" ReviewClosed="FocusDayAsync" />
+    <section class="card-surface todo-today-groups" aria-label="Tasks for the selected day">
+        @if (_error is not null) { <p role="alert" data-testid="today-error">@_error</p> }
+        @if (_view is { } view)
+        {
+            <p>Selected @(view.Source.Source == TodoWorkspaceSource.Cloud ? "cloud" : "browser") workspace · revision @view.Revision · @view.Day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) · @view.Total matching task/date rows</p>
+            @if (view.Total == 0) { <p role="status" data-testid="today-empty">No tasks scheduled, planned or due on this date. Unscheduled Dailies have no invented everyday schedule.</p> }
+            @foreach (var group in Enum.GetValues<TodoTodayGroup>())
+            {
+                var rows = view.Rows.Where(row => row.Group == group).ToArray();
+                @if (rows.Length > 0)
+                {
+                    <section class="todo-today-group" data-testid="@($"today-group-{group}")"><h2>@GroupLabel(group)</h2>
+                        @foreach (var row in rows)
+                        {
+                            var item = row.Item;
+                            <article class="todo-direct-row" data-testid="@($"today-row-{item.TaskId:D}")" @key="(item.TaskId, item.Date)">
+                                <div class="todo-row-content"><strong>@item.Text</strong><span>@item.Kind · @item.TaskState</span>
+                                    @if (item.Planned) { <span>Planned for this day</span> }
+                                    @if (item.Deadline) { <span>Deadline on this day</span> }
+                                    @if (item.RuleTimeZoneId is { } zone) { <span>Schedule time zone: @zone</span> }
+                                    @if (item.OccurrenceState is { } state) { <span>Occurrence: @state · @item.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)</span> }
+                                    @if (!row.CanAct && item.Kind == CompanionTaskKind.Daily && item.OccurrenceState is null) { <span>No scheduled occurrence on this date; planned/deadline information only.</span> }
+                                </div>
+                                <div class="todo-row-actions">
+                                    @if (item.Kind == CompanionTaskKind.Habit)
+                                    {
+                                        <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!row.CanAct || !CanAct)" OnClick="() => ReviewAsync(view, row, HabitScoreDirection.Up)" Variant="Variant.Outlined">Record +1 now</MudButton>
+                                        <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!row.CanAct || !CanAct)" OnClick="() => ReviewAsync(view, row, HabitScoreDirection.Down)" Variant="Variant.Outlined">Record −1 now</MudButton>
+                                    }
+                                    else { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!row.CanAct || !CanAct)" OnClick="() => ReviewAsync(view, row)" Variant="Variant.Outlined" data-testid="@($"today-complete-{item.TaskId:D}")">@(item.OccurrenceState == OccurrenceState.Completed ? "Completed" : item.OccurrenceState == OccurrenceState.Skipped ? "Skipped" : "Complete")</MudButton> }
+                                </div>
+                            </article>
+                        }
+                    </section>
+                }
+            }
+            <div class="action-row"><span>Showing @(view.Rows.Count == 0 ? 0 : view.Offset + 1)–@(view.Offset + view.Rows.Count) of @view.Total</span>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(view.Offset == 0)" OnClick="Previous" Variant="Variant.Text">Previous day rows</MudButton>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(view.NextOffset is null)" OnClick="Next" Variant="Variant.Text">Next day rows</MudButton>
+            </div>
+        }
+        else if (_error is null) { <p role="status">Choose and load an available workspace above. Unavailable task data is not an empty day.</p> }
+        <p class="panel-copy">Each Daily uses its named schedule time zone. Planned dates and deadlines stay separate. Habit events are recorded now, without backdating to the selected day.</p>
+        <p class="panel-copy">@Todo.HabiticaCache.Source · freshness: @Todo.HabiticaCache.Freshness. Legacy Habitica due state remains on <a href="/tasks">Habitica tasks</a> and is not inferred from Companion schedules.</p>
+    </section>
+</div>
+
+@code {
+    [Parameter] public DateOnly? Day { get; set; }
+    private string _date = "";
+    private DateOnly? _parameterDay;
+    private TodoTaskPanel? _editor;
+    private ElementReference _dayInput;
+    private TodoTodayPage? _view;
+    private int _offset;
+    private string? _error;
+    private bool CanAct => !Todo.IsBusy && !Todo.IsReadOnly && !Todo.Commands.HasPendingIntent;
+    protected override void OnInitialized() { _date = (Day ?? DateOnly.FromDateTime(Clock.GetLocalNow().DateTime)).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture); Todo.Changed += Changed; }
+    protected override void OnParametersSet() { if (Day != _parameterDay && Day is { } day) { _date = day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture); _offset = 0; } _parameterDay = Day; Rebuild(); }
+    private void Changed() { if (_view?.Revision != Todo.Revision || _view?.Source != Todo.Selection) _offset = 0; Rebuild(); _ = InvokeAsync(StateHasChanged); }
+    private void Rebuild()
+    {
+        _view = null; _error = null;
+        if (!DateOnly.TryParseExact(_date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var day) || day == default) { _error = "Choose a valid civil day."; return; }
+        if (Todo.Snapshot is null) return;
+        try { _view = TodoTodayProjection.Read(Todo, day, _offset); }
+        catch (InvalidOperationException) { _error = "This day cannot be evaluated. Reload task data and check that every schedule time zone is available on this device. No partial agenda is shown."; }
+        catch (ArgumentException) { _error = "The requested day or page is unavailable. Choose a valid date and reload task data."; }
+    }
+    private void ChangeDate(ChangeEventArgs args) { _date = args.Value?.ToString() ?? ""; _offset = 0; Rebuild(); }
+    private void UseToday() { _date = DateOnly.FromDateTime(Clock.GetLocalNow().DateTime).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture); _offset = 0; Rebuild(); }
+    private void Previous() { _offset = Math.Max(0, _offset - 20); Rebuild(); }
+    private void Next() { if (_view?.NextOffset is { } next) { _offset = next; Rebuild(); } }
+    private async Task ReviewAsync(TodoTodayPage owner, TodoTodayRow row, HabitScoreDirection direction = HabitScoreDirection.Up)
+    {
+        if (!CanAct || !row.CanAct || _editor is null) return;
+        if (owner.Source != Todo.Selection || owner.Revision != Todo.Revision || !DateOnly.TryParseExact(_date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var day) || day != row.Item.Date)
+        { _error = "Task data changed. Review the current day before acting."; return; }
+        await _editor.ReviewPrimaryAsync(row.Item.TaskId, row.Item.Kind == CompanionTaskKind.Daily ? row.Item.Date : null, direction);
+    }
+    private async Task FocusDayAsync() { try { await _dayInput.FocusAsync(); } catch (JSException) { } }
+    private static string GroupLabel(TodoTodayGroup group) => group switch { TodoTodayGroup.Tasks => "Tasks for this day", TodoTodayGroup.Dailies => "Scheduled Dailies", TodoTodayGroup.Recorded => "Already recorded", _ => "Not active" };
+    public void Dispose() => Todo.Changed -= Changed;
+}

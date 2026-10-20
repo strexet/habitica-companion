@@ -1,0 +1,34 @@
+{
+  "task_id": "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae",
+  "date": "2026-10-20",
+  "checks": {
+    "release_publish": "pass; optional wasm-tools absent",
+    "dotnet_suite": {
+      "passed": 861,
+      "web": 491,
+      "failed": 0
+    },
+    "new_today_cases": 7,
+    "rendered_unique_cases": 432,
+    "rendered_errors": 0,
+    "unqualified_sampled_surfaces": 0,
+    "detector_negative_controls": "shared capture fixture: overflow, overlap, contrast detected",
+    "read_only_snapshot_assertion": "Viewing preserves the complete synthetic journal and prepares no commands",
+    "primary_actions": "Exact source/date Daily completion with original receipt recovery; Todo completion and current Habit events without game projection",
+    "failure_states": "Invalid date, unavailable time zone, sign-out, paused/recorded rows and empty day remain distinct",
+    "boundaries": "Weekly/monthly/DST civil dates, invariant ISO date under ar-SA, unique planned/deadline reasons, revision-bound paging"
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoTodayPanel.razor": "e7e63c0e1236ae97bedb0a911823f6dfea39a57eb4e29a1d9c52ace59c93e43a",
+    "src/Habitica.WebApp/Pages/TodoTodayPage.razor": "a5f24009cd315c858dce2b7442a4ba13d4ef5c034d7a561eac56d3e2cc718918",
+    "src/Habitica.WebApp/State/TodoTodayProjection.cs": "38b684908cc946a9af971fcb0996f277b1a812109b9c34c14fdcf31717cafedf",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "f6f7427bcd9987da05b0f77d3a50b7ab3731fe010baeed13d88763dec8341435",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "3c531037f01e097ad070a60bc2f1cf2022aa7ebcb1988642dcb1983393ca67be",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "718c53b6955dbaa3b710130d933e4bde74e2ec98ddf7c4927e6610634b17668b"
+  },
+  "limitations": [
+    "No Today deployment, live mutations, physical device or screen-reader run.",
+    "One ordinary measurement deadline recovered by rerunning its full fixture. Optional dense geometry seed timed out; common detector was separately qualified on a short fixture.",
+    "General Todo navigation and schedule/history editing remain separate roots."
+  ]
+}
