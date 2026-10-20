@@ -502,46 +502,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Build schedule-aware Today task groups
-
-```yaml
-id: T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-7cb0bb45-a294-404c-b257-136d0f9f3de4", "P-346056d8-c254-4a1e-b860-6850c6cb470d"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Implement the owner-requested Today grouping of current-day tasks and due Dailies.
-Current behavior:
-- WorkspaceAgenda provides planned/deadline flags and canonical Daily occurrences with retained completion/skip overrides. Legacy Habitica snapshots supply separate due information; the app has no Today page.
-Desired behavior:
-- A reusable Today surface groups planned/current-day task work and scheduled Daily occurrences with visible primary actions and clear completion/due state.
-Touch:
-- Todo presentation, Today component/page, WorkspaceAgenda/RecurrenceCalendar reads and existing task action components.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Use the selected civil day and explicit rule timezone; Dailies can repeat weekly/monthly and must not appear every day merely because kind is Daily. Keep planned dates and deadlines distinct, labelling same-day deadlines separately. Deduplicate canonical task/date rows, honour retained skipped/completed occurrences and state/archival. Unscheduled Dailies do not acquire an invented schedule. Legacy Habitica due state remains labelled and fresh rather than inferred from canonical recurrence. Viewing creates no occurrence or game effect.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Date-boundary, weekly/monthly/DST, unscheduled, paused, skipped/completed, duplicate and unavailable-timezone fixtures; component actions and rendered mobile checks.
-Acceptance:
-- Today groups current-day planned work and genuinely due canonical Daily occurrences without duplicate rows or invented everyday schedules.
-- Primary actions preserve exact occurrence/source identity and clear freshness, empty, unavailable and completion states.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Expose Inbox and calendar planning views
 
 ```yaml
