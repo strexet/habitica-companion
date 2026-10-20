@@ -67,11 +67,11 @@
       "operation_deadline_seconds": 300
     },
     "mode": "all",
-    "next_action": "implement",
+    "next_action": "Implement accessible hierarchy component/routes and shared review entrypoints, then component journeys and rendered theme/width qualification before commit/acceptance.",
     "partial_work": [
-      "Project removal completed and committed (1d9595d,0386c8c): 903 .NET cases, affected Worker regressions and 72 rendered cases qualified.",
-      "Selected hierarchy query dependency T-8d5444d6-8dec-4395-ae9d-5ea6fa6d8856. Existing relateTodo already uses exact IDs, separate task-write permission, combined iterative cycle checks and no implicit project/game effects.",
-      "Implement a bounded iterative get_todo_hierarchy read with subtree, direct children and ancestor modes. Include all retained Todo lifecycle/archive states, absolute depth, direct child count and explicit parent page/selection coverage. Revision-bound pages retain exact parent IDs; omitted ancestors remain navigable through ancestor queries. Existing reparent/detach command remains unchanged."
+      "Project removal and deep hierarchy query dependencies completed (1d9595d,0386c8c,b5c4ed7,156927b). Latest full solution 906 tests and Release publish pass; three Worker dry runs pass.",
+      "Selected nested Todo UI T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a under Projects root. Use bounded focused-branch navigation with direct-child expansion/collapse and optional paged subtree, exact parent context and capped indentation. Projects surface selects project-assigned tasks then opens full independent branch context.",
+      "Existing createTodo cannot set parent atomically. Reuse two explicit reviewed commands: create independent Todo, then attach exact created ID with relateTodo. Clearly disclose partial success and retain created-task identity; never recreate after attachment failure. Existing shared task review owns uncertainty and original receipts."
     ],
     "pending_ids": [
       "P-ea1a29a0-35f4-4434-84f5-9792f2085b6e",

@@ -4601,3 +4601,12 @@ code {
 .todo-history-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.75rem; align-items: start; padding-block: 1rem; border-bottom: 1px solid var(--card-border); }
 .todo-history [data-layout-primary] { min-height: var(--control-height); white-space: normal; overflow-wrap: anywhere; }
 @media (max-width: 650px) { .todo-history-row { grid-template-columns: minmax(0, 1fr); } }
+
+.todo-task-panel :is(h1,h2,h3) { min-width: 0; overflow-wrap: anywhere; }
+.todo-task-panel :is(h1,h2,h3):focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.todo-task-panel a[data-layout-primary] { display: inline-flex; align-items: center; min-height: var(--control-height); }
+
+.todo-hierarchy-branches .todo-direct-row { grid-template-columns: minmax(0, 1fr); }
+.todo-hierarchy-branches .todo-row-content { min-width: 0; }
+.todo-hierarchy-branches .todo-row-actions { max-width: 100%; }
+.todo-hierarchy-branches button { min-inline-size: 44px; max-inline-size: 100%; }

@@ -1,0 +1,36 @@
+{
+  "task_id": "T-eb745ca4-9da7-4fef-8c5f-13f115b4c22a",
+  "date": "2026-10-20",
+  "checks": {
+    "dotnet": "Full solution 916 passed (537 Web,194 Application,87 API,33 Domain,43 Rules,22 Storage). Final UI repairs and one additional recovery case: all 11 hierarchy component tests pass; current distinct solution case count 917.",
+    "release_publish": "Final current-source Release publish passes; optional wasm-tools absent.",
+    "interaction_cases": 11,
+    "routes": [
+      "/todo/tasks",
+      "/todo/projects"
+    ],
+    "navigation": "Retained root/direct children, expand/collapse subtree, exact parent links, twenty-row paging, archived anchors, exact deep link at level 2000, page/source/revision reset and unavailable deep-link recovery.",
+    "composition": "Two separately reviewed native commands create independent Todo then attach exact saved ID. Cloud/local lost acceptances and cloud lost preparations recover original requests/receipts. Archived parent after creation preserves one independent saved child; no recreation.",
+    "editing": "Exact existing editor changes descendant fields while retaining parent/deadline; same-name move choices, off-page parent caption, no-op/stale/cycle refusal, original move recovery and explicit detach retain project/descendant identities.",
+    "isolation": "Account/source clearing hides private context and original request property; pending/readonly states block fresh actions. Pure relationship preflight commits no state and grants no ownership.",
+    "focus": "Branch/editor/review focus requests retained; child typing does not refocus a heading; editor activation waits for mounted capture controls.",
+    "layout": "648 unique current rendered cases qualify; seeded overflow/overlap/contrast controls detect intentional failures; 16px compressed target repaired and verified.",
+    "diagnostics": "Existing sanitized task command preparation/acceptance/recovery pipeline retained; passive traversal emits no per-row logs.",
+    "docs": "Changed English prose and structural index/navigation validation pass; historical audit warning only."
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "106a3e3a2f1a364b4a18a19868a46b45e79159659df60340c523b92624575b84",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "d714d24c5dbeb36300a39b8f168bd62b0afc853607a576e0e92f84c26bf0c132",
+    "src/Habitica.WebApp/Pages/TodoProjectsPage.razor": "7d4ae0c3d2711772bacbdf1821c2726f2e78708c99db7e44f3ee857e1bd7feb0",
+    "src/Habitica.WebApp/Pages/TodoTasksPage.razor": "dff604ca4cd7b34371ec0fd06e83fa56eb9689059eb1ac1e6a3b8ae4d4738d5d",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "89809fe927eb59abba0ab2b1a6566e9de7d098d4ffc7bdda6c5cc7494d4b8209",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "9ed4a5e5aff4dd919b511d8645494b54e9e560648d337f997903f787f1cd0aa6",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHierarchyPanelTests.cs": "44e85b42d775cc6bb6e286aabae70c69d04a2836bf5d039c7b7307791a47f678"
+  },
+  "limitations": [
+    "No deployment, live account or party mutation, hosted client, physical device or assistive-technology qualification.",
+    "Subtask creation intentionally requires independent creation and then exact attachment. Page-local drafts disappear on navigation; a saved unattached task stays independent and original controller receipts remain authoritative.",
+    "Project metadata creation/rename/archive/removal, goals and advanced task organization remain the selected root implementation after this UI dependency.",
+    "Task/project branches use focused navigation or a bounded flat subtree, rather than recursive DOM nesting or unbounded indentation."
+  ]
+}

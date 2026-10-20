@@ -26,6 +26,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
     public WorkspaceMutationReceipt? LastReceipt { get; private set; }
     public string? Message { get; private set; }
     public bool HasPendingIntent => _intent is not null;
+    public Guid? OriginalRequestId => CurrentScope == _scope && _requestId != Guid.Empty && (_intent is not null || LastReceipt is not null) ? _requestId : null;
     public bool AcceptanceUnknown { get; private set; }
     public bool RequiresReload { get; private set; }
     public bool IsReadOnly => RequiresReload || !IsCloud && Snapshot?.Authority?.Mode is WorkspaceAuthorityMode.Frozen or WorkspaceAuthorityMode.Cloud;
