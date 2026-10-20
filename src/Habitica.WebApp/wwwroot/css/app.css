@@ -4592,3 +4592,12 @@ code {
 .todo-plan-editor fieldset { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: 0.75rem; }
 .todo-plan-labels { margin: 0; padding-left: 1.25rem; }
 .todo-plan-labels li { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+
+.todo-history { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; min-width: 0; }
+.todo-history-header, .todo-history-results { padding: 1rem; min-width: 0; overflow-wrap: anywhere; }
+.todo-history h1 { margin: 0; }
+.todo-history-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 0.75rem; }
+.todo-history-advanced summary { cursor: pointer; min-height: var(--control-height); padding-block: 0.65rem; }
+.todo-history-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.75rem; align-items: start; padding-block: 1rem; border-bottom: 1px solid var(--card-border); }
+.todo-history [data-layout-primary] { min-height: var(--control-height); white-space: normal; overflow-wrap: anywhere; }
+@media (max-width: 650px) { .todo-history-row { grid-template-columns: minmax(0, 1fr); } }

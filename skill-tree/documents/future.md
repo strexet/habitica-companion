@@ -865,6 +865,46 @@ Documentation updates:
 Risks:
 - Exposing live effects or claiming release success from synthetic evidence.
 
+### Diagnose browser qualification startup timing
+
+```yaml
+id: T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25
+priority: 99
+status: Ready
+parent_pending_ids: ["P-b38ebae7-6756-4941-a3af-dad37e3c7666"]
+processing_run_id: PR-6faedfa1-fb43-418b-a355-7cc03d2af9f9
+root_task_id: T-54623cea-9c8f-4819-b33f-b6552c82df55
+related_task_id: T-54623cea-9c8f-4819-b33f-b6552c82df55
+relation: followup
+depends_on: []
+```
+
+Goal:
+- Make first-frame qualification delays reproducible and diagnosable without weakening measurement acceptance.
+Current behavior:
+- matrix.html starts a five-second case timer with iframe navigation; qualification-frame.mjs waits for themes, fonts, animation frames and finite animations without reporting phase timings. Initial Inbox/history cases exceeded the deadline while separate bounded frames passed the same cases in less than 100 milliseconds.
+Desired behavior:
+- Record bounded navigation/readiness/measurement timing and an explicit startup prerequisite state. Preserve timeout records and reject late or mismatched results. Reproduce cold and warm startup with seeded failure controls.
+Touch:
+- tests/browser-qualification/matrix.html, qualification-frame.mjs and focused harness tests/evidence.
+Discovery allowance:
+- Inspect local browser lifecycle and current harness behavior; capture any required browser-control capability gap separately.
+Out of scope:
+- Product UI changes, external service requests, silently increased deadlines and deletion of failed evidence.
+Implementation constraints:
+- Separate prerequisite waiting from executed measurements. Keep hard deadlines and explicit unavailable states; never convert a missing case into success. Reuse the existing geometry/contrast detector and deterministic theme inventory.
+Questions and required clarifications:
+- [Resolved - local evidence] Source and repeated measurements identify an independent harness reliability investigation; the exact initial delay cause remains unknown.
+Validation:
+- Test stale/late messages, timer cleanup and bounded phase diagnostics; compare cold/warm browser runs and seeded overflow/overlap/contrast failures.
+Acceptance:
+- Initial-frame qualification exposes bounded phase evidence and preserves explicit unavailable cases without weakening acceptance deadlines.
+- Cold/warm startup controls and detector negatives remain reproducible with exact case identities and retained failure evidence.
+Documentation updates:
+- Update testing.md with actual harness behavior and remaining qualification limits.
+Risks:
+- Timing changes can mask a browser lifecycle failure if prerequisite and measurement results are conflated.
+
 ### Serialize scoped diagnostic append and clear operations
 
 ```yaml

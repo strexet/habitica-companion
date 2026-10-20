@@ -1,0 +1,41 @@
+{
+  "task_id": "T-54623cea-9c8f-4819-b33f-b6552c82df55",
+  "date": "2026-10-20",
+  "checks": {
+    "release_publish": "pass; optional wasm-tools absent",
+    "dotnet_suite": {
+      "passed": 876,
+      "web": 504,
+      "failed": 0
+    },
+    "new_history_cases": 5,
+    "unique_rendered_cases": 504,
+    "rendered_errors": 0,
+    "read_models": "Original historical snapshots/current fallback, archive flags, UTC event times/civil Daily dates, inclusive UTC filters, direction, revision-bound paging and empty/unavailable separation",
+    "restoration": "Exact completion review, retained history, original acceptance recovery and multiple native completion cycles without game effects",
+    "fences": "Linked/pending/unknown/conflict and retained external mappings, including archived mappings; archived-task and recurring undo remain unavailable",
+    "privacy": "Source/account changes clear retained rows and private search text",
+    "documentation": "Changed prose and repository navigation/index pass; only historical audit warning remains"
+  },
+  "sources": {
+    "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "43618575b52d1ab074522df6a8fbb6beb9bca7e7fb79702bd9e40fc5fffd8b8b",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "f33475dc45a6fc3ce34c0cc0eb324321bee013cd89a4d487052a4cf4b2d5f5d9",
+    "src/Habitica.WebApp/State/TodoHistoryRestoration.cs": "0417d9839c0b561a21c1507e3111d8dbf6afc1c4e1cc0c2842d6fedcabdd4f43",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "05c3eb3266968fc22623ac53be3ed493c02a9fb9252ca710d3011a20a23b27eb",
+    "src/Habitica.WebApp/Pages/TodoHistoryPage.razor": "25163e88a26a10277b758b53506267eb5e0526800f03c94afed1adceb76b30e3",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "4d24cc35a7cb3f60ecce684f101191d79a66b50d612804f0c938f69f2edecb89",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "cba7c8db8a2dab4376443afbde0986a2f4cfda29ff14d8f466e67f015d10beb9"
+  },
+  "evidence": [
+    "skill-tree/history/validation/todo-history-layout.json",
+    "skill-tree/history/validation/todo-history-browser.png"
+  ],
+  "followup_ids": [
+    "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25"
+  ],
+  "limitations": [
+    "One initial final-matrix case exceeded the five-second deadline and is retained. The exact missing 360/light/100 case passed separately in 33 milliseconds with the same detector and unchanged five-second deadline. Matrix startup diagnosis is deferred as T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25.",
+    "Static Razor rendering and current published CSS; physical devices, screen readers and hosted client behavior unqualified.",
+    "No history deployment, live restoration or party mutation test. General navigation remains a separate root."
+  ]
+}

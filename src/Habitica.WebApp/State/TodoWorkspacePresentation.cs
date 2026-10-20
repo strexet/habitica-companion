@@ -120,6 +120,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
     public WorkspaceTaskPage Planning(WorkspacePlanningList list, DateOnly day, int offset = 0) => WorkspacePlanningQuery.Evaluate(RequireSnapshot().Document, list, day, offset: offset, expectedRevision: Revision);
     public WorkspaceAgendaPage Agenda(WorkspaceAgendaFilter filter) => WorkspaceAgenda.Evaluate(RequireSnapshot().Document, filter);
     public WorkspaceReadPage<WorkspaceCompletionItem> History(WorkspaceHistoryFilter filter) => WorkspaceCompletionHistory.Evaluate(RequireSnapshot(), filter);
+    public WorkspaceReadPage<WorkspaceHabitHistoryItem> HabitHistory(WorkspaceHabitHistoryFilter filter) => WorkspaceHabitHistory.Evaluate(RequireSnapshot(), filter);
     public WorkspaceReadPage<WorkspaceCategory> Categories(WorkspaceReadFilter filter) => WorkspaceOrganization.Categories(RequireSnapshot().Document, filter);
     public WorkspaceReadPage<WorkspaceProject> Projects(WorkspaceReadFilter filter, Guid? categoryId = null) => WorkspaceOrganization.Projects(RequireSnapshot().Document, filter, categoryId);
     public WorkspaceReadPage<WorkspaceSection> Sections(WorkspaceReadFilter filter, Guid projectId) => WorkspaceOrganization.Sections(RequireSnapshot().Document, filter, projectId);

@@ -67,6 +67,11 @@
                         @if (planning.LabelIds is { } labels) { <p>Replace labels (@labels.Count): @(labels.Count == 0 ? "Clear all labels" : string.Join("; ", labels.Select(id => PlacementName("Label", id))))</p> }
                         <p>Deadline and recurrence unchanged. No Habitica schedule or reward changes.</p>
                     }
+                    @if (patch.RestoreTodo is { } restore)
+                    {
+                        <p>Restore current Todo: @Todo.Snapshot?.Document.Tasks.FirstOrDefault(row => row.Id == preview.Command.TaskId)?.Text · @preview.Command.TaskId</p>
+                        <p>Exact completion: @restore.CompletionId</p><p>Return the current task to Active and retain the completion plus a restoration event. No Habitica reward is reversed.</p>
+                    }
                     @if (patch.HabiticaDetails is { } details) { <p>Game difficulty: @(details.Difficulty?.ToString(CultureInfo.InvariantCulture) ?? "unchanged"); attribute: @(details.Attribute?.ToString() ?? "unchanged")</p>@if (details.Checklist is not null) { <p>Replace checklist (@details.Checklist.Count items)</p><ul>@foreach (var item in details.Checklist) { <li>@item.Text @(item.Completed ? "(completed)" : "")</li> }</ul> } }
                 }
                 @if (preview.Command.Operation == WorkspaceOperation.DeleteTask) { <p>Archive this task and retain history. Habitica records remain unchanged.</p> }
@@ -236,6 +241,15 @@
         await RunAsync(async () => { await Todo.PrepareAsync(ActionInput(task, WorkspaceOperation.PlanTask) with { Planning = planning }); _focusReview = Todo.Commands.Preview is not null; });
         await InvokeAsync(StateHasChanged);
     }
+    public async Task ReviewRestoreAsync(Guid taskId, Guid completionId, long revision)
+    {
+        if (ActionsDisabled || Todo.Revision != revision) throw new InvalidOperationException("History changed. Reload the current history before restoring.");
+        var document = Todo.Snapshot!.Document;
+        if (TodoHistoryRestoration.UnavailableReason(document, taskId, completionId) is { } reason) throw new InvalidOperationException(reason);
+        var task = document.Tasks.Single(row => row.Id == taskId);
+        await RunAsync(async () => { await Todo.PrepareAsync(ActionInput(task, WorkspaceOperation.RestoreTodo) with { RestoreTodo = new(completionId) }); _focusReview = Todo.Commands.Preview is not null; });
+        await InvokeAsync(StateHasChanged);
+    }
     private string PlacementName(string kind, Guid? id)
     {
         var doc = Todo.Snapshot?.Document;
@@ -275,7 +289,7 @@
     {
         WorkspaceOperation.CreateTodo => "Create Todo", WorkspaceOperation.CreateDaily => "Create unscheduled Daily", WorkspaceOperation.CreateHabit => "Create Habit",
         WorkspaceOperation.UpdateTask => "Update task", WorkspaceOperation.CompleteTask => "Record completion", WorkspaceOperation.ScoreHabit => "Record Habit event",
-        WorkspaceOperation.PlanTask => "Change native placement", WorkspaceOperation.DeleteTask => "Archive task", _ => "Task command"
+        WorkspaceOperation.PlanTask => "Change native placement", WorkspaceOperation.RestoreTodo => "Restore exact completed Todo", WorkspaceOperation.DeleteTask => "Archive task", _ => "Task command"
     };
     private static string SourceValue(TodoWorkspaceSelection? source) => source is null ? "" : $"{source.Source}|{source.WorkspaceId:D}";
     private static string SourceLabel(TodoWorkspaceSelection source) => $"{(source.Source == TodoWorkspaceSource.Cloud ? "Cloud" : "Browser")} · {source.WorkspaceId:D}";

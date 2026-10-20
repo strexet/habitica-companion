@@ -708,3 +708,10 @@ Today places the civil-day input, a device-date shortcut and Add task before a c
 Inbox and Plan expose a labelled native view selector, reference-day input and visible Add task link. Upcoming, Week and Month use chronological agenda rows and Previous/Next period buttons, with explicit inclusive range labels and Monday week boundaries. A manual date input provides keyboard navigation without dragging or a timed calendar. Inbox, Anytime and Overdue explain membership; overdue rows distinguish earlier planning from missed deadlines. Plan / move stays visible beside each row.
 
 The placement editor opens above results and receives heading focus. Planned day remains separate from deadline and recurrence. Existing category/project/section choices use bounded native selectors with visible page controls; selected off-page values remain visible. Labels use an optional disclosure with explicit add/remove controls. Review moves focus to the shared command heading; confirmation/cancellation returns focus to the placement heading. A stale editor retains the draft and offers explicit reload. Close returns focus to the view selector. Rows and placement fields share semantic colors, wrapping layouts and primary touch targets across themes.
+
+
+## Retained task activity
+
+Task history keeps activity type and retained-text search visible at the top. More filters contains labelled UTC-day bounds and the Habit direction filter; active filters keep the disclosure open. Rows show event kind, recorded UTC time, optional Daily civil date, historical/current detail provenance and archival flags in text. Notes and original event/task/command references use native disclosures with wrapping content. A supported Restore Todo action stays visible beside the event; unsupported rows explain the specific reason.
+
+Restoration opens the shared exact-command review and moves focus to the review heading. Confirmation or cancellation returns focus to retained-text search. Original uncertain acceptance remains visible with receipt recovery and blocks another restoration. Shared semantic tokens, responsive rows and primary touch targets apply across themes.
