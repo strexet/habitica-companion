@@ -72,333 +72,984 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
-### Fix Habitica tag coverage for projects and task organization
-
-```yaml
-id: P-505551fa-3ca7-4415-b19e-b64585bf8f9f
-priority: 103
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- BUG: Companion projects, categories, sections, labels, goals and saved selections have no persisted native Habitica tag identity or membership synchronization. Flattened tasks therefore lose project and group context in the original Habitica app. Current projection payloads omit tags.
-
-Expected behavior:
-- Represent task-bearing Companion groups with account-bound native Habitica tags and preserve the corresponding tag memberships on every task and full subtask. Retain stable verified tag IDs through rename, archive, conversion and recovery; preserve unrelated user tags and reject ambiguous adoption. Define saved-view membership, retained historical groups and retirement semantics during processing. Metadata and statistics must not create extra reward-bearing tasks. Coordinate mandatory task mappings and clean legacy conversion without direct database writes or inferred consent.
-
-Current context:
-- Four integration P0 Pending entries cover task defaults, existing-task linkage, recurring creation and source retirement; the tag-coverage intake captures the distinct missing organization/tag correspondence. The local coverage audit reports missing tags without inventing mappings.
-
-Source:
-- Owner request on 2026-10-21: every Todo entity must correspond to Habitica; flat upstream tasks are acceptable and should be related using native tags. WorkspaceDocument.cs, projection-adapter.ts, companion-workspace-contract.md and habitica-api.md tags contract.
-
-Priority rationale:
-- Owner requested the highest P0 group for mandatory task and organization correspondence; priority 103 exceeds the current maximum 102.
-
-### Fix default task projection and agent reward guidance
-
-```yaml
-id: P-f0b54e18-9d9f-4528-8383-db7de5542c63
-priority: 103
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- BUG: the standard task flow defaults to Companion-only storage despite the owner requirement that ordinary user tasks appear and earn rewards in Habitica. TodoTaskDraft.ProjectToHabitica initializes false, the projection checkbox is buried in More details, omitted MCP projection remains false, and task-management/project-planning guidance treats game participation as an additional optional choice. The codev conversion reproduced eight active unlinked tasks.
-
-Expected behavior:
-- Make normal game-facing task creation and conversion request verified Habitica projection consistently in browser code, backend policy and installed agent guidance after the existing required account consent. Require correspondence for every ordinary Todo, full subtask, Daily and Habit, including retained completed or archived records. Organization metadata requires native Habitica tags rather than extra reward-bearing tasks. Local/offline work may remain explicitly pending until existing consent and execution prerequisites are satisfied; no permanent silent Companion-only default is permitted. Existing mapped completion must enqueue the corresponding game effect, and normal unlinked tasks must not silently complete reward-free. Preserve explicit consent, scope checks, offline or disabled-executor pending states, original identity and uncertain-outcome fences. Test browser and MCP defaults plus packaged skill instructions together.
-
-Current context:
-- Current projection execution already plans create/update/score effects when requested and automatically participates for existing mappings. Retain that mechanism and distinguish saved, pending, confirmed and unknown outcomes. Update contradictory product contracts and planned conversion defaults during processing; generic Skill Tree orchestration should not acquire application-specific gameplay policy.
-
-Source:
-- Owner clarification on 2026-10-21; TodoTaskDraftStore.cs; WorkspaceTaskController.cs; WorkspaceCommandEngine.cs; workers/shared/workspace-commands.ts; plugin/skills/habitica-task-management/SKILL.md and references/project-planning.md.
-
-Priority rationale:
-- Owner requested highest priority for the discovered integration defects. Group priority 103 shares the highest integration P0 rank.
-
-### Fix projection-only linking without artificial task edits
-
-```yaml
-id: P-9cc8f051-8a18-46e0-b1fa-959c362efa54
-priority: 103
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- BUG: enabling the Habitica-effects checkbox for an unchanged unlinked Todo produces an empty update patch. WorkspaceTaskController.Intent omits unchanged fields and command validators reject the patch. The observed codev request stayed unresolved with no preview and no visible cancel control; retrying the original request did not resolve the invalid intent.
-
-Expected behavior:
-- Expose a valid idempotent first-class projection enablement flow for an existing unchanged task. Preserve native identity, content, project, history and completed archive state. Audit every task and full subtask, including retained completed and archived records; historical mapping repair never backfills rewards automatically. Reuse verified adoption for an existing Habitica match or create exactly the required matching record with recoverable original receipts. Reject ambiguous matches and unknown outcomes without duplicate effects. Allow safe cancellation or correction of a definitively rejected preparation. No whitespace edits, fake field changes, re-created Companion tasks or hidden API calls.
-
-Current context:
-- The existing PreviewLinkAsync/AdoptLinkAsync adapter handles an explicit existing Habitica task identity; retain that implementation. The new TodoTaskPanel lacks the complete surfaced flow for an unlinked task with no existing Habitica counterpart. No manual linking command was accepted during the audit.
-
-Source:
-- Observed production codev projection-only preparation on 2026-10-21; TodoTaskPanel.razor; WorkspaceTaskController.Intent/PrepareCoreAsync; WorkspaceCloudClient.cs adoption adapter; workers/shared/workspace-commands.ts empty-patch validation.
-
-Priority rationale:
-- Owner requested highest priority for the discovered integration defects. Group priority 103 shares the highest integration P0 rank.
-
-### Restore Habitica creation coverage for Dailies and Habits
-
-```yaml
-id: P-3736aa26-c58b-402d-a736-ff6ce23907bd
-priority: 103
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- BUG: normal Companion Daily and Habit creation cannot produce matching Habitica records. TodoTaskDraft.Basic strips the projection flag for both kinds; C# and Worker engines reject createDaily/createHabit projection, and the task-management skill explicitly directs Companion-only creation. Native completion and score history can therefore exist without Habitica rewards.
-
-Expected behavior:
-- Implement supported game-facing Daily/Habit creation and verified mappings through browser and MCP paths after existing account consent. Carry supported game fields and losslessly represented schedules, preserve exact native identities and original receipts, and send completion or Habit scoring to the correct Habitica record. Expose unsupported schedules or unavailable execution explicitly rather than silently saving unlinked work. Never run Cron, backfill scores, change party membership or grant new consent implicitly.
-
-Current context:
-- Existing Ready task T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9 covers edits of linked Daily schedules rather than creation coverage. Process Pending should coordinate or reuse relevant schedule work and avoid duplicate implementation.
-
-Source:
-- Owner requirement that the original Habitica app reflect and reward user tasks; TodoTaskDraftStore.cs; WorkspaceCommandEngine.cs; workers/companion-workspace/src/commands.ts; projection-adapter.ts; plugin/skills/habitica-task-management/SKILL.md.
-
-Priority rationale:
-- Owner requested highest priority for the discovered integration defects. Group priority 103 shares the highest integration P0 rank.
-
-### Fix incomplete project conversion and linked source retirement
-
-```yaml
-id: P-7414291b-9448-4d98-884c-97b582cd2d67
-priority: 103
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- BUG: checklist-to-project conversion has no complete supported product workflow. The codev conversion created the requested first-class project and ten tasks, but the linked legacy source remains active as a backup because DeleteTask refuses every linked mapping. Manual copies and a permanently retained source container do not satisfy the requested clean conversion.
-
-Expected behavior:
-- Provide a resumable idempotent conversion with durable source-item to task identities, full notes, project membership and verified completion/history semantics. Confirm required Habitica projections before retiring the exact legacy container through supported product lifecycle operations. Preserve retained history, unrelated tasks and original receipts; display any irreversible upstream deletion for concrete approval. No direct database mutation, fake cancellation, renamed backup, silent duplicate or automatic reward backfill.
-
-Current context:
-- Source Companion task c3765653-711e-4532-be37-0ba41f0954b3 maps to Habitica task c9bfce30-f540-4d94-83d4-15a3b3a8ab56. Project c5f8a175-2bee-484a-9b72-018737dc10fd has eight active tasks and two completed archived tasks. Source checklist marks acknowledged plan intake, not implementation completion. Existing retained recovery tasks do not implement linked-source retirement.
-
-Source:
-- Owner cleanup request on 2026-10-21; companion-development-project-conversion.json; WorkspaceCommandEngine.cs; workers/companion-workspace/src/commands.ts; plugin task-management archive guidance.
-
-Priority rationale:
-- Owner requested highest priority for the discovered integration defects. Group priority 103 shares the highest integration P0 rank.
-
-### Recover bulk spell casting and gear restoration under rate limits
-
-```yaml
-id: P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0
-priority: 101
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Investigate and repair owner-reported interrupted bulk casting with Auto equip on the production Spells page. Client logs confirm 17 of 40 acknowledged casts before failure and other partial or all-casts-acknowledged errors; the exact HTTP failure stage and final gear state remain unverified.
-
-Expected behavior:
-- Coordinate account request pacing across casts, gear changes and refreshes; respect Retry-After/reset and stop safely during cooldown. Report acknowledged versus requested casts, uncertain effects and the active stage. Restore original gear through a managed cooldown-aware cleanup or expose verified failed slots and manual recovery. Cancellation and reload preserve safe recovery. Never automatically replay uncertain non-idempotent casts. Add redacted structured stage/status/cooldown/count/gear diagnostics and deterministic regressions for cast, restore, refresh, cancellation and concurrent-request failures.
-
-Current context:
-- Existing account logs provide partial-count evidence, not a complete upstream trace. Error 10/10 may occur after all casts succeeded. Preserve the distinction between private-sync warnings and spell failures. Diagnose the silent restoration catch and cancellation cleanup; implementation research belongs to Process Pending. Highest priority above every unfinished task.
-
-Source:
-- Explicit owner-directed intake from Companion task c3765653-711e-4532-be37-0ba41f0954b3, checklist 50a8d2d0-c268-4b2c-aa5c-3e17d9bd01b5; source task revision 40, workspace revision 41. iPhone Safari incident and sanitized client-log observations retained in the source notes.
-
-### Support stable project aliases in browser and agent workflows
-
-```yaml
-id: P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Add optional user-owned project aliases, including codev for Companion Development, independently of the display name. Current WorkspaceProject records and organization tools expose no project alias field.
-
-Expected behavior:
-- Users can create, rename, clear and resolve project aliases through supported browser and agent flows. Define own-workspace uniqueness, case handling and ambiguity behavior during Process Pending. Preserve exact project IDs, existing assignments and archive history. Existing clients can use the escaped display name Companion Development <codev> until native alias support ships.
-
-Source:
-- Owner request on 2026-10-21 while converting the legacy Companion development checklist into a first-class project.
-
-### Interpret natural deadline shorthand in ChatGPT and Codex
-
-```yaml
-id: P-e19b7c0e-af23-4983-908f-d2e0acde668e
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Support Russian `дд` and Latin `dd` shorthand for due date, relative dates such as tomorrow or in ten days, dates without a year and explicit deadline-setting commands in the task workflow.
-
-Expected behavior:
-- Resolve dates against the user timezone and current civil date, save the exact requested deadline and report the stored date without duplicate tasks. Distinguish deadline from planned date and notification; promise no reminder delivery without an implemented delivery mechanism. Preserve material ambiguity checks and qualify Russian/English ChatGPT and Codex journeys.
-
-Current context:
-- Existing tools support exact deadline fields but the current packaged task skill lacks the requested shorthand/date interpretation contract. Detailed parsing policy, ambiguity cases and host qualification remain for Process Pending.
-
-Source:
-- Explicit owner-directed intake from Companion task c3765653-711e-4532-be37-0ba41f0954b3, checklist 77d6674c-23ed-4a67-870e-a4260ed80f98; source task revision 40.
-
-### Identify installed plugin versions and backend compatibility
-
-```yaml
-id: P-c151f29d-1662-4e34-9316-b849c085681f
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Expose trustworthy installed ChatGPT and Codex plugin version/build information and compare the installed package with the deployed backend and tool contract. Agents can answer which version is installed and whether an update is required.
-
-Expected behavior:
-- Versioned releases and read-only discovery distinguish installed package identity, backend build and supported capability/schema compatibility. Unknown installed versions remain unknown rather than inferred from the server. Provide actionable update guidance. Capture only for a later release; do not add versioning behavior to the current production deployment.
-
-Current context:
-- plugin/plugin.json currently declares 0.1.0, but existing agent tools do not expose trustworthy installed-package identity. Refreshing server tools differs from updating packaged skills. Host support, release policy and safe compatibility checks remain for Process Pending.
-
-Source:
-- Owner request on 2026-10-21; official OpenAI plugin packaging and metadata refresh documentation.
-
-### Add account-bound Markdown notes with agent workflows
-
-```yaml
-id: P-314450c7-4cb3-4604-a872-27d0f2d189b9
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Add a dedicated Notes section for user-owned Markdown information, separate from task notes. Content can include clothing sizes and body measurements, family names, birthdays, observations, travel journals and other personal documents.
-
-Expected behavior:
-- Users can create, read, edit, find and delete personal notes. Authorized Codex and ChatGPT agents can discover relevant notes and answer questions using related stored facts, such as clothing size plus useful measurements. Explicit requests to remember information, add notes through @habitica-companion, or use "add to habitica notes" save a new note or update an appropriate existing topic and report the exact information saved. Generated .md documents can be saved as notes. Later requests to update an existing document preserve the intended note identity, verify the resulting changes and report the additions or other differences; browser editing and deletion remain available.
-
-Current context:
-- Existing task notes do not supply an independent personal knowledge section. Storage, authorization/privacy, safe Markdown rendering, topic discovery, update conflicts and change-verification details require Process Pending research. Notes is independent new work outside the current frozen Implement All snapshot.
-
-Source:
-- Owner request in chat on 2026-10-20; scenarios cover fact retrieval, explicit memory capture into Companion notes, Markdown document storage and later document revision with a change summary.
-
-### Default the equipment optimizer to Intelligence for every class
-
-```yaml
-id: P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e
-priority: 100
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Use Intelligence as the initial equipment optimization goal in the inventory Gear Planning / Equipment optimizer section for every character class.
-
-Expected behavior:
-- Opening the optimizer recommends an Intelligence-focused set by default. Explicit user-selected goals and spell-specific equipment choices remain available; selecting a default never equips gear automatically.
-
-Current context:
-- InventoryPage initializes _optimizationGoal and invalid-selection fallback to Balanced. The owner prefers Intelligence for routine gameplay across classes and different equipment only for explicit spell workflows. Formula claims and the exact handling of remembered goals require Process Pending research.
-
-Source:
-- Owner request on 2026-10-19; InventoryPage.razor equipment-optimizer-goal control and _optimizationGoal default.
-
-### Complete project-filtered completed-task history navigation
-
-```yaml
-id: P-762549ef-d24d-4caa-ab3a-573a8e60eb21
-priority: 25
-status: Pending
-parent_pending_ids: []
-processing_run_id: null
-root_task_id: null
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Description:
-- Finish the requested completed-tasks section after project support, with searchable completed records, project/date filters, task inspection and supported restoration entrypoints.
-
-Expected behavior:
-- Reuse retained completion history and existing safe restoration; add the missing project-filtered journeys and analytics/navigation entrypoint without duplicating completed history or promising unsupported linked-task undo. Keep activity history separate from user descriptions and preserve existing project identities.
-
-Current context:
-- Retained Todo/Daily history and safe native Todo restore are already implemented under T-54623cea-9c8f-4819-b33f-b6552c82df55. Dedicated statistics/navigation and extended restoration have existing prioritized tasks. Process Pending must merge/reuse existing work and isolate remaining project/date filtering or integration gaps rather than reimplement completed behavior. Owner source priority P3 remains low.
-
-Source:
-- Explicit owner-directed intake from Companion task c3765653-711e-4532-be37-0ba41f0954b3, checklist 8c126b81-0cdd-4cd4-a9a7-7a93b417d82f; source task revision 40.
-
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
+
+### Require Habitica correspondence in authoritative Todo commands
+
+```yaml
+id: T-210471d2-f432-43b3-8fc7-bbfd74f93e29
+priority: 103
+status: Ready
+parent_pending_ids: ["P-f0b54e18-9d9f-4528-8383-db7de5542c63"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-210471d2-f432-43b3-8fc7-bbfd74f93e29
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Make ordinary Todo creation, full-subtask creation, edits and completion carry required game correspondence through the shared authoritative command contract.
+Current behavior:
+- WorkspaceCommandEngine and Worker command acceptance plan effects only when projectToHabitica is true or an existing mapping participates. Omission therefore permits silent reward-free Todos; accepted payload hashes already protect immutable intent.
+Desired behavior:
+- Standard Todo commands cannot be reported as fully integrated without verified correspondence and original effect receipts; historical accepted commands retain exact original meaning.
+Touch:
+- WorkspaceCommands/WorkspaceCommandIdentity, WorkspaceCommandEngine, workers/shared/workspace-commands.ts, workers/companion-workspace/src/commands.ts, task-api.ts, executor.ts and neutral command fixtures.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Define a versioned prospective policy rather than rewriting accepted journals. An explicit false flag cannot silently bypass normal cloud correspondence. Native planning/state/organization commands remain non-scoring. Local/offline capture retains required-but-pending integration without uploading credentials or inventing remote IDs. Enforce separate account consent and executor eligibility; never replay unknown outcomes. Complete an unlinked active Todo only through an ordered original create-then-score intent or an explicit integration refusal. Native urgency remains independent of game difficulty.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Cross-runtime tests cover omitted/false/true input, full children, linked/unlinked completion, local/offline capture, disabled execution, existing accepted receipts, stale revisions, duplicate command IDs and unknown outcomes. Assert exact effect order and no retroactive journal execution.
+Acceptance:
+- Standard Todo commands cannot be reported as fully integrated without verified correspondence and original effect receipts; historical accepted commands retain exact original meaning.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Add reviewed projection commands for existing unchanged tasks
+
+```yaml
+id: T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54
+priority: 103
+status: Ready
+parent_pending_ids: ["P-9cc8f051-8a18-46e0-b1fa-959c362efa54"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54
+related_task_id: null
+relation: main
+depends_on: ["T-210471d2-f432-43b3-8fc7-bbfd74f93e29"]
+```
+
+Goal:
+- Provide typed idempotent create-or-adopt correspondence repair without changing task content or canonical identity.
+Current behavior:
+- Projection-only UpdateTask produces an empty invalid patch. PreviewLinkAsync/AdoptLinkAsync can adopt an explicit existing remote identity, but cannot create a missing counterpart through the current editor.
+Desired behavior:
+- A projection-only intent prepares and accepts without fake edits or duplicate native tasks; unsupported historical repair remains explicit and preserves all saved history.
+Touch:
+- WorkspaceCommands and identity validation, WorkspaceCommandEngine, shared Worker command models, task-api.ts, projection-adapter.ts, Auth projection gateway and adoption tests.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Bind exact task/workspace revision, kind, account and reviewed remote identity/fingerprint. Preserve notes, priority, relationships, archive state and history. Active tasks may create a missing matching record through the original ledger. Completed/archived tasks may adopt a verified matching retained record; missing historical matches require an explicit review outcome rather than automatic scoring or reopening. Habitica protects completed/dateCompleted in normal create/update, so no synthetic completed patch is allowed. Unknown create outcomes reconcile the original alias/receipt, never a replacement. Existing raw adoption remains available.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Test unchanged active Todo, verified Daily/Habit adoption, archived/completed discovery, no historical match, ambiguous remote candidates, collision, account switch, stale preview, duplicate acceptance and lost create acknowledgement in both runtimes.
+Acceptance:
+- A projection-only intent prepares and accepts without fake edits or duplicate native tasks; unsupported historical repair remains explicit and preserves all saved history.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Create and verify corresponding Habitica Habits
+
+```yaml
+id: T-0e97833e-efaf-4cbc-ad22-8a03af170c30
+priority: 103
+status: Ready
+parent_pending_ids: ["P-3736aa26-c58b-402d-a736-ff6ce23907bd"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-0e97833e-efaf-4cbc-ad22-8a03af170c30
+related_task_id: null
+relation: main
+depends_on: ["T-210471d2-f432-43b3-8fc7-bbfd74f93e29"]
+```
+
+Goal:
+- Extend typed authoritative creation and the private gateway to create the correct own-account Habit with verified mapping.
+Current behavior:
+- TodoTaskDraft strips creation projection for Habits; C# and Worker engines reject createHabit projection, and Auth create hardcodes type todo.
+Desired behavior:
+- An ordinary new Habit has one corresponding Habitica Habit or an explicit pending/refused/unknown result; no creation command awards Habit score events.
+Touch:
+- HabiticaTaskDetails or a typed Habit creation payload, WorkspaceCommandEngine, workspace-commands.ts, commands.ts, shared/projection.ts, projection-adapter.ts, Auth projection.ts and shared task fixtures.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Use explicit supported up/down fields with validated defaults; carry text, notes, difficulty and attribute. Keep Todo-specific deadline/checklist fields out of unsupported Habit payloads. Preserve alias correlation, fresh ownership checks, receipt-only recovery and existing direction/count guards. No score occurs merely because a Habit is created. Refuse unsupported payloads visibly; no fallback Todo, Cron, party mutation or implicit enrollment.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Synthetic tests cover every supported direction combination, invalid fields, duplicate aliases, timeout after create, cross-profile denial, revoked consent, pacing and later positive/negative scores against the exact verified mapping.
+Acceptance:
+- An ordinary new Habit has one corresponding Habitica Habit or an explicit pending/refused/unknown result; no creation command awards Habit score events.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Create mapped Habitica Dailies with lossless schedules
+
+```yaml
+id: T-07d27408-3019-423f-a5de-4cda1f9e2818
+priority: 103
+status: Ready
+parent_pending_ids: ["P-3736aa26-c58b-402d-a736-ff6ce23907bd"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-07d27408-3019-423f-a5de-4cda1f9e2818
+related_task_id: null
+relation: main
+depends_on: ["T-210471d2-f432-43b3-8fc7-bbfd74f93e29"]
+```
+
+Goal:
+- Create own-account Habitica Dailies through a shared lossless schedule normalization contract.
+Current behavior:
+- Daily creation projection is rejected. Native recurrence supports daily/weekly/monthly rules, while remote parsing/fingerprints omit normalized schedule fields and creation always sends type todo.
+Desired behavior:
+- Supported Daily creation produces one correct Habitica Daily and mapping; unsupported schedules remain visibly unavailable without silently changed dates, past scoring or penalty promises.
+Touch:
+- RecurrenceRule and schedule validation, shared/workspace-domain.ts, shared/projection.ts, projection-adapter.ts, Auth projection.ts, commands.ts and recurrence/projection fixtures.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Bind account timezone/dayStart, normalized startDate, frequency/everyX/repeat/daysOfMonth and resulting next dates. Support only losslessly represented native daily/weekly/monthly rules; reject unrepresentable timezone/DST, weeks-of-month/yearly or missing schedules explicitly. New ordinary Dailies need an explicit supported schedule rather than silently acquiring Habitica default weekdays. Preserve completed/skipped history and alias receipts. Creation never scores historical dates or runs Cron. Publish reusable schedule normalization for the existing linked-schedule editing task instead of duplicating schedule semantics.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Use neutral C#/Worker fixtures for weekday sets, Monday anchors, month gaps, everyX intervals, normalized start dates, timezone/dayStart differences, unsupported cases, stale account observations, duplicate create recovery and later due-day completion.
+Acceptance:
+- Supported Daily creation produces one correct Habitica Daily and mapping; unsupported schedules remain visibly unavailable without silently changed dates, past scoring or penalty promises.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Expose task linking and rejected-preview recovery in Todo UI
+
+```yaml
+id: T-c43d3aff-9bfa-4684-a248-a83af2193492
+priority: 103
+status: Ready
+parent_pending_ids: ["P-9cc8f051-8a18-46e0-b1fa-959c362efa54"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-c43d3aff-9bfa-4684-a248-a83af2193492
+related_task_id: null
+relation: main
+depends_on: ["T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54"]
+```
+
+Goal:
+- Expose the supported unchanged-task linking flow and safe recovery from definitively rejected preparation.
+Current behavior:
+- The shared Todo editor retains an invalid projection-only intent with no visible cancellation outside a valid preview. The older CompanionTasksPanel exposes explicit adoption but the new flow lacks a complete entrypoint.
+Desired behavior:
+- Existing tasks can start reviewed supported linking directly, rejected preparation no longer traps the editor, and uncertain acceptance cannot be silently replaced.
+Touch:
+- WorkspaceTaskController, WorkspaceCloudClient task adapters, TodoTaskPanel, TodoWorkspacePresentation, task provenance/details, MCP link tools and product task-management skill.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Use the typed existing-task command and exact original request identity. Show create versus adopt, affected task/kind and historical limitations before required review. Permit editing/cancellation only after definitive preparation rejection; uncertain acceptance retains original receipt lookup and fences source changes. Do not discard an unknown intent, invent a replacement, mutate whitespace or expose API tokens. Maintain independent account consent and meaningful missing-state copy.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Component/transport fixtures cover unchanged checkbox intent, existing adoption, rejected empty preparation, correction/cancel, expiry, lost acknowledgement, source/account changes and historical refusal. Qualify changed rendered states across documented themes, widths and enlarged text.
+Acceptance:
+- Existing tasks can start reviewed supported linking directly, rejected preparation no longer traps the editor, and uncertain acceptance cannot be silently replaced.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Align browser and agent task defaults with required Habitica links
+
+```yaml
+id: T-7bb19b25-83e8-470d-9e94-94a91d744440
+priority: 103
+status: Ready
+parent_pending_ids: ["P-f0b54e18-9d9f-4528-8383-db7de5542c63"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-7bb19b25-83e8-470d-9e94-94a91d744440
+related_task_id: null
+relation: main
+depends_on: ["T-210471d2-f432-43b3-8fc7-bbfd74f93e29", "T-c43d3aff-9bfa-4684-a248-a83af2193492", "T-0e97833e-efaf-4cbc-ad22-8a03af170c30", "T-07d27408-3019-423f-a5de-4cda1f9e2818"]
+```
+
+Goal:
+- Make normal browser and MCP task journeys consistently request supported Habitica correspondence.
+Current behavior:
+- The browser creates native-only records by default. Updated source guidance describes required correspondence, but the deployed task descriptions and editor defaults still permit the old behavior.
+Desired behavior:
+- No standard browser or agent flow silently reports a reward-free native-only task as a completed integrated workflow; all kinds expose the same required mapping and receipt semantics.
+Touch:
+- TodoTaskDraftStore, TodoTaskPanel, WorkspaceTaskController, MCP task-tools metadata/schema, plugin task-management/hierarchy/project references and coverage-policy reporting.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Apply the authoritative policy to Todos, full children, Dailies and Habits after existing consent. Remove the buried opt-in as a normal reward-free escape; show required integration readiness and exact pending/confirmed/unknown status. Preserve local capture when consent/execution is unavailable and state the missing prerequisite. Keep urgency/difficulty distinct. Update package source and deterministic fixtures together; installed host copies remain a separate update and qualification concern. Historical imports never auto-score.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Browser and MCP tests cover title-first creation, all task kinds, full child capture, unlinked completion, no consent, paused executor, offline drafts, exact original recovery and versioned old payloads. Render status/refusal controls without displacing primary capture; inspect packaged skill references and advertised tools.
+Acceptance:
+- No standard browser or agent flow silently reports a reward-free native-only task as a completed integrated workflow; all kinds expose the same required mapping and receipt semantics.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Persist stable Habitica tag mappings and projection intents
+
+```yaml
+id: T-63ee6e49-6452-4e7c-a707-1dd54b41c94c
+priority: 103
+status: Ready
+parent_pending_ids: ["P-505551fa-3ca7-4415-b19e-b64585bf8f9f"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-63ee6e49-6452-4e7c-a707-1dd54b41c94c
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Define durable account-bound tag identity, desired membership and receipt state for all supported organization kinds.
+Current behavior:
+- WorkspaceDocument stores task projections but no organization/tag identity. WorkspaceHabiticaCoveragePolicy therefore reports every organization as missing tag coverage; organization receipts currently record no external effects.
+Desired behavior:
+- Canonical and exported state can represent exact pending or verified group/tag correspondence and membership work without creating game tasks or modifying prior receipts.
+Touch:
+- WorkspaceDocument and organization command/history models, shared/workspace-domain.ts and workspace-organization.ts, journal/portable serialization, coverage policy and next owning D1 migration when separate ledger storage is required.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Map projects/categories/sections/labels/goals/saved selections to tags, never extra reward-bearing tasks. Store verified remote IDs, exact owner/group kind, correlation evidence, desired canonical revision and pending/confirmed/unknown state. Preserve existing schema/export reads and immutable accepted native receipts; do not reinterpret zero-effect history as authorization. Distinguish task identity, tag identity, membership coverage and confirmed effects. No remote calls or automatic effects follow from model upgrade.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Cross-runtime serialization/domain fixtures cover all six kinds, archived/removed metadata, duplicate tag IDs, alias/name collisions, unknown states, older exports, account isolation and audit count changes without name-based fabricated coverage.
+Acceptance:
+- Canonical and exported state can represent exact pending or verified group/tag correspondence and membership work without creating game tasks or modifying prior receipts.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Add scoped native Habitica tag and task-tag gateway operations
+
+```yaml
+id: T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0
+priority: 103
+status: Ready
+parent_pending_ids: ["P-505551fa-3ca7-4415-b19e-b64585bf8f9f"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0
+related_task_id: null
+relation: main
+depends_on: ["T-63ee6e49-6452-4e7c-a707-1dd54b41c94c"]
+```
+
+Goal:
+- Provide narrow authorized native tag operations and verified task-tag updates through the private Auth gateway.
+Current behavior:
+- Auth projection operations allow inspect/create/update/score for tasks; tag endpoints, tag fields and tag fingerprints are absent. Existing organization-write disclosure explicitly grants no Habitica effects.
+Desired behavior:
+- Only explicitly consented bounded tag metadata changes dispatch; unrelated tags and tasks survive conflicts, retries and recovery.
+Touch:
+- Auth projection gateway and permission/consent handling, shared/projection.ts, workspace identity envelope, next Auth receipt/check migration and Auth fixture suite.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Introduce explicit additive Habitica tag-write consent/scope; existing organization-write or read permission never silently grants upstream writes. Allow only owned native tags and owned non-party/non-challenge tasks. Bind exact current tag/task identity, reviewed changes and fresh tag membership fingerprints. Preserve unrelated user tags; matching names are only candidates. Never automatically delete a tag, because deletion removes references from all user tasks. An uncertain tag create needs original evidence/review, not a second create. Respect pacing, revocation and receipt fences.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Synthetic gateway tests cover denied/old scopes, reviewed creation/adoption/rename, external tags, preserved unrelated membership, revoked identity, quota refusal before dispatch, timeout after create and original receipt recovery. Verify official Habitica tags/task-tag controllers before implementing allowlists.
+Acceptance:
+- Only explicitly consented bounded tag metadata changes dispatch; unrelated tags and tasks survive conflicts, retries and recovery.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Reconcile complete organization tag membership without scoring
+
+```yaml
+id: T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94
+priority: 103
+status: Ready
+parent_pending_ids: ["P-505551fa-3ca7-4415-b19e-b64585bf8f9f"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94
+related_task_id: null
+relation: main
+depends_on: ["T-63ee6e49-6452-4e7c-a707-1dd54b41c94c", "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0", "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54"]
+```
+
+Goal:
+- Translate canonical organization membership into bounded durable native tag reconciliation.
+Current behavior:
+- Native organization and planTask changes create no tag intent, and projection patch matching cannot observe tag membership. Saved-view results are bounded read pages rather than a complete materialized selection.
+Desired behavior:
+- Every relevant canonical change yields complete verified group-tag membership or an explicit recoverable pending/review state; no scoring, bulk first-page truncation or unrelated tag deletion occurs.
+Touch:
+- Workspace organization/task command acceptance, saved-view evaluation, tag ledger, executor.ts, projection-adapter.ts, shared task planning and task-tag fixtures.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Tag each independently mapped task/full child using own project/section/labels, direct-category-before-project-category, explicit goal membership and complete saved-selection matches. No parent mapping or project inheritance is invented. Evaluate every matching page against one source revision; never tag only the first page or create a task for a view. Relevant canonical changes drive bounded work; tag acknowledgements must not create an endless reconciliation loop. Archived groups retain mapped tag provenance/history; logical removal removes only owned active membership according to the exact preview and retains historical identities. Never delete remote tags automatically. Preserve unrelated tags and block stale/unknown effects.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Test all organization kinds, cross-project children, overrides, >100 matches, empty/dynamic views, changing source revision, saved-view mapping filters, archive/removal, preserved external tags, duplicate wakes, shared executor leases, timeouts and zero score calls.
+Acceptance:
+- Every relevant canonical change yields complete verified group-tag membership or an explicit recoverable pending/review state; no scoring, bulk first-page truncation or unrelated tag deletion occurs.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Expose group tag consent coverage and original receipt recovery
+
+```yaml
+id: T-80782d5c-2d9e-4897-ab4c-df3f72b59774
+priority: 103
+status: Ready
+parent_pending_ids: ["P-505551fa-3ca7-4415-b19e-b64585bf8f9f"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-80782d5c-2d9e-4897-ab4c-df3f72b59774
+related_task_id: null
+relation: main
+depends_on: ["T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94"]
+```
+
+Goal:
+- Expose honest browser and MCP organization correspondence controls and diagnostics.
+Current behavior:
+- Current task coverage warns that all group tags are missing. Projects and agents can save metadata but cannot inspect actual tag mapping or membership progress.
+Desired behavior:
+- Users and agents can identify missing group/task membership, enable only reviewed access and recover original tag receipts without mistaking metadata save for verified Habitica presence.
+Touch:
+- Todo organization/project UI, task sync controls and Settings consent, Workspace cloud adapters, MCP organization/status schemas, coverage policy and organization-management skill.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Explain separate tag consent and exact upstream metadata changes without claiming game rewards. Show full workspace coverage including archived/completed task mappings and pending tag memberships; provide original receipt recovery and explicit review of ambiguous tag adoption. Keep project aliases separate from tag identity. Existing clients lacking new scope remain usable for native reads with an explicit incomplete-integration status. Publish no automatic grant expansion.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Component/MCP fixtures cover old/new permissions, long duplicate group names, all coverage states, lost acknowledgement, stale/account changes and refusal paths. Render primary actions, keyboard focus and normal/crazy theme support under the shared geometry/contrast matrix.
+Acceptance:
+- Users and agents can identify missing group/task membership, enable only reviewed access and recover original tag receipts without mistaking metadata save for verified Habitica presence.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Convert checklist projects through a resumable identity ledger
+
+```yaml
+id: T-1cb1e7eb-8599-428b-9c23-52509b926113
+priority: 103
+status: Ready
+parent_pending_ids: ["P-7414291b-9448-4d98-884c-97b582cd2d67"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-1cb1e7eb-8599-428b-9c23-52509b926113
+related_task_id: null
+relation: main
+depends_on: ["T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54", "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94"]
+```
+
+Goal:
+- Provide reviewed resumable checklist-to-project conversion that reuses existing verified targets and preserves all content/history.
+Current behavior:
+- The codev project was manually copied into ten independent native tasks. No product operation records durable source-checklist-item to target-task identity, verified projections and final conversion completeness.
+Desired behavior:
+- Re-entering the conversion resumes exact existing identities, reports every verified or unresolved target and cannot create silent duplicates or retroactive rewards.
+Touch:
+- Workspace domain conversion records/commands, C#/Worker command engines and journals, project APIs/MCP, export validation and conversion fixtures.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Bind exact source Todo/project/checklist revision, source item IDs and target project/task IDs. Preserve full source descriptions, native urgency, task-specific notes and project tags. Checklist checkmarks may mean plan intake rather than task completion: require an explicit per-item state mapping in the preview. Reuse proven codev targets rather than copy again; no hardcoded owner IDs in reusable code. Completed targets retain recorded provenance and actual historical-time uncertainty. Missing historical remote matches remain a review requirement; no automatic scoring, fake completion patch or retired source before all prerequisites are verified.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Synthetic fixtures reproduce 10-item conversion with eight active/two archived targets, full notes, source checkmarks with different meaning, duplicate names, partial restart, existing target reuse, source edits, lost acknowledgement and missing historical projections.
+Acceptance:
+- Re-entering the conversion resumes exact existing identities, reports every verified or unresolved target and cannot create silent duplicates or retroactive rewards.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Expose checklist conversion preview and resumable project progress
+
+```yaml
+id: T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2
+priority: 103
+status: Ready
+parent_pending_ids: ["P-7414291b-9448-4d98-884c-97b582cd2d67"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2
+related_task_id: null
+relation: main
+depends_on: ["T-1cb1e7eb-8599-428b-9c23-52509b926113"]
+```
+
+Goal:
+- Expose checklist-to-project conversion as an exact reviewed browser and agent workflow.
+Current behavior:
+- The codev conversion has no ordinary browser entrypoint, source-item review or durable user-visible resume screen.
+Desired behavior:
+- Users and agents can start or resume the same reviewed conversion and inspect exact remaining mapping work before any source retirement.
+Touch:
+- Todo task details, conversion presentation/controller, Projects entrypoint, cloud adapters, MCP conversion schemas and task-management skill.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Show the source task, every checklist item, destination project, exact target reuse/create decision, explicit active/completed/archive classification and required Habitica effects. Retain reviewed note content and display historical-time uncertainty. Resume the original conversion ID after navigation or acknowledgement loss; source changes require a fresh review. Missing historical counterpart or uncertain effects remain visible and block retirement. Keep destructive source retirement separate from conversion acceptance; no repeated generic approval when explicit reviewed intent already covers a reversible step.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Component and synthetic SDK tests cover ten items, duplicate names, existing codev target reuse, active/archive choices, long notes, source edits, partial progress and original receipt recovery. Render all review/refusal/resume states under shared responsive/theme checks.
+Acceptance:
+- Users and agents can start or resume the same reviewed conversion and inspect exact remaining mapping work before any source retirement.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Retire verified converted source tasks through supported reviewed commands
+
+```yaml
+id: T-bf9aa399-2724-4f21-868e-dc6e4028004c
+priority: 103
+status: Ready
+parent_pending_ids: ["P-7414291b-9448-4d98-884c-97b582cd2d67"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-bf9aa399-2724-4f21-868e-dc6e4028004c
+related_task_id: null
+relation: main
+depends_on: ["T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2"]
+```
+
+Goal:
+- Finish a verified conversion by retiring only the exact obsolete source through supported product lifecycle operations.
+Current behavior:
+- DeleteTask rejects every retained linked mapping, so the legacy linked source remains active. Logical project removal retains native tasks and cannot retire the old Habitica Todo.
+Desired behavior:
+- The legacy container can be retired cleanly only after verified replacement coverage and exact approval; unknown or incomplete conversion never deletes the source.
+Touch:
+- Conversion command/controller, typed source retirement projection, Auth own-task delete allowlist and receipt handling, browser/MCP exact-impact preview and history/export fixtures.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Require conversion-ledger proof of content, target membership and required mappings, no unresolved effects, exact source revision and fresh upstream ownership/fingerprint. Retain native source/conversion history while removing the obsolete active Habitica container through an explicitly reviewed delete when necessary. Habitica deletion is irreversible through ordinary recovery; show exact impact and obtain concrete approval under the active UI/tool contract. A timeout is unknown and permits lookup/reconciliation only. No direct SQL mutation, broad clearCompletedTodos, scoring, renamed backup or deletion of unrelated tasks/tags.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Test incomplete mappings, content mismatch, changed source, completed/archived targets, denied ownership, definitive upstream refusal, delete timeout, already-absent source, restart recovery and preservation of all target notes/history/tags.
+Acceptance:
+- The legacy container can be retired cleanly only after verified replacement coverage and exact approval; unknown or incomplete conversion never deletes the source.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Distinguish bulk cast outcomes from cooldown cleanup and refresh failures
+
+```yaml
+id: T-b89fac23-3ac2-4c64-8560-be7a5d796a81
+priority: 101
+status: Ready
+parent_pending_ids: ["P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-b89fac23-3ac2-4c64-8560-be7a5d796a81
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Expose exact bulk-spell stage, acknowledged casts, unknown dispatch and cleanup/refresh status while reusing the existing request pacer.
+Current behavior:
+- HabiticaApiClient already serializes requests and adapts pacing headers. CastSpellAsync tracks acknowledged count but catch paths return a single message and can report a post-cast refresh failure as an undifferentiated cast failure.
+Desired behavior:
+- Partial casts and completed casts with failed cleanup/refresh produce distinct truthful outcomes and original counts; cooldown never triggers an automatic cast retry.
+Touch:
+- AppSessionController.CastSpellAsync, SpellActionResult/progress models, HabiticaApiException and existing AdaptiveRequestPacer, SpellsPage and diagnostics tests.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Do not replace the already implemented pacer or assume a fixed universal API limit. Casts, equip and refresh calls use the existing scoped dispatch gate and observed cooldown. Stop after definitive refusal or unknown cast; never automatically replay non-idempotent casts. Preserve requested/acknowledged counts through cancellation and all-casts-acknowledged refresh failure. Redact stage/status/cooldown/count diagnostics and separate private-sync warnings. No party mutation or new live spell test is required for local acceptance.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Use fake time and HTTP fixtures for 17/40 acknowledged casts, 10/10 followed by refresh failure, 429 during cast/equip/restore, concurrent refresh, cancellation and response loss. Assert no replay and no loss of already acknowledged successes.
+Acceptance:
+- Partial casts and completed casts with failed cleanup/refresh produce distinct truthful outcomes and original counts; cooldown never triggers an automatic cast retry.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Recover original spell gear after cancellation and interrupted cleanup
+
+```yaml
+id: T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0
+priority: 101
+status: Ready
+parent_pending_ids: ["P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0
+related_task_id: null
+relation: main
+depends_on: ["T-b89fac23-3ac2-4c64-8560-be7a5d796a81"]
+```
+
+Goal:
+- Persist and expose bounded account-bound gear recovery independently of spell completion.
+Current behavior:
+- The cancellation catch refreshes state without restoring changed gear. The general-error path swallows restoration exceptions; restoration uses CancellationToken.None without a dedicated bounded recovery lifecycle.
+Desired behavior:
+- Cancellation and every failure stage either verify original gear restoration or retain visible exact recovery work; no cast is replayed and no restoration failure is hidden.
+Touch:
+- AppSessionController spell/equipment orchestration, scoped recovery storage/model, SpellsPage recovery controls and safe diagnostics.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Capture original verified slots and per-slot acknowledged changes before auto-equip. Cleanup must survive user cast cancellation with an independent deadline, account binding and cooldown-aware waits. Re-read uncertain slots before explicit recovery; never overwrite later user equipment changes. On reload show retained recovery only after account verification. Surface failed/unknown slots and a manual recovery path instead of swallowing errors. Completing cleanup never resumes casts, changes party membership or grants background execution. Clear recovery only after verification of restored or explicitly superseded slots.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Test partial auto-equip, cast cancellation, interrupted restore, quota during cleanup, lost equip response, page reload, new account, user-selected later gear, deadline expiry and duplicate recovery requests with exact slot diagnostics.
+Acceptance:
+- Cancellation and every failure stage either verify original gear restoration or retain visible exact recovery work; no cast is replayed and no restoration failure is hidden.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Add stable unique project aliases to canonical commands and reads
+
+```yaml
+id: T-fed75824-e410-4bca-8664-5039742424da
+priority: 100
+status: Ready
+parent_pending_ids: ["P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-fed75824-e410-4bca-8664-5039742424da
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Support optional stable aliases independently of project display names and immutable project IDs.
+Current behavior:
+- WorkspaceProject, organization patch/snapshot and list_projects expose names and IDs only; codev exists only as an escaped marker in the display name.
+Desired behavior:
+- Projects can store and resolve stable aliases without changing canonical IDs or silently adopting text markers.
+Touch:
+- WorkspaceProject and organization patch/history validation, C#/Worker organization engines/queries, workspace serialization/export, list_projects and MCP schema fixtures.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Use a trimmed lowercase ASCII alias of 1-64 letters/digits with single internal hyphens; retain exact display names. Define one alias per project and case-insensitive uniqueness within the owner workspace including archived/removed records until an explicit reviewed clear releases the alias. Rename/clear uses a typed partial patch and expected revision. Alias resolution returns exact canonical ID and refuses name/alias ambiguity; alias strings never grant access. Old records omit the field without losing history; no automatic parsing or stripping of angle-bracket markers.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt the bounded workspace-local alias policy for local implementation; live access still uses exact authenticated canonical identity.
+Validation:
+- Test normalization, empty/invalid/duplicate aliases, rename/clear, archived collisions, imports, concurrent updates, account isolation, name collisions and unchanged task assignments/command history in both runtimes.
+Acceptance:
+- Projects can store and resolve stable aliases without changing canonical IDs or silently adopting text markers.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Expose project aliases in browser pickers and agent planning
+
+```yaml
+id: T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11
+priority: 100
+status: Ready
+parent_pending_ids: ["P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11
+related_task_id: null
+relation: main
+depends_on: ["T-fed75824-e410-4bca-8664-5039742424da"]
+```
+
+Goal:
+- Make alias authoring and exact project resolution available in normal user and agent journeys.
+Current behavior:
+- Project forms and agent discovery resolve display names only, so the temporary Companion Development <codev> name is required for current shorthand.
+Desired behavior:
+- Users and agents can consistently refer to a project by alias while previews and receipts retain exact canonical identity.
+Touch:
+- TodoOrganizationPanel and project/placement pickers, Workspace cloud adapters, MCP list/organization descriptions and project-planning skill references.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Show alias separately from escaped name and resolve to exact project ID before any write. Preserve selected off-page or archived references and existing assignments. Offer explicit reviewed codev alias assignment to the known selected project; remove the temporary name marker only as an explicit name change after alias acceptance. Never bulk-rewrite names or infer an alias from untrusted project text. Preserve separate original metadata command receipts.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Component/MCP fixtures cover create/edit/clear alias, shorthand planning, duplicate names, name-versus-alias ambiguity, long content, stale revisions, source changes and original receipt recovery. Qualify changed mobile/desktop controls and themes.
+Acceptance:
+- Users and agents can consistently refer to a project by alias while previews and receipts retain exact canonical identity.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Resolve deadline shorthand to explicit civil dates in agent workflows
+
+```yaml
+id: T-d46e457f-7139-416e-875a-840f9ff6ca89
+priority: 100
+status: Ready
+parent_pending_ids: ["P-e19b7c0e-af23-4983-908f-d2e0acde668e"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-d46e457f-7139-416e-875a-840f9ff6ca89
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Interpret explicit deadline shorthand and Russian/English relative dates using a known current civil date and user timezone.
+Current behavior:
+- Task commands already support exact deadline fields and the browser separates planned date. Packaged skills lack the requested Russian `дд`/Latin `dd` and relative-date resolution contract.
+Desired behavior:
+- An unambiguous shorthand request produces the exact intended deadline without duplicate tasks, date drift or notification promises; ambiguity remains visible.
+Touch:
+- Task-management skill and date reference/examples, existing deadline tool descriptions and a neutral multilingual prompt/expected-arguments fixture consumed by synthetic tool-contract tests.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- `дд`/`dd` labels a deadline only in an unambiguous date-setting context; ambiguous day/day or missing values require a question. Resolve tomorrow and in N days by civil calendar arithmetic in a known explicit host/user timezone, not UTC truncation or a guessed locale. A date without a year selects the next non-past occurrence; invalid/leap/ambiguous numeric dates require clarification. Exact past dates remain explicit. Report the stored ISO date and readable local interpretation, update the exact existing task, preserve omitted fields and original receipts. Deadline is distinct from planned date, review and notification; never promise reminders or originating-chat delivery. Host observation remains a separate qualification lane.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt explicit timezone-aware civil dates and next non-past year inference. Current date context is required; missing material timezone is clarified rather than guessed.
+Validation:
+- Golden Russian/English cases cover today/tomorrow/+10 days, December rollover, leap day, year omission, DST midnight, explicit past date, timezone absence, ambiguous dd and exact mutation arguments. Synthetic tests validate tool behavior; new-chat ChatGPT/Codex journeys must be recorded separately when authorized.
+Acceptance:
+- An unambiguous shorthand request produces the exact intended deadline without duplicate tasks, date drift or notification promises; ambiguity remains visible.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Expose backend build and tool compatibility discovery
+
+```yaml
+id: T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9
+priority: 100
+status: Ready
+parent_pending_ids: ["P-c151f29d-1662-4e34-9316-b849c085681f"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Expose authenticated read-only backend identity and explicit tool/schema compatibility metadata for a later release.
+Current behavior:
+- The MCP handshake hardcodes server version 0.1.0; portable plugin.json also declares 0.1.0. Neither value proves which skill package a host installed.
+Desired behavior:
+- Agents can report actual backend identity and compatibility while unknown installed package versions remain explicitly unknown.
+Touch:
+- Build/deployment metadata generation, Auth/Workspace/MCP identity envelopes, MCP discovery tool/schema, diagnostics and compatibility fixtures.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Current production deployment, public-directory submission, inferred installed versions, host configuration inspection and unrelated OAuth changes.
+Implementation constraints:
+- Separate semantic backend release, immutable build hash, tool/schema contract version and supported package range. Generate identities from reviewed release inputs rather than secrets or arbitrary runtime inference. A supplied package version/hash is a labelled client report, never trusted host installation proof or authorization. Missing/mixed/incompatible worker versions and unknown package identity have explicit states. Read discovery causes no Habitica request or account mutation. Do not publish the feature or bump the current production package during the selected preparation task.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Test coherent/mixed backend builds, old/new/missing package claims, incompatible schema majors, stale metadata and direct MCP connections with no package. Assert no credential/content leak, upstream request or authorization change.
+Acceptance:
+- Agents can report actual backend identity and compatibility while unknown installed package versions remain explicitly unknown.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Package traceable skill releases and truthful host update guidance
+
+```yaml
+id: T-6706aad6-b870-484b-80c3-e56c29431556
+priority: 100
+status: Ready
+parent_pending_ids: ["P-c151f29d-1662-4e34-9316-b849c085681f"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-6706aad6-b870-484b-80c3-e56c29431556
+related_task_id: null
+relation: main
+depends_on: ["T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9"]
+```
+
+Goal:
+- Make later plugin releases traceable and let packaged agents distinguish known package identity from backend compatibility.
+Current behavior:
+- Source skills, the publication ZIP, cached local packages and a custom MCP connection can contain different revisions; updating the backend does not update imported skills.
+Desired behavior:
+- A released package identifies the package source and compatibility requirements; agents provide evidence-qualified update advice without claiming unseen host installation state.
+Touch:
+- plugin/plugin.json, generated package identity reference and bundled skills, deploy packaging verification, plugin README/client qualification matrix and schema/SDK fixture suite.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Publication in the current production round, unrequested plugin installation/removal, secret changes or unsupported host introspection.
+Implementation constraints:
+- Use semantic release versions with immutable artifact/skill hashes and separate backend build identity; no automatic current-prod version bump. Package instructions may report only the descriptor actually loaded, labelled as package evidence, or trusted host metadata when available. A custom MCP connection without skills has installedPackage unknown. Document metadata refresh/new conversation versus imported-ZIP or local-marketplace cache update/restart using official OpenAI guidance. Never infer installation from the server handshake or expose local paths/secrets through generic MCP. Record actual fresh-chat host observation separately.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Test reproducible archives, descriptor/content mismatch, unchanged version with changed hash, stale cached skills, direct MCP unknown identity and backend-ahead/package-ahead compatibility messages. Validate current portable schemas and actual advertised tool names.
+Acceptance:
+- A released package identifies the package source and compatibility requirements; agents provide evidence-qualified update advice without claiming unseen host installation state.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Add independent account-bound Markdown note records and local storage
+
+```yaml
+id: T-6b956777-ed98-4783-a353-5e490de79444
+priority: 100
+status: Ready
+parent_pending_ids: ["P-314450c7-4cb3-4604-a872-27d0f2d189b9"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-6b956777-ed98-4783-a353-5e490de79444
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Define independent personal Markdown notes with stable identity, revisioned content and local portability.
+Current behavior:
+- Task notes are fields of CompanionTask. No independent note document, revisioned note history or account-bound notes store exists; the limited safe renderer does not supply a notes model.
+Desired behavior:
+- Local notes can be stored, updated and recovered independently of tasks while preserving exact accepted content and owner identity.
+Touch:
+- New Notes domain/application records and commands, existing IndexedDB storage bridge and next local-store upgrade, account lifecycle clearing, neutral note fixtures and note export/import services.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Keep notes separate from reward-bearing Todo/task projections and the task document schema. Store title, Markdown source, exact note ID/revision, created/updated timestamps and bounded causal revisions; preserve Unicode and source text. Define explicit create/update/append/trash/restore/purge intent and expected revision. Trash is recoverable, excluded from normal reads, and retained until explicit purge; operational audit retention is not note retention. Bound body size at 128 KiB and title at 256 characters with visible refusals; exports preserve full accepted Markdown. Account changes clear private drafts; no hidden extraction from chats or automatic cloud upload.
+Questions and required clarifications:
+- [Resolved - standing owner contract adoption] Adopt personal server-readable notes only after separate Notes cloud consent; local notes remain local. Recoverable trash lasts until explicit purge, with no automatic Habitica projection.
+Validation:
+- Domain/storage tests cover Unicode/line endings, code fences, long documents, quotas, exact partial update/append, concurrent revisions, duplicates, trash/restore/purge, old browser data, account separation and lossless export/import.
+Acceptance:
+- Local notes can be stored, updated and recovered independently of tasks while preserving exact accepted content and owner identity.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Add separately consented cloud note commands and private reads
+
+```yaml
+id: T-385399c5-981c-4710-ae5e-4e0f4860dbdd
+priority: 100
+status: Ready
+parent_pending_ids: ["P-314450c7-4cb3-4604-a872-27d0f2d189b9"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-385399c5-981c-4710-ae5e-4e0f4860dbdd
+related_task_id: null
+relation: main
+depends_on: ["T-6b956777-ed98-4783-a353-5e490de79444"]
+```
+
+Goal:
+- Store and query personal notes in the existing Workspace service with explicit privacy and revision-safe command ownership.
+Current behavior:
+- Workspace Worker stores canonical task JSON and task command journals behind workspace-v1 consent. Existing task-read and organization permissions do not grant access to a personal knowledge store.
+Desired behavior:
+- Only explicitly consented authorized owners/agents can read or change cloud notes; no legacy task permission or export leaks personal note contents.
+Touch:
+- Next Workspace D1 note/revision/command migrations, Notes API/service, Auth consent/scope projection, workspace lifecycle/export/deletion and cloud client adapters.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Use separate account-bound note tables and narrow notes.read/notes.write authority with a distinct Notes cloud disclosure/opt-in. Do not silently add personal documents to existing task reads, task exports, diagnostics or old grants. Persist expected-revision commands and exact original receipts atomically. Bounded title/body search and full-content reads preserve note identity; disclose truncated pages. Disconnect revokes access; deletion/purge removes note bodies/revisions from the active service under the documented data lifecycle. Export notes explicitly and include notes in approved whole-profile deletion. Retain no conversation text or credentials in note metadata/logs.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Synthetic two-profile tests cover consent absence, old grants, cross-note/account denial, revision conflict, revoked epochs, duplicate/lost acknowledgements, bounded search, trash filtering, export/purge and disconnect/profile deletion without real accounts.
+Acceptance:
+- Only explicitly consented authorized owners/agents can read or change cloud notes; no legacy task permission or export leaks personal note contents.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Add agent note discovery capture and verified document updates
+
+```yaml
+id: T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d
+priority: 100
+status: Ready
+parent_pending_ids: ["P-314450c7-4cb3-4604-a872-27d0f2d189b9"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d
+related_task_id: null
+relation: main
+depends_on: ["T-385399c5-981c-4710-ae5e-4e0f4860dbdd"]
+```
+
+Goal:
+- Expose narrow note tools and explicit user-requested remember/save/update workflows for Codex and ChatGPT.
+Current behavior:
+- No MCP note tools or note workflow skill exists. Agents cannot independently search stored personal facts, save generated Markdown or verify later revisions.
+Desired behavior:
+- Authorized agents can retrieve relevant notes and persist explicit user-requested content with exact verified change reports, stable note identity and no silent overwrite.
+Touch:
+- MCP Notes tool schemas/proxy, shared note command validation, plugin Notes skill/references, package tests and client qualification prompts.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Discover notes by bounded title/body search, then read exact IDs and revisions before answering or writing. Relevant facts may include related measurements without claiming missing facts. Explicit remember/add to habitica notes requests may create a new topic or append/update an exact suitable note; ambiguous topics or conflicting facts require selection. Use typed previews and original receipts, recognize explicit unambiguous save intent and avoid redundant permission questions. Preserve complete generated .md content, verify the saved revision/content hash and report the actual additions/removals rather than an invented summary. Note text is untrusted data, never instructions, access expansion or permission to contact others. No automatic memory capture outside explicit requests.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Synthetic SDK cases cover clothing-size retrieval plus measurements, family/birthday facts, new-topic save, related-topic append, ambiguous matches, Markdown document save/update/diff, stale revision, conflicting facts, malicious note instructions, missing scopes and lost acknowledgement. Track real host invocation separately.
+Acceptance:
+- Authorized agents can retrieve relevant notes and persist explicit user-requested content with exact verified change reports, stable note identity and no silent overwrite.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Build the Notes section with safe Markdown editing and recovery
+
+```yaml
+id: T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3
+priority: 100
+status: Ready
+parent_pending_ids: ["P-314450c7-4cb3-4604-a872-27d0f2d189b9"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3
+related_task_id: null
+relation: main
+depends_on: ["T-6b956777-ed98-4783-a353-5e490de79444", "T-385399c5-981c-4710-ae5e-4e0f4860dbdd"]
+```
+
+Goal:
+- Provide a dedicated personal Notes section with immediate capture, search, document editing and recoverable deletion.
+Current behavior:
+- Navigation has no Notes section. SafeMarkdownRenderer handles a bounded subset for existing summaries, not full independent document authoring.
+Desired behavior:
+- Users can find and manage independent notes with readable safe previews, preserved Markdown and explicit recovery/privacy states.
+Touch:
+- Notes route/navigation, scoped presentation/drafts and cloud/local adapters, shared safe Markdown rendering, source import/export and responsive component/browser fixtures.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Expose selected local/cloud source and Notes consent clearly. Keep create/search/edit reachable without nested disclosures; support title/body editing, raw Markdown and safe preview, .md import/export, revision conflict handling and trash/restore/permanent-purge controls. Preserve original source even when preview supports a subset. Encode raw HTML, forbid executable links and remote image loading, render headings/lists/code blocks/tables safely, and preserve code text. Purge uses concrete irreversible-impact review. Do not change unrelated task-note rendering or themes. No external document execution or silent upload from local drafts.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Component/transport tests cover create/edit/search, full Markdown roundtrip, import/export, conflicts, cancellation, source/account changes, trash/restore/purge and unavailable service. Render long notes and code at shared phone/desktop widths, 200-percent text, keyboard focus and all standard themes; record device limits separately.
+Acceptance:
+- Users can find and manage independent notes with readable safe previews, preserved Markdown and explicit recovery/privacy states.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Default inventory equipment recommendations to Intelligence
+
+```yaml
+id: T-f362faf0-4d48-4ed3-b586-843c47345510
+priority: 100
+status: Ready
+parent_pending_ids: ["P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-f362faf0-4d48-4ed3-b586-843c47345510
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Use Intelligence as the initial optimizer preference for every class without changing explicit choices or equipping gear.
+Current behavior:
+- InventoryPage initializes _optimizationGoal and invalid-selection fallback to Balanced; no persisted optimizer goal was found.
+Desired behavior:
+- Opening Inventory recommends Intelligence across classes; explicit other goals still work and merely opening/changing the preference never equips items.
+Touch:
+- InventoryPage.razor optimizer initialization/fallback, InventoryPageTests and optimizer UI documentation.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Treat the default as the owner-selected workflow preference, not a claim that Intelligence mathematically wins every situation. Keep all other goals and spell-specific recommendations available. Preserve an explicit selection for the mounted editor; introduce no new persistence or automatic equip. Invalid goal input falls back to Intelligence. Do not change optimization formulas or API behavior.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Component tests cover warrior/mage/rogue/healer/unknown class defaults, invalid input, explicit alternate goal and zero automatic equip calls. Check long recommendation labels and standard-theme rendering using existing fixtures.
+Acceptance:
+- Opening Inventory recommends Intelligence across classes; explicit other goals still work and merely opening/changing the preference never equips items.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
 
 ### Qualify automatic Companion discovery and invocation
 
@@ -686,8 +1337,8 @@ Risks:
 id: T-b92d23ba-8586-4869-a6b8-f8eb180f1b02
 priority: 100
 status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-346056d8-c254-4a1e-b860-6850c6cb470d", "P-0529505a-68be-5308-a805-44a2f4ddd6a9"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
+parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-346056d8-c254-4a1e-b860-6850c6cb470d", "P-0529505a-68be-5308-a805-44a2f4ddd6a9", "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
 root_task_id: T-b92d23ba-8586-4869-a6b8-f8eb180f1b02
 related_task_id: null
 relation: main
@@ -1052,8 +1703,8 @@ Risks:
 id: T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985
 priority: 99
 status: Ready
-parent_pending_ids: ["P-64d1995c-f862-498c-9437-e867117f2129"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+parent_pending_ids: ["P-64d1995c-f862-498c-9437-e867117f2129", "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
 root_task_id: T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985
 related_task_id: null
 relation: main
@@ -1175,12 +1826,12 @@ Risks:
 id: T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9
 priority: 99
 status: Ready
-parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31"]
-processing_run_id: PR-1577e03d-8a2b-42f8-b3ac-caa1234a7fed
+parent_pending_ids: ["P-438c79fe-385d-4657-be24-85fad9a49c31", "P-3736aa26-c58b-402d-a736-ff6ce23907bd"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
 root_task_id: T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9
 related_task_id: null
 relation: main
-depends_on: ["T-aa82feee-97b1-4f14-8b5a-d642cca014e3", "T-68cb7da7-62e9-4136-b5c5-07da20f97c30"]
+depends_on: ["T-aa82feee-97b1-4f14-8b5a-d642cca014e3", "T-68cb7da7-62e9-4136-b5c5-07da20f97c30", "T-07d27408-3019-423f-a5de-4cda1f9e2818"]
 ```
 
 Goal:
@@ -1524,6 +2175,45 @@ Risks:
 - losing a key before migration.
 - OAuth grants surviving credential deletion.
 - upstream IP-level rate limiting after centralizing requests.
+
+### Add project-filtered retained task history navigation
+
+```yaml
+id: T-16e1b491-18c3-498e-82da-81a97ff1294a
+priority: 25
+status: Ready
+parent_pending_ids: ["P-762549ef-d24d-4caa-ab3a-573a8e60eb21"]
+processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
+root_task_id: T-16e1b491-18c3-498e-82da-81a97ff1294a
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Goal:
+- Add exact project filtering and direct project-to-history navigation while reusing completed history and recovery.
+Current behavior:
+- Completion and Habit history already support exact task, text and UTC dates with safe restoration. Queries and TodoHistoryPanel lack a project filter; statistics and extended recovery have separate existing Ready tasks.
+Desired behavior:
+- Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained.
+Touch:
+- WorkspaceCompletionHistory/WorkspaceHabitHistory filters and parity models, Worker history reads/MCP schemas, TodoHistoryPanel, Projects entrypoints and retained-history skill.
+Discovery allowance:
+- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
+Out of scope:
+- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
+Implementation constraints:
+- Define project filtering as current retained canonical task assignment, labelled clearly rather than claiming event-time membership when snapshots lack placement. Include archived/removed project identities and completed archived tasks; preserve accepted event text/time provenance. Distinguish current Unassigned from a removed historical project selector. Combine text/project/UTC filters with AND, stable revision-bound paging and full counts. Existing exact-event restoration and linked/uncertain refusal remain unchanged. Reuse the planned statistics and extended-recovery tasks instead of implementing duplicate pages or unsafe undo.
+Questions and required clarifications:
+- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
+Validation:
+- Cross-runtime/component tests cover two projects, project reassignment after completion, archived/removed references, Unassigned, completed archives, duplicate names, text/date intersections, paging, stale revision, original restore receipt and project-to-history navigation.
+Acceptance:
+- Project-filtered completion/Habit history is reachable and truthful about current versus historical placement, with all existing safe recovery semantics retained.
+Documentation updates:
+- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
+Risks:
+- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
 
 ## Backlog
 

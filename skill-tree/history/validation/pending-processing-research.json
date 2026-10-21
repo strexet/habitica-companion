@@ -1,0 +1,422 @@
+{
+  "recordedAtUtc": "2026-10-21T11:09:39.766559+00:00",
+  "scope": "Standalone full Pending Queue research and decomposition; no implementation or live-account operations",
+  "inputSourceHash": "5670baa4b975c83069332ca98604705a5087143cd31b065c0227cb58214d5f64",
+  "selectedPendingIds": [
+    "P-505551fa-3ca7-4415-b19e-b64585bf8f9f",
+    "P-f0b54e18-9d9f-4528-8383-db7de5542c63",
+    "P-9cc8f051-8a18-46e0-b1fa-959c362efa54",
+    "P-3736aa26-c58b-402d-a736-ff6ce23907bd",
+    "P-7414291b-9448-4d98-884c-97b582cd2d67",
+    "P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0",
+    "P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e",
+    "P-e19b7c0e-af23-4983-908f-d2e0acde668e",
+    "P-c151f29d-1662-4e34-9316-b849c085681f",
+    "P-314450c7-4cb3-4604-a872-27d0f2d189b9",
+    "P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e",
+    "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
+  ],
+  "research": [
+    {
+      "pendingId": "P-505551fa-3ca7-4415-b19e-b64585bf8f9f",
+      "title": "Fix Habitica tag coverage for projects and task organization",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Promote four bounded units for persistent tag identity, separately scoped gateway operations, complete membership reconciliation and browser/agent recovery; native tag deletion and score effects are excluded."
+      },
+      "producedKeys": [
+        "tag-controls",
+        "tag-membership-executor",
+        "tag-gateway",
+        "tag-ledger-model"
+      ]
+    },
+    {
+      "pendingId": "P-f0b54e18-9d9f-4528-8383-db7de5542c63",
+      "title": "Fix default task projection and agent reward guidance",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Promote authoritative prospective Todo policy and coordinated browser/agent defaults. Existing immutable journals, local capture, consent and uncertain-outcome fences remain explicit."
+      },
+      "producedKeys": [
+        "default-task-browser-agent",
+        "mandatory-todo-policy"
+      ]
+    },
+    {
+      "pendingId": "P-9cc8f051-8a18-46e0-b1fa-959c362efa54",
+      "title": "Fix projection-only linking without artificial task edits",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Promote a typed unchanged-task repair command and a separate UI/recovery unit. Historical completion repair requires verified identity or explicit review rather than synthetic completed fields or automatic reward backfill."
+      },
+      "producedKeys": [
+        "link-editor-recovery",
+        "existing-task-link-command"
+      ]
+    },
+    {
+      "pendingId": "P-3736aa26-c58b-402d-a736-ff6ce23907bd",
+      "title": "Restore Habitica creation coverage for Dailies and Habits",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Promote separate Habit and lossless Daily creation units. Reuse the existing linked-Daily schedule task and make shared creation normalization a prerequisite instead of duplicating schedule authoring."
+      },
+      "producedKeys": [
+        "daily-creation",
+        "habit-creation",
+        "reuse-linked-schedule"
+      ]
+    },
+    {
+      "pendingId": "P-7414291b-9448-4d98-884c-97b582cd2d67",
+      "title": "Fix incomplete project conversion and linked source retirement",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Promote resumable source-item identity conversion, browser/agent conversion journeys and separately reviewed linked-source retirement. Retain the legacy source until every replacement and historical-state decision is verified."
+      },
+      "producedKeys": [
+        "linked-source-retirement",
+        "project-conversion-journey",
+        "project-conversion"
+      ]
+    },
+    {
+      "pendingId": "P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0",
+      "title": "Recover bulk spell casting and gear restoration under rate limits",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Existing adaptive pacing already covers serialized API dispatch. Promote truthful stage/outcome reporting and durable bounded equipment recovery for missing cancellation cleanup and swallowed restoration failure; do not rebuild pacing."
+      },
+      "producedKeys": [
+        "spell-gear-recovery",
+        "spell-stage-outcomes"
+      ]
+    },
+    {
+      "pendingId": "P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e",
+      "title": "Support stable project aliases in browser and agent workflows",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Promote canonical alias identity/uniqueness and separate browser/agent journeys using an explicit workspace-local normalization policy."
+      },
+      "producedKeys": [
+        "project-alias-journeys",
+        "project-alias-model"
+      ]
+    },
+    {
+      "pendingId": "P-e19b7c0e-af23-4983-908f-d2e0acde668e",
+      "title": "Interpret natural deadline shorthand in ChatGPT and Codex",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Promote multilingual deadline shorthand/date interpretation over existing exact fields, with explicit timezone/year rules and separate host qualification; no notification delivery or duplicate parser is implied."
+      },
+      "producedKeys": [
+        "natural-deadlines"
+      ]
+    },
+    {
+      "pendingId": "P-c151f29d-1662-4e34-9316-b849c085681f",
+      "title": "Identify installed plugin versions and backend compatibility",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Promote backend compatibility discovery and traceable later package releases. Installed host identity remains unknown without actual package/host evidence; no current production publication follows."
+      },
+      "producedKeys": [
+        "package-version-guidance",
+        "backend-compatibility"
+      ]
+    },
+    {
+      "pendingId": "P-314450c7-4cb3-4604-a872-27d0f2d189b9",
+      "title": "Add account-bound Markdown notes with agent workflows",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Promote four bounded Notes units for local model/storage, separately consented cloud service, agent tools and safe browser authoring. Personal notes remain separate from task projections and old grants."
+      },
+      "producedKeys": [
+        "notes-browser",
+        "notes-agent-tools",
+        "notes-cloud-api",
+        "notes-domain-storage"
+      ]
+    },
+    {
+      "pendingId": "P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e",
+      "title": "Default the equipment optimizer to Intelligence for every class",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Promote the targeted Intelligence preference change; current defaults remain Balanced, all alternate goals remain available and opening the optimizer must not equip gear."
+      },
+      "producedKeys": [
+        "int-default"
+      ]
+    },
+    {
+      "pendingId": "P-762549ef-d24d-4caa-ab3a-573a8e60eb21",
+      "title": "Complete project-filtered completed-task history navigation",
+      "disposition": {
+        "status": "promoted",
+        "reason": "Promote only missing project-filtered retained history/navigation, and reuse existing dedicated statistics and extended-recovery tasks. Existing search/date/history behavior is not reimplemented."
+      },
+      "producedKeys": [
+        "history-project-filter",
+        "reuse-statistics",
+        "reuse-history-recovery"
+      ]
+    }
+  ],
+  "materialFindings": [
+    "AdaptiveRequestPacer and the API dispatch gate already exist; missing spell cleanup and outcome classification remain independently actionable.",
+    "Normal task projection defaults, recurring creation, missing organization tags and linked-source retirement remain incomplete.",
+    "Ordinary create/update cannot import protected completed/dateCompleted fields; historical correspondence repair must not silently score completed work.",
+    "Task priority already supports Low/Normal/High/Urgent; the optimizer still defaults to Balanced.",
+    "Current history has search/date filters and restoration; project filtering is missing.",
+    "No independent Notes model/API or project alias field exists.",
+    "MCP handshake and package manifest both hardcode 0.1.0 but provide no trusted installed-host package identity."
+  ],
+  "adoptedDefaults": [
+    "Preserve account consent, offline capture, immutable receipts and unknown-outcome fences.",
+    "Tag writes require explicit additive authority; no old native organization permission silently gains upstream writes.",
+    "Tag mapping uses canonical identity; archived provenance remains retained and remote tags are never deleted automatically.",
+    "Aliases are optional normalized workspace-local identities, including retained archived collisions.",
+    "Relative dates use explicit timezone/current civil date; yearless dates choose the next non-past occurrence.",
+    "Independent Notes use explicit cloud opt-in, narrow note scopes, private revisioned source and recoverable trash until explicit purge.",
+    "Plugin version work belongs to a later release; unknown installed versions remain unknown."
+  ],
+  "externalReferences": [
+    {
+      "url": "https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js",
+      "finding": "Own-task creation accepts native kinds. Task-tag changes and deletion use explicit routes and ownership checks; task deletion cannot be represented as native archive alone."
+    },
+    {
+      "url": "https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tags.js",
+      "finding": "Native tags have create/read/update/delete operations; deleting a tag removes user task references, so automatic tag deletion is excluded."
+    },
+    {
+      "url": "https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js",
+      "finding": "Daily fields include frequency/everyX/startDate/repeat/daysOfMonth and unsupported variants. completed/dateCompleted are protected noSet fields."
+    },
+    {
+      "url": "https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/tasks/index.js",
+      "finding": "Task creation sanitizes input before constructing a native task and normalizes Daily start dates."
+    },
+    {
+      "url": "https://github.com/HabitRPG/habitica/blob/develop/website/server/libs/baseModel.js",
+      "finding": "Model sanitization removes protected noSet fields from ordinary task creation/update payloads."
+    },
+    {
+      "url": "https://developers.openai.com/plugins/build/plugins",
+      "finding": "Portable manifests contain package versions; installed local copies can differ from source. Package evidence is separate from the remote MCP server."
+    },
+    {
+      "url": "https://developers.openai.com/plugins/deploy/connect-chatgpt",
+      "finding": "Fresh conversations and actual tool/skill discovery qualify host availability; server connection does not establish installed skill identity."
+    },
+    {
+      "url": "https://developers.openai.com/plugins/deploy/submission",
+      "finding": "Server tool updates differ from package metadata/skill updates, which require a new package/version publication path."
+    }
+  ],
+  "localSourceFingerprints": {
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "47c9d92fc06ec7fce1a5d9a65a865096655252ab960574cd2f3496b88a6899eb",
+    "src/Habitica.Domain/Workspace/WorkspaceCommands.cs": "75bf8f9d9f6de312b23daf097ec90f45037a1e5ae4a9c14aa555457f9a903066",
+    "src/Habitica.Domain/Workspace/WorkspaceOrganizationCommands.cs": "d28a3317da40fcad9a4335c16137688527d47b9e4e349bfeb204a6576d481581",
+    "src/Habitica.Application/Workspace/WorkspaceCommandEngine.cs": "52795b00bd5125420d420ff3f293215e983d3d866614783edd81441199fe7011",
+    "src/Habitica.Application/Workspace/WorkspaceCompletionHistory.cs": "3dc52560917f01a446540246ad429d4fc2b2c477ce3da7822c680cd79be4f679",
+    "src/Habitica.Application/Workspace/WorkspaceHabitHistory.cs": "c2164eb0c2df671855caf4c9b976cca1da022c103cba3a964a2b9bf3af5d7a08",
+    "src/Habitica.Application/Workspace/WorkspaceHabiticaCoveragePolicy.cs": "dc8dfa2c13f5e6cf5c559e78e10bb0549608b6c1570100d417c153ebdf23892a",
+    "src/Habitica.WebApp/State/TodoTaskDraftStore.cs": "50104102a28ba65db83befaa27fff29f9f822346b858421590248d77b7462066",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "319204eb4a231c2327007d4f10b1df637332189be457a02d27da5f3f90a0067a",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "a6f015fbd447bfb8e5774a633b7c81155dd420f6b64ff9422bc31badafe58d6a",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "cb0606ef8c8b0dc6896ad3eef57b2ec2126e1f0d53d8280ae6d19d9a901fcf30",
+    "src/Habitica.WebApp/Components/TodoHistoryPanel.razor": "43618575b52d1ab074522df6a8fbb6beb9bca7e7fb79702bd9e40fc5fffd8b8b",
+    "src/Habitica.WebApp/Pages/InventoryPage.razor": "a3dcc5ee35af51823f063d29935442de58dc650e1742f75de6ac7653a03338f9",
+    "src/Habitica.WebApp/Formatting/SafeMarkdownRenderer.cs": "44afb2e4a43123a7f3363b61243c05805ac1b4c0322ef637880f18cfad3a771d",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "4298159e0e2760a5aa9265c47d884dff0f5c2ec52e3aeaac63e9a7e9529f769a",
+    "src/Habitica.Api/AdaptiveRequestPacer.cs": "dae032dbcc4b20ac5428f840117627611741812fa849cba66936d6d36a733366",
+    "src/Habitica.Api/HabiticaApiClient.cs": "cdc5d5e30225ba7419187215ed2d9d4ce612d6da1052c101a2b0b5b50bc130f6",
+    "workers/shared/projection.ts": "ac518131a0ad81b1311c871d98683d45a90a0ce8d53c4ce38b34f08ca00047d9",
+    "workers/shared/workspace-commands.ts": "8f14eb93cb32fa5788aafe6607f9ea116dded3e37474237046e930c4c7e79290",
+    "workers/shared/workspace-domain.ts": "4d42cf5602e6a137a2d549b0cb62947862c2449f3f719ec6ac3e88afea59e3bc",
+    "workers/companion-workspace/src/projection-adapter.ts": "ac42bf32cc0496340700aced19e8115a91e5924f33ed1dc82a235193c1175d36",
+    "workers/companion-workspace/src/commands.ts": "8f096f5ef605f3b529589d00b124284548c5e5e5f7cb0e8868bf141026408bfb",
+    "workers/companion-workspace/src/organization-api.ts": "488a6bc15804fcc2d343395f9fa301b7360b3377c858f05c4e1a40fd55589c21",
+    "workers/companion-workspace/src/index.ts": "ffb20a6ca24a9aca847b9bf37f037991edef20d77dfa44d5c07e340dbf44cec7",
+    "workers/chatgpt-auth/src/projection.ts": "1f3901759c5aeca894959598b5c81273c4acbb1c89a3a52996b627df3b8d5f09",
+    "workers/chatgpt-auth/src/oauth.ts": "0d68ab8de46e782e653e0bc8fa46f49854857941c28d8e3cf4044f7983c6bccf",
+    "workers/chatgpt-mcp/src/task-tools.ts": "ec8156838dfad0884d8789154a2d5d421568ea9526d1738034c5ea2dc66a8ae7",
+    "workers/chatgpt-mcp/src/tools.ts": "93568e8ccf2d069a539f0687b6da252272017b0bbe05c3553e9adb2cd1bf6fb6",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "cbf1ca4de212dbbe045e2130a3e0d0b5e6cfd2b8b6e17ac44583c41173054166",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoHistoryPanelTests.cs": "cba7c8db8a2dab4376443afbde0986a2f4cfda29ff14d8f466e67f015d10beb9",
+    "tests/Habitica.WebApp.Tests/Pages/InventoryPageTests.cs": "a1500b52099c2eff142f1ddfbaeeaa0dcb04d149b3a49aa449ad1ff13dd9663b",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "76bb1f69858693efc4934c07f337f67c7210dce644c2141c36b54623e7d9a7e6",
+    "tests/Habitica.Api.Tests/AdaptiveRequestPacerTests.cs": "ce1602e2a94c125cb40b0a72f8a539d1edfcf9a9fb5b4f9afd3f8fbe9f099c29",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceHabiticaCoveragePolicyTests.cs": "dc80f2eef0c2238da0ae2bd85ca72302fe4730cd483247f702f2afa5d383fcb6",
+    "workers/companion-workspace/test/projection-adapter.test.mjs": "6cdd12e50fdabe55c31814afa4057a3a5f9a49aa0f0a7bb0382327ffd3f1e9e2",
+    "workers/companion-workspace/test/organization-api.test.mjs": "8c9f968ef6fb184d797af76c2741c96462b68f4f5737c57857fa9623252e9ff7",
+    "workers/companion-workspace/test/recurrence-commands.test.mjs": "9b56fd6f4083ea63ddbbaded925249c591c2d9d3dc6a3b9e9f77ca5aa2e9c0b9",
+    "workers/chatgpt-auth/test/projection.test.mjs": "c3ac36e8c9a579a2f9acead40011225f125e99ca39cb29bc5ce0405abcf17c9c",
+    "workers/companion-workspace/test/plugin.test.mjs": "f8d02558e36e5913560c42b77429f261333156df92af021f088add7364dd9e1f",
+    "plugin/plugin.json": "db563cf9be70e64003312c0229c82b7a8b3895bd0773795abac9f88120eb0a1f",
+    "plugin/skills/habitica-task-management/SKILL.md": "da568b32fd9e60898604fc3516123780e3c55260c480cf6d5e5661b340e4c8c4",
+    "plugin/skills/habitica-activity-review/SKILL.md": "e413076c48ace75d8120688a1afc7a67717bce4c977583c27a9fc2e5cec4ad40",
+    "skill-tree/documents/companion-workspace-contract.md": "334cde2a3301e835f33dc403ea23f5291da0f4290dba82d2865cd59fb0a2233b"
+  },
+  "checks": {
+    "pendingSelection": "all 12 resolved through helper before research",
+    "newContracts": 26,
+    "reusedTasks": 3,
+    "proseValidation": "pass, warnings treated as errors",
+    "implementationTests": "not run; source/tests inspected only",
+    "productionChanges": "none",
+    "liveAccountReadsOrWrites": "none"
+  },
+  "limitations": [
+    "Official source URLs use upstream develop at observation time; implementation must revalidate endpoint behavior.",
+    "Synthetic contract planning does not establish physical-device, installed-client or live-operation acceptance.",
+    "Historical task repair can require a concrete user decision before a real game effect; local implementation can expose and test the refusal/review path.",
+    "Previous implementation checkpoint remains stopped; new nonblocking tasks stay outside the frozen snapshot."
+  ],
+  "sourceCommitBeforeProcessing": "308723084a41cf392cb91ad50a336d028f75cab2",
+  "processingReceipt": {
+    "created_ids": [
+      "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+      "T-f362faf0-4d48-4ed3-b586-843c47345510",
+      "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
+      "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
+      "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
+      "T-6b956777-ed98-4783-a353-5e490de79444",
+      "T-6706aad6-b870-484b-80c3-e56c29431556",
+      "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
+      "T-d46e457f-7139-416e-875a-840f9ff6ca89",
+      "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
+      "T-fed75824-e410-4bca-8664-5039742424da",
+      "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
+      "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
+      "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
+      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+      "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+      "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
+      "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
+      "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
+      "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
+      "T-7bb19b25-83e8-470d-9e94-94a91d744440",
+      "T-c43d3aff-9bfa-4684-a248-a83af2193492",
+      "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+      "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
+      "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
+      "T-210471d2-f432-43b3-8fc7-bbfd74f93e29"
+    ],
+    "dispositions": {
+      "P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e": {
+        "reason": "Promote canonical alias identity/uniqueness and separate browser/agent journeys using an explicit workspace-local normalization policy.",
+        "status": "promoted"
+      },
+      "P-314450c7-4cb3-4604-a872-27d0f2d189b9": {
+        "reason": "Promote four bounded Notes units for local model/storage, separately consented cloud service, agent tools and safe browser authoring. Personal notes remain separate from task projections and old grants.",
+        "status": "promoted"
+      },
+      "P-3736aa26-c58b-402d-a736-ff6ce23907bd": {
+        "reason": "Promote separate Habit and lossless Daily creation units. Reuse the existing linked-Daily schedule task and make shared creation normalization a prerequisite instead of duplicating schedule authoring.",
+        "status": "promoted"
+      },
+      "P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e": {
+        "reason": "Promote the targeted Intelligence preference change; current defaults remain Balanced, all alternate goals remain available and opening the optimizer must not equip gear.",
+        "status": "promoted"
+      },
+      "P-505551fa-3ca7-4415-b19e-b64585bf8f9f": {
+        "reason": "Promote four bounded units for persistent tag identity, separately scoped gateway operations, complete membership reconciliation and browser/agent recovery; native tag deletion and score effects are excluded.",
+        "status": "promoted"
+      },
+      "P-7414291b-9448-4d98-884c-97b582cd2d67": {
+        "reason": "Promote resumable source-item identity conversion, browser/agent conversion journeys and separately reviewed linked-source retirement. Retain the legacy source until every replacement and historical-state decision is verified.",
+        "status": "promoted"
+      },
+      "P-762549ef-d24d-4caa-ab3a-573a8e60eb21": {
+        "reason": "Promote only missing project-filtered retained history/navigation, and reuse existing dedicated statistics and extended-recovery tasks. Existing search/date/history behavior is not reimplemented.",
+        "status": "promoted"
+      },
+      "P-9cc8f051-8a18-46e0-b1fa-959c362efa54": {
+        "reason": "Promote a typed unchanged-task repair command and a separate UI/recovery unit. Historical completion repair requires verified identity or explicit review rather than synthetic completed fields or automatic reward backfill.",
+        "status": "promoted"
+      },
+      "P-c151f29d-1662-4e34-9316-b849c085681f": {
+        "reason": "Promote backend compatibility discovery and traceable later package releases. Installed host identity remains unknown without actual package/host evidence; no current production publication follows.",
+        "status": "promoted"
+      },
+      "P-e19b7c0e-af23-4983-908f-d2e0acde668e": {
+        "reason": "Promote multilingual deadline shorthand/date interpretation over existing exact fields, with explicit timezone/year rules and separate host qualification; no notification delivery or duplicate parser is implied.",
+        "status": "promoted"
+      },
+      "P-f0b54e18-9d9f-4528-8383-db7de5542c63": {
+        "reason": "Promote authoritative prospective Todo policy and coordinated browser/agent defaults. Existing immutable journals, local capture, consent and uncertain-outcome fences remain explicit.",
+        "status": "promoted"
+      },
+      "P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0": {
+        "reason": "Existing adaptive pacing already covers serialized API dispatch. Promote truthful stage/outcome reporting and durable bounded equipment recovery for missing cancellation cleanup and swallowed restoration failure; do not rebuild pacing.",
+        "status": "promoted"
+      }
+    },
+    "id": "PR-662bd939-3fbc-401b-ba37-204067e17989",
+    "reused_ids": [
+      "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+      "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985"
+    ],
+    "selected_ids": [
+      "P-505551fa-3ca7-4415-b19e-b64585bf8f9f",
+      "P-f0b54e18-9d9f-4528-8383-db7de5542c63",
+      "P-9cc8f051-8a18-46e0-b1fa-959c362efa54",
+      "P-3736aa26-c58b-402d-a736-ff6ce23907bd",
+      "P-7414291b-9448-4d98-884c-97b582cd2d67",
+      "P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0",
+      "P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e",
+      "P-e19b7c0e-af23-4983-908f-d2e0acde668e",
+      "P-c151f29d-1662-4e34-9316-b849c085681f",
+      "P-314450c7-4cb3-4604-a872-27d0f2d189b9",
+      "P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e",
+      "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
+    ],
+    "task_keys": {
+      "backend-compatibility": "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
+      "daily-creation": "T-07d27408-3019-423f-a5de-4cda1f9e2818",
+      "default-task-browser-agent": "T-7bb19b25-83e8-470d-9e94-94a91d744440",
+      "existing-task-link-command": "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
+      "habit-creation": "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
+      "history-project-filter": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
+      "int-default": "T-f362faf0-4d48-4ed3-b586-843c47345510",
+      "link-editor-recovery": "T-c43d3aff-9bfa-4684-a248-a83af2193492",
+      "linked-source-retirement": "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
+      "mandatory-todo-policy": "T-210471d2-f432-43b3-8fc7-bbfd74f93e29",
+      "natural-deadlines": "T-d46e457f-7139-416e-875a-840f9ff6ca89",
+      "notes-agent-tools": "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
+      "notes-browser": "T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3",
+      "notes-cloud-api": "T-385399c5-981c-4710-ae5e-4e0f4860dbdd",
+      "notes-domain-storage": "T-6b956777-ed98-4783-a353-5e490de79444",
+      "package-version-guidance": "T-6706aad6-b870-484b-80c3-e56c29431556",
+      "project-alias-journeys": "T-4b2b6c3b-0c31-4e65-89ab-9e9a63f8bf11",
+      "project-alias-model": "T-fed75824-e410-4bca-8664-5039742424da",
+      "project-conversion": "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+      "project-conversion-journey": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+      "reuse-history-recovery": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
+      "reuse-linked-schedule": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
+      "reuse-statistics": "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+      "spell-gear-recovery": "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
+      "spell-stage-outcomes": "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
+      "tag-controls": "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
+      "tag-gateway": "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
+      "tag-ledger-model": "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
+      "tag-membership-executor": "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94"
+    }
+  },
+  "outputSourceHash": "92459642cdbfc5070880345979313b4dd403c78b65c51f8c73f7aaeda6644a5f",
+  "validation": {
+    "strictFuture": "pass",
+    "repositoryDocumentation": "pass; historical audit stale warning retained",
+    "dependencyClosure": "pass; no cycles or missing terminal dependencies",
+    "controllerPhase": "stopped-at-owner-boundary",
+    "implementation": "not launched"
+  }
+}
