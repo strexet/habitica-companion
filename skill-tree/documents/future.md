@@ -98,6 +98,29 @@ Current context:
 Source:
 - Explicit owner-directed intake from Companion task c3765653-711e-4532-be37-0ba41f0954b3, checklist 50a8d2d0-c268-4b2c-aa5c-3e17d9bd01b5; source task revision 40, workspace revision 41. iPhone Safari incident and sanitized client-log observations retained in the source notes.
 
+### Support stable project aliases in browser and agent workflows
+
+```yaml
+id: P-2c423cb9-59c1-4364-9d89-a3dfdbf9655e
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Add optional user-owned project aliases, including codev for Companion Development, independently of the display name. Current WorkspaceProject records and organization tools expose no project alias field.
+
+Expected behavior:
+- Users can create, rename, clear and resolve project aliases through supported browser and agent flows. Define own-workspace uniqueness, case handling and ambiguity behavior during Process Pending. Preserve exact project IDs, existing assignments and archive history. Existing clients can use the escaped display name Companion Development <codev> until native alias support ships.
+
+Source:
+- Owner request on 2026-10-21 while converting the legacy Companion development checklist into a first-class project.
+
 ### Interpret natural deadline shorthand in ChatGPT and Codex
 
 ```yaml
