@@ -14,6 +14,12 @@ The committed MCP endpoint uses `.invalid` and cannot connect. Default Worker te
 
 The source package contains no registered connector ID, public listing, marketplace installation, hooks or custom UI. A real host registration must use the assigned registration identity; never invent a `.app.json` mapping.
 
+## Current package refresh
+
+The production MCP server is updated from source db79a3d. The matching five-skill package is staged in deploy/.production/plugin and archived as output/habitica-companion-plugin-db79a3d.zip. The portable manifest still declares 0.1.0; no tool currently proves the version of an installed client copy. Installed package/version compatibility discovery remains Pending for a later release.
+
+For a direct ChatGPT custom MCP connection, refresh advertised metadata and start a new conversation after changed tools or schemas. Updating imported skills requires replacing the package through the actual supported host source. A local marketplace installation loads a cached copy; update the selected source and restart the desktop host according to the official packaging flow. No package refresh changes server credentials or grants new OAuth scopes. User approval remains required when the host presents broader access. The client matrix retains the recorded qualification limits; current server availability does not establish updated host discovery or skill activation.
+
 ## Client qualification matrix
 
 ChatGPT and Codex desktop are required owner-pilot clients. Direct MCP qualification uses the same approved production HTTPS backend with distinct client registrations and grants. Owner-first checks precede the separate two-consenting-account release stage. Codex CLI diagnostics supplement the desktop lane. A successful direct connection does not prove plugin installation or skill activation.

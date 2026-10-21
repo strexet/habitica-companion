@@ -72,6 +72,84 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### Recover bulk spell casting and gear restoration under rate limits
+
+```yaml
+id: P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0
+priority: 101
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Investigate and repair owner-reported interrupted bulk casting with Auto equip on the production Spells page. Client logs confirm 17 of 40 acknowledged casts before failure and other partial or all-casts-acknowledged errors; the exact HTTP failure stage and final gear state remain unverified.
+
+Expected behavior:
+- Coordinate account request pacing across casts, gear changes and refreshes; respect Retry-After/reset and stop safely during cooldown. Report acknowledged versus requested casts, uncertain effects and the active stage. Restore original gear through a managed cooldown-aware cleanup or expose verified failed slots and manual recovery. Cancellation and reload preserve safe recovery. Never automatically replay uncertain non-idempotent casts. Add redacted structured stage/status/cooldown/count/gear diagnostics and deterministic regressions for cast, restore, refresh, cancellation and concurrent-request failures.
+
+Current context:
+- Existing account logs provide partial-count evidence, not a complete upstream trace. Error 10/10 may occur after all casts succeeded. Preserve the distinction between private-sync warnings and spell failures. Diagnose the silent restoration catch and cancellation cleanup; implementation research belongs to Process Pending. Highest priority above every unfinished task.
+
+Source:
+- Explicit owner-directed intake from Companion task c3765653-711e-4532-be37-0ba41f0954b3, checklist 50a8d2d0-c268-4b2c-aa5c-3e17d9bd01b5; source task revision 40, workspace revision 41. iPhone Safari incident and sanitized client-log observations retained in the source notes.
+
+### Interpret natural deadline shorthand in ChatGPT and Codex
+
+```yaml
+id: P-e19b7c0e-af23-4983-908f-d2e0acde668e
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Support Russian `дд` and Latin `dd` shorthand for due date, relative dates such as tomorrow or in ten days, dates without a year and explicit deadline-setting commands in the task workflow.
+
+Expected behavior:
+- Resolve dates against the user timezone and current civil date, save the exact requested deadline and report the stored date without duplicate tasks. Distinguish deadline from planned date and notification; promise no reminder delivery without an implemented delivery mechanism. Preserve material ambiguity checks and qualify Russian/English ChatGPT and Codex journeys.
+
+Current context:
+- Existing tools support exact deadline fields but the current packaged task skill lacks the requested shorthand/date interpretation contract. Detailed parsing policy, ambiguity cases and host qualification remain for Process Pending.
+
+Source:
+- Explicit owner-directed intake from Companion task c3765653-711e-4532-be37-0ba41f0954b3, checklist 77d6674c-23ed-4a67-870e-a4260ed80f98; source task revision 40.
+
+### Identify installed plugin versions and backend compatibility
+
+```yaml
+id: P-c151f29d-1662-4e34-9316-b849c085681f
+priority: 100
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Expose trustworthy installed ChatGPT and Codex plugin version/build information and compare the installed package with the deployed backend and tool contract. Agents can answer which version is installed and whether an update is required.
+
+Expected behavior:
+- Versioned releases and read-only discovery distinguish installed package identity, backend build and supported capability/schema compatibility. Unknown installed versions remain unknown rather than inferred from the server. Provide actionable update guidance. Capture only for a later release; do not add versioning behavior to the current production deployment.
+
+Current context:
+- plugin/plugin.json currently declares 0.1.0, but existing agent tools do not expose trustworthy installed-package identity. Refreshing server tools differs from updating packaged skills. Host support, release policy and safe compatibility checks remain for Process Pending.
+
+Source:
+- Owner request on 2026-10-21; official OpenAI plugin packaging and metadata refresh documentation.
+
 ### Add account-bound Markdown notes with agent workflows
 
 ```yaml
@@ -123,6 +201,32 @@ Current context:
 
 Source:
 - Owner request on 2026-10-19; InventoryPage.razor equipment-optimizer-goal control and _optimizationGoal default.
+
+### Complete project-filtered completed-task history navigation
+
+```yaml
+id: P-762549ef-d24d-4caa-ab3a-573a8e60eb21
+priority: 25
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- Finish the requested completed-tasks section after project support, with searchable completed records, project/date filters, task inspection and supported restoration entrypoints.
+
+Expected behavior:
+- Reuse retained completion history and existing safe restoration; add the missing project-filtered journeys and analytics/navigation entrypoint without duplicating completed history or promising unsupported linked-task undo. Keep activity history separate from user descriptions and preserve existing project identities.
+
+Current context:
+- Retained Todo/Daily history and safe native Todo restore are already implemented under T-54623cea-9c8f-4819-b33f-b6552c82df55. Dedicated statistics/navigation and extended restoration have existing prioritized tasks. Process Pending must merge/reuse existing work and isolate remaining project/date filtering or integration gaps rather than reimplement completed behavior. Owner source priority P3 remains low.
+
+Source:
+- Explicit owner-directed intake from Companion task c3765653-711e-4532-be37-0ba41f0954b3, checklist 8c126b81-0cdd-4cd4-a9a7-7a93b417d82f; source task revision 40.
 
 ## Prioritized Next Changes
 
