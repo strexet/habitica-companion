@@ -1,5 +1,6 @@
 using Bunit;
 using Habitica.Application.Workspace;
+using Habitica.Domain.Workspace;
 using Habitica.WebApp.Components;
 using Habitica.WebApp.State;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +38,7 @@ public sealed class CompanionTasksPanelTests : BunitContext
     [Theory]
     [InlineData("CreateDaily", "Daily")]
     [InlineData("CreateHabit", "Habit")]
-    public void NativeCreationAndArchiveShowReviewAndRetainHistory(string operation, string kind)
+    public async Task NativeCreationAndArchiveShowReviewAndRetainHistory(string operation, string kind)
     {
         var f = new WorkspaceTaskFixture(); Services.AddMudServices();
         Services.AddSingleton<IJSRuntime>(f.Js); Services.AddSingleton<IAppSessionController>(f.Session);
@@ -52,6 +53,13 @@ public sealed class CompanionTasksPanelTests : BunitContext
         Assert.Contains(kind, cut.Find(".companion-command-preview").TextContent);
         cut.Find("[data-testid='canonical-confirm']").Click();
         var task = Assert.Single(f.Controller.Snapshot!.Document.Tasks); Assert.Equal(kind, task.Kind.ToString());
+        if (kind == "Habit")
+        {
+            Assert.Equal(ProjectionCommandState.Pending, f.Controller.Snapshot.Commands.Single().ProjectionState);
+            await f.SeedLegacyLocalAsync("Retained native Habit", kind: CompanionTaskKind.Habit);
+            task = f.Controller.Snapshot!.Document.Tasks.Single();
+            cut.Dispose(); cut = Render<CompanionTasksPanel>();
+        }
         cut.Find($"[data-testid='canonical-task-{task.Id:D}']").Click();
         cut.Find("[data-testid='canonical-operation']").Change("DeleteTask");
         cut.Find("[data-testid='canonical-preview']").Click();

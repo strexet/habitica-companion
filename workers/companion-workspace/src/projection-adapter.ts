@@ -9,8 +9,11 @@ export type ProjectionStep = { kind: "inspect"; operation: "inspect" | "inspectD
  | { kind: "account" } | { kind: "blocked"; code: string }
  | { kind: "write"; operation: "create" | "update" | "score"; arguments: Record<string,unknown> }
  | { kind: "observedApplied"; task: RemoteTask; evidence: string };
-function detailsPatch(details?:HabiticaTaskDetails|null):Partial<RemotePatch>{return {...(details?.difficulty!=null?{priority:details.difficulty}:{}),...(details?.attribute!=null?{attribute:details.attribute}:{}),...(details?.checklist!=null?{checklist:details.checklist}:{} )};}
-function createPatch(task: CompanionTask): RemotePatch { return { ...detailsPatch(task.habiticaDetails), text: task.text, notes: task.notes ?? "", ...(task.deadline ? { date: task.deadline } : {}) }; }
+function detailsPatch(details?:HabiticaTaskDetails|null):Partial<RemotePatch>{return {...(details?.up!==undefined?{up:details.up}:{}),...(details?.down!==undefined?{down:details.down}:{}),...(details?.difficulty!=null?{priority:details.difficulty}:{}),...(details?.attribute!=null?{attribute:details.attribute}:{}),...(details?.checklist!=null?{checklist:details.checklist}:{} )};}
+function createPatch(task: CompanionTask): RemotePatch {
+ if(task.kind==='habit')return {...(task.habiticaDetails?.difficulty!=null?{priority:task.habiticaDetails.difficulty}:{}),...(task.habiticaDetails?.attribute!=null?{attribute:task.habiticaDetails.attribute}:{}),text:task.text,notes:task.notes??'',up:task.habiticaDetails?.up??true,down:task.habiticaDetails?.down??true};
+ return { ...detailsPatch(task.habiticaDetails), text: task.text, notes: task.notes ?? "", ...(task.deadline ? { date: task.deadline } : {}) };
+}
 function updatePatch(entry: CommandEntry): RemotePatch {
  const patch = entry.command.patch; if (!patch) return {};
  return { ...detailsPatch(patch.habiticaDetails), ...(patch.text === null ? {} : { text: patch.text }), ...(patch.clearNotes || patch.notes !== null ? { notes: patch.clearNotes ? "" : patch.notes! } : {}), ...(patch.clearDeadline || patch.deadline !== null ? { date: patch.clearDeadline ? null : patch.deadline! } : {}) };
@@ -25,7 +28,7 @@ export function projectionStep(document: WorkspaceDocument, entry: CommandEntry,
  const alias = projectionAlias(document.id, task.id);
  if (mapping.correlationAlias && mapping.correlationAlias !== alias) return blocked("projection_identity_conflict");
  const creating = effect === "create" && !mapping.habiticaTaskId;
- if (creating && task.kind !== "todo") return blocked("adoption_required");
+ if (creating && !["todo","habit"].includes(task.kind)) return blocked("adoption_required");
  const target = creating ? alias : mapping.habiticaTaskId;
  if (!target) return blocked("adoption_required");
  if (effect.startsWith("score") && task.kind === "daily" && !account) return {kind:"account"};
@@ -33,10 +36,10 @@ export function projectionStep(document: WorkspaceDocument, entry: CommandEntry,
  const remote = observation.task;
  if (creating) {
   const patch = createPatch(task);
-  if (remote) return entry.projectionState === "unknownOutcome" && remote.alias === alias && remote.kind === "todo" && patchMatches(remote,patch)
+  if (remote) return entry.projectionState === "unknownOutcome" && remote.alias === alias && remote.kind === task.kind && patchMatches(remote,patch)
    ? {kind:"observedApplied",task:remote,evidence:"verified-correlated-create"} : blocked("correlation_requires_review");
   if (entry.projectionState === "unknownOutcome") return blocked("unknown_create_not_proven_absent");
-  return {kind:"write",operation:"create",arguments:{selector:alias,checkToken:observation.checkToken,patch}};
+  return {kind:"write",operation:"create",arguments:{selector:alias,checkToken:observation.checkToken,patch,...(task.kind==='habit'?{taskKind:'habit'}:{})}};
  }
  if (!remote) return blocked("external_deleted");
  if (remote.id !== target || remote.kind !== task.kind || mapping.correlationAlias && remote.alias !== alias) return blocked("projection_identity_conflict");

@@ -1,0 +1,128 @@
+{
+  "cases": [
+    {
+      "up": true,
+      "down": true,
+      "command": {
+        "id": "20000000-0000-4000-8000-000000000031",
+        "workspaceId": "20000000-0000-4000-8000-000000000032",
+        "expectedRevision": 1,
+        "operation": "createHabit",
+        "taskId": "20000000-0000-4000-8000-000000000033",
+        "patch": {
+          "text": "Portable Habit",
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": {
+            "difficulty": 1.5,
+            "attribute": "int",
+            "checklist": null,
+            "up": true,
+            "down": true
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": true
+      },
+      "payloadHash": "ed360334a1750e5640c8ca66f421aa897a9230fc1b5cbb88b2e9e9b5cefcf2e1"
+    },
+    {
+      "up": true,
+      "down": false,
+      "command": {
+        "id": "20000000-0000-4000-8000-000000000031",
+        "workspaceId": "20000000-0000-4000-8000-000000000032",
+        "expectedRevision": 1,
+        "operation": "createHabit",
+        "taskId": "20000000-0000-4000-8000-000000000033",
+        "patch": {
+          "text": "Portable Habit",
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": {
+            "difficulty": 1.5,
+            "attribute": "int",
+            "checklist": null,
+            "up": true,
+            "down": false
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": true
+      },
+      "payloadHash": "704ea155c1b2c5be2b594d584a0ad75bfb77d708b3db60cce18ef66a83ff24ed"
+    },
+    {
+      "up": false,
+      "down": true,
+      "command": {
+        "id": "20000000-0000-4000-8000-000000000031",
+        "workspaceId": "20000000-0000-4000-8000-000000000032",
+        "expectedRevision": 1,
+        "operation": "createHabit",
+        "taskId": "20000000-0000-4000-8000-000000000033",
+        "patch": {
+          "text": "Portable Habit",
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": {
+            "difficulty": 1.5,
+            "attribute": "int",
+            "checklist": null,
+            "up": false,
+            "down": true
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": true
+      },
+      "payloadHash": "fa273f0c0207ec6b3e9f948d26f4be251b908a49a44d8008ae2599a90de78b29"
+    },
+    {
+      "up": false,
+      "down": false,
+      "command": {
+        "id": "20000000-0000-4000-8000-000000000031",
+        "workspaceId": "20000000-0000-4000-8000-000000000032",
+        "expectedRevision": 1,
+        "operation": "createHabit",
+        "taskId": "20000000-0000-4000-8000-000000000033",
+        "patch": {
+          "text": "Portable Habit",
+          "notes": null,
+          "clearNotes": false,
+          "priority": null,
+          "deadline": null,
+          "clearDeadline": false,
+          "habiticaDetails": {
+            "difficulty": 1.5,
+            "attribute": "int",
+            "checklist": null,
+            "up": false,
+            "down": false
+          }
+        },
+        "direction": null,
+        "count": 1,
+        "occurrenceDate": null,
+        "projectToHabitica": true
+      },
+      "payloadHash": "1e7202138857f76c9aab0f881117654fb43096296bb058a0812e64723981738f"
+    }
+  ]
+}

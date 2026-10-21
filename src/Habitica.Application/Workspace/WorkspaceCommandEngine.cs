@@ -62,7 +62,8 @@ public static class WorkspaceCommandEngine
         {
             if (!command.ProjectToHabitica) return Reject(SubmissionDisposition.Invalid, "projection_required");
             if (current!.State != CompanionTaskState.Active) return Reject(SubmissionDisposition.Invalid, "historical_projection_requires_review");
-            if (current.Kind != CompanionTaskKind.Todo) return Reject(SubmissionDisposition.Invalid, "adoption_required");
+            if (current.Kind is not (CompanionTaskKind.Todo or CompanionTaskKind.Habit)) return Reject(SubmissionDisposition.Invalid, "adoption_required");
+            if (current.Kind == CompanionTaskKind.Habit && (current.Deadline is not null || current.HabiticaDetails?.Checklist is not null)) return Reject(SubmissionDisposition.Invalid, "unsupported_habit_fields");
             if (document.Projections.Any(value => value.TaskId == current.Id && (value.IsArchived || value.State is ProjectionState.UnknownOutcome or ProjectionState.ExternalConflict)))
                 return Reject(SubmissionDisposition.Invalid, "projection_review_required");
             if (snapshot.Commands.Any(entry => entry.Command.TaskId == current.Id && entry.ProjectionState != ProjectionCommandState.Cancelled
@@ -98,6 +99,18 @@ public static class WorkspaceCommandEngine
             if (command.ProjectToHabitica) return Reject(SubmissionDisposition.Invalid,"unsupported_projection");
             if (current!.Kind != CompanionTaskKind.Todo || current.State != CompanionTaskState.Active) return Reject(SubmissionDisposition.Invalid,"active_todo_required");
         }
+        var resultingKind = creating ? command.Operation == WorkspaceOperation.CreateHabit ? CompanionTaskKind.Habit : command.Operation == WorkspaceOperation.CreateDaily ? CompanionTaskKind.Daily : CompanionTaskKind.Todo : current!.Kind;
+        if ((patch?.HabiticaDetails?.Up is not null || patch?.HabiticaDetails?.Down is not null) && resultingKind != CompanionTaskKind.Habit)
+            return Reject(SubmissionDisposition.Invalid, "habit_directions_required_kind");
+        if (command.Operation == WorkspaceOperation.CreateHabit && command.ProjectToHabitica &&
+            (patch!.Deadline is not null || patch.HabiticaDetails?.Checklist is not null || patch.HabiticaDetails?.Up is null || patch.HabiticaDetails?.Down is null))
+            return Reject(SubmissionDisposition.Invalid, "unsupported_habit_fields");
+        if (resultingKind == CompanionTaskKind.Habit && (command.ProjectToHabitica || mapping is { State: not ProjectionState.Unlinked }) &&
+            (patch?.Deadline is not null || patch?.ClearDeadline == true || patch?.HabiticaDetails?.Checklist is not null))
+            return Reject(SubmissionDisposition.Invalid, "unsupported_habit_fields");
+        if (command.Operation == WorkspaceOperation.ScoreHabit &&
+            (command.Direction == HabitScoreDirection.Up ? current!.HabiticaDetails?.Up == false : current!.HabiticaDetails?.Down == false))
+            return Reject(SubmissionDisposition.Invalid, "habit_direction_disabled");
         var lifecycle = command.Operation is WorkspaceOperation.SkipOccurrence or WorkspaceOperation.PauseTask or WorkspaceOperation.ResumeTask;
         if (lifecycle)
         {
@@ -118,7 +131,7 @@ public static class WorkspaceCommandEngine
             return Reject(SubmissionDisposition.Invalid, "recurrence_requires_daily");
         if (editsRecurrence && (command.ProjectToHabitica || mapping is not null && (mapping.State != ProjectionState.Unlinked || mapping.HabiticaTaskId is not null)))
             return Reject(SubmissionDisposition.Invalid, "unsupported_projection");
-        if ((command.Operation is WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit or WorkspaceOperation.DeleteTask)
+        if ((command.Operation is WorkspaceOperation.CreateDaily or WorkspaceOperation.DeleteTask)
             && (command.ProjectToHabitica || mapping is not null && (mapping.State != ProjectionState.Unlinked || mapping.HabiticaTaskId is not null)))
             return Reject(SubmissionDisposition.Invalid, "unsupported_projection");
         if (command.Operation == WorkspaceOperation.CompleteTask && (current!.Kind == CompanionTaskKind.Habit || current.State is CompanionTaskState.Completed or CompanionTaskState.Cancelled or CompanionTaskState.Paused))

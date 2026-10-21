@@ -18,11 +18,11 @@ internal sealed class WorkspaceTaskFixture
     public WorkspaceTaskFixture(Habitica.Application.Diagnostics.DiagnosticsLogWriter? diagnostics = null) { Database = new(Js); Controller = new(Session, Client, Database, diagnostics); }
     public static WorkspaceTaskInput Todo(string text = "Synthetic Companion task") => new(WorkspaceOperation.CreateTodo, null, text, "Private synthetic notes", CompanionPriority.High, null, null, false, HabitScoreDirection.Up, 1, null);
     // Historical snapshots bypass current preparation only in this synthetic fixture.
-    public async Task SeedLegacyLocalAsync(string text = "Legacy Todo", bool completed = false)
+    public async Task SeedLegacyLocalAsync(string text = "Legacy Todo", bool completed = false, CompanionTaskKind kind = CompanionTaskKind.Todo)
     {
         await Controller.CreateLocalAsync(); var state = Controller.Snapshot!; var id = Guid.NewGuid();
         state = WorkspaceCommandEngine.Accept(state, new(Guid.NewGuid(), state.Document.Id, state.Document.Revision,
-            WorkspaceOperation.CreateTodo, id, new(Text: text)), DateTimeOffset.UtcNow).Snapshot!;
+            kind == CompanionTaskKind.Habit ? WorkspaceOperation.CreateHabit : kind == CompanionTaskKind.Daily ? WorkspaceOperation.CreateDaily : WorkspaceOperation.CreateTodo, id, new(Text: text)), DateTimeOffset.UtcNow).Snapshot!;
         if (completed) state = WorkspaceCommandEngine.Accept(state, new(Guid.NewGuid(), state.Document.Id,
             state.Document.Revision, WorkspaceOperation.CompleteTask, id), DateTimeOffset.UtcNow).Snapshot!;
         var key = Js.Rows.Keys.Single(key => key.Id == state.Document.Id.ToString("D"));

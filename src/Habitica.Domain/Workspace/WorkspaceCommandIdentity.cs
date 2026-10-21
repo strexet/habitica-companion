@@ -11,6 +11,14 @@ public static class WorkspaceCommandIdentity
     {
         static string? Name<T>(T? value) where T : struct, Enum => value is null ? null : JsonNamingPolicy.CamelCase.ConvertName(value.Value.ToString());
         var patch = command.Patch;
+        if (patch?.HabiticaDetails is { } directions && (directions.Up is not null || directions.Down is not null))
+        {
+            var previous = Hash(command with { Patch = patch with { HabiticaDetails = directions with { Up = null, Down = null } } });
+            var payload = "companion-command-v9\n64:" + previous;
+            foreach (var flag in new[] { directions.Up, directions.Down }) payload += flag is null ? "-1:" : flag.Value ? "1:1" : "1:0";
+            return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(payload))).ToLowerInvariant();
+        }
+
         var fields = new string?[]
         {
             command.Id.ToString("D"), command.WorkspaceId.ToString("D"), command.ExpectedRevision.ToString(CultureInfo.InvariantCulture),

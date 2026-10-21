@@ -111,7 +111,7 @@ test('unaccepted previews cannot survive a disconnected workspace access epoch',
 });
 
 
-test('native creation and archival retain exact receipts and history without upstream effects',async t=>{
+test('native Daily and retained legacy Habit archival preserve receipts and history without upstream effects',async t=>{
  let writes=0;const f=await fixture(t,{workspace:true,habitica:async request=>{
   if(request.method!=='GET')writes++;
   return Response.json({success:true,data:{_id:request.headers.get('x-api-user'),profile:{name:'Fixture A'}}});
@@ -129,12 +129,12 @@ test('native creation and archival retain exact receipts and history without ups
   return result.structuredContent;
  };
  const daily=await execute('createDaily','create_daily',{patch:{text:'Disposable Daily',deadline:'2026-10-18'}});
- const habit=await execute('createHabit','create_habit',{patch:{text:'Disposable Habit'}});
+ const {seedLegacyCommand}=await import('./fixtures/legacy-todo.mjs');const habit={taskId:crypto.randomUUID()};await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:2,operation:'createHabit',taskId:habit.taskId,patch:{text:'Retained native Habit'}});
  const read=await(await call(f,w,'get_companion_task',{taskId:daily.taskId})).json();assert.equal(read.task.kind,'daily');assert.equal(read.task.recurrence,null);assert.equal(read.task.deadline,'2026-10-18');
  await execute('completeTask','complete_task',{taskId:daily.taskId,occurrenceDate:'2026-10-17'});
  await execute('scoreHabit','score_habit',{taskId:habit.taskId,direction:'down',count:2});
  for(const operation of ['createDaily','createHabit']){
-  assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation,patch:{text:'Unsupported projection'},projectToHabitica:true})).status,422);
+  if(operation==='createDaily')assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation,patch:{text:'Unsupported projection'},projectToHabitica:true})).status,422);
   assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation,taskId:crypto.randomUUID(),patch:{text:'Caller identity'}})).status,422);
  }
  assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'deleteTask',taskId:daily.taskId,expectedRevision:1})).status,409);

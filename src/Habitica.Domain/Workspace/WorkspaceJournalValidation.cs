@@ -35,9 +35,15 @@ public static class WorkspaceJournalValidation
                 || entry.PayloadHash != WorkspaceCommandIdentity.Hash(entry.Command) || entry.AcceptedAtUtc == default || entry.AcceptedAtUtc.Offset != TimeSpan.Zero
                 || !Enum.IsDefined(entry.ProjectionState) || !Enum.IsDefined(entry.Failure) || entry.Effects is null || entry.Effects.Count > 11
                 || entry.Effects.Any(effect => !Enum.IsDefined(effect)) || entry.ConfirmedEffects < 0 || entry.ConfirmedEffects > entry.Effects.Count || entry.Attempts < 0) return false;
+            if (entry.Command.Operation == WorkspaceOperation.CreateHabit && entry.Command.ProjectToHabitica &&
+                (entry.Command.Patch?.Deadline is not null || entry.Command.Patch?.HabiticaDetails?.Checklist is not null
+                || entry.Command.Patch?.HabiticaDetails?.Up is null || entry.Command.Patch?.HabiticaDetails?.Down is null
+                || entry.TaskSnapshot is not { Kind: CompanionTaskKind.Habit, State: CompanionTaskState.Active, IsArchived: false }
+                || entry.TaskSnapshot.HabiticaDetails?.Up != entry.Command.Patch.HabiticaDetails.Up || entry.TaskSnapshot.HabiticaDetails?.Down != entry.Command.Patch.HabiticaDetails.Down
+                || !entry.Effects.SequenceEqual(new[] { ProjectionEffectKind.Create }))) return false;
             if (entry.Command.Operation == WorkspaceOperation.EnsureProjection &&
                 (!entry.Command.ProjectToHabitica || entry.Command.Patch is not null || entry.Command.Count != 1 || entry.Command.Direction is not null
-                || entry.Command.OccurrenceDate is not null || entry.TaskSnapshot is not { Kind: CompanionTaskKind.Todo, State: CompanionTaskState.Active, IsArchived: false }
+                || entry.Command.OccurrenceDate is not null || entry.TaskSnapshot is not { Kind: CompanionTaskKind.Todo or CompanionTaskKind.Habit, State: CompanionTaskState.Active, IsArchived: false }
                 || !entry.Effects.SequenceEqual(new[] { ProjectionEffectKind.Create }))) return false;
             if (entry.Command.Operation is WorkspaceOperation.SkipOccurrence or WorkspaceOperation.PauseTask or WorkspaceOperation.ResumeTask)
             {
@@ -73,7 +79,7 @@ public static class WorkspaceJournalValidation
                 && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
                     || entry.Command.Direction is not null || entry.Command.Count != 1 || entry.Command.OccurrenceDate is not null
                     || entry.Command.Patch is not { RestoreTodo: { } target } restorePatch || (restorePatch with { RestoreTodo = null }) != new WorkspaceTaskPatch()
-                    || entry.TaskSnapshot is not { Kind: CompanionTaskKind.Todo, State: CompanionTaskState.Active, IsArchived: false }
+                    || entry.TaskSnapshot is not { Kind: CompanionTaskKind.Todo or CompanionTaskKind.Habit, State: CompanionTaskState.Active, IsArchived: false }
                     || !restorations.TryGetValue(entry.Command.Id,out var restoration) || restoration.TaskId != entry.Command.TaskId
                     || restoration.CompletionId != target.CompletionId || restoration.Revision != entry.Command.ExpectedRevision+1 || restoration.RestoredAtUtc != entry.AcceptedAtUtc)) return false;
             if ((entry.Command.Patch?.Recurrence is not null || entry.Command.Patch?.ClearRecurrence == true)
@@ -88,6 +94,7 @@ public static class WorkspaceJournalValidation
                 || string.IsNullOrWhiteSpace(accepted.Text) || accepted.Text.Length > 2048 || accepted.Notes?.Length > 10000
                 || accepted.ExecutionStage is {} executionStage && (accepted.Kind != CompanionTaskKind.Todo || !Enum.IsDefined(executionStage))
                 || !HabiticaTaskDetails.IsValid(accepted.HabiticaDetails)
+                || accepted.Kind != CompanionTaskKind.Habit && (accepted.HabiticaDetails?.Up is not null || accepted.HabiticaDetails?.Down is not null)
                 || accepted.Recurrence is { } schedule && (accepted.Kind != CompanionTaskKind.Daily || !RecurrenceCalendar.IsStructurallyValid(schedule))
                 || accepted.CreatedAtUtc == default || accepted.CreatedAtUtc.Offset != TimeSpan.Zero || accepted.UpdatedAtUtc != entry.AcceptedAtUtc || accepted.CreatedAtUtc > accepted.UpdatedAtUtc)) return false;
             if (entry.ProjectionState == ProjectionCommandState.NotRequested ? entry.Effects.Count != 0 : entry.Effects.Count == 0) return false;

@@ -102,7 +102,15 @@ public sealed class TodoTaskPanelTests : BunitContext
     {
         var (f, _) = Setup(); await f.Controller.CreateLocalAsync();
         var cut = Render<TodoTaskPanel>(p => p.Add(x => x.Kind, kind));
-        cut.Find("[data-testid='todo-title']").Input("Synthetic " + kind); cut.Find("form").Submit(); cut.Find("[data-testid='todo-confirm']").Click();
+        cut.Find("[data-testid='todo-title']").Input("Synthetic " + kind); cut.Find("form").Submit();
+        if (kind == CompanionTaskKind.Habit)
+        {
+            var directions = f.Controller.Preview!.Command.Patch!.HabiticaDetails!;
+            Assert.True(directions.Up); Assert.True(directions.Down);
+            Assert.Contains("Positive (+): Enabled", cut.Find("[data-testid='todo-review']").TextContent);
+            Save("todo-habit-create-review", cut.Markup, "required-Habit-creation-directions", nameof(Category_specific_primary_actions_record_reviewed_Daily_occurrence_or_Habit_event));
+        }
+        cut.Find("[data-testid='todo-confirm']").Click();
         var task = Assert.Single(f.Controller.Snapshot!.Document.Tasks); Assert.Equal(kind, task.Kind);
         Assert.Null(task.Recurrence); Assert.Empty(cut.FindAll("[data-testid='todo-project']"));
         if (kind == CompanionTaskKind.Daily)
@@ -117,7 +125,7 @@ public sealed class TodoTaskPanelTests : BunitContext
             Assert.Equal(new DateOnly(2026, 10, 20), f.Controller.Preview!.Command.OccurrenceDate);
         }
         else { cut.Find($"[data-testid='todo-up-{task.Id:D}']").Click(); Assert.Equal(HabitScoreDirection.Up, f.Controller.Preview!.Command.Direction); }
-        Assert.False(f.Controller.Preview!.MayAffectHabitica); cut.Find("[data-testid='todo-confirm']").Click();
+        Assert.Equal(kind == CompanionTaskKind.Habit, f.Controller.Preview!.MayAffectHabitica); cut.Find("[data-testid='todo-confirm']").Click();
         if (kind == CompanionTaskKind.Daily) Assert.Single(f.Controller.Snapshot.Document.Completions);
         else Assert.Single(f.Controller.Snapshot.Document.HabitScores);
         Assert.Empty(f.Client.AcceptedIds);
@@ -198,6 +206,21 @@ public sealed class TodoTaskPanelTests : BunitContext
         cut.FindAll("button").Single(button => button.TextContent.Contains("Reload current task and replace this draft")).Click();
         Assert.Equal("Saved newer title", cut.Find("[data-testid='todo-title']").GetAttribute("value"));
         Assert.Equal(2, f.Controller.Snapshot.Commands.Count);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Habit_rows_disable_only_the_unavailable_scoring_direction(bool up)
+    {
+        var (f, presentation) = Setup(); f.Client.Connected = true; var now = DateTimeOffset.UtcNow;
+        f.Client.State = f.Client.State with { Document = f.Client.State.Document with { Tasks = [new(Guid.NewGuid(), 1, "Long Habit " + new string('x', 100), CompanionTaskKind.Habit, CompanionTaskState.Active, CompanionPriority.Normal, now, now, HabiticaDetails: new(Up: up, Down: !up))] } };
+        await presentation.RefreshSourcesAsync(); await presentation.SelectAsync(presentation.Sources.Single());
+        var cut = Render<TodoTaskPanel>(parameters => parameters.Add(x => x.Kind, CompanionTaskKind.Habit));
+        Assert.Equal(!up, cut.FindAll("button").Single(button => button.TextContent.Trim() == "Record +1").HasAttribute("disabled"));
+        Assert.Equal(up, cut.FindAll("button").Single(button => button.TextContent.Trim() == "Record −1").HasAttribute("disabled"));
+        Save("todo-habit-direction-row", cut.Markup, "disabled-direction-without-score", nameof(Habit_rows_disable_only_the_unavailable_scoring_direction));
+        Assert.Null(f.Controller.Preview); Assert.Empty(f.Client.AcceptedIds);
     }
 
     [Fact]

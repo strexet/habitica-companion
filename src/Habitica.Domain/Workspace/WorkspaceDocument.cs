@@ -11,7 +11,9 @@ public enum HabitScoreDirection { Up, Down }
 public enum ProjectionState { Unlinked, Pending, Linked, ExternalConflict, UnknownOutcome }
 public enum HabiticaTaskAttribute { Str, Int, Per, Con }
 public sealed record TaskChecklistItem(Guid Id, string Text, bool Completed = false);
-public sealed record HabiticaTaskDetails(double? Difficulty = null, HabiticaTaskAttribute? Attribute = null, IReadOnlyList<TaskChecklistItem>? Checklist = null)
+public sealed record HabiticaTaskDetails(double? Difficulty = null, HabiticaTaskAttribute? Attribute = null, IReadOnlyList<TaskChecklistItem>? Checklist = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] bool? Up = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] bool? Down = null)
 {
     public static bool IsValid(HabiticaTaskDetails? value) => value is null ||
         (value.Difficulty is null or 0.1 or 1 or 1.5 or 2 && (value.Attribute is null || Enum.IsDefined(value.Attribute.Value))
@@ -19,7 +21,7 @@ public sealed record HabiticaTaskDetails(double? Difficulty = null, HabiticaTask
             && value.Checklist.Select(item => item.Id).Distinct().Count() == value.Checklist.Count));
 
     public static HabiticaTaskDetails? Merge(HabiticaTaskDetails? current, HabiticaTaskDetails? patch) => patch is null ? current :
-        new(patch.Difficulty ?? current?.Difficulty, patch.Attribute ?? current?.Attribute, patch.Checklist ?? current?.Checklist);
+        new(patch.Difficulty ?? current?.Difficulty, patch.Attribute ?? current?.Attribute, patch.Checklist ?? current?.Checklist, patch.Up ?? current?.Up, patch.Down ?? current?.Down);
 }
 
 public abstract record WorkspaceEntity(Guid Id, long Revision, bool IsArchived);

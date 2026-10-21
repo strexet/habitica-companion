@@ -67,6 +67,7 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
       createdAtUtc: utc(row.createdAtUtc), updatedAtUtc: utc(row.updatedAtUtc), notes: row.notes === undefined || row.notes === null ? null : named(row.notes, 10000, true),
       categoryId: optionalId(row.categoryId), projectId: optionalId(row.projectId), sectionId: optionalId(row.sectionId), parentTaskId: optionalId(row.parentTaskId), labelIds: ids(row.labelIds, true), dependsOn: ids(row.dependsOn, true), plannedDate: optDate(row.plannedDate), deadline: optDate(row.deadline), reviewAfterUtc: optUtc(row.reviewAfterUtc), staleSinceUtc: optUtc(row.staleSinceUtc), recurrence: recurrence(row.recurrence) };
     if (utcTicks(task.createdAtUtc) > utcTicks(task.updatedAtUtc) || task.kind !== "todo" && ["completed", "cancelled"].includes(task.state) || task.kind !== "daily" && task.recurrence !== null) return fail();
+    if(task.kind!=='habit'&&(task.habiticaDetails?.up!==undefined||task.habiticaDetails?.down!==undefined))return fail();
     const stage=executionStage(row.executionStage);if(stage){if(task.kind!=='todo')return fail();task.executionStage=stage;}
     return task;
   });

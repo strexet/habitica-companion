@@ -68,6 +68,13 @@ export function workspaceCommand(value: unknown): WorkspaceCommand {
 }
 export async function commandHash(command: WorkspaceCommand): Promise<string> {
   const patch = command.patch;
+  if(patch?.habiticaDetails&&(patch.habiticaDetails.up!==undefined||patch.habiticaDetails.down!==undefined)){
+   const {up,down,...details}=patch.habiticaDetails;
+   const previous=await commandHash({...command,patch:{...patch,habiticaDetails:details}});
+   const payload='companion-command-v9\n64:'+previous+[up,down].map(flag=>flag===undefined?'-1:':flag?'1:1':'1:0').join('');
+   return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(payload))),value=>value.toString(16).padStart(2,'0')).join('');
+  }
+
   const fields = [command.id, command.workspaceId, String(command.expectedRevision), command.operation, command.taskId, patch === null ? "0" : "1", patch?.text ?? null, patch?.notes ?? null, patch?.clearNotes ? "1" : "0", patch?.priority ?? null, patch?.deadline ?? null, patch?.clearDeadline ? "1" : "0", command.direction, String(command.count), command.occurrenceDate, command.projectToHabitica ? "1" : "0"];
   const encoder = new TextEncoder();
   const details=patch?.habiticaDetails;

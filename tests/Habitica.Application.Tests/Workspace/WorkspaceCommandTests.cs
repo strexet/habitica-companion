@@ -305,7 +305,7 @@ public sealed class WorkspaceCommandTests
         Assert.Equal("historical_projection_requires_review", WorkspaceCommandEngine.Accept(completed, Repair(completed), Now).ErrorCode);
         var archived = completed with { Document = completed.Document with { Tasks = [completed.Document.Tasks.Single() with { IsArchived = true }] } };
         Assert.Equal("task_unavailable", WorkspaceCommandEngine.Accept(archived, Repair(archived), Now).ErrorCode);
-        foreach (var kind in new[] { CompanionTaskKind.Daily, CompanionTaskKind.Habit })
+        foreach (var kind in new[] { CompanionTaskKind.Daily })
         {
             var recurring = state with { Document = state.Document with { Tasks = [state.Document.Tasks.Single() with { Kind = kind }] } };
             Assert.Equal("adoption_required", WorkspaceCommandEngine.Accept(recurring, Repair(recurring), Now).ErrorCode);
@@ -315,6 +315,50 @@ public sealed class WorkspaceCommandTests
         var uncertain = state with { Document = state.Document with { Projections = [new(Guid.NewGuid(), 1, create.TaskId, ProjectionState.UnknownOutcome)] } };
         Assert.Equal("projection_review_required", WorkspaceCommandEngine.Accept(uncertain, Repair(uncertain), Now).ErrorCode);
         Assert.Equal("stale_revision", WorkspaceCommandEngine.Accept(state, Repair(state) with { ExpectedRevision = 1 }, Now).ErrorCode);
+    }
+
+    [Fact]
+    public void HabitDirectionsHavePortableV9IdentityCreateOnlyEffectsAndBoundedScoring()
+    {
+        using var fixture = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "fixtures", "habit-commands-v9.json")));
+        var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false) } };
+        foreach (var row in fixture.RootElement.GetProperty("cases").EnumerateArray())
+        {
+            var command = row.GetProperty("command").Deserialize<WorkspaceCommand>(options)!;
+            Assert.Equal(row.GetProperty("payloadHash").GetString(), WorkspaceCommandEngine.Hash(command));
+            var state = new WorkspaceJournalSnapshot(new WorkspaceDocument { Id = command.WorkspaceId }, 1, [], []);
+            var accepted = WorkspaceCommandEngine.Accept(state, command, Now);
+            Assert.Equal(SubmissionDisposition.Accepted, accepted.Disposition);
+            Assert.Equal(new[] { ProjectionEffectKind.Create }, accepted.Entry!.Effects);
+            Assert.Empty(accepted.Snapshot!.Document.HabitScores);
+            var task = accepted.Snapshot.Document.Tasks.Single(); Assert.Equal(CompanionTaskKind.Habit, task.Kind);
+            Assert.Equal(CompanionPriority.Normal, task.Priority); Assert.Equal(1.5, task.HabiticaDetails!.Difficulty);
+            foreach (var direction in new[] { HabitScoreDirection.Up, HabitScoreDirection.Down })
+            {
+                var score = new WorkspaceCommand(Guid.NewGuid(), command.WorkspaceId, 2, WorkspaceOperation.ScoreHabit, task.Id, Direction: direction, Count: 2, ProjectToHabitica: true);
+                var result = WorkspaceCommandEngine.Accept(accepted.Snapshot, score, Now);
+                if (direction == HabitScoreDirection.Up ? task.HabiticaDetails.Up == true : task.HabiticaDetails.Down == true) Assert.Equal(2, result.Snapshot!.Document.HabitScores.Count);
+                else Assert.Equal("habit_direction_disabled", result.ErrorCode);
+            }
+        }
+    }
+
+    [Fact]
+    public void HabitCreationDefaultsAreExplicitAndUnsupportedFieldsNeverBecomeTodoPayloads()
+    {
+        var state = Empty(); var raw = new WorkspaceCommand(Guid.NewGuid(), state.Document.Id, 1, WorkspaceOperation.CreateHabit, Guid.NewGuid(), new(Text: "Habit"));
+        var prepared = WorkspaceTodoProjectionPolicy.Prepare(state.Document, raw);
+        Assert.True(prepared.ProjectToHabitica); Assert.True(prepared.Patch!.HabiticaDetails!.Up); Assert.True(prepared.Patch.HabiticaDetails.Down);
+        Assert.Equal("habit_projection_required", WorkspaceTodoProjectionPolicy.Rejection(state.Document, raw));
+        foreach (var patch in new[] { prepared.Patch with { Deadline = new(2026, 10, 21) }, prepared.Patch with { HabiticaDetails = prepared.Patch.HabiticaDetails with { Checklist = [] } } })
+            Assert.Equal("unsupported_habit_fields", WorkspaceCommandEngine.Accept(state, prepared with { Patch = patch }, Now).ErrorCode);
+        Assert.Equal("habit_directions_required_kind", WorkspaceCommandEngine.Accept(state, prepared with { Operation = WorkspaceOperation.CreateTodo }, Now).ErrorCode);
+        var legacy = WorkspaceCommandEngine.Accept(state, raw, Now).Snapshot!;
+        var repaired = WorkspaceCommandEngine.Accept(legacy, new(Guid.NewGuid(), state.Document.Id, 2, WorkspaceOperation.EnsureProjection, raw.TaskId, ProjectToHabitica: true), Now);
+        Assert.Equal(new[] { ProjectionEffectKind.Create }, repaired.Entry!.Effects);
+        Assert.Equal(CompanionTaskKind.Habit, repaired.Snapshot!.Document.Tasks.Single().Kind);
+        Assert.Empty(repaired.Snapshot.Document.HabitScores);
+
     }
 
     private sealed class FakeStore(WorkspaceJournalSnapshot initial) : ICompanionWorkspaceStore

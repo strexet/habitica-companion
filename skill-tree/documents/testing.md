@@ -405,3 +405,9 @@ The solution suite passes 967 tests, followed by 24 focused panel/presentation c
 ## Projection-only repair coverage
 
 WorkspaceCommandTests and projection-repair.test.mjs consume projection-command-v1.json to preserve cross-runtime identity. Synthetic tests cover patch-free accepted intent, unchanged content, independent native identity, create-only effects, pending/unknown original recovery, unsupported inactive/historical creation, stale revision and corrupt effects. SDK/PWA task-api tests exercise ensure_task_projection and original prepared/accepted receipts. Retained-record adoption covers archived/completed Todos and recurring kinds, matching completion state, exact fingerprint and identity, original revision recovery, tenant/access-epoch checks and absent candidates. .NET HTTP tests validate retained previews and refuse incompatible state/kind or unrelated receipt revisions. No live credentials or account effects are used.
+
+## Habit counterpart qualification
+
+Shared habit-commands-v9.json cases cover all Boolean direction combinations across C# and TypeScript. Application/Worker tests qualify create-only intent, effective defaults, direction refusal, unsupported fields and legacy unchanged-Habit repair. Synthetic SDK/private-gateway tests verify actual type habit creation, ownership, returned fields, later positive/negative scoring, original create uncertainty, explicit positive reconciliation without another POST, cross-profile denial and revoked consent. Workspace SDK schemas advertise optional Boolean directions.
+
+TodoTaskPanelTests captures Habit creation review and a long Habit row with an unavailable direction. Rendered qualification spans six responsive widths, six themes and 100/200-percent text, with seeded overflow/overlap/contrast controls. Component tests establish handlers and disabled controls; static fixtures establish rendering. Physical devices, assistive technology and live game effects remain unqualified.

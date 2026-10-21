@@ -163,7 +163,7 @@ Prepared commands retain exact reviewed previews, stable command identities and 
 
 ## Native lifecycle testing extension
 
-The owner-approved Codex mutation scope includes native Daily/Habit creation, task field edits, dated Daily completion, explicit Habit scores and archival of exact unlinked task IDs. New Dailies remain unscheduled until recurrence editing is implemented. Creation and archival remain Companion-only; no unsupported upstream deletion or recurrence projection is implied. Archive operations retain command and activity history until separate workspace deletion. Party writes and live Cron remain excluded.
+The owner-approved Codex mutation scope includes native Daily/Habit creation, task field edits, dated Daily completion, explicit Habit scores and archival of exact unlinked task IDs. New Dailies remain unscheduled until recurrence editing is implemented. Daily creation and archival remain Companion-only; Habit creation uses the typed Habit correspondence contract. No unsupported upstream deletion or recurrence projection is implied. Archive operations retain command and activity history until separate workspace deletion. Party writes and live Cron remain excluded.
 
 Owner-provided Habitica test credentials may persist only in the ignored root `.dev.vars.owner-test` file with owner-only file permissions. Normal builds, CI, exports, logs and deployment must not consume or include that file. Live tests are explicit, opt-in own-account checks; test evidence stores outcomes without credentials.
 
@@ -296,3 +296,7 @@ Policy todo-required-v1 requires effective projection intent for newly prepared 
 ## Unchanged-task repair contract
 
 Reviewed ensureProjection requires an exact active Todo, projectToHabitica true and no patch. Acceptance preserves task content and activity, records one Create effect and uses the original correlation identity. Unresolved original creation, uncertain mappings and retained archived mappings require original-command recovery or explicit review. Completed/archived missing counterparts are not recreated or scored. Typed adoption previews retain separate native/remote identities, kind and completion state; exact workspace/access epoch, revision and fingerprint bind approval. Repeated accepted adoption returns the retained original mapping result without a new write. Existing-state adoption remains available for matching retained Todos, Dailies and Habits.
+
+## Habit counterpart creation
+
+New Habit preparation carries required game intent and explicit up/down defaults true/true. All Boolean direction combinations remain supported; disabled directions refuse scoring. Creation contains no score event, reward, Todo deadline or checklist payload. Supported unchanged active Habits can use the original create-only repair ledger. Habit-owned response parsing accepts absent completed and requires Boolean direction flags. Kind, alias and requested-field verification protect mapping; uncertainty preserves the original private receipt and forbids replacement creation.

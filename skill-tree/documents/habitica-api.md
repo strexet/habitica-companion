@@ -1312,3 +1312,9 @@ New ordinary Companion Todo create/update/complete commands carry required corre
 ## Unchanged-task correspondence repair
 
 EnsureProjection queues a missing active Todo counterpart through the existing alias-correlated v3 create gateway and original command receipt. Repair contains no fake content patch and never scores. An existing linked mapping can be freshly verified by the same Create effect without another remote create. Missing historical counterparts require explicit review rather than synthesized completed/dateCompleted fields or retroactive rewards. Exact retained-record adoption uses an authenticated owned UUID read, matching kind and Todo completion state, and the reviewed fingerprint; no Habitica write occurs. Identical accepted adoption recovers the retained mapping receipt.
+
+## Habit creation and direction fields
+
+The [official task controller](https://github.com/HabitRPG/habitica/blob/develop/website/server/controllers/api-v3/tasks.js) documents type habit and Boolean up/down defaults true/true. The [task model](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js) defines Habit directions independently of Daily/Todo completed and checklist fields. Companion supports all four explicit direction combinations; disabled directions cannot score. Habit creation sends supported text, notes, difficulty, attribute and direction flags only. Native urgency never becomes game difficulty.
+
+Owned Habit responses can omit completed; normalization supplies false while requiring valid direction flags. Create results must match the requested kind, correlation alias and explicit fields before mapping confirmation. Unknown creates require original-receipt lookup or positively verified original alias reconciliation; a missing record never authorizes a replacement. Habit creation semantics are qualified with synthetic private-gateway fixtures.

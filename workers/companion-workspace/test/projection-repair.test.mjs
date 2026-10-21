@@ -10,7 +10,7 @@ test('projection-only acceptance queues one original create without content edit
  await journal({document:repair.document,storeVersion:3,commands:[first.entry,repair.entry],events:[first.event,repair.event]});
  assert.equal(projectionStep(repair.document,repair.entry,{task:null,checkToken:'fixture'}).operation,'create');
  for(const change of [entry=>entry.effects.push('scoreUp'),entry=>entry.command.projectToHabitica=false]){const entry=structuredClone(repair.entry);change(entry);await assert.rejects(journal({document:repair.document,storeVersion:3,commands:[first.entry,entry],events:[first.event,repair.event]}));}
- for(const [state,kind,archived,code] of [['completed','todo',false,'historical_projection_requires_review'],['active','daily',false,'adoption_required'],['active','habit',false,'adoption_required'],['active','todo',true,'task_unavailable']]){
+ for(const [state,kind,archived,code] of [['completed','todo',false,'historical_projection_requires_review'],['active','daily',false,'adoption_required'],['active','todo',true,'task_unavailable']]){
   const current={...d,tasks:[{...original,state,kind,isArchived:archived}]};
   if(state==='completed')current.completions=[{id:crypto.randomUUID(),revision:2,taskId:original.id,commandId:crypto.randomUUID(),completedAtUtc:now,occurrenceId:null,isArchived:false}];
   await assert.rejects(accept(current,workspaceCommand(fixture.command),now),error=>error.code===code);

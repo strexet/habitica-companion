@@ -752,3 +752,7 @@ Source/account changes clear private editing and selection; revised data require
 ## Todo correspondence review
 
 Normal Todo preparations show required game intent even when an older optional projection control supplied false. The concrete review and receipt disclose pending effects, explicit cloud execution prerequisites and confirmed-effect counts. Browser-only capture can save queued intent offline without credentials being uploaded. A saved/pending Todo must not be described as already present or rewarded in Habitica. Capture control simplification and full linking workflows remain separate Ready units; the correspondence boundary does not qualify the deferred UI changes.
+
+## Habit game-intent review
+
+Habit creation review shows Positive (+) and Negative (−) as Enabled/Disabled alongside independent native urgency and game details. Required pending game intent and executor prerequisites remain visible before confirmation. Known disabled scoring directions render disabled primary row actions; backend checks also refuse the corresponding score. Legacy native archive fixtures remain distinct from newly projected Habit capture. No creation-time score or automatic execution follows from the review.

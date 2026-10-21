@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Create and verify corresponding Habitica Habits
-
-```yaml
-id: T-0e97833e-efaf-4cbc-ad22-8a03af170c30
-priority: 103
-status: Ready
-parent_pending_ids: ["P-3736aa26-c58b-402d-a736-ff6ce23907bd"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-0e97833e-efaf-4cbc-ad22-8a03af170c30
-related_task_id: null
-relation: main
-depends_on: ["T-210471d2-f432-43b3-8fc7-bbfd74f93e29"]
-```
-
-Goal:
-- Extend typed authoritative creation and the private gateway to create the correct own-account Habit with verified mapping.
-Current behavior:
-- TodoTaskDraft strips creation projection for Habits; C# and Worker engines reject createHabit projection, and Auth create hardcodes type todo.
-Desired behavior:
-- An ordinary new Habit has one corresponding Habitica Habit or an explicit pending/refused/unknown result; no creation command awards Habit score events.
-Touch:
-- HabiticaTaskDetails or a typed Habit creation payload, WorkspaceCommandEngine, workspace-commands.ts, commands.ts, shared/projection.ts, projection-adapter.ts, Auth projection.ts and shared task fixtures.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Use explicit supported up/down fields with validated defaults; carry text, notes, difficulty and attribute. Keep Todo-specific deadline/checklist fields out of unsupported Habit payloads. Preserve alias correlation, fresh ownership checks, receipt-only recovery and existing direction/count guards. No score occurs merely because a Habit is created. Refuse unsupported payloads visibly; no fallback Todo, Cron, party mutation or implicit enrollment.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Synthetic tests cover every supported direction combination, invalid fields, duplicate aliases, timeout after create, cross-profile denial, revoked consent, pacing and later positive/negative scores against the exact verified mapping.
-Acceptance:
-- An ordinary new Habit has one corresponding Habitica Habit or an explicit pending/refused/unknown result; no creation command awards Habit score events.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Create mapped Habitica Dailies with lossless schedules
 
 ```yaml

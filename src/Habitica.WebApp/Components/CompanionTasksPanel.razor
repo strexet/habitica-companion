@@ -86,6 +86,8 @@
                             {
                                 <dt>Game difficulty</dt><dd>@(details.Difficulty?.ToString(CultureInfo.InvariantCulture) ?? "Unchanged")</dd>
                                 <dt>Attribute</dt><dd>@(details.Attribute?.ToString() ?? "Unchanged")</dd>
+                                @if (details.Up is not null) { <dt>Positive (+)</dt><dd>@(details.Up.Value ? "Enabled" : "Disabled")</dd> }
+                                @if (details.Down is not null) { <dt>Negative (−)</dt><dd>@(details.Down.Value ? "Enabled" : "Disabled")</dd> }
                                 @if (details.Checklist is { } checklist) { <dt>Checklist replacement</dt><dd><ul>@foreach (var item in checklist) { <li>@item.Text · @(item.Completed ? "Completed" : "Open")</li> }</ul>@if (checklist.Count == 0) { <span>Clear checklist</span> }</dd> }
                             }
                         }
