@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Require Habitica correspondence in authoritative Todo commands
-
-```yaml
-id: T-210471d2-f432-43b3-8fc7-bbfd74f93e29
-priority: 103
-status: Ready
-parent_pending_ids: ["P-f0b54e18-9d9f-4528-8383-db7de5542c63"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-210471d2-f432-43b3-8fc7-bbfd74f93e29
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Make ordinary Todo creation, full-subtask creation, edits and completion carry required game correspondence through the shared authoritative command contract.
-Current behavior:
-- WorkspaceCommandEngine and Worker command acceptance plan effects only when projectToHabitica is true or an existing mapping participates. Omission therefore permits silent reward-free Todos; accepted payload hashes already protect immutable intent.
-Desired behavior:
-- Standard Todo commands cannot be reported as fully integrated without verified correspondence and original effect receipts; historical accepted commands retain exact original meaning.
-Touch:
-- WorkspaceCommands/WorkspaceCommandIdentity, WorkspaceCommandEngine, workers/shared/workspace-commands.ts, workers/companion-workspace/src/commands.ts, task-api.ts, executor.ts and neutral command fixtures.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Define a versioned prospective policy rather than rewriting accepted journals. An explicit false flag cannot silently bypass normal cloud correspondence. Native planning/state/organization commands remain non-scoring. Local/offline capture retains required-but-pending integration without uploading credentials or inventing remote IDs. Enforce separate account consent and executor eligibility; never replay unknown outcomes. Complete an unlinked active Todo only through an ordered original create-then-score intent or an explicit integration refusal. Native urgency remains independent of game difficulty.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Cross-runtime tests cover omitted/false/true input, full children, linked/unlinked completion, local/offline capture, disabled execution, existing accepted receipts, stale revisions, duplicate command IDs and unknown outcomes. Assert exact effect order and no retroactive journal execution.
-Acceptance:
-- Standard Todo commands cannot be reported as fully integrated without verified correspondence and original effect receipts; historical accepted commands retain exact original meaning.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Add reviewed projection commands for existing unchanged tasks
 
 ```yaml

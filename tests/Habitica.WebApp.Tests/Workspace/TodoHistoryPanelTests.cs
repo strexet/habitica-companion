@@ -64,8 +64,10 @@ public sealed class TodoHistoryPanelTests : BunitContext
         Assert.Equal(CompanionTaskState.Active, f.Controller.Snapshot!.Document.Tasks.Single().State); Assert.Equal(completion, Assert.Single(f.Controller.Snapshot.Document.Completions)); Assert.Single(f.Controller.Snapshot.Document.Restorations!);
         Assert.Empty(cut.FindAll("[data-testid^='history-restore-']")); Assert.Contains("already been restored", cut.Markup);
         await cut.InvokeAsync(async () => { await todo.PrepareAsync(WorkspaceTaskFixture.Todo() with { Operation = WorkspaceOperation.CompleteTask, TaskId = id }); await todo.ConfirmAsync(); });
-        Assert.Equal(2, cut.FindAll("[data-testid^='history-row-']").Count); Assert.Single(cut.FindAll("[data-testid^='history-restore-']"));
-        Assert.Single(f.Controller.Snapshot.Document.Restorations!); Assert.Equal(2, f.Controller.Snapshot.Document.Completions.Count); Assert.All(f.Controller.Snapshot.Commands, command => Assert.Empty(command.Effects));
+        Assert.Equal(2, cut.FindAll("[data-testid^='history-row-']").Count); Assert.Empty(cut.FindAll("[data-testid^='history-restore-']"));
+        Assert.Single(f.Controller.Snapshot.Document.Restorations!); Assert.Equal(2, f.Controller.Snapshot.Document.Completions.Count);
+        Assert.All(f.Controller.Snapshot.Commands.SkipLast(1), command => Assert.Empty(command.Effects));
+        Assert.Equal(new[] { ProjectionEffectKind.Create, ProjectionEffectKind.ScoreUp }, f.Controller.Snapshot.Commands[^1].Effects);
         Assert.Contains(JSInterop.Invocations, invocation => invocation.Identifier == "Blazor._internal.domWrapper.focus");
     }
 

@@ -21,13 +21,13 @@ public sealed class TodoWorkspacePresentationTests
         Assert.Same(empty, presentation.HabiticaCoverage);
         await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo());
         await f.Controller.ConfirmAsync();
-        Assert.Equal(1, presentation.HabiticaCoverage!.MissingTaskLinks);
+        Assert.Equal(1, presentation.HabiticaCoverage!.PendingTaskLinks);
         await f.Controller.CreateLocalAsync();
         await presentation.RefreshSourcesAsync();
         await presentation.SelectAsync(new(TodoWorkspaceSource.Browser, f.Controller.Snapshot!.Document.Id));
         Assert.Empty(presentation.HabiticaCoverage!.Tasks);
         await presentation.SelectAsync(new(TodoWorkspaceSource.Browser, first));
-        Assert.Equal(1, presentation.HabiticaCoverage!.MissingTaskLinks);
+        Assert.Equal(1, presentation.HabiticaCoverage!.PendingTaskLinks);
         Assert.Empty(f.Client.AcceptedIds);
     }
 

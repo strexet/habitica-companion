@@ -28,7 +28,7 @@ public sealed class CompanionTasksPanelTests : BunitContext
         cut.Find("[data-testid='canonical-confirm']").Click();
         Assert.Single(f.Controller.Snapshot!.Commands);
         Assert.Contains("Saved in Companion: Yes", cut.Find("[data-testid='canonical-receipt']").TextContent);
-        Assert.Contains("notRequested", cut.Find("[data-testid='canonical-receipt']").TextContent);
+        Assert.Contains("pending", cut.Find("[data-testid='canonical-receipt']").TextContent);
         Assert.Contains("Recent command history", cut.Markup);
         f.Session.SetState(f.Session.State with { IsAuthenticated = false });
         cut.WaitForAssertion(() => Assert.DoesNotContain("A reviewed local task", cut.Markup));

@@ -1304,3 +1304,7 @@ The private gateway sends only `POST /cron` with an empty object, after fresh ac
 ## Remote Cron orchestration
 
 Workspace sends the private Cron gateway only the saved attempt identity and exact preconditions. Workspace does not construct arbitrary upstream paths, replay saved dispatches or combine Cron with a spell. A new typed Cron ledger owns expiring previews, acceptance, recovery and explicit own-history projection. The [reviewed Cron boundary](companion-workspace-contract.md#adopted-reviewed-cron-action-boundary) defines shared ownership, uncertainty and refresh limits.
+
+## Required prospective Todo projection
+
+New ordinary Companion Todo create/update/complete commands carry required correspondence under todo-required-v1. Full subtasks are independent Todos. Preparation reveals the effective game intent; fresh raw false submissions are refused. Native priority never becomes Habitica difficulty. An active unlinked completion plans create before score/up; confirmed original receipts, not canonical saved state alone, establish external completion and rewards. No credential upload, executor enablement or Habitica call is implicit in preparation or local capture. Historical accepted commands are recovered verbatim, and completed unlinked edits require separate historical review.

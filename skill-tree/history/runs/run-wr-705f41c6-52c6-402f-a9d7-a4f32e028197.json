@@ -1,0 +1,40 @@
+{
+  "completed_ids": [
+    "T-210471d2-f432-43b3-8fc7-bbfd74f93e29"
+  ],
+  "completion_refs": {
+    "T-210471d2-f432-43b3-8fc7-bbfd74f93e29": "O-4124854e-954d-45e8-8663-e2263f417221"
+  },
+  "current_task_id": null,
+  "cycle_signature": "97a1a1c50514610500346f814661e6886216bb2c77f3d900e07bc2bf4ea2548c",
+  "deferred_ids": [],
+  "finished_at": "2026-10-21T11:39:53.922435+00:00",
+  "history_refs": [
+    "skill-tree/history/validation/todo-required-v1/result.json",
+    "skill-tree/history/runs/owner-handoff-4aa3ced0-8469-45b5-90ce-c0bd51c19114.json"
+  ],
+  "id": "WR-705f41c6-52c6-402f-a9d7-a4f32e028197",
+  "limits": {
+    "repair_used": 3
+  },
+  "mode": "next",
+  "next_action": null,
+  "partial_work": [
+    "Implemented todo-required-v1 preparation and authoritative guards in C# and Workers; preserved legacy hashes and duplicate receipts.",
+    "Release publish, 970 .NET tests, 376 Worker tests, 2 plugin checks and 216 rendered cases pass; seeded visual defects detected.",
+    "Three evidence-backed test-repair groups resolved old native-only expectations; the final suites pass. No repeated unchanged failure remains.",
+    "No live deployment, account effect or permission change; prior Implement All checkpoint remains preserved under the explicit owner handoff."
+  ],
+  "pending_ids": [],
+  "phase": "completed",
+  "processing_results": [],
+  "required_ids": [
+    "T-210471d2-f432-43b3-8fc7-bbfd74f93e29"
+  ],
+  "root_task_id": "T-210471d2-f432-43b3-8fc7-bbfd74f93e29",
+  "snapshot": [
+    "T-210471d2-f432-43b3-8fc7-bbfd74f93e29"
+  ],
+  "started_at": "2026-10-21T11:20:19.079666+00:00",
+  "stop_reason": null
+}

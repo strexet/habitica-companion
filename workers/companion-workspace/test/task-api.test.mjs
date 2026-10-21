@@ -57,7 +57,7 @@ test('prepared partial updates, Todo and Daily completions, exact-name selection
  const a=await execute('createTodo',{patch:{text:'Same label'}});const b=await execute('createTodo',{patch:{text:'Same label'}});
  const matches=await(await call(f,w,'list_companion_tasks',{query:'Same label'})).json();assert.equal(matches.matchedCount,2);assert.notEqual(matches.tasks[0].id,matches.tasks[1].id);
  assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'completeTask',query:'Same label'})).status,400);
- const completed=await execute('completeTask',{taskId:a.taskId});assert.equal(completed.acceptedEventCount,1);assert.equal(completed.totalProjectionCount,0);
+ const completed=await execute('completeTask',{taskId:a.taskId});assert.equal(completed.acceptedEventCount,1);assert.equal(completed.totalProjectionCount,2);
  const updated=await execute('updateTask',{taskId:b.taskId,patch:{notes:'A partial note'}});assert.equal(updated.taskText,'Same label');
  const current=await(await call(f,w,'get_companion_task',{taskId:b.taskId.toUpperCase()})).json();assert.equal(current.task.notes,'A partial note');assert.equal(current.task.text,'Same label');
  const dailyId=(await execute('createDaily',{patch:{text:'Native Daily'}})).taskId;const habitId=(await execute('createHabit',{patch:{text:'Native Habit'}})).taskId;
@@ -161,4 +161,50 @@ test('archival refuses linked or pending projections and acceptance rechecks fre
  const edit=await(await prepare({operation:'updateTask',taskId:daily.command.taskId,patch:{notes:'Changed after preview'}})).json();await call(f,w,'update_task',{commandId:edit.preparedCommandId});
  assert.equal((await call(f,w,'delete_task',{commandId:deletion.preparedCommandId})).status,409);
  assert.equal((await(await call(f,w,'get_companion_task',{taskId:daily.command.taskId})).json()).task.isArchived,false);
+});
+
+test('new Todo preparation requires game intent for omitted false and true while execution stays disabled',async t=>{
+ let writes=0;const f=await fixture(t,{workspace:true,habitica:request=>{if(request.method!=='GET')writes++;return Response.json({success:true,data:{_id:request.headers.get('x-api-user'),profile:{name:'Fixture'}}});}});
+ const w=await connect(f,await enrolled(f));
+ for(const flag of [undefined,false,true]){
+  const input={requestId:crypto.randomUUID(),operation:'createTodo',patch:{text:'Required Todo'},...(flag===undefined?{}:{projectToHabitica:flag})};
+  const preview=await(await call(f,w,'prepare_task_command',input)).json();assert.equal(preview.command.projectToHabitica,true);assert.equal(preview.mayAffectHabitica,true);
+  const saved=await(await call(f,w,'create_todo',{commandId:preview.preparedCommandId})).json();assert.equal(saved.habiticaProjectionStatus,'pending');assert.equal(saved.totalProjectionCount,1);assert.equal(saved.confirmedProjectionCount,0);
+  const replay=await(await call(f,w,'prepare_task_command',input)).json();assert.equal(replay.preparedCommandId,preview.preparedCommandId);assert.deepEqual(replay.receipt,saved);
+ }
+ assert.equal(writes,0);const d=(await(await f.workspace.fetch(origin+'/export',{headers:{authorization:`Bearer ${w.sessionToken}`}})).json()).document;
+ const raw={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:d.revision,operation:'createTodo',taskId:crypto.randomUUID(),patch:{text:'Cannot bypass'},projectToHabitica:false};
+ const denied=await f.workspace.fetch(origin+'/commands',{method:'POST',headers:{authorization:`Bearer ${w.sessionToken}`,'content-type':'application/json'},body:JSON.stringify(raw)});assert.equal(denied.status,422);assert.match(await denied.text(),/todo_projection_required/);
+});
+
+test('accepted legacy false commands recover verbatim but old unaccepted previews cannot bypass the prospective policy',async t=>{
+ const {seedLegacyCommand}=await import('./fixtures/legacy-todo.mjs');const f=await fixture(t,{workspace:true}),w=await connect(f,await enrolled(f));
+ const raw={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:1,operation:'createTodo',taskId:crypto.randomUUID(),patch:{text:'Retained legacy'},projectToHabitica:false};
+ const legacy=await seedLegacyCommand(f,raw),headers={authorization:`Bearer ${w.sessionToken}`,'content-type':'application/json'};
+ const recovered=await f.workspace.fetch(origin+'/commands',{method:'POST',headers,body:JSON.stringify(raw)});assert.equal(recovered.status,200);assert.deepEqual((await recovered.json()).entry,legacy.entry);
+ const changed=await f.workspace.fetch(origin+'/commands',{method:'POST',headers,body:JSON.stringify({...raw,projectToHabitica:true})});assert.equal(changed.status,409);
+ const input={requestId:crypto.randomUUID(),operation:'createTodo',patch:{text:'Old preview'}};
+ const preview=await(await call(f,w,'prepare_task_command',input)).json();const old={...preview.command,projectToHabitica:false};
+ await f.workspaceDb.prepare('UPDATE workspace_preparations SET command_json=? WHERE command_id=?').bind(JSON.stringify(old),preview.preparedCommandId).run();
+ const refused=await call(f,w,'prepare_task_command',input);assert.equal(refused.status,422);assert.match(await refused.text(),/todo_projection_required/);
+ assert.equal((await call(f,w,'create_todo',{commandId:preview.preparedCommandId})).status,422);
+ assert.equal((await f.workspaceDb.prepare('SELECT COUNT(*) AS n FROM workspace_commands').first()).n,1);
+ const completion=await(await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'completeTask',taskId:raw.taskId})).json();
+ const saved=await(await call(f,w,'complete_task',{commandId:completion.preparedCommandId})).json();assert.equal(saved.totalProjectionCount,2);assert.equal(saved.confirmedProjectionCount,0);
+ const exported=await(await f.workspace.fetch(origin+'/export',{headers})).json();assert.deepEqual(exported.commands[1].effects,['create','scoreUp']);assert.deepEqual(exported.commands[0],legacy.entry);
+});
+
+
+test('accepted legacy preview uses original effects even after the task acquires a pending mapping',async t=>{
+ const {seedLegacyCommand}=await import('./fixtures/legacy-todo.mjs');const f=await fixture(t,{workspace:true}),w=await connect(f,await enrolled(f));
+ const input={requestId:crypto.randomUUID(),operation:'createTodo',patch:{text:'Legacy prepared Todo'},projectToHabitica:false};
+ const prepared=await(await call(f,w,'prepare_task_command',input)).json(),old={...prepared.command,projectToHabitica:false};
+ await f.workspaceDb.prepare('UPDATE workspace_preparations SET command_json=? WHERE command_id=?').bind(JSON.stringify(old),prepared.preparedCommandId).run();
+ const legacy=await seedLegacyCommand(f,old);
+ const completion=await(await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'completeTask',taskId:old.taskId})).json();
+ assert.equal((await call(f,w,'complete_task',{commandId:completion.preparedCommandId})).status,200);
+ const recovered=await(await call(f,w,'prepare_task_command',input)).json();
+ assert.equal(recovered.savedInCompanion,true);assert.equal(recovered.mayAffectHabitica,false);assert.equal(recovered.command.projectToHabitica,false);
+ assert.equal(recovered.receipt.totalProjectionCount,0);assert.equal(recovered.receipt.habiticaProjectionStatus,'notRequested');
+ assert.deepEqual((await(await call(f,w,'get_task_command',{commandId:legacy.entry.command.id})).json()),recovered.receipt);
 });

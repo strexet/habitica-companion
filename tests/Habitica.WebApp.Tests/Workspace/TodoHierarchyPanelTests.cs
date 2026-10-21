@@ -41,7 +41,7 @@ public sealed class TodoHierarchyPanelTests : BunitContext
         for(var level=0;level<2;level++)
         {
             cut.Find($"[data-testid='tree-add-{root.Id:D}']").Click();var focusBeforeTyping=JSInterop.Invocations.Count(row=>row.Identifier=="Blazor._internal.domWrapper.focus");cut.Find("[data-testid='child-title']").Input("Independent subtask "+level);Assert.Equal(focusBeforeTyping,JSInterop.Invocations.Count(row=>row.Identifier=="Blazor._internal.domWrapper.focus"));cut.Find("[data-testid='child-notes']").Input("Child notes");cut.Find("[data-testid='child-deadline']").Change("2026-11-01");
-            cut.Find("[data-testid='child-create']").Closest("form")!.Submit();var createdPreview=f.Controller.Preview!;Assert.Equal(WorkspaceOperation.CreateTodo,createdPreview.Command.Operation);Assert.False(createdPreview.MayAffectHabitica);Assert.Null(createdPreview.Command.Patch!.Relationships);
+            cut.Find("[data-testid='child-create']").Closest("form")!.Submit();var createdPreview=f.Controller.Preview!;Assert.Equal(WorkspaceOperation.CreateTodo,createdPreview.Command.Operation);Assert.True(createdPreview.MayAffectHabitica);Assert.Null(createdPreview.Command.Patch!.Relationships);
             Save("todo-tree-create-review",cut.Markup,"long-parent-independent-create-review",nameof(Two_reviewed_create_and_attach_steps_recover_original_receipts_without_duplicate_Todos));
             f.Client.LoseAcceptance=true;cut.Find("[data-testid='todo-confirm']").Click();Assert.True(f.Controller.AcceptanceUnknown);cut.Find("[data-testid='todo-recover']").Click();cut.WaitForAssertion(()=>Assert.NotNull(cut.Find("[data-testid='child-created']")));
             var childId=f.Controller.LastReceipt!.TaskId;Assert.Null(f.Controller.Snapshot!.Document.Tasks.Single(task=>task.Id==childId).ParentTaskId);
@@ -50,7 +50,7 @@ public sealed class TodoHierarchyPanelTests : BunitContext
             f.Client.LoseAcceptance=true;cut.Find("[data-testid='todo-confirm']").Click();Save("todo-tree-unknown",cut.Markup,"uncertain-attachment-original-receipt",nameof(Two_reviewed_create_and_attach_steps_recover_original_receipts_without_duplicate_Todos));cut.Find("[data-testid='todo-recover']").Click();
             cut.WaitForAssertion(()=>Assert.Empty(cut.FindAll("[data-testid='child-created']")));root=f.Controller.Snapshot!.Document.Tasks.Single(task=>task.Id==childId);Assert.Equal("Child notes",root.Notes);Assert.Equal(new DateOnly(2026,11,1),root.Deadline);Assert.Null(root.ProjectId);
         }
-        Assert.Equal(3,f.Controller.Snapshot!.Document.Tasks.Count);Assert.Equal(4,f.Client.AcceptedIds.Count);Assert.All(f.Controller.Snapshot.Commands,row=>Assert.Empty(row.Effects));Assert.Empty(f.Controller.Snapshot.Document.Completions);
+        Assert.Equal(3,f.Controller.Snapshot!.Document.Tasks.Count);Assert.Equal(4,f.Client.AcceptedIds.Count);Assert.All(f.Controller.Snapshot.Commands.Where(row=>row.Command.Operation==WorkspaceOperation.CreateTodo),row=>Assert.Equal(new[]{ProjectionEffectKind.Create},row.Effects));Assert.All(f.Controller.Snapshot.Commands.Where(row=>row.Command.Operation==WorkspaceOperation.RelateTodo),row=>Assert.Empty(row.Effects));Assert.Empty(f.Controller.Snapshot.Document.Completions);
     }
     [Fact]
     public async Task Lost_create_and_attachment_previews_keep_original_request_bindings_for_the_second_step()

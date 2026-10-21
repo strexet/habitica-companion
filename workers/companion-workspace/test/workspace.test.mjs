@@ -1,3 +1,4 @@
+import {seedLegacyCommand} from './fixtures/legacy-todo.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -154,7 +155,7 @@ test('projection adoption requires reviewed fresh metadata and never writes upst
   if (request.method!=='GET')taskWrites++;
   return Response.json({success:true,data:{id:externalId,userId:user,type:'todo',text:remoteText,notes:'External notes',priority:1,attribute:'str',completed:false,checklist:[],group:{},challenge:{}}});
  }});
- const w=await connect(f,await enrolled(f)); const c={...command(w.workspaceId),projectToHabitica:false}; assert.equal((await call(f,'/commands',w.sessionToken,c)).status,201);
+ const w=await connect(f,await enrolled(f)); const c={...command(w.workspaceId),projectToHabitica:false}; await seedLegacyCommand(f,c);
  const preview=await(await call(f,'/projection/preview',w.sessionToken,{taskId:c.taskId,habiticaTaskId:externalId})).json();
  assert.equal(preview.task.text,c.patch.text); assert.equal(preview.external.text,remoteText); assert.equal(preview.pendingCommandCount,0);
  remoteText='Changed after preview';
@@ -164,7 +165,7 @@ test('projection adoption requires reviewed fresh metadata and never writes upst
  assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedAccessEpoch:crypto.randomUUID(),expectedFingerprint:fresh.external.fingerprint})).status,409);
  assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedFingerprint:fresh.external.fingerprint})).status,200);
  const exported=await(await call(f,'/export',w.sessionToken)).json(); assert.equal(exported.document.tasks[0].id,c.taskId); assert.equal(exported.document.tasks[0].text,c.patch.text); assert.equal(exported.document.projections[0].habiticaTaskId,externalId); assert.equal(taskWrites,0);
- const update={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:exported.document.revision,operation:'updateTask',taskId:c.taskId,patch:{notes:'An explicit later edit'}};
+ const update={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:exported.document.revision,operation:'updateTask',taskId:c.taskId,projectToHabitica:true,patch:{notes:'An explicit later edit'}};
  const saved=await(await call(f,'/commands',w.sessionToken,update)).json(); assert.equal(saved.entry.projectionState,'pending'); assert.deepEqual(saved.entry.effects,['update']);
  assert.equal((await call(f,'/projection/adopt',w.sessionToken,{...approval,expectedRevision:exported.document.revision+1,expectedFingerprint:fresh.external.fingerprint})).status,409);
 });
@@ -181,7 +182,7 @@ test('accepted completion drives ordered create then score through the private g
   remote={id:'90000000-0000-4000-8000-000000000002',userId:user,notes:'',priority:1,attribute:'str',completed:false,checklist:[],group:{},challenge:{},...await request.json()};
   return Response.json({success:true,data:remote},{status:201});
  }});
- const profile=await enrolled(f);const w=await connect(f,profile);const c={...command(w.workspaceId),projectToHabitica:false};assert.equal((await call(f,'/commands',w.sessionToken,c)).status,201);
+ const profile=await enrolled(f);const w=await connect(f,profile);const c={...command(w.workspaceId),projectToHabitica:false};await seedLegacyCommand(f,c);
  const complete={id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:2,operation:'completeTask',taskId:c.taskId,projectToHabitica:true};assert.equal((await call(f,'/commands',w.sessionToken,complete)).status,201);
  const exported=await(await call(f,'/export',w.sessionToken)).json();let doc=exported.document;let entry=exported.commands[1];
  const context=await(await f.workspaceIdentity.fetch('https://identity.internal/management',{method:'POST',headers:{authorization:`Bearer ${profile.managementToken}`}})).json();

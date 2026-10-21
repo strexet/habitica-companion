@@ -49,7 +49,7 @@ test('packaged workflow tool names route through actual SDK with two isolated OA
  }
  const preview=await a.callTool({name:'prepare_task_command',arguments:{requestId:crypto.randomUUID(),operation:'createTodo',patch:{text:'Private canonical intent'},projectToHabitica:false}});assert.notEqual(preview.isError,true);const commandId=preview.structuredContent.preparedCommandId;
  assert.equal((await b.callTool({name:'create_todo',arguments:{commandId}})).isError,true);
- const own=await a.callTool({name:'create_todo',arguments:{commandId}});assert.equal(own.structuredContent.savedInCompanion,true);assert.equal(own.structuredContent.habiticaProjectionStatus,'notRequested');
+ const own=await a.callTool({name:'create_todo',arguments:{commandId}});assert.equal(own.structuredContent.savedInCompanion,true);assert.equal(own.structuredContent.habiticaProjectionStatus,'pending');
  assert.equal((await b.callTool({name:'list_companion_tasks',arguments:{}})).structuredContent.matchedCount,0);
  const otherReceipt=await b.callTool({name:'get_task_command',arguments:{commandId}});assert.equal(otherReceipt.structuredContent.savedInCompanion,null);assert.equal(otherReceipt.structuredContent.taskText,undefined);
  const {token}=await client(t,f,profiles[1],'profile:read tasks:read');

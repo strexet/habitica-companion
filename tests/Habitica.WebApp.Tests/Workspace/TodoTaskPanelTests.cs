@@ -37,29 +37,29 @@ public sealed class TodoTaskPanelTests : BunitContext
     }
 
     [Fact]
-    public async Task Title_only_form_submission_reviews_one_native_save_and_returns_focus_to_immediate_capture()
+    public async Task Title_only_form_submission_reviews_required_game_intent_and_returns_focus_to_immediate_capture()
     {
         var (f, _) = Setup(); await f.Controller.CreateLocalAsync();
         var cut = Render<TodoTaskPanel>();
         Assert.Null(cut.Find("[data-testid='todo-title']").Closest("details"));
         Assert.Equal("submit", cut.Find("[data-testid='todo-add']").GetAttribute("type"));
-        Save("todo-capture-ready", cut.Markup, "title-first-loaded", nameof(Title_only_form_submission_reviews_one_native_save_and_returns_focus_to_immediate_capture));
+        Save("todo-capture-ready", cut.Markup, "title-first-loaded", nameof(Title_only_form_submission_reviews_required_game_intent_and_returns_focus_to_immediate_capture));
         cut.Find("[data-testid='todo-title']").Input("A title-only task"); cut.Find("form").Submit();
-        Assert.Empty(f.Controller.Snapshot!.Commands); Assert.False(f.Controller.Preview!.MayAffectHabitica);
+        Assert.Empty(f.Controller.Snapshot!.Commands); Assert.True(f.Controller.Preview!.MayAffectHabitica);
         Assert.Equal("A title-only task", f.Controller.Preview.Command.Patch!.Text);
-        Assert.Contains("Companion-only save", cut.Find("[data-testid='todo-review']").TextContent);
+        Assert.Contains("separately enabled executor", cut.Find("[data-testid='todo-review']").TextContent);
         cut.Find("[data-testid='todo-confirm']").Click();
         var task = Assert.Single(f.Controller.Snapshot.Document.Tasks);
         Assert.Equal("A title-only task", task.Text); Assert.Equal(CompanionPriority.Normal, task.Priority);
         Assert.Contains("Saved in Companion: Yes", cut.Find("[data-testid='todo-receipt']").TextContent);
-        Assert.Contains("notRequested", cut.Find("[data-testid='todo-receipt']").TextContent);
+        Assert.Contains("pending", cut.Find("[data-testid='todo-receipt']").TextContent);
         Assert.Equal("", cut.Find("[data-testid='todo-title']").GetAttribute("value"));
         Assert.Contains(JSInterop.Invocations, invocation => invocation.Identifier == "Blazor._internal.domWrapper.focus");
         Assert.Null(cut.Find($"[data-testid='todo-complete-{task.Id:D}']").Closest("details"));
         var coverage = cut.Find("[data-testid='todo-habitica-coverage']").TextContent;
-        Assert.Contains("Missing: 1", coverage);
+        Assert.Contains("pending: 1", coverage);
         Assert.Contains("Unlinked task completions earn no Habitica rewards", coverage);
-        Save("todo-coverage-missing", cut.Markup, "saved-task-without-game-link", nameof(Title_only_form_submission_reviews_one_native_save_and_returns_focus_to_immediate_capture));
+        Save("todo-coverage-pending", cut.Markup, "saved-task-awaiting-game-link", nameof(Title_only_form_submission_reviews_required_game_intent_and_returns_focus_to_immediate_capture));
     }
 
     [Fact]
@@ -169,6 +169,11 @@ public sealed class TodoTaskPanelTests : BunitContext
         cut.Find("[data-testid='todo-retry-preview']").Click(); Assert.Equal(2, f.Client.PreparationIds.Count);
         Assert.Single(f.Client.PreparationIds.Distinct()); cut.Find("[data-testid='todo-confirm']").Click();
         var task = Assert.Single(f.Controller.Snapshot!.Document.Tasks);
+        Assert.Single(f.Controller.Snapshot.Document.Projections);
+        await f.SeedLegacyLocalAsync("Legacy archive candidate");
+        await presentation.RefreshSourcesAsync();
+        await presentation.SelectAsync(new(TodoWorkspaceSource.Browser, f.Controller.Snapshot!.Document.Id));
+        task = f.Controller.Snapshot.Document.Tasks.Single();
         cut.Find($"[data-testid='todo-edit-{task.Id:D}']").Click(); cut.Find("[data-testid='todo-archive']").Click();
         Assert.False(f.Controller.Snapshot.Document.Tasks[0].IsArchived); Assert.Contains("retain history", cut.Find("[data-testid='todo-review']").TextContent);
         cut.Find("[data-testid='todo-confirm']").Click(); Assert.True(f.Controller.Snapshot.Document.Tasks[0].IsArchived);

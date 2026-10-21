@@ -12,6 +12,10 @@ public sealed class WorkspaceCommandService(ICompanionWorkspaceStore store, Time
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
         catch { return new(SubmissionDisposition.Unavailable, null, null, "storage_unavailable"); }
         if (current is null) return null;
+        // Accepted legacy intent is recovered verbatim before applying the prospective policy.
+        if (!current.Commands.Any(entry => entry.Command.Id == command.Id) &&
+            WorkspaceTodoProjectionPolicy.Rejection(current.Document, command) is { } policyError)
+            return new(SubmissionDisposition.Invalid, current, null, policyError);
         var result = WorkspaceCommandEngine.Accept(current, command, (clock ?? TimeProvider.System).GetUtcNow());
         if (result.Disposition != SubmissionDisposition.Accepted) return result;
         try

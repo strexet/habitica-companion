@@ -158,7 +158,7 @@ public sealed class WorkspaceCommandTests
     [Fact]
     public async Task AtomicCompareExchangeReturnsConflictAndRecoversLostAcceptanceAcknowledgement()
     {
-        var initial = Empty(); var command = Create(initial);
+        var initial = Empty(); var command = Create(initial, true);
         var accepted = Accept(initial, command);
         var store = new FakeStore(initial) { Competing = accepted };
         var service = new WorkspaceCommandService(store);
@@ -215,6 +215,53 @@ public sealed class WorkspaceCommandTests
         var other = Create(state, true); state = Accept(state, other);
         Assert.False(ProjectionJournal.Acquire(state, other.Id, "owner", Now, TimeSpan.FromSeconds(30)).Acquired);
         Assert.Equal(ProjectionCommandState.Blocked, state.Commands[0].ProjectionState);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task NewTodoIntentRequiresProjectionWithoutRewritingLegacyReceipts(bool requested)
+    {
+        var state = Empty(); var input = Create(state, requested);
+        var prepared = WorkspaceTodoProjectionPolicy.Prepare(state.Document, input);
+        Assert.True(prepared.ProjectToHabitica);
+        Assert.Equal("todo-required-v1", WorkspaceTodoProjectionPolicy.Version);
+        var store = new FakeStore(state); var service = new WorkspaceCommandService(store);
+        var refusal = await service.SubmitAsync(input with { ProjectToHabitica = false }, default);
+        Assert.Equal("todo_projection_required", refusal!.ErrorCode); Assert.Same(state, store.State);
+        var saved = await service.SubmitAsync(prepared, default);
+        Assert.Equal(SubmissionDisposition.Accepted, saved!.Disposition);
+        Assert.Equal(new[] { ProjectionEffectKind.Create }, saved.Entry!.Effects);
+        Assert.Equal(0, saved.Entry.ConfirmedEffects);
+        var legacyCommand = Create(state); var legacy = Accept(state, legacyCommand);
+        var before = WorkspaceJournalJson.Serialize(legacy);
+        var recovered = await new WorkspaceCommandService(new FakeStore(legacy)).SubmitAsync(legacyCommand, default);
+        Assert.Equal(SubmissionDisposition.Duplicate, recovered!.Disposition);
+        Assert.Equal(before, WorkspaceJournalJson.Serialize(recovered.Snapshot!));
+        Assert.Empty(recovered.Entry!.Effects);
+        Assert.Equal(SubmissionDisposition.IdempotencyConflict, (await new WorkspaceCommandService(new FakeStore(legacy))
+            .SubmitAsync(legacyCommand with { ProjectToHabitica = true }, default))!.Disposition);
+    }
+
+    [Fact]
+    public async Task UnlinkedActiveCompletionOrdersCreateBeforeScoreAndHistoricalCompletedEditRequiresReview()
+    {
+        var state = Empty(); var create = Create(state); state = Accept(state, create);
+        var complete = WorkspaceTodoProjectionPolicy.Prepare(state.Document, new(Guid.NewGuid(), state.Document.Id,
+            state.Document.Revision, WorkspaceOperation.CompleteTask, create.TaskId));
+        var result = await new WorkspaceCommandService(new FakeStore(state)).SubmitAsync(complete, default);
+        Assert.Equal(new[] { ProjectionEffectKind.Create, ProjectionEffectKind.ScoreUp }, result!.Entry!.Effects);
+        Assert.Equal(0, result.Entry.ConfirmedEffects);
+        var historical = Accept(state, complete with { ProjectToHabitica = false });
+        var edit = WorkspaceTodoProjectionPolicy.Prepare(historical.Document, new(Guid.NewGuid(), historical.Document.Id,
+            historical.Document.Revision, WorkspaceOperation.UpdateTask, create.TaskId, new(Notes: "Reviewed historical note")));
+        var store = new FakeStore(historical);
+        Assert.Equal("historical_projection_requires_review", (await new WorkspaceCommandService(store).SubmitAsync(edit, default))!.ErrorCode);
+        Assert.Same(historical, store.State);
+        var plan = new WorkspaceCommand(Guid.NewGuid(), state.Document.Id, state.Document.Revision,
+            WorkspaceOperation.PlanTask, create.TaskId, new(Planning: new(PlannedDate: new(2026, 10, 21))));
+        Assert.Equal(plan, WorkspaceTodoProjectionPolicy.Prepare(state.Document, plan));
+        Assert.Null(WorkspaceTodoProjectionPolicy.Rejection(state.Document, plan));
     }
 
     private sealed class FakeStore(WorkspaceJournalSnapshot initial) : ICompanionWorkspaceStore

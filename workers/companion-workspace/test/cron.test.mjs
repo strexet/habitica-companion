@@ -116,7 +116,7 @@ test('an old in-flight preview cannot regain authority after a newer grant epoch
 
 test('re-enrollment after grant revocation restores retained Workspace access without old preview authority',async t=>{
  const {enrolled}=await import('../../chatgpt-auth/test/fixtures/oauth.mjs');const s=await setup(t),p=await s.prepare(),profile=s.profiles[0],before=await(await s.http(0,'/workspace',undefined,'GET')).json(),taskId=crypto.randomUUID();
- assert.equal((await s.http(0,'/commands',{id:crypto.randomUUID(),workspaceId:before.document.id,expectedRevision:1,operation:'createTodo',taskId,patch:{text:'Retained synthetic Todo'},projectToHabitica:false})).status,201);
+ assert.equal((await s.http(0,'/commands',{id:crypto.randomUUID(),workspaceId:before.document.id,expectedRevision:1,operation:'createTodo',taskId,patch:{text:'Retained synthetic Todo'},projectToHabitica:true})).status,201);
  assert.equal((await s.f.auth.fetch(`http://localhost:8787/profiles/${profile.profileId}/revoke-grants`,{method:'POST',headers:{authorization:'Bearer '+profile.managementToken,'content-type':'application/json'},body:JSON.stringify({confirm:'revoke-chatgpt-grants'})})).status,200);
  await s.client(0,scope);assert.notEqual((await s.tool(0,'get_cron_status')).isError,true);const oldEpoch=(await s.f.workspaceDb.prepare('SELECT mcp_grant_epoch FROM workspaces WHERE profile_id=?').bind(profile.profileId).first()).mcp_grant_epoch;assert.notEqual(oldEpoch,'legacy');
  assert.equal((await s.f.auth.fetch(`http://localhost:8787/profiles/${profile.profileId}`,{method:'DELETE',headers:{authorization:'Bearer '+profile.managementToken}})).status,200);s.profiles[0]=await enrolled(s.f);assert.equal(s.profiles[0].profileId,profile.profileId);

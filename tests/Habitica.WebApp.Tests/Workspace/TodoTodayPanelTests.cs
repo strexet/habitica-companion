@@ -126,7 +126,7 @@ public sealed class TodoTodayPanelTests : BunitContext
     }
 
     [Fact]
-    public async Task Planned_Todo_completion_and_Habit_scores_reuse_the_same_review_without_game_projection()
+    public async Task Planned_Todo_completion_requires_projection_while_Habit_events_keep_their_existing_contract()
     {
         var todo = Task("Planned Todo", planned: Monday);
         var habit = Task("Planned Habit", CompanionTaskKind.Habit, planned: Monday);
@@ -135,7 +135,7 @@ public sealed class TodoTodayPanelTests : BunitContext
         Assert.Equal(WorkspaceOperation.CompleteTask, f.Controller.Preview!.Command.Operation); Assert.Null(f.Controller.Preview.Command.OccurrenceDate);
         cut.Find("[data-testid='todo-confirm']").Click(); Assert.Equal(CompanionTaskState.Completed, f.Controller.Snapshot!.Document.Tasks.Single(task => task.Id == todo.Id).State);
         Assert.Empty(cut.FindAll($"[data-testid='today-row-{todo.Id:D}']"));
-        Save("todo-today-habit", cut.Markup, "planned-habit-current-event", nameof(Planned_Todo_completion_and_Habit_scores_reuse_the_same_review_without_game_projection));
+        Save("todo-today-habit", cut.Markup, "planned-habit-current-event", nameof(Planned_Todo_completion_requires_projection_while_Habit_events_keep_their_existing_contract));
         foreach (var label in new[] { "Record +1 now", "Record −1 now" })
         {
             cut.Find($"[data-testid='today-row-{habit.Id:D}']").QuerySelectorAll("button").Single(button => button.TextContent == label).Click();
@@ -143,7 +143,9 @@ public sealed class TodoTodayPanelTests : BunitContext
             Assert.Equal(label.Contains("+1") ? HabitScoreDirection.Up : HabitScoreDirection.Down, f.Controller.Preview.Command.Direction);
             Assert.False(f.Controller.Preview.MayAffectHabitica); cut.Find("[data-testid='todo-confirm']").Click();
         }
-        Assert.Equal(2, f.Controller.Snapshot.Document.HabitScores.Count); Assert.All(f.Controller.Snapshot.Commands, command => Assert.Empty(command.Effects));
+        Assert.Equal(2, f.Controller.Snapshot.Document.HabitScores.Count);
+        Assert.Equal(new[] { ProjectionEffectKind.Create, ProjectionEffectKind.ScoreUp }, f.Controller.Snapshot.Commands[0].Effects);
+        Assert.All(f.Controller.Snapshot.Commands.Skip(1), command => Assert.Empty(command.Effects));
         Assert.Contains(JSInterop.Invocations, call => call.Identifier == "Blazor._internal.domWrapper.focus");
     }
 

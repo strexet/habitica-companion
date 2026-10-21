@@ -135,9 +135,9 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         if (input.Operation == WorkspaceOperation.SetTodoState) patch = new(TodoState: input.TodoState);
         if (input.Operation == WorkspaceOperation.RelateTodo) patch = new(Relationships: input.Relationships);
         if (input.Operation == WorkspaceOperation.RestoreTodo) patch = new(RestoreTodo: input.RestoreTodo);
-        return new(Guid.NewGuid(), snapshot.Document.Id, snapshot.Document.Revision, input.Operation, creating ? Guid.NewGuid() : input.TaskId ?? Guid.Empty,
+        return WorkspaceTodoProjectionPolicy.Prepare(snapshot.Document, new(Guid.NewGuid(), snapshot.Document.Id, snapshot.Document.Revision, input.Operation, creating ? Guid.NewGuid() : input.TaskId ?? Guid.Empty,
             patch, input.Operation == WorkspaceOperation.ScoreHabit ? input.Direction : null, input.Operation == WorkspaceOperation.ScoreHabit ? input.Count : 1,
-            input.Operation is WorkspaceOperation.CompleteTask or WorkspaceOperation.SkipOccurrence ? input.OccurrenceDate : null, input.ProjectToHabitica);
+            input.Operation is WorkspaceOperation.CompleteTask or WorkspaceOperation.SkipOccurrence ? input.OccurrenceDate : null, input.ProjectToHabitica));
     }
     public Task PrepareAsync(WorkspaceTaskInput input, CancellationToken cancellationToken = default) => ObserveAsync("workspace-task-prepare", () => PrepareCoreAsync(input, cancellationToken));
     public Task RetryOriginalPreviewAsync(CancellationToken cancellationToken = default)
@@ -163,6 +163,13 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
         }
         else
         {
+            if (WorkspaceTodoProjectionPolicy.Rejection(Snapshot.Document, _intent) is { } policyError)
+            {
+                Message = policyError == "historical_projection_requires_review"
+                    ? "This completed Todo has no Habitica link. Historical integration needs a separate review; no task or reward was changed."
+                    : "Todo changes require Habitica correspondence. Reload and review a fresh command.";
+                _intent = null; return;
+            }
             var result = WorkspaceCommandEngine.Accept(Snapshot, _intent, DateTimeOffset.UtcNow);
             if (result.Disposition != SubmissionDisposition.Accepted) { Message = "The preview is invalid or stale. Check the task, field bounds and current revision."; _intent = null; return; }
             Preview = new(_intent.Id, _requestId, DateTimeOffset.UtcNow.AddMinutes(10), false, _intent, result.Entry!.Effects.Count > 0, false);

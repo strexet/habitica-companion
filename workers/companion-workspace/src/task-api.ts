@@ -4,6 +4,7 @@ import {unblockedTodos} from './unblocked-todos.ts';
 import {habitHistory} from './habit-history.ts';
 import { taskToolInput, operationForTool, type TaskTool } from '../../shared/task-tools.ts';
 import { workspaceCommand, isTaskCreation } from '../../shared/workspace-commands.ts';
+import {prepareTodoProjection,requireTodoProjection} from '../../shared/todo-projection-policy.ts';
 import { WorkspaceError, workspaceTokenHash, uuid } from '../../shared/workspace-http.ts';
 import type { WorkspaceRow } from './executor.ts';
 import type { CommandEntry } from './commands.ts';
@@ -46,6 +47,8 @@ export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,ar
    // IDs come from the server. Task names and transport request IDs never select mutation targets.
    let command;try{command=workspaceCommand({id:crypto.randomUUID(),workspaceId:row.workspace_id,expectedRevision:input.expectedRevision??document.revision,operation:input.operation,taskId:isTaskCreation(input.operation)?crypto.randomUUID():uuid(input.taskId),patch:input.patch,direction:input.direction,count:input.count,occurrenceDate:input.occurrenceDate,projectToHabitica:input.projectToHabitica});}catch(error){if(error instanceof WorkspaceError)throw error;throw new WorkspaceError('invalid_command',422);}
    if(isTaskCreation(input.operation)&&input.taskId!==undefined)throw new WorkspaceError('server_task_identity_required',422);
+   command=prepareTodoProjection(document,command);
+   requireTodoProjection(document,command);
    await accept(document,command,new Date().toISOString()); // Validate exact canonical state without accepting a command.
    const now=new Date().toISOString();const serialized=JSON.stringify(command);const size=row.archive_bytes+bytes(serialized)+512;
    if(size>8*1024*1024-32768||row.store_version>=Number.MAX_SAFE_INTEGER)throw new WorkspaceError('workspace_capacity',413);
@@ -58,7 +61,8 @@ export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,ar
    if(!prepared||prepared.input_hash!==hash)throw new WorkspaceError(changed[0].meta.changes?'request_id_reused':'workspace_changed',409);
   }
   const found=await receipt(prepared.command_id);if(!found&&(prepared.access_epoch!==row.access_epoch||prepared.grant_epoch!==(row.mcp_grant_epoch??'legacy')))throw new WorkspaceError('preview_connection_changed',409);const command=JSON.parse(prepared.command_json);
-  return {preparedCommandId:prepared.command_id,correlationId:prepared.correlation_id,expiresAtUtc:prepared.expires_at_utc,expired:prepared.expires_at_utc<=new Date().toISOString()&&!found,command,mayAffectHabitica:!['planTask','restoreTodo','relateTodo','setTodoState','setTodoStage'].includes(command.operation)&&(command.projectToHabitica||document.projections.some((p:{taskId:string;state:string})=>p.taskId===command.taskId&&p.state!=='unlinked')),savedInCompanion:Boolean(found),...(found?{receipt:mutationResult(found.entry,document,found.correlationId)}:{})};
+  if(!found)requireTodoProjection(document,command);
+  return {preparedCommandId:prepared.command_id,correlationId:prepared.correlation_id,expiresAtUtc:prepared.expires_at_utc,expired:prepared.expires_at_utc<=new Date().toISOString()&&!found,command,mayAffectHabitica:found?found.entry.effects.length>0:!['planTask','restoreTodo','relateTodo','setTodoState','setTodoStage'].includes(command.operation)&&(command.projectToHabitica||document.projections.some((p:{taskId:string;state:string})=>p.taskId===command.taskId&&p.state!=='unlinked')),savedInCompanion:Boolean(found),...(found?{receipt:mutationResult(found.entry,document,found.correlationId)}:{})};
  }
  const commandId=uuid(input.commandId);const found=await receipt(commandId);const operation=operationForTool[name as keyof typeof operationForTool];
  if(found){if(found.entry.command.operation!==operation)throw new WorkspaceError('operation_mismatch',409);return mutationResult(found.entry,document,found.correlationId);}

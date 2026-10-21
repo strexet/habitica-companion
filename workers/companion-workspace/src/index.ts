@@ -1,4 +1,5 @@
 import {organizationApi} from './organization-api';
+import {requireTodoProjection} from '../../shared/todo-projection-policy.ts';
 import {organizationToolScopes,type OrganizationWriteTool} from '../../shared/organization-tools';
 import {operationalStatus} from './operations';
 import {mcpEpoch} from './mcp-epoch';
@@ -80,6 +81,7 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, p
  let input; try { input = workspaceCommand(await workspaceJson(request, 65536)); } catch (error) { if (error instanceof WorkspaceError) throw error; throw new WorkspaceError("invalid_command", 422); }
  if (input.workspaceId !== row.workspace_id) throw new WorkspaceError("workspace_mismatch", 409);
  const hash = await commandHash(input); const replay = await duplicate(env, row, input.id, hash); if (replay) return replay;
+ requireTodoProjection(JSON.parse(row.document_json),input);
  const accepted = await accept(JSON.parse(row.document_json), input, new Date().toISOString());
  const serialized = JSON.stringify(accepted.document);
  // D1 has a per-row bound. Reject before acceptance rather than silently dropping history.
