@@ -57,7 +57,9 @@
     "dotnet_tests_prior_current_source": 961,
     "worker_typechecks": "pass",
     "three_exact_production_dry_builds": "pass",
-    "production_frontend_build": "pass; optional wasm-tools absent"
+    "production_frontend_build": "pass; optional wasm-tools absent",
+    "affected_search_saved_list_client_tests": 51,
+    "actual_browser_task_query_cases": 30
   },
   "browser_live_checks": [
     "Production sign-in succeeds with session-only credentials.",
@@ -65,12 +67,18 @@
     "Tasks, Tasks and subtasks, Projects and Saved lists render on the stable production origin.",
     "Current user theme is retained across the new pages.",
     "On 2026-10-21 an expired tab management credential becomes unverified rather than claiming server disconnection. Explicit verification restores access.",
-    "Fresh browser server-status check at 2026-10-21 10:48 Asia/Novosibirsk reports zero pending, stalled, uncertain or blocked commands and zero expired execution leases. No command is retried."
+    "Fresh browser server-status check at 2026-10-21 10:48 Asia/Novosibirsk reports zero pending, stalled, uncertain or blocked commands and zero expired execution leases. No command is retried.",
+    "Disposable native saved-list creation is confirmed by original command 8267d01a-81f0-42c5-ba0f-98e7ff4645fb, without task or game effects. Opening the list exposed the browser-only normalization defect; frontend repair published separately.",
+    "Corrected production frontend opens the previously crashing Cyrillic saved list and returns one matching active Todo at revision 44.",
+    "Reviewed update command 79bbe561-47b5-476c-b98f-dc792fec62a4 changes only the disposable saved definition to Completed. Original native receipt is confirmed with complete refresh; zero matching tasks at revision 45.",
+    "Reviewed archive command 020e6741-7aa8-48ad-8a8a-8a5e19fabc46 is confirmed with complete refresh. Zero active saved definitions remain; the selected archived definition reports unavailable with no all-task fallback.",
+    "Native list create/update/archive report zero task, completion and Habitica effects. Original native history is retained. No replacement command was used to recover an uncertain response."
   ],
   "native_mcp_checks": [
     "Post-deployment profile/account/project/saved-view reads succeed through the direct Codex connection on 2026-10-20.",
     "Existing executor status has nine requested and nine confirmed effects, no pending or uncertain task commands at the initial preflight.",
-    "On 2026-10-21 direct MCP metadata discovery fails at the transport layer; the installed plugin connection still reads the exact canonical project task at workspace revision 41."
+    "On 2026-10-21 direct MCP metadata discovery fails at the transport layer; the installed plugin connection still reads the exact canonical project task at workspace revision 41.",
+    "Owner-approved checklist transfer accepted once through installed plugin tools. Original receipt confirmed one of one Habitica projection effects, failure none and outcomeUnknown false. Canonical checklist reads ten of ten checked while the parent remains active."
   ],
   "public_http_checks": {
     "appsettings.json": {
@@ -116,7 +124,24 @@
   "limits": [
     "Public artifact and health GETs return HTTP 403 through the shell network path. No remote artifact hash match is claimed. Cloudflare deployment metadata and real browser observations qualify different facts.",
     "No party mutation, party departure, Start New Day, spell cast, key rotation, second-user or physical-device qualification.",
-    "No test task was accepted during this run. A browser test draft remained unsaved; real create/edit/archive testing remains separate from rendered/read checks.",
+    "No test task was accepted during this run. The browser task draft remained unsaved. A disposable native saved-list definition was accepted; post-repair read/edit/archive checks pass with exact original receipts recorded above.",
     "A newly captured highest-priority bulk-cast rate-limit and gear-restoration defect remains unresolved. The production deployment contains existing spell behavior; setup completion is not broad release qualification."
-  ]
+  ],
+  "frontend_repair": {
+    "source_commit": "f66410c",
+    "previous_pages_deployment": "8733a2ee-8c12-4ed1-a6a0-d6021d57859f",
+    "pages": {
+      "Id": "e1cefdbc-74ac-4b29-88d5-c1737fa894e0",
+      "Environment": "Production",
+      "Branch": "main",
+      "Source": "f66410c",
+      "Deployment": "https://e1cefdbc.habitica-companion.pages.dev",
+      "Status": "36 seconds ago",
+      "Build": "https://dash.cloudflare.com/8c962c94f28f5bdd298024365e0dea40/pages/view/habitica-companion/e1cefdbc-74ac-4b29-88d5-c1737fa894e0"
+    },
+    "workers_republished": false,
+    "database_or_secret_changes": false,
+    "reason": "Browser NFKC search normalization regression found during own-account Saved lists qualification.",
+    "live_result": "pass: existing Cyrillic query read, filter update, archive and explicit archived state"
+  }
 }

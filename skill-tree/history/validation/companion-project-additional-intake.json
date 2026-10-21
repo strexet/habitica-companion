@@ -37,6 +37,18 @@
   "existing_seven_entries": "skill-tree/history/validation/recovered-companion-intake.json",
   "prepared_command_id": "7a60e1d9-78cd-43d2-9ffb-1319237da1e2",
   "server_preview_may_affect_habitica": true,
-  "service_acknowledgement": "awaiting concrete preview approval",
-  "parent_task_completion_requested": false
+  "service_acknowledgement": "accepted once and original Habitica projection receipt confirmed",
+  "parent_task_completion_requested": false,
+  "verification_date": "2026-10-21",
+  "confirmed_command_id": "7a60e1d9-78cd-43d2-9ffb-1319237da1e2",
+  "confirmed_effect_count": 1,
+  "requested_effect_count": 1,
+  "outcome_unknown": false,
+  "checklist_completed_count": 10,
+  "checklist_total_count": 10,
+  "previous_seven_entries_unchanged": true,
+  "parent_task_state": "active",
+  "description_unchanged": true,
+  "source_task_revision_after": 42,
+  "source_workspace_revision_after": 42
 }

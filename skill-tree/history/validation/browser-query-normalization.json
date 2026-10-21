@@ -23,7 +23,23 @@
     "tests/fixtures/workspace/task-query-v1.json": "193e27286dc773155a84bccd79f8e22e1939dc9774cee60f8b451a223915c0e2",
     "tests/Habitica.WebApp.Tests/Integration/WorkspaceOrganizationClientTests.cs": "dd2d192e7a4f376444bcc90c1250a7001be6f046297895d6167086d1b8cb9f3f"
   },
-  "production_recheck": "pending corrected frontend publication",
+  "production_recheck": {
+    "deployment_id": "e1cefdbc-74ac-4b29-88d5-c1737fa894e0",
+    "source_commit": "f66410c",
+    "origin": "https://habitica-companion.pages.dev",
+    "result": "Previously crashing Cyrillic saved search opens and returns one matching active Todo at revision 44.",
+    "native_view_id": "69d66ba3-6811-4430-b3f5-01d19344e859",
+    "create_command_id": "8267d01a-81f0-42c5-ba0f-98e7ff4645fb",
+    "task_and_game_mutations": 0,
+    "update_command_id": "79bbe561-47b5-476c-b98f-dc792fec62a4",
+    "updated_completed_query_matched_count": 0,
+    "update_revision": 45,
+    "archive_command_id": "020e6741-7aa8-48ad-8a8a-8a5e19fabc46",
+    "archive_receipt_confirmed": true,
+    "active_definition_count_after_archive": 0,
+    "archived_selection_is_explicitly_unavailable": true,
+    "all_task_fallback": false
+  },
   "limits": [
     "No mobile-device or assistive-technology qualification.",
     "No unrelated gameplay or party tests."
