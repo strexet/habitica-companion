@@ -41,7 +41,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
     public bool? BrowserSourcesAvailable { get; private set; }
     public bool IsBusy { get; private set; }
     public string? Message { get; private set; }
-    public bool CanSwitchSource => !IsBusy && !_commands.HasPendingIntent && _organization?.HasPendingIntent != true && _organization?.IsBusy != true;
+    public bool CanSwitchSource => !IsBusy && !_commands.HasPendingIntent && _commands.LinkPreview is null && _organization?.HasPendingIntent != true && _organization?.IsBusy != true;
     public WorkspaceTaskController Commands => _commands;
     private string? Account => _session.State.IsAuthenticated && Guid.TryParse(_session.State.UserId, out var id) ? id.ToString("D") : null;
     public TodoWorkspaceAvailability Availability => Account is null ? TodoWorkspaceAvailability.SignedOut
@@ -133,6 +133,10 @@ public sealed class TodoWorkspacePresentation : IDisposable
         if (OrganizationBlockReason is { } reason) throw new InvalidOperationException(reason);
         return RunAsync(() => _commands.PrepareAsync(input, token), token);
     }
+    public Task PreviewLinkAsync(Guid taskId, Guid remoteId, CancellationToken token = default)
+    { _ = RequireSnapshot(); return RunAsync(() => _commands.PreviewLinkAsync(taskId, remoteId, token), token); }
+    public Task AdoptLinkAsync(CancellationToken token = default) => RunAsync(() => _commands.AdoptLinkAsync(token), token);
+    public void CancelLinkPreview() { if (IsBusy) throw new InvalidOperationException("Wait for the current operation."); _commands.CancelLinkPreview(); Changed?.Invoke(); }
     public Task ConfirmAsync(CancellationToken token = default) => RunAsync(() => _commands.ConfirmAsync(token), token);
     public Task RetryOriginalPreviewAsync(CancellationToken token = default) => RunAsync(() => _commands.RetryOriginalPreviewAsync(token), token);
     public Task CheckOriginalAsync(CancellationToken token = default) => RunAsync(() => _commands.CheckOriginalAsync(token), token);

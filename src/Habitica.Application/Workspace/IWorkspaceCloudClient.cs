@@ -4,7 +4,7 @@ using Habitica.Domain.Workspace;
 
 namespace Habitica.Application.Workspace;
 
-public sealed record WorkspaceActionResult(bool Succeeded, string Message, string? Json = null);
+public sealed record WorkspaceActionResult(bool Succeeded, string Message, string? Json = null, bool OutcomeUnknown = false);
 public sealed record WorkspaceOperationalStatus([property: JsonRequired] DateTimeOffset CheckedAtUtc, [property: JsonRequired] int Pending, [property: JsonRequired] int Stalled, [property: JsonRequired] int Uncertain, [property: JsonRequired] int Blocked, [property: JsonRequired] int ExpiredLeases, DateTimeOffset? OldestPendingAtUtc);
 public sealed record WorkspaceStatusResult(bool Succeeded, string Message, WorkspaceOperationalStatus? Status = null);
 public interface IWorkspaceCloudClient

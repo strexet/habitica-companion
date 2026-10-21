@@ -77,6 +77,12 @@ internal sealed class WorkspaceTaskFixture
         public Task<WorkspaceStatusResult> ReadOperationalStatusAsync(CancellationToken token) { StatusReads++; return StatusAction(); }
         public bool LoseAcceptance { get; set; }
         public bool LosePreparation { get; set; }
+        public bool RejectPreparation { get; set; }
+        public bool ExpirePreparation { get; set; }
+        public bool LoseLinkAcceptance { get; set; }
+        public WorkspaceExternalTask? LinkExternal { get; set; }
+        public List<WorkspaceProjectionPreview> AdoptionRequests { get; } = [];
+        public List<Guid> LinkPreviewRequests { get; } = [];
         private readonly Dictionary<Guid, WorkspaceCommandPreview> _previews = [];
         public bool FailLoads { get; set; }
         public TaskCompletionSource? LoadGate { get; set; }
@@ -97,10 +103,11 @@ internal sealed class WorkspaceTaskFixture
         public Task<WorkspaceTaskResponse<WorkspaceCommandPreview>> PrepareCommandAsync(Guid requestId, WorkspaceCommand intent, CancellationToken token)
         {
             PreparationIds.Add(requestId);
+            if (RejectPreparation) return Task.FromResult(new WorkspaceTaskResponse<WorkspaceCommandPreview>(false,null,"Synthetic definitive rejection"));
             if (!_previews.TryGetValue(requestId, out var preview))
             {
                 var command = intent with { Id = Guid.NewGuid(), TaskId = intent.Operation == WorkspaceOperation.CreateTodo ? Guid.NewGuid() : intent.TaskId };
-                preview = new WorkspaceCommandPreview(command.Id, requestId, DateTimeOffset.UtcNow.AddMinutes(10), false, command, intent.ProjectToHabitica, false);
+                preview = new WorkspaceCommandPreview(command.Id, requestId, DateTimeOffset.UtcNow.AddMinutes(ExpirePreparation ? -1 : 10), false, command, intent.ProjectToHabitica, false);
                 _previews[requestId] = preview;
             }
             if (LosePreparation) { LosePreparation = false; return Task.FromResult(new WorkspaceTaskResponse<WorkspaceCommandPreview>(false, null, "Synthetic lost preparation", true)); }
@@ -122,8 +129,23 @@ internal sealed class WorkspaceTaskFixture
         public Task<WorkspaceActionResult> SetExecutorAsync(bool enabled, CancellationToken token) => throw new NotSupportedException();
         public Task<WorkspaceActionResult> HandoffAsync(string json, CancellationToken token) => throw new NotSupportedException();
         public Task<WorkspaceActionResult> DisconnectAsync(bool delete, CancellationToken token) => throw new NotSupportedException();
-        public Task<WorkspaceTaskResponse<WorkspaceProjectionPreview>> PreviewLinkAsync(Guid taskId, Guid externalId, CancellationToken token) => throw new NotSupportedException();
-        public Task<WorkspaceActionResult> AdoptLinkAsync(WorkspaceProjectionPreview preview, CancellationToken token) => throw new NotSupportedException();
+        public Task<WorkspaceTaskResponse<WorkspaceProjectionPreview>> PreviewLinkAsync(Guid taskId, Guid externalId, CancellationToken token)
+        {
+            LinkPreviewRequests.Add(taskId); var task=State.Document.Tasks.Single(t=>t.Id==taskId);
+            var external=LinkExternal??new WorkspaceExternalTask(externalId,task.Kind.ToString().ToLowerInvariant(),"Synthetic remote task","Different remote notes",null,1,"str",null,[],task.State==CompanionTaskState.Completed,true,true,null,new string('a',64));
+            return Task.FromResult(new WorkspaceTaskResponse<WorkspaceProjectionPreview>(true,new(State.Document.Id,Guid.NewGuid(),task,external,State.Document.Revision,State.Commands.Count(e=>e.ProjectionState is not (ProjectionCommandState.NotRequested or ProjectionCommandState.Confirmed or ProjectionCommandState.Cancelled))),"Synthetic link preview"));
+        }
+        public Task<WorkspaceActionResult> AdoptLinkAsync(WorkspaceProjectionPreview preview, CancellationToken token)
+        {
+            AdoptionRequests.Add(preview);
+            if(!State.Document.Projections.Any(p=>p.TaskId==preview.Task.Id&&p.HabiticaTaskId==preview.External.Id.ToString("D")))
+            {
+                var revision=State.Document.Revision+1;
+                State=State with {Document=State.Document with {Revision=revision,Projections=[new(Guid.NewGuid(),revision,preview.Task.Id,ProjectionState.Linked,preview.External.Id.ToString("D"),Fingerprint:preview.External.Fingerprint)]}};
+            }
+            if(LoseLinkAcceptance){LoseLinkAcceptance=false;return Task.FromResult(new WorkspaceActionResult(false,"Synthetic lost adoption",OutcomeUnknown:true));}
+            return Task.FromResult(new WorkspaceActionResult(true,"Synthetic original adoption receipt"));
+        }
         public void ForgetSession() => Connected = false;
     }
 }

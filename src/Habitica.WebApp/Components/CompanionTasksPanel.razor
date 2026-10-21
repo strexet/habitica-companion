@@ -104,11 +104,11 @@
                     <MudButton Disabled="@(_busy || Workspace.AcceptanceUnknown)" OnClick="CancelPreview" Variant="Variant.Outlined">Cancel preview</MudButton>
                 </section>
             }
-            else if (Workspace.HasPendingIntent)
+            else if (Workspace.HasPendingIntent && !Workspace.LinkAcceptanceUnknown)
             {
                 <p>The preview response was not confirmed. Retry the original preview to recover its command ID.</p>
                 <MudButton Disabled="@_busy" OnClick="PrepareAsync" Variant="Variant.Outlined">Retry original preview</MudButton>
-                <MudButton Disabled="@_busy" OnClick="CancelPreview" Variant="Variant.Outlined">Cancel preview</MudButton>
+                <MudButton Disabled="@(_busy || Workspace.PreparationUnknown || Workspace.AcceptanceUnknown)" OnClick="CancelPreview" Variant="Variant.Outlined">Cancel preview</MudButton>
             }
             @if (Workspace.LastReceipt is { } receipt)
             {
@@ -120,16 +120,17 @@
                 <fieldset class="companion-task-form" disabled="@(_busy || Workspace.HasPendingIntent)">
                     <legend>Link an existing Habitica task</legend>
                     <p>Use the exact Habitica task ID. Review both records before linking. Linking preserves Companion fields and does not change Habitica state.</p>
-                    <label>Habitica task ID<input class="app-input" @bind="_externalId" /></label>
-                    <MudButton OnClick="PreviewLinkAsync" Variant="Variant.Outlined">Preview task link</MudButton>
+                    <label>Habitica task ID<input class="app-input" @bind="_externalId" data-testid="canonical-link-id" /></label>
+                    <MudButton OnClick="PreviewLinkAsync" Variant="Variant.Outlined" data-testid="canonical-link-preview">Preview task link</MudButton>
+                </fieldset>
                     @if (Workspace.LinkPreview is { } link)
                     {
                         <dl><dt>Companion task</dt><dd>@link.Task.Text · @link.Task.Kind · @link.Task.State</dd><dt>Habitica task</dt><dd>@link.External.Text · @link.External.Kind · @(link.External.Completed ? "Completed" : "Open")</dd></dl>
                         <details><summary>Habitica notes</summary><p>@link.External.Notes</p></details>
                         @if (link.PendingCommandCount > 0) { <p>Resolve @link.PendingCommandCount pending projected commands before linking.</p> }
-                        <MudButton Disabled="@(link.PendingCommandCount > 0)" OnClick="@(() => RunAsync(() => Workspace.AdoptLinkAsync()))" Variant="Variant.Filled">Confirm reviewed task link</MudButton>
+                        @if (Workspace.LinkAcceptanceUnknown) { <p>Link acceptance is uncertain. Recover the original reviewed link; do not prepare a replacement.</p> }
+                        <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(_busy || link.PendingCommandCount > 0)" OnClick="@(() => RunAsync(() => Workspace.AdoptLinkAsync()))" Variant="Variant.Filled" data-testid="canonical-link-confirm">@(Workspace.LinkAcceptanceUnknown ? "Recover original link receipt" : "Confirm reviewed task link")</MudButton>
                     }
-                </fieldset>
             }
             <details><summary>Recent command history</summary><ul>@foreach (var entry in snapshot.Commands.Reverse().Take(10)) { <li>@(entry.TaskSnapshot?.Text ?? "Task") · @entry.Command.Operation · @entry.ProjectionState · @entry.ConfirmedEffects / @entry.Effects.Count effects <small>@entry.Command.Id</small></li> }</ul></details>
         }

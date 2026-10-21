@@ -219,6 +219,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
             if (generation != _generation || WorkspaceId != workspaceId || preview.WorkspaceId != workspaceId || preview.Task.Id != taskId || preview.External.Id != habiticaTaskId || preview.AccessEpoch == Guid.Empty || preview.ExpectedRevision < 1 || preview.ExpectedRevision >= WorkspaceDocument.MaxRevision || preview.PendingCommandCount < 0
                 || preview.Task.Kind.ToString().ToLowerInvariant() != preview.External.Kind
                 || preview.Task.Kind == CompanionTaskKind.Todo && (preview.Task.State == CompanionTaskState.Completed) != preview.External.Completed
+                || preview.External.Schedule is { } schedule && (preview.External.Kind != "daily" || !schedule.IsValid())
                 || !System.Text.RegularExpressions.Regex.IsMatch(preview.External.Fingerprint ?? "", "^[a-f0-9]{64}$")) return new(false, null, "The link preview could not be validated.");
             return new(true, preview, "Review the separate Companion and Habitica task states before linking.");
         }
@@ -234,14 +235,14 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
         {
             using var request = Request(HttpMethod.Post, "projection/adopt"); request.Content = JsonContent.Create(new { taskId = preview.Task.Id, habiticaTaskId = preview.External.Id, expectedWorkspaceId = preview.WorkspaceId, expectedAccessEpoch = preview.AccessEpoch, expectedRevision = preview.ExpectedRevision, expectedFingerprint = preview.External.Fingerprint });
             using var response = await _http.SendAsync(request, cancellationToken);
-            if (!response.IsSuccessStatusCode) return new(false, "The link was not confirmed. Reload current task states and review a fresh preview.");
+            if (!response.IsSuccessStatusCode) return new(false, "The link was not confirmed. Retain the original review while the result is uncertain.", OutcomeUnknown: (int)response.StatusCode is not (400 or 401 or 403 or 404 or 409 or 422 or 429));
             var result = await response.Content.ReadFromJsonAsync<Adoption>(cancellationToken);
             if (result is null || !result.Adopted || result.TaskId != preview.Task.Id || result.HabiticaTaskId != preview.External.Id || result.Revision != preview.ExpectedRevision + 1 || generation != _generation)
-                return new(false, "The link receipt could not be validated. Reload before reviewing another link.");
+                return new(false, "The link receipt could not be validated. Recover the original link before another review.", OutcomeUnknown: true);
             return new(true, "Tasks linked without changing their fields or Habitica state. Future accepted commands can request projection.");
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
-        catch { return new(false, "Link outcome is unknown. Reload and review current mapping before another confirmation."); }
+        catch { return new(false, "Link outcome is unknown. Retry the identical reviewed link to recover its original receipt.", OutcomeUnknown: true); }
     }
 
     private async Task<WorkspaceTaskResponse<T>> CallTaskAsync<T>(string tool, object args, CancellationToken cancellationToken, Guid? expectedCommandId = null)
@@ -253,7 +254,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
             using var request = Request(HttpMethod.Post, "task-api");
             request.Content = new StringContent(WorkspaceTaskApiJson.Serialize(new { tool, arguments = args }), System.Text.Encoding.UTF8, "application/json");
             using var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-            if (!response.IsSuccessStatusCode) return new(false, default, "The command was not confirmed. Check its original receipt; review current state before preparing another action.", (int)response.StatusCode >= 500);
+            if (!response.IsSuccessStatusCode) return new(false, default, "The command was not confirmed. Check its original receipt; review current state before preparing another action.", (int)response.StatusCode is not (400 or 401 or 403 or 404 or 409 or 422 or 429));
             var value = WorkspaceTaskApiJson.Deserialize<T>(await BoundedTextAsync(response.Content, cancellationToken));
             if (generation != _generation) return new(false, default, "The account session changed; the response was discarded.", true);
             if (value is WorkspaceMutationReceipt receipt && (receipt.CommandId != expectedCommandId || receipt.TaskId == Guid.Empty || receipt.CorrelationId == Guid.Empty || !receipt.SavedInCompanion

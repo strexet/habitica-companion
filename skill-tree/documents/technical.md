@@ -1237,3 +1237,12 @@ DailyProjectionSchedule and shared/daily-projection.ts define the portable norma
 Only UTC and supported fixed Etc/GMT identifiers with matching account offset and dayStart zero qualify. Multiweek rules require a Monday start; yearly and weeks-of-month rules are not authored. Returned Daily schedule data is normalized into fingerprints, including retained yearly/week-of-month schedules for conflict detection. Missing legacy schedule observations cannot prove a new create. Existing Todo/Habit fingerprint bytes remain unchanged. Earlier Daily fingerprints may require explicit conflict review after deployment; the Daily creation change performs no migration.
 
 Account observations expire after ninety seconds and are checked again at dispatch, including current day identity. Account receipts are bounded observations rather than a lock on account preferences in other clients. Creation runs no Cron; server due state remains authoritative for scoring. Companion calculates bounded civil-date occurrences; upstream nextDue is not accepted as equivalent proof of every supported multi-date schedule. Linked schedule edits remain refused pending the dedicated linked-schedule task.
+
+
+## Task-link review recovery
+
+WorkspaceTaskController distinguishes PreparationRejected, PreparationUnknown, AcceptanceUnknown and LinkAcceptanceUnknown. Preparation errors clear uncertainty only when a valid original preview is returned; a later refusal cannot erase earlier transport uncertainty. Original request identity survives retries. Prospective unchanged checkbox intent maps to ensureProjection, preserving task identity and activity history.
+
+Adoption retains WorkspaceProjectionPreview across uncertain sends and reuses workspace/access epoch, revision, task IDs and fingerprint. Successful receipts clear the pending review; failed refresh marks the local view read only. WorkspaceActionResult appends optional OutcomeUnknown for adoption transport. Only explicit validation/auth/conflict/quota refusal statuses establish rejection; timeout, unexpected status, malformed success and transport failure retain uncertainty. Source/account fencing and the existing server idempotent adoption receipt remain authoritative.
+
+WorkspaceExternalTask appends optional typed Daily schedule metadata matching the normalized Worker response. Validation checks frequency, interval, UTC start timestamp, seven weekdays and unique bounded month/week arrays. Retained unsupported schedule forms remain readable for comparison; browser adoption never edits schedules.

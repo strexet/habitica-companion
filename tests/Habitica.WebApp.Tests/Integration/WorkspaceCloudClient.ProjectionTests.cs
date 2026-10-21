@@ -48,4 +48,34 @@ public sealed partial class WorkspaceCloudClientTests
         var client = new WorkspaceCloudClient(http, vault, "https://workspace.invalid/"); await client.ConnectAsync(Credentials, default);
         Assert.False((await client.PreviewLinkAsync(taskId, remoteId, default)).Succeeded);
     }
+    [Theory]
+    [InlineData(true,2)]
+    [InlineData(true,0)]
+    [InlineData(false,-1)]
+    public async Task Daily_adoption_preview_accepts_complete_schedule_metadata_and_rejects_malformed_schedule(bool valid,int interval)
+    {
+        var taskId=Guid.NewGuid();var remoteId=Guid.NewGuid();var now=DateTimeOffset.UtcNow;
+        var schedule=new WorkspaceExternalDailySchedule("weekly",interval,now,new Dictionary<string,bool>{{"su",false},{"m",true},{"t",false},{"w",false},{"th",false},{"f",false},{"s",false}},[],[]);
+        var preview=new WorkspaceProjectionPreview(_id,Guid.NewGuid(),new(taskId,1,"Daily",CompanionTaskKind.Daily,CompanionTaskState.Active,CompanionPriority.Normal,now,now),new(remoteId,"daily","Remote","",null,1,"str",null,[],false,false,false,null,new string('a',64),schedule),2,0);
+        var vault=Vault(out var vaultHttp);using var ownedVault=vaultHttp;
+        using var http=new HttpClient(new Handler((request,_)=>Task.FromResult(request.RequestUri!.AbsolutePath=="/connect"?Connection():new HttpResponseMessage(HttpStatusCode.OK){Content=new StringContent(WorkspaceTaskApiJson.Serialize(preview))})));
+        var client=new WorkspaceCloudClient(http,vault,"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
+        var result=await client.PreviewLinkAsync(taskId,remoteId,default);Assert.Equal(valid,result.Succeeded);if(valid)Assert.Equal(schedule.Frequency,result.Value!.External.Schedule!.Frequency);
+    }
+    [Theory]
+    [InlineData(503,true)]
+    [InlineData(408,true)]
+    [InlineData(301,true)]
+    [InlineData(409,false)]
+    [InlineData(200,true)]
+    public async Task Adoption_transport_distinguishes_definitive_refusal_from_an_uncertain_receipt(int status,bool unknown)
+    {
+        var now=DateTimeOffset.UtcNow;var taskId=Guid.NewGuid();var remoteId=Guid.NewGuid();
+        var preview=new WorkspaceProjectionPreview(_id,Guid.NewGuid(),new(taskId,1,"Todo",CompanionTaskKind.Todo,CompanionTaskState.Active,CompanionPriority.Normal,now,now),new(remoteId,"todo","Remote","",null,1,"str",null,[],false,false,false,null,new string('a',64)),2,0);
+        var vault=Vault(out var vaultHttp);using var ownedVault=vaultHttp;
+        using var http=new HttpClient(new Handler((request,_)=>Task.FromResult(request.RequestUri!.AbsolutePath=="/connect"?Connection():new HttpResponseMessage((HttpStatusCode)status){Content=new StringContent("{}") })));
+        var client=new WorkspaceCloudClient(http,vault,"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
+        var result=await client.AdoptLinkAsync(preview,default);Assert.False(result.Succeeded);Assert.Equal(unknown,result.OutcomeUnknown);
+    }
+
 }

@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
-import {normalizeDailySchedule} from '../../shared/daily-projection.ts';import {expandRecurrence} from '../../shared/recurrence-calendar.ts';import {emptyWorkspace} from '../../shared/workspace-domain.ts';import {workspaceCommand} from '../../shared/workspace-commands.ts';import {accept} from '../src/commands.ts';import {projectionStep,confirmMapping} from '../src/projection-adapter.ts';import {remoteTask,remotePatch} from '../../shared/projection.ts';import {journal} from '../src/journal.ts';
+import {readDailySchedule,normalizeDailySchedule} from '../../shared/daily-projection.ts';import {expandRecurrence} from '../../shared/recurrence-calendar.ts';import {emptyWorkspace} from '../../shared/workspace-domain.ts';import {workspaceCommand} from '../../shared/workspace-commands.ts';import {accept} from '../src/commands.ts';import {projectionStep,confirmMapping} from '../src/projection-adapter.ts';import {remoteTask,remotePatch} from '../../shared/projection.ts';import {journal} from '../src/journal.ts';
 const fixture=JSON.parse(await readFile(new URL('../../../tests/fixtures/workspace/daily-projection-v1.json',import.meta.url),'utf8'));
 for(const row of fixture.cases)test(row.name,()=>{if(row.failure)assert.throws(()=>normalizeDailySchedule(row.rule,row.account),error=>error.code===row.failure);else{assert.deepEqual(normalizeDailySchedule(row.rule,row.account),row.schedule);assert.deepEqual(expandRecurrence(row.rule,row.from,row.through).dates,row.dates);}});
 test('Daily creation binds account, complete schedule, mapping and original alias without scoring',async()=>{
@@ -14,4 +14,8 @@ test('Daily creation binds account, complete schedule, mapping and original alia
  assert.equal(projectionStep(accepted.document,accepted.entry,{task:null,checkToken:'absent'},{...account,needsCron:true}).code,'daily_precondition_unknown');
  assert.equal(projectionStep(accepted.document,accepted.entry,{task:null,checkToken:'absent'},{...account,timezoneOffset:60}).code,'daily_timezone_mismatch');
  assert.throws(()=>remotePatch({...step.arguments.patch,frequency:'yearly'},true,'todo'));assert.throws(()=>remotePatch({text:'No rule'},true,'daily'));
+});
+
+test('upstream zero interval remains readable for retained adoption but cannot authorize a new schedule',()=>{
+ const row=fixture.cases[0];assert.equal(readDailySchedule({...row.schedule,everyX:0}).everyX,0);assert.throws(()=>normalizeDailySchedule({...row.rule,interval:0},row.account),error=>error.code==='invalid_recurrence');
 });

@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Expose task linking and rejected-preview recovery in Todo UI
-
-```yaml
-id: T-c43d3aff-9bfa-4684-a248-a83af2193492
-priority: 103
-status: Ready
-parent_pending_ids: ["P-9cc8f051-8a18-46e0-b1fa-959c362efa54"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-c43d3aff-9bfa-4684-a248-a83af2193492
-related_task_id: null
-relation: main
-depends_on: ["T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54"]
-```
-
-Goal:
-- Expose the supported unchanged-task linking flow and safe recovery from definitively rejected preparation.
-Current behavior:
-- The shared Todo editor retains an invalid projection-only intent with no visible cancellation outside a valid preview. The older CompanionTasksPanel exposes explicit adoption but the new flow lacks a complete entrypoint.
-Desired behavior:
-- Existing tasks can start reviewed supported linking directly, rejected preparation no longer traps the editor, and uncertain acceptance cannot be silently replaced.
-Touch:
-- WorkspaceTaskController, WorkspaceCloudClient task adapters, TodoTaskPanel, TodoWorkspacePresentation, task provenance/details, MCP link tools and product task-management skill.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Use the typed existing-task command and exact original request identity. Show create versus adopt, affected task/kind and historical limitations before required review. Permit editing/cancellation only after definitive preparation rejection; uncertain acceptance retains original receipt lookup and fences source changes. Do not discard an unknown intent, invent a replacement, mutate whitespace or expose API tokens. Maintain independent account consent and meaningful missing-state copy.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Component/transport fixtures cover unchanged checkbox intent, existing adoption, rejected empty preparation, correction/cancel, expiry, lost acknowledgement, source/account changes and historical refusal. Qualify changed rendered states across documented themes, widths and enlarged text.
-Acceptance:
-- Existing tasks can start reviewed supported linking directly, rejected preparation no longer traps the editor, and uncertain acceptance cannot be silently replaced.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Align browser and agent task defaults with required Habitica links
 
 ```yaml

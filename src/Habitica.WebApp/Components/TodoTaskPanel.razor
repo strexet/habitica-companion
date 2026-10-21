@@ -12,7 +12,7 @@
         <div><p class="section-label">Companion workspace</p><h2>@KindLabel(_kind)</h2>@if (_kind == CompanionTaskKind.Todo) { <a href="/todo/tasks" data-layout-primary="true">Tasks and subtasks</a> <a href="/todo/lists" data-layout-primary="true">Saved lists</a> }</div>
         @if (ShowKindSelector)
         {
-            <label class="field-row compact">Task type<select class="app-input" value="@_kind" @onchange="ChangeKind" disabled="@Busy" data-testid="todo-kind">
+            <label class="field-row compact">Task type<select class="app-input" value="@_kind" @onchange="ChangeKind" disabled="@(Busy || Todo.Commands.HasPendingIntent || Todo.Commands.LinkPreview is not null)" data-testid="todo-kind">
                 <option value="Todo">Tasks</option><option value="Daily">Dailies</option><option value="Habit">Habits</option>
             </select></label>
         }
@@ -99,6 +99,7 @@
                     @if (patch.TodoStage is { } todoStage) { <p>Set active Todo stage: @(todoStage.ClearStage ? "Default Inbox" : todoStage.Stage==TodoExecutionStage.InProgress ? "In progress" : todoStage.Stage?.ToString()). Independent task state and completion history remain unchanged.</p> }
                     @if (patch.HabiticaDetails is { } details) { <p>Game difficulty: @(details.Difficulty?.ToString(CultureInfo.InvariantCulture) ?? "unchanged"); attribute: @(details.Attribute?.ToString() ?? "unchanged")</p>@if (details.Up is not null || details.Down is not null) { <p>Positive (+): @(details.Up is null ? "unchanged" : details.Up.Value ? "Enabled" : "Disabled"); Negative (−): @(details.Down is null ? "unchanged" : details.Down.Value ? "Enabled" : "Disabled")</p> } @if (details.Checklist is not null) { <p>Replace checklist (@details.Checklist.Count items)</p><ul>@foreach (var item in details.Checklist) { <li>@item.Text @(item.Completed ? "(completed)" : "")</li> }</ul> } }
                 }
+                @if (preview.Command.Operation == WorkspaceOperation.EnsureProjection) { <p>Existing Companion task: @Todo.Snapshot?.Document.Tasks.FirstOrDefault(task=>task.Id==preview.Command.TaskId)?.Text · @preview.Command.TaskId</p><p>Create a counterpart only if absent, or verify the stored mapping. No canonical fields, completion or scores change. If an existing Habitica task already represents this work, cancel and use exact-record adoption to avoid a duplicate.</p> }
                 @if (preview.Command.Operation == WorkspaceOperation.DeleteTask) { <p>Archive this task and retain history. Habitica records remain unchanged.</p> }
                 @if (preview.Command.Operation == WorkspaceOperation.SkipOccurrence) { <p>Record one skipped pending occurrence for the exact date below. No completion or Habit score is recorded; Habitica remains unchanged.</p> }
                 @if (preview.Command.Operation is WorkspaceOperation.PauseTask or WorkspaceOperation.ResumeTask) { <p>Change only Companion lifecycle. Keep the schedule and history; create no automatic events. Companion pause does not pause Habitica penalties.</p> }
@@ -111,8 +112,8 @@
                     <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy || Todo.Commands.AcceptanceUnknown)" OnClick="CancelReview" Variant="Variant.Text" data-testid="todo-cancel">Cancel review</MudButton></div>
             </section>
         }
-        else if (Todo.Commands.HasPendingIntent)
-        { <p>Preparation is unresolved. Keep the original request.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="RetryPreviewAsync" Variant="Variant.Outlined" data-testid="todo-retry-preview">Retry original preview</MudButton> }
+        else if (Todo.Commands.HasPendingIntent && !Todo.Commands.LinkAcceptanceUnknown)
+        { @if (Todo.Commands.PreparationRejected) { <p role="status" data-testid="todo-preparation-rejected">The server rejected preparation. Nothing was accepted. Correct the retained draft or cancel this rejected request.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="CancelReview" Variant="Variant.Outlined" data-testid="todo-rejected-edit">Return to editing</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="CancelReview" Variant="Variant.Text" data-testid="todo-rejected-cancel">Cancel rejected request</MudButton> }<p>Preparation is unresolved. Keep the original request.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="RetryPreviewAsync" Variant="Variant.Outlined" data-testid="todo-retry-preview">Retry original preview</MudButton> }
         @if (Todo.Snapshot is not null && _editId is not null && Editing is null)
         { <p role="status">The selected task is unavailable or archived. The retained draft has not been saved.</p><MudButton HtmlTag="button" data-layout-primary="true" OnClick="NewTask" Variant="Variant.Outlined">Start a new task</MudButton> }
         @if (Todo.Snapshot is { } snapshot && Draft is { } draft)
@@ -121,7 +122,7 @@
             @if (ShowCapture)
             {
             <form class="todo-capture" @onsubmit="PrepareBasicAsync" @onsubmit:preventDefault>
-                <fieldset disabled="@(Busy || Todo.IsReadOnly || Todo.Commands.HasPendingIntent)">
+                <fieldset disabled="@ActionsDisabled">
                     <div class="todo-capture-primary">
                         <label class="field-row">@(_editId is null ? $"New {Singular(_kind)}" : $"Edit {Singular(_kind)}")
                             <input class="app-input" maxlength="2048" @bind="draft.Text" @bind:event="oninput" @ref="_title" data-testid="todo-title" />
@@ -171,6 +172,7 @@
                             <span>Habitica mapping: @Todo.Provenance(task.Id).MappingState</span>
                         </div>
                         <div class="todo-row-actions">
+                            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => OpenLink(task.Id)" Variant="Variant.Text" data-testid="@($"todo-link-{task.Id:D}")">Habitica link</MudButton>
                             <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => Edit(task)" Variant="Variant.Text" data-testid="@($"todo-edit-{task.Id:D}")">Edit</MudButton>
                             @if (task.Kind is CompanionTaskKind.Daily or CompanionTaskKind.Habit) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => OpenRecurring(task.Id)" Variant="Variant.Text" data-testid="@($"todo-recurring-{task.Id:D}")">@(task.Kind==CompanionTaskKind.Daily ? "Schedule / occurrences" : "Pause / resume")</MudButton> }
                             @if (task.Kind == CompanionTaskKind.Habit)
@@ -192,7 +194,8 @@
                 <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || taskPage.NextOffset is null)" OnClick="Next" Variant="Variant.Text">Next</MudButton>
             </div>
             }
-            @if (_recurringId is { } recurringId) { <TodoRecurringEditor TaskId="recurringId" Reviewed="ReviewRecurringAsync" Closed="() => _recurringId = null" /> }
+            @if (_linkTaskId is { } linkId) { <TodoTaskLinkEditor TaskId="linkId" Reviewed="LinkCreationReviewed" Closed="() => _linkTaskId=null" /> }
+        @if (_recurringId is { } recurringId) { <TodoRecurringEditor TaskId="recurringId" Reviewed="ReviewRecurringAsync" Closed="() => _recurringId = null" /> }
         }
     }
 </section>
@@ -206,6 +209,7 @@
     private CompanionTaskKind _kind;
     private Guid? _editId;
     private Guid? _recurringId;
+    private Guid? _linkTaskId;
     private TodoWorkspaceSelection? _seenSelection;
     private long? _seenRevision;
     private ElementReference _title, _reviewTitle;
@@ -213,7 +217,7 @@
     private string? _error;
     private int _offset;
     private bool Busy => _busy || Todo.IsBusy;
-    private bool ActionsDisabled => Busy || Todo.IsReadOnly || Todo.Commands.HasPendingIntent;
+    private bool ActionsDisabled => Busy || Todo.IsReadOnly || Todo.Commands.HasPendingIntent || Todo.Commands.LinkPreview is not null;
     private CompanionTask? Editing => Todo.Snapshot?.Document.Tasks.FirstOrDefault(task => task.Id == _editId && !task.IsArchived);
     private TodoTaskDraft? Draft => Todo.Selection is { } source && Todo.Snapshot is not null && (_editId is null || Editing is not null) ? Drafts.Get(source, _kind, Editing) : null;
     private IEnumerable<TodoWorkspaceSelection> AvailableSources => Todo.Sources.Concat(Todo.Selection is { } selected ? [selected] : Array.Empty<TodoWorkspaceSelection>()).Distinct();
@@ -222,7 +226,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender) { if (_focusReview && Todo.Commands.Preview is not null) { _focusReview = false; try { await _reviewTitle.FocusAsync(); } catch (JSException) { } } else if (_focusTitle && !ShowCapture) { _focusTitle = false; await ReviewClosed.InvokeAsync(); } else if (_focusTitle && Draft is not null && !ActionsDisabled) { _focusTitle = false; try { await _title.FocusAsync(); } catch (JSException) { } } }
     private void Changed()
     {
-        if (_seenSelection != Todo.Selection) { _seenSelection = Todo.Selection; _recurringId = null; RestoreEditing(); _error = null; _offset = 0; }
+        if (_seenSelection != Todo.Selection) { _seenSelection = Todo.Selection; _recurringId = null; _linkTaskId = null; RestoreEditing(); _error = null; _offset = 0; }
         if (_seenRevision != Todo.Revision) { _seenRevision = Todo.Revision; _offset = 0; }
         _ = InvokeAsync(StateHasChanged);
     }
@@ -243,7 +247,7 @@
         if (parts is not [var kind, var id] || !Enum.TryParse<TodoWorkspaceSource>(kind, out var source) || !Guid.TryParse(id, out var workspaceId)) return;
         await Todo.SelectAsync(new(source, workspaceId));
     });
-    private void ChangeKind(ChangeEventArgs args) { if (Enum.TryParse<CompanionTaskKind>(args.Value?.ToString(), out var kind) && Enum.IsDefined(kind)) { _kind = kind; _recurringId = null; RestoreEditing(); _focusTitle = true; _offset = 0; } }
+    private void ChangeKind(ChangeEventArgs args) { if (ActionsDisabled) return; if (Enum.TryParse<CompanionTaskKind>(args.Value?.ToString(), out var kind) && Enum.IsDefined(kind)) { _kind = kind; _recurringId = null; _linkTaskId = null; RestoreEditing(); _focusTitle = true; _offset = 0; } }
     private void RestoreEditing() => _editId = Todo.Selection is { } source ? Drafts.Editing(source, _kind) : null;
     private void NewTask() { _editId = null; if (Todo.Selection is { } source) Drafts.Edit(source, _kind, null); _focusTitle = true; _error = null; }
     private void Edit(CompanionTask task) { _editId = task.Id; Drafts.Edit(Todo.Selection!, _kind, task.Id); _focusTitle = true; }
@@ -257,6 +261,9 @@
         await Todo.PrepareAsync(ActionInput(current, WorkspaceOperation.PlanTask) with { Planning = new(PlannedDate: date, ClearPlannedDate: date is null) }); TrackDraft();
     });
     private Task ArchiveAsync() => Editing is { } task ? ActAsync(task, WorkspaceOperation.DeleteTask) : Task.CompletedTask;
+    private void OpenLink(Guid taskId) { if (!ActionsDisabled) _linkTaskId = taskId; }
+    public async Task FocusTaskReviewAsync() { _focusReview = Todo.Commands.Preview is not null; await InvokeAsync(StateHasChanged); }
+    private void LinkCreationReviewed() { _focusReview = Todo.Commands.Preview is not null; }
     private void OpenRecurring(Guid taskId){if(!ActionsDisabled)_recurringId=taskId;}
     public async Task ReviewRecurringAsync(TodoRecurringReview review)
     {
@@ -373,7 +380,7 @@
     private static string ReviewLabel(WorkspaceOperation operation) => operation switch
     {
         WorkspaceOperation.CreateTodo => "Create Todo", WorkspaceOperation.CreateDaily => "Create Daily", WorkspaceOperation.CreateHabit => "Create Habit",
-        WorkspaceOperation.UpdateTask => "Update task", WorkspaceOperation.CompleteTask => "Record completion", WorkspaceOperation.ScoreHabit => "Record Habit event",
+        WorkspaceOperation.EnsureProjection => "Ensure Habitica counterpart", WorkspaceOperation.UpdateTask => "Update task", WorkspaceOperation.CompleteTask => "Record completion", WorkspaceOperation.ScoreHabit => "Record Habit event",
         WorkspaceOperation.SkipOccurrence => "Skip exact Daily occurrence", WorkspaceOperation.PauseTask => "Pause Companion task", WorkspaceOperation.ResumeTask => "Resume Companion task", WorkspaceOperation.SetTodoState => "Change Todo state", WorkspaceOperation.SetTodoStage => "Change active Todo stage", WorkspaceOperation.RelateTodo => "Change exact Todo relationships", WorkspaceOperation.PlanTask => "Change native placement", WorkspaceOperation.RestoreTodo => "Restore exact completed Todo", WorkspaceOperation.DeleteTask => "Archive task", _ => "Task command"
     };
     private static string SourceValue(TodoWorkspaceSelection? source) => source is null ? "" : $"{source.Source}|{source.WorkspaceId:D}";

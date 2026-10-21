@@ -418,3 +418,10 @@ TodoTaskPanelTests captures Habit creation review and a long Habit row with an u
 daily-projection-v1.json is consumed by C# and Worker tests for interval days, unordered weekdays, Monday multiweek anchors, month gaps, account offset conversion and explicit unsupported cases. Daily creation tests verify one typed create effect, no historical activity, complete schedule fingerprints, original-alias matching, changed-schedule refusal and later due-day scoring. Synthetic Auth/Workspace integration covers success, lost response recovery and expired account observations without real credentials or Cron calls.
 
 Rendered fixtures cover the direct daily/weekly/monthly capture form, Daily review and advanced-panel review across six widths, six themes and 100/200-percent text. Component handlers separately cover missing dates, unsupported zones and retained draft input. Rendered browser evidence does not qualify physical devices, assistive technology, actual Habitica mutation, travel or DST. Earlier native recurrence tests use explicit historical fixtures where native-only lifecycle behavior is required.
+
+
+## Task-link recovery qualification
+
+TodoTaskLinkTests exercises exact unchanged linking, checkbox-only intent, definitive rejection correction/cancellation, uncertainty surviving later refusals, expired known previews, idempotent adoption recovery, account/source/type fences, completed/archived History entrypoints and confirmed adoption with failed refresh. The advanced panel verifies enabled original-link recovery outside disabled fields. Transport tests distinguish timeout/unexpected/malformed responses from known refusal and validate normalized Daily schedule metadata.
+
+Synthetic rendered states cover create/adopt choice, exact counterpart review, definitive preparation rejection, active/historical adoption comparison, uncertain adoption and advanced-panel recovery. Qualification uses documented widths, themes and enlarged text with seeded layout/contrast failures. Component/transport evidence remains separate from actual account writes, physical devices and host refresh.
