@@ -58,6 +58,17 @@ public static class WorkspaceCommandEngine
         if (creating ? current is not null : current is null || current.IsArchived)
             return Reject(SubmissionDisposition.Invalid, "task_unavailable");
         var mapping = document.Projections.FirstOrDefault(value => value.TaskId == command.TaskId && !value.IsArchived);
+        if (command.Operation == WorkspaceOperation.EnsureProjection)
+        {
+            if (!command.ProjectToHabitica) return Reject(SubmissionDisposition.Invalid, "projection_required");
+            if (current!.State != CompanionTaskState.Active) return Reject(SubmissionDisposition.Invalid, "historical_projection_requires_review");
+            if (current.Kind != CompanionTaskKind.Todo) return Reject(SubmissionDisposition.Invalid, "adoption_required");
+            if (document.Projections.Any(value => value.TaskId == current.Id && (value.IsArchived || value.State is ProjectionState.UnknownOutcome or ProjectionState.ExternalConflict)))
+                return Reject(SubmissionDisposition.Invalid, "projection_review_required");
+            if (snapshot.Commands.Any(entry => entry.Command.TaskId == current.Id && entry.ProjectionState != ProjectionCommandState.Cancelled
+                && entry.Effects.Select((effect, index) => (effect, index)).Any(item => item.effect == ProjectionEffectKind.Create && entry.ConfirmedEffects <= item.index)))
+                return Reject(SubmissionDisposition.Invalid, "projection_already_pending");
+        }
         if (command.Operation == WorkspaceOperation.RestoreTodo)
         {
             var retained = document.Projections.FirstOrDefault(value => value.TaskId == command.TaskId);
@@ -180,7 +191,7 @@ public static class WorkspaceCommandEngine
         var effects = new List<ProjectionEffectKind>();
         if (requested)
         {
-            if (mapping?.HabiticaTaskId is null) effects.Add(ProjectionEffectKind.Create);
+            if (mapping?.HabiticaTaskId is null || command.Operation == WorkspaceOperation.EnsureProjection) effects.Add(ProjectionEffectKind.Create);
             if (command.Operation == WorkspaceOperation.UpdateTask) effects.Add(ProjectionEffectKind.Update);
             if (command.Operation == WorkspaceOperation.CompleteTask) effects.Add(ProjectionEffectKind.ScoreUp);
             if (command.Operation == WorkspaceOperation.ScoreHabit)

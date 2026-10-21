@@ -208,3 +208,15 @@ test('accepted legacy preview uses original effects even after the task acquires
  assert.equal(recovered.receipt.totalProjectionCount,0);assert.equal(recovered.receipt.habiticaProjectionStatus,'notRequested');
  assert.deepEqual((await(await call(f,w,'get_task_command',{commandId:legacy.entry.command.id})).json()),recovered.receipt);
 });
+
+test('reviewed projection-only repair creates no second native task and recovers its original receipt over PWA and MCP',async t=>{
+ const {seedLegacyCommand}=await import('./fixtures/legacy-todo.mjs');const f=await fixture(t,{workspace:true}),p=await enrolled(f),w=await connect(f,p),{client:c}=await client(t,f,p);
+ const taskId=crypto.randomUUID();await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:1,operation:'createTodo',taskId,patch:{text:'Unchanged legacy task',notes:'Keep these notes',priority:'high'}});
+ const args={requestId:crypto.randomUUID(),operation:'ensureProjection',taskId,projectToHabitica:true};
+ const prepared=await c.callTool({name:'prepare_task_command',arguments:args});assert.notEqual(prepared.isError,true,JSON.stringify(prepared));const preview=prepared.structuredContent;assert.equal(preview.command.patch,null);assert.equal(preview.mayAffectHabitica,true);
+ const result=await c.callTool({name:'ensure_task_projection',arguments:{commandId:preview.preparedCommandId}});assert.notEqual(result.isError,true,JSON.stringify(result));assert.equal(result.structuredContent.totalProjectionCount,1);assert.equal(result.structuredContent.acceptedEventCount,0);
+ const recovered=await(await call(f,w,'ensure_task_projection',{commandId:preview.preparedCommandId})).json();assert.deepEqual(recovered,result.structuredContent);
+ const exported=await(await f.workspace.fetch(origin+'/export',{headers:{authorization:`Bearer ${w.sessionToken}`}})).json();assert.equal(exported.document.tasks.length,1);assert.equal(exported.document.tasks[0].text,'Unchanged legacy task');assert.equal(exported.document.tasks[0].notes,'Keep these notes');assert.equal(exported.document.tasks[0].priority,'high');assert.equal(exported.document.completions.length,0);assert.deepEqual(exported.commands[1].effects,['create']);
+ const again=await call(f,w,'prepare_task_command',{...args,requestId:crypto.randomUUID()});assert.equal(again.status,409);assert.match(await again.text(),/projection_already_pending/);
+ assert.equal((await(await call(f,w,'prepare_task_command',args)).json()).preparedCommandId,preview.preparedCommandId);
+});

@@ -82,6 +82,10 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, p
  if (input.workspaceId !== row.workspace_id) throw new WorkspaceError("workspace_mismatch", 409);
  const hash = await commandHash(input); const replay = await duplicate(env, row, input.id, hash); if (replay) return replay;
  requireTodoProjection(JSON.parse(row.document_json),input);
+ if(input.operation==='ensureProjection'){
+  const pending=await env.WORKSPACE_DB.prepare('SELECT entry_json FROM workspace_commands WHERE profile_id=?').bind(row.profile_id).all<{entry_json:string}>();
+  if(pending.results.some(row=>{const entry=JSON.parse(row.entry_json);return entry.command.taskId===input.taskId&&entry.projectionState!=='cancelled'&&entry.effects.some((effect:string,index:number)=>effect==='create'&&entry.confirmedEffects<=index);}))throw new WorkspaceError('projection_already_pending',409);
+ }
  const accepted = await accept(JSON.parse(row.document_json), input, new Date().toISOString());
  const serialized = JSON.stringify(accepted.document);
  // D1 has a per-row bound. Reject before acceptance rather than silently dropping history.
@@ -187,6 +191,11 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
   const body=workspaceObject(await workspaceJson(request),path.endsWith("preview")?["taskId","habiticaTaskId"]:["taskId","habiticaTaskId","expectedWorkspaceId","expectedAccessEpoch","expectedRevision","expectedFingerprint"]);
   const taskId=uuid(body.taskId); const externalId=uuid(body.habiticaTaskId); const document=JSON.parse(row.document_json);
   const task=document.tasks.find((task: {id:string})=>task.id===taskId); if (!task) throw new WorkspaceError("task_unavailable",422);
+  if(path.endsWith('adopt')){
+   if(body.expectedWorkspaceId!==row.workspace_id||body.expectedAccessEpoch!==row.access_epoch||!Number.isSafeInteger(body.expectedRevision)||Number(body.expectedRevision)<1||typeof body.expectedFingerprint!=='string'||!/^[a-f0-9]{64}$/.test(body.expectedFingerprint))throw new WorkspaceError('adoption_conflict',409);
+   const original=document.projections.find((mapping:{taskId:string;habiticaTaskId:string;fingerprint:string;revision:number;state:string;isArchived:boolean})=>mapping.taskId===taskId&&mapping.habiticaTaskId===externalId&&mapping.fingerprint===body.expectedFingerprint&&mapping.revision===Number(body.expectedRevision)+1&&mapping.state==='linked'&&!mapping.isArchived);
+   if(original)return json({adopted:true,taskId,habiticaTaskId:externalId,revision:original.revision});
+  }
   const response=await env.AUTH_PROJECTION.fetch("https://projection.internal/operation",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({profileId:row.profile_id,connectionId:row.connection_id,operation:"inspect",arguments:{selector:externalId},automated:false})});
   if (!response.ok) throw new WorkspaceError("projection_preview_unavailable",response.status===401?401:503);
   const observed=await response.json<{task: import("../../shared/projection").RemoteTask|null}>();

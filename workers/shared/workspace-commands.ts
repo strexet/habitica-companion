@@ -5,10 +5,10 @@ import { habiticaDetails, type HabiticaTaskDetails } from "./task-details.ts";
 import {workspaceRecurrence,type Recurrence} from './workspace-domain.ts';
 import {taskPlanning,type TaskPlanning} from './task-planning.ts';
 import {todoRestore,type TodoRestore} from './todo-restore.ts';
-export type WorkspaceOperation = "createTodo" | "updateTask" | "completeTask" | "scoreHabit" | "createDaily" | "createHabit" | "deleteTask" | "skipOccurrence" | "pauseTask" | "resumeTask" | "planTask" | "restoreTodo" | "relateTodo" | "setTodoState" | "setTodoStage";
+export type WorkspaceOperation = "createTodo" | "updateTask" | "completeTask" | "scoreHabit" | "createDaily" | "createHabit" | "deleteTask" | "skipOccurrence" | "pauseTask" | "resumeTask" | "planTask" | "restoreTodo" | "relateTodo" | "setTodoState" | "setTodoStage" | "ensureProjection";
 export interface WorkspacePatch { text: string | null; notes: string | null; clearNotes: boolean; priority: "low" | "normal" | "high" | "urgent" | null; deadline: string | null; clearDeadline: boolean; habiticaDetails?: HabiticaTaskDetails | null; recurrence?:Recurrence|null;clearRecurrence?:boolean;planning?:TaskPlanning|null;restoreTodo?:TodoRestore|null;relationships?:TaskRelationships|null;todoState?:TodoState|null;todoStage?:TodoStage|null }
 export interface WorkspaceCommand { id: string; workspaceId: string; expectedRevision: number; operation: WorkspaceOperation; taskId: string; patch: WorkspacePatch | null; direction: "up" | "down" | null; count: number; occurrenceDate: string | null; projectToHabitica: boolean }
-const operations = ["createTodo", "updateTask", "completeTask", "scoreHabit", "createDaily", "createHabit", "deleteTask", "skipOccurrence", "pauseTask", "resumeTask", "planTask", "restoreTodo", "relateTodo", "setTodoState", "setTodoStage"];
+const operations = ["createTodo", "updateTask", "completeTask", "scoreHabit", "createDaily", "createHabit", "deleteTask", "skipOccurrence", "pauseTask", "resumeTask", "planTask", "restoreTodo", "relateTodo", "setTodoState", "setTodoStage", "ensureProjection"];
 export function isTaskCreation(operation: unknown): boolean { return ["createTodo", "createDaily", "createHabit"].includes(operation as string); }
 function object(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("invalid_command");

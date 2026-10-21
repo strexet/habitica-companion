@@ -55,8 +55,8 @@ export function projectionStep(document: WorkspaceDocument, entry: CommandEntry,
  return {kind:"write",operation:"score",arguments:{selector:target,checkToken:observation.checkToken,expectedFingerprint:remote.fingerprint,direction:effect==="scoreUp"?"up":"down",...(remote.kind==="daily"?{accountCheckToken:account!.accountCheckToken,occurrenceDate:entry.command.occurrenceDate}:{})}};
 }
 export function adoptProjection(document: WorkspaceDocument, taskId: string, remote: RemoteTask, expectedFingerprint: string): WorkspaceDocument {
- taskId=uuid(taskId); const task=document.tasks.find(row=>row.id===taskId && !row.isArchived);
- if (!task || task.kind!==remote.kind || remote.fingerprint!==expectedFingerprint) throw new WorkspaceError("adoption_conflict",409);
+ taskId=uuid(taskId); const task=document.tasks.find(row=>row.id===taskId);
+ if (!task || task.kind!==remote.kind || remote.fingerprint!==expectedFingerprint || task.kind==="todo" && (task.state==="completed")!==remote.completed) throw new WorkspaceError("adoption_conflict",409);
  if (document.revision===Number.MAX_SAFE_INTEGER || document.projections.some(row=>row.taskId!==taskId && row.habiticaTaskId===remote.id)) throw new WorkspaceError("projection_identity_conflict",409);
  const mapping=document.projections.find(row=>row.taskId===taskId);
  if (mapping?.habiticaTaskId && mapping.habiticaTaskId!==remote.id) throw new WorkspaceError("projection_identity_conflict",409);

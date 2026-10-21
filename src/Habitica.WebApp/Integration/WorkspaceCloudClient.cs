@@ -196,7 +196,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
     public async Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>> AcceptCommandAsync(WorkspaceCommandPreview preview, CancellationToken cancellationToken)
     {
         if (WorkspaceId != preview.Command.WorkspaceId) return new(false, null, "The workspace connection changed.");
-        var tool = preview.Command.Operation switch { WorkspaceOperation.CreateTodo => "create_todo", WorkspaceOperation.CreateDaily => "create_daily", WorkspaceOperation.CreateHabit => "create_habit", WorkspaceOperation.DeleteTask => "delete_task", WorkspaceOperation.UpdateTask => "update_task", WorkspaceOperation.CompleteTask => "complete_task", WorkspaceOperation.ScoreHabit => "score_habit", WorkspaceOperation.SkipOccurrence => "skip_occurrence", WorkspaceOperation.PauseTask => "pause_task", WorkspaceOperation.ResumeTask => "resume_task", WorkspaceOperation.PlanTask => "plan_task", WorkspaceOperation.RestoreTodo => "restore_todo", WorkspaceOperation.RelateTodo => "relate_todo", WorkspaceOperation.SetTodoState => "set_todo_state", WorkspaceOperation.SetTodoStage => "set_todo_stage", _ => throw new InvalidOperationException("Unsupported command.") };
+        var tool = preview.Command.Operation switch { WorkspaceOperation.CreateTodo => "create_todo", WorkspaceOperation.CreateDaily => "create_daily", WorkspaceOperation.CreateHabit => "create_habit", WorkspaceOperation.DeleteTask => "delete_task", WorkspaceOperation.UpdateTask => "update_task", WorkspaceOperation.CompleteTask => "complete_task", WorkspaceOperation.ScoreHabit => "score_habit", WorkspaceOperation.SkipOccurrence => "skip_occurrence", WorkspaceOperation.PauseTask => "pause_task", WorkspaceOperation.ResumeTask => "resume_task", WorkspaceOperation.PlanTask => "plan_task", WorkspaceOperation.RestoreTodo => "restore_todo", WorkspaceOperation.RelateTodo => "relate_todo", WorkspaceOperation.SetTodoState => "set_todo_state", WorkspaceOperation.SetTodoStage => "set_todo_stage", WorkspaceOperation.EnsureProjection => "ensure_task_projection", _ => throw new InvalidOperationException("Unsupported command.") };
         var result = await CallTaskAsync<WorkspaceMutationReceipt>(tool, new { commandId = preview.PreparedCommandId }, cancellationToken, preview.PreparedCommandId);
         if (result.Succeeded && result.Value is { } receipt && (receipt.TaskId != preview.Command.TaskId || receipt.Operation != System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(preview.Command.Operation.ToString())))
             return new(false, null, "The command receipt identity did not match. Check the original command before retrying.", true);
@@ -216,7 +216,9 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
             using var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             if (!response.IsSuccessStatusCode) return new(false, null, "The link preview is unavailable. Check the task identity, connection and quota before trying again.");
             var preview = WorkspaceTaskApiJson.Deserialize<WorkspaceProjectionPreview>(await BoundedTextAsync(response.Content, cancellationToken));
-            if (generation != _generation || WorkspaceId != workspaceId || preview.WorkspaceId != workspaceId || preview.Task.Id != taskId || preview.External.Id != habiticaTaskId || preview.AccessEpoch == Guid.Empty || preview.ExpectedRevision < 1 || preview.PendingCommandCount < 0
+            if (generation != _generation || WorkspaceId != workspaceId || preview.WorkspaceId != workspaceId || preview.Task.Id != taskId || preview.External.Id != habiticaTaskId || preview.AccessEpoch == Guid.Empty || preview.ExpectedRevision < 1 || preview.ExpectedRevision >= WorkspaceDocument.MaxRevision || preview.PendingCommandCount < 0
+                || preview.Task.Kind.ToString().ToLowerInvariant() != preview.External.Kind
+                || preview.Task.Kind == CompanionTaskKind.Todo && (preview.Task.State == CompanionTaskState.Completed) != preview.External.Completed
                 || !System.Text.RegularExpressions.Regex.IsMatch(preview.External.Fingerprint ?? "", "^[a-f0-9]{64}$")) return new(false, null, "The link preview could not be validated.");
             return new(true, preview, "Review the separate Companion and Habitica task states before linking.");
         }
@@ -234,7 +236,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
             using var response = await _http.SendAsync(request, cancellationToken);
             if (!response.IsSuccessStatusCode) return new(false, "The link was not confirmed. Reload current task states and review a fresh preview.");
             var result = await response.Content.ReadFromJsonAsync<Adoption>(cancellationToken);
-            if (result is null || !result.Adopted || result.TaskId != preview.Task.Id || result.HabiticaTaskId != preview.External.Id || result.Revision <= preview.ExpectedRevision || generation != _generation)
+            if (result is null || !result.Adopted || result.TaskId != preview.Task.Id || result.HabiticaTaskId != preview.External.Id || result.Revision != preview.ExpectedRevision + 1 || generation != _generation)
                 return new(false, "The link receipt could not be validated. Reload before reviewing another link.");
             return new(true, "Tasks linked without changing their fields or Habitica state. Future accepted commands can request projection.");
         }

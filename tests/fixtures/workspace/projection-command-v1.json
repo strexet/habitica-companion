@@ -1,0 +1,15 @@
+{
+  "command": {
+    "id": "10000000-0000-4000-8000-000000000031",
+    "workspaceId": "10000000-0000-4000-8000-000000000032",
+    "expectedRevision": 2,
+    "operation": "ensureProjection",
+    "taskId": "10000000-0000-4000-8000-000000000033",
+    "patch": null,
+    "direction": null,
+    "count": 1,
+    "occurrenceDate": null,
+    "projectToHabitica": true
+  },
+  "payloadHash": "3996108cb6060e33488fbcacf0076d4877827d2038f0893cb42f74ae8d2b0068"
+}

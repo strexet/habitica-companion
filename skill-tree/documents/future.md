@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Add reviewed projection commands for existing unchanged tasks
-
-```yaml
-id: T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54
-priority: 103
-status: Ready
-parent_pending_ids: ["P-9cc8f051-8a18-46e0-b1fa-959c362efa54"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54
-related_task_id: null
-relation: main
-depends_on: ["T-210471d2-f432-43b3-8fc7-bbfd74f93e29"]
-```
-
-Goal:
-- Provide typed idempotent create-or-adopt correspondence repair without changing task content or canonical identity.
-Current behavior:
-- Projection-only UpdateTask produces an empty invalid patch. PreviewLinkAsync/AdoptLinkAsync can adopt an explicit existing remote identity, but cannot create a missing counterpart through the current editor.
-Desired behavior:
-- A projection-only intent prepares and accepts without fake edits or duplicate native tasks; unsupported historical repair remains explicit and preserves all saved history.
-Touch:
-- WorkspaceCommands and identity validation, WorkspaceCommandEngine, shared Worker command models, task-api.ts, projection-adapter.ts, Auth projection gateway and adoption tests.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Bind exact task/workspace revision, kind, account and reviewed remote identity/fingerprint. Preserve notes, priority, relationships, archive state and history. Active tasks may create a missing matching record through the original ledger. Completed/archived tasks may adopt a verified matching retained record; missing historical matches require an explicit review outcome rather than automatic scoring or reopening. Habitica protects completed/dateCompleted in normal create/update, so no synthetic completed patch is allowed. Unknown create outcomes reconcile the original alias/receipt, never a replacement. Existing raw adoption remains available.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Test unchanged active Todo, verified Daily/Habit adoption, archived/completed discovery, no historical match, ambiguous remote candidates, collision, account switch, stale preview, duplicate acceptance and lost create acknowledgement in both runtimes.
-Acceptance:
-- A projection-only intent prepares and accepts without fake edits or duplicate native tasks; unsupported historical repair remains explicit and preserves all saved history.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Create and verify corresponding Habitica Habits
 
 ```yaml

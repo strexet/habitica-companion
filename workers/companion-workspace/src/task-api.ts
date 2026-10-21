@@ -49,6 +49,10 @@ export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,ar
    if(isTaskCreation(input.operation)&&input.taskId!==undefined)throw new WorkspaceError('server_task_identity_required',422);
    command=prepareTodoProjection(document,command);
    requireTodoProjection(document,command);
+   if(command.operation==='ensureProjection'){
+    const entries=await env.WORKSPACE_DB.prepare('SELECT entry_json FROM workspace_commands WHERE profile_id=?').bind(row.profile_id).all<{entry_json:string}>();
+    if(entries.results.some(row=>{const entry=JSON.parse(row.entry_json);return entry.command.taskId===command.taskId&&entry.projectionState!=='cancelled'&&entry.effects.some((effect:string,index:number)=>effect==='create'&&entry.confirmedEffects<=index);}))throw new WorkspaceError('projection_already_pending',409);
+   }
    await accept(document,command,new Date().toISOString()); // Validate exact canonical state without accepting a command.
    const now=new Date().toISOString();const serialized=JSON.stringify(command);const size=row.archive_bytes+bytes(serialized)+512;
    if(size>8*1024*1024-32768||row.store_version>=Number.MAX_SAFE_INTEGER)throw new WorkspaceError('workspace_capacity',413);

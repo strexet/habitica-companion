@@ -176,6 +176,7 @@ public sealed class WorkspaceCommandTests
 
     [Theory]
     [InlineData("command-v1.json")]
+    [InlineData("projection-command-v1.json")]
     [InlineData("command-v2.json")]
     [InlineData("command-v3.json")]
     [InlineData("command-v3-clear.json")]
@@ -186,7 +187,7 @@ public sealed class WorkspaceCommandTests
         var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false) } };
         var command = fixture.RootElement.GetProperty("command").Deserialize<WorkspaceCommand>(options)!;
         Assert.Equal(fixture.RootElement.GetProperty("payloadHash").GetString(), WorkspaceCommandEngine.Hash(command));
-        Assert.NotEqual(WorkspaceCommandEngine.Hash(command), WorkspaceCommandEngine.Hash(command with { Patch = command.Patch! with { Notes = null } }));
+        Assert.NotEqual(WorkspaceCommandEngine.Hash(command), WorkspaceCommandEngine.Hash(command.Patch is null ? command with { ProjectToHabitica = false } : command with { Patch = command.Patch with { Notes = null } }));
     }
 
     [Fact]
@@ -262,6 +263,58 @@ public sealed class WorkspaceCommandTests
             WorkspaceOperation.PlanTask, create.TaskId, new(Planning: new(PlannedDate: new(2026, 10, 21))));
         Assert.Equal(plan, WorkspaceTodoProjectionPolicy.Prepare(state.Document, plan));
         Assert.Null(WorkspaceTodoProjectionPolicy.Rejection(state.Document, plan));
+    }
+
+    [Fact]
+    public async Task ProjectionOnlyRepairKeepsTaskContentAndRecoversOriginalCreateWithoutFakeEdits()
+    {
+        var state = Empty(); var create = Create(state); state = Accept(state, create);
+        var task = state.Document.Tasks.Single();
+        var command = new WorkspaceCommand(Guid.NewGuid(), state.Document.Id, state.Document.Revision,
+            WorkspaceOperation.EnsureProjection, task.Id, ProjectToHabitica: true);
+        var store = new FakeStore(state) { FailAfterCommit = true }; var service = new WorkspaceCommandService(store);
+        Assert.Equal("acceptance_unknown", (await service.SubmitAsync(command, default))!.ErrorCode);
+        store.FailAfterCommit = false;
+        var recovered = await service.SubmitAsync(command, default);
+        Assert.Equal(SubmissionDisposition.Duplicate, recovered!.Disposition);
+        Assert.Equal(new[] { ProjectionEffectKind.Create }, recovered.Entry!.Effects);
+        Assert.Equal(task with { Revision = state.Document.Revision + 1, UpdatedAtUtc = recovered.Entry.AcceptedAtUtc }, recovered.Snapshot!.Document.Tasks.Single());
+        Assert.Empty(recovered.Snapshot.Document.Completions); Assert.Empty(recovered.Snapshot.Document.HabitScores);
+        Assert.Equal("projection_already_pending", (await service.SubmitAsync(command with { Id = Guid.NewGuid(), ExpectedRevision = recovered.Snapshot.Document.Revision }, default))!.ErrorCode);
+        Assert.Equal(2, store.State!.Commands.Count);
+        var accepted = recovered.Snapshot;
+        var lease = ProjectionJournal.Acquire(accepted, command.Id, "fixture", recovered.Entry.AcceptedAtUtc, TimeSpan.FromSeconds(30));
+        var dispatched = ProjectionJournal.Dispatch(lease.Snapshot, command.Id, lease.Entry!.Lease!.Token, recovered.Entry.AcceptedAtUtc);
+        var unknown = ProjectionJournal.RecordKnownResult(dispatched, command.Id, lease.Entry.Lease.Token, false, ProjectionFailure.Ambiguous, recovered.Entry.AcceptedAtUtc);
+        var unknownService = new WorkspaceCommandService(new FakeStore(unknown));
+        Assert.Equal(ProjectionCommandState.UnknownOutcome, (await unknownService.SubmitAsync(command, default))!.Entry!.ProjectionState);
+        Assert.Equal("projection_already_pending", (await unknownService.SubmitAsync(command with { Id = Guid.NewGuid(), ExpectedRevision = unknown.Document.Revision }, default))!.ErrorCode);
+
+        Assert.Equal(SubmissionDisposition.IdempotencyConflict, (await service.SubmitAsync(command with { ProjectToHabitica = false }, default))!.Disposition);
+    }
+
+    [Fact]
+    public void ProjectionOnlyRepairRequiresAnActiveTodoAndDoesNotReopenOrScoreHistory()
+    {
+        var state = Empty(); var create = Create(state); state = Accept(state, create);
+        WorkspaceCommand Repair(WorkspaceJournalSnapshot s) => new(Guid.NewGuid(), s.Document.Id, s.Document.Revision,
+            WorkspaceOperation.EnsureProjection, create.TaskId, ProjectToHabitica: true);
+        Assert.Equal("projection_required", WorkspaceCommandEngine.Accept(state, Repair(state) with { ProjectToHabitica = false }, Now).ErrorCode);
+        Assert.Equal("unexpected_patch", WorkspaceCommandEngine.Accept(state, Repair(state) with { Patch = new(Text: "Fake") }, Now).ErrorCode);
+        var completed = Accept(state, new(Guid.NewGuid(), state.Document.Id, state.Document.Revision, WorkspaceOperation.CompleteTask, create.TaskId));
+        Assert.Equal("historical_projection_requires_review", WorkspaceCommandEngine.Accept(completed, Repair(completed), Now).ErrorCode);
+        var archived = completed with { Document = completed.Document with { Tasks = [completed.Document.Tasks.Single() with { IsArchived = true }] } };
+        Assert.Equal("task_unavailable", WorkspaceCommandEngine.Accept(archived, Repair(archived), Now).ErrorCode);
+        foreach (var kind in new[] { CompanionTaskKind.Daily, CompanionTaskKind.Habit })
+        {
+            var recurring = state with { Document = state.Document with { Tasks = [state.Document.Tasks.Single() with { Kind = kind }] } };
+            Assert.Equal("adoption_required", WorkspaceCommandEngine.Accept(recurring, Repair(recurring), Now).ErrorCode);
+        }
+        var linked = state with { Document = state.Document with { Projections = [new(Guid.NewGuid(), 1, create.TaskId, ProjectionState.Linked, Guid.NewGuid().ToString("D"), Fingerprint: new string('a', 64))] } };
+        Assert.Equal(new[] { ProjectionEffectKind.Create }, WorkspaceCommandEngine.Accept(linked, Repair(linked), Now).Entry!.Effects);
+        var uncertain = state with { Document = state.Document with { Projections = [new(Guid.NewGuid(), 1, create.TaskId, ProjectionState.UnknownOutcome)] } };
+        Assert.Equal("projection_review_required", WorkspaceCommandEngine.Accept(uncertain, Repair(uncertain), Now).ErrorCode);
+        Assert.Equal("stale_revision", WorkspaceCommandEngine.Accept(state, Repair(state) with { ExpectedRevision = 1 }, Now).ErrorCode);
     }
 
     private sealed class FakeStore(WorkspaceJournalSnapshot initial) : ICompanionWorkspaceStore

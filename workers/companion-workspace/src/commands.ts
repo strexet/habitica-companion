@@ -24,6 +24,12 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  if(patch?.recurrence&&expandRecurrence(patch.recurrence,patch.recurrence.startDate,patch.recurrence.startDate).failure)throw new WorkspaceError('invalid_patch',422);
  if (isTaskCreation(command.operation) ? Boolean(task) : !task || task.isArchived) throw new WorkspaceError("task_unavailable", 422);
  const mapping = result.projections.find(row => row.taskId === command.taskId && !row.isArchived);
+ if(command.operation==='ensureProjection'){
+  if(!command.projectToHabitica)throw new WorkspaceError('projection_required',422);
+  if(task!.state!=='active')throw new WorkspaceError('historical_projection_requires_review',409);
+  if(task!.kind!=='todo')throw new WorkspaceError('adoption_required',422);
+  if(result.projections.some(row=>row.taskId===task!.id&&(row.isArchived||['unknownOutcome','externalConflict'].includes(row.state))))throw new WorkspaceError('projection_review_required',409);
+ }
  if(command.operation==='setTodoStage'){if(command.projectToHabitica)throw new WorkspaceError('unsupported_projection',422);if(task!.kind!=='todo'||task!.state!=='active')throw new WorkspaceError('active_todo_required',422);}
  if(command.operation==='setTodoState'){if(command.projectToHabitica)throw new WorkspaceError('unsupported_projection',422);if(task!.kind!=='todo'||task!.state==='completed')throw new WorkspaceError('todo_state_unavailable',422);}
  if(command.operation==='planTask'){if(command.projectToHabitica)throw new WorkspaceError('unsupported_projection',422);if(!planningReferencesAvailable(result,task!,patch!.planning!))throw new WorkspaceError('invalid_planning_reference',422);}
@@ -90,7 +96,7 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
  const requested = !['planTask','restoreTodo','relateTodo','setTodoState','setTodoStage'].includes(command.operation)&&(command.projectToHabitica || Boolean(mapping && mapping.state !== "unlinked"));
  const effects: string[] = [];
  if (requested) {
-  if (!mapping?.habiticaTaskId) effects.push("create");
+  if (!mapping?.habiticaTaskId || command.operation==='ensureProjection') effects.push("create");
   if (command.operation === "updateTask") effects.push("update");
   if (command.operation === "completeTask") effects.push("scoreUp");
   if (command.operation === "scoreHabit") for (let i = 0; i < command.count; i++) effects.push(command.direction === "up" ? "scoreUp" : "scoreDown");

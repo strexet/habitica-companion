@@ -1308,3 +1308,7 @@ Workspace sends the private Cron gateway only the saved attempt identity and exa
 ## Required prospective Todo projection
 
 New ordinary Companion Todo create/update/complete commands carry required correspondence under todo-required-v1. Full subtasks are independent Todos. Preparation reveals the effective game intent; fresh raw false submissions are refused. Native priority never becomes Habitica difficulty. An active unlinked completion plans create before score/up; confirmed original receipts, not canonical saved state alone, establish external completion and rewards. No credential upload, executor enablement or Habitica call is implicit in preparation or local capture. Historical accepted commands are recovered verbatim, and completed unlinked edits require separate historical review.
+
+## Unchanged-task correspondence repair
+
+EnsureProjection queues a missing active Todo counterpart through the existing alias-correlated v3 create gateway and original command receipt. Repair contains no fake content patch and never scores. An existing linked mapping can be freshly verified by the same Create effect without another remote create. Missing historical counterparts require explicit review rather than synthesized completed/dateCompleted fields or retroactive rewards. Exact retained-record adoption uses an authenticated owned UUID read, matching kind and Todo completion state, and the reviewed fingerprint; no Habitica write occurs. Identical accepted adoption recovers the retained mapping receipt.
