@@ -19,6 +19,21 @@ public sealed class WorkspaceOrganizationClientTests
     private static WorkspaceOrganizationPreview Preview(WorkspaceOrganizationCommand command)=>new(command.Id,Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(10),false,command,WorkspaceOrganizationCommands.Apply(command,null),false,false);
     private static WorkspaceOrganizationReceipt Receipt(WorkspaceOrganizationPreview p)=>new(p.Command.Id,p.CorrelationId,p.Command.WorkspaceId,p.Command.Kind,p.Command.Operation,p.Command.EntityId,new(p.Command,WorkspaceOrganizationCommands.Hash(p.Command),DateTimeOffset.UtcNow,p.Snapshot),true,false,0,0,true,false);
     [Fact]
+    public async Task Worker_shaped_saved_view_create_response_is_accepted()
+    {
+        var json = """{"preparedCommandId":"11111111-1111-4111-8111-111111111111","correlationId":"44444444-4444-4444-8444-444444444444","expiresAtUtc":"2099-01-01T00:00:00.000Z","expired":false,"command":{"id":"11111111-1111-4111-8111-111111111111","workspaceId":"22222222-2222-4222-8222-222222222222","expectedRevision":43,"kind":"savedTaskView","operation":"create","entityId":"33333333-3333-4333-8333-333333333333","patch":{"name":"Synthetic list — Cyrillic","categoryId":null,"clearCategory":false,"projectId":null,"position":null,"taskIds":null,"query":{"source":"tasks","filter":{"query":"Заметки Alpha","kind":"todo","state":"active"}}}},"snapshot":{"kind":"savedTaskView","id":"33333333-3333-4333-8333-333333333333","revision":44,"name":"Synthetic list — Cyrillic","isArchived":false,"categoryId":null,"projectId":null,"position":0,"taskIds":null,"query":{"source":"tasks","filter":{"query":"Заметки Alpha","kind":"todo","state":"active"}}},"mayAffectHabitica":false,"savedInCompanion":false}""";
+        var server = WorkspaceTaskApiJson.Deserialize<WorkspaceOrganizationPreview>(json);
+        Assert.True(WorkspaceOrganizationCommands.IsValid(server.Command));
+        Assert.True(WorkspaceOrganizationCommands.Apply(server.Command, null).Equivalent(server.Snapshot));
+        var intent = server.Command with { Id=Guid.NewGuid(), EntityId=Guid.NewGuid() };
+        using var vault=Vault();using var http=new HttpClient(new Handler(request=>Task.FromResult(request.RequestUri!.AbsolutePath=="/connect"?Connection(intent.WorkspaceId):new HttpResponseMessage(HttpStatusCode.OK){Content=new StringContent(json)})));
+        var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/");
+        await client.ConnectAsync(Credentials,default);
+        var result=await client.PrepareOrganizationAsync(Guid.NewGuid(),intent,default);
+        Assert.True(result.Succeeded,result.Message);
+    }
+
+    [Fact]
     public async Task Creation_binds_all_intent_fields_and_recovers_original_native_receipt_after_lost_acknowledgement()
     {
         var id=Guid.NewGuid();var intent=Intent(id);var preview=Preview(intent with {Id=Guid.NewGuid(),EntityId=Guid.NewGuid()});var requestId=Guid.NewGuid();var calls=0;

@@ -1,5 +1,9 @@
 # Testing
 
+## Browser query normalization regression
+
+Publish tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj with the pinned local .NET SDK to an isolated output directory, serve the isolated wwwroot over loopback HTTP and open that origin in a browser. The page must report PASS for every shared task-query-v1.json case and unchanged input. The isolated app contains synthetic embedded data and makes no service requests. The isolated app exercises the actual browser-only NFKC interop branch, including composed accents, compatibility characters, U+0130 and Greek sigma. The isolated app remains outside production publication and ordinary desktop test discovery.
+
 ## Application topology
 
 `tests/Habitica.Domain.Tests/`, `tests/Habitica.Rules.Tests/`, `tests/Habitica.Api.Tests/`, `tests/Habitica.Storage.Tests/` and `tests/Habitica.Application.Tests/` contain xUnit domain, calculation, API, storage and orchestration checks. `tests/Habitica.WebApp.Tests/` uses bUnit for Razor components, page behavior and session state. `tests/Functions/` uses the Node test runner.
