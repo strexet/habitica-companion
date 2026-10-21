@@ -65,8 +65,9 @@ export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,ar
    if(!prepared||prepared.input_hash!==hash)throw new WorkspaceError(changed[0].meta.changes?'request_id_reused':'workspace_changed',409);
   }
   const found=await receipt(prepared.command_id);if(!found&&(prepared.access_epoch!==row.access_epoch||prepared.grant_epoch!==(row.mcp_grant_epoch??'legacy')))throw new WorkspaceError('preview_connection_changed',409);const command=JSON.parse(prepared.command_json);
-  if(!found)requireTodoProjection(document,command);
-  return {preparedCommandId:prepared.command_id,correlationId:prepared.correlation_id,expiresAtUtc:prepared.expires_at_utc,expired:prepared.expires_at_utc<=new Date().toISOString()&&!found,command,mayAffectHabitica:found?found.entry.effects.length>0:!['planTask','restoreTodo','relateTodo','setTodoState','setTodoStage'].includes(command.operation)&&(command.projectToHabitica||document.projections.some((p:{taskId:string;state:string})=>p.taskId===command.taskId&&p.state!=='unlinked')),savedInCompanion:Boolean(found),...(found?{receipt:mutationResult(found.entry,document,found.correlationId)}:{})};
+  let policyExpired=false;
+  if(!found){try{requireTodoProjection(document,command);}catch(error){if(!(error instanceof WorkspaceError))throw error;policyExpired=true;}}
+  return {preparedCommandId:prepared.command_id,correlationId:prepared.correlation_id,expiresAtUtc:prepared.expires_at_utc,expired:!found&&(policyExpired||prepared.expires_at_utc<=new Date().toISOString()),command,mayAffectHabitica:found?found.entry.effects.length>0:!['planTask','restoreTodo','relateTodo','setTodoState','setTodoStage'].includes(command.operation)&&(command.projectToHabitica||document.projections.some((p:{taskId:string;state:string})=>p.taskId===command.taskId&&p.state!=='unlinked')),savedInCompanion:Boolean(found),...(found?{receipt:mutationResult(found.entry,document,found.correlationId)}:{})};
  }
  const commandId=uuid(input.commandId);const found=await receipt(commandId);const operation=operationForTool[name as keyof typeof operationForTool];
  if(found){if(found.entry.command.operation!==operation)throw new WorkspaceError('operation_mismatch',409);return mutationResult(found.entry,document,found.correlationId);}

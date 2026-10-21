@@ -1,0 +1,28 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';
+import {fixture,enrolled} from '../../chatgpt-auth/test/fixtures/oauth.mjs';import {seedLegacyCommand} from './fixtures/legacy-todo.mjs';
+const origin='http://localhost:8789';
+async function setup(t){let writes=0;const f=await fixture(t,{workspace:true,habitica:request=>{if(request.method!=='GET')writes++;return Response.json({success:true,data:{_id:request.headers.get('x-api-user'),profile:{name:'Fixture'}}});}});const p=await enrolled(f),r=await f.workspace.fetch(origin+'/connect',{method:'POST',headers:{authorization:`Bearer ${p.managementToken}`,'content-type':'application/json'},body:JSON.stringify({consentVersion:'workspace-v1'})});assert.equal(r.status,201);return {f,w:await r.json(),writes:()=>writes};}
+async function call(f,w,tool,args){return f.workspace.fetch(origin+'/task-api',{method:'POST',headers:{authorization:`Bearer ${w.sessionToken}`,'content-type':'application/json'},body:JSON.stringify({tool,arguments:args})});}
+for(const flag of [undefined,false,true])test(`unlinked Habit activity requires correspondence with compatibility flag ${flag}`,async t=>{
+ const {f,w,writes}=await setup(t),taskId=crypto.randomUUID(),legacyId=crypto.randomUUID();await seedLegacyCommand(f,{id:legacyId,workspaceId:w.workspaceId,expectedRevision:1,operation:'createHabit',taskId,patch:{text:'Retained Habit'}});
+ const input={requestId:crypto.randomUUID(),operation:'scoreHabit',taskId,direction:'up',count:2,...(flag===undefined?{}:{projectToHabitica:flag})};const response=await call(f,w,'prepare_task_command',input);assert.equal(response.status,200,await response.clone().text());const preview=await response.json();assert.equal(preview.command.projectToHabitica,true);assert.equal(preview.mayAffectHabitica,true);
+ const accepted=await(await call(f,w,'score_habit',{commandId:preview.preparedCommandId})).json();assert.equal(accepted.acceptedEventCount,2);assert.equal(accepted.totalProjectionCount,3);assert.equal(accepted.confirmedProjectionCount,0);assert.equal(accepted.habiticaProjectionStatus,'pending');assert.deepEqual(await(await call(f,w,'score_habit',{commandId:preview.preparedCommandId})).json(),accepted);
+ const legacy=await(await call(f,w,'create_habit',{commandId:legacyId})).json();assert.equal(legacy.habiticaProjectionStatus,'notRequested');assert.equal(legacy.totalProjectionCount,0);assert.equal(writes(),0);
+ const archive=await(await f.workspace.fetch(origin+'/export',{headers:{authorization:`Bearer ${w.sessionToken}`}})).json();assert.equal(archive.document.habitScores.length,2);assert.equal(archive.commands[0].command.projectToHabitica,false);assert.equal(archive.commands.length,2);
+});
+test('unscheduled legacy Daily refuses new game activity until a supported native schedule is reviewed',async t=>{
+ const {f,w,writes}=await setup(t),taskId=crypto.randomUUID();await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:1,operation:'createDaily',taskId,patch:{text:'Unscheduled retained Daily'}});
+ const args={requestId:crypto.randomUUID(),operation:'completeTask',taskId,occurrenceDate:'2026-10-21'};const rejected=await call(f,w,'prepare_task_command',args);assert.equal(rejected.status,422);assert.equal((await rejected.json()).error,'daily_schedule_required');
+ const schedule={frequency:'daily',interval:1,startDate:'2026-10-19',timeZoneId:'UTC',weekdays:[],daysOfMonth:[]};const native=await(await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'updateTask',taskId,patch:{recurrence:schedule}})).json();assert.equal(native.command.projectToHabitica,false);assert.equal(native.mayAffectHabitica,false);assert.equal((await call(f,w,'update_task',{commandId:native.preparedCommandId})).status,200);
+ const prepared=await(await call(f,w,'prepare_task_command',{...args,requestId:crypto.randomUUID(),projectToHabitica:false})).json();assert.equal(prepared.command.projectToHabitica,true);const accepted=await(await call(f,w,'complete_task',{commandId:prepared.preparedCommandId})).json();assert.equal(accepted.acceptedEventCount,1);assert.equal(accepted.totalProjectionCount,2);assert.equal(accepted.confirmedProjectionCount,0);assert.equal(writes(),0);
+});
+
+test('a superseded unaccepted legacy preview is recoverable verbatim but cannot bypass required projection',async t=>{
+ const {f,w}=await setup(t),input={requestId:crypto.randomUUID(),operation:'createHabit',patch:{text:'Old unaccepted intent'},projectToHabitica:false};
+ const first=await(await call(f,w,'prepare_task_command',input)).json(),legacy={...first.command,projectToHabitica:false};
+ await f.workspaceDb.prepare('UPDATE workspace_preparations SET command_json=? WHERE command_id=?').bind(JSON.stringify(legacy),first.preparedCommandId).run();
+ const response=await call(f,w,'prepare_task_command',input);assert.equal(response.status,200);const recovered=await response.json();assert.equal(recovered.preparedCommandId,first.preparedCommandId);assert.equal(recovered.expired,true);assert.deepEqual(recovered.command,legacy);assert.equal(recovered.savedInCompanion,false);
+ const rejected=await call(f,w,'create_habit',{commandId:first.preparedCommandId});assert.equal(rejected.status,422);assert.equal((await rejected.json()).error,'habit_projection_required');
+ assert.equal((await f.workspaceDb.prepare('SELECT COUNT(*) AS n FROM workspace_commands').first()).n,0);
+ const fresh=await(await call(f,w,'prepare_task_command',{...input,requestId:crypto.randomUUID()})).json();assert.notEqual(fresh.preparedCommandId,first.preparedCommandId);assert.equal(fresh.expired,false);assert.equal(fresh.command.projectToHabitica,true);
+});

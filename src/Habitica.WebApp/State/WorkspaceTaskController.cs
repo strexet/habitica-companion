@@ -184,7 +184,7 @@ public sealed class WorkspaceTaskController(IAppSessionController session, IWork
             {
                 Message = policyError == "historical_projection_requires_review"
                     ? "This completed Todo has no Habitica link. Historical integration needs a separate review; no task or reward was changed."
-                    : "Todo changes require Habitica correspondence. Reload and review a fresh command.";
+                    : $"Task integration is unavailable ({policyError}). Supply a supported Daily schedule or use Habitica link to review an existing record. No task or game effect was accepted.";
                 _intent = null; return;
             }
             var result = WorkspaceCommandEngine.Accept(Snapshot, _intent, DateTimeOffset.UtcNow);

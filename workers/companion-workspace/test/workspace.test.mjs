@@ -66,18 +66,18 @@ test('multiple sessions survive unchanged credential validation; revocation and 
 
 test('neutral canonical fixture supports typed update, Daily completion and bounded Habit scoring without upstream writes', async t => {
  const f = await fixture(t, { workspace: true }); const document = JSON.parse(await readFile(new URL('../../../tests/fixtures/workspace/workspace-v1.json', import.meta.url), 'utf8'));
- document.tasks.push({ ...document.tasks[0], id: crypto.randomUUID(), kind: "daily", recurrence: { frequency: "daily", interval: 1, startDate: "2026-10-15", timeZoneId: "UTC", weekdays: [], daysOfMonth: [] } }, { ...document.tasks[0], id: crypto.randomUUID(), kind: "habit" });
+ document.tasks.push({ ...document.tasks[0], id: crypto.randomUUID(), kind: "daily", deadline:null, recurrence: { frequency: "daily", interval: 1, startDate: "2026-10-15", timeZoneId: "UTC", weekdays: [], daysOfMonth: [] } }, { ...document.tasks[0], id: crypto.randomUUID(), kind: "habit",deadline:null });
  const w = await connect(f, await enrolled(f), document.id);
  await f.workspaceDb.prepare('UPDATE workspaces SET document_json=?').bind(JSON.stringify(document)).run();
  const daily = document.tasks.find(task => task.kind === 'daily'); const habit = document.tasks.find(task => task.kind === 'habit');
  assert.ok(daily); assert.ok(habit);
  let rev = document.revision;
- const complete = { id: crypto.randomUUID(), workspaceId: document.id, expectedRevision: rev++, operation: 'completeTask', taskId: daily.id, occurrenceDate: '2026-10-15' };
+ const complete = { id: crypto.randomUUID(), workspaceId: document.id, expectedRevision: rev++, operation: 'completeTask', taskId: daily.id, occurrenceDate: '2026-10-15',projectToHabitica:true };
  const completed = await call(f, '/commands', w.sessionToken, complete); assert.equal(completed.status, 201, await completed.clone().text());
- const score = { id: crypto.randomUUID(), workspaceId: document.id, expectedRevision: rev++, operation: 'scoreHabit', taskId: habit.id, direction: 'up', count: 3 };
+ const score = { id: crypto.randomUUID(), workspaceId: document.id, expectedRevision: rev++, operation: 'scoreHabit', taskId: habit.id, direction: 'up', count: 3,projectToHabitica:true };
  assert.equal((await call(f, '/commands', w.sessionToken, score)).status, 201);
  const result = await (await call(f, '/export', w.sessionToken)).json(); assert.equal(result.document.completions.length, (document.completions ?? []).length + 1); assert.equal(result.document.habitScores.length, (document.habitScores ?? []).length + 3);
- assert.equal(result.commands[1].projectionState, 'notRequested');
+ assert.equal(result.commands[1].projectionState, 'pending');assert.deepEqual(result.commands[1].effects,['create','scoreUp','scoreUp','scoreUp']);
  const invalid = { ...score, id: crypto.randomUUID(), expectedRevision: rev, count: 11 };
  assert.equal((await call(f, '/commands', w.sessionToken, invalid)).status, 422);
 });

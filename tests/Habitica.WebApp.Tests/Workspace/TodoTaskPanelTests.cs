@@ -231,14 +231,14 @@ public sealed class TodoTaskPanelTests : BunitContext
     {
         var (f, _) = Setup(); await f.Controller.CreateLocalAsync();
         var cut = Render<TodoTaskPanel>(); cut.Find("[data-testid='todo-title']").Input("Explicit projected Todo");
-        cut.Find("[data-testid='todo-project']").Change(true); cut.Find("form").Submit();
+         cut.Find("form").Submit();
         Assert.True(f.Controller.Preview!.MayAffectHabitica); Assert.True(f.Controller.Preview.Command.ProjectToHabitica);
         Assert.Empty(f.Controller.Snapshot!.Commands); Assert.Contains("separately enabled executor", cut.Find("[data-testid='todo-review']").TextContent);
         cut.Find("[data-testid='todo-confirm']").Click();
         var command = Assert.Single(f.Controller.Snapshot.Commands); Assert.Equal(ProjectionCommandState.Pending, command.ProjectionState);
         Assert.Single(command.Effects); Assert.Equal(0, command.ConfirmedEffects); Assert.Empty(f.Client.AcceptedIds);
         Assert.Contains("pending", cut.Find("[data-testid='todo-receipt']").TextContent);
-        Assert.False(cut.Find("[data-testid='todo-project']").HasAttribute("checked"));
+        Assert.Empty(cut.FindAll("[data-testid='todo-project']"));
     }
     [Theory]
     [InlineData("Weekly")]
@@ -263,6 +263,33 @@ public sealed class TodoTaskPanelTests : BunitContext
         Assert.Equal("Etc/GMT-7", preview.Command.Patch.Recurrence.TimeZoneId);
         Assert.Contains("future missed Dailies", cut.Find("[data-testid='todo-review']").TextContent, StringComparison.OrdinalIgnoreCase);
         Assert.Empty(f.Controller.Snapshot.Commands); Assert.Empty(f.Client.AcceptedIds);
+    }
+
+    [Fact]
+    public async Task Habit_capture_reviews_configured_directions_and_keeps_urgency_separate_from_game_difficulty_without_consent()
+    {
+        var(f,_) = Setup();await f.Controller.CreateLocalAsync();var cut=Render<TodoTaskPanel>(p=>p.Add(x=>x.Kind,CompanionTaskKind.Habit));
+        cut.Find("[data-testid='todo-title']").Input("Synthetic negative-only Habit");cut.Find("[data-testid='todo-habit-positive']").Change(false);
+        cut.Find("[data-testid='todo-priority']").Change("Urgent");cut.FindAll("select").Single(el=>el.ParentElement!.TextContent.StartsWith("Game difficulty",StringComparison.Ordinal)).Change("2");
+        Assert.Empty(cut.FindAll("[data-testid='todo-project']"));Assert.Empty(cut.FindAll("[data-testid='todo-deadline']"));
+        Assert.Contains("separate account consent",cut.Find("[data-testid='todo-required-integration']").TextContent);
+        Save("defaults-habit-config",cut.Markup.Replace("<details class=\"todo-advanced\"","<details open class=\"todo-advanced\"",StringComparison.Ordinal),"negative-only-Habit-configuration",nameof(Habit_capture_reviews_configured_directions_and_keeps_urgency_separate_from_game_difficulty_without_consent));
+        cut.Find("form").Submit();var command=f.Controller.Preview!.Command;Assert.True(command.ProjectToHabitica);Assert.Equal(CompanionPriority.Urgent,command.Patch!.Priority);Assert.Equal(2,command.Patch.HabiticaDetails!.Difficulty);Assert.False(command.Patch.HabiticaDetails.Up);Assert.True(command.Patch.HabiticaDetails.Down);
+        Save("defaults-habit-review",cut.Markup,"required-direction-game-intent",nameof(Habit_capture_reviews_configured_directions_and_keeps_urgency_separate_from_game_difficulty_without_consent));
+        cut.Find("[data-testid='todo-confirm']").Click();Assert.Empty(f.Client.AcceptedIds);Assert.Empty(f.Client.PreparationIds);Assert.Equal(ProjectionCommandState.Pending,f.Controller.Snapshot!.Commands.Single().ProjectionState);Assert.Empty(f.Controller.Snapshot.Document.HabitScores);
+    }
+    [Theory]
+    [InlineData(false,false,false,"unverified")]
+    [InlineData(true,false,false,"unavailable")]
+    [InlineData(true,true,false,"paused")]
+    [InlineData(true,true,true,"enabled")]
+    public async Task Cloud_readiness_is_explicit_and_does_not_offer_a_reward_free_opt_out(bool verified,bool available,bool enabled,string state)
+    {
+        var(f,todo)=Setup();f.Client.Connected=true;f.Client.ConnectionStatusVerified=verified;f.Client.ExecutorAvailable=available;f.Client.ExecutorEnabled=enabled;
+        await todo.RefreshSourcesAsync();await todo.SelectAsync(new(TodoWorkspaceSource.Cloud,f.Client.State.Document.Id));var cut=Render<TodoTaskPanel>();
+        Assert.Contains(state,cut.Find("[data-testid='todo-required-integration']").TextContent,StringComparison.OrdinalIgnoreCase);Assert.Empty(cut.FindAll("[data-testid='todo-project']"));
+        Assert.Empty(f.Client.PreparationIds);Assert.Empty(f.Client.AcceptedIds);
+        Save("defaults-cloud-"+state,cut.Markup,"required-game-intent-"+state,nameof(Cloud_readiness_is_explicit_and_does_not_offer_a_reward_free_opt_out));
     }
 
 }

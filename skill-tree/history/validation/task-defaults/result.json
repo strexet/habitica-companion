@@ -1,0 +1,109 @@
+{
+  "taskId": "T-7bb19b25-83e8-470d-9e94-94a91d744440",
+  "recordedAtUtc": "2026-10-21T15:59:35.773292+00:00",
+  "sourceFingerprints": {
+    "plugin/skills/habitica-task-management/SKILL.md": "c9c55edad1d8167a832685abdb38b78d7ef9659c7efb41ab562fc6f4d6e33986",
+    "plugin/skills/habitica-task-management/references/habitica-correspondence.md": "eae9a9e5da340c5f62ade5f9041fc77d518a34ff5e35c8b14bb4d75fd817f2e4",
+    "plugin/skills/habitica-task-management/references/project-planning.md": "ef3661c49ce3274f0e34e69162132f4b339da19a33930416907b1b318bc0b5eb",
+    "plugin/skills/habitica-task-management/references/todo-hierarchy.md": "460b7de9151380804e444881503a205a56b44650c4ab29830383e446173728bd",
+    "skill-tree/documents/companion-workspace-contract.md": "1238249c05eccc1b12744def97b27f6781ce850572cb480791fd3ad93235ef40",
+    "skill-tree/documents/features.md": "891a7341b7495c65143fc8f439ec61b646bfd64a2e6dce4dbec36146b380e757",
+    "skill-tree/documents/habitica-api.md": "be0eb9f7ffa1f669206798d8cd17fdc982ed8b07e28b7f5e64c17932219ad609",
+    "skill-tree/documents/technical.md": "7894522acf4622d6864f5e7765dc43617d5733690fb1d9ca46dbf9789fa02d7b",
+    "skill-tree/documents/testing.md": "d0fdbc7fa4872c2a1da4f86b4493fdd1f0b5ade570065f7b25494a733af4eb4f",
+    "skill-tree/documents/ux-ui-manifest.md": "ef852081c9d66b8251c9ad4d69c527c3205577d5f65d02996e0a57dc2e2552d5",
+    "src/Habitica.Application/Workspace/WorkspaceTodoProjectionPolicy.cs": "cd9f8d544719fc532a106c86658a62a88e5c944fd29b57aa485c57ce6b69a456",
+    "src/Habitica.WebApp/Components/CompanionTasksPanel.razor": "261fe736572657c933efb930e8b50c054ef9f9143c7ef16d146f9ed12aad0c85",
+    "src/Habitica.WebApp/Components/TodoRecurringEditor.razor": "b88c2f51e00ac5c1656dc5e194f6818d3ae7cfae22b067d8e1c0f1e9a96f3147",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "6357c214febc90ffb8a8d277cd5ac16cf964b092d98c824a2f320ba758a32f6a",
+    "src/Habitica.WebApp/State/TodoTaskDraftStore.cs": "7e4630a28e0b4c88ac9fecb5e613574a17743f577f4709671af5bc53cfd12188",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "9295159102f05f48294954d8cfed1f1bec635b4afa51e3a1ea5b3b066ffd0626",
+    "src/Habitica.WebApp/State/WorkspaceTaskController.cs": "cc0495d99f3bc302b92a1acf19e9ea4ffc15485ec604601f815026cb2a09926f",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceProjectionDefaultsTests.cs": "f09dff7cf9595c661ab4bb08b9e3deebc57af0bf5749a32aebbcf61418ba32a1",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoRecurringEditorTests.cs": "95bce6a5e2690201e105020115345c5bd316074d837750f4e9e4010dd06c0e66",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskLinkTests.cs": "687fe192b8ab92de87465f039cddefb5bf967d8017f02776c6a3d77351b35784",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTaskPanelTests.cs": "36b5a826d6c891d0fe55f91953a84ef27d562d6e13eb878c669bbbc8f200fb7e",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoTodayPanelTests.cs": "d978b07d11fa06e14067db721f784a2adb49aa868dd9496cd84d07461e823151",
+    "tests/fixtures/workspace/task-projection-defaults-v1.json": "23216bcb3ae1f26cecbb5bbf56aa68986886b7152c04322ded783483f329f7b7",
+    "workers/chatgpt-mcp/src/task-tools.ts": "9eb278a225dc0ffcc14ba2d9f358e88189083bd6dcdd4c66241502b25a439522",
+    "workers/companion-workspace/src/task-api.ts": "d4784d6897ad2f80f089622382ad59f10774435e413cdb601338f23d3f762549",
+    "workers/companion-workspace/test/executor.test.mjs": "66b7f48e57d8ddba432c9690b03a685923f4b29e15f8fbf08b11e3f10edcf9f7",
+    "workers/companion-workspace/test/occurrence-lifecycle.test.mjs": "9052d8566d84b30d6ff439af9ac960e00b585bd4d9cd7398f8f18b80818b4221",
+    "workers/companion-workspace/test/plugin.test.mjs": "0061869c1e968d89d0a7681a5e253c0091a8f5ed7e91288f9fe952792c382d2d",
+    "workers/companion-workspace/test/task-api.test.mjs": "3861324d1b4d6576b933660aab0b547b32e1c3f2e4d479789bf4dd212e626db2",
+    "workers/companion-workspace/test/task-defaults-api.test.mjs": "3f90fb359fdaf0db78fb975a47c31609e6a88eeea3c72f69b63a1417bb7e5d20",
+    "workers/companion-workspace/test/task-projection-defaults.test.mjs": "dbf54c4f4feb1e7ad3a3c6f6acfbee1def8b97d08b86fb1ee00a778c7113ca57",
+    "workers/companion-workspace/test/workspace.test.mjs": "b0250be0dc7e7699f288bcbc6cfc66ab5773579e27dfbb766b6348422e74035b",
+    "workers/shared/todo-projection-policy.ts": "174d1c0e9bae1254717e317b648ef61c491aa8ba7fce36f98ce424b2d40f73c5"
+  },
+  "checks": {
+    "dotnet": {
+      "result": "pass",
+      "log": "/tmp/habitica-defaults-final-dotnet.log",
+      "sha256": "f1913cd32ef0b494e335ef62c9f91405c9e9eaa319cd91b6bce41403a1bdfcaf",
+      "total": 1011
+    },
+    "releasePublish": {
+      "result": "pass",
+      "log": "/tmp/habitica-defaults-final-publish.log",
+      "sha256": "63834c0c90580a375a8cca6853b92642553885b4431417fb2cf75371ba2ac860"
+    },
+    "workerBuilds": {
+      "result": "pass",
+      "log": "/tmp/habitica-defaults-final-worker-builds.log",
+      "sha256": "1e0a2e07a0827912b8141a4021aa70b0d1a0ac10793f609bd379cd3c53c6bd1a"
+    },
+    "workers": {
+      "result": "pass",
+      "log": "/tmp/habitica-defaults-final-workers.log",
+      "sha256": "e551025dfb11937d08f534fbce83d446b70dc613100ddc49699dbef02fdb42f2",
+      "total": 439
+    },
+    "rendered": {
+      "result": "pass",
+      "cases": 936,
+      "errors": 0,
+      "unqualifiedSurfaces": 0,
+      "evidence": "browser-results.json"
+    },
+    "negativeControls": {
+      "cases": 2,
+      "detected": [
+        "contrast",
+        "overflow",
+        "overlap"
+      ],
+      "evidence": "browser-negative-results.json"
+    },
+    "documentation": {
+      "changedLineProse": "pass",
+      "strictFuture": "pass",
+      "navigationAndCheckpoint": "pass",
+      "fullStrictProse": "Existing errors outside changed lines remain; no clean full-strict verdict.",
+      "audit": "Existing stale audit warning."
+    }
+  },
+  "delivered": [
+    "Shared task-required-v1 defaults for Todo/full children/Daily/Habit creation, ordinary field edits, completion and Habit scores.",
+    "Fresh raw false intent refuses; accepted legacy command identities/effects/receipts remain immutable and recoverable.",
+    "Unaccepted superseded previews recover original bytes as expired, enabling cancel/new review without accepting legacy false intent.",
+    "Native schedule-only authoring and explicit planning/lifecycle metadata remain non-scoring; supported Daily schedule/adoption and retained mapping fences remain explicit.",
+    "Browser ordinary opt-out removed; title-first capture, separate consent/executor readiness, Habit directions and urgency/difficulty distinctions are visible.",
+    "Nineteen neutral C#/Worker policy cases and API/PWA/MCP package contracts checked together."
+  ],
+  "limits": [
+    "No live account writes, deployment, installed-host refresh, physical-device or assistive-technology qualification.",
+    "Synthetic rendered snapshots use published production styles; component interactions are verified separately by bUnit.",
+    "Missing tag correspondence remains the next dedicated model/gateway/executor/UI scope. Stored links alone do not prove pending game effects."
+  ],
+  "operationEvidence": {
+    "activeControllerSeconds": null,
+    "prerequisiteWaitingSeconds": null,
+    "note": "Aggregate controller time not measured. Test logs retain durations. Builds/tests have 180/240-second deadlines; browser cases 5 seconds, matrix 300 seconds, local server 900 seconds; created tab/server cleaned up.",
+    "repairs": [
+      "Retained raw documents tolerate omitted optional arrays, remote IDs and deadlines.",
+      "Historical tests seed legacy activity instead of freshly accepting reward-free activity.",
+      "Lost superseded preparation remains recoverable; previous refusal expectation updated to expired original preview."
+    ]
+  }
+}

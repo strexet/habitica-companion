@@ -128,7 +128,7 @@ test('hosted Daily execution obtains fresh account and due receipts before the p
  document.projections[0]={...document.projections[0],habiticaTaskId:externalId,state:'linked',fingerprint:verified.fingerprint};
  const first={...archive.commands[0],command:{...archive.commands[0].command,projectToHabitica:false},effects:[],projectionState:'notRequested'};first.payloadHash=await commandHash(first.command);
  await x.f.workspaceDb.batch([x.f.workspaceDb.prepare('UPDATE workspaces SET document_json=?').bind(JSON.stringify(document)),x.f.workspaceDb.prepare('UPDATE workspace_commands SET entry_json=?').bind(JSON.stringify(first))]);
- const complete={id:crypto.randomUUID(),workspaceId:x.w.workspaceId,expectedRevision:document.revision,operation:'completeTask',taskId:x.c.taskId,occurrenceDate:date};
+ const complete={id:crypto.randomUUID(),workspaceId:x.w.workspaceId,expectedRevision:document.revision,operation:'completeTask',taskId:x.c.taskId,occurrenceDate:date,projectToHabitica:true};
  assert.equal((await call(x.f,'/commands',x.w.sessionToken,complete)).status,201);await x.enable();
  assert.equal(await executeProfile(x.env,x.p.profileId,{wait:x.wait}),'applied');assert.equal(writes,1);assert.equal(x.delays.filter(ms=>ms>=29000).length,2);
  const completed=await x.exported();assert.equal(completed.commands[1].projectionState,'confirmed');assert.equal(completed.document.completions.length,1);assert.equal(completed.document.occurrences[0].state,'completed');await journal(completed);

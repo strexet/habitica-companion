@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Align browser and agent task defaults with required Habitica links
-
-```yaml
-id: T-7bb19b25-83e8-470d-9e94-94a91d744440
-priority: 103
-status: Ready
-parent_pending_ids: ["P-f0b54e18-9d9f-4528-8383-db7de5542c63"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-7bb19b25-83e8-470d-9e94-94a91d744440
-related_task_id: null
-relation: main
-depends_on: ["T-210471d2-f432-43b3-8fc7-bbfd74f93e29", "T-c43d3aff-9bfa-4684-a248-a83af2193492", "T-0e97833e-efaf-4cbc-ad22-8a03af170c30", "T-07d27408-3019-423f-a5de-4cda1f9e2818"]
-```
-
-Goal:
-- Make normal browser and MCP task journeys consistently request supported Habitica correspondence.
-Current behavior:
-- The browser creates native-only records by default. Updated source guidance describes required correspondence, but the deployed task descriptions and editor defaults still permit the old behavior.
-Desired behavior:
-- No standard browser or agent flow silently reports a reward-free native-only task as a completed integrated workflow; all kinds expose the same required mapping and receipt semantics.
-Touch:
-- TodoTaskDraftStore, TodoTaskPanel, WorkspaceTaskController, MCP task-tools metadata/schema, plugin task-management/hierarchy/project references and coverage-policy reporting.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Apply the authoritative policy to Todos, full children, Dailies and Habits after existing consent. Remove the buried opt-in as a normal reward-free escape; show required integration readiness and exact pending/confirmed/unknown status. Preserve local capture when consent/execution is unavailable and state the missing prerequisite. Keep urgency/difficulty distinct. Update package source and deterministic fixtures together; installed host copies remain a separate update and qualification concern. Historical imports never auto-score.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Browser and MCP tests cover title-first creation, all task kinds, full child capture, unlinked completion, no consent, paused executor, offline drafts, exact original recovery and versioned old payloads. Render status/refusal controls without displacing primary capture; inspect packaged skill references and advertised tools.
-Acceptance:
-- No standard browser or agent flow silently reports a reward-free native-only task as a completed integrated workflow; all kinds expose the same required mapping and receipt semantics.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Persist stable Habitica tag mappings and projection intents
 
 ```yaml

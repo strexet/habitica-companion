@@ -132,8 +132,9 @@ test('native Daily and retained legacy Habit archival preserve receipts and hist
  const daily={taskId:crypto.randomUUID()};await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:1,operation:'createDaily',taskId:daily.taskId,patch:{text:'Retained native Daily',deadline:'2026-10-18'}});
  const habit={taskId:crypto.randomUUID()};await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:2,operation:'createHabit',taskId:habit.taskId,patch:{text:'Retained native Habit'}});
  const read=await(await call(f,w,'get_companion_task',{taskId:daily.taskId})).json();assert.equal(read.task.kind,'daily');assert.equal(read.task.recurrence,null);assert.equal(read.task.deadline,'2026-10-18');
- await execute('completeTask','complete_task',{taskId:daily.taskId,occurrenceDate:'2026-10-17'});
- await execute('scoreHabit','score_habit',{taskId:habit.taskId,direction:'down',count:2});
+ await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:3,operation:'completeTask',taskId:daily.taskId,occurrenceDate:'2026-10-17'});
+ const legacyScoreId=crypto.randomUUID();await seedLegacyCommand(f,{id:legacyScoreId,workspaceId:w.workspaceId,expectedRevision:4,operation:'scoreHabit',taskId:habit.taskId,direction:'down',count:2});
+ const recoveredLegacy=await(await call(f,w,'score_habit',{commandId:legacyScoreId})).json();assert.equal(recoveredLegacy.habiticaProjectionStatus,'notRequested');assert.equal(recoveredLegacy.totalProjectionCount,0);
  for(const operation of ['createDaily','createHabit']){
   if(operation==='createDaily')assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation,patch:{text:'Unsupported projection'},projectToHabitica:true})).status,422);
   assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation,taskId:crypto.randomUUID(),patch:{text:'Caller identity'}})).status,422);
@@ -159,7 +160,7 @@ test('archival refuses linked or pending projections and acceptance rechecks fre
  assert.equal((await prepare({operation:'deleteTask',taskId:created.command.taskId})).status,422);
  const {seedLegacyCommand}=await import('./fixtures/legacy-todo.mjs');const taskId=crypto.randomUUID();await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:2,operation:'createDaily',taskId,patch:{text:'Retained native Daily'}});const daily={command:{taskId}};
  const deletion=await(await prepare({operation:'deleteTask',taskId:daily.command.taskId})).json();
- const edit=await(await prepare({operation:'updateTask',taskId:daily.command.taskId,patch:{notes:'Changed after preview'}})).json();await call(f,w,'update_task',{commandId:edit.preparedCommandId});
+ const edit=await(await prepare({operation:'planTask',taskId:daily.command.taskId,patch:{planning:{plannedDate:'2026-10-21'}}})).json();await call(f,w,'plan_task',{commandId:edit.preparedCommandId});
  assert.equal((await call(f,w,'delete_task',{commandId:deletion.preparedCommandId})).status,409);
  assert.equal((await(await call(f,w,'get_companion_task',{taskId:daily.command.taskId})).json()).task.isArchived,false);
 });
@@ -187,7 +188,7 @@ test('accepted legacy false commands recover verbatim but old unaccepted preview
  const input={requestId:crypto.randomUUID(),operation:'createTodo',patch:{text:'Old preview'}};
  const preview=await(await call(f,w,'prepare_task_command',input)).json();const old={...preview.command,projectToHabitica:false};
  await f.workspaceDb.prepare('UPDATE workspace_preparations SET command_json=? WHERE command_id=?').bind(JSON.stringify(old),preview.preparedCommandId).run();
- const refused=await call(f,w,'prepare_task_command',input);assert.equal(refused.status,422);assert.match(await refused.text(),/todo_projection_required/);
+ const refused=await call(f,w,'prepare_task_command',input);assert.equal(refused.status,200);const expired=await refused.json();assert.equal(expired.expired,true);assert.deepEqual(expired.command,old);
  assert.equal((await call(f,w,'create_todo',{commandId:preview.preparedCommandId})).status,422);
  assert.equal((await f.workspaceDb.prepare('SELECT COUNT(*) AS n FROM workspace_commands').first()).n,1);
  const completion=await(await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'completeTask',taskId:raw.taskId})).json();

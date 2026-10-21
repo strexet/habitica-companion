@@ -42,6 +42,7 @@
         @if (Todo.BrowserSourcesAvailable == false) { <p role="status">Browser workspaces could not be listed. Cloud access remains separate.</p> }
         @if (Todo.Availability is TodoWorkspaceAvailability.NeedsSelection or TodoWorkspaceAvailability.Unavailable)
         { <p role="status">Select a workspace or reload available data before saving tasks. Creating a browser workspace makes no cloud connection.</p> }
+        @if (!ShowCapture && Todo.Selection is not null) { <p class="panel-copy" data-testid="todo-required-integration">Task creation, field edits and scoring require Habitica correspondence. @Todo.IntegrationReadiness <a href="/todo/sync">Open Todo Sync</a></p> }
         @if (Todo.Commands.LastReceipt is { } receipt)
         { <p role="status" data-testid="todo-receipt">Saved in Companion: @(receipt.SavedInCompanion ? "Yes" : "No") · Habitica: @receipt.HabiticaProjectionStatus · confirmed effects: @receipt.ConfirmedProjectionCount/@receipt.TotalProjectionCount · refresh: @(receipt.RefreshSucceeded ? "complete" : "reload required"). Command: @receipt.CommandId</p> }
         @if (_error is not null) { <p role="alert">@_error</p> }
@@ -60,7 +61,17 @@
         @if (Todo.Commands.Preview is { } preview)
         {
             <section class="todo-command-review" aria-label="Review task command" data-testid="todo-review">
+                @if (preview.Expired || preview.ExpiresAtUtc <= DateTimeOffset.UtcNow) { <p role="status">This preview expired or was superseded. No new acceptance is allowed. Cancel it and review a new request; any uncertain accepted command still requires its original receipt.</p> }
                 <h3 tabindex="-1" @ref="_reviewTitle">Review before saving</h3><p>@ReviewLabel(preview.Command.Operation) · @Singular(PreviewKind(preview.Command))</p>
+                @if (preview.Command.Operation is WorkspaceOperation.UpdateTask or WorkspaceOperation.CompleteTask or WorkspaceOperation.ScoreHabit)
+                {
+                    var affected = Todo.Snapshot?.Document.Tasks.FirstOrDefault(task=>task.Id==preview.Command.TaskId);
+                    <p>Task: @affected?.Text · @affected?.Kind · @preview.Command.TaskId</p>
+                    @if (preview.MayAffectHabitica && !Todo.Snapshot!.Document.Projections.Any(mapping=>mapping.TaskId==preview.Command.TaskId&&!mapping.IsArchived&&mapping.HabiticaTaskId is not null))
+                    { <p>Habitica counterpart is unconfirmed. Execution must create or recover the counterpart before game activity. If an existing Habitica task already represents this work, cancel and use Habitica link first.</p>
+                        @if (affected?.Kind == CompanionTaskKind.Habit) { <p>Missing Habit counterpart: Positive (+) @((affected.HabiticaDetails?.Up??true)?"Enabled":"Disabled"); Negative (−) @((affected.HabiticaDetails?.Down??true)?"Enabled":"Disabled"). Urgency does not set game difficulty.</p> }
+                    }
+                }
                 @if (preview.Command.Patch?.Recurrence is not null || preview.Command.Patch?.ClearRecurrence == true || preview.Command.Operation is WorkspaceOperation.SkipOccurrence or WorkspaceOperation.PauseTask or WorkspaceOperation.ResumeTask || preview.Command.Operation == WorkspaceOperation.CompleteTask && PreviewKind(preview.Command) == CompanionTaskKind.Daily)
                 { <p>Exact recurring task: @Todo.Snapshot?.Document.Tasks.FirstOrDefault(row=>row.Id==preview.Command.TaskId)?.Text · @preview.Command.TaskId</p> }
                 @if (preview.Command.Patch is { } patch)
@@ -135,13 +146,12 @@
                         <div class="todo-editor-fields">
                             <label class="field-row">Notes<textarea class="app-input" maxlength="10000" @bind="draft.Notes" @bind:event="oninput" data-testid="todo-notes"></textarea></label>
                             <label class="field-row">Urgency<select class="app-input" @bind="draft.Priority" data-testid="todo-priority">@foreach (var value in Enum.GetValues<CompanionPriority>()) { <option value="@value">@value</option> }</select></label>
-                            <label class="field-row">Deadline<input class="app-input" type="date" value="@draft.Deadline" @onchange="args => draft.Deadline = args.Value?.ToString() ?? string.Empty" data-testid="todo-deadline" /></label>
+                            @if (_kind == CompanionTaskKind.Todo) { <label class="field-row">Deadline<input class="app-input" type="date" value="@draft.Deadline" @onchange="args => draft.Deadline = args.Value?.ToString() ?? string.Empty" data-testid="todo-deadline" /></label> }
                             <label class="field-row">Game difficulty<select class="app-input" @bind="draft.Difficulty"><option value="">Default / unchanged</option><option value="0.1">Trivial</option><option value="1">Easy</option><option value="1.5">Medium</option><option value="2">Hard</option></select></label>
                             <label class="field-row">Game attribute<select class="app-input" @bind="draft.Attribute"><option value="">Default / unchanged</option>@foreach (var value in Enum.GetValues<HabiticaTaskAttribute>()) { <option value="@value">@value</option> }</select></label>
-                            <label class="checkbox-row"><input type="checkbox" @bind="draft.ReplaceChecklist" /><span>Replace checklist with the lines below</span></label>
-                            <label class="field-row">Checklist, one item per line<textarea class="app-input" maxlength="25700" @bind="draft.Checklist" @bind:event="oninput"></textarea></label>
-                            @if (_kind == CompanionTaskKind.Todo || _editId is not null)
-                            { <label class="checkbox-row"><input type="checkbox" @bind="draft.ProjectToHabitica" data-testid="todo-project" /><span>Request Habitica effects for this save; review before acceptance. Execution requires separate settings.</span></label> }
+                            @if (_kind != CompanionTaskKind.Habit) { <label class="checkbox-row"><input type="checkbox" @bind="draft.ReplaceChecklist" /><span>Replace checklist with the lines below</span></label>
+                            <label class="field-row">Checklist, one item per line<textarea class="app-input" maxlength="25700" @bind="draft.Checklist" @bind:event="oninput"></textarea></label> }
+                            @if (_kind == CompanionTaskKind.Habit && _editId is null) { <label class="checkbox-row"><input type="checkbox" @bind="draft.HabitUp" data-testid="todo-habit-positive" /><span>Enable positive (+)</span></label><label class="checkbox-row"><input type="checkbox" @bind="draft.HabitDown" data-testid="todo-habit-negative" /><span>Enable negative (−)</span></label> }
 
                             @if (_editId is not null)
                             {
@@ -156,6 +166,7 @@
                     </details>
                 </fieldset>
             </form>
+            <p class="panel-copy" data-testid="todo-required-integration">Task creation, field edits and scoring require Habitica correspondence. @Todo.IntegrationReadiness <a href="/todo/sync">Open Todo Sync</a></p>
             }
             @if (ShowTaskList)
             {
@@ -307,7 +318,7 @@
     }
     public async Task ReviewNewTodoAsync(WorkspaceTaskInput input, long revision)
     {
-        if (ActionsDisabled || Todo.Revision != revision || input.Operation != WorkspaceOperation.CreateTodo || input.ProjectToHabitica)
+        if (ActionsDisabled || Todo.Revision != revision || input.Operation != WorkspaceOperation.CreateTodo)
             throw new InvalidOperationException("Reload task context before reviewing a new independent Todo.");
         await RunAsync(async () => { await Todo.PrepareAsync(input); _focusReview = Todo.Commands.Preview is not null; });
         await InvokeAsync(StateHasChanged);

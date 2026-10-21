@@ -39,14 +39,14 @@
                         <label>Task name<input class="app-input" maxlength="2048" @bind="_text" data-testid="canonical-text" /></label>
                         <label>Notes<textarea class="app-input" maxlength="10000" @bind="_notes" data-testid="canonical-notes"></textarea></label>
                         <label>Companion urgency<select class="app-input" @bind="_priority"><option value="Low">Low</option><option value="Normal">Normal</option><option value="High">High</option><option value="Urgent">Urgent</option></select></label>
-                        <label>Deadline<input class="app-input" type="date" value="@_deadline" @onchange="e => _deadline = e.Value?.ToString() ?? string.Empty" /></label>
+                        @if (FormKind == CompanionTaskKind.Todo) { <label>Deadline<input class="app-input" type="date" value="@_deadline" @onchange="e => _deadline = e.Value?.ToString() ?? string.Empty" /></label> }
                         <details><summary>Habitica task details</summary>
                             <p>Game difficulty is independent of Companion urgency. Blank values leave existing settings unchanged.</p>
                             <label>Game difficulty<select class="app-input" @bind="_difficulty"><option value="">Default / unchanged</option><option value="0.1">Trivial</option><option value="1">Easy</option><option value="1.5">Medium</option><option value="2">Hard</option></select></label>
                             <label>Attribute<select class="app-input" @bind="_attribute"><option value="">Default / unchanged</option><option value="Str">Strength</option><option value="Int">Intelligence</option><option value="Per">Perception</option><option value="Con">Constitution</option></select></label>
-                            <label class="checkbox-row"><input type="checkbox" @bind="_replaceChecklist" /><span>Replace checklist with the lines below</span></label>
+                            @if (FormKind != CompanionTaskKind.Habit) { <label class="checkbox-row"><input type="checkbox" @bind="_replaceChecklist" /><span>Replace checklist with the lines below</span></label>
                             <label>Checklist, one item per line<textarea class="app-input" maxlength="25700" @bind="_checklist"></textarea></label>
-                            <p>An empty replacement clears the checklist. Lines kept at the same position retain their completion state.</p>
+                            <p>An empty replacement clears the checklist. Lines kept at the same position retain their completion state.</p> }
                         </details>
                     }
                     @if (_operation == WorkspaceOperation.ScoreHabit)
@@ -64,10 +64,7 @@
                     {
                         <p>Companion only. Archiving hides an unlinked task and retains its history in exports; linked tasks cannot be archived here.</p>
                     }
-                    else if (_operation is not (WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit))
-                    {
-                        <label class="checkbox-row"><input type="checkbox" @bind="_project" data-testid="canonical-project" /><span>Request Habitica projection. Already linked tasks project changes automatically.</span></label>
-                    }
+                    @if (_operation != WorkspaceOperation.DeleteTask) { <p>Task creation, field changes, completion and Habit scores require Habitica correspondence. Browser saves wait for cloud consent and separately enabled execution; inspect the original receipt for actual effects.</p> }
                     <MudButton OnClick="PrepareAsync" Variant="Variant.Filled" data-testid="canonical-preview">Review command</MudButton>
                 </fieldset>
             }
@@ -140,7 +137,7 @@
 </div>
 
 @code {
-    private bool _busy, _project, _replaceChecklist;
+    private bool _busy, _replaceChecklist;
     private string _externalId = "", _text = "", _notes = "", _deadline = "", _difficulty = "", _attribute = "", _checklist = "", _occurrence = "";
     private string? _error, _account;
     private Guid? _selectedId;
@@ -148,6 +145,7 @@
     private WorkspaceOperation _operation;
     private CompanionPriority _priority = CompanionPriority.Normal;
     private HabitScoreDirection _direction;
+    private CompanionTaskKind FormKind => _operation == WorkspaceOperation.CreateDaily ? CompanionTaskKind.Daily : _operation == WorkspaceOperation.CreateHabit ? CompanionTaskKind.Habit : _operation == WorkspaceOperation.CreateTodo ? CompanionTaskKind.Todo : Selected?.Kind ?? CompanionTaskKind.Todo;
     private CompanionTask? Selected => Workspace.Snapshot?.Document.Tasks.FirstOrDefault(task => task.Id == _selectedId);
     protected override void OnInitialized() { _account = AccountKey; Session.Changed += OnSessionChanged; }
     private string AccountKey => Session.State.IsAuthenticated ? Session.State.UserId ?? "" : "";
@@ -164,12 +162,12 @@
         catch { _error = "Workspace action could not be confirmed. Keep the original preview and check its receipt before retrying."; }
         finally { _busy = false; }
     }
-    private void NewTodo() { _dailyCreation = new(); Workspace.CancelLinkPreview(); _externalId = ""; _selectedId = null; _operation = WorkspaceOperation.CreateTodo; _text = _notes = _deadline = _difficulty = _attribute = _checklist = ""; _priority = CompanionPriority.Normal; _project = _replaceChecklist = false; _count = 1; }
+    private void NewTodo() { _dailyCreation = new(); Workspace.CancelLinkPreview(); _externalId = ""; _selectedId = null; _operation = WorkspaceOperation.CreateTodo; _text = _notes = _deadline = _difficulty = _attribute = _checklist = ""; _priority = CompanionPriority.Normal; _replaceChecklist = false; _count = 1; }
     private void SelectTask(CompanionTask task)
     {
         Workspace.CancelLinkPreview(); _externalId = ""; _selectedId = task.Id; _operation = WorkspaceOperation.UpdateTask; _text = task.Text; _notes = task.Notes ?? ""; _priority = task.Priority; _deadline = task.Deadline?.ToString("yyyy-MM-dd") ?? "";
         _difficulty = task.HabiticaDetails?.Difficulty?.ToString(CultureInfo.InvariantCulture) ?? ""; _attribute = task.HabiticaDetails?.Attribute?.ToString() ?? "";
-        _checklist = string.Join("\n", task.HabiticaDetails?.Checklist?.Select(item => item.Text) ?? []); _project = _replaceChecklist = false; _count = 1;
+        _checklist = string.Join("\n", task.HabiticaDetails?.Checklist?.Select(item => item.Text) ?? []); _replaceChecklist = false; _count = 1;
     }
     private static DateOnly? Date(string value) => value.Length == 0 ? null : DateOnly.ParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture);
     private Task PrepareAsync() => RunAsync(() => Workspace.PrepareAsync(Input()));
@@ -179,7 +177,7 @@
         double? difficulty = _difficulty.Length == 0 ? null : double.Parse(_difficulty, CultureInfo.InvariantCulture);
         HabiticaTaskAttribute? attribute = _attribute.Length == 0 ? null : Enum.Parse<HabiticaTaskAttribute>(_attribute);
         IReadOnlyList<TaskChecklistItem>? checklist = null;
-        if (_replaceChecklist)
+        if (_replaceChecklist && FormKind != CompanionTaskKind.Habit)
         {
             var prior = Selected?.HabiticaDetails?.Checklist ?? [];
             checklist = _checklist.Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).Select((text, index) => index < prior.Count && prior[index].Text == text ? prior[index] : new TaskChecklistItem(Guid.NewGuid(), text)).ToArray();
@@ -187,7 +185,7 @@
         if (difficulty == current?.Difficulty) difficulty = null;
         if (attribute == current?.Attribute) attribute = null;
         var details = difficulty is null && attribute is null && checklist is null ? null : new HabiticaTaskDetails(difficulty, attribute, checklist);
-        return new(_operation, _selectedId, _text, _notes, _priority, Date(_deadline), details, _project && _operation is not (WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit or WorkspaceOperation.DeleteTask), _direction, _count, Date(_occurrence), Recurrence: _operation == WorkspaceOperation.CreateDaily ? _dailyCreation.Rule() : null);
+        return new(_operation, _selectedId, _text, _notes, _priority, (_operation is WorkspaceOperation.CreateDaily or WorkspaceOperation.CreateHabit ? null : Date(_deadline)), details, _operation != WorkspaceOperation.DeleteTask, _direction, _count, Date(_occurrence), Recurrence: _operation == WorkspaceOperation.CreateDaily ? _dailyCreation.Rule() : null);
     }
     private Task PreviewLinkAsync() => RunAsync(async () =>
     {

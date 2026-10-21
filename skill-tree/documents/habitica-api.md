@@ -1332,3 +1332,10 @@ Official [due-date logic](https://github.com/HabitRPG/habitica/blob/develop/webs
 Todo and History use the existing typed ensureProjection and exact-record adoption endpoints. No extra Habitica endpoint, score, Cron operation or permission is introduced. Adoption repeats the identical reviewed request only to recover the original server mapping receipt; uncertain sends retain original workspace, access epoch, revision, remote identity and fingerprint. Browser preparation rejects/cancels only after known refusal; lost acknowledgement retains the original command reference.
 
 Habitica [Daily schema](https://github.com/HabitRPG/habitica/blob/develop/website/server/models/task.js) permits everyX zero, while the due evaluator treats intervals below one as not due. Retained zero-interval schedules remain readable for exact-record adoption and fingerprints. New native schedule authoring still requires interval one or greater; no zero-interval creation or score is authorized.
+
+
+## Required defaults across all task kinds
+
+New prepare_task_command activity uses task-required-v1 for createTodo/createDaily/createHabit, ordinary updateTask, completeTask and scoreHabit. Omitted/false projectToHabitica input normalizes to required effects; fresh raw commands must carry true. Native schedule-only authoring and dedicated planning/state/relationship/lifecycle commands remain explicit non-scoring operations. Incompatible unlinked Daily schedules or retained mapping identities refuse before new acceptance. Exact accepted legacy receipts remain recoverable verbatim.
+
+Fresh legacy Habit activity can request counterpart creation followed by bounded scores; no accepted historical event is replayed. Fresh Daily completion similarly records required creation/recovery and score effects, subject to the existing current-day/isDue/needsCron gateway checks. Offline/local acceptance remains pending until separately granted server consent, cloud ownership and enabled execution. Native urgency never substitutes for Habitica priority/difficulty.

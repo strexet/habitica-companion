@@ -305,3 +305,8 @@ New Habit preparation carries required game intent and explicit up/down defaults
 ## Supported Daily correspondence
 
 Ordinary new Dailies require an explicit complete supported schedule and one requested correct-kind Habitica counterpart. UTC or an explicitly fixed Etc/GMT zone must match the account observation; native parity currently requires midnight Habitica dayStart. Multiweek intervals require a Monday start. Unsupported zones, boundaries, yearly/weeks-of-month authoring and missing rules are unavailable rather than silently approximated. Canonical IDs, recurrence history and original command receipts remain durable. Creating the counterpart grants no rewards for past dates and invokes no Cron. Existing adopted records and linked schedule edits retain separate review contracts.
+
+
+## Shared task-default policy
+
+Ordinary task creation, field edits, completion and Habit scoring request supported Habitica correspondence for every task kind and full child. New omitted/false compatibility intent cannot select a reward-free ordinary workflow. Canonical acceptance remains available locally without implicit server credential consent or execution, but required game effects remain pending and unconfirmed. Unschedulable Daily activity and retained identity conflicts require schedule/adoption review. Explicit native planning, schedule preparation and lifecycle metadata remain separately disclosed non-scoring operations. Accepted historical commands retain original bytes, hashes and receipts; historical imports never auto-score.

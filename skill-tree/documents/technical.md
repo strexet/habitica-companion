@@ -1246,3 +1246,14 @@ WorkspaceTaskController distinguishes PreparationRejected, PreparationUnknown, A
 Adoption retains WorkspaceProjectionPreview across uncertain sends and reuses workspace/access epoch, revision, task IDs and fingerprint. Successful receipts clear the pending review; failed refresh marks the local view read only. WorkspaceActionResult appends optional OutcomeUnknown for adoption transport. Only explicit validation/auth/conflict/quota refusal statuses establish rejection; timeout, unexpected status, malformed success and transport failure retain uncertainty. Source/account fencing and the existing server idempotent adoption receipt remain authoritative.
 
 WorkspaceExternalTask appends optional typed Daily schedule metadata matching the normalized Worker response. Validation checks frequency, interval, UTC start timestamp, seven weekdays and unique bounded month/week arrays. Retained unsupported schedule forms remain readable for comparison; browser adoption never edits schedules.
+
+
+## Prospective task-required policy
+
+The existing policy modules retain public names and earlier policy constants; task-required-v1 extends new game-affecting intent to all task kinds. Preparation normalizes required flags before canonical validation. Both submission paths recover accepted command IDs before enforcing new policy. Stored immutable journals retain prior command identities and original nonrequested effects; no migration, hash-version change or replay is introduced.
+
+Explicit recurrence-only updateTask patches remain native metadata preparations, provided no retained game mapping requires separate review. Field-plus-recurrence patches cannot use the exception. Raw older documents can omit default collection/deadline fields; policy treats absent defaults consistently with canonical parsing and validates before acceptance. Unlinked Daily activity requires a lossless schedule; adopted Daily activity remains subject to authoritative server due/Cron checks. Retained archived identities and unsupported Habit/Daily creation fields do not authorize new copies.
+
+TodoTaskDraftStore supplies required ordinary intent, removes the optional projection escape and materializes creation-only Habit directions. TodoWorkspacePresentation exposes readiness from source and verified connection/executor observations without granting consent or changing settings. Native metadata actions remain independent. Immutable accepted legacy API receipts are returned before prospective refusal, including unchanged legacy Habit history.
+
+An unaccepted stored preview superseded by current required-projection policy remains recoverable with original command bytes and an expired marker. Fresh acceptance remains refused; cancellation and a newly reviewed request can proceed after the original preview is known. Existing accepted receipts bypass prospective policy and remain unchanged. Synthetic API and browser expiry cases cover the recovery boundary.

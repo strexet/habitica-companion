@@ -58,3 +58,9 @@ test('packaged workflow tool names route through actual SDK with two isolated OA
  assert.equal(writes,0);assert.equal((await f.workspaceDb.prepare('SELECT COUNT(*) AS n FROM workspace_commands').first()).n,1);
  for(const account of accounts)assert.equal(JSON.stringify(f.messages).includes(account.apiToken),false);
 });
+
+test('packaged task references share the all-kind required-default contract',async()=>{
+ for(const path of ['SKILL.md','references/habitica-correspondence.md','references/todo-hierarchy.md','references/project-planning.md']){
+  const source=await readFile(new URL('plugin/skills/habitica-task-management/'+path,root),'utf8');assert.match(source,/task-required-v1/);assert.match(source,/original.*receipt|receipts/s);assert.match(source,/consent/);
+ }
+});

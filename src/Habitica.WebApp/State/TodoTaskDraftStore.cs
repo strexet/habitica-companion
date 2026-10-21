@@ -15,7 +15,8 @@ public sealed class TodoTaskDraft
     public string Attribute { get; set; } = "";
     public string Checklist { get; set; } = "";
     public bool ReplaceChecklist { get; set; }
-    public bool ProjectToHabitica { get; set; }
+    public bool HabitUp { get; set; } = true;
+    public bool HabitDown { get; set; } = true;
     public long? TaskRevision { get; set; }
 
     public static TodoTaskDraft From(CompanionTask? task) => task is null ? new() : new()
@@ -49,11 +50,12 @@ public sealed class TodoTaskDraft
                 .Select((text, index) => index < prior.Count && prior[index].Text == text ? prior[index] : new TaskChecklistItem(Guid.NewGuid(), text)).ToArray();
         }
         var details = difficulty is null && attribute is null && checklist is null ? null : new HabiticaTaskDetails(difficulty, attribute, checklist);
+        if (current is null && kind == CompanionTaskKind.Habit) details = new(difficulty, attribute, null, HabitUp, HabitDown);
         if (!HabiticaTaskDetails.IsValid(details)) throw new InvalidOperationException("Use at most 100 checklist items, each up to 256 characters.");
         var operation = current is not null ? WorkspaceOperation.UpdateTask : kind switch
         { CompanionTaskKind.Daily => WorkspaceOperation.CreateDaily, CompanionTaskKind.Habit => WorkspaceOperation.CreateHabit, _ => WorkspaceOperation.CreateTodo };
         return new(operation, current?.Id, Text, Notes, Priority, Date(Deadline), details,
-            ProjectToHabitica && operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.UpdateTask, HabitScoreDirection.Up, 1, null, Recurrence: operation == WorkspaceOperation.CreateDaily ? DailyCreation.Rule() : null);
+            true, HabitScoreDirection.Up, 1, null, Recurrence: operation == WorkspaceOperation.CreateDaily ? DailyCreation.Rule() : null);
     }
     public static DateOnly? Date(string value) => value.Length == 0 ? null
         : DateOnly.TryParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date) && date != DateOnly.MinValue

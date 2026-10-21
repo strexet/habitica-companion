@@ -81,6 +81,12 @@ public sealed class TodoWorkspacePresentation : IDisposable
             && receipt.WorkspaceId == source.WorkspaceId && _organization.IsCloud == (source.Source == TodoWorkspaceSource.Cloud)
             && Revision < receipt.Entry.Snapshot.Revision ? "Organization changes were saved. Reload the selected workspace before editing tasks." : null;
     public bool IsReadOnly => Snapshot is null || _commands.IsReadOnly || OrganizationBlockReason is not null;
+    public string IntegrationReadiness => Selection?.Source != TodoWorkspaceSource.Cloud
+        ? "Saved browser tasks request Habitica changes, but execution waits for cloud transfer, separate account consent and an enabled executor."
+        : !_cloud.ConnectionStatusVerified ? "Cloud connection status is unverified. Check Todo Sync before relying on game effects."
+        : !_cloud.ExecutorAvailable ? "Cloud task execution is unavailable. Canonical saves do not confirm Habitica presence or rewards."
+        : !_cloud.ExecutorEnabled ? "Cloud execution is paused. Accepted Habitica changes remain pending until execution is separately enabled."
+        : "Cloud execution is enabled at the last connection check. Only original confirmed receipts establish Habitica effects; pending or unknown remains unconfirmed.";
     public TodoHabiticaCacheContext HabiticaCache => new("Separate Habitica cache; not merged into Companion tasks",
         Account is null ? SnapshotFreshnessState.Missing : _session.State.TaskFreshness,
         Account is null ? null : _session.State.TaskSnapshot?.RetrievedAtUtc);

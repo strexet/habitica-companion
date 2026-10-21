@@ -34,13 +34,13 @@ public sealed class TodoTaskLinkTests : BunitContext
     [Fact]
     public async Task Checkbox_only_intent_uses_ensure_projection_without_fabricated_fields()
     {
-        var(f,todo,task)=await Setup();var cut=Render<TodoTaskPanel>();cut.Find($"[data-testid='todo-edit-{task.Id:D}']").Click();cut.Find("[data-testid='todo-project']").Change(true);cut.Find("form").Submit();
+        var(f,todo,task)=await Setup();var cut=Render<TodoTaskPanel>();cut.Find($"[data-testid='todo-edit-{task.Id:D}']").Click();cut.Find("form").Submit();
         Assert.Equal(WorkspaceOperation.EnsureProjection,f.Controller.Preview!.Command.Operation);Assert.Null(f.Controller.Preview.Command.Patch);Assert.Equal(task.Id,f.Controller.Preview.Command.TaskId);Assert.Single(todo.Snapshot!.Document.Tasks);
     }
     [Fact]
     public async Task Definitively_rejected_preparation_offers_correction_and_cancellation_but_unknown_preparation_keeps_identity()
     {
-        var(f,todo,task)=await Setup(true);f.Client.RejectPreparation=true;var cut=Render<TodoTaskPanel>();cut.Find($"[data-testid='todo-edit-{task.Id:D}']").Click();cut.Find("[data-testid='todo-project']").Change(true);cut.Find("form").Submit();
+        var(f,todo,task)=await Setup(true);f.Client.RejectPreparation=true;var cut=Render<TodoTaskPanel>();cut.Find($"[data-testid='todo-edit-{task.Id:D}']").Click();cut.Find("form").Submit();
         Assert.True(f.Controller.PreparationRejected);Assert.True(f.Controller.HasPendingIntent);Assert.False(todo.CanSwitchSource);Assert.Empty(f.Client.AcceptedIds);
         Save("todo-link-rejected",cut.Markup,"definitive-rejected-intent-can-cancel",nameof(Definitively_rejected_preparation_offers_correction_and_cancellation_but_unknown_preparation_keeps_identity));
         var rejected=f.Client.PreparationIds.Single();cut.Find("[data-testid='todo-rejected-edit']").Click();Assert.False(f.Controller.HasPendingIntent);Assert.Equal(task.Text,cut.Find("[data-testid='todo-title']").GetAttribute("value"));
@@ -88,7 +88,7 @@ public sealed class TodoTaskLinkTests : BunitContext
     public async Task An_expired_known_preview_can_be_cancelled_but_is_never_accepted()
     {
         var(f,todo,task)=await Setup(true);f.Client.ExpirePreparation=true;var cut=Render<TodoTaskPanel>();cut.Find($"[data-testid='todo-link-{task.Id:D}']").Click();cut.Find("[data-testid='todo-link-create']").Click();
-        var original=f.Controller.Preview!;cut.Find("[data-testid='todo-confirm']").Click();Assert.Empty(f.Client.AcceptedIds);Assert.Contains("expired",f.Controller.Message);Assert.False(f.Controller.AcceptanceUnknown);
+        var original=f.Controller.Preview!;Assert.Contains("expired or was superseded",cut.Markup);Save("defaults-expired-review",cut.Markup,"superseded-known-preview-needs-new-review",nameof(An_expired_known_preview_can_be_cancelled_but_is_never_accepted));cut.Find("[data-testid='todo-confirm']").Click();Assert.Empty(f.Client.AcceptedIds);Assert.Contains("expired",f.Controller.Message);Assert.False(f.Controller.AcceptanceUnknown);
         cut.Find("[data-testid='todo-cancel']").Click();f.Client.ExpirePreparation=false;cut.Find("[data-testid='todo-link-create']").Click();Assert.NotEqual(original.PreparedCommandId,f.Controller.Preview!.PreparedCommandId);
     }
     [Fact]

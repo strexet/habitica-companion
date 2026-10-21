@@ -43,3 +43,6 @@ For named saved task views, follow the [saved-view workflow](references/saved-ta
 For a reported connection, synchronization or uncertain-command problem, use the [on-demand diagnostic workflow](../habitica-diagnostics/SKILL.md). Browser logs require explicit user-shared bundles; routine reviews need no log collection.
 
 For native parent/descendant context, discover `get_todo_hierarchy` and follow the [hierarchy workflow](references/todo-hierarchy.md). Checklist items and dependency edges remain separate from full descendant tasks.
+
+
+New task-required-v1 preparation requests Habitica correspondence for creation, field edits, completion and Habit scores across Todos, full children, Dailies and Habits. Omitted or false compatibility intent is normalized; fresh raw false intent is refused. Native schedule-only authoring, planning, relationships, organization and lifecycle controls remain explicit non-scoring operations. Existing adopted Dailies use server due-state checks; an unlinked Daily needs a supported schedule before game activity. Retained conflicting/archived mappings require review. Local capture remains pending without implicit credential consent or execution. Report original pending/confirmed/unknown receipts and missing prerequisites; canonical completion alone never proves game rewards. Preserve accepted legacy flags and hashes without replay.

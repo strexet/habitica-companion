@@ -71,7 +71,7 @@ public sealed class TodoTodayPanelTests : BunitContext
         cut.Find($"[data-testid='today-complete-{daily.Id:D}']").Click();
         Assert.Contains(JSInterop.Invocations, call => call.Identifier == "Blazor._internal.domWrapper.focus");
         Assert.Equal(Monday, f.Controller.Preview!.Command.OccurrenceDate); Assert.Equal(daily.Id, f.Controller.Preview.Command.TaskId);
-        Assert.Equal(f.Client.State.Document.Id, f.Controller.Preview.Command.WorkspaceId); Assert.False(f.Controller.Preview.MayAffectHabitica);
+        Assert.Equal(f.Client.State.Document.Id, f.Controller.Preview.Command.WorkspaceId); Assert.True(f.Controller.Preview.MayAffectHabitica);
         var original = f.Controller.Preview.PreparedCommandId; f.Client.LoseAcceptance = true;
         Save("todo-today-review", cut.Markup, "exact-occurrence-review", nameof(Daily_action_reviews_exact_source_date_and_original_receipt_recovers_without_duplicate_occurrences));
         cut.Find("[data-testid='todo-confirm']").Click(); Assert.True(f.Controller.AcceptanceUnknown);
@@ -126,7 +126,7 @@ public sealed class TodoTodayPanelTests : BunitContext
     }
 
     [Fact]
-    public async Task Planned_Todo_completion_requires_projection_while_Habit_events_keep_their_existing_contract()
+    public async Task Planned_Todo_completion_and_Habit_events_require_projection()
     {
         var todo = Task("Planned Todo", planned: Monday);
         var habit = Task("Planned Habit", CompanionTaskKind.Habit, planned: Monday);
@@ -135,17 +135,18 @@ public sealed class TodoTodayPanelTests : BunitContext
         Assert.Equal(WorkspaceOperation.CompleteTask, f.Controller.Preview!.Command.Operation); Assert.Null(f.Controller.Preview.Command.OccurrenceDate);
         cut.Find("[data-testid='todo-confirm']").Click(); Assert.Equal(CompanionTaskState.Completed, f.Controller.Snapshot!.Document.Tasks.Single(task => task.Id == todo.Id).State);
         Assert.Empty(cut.FindAll($"[data-testid='today-row-{todo.Id:D}']"));
-        Save("todo-today-habit", cut.Markup, "planned-habit-current-event", nameof(Planned_Todo_completion_requires_projection_while_Habit_events_keep_their_existing_contract));
+        Save("todo-today-habit", cut.Markup, "planned-habit-current-event", nameof(Planned_Todo_completion_and_Habit_events_require_projection));
         foreach (var label in new[] { "Record +1 now", "Record −1 now" })
         {
             cut.Find($"[data-testid='today-row-{habit.Id:D}']").QuerySelectorAll("button").Single(button => button.TextContent == label).Click();
             Assert.Equal(WorkspaceOperation.ScoreHabit, f.Controller.Preview!.Command.Operation); Assert.Null(f.Controller.Preview.Command.OccurrenceDate);
             Assert.Equal(label.Contains("+1") ? HabitScoreDirection.Up : HabitScoreDirection.Down, f.Controller.Preview.Command.Direction);
-            Assert.False(f.Controller.Preview.MayAffectHabitica); cut.Find("[data-testid='todo-confirm']").Click();
+            Assert.True(f.Controller.Preview.MayAffectHabitica); cut.Find("[data-testid='todo-confirm']").Click();
         }
         Assert.Equal(2, f.Controller.Snapshot.Document.HabitScores.Count);
         Assert.Equal(new[] { ProjectionEffectKind.Create, ProjectionEffectKind.ScoreUp }, f.Controller.Snapshot.Commands[0].Effects);
-        Assert.All(f.Controller.Snapshot.Commands.Skip(1), command => Assert.Empty(command.Effects));
+        Assert.Equal(new[]{ProjectionEffectKind.Create,ProjectionEffectKind.ScoreUp},f.Controller.Snapshot.Commands[1].Effects);
+        Assert.Equal(new[]{ProjectionEffectKind.Create,ProjectionEffectKind.ScoreDown},f.Controller.Snapshot.Commands[2].Effects);
         Assert.Contains(JSInterop.Invocations, call => call.Identifier == "Blazor._internal.domWrapper.focus");
     }
 

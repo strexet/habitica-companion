@@ -6,7 +6,7 @@
 
 <section class="card-surface todo-task-panel todo-recurring-editor" aria-label="Recurring task" data-testid="recurring-editor">
     <h2 tabindex="-1" @ref="_heading">@(_original?.Kind == CompanionTaskKind.Habit ? "Habit lifecycle" : "Daily schedule and occurrences"): @_original?.Text</h2>
-    <p>Companion-only controls. A Companion pause does not pause Habitica penalties. Linked Habitica schedules, type conversion and reward reversal are unavailable here.</p>
+    <p>Schedule, skip and pause controls change Companion only; completion requests required Habitica effects. A Companion pause does not pause Habitica penalties. Linked Habitica schedules, type conversion and reward reversal are unavailable here.</p>
     @if (Stale) { <p role="status">Task data changed. Reload the current task before reviewing another change.</p> }
     @if (_error is not null) { <p role="alert">@_error</p> }
     @if (_original is { } task)
