@@ -47,6 +47,8 @@ Responsive review targets:
 
 UI change completion checklist:
 
+Task pages must distinguish saved canonical data, stored Habitica identity and confirmed game effects. The shared task panel reports incomplete correspondence across the selected workspace, including completed and archived tasks. Missing group tags remain explicit. The coverage message performs no automatic repair or connection activation; the normal task flow still exposes the tracked integration defects.
+
 - Primary action remains visible or easy to reach.
 - Disabled actions explain their cause when the cause is not obvious.
 - Data freshness remains visible when stale data can make an action unsafe.

@@ -23,6 +23,20 @@ public sealed class TodoTaskPanelTests : BunitContext
     private static void Save(string name, string markup, string state, string test) => Qualification.PageLayoutEvidence.Save(name, markup, "/tasks", state, ["form", "actions", "confirmation", "disabled-controls"], test);
 
     [Fact]
+    public async Task Native_project_receipt_cannot_imply_existing_Habitica_tag_coverage()
+    {
+        var (f, presentation) = Setup(); f.Client.Connected = true;
+        f.Client.State = f.Client.State with { Document = f.Client.State.Document with
+        { Projects = [new(Guid.NewGuid(), 1, "Synthetic project")] } };
+        await presentation.RefreshSourcesAsync();
+        await presentation.SelectAsync(new(TodoWorkspaceSource.Cloud, f.Client.State.Document.Id));
+        var cut = Render<TodoTaskPanel>();
+        Assert.Contains("Projects and groups awaiting Habitica tags: 1.", cut.Find("[data-testid='todo-habitica-coverage']").TextContent);
+        Assert.Empty(f.Client.AcceptedIds);
+        Save("todo-coverage-groups", cut.Markup, "project-without-Habitica-tag", nameof(Native_project_receipt_cannot_imply_existing_Habitica_tag_coverage));
+    }
+
+    [Fact]
     public async Task Title_only_form_submission_reviews_one_native_save_and_returns_focus_to_immediate_capture()
     {
         var (f, _) = Setup(); await f.Controller.CreateLocalAsync();
@@ -42,6 +56,10 @@ public sealed class TodoTaskPanelTests : BunitContext
         Assert.Equal("", cut.Find("[data-testid='todo-title']").GetAttribute("value"));
         Assert.Contains(JSInterop.Invocations, invocation => invocation.Identifier == "Blazor._internal.domWrapper.focus");
         Assert.Null(cut.Find($"[data-testid='todo-complete-{task.Id:D}']").Closest("details"));
+        var coverage = cut.Find("[data-testid='todo-habitica-coverage']").TextContent;
+        Assert.Contains("Missing: 1", coverage);
+        Assert.Contains("Unlinked task completions earn no Habitica rewards", coverage);
+        Save("todo-coverage-missing", cut.Markup, "saved-task-without-game-link", nameof(Title_only_form_submission_reviews_one_native_save_and_returns_focus_to_immediate_capture));
     }
 
     [Fact]
@@ -60,6 +78,7 @@ public sealed class TodoTaskPanelTests : BunitContext
         Save("todo-capture-review", cut.Markup, "long-name-review", nameof(Advanced_fields_and_planned_date_have_exact_separate_previews_and_invalid_dates_never_prepare));
         cut.Find("[data-testid='todo-confirm']").Click();
         var task = Assert.Single(f.Controller.Snapshot!.Document.Tasks);
+        Assert.Equal(CompanionPriority.Urgent, task.Priority);
         cut.Find($"[data-testid='todo-edit-{task.Id:D}']").Click();
         cut.Find("[data-testid='todo-notes']").Input("Unsaved note must remain a draft");
         cut.Find("[data-testid='todo-planned']").Change("2026-10-21");

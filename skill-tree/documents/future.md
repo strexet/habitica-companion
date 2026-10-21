@@ -72,6 +72,151 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### Fix Habitica tag coverage for projects and task organization
+
+```yaml
+id: P-505551fa-3ca7-4415-b19e-b64585bf8f9f
+priority: 103
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- BUG: Companion projects, categories, sections, labels, goals and saved selections have no persisted native Habitica tag identity or membership synchronization. Flattened tasks therefore lose project and group context in the original Habitica app. Current projection payloads omit tags.
+
+Expected behavior:
+- Represent task-bearing Companion groups with account-bound native Habitica tags and preserve the corresponding tag memberships on every task and full subtask. Retain stable verified tag IDs through rename, archive, conversion and recovery; preserve unrelated user tags and reject ambiguous adoption. Define saved-view membership, retained historical groups and retirement semantics during processing. Metadata and statistics must not create extra reward-bearing tasks. Coordinate mandatory task mappings and clean legacy conversion without direct database writes or inferred consent.
+
+Current context:
+- Four integration P0 Pending entries cover task defaults, existing-task linkage, recurring creation and source retirement; the tag-coverage intake captures the distinct missing organization/tag correspondence. The local coverage audit reports missing tags without inventing mappings.
+
+Source:
+- Owner request on 2026-10-21: every Todo entity must correspond to Habitica; flat upstream tasks are acceptable and should be related using native tags. WorkspaceDocument.cs, projection-adapter.ts, companion-workspace-contract.md and habitica-api.md tags contract.
+
+Priority rationale:
+- Owner requested the highest P0 group for mandatory task and organization correspondence; priority 103 exceeds the current maximum 102.
+
+### Fix default task projection and agent reward guidance
+
+```yaml
+id: P-f0b54e18-9d9f-4528-8383-db7de5542c63
+priority: 103
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- BUG: the standard task flow defaults to Companion-only storage despite the owner requirement that ordinary user tasks appear and earn rewards in Habitica. TodoTaskDraft.ProjectToHabitica initializes false, the projection checkbox is buried in More details, omitted MCP projection remains false, and task-management/project-planning guidance treats game participation as an additional optional choice. The codev conversion reproduced eight active unlinked tasks.
+
+Expected behavior:
+- Make normal game-facing task creation and conversion request verified Habitica projection consistently in browser code, backend policy and installed agent guidance after the existing required account consent. Require correspondence for every ordinary Todo, full subtask, Daily and Habit, including retained completed or archived records. Organization metadata requires native Habitica tags rather than extra reward-bearing tasks. Local/offline work may remain explicitly pending until existing consent and execution prerequisites are satisfied; no permanent silent Companion-only default is permitted. Existing mapped completion must enqueue the corresponding game effect, and normal unlinked tasks must not silently complete reward-free. Preserve explicit consent, scope checks, offline or disabled-executor pending states, original identity and uncertain-outcome fences. Test browser and MCP defaults plus packaged skill instructions together.
+
+Current context:
+- Current projection execution already plans create/update/score effects when requested and automatically participates for existing mappings. Retain that mechanism and distinguish saved, pending, confirmed and unknown outcomes. Update contradictory product contracts and planned conversion defaults during processing; generic Skill Tree orchestration should not acquire application-specific gameplay policy.
+
+Source:
+- Owner clarification on 2026-10-21; TodoTaskDraftStore.cs; WorkspaceTaskController.cs; WorkspaceCommandEngine.cs; workers/shared/workspace-commands.ts; plugin/skills/habitica-task-management/SKILL.md and references/project-planning.md.
+
+Priority rationale:
+- Owner requested highest priority for the discovered integration defects. Group priority 103 shares the highest integration P0 rank.
+
+### Fix projection-only linking without artificial task edits
+
+```yaml
+id: P-9cc8f051-8a18-46e0-b1fa-959c362efa54
+priority: 103
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- BUG: enabling the Habitica-effects checkbox for an unchanged unlinked Todo produces an empty update patch. WorkspaceTaskController.Intent omits unchanged fields and command validators reject the patch. The observed codev request stayed unresolved with no preview and no visible cancel control; retrying the original request did not resolve the invalid intent.
+
+Expected behavior:
+- Expose a valid idempotent first-class projection enablement flow for an existing unchanged task. Preserve native identity, content, project, history and completed archive state. Audit every task and full subtask, including retained completed and archived records; historical mapping repair never backfills rewards automatically. Reuse verified adoption for an existing Habitica match or create exactly the required matching record with recoverable original receipts. Reject ambiguous matches and unknown outcomes without duplicate effects. Allow safe cancellation or correction of a definitively rejected preparation. No whitespace edits, fake field changes, re-created Companion tasks or hidden API calls.
+
+Current context:
+- The existing PreviewLinkAsync/AdoptLinkAsync adapter handles an explicit existing Habitica task identity; retain that implementation. The new TodoTaskPanel lacks the complete surfaced flow for an unlinked task with no existing Habitica counterpart. No manual linking command was accepted during the audit.
+
+Source:
+- Observed production codev projection-only preparation on 2026-10-21; TodoTaskPanel.razor; WorkspaceTaskController.Intent/PrepareCoreAsync; WorkspaceCloudClient.cs adoption adapter; workers/shared/workspace-commands.ts empty-patch validation.
+
+Priority rationale:
+- Owner requested highest priority for the discovered integration defects. Group priority 103 shares the highest integration P0 rank.
+
+### Restore Habitica creation coverage for Dailies and Habits
+
+```yaml
+id: P-3736aa26-c58b-402d-a736-ff6ce23907bd
+priority: 103
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- BUG: normal Companion Daily and Habit creation cannot produce matching Habitica records. TodoTaskDraft.Basic strips the projection flag for both kinds; C# and Worker engines reject createDaily/createHabit projection, and the task-management skill explicitly directs Companion-only creation. Native completion and score history can therefore exist without Habitica rewards.
+
+Expected behavior:
+- Implement supported game-facing Daily/Habit creation and verified mappings through browser and MCP paths after existing account consent. Carry supported game fields and losslessly represented schedules, preserve exact native identities and original receipts, and send completion or Habit scoring to the correct Habitica record. Expose unsupported schedules or unavailable execution explicitly rather than silently saving unlinked work. Never run Cron, backfill scores, change party membership or grant new consent implicitly.
+
+Current context:
+- Existing Ready task T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9 covers edits of linked Daily schedules rather than creation coverage. Process Pending should coordinate or reuse relevant schedule work and avoid duplicate implementation.
+
+Source:
+- Owner requirement that the original Habitica app reflect and reward user tasks; TodoTaskDraftStore.cs; WorkspaceCommandEngine.cs; workers/companion-workspace/src/commands.ts; projection-adapter.ts; plugin/skills/habitica-task-management/SKILL.md.
+
+Priority rationale:
+- Owner requested highest priority for the discovered integration defects. Group priority 103 shares the highest integration P0 rank.
+
+### Fix incomplete project conversion and linked source retirement
+
+```yaml
+id: P-7414291b-9448-4d98-884c-97b582cd2d67
+priority: 103
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- BUG: checklist-to-project conversion has no complete supported product workflow. The codev conversion created the requested first-class project and ten tasks, but the linked legacy source remains active as a backup because DeleteTask refuses every linked mapping. Manual copies and a permanently retained source container do not satisfy the requested clean conversion.
+
+Expected behavior:
+- Provide a resumable idempotent conversion with durable source-item to task identities, full notes, project membership and verified completion/history semantics. Confirm required Habitica projections before retiring the exact legacy container through supported product lifecycle operations. Preserve retained history, unrelated tasks and original receipts; display any irreversible upstream deletion for concrete approval. No direct database mutation, fake cancellation, renamed backup, silent duplicate or automatic reward backfill.
+
+Current context:
+- Source Companion task c3765653-711e-4532-be37-0ba41f0954b3 maps to Habitica task c9bfce30-f540-4d94-83d4-15a3b3a8ab56. Project c5f8a175-2bee-484a-9b72-018737dc10fd has eight active tasks and two completed archived tasks. Source checklist marks acknowledged plan intake, not implementation completion. Existing retained recovery tasks do not implement linked-source retirement.
+
+Source:
+- Owner cleanup request on 2026-10-21; companion-development-project-conversion.json; WorkspaceCommandEngine.cs; workers/companion-workspace/src/commands.ts; plugin task-management archive guidance.
+
+Priority rationale:
+- Owner requested highest priority for the discovered integration defects. Group priority 103 shares the highest integration P0 rank.
+
 ### Recover bulk spell casting and gear restoration under rate limits
 
 ```yaml

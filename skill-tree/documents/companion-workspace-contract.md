@@ -22,13 +22,34 @@ The task-mutation contract requires the PWA and MCP to submit through the same a
 | Categories | Flat optional category membership | Nested categories remain deferred. |
 | Projects | One optional primary project per task; one optional section within the selected project | Labels support overlapping views without multiple project ownership. |
 | Goals | Progress derives from completed linked eligible Todos divided by eligible linked Todos; archived and cancelled Todos are excluded; zero eligible Todos means unknown progress | Daily/Habit occurrence metrics and manually entered custom metrics remain separate later choices. |
-| Task identity | Companion Todos, Dailies and Habits receive independent opaque IDs; Habitica projection is optional and has a separate mapping | Imported Habitica tasks require explicit adoption before Companion commands become authoritative. |
+| Task identity | Every Companion Todo, full subtask, Daily and Habit requires a separate verified Habitica task mapping | Account consent and execution availability remain prerequisites; missing correspondence is incomplete integration rather than a successful reward-free task workflow. Imported Habitica tasks require verified adoption. |
 | External Habitica deletion | Block projection and request review for a verified external deletion | No automatic resurrection of intentionally deleted tasks. Explicit repair can recreate only an adopted Companion projection. |
 | Completed history | Retain canonical completion events until explicit workspace/history deletion | Thirty-day operational audit retention does not silently delete user task history. Exports and deletion controls cover retained history. |
 | Unknown outcomes | Continue durable Companion saves and reads; pause profile game-effect execution until reconciliation resolves the unknown outcome | No automatic replay of ambiguous scoring or creation; pending status remains visible. |
 | Background executor | Separate per-profile opt-in; one persisted execution lease; bounded scheduled recovery from the D1 ledger | Browser and server cannot both own the same projection. Disabling the executor pauses new execution while preserving accepted records. |
 | Habitica pacing | Persist quota/cooldown state and use at least thirty seconds between automated background calls | Accepted commands may remain pending; transport retries never create duplicate game effects. |
 | Workspace disconnect/delete | Revoke cloud access and executor eligibility; explicit workspace deletion removes canonical cloud records and command history | Habitica records and local browser copies are separate. Already transmitted upstream effects cannot be undone by deleting the workspace. |
+
+## Required Habitica correspondence
+
+The product invariant applies to browser and agent workflows, conversion, existing records and retained history. Companion owns canonical identity, planning and command history; Habitica owns game effects and rewards.
+
+| Companion entity | Required Habitica representation |
+| --- | --- |
+| Todo and each full Todo subtask | Independent Habitica Todo; flattening the hierarchy is acceptable. A parent mapping never covers children. |
+| Daily | Habitica Daily with a supported corresponding schedule. Unsupported schedules require an explicit integration limitation. |
+| Habit | Habitica Habit with supported scoring directions. |
+| Project, category, section, label and goal | Native Habitica tag with a stable account-bound mapping; related tasks carry the corresponding tags. Metadata never creates an extra reward-bearing Todo. |
+| Saved task view | Native tag association for the saved selection; dynamic membership and retained-view lifecycle require the tag-coverage task contract. |
+| Inline checklist item | Checklist field of the mapped task. Conversion to a full subtask requires an independent task mapping. |
+| Completed or archived task | Retained task identity and confirmed command history. Completion or archive must not silently discard correspondence. |
+| Statistics, completion events and activity records | Derived data or retained history; no additional reward-bearing task. |
+
+Local capture without cloud consent or available execution remains visibly incomplete/pending. No implicit enrollment, credential upload, executor activation or reward claim follows from local capture. Existing account consent remains mandatory. Current ordinary task defaults and recurring creation do not satisfy the invariant; P0 tasks in future.md own remediation.
+
+Stable mappings, rather than matching names, establish task and tag identity. Tag changes must preserve unrelated user tags. A stored identity never proves a pending score succeeded: original command receipts establish confirmed effects. Unknown outcomes block replay. Historical completion imports and mapping repair never backfill rewards automatically. Conversion must verify replacement mappings and content/history before supported retirement of the exact legacy container.
+
+Companion urgency uses Low, Normal, High and Urgent. Habitica game difficulty is separate; changing urgency must not silently change game difficulty or awards.
 
 ## Dependency decomposition
 

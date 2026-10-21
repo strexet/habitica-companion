@@ -8,6 +8,29 @@ public sealed class TodoWorkspacePresentationTests
 {
     private static TodoWorkspacePresentation Presentation(WorkspaceTaskFixture f) => new(f.Session, f.Client, f.Database, f.Controller);
 
+    [Fact]
+    public async Task Coverage_updates_after_a_save_and_does_not_leak_between_workspaces()
+    {
+        var f = new WorkspaceTaskFixture(); using var presentation = Presentation(f);
+        await f.Controller.CreateLocalAsync();
+        var first = f.Controller.Snapshot!.Document.Id;
+        await presentation.RefreshSourcesAsync();
+        await presentation.SelectAsync(new(TodoWorkspaceSource.Browser, first));
+        var empty = presentation.HabiticaCoverage;
+        Assert.True(empty!.HasCompleteStoredCoverage);
+        Assert.Same(empty, presentation.HabiticaCoverage);
+        await f.Controller.PrepareAsync(WorkspaceTaskFixture.Todo());
+        await f.Controller.ConfirmAsync();
+        Assert.Equal(1, presentation.HabiticaCoverage!.MissingTaskLinks);
+        await f.Controller.CreateLocalAsync();
+        await presentation.RefreshSourcesAsync();
+        await presentation.SelectAsync(new(TodoWorkspaceSource.Browser, f.Controller.Snapshot!.Document.Id));
+        Assert.Empty(presentation.HabiticaCoverage!.Tasks);
+        await presentation.SelectAsync(new(TodoWorkspaceSource.Browser, first));
+        Assert.Equal(1, presentation.HabiticaCoverage!.MissingTaskLinks);
+        Assert.Empty(f.Client.AcceptedIds);
+    }
+
     [Theory]
     [InlineData(false)]
     [InlineData(true)]

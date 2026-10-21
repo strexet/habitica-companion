@@ -25,6 +25,8 @@ public sealed class TodoWorkspacePresentation : IDisposable
     private bool _unavailable;
     private bool _loading;
     private WorkspaceJournalSnapshot? _validated;
+    private WorkspaceDocument? _coverageDocument;
+    private WorkspaceHabiticaCoverage? _coverage;
     public TodoWorkspacePresentation(IAppSessionController session, IWorkspaceCloudClient cloud,
         IndexedDbWorkspaceDatabase database, WorkspaceTaskController commands, WorkspaceOrganizationController? organization = null)
     {
@@ -61,6 +63,17 @@ public sealed class TodoWorkspacePresentation : IDisposable
         }
     }
     public long? Revision => Snapshot?.Document.Revision;
+    public WorkspaceHabiticaCoverage? HabiticaCoverage
+    {
+        get
+        {
+            var document = Snapshot?.Document;
+            if (document is null) { _coverageDocument = null; _coverage = null; return null; }
+            if (!ReferenceEquals(document, _coverageDocument))
+            { _coverageDocument = document; _coverage = WorkspaceHabiticaCoveragePolicy.Audit(document); }
+            return _coverage;
+        }
+    }
     public string? OrganizationBlockReason => _organization?.HasPendingIntent == true
         ? "Resolve the original organization command in Projects before editing tasks."
         : _organization?.IsBusy == true ? "Wait for the current organization operation before editing tasks."
@@ -222,7 +235,8 @@ public sealed class TodoWorkspacePresentation : IDisposable
         if (Account != _account)
         {
             _account = Account; _generation++; _commands.Forget(); Selection = null; Sources = []; BrowserSourcesAvailable = null;
-            _validated = null; _unavailable = false; _loading = false; IsBusy = false; Message = null;
+            _validated = null; _coverageDocument = null; _coverage = null;
+            _unavailable = false; _loading = false; IsBusy = false; Message = null;
             // Consumers clear account-private drafts before an original source can be restored, even for reused workspace IDs.
             Changed?.Invoke(); AdoptLoadedSelection();
         }

@@ -47,6 +47,16 @@
         @if (_error is not null) { <p role="alert">@_error</p> }
         @if (Todo.OrganizationBlockReason is { } organizationReason) { <p role="status">@organizationReason <a href="/todo/projects">Open Projects</a></p> }
         @if (Todo.Message is not null) { <p role="status">@Todo.Message</p> }
+        @if (Todo.HabiticaCoverage is { HasCompleteStoredCoverage: false } coverage)
+        {
+            <p class="panel-copy" role="status" data-testid="todo-habitica-coverage">
+                Habitica task links: @coverage.StoredTaskLinks/@coverage.Tasks.Count.
+                Missing: @coverage.MissingTaskLinks · pending: @coverage.PendingTaskLinks · need review: @coverage.TaskLinksNeedingReview.
+                Counts include completed and archived tasks. Unlinked task completions earn no Habitica rewards.
+                @if (coverage.MissingGroupTagLinks > 0) { <span>Projects and groups awaiting Habitica tags: @coverage.MissingGroupTagLinks.</span> }
+                Saved links do not confirm pending game effects; check the original command receipt.
+            </p>
+        }
         @if (Todo.Commands.Preview is { } preview)
         {
             <section class="todo-command-review" aria-label="Review task command" data-testid="todo-review">
