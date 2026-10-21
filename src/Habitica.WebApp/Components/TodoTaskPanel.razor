@@ -70,7 +70,7 @@
                     @if (patch.Priority is { } priority) { <p>Urgency: @priority</p> }
                     @if (patch.Deadline is { } deadline) { <p>Deadline: @deadline.ToString("yyyy-MM-dd")</p> }
                     @if (patch.ClearDeadline) { <p>Clear deadline</p> }
-                    @if (patch.Recurrence is { } recurrence) { <p>Replace the complete Companion Daily schedule: @TodoRecurringEditor.RuleText(recurrence)</p><p>Retain recorded completions and skips. No Habitica schedule or reward changes.</p> }
+                    @if (patch.Recurrence is { } recurrence) { <p>Daily schedule: @TodoRecurringEditor.RuleText(recurrence)</p><p>@(preview.Command.Operation == WorkspaceOperation.CreateDaily && preview.MayAffectHabitica ? "Create the same supported schedule in Habitica after account timezone/day-start verification. Creation scores no dates and runs no Cron; future missed Dailies can have normal penalties." : "Retain recorded completions and skips. No Habitica schedule or reward changes.")</p> }
                     @if (patch.ClearRecurrence) { <p>Clear the Companion schedule. The Daily becomes unscheduled; recorded completions and skips remain.</p> }
                     @if (patch.Planning is { } planning)
                     {
@@ -129,6 +129,7 @@
                         <MudButton HtmlTag="button" data-layout-primary="true" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled" data-testid="todo-add">@(_editId is null ? $"Add {Singular(_kind)}" : "Review changes")</MudButton>
                         @if (_editId is not null) { <MudButton HtmlTag="button" data-layout-primary="true" OnClick="NewTask" Variant="Variant.Text">New task</MudButton> }
                     </div>
+                    @if (_kind == CompanionTaskKind.Daily && _editId is null) { <TodoDailyCreationFields Draft="draft.DailyCreation" /> }
                     <details class="todo-advanced" @key="draft"><summary>More details</summary>
                         <div class="todo-editor-fields">
                             <label class="field-row">Notes<textarea class="app-input" maxlength="10000" @bind="draft.Notes" @bind:event="oninput" data-testid="todo-notes"></textarea></label>
@@ -140,7 +141,7 @@
                             <label class="field-row">Checklist, one item per line<textarea class="app-input" maxlength="25700" @bind="draft.Checklist" @bind:event="oninput"></textarea></label>
                             @if (_kind == CompanionTaskKind.Todo || _editId is not null)
                             { <label class="checkbox-row"><input type="checkbox" @bind="draft.ProjectToHabitica" data-testid="todo-project" /><span>Request Habitica effects for this save; review before acceptance. Execution requires separate settings.</span></label> }
-                            @if (_kind == CompanionTaskKind.Daily && _editId is null) { <p>New Dailies are unscheduled. Completion records the selected occurrence date.</p> }
+
                             @if (_editId is not null)
                             {
                                 <label class="field-row">Planned date, separate from deadline<input class="app-input" type="date" value="@draft.PlannedDate" @onchange="args => draft.PlannedDate = args.Value?.ToString() ?? string.Empty" data-testid="todo-planned" /></label>

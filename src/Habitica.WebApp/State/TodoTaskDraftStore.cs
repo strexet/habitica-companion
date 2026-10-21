@@ -5,6 +5,7 @@ namespace Habitica.WebApp.State;
 
 public sealed class TodoTaskDraft
 {
+    public DailyCreationDraft DailyCreation { get; } = new();
     public string Text { get; set; } = "";
     public string Notes { get; set; } = "";
     public CompanionPriority Priority { get; set; } = CompanionPriority.Normal;
@@ -52,7 +53,7 @@ public sealed class TodoTaskDraft
         var operation = current is not null ? WorkspaceOperation.UpdateTask : kind switch
         { CompanionTaskKind.Daily => WorkspaceOperation.CreateDaily, CompanionTaskKind.Habit => WorkspaceOperation.CreateHabit, _ => WorkspaceOperation.CreateTodo };
         return new(operation, current?.Id, Text, Notes, Priority, Date(Deadline), details,
-            ProjectToHabitica && operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.UpdateTask, HabitScoreDirection.Up, 1, null);
+            ProjectToHabitica && operation is WorkspaceOperation.CreateTodo or WorkspaceOperation.UpdateTask, HabitScoreDirection.Up, 1, null, Recurrence: operation == WorkspaceOperation.CreateDaily ? DailyCreation.Rule() : null);
     }
     public static DateOnly? Date(string value) => value.Length == 0 ? null
         : DateOnly.TryParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date) && date != DateOnly.MinValue

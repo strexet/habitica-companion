@@ -1,3 +1,4 @@
+import {dailyRuleFailure} from '../../shared/daily-projection.ts';
 import {validateOrganizationHistoryHashes} from '../../shared/workspace-organization.ts';
 import {applyRelationships,relationshipReferencesAvailable} from '../../shared/task-relationships.ts';
 import { mergeDetails } from "../../shared/task-details.ts";
@@ -59,10 +60,11 @@ export async function accept(document: WorkspaceDocument, command: WorkspaceComm
    if(!task!.recurrence)throw new WorkspaceError('recurrence_required',422);
   }
  }
+ if(command.operation==='createDaily'&&command.projectToHabitica){const failure=dailyRuleFailure(patch?.recurrence);if(failure)throw new WorkspaceError(failure,422);if(patch?.deadline!==null)throw new WorkspaceError('unsupported_daily_fields',422);}
  const editsRecurrence=Boolean(patch?.recurrence||patch?.clearRecurrence);
  if(editsRecurrence&&(isTaskCreation(command.operation)?command.operation!=='createDaily'||patch!.clearRecurrence:task!.kind!=='daily'))throw new WorkspaceError('recurrence_requires_daily',422);
- if(editsRecurrence&&(command.projectToHabitica||mapping&&(mapping.state!=='unlinked'||mapping.habiticaTaskId!==null)))throw new WorkspaceError('unsupported_projection',422);
- if (["createDaily", "deleteTask"].includes(command.operation) && (command.projectToHabitica || mapping && (mapping.state !== "unlinked" || mapping.habiticaTaskId !== null))) throw new WorkspaceError("unsupported_projection", 422);
+ if(editsRecurrence&&!isTaskCreation(command.operation)&&(command.projectToHabitica||mapping&&(mapping.state!=='unlinked'||mapping.habiticaTaskId!==null)))throw new WorkspaceError('unsupported_projection',422);
+ if (command.operation === "deleteTask" && (command.projectToHabitica || mapping && (mapping.state !== "unlinked" || mapping.habiticaTaskId !== null))) throw new WorkspaceError("unsupported_projection", 422);
  if (command.operation === "completeTask" && (task!.kind === "habit" || ["completed", "cancelled", "paused"].includes(task!.state))) throw new WorkspaceError("task_not_completable", 422);
  if (command.operation === "scoreHabit" && (task!.kind !== "habit" || task!.state !== "active")) throw new WorkspaceError("habit_not_active", 422);
  if (command.operation === "completeTask" && (task!.kind === "daily" ? command.occurrenceDate === null : command.occurrenceDate !== null)) throw new WorkspaceError(task!.kind === "daily" ? "occurrence_required" : "unexpected_occurrence", 422);

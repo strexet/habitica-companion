@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Create mapped Habitica Dailies with lossless schedules
-
-```yaml
-id: T-07d27408-3019-423f-a5de-4cda1f9e2818
-priority: 103
-status: Ready
-parent_pending_ids: ["P-3736aa26-c58b-402d-a736-ff6ce23907bd"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-07d27408-3019-423f-a5de-4cda1f9e2818
-related_task_id: null
-relation: main
-depends_on: ["T-210471d2-f432-43b3-8fc7-bbfd74f93e29"]
-```
-
-Goal:
-- Create own-account Habitica Dailies through a shared lossless schedule normalization contract.
-Current behavior:
-- Daily creation projection is rejected. Native recurrence supports daily/weekly/monthly rules, while remote parsing/fingerprints omit normalized schedule fields and creation always sends type todo.
-Desired behavior:
-- Supported Daily creation produces one correct Habitica Daily and mapping; unsupported schedules remain visibly unavailable without silently changed dates, past scoring or penalty promises.
-Touch:
-- RecurrenceRule and schedule validation, shared/workspace-domain.ts, shared/projection.ts, projection-adapter.ts, Auth projection.ts, commands.ts and recurrence/projection fixtures.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Bind account timezone/dayStart, normalized startDate, frequency/everyX/repeat/daysOfMonth and resulting next dates. Support only losslessly represented native daily/weekly/monthly rules; reject unrepresentable timezone/DST, weeks-of-month/yearly or missing schedules explicitly. New ordinary Dailies need an explicit supported schedule rather than silently acquiring Habitica default weekdays. Preserve completed/skipped history and alias receipts. Creation never scores historical dates or runs Cron. Publish reusable schedule normalization for the existing linked-schedule editing task instead of duplicating schedule semantics.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Use neutral C#/Worker fixtures for weekday sets, Monday anchors, month gaps, everyX intervals, normalized start dates, timezone/dayStart differences, unsupported cases, stale account observations, duplicate create recovery and later due-day completion.
-Acceptance:
-- Supported Daily creation produces one correct Habitica Daily and mapping; unsupported schedules remain visibly unavailable without silently changed dates, past scoring or penalty promises.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Expose task linking and rejected-preview recovery in Todo UI
 
 ```yaml

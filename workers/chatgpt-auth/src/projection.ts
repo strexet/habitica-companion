@@ -1,3 +1,5 @@
+import {normalizeDailySchedule,sameDailySchedule,readDailySchedule} from '../../shared/daily-projection.ts';
+import {workspaceRecurrence} from '../../shared/workspace-domain.ts';
 import {upstreamBudget,upstreamFetch,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
 import { activeProfile, boundedJson, credentialKeys, VaultError } from "./vault";
 import { decryptCredential } from "./cryptography";
@@ -40,7 +42,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
   who = { profileId: input.profileId, connectionId: uuid(input.connectionId) };
   const operation = input.operation; if (typeof operation !== "string" || !["inspect","inspectDaily","inspectAccount","create","update","score","reconcile","lookup"].includes(operation)) throw new WorkspaceError("invalid_operation");
   const writing = ["create","update","score"].includes(operation);
-  const args = workspaceObject(input.arguments,["reconcile","lookup"].includes(operation) ? ["operation","arguments"] : writing ? operation === "create" ? ["selector","checkToken","patch","taskKind"] : operation === "update" ? ["selector","checkToken","expectedFingerprint","patch"] : ["selector","checkToken","expectedFingerprint","direction","accountCheckToken","occurrenceDate"] : operation === "inspectAccount" ? [] : ["selector"]);
+  const args = workspaceObject(input.arguments,["reconcile","lookup"].includes(operation) ? ["operation","arguments"] : writing ? operation === "create" ? ["selector","checkToken","patch","taskKind","recurrence","accountCheckToken"] : operation === "update" ? ["selector","checkToken","expectedFingerprint","patch"] : ["selector","checkToken","expectedFingerprint","direction","accountCheckToken","occurrenceDate"] : operation === "inspectAccount" ? [] : ["selector"]);
   const profile = await activeProfile(env,who.profileId,who.connectionId);
   // Operational attempt metadata expires after thirty days. Old attempt timestamps cannot authorize a new send.
   await env.HABITICA_INTEGRATION_DB.batch([
@@ -63,13 +65,19 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
   if (quota?.blocked_until_utc && Date.parse(quota.blocked_until_utc)>Date.now()) return json({kind:"refused",code:"rate_limited",retryAtUtc:quota.blocked_until_utc},429);
   let precondition: Check | undefined; let target = operation === "inspectAccount" ? "account" : selector(args.selector);
   let patch; const creationKind=args.taskKind??"todo";
-  if(operation==="create"&&!["todo","habit"].includes(creationKind as string))throw new WorkspaceError("invalid_task_kind",422);
+  if(operation==="create"&&!["todo","habit","daily"].includes(creationKind as string))throw new WorkspaceError("invalid_task_kind",422);
   if (writing) {
    precondition = await check(env,who,args.checkToken);
    if (precondition.selector !== target && precondition.task_id !== target) throw new WorkspaceError("precondition_mismatch",409);
    if (operation === "create") {
     if (precondition.task_id || !/^companion_[0-9a-f]{32}_[0-9a-f]{32}$/.test(target)) throw new WorkspaceError("creation_not_absent",409);
     patch = remotePatch(args.patch,true,creationKind as string);
+    if(creationKind==='daily'){
+     const account=await check(env,who,args.accountCheckToken),state=account.account_json?JSON.parse(account.account_json):null;
+     if(!state||state.needsCron!==false||day(state)!==state.day)throw new WorkspaceError('daily_precondition_unknown',409);
+     const rule=workspaceRecurrence(args.recurrence);if(!rule)throw new WorkspaceError('daily_schedule_required',422);
+     if(!sameDailySchedule(normalizeDailySchedule(rule,state),readDailySchedule(patch)))throw new WorkspaceError('daily_schedule_mismatch',409);
+    }else if(args.recurrence!==undefined||args.accountCheckToken!==undefined)throw new WorkspaceError('invalid_request');
    } else {
     target = uuid(target);
     if (precondition.task_id !== target || precondition.fingerprint !== fingerprint(args.expectedFingerprint)) throw new WorkspaceError("external_conflict",409);

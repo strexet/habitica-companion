@@ -163,7 +163,7 @@ Prepared commands retain exact reviewed previews, stable command identities and 
 
 ## Native lifecycle testing extension
 
-The owner-approved Codex mutation scope includes native Daily/Habit creation, task field edits, dated Daily completion, explicit Habit scores and archival of exact unlinked task IDs. New Dailies remain unscheduled until recurrence editing is implemented. Daily creation and archival remain Companion-only; Habit creation uses the typed Habit correspondence contract. No unsupported upstream deletion or recurrence projection is implied. Archive operations retain command and activity history until separate workspace deletion. Party writes and live Cron remain excluded.
+The owner-approved Codex mutation scope includes native Daily/Habit creation, task field edits, dated Daily completion, explicit Habit scores and archival of exact unlinked task IDs. New Dailies require an explicit supported schedule and typed Habitica correspondence. Archival remains Companion-only; Habit creation uses the typed Habit correspondence contract. No unsupported upstream deletion or recurrence projection is implied. Archive operations retain command and activity history until separate workspace deletion. Party writes and live Cron remain excluded.
 
 Owner-provided Habitica test credentials may persist only in the ignored root `.dev.vars.owner-test` file with owner-only file permissions. Normal builds, CI, exports, logs and deployment must not consume or include that file. Live tests are explicit, opt-in own-account checks; test evidence stores outcomes without credentials.
 
@@ -177,7 +177,7 @@ Canonical recurrence uses civil dates in the selected UTC or supported IANA regi
 
 ## Reviewed recurrence authoring boundary
 
-Local application commands and MCP share reviewed createDaily/updateTask authoring for unlinked Companion Dailies. Explicit schedule clearing retains history. Recurrence intents cannot request Habitica projection or edit a linked/pending/uncertain mapping. Scheduled dates remain civil calendar facts and require separate server due-state/Cron verification before any existing game projection. Default request serialization and legacy command identities remain stable; extended recurrence intents use a distinct versioned hash. The basic PWA editor remains unscheduled until the separate UI gate is satisfied.
+Local application commands and MCP share reviewed createDaily/updateTask authoring for unlinked Companion Dailies. Explicit schedule clearing retains history. Recurrence edits cannot request Habitica projection or edit a linked/pending/uncertain mapping; new creation follows the supported Daily correspondence contract. Scheduled dates remain civil calendar facts and require separate server due-state/Cron verification before any existing game projection. Default request serialization and legacy command identities remain stable; extended recurrence intents use a distinct versioned hash. The PWA creation editor exposes the complete supported schedule before review.
 
 ## Companion-only occurrence lifecycle
 
@@ -300,3 +300,8 @@ Reviewed ensureProjection requires an exact active Todo, projectToHabitica true 
 ## Habit counterpart creation
 
 New Habit preparation carries required game intent and explicit up/down defaults true/true. All Boolean direction combinations remain supported; disabled directions refuse scoring. Creation contains no score event, reward, Todo deadline or checklist payload. Supported unchanged active Habits can use the original create-only repair ledger. Habit-owned response parsing accepts absent completed and requires Boolean direction flags. Kind, alias and requested-field verification protect mapping; uncertainty preserves the original private receipt and forbids replacement creation.
+
+
+## Supported Daily correspondence
+
+Ordinary new Dailies require an explicit complete supported schedule and one requested correct-kind Habitica counterpart. UTC or an explicitly fixed Etc/GMT zone must match the account observation; native parity currently requires midnight Habitica dayStart. Multiweek intervals require a Monday start. Unsupported zones, boundaries, yearly/weeks-of-month authoring and missing rules are unavailable rather than silently approximated. Canonical IDs, recurrence history and original command receipts remain durable. Creating the counterpart grants no rewards for past dates and invokes no Cron. Existing adopted records and linked schedule edits retain separate review contracts.

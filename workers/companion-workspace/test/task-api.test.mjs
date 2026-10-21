@@ -60,7 +60,7 @@ test('prepared partial updates, Todo and Daily completions, exact-name selection
  const completed=await execute('completeTask',{taskId:a.taskId});assert.equal(completed.acceptedEventCount,1);assert.equal(completed.totalProjectionCount,2);
  const updated=await execute('updateTask',{taskId:b.taskId,patch:{notes:'A partial note'}});assert.equal(updated.taskText,'Same label');
  const current=await(await call(f,w,'get_companion_task',{taskId:b.taskId.toUpperCase()})).json();assert.equal(current.task.notes,'A partial note');assert.equal(current.task.text,'Same label');
- const dailyId=(await execute('createDaily',{patch:{text:'Native Daily'}})).taskId;const habitId=(await execute('createHabit',{patch:{text:'Native Habit'}})).taskId;
+ const dailyId=(await execute('createDaily',{patch:{text:'Scheduled Daily',recurrence:{frequency:'daily',interval:1,startDate:'2026-10-15',timeZoneId:'UTC',weekdays:[],daysOfMonth:[]}}})).taskId;const habitId=(await execute('createHabit',{patch:{text:'Native Habit'}})).taskId;
  assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'completeTask',taskId:habitId})).status,422);
  assert.equal((await call(f,w,'prepare_task_command',{requestId:crypto.randomUUID(),operation:'scoreHabit',taskId:habitId,direction:'up',count:11})).status,422);
  const daily=await execute('completeTask',{taskId:dailyId,occurrenceDate:'2026-10-15'});assert.equal(daily.acceptedEventCount,1);
@@ -128,8 +128,9 @@ test('native Daily and retained legacy Habit archival preserve receipts and hist
   assert.equal((await call(f,other,tool,{commandId:prepared.preparedCommandId})).status,409);
   return result.structuredContent;
  };
- const daily=await execute('createDaily','create_daily',{patch:{text:'Disposable Daily',deadline:'2026-10-18'}});
- const {seedLegacyCommand}=await import('./fixtures/legacy-todo.mjs');const habit={taskId:crypto.randomUUID()};await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:2,operation:'createHabit',taskId:habit.taskId,patch:{text:'Retained native Habit'}});
+ const {seedLegacyCommand}=await import('./fixtures/legacy-todo.mjs');
+ const daily={taskId:crypto.randomUUID()};await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:1,operation:'createDaily',taskId:daily.taskId,patch:{text:'Retained native Daily',deadline:'2026-10-18'}});
+ const habit={taskId:crypto.randomUUID()};await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:2,operation:'createHabit',taskId:habit.taskId,patch:{text:'Retained native Habit'}});
  const read=await(await call(f,w,'get_companion_task',{taskId:daily.taskId})).json();assert.equal(read.task.kind,'daily');assert.equal(read.task.recurrence,null);assert.equal(read.task.deadline,'2026-10-18');
  await execute('completeTask','complete_task',{taskId:daily.taskId,occurrenceDate:'2026-10-17'});
  await execute('scoreHabit','score_habit',{taskId:habit.taskId,direction:'down',count:2});
@@ -156,7 +157,7 @@ test('archival refuses linked or pending projections and acceptance rechecks fre
  const created=await(await prepare({operation:'createTodo',patch:{text:'Pending projected task'},projectToHabitica:true})).json();
  await call(f,w,'create_todo',{commandId:created.preparedCommandId});
  assert.equal((await prepare({operation:'deleteTask',taskId:created.command.taskId})).status,422);
- const daily=await(await prepare({operation:'createDaily',patch:{text:'Fresh Daily'}})).json();await call(f,w,'create_daily',{commandId:daily.preparedCommandId});
+ const {seedLegacyCommand}=await import('./fixtures/legacy-todo.mjs');const taskId=crypto.randomUUID();await seedLegacyCommand(f,{id:crypto.randomUUID(),workspaceId:w.workspaceId,expectedRevision:2,operation:'createDaily',taskId,patch:{text:'Retained native Daily'}});const daily={command:{taskId}};
  const deletion=await(await prepare({operation:'deleteTask',taskId:daily.command.taskId})).json();
  const edit=await(await prepare({operation:'updateTask',taskId:daily.command.taskId,patch:{notes:'Changed after preview'}})).json();await call(f,w,'update_task',{commandId:edit.preparedCommandId});
  assert.equal((await call(f,w,'delete_task',{commandId:deletion.preparedCommandId})).status,409);

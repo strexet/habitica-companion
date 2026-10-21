@@ -47,16 +47,18 @@ public sealed class CompanionTasksPanelTests : BunitContext
         cut.Find("[data-testid='canonical-new-workspace']").Click();
         cut.Find("[data-testid='canonical-operation']").Change(operation);
         cut.Find("[data-testid='canonical-text']").Change("Disposable native task");
+        if (kind == "Daily") cut.Find("[data-testid='daily-start']").Change("2026-10-19");
         Assert.Empty(cut.FindAll("[data-testid='canonical-project']"));
         cut.Find("[data-testid='canonical-preview']").Click();
         Assert.Empty(f.Controller.Snapshot!.Document.Tasks);
         Assert.Contains(kind, cut.Find(".companion-command-preview").TextContent);
+        if (kind == "Daily") { Assert.Contains("Daily schedule", cut.Find(".companion-command-preview").TextContent); WorkspaceLayoutEvidence.Save("canonical-daily-preview", cut.Markup); }
         cut.Find("[data-testid='canonical-confirm']").Click();
         var task = Assert.Single(f.Controller.Snapshot!.Document.Tasks); Assert.Equal(kind, task.Kind.ToString());
-        if (kind == "Habit")
+        if (kind is "Habit" or "Daily")
         {
             Assert.Equal(ProjectionCommandState.Pending, f.Controller.Snapshot.Commands.Single().ProjectionState);
-            await f.SeedLegacyLocalAsync("Retained native Habit", kind: CompanionTaskKind.Habit);
+            await f.SeedLegacyLocalAsync("Retained native " + kind, kind: Enum.Parse<CompanionTaskKind>(kind));
             task = f.Controller.Snapshot!.Document.Tasks.Single();
             cut.Dispose(); cut = Render<CompanionTasksPanel>();
         }
@@ -72,6 +74,8 @@ public sealed class CompanionTasksPanelTests : BunitContext
         Assert.Equal(2, f.Controller.Snapshot.Commands.Count);
         Assert.Contains("0 listed tasks · 1 archived", cut.Markup);
         Assert.Equal("CreateTodo", cut.Find("[data-testid='canonical-operation']").GetAttribute("value"));
+        cut.Find("[data-testid='canonical-operation']").Change("CreateDaily");
+        Assert.Equal("", cut.Find("[data-testid='daily-start']").GetAttribute("value"));
     }
 
 }

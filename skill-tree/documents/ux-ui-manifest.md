@@ -608,7 +608,7 @@ Local canonical workspace backups have separate listing, export and confirmed re
 
 The Tasks page exposes the canonical editor through an explicit disclosure button. Browser and cloud sources remain visible, with independent workspace selection, a read-only explanation for frozen or stale copies and separate paused-execution status for restored copies. The existing Habitica task dashboard remains separate. Account changes clear the editor's pending content and discard late data.
 
-The editor creates Todos, unscheduled Dailies and Habits. The workspace header separates listed tasks from archived records; completed unarchived tasks remain listed. Selected unlinked tasks can be archived through a reviewed command; the review states that history remains in exports and Habitica is unchanged. Unsupported projection controls are absent for native Daily/Habit creation and archiving.
+The editor creates Todos, explicitly scheduled Dailies and Habits. The workspace header separates listed tasks from archived records; completed unarchived tasks remain listed. Selected unlinked tasks can be archived through a reviewed command; the review states that history remains in exports and Habitica is unchanged. New Daily/Habit creation carries required game intent; unsupported projection controls remain absent for archiving.
 
 Every save opens a field-level review before confirmation. Native urgency and game difficulty have separate labels. Checklist replacement requires an explicit checkbox; empty replacement clears the list. Completion and Habit-score previews show the affected occurrence or bounded event count and explain possible game effects. Unknown acceptance preserves the original command ID and replaces ordinary cancellation with receipt checking or an original-command retry. Successful canonical saving and projection progress use separate text labels and a bounded recent-history disclosure.
 
@@ -698,7 +698,7 @@ The collapsed Share diagnostics with Codex or ChatGPT disclosure keeps optional 
 
 ## Direct task capture and primary rows
 
-TodoTaskPanel places title and Add together before task rows; Enter in the title submits the native form for review. Primary row Edit, Complete and Habit score actions stay outside disclosure sections. Long notes remain behind a native Notes disclosure; rows wrap and stack at phone widths. More details contains advanced fields, separate planned-date review and explicit archival. A loaded workspace keeps source controls collapsed; unavailable/unselected sources expose the source chooser and reason. Reviews and receipts appear above the editor and preserve a wrapping original-command reference. Review focus moves to its heading; confirmation/cancellation requests focus back on the title. New Dailies explain their unscheduled state and require an explicit occurrence date. Shared semantic colors, focus treatment and 44-pixel primary targets apply. The complete Todo sidebar and Today/category navigation remain separate planned composition work.
+TodoTaskPanel places title and Add together before task rows; Enter in the title submits the native form for review. Primary row Edit, Complete and Habit score actions stay outside disclosure sections. Long notes remain behind a native Notes disclosure; rows wrap and stack at phone widths. More details contains advanced fields, separate planned-date review and explicit archival. A loaded workspace keeps source controls collapsed; unavailable/unselected sources expose the source chooser and reason. Reviews and receipts appear above the editor and preserve a wrapping original-command reference. Review focus moves to the review heading; confirmation/cancellation requests focus back on the title. New Dailies require an explicit supported schedule; completion requires an explicit occurrence date. Shared semantic colors, focus treatment and 44-pixel primary targets apply. The complete Todo sidebar and Today/category navigation remain separate planned composition work.
 
 ## Today day groups
 
@@ -756,3 +756,10 @@ Normal Todo preparations show required game intent even when an older optional p
 ## Habit game-intent review
 
 Habit creation review shows Positive (+) and Negative (−) as Enabled/Disabled alongside independent native urgency and game details. Required pending game intent and executor prerequisites remain visible before confirmation. Known disabled scoring directions render disabled primary row actions; backend checks also refuse the corresponding score. Legacy native archive fixtures remain distinct from newly projected Habit capture. No creation-time score or automatic execution follows from the review.
+
+
+## Explicit Daily creation schedule
+
+New Daily capture shows frequency, interval, required start date, fixed timezone and applicable weekday/month-date inputs directly in the form. The initial start date is blank so no schedule is silently selected. Weekly and monthly controls retain draft values when switching frequency. Missing or unsupported rules show an error and prepare no command. The advanced Companion task panel uses the same fields.
+
+Review displays the complete recurrence and requested Habitica creation. The review states that fresh account timezone/day-start verification and separate executor access are required, that creation runs no Cron or historical scoring, and that future missed Dailies may have normal penalties. Fixed zones use UTC or Etc/GMT identifiers; UTC+7 is Etc/GMT-7. Account mismatch blocks projection rather than converting dates. Native historical Daily editing remains separate from linked schedule authoring.

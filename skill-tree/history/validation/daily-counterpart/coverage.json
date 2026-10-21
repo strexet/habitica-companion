@@ -1,0 +1,1481 @@
+{
+  "shared-navigation": {
+    "file": "shared-navigation.html",
+    "route": "shared-navigation",
+    "state": "authenticated",
+    "surfaces": [
+      "navigation"
+    ],
+    "interactionTest": "Authenticated_navigation_retains_real_routes_and_drawer_surface",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "workspace-fresh-tab": {
+    "file": "workspace-fresh-tab.html",
+    "route": "/settings",
+    "state": "unknown-access",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure",
+      "disabled-controls"
+    ],
+    "interactionTest": "Fresh_tab_does_not_infer_disconnection_or_offer_executor_changes",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "workspace-operational-status": {
+    "file": "workspace-operational-status.html",
+    "route": "/settings",
+    "state": "workspace-operational-status",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "StatusIsManualAndNeverPreparesOrExecutesAnAction",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-monthly": {
+    "file": "todo-recurring-monthly.html",
+    "route": "/tasks",
+    "state": "complete-monthly-schedule-editor",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Complete_schedule_replacement_reviews_all_fields_and_preserves_independent_task_data",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "bound-textarea-evidence": {
+    "file": "bound-textarea-evidence.html",
+    "route": "/tasks",
+    "state": "bound-textarea-canary",
+    "surfaces": [
+      "form"
+    ],
+    "interactionTest": "Bound_textarea_values_become_literal_multiline_content_without_changing_source_markup",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "canonical-archive-preview": {
+    "file": "canonical-archive-preview.html",
+    "route": "/tasks",
+    "state": "canonical-archive-preview",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure",
+      "confirmation"
+    ],
+    "interactionTest": "NativeCreationAndArchiveShowReviewAndRetainHistory",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-tree-edit": {
+    "file": "todo-tree-edit.html",
+    "route": "/todo/tasks",
+    "state": "descendant-edit-independent-fields",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Descendant_edit_uses_existing_fields_and_preserves_parent_and_independent_dates",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "authenticated-party-controls": {
+    "file": "authenticated-party-controls.html",
+    "route": "/settings",
+    "state": "authenticated-party-controls",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "ConsentBindsTheDisplayedPartyAndRemovalRequiresASeparateConfirmation",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "sign-in-empty": {
+    "file": "sign-in-empty.html",
+    "route": "/sign-in",
+    "state": "signed-out-empty",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Renders_credential_help_and_safety_copy",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "workspace-status-unavailable": {
+    "file": "workspace-status-unavailable.html",
+    "route": "/settings",
+    "state": "error",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure",
+      "error"
+    ],
+    "interactionTest": "Failed_server_refresh_hides_executor_controls_instead_of_claiming_paused_state",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "sign-in-loading": {
+    "file": "sign-in-loading.html",
+    "route": "/sign-in",
+    "state": "loading",
+    "surfaces": [
+      "form",
+      "disabled-controls",
+      "loading"
+    ],
+    "interactionTest": "Renders_credential_help_and_safety_copy",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "sign-in-error": {
+    "file": "sign-in-error.html",
+    "route": "/sign-in",
+    "state": "credential-validation-error",
+    "surfaces": [
+      "form",
+      "error"
+    ],
+    "interactionTest": "Renders_credential_help_and_safety_copy",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "workspace-recovered": {
+    "file": "workspace-recovered.html",
+    "route": "/settings",
+    "state": "workspace-recovered",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "Explicit_recovery_rereads_retained_executor_state_without_enabling_it",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-weekly": {
+    "file": "todo-recurring-weekly.html",
+    "route": "/tasks",
+    "state": "complete-weekly-schedule-editor",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Complete_schedule_replacement_reviews_all_fields_and_preserves_independent_task_data",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-organization-review": {
+    "file": "todo-organization-review.html",
+    "route": "/todo/projects",
+    "state": "long-native-project-review-and-task-fence",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Rename_preserves_omitted_archived_references_and_recovers_original_preparation_and_acceptance",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-organization-unknown": {
+    "file": "todo-organization-unknown.html",
+    "route": "/todo/projects",
+    "state": "unknown-native-original-receipt",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Rename_preserves_omitted_archived_references_and_recovers_original_preparation_and_acceptance",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-review": {
+    "file": "todo-recurring-review.html",
+    "route": "/tasks",
+    "state": "exact-full-schedule-replacement-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Complete_schedule_replacement_reviews_all_fields_and_preserves_independent_task_data",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "canonical-preview": {
+    "file": "canonical-preview.html",
+    "route": "/tasks",
+    "state": "canonical-preview",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure",
+      "confirmation"
+    ],
+    "interactionTest": "BrowserTaskRequiresAVisibleReviewThenShowsSavedAndProjectedStatesSeparately",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-plan-removed-project": {
+    "file": "todo-plan-removed-project.html",
+    "route": "/todo/inbox",
+    "state": "removed-project-unassigned-retained-placement",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Removed_project_tasks_appear_as_unassigned_while_the_exact_project_and_section_references_remain_retained",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-organization-removal": {
+    "file": "todo-organization-removal.html",
+    "route": "/todo/projects",
+    "state": "reviewed-complete-paged-project-removal",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Logical_project_removal_requires_every_reference_page_and_preserves_all_tasks_and_links",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-daily": {
+    "file": "todo-recurring-daily.html",
+    "route": "/tasks",
+    "state": "complete-daily-schedule-editor",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Complete_schedule_replacement_reviews_all_fields_and_preserves_independent_task_data",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "dashboard-stats-table": {
+    "file": "dashboard-stats-table.html",
+    "route": "/dashboard",
+    "state": "cached-account-stat-table",
+    "surfaces": [
+      "tables",
+      "navigation",
+      "actions"
+    ],
+    "interactionTest": "Renders_cached_user_snapshot_cards_and_freshness_state",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-organization-section": {
+    "file": "todo-organization-section.html",
+    "route": "/todo/projects",
+    "state": "immutable-project-section-order-editor",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Optional_native_records_and_Todo_goal_progress_use_reviewed_commands_without_game_effects",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "canonical-filter-disabled": {
+    "file": "canonical-filter-disabled.html",
+    "route": "/tasks",
+    "state": "canonical-filter-disabled",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure",
+      "disabled-controls"
+    ],
+    "interactionTest": "Pending_command_disables_selection_without_losing_the_list",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-unknown": {
+    "file": "todo-recurring-unknown.html",
+    "route": "/tasks",
+    "state": "original-schedule-acceptance-uncertainty",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Lost_schedule_preview_or_acceptance_recovers_the_original_without_duplicate_history",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-plan-inbox": {
+    "file": "todo-plan-inbox.html",
+    "route": "/todo/inbox",
+    "state": "inbox-deadline",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Inbox_anytime_overdue_and_bounded_agenda_views_remain_distinct_and_pure",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "theme-import": {
+    "file": "theme-import.html",
+    "route": "/settings",
+    "state": "theme-import",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "Import_updates_open_panel_fast_cache_and_reload_without_restamping_selection",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-organization-goal": {
+    "file": "todo-organization-goal.html",
+    "route": "/todo/projects",
+    "state": "goal-membership-and-cancelled-progress",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Optional_native_records_and_Todo_goal_progress_use_reviewed_commands_without_game_effects",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "canonical-saved-list": {
+    "file": "canonical-saved-list.html",
+    "route": "/tasks",
+    "state": "canonical-saved-list",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "Saved_lists_show_fixed_dates_and_recompute_dependency_eligibility",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-linked": {
+    "file": "todo-recurring-linked.html",
+    "route": "/tasks",
+    "state": "game-linked-native-controls-unavailable",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Retained_game_mappings_block_native_controls_before_preparation",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-organization-page": {
+    "file": "todo-organization-page.html",
+    "route": "/todo/projects",
+    "state": "composed-project-management-and-branch-page",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Projects_page_composes_optional_management_and_independent_branch_selection",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-completions": {
+    "file": "todo-history-completions.html",
+    "route": "/todo/history",
+    "state": "snapshot-archive-and-civil-labels",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Retained_history_labels_historical_snapshots_current_fallback_UTC_civil_dates_and_archive_flags_without_writes",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-expanded": {
+    "file": "todo-history-expanded.html",
+    "route": "/todo/history",
+    "state": "expanded-retained-notes-and-identities",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Retained_history_labels_historical_snapshots_current_fallback_UTC_civil_dates_and_archive_flags_without_writes",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-plan-week": {
+    "file": "todo-plan-week.html",
+    "route": "/todo/plan",
+    "state": "week-agenda",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Inbox_anytime_overdue_and_bounded_agenda_views_remain_distinct_and_pure",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-plan-unavailable": {
+    "file": "todo-plan-unavailable.html",
+    "route": "/todo/plan",
+    "state": "timezone-unavailable",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Empty_unavailable_invalid_timezone_and_bad_dates_remain_explicit_without_partial_agenda",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-review": {
+    "file": "todo-history-review.html",
+    "route": "/todo/history",
+    "state": "exact-restoration-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Exact_native_restore_recovers_original_receipt_retains_cycles_and_never_reverses_game_rewards",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-plan-empty": {
+    "file": "todo-plan-empty.html",
+    "route": "/todo/inbox",
+    "state": "empty-inbox",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Empty_unavailable_invalid_timezone_and_bad_dates_remain_explicit_without_partial_agenda",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-unknown": {
+    "file": "todo-history-unknown.html",
+    "route": "/todo/history",
+    "state": "original-restoration-uncertain",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Exact_native_restore_recovers_original_receipt_retains_cycles_and_never_reverses_game_rewards",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "theme-conflict": {
+    "file": "theme-conflict.html",
+    "route": "/settings",
+    "state": "theme-conflict",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "Import_preserves_unsaved_editor_and_requires_an_explicit_choice",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-plan-review": {
+    "file": "todo-plan-review.html",
+    "route": "/todo/plan",
+    "state": "long-task-placement-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Review_set_and_clear_preserves_identity_deadline_recurrence_history_mapping_and_recovers_original_receipt",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-tree-deep": {
+    "file": "todo-tree-deep.html",
+    "route": "/todo/tasks",
+    "state": "level-2000-focused-branch",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Deep_linked_branch_renders_level_two_thousand_without_recursive_markup_or_increasing_indent",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-capture-review": {
+    "file": "todo-capture-review.html",
+    "route": "/tasks",
+    "state": "long-name-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Advanced_fields_and_planned_date_have_exact_separate_previews_and_invalid_dates_never_prepare",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-capture-advanced": {
+    "file": "todo-capture-advanced.html",
+    "route": "/tasks",
+    "state": "advanced-edit",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Advanced_fields_and_planned_date_have_exact_separate_previews_and_invalid_dates_never_prepare",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-workflow-dependencies": {
+    "file": "todo-workflow-dependencies.html",
+    "route": "/todo/tasks",
+    "state": "long-full-replacement-dependency-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Full_dependency_review_refuses_incompatible_refs_and_combined_cycles_without_moving_parents",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-empty": {
+    "file": "todo-history-empty.html",
+    "route": "/todo/history",
+    "state": "empty-filtered-history",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Stable_paging_resets_on_filters_and_revision_and_empty_is_distinct_from_unavailable",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-error": {
+    "file": "todo-recurring-error.html",
+    "route": "/tasks",
+    "state": "unsupported-zone-and-schedule-error",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Invalid_rules_timezones_and_noop_replacement_fail_before_transport",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-plan-editor": {
+    "file": "todo-plan-editor.html",
+    "route": "/todo/plan",
+    "state": "paged-placement-editor",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Placement_controls_page_existing_records_and_review_exact_replacement_and_project_section_clear",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-plan-labels": {
+    "file": "todo-plan-labels.html",
+    "route": "/todo/plan",
+    "state": "expanded-label-placement",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Placement_controls_page_existing_records_and_review_exact_replacement_and_project_section_clear",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-coverage-groups": {
+    "file": "todo-coverage-groups.html",
+    "route": "/tasks",
+    "state": "project-without-Habitica-tag",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Native_project_receipt_cannot_imply_existing_Habitica_tag_coverage",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-habit": {
+    "file": "todo-history-habit.html",
+    "route": "/todo/history",
+    "state": "long-habit-expanded-UTC-and-direction-filters",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Habit_direction_search_and_inclusive_UTC_days_filter_retained_events_without_undo_or_inferred_streaks",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-history-error": {
+    "file": "todo-history-error.html",
+    "route": "/todo/history",
+    "state": "invalid-UTC-range",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Habit_direction_search_and_inclusive_UTC_days_filter_retained_events_without_undo_or_inferred_streaks",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-tree-create-review": {
+    "file": "todo-tree-create-review.html",
+    "route": "/todo/tasks",
+    "state": "long-parent-independent-create-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Two_reviewed_create_and_attach_steps_recover_original_receipts_without_duplicate_Todos",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-capture-unknown": {
+    "file": "todo-capture-unknown.html",
+    "route": "/tasks",
+    "state": "uncertain-original-command",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Lost_acceptance_recovers_original_after_navigation_without_clearing_the_unsaved_title_early",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-workflow-state-review": {
+    "file": "todo-workflow-state-review.html",
+    "route": "/todo/tasks",
+    "state": "independent-state-review-with-retained-stage",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Active_stage_and_inactive_state_have_separate_reviews_and_original_receipt_recovery",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-habit-direction-row": {
+    "file": "todo-habit-direction-row.html",
+    "route": "/tasks",
+    "state": "disabled-direction-without-score",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Habit_rows_disable_only_the_unavailable_scoring_direction",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-tree-attach-review": {
+    "file": "todo-tree-attach-review.html",
+    "route": "/todo/tasks",
+    "state": "exact-attachment-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Two_reviewed_create_and_attach_steps_recover_original_receipts_without_duplicate_Todos",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-tree-unknown": {
+    "file": "todo-tree-unknown.html",
+    "route": "/todo/tasks",
+    "state": "uncertain-attachment-original-receipt",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Two_reviewed_create_and_attach_steps_recover_original_receipts_without_duplicate_Todos",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-capture-ready": {
+    "file": "todo-capture-ready.html",
+    "route": "/tasks",
+    "state": "title-first-loaded",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Title_only_form_submission_reviews_required_game_intent_and_returns_focus_to_immediate_capture",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-workflow-dormant": {
+    "file": "todo-workflow-dormant.html",
+    "route": "/todo/tasks",
+    "state": "waiting-dominates-dormant-next-stage",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Active_stage_and_inactive_state_have_separate_reviews_and_original_receipt_recovery",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-coverage-pending": {
+    "file": "todo-coverage-pending.html",
+    "route": "/tasks",
+    "state": "saved-task-awaiting-game-link",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Title_only_form_submission_reviews_required_game_intent_and_returns_focus_to_immediate_capture",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-skip": {
+    "file": "todo-recurring-skip.html",
+    "route": "/tasks",
+    "state": "exact-pending-date-skip-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Dated_actions_pause_resume_and_clearing_retain_precedence_and_never_change_Habitica",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-daily-create-form": {
+    "file": "todo-daily-create-form.html",
+    "route": "/tasks",
+    "state": "explicit-daily-schedule",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Category_specific_primary_actions_record_reviewed_Daily_occurrence_or_Habit_event",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-daily-create-review": {
+    "file": "todo-daily-create-review.html",
+    "route": "/tasks",
+    "state": "reviewed-daily-and-penalties",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Category_specific_primary_actions_record_reviewed_Daily_occurrence_or_Habit_event",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-workflow-placement": {
+    "file": "todo-workflow-placement.html",
+    "route": "/todo/tasks",
+    "state": "reviewed-project-section-label-and-day-placement",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Native_placement_from_task_rows_reviews_category_project_section_and_label_assignment",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-capture-daily": {
+    "file": "todo-capture-daily.html",
+    "route": "/tasks",
+    "state": "daily-row-date-action",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Category_specific_primary_actions_record_reviewed_Daily_occurrence_or_Habit_event",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-complete": {
+    "file": "todo-recurring-complete.html",
+    "route": "/tasks",
+    "state": "exact-dated-completion-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Dated_actions_pause_resume_and_clearing_retain_precedence_and_never_change_Habitica",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-workflow-placed": {
+    "file": "todo-workflow-placed.html",
+    "route": "/todo/tasks",
+    "state": "saved-project-and-section-placement",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Native_placement_from_task_rows_reviews_category_project_section_and_label_assignment",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-agent-bundle": {
+    "file": "diagnostics-agent-bundle.html",
+    "route": "/diagnostics",
+    "state": "reviewed-agent-bundle",
+    "surfaces": [
+      "logs",
+      "filters"
+    ],
+    "interactionTest": "Agent_bundle_requires_preview_exports_exact_reviewed_copy_and_clears_after_filter_change",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-habit-create-review": {
+    "file": "todo-habit-create-review.html",
+    "route": "/tasks",
+    "state": "required-Habit-creation-directions",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "Category_specific_primary_actions_record_reviewed_Daily_occurrence_or_Habit_event",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-paused": {
+    "file": "todo-recurring-paused.html",
+    "route": "/tasks",
+    "state": "paused-native-task-and-retained-occurrence-history",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Dated_actions_pause_resume_and_clearing_retain_precedence_and_never_change_Habitica",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-multiline": {
+    "file": "diagnostics-multiline.html",
+    "route": "/diagnostics",
+    "state": "multiline-logs",
+    "surfaces": [
+      "logs",
+      "filters",
+      "disabled-controls"
+    ],
+    "interactionTest": "Diagnostics_console_keeps_long_metadata_in_dedicated_wrapping_block",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-unscheduled": {
+    "file": "todo-recurring-unscheduled.html",
+    "route": "/tasks",
+    "state": "explicit-unscheduled-completion-with-retained-history",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Dated_actions_pause_resume_and_clearing_retain_precedence_and_never_change_Habitica",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-compact-many": {
+    "file": "diagnostics-compact-many.html",
+    "route": "/diagnostics",
+    "state": "twelve-compact-rows",
+    "surfaces": [
+      "logs",
+      "filters"
+    ],
+    "interactionTest": "Compact_rows_copy_exact_redacted_entry_and_filtered_batch_with_recoverable_failures",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-compact-details": {
+    "file": "diagnostics-compact-details.html",
+    "route": "/diagnostics",
+    "state": "twelve-expanded-redacted-details",
+    "surfaces": [
+      "logs",
+      "filters"
+    ],
+    "interactionTest": "Compact_rows_copy_exact_redacted_entry_and_filtered_batch_with_recoverable_failures",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-unavailable": {
+    "file": "todo-recurring-unavailable.html",
+    "route": "/tasks",
+    "state": "unknown-zone-and-paged-retained-dates",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "History_is_paged_and_unavailable_zone_does_not_fabricate_due_state",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "diagnostics-read-unavailable": {
+    "file": "diagnostics-read-unavailable.html",
+    "route": "/diagnostics",
+    "state": "local-log-read-unavailable",
+    "surfaces": [
+      "logs",
+      "error",
+      "disabled-controls"
+    ],
+    "interactionTest": "Opening_diagnostics_requests_local_messages_once_and_exposes_unavailable_refresh",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-recurring-habit": {
+    "file": "todo-recurring-habit.html",
+    "route": "/tasks",
+    "state": "native-habit-pause-without-recurrence-conversion",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Native_Habit_pause_retains_scores_without_exposing_Daily_schedule_fields",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-error": {
+    "file": "todo-saved-error.html",
+    "route": "/todo/lists",
+    "state": "invalid-or-stale-reference-refusal",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Invalid_combinations_ranges_and_reference_changes_never_prepare_a_native_command",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-today-unavailable": {
+    "file": "todo-today-unavailable.html",
+    "route": "/todo/today",
+    "state": "timezone-unavailable",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Missing_timezone_fails_the_whole_view_without_partial_tasks_and_invalid_dates_never_prepare",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-project-recovery": {
+    "file": "todo-saved-project-recovery.html",
+    "route": "/todo/projects",
+    "state": "complete-saved-query-review-from-Projects",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Saved_page_and_cross_page_native_recovery_show_complete_query_and_one_heading",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-today-habit": {
+    "file": "todo-today-habit.html",
+    "route": "/todo/today",
+    "state": "planned-habit-current-event",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Planned_Todo_completion_requires_projection_while_Habit_events_keep_their_existing_contract",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-page": {
+    "file": "todo-saved-page.html",
+    "route": "/todo/lists",
+    "state": "composed-saved-list-page-with-native-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Saved_page_and_cross_page_native_recovery_show_complete_query_and_one_heading",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-entrypoint": {
+    "file": "todo-saved-entrypoint.html",
+    "route": "/tasks",
+    "state": "direct-task-saved-list-navigation",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Saved_page_and_cross_page_native_recovery_show_complete_query_and_one_heading",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-entrypoint-source": {
+    "file": "todo-saved-entrypoint-source.html",
+    "route": "/tasks",
+    "state": "expanded-workspace-controls-and-navigation",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Saved_page_and_cross_page_native_recovery_show_complete_query_and_one_heading",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-today-review": {
+    "file": "todo-today-review.html",
+    "route": "/todo/today",
+    "state": "exact-occurrence-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Daily_action_reviews_exact_source_date_and_original_receipt_recovers_without_duplicate_occurrences",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-today-groups": {
+    "file": "todo-today-groups.html",
+    "route": "/todo/today",
+    "state": "planned-due-recorded-inactive",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Groups_unique_planned_deadline_and_due_rows_and_preserves_recorded_and_inactive_states_without_writes",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-archived": {
+    "file": "todo-saved-archived.html",
+    "route": "/todo/lists",
+    "state": "archived-selected-definition-without-fallback",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Archived_references_remain_explicit_and_archiving_the_selected_view_never_falls_back",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-today-empty": {
+    "file": "todo-today-empty.html",
+    "route": "/todo/today",
+    "state": "empty-selected-day",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "Empty_day_and_unavailable_account_are_distinct_and_paginated_rows_follow_current_revision",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "integration-management": {
+    "file": "integration-management.html",
+    "route": "/settings",
+    "state": "integration-management",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "Integration_management_requires_confirmation_and_keeps_grant_revocation_separate_from_deletion",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-unblocked": {
+    "file": "todo-saved-unblocked.html",
+    "route": "/todo/lists",
+    "state": "unblocked-active-Todo-stage-source",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Unblocked_source_resets_incompatible_fields_and_evaluates_dependencies_and_stage",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-tree-project": {
+    "file": "todo-tree-project.html",
+    "route": "/todo/projects",
+    "state": "cross-project-descendant-context",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Project_lists_keep_other_project_branch_context_and_bounded_parent_choices",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-tree-unavailable": {
+    "file": "todo-tree-unavailable.html",
+    "route": "/todo/tasks",
+    "state": "unavailable-exact-task-context",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Unknown_deep_link_recovers_to_roots_without_retaining_an_unavailable_error",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tasks-charts": {
+    "file": "tasks-charts.html",
+    "route": "/tasks",
+    "state": "cached-month-statistics",
+    "surfaces": [
+      "charts",
+      "tasks",
+      "filters"
+    ],
+    "interactionTest": "Task_statistics_render_history_charts_for_selected_period",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "workspace-renewal": {
+    "file": "workspace-renewal.html",
+    "route": "/settings",
+    "state": "workspace-renewal",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "ConnectedWorkspaceRenewalRequiresExplicitDataConsent",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-tree-move-review": {
+    "file": "todo-tree-move-review.html",
+    "route": "/todo/tasks",
+    "state": "same-name-exact-move-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Exact_moves_reject_cycles_recover_original_receipts_and_detach_without_project_or_descendant_cascade",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "connection-fresh-tab": {
+    "file": "connection-fresh-tab.html",
+    "route": "/settings",
+    "state": "unknown-access",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure",
+      "disabled-controls"
+    ],
+    "interactionTest": "Fresh_tab_shows_unknown_server_state_and_requires_consent_to_restore_access",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "settings-actions": {
+    "file": "settings-actions.html",
+    "route": "/settings",
+    "state": "settings-actions",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "Session_actions_keep_signout_and_checks_routes_with_keyboard_native_controls",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "settings-actions-long": {
+    "file": "settings-actions-long.html",
+    "route": "/settings",
+    "state": "settings-actions-long",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure"
+    ],
+    "interactionTest": "Session_actions_keep_signout_and_checks_routes_with_keyboard_native_controls",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-tree-retained": {
+    "file": "todo-tree-retained.html",
+    "route": "/todo/tasks",
+    "state": "expanded-archived-parent-context",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Retained_branches_expand_collapse_and_page_with_exact_parent_context_and_no_writes",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-unknown": {
+    "file": "todo-saved-unknown.html",
+    "route": "/todo/lists",
+    "state": "original-native-query-acceptance-unknown",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Lost_native_preparation_and_acceptance_recover_original_list_without_duplicating_tasks",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-unavailable": {
+    "file": "todo-saved-unavailable.html",
+    "route": "/todo/lists",
+    "state": "confirmed-native-save-with-unavailable-task-refresh",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Confirmed_save_with_failed_refresh_keeps_receipt_without_fabricated_empty_results",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-editor": {
+    "file": "todo-saved-editor.html",
+    "route": "/todo/lists",
+    "state": "long-name-full-fixed-filter-editor",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Create_reviews_all_fixed_filters_and_reads_exact_current_tasks_without_duplication",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-review": {
+    "file": "todo-saved-review.html",
+    "route": "/todo/lists",
+    "state": "complete-query-and-identity-review",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Create_reviews_all_fixed_filters_and_reads_exact_current_tasks_without_duplication",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-saved-results": {
+    "file": "todo-saved-results.html",
+    "route": "/todo/lists",
+    "state": "saved-fixed-query-and-matching-task",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls",
+      "error",
+      "navigation"
+    ],
+    "interactionTest": "Create_reviews_all_fixed_filters_and_reads_exact_current_tasks_without_duplication",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "canonical-daily-preview": {
+    "file": "canonical-daily-preview.html",
+    "route": "/tasks",
+    "state": "canonical-daily-preview",
+    "surfaces": [
+      "form",
+      "actions",
+      "disclosure",
+      "confirmation"
+    ],
+    "interactionTest": "NativeCreationAndArchiveShowReviewAndRetainHistory",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-daily-create-monthly": {
+    "file": "todo-daily-create-monthly.html",
+    "route": "/tasks",
+    "state": "explicit-monthly-fixed-zone-rule",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "New_Daily_reviews_complete_schedule_and_refuses_missing_or_unrepresentable_rules",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "todo-daily-create-weekly": {
+    "file": "todo-daily-create-weekly.html",
+    "route": "/tasks",
+    "state": "explicit-weekly-fixed-zone-rule",
+    "surfaces": [
+      "form",
+      "actions",
+      "confirmation",
+      "disabled-controls"
+    ],
+    "interactionTest": "New_Daily_reviews_complete_schedule_and_refuses_missing_or_unrepresentable_rules",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}

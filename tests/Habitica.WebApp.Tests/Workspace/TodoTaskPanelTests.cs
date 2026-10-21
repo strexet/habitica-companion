@@ -102,7 +102,10 @@ public sealed class TodoTaskPanelTests : BunitContext
     {
         var (f, _) = Setup(); await f.Controller.CreateLocalAsync();
         var cut = Render<TodoTaskPanel>(p => p.Add(x => x.Kind, kind));
-        cut.Find("[data-testid='todo-title']").Input("Synthetic " + kind); cut.Find("form").Submit();
+        cut.Find("[data-testid='todo-title']").Input("Synthetic " + kind);
+        if (kind == CompanionTaskKind.Daily) { cut.Find("[data-testid='daily-start']").Change("2026-10-19"); Save("todo-daily-create-form", cut.Markup, "explicit-daily-schedule", nameof(Category_specific_primary_actions_record_reviewed_Daily_occurrence_or_Habit_event)); }
+        cut.Find("form").Submit();
+        if (kind == CompanionTaskKind.Daily) { Assert.True(f.Controller.Preview!.MayAffectHabitica); Save("todo-daily-create-review", cut.Markup, "reviewed-daily-and-penalties", nameof(Category_specific_primary_actions_record_reviewed_Daily_occurrence_or_Habit_event)); }
         if (kind == CompanionTaskKind.Habit)
         {
             var directions = f.Controller.Preview!.Command.Patch!.HabiticaDetails!;
@@ -112,7 +115,7 @@ public sealed class TodoTaskPanelTests : BunitContext
         }
         cut.Find("[data-testid='todo-confirm']").Click();
         var task = Assert.Single(f.Controller.Snapshot!.Document.Tasks); Assert.Equal(kind, task.Kind);
-        Assert.Null(task.Recurrence); Assert.Empty(cut.FindAll("[data-testid='todo-project']"));
+        if (kind == CompanionTaskKind.Daily) Assert.NotNull(task.Recurrence); else Assert.Null(task.Recurrence); Assert.Empty(cut.FindAll("[data-testid='todo-project']"));
         if (kind == CompanionTaskKind.Daily)
         {
             cut.Find($"[data-testid='todo-complete-{task.Id:D}']").Click();
@@ -125,7 +128,7 @@ public sealed class TodoTaskPanelTests : BunitContext
             Assert.Equal(new DateOnly(2026, 10, 20), f.Controller.Preview!.Command.OccurrenceDate);
         }
         else { cut.Find($"[data-testid='todo-up-{task.Id:D}']").Click(); Assert.Equal(HabitScoreDirection.Up, f.Controller.Preview!.Command.Direction); }
-        Assert.Equal(kind == CompanionTaskKind.Habit, f.Controller.Preview!.MayAffectHabitica); cut.Find("[data-testid='todo-confirm']").Click();
+        Assert.True(f.Controller.Preview!.MayAffectHabitica); cut.Find("[data-testid='todo-confirm']").Click();
         if (kind == CompanionTaskKind.Daily) Assert.Single(f.Controller.Snapshot.Document.Completions);
         else Assert.Single(f.Controller.Snapshot.Document.HabitScores);
         Assert.Empty(f.Client.AcceptedIds);
@@ -237,4 +240,29 @@ public sealed class TodoTaskPanelTests : BunitContext
         Assert.Contains("pending", cut.Find("[data-testid='todo-receipt']").TextContent);
         Assert.False(cut.Find("[data-testid='todo-project']").HasAttribute("checked"));
     }
+    [Theory]
+    [InlineData("Weekly")]
+    [InlineData("Monthly")]
+    public async Task New_Daily_reviews_complete_schedule_and_refuses_missing_or_unrepresentable_rules(string frequency)
+    {
+        var (f, _) = Setup(); await f.Controller.CreateLocalAsync();
+        var cut = Render<TodoTaskPanel>(p => p.Add(x => x.Kind, CompanionTaskKind.Daily));
+        cut.Find("[data-testid='todo-title']").Input(new string('W', 130) + " reviewed Daily");
+        cut.Find("form").Submit(); Assert.Null(f.Controller.Preview); Assert.Empty(f.Controller.Snapshot!.Commands);
+        cut.Find("[data-testid='daily-start']").Change("2026-10-19");
+        cut.Find("[data-testid='daily-frequency']").Change(frequency);
+        cut.Find("[data-testid='daily-interval']").Change("2");
+        if (frequency == "Weekly") cut.Find("[data-testid='daily-creation-fields'] input[type=checkbox]").Change(true);
+        else cut.Find("[data-testid='daily-month-days']").Change("31, 15");
+        cut.Find("[data-testid='daily-zone']").Change("Europe/Paris");
+        cut.Find("form").Submit(); Assert.Null(f.Controller.Preview); Assert.Empty(f.Controller.Snapshot.Commands);
+        cut.Find("[data-testid='daily-zone']").Change("Etc/GMT-7");
+        Save("todo-daily-create-" + frequency.ToLowerInvariant(), cut.Markup, "explicit-" + frequency.ToLowerInvariant() + "-fixed-zone-rule", nameof(New_Daily_reviews_complete_schedule_and_refuses_missing_or_unrepresentable_rules));
+        cut.Find("form").Submit(); var preview = f.Controller.Preview!;
+        Assert.True(preview.MayAffectHabitica); Assert.Equal(2, preview.Command.Patch!.Recurrence!.Interval);
+        Assert.Equal("Etc/GMT-7", preview.Command.Patch.Recurrence.TimeZoneId);
+        Assert.Contains("future missed Dailies", cut.Find("[data-testid='todo-review']").TextContent, StringComparison.OrdinalIgnoreCase);
+        Assert.Empty(f.Controller.Snapshot.Commands); Assert.Empty(f.Client.AcceptedIds);
+    }
+
 }

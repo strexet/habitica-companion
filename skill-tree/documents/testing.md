@@ -411,3 +411,10 @@ WorkspaceCommandTests and projection-repair.test.mjs consume projection-command-
 Shared habit-commands-v9.json cases cover all Boolean direction combinations across C# and TypeScript. Application/Worker tests qualify create-only intent, effective defaults, direction refusal, unsupported fields and legacy unchanged-Habit repair. Synthetic SDK/private-gateway tests verify actual type habit creation, ownership, returned fields, later positive/negative scoring, original create uncertainty, explicit positive reconciliation without another POST, cross-profile denial and revoked consent. Workspace SDK schemas advertise optional Boolean directions.
 
 TodoTaskPanelTests captures Habit creation review and a long Habit row with an unavailable direction. Rendered qualification spans six responsive widths, six themes and 100/200-percent text, with seeded overflow/overlap/contrast controls. Component tests establish handlers and disabled controls; static fixtures establish rendering. Physical devices, assistive technology and live game effects remain unqualified.
+
+
+## Daily counterpart qualification
+
+daily-projection-v1.json is consumed by C# and Worker tests for interval days, unordered weekdays, Monday multiweek anchors, month gaps, account offset conversion and explicit unsupported cases. Daily creation tests verify one typed create effect, no historical activity, complete schedule fingerprints, original-alias matching, changed-schedule refusal and later due-day scoring. Synthetic Auth/Workspace integration covers success, lost response recovery and expired account observations without real credentials or Cron calls.
+
+Rendered fixtures cover the direct daily/weekly/monthly capture form, Daily review and advanced-panel review across six widths, six themes and 100/200-percent text. Component handlers separately cover missing dates, unsupported zones and retained draft input. Rendered browser evidence does not qualify physical devices, assistive technology, actual Habitica mutation, travel or DST. Earlier native recurrence tests use explicit historical fixtures where native-only lifecycle behavior is required.

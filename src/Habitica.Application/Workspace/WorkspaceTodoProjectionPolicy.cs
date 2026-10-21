@@ -10,9 +10,11 @@ public static class WorkspaceTodoProjectionPolicy
         command.Operation == WorkspaceOperation.CreateTodo ||
         command.Operation is WorkspaceOperation.UpdateTask or WorkspaceOperation.CompleteTask &&
         document.Tasks.Any(task => task.Id == command.TaskId && task.Kind == CompanionTaskKind.Todo);
+    public const string DailyVersion = "daily-required-v1";
     public const string HabitVersion = "habit-required-v1";
     public static WorkspaceCommand Prepare(WorkspaceDocument document, WorkspaceCommand command)
     {
+        if (command.Operation == WorkspaceOperation.CreateDaily) return command with { ProjectToHabitica = true };
         if (command.Operation == WorkspaceOperation.CreateHabit && command.Patch is { } patch)
         {
             var details = patch.HabiticaDetails ?? new HabiticaTaskDetails();
@@ -22,6 +24,7 @@ public static class WorkspaceTodoProjectionPolicy
     }
     public static string? Rejection(WorkspaceDocument document, WorkspaceCommand command)
     {
+        if (command.Operation == WorkspaceOperation.CreateDaily) return command.ProjectToHabitica ? DailyProjectionSchedule.RuleFailure(command.Patch?.Recurrence) : "daily_projection_required";
         if (command.Operation == WorkspaceOperation.CreateHabit) return command.ProjectToHabitica ? null : "habit_projection_required";
         if (!Applies(document, command)) return null;
         if (!command.ProjectToHabitica) return "todo_projection_required";

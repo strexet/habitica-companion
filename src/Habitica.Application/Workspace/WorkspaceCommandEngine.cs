@@ -126,12 +126,17 @@ public static class WorkspaceCommandEngine
                 if (current.Recurrence is null) return Reject(SubmissionDisposition.Invalid, "recurrence_required");
             }
         }
+        if (command.Operation == WorkspaceOperation.CreateDaily && command.ProjectToHabitica)
+        {
+            if (DailyProjectionSchedule.RuleFailure(patch?.Recurrence) is { } scheduleFailure) return Reject(SubmissionDisposition.Invalid, scheduleFailure);
+            if (patch!.Deadline is not null) return Reject(SubmissionDisposition.Invalid, "unsupported_daily_fields");
+        }
         var editsRecurrence = patch?.Recurrence is not null || patch?.ClearRecurrence == true;
         if (editsRecurrence && (creating ? command.Operation != WorkspaceOperation.CreateDaily || patch!.ClearRecurrence : current!.Kind != CompanionTaskKind.Daily))
             return Reject(SubmissionDisposition.Invalid, "recurrence_requires_daily");
-        if (editsRecurrence && (command.ProjectToHabitica || mapping is not null && (mapping.State != ProjectionState.Unlinked || mapping.HabiticaTaskId is not null)))
+        if (editsRecurrence && !creating && (command.ProjectToHabitica || mapping is not null && (mapping.State != ProjectionState.Unlinked || mapping.HabiticaTaskId is not null)))
             return Reject(SubmissionDisposition.Invalid, "unsupported_projection");
-        if ((command.Operation is WorkspaceOperation.CreateDaily or WorkspaceOperation.DeleteTask)
+        if (command.Operation == WorkspaceOperation.DeleteTask
             && (command.ProjectToHabitica || mapping is not null && (mapping.State != ProjectionState.Unlinked || mapping.HabiticaTaskId is not null)))
             return Reject(SubmissionDisposition.Invalid, "unsupported_projection");
         if (command.Operation == WorkspaceOperation.CompleteTask && (current!.Kind == CompanionTaskKind.Habit || current.State is CompanionTaskState.Completed or CompanionTaskState.Cancelled or CompanionTaskState.Paused))

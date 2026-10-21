@@ -82,8 +82,12 @@ public static class WorkspaceJournalValidation
                     || entry.TaskSnapshot is not { Kind: CompanionTaskKind.Todo or CompanionTaskKind.Habit, State: CompanionTaskState.Active, IsArchived: false }
                     || !restorations.TryGetValue(entry.Command.Id,out var restoration) || restoration.TaskId != entry.Command.TaskId
                     || restoration.CompletionId != target.CompletionId || restoration.Revision != entry.Command.ExpectedRevision+1 || restoration.RestoredAtUtc != entry.AcceptedAtUtc)) return false;
+            if (entry.Command.Operation == WorkspaceOperation.CreateDaily && entry.Command.ProjectToHabitica
+                && (DailyProjectionSchedule.RuleFailure(entry.Command.Patch?.Recurrence) is not null || entry.Command.Patch?.Deadline is not null
+                    || entry.TaskSnapshot is not { Kind: CompanionTaskKind.Daily, State: CompanionTaskState.Active, IsArchived: false }
+                    || entry.Effects.Count != 1 || entry.Effects[0] != ProjectionEffectKind.Create)) return false;
             if ((entry.Command.Patch?.Recurrence is not null || entry.Command.Patch?.ClearRecurrence == true)
-                && (entry.Command.ProjectToHabitica || entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0
+                && ((entry.Command.ProjectToHabitica ? entry.Command.Operation != WorkspaceOperation.CreateDaily || DailyProjectionSchedule.RuleFailure(entry.Command.Patch.Recurrence) is not null || entry.Command.Patch.Deadline is not null || entry.Effects.Count != 1 || entry.Effects[0] != ProjectionEffectKind.Create : entry.ProjectionState != ProjectionCommandState.NotRequested || entry.Effects.Count != 0)
                     || entry.Command.Operation is not (WorkspaceOperation.CreateDaily or WorkspaceOperation.UpdateTask)
                     || entry.Command.Operation == WorkspaceOperation.CreateDaily && entry.Command.Patch.ClearRecurrence
                     || entry.TaskSnapshot?.Kind != CompanionTaskKind.Daily)) return false;
