@@ -1543,6 +1543,8 @@ input[type="radio"] {
 
 .spell-card-section {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    overflow-wrap: anywhere;
     gap: var(--space-sm);
     min-width: 0;
     padding: 1rem 1.15rem;
@@ -1592,6 +1594,7 @@ input[type="radio"] {
 
 .spell-cast-status {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.75rem;
     min-width: 0;
 }
@@ -1627,6 +1630,8 @@ input[type="radio"] {
 
 .spell-mana-preview {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
     gap: 0.45rem;
     padding: 0.75rem;
     border: 1px solid rgba(45, 116, 110, 0.14);
@@ -1641,6 +1646,7 @@ input[type="radio"] {
 
 .spell-mana-preview-row {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: 1rem;
     color: var(--text-muted, var(--ink));
@@ -1683,7 +1689,7 @@ input[type="radio"] {
 
 .spell-action-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
     gap: 0.75rem;
     align-items: center;
 }
@@ -4625,3 +4631,11 @@ code {
 
 /* Read full retained conversion notes without horizontal overflow. */
 .conversion-notes { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; margin-block: .5rem 1rem; font: inherit; }
+
+/* Spell controls must fit their cards when text grows independently of the viewport. */
+.spell-card-section > *, .spell-action-row { min-width: 0; }
+.spell-recommendation-selector { max-width: 100%; }
+@media (max-width: 760px) {
+    .spell-card-summary, .spell-mana-bar, .spell-cast-controls, .spell-cast-inputs,
+    .spell-action-row, .spell-cron-warning-actions, .spell-recommendation { grid-template-columns: minmax(0, 1fr); }
+}

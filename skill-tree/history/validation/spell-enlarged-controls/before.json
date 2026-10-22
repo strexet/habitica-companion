@@ -1,0 +1,805 @@
+{
+  "summary": {
+    "cases": 216,
+    "errorKinds": [
+      "control-bounds"
+    ],
+    "errors": 162,
+    "harnessErrors": 0,
+    "unqualifiedSurfaces": 0
+  },
+  "failed_cases": [
+    {
+      "fixture": "/spell-outcome-equipment-unknown.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "gryphy-light",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-equipment-unknown.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "gryphy-dark",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-equipment-unknown.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "toxic-swamp",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-equipment-unknown.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "boss-battle",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-equipment-unknown.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "generated-calm",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-equipment-unknown.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "generated-moderate",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-cleanup-failed.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "gryphy-light",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-cleanup-failed.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "gryphy-dark",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-cleanup-failed.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "toxic-swamp",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-cleanup-failed.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "boss-battle",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-cleanup-failed.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "generated-calm",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-cleanup-failed.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "generated-moderate",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-partial.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "gryphy-light",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-partial.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "gryphy-dark",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-partial.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "toxic-swamp",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-partial.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "boss-battle",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-partial.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "generated-calm",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    },
+    {
+      "fixture": "/spell-outcome-partial.html",
+      "width": 360,
+      "text_percent": 200,
+      "theme": "generated-moderate",
+      "errors": [
+        {
+          "id": "spend-all-mana-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spell-recommendation-selector-fireball",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-mpheal",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-earth",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "spend-all-mana-frost",
+          "kind": "control-bounds"
+        },
+        {
+          "id": "cast-spell-frost",
+          "kind": "control-bounds"
+        }
+      ]
+    }
+  ]
+}

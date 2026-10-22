@@ -1,0 +1,60 @@
+{
+  "task_id": "T-1f306466-4618-4f88-b14b-589b295acbd2",
+  "root_task_id": "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
+  "recorded_at": "2026-10-22T16:02:51.302748+00:00",
+  "scope": "Shrinkable spell card/status tracks, bounded action tracks, wrapped mana rows and narrow grid sizing.",
+  "before": {
+    "cases": 216,
+    "errorKinds": [
+      "control-bounds"
+    ],
+    "errors": 162,
+    "harnessErrors": 0,
+    "unqualifiedSurfaces": 0
+  },
+  "browser": {
+    "cases": 432,
+    "states": 6,
+    "themes": 6,
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "text_percent": [
+      100,
+      200
+    ],
+    "errors": 0,
+    "harness_errors": 0,
+    "unqualified_surfaces": 0,
+    "seeded_controls": 2,
+    "seeded_error_kinds": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ]
+  },
+  "matching_source_assets": true,
+  "publish_sha256": "607a702fc11d065815c92f2231f1c854abfd009e2f743caa8a50ab841abc733e",
+  "component_evidence": {
+    "solution_tests": 1082,
+    "sha256": "16924f19cb36ead8e638f76ccac1bed9651c524a5f35921d5fae96baa7a8c32d",
+    "qualification_fixture_tests": 6,
+    "fixture_sha256": "832841a709fa63bfbfc0898ab11424ffd3f962f42ec11e2a95e9801c44f9a643"
+  },
+  "source_fingerprints": {
+    "src/Habitica.WebApp/wwwroot/css/app.css": "b1d5100181e781337e7de8bde3f40d00dabfb250237795c2fe047251bffb9ff3",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "b7476ce6f6e5766f604e53a0ecdf19cb68dc775a911c8a2276fdf8a3e22d0bd2",
+    "tests/browser-qualification/matrix.html": "36839e584b3fa2f477fbd0d2fabbc24072da8a8f3322db075902d67be25ed579"
+  },
+  "limitations": [
+    "CSS-only correction qualified against the active root13 working overlay; parent spell orchestration remains unaccepted by this leaf outcome.",
+    "Physical devices, assistive technologies, hosted rendering and live account effects remain unqualified.",
+    "No detector or accepted overflow exception was changed. No deployment occurred."
+  ]
+}

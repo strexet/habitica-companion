@@ -1,0 +1,18 @@
+{
+  "visual-mobile.html": "e249d84282b73b4119aaa411ae6394e5d9d99a4303f704bbc1d87f0e0b7fc37f",
+  "spell-outcome-partial.html": "badf3cd3e6830a8c6abdf0a3d9e8e8e8618f52c43565c9e56276919b44088b93",
+  "spell-outcome-cleanup-failed.html": "9d688ce7850e3d94367b88c783eb70887d9a6a1207bf804deb06157a7584e71e",
+  "spell-outcome-refresh-failed.html": "e17fe2dc279a9c47e933cafa2695af0bbd185acd66370f2f357f0ce17ea67e49",
+  "qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+  "mud.css": "e14e158cddb262e4afd212568dfacfb3d89216c6795b46225d1e004271642c64",
+  "matrix.html": "36839e584b3fa2f477fbd0d2fabbc24072da8a8f3322db075902d67be25ed579",
+  "route-inventory.json": "65362158847ed30447ec5344f29e84df4ef6c32e2329311ea1af619b90ae0a6f",
+  "app.css": "b1d5100181e781337e7de8bde3f40d00dabfb250237795c2fe047251bffb9ff3",
+  "spell-outcome-unknown.html": "d5c0da525ba13600ce7781daf83d26fabc862abf2a60aa681481d1f0599efe6a",
+  "schemes.json": "4088181304e6be006bb7a4cae9e690d77b41e026b4c1885da5b28a338b88ad49",
+  "colorSchemes.js": "8462ddaa89004ccf1c99ba78fc909d3d0474291d80187deed343b0c18905c387",
+  "spell-outcome-cancelled.html": "48fdc2a1b5d65b45c19fcea27e65f9b767ecf719fb5ec63e4da2c551a7abb36b",
+  "coverage.json": "13c091b5a743a94e684cddf94d600cafc3a16d7de2cc5fb2e31355635d93d2c5",
+  "spell-outcome-equipment-unknown.html": "913dd3ae14e2351f12be8e55a99dd8c28e5a1235c0e731319bcfb400441cab93",
+  "qualification-frame.mjs": "b7476ce6f6e5766f604e53a0ecdf19cb68dc775a911c8a2276fdf8a3e22d0bd2"
+}
