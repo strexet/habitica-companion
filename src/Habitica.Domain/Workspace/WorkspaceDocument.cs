@@ -96,4 +96,6 @@ public sealed record WorkspaceDocument
     public IReadOnlyList<HabiticaProjection> Projections { get; init; } = Array.Empty<HabiticaProjection>();
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public WorkspaceTagLedger? TagLedger { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<WorkspaceChecklistConversion>? ChecklistConversions { get; init; }
 }

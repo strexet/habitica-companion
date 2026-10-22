@@ -1,3 +1,4 @@
+import {validateConversionHashes} from '../../shared/checklist-conversion.ts';
 import {dailyRuleFailure} from '../../shared/daily-projection.ts';
 import {executionStage,todoStageMatches} from '../../shared/todo-stage.ts';
 import {todoStateMatches} from '../../shared/todo-state.ts';
@@ -17,9 +18,9 @@ const kinds=['accepted','leaseAcquired','leaseExpired','dispatched','resultKnown
 function valid(ok:unknown):asserts ok {if(!ok)throw new WorkspaceError('invalid_archive',422);}
 function timestamp(v:unknown):v is string{try{return utcTicks(v)!==utcTicks('0001-01-01T00:00:00Z');}catch{return false;}}
 export async function journal(value:unknown):Promise<Journal>{
- const input=object(value,['document','storeVersion','commands','events','authority']);const document=workspaceDocument(input.document);
+ const input=object(value,['document','storeVersion','commands','events','authority']);const document=workspaceDocument(input.document);await validateConversionHashes(document);
  valid(Number.isSafeInteger(input.storeVersion)&&Number(input.storeVersion)>=document.revision&&Array.isArray(input.commands));
- const organizationIds=new Set((document.organizationHistory??[]).map(entry=>entry.command.id)),organizationRevisions=new Set((document.organizationHistory??[]).map(entry=>entry.snapshot.revision));
+ const organizationIds=new Set([...(document.organizationHistory??[]).map(entry=>entry.command.id),...(document.checklistConversions??[]).flatMap(row=>row.receipts.map(receipt=>receipt.command.id))]),organizationRevisions=new Set((document.organizationHistory??[]).map(entry=>entry.snapshot.revision));
  await validateOrganizationHistoryHashes(document);
  const ids=new Set<string>();const commands:CommandEntry[]=[];
  for(const raw of input.commands){

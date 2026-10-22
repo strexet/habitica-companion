@@ -379,3 +379,8 @@ No migration, live scope upgrade, consent activation or deployment ran during th
 ## Group-tag controls release dependency
 
 The local tag UI/MCP release requires Auth migration 0009, Workspace migration 0008 and Workspace migration 0009, matching Auth/Workspace/MCP bundles and the matching browser application. Dry-run builds and synthetic tests do not publish resources or apply remote migrations. Existing grants retain original scopes; requested tag operations need normal reauthorization plus separate owner tag consent. No release activates consent or executor automatically. Confirm matching schema/tool discovery and explicit consent in the separately authorized live qualification before claiming production support.
+
+
+## Checklist conversion release dependency
+
+The optional checklistConversions document field requires matching browser, Workspace, Auth and MCP readers before cloud conversion is offered. Older strict readers can reject documents containing the new field. Deploy matching qualified assets as one release sequence; do not expose a backend-only conversion release. Existing preparations retain accepted conversion bindings, so no new D1 migration, secret, feature flag or enrollment is required for the conversion backend. Existing habitica.tasks.write and workspace.organization.write grants are both required for agent writes; owner tag consent and executor remain separate. Current local dry builds and synthetic fixtures grant no deployment or live-account qualification.

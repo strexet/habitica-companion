@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Convert checklist projects through a resumable identity ledger
-
-```yaml
-id: T-1cb1e7eb-8599-428b-9c23-52509b926113
-priority: 103
-status: Ready
-parent_pending_ids: ["P-7414291b-9448-4d98-884c-97b582cd2d67"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-1cb1e7eb-8599-428b-9c23-52509b926113
-related_task_id: null
-relation: main
-depends_on: ["T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54", "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94"]
-```
-
-Goal:
-- Provide reviewed resumable checklist-to-project conversion that reuses existing verified targets and preserves all content/history.
-Current behavior:
-- The codev project was manually copied into ten independent native tasks. No product operation records durable source-checklist-item to target-task identity, verified projections and final conversion completeness.
-Desired behavior:
-- Re-entering the conversion resumes exact existing identities, reports every verified or unresolved target and cannot create silent duplicates or retroactive rewards.
-Touch:
-- Workspace domain conversion records/commands, C#/Worker command engines and journals, project APIs/MCP, export validation and conversion fixtures.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Bind exact source Todo/project/checklist revision, source item IDs and target project/task IDs. Preserve full source descriptions, native urgency, task-specific notes and project tags. Checklist checkmarks may mean plan intake rather than task completion: require an explicit per-item state mapping in the preview. Reuse proven codev targets rather than copy again; no hardcoded owner IDs in reusable code. Completed targets retain recorded provenance and actual historical-time uncertainty. Missing historical remote matches remain a review requirement; no automatic scoring, fake completion patch or retired source before all prerequisites are verified.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Synthetic fixtures reproduce 10-item conversion with eight active/two archived targets, full notes, source checkmarks with different meaning, duplicate names, partial restart, existing target reuse, source edits, lost acknowledgement and missing historical projections.
-Acceptance:
-- Re-entering the conversion resumes exact existing identities, reports every verified or unresolved target and cannot create silent duplicates or retroactive rewards.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Expose checklist conversion preview and resumable project progress
 
 ```yaml

@@ -1,3 +1,4 @@
+import {validateConversionHashes} from '../../shared/checklist-conversion.ts';
 import {dailyRuleFailure} from '../../shared/daily-projection.ts';
 import {validateOrganizationHistoryHashes} from '../../shared/workspace-organization.ts';
 import {applyRelationships,relationshipReferencesAvailable} from '../../shared/task-relationships.ts';
@@ -15,7 +16,7 @@ export interface CommandEntry {
 export interface JournalEvent { id: string; commandId: string; kind: string; atUtc: string; confirmedEffects: number; failure: string; attemptToken: string | null; evidenceReference: string | null }
 export async function accept(document: WorkspaceDocument, command: WorkspaceCommand, now: string): Promise<{ document: WorkspaceDocument; entry: CommandEntry; event: JournalEvent }> {
  document = workspaceDocument(document);
- await validateOrganizationHistoryHashes(document);
+ await validateOrganizationHistoryHashes(document);await validateConversionHashes(document);
  if (command.workspaceId !== document.id) throw new WorkspaceError("workspace_mismatch", 409);
  if(document.organizationHistory?.some(entry=>entry.command.id===command.id))throw new WorkspaceError('command_id_reused',409);
  if (command.expectedRevision !== document.revision) throw new WorkspaceError("stale_revision", 409);

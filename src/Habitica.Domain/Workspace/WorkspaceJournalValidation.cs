@@ -15,7 +15,7 @@ public static class WorkspaceJournalValidation
         var organizationHistory = snapshot.Document.OrganizationHistory ?? Array.Empty<WorkspaceOrganizationEntry>();
         if (organizationHistory.Any(entry => entry.PayloadHash != WorkspaceOrganizationCommands.Hash(entry.Command))) return false;
         var organizationRevisions = organizationHistory.Select(entry => entry.Snapshot.Revision).ToHashSet();
-        var organizationIds = organizationHistory.Select(entry => entry.Command.Id).ToHashSet();
+        var organizationIds = organizationHistory.Select(entry => entry.Command.Id).Concat((snapshot.Document.ChecklistConversions??[]).SelectMany(row=>row.Receipts.Select(receipt=>receipt.Command.Id))).ToHashSet();
         var ids = new HashSet<Guid>();
         var restorations = (snapshot.Document.Restorations ?? Array.Empty<TaskRestoration>()).ToDictionary(value => value.CommandId);
         foreach (var entry in snapshot.Commands)
