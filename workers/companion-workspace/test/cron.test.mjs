@@ -134,3 +134,12 @@ test('credential re-enrollment cannot turn an inaccessible original Cron receipt
 test('successful original-refusal receipt lookup still resolves an uncertain Cron acknowledgement without dispatch',async t=>{
  const s=await setup(t),p=await s.prepare();s.state.task.completed=true;s.state.lost=true;assert.equal((await s.execute(p)).structuredContent.outcomeUnknown,true);const receipt=(await s.tool(0,'get_cron_command',{actionId:p.actionId})).structuredContent;assert.equal(receipt.status,'stopped');assert.equal(receipt.outcomeUnknown,false);assert.equal(receipt.failure,'cron_precondition_changed');assert.equal(s.state.posts,0);
 });
+
+test('durable unknown tag metadata fences Cron and spells before any gameplay dispatch',async t=>{
+ const s=await setup(t),cron=await s.prepare();
+ assert.equal((await s.http(0,'/party/consent',{consentVersion:'party-planning-v1',expectedPartyId:party})).status,200);
+ const spell=await s.tool(0,'prepare_spell_cast',{requestId:crypto.randomUUID(),spellId:'healAll',count:1});assert.notEqual(spell.isError,true,JSON.stringify(spell));
+ const row=await s.f.workspaceDb.prepare('SELECT * FROM workspaces WHERE profile_id=?').bind(s.profiles[0].profileId).first();
+ await s.f.workspaceDb.prepare(`INSERT INTO workspace_tag_work(profile_id,work_id,workspace_id,connection_id,access_epoch,command_id,source_revision,intent_id,desired_hash,work_json,state,created_at_utc,updated_at_utc) VALUES(?,?,?,?,?,?,1,?,'synthetic','{}','unknownOutcome',?,?)`).bind(row.profile_id,crypto.randomUUID(),row.workspace_id,row.connection_id,row.access_epoch,crypto.randomUUID(),crypto.randomUUID(),new Date().toISOString(),new Date().toISOString()).run();
+ assert.equal((await s.execute(cron)).isError,true);assert.equal((await s.tool(0,'execute_spell_cast',{actionId:spell.structuredContent.actionId,executeToken:spell.structuredContent.executeToken})).isError,true);assert.equal(s.state.posts,0);
+});

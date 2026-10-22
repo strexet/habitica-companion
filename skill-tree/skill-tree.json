@@ -317,11 +317,11 @@
     "skill-tree/documents/companion-workspace-contract.md": "af9ef704e466b16fdb7eabdc77d2e3f2a5d44abdc4058d65ba0d77ec4fd7a396",
     "skill-tree/documents/cron.md": "918ee03ea0ef68b20de7311b9b5131dda1f5be6e2d87ec9fc35b6e20f6e142f2",
     "skill-tree/documents/dependencies.md": "ef0a360701ccfcc93ec7f725f1b7a90c4dd2d10567ddd26e58d264977cc0d6e1",
-    "skill-tree/documents/deploy-cloudflare-pages.md": "e7c3be006e8d90b44cb80dd159d97f37389d103794808e08c25aa70a3c3666e9",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "036eef2e6e31ec661d5a245c8abbb143499935f1622df1e60ce67c6a6031b3e5",
     "skill-tree/documents/documents-snapshot.md": "6f79e4202c9cfc84df57641150d8a2fce2ab5d9670f6efe4d05eec00f89d73c9",
-    "skill-tree/documents/features.md": "be9eaa8a9765f324e5c229e42b39269f27472ab511130a795eabfe942a202c89",
-    "skill-tree/documents/future.md": "7bed5e536ba235e83c8093194a2ce0d18694cb89a555dcc3ee29d946b34ee46d",
-    "skill-tree/documents/habitica-api.md": "cca16935933207bde86c5cb788863214b0f229a8a4269a327070112aaef71ea2",
+    "skill-tree/documents/features.md": "2e39567220fb4df2d76675fb1bd25361c9ee3f5667604ef86ff388fe3052ba43",
+    "skill-tree/documents/future.md": "a0d54e9ac76b2bbe8349a25b88f54febcfd42f43235205ec25c66cb4335f6e6c",
+    "skill-tree/documents/habitica-api.md": "4df507812732568b33e35dc672ec999dfde1cb9769ba91c3995945d270f017b5",
     "skill-tree/documents/habitica-deeplinks.md": "37809f11086587ab474caeab319939e444de7701e9ce19301b8e00ebc1bf9fc7",
     "skill-tree/documents/habitica-tool-references.md": "365f6d395422ba7444fdfe3c61304ef0f86f5069be76066ba67f6378d1c0883b",
     "skill-tree/documents/navigation-study.md": "bb1fcba3b368720821eedc846da63e92fdfac6ef0007ab4357cca24cced039ad",
@@ -329,9 +329,9 @@
     "skill-tree/documents/repository-map.md": "ceb96bc420dfd52248892e032719177f459460911761c1a7698829ed5321e3fe",
     "skill-tree/documents/rules.md": "c23301935a897fce47325147efb02f0fb593314aea31cfbc46d62f2edb9950e2",
     "skill-tree/documents/skill-tree-workflow-proposals.md": "35d9e950e9cc7a22e2b1765db8c2e00355be5cda6be170f9e249ab7e6c5440d1",
-    "skill-tree/documents/technical.md": "d284d98d5c723c78bfe97396be8b8e728befaec6d3c92a3bed82ce3d7e1cf95d",
-    "skill-tree/documents/testing.md": "582cef794dc340941b360fcd6fdb36bd814aee26f9f3c292f04c03a406c67f02",
-    "skill-tree/documents/ux-ui-manifest.md": "85aca362ed049d213580aa8aca72d901408a8c76c3b0a5b93fcc20e93d2c275f"
+    "skill-tree/documents/technical.md": "328487f866c44501bc37ea2030a52d4b06e72440fff1bdc15395f73457ee7675",
+    "skill-tree/documents/testing.md": "d17540ef1e04c35024519c262e4c1eae625f744607713370413edecece3e4e33",
+    "skill-tree/documents/ux-ui-manifest.md": "33e9ee202933ce092a4021cac2a44b5c0b5dbc3c89910f65366a9eba2df954ba"
   },
   "state": "skill-tree/documents/future.json",
   "validation_commands": [

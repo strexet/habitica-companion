@@ -37,7 +37,7 @@ export async function tagOperation(request:Request,env:AuthEnv):Promise<Response
  let who:Who|undefined,attemptId:string|undefined,lease:string|undefined,reserved=false;
  try{
   if(!env.WORKSPACE_ENABLED||!env.PROJECTION_ENABLED||request.method!=='POST')throw new WorkspaceError('unauthorized',401);
-  const input=object(await workspaceJson(request,65536),['profileId','connectionId','context','operation','arguments','attemptId','attemptAtUtc','automated']);
+  const input=object(await workspaceJson(request,65536),['profileId','connectionId','context','operation','arguments','attemptId','attemptAtUtc','automated','expectedConsentEpoch','requiredGrantEpoch']);
   if(typeof input.profileId!=='string'||!/^prf_[A-Za-z0-9_-]{43}$/.test(input.profileId)||typeof input.automated!=='boolean')throw new WorkspaceError('invalid_request',422);
   who={profileId:input.profileId,connectionId:uuid(input.connectionId)};const profile=await activeProfile(env,who.profileId,who.connectionId);
   const context=tagContext(input.context),contextHash=await workspaceTokenHash(JSON.stringify(context)),operation=input.operation;
@@ -58,6 +58,7 @@ export async function tagOperation(request:Request,env:AuthEnv):Promise<Response
    if(unresolved)throw new WorkspaceError('unknown_outcome_pending',409);
   }else if(input.attemptId!==undefined||input.attemptAtUtc!==undefined)throw new WorkspaceError('invalid_request',422);
   const consent=await requireTagConsent(env,who.profileId,who.connectionId);
+  if(input.expectedConsentEpoch!==undefined&&input.expectedConsentEpoch!==consent.consent_epoch||input.requiredGrantEpoch!==undefined&&input.requiredGrantEpoch!==profile.grant_epoch)throw new WorkspaceError('tag_authority_changed',409);
   const quota=await env.HABITICA_INTEGRATION_DB.prepare('SELECT blocked_until_utc,credential_repair_required FROM integration_read_state WHERE profile_id=? AND connection_id=?').bind(who.profileId,who.connectionId).first<{blocked_until_utc:string|null;credential_repair_required:number}>();
   if(quota?.credential_repair_required)throw new WorkspaceError('credential_repair_required',401);
   if(quota?.blocked_until_utc&&Date.parse(quota.blocked_until_utc)>Date.now())return json({kind:'refused',code:'rate_limited',retryAtUtc:quota.blocked_until_utc},429);
@@ -110,7 +111,7 @@ export async function tagOperation(request:Request,env:AuthEnv):Promise<Response
   else if(operation==='adoptTag'){
    const tag=(observed!.tags as NativeTag[]).find(tag=>tag.id===tagId)!;outcome={kind:'applied',code:'adopted',tag:{id:tag.id,name:tag.name,fingerprint:await tagsFingerprint([tag])},receiptId:attemptId};
   }else{
-   await activeProfile(env,who.profileId,who.connectionId);const currentConsent=await requireTagConsent(env,who.profileId,who.connectionId);if(currentConsent.consent_epoch!==consent.consent_epoch)throw new WorkspaceError('tag_consent_changed',409);
+   const currentProfile=await activeProfile(env,who.profileId,who.connectionId);if(input.requiredGrantEpoch!==undefined&&input.requiredGrantEpoch!==currentProfile.grant_epoch)throw new WorkspaceError('tag_authority_changed',409);const currentConsent=await requireTagConsent(env,who.profileId,who.connectionId);if(currentConsent.consent_epoch!==consent.consent_epoch)throw new WorkspaceError('tag_consent_changed',409);
    const path=operation==='inspectTags'||operation==='createTag'?'tags':operation==='renameTag'?'tags/'+tagId:'tasks/'+taskId+(operation==='setMembership'?'/tags/'+tagId:'');
    const method=operation==='createTag'?'POST':operation==='renameTag'?'PUT':operation==='setMembership'?args.present?'POST':'DELETE':'GET';
    const response=await upstreamFetch(env,'https://habitica.com/api/v3/'+path,{method,redirect:'manual',headers:{'x-api-user':credential.habiticaUserId,'x-api-key':credential.apiToken,'x-client':env.HABITICA_X_CLIENT_HEADER,accept:'application/json','content-type':'application/json'},...(operation==='createTag'||operation==='renameTag'?{body:JSON.stringify({...(operation==='createTag'?{id:tagId}:{}),name:tagNameValue})}:{}),signal:AbortSignal.timeout(10000)},who.profileId);
@@ -119,7 +120,9 @@ export async function tagOperation(request:Request,env:AuthEnv):Promise<Response
     if(!response.ok)return json({kind:'refused',code:response.status===429?'rate_limited':[401,403].includes(response.status)?'credential_repair_required':'habitica_unavailable',...(retryAtUtc?{retryAtUtc}:{})},response.status===429?429:[401,403].includes(response.status)?401:502);
     const body=object(await boundedJson(response,2097152));if(body.success!==true)throw new WorkspaceError('invalid_upstream_response',502);
     if(operation==='inspectTags'){
-     const tags=nativeTags(body.data),hash=await tagsFingerprint(tags);return json({accountId:credential.habiticaUserId,tags,fingerprint:hash,checkToken:await remember(env,who,consent.consent_epoch,contextHash,{type:'tags',tags,fingerprint:hash})});
+     const tags=nativeTags(body.data),hash=await tagsFingerprint(tags);
+     const mapped=await env.HABITICA_INTEGRATION_DB.prepare('SELECT tag_id,fingerprint FROM integration_owned_tags WHERE profile_id=? AND connection_id=? AND workspace_id=? AND entity_id=? AND kind=?').bind(who.profileId,who.connectionId,context.workspaceId,context.entityId,context.kind).first<{tag_id:string;fingerprint:string}>();
+     return json({accountId:credential.habiticaUserId,tags,mappedTagId:mapped?.tag_id??null,mappedTagFingerprint:mapped?.fingerprint??null,fingerprint:hash,checkToken:await remember(env,who,consent.consent_epoch,contextHash,{type:'tags',tags,fingerprint:hash})});
     }
     const task=await taggedTask(body.data,credential.habiticaUserId);if(task.task.id!==taskId)throw new WorkspaceError('invalid_upstream_response',502);
     return json({accountId:credential.habiticaUserId,task:{id:task.task.id,kind:task.task.kind,tags:task.tags},fingerprint:task.fingerprint,checkToken:await remember(env,who,consent.consent_epoch,contextHash,{type:'membership',tagId,taskId,kind:task.task.kind,tags:task.tags,fingerprint:task.fingerprint})});

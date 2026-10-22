@@ -156,3 +156,12 @@ test('oversized complete native tag observations refuse without first-page trunc
  const x=await setup(t);await x.consent();for(let i=0;i<1200;i++)x.tags.push({id:crypto.randomUUID(),name:'x'.repeat(240)});
  const r=await x.invoke('inspectTags');assert.equal(r.status,413);assert.equal((await r.json()).code,'tag_check_capacity');assert.equal(x.writes,0);assert.equal((await x.f.db.prepare('SELECT COUNT(*) AS n FROM integration_tag_checks').first()).n,0);
 });
+test('private tag observations expose only the exact registered context and queued authority epochs are enforced',async t=>{
+ const x=await setup(t);await x.consent();let p=await x.preview();assert.equal(p.mappedTagId,null);
+ const consent=await x.f.db.prepare('SELECT consent_epoch FROM integration_tag_consents').first();
+ for(const guard of [{expectedConsentEpoch:crypto.randomUUID()},{requiredGrantEpoch:'revoked-epoch'}]){
+  const before=x.reads,r=await x.invoke('inspectTags',{},guard);assert.equal(r.status,409);assert.equal((await r.json()).code,'tag_authority_changed');assert.equal(x.reads,before);
+ }
+ const tagId=crypto.randomUUID(),result=await(await x.write('createTag',{tagId,name:'Registered',checkToken:p.checkToken,expectedFingerprint:p.fingerprint},{expectedConsentEpoch:consent.consent_epoch,requiredGrantEpoch:'legacy'})).json();assert.equal(result.kind,'applied');p=await x.preview();assert.equal(p.mappedTagId,tagId);
+ const other=await x.invoke('inspectTags',{}, {context:{...x.c,entityId:crypto.randomUUID()}});assert.equal((await other.json()).mappedTagId,null);
+});

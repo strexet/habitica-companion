@@ -26,7 +26,7 @@ async function planning(env:WorkspaceEnv,row:WorkspaceRow,partyId:string,namespa
  const p=await env.WORKSPACE_DB.prepare(`SELECT p.namespace_id FROM authenticated_party_plans p JOIN authenticated_party_consents c ON c.namespace_id=p.namespace_id AND c.party_id=p.party_id JOIN workspaces w ON w.profile_id=c.profile_id WHERE c.profile_id=? AND c.connection_id=? AND c.access_epoch=? AND p.party_id=? AND w.active=1 AND w.connection_id=c.connection_id AND w.access_epoch=c.access_epoch`).bind(row.profile_id,row.connection_id,row.access_epoch,partyId).first<{namespace_id:string}>();
  if(!p||namespace&&p.namespace_id!==namespace)throw new WorkspaceError('party_consent_required',403);return p.namespace_id;
 }
-const taskFence=(env:WorkspaceEnv,profile:string)=>env.WORKSPACE_DB.prepare("SELECT 1 FROM workspace_commands WHERE profile_id=? AND json_extract(entry_json,'$.projectionState') IN ('executing','unknownOutcome','leased') LIMIT 1").bind(profile).first();
+const taskFence=(env:WorkspaceEnv,profile:string)=>env.WORKSPACE_DB.prepare("SELECT 1 FROM workspace_commands WHERE profile_id=?1 AND json_extract(entry_json,'$.projectionState') IN ('executing','unknownOutcome','leased') UNION ALL SELECT 1 FROM workspace_tag_work WHERE profile_id=?1 AND state IN ('executing','unknownOutcome') LIMIT 1").bind(profile).first();
 export async function spellHistory(env:WorkspaceEnv,profile:string){
  const rows=await env.WORKSPACE_DB.prepare('SELECT * FROM prepared_spell_actions WHERE profile_id=? ORDER BY created_at_utc,action_id LIMIT 1001').bind(profile).all<Action>();
  if(rows.results.length>1000)throw new WorkspaceError('export_capacity',413);

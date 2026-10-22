@@ -1,3 +1,5 @@
+import {reconcileTags,tagStatements,tagStatus,tagWorkBytes,browserTagOrigin} from './tag-reconciliation';
+import type {TagOrigin} from './tag-authority';
 import {organizationApi} from './organization-api';
 import {requireTodoProjection} from '../../shared/todo-projection-policy.ts';
 import {organizationToolScopes,type OrganizationWriteTool} from '../../shared/organization-tools';
@@ -77,7 +79,7 @@ async function duplicate(env: WorkspaceEnv, row: WorkspaceRow, id: string, hash:
  if (receipt.payload_hash !== hash) throw new WorkspaceError("command_id_reused", 409);
  return json({ disposition: "duplicate", savedInCompanion: true, entry: JSON.parse(receipt.entry_json) });
 }
-async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, prepared = false): Promise<Response> {
+async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, prepared = false, tagOrigin:TagOrigin = browserTagOrigin): Promise<Response> {
  let input; try { input = workspaceCommand(await workspaceJson(request, 65536)); } catch (error) { if (error instanceof WorkspaceError) throw error; throw new WorkspaceError("invalid_command", 422); }
  if (input.workspaceId !== row.workspace_id) throw new WorkspaceError("workspace_mismatch", 409);
  const hash = await commandHash(input); const replay = await duplicate(env, row, input.id, hash); if (replay) return replay;
@@ -87,11 +89,14 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, p
   if(pending.results.some(row=>{const entry=JSON.parse(row.entry_json);return entry.command.taskId===input.taskId&&entry.projectionState!=='cancelled'&&entry.effects.some((effect:string,index:number)=>effect==='create'&&entry.confirmedEffects<=index);}))throw new WorkspaceError('projection_already_pending',409);
  }
  const accepted = await accept(JSON.parse(row.document_json), input, new Date().toISOString());
+ const approval=prepared?await env.WORKSPACE_DB.prepare('SELECT tag_authority_json FROM workspace_preparations WHERE profile_id=? AND command_id=?').bind(row.profile_id,input.id).first<{tag_authority_json:string|null}>():undefined;
+ const tags=await reconcileTags(env,row,JSON.parse(row.document_json),accepted.document,input.id,tagOrigin,approval===undefined?undefined:approval?.tag_authority_json?JSON.parse(approval.tag_authority_json):null);
+ accepted.document=tags.document;
  const serialized = JSON.stringify(accepted.document);
  // D1 has a per-row bound. Reject before acceptance rather than silently dropping history.
  if (bytes(serialized) > 1024 * 1024) throw new WorkspaceError("workspace_capacity", 413);
  if (row.store_version >= Number.MAX_SAFE_INTEGER) throw new WorkspaceError("revision_exhausted", 409);
- const archiveBytes = row.archive_bytes - bytes(row.document_json) + bytes(serialized) + bytes(JSON.stringify(accepted.entry)) + bytes(JSON.stringify(accepted.event)) + 2;
+ const archiveBytes = row.archive_bytes - bytes(row.document_json) + bytes(serialized) + bytes(JSON.stringify(accepted.entry)) + bytes(JSON.stringify(accepted.event)) + 2 + tagWorkBytes(tags);
  if (archiveBytes > 8 * 1024 * 1024) throw new WorkspaceError("workspace_capacity", 413);
  const version = row.store_version + 1; const tag = crypto.randomUUID();
  const result = await env.WORKSPACE_DB.batch([
@@ -102,6 +107,7 @@ async function command(request: Request, env: WorkspaceEnv, row: WorkspaceRow, p
    SELECT profile_id,?,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?`).bind(input.id, version, hash, JSON.stringify(accepted.entry), row.profile_id, tag),
   env.WORKSPACE_DB.prepare(`INSERT INTO workspace_events(profile_id,event_id,sequence,event_json)
    SELECT profile_id,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?`).bind(accepted.event.id, version, JSON.stringify(accepted.event), row.profile_id, tag),
+  ...tagStatements(env,row,tags,tag),
  ]);
  if (!result[0].meta.changes) { const retry = await duplicate(env, row, input.id, hash); if (retry) return retry; throw new WorkspaceError("stale_revision", 409); }
  return json({ disposition: "accepted", savedInCompanion: true, entry: accepted.entry, revision: accepted.document.revision }, 201);
@@ -147,6 +153,7 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  const row = await session(request, env);
  const quota=await env.AUTH_IDENTITY.fetch("https://identity.internal/traffic",{method:"POST",body:JSON.stringify({lane:"workspace",profileId:row.profile_id,connectionId:row.connection_id,recovery:request.method==="GET"&&(path==="/operations"||path.startsWith("/commands/"))}),signal:AbortSignal.timeout(5000)});
  if(!quota.ok)return quota;
+ if(path==='/tag-projection'&&request.method==='GET')return json(await tagStatus(env,row));
  if(path==="/operations"&&request.method==="GET")return json(await operationalStatus(env,row));
  if(path.startsWith('/party/')||path==='/party-api'){
   if(!env.PARTY_ENABLED)throw new WorkspaceError('party_unavailable',503);
@@ -234,18 +241,19 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
    if(typeof body.tool!=="string"||!Object.hasOwn(organizationToolScopes,body.tool)&&!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool)&&!Object.hasOwn(spellToolScopes,body.tool)&&!Object.hasOwn(cronToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
    const verified=await this.env.AUTH_IDENTITY.fetch("https://identity.internal/mcp",{method:"POST",headers:{authorization:request.headers.get("authorization")??""},signal:AbortSignal.timeout(5000)});
    if(!verified.ok)throw new WorkspaceError("unauthorized",401);
-   const who=await verified.json<Identity&{scopes:string[];grantEpoch:string}>();
+   const who=await verified.json<Identity&{scopes:string[];grantEpoch:string;tagWriteAllowed:boolean}>();
    const requiredScope=Object.hasOwn(organizationToolScopes,body.tool)?organizationToolScopes[body.tool as OrganizationWriteTool]:Object.hasOwn(partyToolScopes,body.tool)?partyToolScopes[body.tool as PartyTool]:taskToolScopes[body.tool as TaskTool];
    const required=Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:['profile:read',requiredScope];
    if(!Array.isArray(who.scopes)||required.some(scope=>!who.scopes.includes(scope)))throw new WorkspaceError("insufficient_scope",403);
    let row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
    if(!row)throw new WorkspaceError("workspace_consent_required",403);
    row=await mcpEpoch(this.env,row,who.grantEpoch);
-   if(Object.hasOwn(organizationToolScopes,body.tool))return json(await organizationApi(this.env,row,body.tool as OrganizationWriteTool,body.arguments));
+   const tagOrigin:TagOrigin={source:'mcp',tagWriteAllowed:who.tagWriteAllowed===true,grantEpoch:who.grantEpoch};
+   if(Object.hasOwn(organizationToolScopes,body.tool))return json(await organizationApi(this.env,row,body.tool as OrganizationWriteTool,body.arguments,tagOrigin));
    if(Object.hasOwn(cronToolScopes,body.tool))return json(await cronApi(this.env,row,body.tool as CronTool,body.arguments,request.headers.get('authorization')??''));
    if(Object.hasOwn(spellToolScopes,body.tool))return json(await spellApi(this.env,row,body.tool as SpellTool,body.arguments,request.headers.get('authorization')??''));
    if(Object.hasOwn(partyToolScopes,body.tool))return json(await partyApi(this.env,row,body.tool as PartyTool,body.arguments,request.headers.get("authorization")??undefined));
-   return json(await taskApi(this.env,row,body.tool as TaskTool,body.arguments,cmd=>command(new Request("https://workspace.internal/commands",{method:"POST",body:JSON.stringify(cmd)}),this.env,row,true)));
+   return json(await taskApi(this.env,row,body.tool as TaskTool,body.arguments,cmd=>command(new Request("https://workspace.internal/commands",{method:"POST",body:JSON.stringify(cmd)}),this.env,row,true,tagOrigin),tagOrigin));
   }catch(error){return json({error:error instanceof WorkspaceError?error.code:"command_outcome_unknown",...(error instanceof PartyApiFailure?{rate:error.rate}:{}),savedInCompanion:error instanceof WorkspaceError?false:null,outcomeUnknown:!(error instanceof WorkspaceError)},error instanceof WorkspaceError?error.status:503);}
  }
 }

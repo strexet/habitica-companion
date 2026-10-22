@@ -1,3 +1,5 @@
+import {previewTagAuthority,tagPreview,browserTagOrigin} from './tag-reconciliation.ts';
+import type {TagOrigin} from './tag-authority.ts';
 import {queryTodoHierarchy} from '../../shared/todo-hierarchy.ts';
 import {savedTaskReads} from './saved-task-reads.ts';
 import {unblockedTodos} from './unblocked-todos.ts';
@@ -14,14 +16,14 @@ import {completionHistory} from './completion-history.ts';
 import { taskSyncStatus } from './task-status.ts';
 import { queryAgenda } from '../../shared/task-agenda.ts';
 import { organizationNames, queryOrganization, type OrganizationTool } from '../../shared/organization-query.ts';
-interface Preparation {grant_epoch:string;access_epoch:string;request_id:string;command_id:string;input_hash:string;command_json:string;correlation_id:string;expires_at_utc:string}
+interface Preparation {grant_epoch:string;access_epoch:string;request_id:string;command_id:string;input_hash:string;command_json:string;correlation_id:string;expires_at_utc:string;tag_authority_json:string|null}
 const bytes=(value:string)=>new TextEncoder().encode(value).length;
 function stable(value:unknown):string {if(value===null||typeof value!=='object')return JSON.stringify(value);if(Array.isArray(value))return '['+value.map(stable).join(',')+']';return '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+stable((value as Record<string,unknown>)[k])).join(',')+'}';}
 export function mutationResult(entry:CommandEntry,document:{tasks:{id:string;text:string}[]},correlationId:string,refreshSucceeded=true){
  const state=entry.projectionState;const unknown=state==='unknownOutcome';
  return {operation:entry.command.operation,taskId:entry.command.taskId,commandId:entry.command.id,correlationId,taskText:entry.taskSnapshot?.text??document.tasks.find(t=>t.id===entry.command.taskId)?.text??'',savedInCompanion:true,habiticaProjectionStatus:unknown?'UnknownOutcome':['notRequested','confirmed','blocked','cancelled'].includes(state)?state:'pending',acceptedEventCount:entry.command.operation==='scoreHabit'?entry.command.count:['completeTask','skipOccurrence','restoreTodo'].includes(entry.command.operation)?1:0,confirmedProjectionCount:entry.confirmedEffects,totalProjectionCount:entry.effects.length,failurePosition:entry.failure==='none'?null:entry.confirmedEffects+1,failure:entry.failure,retryAtUtc:entry.retryAtUtc,refreshSucceeded,outcomeUnknown:unknown};
 }
-export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,args:unknown,submit:(command:unknown)=>Promise<Response>):Promise<Record<string,unknown>>{
+export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,args:unknown,submit:(command:unknown)=>Promise<Response>,tagOrigin:TagOrigin=browserTagOrigin):Promise<Record<string,unknown>>{
  const input=taskToolInput(name,args);
  if(name==='list_saved_task_views'||name==='query_saved_task_view')return savedTaskReads(env,row,name,input);
  if(name==='get_unblocked_todos')return unblockedTodos(env,row,input);
@@ -54,12 +56,13 @@ export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,ar
     if(entries.results.some(row=>{const entry=JSON.parse(row.entry_json);return entry.command.taskId===command.taskId&&entry.projectionState!=='cancelled'&&entry.effects.some((effect:string,index:number)=>effect==='create'&&entry.confirmedEffects<=index);}))throw new WorkspaceError('projection_already_pending',409);
    }
    await accept(document,command,new Date().toISOString()); // Validate exact canonical state without accepting a command.
+   const tagAuthorityJson=await previewTagAuthority(env,row,tagOrigin);
    const now=new Date().toISOString();const serialized=JSON.stringify(command);const size=row.archive_bytes+bytes(serialized)+512;
    if(size>8*1024*1024-32768||row.store_version>=Number.MAX_SAFE_INTEGER)throw new WorkspaceError('workspace_capacity',413);
    const tag=crypto.randomUUID();const expires=new Date(Date.now()+10*60000).toISOString();const correlationId=crypto.randomUUID();
    const changed=await env.WORKSPACE_DB.batch([
     env.WORKSPACE_DB.prepare('UPDATE workspaces SET archive_bytes=?,commit_tag=?,store_version=store_version+1 WHERE profile_id=? AND access_epoch=? AND store_version=? AND commit_tag=? AND active=1').bind(size,tag,row.profile_id,row.access_epoch,row.store_version,row.commit_tag),
-    env.WORKSPACE_DB.prepare('INSERT INTO workspace_preparations(profile_id,access_epoch,request_id,command_id,input_hash,command_json,correlation_id,created_at_utc,expires_at_utc,grant_epoch) SELECT profile_id,access_epoch,?,?,?,?,?,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?').bind(requestId,command.id,hash,serialized,correlationId,now,expires,row.mcp_grant_epoch??'legacy',row.profile_id,tag),
+    env.WORKSPACE_DB.prepare('INSERT INTO workspace_preparations(profile_id,access_epoch,request_id,command_id,input_hash,command_json,correlation_id,created_at_utc,expires_at_utc,grant_epoch,tag_authority_json) SELECT profile_id,access_epoch,?,?,?,?,?,?,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?').bind(requestId,command.id,hash,serialized,correlationId,now,expires,row.mcp_grant_epoch??'legacy',tagAuthorityJson,row.profile_id,tag),
    ]);
    prepared=await env.WORKSPACE_DB.prepare('SELECT * FROM workspace_preparations WHERE profile_id=? AND request_id=?').bind(row.profile_id,requestId).first<Preparation>();
    if(!prepared||prepared.input_hash!==hash)throw new WorkspaceError(changed[0].meta.changes?'request_id_reused':'workspace_changed',409);
@@ -67,7 +70,9 @@ export async function taskApi(env:WorkspaceEnv,row:WorkspaceRow,name:TaskTool,ar
   const found=await receipt(prepared.command_id);if(!found&&(prepared.access_epoch!==row.access_epoch||prepared.grant_epoch!==(row.mcp_grant_epoch??'legacy')))throw new WorkspaceError('preview_connection_changed',409);const command=JSON.parse(prepared.command_json);
   let policyExpired=false;
   if(!found){try{requireTodoProjection(document,command);}catch(error){if(!(error instanceof WorkspaceError))throw error;policyExpired=true;}}
-  return {preparedCommandId:prepared.command_id,correlationId:prepared.correlation_id,expiresAtUtc:prepared.expires_at_utc,expired:!found&&(policyExpired||prepared.expires_at_utc<=new Date().toISOString()),command,mayAffectHabitica:found?found.entry.effects.length>0:!['planTask','restoreTodo','relateTodo','setTodoState','setTodoStage'].includes(command.operation)&&(command.projectToHabitica||document.projections.some((p:{taskId:string;state:string})=>p.taskId===command.taskId&&p.state!=='unlinked')),savedInCompanion:Boolean(found),...(found?{receipt:mutationResult(found.entry,document,found.correlationId)}:{})};
+  const tagProjection=found||policyExpired||command.expectedRevision!==document.revision?null:tagPreview(document,(await accept(document,command,new Date().toISOString())).document,prepared.tag_authority_json);
+  const tagEffects=Boolean(tagProjection?.scopeAllowed&&tagProjection.consentEnabled&&tagProjection.groups.some(group=>!group.retainMembership));
+  return {preparedCommandId:prepared.command_id,correlationId:prepared.correlation_id,expiresAtUtc:prepared.expires_at_utc,expired:!found&&(policyExpired||prepared.expires_at_utc<=new Date().toISOString()),command,tagProjection,mayAffectHabitica:tagEffects|| (found?found.entry.effects.length>0:!['planTask','restoreTodo','relateTodo','setTodoState','setTodoStage'].includes(command.operation)&&(command.projectToHabitica||document.projections.some((p:{taskId:string;state:string})=>p.taskId===command.taskId&&p.state!=='unlinked'))),savedInCompanion:Boolean(found),...(found?{receipt:mutationResult(found.entry,document,found.correlationId)}:{})};
  }
  const commandId=uuid(input.commandId);const found=await receipt(commandId);const operation=operationForTool[name as keyof typeof operationForTool];
  if(found){if(found.entry.command.operation!==operation)throw new WorkspaceError('operation_mismatch',409);return mutationResult(found.entry,document,found.correlationId);}

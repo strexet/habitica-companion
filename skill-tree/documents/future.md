@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Reconcile complete organization tag membership without scoring
-
-```yaml
-id: T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94
-priority: 103
-status: Ready
-parent_pending_ids: ["P-505551fa-3ca7-4415-b19e-b64585bf8f9f"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94
-related_task_id: null
-relation: main
-depends_on: ["T-63ee6e49-6452-4e7c-a707-1dd54b41c94c", "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0", "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54"]
-```
-
-Goal:
-- Translate canonical organization membership into bounded durable native tag reconciliation.
-Current behavior:
-- Native organization and planTask changes create no tag intent, and projection patch matching cannot observe tag membership. Saved-view results are bounded read pages rather than a complete materialized selection.
-Desired behavior:
-- Every relevant canonical change yields complete verified group-tag membership or an explicit recoverable pending/review state; no scoring, bulk first-page truncation or unrelated tag deletion occurs.
-Touch:
-- Workspace organization/task command acceptance, saved-view evaluation, tag ledger, executor.ts, projection-adapter.ts, shared task planning and task-tag fixtures.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Tag each independently mapped task/full child using own project/section/labels, direct-category-before-project-category, explicit goal membership and complete saved-selection matches. No parent mapping or project inheritance is invented. Evaluate every matching page against one source revision; never tag only the first page or create a task for a view. Relevant canonical changes drive bounded work; tag acknowledgements must not create an endless reconciliation loop. Archived groups retain mapped tag provenance/history; logical removal removes only owned active membership according to the exact preview and retains historical identities. Never delete remote tags automatically. Preserve unrelated tags and block stale/unknown effects.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Test all organization kinds, cross-project children, overrides, >100 matches, empty/dynamic views, changing source revision, saved-view mapping filters, archive/removal, preserved external tags, duplicate wakes, shared executor leases, timeouts and zero score calls.
-Acceptance:
-- Every relevant canonical change yields complete verified group-tag membership or an explicit recoverable pending/review state; no scoring, bulk first-page truncation or unrelated tag deletion occurs.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Expose group tag consent coverage and original receipt recovery
 
 ```yaml

@@ -1,3 +1,5 @@
+import {tagAcknowledgement} from './tag-reconciliation.ts';
+import {executeTagWork} from './tag-executor.ts';
 import { event, type Authority } from './journal.ts';
 import type { CommandEntry, JournalEvent } from './commands.ts';
 import { projectionStep, confirmMapping, type Observation, type AccountObservation } from './projection-adapter.ts';
@@ -35,7 +37,7 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
    const statements=[env.WORKSPACE_DB.prepare(`UPDATE workspaces SET document_json=?,store_version=?,archive_bytes=?,commit_tag=?,updated_at_utc=? WHERE profile_id=? AND access_epoch=? AND store_version=?
     AND EXISTS(SELECT 1 FROM workspace_runtime WHERE profile_id=? AND access_epoch=? AND lease_token=? AND lease_until_utc>?)`).bind(docJson,version,size,tag,now(),profileId,epoch,w.store_version,profileId,epoch,token,now()),
     env.WORKSPACE_DB.prepare('UPDATE workspace_commands SET entry_json=? WHERE profile_id=? AND command_id=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND commit_tag=?)').bind(entryJson,profileId,id,profileId,tag),
-    env.WORKSPACE_DB.prepare('INSERT INTO workspace_events(profile_id,event_id,sequence,event_json) SELECT profile_id,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?').bind(e.id,version,eventJson,profileId,tag)];
+    env.WORKSPACE_DB.prepare('INSERT INTO workspace_events(profile_id,event_id,sequence,event_json) SELECT profile_id,?,?,? FROM workspaces WHERE profile_id=? AND commit_tag=?').bind(e.id,version,eventJson,profileId,tag),...tagAcknowledgement(env,w,doc,next.document??doc,tag)];
    if(prepared!==undefined)statements.push(env.WORKSPACE_DB.prepare('UPDATE workspace_runtime SET command_id=?,prepared_request_json=? WHERE profile_id=? AND lease_token=? AND EXISTS(SELECT 1 FROM workspaces WHERE profile_id=? AND commit_tag=?)').bind(prepared?id:null,prepared?JSON.stringify(prepared):null,profileId,token,profileId,tag));
    const result=await env.WORKSPACE_DB.batch(statements);if(result[0].meta.changes)return true;
   }return false;
@@ -76,6 +78,8 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
   },outcome.kind==='unknown'||!['applied','refused'].includes(outcome.kind??'')?undefined:null);
  }
  try{
+  const tagControl={runtime,row,permitted,wait,deadline,token,epoch};
+  const tagRecovery=await executeTagWork(env,profileId,tagControl,true);if(tagRecovery)return tagRecovery;
   if(await env.WORKSPACE_DB.prepare("SELECT 1 FROM prepared_cron_actions WHERE profile_id=? AND status IN ('accepted','dispatching','unknownOutcome') LIMIT 1").bind(profileId).first())return 'cron_fenced';
   if(await env.WORKSPACE_DB.prepare("SELECT 1 FROM prepared_spell_actions WHERE profile_id=? AND status IN ('accepted','dispatching','unknownOutcome') LIMIT 1").bind(profileId).first())return 'spell_fenced';
   const r=await runtime();if(!r)return 'lost_lease';
@@ -96,7 +100,7 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
   }
   if(entries.some(c=>c.failure==='credentialRepair'&&c.projectionState==='blocked'||c.failure==='rateLimited'&&Date.parse(c.retryAtUtc??'')>Date.now()))return 'fenced';
   const candidate=entries.find((c,i)=>c.projectionState==='pending'&&!(Date.parse(c.retryAtUtc??'')>Date.now())&&!entries.slice(0,i).some(p=>p.command.taskId===c.command.taskId&&!['confirmed','notRequested','cancelled'].includes(p.projectionState)));
-  if(!candidate)return 'idle';
+  if(!candidate)return await executeTagWork(env,profileId,tagControl)??'idle';
   const w=await row();if(!w||w.archive_bytes>8*1024*1024-32768||w.store_version>Number.MAX_SAFE_INTEGER-8)return 'capacity';
   const lease={owner:'workspace-worker',token:crypto.randomUUID(),expiresAtUtc:until};
   if(!await transition(candidate.command.id,e=>({entry:{...e,projectionState:'leased',lease},kind:'leaseAcquired'})))return 'conflict';
