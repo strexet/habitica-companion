@@ -1,0 +1,62 @@
+@page "/todo/retire/{ConversionId:guid}"
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@inject TodoWorkspacePresentation Todo
+@inject WorkspaceSourceRetirementController Retirement
+@inject IWorkspaceCloudClient Cloud
+@implements IDisposable
+<PageTitle>Retire converted source</PageTitle>
+<section class="card-surface todo-task-panel" data-testid="source-retirement">
+    <div class="task-group-header"><h1>Retire converted source</h1><a href="/todo/projects" data-layout-primary="true">Projects</a></div>
+    <p>Complete a verified checklist conversion by removing only the obsolete Habitica container. All replacement tasks, descriptions, completion history and tags remain. Full source content stays archived in Companion.</p>
+    <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Retirement.IsBusy||!Todo.CanSwitchSource||Cloud.WorkspaceId is null)" OnClick="LoadAsync" Variant="Variant.Outlined" data-testid="retirement-load">Load current cloud workspace</MudButton><a href="/todo/sync#habitica-tags" data-layout-primary="true">Tag consent and recovery</a></div>
+    @if(!Retirement.Available){<p>Connect the cloud workspace and sign in before preparing cleanup.</p>}
+    else if(Retirement.View is {} view)
+    {
+        <h2 tabindex="-1" @ref="_heading">@view.Source.Text</h2>
+        <p>Original command: @view.CommandId · conversion: @view.ConversionId · source: @view.Source.Id · native Todo: @view.HabiticaTaskId · workspace revision: @view.Revision.</p>
+        <h3>Retained source description</h3><pre class="conversion-notes">@view.Source.Notes</pre>
+        <p>Destination: @view.Project.Name · @view.Project.Id. Verified replacements: @view.VerifiedTargets of @view.Targets.Count. Verification steps: @view.CompletedSteps of @view.VerificationSteps.</p>
+        @if(view.Receipt is {} receipt)
+        {<p role="status" data-testid="retirement-receipt">Cleanup confirmed: @receipt.Outcome · @receipt.RetiredAtUtc.ToString("u"). The obsolete source and mapping are archived. Original native attempt: @(receipt.NativeAttemptId?.ToString()??"None; source was already absent"). No new score or reward.</p>}
+        else if(view.State=="verifying")
+        {<p>Native verification reads current tags, every exact replacement and the source last. A missing counterpart, edited content, changed completion or membership stops cleanup. Respect returned rate limits; continue the same review.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Retirement.IsBusy||Retirement.Unknown||view.Expired)" OnClick="()=>Retirement.VerifyAsync()" Variant="Variant.Filled" Color="Color.Primary" data-testid="retirement-verify">Verify replacements</MudButton>}
+        else if(view.State=="ready")
+        {
+            <p role="alert">@view.Disclosure</p>
+            @if(view.SourceAlreadyAbsent){<p>The source is already absent in Habitica. Confirmation archives the retained Companion source; no DELETE or synthetic success receipt is created.</p>}
+            @foreach(var target in view.Targets.Skip(Retirement.ReviewOffset).Take(10))
+            {<article class="todo-direct-row"><div class="todo-row-content"><strong>@target.Task.Text</strong><span>@target.Task.Id · @target.Mapping.HabiticaTaskId · @target.DesiredState · urgency @target.Task.Priority</span><pre class="conversion-notes">@target.Task.Notes</pre></div></article>}
+            <label class="checkbox-row"><input type="checkbox" checked="@Retirement.PageReviewed" disabled="@Retirement.IsBusy" @onchange="args=>Retirement.AcknowledgePage(args.Value is true)" data-testid="retirement-page-ack" /><span>Reviewed these replacement tasks, descriptions and completed/archived states</span></label>
+            <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Retirement.IsBusy||Retirement.ReviewOffset==0)" OnClick="()=>Retirement.ReviewPage(Retirement.ReviewOffset-10)" Variant="Variant.Text">Previous replacements</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Retirement.IsBusy||Retirement.ReviewOffset+10>=view.Targets.Count)" OnClick="()=>Retirement.ReviewPage(Retirement.ReviewOffset+10)" Variant="Variant.Text">Next replacements</MudButton></div>
+            <label class="checkbox-row"><input type="checkbox" checked="@Retirement.IrreversibleApproved" disabled="@Retirement.IsBusy" @onchange="args=>Retirement.ApproveIrreversible(args.Value is true)" data-testid="retirement-irreversible-ack" /><span>I approve permanent deletion of this exact obsolete Habitica Todo, or archival if already absent. Habitica deletion cannot be undone through ordinary recovery.</span></label>
+            <p>Review context: @view.ContextHash · expires @view.ExpiresAtUtc.ToString("u"). Verification lasts at most five minutes. Confirmation checks the exact source again; an expired review needs fresh preparation.</p>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(!Retirement.CanAccept)" OnClick="()=>Retirement.AcceptAsync()" Variant="Variant.Filled" Color="Color.Error" data-testid="retirement-confirm">@(view.SourceAlreadyAbsent?"Archive already-absent source":"Permanently delete obsolete source")</MudButton>
+        }
+        @if(Retirement.Unknown||view.State=="nativeConfirmed")
+        {<p role="alert" data-testid="retirement-unknown">The original outcome requires recovery. Task writes stay paused. Never send another deletion. Receipt lookup does not infer success from absence.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Retirement.IsBusy" OnClick="()=>Retirement.RecoverAsync()" Variant="Variant.Outlined" data-testid="retirement-recover">Check original receipt</MudButton><label class="checkbox-row"><input type="checkbox" @bind="_reconcileApproved" disabled="@Retirement.IsBusy" /><span>Review original uncertainty and check whether the original source is now absent; this observation is distinct from an original success receipt</span></label><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Retirement.IsBusy||!_reconcileApproved)" OnClick="ReconcileAsync" Variant="Variant.Outlined" data-testid="retirement-reconcile">Reconcile original absence</MudButton>}
+        @if(view.State=="refused"){<p role="alert">Cleanup refused: @view.Error. Source archival was not confirmed. Inspect current data before another review.</p>}
+        @if(!Retirement.Unknown&&view.State!="nativeConfirmed"){<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Retirement.IsBusy" OnClick="Retirement.ClearUnsentReview" Variant="Variant.Text">Close review</MudButton>}
+    }
+    else if(Retirement.Request is {} request)
+    {<p>Original preparation request: @request.RequestId.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Retirement.IsBusy" OnClick="()=>Retirement.RetryPreparationAsync()" Variant="Variant.Outlined" data-testid="retirement-prepare-recover">Recover original preparation</MudButton>@if(!Retirement.Unknown){<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Retirement.IsBusy" OnClick="Retirement.ClearUnsentReview" Variant="Variant.Text">Close unsent review</MudButton>}}
+    else if(Todo.Selection?.Source==TodoWorkspaceSource.Cloud&&Todo.Snapshot?.Document.ChecklistConversions?.SingleOrDefault(row=>row.Id==ConversionId) is {} conversion)
+    {
+        @if(Todo.Snapshot.Document.SourceRetirements?.SingleOrDefault(row=>row.ConversionId==ConversionId) is {} previous){<p>Source already retired: @previous.Outcome · original command @previous.Id.</p>}
+        else{<p>Conversion @conversion.Id. Incomplete mappings, content mismatches, historical gaps and unresolved effects block cleanup.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Retirement.IsBusy" OnClick="()=>Retirement.PrepareAsync(ConversionId,Todo.Snapshot.Document.Revision)" Variant="Variant.Outlined" data-testid="retirement-prepare">Prepare exact source cleanup</MudButton>}
+    }
+    <label class="field-row">Recover original command ID<input class="app-input" @bind="_originalId" disabled="@Retirement.IsBusy" /></label><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Retirement.IsBusy||!Guid.TryParse(_originalId,out _))" OnClick="RecoverIdAsync" Variant="Variant.Outlined">Read original cleanup</MudButton>
+    @if(Retirement.Message is {} message){<p role="status">@message</p>}
+</section>
+@code {
+    [Parameter] public Guid ConversionId {get;set;}
+    private string _originalId="";private bool _reconcileApproved;private ElementReference _heading;private Guid? _focused;private Guid? _refreshed;
+    protected override void OnInitialized(){Retirement.Changed+=Changed;Todo.Changed+=Changed;}
+    protected override void OnParametersSet(){Retirement.CheckScope();}
+    protected override async Task OnAfterRenderAsync(bool firstRender){if(Retirement.View?.Receipt is {} receipt&&_refreshed!=receipt.Id&&Todo.CanSwitchSource&&Todo.Selection?.Source==TodoWorkspaceSource.Cloud){_refreshed=receipt.Id;await Todo.LoadSelectedAsync();}if(Retirement.View is {State:"ready"} view&&_focused!=view.CommandId){_focused=view.CommandId;try{await _heading.FocusAsync();}catch{}}}
+    private void Changed()=>InvokeAsync(StateHasChanged);
+    private async Task LoadAsync(){if(Cloud.WorkspaceId is {} id&&Todo.CanSwitchSource){await Todo.RefreshSourcesAsync();await Todo.SelectAsync(new(TodoWorkspaceSource.Cloud,id));}}
+    private Task RecoverIdAsync()=>Guid.TryParse(_originalId,out var id)?Retirement.RecoverAsync(id):Task.CompletedTask;
+    private Task ReconcileAsync(){_reconcileApproved=false;return Retirement.RecoverAsync(reconcile:true);}
+    public void Dispose(){Retirement.Changed-=Changed;Todo.Changed-=Changed;}
+}

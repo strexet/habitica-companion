@@ -49,3 +49,5 @@ New task-required-v1 preparation requests Habitica correspondence for creation, 
 
 
 For missing group correspondence, use the [tag consent, adoption and receipt workflow](references/organization-management.md#tag-consent-exact-adoption-and-recovery). Read complete coverage on demand, disclose independent tag permission and owner consent, and review every native membership change. Saving metadata never confirms upstream presence or rewards. Unknown results retain the original request/command/work identity.
+
+For an explicitly requested cleanup after checklist-to-project conversion, follow the [converted source retirement workflow](references/source-retirement.md). Concrete irreversible approval, complete fresh replacement verification and original receipt recovery remain separate from conversion approval; unknown DELETE is never resent.

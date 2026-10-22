@@ -1,0 +1,16 @@
+{
+  "conversion-retired-source-history": {
+    "file": "conversion-retired-source-history.html",
+    "route": "/todo/convert/{SourceTaskId:guid}",
+    "state": "conversion-retired-source-history",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation",
+      "error"
+    ],
+    "interactionTest": "WorkspaceChecklistConversionPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}

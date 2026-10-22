@@ -1,3 +1,4 @@
+import {sourceRetirements,type SourceRetirement} from './source-retirements.ts';
 import {checklistConversions,type ChecklistConversion} from './checklist-conversion.ts';
 import {tagLedger,type TagLedger} from './tag-projection.ts';
 import {savedTaskViews,type SavedTaskView} from './saved-task-views.ts';
@@ -21,7 +22,7 @@ export interface Completion extends Entity { taskId: string; commandId: string; 
 export interface Restoration extends Entity {taskId:string;completionId:string;commandId:string;restoredAtUtc:string}
 export interface HabitScore extends Entity { taskId: string; commandId: string; recordedAtUtc: string; direction: "up" | "down" }
 export interface Projection extends Entity { taskId: string; state: "unlinked" | "pending" | "linked" | "externalConflict" | "unknownOutcome"; habiticaTaskId: string | null; fingerprint?: string | null; correlationAlias?: string | null }
-export interface WorkspaceDocument { checklistConversions?:ChecklistConversion[]; tagLedger?:TagLedger; schemaVersion: 1; savedTaskViews?:SavedTaskView[]; id: string; revision: number; categories: Category[]; projects: Project[]; sections: Section[]; labels: Category[]; goals: Goal[]; tasks: CompanionTask[]; occurrences: Occurrence[]; completions: Completion[]; restorations?:Restoration[]; organizationHistory?:OrganizationEntry[]; habitScores: HabitScore[]; projections: Projection[] }
+export interface WorkspaceDocument { sourceRetirements?:SourceRetirement[]; checklistConversions?:ChecklistConversion[]; tagLedger?:TagLedger; schemaVersion: 1; savedTaskViews?:SavedTaskView[]; id: string; revision: number; categories: Category[]; projects: Project[]; sections: Section[]; labels: Category[]; goals: Goal[]; tasks: CompanionTask[]; occurrences: Occurrence[]; completions: Completion[]; restorations?:Restoration[]; organizationHistory?:OrganizationEntry[]; habitScores: HabitScore[]; projections: Projection[] }
 const fail = (): never => { throw new WorkspaceError("invalid_workspace", 422); };
 function named(value: unknown, max = 256, allowEmpty = false): string { if (typeof value !== "string" || value.length > max || !allowEmpty && /^\p{White_Space}*$/u.test(value)) return fail(); return value; }
 function optionalId(value: unknown) { return value === undefined || value === null ? null : uuid(value); }
@@ -66,7 +67,7 @@ export function workspaceTask(item:unknown,revision:number):CompanionTask {
     return task;
 }
 export function workspaceDocument(input: unknown): WorkspaceDocument {
-  const value = workspaceObject(input, ["checklistConversions", "tagLedger", "schemaVersion", "id", "revision", "categories", "projects", "sections", "labels", "goals", "tasks", "occurrences", "completions", "restorations", "organizationHistory", "savedTaskViews", "habitScores", "projections"]);
+  const value = workspaceObject(input, ["sourceRetirements", "checklistConversions", "tagLedger", "schemaVersion", "id", "revision", "categories", "projects", "sections", "labels", "goals", "tasks", "occurrences", "completions", "restorations", "organizationHistory", "savedTaskViews", "habitScores", "projections"]);
   if (value.schemaVersion !== 1) return fail(); const revision = integer(value.revision); const id = uuid(value.id);
   const names = (key: string): Category[] => list(value[key]).map(item => { const row = workspaceObject(item, [...baseKeys, "name"]); return { ...entity(row, revision), name: named(row.name) }; });
   const categories = names("categories"); const labels = names("labels");
@@ -127,6 +128,8 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   const ledger=tagLedger(value.tagLedger,document,utc);if(ledger){document.tagLedger=ledger;const entities=[...ledger.mappings,...ledger.intents];const identities=new Set([id,...all.map(row=>row.id)]);for(const row of entities){if(identities.has(row.id))return fail();identities.add(row.id);}if(all.length+entities.length+(document.organizationHistory?.length??0)>100000)return fail();}
   const conversions=checklistConversions(value.checklistConversions,document,workspaceTask,utc);
   if(conversions){document.checklistConversions=conversions;const identities=new Set([id,...all.map(row=>row.id),...(ledger?.mappings??[]).map(row=>row.id),...(ledger?.intents??[]).map(row=>row.id)]);for(const row of conversions){if(identities.has(row.id))return fail();identities.add(row.id);}if(identities.size-1+(document.organizationHistory?.length??0)+conversions.reduce((n,row)=>n+row.receipts.length,0)>100000)return fail();}
+  const retirements=sourceRetirements(value.sourceRetirements,document,utc,utcTicks);
+  if(retirements){document.sourceRetirements=retirements;const identities=new Set([id,...all.map(row=>row.id),...(ledger?.mappings??[]).map(row=>row.id),...(ledger?.intents??[]).map(row=>row.id),...(conversions??[]).map(row=>row.id)]);for(const row of retirements){if(identities.has(row.id))return fail();identities.add(row.id);}if(identities.size-1+(document.organizationHistory?.length??0)+(conversions??[]).reduce((n,row)=>n+row.receipts.length,0)>100000)return fail();}
   return document;
 }
 export function emptyWorkspace(id = crypto.randomUUID()): WorkspaceDocument { return workspaceDocument({ schemaVersion: 1, id, revision: 1 }); }

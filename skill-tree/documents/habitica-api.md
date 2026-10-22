@@ -1380,3 +1380,10 @@ accept_checklist_conversion consumes the approved preparedCommandId as commandId
 
 
 Browser conversion uses authenticated POST /conversion-api with the same four tool names and exact arguments. New task inputs omit targetTaskId rather than sending null. The typed adapter validates complete ordered source/binding identities, original ledger hashes, source notes and original acceptance receipts against the connected workspace. Status never upgrades stored mappings to fresh native presence. A missing original acceptance is uncertain; retry preserves the original ID. Browser navigation retains unresolved review identity in the scoped controller, without storing credentials or descriptions in diagnostics.
+
+
+## Exact converted source retirement
+
+The private Auth gateway supports owned Todo retirement through DELETE /api/v3/tasks/{taskId} only after a separately approved conversion cleanup. The server requires exact source/native/conversion/workspace identity, matching fingerprint and completed Boolean, a fresh owned-task check and irreversible approval. The remoteTask content fingerprint excludes completed, so retirement compares completed independently. Foreign, party/group and challenge tasks remain refused.
+
+A final GET precedes reservation of one DELETE. Each upstream operation has an independent ten-second deadline and quota reservation. Confirmed HTTP 200/201 success requires success true and empty object data, following the [Habitica task controller](https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/server/controllers/api-v3/tasks.js). Definitive refusal creates no canonical source archival. A timeout or lost acknowledgement remains unknown and never authorizes resending. Original attempt lookup is read-only upstream; explicit reconciliation may observe source absence with a distinct outcome. Absence before dispatch creates no native delete attempt. No conditional DELETE or cross-service atomic snapshot exists; the final observation-to-deletion race remains explicit. Broad clearCompletedTodos and scoring are excluded.

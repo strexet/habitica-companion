@@ -46,6 +46,12 @@ public sealed class WorkspaceChecklistConversionPanelTests:BunitContext
         var cut=Render<TodoConversionPage>(p=>p.Add(x=>x.SourceTaskId,original.Id));cut.Find("[data-testid='conversion-refresh']").Click();Assert.NotNull(cut.Find("[data-testid='conversion-source-changed']"));Assert.True(cut.Find("fieldset").HasAttribute("disabled"));Assert.Contains("Current edited description",cut.Markup);Assert.Contains(original.Notes!,cut.Markup);Assert.Single(api.Requests);Save("conversion-source-changed",cut.Markup);
     }
     [Fact]
+    public async Task Retired_source_keeps_cleanup_history_entry_without_a_false_source_edit_warning()
+    {
+        var(api,c)=await Setup();var retirement=new SourceRetirementFixture();await retirement.PrepareSourceRetirementAsync(new(Guid.NewGuid(),retirement.Plan.ConversionId,retirement.Plan.Revision),default);for(var i=0;i<retirement.View!.VerificationSteps;i++)await retirement.VerifySourceRetirementAsync(retirement.View.CommandId,default);retirement.Save(SourceRetirementOutcome.OriginalReceipt);api.State=retirement.State;
+        await Services.GetRequiredService<TodoWorkspacePresentation>().LoadSelectedAsync();var cut=Render<TodoConversionPage>(p=>p.Add(x=>x.SourceTaskId,retirement.Plan.Source.Id));Assert.Empty(cut.FindAll("[data-testid='conversion-source-changed']"));Assert.Equal($"/todo/retire/{retirement.Plan.ConversionId:D}",cut.Find("a[href^='/todo/retire/']").GetAttribute("href"));Assert.True(cut.Find("fieldset").HasAttribute("disabled"));Save("conversion-retired-source-history",cut.Markup,"/todo/convert/{SourceTaskId:guid}");
+    }
+    [Fact]
     public async Task Conversion_entrypoints_preserve_source_identity_on_capture_hierarchy_and_projects_routes()
     {
         var(api,_)=await Setup();var exact="/todo/convert/"+api.Source.Id.ToString("D");

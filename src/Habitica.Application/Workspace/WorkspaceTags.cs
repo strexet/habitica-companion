@@ -22,7 +22,7 @@ public sealed record WorkspaceGroupTagState(Guid EntityId,WorkspaceOrganizationK
     string IdentityState,string MembershipState,string? HabiticaTagId,int DesiredTaskCount,int ConfirmedMemberCount,string? Reason,IReadOnlyList<Guid>? UnknownWorkIds=null);
 public sealed record WorkspaceTagStatusPage(string Provenance,Guid WorkspaceId,long Revision,[property:JsonRequired] bool AccountVerified,
     [property:JsonRequired] bool TagConsentEnabled,[property:JsonRequired] bool TagScopeAllowed,[property:JsonRequired] bool IntegrationComplete,
-    WorkspaceTagTaskCoverage TaskCoverage,WorkspaceTagGroupCoverage GroupCoverage,IReadOnlyList<WorkspaceGroupTagState> Groups,int MatchedCount,int? NextOffset);
+    WorkspaceTagTaskCoverage TaskCoverage,WorkspaceTagGroupCoverage GroupCoverage,IReadOnlyList<WorkspaceGroupTagState> Groups,int MatchedCount,int? NextOffset, [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] int RetiredSourceContainers=0);
 public sealed record WorkspaceTagCandidate(Guid Id,string Name,bool RegisteredForGroup);
 public sealed record WorkspaceTagCandidatePage(Guid WorkspaceId,long Revision,Guid EntityId,WorkspaceOrganizationKind Kind,string Name,string Fingerprint,
     IReadOnlyList<WorkspaceTagCandidate> Candidates,int MatchedCount,int? NextOffset);

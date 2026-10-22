@@ -4,7 +4,7 @@ import { event, type Authority } from './journal.ts';
 import type { CommandEntry, JournalEvent } from './commands.ts';
 import { projectionStep, confirmMapping, type Observation, type AccountObservation } from './projection-adapter.ts';
 import type { WorkspaceDocument } from '../../shared/workspace-domain.ts';
-export interface WorkspaceRow {mcp_grant_epoch?:string|null;profile_id:string;workspace_id:string;connection_id:string;access_epoch:string;active:number;executor_enabled:number;document_json:string;store_version:number;archive_bytes:number;commit_tag:string;authority_json:string|null}
+export interface WorkspaceRow {retirement_fence?:string|null;mcp_grant_epoch?:string|null;profile_id:string;workspace_id:string;connection_id:string;access_epoch:string;active:number;executor_enabled:number;document_json:string;store_version:number;archive_bytes:number;commit_tag:string;authority_json:string|null}
 interface Runtime {access_epoch:string;lease_token:string|null;lease_until_utc:string|null;next_network_at_utc:string|null;command_id:string|null;prepared_request_json:string|null}
 interface Prepared {profileId:string;connectionId:string;operation:string;arguments:Record<string,unknown>;automated:boolean;attemptId:string;attemptAtUtc:string}
 interface Outcome {kind?:string;code?:string;retryAtUtc?:string;task?:{id:string;fingerprint:string;alias:string|null}}
@@ -15,7 +15,7 @@ export const cloudAuthority=(id:string):Authority=>({mode:'cloud',transferId:nul
 export async function executeProfile(env:ExecutorEnv,profileId:string,options:{wait?:(ms:number)=>Promise<void>}={}):Promise<string>{
  if(!env.EXECUTOR_ENABLED||!env.WORKSPACE_ENABLED)return 'disabled';
  const initial=await env.WORKSPACE_DB.prepare('SELECT * FROM workspaces WHERE profile_id=? AND active=1 AND executor_enabled=1').bind(profileId).first<WorkspaceRow>();
- if(!initial)return 'disabled';
+ if(!initial)return 'disabled';if(initial.retirement_fence)return 'source_retirement_pending';
  const authority:Authority=initial.authority_json?JSON.parse(initial.authority_json):cloudAuthority(initial.workspace_id);if(authority.mode!=='cloud')return 'paused';
  const token=crypto.randomUUID();const until=new Date(Date.now()+240000).toISOString();
  const acquired=await env.WORKSPACE_DB.prepare(`INSERT INTO workspace_runtime(profile_id,access_epoch,lease_token,lease_until_utc,last_wake_at_utc)
@@ -27,7 +27,7 @@ export async function executeProfile(env:ExecutorEnv,profileId:string,options:{w
  const runtime=()=>env.WORKSPACE_DB.prepare('SELECT * FROM workspace_runtime WHERE profile_id=? AND access_epoch=? AND lease_token=? AND lease_until_utc>?').bind(profileId,epoch,token,now()).first<Runtime>();
  const row=()=>env.WORKSPACE_DB.prepare('SELECT * FROM workspaces WHERE profile_id=? AND access_epoch=?').bind(profileId,epoch).first<WorkspaceRow>();
  const currentEntry=(id:string)=>env.WORKSPACE_DB.prepare('SELECT entry_json FROM workspace_commands WHERE profile_id=? AND command_id=?').bind(profileId,id).first<{entry_json:string}>();
- async function permitted(){const [w,r]=await Promise.all([row(),runtime()]);return Boolean(w?.active&&w.executor_enabled&&r&&Date.now()<deadline);}
+ async function permitted(){const [w,r]=await Promise.all([row(),runtime()]);return Boolean(w?.active&&!w.retirement_fence&&w.executor_enabled&&r&&Date.now()<deadline);}
  async function transition(id:string,change:(entry:CommandEntry,document:WorkspaceDocument)=>{entry:CommandEntry;document?:WorkspaceDocument;kind:string;evidence?:string},prepared?:Prepared|null):Promise<boolean>{
   for(let i=0;i<3;i++){
    const w=await row();const r=await runtime();const c=await currentEntry(id);if(!w||!r||!c)return false;

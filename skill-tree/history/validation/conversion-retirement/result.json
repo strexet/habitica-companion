@@ -1,0 +1,143 @@
+{
+  "task_id": "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
+  "recorded_at": "2026-10-22T15:26:11.722819+00:00",
+  "base_commit": "ecfa8af7a37aebdb4dedb8947c9445204cf8dcd9",
+  "scope": "Exact converted source retirement; trusted server verification, irreversible review, one-send unknown recovery, immutable history and coverage.",
+  "checks": {
+    "strict_future": true,
+    "repository_documentation": true,
+    "changed_line_prose": true,
+    "new_reference_prose": true,
+    "diff_check": true,
+    "plugin_skill_validation": true
+  },
+  "logs": {
+    "build": {
+      "sha256": "66a873811818e1572f4033b2f72fdebce7ce63d8ecdcd9023560b6118ba03b06"
+    },
+    "dotnet": {
+      "sha256": "f1e223acc5635294581d9bff016abe74a975df4b967f922c4d242b2733633f82",
+      "passed": 1061
+    },
+    "publish": {
+      "sha256": "b3d5251c1bc73b0d0e7fcfd9b2c7de5bbf49113734f183d7ffbf63ec70701ad5"
+    },
+    "auth-build": {
+      "sha256": "4a934990496e6b33391144be5ea6e15b29b2bc843fb346886b87d5cf23588286"
+    },
+    "workspace-build": {
+      "sha256": "5e3ca9dac37c4cd38b6d9a426353a1c1b251ea82cf86eb352d7ada468c4e4f9e"
+    },
+    "mcp-build": {
+      "sha256": "832d3b041fee56c5990fd80057bbd5da1304d172c633aa29147b774de401ff2b"
+    },
+    "auth": {
+      "sha256": "a06752fbb6edc9925c61acb140cfa93aab9969a69c6194fc7b8aa19c9de265f7",
+      "passed": 154
+    },
+    "workspace": {
+      "sha256": "15fbb6718e5242ed1e3965a6558af13b95f8a1e75e1bd823f04e38b7f16ccf2e",
+      "passed": 537
+    }
+  },
+  "browser": {
+    "cases": 792,
+    "states": 11,
+    "themes": 6,
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "text_percent": [
+      100,
+      200
+    ],
+    "errors": 0,
+    "harness_errors": 0,
+    "unqualified_surfaces": 0,
+    "seeded_controls": 2,
+    "seeded_errors_detected": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ],
+    "visual_review": "review-light.png; retained exact replacement identities and disabled destructive confirmation until acknowledgements.",
+    "matching_published_assets": true,
+    "temporary_tabs_and_servers_closed": true
+  },
+  "source_fingerprints": {
+    "plugin/skills/habitica-task-management/SKILL.md": "1e23ba25899beeae04f68262a03b311f39cfb96631fc47796c06156ae0639716",
+    "plugin/skills/habitica-task-management/references/source-retirement.md": "b0a518b94456eb0769e42b2e7b97f75d2164da8dc6e934bd083e3f695ffc66f5",
+    "skill-tree/documents/companion-workspace-contract.md": "4a2b8d24062fd8f097e7cd0d1d3898cdd7cedd6157316f1a105cc71d50574762",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "50dae71453737d3aea449ff278018b27cdf468420df042922171cdd5bded0580",
+    "skill-tree/documents/features.md": "a52c7e2c973f81751b813196e70035ccbe821c20d51de67ed32171a73f46a35f",
+    "skill-tree/documents/habitica-api.md": "87e2c5256b968e32d23dc696fdfa7b9334b539f8a91600a5d8d8d982b77279c7",
+    "skill-tree/documents/technical.md": "83a1002f055e89a28d510c8f52625a1b4ba918eec4889494edb3ad4e8fd6102e",
+    "skill-tree/documents/testing.md": "6d5a941b7cc7e71fb42e6a69b4b0bf9124499f2fd5e24adc273247d8ca713b1d",
+    "skill-tree/documents/ux-ui-manifest.md": "41a09d357f0209a419298a2e247d4abb1b100b7deb74c392eed44f8dc42586b7",
+    "src/Habitica.Application/Workspace/IWorkspaceSourceRetirementApi.cs": "ea1cf10bdada001b256956223c59862ae5f49b60aea02727f8179fe05cf48447",
+    "src/Habitica.Application/Workspace/WorkspaceConversionRetirementPolicy.cs": "bcf0b71461eca2db598699a648ca748b7eb8984f102cc16921a5cf99ad971a35",
+    "src/Habitica.Application/Workspace/WorkspaceHabiticaCoveragePolicy.cs": "4d046be19b185b4022bd9af2242134b1efca90b5e65b99141dd883654295496f",
+    "src/Habitica.Application/Workspace/WorkspaceTags.cs": "3f735b6217457c4689afa79f5b6eceae4480cd8552b17b8a19c81b8d13a92c22",
+    "src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs": "973f1234bc6ad5cbfb9f410199549ea960f05dac641e9eb7c3991c675eaa0a56",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "498b7454680316f4b2fef100dd6b1f046ac42bb0bb7bbe6d705a5d41398a6eb7",
+    "src/Habitica.Domain/Workspace/WorkspaceJournalValidation.cs": "e10ab15ffd825710d900ef0e5b6e6f2cf56c4206f085c9954c2b03623aad415c",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "e28b963a37f26a1d171be200f97cb04ab4b6ca6a5fddad34286b0aa224758318",
+    "src/Habitica.Domain/Workspace/WorkspaceSourceRetirement.cs": "6ab566effc203e157cedf0a60ac8358490b741a0e8fc3600a0681c03542bef54",
+    "src/Habitica.WebApp/Components/WorkspaceChecklistConversionPanel.razor": "b6200f1f6f0bee0207de0e06f04553db1c633b55e3eae324da2b27880e24dda7",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Diagnostics.cs": "80bbe9e258e85576ec04bf0e33179b7b273e3e1ad9257cf16a5f4da92398a28e",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Retirement.cs": "161a7c30b38006927aac20f6d85789eb0be633fbee54ef40aa825cdf43a636e2",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Tags.cs": "e98c1096b2a2bfe525f3867409233013c83f41fadd9f2af7e6a53e42ac4517ec",
+    "src/Habitica.WebApp/Pages/TodoRetirementPage.razor": "9a9fb6072d420378c5bfa8c443c1a963fc6ff8154e20acc2d72488bda52b6777",
+    "src/Habitica.WebApp/Program.cs": "af1b82984818883d221289515588b60797b8fc3c24d84f0c95293b0b976eeb20",
+    "src/Habitica.WebApp/State/WorkspaceSourceRetirementController.cs": "4093dded12fba1a3d8775c55cc8f8d527c854b43e0b81207e4c5dcab45aed808",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "b0f0ee653433c5c72f579d800b06d7fc09bb7a621df0a0c5686bb78498180090",
+    "src/Habitica.WebApp/wwwroot/js/colorSchemes.js": "8462ddaa89004ccf1c99ba78fc909d3d0474291d80187deed343b0c18905c387",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceConversionRetirementTests.cs": "fa8af258e8e06dd1e8eb5f1a447b988d084a617b85cc06f841014957409cdcbb",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "2dcbea36f4c77fcade1635accd110ba02fd356445261b6ebf9db79bd05ad1cbf",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.RetirementTests.cs": "061d3bcee87285f935a28171f2c1749a118f582f46d890e17e3f4ea31afc0238",
+    "tests/Habitica.WebApp.Tests/Workspace/SourceRetirementFixture.cs": "c30edf17b8012fff41579b75fd31530f9870c19c2101377361a04eae1130d46e",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs": "c6312714223f255cfadebabcbce61f91eda5558ac7a5ca8f1f4c83fcb0fca3e1",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceSourceRetirementTests.cs": "cb9ce0fc6db251967139388eba6dc8e733113e855c31f68c15a7cdcba6187928",
+    "tests/browser-qualification/matrix.html": "36839e584b3fa2f477fbd0d2fabbc24072da8a8f3322db075902d67be25ed579",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "b7476ce6f6e5766f604e53a0ecdf19cb68dc775a911c8a2276fdf8a3e22d0bd2",
+    "tests/fixtures/workspace/conversion-retirement-already-absent.json": "2bfc5a0c330dca07d0cd0a3cb95a68975d0caf2559a2bb216d4b51e35a670508",
+    "tests/fixtures/workspace/conversion-retirement-observed-absent-after-unknown.json": "5523343ef5e34c05bb1133eaa02d8915848e1ffa2bf805ef805dd17cc84e22c0",
+    "tests/fixtures/workspace/conversion-retirement-original-receipt.json": "226775726b02707010ded56bc485a50405261c1c76d9d98a954f7b00b1d53704",
+    "tests/fixtures/workspace/conversion-retirement-prerequisites.json": "3aacb7ae20332f7fb1ebccf0518a962387aa8b9d7960f5817496a6b6eea79302",
+    "workers/chatgpt-auth/src/projection.ts": "0b0548b5df83669fe8233a6a4fbfec65873f6d40897dcde62f7b6c0c085b9a49",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "bcf508b939dae848eb23ae98e0817b33ca647764463529954beaf8dfd07615e5",
+    "workers/chatgpt-auth/test/retirement-gateway.test.mjs": "bfdcc5171f92ca12572d6e6220c845ef8caf478ff394370d58131f9a50c2ad27",
+    "workers/chatgpt-mcp/src/index.ts": "1fc4b21a0915744733bb585b23848106e258629366ca0e287e7301a447c562b3",
+    "workers/chatgpt-mcp/src/retirement-tools.ts": "c48371fa7860dc1a7c6441b554119b755d4a4de69f114eb74e27df8d3e265858",
+    "workers/chatgpt-mcp/src/tools.ts": "3822711f51288276d933ab1563f68c611bcc62f89b5669242f8ba5e0f1d8dc97",
+    "workers/companion-workspace/migrations/0010-source-retirement.sql": "ae4da29bdef6b111d47e6f7d32ece8da70c5d7ea38c5d79f359f11ab00b75b96",
+    "workers/companion-workspace/src/executor.ts": "a95edb4e85dc61939a19b48f793891832341d5d4e60c2b504b7574177878b11c",
+    "workers/companion-workspace/src/index.ts": "68d03d333116413b00323fa9f53d7eae3f55a8f185d850058563d7f518825dba",
+    "workers/companion-workspace/src/journal.ts": "6f08c417c5d5bc23d7bef045d9ff3e7ce2e1ad0415f23d6fee9957554d8a45fc",
+    "workers/companion-workspace/src/retirement-policy.ts": "72b13e2f45e289ad2ae4ad9a5ffbc8011f68886b7b9b01b81f000cfa8c58c0d3",
+    "workers/companion-workspace/src/source-retirement-api.ts": "6c6e8c14d52c4011af5afa2e7a0b89c88cd753389ece6ec01981793d1cc4604b",
+    "workers/companion-workspace/src/tag-executor.ts": "c02d80ccb1ce3a70ffb91354f9727931689dab5b62fd6e342e23f8504924f068",
+    "workers/companion-workspace/test/retirement-policy.test.mjs": "01eaf6594357f62a5d79c4054bc6bbe1c824f3c25fc912dcf6c7f607b27a08c1",
+    "workers/companion-workspace/test/source-retirement-api.test.mjs": "f785859a74308a689c7158cbc18c564a8857920a1fd4cf544b408f286ed1c495",
+    "workers/companion-workspace/test/source-retirements.test.mjs": "ce69783877280c72d17466c5741bdb4eb4d215deed61610a3686e9874f2e5f11",
+    "workers/shared/group-tag-status.ts": "060f61827ff3597ece4a8c03923b5bfd3a75fd1436e2dac028fd1480da370d5b",
+    "workers/shared/retirement-tools.ts": "5f150c7e1e71147dbdfad626fc51f44a8f6bd2708ba3343ce88a3cadc0463384",
+    "workers/shared/source-retirements.ts": "c25e8386250b379b33ed28992722d62e8daa4c2f611d6cdd962561ab10d00d13",
+    "workers/shared/tag-membership.ts": "1f8e2cb09f32fd8f05405b042009285b922ec214529240adc0df52d866044620",
+    "workers/shared/workspace-domain.ts": "81f9c2b0d757b10eafc7ea55a276b0d612679525602be975db205aaa262ce781"
+  },
+  "limitations": [
+    "Local synthetic qualification only; no deployment, push, remote migration, enrollment or live Habitica mutation occurred.",
+    "Physical devices, assistive technologies and hosted OAuth/client behavior remain unqualified.",
+    "Habitica has no conditional DELETE or cross-service transaction. Native observations can race external edits; unknown dispatch is never resent.",
+    "Original unknown work can remain fenced when the native source remains present or original evidence is unavailable; no manual fence override or retry is supplied.",
+    "Workspace migration0010 and coordinated Auth/Workspace/MCP/PWA publication are required before hosted use. Existing account/task/organization/tag consents remain separate.",
+    "Publication retains the existing optional wasm-tools optimization limitation; no workload upgrade was performed."
+  ]
+}

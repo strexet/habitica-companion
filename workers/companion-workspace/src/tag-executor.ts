@@ -75,7 +75,7 @@ export async function executeTagWork(env:ExecutorEnv,profileId:string,control:Ta
   return finish(outcome,prepared);
  }
  if(stored.retry_at_utc&&Date.parse(stored.retry_at_utc)>Date.now())return 'tag_limited';
- const row=await control.row();if(!row)return 'tag_paused';
+ const row=await control.row();if(!row||row.retirement_fence)return 'tag_paused';
  if(stored.access_epoch!==row.access_epoch||stored.connection_id!==row.connection_id)return review('tag_connection_changed');
  let authority;try{authority=await tagAuthority(env,row,{source:work.origin.source,tagWriteAllowed:work.origin.scopeAllowed,grantEpoch:work.origin.grantEpoch??undefined});}catch{return review('tag_authority_unavailable');}
  const gap=tagAuthorityGap(authority);if(gap)return review(gap);

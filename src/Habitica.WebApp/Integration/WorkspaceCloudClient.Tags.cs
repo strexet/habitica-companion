@@ -28,7 +28,7 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceTagApi
             var result=await CallTagAsync<WorkspaceTagStatusPage>("get_group_tag_status",args,cancellationToken);
             if(result.Value is not {} page)return result;
             var t=page.TaskCoverage;var g=page.GroupCoverage;
-            if(page.WorkspaceId!=WorkspaceId||page.Provenance!="stored-canonical-evidence"||page.Revision<1||expectedRevision is not null&&page.Revision!=expectedRevision
+            if(page.WorkspaceId!=WorkspaceId||page.Provenance!="stored-canonical-evidence"||page.Revision<1||page.RetiredSourceContainers is <0 or >1000||expectedRevision is not null&&page.Revision!=expectedRevision
                 ||t is null||g is null||!Counts(t.Total,t.Linked,t.Pending,t.Missing,t.NeedsReview,t.Archived)||t.Linked+t.Pending+t.Missing+t.NeedsReview!=t.Total||t.Archived>t.Total
                 ||!Counts(g.Total,g.Confirmed,g.Pending,g.NeedsReview,g.Missing)||g.Confirmed+g.Pending+g.NeedsReview+g.Missing!=g.Total
                 ||page.Groups is null||page.Groups.Count>20||page.MatchedCount<0||page.MatchedCount>g.Total||page.Groups.Count>page.MatchedCount

@@ -9,7 +9,7 @@ public sealed record WorkspaceHabiticaTagRequirement(Guid EntityId, WorkspaceOrg
     HabiticaCoverageState State = HabiticaCoverageState.Missing, string? HabiticaTagId = null,
     HabiticaCoverageState MembershipState = HabiticaCoverageState.Missing);
 public sealed record WorkspaceHabiticaCoverage(IReadOnlyList<WorkspaceHabiticaTaskCoverage> Tasks,
-    IReadOnlyList<WorkspaceHabiticaTagRequirement> RequiredTags)
+    IReadOnlyList<WorkspaceHabiticaTagRequirement> RequiredTags, int RetiredSourceContainers = 0)
 {
     public int MissingTaskLinks => Tasks.Count(task => task.State == HabiticaCoverageState.Missing);
     public int PendingTaskLinks => Tasks.Count(task => task.State == HabiticaCoverageState.Pending);
@@ -29,7 +29,8 @@ public static class WorkspaceHabiticaCoveragePolicy
     public static WorkspaceHabiticaCoverage Audit(WorkspaceDocument document, Guid? expectedAccountId = null)
     {
         var mappings = document.Projections.ToLookup(mapping => mapping.TaskId);
-        var tasks = document.Tasks.Select(task =>
+        var retired = document.SourceRetirements is {Count:>0} && WorkspaceSourceRetirements.IsValid(document) ? document.SourceRetirements.Select(row=>row.SourceTaskId).ToHashSet() : [];
+        var tasks = document.Tasks.Where(task=>!retired.Contains(task.Id)).Select(task =>
         {
             var candidates = mappings[task.Id].ToArray();
             var mapping = candidates.Length == 1 ? candidates[0] : null;
@@ -89,6 +90,6 @@ public static class WorkspaceHabiticaCoveragePolicy
         Add(document.Labels, WorkspaceOrganizationKind.Label);
         Add(document.Goals, WorkspaceOrganizationKind.Goal);
         Add(document.SavedTaskViews ?? [], WorkspaceOrganizationKind.SavedTaskView);
-        return new(tasks, tags);
+        return new(tasks, tags, retired.Count);
     }
 }

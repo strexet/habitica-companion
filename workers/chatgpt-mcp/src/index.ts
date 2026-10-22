@@ -53,7 +53,7 @@ export default {
           catch { return Response.json({ error: "invalid_request" }, { status: 400, headers }); }
           const call = body as { method?: string; params?: { name?: string } } | null;
           const name = call?.method === "tools/call" ? call.params?.name : undefined;
-          const quota=await mcpEnv.AUTH_SERVER.fetch("https://auth.internal/traffic",{method:"POST",body:JSON.stringify({lane:"mcp",profileId:context.props.profileId,connectionId:context.props.connectionId,recovery:["get_checklist_conversion_command","get_group_tag_command","recover_group_tag_receipt","get_task_command","get_organization_command","get_spell_command","get_cron_command"].includes(name??"")}),signal:AbortSignal.timeout(5000)});
+          const quota=await mcpEnv.AUTH_SERVER.fetch("https://auth.internal/traffic",{method:"POST",body:JSON.stringify({lane:"mcp",profileId:context.props.profileId,connectionId:context.props.connectionId,recovery:["get_source_retirement_command","get_checklist_conversion_command","get_group_tag_command","recover_group_tag_receipt","get_task_command","get_organization_command","get_spell_command","get_cron_command"].includes(name??"")}),signal:AbortSignal.timeout(5000)});
           if(!quota.ok)return quota;
           if (name && Object.hasOwn(readScopes, name)) {
             const scope = readScopes[name as keyof typeof readScopes];

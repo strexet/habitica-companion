@@ -41,6 +41,7 @@ public static class DiagnosticsLogSanitizer
         "workspace-executor", "workspace-export-cloud", "workspace-disconnect", "workspace-delete", "workspace-transfer",
         "workspace-export-local", "workspace-restore-local", "workspace-organization-prepare", "workspace-organization-accept",
         "workspace-organization-recover", "workspace-saved-list", "workspace-saved-query", "workspace-party-planning",
+        "workspace-retirement-read", "workspace-retirement-prepare", "workspace-retirement-verify", "workspace-retirement-accept", "workspace-retirement-reconcile",
         "workspace-conversion-read", "workspace-conversion-prepare", "workspace-conversion-accept", "workspace-conversion-recover"
     };
     private static readonly HashSet<string> Counts = new(StringComparer.Ordinal)

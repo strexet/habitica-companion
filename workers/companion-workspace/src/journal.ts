@@ -20,7 +20,7 @@ function timestamp(v:unknown):v is string{try{return utcTicks(v)!==utcTicks('000
 export async function journal(value:unknown):Promise<Journal>{
  const input=object(value,['document','storeVersion','commands','events','authority']);const document=workspaceDocument(input.document);await validateConversionHashes(document);
  valid(Number.isSafeInteger(input.storeVersion)&&Number(input.storeVersion)>=document.revision&&Array.isArray(input.commands));
- const organizationIds=new Set([...(document.organizationHistory??[]).map(entry=>entry.command.id),...(document.checklistConversions??[]).flatMap(row=>row.receipts.map(receipt=>receipt.command.id))]),organizationRevisions=new Set((document.organizationHistory??[]).map(entry=>entry.snapshot.revision));
+ const organizationIds=new Set([...(document.organizationHistory??[]).map(entry=>entry.command.id),...(document.checklistConversions??[]).flatMap(row=>row.receipts.map(receipt=>receipt.command.id)),...(document.sourceRetirements??[]).map(row=>row.id)]),organizationRevisions=new Set((document.organizationHistory??[]).map(entry=>entry.snapshot.revision));
  await validateOrganizationHistoryHashes(document);
  const ids=new Set<string>();const commands:CommandEntry[]=[];
  for(const raw of input.commands){

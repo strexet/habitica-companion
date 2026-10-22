@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Retire verified converted source tasks through supported reviewed commands
-
-```yaml
-id: T-bf9aa399-2724-4f21-868e-dc6e4028004c
-priority: 103
-status: Ready
-parent_pending_ids: ["P-7414291b-9448-4d98-884c-97b582cd2d67"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-bf9aa399-2724-4f21-868e-dc6e4028004c
-related_task_id: null
-relation: main
-depends_on: ["T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2"]
-```
-
-Goal:
-- Finish a verified conversion by retiring only the exact obsolete source through supported product lifecycle operations.
-Current behavior:
-- DeleteTask rejects every retained linked mapping, so the legacy linked source remains active. Logical project removal retains native tasks and cannot retire the old Habitica Todo.
-Desired behavior:
-- The legacy container can be retired cleanly only after verified replacement coverage and exact approval; unknown or incomplete conversion never deletes the source.
-Touch:
-- Conversion command/controller, typed source retirement projection, Auth own-task delete allowlist and receipt handling, browser/MCP exact-impact preview and history/export fixtures.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Require conversion-ledger proof of content, target membership and required mappings, no unresolved effects, exact source revision and fresh upstream ownership/fingerprint. Retain native source/conversion history while removing the obsolete active Habitica container through an explicitly reviewed delete when necessary. Habitica deletion is irreversible through ordinary recovery; show exact impact and obtain concrete approval under the active UI/tool contract. A timeout is unknown and permits lookup/reconciliation only. No direct SQL mutation, broad clearCompletedTodos, scoring, renamed backup or deletion of unrelated tasks/tags.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Test incomplete mappings, content mismatch, changed source, completed/archived targets, denied ownership, definitive upstream refusal, delete timeout, already-absent source, restart recovery and preservation of all target notes/history/tags.
-Acceptance:
-- The legacy container can be retired cleanly only after verified replacement coverage and exact approval; unknown or incomplete conversion never deletes the source.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Preserve group tag names through diagnostic sanitization
 
 ```yaml

@@ -1,0 +1,14 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
+import {groupTagStatus} from '../../shared/group-tag-status.ts';import {desiredTagMembership} from '../../shared/tag-membership.ts';import {workspaceDocument} from '../../shared/workspace-domain.ts';import {workspaceCommand} from '../../shared/workspace-commands.ts';import {journal} from '../src/journal.ts';import {inspectRetirement} from '../src/retirement-policy.ts';import {accept} from '../src/commands.ts';
+const fixture=async name=>JSON.parse(await readFile(new URL('../../../tests/fixtures/workspace/conversion-retirement-'+name+'.json',import.meta.url),'utf8'));
+for(const name of ['original-receipt','already-absent','observed-absent-after-unknown'])test('portable '+name+' retirement preserves all content and permits later independent target work',async()=>{
+ const x=await fixture(name),state=await journal(x),row=state.document.sourceRetirements[0],conversion=state.document.checklistConversions[0];
+ assert.equal(row.outcome,name==='original-receipt'?'originalReceipt':name==='already-absent'?'alreadyAbsent':'observedAbsentAfterUnknown');assert.equal(state.document.tasks.length,11);assert.equal(state.document.completions.length,2);const status=groupTagStatus(state.document,{accountId:row.accountId,consentEnabled:true,scopeAllowed:true});assert.equal(status.retiredSourceContainers,1);assert.equal(status.taskCoverage.total,10);assert.ok(desiredTagMembership(state.document).groups.every(group=>!group.taskIds.includes(row.sourceTaskId)));
+ assert.equal((await inspectRetirement(state,conversion.id,row.accountId)).canPrepareNativeReview,false);
+ const target=conversion.items[0].targetTaskId;const later=await accept(state.document,workspaceCommand({id:crypto.randomUUID(),workspaceId:state.document.id,expectedRevision:state.document.revision,operation:'completeTask',taskId:target,projectToHabitica:true}),new Date(Date.parse(row.retiredAtUtc)+60000).toISOString());assert.deepEqual(later.document.sourceRetirements,state.document.sourceRetirements);assert.equal(later.document.completions.length,3);
+ let changed=structuredClone(x.document);changed.tasks.find(task=>task.id===row.sourceTaskId).notes='Lost original notes';assert.throws(()=>workspaceDocument(changed));
+ changed=structuredClone(x.document);changed.sourceRetirements[0].nativeAttemptId=name==='already-absent'?crypto.randomUUID():null;assert.throws(()=>workspaceDocument(changed));
+ changed=structuredClone(x.document);changed.sourceRetirements[0].id=target;assert.throws(()=>workspaceDocument(changed));
+ changed=structuredClone(x.document);changed.sourceRetirements[0].reviewedRevision=changed.revision;assert.throws(()=>workspaceDocument(changed));
+ changed=structuredClone(x.document);changed.sourceRetirements[0].retiredAtUtc='2026-10-23T00:00:00.0000001+00:00';assert.throws(()=>workspaceDocument(changed));
+});

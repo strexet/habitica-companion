@@ -1,3 +1,5 @@
+import {sourceRetirementApi} from './source-retirement-api';
+import {retirementToolScopes,type RetirementTool} from '../../shared/retirement-tools';
 import {conversionApi} from './conversion-api';
 import {conversionToolScopes,type ConversionTool} from '../../shared/conversion-tools';
 import {purgeExpiredTagReviews} from './group-tag-retention';
@@ -156,6 +158,7 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
   return json(await ownContributions(env,who.profileId,request.method==='POST'));
  }
  const row = await session(request, env);
+ if(row.retirement_fence&&request.method!=="GET"&&!["/retirement-api","/disconnect","/executor"].includes(path))throw new WorkspaceError("source_retirement_pending",409);
  const quota=await env.AUTH_IDENTITY.fetch("https://identity.internal/traffic",{method:"POST",body:JSON.stringify({lane:"workspace",profileId:row.profile_id,connectionId:row.connection_id,recovery:request.method==="GET"&&(path==="/operations"||path.startsWith("/commands/"))}),signal:AbortSignal.timeout(5000)});
  if(!quota.ok)return quota;
  if(path==='/tag-projection'&&request.method==='GET')return json(await tagStatus(env,row));
@@ -181,6 +184,7 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  }
  if (path === "/workspace" && request.method === "GET") return json({ document: JSON.parse(row.document_json), storeVersion: row.store_version, executorEnabled: Boolean(row.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED) });
  if (path === "/export" && request.method === "GET") return snapshot(env, row);
+ if(path==='/retirement-api'&&request.method==='POST'){const body=workspaceObject(await workspaceJson(request,16384),['tool','arguments']);return json(await sourceRetirementApi(env,row,body.tool as RetirementTool,body.arguments));}
  if(path==='/conversion-api'&&request.method==='POST'){const body=workspaceObject(await workspaceJson(request,65536),['tool','arguments']);return json(await conversionApi(env,row,body.tool as ConversionTool,body.arguments));}
  if(path==='/tag-api'&&request.method==='POST'){
   const body=workspaceObject(await workspaceJson(request,65536),['tool','arguments']);return json(await groupTagApi(env,row,body.tool as GroupTagTool,body.arguments,browserTagOrigin));
@@ -247,17 +251,19 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
   try{
    if(!this.env.WORKSPACE_ENABLED||request.method!=="POST")throw new WorkspaceError("workspace_unavailable",503);
    const body=workspaceObject(await workspaceJson(request,1024*1024),["tool","arguments"]);
-   if(typeof body.tool!=="string"||!Object.hasOwn(conversionToolScopes,body.tool)&&!Object.hasOwn(groupTagScopes,body.tool)&&!Object.hasOwn(organizationToolScopes,body.tool)&&!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool)&&!Object.hasOwn(spellToolScopes,body.tool)&&!Object.hasOwn(cronToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
+   if(typeof body.tool!=="string"||!Object.hasOwn(retirementToolScopes,body.tool)&&!Object.hasOwn(conversionToolScopes,body.tool)&&!Object.hasOwn(groupTagScopes,body.tool)&&!Object.hasOwn(organizationToolScopes,body.tool)&&!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool)&&!Object.hasOwn(spellToolScopes,body.tool)&&!Object.hasOwn(cronToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
    const verified=await this.env.AUTH_IDENTITY.fetch("https://identity.internal/mcp",{method:"POST",headers:{authorization:request.headers.get("authorization")??""},signal:AbortSignal.timeout(5000)});
    if(!verified.ok)throw new WorkspaceError("unauthorized",401);
    const who=await verified.json<Identity&{scopes:string[];grantEpoch:string;tagWriteAllowed:boolean}>();
    const requiredScope=Object.hasOwn(groupTagScopes,body.tool)?groupTagScopes[body.tool as GroupTagTool]:Object.hasOwn(organizationToolScopes,body.tool)?organizationToolScopes[body.tool as OrganizationWriteTool]:Object.hasOwn(partyToolScopes,body.tool)?partyToolScopes[body.tool as PartyTool]:taskToolScopes[body.tool as TaskTool];
-   const required=Object.hasOwn(conversionToolScopes,body.tool)?conversionToolScopes[body.tool as ConversionTool]:Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:['profile:read',requiredScope];
+   const required=Object.hasOwn(retirementToolScopes,body.tool)?retirementToolScopes[body.tool as RetirementTool]:Object.hasOwn(conversionToolScopes,body.tool)?conversionToolScopes[body.tool as ConversionTool]:Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:['profile:read',requiredScope];
    if(!Array.isArray(who.scopes)||required.some(scope=>!who.scopes.includes(scope)))throw new WorkspaceError("insufficient_scope",403);
    let row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
    if(!row)throw new WorkspaceError("workspace_consent_required",403);
    row=await mcpEpoch(this.env,row,who.grantEpoch);
+   if(row.retirement_fence&&!Object.hasOwn(retirementToolScopes,body.tool)&&!body.tool.startsWith('get_'))throw new WorkspaceError('source_retirement_pending',409);
    const tagOrigin:TagOrigin={source:'mcp',tagWriteAllowed:who.tagWriteAllowed===true,grantEpoch:who.grantEpoch};
+   if(Object.hasOwn(retirementToolScopes,body.tool))return json(await sourceRetirementApi(this.env,row,body.tool as RetirementTool,body.arguments,tagOrigin));
    if(Object.hasOwn(conversionToolScopes,body.tool))return json(await conversionApi(this.env,row,body.tool as ConversionTool,body.arguments,tagOrigin));
    if(Object.hasOwn(groupTagScopes,body.tool))return json(await groupTagApi(this.env,row,body.tool as GroupTagTool,body.arguments,tagOrigin));
    if(Object.hasOwn(organizationToolScopes,body.tool))return json(await organizationApi(this.env,row,body.tool as OrganizationWriteTool,body.arguments,tagOrigin));

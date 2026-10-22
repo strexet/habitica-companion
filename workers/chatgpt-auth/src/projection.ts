@@ -1,3 +1,5 @@
+import {requireTagConsent} from './tag-consent';
+import {taggedTask} from '../../shared/tag-gateway.ts';
 import {normalizeDailySchedule,sameDailySchedule,readDailySchedule} from '../../shared/daily-projection.ts';
 import {workspaceRecurrence} from '../../shared/workspace-domain.ts';
 import {upstreamBudget,upstreamFetch,observeUpstream,TrafficLimit,trafficFailure} from './traffic';
@@ -37,12 +39,12 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
  let who: Context | undefined, lease: string | undefined, attemptId: string | undefined, dispatched = false;
  try {
   if (!Boolean(env.PROJECTION_ENABLED) || !Boolean(env.WORKSPACE_ENABLED) || request.method !== "POST") throw new WorkspaceError("unauthorized",401);
-  const input = workspaceObject(await workspaceJson(request,262144),["profileId","connectionId","operation","arguments","attemptId","attemptAtUtc","automated"]);
+  const input = workspaceObject(await workspaceJson(request,262144),["profileId","connectionId","operation","arguments","attemptId","attemptAtUtc","automated","expectedConsentEpoch","requiredGrantEpoch"]);
   if (typeof input.profileId !== "string" || !/^prf_[A-Za-z0-9_-]{43}$/.test(input.profileId) || typeof input.automated !== "boolean") throw new WorkspaceError("invalid_request");
   who = { profileId: input.profileId, connectionId: uuid(input.connectionId) };
-  const operation = input.operation; if (typeof operation !== "string" || !["inspect","inspectDaily","inspectAccount","create","update","score","reconcile","lookup"].includes(operation)) throw new WorkspaceError("invalid_operation");
-  const writing = ["create","update","score"].includes(operation);
-  const args = workspaceObject(input.arguments,["reconcile","lookup"].includes(operation) ? ["operation","arguments"] : writing ? operation === "create" ? ["selector","checkToken","patch","taskKind","recurrence","accountCheckToken"] : operation === "update" ? ["selector","checkToken","expectedFingerprint","patch"] : ["selector","checkToken","expectedFingerprint","direction","accountCheckToken","occurrenceDate"] : operation === "inspectAccount" ? [] : ["selector"]);
+  const operation = input.operation; if (typeof operation !== "string" || !["inspect","inspectRetirement","inspectDaily","inspectAccount","create","update","score","retireSource","reconcile","lookup"].includes(operation)) throw new WorkspaceError("invalid_operation");
+  const writing = ["create","update","score","retireSource"].includes(operation);
+  const args = workspaceObject(input.arguments,["reconcile","lookup"].includes(operation) ? ["operation","arguments"] : writing ? operation === "retireSource" ? ["selector","checkToken","expectedFingerprint","expectedCompleted","workspaceId","conversionId","sourceTaskId","contextHash","irreversibleApproved"] : operation === "create" ? ["selector","checkToken","patch","taskKind","recurrence","accountCheckToken"] : operation === "update" ? ["selector","checkToken","expectedFingerprint","patch"] : ["selector","checkToken","expectedFingerprint","direction","accountCheckToken","occurrenceDate"] : operation === "inspectAccount" ? [] : ["selector"]);
   const profile = await activeProfile(env,who.profileId,who.connectionId);
   // Operational attempt metadata expires after thirty days. Old attempt timestamps cannot authorize a new send.
   await env.HABITICA_INTEGRATION_DB.batch([
@@ -82,6 +84,12 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
     target = uuid(target);
     if (precondition.task_id !== target || precondition.fingerprint !== fingerprint(args.expectedFingerprint)) throw new WorkspaceError("external_conflict",409);
     if (operation === "update") patch = remotePatch(args.patch,false,precondition.kind??undefined);
+    else if(operation === "retireSource") {
+     // Narrow private source-retirement lane; ordinary linked-task deletion remains unavailable.
+     uuid(args.workspaceId);uuid(args.conversionId);uuid(args.sourceTaskId);fingerprint(args.contextHash);
+     if(input.automated!==false||args.irreversibleApproved!==true||typeof args.expectedCompleted!=="boolean")throw new WorkspaceError("exact_retirement_approval_required",409);
+     if(precondition.kind!=="todo"||precondition.completed!==Number(args.expectedCompleted))throw new WorkspaceError("retirement_source_changed",409);
+    }
     else {
      if (args.patch !== undefined || !["up","down"].includes(args.direction as string)) throw new WorkspaceError("invalid_direction",422);
      if (precondition.kind === "habit" ? !(args.direction === "up" ? precondition.up : precondition.down) : args.direction !== "up" || precondition.completed !== 0) throw new WorkspaceError("task_not_scorable",409);
@@ -93,15 +101,34 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
     }
    }
   }
+  async function retirementAuthority(){
+   if(operation!=="retireSource")return;
+   const current=await activeProfile(env,who!.profileId,who!.connectionId),consent=await requireTagConsent(env,who!.profileId,who!.connectionId);
+   if(typeof input.expectedConsentEpoch!=="string"||input.expectedConsentEpoch!==consent.consent_epoch||input.requiredGrantEpoch!==undefined&&input.requiredGrantEpoch!==current.grant_epoch)throw new WorkspaceError("retirement_authority_changed",409);
+  }
+  await retirementAuthority();
   if (profile.credential_schema_version !== 1 || !env.HABITICA_X_CLIENT_HEADER) throw new WorkspaceError("service_unavailable",503);
   const credential = await decryptCredential(who.profileId,{ciphertext:profile.credential_ciphertext!,iv:profile.credential_iv!,keyVersion:profile.credential_key_version!,schemaVersion:1},credentialKeys(env));
   lease = crypto.randomUUID(); const now = new Date().toISOString();
   const acquired = await env.HABITICA_INTEGRATION_DB.prepare(`INSERT INTO integration_projection_state(profile_id,connection_id,lease_token,lease_until_utc,next_automated_at_utc) VALUES(?,?,?,?,?)
    ON CONFLICT(profile_id,connection_id) DO UPDATE SET lease_token=excluded.lease_token,lease_until_utc=excluded.lease_until_utc,next_automated_at_utc=excluded.next_automated_at_utc
    WHERE (integration_projection_state.lease_until_utc IS NULL OR integration_projection_state.lease_until_utc<=?)
-   AND (?=0 OR integration_projection_state.next_automated_at_utc IS NULL OR integration_projection_state.next_automated_at_utc<=?)`).bind(who.profileId,who.connectionId,lease,new Date(Date.now()+15000).toISOString(),new Date(Date.now()+30000).toISOString(),now,Number(input.automated),now).run();
+   AND (?=0 OR integration_projection_state.next_automated_at_utc IS NULL OR integration_projection_state.next_automated_at_utc<=?)`).bind(who.profileId,who.connectionId,lease,new Date(Date.now()+(operation==="retireSource"?45000:15000)).toISOString(),new Date(Date.now()+30000).toISOString(),now,Number(input.automated),now).run();
   if (!acquired.meta.changes) return json({kind:"refused",code:"projection_busy",retryAtUtc:new Date(Date.now()+30000).toISOString()},429);
   await upstreamBudget(env,who.profileId);
+  if(operation === "retireSource") {
+   // Re-observe ownership, type, content and completion immediately before reserving one DELETE.
+   // Habitica has no conditional-delete endpoint; the final external race remains explicit.
+   const observedResponse=await upstreamFetch(env,"https://habitica.com/api/v3/tasks/"+encodeURIComponent(target),{method:"GET",redirect:"manual",headers:{"x-api-user":credential.habiticaUserId,"x-api-key":credential.apiToken,"x-client":env.HABITICA_X_CLIENT_HEADER,accept:"application/json"},signal:AbortSignal.timeout(10000)},who.profileId);
+   await observeUpstream(env,observedResponse,who.profileId);const retry=await rateState(env,who,observedResponse);
+   if(!observedResponse.ok)return json({kind:"refused",code:observedResponse.status===404?"source_already_absent":observedResponse.status===429?"rate_limited":[401,403].includes(observedResponse.status)?"credential_repair_required":"habitica_unavailable",...(retry?{retryAtUtc:retry}:{})},observedResponse.status===429?429:409);
+   const observedBody=workspaceObject(await boundedJson(observedResponse,2097152));if(observedBody.success!==true)throw new WorkspaceError("invalid_upstream_response",502);
+   const observed=await remoteTask(observedBody.data,credential.habiticaUserId);
+   if(observed.id!==target||observed.kind!=="todo"||observed.fingerprint!==args.expectedFingerprint||observed.completed!==args.expectedCompleted)throw new WorkspaceError("retirement_source_changed",409);
+   // The final DELETE consumes its own quota reservation; a read that exhausts quota sends no mutation.
+   await upstreamBudget(env,who.profileId);
+  }
+  await retirementAuthority();
   if (writing) {
    const prepared = await env.HABITICA_INTEGRATION_DB.batch([
     env.HABITICA_INTEGRATION_DB.prepare("INSERT INTO integration_projection_attempts(profile_id,connection_id,attempt_id,payload_hash,operation,state,created_at_utc) SELECT ?,?,?,?,?,'dispatched',? FROM integration_projection_checks WHERE token_hash=? AND profile_id=? AND connection_id=? AND expires_at_utc>?").bind(who.profileId,who.connectionId,attemptId!,payloadHash!,operation,now,precondition!.token_hash,who.profileId,who.connectionId,now),
@@ -110,13 +137,14 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
    if (!prepared[0].meta.changes) throw new WorkspaceError("precondition_consumed",409); dispatched = true;
   }
   const path = operation === "inspectAccount" ? "user" : operation === "inspectDaily" ? "tasks/user?type=dailys&history=false&dueDate="+encodeURIComponent(now) : operation === "create" ? "tasks/user" : `tasks/${encodeURIComponent(target)}${operation === "score" ? `/score/${args.direction}` : ""}`;
-  const method = operation === "create" || operation === "score" ? "POST" : operation === "update" ? "PUT" : "GET";
+  const method = operation === "create" || operation === "score" ? "POST" : operation === "update" ? "PUT" : operation === "retireSource" ? "DELETE" : "GET";
   await activeProfile(env,who.profileId,who.connectionId);
+  await retirementAuthority();
   const response = await upstreamFetch(env,"https://habitica.com/api/v3/"+path,{method,redirect:"manual",headers:{"x-api-user":credential.habiticaUserId,"x-api-key":credential.apiToken,"x-client":env.HABITICA_X_CLIENT_HEADER,accept:"application/json","content-type":"application/json"},body:operation === "create" ? JSON.stringify({...patch,type:creationKind,alias:target}) : operation === "update" ? JSON.stringify(patch) : undefined,signal:AbortSignal.timeout(10000)},who.profileId);
   await observeUpstream(env,response,who.profileId);
   const retryAtUtc = await rateState(env,who,response);
   if (!writing) {
-   if (response.status === 404 && operation === "inspect") return json({task:null,checkToken:await rememberCheck(env,who,target,null)});
+   if (response.status === 404 && ["inspect","inspectRetirement"].includes(operation)) return json({task:null,checkToken:await rememberCheck(env,who,target,null)});
    if (!response.ok) return json({kind:"refused",code:[401,403].includes(response.status)?"credential_repair_required":response.status===429?"rate_limited":"habitica_unavailable",...(retryAtUtc?{retryAtUtc}:{})},response.status===429?429:response.status===401||response.status===403?401:502);
    const body = workspaceObject(await boundedJson(response,2097152)); if (body.success !== true) throw new WorkspaceError("invalid_upstream_response",502);
    if (operation === "inspectAccount") {
@@ -130,7 +158,7 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
    if (raw === undefined) return json({task:null,checkToken:await rememberCheck(env,who,target,null)});
    const task = await remoteTask(raw,credential.habiticaUserId,operation === "inspectDaily");
    if (task.id !== target && task.alias !== target || operation === "inspectDaily" && task.kind !== "daily") throw new WorkspaceError("invalid_upstream_response",502);
-   return json({task,checkToken:await rememberCheck(env,who,target,task)});
+   return json({task:operation==="inspectRetirement"?{...task,tags:(await taggedTask(raw,credential.habiticaUserId)).tags}:task,checkToken:await rememberCheck(env,who,target,task)});
   }
   let outcome: Outcome;
   if ([400,401,403,404,409,422,429].includes(response.status)) outcome={kind:"refused",code:response.status===429?"rate_limited":[401,403].includes(response.status)?"credential_repair_required":response.status===404?"external_deleted":"habitica_refused",...(retryAtUtc?{retryAtUtc}:{})};
@@ -138,7 +166,8 @@ export async function projectionOperation(request: Request, env: AuthEnv): Promi
   else {
    const body = workspaceObject(await boundedJson(response,2097152));
    if (body.success !== true) throw new WorkspaceError("outcome_unknown",502);
-   if (operation === "score") { const data=workspaceObject(body.data); if (typeof data.delta !== "number" || !Number.isFinite(data.delta)) throw new WorkspaceError("outcome_unknown",502); outcome={kind:"applied",code:"applied",task:{id:target,kind:precondition!.kind!,fingerprint:precondition!.fingerprint!,alias:null}}; }
+   if(operation === "retireSource") {const data=workspaceObject(body.data);if(Object.keys(data).length!==0)throw new WorkspaceError("outcome_unknown",502);outcome={kind:"applied",code:"source_retired",task:{id:target,kind:"todo",fingerprint:precondition!.fingerprint!,alias:null}};}
+   else if (operation === "score") { const data=workspaceObject(body.data); if (typeof data.delta !== "number" || !Number.isFinite(data.delta)) throw new WorkspaceError("outcome_unknown",502); outcome={kind:"applied",code:"applied",task:{id:target,kind:precondition!.kind!,fingerprint:precondition!.fingerprint!,alias:null}}; }
    else { const task=await remoteTask(body.data,credential.habiticaUserId); if (operation === "create" ? task.kind!==creationKind||task.alias!==target||!remotePatchMatches(task,patch!) : task.id!==target) throw new WorkspaceError("outcome_unknown",502); outcome={kind:"applied",code:"applied",task:{id:task.id,kind:task.kind,fingerprint:task.fingerprint,alias:task.alias}}; }
   }
   await env.HABITICA_INTEGRATION_DB.prepare("UPDATE integration_projection_attempts SET state=?,outcome_json=? WHERE profile_id=? AND connection_id=? AND attempt_id=?").bind(outcome.kind,JSON.stringify(outcome),who.profileId,who.connectionId,attemptId!).run();
@@ -169,7 +198,7 @@ export async function purgeProjectionMetadata(env: AuthEnv): Promise<void> {
 
 async function reconcileAttempt(env: AuthEnv, who: Context, input: Record<string,unknown>, args: Record<string,unknown>, lookupOnly = false): Promise<Response> {
  const attemptId=uuid(input.attemptId); const operation=args.operation;
- if (typeof operation!=="string" || !["create","update","score"].includes(operation)) throw new WorkspaceError("invalid_operation");
+ if (typeof operation!=="string" || !["create","update","score","retireSource"].includes(operation)) throw new WorkspaceError("invalid_operation");
  const original=workspaceObject(args.arguments); const hash=await workspaceTokenHash(JSON.stringify({operation,arguments:original,attemptAtUtc:input.attemptAtUtc}));
  const prior=await env.HABITICA_INTEGRATION_DB.prepare("SELECT payload_hash,state,outcome_json FROM integration_projection_attempts WHERE profile_id=? AND connection_id=? AND attempt_id=?").bind(who.profileId,who.connectionId,attemptId).first<{payload_hash:string;state:string;outcome_json:string|null}>();
  if (!prior) return json({kind:"unknown",code:"attempt_not_found"});
@@ -181,7 +210,15 @@ async function reconcileAttempt(env: AuthEnv, who: Context, input: Record<string
  const target=selector(original.selector);
  const read=await projectionOperation(new Request("https://projection.internal/operation",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({...who,operation:"inspect",arguments:{selector:target},automated:input.automated})}),env);
  if (!read.ok) return read;
- const observed=await read.json<{task:RemoteTask|null}>(); const task=observed.task; const patch=remotePatch(original.patch,operation==="create",operation==="create"?String(original.taskKind??"todo"):task?.kind);
+ const observed=await read.json<{task:RemoteTask|null}>(); const task=observed.task;
+ if(operation === "retireSource") {
+  // Explicit reconciliation confirms current absence only, never the original HTTP outcome.
+  if(task)return json({kind:"unknown",code:"retirement_outcome_requires_review"});
+  const outcome:Outcome={kind:"applied",code:"retirement_absence_observed",task:{id:uuid(target),kind:"todo",fingerprint:fingerprint(original.expectedFingerprint),alias:null}};
+  const updated=await env.HABITICA_INTEGRATION_DB.prepare("UPDATE integration_projection_attempts SET state='applied',outcome_json=? WHERE profile_id=? AND connection_id=? AND attempt_id=? AND payload_hash=? AND state IN ('unknown','dispatched')").bind(JSON.stringify(outcome),who.profileId,who.connectionId,attemptId,hash).run();
+  return json(updated.meta.changes?outcome:{kind:"unknown",code:"outcome_unknown"});
+ }
+ const patch=remotePatch(original.patch,operation==="create",operation==="create"?String(original.taskKind??"todo"):task?.kind);
  // Absence after a timeout does not prove that an earlier request will never finish.
  if (!task || operation==="create" && (task.alias!==target || task.kind!==(original.taskKind??"todo")) || operation==="update" && task.id!==target || !remotePatchMatches(task,patch)) return json({kind:"unknown",code:"outcome_unknown"});
  const outcome: Outcome={kind:"applied",code:"reconciled_applied",task:{id:task.id,kind:task.kind,fingerprint:task.fingerprint,alias:task.alias}};

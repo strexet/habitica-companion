@@ -98,4 +98,6 @@ public sealed record WorkspaceDocument
     public WorkspaceTagLedger? TagLedger { get; init; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IReadOnlyList<WorkspaceChecklistConversion>? ChecklistConversions { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IReadOnlyList<WorkspaceSourceRetirement>? SourceRetirements { get; init; }
 }

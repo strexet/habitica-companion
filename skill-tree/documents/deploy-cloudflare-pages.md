@@ -384,3 +384,8 @@ The local tag UI/MCP release requires Auth migration 0009, Workspace migration 0
 ## Checklist conversion release dependency
 
 The optional checklistConversions document field requires matching browser, Workspace, Auth and MCP readers before cloud conversion is offered. Older strict readers can reject documents containing the new field. Deploy matching qualified assets as one release sequence; do not expose a backend-only conversion release. Existing preparations retain accepted conversion bindings, so no new D1 migration, secret, feature flag or enrollment is required for the conversion backend. Existing habitica.tasks.write and workspace.organization.write grants are both required for agent writes; owner tag consent and executor remain separate. Current local dry builds and synthetic fixtures grant no deployment or live-account qualification.
+
+
+## Source retirement schema publication
+
+Source retirement requires Workspace migration 0010-source-retirement.sql before the corresponding Workspace Worker. The migration creates trusted review/recovery storage and a durable source-retirement fence with a document-update trigger. Publish matching Auth, Workspace, MCP and PWA code before enabling use of sourceRetirements in portable journals. The private gateway extends the existing projection binding; no new secret or consent is created by deployment. Existing task, organization and tag permissions remain required. An unresolved retirement must recover through the original command; database edits, fence overrides and native DELETE retries are unsupported. Local dry builds and synthetic migration fixtures do not establish remote migration or production qualification.

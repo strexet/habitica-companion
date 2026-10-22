@@ -25,6 +25,7 @@ public static class WorkspaceRules
             .Concat(document.Completions).Concat(document.Restorations ?? Array.Empty<TaskRestoration>()).Concat(document.HabitScores).Concat(document.Projections)
             .Concat(document.SavedTaskViews ?? Array.Empty<WorkspaceSavedTaskView>())
             .Concat(document.ChecklistConversions ?? Array.Empty<WorkspaceChecklistConversion>())
+            .Concat(document.SourceRetirements ?? Array.Empty<WorkspaceSourceRetirement>())
             .Concat(document.TagLedger?.Mappings ?? Array.Empty<WorkspaceTagMapping>()).Concat(document.TagLedger?.Intents ?? Array.Empty<WorkspaceTagIntent>()).ToArray();
         if (all.Any(entity => entity is null)) { errors.Add(new("null_entity")); return errors; }
         if (all.Length + (document.OrganizationHistory?.Count ?? 0) + (document.ChecklistConversions?.Sum(row=>row?.Receipts?.Count??0)??0) > 100000) { errors.Add(new("workspace_too_large")); return errors; }
@@ -162,6 +163,7 @@ public static class WorkspaceRules
         if (errors.Count == 0 && !WorkspaceTagProjection.IsValid(document)) errors.Add(new("invalid_tag_ledger"));
         if (errors.Count == 0 && !WorkspaceOrganizationHistory.IsValid(document)) errors.Add(new("invalid_organization_history"));
         if (errors.Count == 0 && !WorkspaceChecklistConversions.IsValid(document)) errors.Add(new("invalid_checklist_conversion"));
+        if (errors.Count == 0 && !WorkspaceSourceRetirements.IsValid(document)) errors.Add(new("invalid_source_retirement"));
         return errors;
     }
 
