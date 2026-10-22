@@ -115,45 +115,6 @@ Documentation updates:
 Risks:
 - Broad name passthrough could expose arbitrary user text. Restrict registration to the fixed operation set and preserve fallback behavior.
 
-### Distinguish bulk cast outcomes from cooldown cleanup and refresh failures
-
-```yaml
-id: T-b89fac23-3ac2-4c64-8560-be7a5d796a81
-priority: 101
-status: Ready
-parent_pending_ids: ["P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-b89fac23-3ac2-4c64-8560-be7a5d796a81
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Expose exact bulk-spell stage, acknowledged casts, unknown dispatch and cleanup/refresh status while reusing the existing request pacer.
-Current behavior:
-- HabiticaApiClient already serializes requests and adapts pacing headers. CastSpellAsync tracks acknowledged count but catch paths return a single message and can report a post-cast refresh failure as an undifferentiated cast failure.
-Desired behavior:
-- Partial casts and completed casts with failed cleanup/refresh produce distinct truthful outcomes and original counts; cooldown never triggers an automatic cast retry.
-Touch:
-- AppSessionController.CastSpellAsync, SpellActionResult/progress models, HabiticaApiException and existing AdaptiveRequestPacer, SpellsPage and diagnostics tests.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Do not replace the already implemented pacer or assume a fixed universal API limit. Casts, equip and refresh calls use the existing scoped dispatch gate and observed cooldown. Stop after definitive refusal or unknown cast; never automatically replay non-idempotent casts. Preserve requested/acknowledged counts through cancellation and all-casts-acknowledged refresh failure. Redact stage/status/cooldown/count diagnostics and separate private-sync warnings. No party mutation or new live spell test is required for local acceptance.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Use fake time and HTTP fixtures for 17/40 acknowledged casts, 10/10 followed by refresh failure, 429 during cast/equip/restore, concurrent refresh, cancellation and response loss. Assert no replay and no loss of already acknowledged successes.
-Acceptance:
-- Partial casts and completed casts with failed cleanup/refresh produce distinct truthful outcomes and original counts; cooldown never triggers an automatic cast retry.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Recover original spell gear after cancellation and interrupted cleanup
 
 ```yaml

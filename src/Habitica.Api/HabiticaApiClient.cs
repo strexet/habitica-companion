@@ -321,7 +321,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
     {
         var equipType = kind == EquipmentSetKind.Costume ? "costume" : "equipped";
         using var request = CreateRequest(HttpMethod.Post, $"user/equip/{equipType}/{Uri.EscapeDataString(key)}", credentials);
-        using var _ = await SendForDocumentAsync(request, cancellationToken);
+        await SendForegroundMutationAsync(request, cancellationToken);
     }
 
     public async Task CastSpellAsync(
@@ -337,7 +337,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         }
 
         using var request = CreateRequest(HttpMethod.Post, path, credentials);
-        using var _ = await SendForDocumentAsync(request, cancellationToken);
+        await SendForegroundMutationAsync(request, cancellationToken);
     }
 
     public async Task RunCronAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
@@ -497,7 +497,24 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
         return request;
     }
 
-    private async Task<JsonDocument> SendForDocumentAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    private async Task SendForegroundMutationAsync(HttpRequestMessage request,CancellationToken token)
+    {
+        var dispatched=false;
+        try
+        {
+            using var document=await SendForDocumentAsync(request,token,()=>dispatched=true);
+            if(document.RootElement.ValueKind!=JsonValueKind.Object||!document.RootElement.TryGetProperty("success",out var success)||success.ValueKind!=JsonValueKind.True
+                ||!document.RootElement.TryGetProperty("data",out var data)||data.ValueKind!=JsonValueKind.Object)throw new HabiticaMutationException(dispatched);
+        }
+        catch(HabiticaApiException){throw;}
+        catch(HabiticaMutationException){throw;}
+        catch(OperationCanceledException) when(!token.IsCancellationRequested){throw new HabiticaMutationException(dispatched);}
+        catch(OperationCanceledException){throw new HabiticaMutationCanceledException(dispatched,token);}
+        catch(HttpRequestException){throw new HabiticaMutationException(dispatched);}
+        catch(JsonException){throw new HabiticaMutationException(dispatched);}
+    }
+
+    private async Task<JsonDocument> SendForDocumentAsync(HttpRequestMessage request, CancellationToken cancellationToken, Action? dispatching = null)
     {
         await _dispatchGate.WaitAsync(cancellationToken);
         try
@@ -513,7 +530,7 @@ public sealed class HabiticaApiClient : IHabiticaSyncClient
             cancellationToken.ThrowIfCancellationRequested();
             _pacer.Dispatch(_timeProvider.GetUtcNow());
             HttpResponseMessage response;
-            try { response = await _httpClient.SendAsync(request, cancellationToken); }
+            try { dispatching?.Invoke(); response = await _httpClient.SendAsync(request, cancellationToken); }
             catch (Exception error) when (error is HttpRequestException || error is OperationCanceledException && !cancellationToken.IsCancellationRequested)
             {
                 _pacer.Observe(null, false, true, _timeProvider.GetUtcNow(), Random.Shared.NextDouble());

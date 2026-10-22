@@ -1,0 +1,113 @@
+{
+  "task_id": "T-b89fac23-3ac2-4c64-8560-be7a5d796a81",
+  "recorded_at": "2026-10-22T16:09:21.680659+00:00",
+  "base_commit": "68ec32c52429456aab6e480a320c92649732a0eb",
+  "scope": "Foreground PWA bulk-spell acknowledged counts, unknown dispatch, equipment cleanup and read refresh outcomes; existing pacer retained.",
+  "checks": {
+    "solution_passed": 1082,
+    "release_warnings": 0,
+    "release_errors": 0,
+    "solution_log_sha256": "d22228c876267ab1cbe9d827c65b60829b94a532cf4c30f581b9d5782a1c7812",
+    "release_log_sha256": "5a097859a80ad2464ef9a6b253a8af226f5069c1de95937d4ad1bad353414ff7",
+    "publish_log_sha256": "040eabf9cee32dae2a97468c8511a52914f256c09dddb2174bc8fb64069f3199",
+    "strict_future": true,
+    "repository_documentation": true,
+    "changed_line_prose": true,
+    "diff_check": true
+  },
+  "browser": {
+    "cases": 432,
+    "states": 6,
+    "themes": 6,
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "text_percent": [
+      100,
+      200
+    ],
+    "errors": 0,
+    "harness_errors": 0,
+    "unqualified_surfaces": 0,
+    "seeded_controls": 2,
+    "seeded_errors": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ],
+    "matching_published_assets": true,
+    "temporary_tabs_and_server_closed": true
+  },
+  "required_blocker": {
+    "task_id": "T-1f306466-4618-4f88-b14b-589b295acbd2",
+    "commit": "68ec32c",
+    "proof": "skill-tree/history/validation/spell-enlarged-controls/result.json"
+  },
+  "retained_worker_qualification": {
+    "proof": "skill-tree/history/validation/conversion-retirement/result.json",
+    "unchanged_worker_fingerprints": {
+      "workers/chatgpt-auth/src/projection.ts": "0b0548b5df83669fe8233a6a4fbfec65873f6d40897dcde62f7b6c0c085b9a49",
+      "workers/chatgpt-auth/test/fixtures/oauth.mjs": "bcf508b939dae848eb23ae98e0817b33ca647764463529954beaf8dfd07615e5",
+      "workers/chatgpt-auth/test/retirement-gateway.test.mjs": "bfdcc5171f92ca12572d6e6220c845ef8caf478ff394370d58131f9a50c2ad27",
+      "workers/chatgpt-mcp/src/index.ts": "1fc4b21a0915744733bb585b23848106e258629366ca0e287e7301a447c562b3",
+      "workers/chatgpt-mcp/src/retirement-tools.ts": "c48371fa7860dc1a7c6441b554119b755d4a4de69f114eb74e27df8d3e265858",
+      "workers/chatgpt-mcp/src/tools.ts": "3822711f51288276d933ab1563f68c611bcc62f89b5669242f8ba5e0f1d8dc97",
+      "workers/companion-workspace/migrations/0010-source-retirement.sql": "ae4da29bdef6b111d47e6f7d32ece8da70c5d7ea38c5d79f359f11ab00b75b96",
+      "workers/companion-workspace/src/executor.ts": "a95edb4e85dc61939a19b48f793891832341d5d4e60c2b504b7574177878b11c",
+      "workers/companion-workspace/src/index.ts": "68d03d333116413b00323fa9f53d7eae3f55a8f185d850058563d7f518825dba",
+      "workers/companion-workspace/src/journal.ts": "6f08c417c5d5bc23d7bef045d9ff3e7ce2e1ad0415f23d6fee9957554d8a45fc",
+      "workers/companion-workspace/src/retirement-policy.ts": "72b13e2f45e289ad2ae4ad9a5ffbc8011f68886b7b9b01b81f000cfa8c58c0d3",
+      "workers/companion-workspace/src/source-retirement-api.ts": "6c6e8c14d52c4011af5afa2e7a0b89c88cd753389ece6ec01981793d1cc4604b",
+      "workers/companion-workspace/src/tag-executor.ts": "c02d80ccb1ce3a70ffb91354f9727931689dab5b62fd6e342e23f8504924f068",
+      "workers/companion-workspace/test/retirement-policy.test.mjs": "01eaf6594357f62a5d79c4054bc6bbe1c824f3c25fc912dcf6c7f607b27a08c1",
+      "workers/companion-workspace/test/source-retirement-api.test.mjs": "f785859a74308a689c7158cbc18c564a8857920a1fd4cf544b408f286ed1c495",
+      "workers/companion-workspace/test/source-retirements.test.mjs": "ce69783877280c72d17466c5741bdb4eb4d215deed61610a3686e9874f2e5f11",
+      "workers/shared/group-tag-status.ts": "060f61827ff3597ece4a8c03923b5bfd3a75fd1436e2dac028fd1480da370d5b",
+      "workers/shared/retirement-tools.ts": "5f150c7e1e71147dbdfad626fc51f44a8f6bd2708ba3343ce88a3cadc0463384",
+      "workers/shared/source-retirements.ts": "c25e8386250b379b33ed28992722d62e8daa4c2f611d6cdd962561ab10d00d13",
+      "workers/shared/tag-membership.ts": "1f8e2cb09f32fd8f05405b042009285b922ec214529240adc0df52d866044620",
+      "workers/shared/workspace-domain.ts": "81f9c2b0d757b10eafc7ea55a276b0d612679525602be975db205aaa262ce781"
+    },
+    "workspace_passed": 537,
+    "auth_passed": 154,
+    "new_worker_run_required": false
+  },
+  "official_source": "https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/server/libs/spells.js",
+  "source_fingerprints": {
+    "skill-tree/documents/features.md": "5f5462ad4587ed84e8991df28dcea17e673a9aa0787cbd3683fa39843dd56427",
+    "skill-tree/documents/habitica-api.md": "a1a11be7aff40355d1513932b496a8e889473512a93ff0471287311da4e0a0ae",
+    "skill-tree/documents/technical.md": "4afd9ad37d8060df92255df3788d2388b1062f01a855b3dae6dda18867f8d555",
+    "skill-tree/documents/testing.md": "3c45eac7cc4b5bc27c884f6037edecf584eab69434e3bd91ba7f2ad88fa83354",
+    "skill-tree/documents/ux-ui-manifest.md": "358e091ab2a840a422cb995b891643111e9508246984eba7f608d713bd37f213",
+    "src/Habitica.Api/AdaptiveRequestPacer.cs": "dae032dbcc4b20ac5428f840117627611741812fa849cba66936d6d36a733366",
+    "src/Habitica.Api/HabiticaApiClient.cs": "b24ce5572ce4522befbbf7b89db026f039dca44c10b07a0e6399b9e6116afc6f",
+    "src/Habitica.Api/HabiticaApiException.cs": "7fefc6725a1e4629c2c0cf668b98bda711f1fe6afb603660941d83cf25f0b5b6",
+    "src/Habitica.Api/HabiticaMutationException.cs": "1e438fb2efc1df5013e97a864081e546e1928c25474f6b794049d8af7cd781de",
+    "src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs": "330253b0ef4872950aec459edc83c6e87b49998b3d46378daa132ac512140ca0",
+    "src/Habitica.WebApp/Pages/SpellsPage.razor": "6b4808f673972451490d502fe1b7fd2256f7cf802aa46c2ab1a9b3a9781eae97",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "1e8357b2e1d58746332b781745dafea0df3a834e8081a0d8ebf36050379de1ea",
+    "src/Habitica.WebApp/State/SessionViewModel.cs": "fe9e55288f3784fe8d1e27a0f70245c213bc68fe47b76ade686600691fca5c7a",
+    "src/Habitica.WebApp/State/SpellCastOutcome.cs": "9c183a5f8fa2f6d43f184080768f43955f072ec47f95c5f85ba65b5680f05ee7",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "b1d5100181e781337e7de8bde3f40d00dabfb250237795c2fe047251bffb9ff3",
+    "tests/Habitica.Api.Tests/AdaptiveRequestPacerTests.cs": "3eef4366c70a74ecd1f9ad7fb67e1ebf571e66bcb78606f7ccf42adad03edfe9",
+    "tests/Habitica.Api.Tests/ForegroundMutationOutcomeTests.cs": "01f18d56b16e686a079886a3a33dc662a719038324bca5412db3c50178dcd424",
+    "tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs": "8414b9e8a8379595e099cca1a014a45c5490a404715f511937de872cd9e608d5",
+    "tests/Habitica.WebApp.Tests/State/AppSessionController.SpellOutcomesTests.cs": "a2e9d29826bd0cdb288d501d518683ede5548fdf6c60aef7f47774502cb4f746",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "4f23f01b5da1c03a9a9c995ef7f14eee7ec18d4e4ef354963d863c157604ae7a",
+    "tests/browser-qualification/matrix.html": "36839e584b3fa2f477fbd0d2fabbc24072da8a8f3322db075902d67be25ed579",
+    "tests/browser-qualification/qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+    "tests/browser-qualification/qualification-frame.mjs": "b7476ce6f6e5766f604e53a0ecdf19cb68dc775a911c8a2276fdf8a3e22d0bd2"
+  },
+  "limitations": [
+    "Local synthetic qualification only; no live spell, equipment, party, deployment, push or remote migration operation occurred.",
+    "Physical devices, assistive technologies and actual account effects remain unqualified.",
+    "Current result and progress remain session-scoped; persisted exact gear recovery after interruption is the separate queued task T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0.",
+    "Native timeout or missing acknowledgement cannot be reconstructed from changed mana/snapshots. No automatic replay is supplied.",
+    "Publication retains the existing optional wasm-tools optimization limitation."
+  ]
+}

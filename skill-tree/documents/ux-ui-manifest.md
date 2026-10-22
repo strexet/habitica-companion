@@ -375,7 +375,7 @@ Current pattern after the latest UI pass:
 - Spell cards with stable summary, cost/availability pills, count/target input zone, mana spent/available/after-cast preview, auto-equip toggle, Spend All Mana, cast button, card-local cancel/progress, card-local quest/stat context, effect preview, and equipment recommendations.
 - Cron-sensitive stat buffs show an inline warning inside the spell card when the user has not started the current Habitica day. The warning offers Cancel, Cast anyway, and Start New Day and Cast, plus local per-day suppression and a collapsed due-Daily mini-list disclosure.
 - Blessing previews keep raw per-member healing as the primary line, show multi-cast totals per member instead of party-wide aggregate HP, and place limited-value or low-need healing warnings close to Cast without disabling normal casting.
-- Responsive two-zone layout: variable user inputs on the left, mana/action status on the right; stacks at narrower widths.
+- Responsive two-zone layout: variable user inputs on the left, mana/action status on the right; stacks at narrower widths. Spell card/status tracks use zero minimum sizing, narrow spell tracks remain shrinkable, and mana rows wrap when text expands. Cast, Spend All Mana and recommendation controls remain inside visible cards at200-percent text.
 
 What works:
 
@@ -814,3 +814,8 @@ Conversion backend previews expose full source descriptions, explicit active/com
 The conversion status links to /todo/retire/{ConversionId:guid}. The cleanup page shows exact source/native IDs, full source description, project, verified replacement progress and complete ten-item review pages. Every page requires acknowledgement, followed by a separate irreversible-deletion checkbox. The primary destructive button remains disabled until ready, unexpired and fully reviewed. Already-absent source archival uses a distinct label. Review headings receive focus; shared controls and surfaces inherit the active scheme.
 
 Unknown dispatch preserves the original command across navigation, disables another deletion and exposes original receipt lookup. Explicit observed-absence reconciliation requires a separate uncertainty acknowledgement. Confirmed outcomes show originalReceipt, alreadyAbsent or observedAbsentAfterUnknown and retain the source/history audit. Canonical refresh follows confirmed cleanup without losing the receipt. An original-ID recovery field supports page reload. Account/workspace changes discard private drafts and late responses. Source retirement history is not presented as an ordinary source edit; unrelated source amendments retain the existing refusal. No hosted or physical-device qualification follows from synthetic rendering.
+
+
+## Bulk-spell result presentation
+
+Spells renders the last spell operation in a persistent status surface above the cards. The result shows acknowledged/requested counts, readable failed stage, independent gear cleanup and snapshot refresh state, uncertainty and observed cooldown. An unknown dispatched cast explicitly prohibits replaying the batch. Completed casts with failed followups use a warning, preserving cast acknowledgement. The result surface supplies no retry control. Active progress names preparation, equipment, casting and refresh stages; cancellation remains on the active card. Shared theme surfaces and typography apply to the outcome, including enlarged text and long operation IDs. Private sync warnings cannot replace the displayed cast counts.

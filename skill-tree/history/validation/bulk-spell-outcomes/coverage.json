@@ -1,0 +1,80 @@
+{
+  "spell-outcome-equipment-unknown": {
+    "file": "spell-outcome-equipment-unknown.html",
+    "route": "/spells",
+    "state": "equipment-unknown",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "SpellsPageTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "spell-outcome-cleanup-failed": {
+    "file": "spell-outcome-cleanup-failed.html",
+    "route": "/spells",
+    "state": "cleanup-failed",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "SpellsPageTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "spell-outcome-partial": {
+    "file": "spell-outcome-partial.html",
+    "route": "/spells",
+    "state": "partial",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "SpellsPageTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "spell-outcome-refresh-failed": {
+    "file": "spell-outcome-refresh-failed.html",
+    "route": "/spells",
+    "state": "refresh-failed",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "SpellsPageTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "spell-outcome-unknown": {
+    "file": "spell-outcome-unknown.html",
+    "route": "/spells",
+    "state": "unknown",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "SpellsPageTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "spell-outcome-cancelled": {
+    "file": "spell-outcome-cancelled.html",
+    "route": "/spells",
+    "state": "cancelled",
+    "surfaces": [
+      "form",
+      "navigation",
+      "disabled-controls",
+      "error"
+    ],
+    "interactionTest": "SpellsPageTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}

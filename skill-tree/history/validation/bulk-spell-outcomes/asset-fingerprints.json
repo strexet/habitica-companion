@@ -1,0 +1,17 @@
+{
+  "spell-outcome-partial.html": "9eba9d34d29c8fa38cf15e47cb2854c938f0260812da4b12e29d903f2453a46d",
+  "spell-outcome-cleanup-failed.html": "bec4bd886c6e7784c15f0c784a81d5a016944f7d62e0eee4eedcccc2e7e390ad",
+  "spell-outcome-refresh-failed.html": "3fd1d8826765f828e37309a69f6412754fce06d3f6ad370402f3b6366eb98833",
+  "qualification-core.mjs": "98e946b4a9c6c103ffabf693f0318622359c47778f1de313b494d36816a85874",
+  "mud.css": "e14e158cddb262e4afd212568dfacfb3d89216c6795b46225d1e004271642c64",
+  "matrix.html": "36839e584b3fa2f477fbd0d2fabbc24072da8a8f3322db075902d67be25ed579",
+  "route-inventory.json": "65362158847ed30447ec5344f29e84df4ef6c32e2329311ea1af619b90ae0a6f",
+  "app.css": "b1d5100181e781337e7de8bde3f40d00dabfb250237795c2fe047251bffb9ff3",
+  "spell-outcome-unknown.html": "f9ed7172eecaaec192d1faa7cd5e2821cb792b0db0f9081818a9f48be1970f5b",
+  "schemes.json": "4088181304e6be006bb7a4cae9e690d77b41e026b4c1885da5b28a338b88ad49",
+  "colorSchemes.js": "8462ddaa89004ccf1c99ba78fc909d3d0474291d80187deed343b0c18905c387",
+  "spell-outcome-cancelled.html": "fb3723d15f907761bae158f7661648edbfa12e83507c99e9af9015c22bdd590e",
+  "coverage.json": "81431a7e8ddee8c4baec2e9d67cdd31dd985ef032822f23622196588f451f4d9",
+  "spell-outcome-equipment-unknown.html": "e0d4e5f69eb4f6767e0e97401717d4795f56b889bf4a343aba260b1763ddbf99",
+  "qualification-frame.mjs": "b7476ce6f6e5766f604e53a0ecdf19cb68dc775a911c8a2276fdf8a3e22d0bd2"
+}

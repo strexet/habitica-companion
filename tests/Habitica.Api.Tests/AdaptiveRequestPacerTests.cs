@@ -4,7 +4,7 @@ using Habitica.Domain.Auth;
 
 namespace Habitica.Api.Tests;
 
-public sealed class AdaptiveRequestPacerTests
+public sealed partial class AdaptiveRequestPacerTests
 {
     private static readonly DateTimeOffset Start = DateTimeOffset.Parse("2026-10-17T00:00:00Z");
 
@@ -121,7 +121,7 @@ public sealed class AdaptiveRequestPacerTests
         })) { BaseAddress = new Uri("https://synthetic.invalid/api/v3/") };
         var client = new HabiticaApiClient(http, new("synthetic-client", MinRequestSpacingMilliseconds: 0));
         var action = () => client.EquipGearAsync(new("synthetic-user", "synthetic-token"), "synthetic-gear", CancellationToken.None);
-        if (status == 0) await Assert.ThrowsAsync<HttpRequestException>(action);
+        if (status == 0) Assert.True((await Assert.ThrowsAsync<HabiticaMutationException>(action)).RequestDispatched);
         else await Assert.ThrowsAsync<HabiticaApiException>(action);
         Assert.Equal(1, count); Assert.Equal(2, client.PacingStatus.RecoveryFactor);
         Assert.True(client.PacingStatus.CooldownUntilUtc > DateTimeOffset.UtcNow);

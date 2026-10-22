@@ -46,14 +46,16 @@ public static class DiagnosticsLogSanitizer
     };
     private static readonly HashSet<string> Counts = new(StringComparer.Ordinal)
     {
-        "requestCount", "taskCount", "resultCount", "itemCount", "count", "completed", "requested", "requestedCount", "completedCount",
+        "httpStatus", "cooldownSeconds", "requestCount", "taskCount", "resultCount", "itemCount", "count", "completed", "requested", "requestedCount", "completedCount",
         "payloadBytes", "maxBytes", "metadataPayloadBytes", "gearRequestCount", "restoreGearRequestCount", "requestedPotionCount", "completedPurchaseCount", "str", "int", "con", "per"
     };
     private static readonly HashSet<string> Measurements = new(StringComparer.Ordinal)
         { "healthBefore", "healthAfter", "goldBefore", "goldAfter", "gemBalanceBefore", "gemBalanceAfter" };
     private static readonly Dictionary<string, string[]> Choices = new(StringComparer.Ordinal)
     {
-        ["stage"] = ["preparation", "casting", "refresh", "restore", "refreshing", "restoring"],
+        ["stage"] = ["auto-equip", "cast", "restore-gear", "refresh-user", "refresh-tasks", "refresh-party", "load-cache", "completed", "preparation", "casting", "refresh", "restore", "refreshing", "restoring"],
+        ["cleanupStatus"] = ["NotNeeded", "Pending", "Completed", "Failed", "Unknown", "Skipped"],
+        ["refreshStatus"] = ["NotNeeded", "Pending", "Completed", "Failed", "Unknown", "Skipped"],
         ["gearGoal"] = ["INT for mana", "CON for defense"],
         ["endpoint"] = ["POST /user/buy/potion"],
         ["itemType"] = ["Egg", "HatchingPotion", "Food", "Quest"],
@@ -63,7 +65,7 @@ public static class DiagnosticsLogSanitizer
         ["provider"] = ["Cloudflare", "cloudflare"]
     };
     private static readonly HashSet<string> Flags = new(StringComparer.Ordinal)
-        { "automatic", "autoEquip", "cronStarted", "cronCompleted", "restoreStarted", "restoreCompleted", "recommendedForCronRisk", "mergedRemoteData" };
+        { "castOutcomeUnknown", "equipmentOutcomeUnknown", "automatic", "autoEquip", "cronStarted", "cronCompleted", "restoreStarted", "restoreCompleted", "recommendedForCronRisk", "mergedRemoteData" };
     private static readonly HashSet<string> Sections = new(StringComparer.Ordinal)
         { "user-profile", "tasks-current", "task-order-preferences", "inventory-current", "inventory-catalog", "saved-presets", "party-current", "party-cron-history", "diagnostics", "color-schemes", "sync-metadata", "settings" };
     private static readonly HashSet<string> Statuses = new(StringComparer.Ordinal)
