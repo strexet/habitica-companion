@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Add scoped native Habitica tag and task-tag gateway operations
-
-```yaml
-id: T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0
-priority: 103
-status: Ready
-parent_pending_ids: ["P-505551fa-3ca7-4415-b19e-b64585bf8f9f"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0
-related_task_id: null
-relation: main
-depends_on: ["T-63ee6e49-6452-4e7c-a707-1dd54b41c94c"]
-```
-
-Goal:
-- Provide narrow authorized native tag operations and verified task-tag updates through the private Auth gateway.
-Current behavior:
-- Auth projection operations allow inspect/create/update/score for tasks; tag endpoints, tag fields and tag fingerprints are absent. Existing organization-write disclosure explicitly grants no Habitica effects.
-Desired behavior:
-- Only explicitly consented bounded tag metadata changes dispatch; unrelated tags and tasks survive conflicts, retries and recovery.
-Touch:
-- Auth projection gateway and permission/consent handling, shared/projection.ts, workspace identity envelope, next Auth receipt/check migration and Auth fixture suite.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Introduce explicit additive Habitica tag-write consent/scope; existing organization-write or read permission never silently grants upstream writes. Allow only owned native tags and owned non-party/non-challenge tasks. Bind exact current tag/task identity, reviewed changes and fresh tag membership fingerprints. Preserve unrelated user tags; matching names are only candidates. Never automatically delete a tag, because deletion removes references from all user tasks. An uncertain tag create needs original evidence/review, not a second create. Respect pacing, revocation and receipt fences.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Synthetic gateway tests cover denied/old scopes, reviewed creation/adoption/rename, external tags, preserved unrelated membership, revoked identity, quota refusal before dispatch, timeout after create and original receipt recovery. Verify official Habitica tags/task-tag controllers before implementing allowlists.
-Acceptance:
-- Only explicitly consented bounded tag metadata changes dispatch; unrelated tags and tasks survive conflicts, retries and recovery.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Reconcile complete organization tag membership without scoring
 
 ```yaml

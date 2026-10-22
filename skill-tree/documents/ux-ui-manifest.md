@@ -782,3 +782,10 @@ New Habit capture offers positive/negative direction checkboxes in advanced game
 ## Tag coverage data boundary
 
 Todo coverage now evaluates stored tag identities only against the signed-in account and keeps recorded membership confirmation separate. A missing/mismatched expected account, stale desired metadata or unknown result cannot display verified tag coverage. Existing missing-group counts include pending/review identities. The model milestone changes no visual layout or navigation. Dedicated tag review/recovery controls and full membership derivation remain the following tasks; stored identity never proves fresh upstream state or game rewards.
+
+
+## Tag permission disclosure and observation recovery
+
+The standalone Auth approval page presents tag access separately from native organization/task permissions. The disclosure explains the additional Companion consent, reviewed native tag metadata, preserved unrelated tags and absence of automatic tag deletion or gameplay permission. Workspace identity reports validated scope, but the following tag UI milestone owns account consent controls and canonical tag review/recovery entrypoints.
+
+A recovered metadata observation must be described as an original send with uncertain outcome and a matching current state. Approval records the reviewed observed state without repeating the write; missing identity, changed names, lost unrelated membership or expired/revoked review cannot be presented as confirmed original execution. The secure standalone Auth page retains browser-native colors rather than reading PWA theme preferences across origins. Font sizing follows relative units so increased root text size affects the disclosure and controls. Actual host/device authorization remains separate from synthetic page qualification.

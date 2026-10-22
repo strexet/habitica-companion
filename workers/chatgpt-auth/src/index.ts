@@ -1,3 +1,5 @@
+import {tagOperation} from './tag-gateway';
+import {tagConsentRoute,clearTagContext} from './tag-consent';
 import {purgePacing} from './upstream-pacing';
 import {networkBudget,trafficFailure} from './traffic';
 import {trafficOperation} from './traffic-route';
@@ -59,13 +61,14 @@ export class PartyService extends WorkerEntrypoint<AuthEnv> {
 }
 
 export class ProjectionService extends WorkerEntrypoint<AuthEnv> {
-  async fetch(request: Request): Promise<Response> { return projectionOperation(request, this.env); }
+  async fetch(request: Request): Promise<Response> { return new URL(request.url).pathname==="/tags"?tagOperation(request,this.env):projectionOperation(request, this.env); }
 }
 
 async function handlePublicRequest(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     resourceConfiguration(env.ENVIRONMENT, env);
-    const vault = await vaultRoute(request, env, async (id, connectionId) => { if (Boolean(env.OAUTH_ENABLED)) await cleanupProfile(env, id, connectionId); await clearProjectionContext(env,id,connectionId); });
+    const vault = await vaultRoute(request, env, async (id, connectionId) => { if (Boolean(env.OAUTH_ENABLED)) await cleanupProfile(env, id, connectionId); await clearProjectionContext(env,id,connectionId); await clearTagContext(env,id,connectionId); });
     if (vault) return vault;
+    const tagConsent=await tagConsentRoute(request,env);if(tagConsent)return tagConsent;
     const management=await managementRoute(request,env);if(management)return management;
     if (new URL(request.url).pathname === "/health" && request.method === "GET") return Response.json({ service: "auth", authorization: Boolean(env.OAUTH_ENABLED) ? "enabled" : "unavailable" }, { headers });
     if (Boolean(env.OAUTH_ENABLED)) {
@@ -94,7 +97,7 @@ async function handlePublicRequest(request: Request, env: AuthEnv, ctx: Executio
     return Response.json({ error: "unauthorized" }, { status: 401, headers });
 }
 export default {
-  async scheduled(_event, env): Promise<void> { await purgeProjectionMetadata(env); await purgeKeyJobs(env); await purgePacing(env); },
+  async scheduled(_event, env): Promise<void> { await purgeProjectionMetadata(env); await purgeKeyJobs(env); await purgePacing(env); await env.HABITICA_INTEGRATION_DB.batch([env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_checks WHERE expires_at_utc<=?").bind(new Date().toISOString()),env.HABITICA_INTEGRATION_DB.prepare("DELETE FROM integration_tag_attempt_details WHERE created_at_utc<?").bind(new Date(Date.now()-30*86400000).toISOString())]); },
   async fetch(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const config = resourceConfiguration(env.ENVIRONMENT, env);
