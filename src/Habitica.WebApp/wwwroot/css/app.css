@@ -4622,3 +4622,6 @@ code {
 .todo-saved-list-panel .todo-direct-row { grid-template-columns: minmax(0, 1fr); }
 .todo-saved-list-panel .todo-row-actions { max-width: 100%; }
 .todo-saved-query li { min-width: 0; overflow-wrap: anywhere; }
+
+/* Read full retained conversion notes without horizontal overflow. */
+.conversion-notes { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; margin-block: .5rem 1rem; font: inherit; }

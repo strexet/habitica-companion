@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Expose checklist conversion preview and resumable project progress
-
-```yaml
-id: T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2
-priority: 103
-status: Ready
-parent_pending_ids: ["P-7414291b-9448-4d98-884c-97b582cd2d67"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2
-related_task_id: null
-relation: main
-depends_on: ["T-1cb1e7eb-8599-428b-9c23-52509b926113"]
-```
-
-Goal:
-- Expose checklist-to-project conversion as an exact reviewed browser and agent workflow.
-Current behavior:
-- The codev conversion has no ordinary browser entrypoint, source-item review or durable user-visible resume screen.
-Desired behavior:
-- Users and agents can start or resume the same reviewed conversion and inspect exact remaining mapping work before any source retirement.
-Touch:
-- Todo task details, conversion presentation/controller, Projects entrypoint, cloud adapters, MCP conversion schemas and task-management skill.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Show the source task, every checklist item, destination project, exact target reuse/create decision, explicit active/completed/archive classification and required Habitica effects. Retain reviewed note content and display historical-time uncertainty. Resume the original conversion ID after navigation or acknowledgement loss; source changes require a fresh review. Missing historical counterpart or uncertain effects remain visible and block retirement. Keep destructive source retirement separate from conversion acceptance; no repeated generic approval when explicit reviewed intent already covers a reversible step.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Component and synthetic SDK tests cover ten items, duplicate names, existing codev target reuse, active/archive choices, long notes, source edits, partial progress and original receipt recovery. Render all review/refusal/resume states under shared responsive/theme checks.
-Acceptance:
-- Users and agents can start or resume the same reviewed conversion and inspect exact remaining mapping work before any source retirement.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Retire verified converted source tasks through supported reviewed commands
 
 ```yaml
@@ -153,6 +114,45 @@ Documentation updates:
 - Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
 Risks:
 - Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
+
+### Preserve group tag names through diagnostic sanitization
+
+```yaml
+id: T-56a7a511-0ebf-41f8-8e1f-65ae87399459
+priority: 102
+status: Ready
+parent_pending_ids: ["P-129cb3e4-32db-4017-8afd-38df70a8f595"]
+processing_run_id: PR-31ca09e4-957f-4644-a48f-cc5c1e852799
+root_task_id: T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2
+related_task_id: T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2
+relation: followup
+depends_on: []
+```
+
+Goal:
+- Preserve distinct safe group-tag operation names in retained diagnostic events.
+Current behavior:
+- WorkspaceCloudClient.Tags.cs emits eight bounded workspace-tag identifiers for consent reads/changes, status, candidates, preparation, acceptance and recovery. DiagnosticsLogSanitizer.Operations omits the identifiers and replaces each name with app-operation. Result modes and bounded context survive, but operation names lose diagnostic meaning.
+Desired behavior:
+- Retained, copied, exported and explicitly shared events distinguish the supported group-tag operations without exposing user content.
+Touch:
+- DiagnosticsLogSanitizer, WorkspaceCloudClient.Tags diagnostics and domain/browser/export regression tests.
+Discovery allowance:
+- Inspect the log writer, sanitization, portability and existing diagnostic sharing boundaries.
+Out of scope:
+- Log-store concurrency changes, unsolicited uploads, new access grants, live account calls or UI layout changes.
+Implementation constraints:
+- Register only the exact fixed operation identifiers emitted by current code. Preserve unknown-operation fallback and existing text, credential, account and metadata redaction. Keep bounded IDs/counts and existing read/mutation/result classification. Diagnostics failures cannot replace operation outcomes. No task names, note content or raw HTTP data enter logs. Reuse the existing user-approved diagnostic bundle path.
+Questions and required clarifications:
+- [Resolved - source evidence] The eight fixed identifiers are present in WorkspaceCloudClient.Tags.cs and absent from DiagnosticsLogSanitizer.Operations. DiagnosticsLogWriter sanitizes before storage; portability sanitizes exports again. Existing log-store serialization work addresses a separate issue. No external behavior assumption or new owner decision is required.
+Validation:
+- Exercise actual tag API observer events with synthetic responses and inspect retained events. Round-trip supported names through sanitization and export/shared bundle parsing; verify bounded context, unknown fallback and private-data canaries. Run the affected solution regressions. No visual layout changes or live checks are required.
+Acceptance:
+- Supported group-tag operations retain exact safe names through storage and redacted export while unsupported names and private content remain sanitized.
+Documentation updates:
+- Update the diagnostic coverage contract in testing.md and features.md with the delivered scope.
+Risks:
+- Broad name passthrough could expose arbitrary user text. Restrict registration to the fixed operation set and preserve fallback behavior.
 
 ### Distinguish bulk cast outcomes from cooldown cleanup and refresh failures
 

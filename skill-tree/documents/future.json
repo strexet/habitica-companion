@@ -10,7 +10,8 @@
       "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
       "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
       "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
-      "T-1cb1e7eb-8599-428b-9c23-52509b926113"
+      "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2"
     ],
     "completion_refs": {
       "T-07d27408-3019-423f-a5de-4cda1f9e2818": "O-4203a794-8216-43bc-84a8-eaddd14f1479",
@@ -19,40 +20,59 @@
       "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54": "O-2fe87b8c-6c97-4095-ad3a-0ae6d8dcc7e5",
       "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c": "O-fbeec3fd-f9d0-4d22-9c51-49dff413c43f",
       "T-7bb19b25-83e8-470d-9e94-94a91d744440": "O-f27cf34d-bbd4-45d1-ade2-7efbe92ff8f2",
+      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2": "O-ceb5e365-b76c-4dc8-930b-a7ed8b91411b",
       "T-80782d5c-2d9e-4897-ab4c-df3f72b59774": "O-85b9f430-72c7-4869-bad8-2b5d54cff66a",
       "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94": "O-43c64132-e988-4884-8679-00bc9633f9f5",
       "T-c43d3aff-9bfa-4684-a248-a83af2193492": "O-2795bdf1-6d13-4c4f-8857-c0125f4745b8",
       "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0": "O-e35cf500-42f9-48ff-957c-aa28fce5927f"
     },
     "current_task_id": null,
-    "cycle_signature": "0eb829d8d251d464ee58d1a7e56cb1c90832bccd3b48ece7409d1add196ddab0",
-    "deferred_ids": [],
+    "cycle_signature": "60bf920b889249e5f6f5dd8cd67ca36c5be76cf72f868e35700204ab88224307",
+    "deferred_ids": [
+      "T-56a7a511-0ebf-41f8-8e1f-65ae87399459"
+    ],
     "history_refs": [
       "skill-tree/history/validation/tag-reconciliation/result.json",
-      "skill-tree/history/validation/group-tag-controls/result.json"
+      "skill-tree/history/validation/group-tag-controls/result.json",
+      "skill-tree/history/validation/checklist-conversion/result.json"
     ],
     "id": "WR-db3533db-230a-4c61-a88b-0db609cb6ff5",
     "limits": {
-      "repair_used": 44,
-      "retry_used": 52
+      "repair_used": 49,
+      "retry_used": 59
     },
     "mode": "all",
-    "next_action": "Select required task or finish root",
+    "next_action": "Select required task",
     "partial_work": [
-      "Completed group-tag controls as7daab5a on develop.9/50 frozen roots complete. O-85b9f430-72c7-4869-bad8-2b5d54cff66a. Proof skill-tree/history/validation/group-tag-controls/result.json.1030.NET/514Workspace/145Auth passed;936browsercases pass2negative detectorcontrols. No live/deploy/migration.",
-      "Advanced T-1cb1e7eb-8599-428b-9c23-52509b926113. Read exact contract; source/checklist/project/target identities and explicit per-item active-vs-historical-completed mapping required. Preserve full notes/urgency/source and verified existing targets; no name matching, owner IDs, automatic retrospective scoring or source retirement. No implementation files changed for conversion yet.",
-      "Discovery read WorkspaceDocument, WorkspaceRules, journal validation/JSON, C#/Worker command identity, organization history/engines and current organization API. Model optional ledger must preserve old journal encodings and command hashes. Need inspect adjacent task commands/API storage, existing target/history coverage and permission boundaries before choosing exact implementation. New UI and retirement are subsequent frozen roots, not current completion.",
-      "Uncommitted current root adds optional WorkspaceChecklistConversion portable ledger, strict command/binding/provenance/history model and C# acceptance engine. New active targets use normal pending createTodo effects; existing exact targets preserve own notes/urgency/history and get explicitly reviewed project placement; completed targets archive without a new completion or score; historical missing targets can remain defer. Stable source item bindings, source revision and duplicate original command recovery enforced. No UI/API live changes yet.",
-      "C# three new conversion engine tests pass twice (latest /tmp/habitica-conversion-model-tests2.log): ten-item8active2archived reuse, create8/defer2 with no historicalscore, exact original/partial resume, source edit and rebind refusal, portable roundtrip. Initial Release build zero warnings/errors, but full latest solution/build and regression suites remain unrun.",
-      "Worker mirror draft added: workers/shared/checklist-conversion.ts, Workspace domain parser extraction workspaceTask, optional ledger parsing and journal/normal command hash validation, workers/companion-workspace/src/checklist-conversion.ts engine. tsc check passes. Worker engine runtime/cross-language fixtures not tested yet. Two generated synthetic C# fixtures copied into tests/fixtures/workspace (~290k and1MB); reduce envelope duplication before final fixture qualification. Read /tmp/habitica-conversion-selected.json for selected full task contract.",
-      "Next: qualify cross-language command hashes/derived IDs/document semantics; finish strict provenance/model parity; implement scoped prepare/accept/original/status backend and D1 atomicity with additive MCP adapters, complete docs and meaningful tests. Browser UI and source retirement remain following frozen roots.",
-      "Current conversion root now includes reviewed /conversion-api, four MCP tools with BOTH actual habitica.tasks.write and workspace.organization.write, existing preparation storage (no new migration), atomic document/task/event/tag acceptance, full status and original receipts. Accepted request bindings retained through generic preparation cleanup; SQL sequences advance from storeVersion to avoid preparation/ack gaps. Source and project identity are server-bound; cloud capture steps limited10 new active tasks; all remaining items stay explicit/defer.",
-      "Shared neutral fixtures reduced to122k/213k, committed only when root accepted. C#5 conversion tests (3engine+2shared-fixture cases) and Worker9 focused tests passed; full first run1035.NET/523Workspace/145Auth with Release+publish and3drybuilds passed. Review then found a missing Worker receipt-length check; added complete ordered item count and impossible history revision guard in BOTH languages with negative controls. Second matched build/test pass is running /tmp/habitica-conversion-{build,dotnet,publish,workspace-full,auth-full}.log; do not use first run as proof for changed guards.",
-      "Docs and organization-management skill updated. Changed-line prose clean,167 inherited errors outside changes; strict future/docs validators passed before tiny canonicalComplete spelling correction. No current-root UI changes, live calls, remote migrations, publication or new consent activation. Current main remains uncommitted and incomplete until second validation finishes and proof/outcome/cycle/commit records exist."
+      "Completed group tag controls7daab5a and checklist conversion backend1af72af on develop.10/50 frozen roots complete. Root10 outcomeO-ac3eddd3-7e3a-4a05-9ad6-fd163b59aab3. Proof skill-tree/history/validation/checklist-conversion/result.json.1035.NET/523Workspace/145Auth pass, Release0warnings/errors, matching local app publish and3Worker dry builds. No live/deploy/remote migration.",
+      "Root11 implemented: typed conversion API, strict domain ledger/hash/source/binding/count/receipt guards, redacted diagnostic operation names, account-scoped controller and /todo/convert source/status/draft/preview/recovery UI, project/task entrypoints.12focused tests pass. Final Release build0warnings/errors,1047solution tests and local publish pass. No Worker source changed; previous root10 backend tests remain matching static references.",
+      "Corrected inline status-link overlap found by rendered matrix. Restarted complete9-state/6theme/6width/2text run with corrected frozen fixtures; prior incomplete mixed run is not acceptance.2seeded controls detected overflow/overlap/contrast. Captured nonblocking tag-operation diagnostic naming defect P-129cb3e4-32db-4017-8afd-38df70a8f595 priority102; process once after root11 completion and defer implementation outside50-root snapshot. No live/deploy."
     ],
-    "pending_ids": [],
-    "phase": "resume-parent",
-    "processing_results": [],
+    "pending_ids": [
+      "P-129cb3e4-32db-4017-8afd-38df70a8f595"
+    ],
+    "phase": "dependencies",
+    "processing_results": [
+      {
+        "created_ids": [
+          "T-56a7a511-0ebf-41f8-8e1f-65ae87399459"
+        ],
+        "dispositions": {
+          "P-129cb3e4-32db-4017-8afd-38df70a8f595": {
+            "reason": "Source inspection confirms eight fixed tag observer operation identifiers omitted from the sanitizer whitelist; existing synthetic diagnostic/export boundaries support a separate bounded repair.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-31ca09e4-957f-4644-a48f-cc5c1e852799",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-129cb3e4-32db-4017-8afd-38df70a8f595"
+        ],
+        "task_keys": {
+          "tag-diagnostic-operation-names": "T-56a7a511-0ebf-41f8-8e1f-65ae87399459"
+        }
+      }
+    ],
     "required_ids": [
       "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
       "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
@@ -63,9 +83,10 @@
       "T-ed1df00d-7d90-4aac-a3d6-ca2579ec05c0",
       "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94",
       "T-80782d5c-2d9e-4897-ab4c-df3f72b59774",
-      "T-1cb1e7eb-8599-428b-9c23-52509b926113"
+      "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+      "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2"
     ],
-    "root_task_id": "T-1cb1e7eb-8599-428b-9c23-52509b926113",
+    "root_task_id": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
     "snapshot": [
       "T-5d6fb7f0-132b-4bf7-8a5a-8b6d825beb54",
       "T-0e97833e-efaf-4cbc-ad22-8a03af170c30",
@@ -122,32 +143,14 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "3573538917bd8d6c74018a8adc3dbd7952eb668d9e8af4b29433296f49c6f5f0",
+  "source_hash": "478ef1bafa454972d081f0ee7701dae464460b940459e7349777d60a9853c7fc",
   "tasks": [
-    {
-      "depends_on": [
-        "T-1cb1e7eb-8599-428b-9c23-52509b926113"
-      ],
-      "id": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
-      "line": 79,
-      "parent_pending_ids": [
-        "P-7414291b-9448-4d98-884c-97b582cd2d67"
-      ],
-      "priority": 103,
-      "processing_run_id": "PR-662bd939-3fbc-401b-ba37-204067e17989",
-      "queue": "Prioritized Next Changes",
-      "related_task_id": null,
-      "relation": "main",
-      "root_task_id": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
-      "status": "Ready",
-      "title": "Expose checklist conversion preview and resumable project progress"
-    },
     {
       "depends_on": [
         "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2"
       ],
       "id": "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
-      "line": 118,
+      "line": 79,
       "parent_pending_ids": [
         "P-7414291b-9448-4d98-884c-97b582cd2d67"
       ],
@@ -159,6 +162,22 @@
       "root_task_id": "T-bf9aa399-2724-4f21-868e-dc6e4028004c",
       "status": "Ready",
       "title": "Retire verified converted source tasks through supported reviewed commands"
+    },
+    {
+      "depends_on": [],
+      "id": "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+      "line": 118,
+      "parent_pending_ids": [
+        "P-129cb3e4-32db-4017-8afd-38df70a8f595"
+      ],
+      "priority": 102,
+      "processing_run_id": "PR-31ca09e4-957f-4644-a48f-cc5c1e852799",
+      "queue": "Prioritized Next Changes",
+      "related_task_id": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+      "relation": "followup",
+      "root_task_id": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+      "status": "Ready",
+      "title": "Preserve group tag names through diagnostic sanitization"
     },
     {
       "depends_on": [],

@@ -185,6 +185,7 @@
                         </div>
                         <div class="todo-row-actions">
                             <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => OpenLink(task.Id)" Variant="Variant.Text" data-testid="@($"todo-link-{task.Id:D}")">Habitica link</MudButton>
+                            @if(task.Kind==CompanionTaskKind.Todo&&task.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{task.Id:D}")" data-layout-primary="true" Variant="Variant.Text">Convert checklist to project</MudButton>}
                             <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => Edit(task)" Variant="Variant.Text" data-testid="@($"todo-edit-{task.Id:D}")">Edit</MudButton>
                             @if (task.Kind is CompanionTaskKind.Daily or CompanionTaskKind.Habit) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => OpenRecurring(task.Id)" Variant="Variant.Text" data-testid="@($"todo-recurring-{task.Id:D}")">@(task.Kind==CompanionTaskKind.Daily ? "Schedule / occurrences" : "Pause / resume")</MudButton> }
                             @if (task.Kind == CompanionTaskKind.Habit)

@@ -1,0 +1,122 @@
+{
+  "task_id": "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2",
+  "recorded_at": "2026-10-22T10:57:38.227608+00:00",
+  "base_commit": "1af72afd5db90702be4ca1d4f01f3cf45b147de6",
+  "scope": "Local typed adapter, controller, browser conversion and synthetic qualification.",
+  "checks": {
+    "strict_future": true,
+    "repository_documentation": true,
+    "changed_line_prose": true,
+    "diff_check": true
+  },
+  "logs": {
+    "build": {
+      "sha256": "527f810a303d4857af80271c4706f5b6d15dd1245bdb3180c690f63c8ddcf099"
+    },
+    "dotnet": {
+      "sha256": "533967c635286b98641040684099c17627473a17e9c09bf0391d8b78109ea242",
+      "passed": 1048
+    },
+    "publish": {
+      "sha256": "0140b73e4735178d3c08c0da0a7adbb3925dbceac83a42225728cde85415b8ef"
+    },
+    "tests": {
+      "sha256": "ec17731eeea482d9b473c639c92395bcdb2de07660cfd70213df4932ebe7fa57"
+    },
+    "wire-final": {
+      "sha256": "1e0a8d796c44160b1e841aa9bfebfefea350c7e0c90e6172ee9a8a40981672cc"
+    },
+    "entry-tests": {
+      "sha256": "7a6bca16a14eb9549d7bc17041c1bb33e5bb58714ac74913187ca7548f22c3cc"
+    }
+  },
+  "browser": {
+    "cases": 864,
+    "states": 12,
+    "themes": 6,
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "text_percent": [
+      100,
+      200
+    ],
+    "errors": 0,
+    "harness_errors": 0,
+    "unqualified_surfaces": 0,
+    "seeded_controls": 2,
+    "seeded_errors_detected": [
+      "overflow",
+      "overlap",
+      "contrast"
+    ],
+    "intermediate_repair": "Inline status-link overlap corrected; incomplete first matrix was discarded before the matching final runs."
+  },
+  "coverage": [
+    "Complete ten-item explicit reuse/create/defer and active/archive choices; duplicate titles selected only by exact IDs; full notes and historical uncertainty.",
+    "Review every item page and separate tag metadata before confirmation; original request/command recovery after lost acknowledgements and route remount.",
+    "Saved/partial status includes every placement, stored mapping and historical gap; source retirement remains false.",
+    "Changed source revision or cleared checklist preserves frozen original visibility; existing binding amendments refuse.",
+    "Strict original preview/receipt hashes, count/source/binding validation, old receipt after later resume and expired fresh review refusal.",
+    "Account-scoped drafts and late-response rejection; confirmed receipt survives failed current status refresh.",
+    "Conversion diagnostics preserve bounded operation/command/count context and exclude private task text/credentials.",
+    "Current Tasks, hierarchy and Projects entrypoints preserve source identity without writes on navigation."
+  ],
+  "matching_worker_source_fingerprints": {
+    "workers/chatgpt-mcp/src/conversion-tools.ts": "6919a73a26cab581f6578556c5daa107a349e7047e4730a26495ccbf996fd4a5",
+    "workers/chatgpt-mcp/src/index.ts": "41c3f9ad8e8b136521f5ee0d8af9712a3bfaa0592f03eef0ea1cf56ac52ea272",
+    "workers/chatgpt-mcp/src/tools.ts": "b2b0c633c00691236d13d6021d7661f29bfde6a9ef819af6a797c06cb8f74b37",
+    "workers/companion-workspace/src/checklist-conversion.ts": "52d8862f9e578468b3c9a33b7914e5c8cdeb6b84b23787f0bff0020aa15a4dd1",
+    "workers/companion-workspace/src/commands.ts": "2fe1637694ea1ab35eb92fad73a90a5e1063d732486927919bc3354d76ab21ea",
+    "workers/companion-workspace/src/conversion-api.ts": "98f488d6bcbebeffae94da74aa58ee0aeb94340739c005470255eb784aac7041",
+    "workers/companion-workspace/src/index.ts": "40207f9345418e4777c9ed7bd06641eb4d62b404ddc0dc8e9bd40b01b79fa1f4",
+    "workers/companion-workspace/src/journal.ts": "fb86143228d2781c08df579517f2d727774265daf21b4e8c9f55fc7783525375",
+    "workers/companion-workspace/src/preparation-retention.ts": "c117562941cfc100db8473fad24c851a57c0cedba9861741874c085db6ade1e2",
+    "workers/companion-workspace/test/checklist-conversion.test.mjs": "5eba74ff7ebc406f3ebac7b8879444b511ce29190eb7faae031b6f5e738f2b33",
+    "workers/companion-workspace/test/conversion-api.test.mjs": "f0476390fdeb15eeb0fb0dceb44989f09b237a085a7139aaa35f5ed4309ebd29",
+    "workers/shared/checklist-conversion.ts": "f953d700e385b604f726fde6d3246423b56fbca9cc18292a9442f739983b119e",
+    "workers/shared/conversion-tools.ts": "bf9aa89889b79cef56698c1becf20250ac367cd3ab56114f0fdb5e5980487c07",
+    "workers/shared/workspace-domain.ts": "b3bdf6e56f43c697edb005fc6d40506d90d18ea804b813d318eda33633176046"
+  },
+  "source_fingerprints": {
+    "plugin/skills/habitica-task-management/references/organization-management.md": "3ed4bc53a11d2222443e9ff86d032e34c532eca8a05c445190035644bcef7052",
+    "skill-tree/documents/features.md": "f1cae1c2bb2460c7fe01b8fb8306aa66131c26254a6cf6249f7b521440d1a3d5",
+    "skill-tree/documents/habitica-api.md": "49b0fe4d02fb6e115f50f725c6800dd60412cafd08289241452b564893027f5c",
+    "skill-tree/documents/technical.md": "769ddbcf5fe7c33a2b7cb42749d730fdae97f523aaabb47d7d9f7dc0cd7ea843",
+    "skill-tree/documents/testing.md": "cabe8b84e49df858c5574aa145cad061520421ad6eed2ada057a39010e6b04aa",
+    "skill-tree/documents/ux-ui-manifest.md": "e42c6562c0525ad878607bde1247ae3bb7c6e2b1ef90fae22d076f20254c6295",
+    "src/Habitica.Application/Workspace/IWorkspaceConversionApi.cs": "5e39d0a4f05071fbe640aae1dae6dfa3a25d05d075684ff5d0709f223e512977",
+    "src/Habitica.Domain/Diagnostics/DiagnosticsLogSanitizer.cs": "55f002fc4fb62267525b2cc7659fa5df5d84b1e2812bc3c363fd550431ce78ea",
+    "src/Habitica.WebApp/Components/TodoHierarchyPanel.razor": "219adc95421a85221e89deb1a7d2a7d058734df49615fe1e9bcef42a503ca760",
+    "src/Habitica.WebApp/Components/TodoOrganizationPanel.razor": "c1c0334f0f2b436067548523551922ecb3c3a75613100e3ce4165bd5e8d84b7e",
+    "src/Habitica.WebApp/Components/TodoTaskPanel.razor": "2afd5ecf5320c902ba82639b7a118255ddae100a1a49ec2f702939520fd8606b",
+    "src/Habitica.WebApp/Components/WorkspaceChecklistConversionPanel.razor": "5872b052c1d648bc21b160dc384a1d9a8f87ef3b2a436579525a7376da252861",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Conversion.cs": "c3144172f9d1ab941258f2d1b405dbad10d3af1c47880a1793d1d7378a954739",
+    "src/Habitica.WebApp/Integration/WorkspaceCloudClient.Diagnostics.cs": "b1bf5e65bb2a8dad9335406e2a6a05ba08854d701bad716071ba670da824d127",
+    "src/Habitica.WebApp/Pages/TodoConversionPage.razor": "fa421256f6bc81583048b4a4f4e238ce8a4eec5ce14fc07bd0b7cb1990f5fd76",
+    "src/Habitica.WebApp/Program.cs": "a5e1ed0e78706c90d6de15d4211acc5e4b1b4c1edc1a7c19041eb49242f75d15",
+    "src/Habitica.WebApp/State/WorkspaceConversionController.cs": "91bcde7755c61dd67f2e2853a5724a12dfd22b948efb4fb7909bb988b2ddf1c4",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "b0f0ee653433c5c72f579d800b06d7fc09bb7a621df0a0c5686bb78498180090",
+    "tests/Habitica.WebApp.Tests/Habitica.WebApp.Tests.csproj": "db8ed3eea1b4bf95ac9c15868aad2f4c6d661d62a038bd547df8d194784c3bc5",
+    "tests/Habitica.WebApp.Tests/Integration/WorkspaceCloudClient.ConversionTests.cs": "d25fa4993e4c4241f165224e970674966b99c0986ad603f22de410b3e9d838ee",
+    "tests/Habitica.WebApp.Tests/Workspace/ChecklistConversionFixture.cs": "dc233df496f0b0c085339109ea2b623379f154ba4b97f8249332a7045eef7d47",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceChecklistConversionPanelTests.cs": "6e86648bdb3373d17b4541c467d55eb0db39d2a36a57cd1c6dfb83c586a7c2e6",
+    "tests/Habitica.WebApp.Tests/Workspace/WorkspaceConversionControllerTests.cs": "eb56bcfc43b0992257bf05cc19ecd4623c38f0215440fc79ee0e003fcdd54153"
+  },
+  "limitations": [
+    "Cloud conversion controls require the separately connected Workspace; no consent or background execution is enabled by navigation.",
+    "Source retirement remains separate. Existing accepted conversions refuse unsupported source amendments while exposing current and frozen descriptions.",
+    "Original browser review ownership is memory-only across route navigation; durable conversion status and original server receipts remain available after reload.",
+    "Physical devices, assistive technology, hosted OAuth, actual account writes and production behavior remain unqualified.",
+    "No push, deployment, live tests or remote migration ran. Worker code is unchanged from the preceding verified backend milestone.",
+    "Inherited prose errors outside changed lines remain backlog. Group tag diagnostic operation naming is captured as a deferred nonblocking finding."
+  ],
+  "followup_ids": [
+    "P-129cb3e4-32db-4017-8afd-38df70a8f595"
+  ]
+}

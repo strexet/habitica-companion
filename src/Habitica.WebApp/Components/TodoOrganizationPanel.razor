@@ -7,6 +7,7 @@
 
 <section class="card-surface todo-task-panel todo-organization-panel">
     <div class="task-group-header"><h1 tabindex="-1" @ref="_heading">Projects</h1><a href="/todo/tasks" data-layout-primary="true">Tasks and subtasks</a></div>
+    <div class="action-row"><MudButton HtmlTag="a" Href="/todo/convert" data-layout-primary="true" Variant="Variant.Outlined">Convert checklist to project</MudButton></div>
     <p><a href="/todo/sync#habitica-tags">Group tag coverage and recovery</a></p>
     <p class="panel-copy">Organization is optional. Tasks can stay unassigned. Categories, sections, labels and goals help group work without changing Habitica rewards.</p>
     @if (_error is not null) { <p role="alert">@_error</p> }

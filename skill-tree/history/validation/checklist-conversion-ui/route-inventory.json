@@ -1,0 +1,200 @@
+{
+  "routes": {
+    "/": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/dashboard": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/diagnostics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/inventory": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/live-tests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/party": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/pets-mounts": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/privacy": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/quests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/settings": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/sign-in": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/signin": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/spells": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/tasks": {
+      "fixtures": [
+        "conversion-capture-entry"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/convert": {
+      "fixtures": [
+        "conversion-unavailable",
+        "conversion-source-changed",
+        "conversion-exact-targets",
+        "conversion-full-review",
+        "conversion-saved-gaps",
+        "conversion-unresolved-preview",
+        "conversion-unknown-acceptance",
+        "conversion-partial-progress"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/convert/{SourceTaskId:guid}": {
+      "fixtures": [
+        "conversion-draft"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/history": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/inbox": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/lists": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/plan": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/projects": {
+      "fixtures": [
+        "conversion-project-entry"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/sync": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/tasks": {
+      "fixtures": [
+        "conversion-tree-entry"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/today": {
+      "fixtures": [],
+      "qualification": "not captured"
+    }
+  },
+  "surfaces": {
+    "form": [
+      "conversion-capture-entry",
+      "conversion-draft",
+      "conversion-exact-targets",
+      "conversion-full-review",
+      "conversion-partial-progress",
+      "conversion-project-entry",
+      "conversion-saved-gaps",
+      "conversion-source-changed",
+      "conversion-tree-entry",
+      "conversion-unavailable",
+      "conversion-unknown-acceptance",
+      "conversion-unresolved-preview"
+    ],
+    "navigation": [
+      "conversion-capture-entry",
+      "conversion-draft",
+      "conversion-exact-targets",
+      "conversion-full-review",
+      "conversion-partial-progress",
+      "conversion-project-entry",
+      "conversion-saved-gaps",
+      "conversion-source-changed",
+      "conversion-tree-entry",
+      "conversion-unavailable",
+      "conversion-unknown-acceptance",
+      "conversion-unresolved-preview"
+    ],
+    "confirmation": [
+      "conversion-capture-entry",
+      "conversion-draft",
+      "conversion-exact-targets",
+      "conversion-full-review",
+      "conversion-partial-progress",
+      "conversion-project-entry",
+      "conversion-saved-gaps",
+      "conversion-source-changed",
+      "conversion-tree-entry",
+      "conversion-unavailable",
+      "conversion-unknown-acceptance",
+      "conversion-unresolved-preview"
+    ],
+    "tables": [],
+    "charts": [],
+    "logs": [],
+    "disabled-controls": [
+      "conversion-capture-entry",
+      "conversion-draft",
+      "conversion-exact-targets",
+      "conversion-full-review",
+      "conversion-partial-progress",
+      "conversion-project-entry",
+      "conversion-saved-gaps",
+      "conversion-source-changed",
+      "conversion-tree-entry",
+      "conversion-unavailable",
+      "conversion-unknown-acceptance",
+      "conversion-unresolved-preview"
+    ],
+    "error": [
+      "conversion-capture-entry",
+      "conversion-draft",
+      "conversion-exact-targets",
+      "conversion-full-review",
+      "conversion-partial-progress",
+      "conversion-project-entry",
+      "conversion-saved-gaps",
+      "conversion-source-changed",
+      "conversion-tree-entry",
+      "conversion-unavailable",
+      "conversion-unknown-acceptance",
+      "conversion-unresolved-preview"
+    ],
+    "loading": []
+  },
+  "omitted": [
+    "Modal overlay lifecycle is not represented by inline confirmation fixtures.",
+    "SVG graphics, decorative images and pseudo-elements require separate visual review.",
+    "CSS sampling covers supported solid, generated PNG and vertical linear backgrounds; unsupported paint is explicitly unqualified.",
+    "Physical devices, assistive technologies, hosted login and actual background execution remain unqualified."
+  ],
+  "primaryTargetRule": "44 pixels for marked primary actions, default-size filled controls and navigation links; auxiliary small controls remain separately reviewed."
+}

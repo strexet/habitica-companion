@@ -70,7 +70,7 @@
         @if (_context is { } context)
         {
             <article class="todo-direct-row" data-testid="tree-context"><div class="todo-row-content"><h2>@context.Text</h2><span>@context.State @(context.IsArchived ? "· archived; retained context" : "")</span><span>Parent: @(context.ParentTaskId is { } p ? Name(p) : "Root task")</span><span>Project: @ProjectName(context)</span>@if (context.SectionId is { } contextSection) { <span>Section: @SectionName(contextSection)</span> }<details><summary>References</summary><p>Task: @context.Id · Parent: @context.ParentTaskId</p></details></div>
-                <div class="todo-row-actions"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => ChildAsync(context.Id)" Variant="Variant.Filled" Color="Color.Primary">Add subtask</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => EditAsync(context.Id)" Variant="Variant.Text">Edit task</MudButton></div>
+                <div class="todo-row-actions">@if(context.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{context.Id:D}")" data-layout-primary="true" Variant="Variant.Text">Convert checklist to project</MudButton>}<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => ChildAsync(context.Id)" Variant="Variant.Filled" Color="Color.Primary">Add subtask</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => EditAsync(context.Id)" Variant="Variant.Text">Edit task</MudButton></div>
             </article>
         }
         <p class="panel-copy">@(_focus is null ? ProjectMode ? "Tasks directly assigned to the selected project. Parent context remains available even outside this list." : "Root Todos. Expand a task to navigate one level at a time." : _subtree ? "All subtasks in order, shown in pages. Parent links stay available." : "Direct children. Each subtask has independent status, notes and dates.")</p>
@@ -88,6 +88,7 @@
                     @if (task.Notes is { Length: > 0 }) { <details><summary>Notes</summary><p>@task.Notes</p></details> }
                 </div>
                 <div class="todo-row-actions">
+                    @if(task.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{task.Id:D}")" data-layout-primary="true" Variant="Variant.Text">Convert checklist to project</MudButton>}
                     <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="() => Open(task.Id)" Variant="Variant.Outlined" data-testid="@($"tree-expand-{task.Id:D}")">Expand subtasks</MudButton>
                     <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => ChildAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-add-{task.Id:D}")">Add subtask</MudButton>
                     <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => EditAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-edit-{task.Id:D}")">Edit</MudButton>

@@ -24,4 +24,8 @@
     <ProjectReference Include="..\..\src\Habitica.WebApp\Habitica.WebApp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="../fixtures/workspace/checklist-conversion-*.json" Link="fixtures/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

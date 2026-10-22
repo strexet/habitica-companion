@@ -55,6 +55,7 @@ builder.Services.AddSingleton(builder.Configuration.GetSection("Features").Get<A
 builder.Services.AddScoped<IndexedDbWorkspaceDatabase>();
 builder.Services.AddScoped<WorkspaceDataController>();
 builder.Services.AddScoped<WorkspaceTaskController>();
+builder.Services.AddScoped<WorkspaceConversionController>();
 builder.Services.AddScoped<WorkspaceOrganizationController>();
 builder.Services.AddScoped<TodoWorkspacePresentation>();
 builder.Services.AddScoped<TodoTaskDraftStore>();
@@ -62,6 +63,7 @@ builder.Services.AddScoped<ChatGptIntegrationClient>(_ => new ChatGptIntegration
     new HttpClient { Timeout = TimeSpan.FromSeconds(15) }, builder.Configuration["ChatGptIntegration:AuthBaseUrl"], builder.Configuration.GetValue("ChatGptIntegration:Enabled", false)));
 builder.Services.AddScoped<IChatGptIntegrationClient>(sp => sp.GetRequiredService<ChatGptIntegrationClient>());
 builder.Services.AddScoped<IWorkspaceCloudClient>(sp => new WorkspaceCloudClient(new HttpClient { Timeout = TimeSpan.FromSeconds(15) }, sp.GetRequiredService<ChatGptIntegrationClient>(), builder.Configuration["CompanionWorkspace:BaseUrl"], builder.Configuration.GetValue<bool>("CompanionWorkspace:PartyPlanningEnabled"), sp.GetRequiredService<DiagnosticsLogWriter>()));
+builder.Services.AddScoped<IWorkspaceConversionApi>(sp => (IWorkspaceConversionApi)sp.GetRequiredService<IWorkspaceCloudClient>());
 builder.Services.AddScoped<IWorkspaceTagApi>(sp => (IWorkspaceTagApi)sp.GetRequiredService<IWorkspaceCloudClient>());
 builder.Services.AddScoped<IWorkspaceOrganizationApi>(sp => (IWorkspaceOrganizationApi)sp.GetRequiredService<IWorkspaceCloudClient>());
 builder.Services.AddScoped<IWorkspaceSavedTaskViewApi>(sp => (IWorkspaceSavedTaskViewApi)sp.GetRequiredService<IWorkspaceCloudClient>());
