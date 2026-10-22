@@ -5,7 +5,7 @@ using Habitica.Domain.Auth;
 
 namespace Habitica.WebApp.Integration;
 
-public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
+public sealed partial class ChatGptIntegrationClient : IChatGptIntegrationClient
 {
     private readonly HttpClient _http;
     private readonly Uri? _baseUri;
@@ -112,7 +112,7 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
             using var response = await _http.SendAsync(request, cancellationToken);
             if (!response.IsSuccessStatusCode) return new(false, "Integration status is unavailable. Revalidate credentials if access changed.");
             var status = await response.Content.ReadFromJsonAsync<StatusPayload>(cancellationToken);
-            if (version != _sessionVersion || status is null || status.DisplayName?.Length > 256 || status.Permissions is null || status.Permissions.Length > 8
+            if (version != _sessionVersion || status is null || status.DisplayName?.Length > 256 || status.Permissions is null || status.Permissions.Length > KnownPermissions.Length
                 || status.Permissions.Any(scope => !KnownPermissions.Contains(scope)) || status.CredentialStatus is not ("last_verified" or "repair_needed"))
                 return new(false, "Integration status is unavailable.");
             return new(true, "Integration status loaded.", status.DisplayName, status.Permissions, status.CredentialStatus, status.LastVerifiedAtUtc, status.LastUsedAtUtc, status.PermissionsTruncated);
@@ -168,7 +168,7 @@ public sealed class ChatGptIntegrationClient : IChatGptIntegrationClient
         }
     }
 
-    private static readonly string[] KnownPermissions = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute"];
+    private static readonly string[] KnownPermissions = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute", "workspace.organization.write", "habitica.tags.write"];
     private sealed record StatusPayload(string? DisplayName, string[]? Permissions, string? CredentialStatus, DateTimeOffset? LastVerifiedAtUtc, DateTimeOffset? LastUsedAtUtc, bool PermissionsTruncated);
     private sealed record ManagementPayload(bool Rotated, string? ManagementToken, bool Revoked, bool PendingCleanup);
 

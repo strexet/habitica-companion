@@ -8,7 +8,7 @@ Discover actual connected schemas. For ordinary Todo creation, full-subtask crea
 
 Accepted legacy receipts retain their original flags, hashes and effects. Recover them verbatim; never replace a legacy command with changed projection intent. Old unaccepted false previews require a fresh review. Completed unlinked edits require separate historical conversion review.
 
-Current implementation gaps: Daily creation requires an explicit supported schedule and fresh account timezone/day-start verification; organization tags and linked legacy-source retirement are unavailable. Report unavailable correspondence explicitly. Never invent tools, fabricate an edit, silently create duplicate native tasks, bypass consent, issue raw Habitica requests or describe native-only completion as rewarded. Local/offline capture remains visibly incomplete until required integration succeeds. No new authorization or executor opt-in follows from task intent.
+Current implementation gaps: Daily creation requires an explicit supported schedule and fresh account timezone/day-start verification; linked legacy-source retirement remains unavailable. Reviewed organization tags use the separate consent and exact-ID workflow in organization-management.md. Report unavailable correspondence explicitly. Never invent tools, fabricate an edit, silently create duplicate native tasks, bypass consent, issue raw Habitica requests or describe native-only completion as rewarded. Local/offline capture remains visibly incomplete until required integration succeeds. No new authorization or executor opt-in follows from task intent.
 
 Urgency already supports patch.priority low/normal/high/urgent. Game difficulty belongs in habiticaDetails.difficulty and is independent of urgency.
 

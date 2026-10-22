@@ -1,0 +1,20 @@
+CREATE TABLE workspace_tag_reviews (
+ profile_id TEXT NOT NULL REFERENCES workspaces(profile_id) ON DELETE CASCADE,
+ command_id TEXT NOT NULL,
+ request_id TEXT NOT NULL,
+ input_hash TEXT NOT NULL,
+ workspace_id TEXT NOT NULL,
+ connection_id TEXT NOT NULL,
+ access_epoch TEXT NOT NULL,
+ authority_json TEXT NOT NULL,
+ expected_revision INTEGER NOT NULL,
+ ledger_hash TEXT NOT NULL,
+ operation TEXT NOT NULL,
+ payload_json TEXT NOT NULL,
+ preview_json TEXT NOT NULL,
+ receipt_json TEXT,
+ created_at_utc TEXT NOT NULL,
+ expires_at_utc TEXT NOT NULL,
+ PRIMARY KEY(profile_id,command_id),
+ UNIQUE(profile_id,request_id)
+);

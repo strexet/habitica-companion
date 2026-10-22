@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Expose group tag consent coverage and original receipt recovery
-
-```yaml
-id: T-80782d5c-2d9e-4897-ab4c-df3f72b59774
-priority: 103
-status: Ready
-parent_pending_ids: ["P-505551fa-3ca7-4415-b19e-b64585bf8f9f"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-80782d5c-2d9e-4897-ab4c-df3f72b59774
-related_task_id: null
-relation: main
-depends_on: ["T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94"]
-```
-
-Goal:
-- Expose honest browser and MCP organization correspondence controls and diagnostics.
-Current behavior:
-- Current task coverage warns that all group tags are missing. Projects and agents can save metadata but cannot inspect actual tag mapping or membership progress.
-Desired behavior:
-- Users and agents can identify missing group/task membership, enable only reviewed access and recover original tag receipts without mistaking metadata save for verified Habitica presence.
-Touch:
-- Todo organization/project UI, task sync controls and Settings consent, Workspace cloud adapters, MCP organization/status schemas, coverage policy and organization-management skill.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Explain separate tag consent and exact upstream metadata changes without claiming game rewards. Show full workspace coverage including archived/completed task mappings and pending tag memberships; provide original receipt recovery and explicit review of ambiguous tag adoption. Keep project aliases separate from tag identity. Existing clients lacking new scope remain usable for native reads with an explicit incomplete-integration status. Publish no automatic grant expansion.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Component/MCP fixtures cover old/new permissions, long duplicate group names, all coverage states, lost acknowledgement, stale/account changes and refusal paths. Render primary actions, keyboard focus and normal/crazy theme support under the shared geometry/contrast matrix.
-Acceptance:
-- Users and agents can identify missing group/task membership, enable only reviewed access and recover original tag receipts without mistaking metadata save for verified Habitica presence.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Convert checklist projects through a resumable identity ledger
 
 ```yaml

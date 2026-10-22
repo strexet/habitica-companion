@@ -1,0 +1,171 @@
+{
+  "tags-full-review": {
+    "file": "tags-full-review.html",
+    "route": "/todo/sync",
+    "state": "tags-full-review",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-queued": {
+    "file": "tags-queued.html",
+    "route": "/todo/sync",
+    "state": "tags-queued",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-acceptance-unknown": {
+    "file": "tags-acceptance-unknown.html",
+    "route": "/todo/sync",
+    "state": "tags-acceptance-unknown",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-duplicate-candidates": {
+    "file": "tags-duplicate-candidates.html",
+    "route": "/todo/sync",
+    "state": "tags-duplicate-candidates",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-adopt-review": {
+    "file": "tags-adopt-review.html",
+    "route": "/todo/sync",
+    "state": "tags-adopt-review",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-original-unknown": {
+    "file": "tags-original-unknown.html",
+    "route": "/todo/sync",
+    "state": "tags-original-unknown",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-observation-review": {
+    "file": "tags-observation-review.html",
+    "route": "/todo/sync",
+    "state": "tags-observation-review",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-changed-account": {
+    "file": "tags-changed-account.html",
+    "route": "/todo/sync",
+    "state": "tags-changed-account",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-unverified": {
+    "file": "tags-unverified.html",
+    "route": "/settings",
+    "state": "tags-unverified",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-enabled": {
+    "file": "tags-enabled.html",
+    "route": "/todo/sync",
+    "state": "tags-enabled",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-sync-page": {
+    "file": "tags-sync-page.html",
+    "route": "/todo/sync",
+    "state": "tags-sync-page",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-command-membership": {
+    "file": "tags-command-membership.html",
+    "route": "/todo/projects",
+    "state": "tags-command-membership",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  },
+  "tags-command-old-scope": {
+    "file": "tags-command-old-scope.html",
+    "route": "/todo/tasks",
+    "state": "tags-command-old-scope",
+    "surfaces": [
+      "form",
+      "confirmation",
+      "disabled-controls",
+      "navigation"
+    ],
+    "interactionTest": "WorkspaceTagPanelTests",
+    "runtime": "Synthetic Razor; physical devices and hosted access unqualified"
+  }
+}

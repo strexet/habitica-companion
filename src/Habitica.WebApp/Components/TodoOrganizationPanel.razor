@@ -7,11 +7,12 @@
 
 <section class="card-surface todo-task-panel todo-organization-panel">
     <div class="task-group-header"><h1 tabindex="-1" @ref="_heading">Projects</h1><a href="/todo/tasks" data-layout-primary="true">Tasks and subtasks</a></div>
+    <p><a href="/todo/sync#habitica-tags">Group tag coverage and recovery</a></p>
     <p class="panel-copy">Organization is optional. Tasks can stay unassigned. Categories, sections, labels and goals help group work without changing Habitica rewards.</p>
     @if (_error is not null) { <p role="alert">@_error</p> }
     @if (Organization.Message is not null) { <p role="status">@Organization.Message</p> }
     @if (Organization.LastReceipt is { } receipt)
-    { <p role="status" data-testid="organization-receipt">Saved in Companion: @(receipt.SavedInCompanion ? "Yes" : "No") · no Habitica effects · refresh: @(receipt.RefreshSucceeded ? "complete" : "reload required"). Original command: @receipt.CommandId</p> }
+    { <p role="status" data-testid="organization-receipt">Saved in Companion: @(receipt.SavedInCompanion ? "Yes" : "No") · no gameplay effects · tag metadata may need confirmation · refresh: @(receipt.RefreshSucceeded ? "complete" : "reload required"). Original command: @receipt.CommandId</p> }
     @if (Organization.Preview is { } preview)
     {
         <section class="todo-command-review" aria-label="Review organization change" data-testid="organization-review">
@@ -38,10 +39,11 @@
                     <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(OriginalBusy || _referenceOffset == 0)" OnClick="PreviousReferences" Variant="Variant.Text">Previous references</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(OriginalBusy || _referenceOffset + 20 >= _references.Count)" OnClick="NextReferences" Variant="Variant.Text">Next references</MudButton></div>
                 }
             }
+            <WorkspaceTagChangeReview CommandId="preview.PreparedCommandId" Preview="preview.TagProjection" Tasks="@(Todo.Snapshot?.Document.Tasks??[])" Disabled="@OriginalBusy" Reviewed="value=>TagReviewed(preview.PreparedCommandId,value)" />
             <p>Original command: @preview.PreparedCommandId · expires @preview.ExpiresAtUtc.ToString("u")</p>
             @if (Organization.AcceptanceUnknown) { <p>Acceptance is uncertain. Check the original receipt before considering another change.</p> }
             <div class="action-row">
-                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(OriginalBusy || !AllReferencesReviewed && !Organization.AcceptanceUnknown)" OnClick="ConfirmAsync" Color="Color.Primary" Variant="Variant.Filled" data-testid="organization-confirm">@(Organization.AcceptanceUnknown ? "Retry original change" : "Confirm organization change")</MudButton>
+                <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(OriginalBusy || (!AllReferencesReviewed||!TagsReady(preview.PreparedCommandId,preview.TagProjection)) && !Organization.AcceptanceUnknown)" OnClick="ConfirmAsync" Color="Color.Primary" Variant="Variant.Filled" data-testid="organization-confirm">@(Organization.AcceptanceUnknown ? "Retry original change" : "Confirm organization change")</MudButton>
                 <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@OriginalBusy" OnClick="RecoverAsync" Variant="Variant.Outlined" data-testid="organization-recover">Check original receipt</MudButton>
                 <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(OriginalBusy || Organization.AcceptanceUnknown)" OnClick="Cancel" Variant="Variant.Text">Cancel organization review</MudButton>
             </div>
@@ -90,6 +92,9 @@
 </section>
 
 @code {
+    private Guid _tagReviewId;private bool _tagReviewed;
+    private void TagReviewed(Guid id,bool reviewed){_tagReviewId=id;_tagReviewed=reviewed;}
+    private bool TagsReady(Guid id,WorkspaceTagChangePreview? preview)=>preview?.RequestsMetadataChanges!=true||_tagReviewId==id&&_tagReviewed;
     private static readonly WorkspaceOrganizationKind[] Kinds=[WorkspaceOrganizationKind.Project,WorkspaceOrganizationKind.Category,WorkspaceOrganizationKind.Section,WorkspaceOrganizationKind.Label,WorkspaceOrganizationKind.Goal];
     private WorkspaceOrganizationKind _kind=WorkspaceOrganizationKind.Project;
     private TodoWorkspaceSelection? _source, _draftSource;
@@ -168,7 +173,7 @@
     private Task PrepareAsync()=>RunAsync(async()=>{RequireFresh();await Todo.PrepareOrganizationAsync(new(_kind,_editing is null?WorkspaceOrganizationOperation.Create:WorkspaceOrganizationOperation.Update,_editing,Patch()));_focusReview=Organization.Preview is not null;});
     private Task ArchiveAsync(Guid id)=>RunAsync(async()=>{if(FreshDisabled)throw new InvalidOperationException("Resolve the original change first.");await Todo.PrepareOrganizationAsync(new(_kind,WorkspaceOrganizationOperation.Archive,id));_focusReview=Organization.Preview is not null;});
     private Task RemoveAsync(Guid id)=>RunAsync(async()=>{if(FreshDisabled)throw new InvalidOperationException("Resolve the original change first.");var impact=Todo.ProjectRemoval(id,Todo.Revision);await Todo.PrepareOrganizationAsync(new(WorkspaceOrganizationKind.Project,WorkspaceOrganizationOperation.Remove,id,new(Removal:impact.Removal)));_focusReview=Organization.Preview is not null;});
-    private Task ConfirmAsync()=>RunAsync(async()=>{if(!AllReferencesReviewed&&!Organization.AcceptanceUnknown)throw new InvalidOperationException("Review every reference page before confirming removal.");await Todo.ConfirmOrganizationAsync();if(Organization.LastReceipt?.SavedInCompanion==true)ResetEditor();});
+    private Task ConfirmAsync()=>RunAsync(async()=>{if(Organization.Preview is {} current&&!TagsReady(current.PreparedCommandId,current.TagProjection)&&!Organization.AcceptanceUnknown)throw new InvalidOperationException("Review every tag reference page before confirming.");if(!AllReferencesReviewed&&!Organization.AcceptanceUnknown)throw new InvalidOperationException("Review every reference page before confirming removal.");await Todo.ConfirmOrganizationAsync();if(Organization.LastReceipt?.SavedInCompanion==true)ResetEditor();});
     private Task RecoverAsync()=>RunAsync(async()=>{await Todo.RecoverOrganizationAsync();if(Organization.LastReceipt?.SavedInCompanion==true)ResetEditor();});
     private Task RetryAsync()=>RunAsync(async()=>{await Todo.RetryOrganizationPreviewAsync();_focusReview=Organization.Preview is not null;if(Organization.LastReceipt?.SavedInCompanion==true)ResetEditor();});
     private void Cancel(){Todo.CancelOrganizationPreview();_error=null;_focusEditor=true;Read();}

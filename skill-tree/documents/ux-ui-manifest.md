@@ -795,3 +795,10 @@ A recovered metadata observation must be described as an original send with unce
 Native organization and task previews can return tagProjection with the full changed group selection, removedTaskIds, archive retention and separate consent/scope readiness. Agent instructions require presenting the tag metadata with the original canonical preview. Native saved state and tag metadata confirmation remain separate from gameplay rewards. Missing authority or a changed review context preserves native capture with an explicit tag review gap.
 
 The backend milestone adds no browser controls or visual pages. The next tag UI milestone must expose separate consent, complete review, adoption and original unknown-result recovery before the backend is published. Existing portable coverage remains an audit of stored evidence; an older source revision can require review without scheduling another automatic write.
+
+
+## Group tag consent and recovery
+
+Settings and Todo Sync expose an unverified-per-tab consent state with explicit Check tag consent and Check tag coverage actions. Enabling tag metadata requires a separate disclosure checkbox; agent permission and background execution remain independent. Group rows show identity, membership and missing/retained task coverage. Exact native IDs distinguish duplicate-name candidates; candidate selection opens a review without acceptance.
+
+Membership previews expose complete twenty-reference pages and require every page before confirmation. Existing task/organization previews use the shared tag metadata review component. Review headings receive keyboard focus. Unknown acceptance retains the original ID and blocks replacement while offering original receipt lookup and explicit original acceptance retry. Original native unknown work offers a separate observation review. Buttons and long references use shared theme/layout primitives; normal schemes require readable contrast and primary targets under the common matrix.

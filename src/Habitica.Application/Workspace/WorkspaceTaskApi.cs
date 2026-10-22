@@ -5,7 +5,7 @@ using Habitica.Domain.Workspace;
 namespace Habitica.Application.Workspace;
 
 public sealed record WorkspaceTaskResponse<T>(bool Succeeded, T? Value, string Message, bool OutcomeUnknown = false);
-public sealed record WorkspaceCommandPreview(Guid PreparedCommandId, Guid CorrelationId, DateTimeOffset ExpiresAtUtc, bool Expired, WorkspaceCommand Command, bool MayAffectHabitica, bool SavedInCompanion, WorkspaceMutationReceipt? Receipt = null);
+public sealed record WorkspaceCommandPreview(Guid PreparedCommandId, Guid CorrelationId, DateTimeOffset ExpiresAtUtc, bool Expired, WorkspaceCommand Command, bool MayAffectHabitica, bool SavedInCompanion, WorkspaceMutationReceipt? Receipt = null, WorkspaceTagChangePreview? TagProjection = null);
 public sealed record WorkspaceMutationReceipt(string Operation, Guid TaskId, Guid CommandId, Guid CorrelationId, string TaskText, bool SavedInCompanion, string HabiticaProjectionStatus, int AcceptedEventCount, int ConfirmedProjectionCount, int TotalProjectionCount, int? FailurePosition, string Failure, DateTimeOffset? RetryAtUtc, bool RefreshSucceeded, bool OutcomeUnknown);
 public sealed record WorkspaceExternalTask(Guid Id, string Kind, string Text, string Notes, string? Alias, double Priority, string Attribute, string? Date, IReadOnlyList<TaskChecklistItem> Checklist, bool Completed, bool Up, bool Down, bool? IsDue, string Fingerprint, [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] WorkspaceExternalDailySchedule? Schedule = null);
 public sealed record WorkspaceExternalDailySchedule(string Frequency, int EveryX, DateTimeOffset StartDate, IReadOnlyDictionary<string, bool> Repeat, IReadOnlyList<int> DaysOfMonth, IReadOnlyList<int> WeeksOfMonth)

@@ -46,3 +46,6 @@ For native parent/descendant context, discover `get_todo_hierarchy` and follow t
 
 
 New task-required-v1 preparation requests Habitica correspondence for creation, field edits, completion and Habit scores across Todos, full children, Dailies and Habits. Omitted or false compatibility intent is normalized; fresh raw false intent is refused. Native schedule-only authoring, planning, relationships, organization and lifecycle controls remain explicit non-scoring operations. Existing adopted Dailies use server due-state checks; an unlinked Daily needs a supported schedule before game activity. Retained conflicting/archived mappings require review. Local capture remains pending without implicit credential consent or execution. Report original pending/confirmed/unknown receipts and missing prerequisites; canonical completion alone never proves game rewards. Preserve accepted legacy flags and hashes without replay.
+
+
+For missing group correspondence, use the [tag consent, adoption and receipt workflow](references/organization-management.md#tag-consent-exact-adoption-and-recovery). Read complete coverage on demand, disclose independent tag permission and owner consent, and review every native membership change. Saving metadata never confirms upstream presence or rewards. Unknown results retain the original request/command/work identity.

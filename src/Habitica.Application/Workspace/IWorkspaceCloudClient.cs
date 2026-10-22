@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Habitica.Domain.Auth;
+using Habitica.Application.Integration;
 using Habitica.Domain.Workspace;
 
 namespace Habitica.Application.Workspace;
@@ -9,6 +10,8 @@ public sealed record WorkspaceOperationalStatus([property: JsonRequired] DateTim
 public sealed record WorkspaceStatusResult(bool Succeeded, string Message, WorkspaceOperationalStatus? Status = null);
 public interface IWorkspaceCloudClient
 {
+    Task<IntegrationTagConsentResult> ReadTagConsentAsync(CancellationToken cancellationToken) => Task.FromResult(new IntegrationTagConsentResult(false, "Tag consent is unavailable in this client."));
+    Task<IntegrationTagConsentResult> SetTagConsentAsync(bool enabled, CancellationToken cancellationToken) => Task.FromResult(new IntegrationTagConsentResult(false, "Tag consent is unavailable in this client."));
     Task<WorkspaceStatusResult> ReadOperationalStatusAsync(CancellationToken cancellationToken) => Task.FromResult(new WorkspaceStatusResult(false, "Workspace status is unavailable."));
     bool ConnectionStatusVerified => false;
     Task<WorkspaceActionResult> RefreshConnectionStatusAsync(CancellationToken cancellationToken) => Task.FromResult(new WorkspaceActionResult(false, "Cloud connection status is unavailable."));

@@ -3,10 +3,10 @@ import {desiredTagMembership,type DesiredTagGroup} from '../../shared/tag-member
 import {tagAlias,type TagMapping,type TagIntent,type TagMember} from '../../shared/tag-projection.ts';
 import {workspaceTokenHash} from '../../shared/workspace-http.ts';
 import {tagAuthorityGap,type TagAuthority} from './tag-authority.ts';
-export interface TagWorkPlan {id:string;intentId:string;commandId:string;sourceRevision:number;desiredHash:string;context:{workspaceId:string;entityId:string;kind:DesiredTagGroup['kind']};accountId:string;consentEpoch:string;origin:TagAuthority;operation:'ensureTag'|'setMembership';mappingId:string;plannedTagId:string;name:string;members:TagMember[];state:'pending'|'needsReview';error:string|null}
+export interface TagWorkPlan {manualReview?:boolean;id:string;intentId:string;commandId:string;sourceRevision:number;desiredHash:string;context:{workspaceId:string;entityId:string;kind:DesiredTagGroup['kind']};accountId:string;consentEpoch:string;origin:TagAuthority;operation:'ensureTag'|'setMembership';mappingId:string;plannedTagId:string;name:string;members:TagMember[];state:'pending'|'needsReview';error:string|null}
 export interface PlannedTags {document:WorkspaceDocument;work:TagWorkPlan[];gap:string|null}
 const bytes=(value:unknown)=>new TextEncoder().encode(JSON.stringify(value)).length;
-export async function planTags(source:WorkspaceDocument,authority:TagAuthority,commandId:string,beforeSource?:WorkspaceDocument):Promise<PlannedTags>{
+export async function planTags(source:WorkspaceDocument,authority:TagAuthority,commandId:string,beforeSource?:WorkspaceDocument,entityId?:string):Promise<PlannedTags>{
  const document=workspaceDocument(source),desired=desiredTagMembership(document),prior=document.tagLedger;
  if(prior&&prior.accountId!==authority.accountId)return {document,work:[],gap:'tag_account_mismatch'};
  const ledger=structuredClone(prior??{accountId:authority.accountId,mappings:[],intents:[]}),work:TagWorkPlan[]=[],gap=tagAuthorityGap(authority);
@@ -14,6 +14,7 @@ export async function planTags(source:WorkspaceDocument,authority:TagAuthority,c
  const previousGroups=beforeSource?new Map(desiredTagMembership(beforeSource).groups.map(group=>[group.entityId,group])):null;
  const signature=(group:DesiredTagGroup)=>JSON.stringify({kind:group.kind,name:group.name,archived:group.archived,removed:group.removed,taskIds:group.taskIds,retainMembership:group.retainMembership});
  for(const group of desired.groups){
+  if(entityId!==undefined&&group.entityId!==entityId)continue;
   const previous=previousGroups?.get(group.entityId);if(previousGroups&&previous&&signature(previous)===signature(group))continue;
   let mapping=ledger.mappings.find(row=>row.entityId===group.entityId&&row.kind===group.kind);
   const uncertain=mapping?.state==='unknownOutcome'||ledger.intents.some(row=>row.mappingId===mapping?.id&&row.state==='unknownOutcome');

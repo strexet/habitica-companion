@@ -187,8 +187,9 @@ public sealed partial class WorkspaceCloudClient : IWorkspaceCloudClient
         var result = await CallTaskAsync<WorkspaceCommandPreview>("prepare_task_command", args, cancellationToken);
         if (result.Succeeded && result.Value is { } preview && (preview.Command.WorkspaceId != intent.WorkspaceId || preview.PreparedCommandId != preview.Command.Id || preview.Command.Operation != intent.Operation || preview.CorrelationId == Guid.Empty || preview.PreparedCommandId == Guid.Empty))
             return new(false, null, "The command preview could not be validated.", true);
+        if (result.Value is { TagProjection: { } tags } && !tags.IsValid()) return new(false, null, "The tag metadata preview is invalid.", true);
         if (result.Succeeded && result.Value is { } plan && intent.Operation is WorkspaceOperation.PlanTask or WorkspaceOperation.RestoreTodo or WorkspaceOperation.RelateTodo or WorkspaceOperation.SetTodoState or WorkspaceOperation.SetTodoStage
-            && (plan.MayAffectHabitica || WorkspaceCommandIdentity.Hash(plan.Command with { Id = intent.Id }) != WorkspaceCommandIdentity.Hash(intent)))
+            && ((plan.MayAffectHabitica && plan.TagProjection?.RequestsMetadataChanges != true) || WorkspaceCommandIdentity.Hash(plan.Command with { Id = intent.Id }) != WorkspaceCommandIdentity.Hash(intent)))
             return new(false, null, "The native command preview did not match the requested command.", true);
         return result;
     }

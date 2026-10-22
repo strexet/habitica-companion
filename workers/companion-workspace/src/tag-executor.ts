@@ -12,8 +12,8 @@ interface Outcome {kind?:string;code?:string;retryAtUtc?:string;accountId?:strin
 export interface TagExecutorControl {runtime:()=>Promise<{next_network_at_utc:string|null}|null>;row:()=>Promise<WorkspaceRow|null>;permitted:()=>Promise<boolean>;wait:(ms:number)=>Promise<void>;deadline:number;token:string;epoch:string}
 const bytes=(value:string)=>new TextEncoder().encode(value).length;
 // Called under the same durable profile lease as game task projection. One metadata effect per wake.
-export async function executeTagWork(env:ExecutorEnv,profileId:string,control:TagExecutorControl,uncertainOnly=false):Promise<string|null>{
- const stored=await env.WORKSPACE_DB.prepare(`SELECT * FROM workspace_tag_work WHERE profile_id=? AND state IN ('executing','unknownOutcome'${uncertainOnly?'':",'pending'"}) ORDER BY CASE WHEN state IN ('executing','unknownOutcome') THEN 0 ELSE 1 END,created_at_utc,CASE json_extract(work_json,'$.operation') WHEN 'ensureTag' THEN 0 ELSE 1 END,work_id LIMIT 1`).bind(profileId).first<WorkRow>();
+export async function executeTagWork(env:ExecutorEnv,profileId:string,control:TagExecutorControl,uncertainOnly=false,workId?:string):Promise<string|null>{
+ const stored=await env.WORKSPACE_DB.prepare(`SELECT * FROM workspace_tag_work WHERE profile_id=? AND state IN ('executing','unknownOutcome'${uncertainOnly?'':",'pending'"}) AND (? IS NULL OR work_id=?) ORDER BY CASE WHEN state IN ('executing','unknownOutcome') THEN 0 ELSE 1 END,created_at_utc,CASE json_extract(work_json,'$.operation') WHEN 'ensureTag' THEN 0 ELSE 1 END,work_id LIMIT 1`).bind(profileId,workId??null,workId??null).first<WorkRow>();
  if(!stored)return null;
  let work=JSON.parse(stored.work_json) as TagWorkPlan;
  async function save(state:string,error:string|null,update:(document:WorkspaceDocument)=>void=()=>{},prepared?:Prepared|null,retry:string|null=null,expectedVersion?:number):Promise<boolean>{
@@ -49,7 +49,7 @@ export async function executeTagWork(env:ExecutorEnv,profileId:string,control:Ta
  async function finish(outcome:Outcome,prepared:Prepared):Promise<string>{
   if(outcome.kind!=='applied'){
    if(outcome.kind==='refused'){
-    const retry=['projection_busy','rate_limited'].includes(outcome.code??'')&&outcome.retryAtUtc&&Date.parse(outcome.retryAtUtc)>Date.now()?outcome.retryAtUtc:null;
+    const retry=!work.manualReview&&['projection_busy','rate_limited'].includes(outcome.code??'')&&outcome.retryAtUtc&&Date.parse(outcome.retryAtUtc)>Date.now()?outcome.retryAtUtc:null;
     await save(retry?'pending':'needsReview',outcome.code??'tag_refused',()=>{},null,retry);return retry?'tag_limited':'tag_review';
    }
    await save('unknownOutcome',outcome.code??'tag_transport_unknown',document=>{if(work.operation==='ensureTag'){const mapping=document.tagLedger?.mappings.find(item=>item.id===work.mappingId);if(mapping)mapping.state='unknownOutcome';}});return 'tag_unknown';

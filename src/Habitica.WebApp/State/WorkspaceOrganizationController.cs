@@ -196,7 +196,7 @@ public sealed class WorkspaceOrganizationController : IDisposable
     {
         if (context.Intent is not { } intent || preview.Command is not { } command || !WorkspaceOrganizationCommands.IsValid(command)
             || preview.PreparedCommandId != command.Id || preview.CorrelationId == Guid.Empty || preview.ExpiresAtUtc == default || preview.ExpiresAtUtc.Offset != TimeSpan.Zero
-            || preview.MayAffectHabitica || preview.SavedInCompanion != (preview.Receipt is not null)) return false;
+            || preview.MayAffectHabitica && preview.TagProjection?.RequestsMetadataChanges != true || preview.TagProjection is not null && !preview.TagProjection.IsValid() || preview.SavedInCompanion != (preview.Receipt is not null)) return false;
         var normalized = command with { Id = intent.Id, EntityId = intent.Operation == WorkspaceOrganizationOperation.Create ? intent.EntityId : command.EntityId };
         if (WorkspaceOrganizationCommands.Hash(normalized) != WorkspaceOrganizationCommands.Hash(intent)) return false;
         var current = context.Baseline is { } snapshot ? WorkspaceOrganizationSnapshot.From(snapshot.Document, command.Kind, command.EntityId) : null;
@@ -211,7 +211,7 @@ public sealed class WorkspaceOrganizationController : IDisposable
         return command is not null && entry?.Command is not null && entry.Snapshot is not null
             && receipt.CommandId == command.Id && receipt.CorrelationId == preview!.CorrelationId && receipt.WorkspaceId == context.WorkspaceId
             && receipt.EntityId == command.EntityId && receipt.Kind == command.Kind && receipt.Operation == command.Operation
-            && receipt.SavedInCompanion && !receipt.MayAffectHabitica && !receipt.OutcomeUnknown && receipt.AcceptedEventCount == 0 && receipt.ConfirmedEffectCount == 0
+            && receipt.SavedInCompanion && (!receipt.MayAffectHabitica||preview.TagProjection?.RequestsMetadataChanges==true) && !receipt.OutcomeUnknown && receipt.AcceptedEventCount == 0 && receipt.ConfirmedEffectCount == 0
             && entry.AcceptedAtUtc != default && entry.AcceptedAtUtc.Offset == TimeSpan.Zero
             && entry.PayloadHash == WorkspaceOrganizationCommands.Hash(command) && WorkspaceOrganizationCommands.Hash(entry.Command) == entry.PayloadHash
             && entry.Snapshot.Equivalent(preview.Snapshot);

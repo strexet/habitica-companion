@@ -20,6 +20,6 @@ public sealed partial class WorkspaceCloudClient
                 _ => new(result, CorrelationId: correlationId, CommandId: commandId)
             };
         }, () => generation == _generation,
-            operation is "workspace-organization-recover" or "workspace-saved-list" or "workspace-saved-query" ? DiagnosticsMode.LiveRead : DiagnosticsMode.LiveMutation);
+            operation is "workspace-tag-status" or "workspace-tag-candidates" or "workspace-tag-recover" or "workspace-tag-original-receipt" or "workspace-organization-recover" or "workspace-saved-list" or "workspace-saved-query" ? DiagnosticsMode.LiveRead : DiagnosticsMode.LiveMutation);
     }
 }

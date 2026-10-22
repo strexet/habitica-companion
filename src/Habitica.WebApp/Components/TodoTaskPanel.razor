@@ -117,9 +117,10 @@
                 @if (preview.Command.Operation == WorkspaceOperation.ScoreHabit) { <p>Record @preview.Command.Count Habit event: @preview.Command.Direction</p> }
                 @if (preview.Command.OccurrenceDate is { } occurrence) { <p>Occurrence date: @occurrence.ToString("yyyy-MM-dd")</p> }
                 <p>@(preview.MayAffectHabitica ? "Requested Habitica effects may run after this save when the separately enabled executor permits execution." : "Companion-only save. No new Habitica effect is requested.")</p>
+                <WorkspaceTagChangeReview CommandId="preview.PreparedCommandId" Preview="preview.TagProjection" Tasks="@(Todo.Snapshot?.Document.Tasks??[])" Disabled="@Busy" Reviewed="value=>TagReviewed(preview.PreparedCommandId,value)" />
                 <details><summary>Original command reference</summary><p>@preview.PreparedCommandId</p><p>Expires: @preview.ExpiresAtUtc.ToString("u")</p></details>
                 @if (Todo.Commands.AcceptanceUnknown) { <p>Acceptance is uncertain. Recover the original receipt before another action.</p><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="RecoverAsync" Variant="Variant.Outlined" data-testid="todo-recover">Check original receipt</MudButton> }
-                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="ConfirmAsync" Color="Color.Primary" Variant="Variant.Filled" data-testid="todo-confirm">@(Todo.Commands.AcceptanceUnknown ? "Retry original command" : "Confirm save")</MudButton>
+                <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy||!TagsReady(preview.PreparedCommandId,preview.TagProjection))" OnClick="ConfirmAsync" Color="Color.Primary" Variant="Variant.Filled" data-testid="todo-confirm">@(Todo.Commands.AcceptanceUnknown ? "Retry original command" : "Confirm save")</MudButton>
                     <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Busy || Todo.Commands.AcceptanceUnknown)" OnClick="CancelReview" Variant="Variant.Text" data-testid="todo-cancel">Cancel review</MudButton></div>
             </section>
         }
@@ -212,6 +213,9 @@
 </section>
 
 @code {
+    private Guid _tagReviewId;private bool _tagReviewed;
+    private void TagReviewed(Guid id,bool reviewed){_tagReviewId=id;_tagReviewed=reviewed;}
+    private bool TagsReady(Guid id,WorkspaceTagChangePreview? preview)=>preview?.RequestsMetadataChanges!=true||_tagReviewId==id&&_tagReviewed;
     [Parameter] public CompanionTaskKind Kind { get; set; } = CompanionTaskKind.Todo;
     [Parameter] public bool ShowKindSelector { get; set; }
     [Parameter] public bool ShowTaskList { get; set; } = true;
@@ -375,7 +379,7 @@
         Drafts.Prepared(preview.PreparedCommandId, Drafts.Get(source, PreviewKind(preview.Command), task), creating);
     }
     private Task RetryPreviewAsync() => RunAsync(async () => { await Todo.RetryOriginalPreviewAsync(); TrackDraft(); });
-    private Task ConfirmAsync() => RunAsync(async () => { var id = Todo.Commands.Preview?.PreparedCommandId; await Todo.ConfirmAsync(); Applied(id); });
+    private Task ConfirmAsync() => RunAsync(async () => { if(Todo.Commands.Preview is {} current&&!TagsReady(current.PreparedCommandId,current.TagProjection))throw new InvalidOperationException("Review every tag reference page before confirming."); var id = Todo.Commands.Preview?.PreparedCommandId; await Todo.ConfirmAsync(); Applied(id); });
     private Task RecoverAsync() => RunAsync(async () => { var id = Todo.Commands.Preview?.PreparedCommandId; await Todo.CheckOriginalAsync(); Applied(id); });
     private void Applied(Guid? id)
     {

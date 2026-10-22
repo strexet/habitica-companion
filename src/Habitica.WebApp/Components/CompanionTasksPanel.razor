@@ -95,9 +95,10 @@
                     </dl>
                     @if (preview.Command.Operation == WorkspaceOperation.CreateDaily) { <p>Create the reviewed schedule after fresh Habitica timezone/day-start verification. Creation runs no Cron and scores no dates. Future missed Dailies can have normal Habitica penalties.</p> }
                     @if (preview.Command.Operation == WorkspaceOperation.DeleteTask) { <p>The task will be archived and hidden from active lists. Command, completion and score history remain in exports. Habitica is unchanged.</p> }
-                    <p>@(preview.MayAffectHabitica ? "This command requests game effects. The separately enabled executor can apply them after canonical acceptance. Saving and projection are reported separately." : "This command saves Companion data without requesting a new Habitica projection.")</p>
+                    <p>@(preview.MayAffectHabitica ? "This command may change Habitica. Review task effects and separate group tag metadata before saving. The separately enabled executor applies accepted work. Saving and projection are reported separately." : "This command saves Companion data without requesting a new Habitica projection.")</p>
+                    <WorkspaceTagChangeReview CommandId="preview.PreparedCommandId" Preview="preview.TagProjection" Tasks="@(Workspace.Snapshot?.Document.Tasks??[])" Disabled="@_busy" Reviewed="value=>TagReviewed(preview.PreparedCommandId,value)" />
                     @if (Workspace.AcceptanceUnknown) { <p>The original acceptance is uncertain. Check its receipt or retry only this original command ID.</p><MudButton Disabled="@_busy" OnClick="@(() => RunAsync(() => Workspace.CheckOriginalAsync()))" Variant="Variant.Outlined">Check original receipt</MudButton> }
-                    <MudButton Disabled="@_busy" OnClick="@(() => RunAsync(() => Workspace.ConfirmAsync()))" Variant="Variant.Filled" data-testid="canonical-confirm">@(Workspace.AcceptanceUnknown ? "Retry original command" : "Confirm and save command")</MudButton>
+                    <MudButton Disabled="@(_busy||!TagsReady(preview.PreparedCommandId,preview.TagProjection))" OnClick="ConfirmWithTagsAsync" Variant="Variant.Filled" data-testid="canonical-confirm">@(Workspace.AcceptanceUnknown ? "Retry original command" : "Confirm and save command")</MudButton>
                     <MudButton Disabled="@(_busy || Workspace.AcceptanceUnknown)" OnClick="CancelPreview" Variant="Variant.Outlined">Cancel preview</MudButton>
                 </section>
             }
@@ -137,6 +138,10 @@
 </div>
 
 @code {
+    private Guid _tagReviewId;private bool _tagReviewed;
+    private void TagReviewed(Guid id,bool reviewed){_tagReviewId=id;_tagReviewed=reviewed;}
+    private bool TagsReady(Guid id,WorkspaceTagChangePreview? preview)=>preview?.RequestsMetadataChanges!=true||_tagReviewId==id&&_tagReviewed;
+    private Task ConfirmWithTagsAsync()=>Workspace.Preview is {} preview&&TagsReady(preview.PreparedCommandId,preview.TagProjection)?RunAsync(()=>Workspace.ConfirmAsync()):Task.CompletedTask;
     private bool _busy, _replaceChecklist;
     private string _externalId = "", _text = "", _notes = "", _deadline = "", _difficulty = "", _attribute = "", _checklist = "", _occurrence = "";
     private string? _error, _account;

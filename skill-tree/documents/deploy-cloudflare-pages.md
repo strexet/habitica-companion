@@ -374,3 +374,8 @@ The local gateway milestone performs no production migration, deployment, enroll
 Apply Workspace migration 0008 together with Auth migration 0009 before deploying the matching tag executor. The Workspace migration adds trusted work, source review status and preparation authority records; no new secret, binding or flag is required. Deploy matching Auth, Workspace and MCP code and the following browser consent/recovery controls as one reviewed release. Existing native task and organization grants can still save canonical metadata, but existing grants cannot acquire habitica.tags.write implicitly.
 
 No migration, live scope upgrade, consent activation or deployment ran during the reconciliation milestone. Retain unresolved original attempts across rollback; never delete native tags to clean up a failed release.
+
+
+## Group-tag controls release dependency
+
+The local tag UI/MCP release requires Auth migration 0009, Workspace migration 0008 and Workspace migration 0009, matching Auth/Workspace/MCP bundles and the matching browser application. Dry-run builds and synthetic tests do not publish resources or apply remote migrations. Existing grants retain original scopes; requested tag operations need normal reauthorization plus separate owner tag consent. No release activates consent or executor automatically. Confirm matching schema/tool discovery and explicit consent in the separately authorized live qualification before claiming production support.

@@ -64,7 +64,7 @@ internal sealed class WorkspaceTaskFixture
         }
         public ValueTask DisposeAsync() => ValueTask.CompletedTask;
     }
-    internal sealed class Cloud : IWorkspaceCloudClient
+    internal class Cloud : IWorkspaceCloudClient
     {
         public WorkspaceJournalSnapshot State { get; set; } = new(new WorkspaceDocument { Id = Guid.NewGuid() }, 1, [], []);
         public bool Connected { get; set; }

@@ -1,3 +1,6 @@
+import {purgeExpiredTagReviews} from './group-tag-retention';
+import {groupTagApi} from './group-tag-reviews';
+import {groupTagScopes,type GroupTagTool} from '../../shared/group-tag-tools';
 import {reconcileTags,tagStatements,tagStatus,tagWorkBytes,browserTagOrigin} from './tag-reconciliation';
 import type {TagOrigin} from './tag-authority';
 import {organizationApi} from './organization-api';
@@ -176,6 +179,9 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
  }
  if (path === "/workspace" && request.method === "GET") return json({ document: JSON.parse(row.document_json), storeVersion: row.store_version, executorEnabled: Boolean(row.executor_enabled), executorAvailable: Boolean(env.EXECUTOR_ENABLED) });
  if (path === "/export" && request.method === "GET") return snapshot(env, row);
+ if(path==='/tag-api'&&request.method==='POST'){
+  const body=workspaceObject(await workspaceJson(request,65536),['tool','arguments']);return json(await groupTagApi(env,row,body.tool as GroupTagTool,body.arguments,browserTagOrigin));
+ }
  if(path==='/organization-api'&&request.method==='POST'){
   // Exact removal approvals can list every reference in the bounded one-MiB cloud document.
   const body=workspaceObject(await workspaceJson(request,1024*1024),['tool','arguments']);return json(await organizationApi(env,row,body.tool as OrganizationWriteTool,body.arguments));
@@ -238,17 +244,18 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
   try{
    if(!this.env.WORKSPACE_ENABLED||request.method!=="POST")throw new WorkspaceError("workspace_unavailable",503);
    const body=workspaceObject(await workspaceJson(request,1024*1024),["tool","arguments"]);
-   if(typeof body.tool!=="string"||!Object.hasOwn(organizationToolScopes,body.tool)&&!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool)&&!Object.hasOwn(spellToolScopes,body.tool)&&!Object.hasOwn(cronToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
+   if(typeof body.tool!=="string"||!Object.hasOwn(groupTagScopes,body.tool)&&!Object.hasOwn(organizationToolScopes,body.tool)&&!Object.hasOwn(taskToolScopes,body.tool)&&!Object.hasOwn(partyToolScopes,body.tool)&&!Object.hasOwn(spellToolScopes,body.tool)&&!Object.hasOwn(cronToolScopes,body.tool))throw new WorkspaceError("invalid_tool",422);
    const verified=await this.env.AUTH_IDENTITY.fetch("https://identity.internal/mcp",{method:"POST",headers:{authorization:request.headers.get("authorization")??""},signal:AbortSignal.timeout(5000)});
    if(!verified.ok)throw new WorkspaceError("unauthorized",401);
    const who=await verified.json<Identity&{scopes:string[];grantEpoch:string;tagWriteAllowed:boolean}>();
-   const requiredScope=Object.hasOwn(organizationToolScopes,body.tool)?organizationToolScopes[body.tool as OrganizationWriteTool]:Object.hasOwn(partyToolScopes,body.tool)?partyToolScopes[body.tool as PartyTool]:taskToolScopes[body.tool as TaskTool];
+   const requiredScope=Object.hasOwn(groupTagScopes,body.tool)?groupTagScopes[body.tool as GroupTagTool]:Object.hasOwn(organizationToolScopes,body.tool)?organizationToolScopes[body.tool as OrganizationWriteTool]:Object.hasOwn(partyToolScopes,body.tool)?partyToolScopes[body.tool as PartyTool]:taskToolScopes[body.tool as TaskTool];
    const required=Object.hasOwn(cronToolScopes,body.tool)?cronToolScopes[body.tool as CronTool]:Object.hasOwn(spellToolScopes,body.tool)?spellToolScopes[body.tool as SpellTool]:['profile:read',requiredScope];
    if(!Array.isArray(who.scopes)||required.some(scope=>!who.scopes.includes(scope)))throw new WorkspaceError("insufficient_scope",403);
    let row=await this.env.WORKSPACE_DB.prepare("SELECT * FROM workspaces WHERE profile_id=? AND connection_id=? AND active=1").bind(who.profileId,who.connectionId).first<WorkspaceRow>();
    if(!row)throw new WorkspaceError("workspace_consent_required",403);
    row=await mcpEpoch(this.env,row,who.grantEpoch);
    const tagOrigin:TagOrigin={source:'mcp',tagWriteAllowed:who.tagWriteAllowed===true,grantEpoch:who.grantEpoch};
+   if(Object.hasOwn(groupTagScopes,body.tool))return json(await groupTagApi(this.env,row,body.tool as GroupTagTool,body.arguments,tagOrigin));
    if(Object.hasOwn(organizationToolScopes,body.tool))return json(await organizationApi(this.env,row,body.tool as OrganizationWriteTool,body.arguments,tagOrigin));
    if(Object.hasOwn(cronToolScopes,body.tool))return json(await cronApi(this.env,row,body.tool as CronTool,body.arguments,request.headers.get('authorization')??''));
    if(Object.hasOwn(spellToolScopes,body.tool))return json(await spellApi(this.env,row,body.tool as SpellTool,body.arguments,request.headers.get('authorization')??''));
@@ -268,5 +275,5 @@ export default {
   if (origin === config.pwaOrigin) { response.headers.set("access-control-allow-origin", origin); response.headers.set("access-control-allow-methods", "GET, POST, DELETE, OPTIONS"); response.headers.set("access-control-allow-headers", "content-type, authorization"); response.headers.set("vary", "Origin"); }
   return response;
  },
- async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { await purgeExpiredPreparations(env); await executeScheduled(env); },
+ async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { await purgeExpiredPreparations(env); await purgeExpiredTagReviews(env); await executeScheduled(env); },
 } satisfies ExportedHandler<WorkspaceEnv>;

@@ -6,8 +6,12 @@ public sealed record IntegrationLinkResult(bool Succeeded, string Message, strin
 
 public sealed record IntegrationStatusResult(bool Succeeded, string Message, string? DisplayName = null, string[]? Permissions = null, string? CredentialStatus = null, DateTimeOffset? LastVerifiedAtUtc = null, DateTimeOffset? LastUsedAtUtc = null, bool PermissionsTruncated = false);
 
+public sealed record IntegrationTagConsentResult(bool Succeeded, string Message, bool? Enabled = null, DateTimeOffset? GrantedAtUtc = null);
+
 public interface IChatGptIntegrationClient
 {
+    Task<IntegrationTagConsentResult> ReadTagConsentAsync(CancellationToken cancellationToken) => Task.FromResult(new IntegrationTagConsentResult(false, "Tag consent is unavailable in this client."));
+    Task<IntegrationTagConsentResult> SetTagConsentAsync(bool enabled, CancellationToken cancellationToken) => Task.FromResult(new IntegrationTagConsentResult(false, "Tag consent is unavailable in this client."));
     bool IsAvailable { get; }
     bool HasConnection { get; }
     Task<IntegrationLinkResult> EnrollAsync(HabiticaCredentials credentials, CancellationToken cancellationToken);
