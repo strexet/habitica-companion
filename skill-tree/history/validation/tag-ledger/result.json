@@ -1,0 +1,85 @@
+{
+  "taskId": "T-63ee6e49-6452-4e7c-a707-1dd54b41c94c",
+  "recordedAtUtc": "2026-10-22T03:08:24.355881+00:00",
+  "sourceFingerprints": {
+    "skill-tree/documents/companion-workspace-contract.md": "b37a99f17e2bc4f5e3b409ab33a8d0277ec0558b06794d3dcfbbd84890101044",
+    "skill-tree/documents/features.md": "f408ed4d1f472761bed25a7d143bd541d3a16cdc53f656f6a1c7964033be03b6",
+    "skill-tree/documents/habitica-api.md": "18c9a59311cdc1ad55913271f60610c586c2d23a2f3fc25e6cde83ed0000be40",
+    "skill-tree/documents/technical.md": "c5d8cca13b61bf7b4067fbd3139719acd12cde5384626f12f90c48070d7f1272",
+    "skill-tree/documents/testing.md": "779abbac31b21d8a9dbb0bf98732b156bb56af69dcbf4590bfe80ad886a2631f",
+    "skill-tree/documents/ux-ui-manifest.md": "542c89c3cbb846252f8206e183a1da5e5e43d0a1fd888ffad3aef451ca27c7f2",
+    "src/Habitica.Application/Workspace/WorkspaceHabiticaCoveragePolicy.cs": "d8c21791d3f1b4433c441ef53a194bf1491e3dd89dbfa8864923765ec8e35453",
+    "src/Habitica.Domain/Workspace/WorkspaceDocument.cs": "277cf7d58c45b0668620963eefb9a7a91f61d0a7956c148dd9ca838fc4e02cfd",
+    "src/Habitica.Domain/Workspace/WorkspaceRules.cs": "d4236f64bb142890aceb630a17b8c423fc6a5c91011f51afadf5489d95a60f68",
+    "src/Habitica.Domain/Workspace/WorkspaceTagProjection.cs": "1873c3910164ced5fd0f4030547b08c3f38fed451b1984616b5b94624588ab60",
+    "src/Habitica.WebApp/State/TodoWorkspacePresentation.cs": "39f648f9e5bc530f862b233c5e92e1c7f7781d49dfb1ccc548d948959fb437e1",
+    "tests/Habitica.Application.Tests/Workspace/WorkspacePortabilityTests.cs": "11e87eb22de8bdf28481af5d27513a533f96cfa5f16e9f501e086326d4e1ab59",
+    "tests/Habitica.Application.Tests/Workspace/WorkspaceTagCoverageTests.cs": "9d20b3cd29db66dcccb4890326e0736ed822cb0f446fe63d40c4087e20384f95",
+    "tests/Habitica.Domain.Tests/Workspace/WorkspaceTagProjectionTests.cs": "6630b8bbb3c2f3f3b0b697b55ce5e40769de9f9705e24ff7a7e43856dfadddaa",
+    "tests/fixtures/workspace/tag-projection-v1.json": "4a4446e76548f35530eea3acaac100daeecd85d88fc909d13d367c87b414d532",
+    "workers/companion-workspace/test/tag-projection.test.mjs": "f9e631dcf3a52aa0c48be516a8704f9ff65992f2ff49dbac10a9e0dc211de591",
+    "workers/shared/tag-projection.ts": "9e6d1811a2ac8c15ad1ea0bd9d91ebfc5e38070bffde4f36d619a5575e46b9a4",
+    "workers/shared/workspace-domain.ts": "679483889f49c666edd82925829dadc2cfe74185254a94ea1d7ae982f411a346"
+  },
+  "checks": {
+    "dotnet": {
+      "result": "pass",
+      "log": "/tmp/habitica-tags-final-dotnet.log",
+      "sha256": "a4fbced7d73a41b242aa79ce382c0d1be574444c5bd92d9b5b8dc816c62d5792",
+      "total": 1018
+    },
+    "releasePublish": {
+      "result": "pass",
+      "log": "/tmp/habitica-tags-final-publish.log",
+      "sha256": "41d986bfd60a7c71d16d983ddaab01327738707e9be6cab151ffe63d0854f457"
+    },
+    "workerBuilds": {
+      "result": "pass",
+      "log": "/tmp/habitica-tags-worker-builds.log",
+      "sha256": "378b924c9fcd25763fec172eda09017636e1dbe5f3a6fd7be1edb55e3583ba91"
+    },
+    "workers": {
+      "result": "pass",
+      "log": "/tmp/habitica-tags-final-workers.log",
+      "sha256": "d9d3dd2e7cecb29bef207dbec0cd0812c8eb25610b8115792c4ded04ffda2d09",
+      "total": 482
+    },
+    "neutralCurrent": {
+      "result": "pass",
+      "log": "/tmp/habitica-tags-neutral-current.log",
+      "sha256": "7a215e9cb4c1741c12f17aeb7b9f8bc166880f8bf56baf9e118975f4d97ea4f1",
+      "cases": 42,
+      "tests": 43
+    },
+    "documentation": {
+      "changedLineProse": "pass",
+      "strictFuture": "pass",
+      "repositoryNavigation": "pass",
+      "fullStrictProse": "Existing errors outside changed lines remain; no clean full-strict verdict.",
+      "audit": "Existing stale audit warning."
+    }
+  },
+  "delivered": [
+    "Optional schema-1 account-bound ledger with typed stable mappings for all six organization kinds; unused old export encoding remains unchanged.",
+    "Separate original command/correlation identities, exact historical tag targets, desired revisions/names and pending/confirmed/unknown/review states.",
+    "Per-member target task IDs, presence intent, state and original receipt evidence preserve partial progress.",
+    "Strict portable C#/Worker document/journal validation covers 42 shared cases, including archived/removed metadata, collisions, unknown states and malformed confirmation.",
+    "Expected-account read audit distinguishes stored identity and recorded membership without name-based or foreign-account fabricated coverage.",
+    "Native accepted receipts/hashes, no-game-effect removal, export, paused restoration and frozen handoff preserve the new data without authorization."
+  ],
+  "limits": [
+    "Data/audit milestone only: no tag gateway, consent grant, reconciliation executor, remote mutation, publication or installed-host refresh.",
+    "Imported ledger evidence is historical data and never dispatch authority. Complete canonical membership derivation and current upstream verification belong to following tasks.",
+    "No layout/style change; no new rendered qualification. Physical devices and assistive technology remain unqualified."
+  ],
+  "operationEvidence": {
+    "activeControllerSeconds": null,
+    "prerequisiteWaitingSeconds": null,
+    "note": "Aggregate controller timer unavailable. Build/test controls have 60/180/240-second deadlines; logs retain durations. No browser/server was created for this data milestone.",
+    "controls": [
+      "Initial overloaded parallel build/test run exhausted existing 30-second Worker file deadlines. Running the full Worker suite alone passed; no test timeout or source policy was weakened.",
+      "A mistaken solution filename was corrected to the discovered Habitica.sln before the successful full run.",
+      "Member-level receipt/state was added before acceptance so partial membership cannot masquerade as confirmed aggregate work."
+    ]
+  }
+}

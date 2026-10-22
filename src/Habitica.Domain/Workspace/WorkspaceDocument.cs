@@ -94,4 +94,6 @@ public sealed record WorkspaceDocument
     public IReadOnlyList<WorkspaceOrganizationEntry>? OrganizationHistory { get; init; }
     public IReadOnlyList<HabitScoreEvent> HabitScores { get; init; } = Array.Empty<HabitScoreEvent>();
     public IReadOnlyList<HabiticaProjection> Projections { get; init; } = Array.Empty<HabiticaProjection>();
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public WorkspaceTagLedger? TagLedger { get; init; }
 }

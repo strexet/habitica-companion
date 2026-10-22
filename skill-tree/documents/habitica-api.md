@@ -1339,3 +1339,10 @@ Habitica [Daily schema](https://github.com/HabitRPG/habitica/blob/develop/websit
 New prepare_task_command activity uses task-required-v1 for createTodo/createDaily/createHabit, ordinary updateTask, completeTask and scoreHabit. Omitted/false projectToHabitica input normalizes to required effects; fresh raw commands must carry true. Native schedule-only authoring and dedicated planning/state/relationship/lifecycle commands remain explicit non-scoring operations. Incompatible unlinked Daily schedules or retained mapping identities refuse before new acceptance. Exact accepted legacy receipts remain recoverable verbatim.
 
 Fresh legacy Habit activity can request counterpart creation followed by bounded scores; no accepted historical event is replayed. Fresh Daily completion similarly records required creation/recovery and score effects, subject to the existing current-day/isDue/needsCron gateway checks. Offline/local acceptance remains pending until separately granted server consent, cloud ownership and enabled execution. Native urgency never substitutes for Habitica priority/difficulty.
+
+
+## Tag correspondence model boundary
+
+The optional canonical tagLedger represents owned native tag identity and desired task membership for all six organization kinds. The ledger records exact account/group/task IDs, original correlation/receipt references, source revisions and pending/confirmed/unknown/review states. Stable internal correlation aliases are not assumed to exist as Habitica tag API fields. Matching tag names supply no identity evidence. Remote tag IDs do not substitute for reward-bearing task IDs.
+
+The data milestone introduces no endpoint, permission, upstream request, tag deletion or score. Populated exports retain account UUID and mapping metadata without credentials. Imported confirmation records are historical evidence and grant no execution authority. The following gateway milestone must verify current official endpoints, own-account scope, exact fingerprints and preservation of unrelated tags before dispatch.

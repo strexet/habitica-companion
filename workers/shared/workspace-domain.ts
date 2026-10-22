@@ -1,3 +1,4 @@
+import {tagLedger,type TagLedger} from './tag-projection.ts';
 import {savedTaskViews,type SavedTaskView} from './saved-task-views.ts';
 import {executionStage,type TodoExecutionStage} from './todo-stage.ts';
 import {organizationHistory,type OrganizationEntry} from './workspace-organization.ts';
@@ -19,7 +20,7 @@ export interface Completion extends Entity { taskId: string; commandId: string; 
 export interface Restoration extends Entity {taskId:string;completionId:string;commandId:string;restoredAtUtc:string}
 export interface HabitScore extends Entity { taskId: string; commandId: string; recordedAtUtc: string; direction: "up" | "down" }
 export interface Projection extends Entity { taskId: string; state: "unlinked" | "pending" | "linked" | "externalConflict" | "unknownOutcome"; habiticaTaskId: string | null; fingerprint?: string | null; correlationAlias?: string | null }
-export interface WorkspaceDocument { schemaVersion: 1; savedTaskViews?:SavedTaskView[]; id: string; revision: number; categories: Category[]; projects: Project[]; sections: Section[]; labels: Category[]; goals: Goal[]; tasks: CompanionTask[]; occurrences: Occurrence[]; completions: Completion[]; restorations?:Restoration[]; organizationHistory?:OrganizationEntry[]; habitScores: HabitScore[]; projections: Projection[] }
+export interface WorkspaceDocument { tagLedger?:TagLedger; schemaVersion: 1; savedTaskViews?:SavedTaskView[]; id: string; revision: number; categories: Category[]; projects: Project[]; sections: Section[]; labels: Category[]; goals: Goal[]; tasks: CompanionTask[]; occurrences: Occurrence[]; completions: Completion[]; restorations?:Restoration[]; organizationHistory?:OrganizationEntry[]; habitScores: HabitScore[]; projections: Projection[] }
 const fail = (): never => { throw new WorkspaceError("invalid_workspace", 422); };
 function named(value: unknown, max = 256, allowEmpty = false): string { if (typeof value !== "string" || value.length > max || !allowEmpty && /^\p{White_Space}*$/u.test(value)) return fail(); return value; }
 function optionalId(value: unknown) { return value === undefined || value === null ? null : uuid(value); }
@@ -54,7 +55,7 @@ function recurrence(value: unknown): Recurrence | null {
 }
 export { recurrence as workspaceRecurrence };
 export function workspaceDocument(input: unknown): WorkspaceDocument {
-  const value = workspaceObject(input, ["schemaVersion", "id", "revision", "categories", "projects", "sections", "labels", "goals", "tasks", "occurrences", "completions", "restorations", "organizationHistory", "savedTaskViews", "habitScores", "projections"]);
+  const value = workspaceObject(input, ["tagLedger", "schemaVersion", "id", "revision", "categories", "projects", "sections", "labels", "goals", "tasks", "occurrences", "completions", "restorations", "organizationHistory", "savedTaskViews", "habitScores", "projections"]);
   if (value.schemaVersion !== 1) return fail(); const revision = integer(value.revision); const id = uuid(value.id);
   const names = (key: string): Category[] => list(value[key]).map(item => { const row = workspaceObject(item, [...baseKeys, "name"]); return { ...entity(row, revision), name: named(row.name) }; });
   const categories = names("categories"); const labels = names("labels");
@@ -121,6 +122,7 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   if(value.savedTaskViews!=null)document.savedTaskViews=views;
   if(value.organizationHistory!==undefined&&value.organizationHistory!==null){try{document.organizationHistory=organizationHistory(value.organizationHistory,document,utc);}catch{return fail();}}
   if(document.projects.some(project=>project.isRemoved&&!document.organizationHistory?.some(entry=>entry.command.operation==='remove'&&entry.command.entityId===project.id&&entry.snapshot.isRemoved)))return fail();
+  const ledger=tagLedger(value.tagLedger,document,utc);if(ledger){document.tagLedger=ledger;const entities=[...ledger.mappings,...ledger.intents];const identities=new Set([id,...all.map(row=>row.id)]);for(const row of entities){if(identities.has(row.id))return fail();identities.add(row.id);}if(all.length+entities.length+(document.organizationHistory?.length??0)>100000)return fail();}
   return document;
 }
 export function emptyWorkspace(id = crypto.randomUUID()): WorkspaceDocument { return workspaceDocument({ schemaVersion: 1, id, revision: 1 }); }

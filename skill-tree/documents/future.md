@@ -76,45 +76,6 @@ Research/decomposition intake; no implementation selection. Equal numeric priori
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.
 
-### Persist stable Habitica tag mappings and projection intents
-
-```yaml
-id: T-63ee6e49-6452-4e7c-a707-1dd54b41c94c
-priority: 103
-status: Ready
-parent_pending_ids: ["P-505551fa-3ca7-4415-b19e-b64585bf8f9f"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-63ee6e49-6452-4e7c-a707-1dd54b41c94c
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Define durable account-bound tag identity, desired membership and receipt state for all supported organization kinds.
-Current behavior:
-- WorkspaceDocument stores task projections but no organization/tag identity. WorkspaceHabiticaCoveragePolicy therefore reports every organization as missing tag coverage; organization receipts currently record no external effects.
-Desired behavior:
-- Canonical and exported state can represent exact pending or verified group/tag correspondence and membership work without creating game tasks or modifying prior receipts.
-Touch:
-- WorkspaceDocument and organization command/history models, shared/workspace-domain.ts and workspace-organization.ts, journal/portable serialization, coverage policy and next owning D1 migration when separate ledger storage is required.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Map projects/categories/sections/labels/goals/saved selections to tags, never extra reward-bearing tasks. Store verified remote IDs, exact owner/group kind, correlation evidence, desired canonical revision and pending/confirmed/unknown state. Preserve existing schema/export reads and immutable accepted native receipts; do not reinterpret zero-effect history as authorization. Distinguish task identity, tag identity, membership coverage and confirmed effects. No remote calls or automatic effects follow from model upgrade.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Cross-runtime serialization/domain fixtures cover all six kinds, archived/removed metadata, duplicate tag IDs, alias/name collisions, unknown states, older exports, account isolation and audit count changes without name-based fabricated coverage.
-Acceptance:
-- Canonical and exported state can represent exact pending or verified group/tag correspondence and membership work without creating game tasks or modifying prior receipts.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Add scoped native Habitica tag and task-tag gateway operations
 
 ```yaml

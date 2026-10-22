@@ -70,7 +70,7 @@ public sealed class TodoWorkspacePresentation : IDisposable
             var document = Snapshot?.Document;
             if (document is null) { _coverageDocument = null; _coverage = null; return null; }
             if (!ReferenceEquals(document, _coverageDocument))
-            { _coverageDocument = document; _coverage = WorkspaceHabiticaCoveragePolicy.Audit(document); }
+            { _coverageDocument = document; _coverage = WorkspaceHabiticaCoveragePolicy.Audit(document,Guid.TryParse(Account,out var accountId)?accountId:null); }
             return _coverage;
         }
     }

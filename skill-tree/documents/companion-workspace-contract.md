@@ -310,3 +310,10 @@ Ordinary new Dailies require an explicit complete supported schedule and one req
 ## Shared task-default policy
 
 Ordinary task creation, field edits, completion and Habit scoring request supported Habitica correspondence for every task kind and full child. New omitted/false compatibility intent cannot select a reward-free ordinary workflow. Canonical acceptance remains available locally without implicit server credential consent or execution, but required game effects remain pending and unconfirmed. Unschedulable Daily activity and retained identity conflicts require schedule/adoption review. Explicit native planning, schedule preparation and lifecycle metadata remain separately disclosed non-scoring operations. Accepted historical commands retain original bytes, hashes and receipts; historical imports never auto-score.
+
+
+## Portable tag ledger contract
+
+An optional schema-1 tagLedger binds one exact Habitica account UUID to typed group mappings and separately identified ensureTag/setMembership intents. Every mapping keeps the desired canonical revision/name, internal workspace/kind/entity alias, correlation and optional remote identity/evidence. Membership intents retain the exact target tag and native/remote task identities with explicit present/remove intent. Confirmation requires an original receipt reference, UTC observation and fingerprint. Unknown or ambiguous outcomes remain distinct and grant no replay.
+
+Canonical storage/export preserves archived and removed metadata and accepted native command history. Upgrading or importing the model never generates tasks, scores, tag mutations, credential consent or executor permission. Account-scoped coverage refuses missing/foreign context and distinguishes tag identity from recorded membership receipts. Authenticated verification, complete derived membership and actual reconciliation belong to subsequent milestones.
