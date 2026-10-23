@@ -3363,7 +3363,7 @@ Local package preparation preserves the source semantic version and adds exact f
 
 Personal Markdown notes have independent IDs, revisions, exact source text and recoverable trash. Explicit create, partial update, append, trash, restore and purge commands use expected notebook/note revisions and original command receipts. Purge removes every retained content version while retaining identity/receipt hashes. Notes never create Habitica tasks or rewards.
 
-The local Notes service supplies account-bound export/import with conflict refusal and full Markdown preservation. Drafts remain volatile and clear on account switch or sign-out. Notes pages and public agent tools remain separate delivery units.
+The local Notes service supplies account-bound export/import with conflict refusal and full Markdown preservation. Drafts remain volatile and clear on account switch or sign-out. The Notes page remains a separate delivery unit.
 
 ### Separately consented Notes service
 
@@ -3373,4 +3373,16 @@ Browser connection requires credential verification and separate Notes consent. 
 
 Search returns at most twenty title/snippet results, labels omitted content and requires the returned notebook revision for continuation. Exact note reads include a content hash and explicitly bounded version history. Dedicated Notes exports preserve full source and history; ordinary task exports exclude Notes. Purge removes current Markdown and retained versions from active service tables, retaining identity and receipt hashes. Notes disconnect revokes all Notes sessions while retaining content. Integration disconnect also blocks Notes; integration profile deletion includes Notes cleanup and reports pending cleanup until confirmed. Pending cross-service deletion blocks reenrollment. Provider backups retain the provider recovery lifecycle; active-table deletion does not promise immediate backup erasure.
 
-Synthetic C#/Worker, database and browser-client transport controls qualify tenancy, lifecycle, portable hashes, original receipts, consent and malformed responses. Public agent discovery, Notes page UX, remote migration and actual hosted/device use remain unqualified.
+Synthetic C#/Worker, database and browser-client transport controls qualify tenancy, lifecycle, portable hashes, original receipts, consent and malformed responses. Notes page UX, remote migration and actual hosted/device use remain unqualified.
+
+### Personal Notes agent workflow
+
+Status: implemented locally through search_notes, get_note, prepare_note_command, accept_note_command and get_note_command, with the packaged habitica-notes skill. Separate Notes read/write scopes and cloud consent remain mandatory. Notes are independent of task descriptions, Habitica game effects and private device sync.
+
+Search returns bounded incomplete snippets; exact reads return full selected Markdown, a content hash, the current revision and retained version identities. An exact retained revision supports post-save verification without dumping every historical body. Stored facts and documents remain explicitly untrusted content. Ambiguous matches and conflicting facts require clarification unless an explicit correction resolves the conflict. Ordinary conversation never authorizes automatic memory capture.
+
+Typed previews allocate server command/note identities and bind exact notebook/note revisions, Notes access epoch, OAuth grant epoch and ten-minute expiry. Explicit unambiguous remember/save/update intent permits matching acceptance without a redundant permission question. Previews expose exact before/after content and a bounded-source contiguous replacement range; the range is truthful but not necessarily minimal. Whole generated Markdown documents retain exact source. Original receipts and exact accepted-version hashes qualify change reports; unavailable retained content leaves content verification incomplete even after confirmed acceptance.
+
+Accepted previews retain only request/command identity and hashes. Expired previews lose Markdown during bounded scheduled cleanup; preparation also clears expired/revoked pending copies. At most eight body-bearing previews and8192 preparation identities exist per notebook. Purge removes every pending copy for the exact note; disconnect clears pending content and whole-profile deletion cascades the preparation namespace. Lost acknowledgement uses the original receipt or identical preparation request, never a replacement write.
+
+Synthetic SDK scenarios qualify clothing measurements, family/birthday facts, topic capture/append, full document updates, actual replacement ranges, ambiguous targets, malicious text, cross-profile refusal, stale/expired/revoked previews and response-loss recovery. Fresh-chat skill activation and actual ChatGPT/Codex adherence remain unqualified.

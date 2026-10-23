@@ -1,5 +1,7 @@
 import {identityEnvelope} from '../../shared/build-identity';
 import {notesRoute,agentNotes} from './notes-api';
+import {noteToolsApi,purgeExpiredNotesPreviews} from './note-tools-api';
+import {noteToolScopes,type NoteTool} from '../../shared/note-tools';
 export {NotesLifecycleService} from './notes-api';
 import {sourceRetirementApi} from './source-retirement-api';
 import {retirementToolScopes,type RetirementTool} from '../../shared/retirement-tools';
@@ -255,6 +257,10 @@ export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
   if(new URL(request.url).pathname === "/build-identity" && request.method === "GET") return json(identityEnvelope("workspace"));
   try{
    if(!this.env.WORKSPACE_ENABLED||request.method!=="POST")throw new WorkspaceError("workspace_unavailable",503);
+   if(new URL(request.url).pathname==='/note-tools'){
+    const body=workspaceObject(await workspaceJson(request,1024*1024),['tool','arguments']);if(typeof body.tool!=='string'||!Object.hasOwn(noteToolScopes,body.tool))throw new WorkspaceError('invalid_tool',422);
+    return json(await noteToolsApi(request,this.env,body.tool as NoteTool,body.arguments));
+   }
    if(new URL(request.url).pathname==='/notes'){
     const input=workspaceObject(await workspaceJson(request,1024*1024),['operation','arguments']);
     if(typeof input.operation!=='string'||!['search','get','receipt','command','export'].includes(input.operation))throw new WorkspaceError('invalid_tool',422);
@@ -295,5 +301,5 @@ export default {
   if (origin === config.pwaOrigin) { response.headers.set("access-control-allow-origin", origin); response.headers.set("access-control-allow-methods", "GET, POST, DELETE, OPTIONS"); response.headers.set("access-control-allow-headers", "content-type, authorization"); response.headers.set("vary", "Origin"); }
   return response;
  },
- async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { await purgeExpiredPreparations(env); await purgeExpiredTagReviews(env); await executeScheduled(env); },
+ async scheduled(_event: ScheduledController,env: WorkspaceEnv): Promise<void> { await purgeExpiredNotesPreviews(env); await purgeExpiredPreparations(env); await purgeExpiredTagReviews(env); await executeScheduled(env); },
 } satisfies ExportedHandler<WorkspaceEnv>;

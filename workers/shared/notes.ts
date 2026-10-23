@@ -18,7 +18,7 @@ function validText(value:string):boolean {
 export function noteText(title:unknown,markdown:unknown):boolean{return typeof title==='string'&&/[^\u0009-\u000d\u0020\u0085\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]/.test(title)&&title.length<=256&&validText(title)&&typeof markdown==='string'&&validText(markdown)&&size(markdown)<=notesLimits.bodyBytes;}
 export function noteCommand(input:unknown):NoteCommand {
  const value=workspaceObject(input,['id','noteId','expectedNotebookRevision','expectedNoteRevision','operation','title','markdown']);
- if(!revision(value.expectedNotebookRevision)||!revision(value.expectedNoteRevision)||!['create','update','append','trash','restore','purge'].includes(String(value.operation)))throw new WorkspaceError('invalid_command',422);
+ if(!revision(value.expectedNotebookRevision)||!revision(value.expectedNoteRevision)||typeof value.operation!=='string'||!['create','update','append','trash','restore','purge'].includes(value.operation))throw new WorkspaceError('invalid_command',422);
  for(const key of ['title','markdown'])if(value[key]!==undefined&&value[key]!==null&&typeof value[key]!=='string')throw new WorkspaceError('invalid_command',422);
  const result:NoteCommand={id:uuid(value.id),noteId:uuid(value.noteId),expectedNotebookRevision:Number(value.expectedNotebookRevision),expectedNoteRevision:Number(value.expectedNoteRevision),operation:value.operation as NoteOperation,title:value.title as string??null,markdown:value.markdown as string??null};
  if(result.title!==null&&!noteText(result.title,'')||result.markdown!==null&&!noteText('note',result.markdown))throw new WorkspaceError('note_content_limit',422);

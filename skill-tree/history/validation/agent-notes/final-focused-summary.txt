@@ -1,0 +1,14 @@
+# Subtest: staged release validates portable schemas and reports descriptor evidence separately from installation
+ok 29 - staged release validates portable schemas and reports descriptor evidence separately from installation
+  ---
+  duration_ms: 185.146084
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9220.861334

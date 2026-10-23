@@ -1,0 +1,8 @@
+  Habitica.WebApp (Blazor output) -> /Users/petr/Projects/habitica-tool/src/Habitica.WebApp/bin/Release/net8.0/wwwroot
+  Habitica.WebApp.Tests -> /Users/petr/Projects/habitica-tool/tests/Habitica.WebApp.Tests/bin/Release/net8.0/Habitica.WebApp.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.28

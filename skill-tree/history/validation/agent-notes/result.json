@@ -1,0 +1,53 @@
+{
+  "task_id": "T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d",
+  "status": "pass",
+  "recorded_at_utc": "2026-10-23T12:33:36.680872+00:00",
+  "checks": {
+    "workspaceBaseline": 571,
+    "authBaseline": 154,
+    "finalFocused": 29,
+    "packagePython": 7,
+    "newSkillValidator": "pass",
+    "workerFinalDryBuilds": 3,
+    "release": "0 warnings/errors",
+    "prose": "no introduced errors",
+    "metadata": "pass with inherited stale audit warning",
+    "diffCheck": "pass"
+  },
+  "source_fingerprints": {
+    "plugin/README.md": "6e4c622baafded1bef1724f0aa2efb702025ee7d3270dc882a46da82d11b48ac",
+    "plugin/plugin.json": "fe16fc43600ac08bcd736990aebade6635bd67c8c22b087f2b7321258c88ca93",
+    "plugin/skills/habitica-notes/SKILL.md": "baa9a34c586b31a8261a564f70b822c2f2a357186c67a40c6cef6248610c6de9",
+    "plugin/skills/habitica-notes/references/package-version.md": "6a702c1721ef692c533a77b7de4db50f6a1f266785ddb6d9f18e0fb96886b999",
+    "skill-tree/documents/deploy-cloudflare-pages.md": "1c2d069dd285e0d139bc803f700732828a64d539bfe6f490b015cc3a7d80dce8",
+    "skill-tree/documents/features.md": "8625b945441121308ad3d79ce875082c47be8e1ac07f33f164fa681996c62586",
+    "skill-tree/documents/technical.md": "75f5f93e6331ca128a29a38c00f977a72d769178972d749c64cab5d40dc08b8f",
+    "skill-tree/documents/testing.md": "2621460e379c7d5ce1e52bd1cb4565eef09dc1fa744fdd603e62060f99d64c5f",
+    "skill-tree/documents/ux-ui-manifest.md": "4474438830b3b461a2c8d5b12962c1534c79cd16ad5bc6467db02bec01356127",
+    "workers/chatgpt-auth/test/fixtures/oauth.mjs": "6c09e4015d33fd078e66ea6359367dff2944e030d095b2faebedd5db40c677ae",
+    "workers/chatgpt-mcp/src/index.ts": "dce21b6bf2f3567103f4a324ccb7acc6f01f76205a2b8ff1eb404d7d66b79461",
+    "workers/chatgpt-mcp/src/note-tools.ts": "f7ffb6c5a0ed3f2f8780a0ed4754314dfffef8813ed0a526b36f76741cad338a",
+    "workers/chatgpt-mcp/src/tools.ts": "695e90f6d687f32846a09836ad34cbea5b51176c08334da6f9518e11792aec27",
+    "workers/companion-workspace/migrations/0012-note-previews.sql": "4d20586b1d80f57d1ff782f8f53bcea36c14880a20ad3f79f8ae95440ba982fe",
+    "workers/companion-workspace/src/index.ts": "6f043879852af898625d837906c970834424c85e0527c75d2eadbc313e526451",
+    "workers/companion-workspace/src/note-tools-api.ts": "f3f795bf98aa82fcd26c86c8f09d8332b69dbac8e5fa0116d8bdd8a3e46298ba",
+    "workers/companion-workspace/src/notes-api.ts": "dc72f712911eff0b7df7cffe7541437c5de006aeaff256229808a36662e289c7",
+    "workers/companion-workspace/test/note-tools.test.mjs": "81e3d6105b8d8bf70f470b9f0a49a099d62da01df14398a3651d4b85d2ed890b",
+    "workers/companion-workspace/test/plugin.test.mjs": "a864f95a85d7bd13a838250ed32bde785ee16b787d508bdce0e688bed0362dfe",
+    "workers/shared/build-identity.generated.ts": "61e841281d343849ccf3cd7c3a763c194b308e13a3808f572b72095967d6f0af",
+    "workers/shared/note-tools.ts": "78aba160dc3ea12f2e4c4daa161ed4699145fe8278d4ac8fd0df60b4d425029f",
+    "workers/shared/notes.ts": "dcc33841dd904c5bde0ccd2b6d6049e06e792332e1845a014ca922a09726087b"
+  },
+  "limitations": [
+    "Local synthetic SDK, package and service-binding qualification only; no actual ChatGPT/Codex model invocation, deployment or live enrollment.",
+    "The full571-control Workspace baseline precedes the final128-row bounded expiry cleanup and expiry index; the final29-control focused suite covers the matching builds and retention boundary.",
+    "The Notes page remains the next selected delivery unit."
+  ],
+  "observations": [
+    "Five typed MCP tools and the sixth packaged skill preserve explicit user save intent, exact source, original receipts and verified revision hashes.",
+    "Synthetic SDK fixtures qualify available facts and contract behavior; ambiguous/conflicting/malicious-content cases do not establish actual model adherence.",
+    "Response-loss injection commits through the real private binding before withholding acknowledgement; original recovery preserves one append.",
+    "Purging one note clears current/history and all pending preview content copies. Scheduled cleanup handles at most128 expired records per pass.",
+    "Initial test fixture imported a Worker entrypoint through Node and retained a five-skill count; runtime scheduled validation and complete staged-skill identity comparison replace those fixture assumptions."
+  ]
+}

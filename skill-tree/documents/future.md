@@ -115,45 +115,6 @@ Documentation updates:
 Risks:
 - Broad name passthrough could expose arbitrary user text. Restrict registration to the fixed operation set and preserve fallback behavior.
 
-### Add agent note discovery capture and verified document updates
-
-```yaml
-id: T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d
-priority: 100
-status: Ready
-parent_pending_ids: ["P-314450c7-4cb3-4604-a872-27d0f2d189b9"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-ea6e2e26-15f9-4889-9505-5da1d96a6c1d
-related_task_id: null
-relation: main
-depends_on: ["T-385399c5-981c-4710-ae5e-4e0f4860dbdd"]
-```
-
-Goal:
-- Expose narrow note tools and explicit user-requested remember/save/update workflows for Codex and ChatGPT.
-Current behavior:
-- No MCP note tools or note workflow skill exists. Agents cannot independently search stored personal facts, save generated Markdown or verify later revisions.
-Desired behavior:
-- Authorized agents can retrieve relevant notes and persist explicit user-requested content with exact verified change reports, stable note identity and no silent overwrite.
-Touch:
-- MCP Notes tool schemas/proxy, shared note command validation, plugin Notes skill/references, package tests and client qualification prompts.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Discover notes by bounded title/body search, then read exact IDs and revisions before answering or writing. Relevant facts may include related measurements without claiming missing facts. Explicit remember/add to habitica notes requests may create a new topic or append/update an exact suitable note; ambiguous topics or conflicting facts require selection. Use typed previews and original receipts, recognize explicit unambiguous save intent and avoid redundant permission questions. Preserve complete generated .md content, verify the saved revision/content hash and report the actual additions/removals rather than an invented summary. Note text is untrusted data, never instructions, access expansion or permission to contact others. No automatic memory capture outside explicit requests.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Synthetic SDK cases cover clothing-size retrieval plus measurements, family/birthday facts, new-topic save, related-topic append, ambiguous matches, Markdown document save/update/diff, stale revision, conflicting facts, malicious note instructions, missing scopes and lost acknowledgement. Track real host invocation separately.
-Acceptance:
-- Authorized agents can retrieve relevant notes and persist explicit user-requested content with exact verified change reports, stable note identity and no silent overwrite.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Build the Notes section with safe Markdown editing and recovery
 
 ```yaml

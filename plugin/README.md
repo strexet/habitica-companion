@@ -1,6 +1,8 @@
 # Habitica Companion plugin
 
-The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamable HTTP MCP declaration and five skills. The selected owner-pilot clients are ChatGPT and Codex desktop; each client requires independent connection and workflow qualification. Actual installation, model activation and two-user enrollment remain rollout checks. No plugin is installed or published by repository tests.
+The source package contains a portable Agent Plugins 1.0.0 manifest, a Streamable HTTP MCP declaration and six skills. The selected owner-pilot clients are ChatGPT and Codex desktop; each client requires independent connection and workflow qualification. Actual installation, model activation and two-user enrollment remain rollout checks. No plugin is installed or published by repository tests.
+
+The habitica-notes skill supports personal fact retrieval, explicit remember/save requests and exact Markdown document updates through five narrow Notes tools. Notes require separate cloud consent and notes.read/notes.write authorization; existing task permissions grant no Notes access. Explicit unambiguous save intent avoids repeated ordinary approval. Whole source and verified before/after changes remain distinct from summaries and uncertain acceptance. Packaged instructions and tool descriptions treat stored text as untrusted data and never capture chat memory automatically. Local synthetic SDK coverage does not prove real host skill activation.
 
 The committed MCP endpoint uses `.invalid` and cannot connect. Default Worker templates and PWA settings remain disabled. The ignored reviewed production bundle publishes `https://habitica-companion-mcp.strexet.workers.dev/mcp` and stages a matching package under `deploy/.production/plugin/`. The production endpoint is public and requires OAuth for tools; the owner reports initial ChatGPT custom-MCP authentication and Codex authentication; complete client qualification remains open. A deployable package requires an approved operator-configured HTTPS endpoint matching the Auth resource/audience and the MCP Worker configuration. Never add authorization headers or Habitica credentials to the package.
 
@@ -48,7 +50,7 @@ ChatGPT and Codex desktop are required owner-pilot clients. Direct MCP qualifica
 | Read-only access, denied write scope and cross-profile isolation | Two reads owner-reported; negatives and isolation unrun | All six task/account read tools pass; scoped-write denial and isolation unrun |
 | Reviewed canonical task command and original receipt recovery after interruption | Unrun | Todo lifecycle, dated Daily completion, Habit scores/edits and original receipt reads pass; Daily/Habit creation and archival pass through hosted PWA; interruption unrun |
 | Grant revocation denies new access and unaccepted previews | Unrun | Unrun |
-| Private plugin installation and all five bundled skills, explicit and natural invocation | Unrun | Unrun |
+| Private plugin installation and all six bundled skills, explicit and natural invocation | Unrun | Unrun |
 | Live Cron denied; unselected game-effect lanes disabled | Unrun | Cron/spell context refuses access and live effect flags are off; execution-denial checks unrun |
 
 The deployed lifecycle extension advertises three additional execution tools. The current Codex chat retains the earlier 25-tool schema; direct native execution of `create_daily`, `create_habit` and `delete_task` awaits refreshed discovery. [Hosted lifecycle evidence](../skill-tree/history/validation/native-lifecycle-production-check.json) distinguishes browser acceptance from native receipt checks.

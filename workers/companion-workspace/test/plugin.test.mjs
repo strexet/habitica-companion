@@ -17,7 +17,7 @@ test('portable plugin and MCP configuration validate against pinned upstream sch
  }
  const mcp=await json('plugin/mcp.json');const server=mcp.mcpServers['habitica-companion'];
  assert.equal(server.type,'streamable-http');assert.equal(new URL(server.url).pathname,'/mcp');assert.ok(new URL(server.url).hostname.endsWith('.invalid'));assert.equal(server.headers,undefined);
- assert.deepEqual((await readdir(new URL('plugin/skills',root))).sort(),['habitica-account-review','habitica-activity-review','habitica-daily-review','habitica-diagnostics','habitica-task-management']);
+ assert.deepEqual((await readdir(new URL('plugin/skills',root))).sort(),['habitica-account-review','habitica-activity-review','habitica-daily-review','habitica-diagnostics','habitica-notes','habitica-task-management']);
 });
 async function client(t,f,p,scope){
  const response=await exchange(f,await authorization(f,p,scope));assert.equal(response.status,200);const token=(await response.json()).access_token;
@@ -70,7 +70,7 @@ test('staged release validates portable schemas and reports descriptor evidence 
  const dir=await mkdtemp(join(tmpdir(),'companion-package-schema-'));t.after(()=>rm(dir,{recursive:true,force:true}));const staged=join(dir,'plugin');
  execFileSync('python3',['deploy/package-plugin.py','build','--source','plugin','--target',staged,'--source-revision','a'.repeat(40),'--requirements','deploy/plugin-requirements.json'],{cwd:fileURLToPath(root),timeout:15000});
  const ajv=new Ajv2020();for(const name of ['plugin','mcp']){const validate=ajv.compile(await json(`tests/fixtures/plugin/${name}.schema.json`));assert.equal(validate(JSON.parse(await readFile(join(staged,name+'.json'),'utf8'))),true,JSON.stringify(validate.errors));}
- const identity=JSON.parse(await readFile(join(staged,'package-identity.json'),'utf8'));assert.equal(identity.packageVersion,(await json('plugin/plugin.json')).version);assert.match(identity.contentHash,/^[a-f0-9]{64}$/);assert.equal(Object.keys(identity.skills).length,5);
+ const identity=JSON.parse(await readFile(join(staged,'package-identity.json'),'utf8'));assert.equal(identity.packageVersion,(await json('plugin/plugin.json')).version);assert.match(identity.contentHash,/^[a-f0-9]{64}$/);assert.deepEqual(Object.keys(identity.skills).sort(),(await readdir(new URL('plugin/skills',root))).sort());
  for(const folder of Object.keys(identity.skills)){const claim=JSON.parse(await readFile(join(staged,'skills',folder,'references','package-identity.json'),'utf8'));assert.deepEqual(claim,identity);const guidance=await readFile(join(staged,'skills',folder,'references','package-version.md'),'utf8');assert.match(guidance,/host installation unverified/);}
  execFileSync('python3',['deploy/package-plugin.py','verify-archive',staged+'.zip'],{cwd:fileURLToPath(root),timeout:15000});
 });

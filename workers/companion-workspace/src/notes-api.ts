@@ -2,7 +2,7 @@ import {WorkerEntrypoint} from 'cloudflare:workers';
 import {applyNote,emptyNotes,noteCommand,noteText,notesConsentVersion,notesLimits,notesReadScope,notesWriteScope,notesWireJson,type NoteReceipt,type NotesNotebook,type NoteVersion} from '../../shared/notes';
 import {bearer,uuid,workspaceJson,workspaceObject,WorkspaceError,workspaceSessionToken,workspaceTokenHash} from '../../shared/workspace-http';
 
-interface NotesIdentity {profileId:string;connectionId:string;scopes?:string[];grantEpoch?:string}
+export interface NotesIdentity {profileId:string;connectionId:string;scopes?:string[];grantEpoch?:string}
 export interface NotesRow {profile_id:string;notebook_id:string;owner_scope:string;connection_id:string;access_epoch:string;consent_version:string;revision:number;active:number}
 const headers={'cache-control':'no-store','x-content-type-options':'nosniff'};
 const json=(value:unknown,status=200)=>Response.json(value,{status,headers});
@@ -63,11 +63,14 @@ export async function loadNotes(env:WorkspaceEnv,row:NotesRow):Promise<NotesNote
  return book;
 }
 const guard='EXISTS(SELECT 1 FROM notes_notebooks WHERE profile_id=? AND commit_tag=? AND active=1)';
-async function submit(env:WorkspaceEnv,row:NotesRow,value:unknown):Promise<Response>{
+export async function submitNote(env:WorkspaceEnv,row:NotesRow,value:unknown,preview?:{grantEpoch:string}):Promise<Response>{
  const command=noteCommand(value),before=await loadNotes(env,row),result=await applyNote(before,command,new Date().toISOString());
  const output=()=>json({notebookId:row.notebook_id,ownerScope:row.owner_scope,receipt:result.receipt,disposition:result.disposition,saved:true},result.disposition==='accepted'?201:200);
  if(result.disposition==='duplicate')return output();
- const tag=crypto.randomUUID(),writes=[env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET revision=?,commit_tag=? WHERE profile_id=? AND notebook_id=? AND connection_id=? AND access_epoch=? AND active=1 AND revision=?').bind(result.book.revision,tag,row.profile_id,row.notebook_id,row.connection_id,row.access_epoch,before.revision)];
+ const tag=crypto.randomUUID(),parameters=[result.book.revision,tag,row.profile_id,row.notebook_id,row.connection_id,row.access_epoch,before.revision];
+ const previewGuard=preview?' AND EXISTS(SELECT 1 FROM notes_preparations p WHERE p.profile_id=notes_notebooks.profile_id AND p.command_id=? AND p.notebook_id=notes_notebooks.notebook_id AND p.access_epoch=notes_notebooks.access_epoch AND p.grant_epoch=? AND p.command_json IS NOT NULL AND p.expires_at_utc>strftime(\'%Y-%m-%dT%H:%M:%fZ\',\'now\'))':'';
+ if(preview)parameters.push(command.id,preview.grantEpoch);
+ const writes=[env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET revision=?,commit_tag=? WHERE profile_id=? AND notebook_id=? AND connection_id=? AND access_epoch=? AND active=1 AND revision=?'+previewGuard).bind(...parameters)];
  const previous=before.notes.find(note=>note.id===command.noteId);
  if(command.operation==='purge'){
   writes.push(env.WORKSPACE_DB.prepare(`UPDATE personal_notes SET title=NULL,markdown=NULL,revision=?,is_purged=1,at_utc=? WHERE profile_id=? AND note_id=? AND ${guard}`).bind(result.receipt.noteRevision,new Date().toISOString(),row.profile_id,command.noteId,row.profile_id,tag));
@@ -82,6 +85,8 @@ async function submit(env:WorkspaceEnv,row:NotesRow,value:unknown):Promise<Respo
   writes.push(env.WORKSPACE_DB.prepare(`DELETE FROM personal_note_versions WHERE profile_id=? AND note_id=? AND revision<=? AND ${guard}`).bind(row.profile_id,note.id,note.current.revision-notesLimits.history-1,row.profile_id,tag));
  }
  writes.push(env.WORKSPACE_DB.prepare(`INSERT INTO personal_note_receipts(profile_id,command_id,sequence,receipt_json) SELECT profile_id,?,?,? FROM notes_notebooks WHERE profile_id=? AND commit_tag=? AND active=1`).bind(command.id,result.receipt.notebookRevision,JSON.stringify(result.receipt),row.profile_id,tag));
+ // Accepted previews retain only request/command identity; purge also erases every pending copy.
+ writes.push(env.WORKSPACE_DB.prepare(`UPDATE notes_preparations SET command_json=NULL WHERE profile_id=? AND ${command.operation==='purge'?'note_id=?':'command_id=?'} AND ${guard}`).bind(row.profile_id,command.operation==='purge'?command.noteId:command.id,row.profile_id,tag));
  const committed=await env.WORKSPACE_DB.batch(writes);
  if(!committed[0].meta.changes){
   const recovered=await applyNote(await loadNotes(env,row),command,new Date().toISOString());
@@ -93,7 +98,7 @@ async function submit(env:WorkspaceEnv,row:NotesRow,value:unknown):Promise<Respo
 export async function notesOperation(env:WorkspaceEnv,row:NotesRow,operation:string,input:unknown):Promise<Response>{
  if(operation==='command'){
   const envelope=workspaceObject(input,['expectedNotebookId','command']);if(uuid(envelope.expectedNotebookId)!==row.notebook_id)throw new WorkspaceError('notebook_changed',409);
-  return submit(env,row,envelope.command);
+  return submitNote(env,row,envelope.command);
  }
  const allowed=operation==='search'?['query','trash','offset','expectedRevision']:operation==='get'?['noteId']:operation==='receipt'?['expectedNotebookId','commandId']:[];
  const args=workspaceObject(input,allowed),book=await loadNotes(env,row),context={notebookId:row.notebook_id,ownerScope:row.owner_scope,revision:book.revision};
@@ -123,7 +128,7 @@ export async function notesRoute(request:Request,env:WorkspaceEnv):Promise<Respo
  await quota(env,{profileId:row.profile_id,connectionId:row.connection_id},path==='/notes/receipt');
  if(path==='/notes/disconnect'&&request.method==='POST'){
   workspaceObject(await workspaceJson(request),[]);
-  const result=await env.WORKSPACE_DB.batch([env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET active=0,access_epoch=? WHERE profile_id=? AND notebook_id=? AND access_epoch=? AND active=1').bind(crypto.randomUUID(),row.profile_id,row.notebook_id,row.access_epoch),env.WORKSPACE_DB.prepare('DELETE FROM notes_sessions WHERE profile_id=? AND access_epoch=?').bind(row.profile_id,row.access_epoch)]);
+  const result=await env.WORKSPACE_DB.batch([env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET active=0,access_epoch=? WHERE profile_id=? AND notebook_id=? AND access_epoch=? AND active=1').bind(crypto.randomUUID(),row.profile_id,row.notebook_id,row.access_epoch),env.WORKSPACE_DB.prepare('DELETE FROM notes_sessions WHERE profile_id=? AND access_epoch=?').bind(row.profile_id,row.access_epoch),env.WORKSPACE_DB.prepare('UPDATE notes_preparations SET command_json=NULL WHERE profile_id=? AND access_epoch=?').bind(row.profile_id,row.access_epoch)]);
   if(!result[0].meta.changes)throw new WorkspaceError('unauthorized',401);return json({disconnected:true,retained:true});
  }
  if(path==='/notes'&&request.method==='DELETE'){
@@ -136,14 +141,17 @@ export async function notesRoute(request:Request,env:WorkspaceEnv):Promise<Respo
  throw new WorkspaceError('not_found',404);
 }
 // Private MCP entry invokes the same owner operations without accepting an account selector.
-export async function agentNotes(request:Request,env:WorkspaceEnv,operation:string,args:unknown):Promise<Response>{
+export async function notesAgentContext(request:Request,env:WorkspaceEnv,write:boolean,recovery=false):Promise<{row:NotesRow;who:NotesIdentity}>{
  const who=await identify(env,'mcp',request.headers.get('authorization')??'');
- const required=operation==='command'?[notesReadScope,notesWriteScope]:[notesReadScope];
+ const required=write?[notesReadScope,notesWriteScope]:[notesReadScope];
  if(!Array.isArray(who.scopes)||!who.scopes.includes('profile:read')||required.some(scope=>!who.scopes!.includes(scope)))throw new WorkspaceError('insufficient_scope',403);
- await quota(env,who,operation==='receipt');
+ await quota(env,who,recovery);
  const row=await env.WORKSPACE_DB.prepare('SELECT * FROM notes_notebooks WHERE profile_id=? AND connection_id=? AND active=1 AND consent_version=?').bind(who.profileId,who.connectionId,notesConsentVersion).first<NotesRow>();
  if(!row)throw new WorkspaceError('notes_consent_required',403);
- return notesOperation(env,row,operation,args);
+ return {row,who};
+}
+export async function agentNotes(request:Request,env:WorkspaceEnv,operation:string,args:unknown):Promise<Response>{
+ const {row}=await notesAgentContext(request,env,operation==='command',operation==='receipt');return notesOperation(env,row,operation,args);
 }
 // Only Auth receives this binding. No public request dispatches this entrypoint.
 export class NotesLifecycleService extends WorkerEntrypoint<WorkspaceEnv>{
@@ -153,7 +161,7 @@ export class NotesLifecycleService extends WorkerEntrypoint<WorkspaceEnv>{
    const input=workspaceObject(await workspaceJson(request),['profileId','connectionId','deleteProfile']);
    if(!profileId(input.profileId)||typeof input.deleteProfile!=='boolean')throw new WorkspaceError('invalid_request',400);uuid(input.connectionId);
    if(input.deleteProfile)await this.env.WORKSPACE_DB.prepare('DELETE FROM notes_notebooks WHERE profile_id=?').bind(input.profileId).run();
-   else await this.env.WORKSPACE_DB.batch([this.env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET active=0,access_epoch=? WHERE profile_id=? AND connection_id=?').bind(crypto.randomUUID(),input.profileId,input.connectionId),this.env.WORKSPACE_DB.prepare('DELETE FROM notes_sessions WHERE profile_id=? AND connection_id=?').bind(input.profileId,input.connectionId)]);
+   else await this.env.WORKSPACE_DB.batch([this.env.WORKSPACE_DB.prepare('UPDATE notes_notebooks SET active=0,access_epoch=? WHERE profile_id=? AND connection_id=?').bind(crypto.randomUUID(),input.profileId,input.connectionId),this.env.WORKSPACE_DB.prepare('DELETE FROM notes_sessions WHERE profile_id=? AND connection_id=?').bind(input.profileId,input.connectionId),this.env.WORKSPACE_DB.prepare('UPDATE notes_preparations SET command_json=NULL WHERE profile_id=?').bind(input.profileId)]);
    return json({cleaned:true});
   }catch{return json({cleaned:false},503);}
  }
