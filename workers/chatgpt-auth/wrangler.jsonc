@@ -71,7 +71,14 @@
         "crons": [
           "17 * * * *"
         ]
-      }
+      },
+      "services": [
+        {
+          "binding": "NOTES_LIFECYCLE",
+          "service": "habitica-companion-workspace-preview",
+          "entrypoint": "NotesLifecycleService"
+        }
+      ]
     },
     "production": {
       "name": "habitica-chatgpt-auth-production",
@@ -114,7 +121,14 @@
         "crons": [
           "17 * * * *"
         ]
-      }
+      },
+      "services": [
+        {
+          "binding": "NOTES_LIFECYCLE",
+          "service": "habitica-companion-workspace-production",
+          "entrypoint": "NotesLifecycleService"
+        }
+      ]
     }
   },
   "kv_namespaces": [
@@ -143,5 +157,12 @@
     "crons": [
       "17 * * * *"
     ]
-  }
+  },
+  "services": [
+    {
+      "binding": "NOTES_LIFECYCLE",
+      "service": "habitica-companion-workspace-local",
+      "entrypoint": "NotesLifecycleService"
+    }
+  ]
 }

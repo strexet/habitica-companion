@@ -846,4 +846,4 @@ Version answers identify the evidence layer: loaded package descriptor, backend 
 
 ### Notes foundation boundaries
 
-The local Notes engine exposes explicit accepted, duplicate, stale, quota and unknown-acceptance outcomes. Future editor controls must preserve the distinction and original command ID. Trash remains recoverable until explicit purge. No Notes page or new editor interaction is delivered by the storage foundation; existing task-note controls remain separate.
+The Notes engine exposes explicit accepted, duplicate, stale, quota and unknown-acceptance outcomes. Editor controls must preserve the distinction and original command ID. Trash remains recoverable until explicit purge. The Notes service supplies no Notes page; existing task-note controls remain separate. OAuth consent identifies personal Notes reads and writes separately from task access, with explicit server-readable content and retained-version disclosure. Cloud Notes connection requires separate notes-v1 consent; ordinary task consent grants no Notes access.

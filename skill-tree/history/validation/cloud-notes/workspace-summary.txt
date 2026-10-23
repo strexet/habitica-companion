@@ -1,0 +1,14 @@
+# Subtest: reviewed adoption supports retained historical and recurring records and recovers identical approval without another remote read
+ok 457 - reviewed adoption supports retained historical and recurring records and recovers identical approval without another remote read
+  ---
+  duration_ms: 1647.177875
+  ...
+1..457
+# tests 564
+# suites 0
+# pass 564
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 221621.208166

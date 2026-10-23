@@ -68,7 +68,14 @@ export class ProjectionService extends WorkerEntrypoint<AuthEnv> {
 
 async function handlePublicRequest(request: Request, env: AuthEnv, ctx: ExecutionContext): Promise<Response> {
     resourceConfiguration(env.ENVIRONMENT, env);
-    const vault = await vaultRoute(request, env, async (id, connectionId) => { if (Boolean(env.OAUTH_ENABLED)) await cleanupProfile(env, id, connectionId); await clearProjectionContext(env,id,connectionId); await clearTagContext(env,id,connectionId); });
+    const vault = await vaultRoute(request, env, async (id, connectionId,deleteProfile) => {
+      if (Boolean(env.OAUTH_ENABLED)) await cleanupProfile(env, id, connectionId);
+      await clearProjectionContext(env,id,connectionId); await clearTagContext(env,id,connectionId);
+      if(env.NOTES_LIFECYCLE){
+        const cleanup=await env.NOTES_LIFECYCLE.fetch('https://notes.internal/cleanup',{method:'POST',body:JSON.stringify({profileId:id,connectionId,deleteProfile}),signal:AbortSignal.timeout(10000)});
+        if(!cleanup.ok||(await cleanup.json<{cleaned?:boolean}>()).cleaned!==true)throw new Error('Notes cleanup pending.');
+      }else if(env.WORKSPACE_ENABLED)throw new Error('Notes cleanup binding unavailable.');
+    });
     if (vault) return vault;
     const tagConsent=await tagConsentRoute(request,env);if(tagConsent)return tagConsent;
     const management=await managementRoute(request,env);if(management)return management;

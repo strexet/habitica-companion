@@ -1,4 +1,5 @@
 import {tagWriteScope} from '../../shared/tag-gateway';
+import {notesReadScope,notesWriteScope} from '../../shared/notes';
 import { OAuthAuthorizationServer, OAuthError, AuthorizationError, CimdFetchError, type OAuthHelpers } from "@cloudflare/workers-oauth-provider";
 import { resourceConfiguration } from "../../shared/resources";
 import { authProps, type AuthProps } from "../../shared/contracts";
@@ -6,7 +7,7 @@ import { activeProfile, boundedText, VaultError } from "./vault";
 import { attempts, consumeTicket, networkAttempts } from "./linking";
 import { tokenHash } from "./cryptography";
 
-export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "workspace.organization.write", tagWriteScope, "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute"];
+export const scopes = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "workspace.organization.write", tagWriteScope, "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute",notesReadScope,notesWriteScope];
 export function authorizationServer(env: AuthEnv) {
   const config = resourceConfiguration(env.ENVIRONMENT, env);
   return new OAuthAuthorizationServer<AuthEnv>({
@@ -64,11 +65,14 @@ async function display(oauth: OAuthHelpers, request: Parameters<OAuthHelpers["be
   const cronNotice=details.scope.includes('habitica.cron.execute')?'<p>Start New Day can apply missed-Daily damage, change buffs, reset tasks and process party quest progress. Each action requires an explicit yesterday review and preview approval. Unknown outcomes pause gameplay; no automatic retry or scheduled Cron is permitted.</p>':'';
   const spellNotice=details.scope.includes('habitica.spells.execute')?'<p>Spell access can spend mana and affect the verified current party after explicit preview approval. Habitica may post an automatic spell notice in party chat. Unknown outcomes pause new gameplay effects; no automatic replay or scheduled spell casting is permitted.</p>':'';
   const partyNotice=details.scope.some(scope=>scope.startsWith('party'))?'<p>Authenticated Companion planning is separate from legacy party sync. Shared quest selections and contributor labels are readable by opted-in current party members. Enable separate planning consent in Companion Settings before using shared records. Planning access does not start quests or cast spells.</p>':'';
+  labels[notesReadScope]='Search and read personal Markdown Notes, including retained revisions and trash';
+  labels[notesWriteScope]='Save, edit, append, trash, restore and permanently purge personal Notes after explicit requests';
+  const notesNotice=details.scope.some(scope=>[notesReadScope,notesWriteScope].includes(scope))?'<p>Personal Notes can contain sensitive personal facts and documents. Notes access requires separate Notes cloud consent in Companion. Existing task access does not grant Notes access. The server can read stored titles, Markdown and retained revisions until permanent deletion. Notes do not create Habitica tasks or game effects.</p>':'';
   const scopeInputs = details.scope.map(scope => `<label><input ${profileLabel ? 'type="checkbox" checked' : 'type="hidden"'} name="scope" value="${escape(scope)}">${profileLabel ? escape(labels[scope]??scope) : ''}</label>`).join("");
   const origin = details.clientDomain ? `Published by ${escape(details.clientDomain)}.` : "Client name is self-declared.";
   const identity = profileLabel ? `<p>Habitica account: <strong>${escape(profileLabel)}</strong></p>` : '<label>One-time Companion code <input name="code" maxlength="16" autocomplete="off" required></label><p>Generate the code from Companion Settings after explicit integration enrollment.</p>';
   const warning = details.redirectIsLoopback ? "<p>This grants access to a local app. Continue only after starting that app's connection flow.</p>" : "";
-  const content = `<p>Client: <strong>${escape(details.clientName)}</strong>. ${origin}</p><p>Redirect destination: ${escape(details.redirectHost)}.</p>${warning}${writeNotice}${organizationNotice}${tagNotice}${partyNotice}${spellNotice}${cronNotice}<form method="post"><input type="hidden" name="handle" value="${escape(consent.handle)}">${identity}${scopeInputs}<button name="decision" value="${profileLabel ? 'approve' : 'identify'}">${profileLabel ? 'Allow selected access' : 'Verify code'}</button><button name="decision" value="deny" formnovalidate>Deny</button></form><p>Habitica API tokens are never sent to ChatGPT. Credential storage belongs to the opted-in Companion integration.</p>`;
+  const content = `<p>Client: <strong>${escape(details.clientName)}</strong>. ${origin}</p><p>Redirect destination: ${escape(details.redirectHost)}.</p>${warning}${writeNotice}${organizationNotice}${tagNotice}${partyNotice}${spellNotice}${cronNotice}${notesNotice}<form method="post"><input type="hidden" name="handle" value="${escape(consent.handle)}">${identity}${scopeInputs}<button name="decision" value="${profileLabel ? 'approve' : 'identify'}">${profileLabel ? 'Allow selected access' : 'Verify code'}</button><button name="decision" value="deny" formnovalidate>Deny</button></form><p>Habitica API tokens are never sent to ChatGPT. Credential storage belongs to the opted-in Companion integration.</p>`;
   return { consent, response: new Response(page(profileLabel ? "Approve Companion access" : "Link Companion account", content), { headers: consentHeaders(consent.headers, details.redirectUri) }) };
 }
 export async function authorize(request: Request, env: AuthEnv): Promise<Response> {

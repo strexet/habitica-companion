@@ -65,6 +65,7 @@ builder.Services.AddScoped<TodoTaskDraftStore>();
 builder.Services.AddScoped<ChatGptIntegrationClient>(_ => new ChatGptIntegrationClient(
     new HttpClient { Timeout = TimeSpan.FromSeconds(15) }, builder.Configuration["ChatGptIntegration:AuthBaseUrl"], builder.Configuration.GetValue("ChatGptIntegration:Enabled", false)));
 builder.Services.AddScoped<IChatGptIntegrationClient>(sp => sp.GetRequiredService<ChatGptIntegrationClient>());
+builder.Services.AddScoped<Habitica.Application.Notes.INotesCloudClient>(sp=>new NotesCloudClient(new HttpClient{Timeout=TimeSpan.FromSeconds(20)},sp.GetRequiredService<ChatGptIntegrationClient>(),builder.Configuration["CompanionWorkspace:BaseUrl"]));
 builder.Services.AddScoped<IWorkspaceCloudClient>(sp => new WorkspaceCloudClient(new HttpClient { Timeout = TimeSpan.FromSeconds(15) }, sp.GetRequiredService<ChatGptIntegrationClient>(), builder.Configuration["CompanionWorkspace:BaseUrl"], builder.Configuration.GetValue<bool>("CompanionWorkspace:PartyPlanningEnabled"), sp.GetRequiredService<DiagnosticsLogWriter>()));
 builder.Services.AddScoped<IWorkspaceSourceRetirementApi>(sp => (IWorkspaceSourceRetirementApi)sp.GetRequiredService<IWorkspaceCloudClient>());
 builder.Services.AddScoped<WorkspaceSourceRetirementController>();

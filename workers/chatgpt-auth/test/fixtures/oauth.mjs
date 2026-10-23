@@ -20,7 +20,7 @@ async function fixture(t, options = {}) {
     { name: "auth", modules: true, script: await readFile(new URL("dist/index.js", authRoot), "utf8"),
       compatibilityDate: authConfig.compatibility_date, compatibilityFlags: ["nodejs_compat", "global_fetch_strictly_public"],
       bindings: { ...authConfig.vars, OAUTH_ENABLED: true, ENROLLMENT_ENABLED: true, WORKSPACE_ENABLED: Boolean(options.workspace), PROJECTION_ENABLED: Boolean(options.projection), PARTY_ENABLED:Boolean(options.party), SPELLS_ENABLED:Boolean(options.spells), CRON_ENABLED:Boolean(options.cron), KEY_OPERATIONS_ENABLED:Boolean(options.keyOperations), ADAPTIVE_PACING_ENABLED:Boolean(options.adaptivePacing), CREDENTIAL_CURRENT_KEY_VERSION:options.currentKeyVersion??authConfig.vars.CREDENTIAL_CURRENT_KEY_VERSION, PROFILE_ID_KEY: key(3), CREDENTIAL_KEY_V1: key(1), CREDENTIAL_KEY_V2: key(2) },
-      kvNamespaces: ["OAUTH_KV"], d1Databases: ["HABITICA_INTEGRATION_DB"],
+      kvNamespaces: ["OAUTH_KV"], d1Databases: ["HABITICA_INTEGRATION_DB"], serviceBindings: options.workspace ? {NOTES_LIFECYCLE:{name:"workspace",entrypoint:"NotesLifecycleService"}} : {},
       outboundService: async request => {
         if (request.url.startsWith("https://habitica.com/api/v3/")) {
           if (options.habitica) return options.habitica(request);
@@ -46,7 +46,7 @@ async function fixture(t, options = {}) {
   let workspace, workspaceDb, workspaceIdentity, projection;
   if (options.workspace) {
     workspace = await mf.getWorker("workspace"); workspaceDb = await mf.getD1Database("WORKSPACE_DB", "workspace");
-    for (const migration of ["0001-workspace.sql","0002-execution-ownership.sql","0003-prepared-commands.sql","0004-authenticated-party-planning.sql","0005-reviewed-spell-actions.sql","0006-reviewed-cron-actions.sql","0007-mcp-grant-epoch.sql","0008-tag-reconciliation.sql","0009-group-tag-reviews.sql","0010-source-retirement.sql"]) {
+    for (const migration of ["0001-workspace.sql","0002-execution-ownership.sql","0003-prepared-commands.sql","0004-authenticated-party-planning.sql","0005-reviewed-spell-actions.sql","0006-reviewed-cron-actions.sql","0007-mcp-grant-epoch.sql","0008-tag-reconciliation.sql","0009-group-tag-reviews.sql","0010-source-retirement.sql","0011-personal-notes.sql"]) {
       const sqlText = await readFile(new URL("../companion-workspace/migrations/"+migration, authRoot), "utf8");
       for (const sql of sqlText.split(/;\s*(?=(?:CREATE|ALTER|INSERT|UPDATE|DELETE)\b|$)/)) if (sql.trim()) await workspaceDb.prepare(sql).run();
     }

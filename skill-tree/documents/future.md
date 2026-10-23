@@ -115,45 +115,6 @@ Documentation updates:
 Risks:
 - Broad name passthrough could expose arbitrary user text. Restrict registration to the fixed operation set and preserve fallback behavior.
 
-### Add separately consented cloud note commands and private reads
-
-```yaml
-id: T-385399c5-981c-4710-ae5e-4e0f4860dbdd
-priority: 100
-status: Ready
-parent_pending_ids: ["P-314450c7-4cb3-4604-a872-27d0f2d189b9"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-385399c5-981c-4710-ae5e-4e0f4860dbdd
-related_task_id: null
-relation: main
-depends_on: ["T-6b956777-ed98-4783-a353-5e490de79444"]
-```
-
-Goal:
-- Store and query personal notes in the existing Workspace service with explicit privacy and revision-safe command ownership.
-Current behavior:
-- Workspace Worker stores canonical task JSON and task command journals behind workspace-v1 consent. Existing task-read and organization permissions do not grant access to a personal knowledge store.
-Desired behavior:
-- Only explicitly consented authorized owners/agents can read or change cloud notes; no legacy task permission or export leaks personal note contents.
-Touch:
-- Next Workspace D1 note/revision/command migrations, Notes API/service, Auth consent/scope projection, workspace lifecycle/export/deletion and cloud client adapters.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Use separate account-bound note tables and narrow notes.read/notes.write authority with a distinct Notes cloud disclosure/opt-in. Do not silently add personal documents to existing task reads, task exports, diagnostics or old grants. Persist expected-revision commands and exact original receipts atomically. Bounded title/body search and full-content reads preserve note identity; disclose truncated pages. Disconnect revokes access; deletion/purge removes note bodies/revisions from the active service under the documented data lifecycle. Export notes explicitly and include notes in approved whole-profile deletion. Retain no conversation text or credentials in note metadata/logs.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Synthetic two-profile tests cover consent absence, old grants, cross-note/account denial, revision conflict, revoked epochs, duplicate/lost acknowledgements, bounded search, trash filtering, export/purge and disconnect/profile deletion without real accounts.
-Acceptance:
-- Only explicitly consented authorized owners/agents can read or change cloud notes; no legacy task permission or export leaks personal note contents.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Add agent note discovery capture and verified document updates
 
 ```yaml

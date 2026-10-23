@@ -1,0 +1,266 @@
+{
+  "cases": [
+    {
+      "buttons": [
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 200.1015625
+        },
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Deny",
+          "width": 64.5625
+        }
+      ],
+      "notesLabels": [
+        "Identify the linked account",
+        "Search and read personal Markdown Notes, including retained revisions and trash",
+        "Save, edit, append, trash, restore and permanently purge personal Notes after explicit requests"
+      ],
+      "overflow": false,
+      "scale": 100,
+      "width": 360
+    },
+    {
+      "buttons": [
+        {
+          "height": 204.390625,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 261.796875
+        },
+        {
+          "height": 96.390625,
+          "inside": true,
+          "text": "Deny",
+          "width": 123.21875
+        }
+      ],
+      "notesLabels": [
+        "Identify the linked account",
+        "Search and read personal Markdown Notes, including retained revisions and trash",
+        "Save, edit, append, trash, restore and permanently purge personal Notes after explicit requests"
+      ],
+      "overflow": false,
+      "scale": 200,
+      "width": 360
+    },
+    {
+      "buttons": [
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 200.1015625
+        },
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Deny",
+          "width": 64.5625
+        }
+      ],
+      "notesLabels": [
+        "Identify the linked account",
+        "Search and read personal Markdown Notes, including retained revisions and trash",
+        "Save, edit, append, trash, restore and permanently purge personal Notes after explicit requests"
+      ],
+      "overflow": false,
+      "scale": 100,
+      "width": 768
+    },
+    {
+      "buttons": [
+        {
+          "height": 96.390625,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 381.125
+        },
+        {
+          "height": 96.390625,
+          "inside": true,
+          "text": "Deny",
+          "width": 123.21875
+        }
+      ],
+      "notesLabels": [
+        "Identify the linked account",
+        "Search and read personal Markdown Notes, including retained revisions and trash",
+        "Save, edit, append, trash, restore and permanently purge personal Notes after explicit requests"
+      ],
+      "overflow": false,
+      "scale": 200,
+      "width": 768
+    },
+    {
+      "buttons": [
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 200.1015625
+        },
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Deny",
+          "width": 64.5625
+        }
+      ],
+      "notesLabels": [
+        "Identify the linked account",
+        "Search and read personal Markdown Notes, including retained revisions and trash",
+        "Save, edit, append, trash, restore and permanently purge personal Notes after explicit requests"
+      ],
+      "overflow": false,
+      "scale": 100,
+      "width": 1280
+    },
+    {
+      "buttons": [
+        {
+          "height": 96.390625,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 381.125
+        },
+        {
+          "height": 96.390625,
+          "inside": true,
+          "text": "Deny",
+          "width": 123.21875
+        }
+      ],
+      "notesLabels": [
+        "Identify the linked account",
+        "Search and read personal Markdown Notes, including retained revisions and trash",
+        "Save, edit, append, trash, restore and permanently purge personal Notes after explicit requests"
+      ],
+      "overflow": false,
+      "scale": 200,
+      "width": 1280
+    },
+    {
+      "buttons": [
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 200.1015625
+        },
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Deny",
+          "width": 64.5625
+        }
+      ],
+      "overflow": false,
+      "scale": 100,
+      "width": 390
+    },
+    {
+      "buttons": [
+        {
+          "height": 150.390625,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 291.796875
+        },
+        {
+          "height": 96.390625,
+          "inside": true,
+          "text": "Deny",
+          "width": 123.21875
+        }
+      ],
+      "overflow": false,
+      "scale": 200,
+      "width": 390
+    },
+    {
+      "buttons": [
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 200.1015625
+        },
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Deny",
+          "width": 64.5625
+        }
+      ],
+      "overflow": false,
+      "scale": 100,
+      "width": 430
+    },
+    {
+      "buttons": [
+        {
+          "height": 150.390625,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 331.796875
+        },
+        {
+          "height": 96.390625,
+          "inside": true,
+          "text": "Deny",
+          "width": 123.21875
+        }
+      ],
+      "overflow": false,
+      "scale": 200,
+      "width": 430
+    },
+    {
+      "buttons": [
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 200.1015625
+        },
+        {
+          "height": 50.1875,
+          "inside": true,
+          "text": "Deny",
+          "width": 64.5625
+        }
+      ],
+      "overflow": false,
+      "scale": 100,
+      "width": 1024
+    },
+    {
+      "buttons": [
+        {
+          "height": 96.390625,
+          "inside": true,
+          "text": "Allow selected access",
+          "width": 381.125
+        },
+        {
+          "height": 96.390625,
+          "inside": true,
+          "text": "Deny",
+          "width": 123.21875
+        }
+      ],
+      "overflow": false,
+      "scale": 200,
+      "width": 1024
+    }
+  ],
+  "focus": {
+    "outline": "rgb(0, 95, 204) auto 1px",
+    "text": "Deny"
+  }
+}

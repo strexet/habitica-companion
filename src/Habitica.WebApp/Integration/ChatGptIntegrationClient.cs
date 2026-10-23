@@ -30,6 +30,8 @@ public sealed partial class ChatGptIntegrationClient : IChatGptIntegrationClient
     public bool IsAvailable => _baseUri is not null && _linkingEnabled;
     internal bool IsVaultAvailable => _baseUri is not null;
     public bool HasConnection => _profileId is not null && _managementToken is not null;
+    internal string? ProfileId=>_profileId;
+    internal int SessionVersion=>_sessionVersion;
 
     public async Task<IntegrationLinkResult> EnrollAsync(HabiticaCredentials credentials, CancellationToken cancellationToken)
     {
@@ -168,7 +170,7 @@ public sealed partial class ChatGptIntegrationClient : IChatGptIntegrationClient
         }
     }
 
-    private static readonly string[] KnownPermissions = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute", "workspace.organization.write", "habitica.tags.write"];
+    private static readonly string[] KnownPermissions = ["profile:read", "account:read", "tasks:read", "habitica.tasks.write", "party:read", "party.planning.write", "habitica.spells.execute", "habitica.cron.execute", "workspace.organization.write", "habitica.tags.write","notes.read","notes.write"];
     private sealed record StatusPayload(string? DisplayName, string[]? Permissions, string? CredentialStatus, DateTimeOffset? LastVerifiedAtUtc, DateTimeOffset? LastUsedAtUtc, bool PermissionsTruncated);
     private sealed record ManagementPayload(bool Rotated, string? ManagementToken, bool Revoked, bool PendingCleanup);
 
@@ -186,6 +188,13 @@ public sealed partial class ChatGptIntegrationClient : IChatGptIntegrationClient
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _managementToken);
         request.Content = JsonContent.Create(new { consentVersion = "workspace-v1" });
         return request;
+    }
+
+    internal HttpRequestMessage NotesHandshake(Uri uri)
+    {
+        if(!HasConnection)throw new InvalidOperationException("Credential verification is required.");
+        var request=new HttpRequestMessage(HttpMethod.Post,uri);request.Headers.Authorization=new AuthenticationHeaderValue("Bearer",_managementToken);
+        request.Content=JsonContent.Create(new{consentVersion="notes-v1"});return request;
     }
 
     private HttpRequestMessage ManagementRequest(HttpMethod method, string suffix)
