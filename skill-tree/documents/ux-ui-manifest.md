@@ -819,3 +819,7 @@ Unknown dispatch preserves the original command across navigation, disables anot
 ## Bulk-spell result presentation
 
 Spells renders the last spell operation in a persistent status surface above the cards. The result shows acknowledged/requested counts, readable failed stage, independent gear cleanup and snapshot refresh state, uncertainty and observed cooldown. An unknown dispatched cast explicitly prohibits replaying the batch. Completed casts with failed followups use a warning, preserving cast acknowledgement. The result surface supplies no retry control. Active progress names preparation, equipment, casting and refresh stages; cancellation remains on the active card. Shared theme surfaces and typography apply to the outcome, including enlarged text and long operation IDs. Private sync warnings cannot replace the displayed cast counts.
+
+### Spell recovery surface
+
+The Spells equipment recovery section exposes persisted work through an authenticated check. Exact original/temporary slots and unresolved status remain visible together. Restore original gear and Keep current gear have separate meanings; later selections require explicit supersession. Controls disable during active work. Recovery never offers a spell replay. Long equipment identifiers wrap within existing theme-aware card surfaces.

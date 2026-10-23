@@ -22,7 +22,7 @@ using Habitica.WebApp.Theme;
 
 namespace Habitica.WebApp.State;
 
-public sealed class AppSessionController : IAppSessionController
+public sealed partial class AppSessionController : IAppSessionController
 {
     private readonly object _refreshViewGate = new();
     private long _refreshViewGeneration;
@@ -88,8 +88,10 @@ public sealed class AppSessionController : IAppSessionController
         IChatGptIntegrationClient? integrationClient = null,
         IWorkspaceCloudClient? workspaceClient = null,
         IndexedDbWorkspaceDatabase? workspaceDatabase = null,
-        ColorSchemeService? colorSchemeService = null)
+        ColorSchemeService? colorSchemeService = null,
+        SpellGearRecoveryStore? spellGearRecoveryStore = null)
     {
+        _spellGearRecoveryStore = spellGearRecoveryStore;
         _colorSchemeService = colorSchemeService;
         _integrationClient = integrationClient;
         _workspaceClient = workspaceClient;
@@ -219,6 +221,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public async Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default)
     {
+        _activeSpellCastCancellation?.Cancel();
         if (_currentCredentials?.UserId != request.UserId) { _integrationClient?.ForgetSession(); _workspaceClient?.ForgetSession(); }
         await SignInCoreAsync(request, cancellationToken);
     }
@@ -1624,7 +1627,8 @@ public sealed class AppSessionController : IAppSessionController
 
         _activeSpellCastCancellation?.Dispose();
         _activeSpellCastCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        var activeToken = _activeSpellCastCancellation.Token;
+        var castCancellation = _activeSpellCastCancellation;
+        var activeToken = castCancellation.Token;
         SetState(State with
         {
             ActiveSpellCastProgress = new SpellCastProgress(request.SpellId, 0, count, "Preparing..."),
@@ -1638,6 +1642,7 @@ public sealed class AppSessionController : IAppSessionController
         var currentBattleGear=originalBattleGear;var gearChanged=false;
         var cleanup=SpellFollowupStatus.NotNeeded;var refresh=SpellFollowupStatus.NotNeeded;var partyRefreshFailed=false;
         var owner=State.UserId;
+        GearRecoveryContext? recovery = null;
         void Progress(SpellCastStage value,string label)
         {
             stage=value;SetState(State with {ActiveSpellCastProgress=new(request.SpellId,completed,count,label,value)});
@@ -1662,14 +1667,23 @@ public sealed class AppSessionController : IAppSessionController
             try
             {
                 await Task.Delay(SpellPreparationDelay,_timeProvider,activeToken);activeToken.ThrowIfCancellationRequested();
+                if (autoEquipSlots is not null && _spellGearRecoveryStore is not null)
+                {
+                    recovery = await BeginSpellGearRecoveryAsync(credentials, operationId, autoEquipSlots, activeToken);
+                    originalBattleGear = recovery.Original;
+                    currentBattleGear = originalBattleGear;
+                }
                 if(autoEquipSlots is not null)
                 {
                     Progress(SpellCastStage.AutoEquip,"Auto-equipping spell gear");
-                    await EquipSlotsWithoutRefreshAsync(credentials,EquipmentSetKind.Battle,currentBattleGear,autoEquipSlots,$"spell:{request.SpellId}:auto-equip","Auto-equipping spell gear",activeToken,Equipped,()=>equipmentInFlight=true);
+                    await EquipSlotsWithoutRefreshAsync(credentials,EquipmentSetKind.Battle,currentBattleGear,autoEquipSlots,$"spell:{request.SpellId}:auto-equip","Auto-equipping spell gear",activeToken,Equipped,()=>equipmentInFlight=true,
+                        recovery is null ? null : (slot,key)=>recovery.BeforeAsync(slot,key,activeToken),
+                        recovery is null ? null : (slot,key)=>recovery.AfterAsync(slot,key,activeToken));
                 }
                 for(var index=0;index<count;index++)
                 {
                     Progress(SpellCastStage.Casting,$"Casting {completed} of {count}");activeToken.ThrowIfCancellationRequested();castInFlight=true;
+                    if (!IsCurrentCloudAccount(credentials)) throw new OperationCanceledException(activeToken);
                     await _habiticaSyncClient.CastSpellAsync(credentials,request.SpellId,request.TargetTaskId,activeToken);
                     castInFlight=false;completed++;requestCount++;
                     Progress(SpellCastStage.Casting,$"Casting {completed} of {count}");await DelayBetweenHabiticaRequestsAsync(activeToken);
@@ -1678,8 +1692,8 @@ public sealed class AppSessionController : IAppSessionController
             catch(Exception error){Failure(error);}
 
             // Cleanup is a distinct bounded operation. An uncertain cast/equip or a failed restore is never replayed.
-            using var followupDeadline=cancelled?new CancellationTokenSource(TimeSpan.FromSeconds(20)):CancellationTokenSource.CreateLinkedTokenSource(activeToken);
-            if(!cancelled)followupDeadline.CancelAfter(TimeSpan.FromSeconds(20));
+            cancelled |= activeToken.IsCancellationRequested;
+            using var followupDeadline=new CancellationTokenSource(TimeSpan.FromSeconds(20));
             var followupToken=followupDeadline.Token;
             if(gearChanged)
             {
@@ -1689,7 +1703,9 @@ public sealed class AppSessionController : IAppSessionController
                     Progress(SpellCastStage.RestoreGear,"Restoring battle gear");cleanup=SpellFollowupStatus.Pending;
                     try
                     {
-                        await EquipSlotsWithoutRefreshAsync(credentials,EquipmentSetKind.Battle,currentBattleGear,originalBattleGear,$"spell:{request.SpellId}:restore-gear","Restoring battle gear",followupToken,Equipped,()=>equipmentInFlight=true);
+                        await EquipSlotsWithoutRefreshAsync(credentials,EquipmentSetKind.Battle,currentBattleGear,originalBattleGear,$"spell:{request.SpellId}:restore-gear","Restoring battle gear",followupToken,Equipped,()=>equipmentInFlight=true,
+                            recovery is null ? null : (slot,key)=>recovery.BeforeAsync(slot,key,followupToken),
+                            recovery is null ? null : (slot,key)=>recovery.AfterAsync(slot,key,followupToken));
                         cleanup=SpellFollowupStatus.Completed;
                     }
                     catch(Exception error){Failure(error);cleanup=equipmentUnknown?SpellFollowupStatus.Unknown:SpellFollowupStatus.Failed;}
@@ -1697,7 +1713,7 @@ public sealed class AppSessionController : IAppSessionController
             }
             else if(equipmentUnknown)cleanup=SpellFollowupStatus.Unknown;
 
-            if(requestCount>0||castUnknown||equipmentUnknown)
+            if(IsCurrentCloudAccount(credentials) && (requestCount>0||castUnknown||equipmentUnknown))
             {
                 refresh=SpellFollowupStatus.Pending;
                 try
@@ -1725,7 +1741,7 @@ public sealed class AppSessionController : IAppSessionController
                 catch(Exception error){Failure(error);refresh=SpellFollowupStatus.Failed;}
             }
             Progress(SpellCastStage.LoadCache,"Loading saved snapshots");
-            try{await LoadCachedStateAsync(followupDeadline.Token);}catch(Exception error){Failure(error);refresh=SpellFollowupStatus.Failed;}
+            try{if(IsCurrentCloudAccount(credentials))await LoadCachedStateAsync(followupDeadline.Token);}catch(Exception error){Failure(error);refresh=SpellFollowupStatus.Failed;}
             var result=new SpellCastOutcome(operationId,request.SpellId,count,completed,failedStage??SpellCastStage.Completed,castUnknown,equipmentUnknown,cancelled,cleanup,refresh,httpStatus,retryAt);
             var message=result.Summary+(partyRefreshFailed?" Party refresh needs retry; completed casts remain acknowledged.":"");
             await _diagnosticsLogWriter.WriteAsync(DiagnosticsFeatureArea.Skills,"spell-cast",result.AllCastsAcknowledged?DiagnosticsSeverity.Success:cancelled&&!castUnknown?DiagnosticsSeverity.Info:DiagnosticsSeverity.Warning,DiagnosticsMode.LiveMutation,message,
@@ -1745,8 +1761,10 @@ public sealed class AppSessionController : IAppSessionController
         }
         finally
         {
+            if (recovery is not null) await recovery.DisposeAsync();
             if(State.UserId==owner)SetState(State with {ActiveSpellCastProgress=null,ActiveEquipmentProgress=null,IsBusy=false});
-            _activeSpellCastCancellation?.Dispose();_activeSpellCastCancellation=null;
+            castCancellation.Dispose();
+            if (ReferenceEquals(_activeSpellCastCancellation, castCancellation)) _activeSpellCastCancellation=null;
         }
     }
 
@@ -2704,6 +2722,7 @@ public sealed class AppSessionController : IAppSessionController
 
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
+        _activeSpellCastCancellation?.Cancel();
         BeginRefreshView();
         _integrationClient?.ForgetSession();
         _workspaceClient?.ForgetSession();
@@ -4945,7 +4964,9 @@ public sealed class AppSessionController : IAppSessionController
         string label,
         CancellationToken cancellationToken,
         Action<string, string?>? gearChanged = null,
-        Action? dispatching = null)
+        Action? dispatching = null,
+        Func<string, string?, Task>? beforeEquipment = null,
+        Func<string, string?, Task>? afterEquipment = null)
     {
         var changedSlots = EnumerateSlots(NormalizePresetSlots(kind, desiredSlots))
             .Where(slot => !string.Equals(NormalizeGearKey(GetSlotValue(currentSlots, slot.SlotTitle)), slot.Key, StringComparison.Ordinal))
@@ -4973,9 +4994,11 @@ public sealed class AppSessionController : IAppSessionController
             }
 
             cancellationToken.ThrowIfCancellationRequested();
+            if (beforeEquipment is not null) await beforeEquipment(slot.SlotTitle, slot.Key);
             dispatching?.Invoke();
             await _habiticaSyncClient.EquipGearAsync(credentials, kind, keyToToggle, cancellationToken);
             gearChanged?.Invoke(slot.SlotTitle, slot.Key);
+            if (afterEquipment is not null) await afterEquipment(slot.SlotTitle, slot.Key);
             completed++;
             await DelayBetweenHabiticaRequestsAsync(cancellationToken);
             SetState(State with

@@ -2363,10 +2363,11 @@ public sealed partial class AppSessionControllerTests
         bool ownerIsolatedTesting = false,
         ColorSchemeService? colorSchemeService = null,
         LocalUserDataPortabilityService? portability = null,
-        TimeProvider? timeProvider = null)
+        TimeProvider? timeProvider = null,
+        SpellGearRecoveryStore? spellGearRecoveryStore = null)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
-        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting, colorSchemeService, portability, timeProvider);
+        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting, colorSchemeService, portability, timeProvider, spellGearRecoveryStore);
     }
 
     private static AppSessionController CreateController(
@@ -2379,7 +2380,8 @@ public sealed partial class AppSessionControllerTests
         bool ownerIsolatedTesting = false,
         ColorSchemeService? colorSchemeService = null,
         LocalUserDataPortabilityService? portability = null,
-        TimeProvider? timeProvider = null)
+        TimeProvider? timeProvider = null,
+        SpellGearRecoveryStore? spellGearRecoveryStore = null)
     {
         var credentialStore = new FakeCredentialStore();
         var storage = keyValueStorage ?? new FakeKeyValueStorage();
@@ -2418,7 +2420,8 @@ public sealed partial class AppSessionControllerTests
             featureOptions: new AppFeatureOptions { HabiticaRequestDelayMilliseconds = 0, OwnerIsolatedTestingEnabled = ownerIsolatedTesting },
             timeProvider: timeProvider ?? TimeProvider.System,
             integrationClient: integrationClient,
-            colorSchemeService: colorSchemeService);
+            colorSchemeService: colorSchemeService,
+            spellGearRecoveryStore: spellGearRecoveryStore);
     }
 
     private static async Task WaitForConditionAsync(Func<bool> condition)
@@ -2973,6 +2976,7 @@ public sealed partial class AppSessionControllerTests
         public Func<int,CancellationToken,Task>? CastAction {get;set;}
         public Func<int,CancellationToken,Task>? EquipAction {get;set;}
         public Exception? UserReadFailure {get;set;}
+        public UserSnapshot? UserReadOverride {get;set;}
         public List<(string SpellId, string? TargetTaskId)> CastCalls { get; } = new();
 
         public List<(EquipmentSetKind Kind, string Key)> EquipCalls { get; } = new();
@@ -3187,7 +3191,7 @@ public sealed partial class AppSessionControllerTests
         {
             if(UserReadFailure is {} failure)throw failure;
             GetUserSnapshotCalls++;
-            return Task.FromResult(_userSnapshot);
+            return Task.FromResult(UserReadOverride ?? _userSnapshot);
         }
     }
 

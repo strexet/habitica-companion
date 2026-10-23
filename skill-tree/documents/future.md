@@ -115,45 +115,6 @@ Documentation updates:
 Risks:
 - Broad name passthrough could expose arbitrary user text. Restrict registration to the fixed operation set and preserve fallback behavior.
 
-### Recover original spell gear after cancellation and interrupted cleanup
-
-```yaml
-id: T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0
-priority: 101
-status: Ready
-parent_pending_ids: ["P-f6c9c39b-7d9a-476c-b7e1-f2243beee5d0"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0
-related_task_id: null
-relation: main
-depends_on: ["T-b89fac23-3ac2-4c64-8560-be7a5d796a81"]
-```
-
-Goal:
-- Persist and expose bounded account-bound gear recovery independently of spell completion.
-Current behavior:
-- The cancellation catch refreshes state without restoring changed gear. The general-error path swallows restoration exceptions; restoration uses CancellationToken.None without a dedicated bounded recovery lifecycle.
-Desired behavior:
-- Cancellation and every failure stage either verify original gear restoration or retain visible exact recovery work; no cast is replayed and no restoration failure is hidden.
-Touch:
-- AppSessionController spell/equipment orchestration, scoped recovery storage/model, SpellsPage recovery controls and safe diagnostics.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Capture original verified slots and per-slot acknowledged changes before auto-equip. Cleanup must survive user cast cancellation with an independent deadline, account binding and cooldown-aware waits. Re-read uncertain slots before explicit recovery; never overwrite later user equipment changes. On reload show retained recovery only after account verification. Surface failed/unknown slots and a manual recovery path instead of swallowing errors. Completing cleanup never resumes casts, changes party membership or grants background execution. Clear recovery only after verification of restored or explicitly superseded slots.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Test partial auto-equip, cast cancellation, interrupted restore, quota during cleanup, lost equip response, page reload, new account, user-selected later gear, deadline expiry and duplicate recovery requests with exact slot diagnostics.
-Acceptance:
-- Cancellation and every failure stage either verify original gear restoration or retain visible exact recovery work; no cast is replayed and no restoration failure is hidden.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Add stable unique project aliases to canonical commands and reads
 
 ```yaml

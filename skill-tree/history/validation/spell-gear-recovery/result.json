@@ -1,0 +1,72 @@
+{
+  "task_id": "T-e7d542d4-4a47-4155-afc9-ab0dfb457fa0",
+  "qualification": "Local synthetic only",
+  "source_fingerprints": {
+    "skill-tree/documents/features.md": "c754053ad6514ba76ce4f54f2df5bc0e08c8fc9d15e73b05bb1839732d05722c",
+    "skill-tree/documents/habitica-api.md": "7db2df861815991ec19c61001867b4421a5f877df4988b664429cf0e6024d902",
+    "skill-tree/documents/technical.md": "2fd9de123a28fee903e4d2c3d236567cba63d982cc52049dc35afacee10366d9",
+    "skill-tree/documents/testing.md": "6cc5b4b59a8be6d5be636328dde8f5a8c3be639c4e836fbad39da817e8e438d8",
+    "skill-tree/documents/ux-ui-manifest.md": "5aab87b3a89c926ebcbe1c46508fc40226c7dd7db1bc50aa2b2bd7967a033467",
+    "src/Habitica.Storage/SpellGearRecoveryStore.cs": "00a108998fea952648b4670ce55a559e1478f75f457ae9d4cd05946fecf1b96b",
+    "src/Habitica.WebApp/Pages/SpellsPage.razor": "648e6e4c61eb3169fa4a36b85c1a5f66bcf09819d961e8f1e95542882be7b8fe",
+    "src/Habitica.WebApp/Program.cs": "fd823153a7c64010969406b8d8cd4a1c1babb0064e3641e6f921cd72c35fafe2",
+    "src/Habitica.WebApp/State/AppSessionController.GearRecovery.cs": "19c31dd71da07bbcbda83f9bd78a4990b91b357728e76765eecc6e025ced9b4e",
+    "src/Habitica.WebApp/State/AppSessionController.cs": "8a85188b1c9951b462d2bd1e934a91581d89f73c3e4cd52554765041ae7df6ce",
+    "src/Habitica.WebApp/State/GearRecoveryReview.cs": "d9152b4efb9bd40e91ea8bacf605107e0e0e1d22142c5330b4df3bbfa25f9758",
+    "src/Habitica.WebApp/State/IAppSessionController.cs": "fbdf6fc8022639b51efb5f47ef43b248ed9dfdfd9fe18fcc86112fdc832caa42",
+    "src/Habitica.WebApp/wwwroot/js/storage/indexedDbStorage.js": "8bdcba363ac340cd38cf5925a7e760bb8a2f2db745b998ac64a9b468db000a2f",
+    "tests/Functions/gear-recovery-storage.test.mjs": "e73fe467c489315e46f5b6409ee666b6a86fc30e8d6e7f6198bb707fa8c7114c",
+    "tests/Habitica.Storage.Tests/SpellGearRecoveryStoreTests.cs": "28a5fae0fb51849db86431e94cb77fad20b074c1c7aa9e9d6182d7965f35eea1",
+    "tests/Habitica.WebApp.Tests/FakeAppSessionController.cs": "ca19dcf0ab1aa866fce36f3ed23f721736278a9ec7fc0874ed868204c4e3a7a7",
+    "tests/Habitica.WebApp.Tests/Pages/SpellsPageTests.cs": "d9b28aa2cdede050a6905bc9a518884a6da03efe6e087b022446236085c75030",
+    "tests/Habitica.WebApp.Tests/State/AppSessionController.GearRecoveryTests.cs": "e0b6ea6e5c3c237ba1379c76eaeb2efd1bf4e3ac1245119a72eaed7f87e2af90",
+    "tests/Habitica.WebApp.Tests/State/AppSessionControllerTests.cs": "06d814f48d01fa4ff45d3107dd001eb300191130925b74b8dafeba34f770f200",
+    "tests/browser/gear-recovery-storage.html": "8234debbfb1fad5cdb150b50d6bedfc7a0b949799271b908c290a32c9bfcef39"
+  },
+  "checks": {
+    "solution": {
+      "passed": 1098
+    },
+    "targeted_deadline_duplicate": {
+      "passed": 2
+    },
+    "rendered": {
+      "cases": 216,
+      "errorKinds": [],
+      "errors": 0,
+      "harnessErrors": 0,
+      "unqualifiedSurfaces": 0
+    },
+    "seeded_detectors": {
+      "cases": 2,
+      "errorKinds": [
+        "overflow",
+        "overlap",
+        "contrast"
+      ],
+      "errors": 3,
+      "harnessErrors": 0,
+      "unqualifiedSurfaces": 0
+    },
+    "real_browser_storage": [
+      "initial saved",
+      "CAS exclusion",
+      "account scope exclusion",
+      "immutable original",
+      "reload persistence",
+      "competing tab busy",
+      "closed holder releases lease",
+      "explicit release"
+    ],
+    "release": "zero warnings/errors",
+    "final_web": {
+      "passed": 680
+    }
+  },
+  "limitations": [
+    "No live account, deployment, party or remote operations.",
+    "Native equipment has no conditional write; an external client can race final observation.",
+    "Physical devices and assistive technologies remain unqualified.",
+    "Web Locks unsupported environments refuse mutation; cross-device locks are not supplied."
+  ]
+}

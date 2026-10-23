@@ -27,6 +27,9 @@ public interface IAppSessionController
     Task<IntegrationLinkResult> RevalidateChatGptAsync(CancellationToken cancellationToken = default);
     Task<IntegrationLinkResult> DisconnectChatGptAsync(bool deleteProfile, CancellationToken cancellationToken = default);
 
+    Task<GearRecoveryReview> ReviewSpellGearRecoveryAsync(bool restore = false, bool keepCurrent = false, Guid? expectedOperationId = null, CancellationToken token = default)
+        => Task.FromResult(new GearRecoveryReview(null, "Equipment recovery unavailable."));
+
     Task InitializeAsync(CancellationToken cancellationToken = default);
 
     Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default);

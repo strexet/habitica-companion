@@ -1392,3 +1392,7 @@ A final GET precedes reservation of one DELETE. Each upstream operation has an i
 ## Foreground cast acknowledgement semantics
 
 Foreground cast and equipment operations require success true with object data. The [Habitica spell implementation](https://raw.githubusercontent.com/HabitRPG/habitica/develop/website/server/libs/spells.js) returns a result object after user/task or member saves; a server error can follow partial effects. Transport loss, timeout, malformed success and nondefinitive server errors remain unknown and never trigger automatic replay. Definitive HTTP refusal status remains separate from request pacing; subsequent explicit calls obey the existing shared cooldown. Cancellation while queued sends no mutation, while cancelled dispatched acknowledgement cannot prove absence of effects. Refreshing user/task state never reconstructs an original missing cast acknowledgement.
+
+### Foreground equipment recovery
+
+Equipment recovery uses the existing paced own-account reads and equipped-gear endpoint. A fresh read verifies original gear before temporary equipment; every dispatch records an in-flight slot and every acknowledgement requires an observed expected selection. Missing acknowledgements remain unresolved. Explicit recovery reads again and preserves equipment differing from both recorded selections. Native equipment has no conditional-write token, so external-client changes can race the final read and toggle. Recovery supplies neither cast replay nor background execution.

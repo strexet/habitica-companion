@@ -12,6 +12,13 @@ namespace Habitica.WebApp.Tests;
 
 internal sealed class FakeAppSessionController : IAppSessionController
 {
+    public GearRecoveryReview RecoveryReview { get; set; } = new(null, "No unresolved equipment recovery.");
+    public List<(bool Restore, bool KeepCurrent, Guid? Operation)> RecoveryCalls { get; } = new();
+    public Task<GearRecoveryReview> ReviewSpellGearRecoveryAsync(bool restore = false, bool keepCurrent = false, Guid? expectedOperationId = null, CancellationToken token = default)
+    {
+        RecoveryCalls.Add((restore, keepCurrent, expectedOperationId));
+        return Task.FromResult(RecoveryReview);
+    }
     public int WorkspaceConnectCalls { get; private set; }
     public Func<Task<Habitica.Application.Workspace.WorkspaceActionResult>>? WorkspaceConnectAction { get; set; }
     public Task<Habitica.Application.Workspace.WorkspaceActionResult> ConnectWorkspaceAsync(bool consentAcknowledged, CancellationToken cancellationToken = default) { WorkspaceConnectCalls++; return WorkspaceConnectAction?.Invoke() ?? Task.FromResult(new Habitica.Application.Workspace.WorkspaceActionResult(false, "Unavailable")); }

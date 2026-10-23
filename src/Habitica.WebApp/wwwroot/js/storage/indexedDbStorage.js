@@ -121,3 +121,71 @@ export async function listWorkspaces(scope) {
     const rows = await database.table('workspaces').where('scope').equals(scope).toArray();
     return rows.map(row => row.id);
 }
+
+// Recovery records stay outside portable settings and workspace exports.
+export async function getGearRecovery(scope) {
+  workspaceScope(scope);
+  return getJson("spell-gear-recovery:" + scope);
+}
+export async function commitGearRecovery(scope, expectedRevision, json) {
+  workspaceScope(scope);
+  if (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0 || typeof json !== "string" || json.length > 16384)
+    throw new Error("Invalid gear recovery commit.");
+  const next = JSON.parse(json);
+  validateGearRecovery(next);
+  if (next.revision !== expectedRevision + 1) throw new Error("Invalid gear recovery revision.");
+  const key = "spell-gear-recovery:" + scope;
+  return database.transaction("rw", kv, async () => {
+    const row = await kv.get(key);
+    const current = row ? JSON.parse(row.jsonText) : null;
+    if ((current?.revision ?? 0) !== expectedRevision) return false;
+    if (current) {
+      validateGearRecovery(current);
+      const terminal = current.slots.every(slot => slot.status === 3 || slot.status === 4);
+      if (next.operationId !== current.operationId) {
+        if (!terminal || next.slots.some(slot => slot.status !== 0)) throw new Error("Unresolved gear recovery.");
+      } else {
+        if (next.slots.length !== current.slots.length) throw new Error("Recovery slots are immutable.");
+        for (let i = 0; i < current.slots.length; i++) {
+          const before = current.slots[i], after = next.slots[i];
+          if (before.slot !== after.slot || before.originalKey !== after.originalKey || before.temporaryKey !== after.temporaryKey
+              || (before.status === 3 || before.status === 4) && after.status !== before.status)
+            throw new Error("Recovery identity is immutable.");
+          // A dispatched toggle cannot return to a sendable state without a fresh observation.
+          // Reconciliation terminates a slot or records an acknowledged temporary selection.
+          const allowed = [[0,1,3,4], [1,2,3,4], [1,2,3,4], [3], [4]][before.status];
+          if (!allowed.includes(after.status)) throw new Error("Invalid gear recovery transition.");
+        }
+      }
+    } else if (next.slots.some(slot => slot.status !== 0)) throw new Error("Recovery must precede dispatch.");
+    await kv.put({ key, jsonText: json, updatedAtUtc: new Date().toISOString() });
+    return true;
+  });
+}
+function validateGearRecovery(value) {
+  workspaceId(value?.operationId);
+  if (value.operationId === "00000000-0000-0000-0000-000000000000") throw new Error("Invalid gear recovery identity.");
+  const names = new Set(["Head", "Head Accessory", "Eyewear", "Armor", "Body", "Weapon", "Shield", "Back"]);
+  if (!Number.isSafeInteger(value.revision) || value.revision < 1 || !Array.isArray(value.slots)
+      || value.slots.length < 1 || value.slots.length > 8 || new Set(value.slots.map(slot => slot?.slot)).size !== value.slots.length
+      || value.slots.some(slot => !slot || !names.has(slot.slot) || typeof slot.originalKey !== "string" || typeof slot.temporaryKey !== "string"
+          || !/^[A-Za-z0-9_]{0,128}$/.test(slot.originalKey) || !/^[A-Za-z0-9_]{0,128}$/.test(slot.temporaryKey)
+          || slot.originalKey === slot.temporaryKey || !Number.isInteger(slot.status) || slot.status < 0 || slot.status > 4))
+    throw new Error("Invalid gear recovery journal.");
+}
+
+const recoveryLeases = new Map();
+export async function acquireGearRecovery(scope, lease) {
+  workspaceScope(scope); workspaceId(lease);
+  if (!globalThis.navigator?.locks) throw new Error("Exclusive recovery locks unavailable.");
+  return new Promise((resolve, reject) => {
+    navigator.locks.request("habitica-gear:" + scope, { ifAvailable: true }, async lock => {
+      if (!lock) { resolve(false); return; }
+      await new Promise(release => { recoveryLeases.set(lease, release); resolve(true); });
+    }).catch(reject);
+  });
+}
+export function releaseGearRecovery(lease) {
+  const release = recoveryLeases.get(lease);
+  if (release) { recoveryLeases.delete(lease); release(); }
+}
