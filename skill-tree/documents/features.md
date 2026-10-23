@@ -3358,3 +3358,9 @@ Authenticated get_connector_compatibility reads explicit Auth, Workspace and MCP
 ### Traceable plugin package preparation
 
 Local package preparation preserves the source semantic version and adds exact file/skill hashes, a labelled operator-supplied source revision and compatibility requirements. Generated identity copies accompany every skill. Deterministic archives have separate SHA-256 receipts; source files, installed packages and production deployments remain untouched. A loaded descriptor supplies package evidence without proving host installation or model adherence.
+
+### Local personal Notes foundation
+
+Personal Markdown notes have independent IDs, revisions, exact source text and recoverable trash. Explicit create, partial update, append, trash, restore and purge commands use expected notebook/note revisions and original command receipts. Purge removes every retained content version while retaining identity/receipt hashes. Notes never create Habitica tasks or rewards.
+
+The local Notes service supplies account-bound export/import with conflict refusal and full Markdown preservation. Drafts remain volatile and clear on account switch or sign-out. Notes pages, agent tools and separately consented cloud storage remain subsequent work.

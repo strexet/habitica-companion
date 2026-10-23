@@ -115,45 +115,6 @@ Documentation updates:
 Risks:
 - Broad name passthrough could expose arbitrary user text. Restrict registration to the fixed operation set and preserve fallback behavior.
 
-### Add independent account-bound Markdown note records and local storage
-
-```yaml
-id: T-6b956777-ed98-4783-a353-5e490de79444
-priority: 100
-status: Ready
-parent_pending_ids: ["P-314450c7-4cb3-4604-a872-27d0f2d189b9"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-6b956777-ed98-4783-a353-5e490de79444
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Define independent personal Markdown notes with stable identity, revisioned content and local portability.
-Current behavior:
-- Task notes are fields of CompanionTask. No independent note document, revisioned note history or account-bound notes store exists; the limited safe renderer does not supply a notes model.
-Desired behavior:
-- Local notes can be stored, updated and recovered independently of tasks while preserving exact accepted content and owner identity.
-Touch:
-- New Notes domain/application records and commands, existing IndexedDB storage bridge and next local-store upgrade, account lifecycle clearing, neutral note fixtures and note export/import services.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Keep notes separate from reward-bearing Todo/task projections and the task document schema. Store title, Markdown source, exact note ID/revision, created/updated timestamps and bounded causal revisions; preserve Unicode and source text. Define explicit create/update/append/trash/restore/purge intent and expected revision. Trash is recoverable, excluded from normal reads, and retained until explicit purge; operational audit retention is not note retention. Bound body size at 128 KiB and title at 256 characters with visible refusals; exports preserve full accepted Markdown. Account changes clear private drafts; no hidden extraction from chats or automatic cloud upload.
-Questions and required clarifications:
-- [Resolved - standing owner contract adoption] Adopt personal server-readable notes only after separate Notes cloud consent; local notes remain local. Recoverable trash lasts until explicit purge, with no automatic Habitica projection.
-Validation:
-- Domain/storage tests cover Unicode/line endings, code fences, long documents, quotas, exact partial update/append, concurrent revisions, duplicates, trash/restore/purge, old browser data, account separation and lossless export/import.
-Acceptance:
-- Local notes can be stored, updated and recovered independently of tasks while preserving exact accepted content and owner identity.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Add separately consented cloud note commands and private reads
 
 ```yaml

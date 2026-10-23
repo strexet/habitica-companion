@@ -516,3 +516,9 @@ Identity controls cover coherent/mixed/missing Worker metadata, reported package
 ### Package release controls
 
 Seven Python controls exercise deterministic archives, changed content under an unchanged semantic version, stale payload/descriptors, archive-byte tampering, symlink/credential refusal and explicit release requirements. Deployment preparation includes package/receipt checks. Portable plugin/MCP schemas validate staged artifacts; SDK fixtures check actual advertised tools and direct-MCP unknown installation. Skill validators cover all five entrypoints. Fresh-chat descriptor loading, stale host-cache replacement and imported-package installation remain unqualified host observations.
+
+### Local Notes evidence
+
+Notes controls exercise Unicode/CRLF/code fences, source-size bounds, malformed Unicode, exact partial updates/appends, bounded causal history, original command recovery, stale revisions, trash/restore/purge, reserved deletion capacity and lossless account-bound backup conflicts. Storage adapter checks include owner mismatch, stale writes and explicit clear. Session controls verify account switch/sign-out draft clearing.
+
+The disposable browser fixture upgrades a version1 database to version3, preserves unrelated key/value data, checks concurrent Notes revision exclusion and immutable receipts, isolates scopes, verifies exact text/history after reload and clears only Notes. The fixture uses synthetic records without credentials or network account calls. Notes page UX, remote consent and agent access remain unqualified subsequent work.

@@ -1,0 +1,3 @@
+PASS exact Unicode CRLF and history survive reload
+PASS explicit clear removes Notes
+PASS Notes clear preserves unrelated data

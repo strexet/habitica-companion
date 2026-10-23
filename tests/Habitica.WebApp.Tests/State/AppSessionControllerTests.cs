@@ -2364,10 +2364,11 @@ public sealed partial class AppSessionControllerTests
         ColorSchemeService? colorSchemeService = null,
         LocalUserDataPortabilityService? portability = null,
         TimeProvider? timeProvider = null,
-        SpellGearRecoveryStore? spellGearRecoveryStore = null)
+        SpellGearRecoveryStore? spellGearRecoveryStore = null,
+        Habitica.Application.Notes.NotesDraftSession? notesDrafts = null)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
-        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting, colorSchemeService, portability, timeProvider, spellGearRecoveryStore);
+        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting, colorSchemeService, portability, timeProvider, spellGearRecoveryStore, notesDrafts);
     }
 
     private static AppSessionController CreateController(
@@ -2381,7 +2382,8 @@ public sealed partial class AppSessionControllerTests
         ColorSchemeService? colorSchemeService = null,
         LocalUserDataPortabilityService? portability = null,
         TimeProvider? timeProvider = null,
-        SpellGearRecoveryStore? spellGearRecoveryStore = null)
+        SpellGearRecoveryStore? spellGearRecoveryStore = null,
+        Habitica.Application.Notes.NotesDraftSession? notesDrafts = null)
     {
         var credentialStore = new FakeCredentialStore();
         var storage = keyValueStorage ?? new FakeKeyValueStorage();
@@ -2421,7 +2423,8 @@ public sealed partial class AppSessionControllerTests
             timeProvider: timeProvider ?? TimeProvider.System,
             integrationClient: integrationClient,
             colorSchemeService: colorSchemeService,
-            spellGearRecoveryStore: spellGearRecoveryStore);
+            spellGearRecoveryStore: spellGearRecoveryStore,
+            notesDrafts: notesDrafts);
     }
 
     private static async Task WaitForConditionAsync(Func<bool> condition)

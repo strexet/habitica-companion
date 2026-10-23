@@ -843,3 +843,7 @@ Agent-facing compatibility results distinguish backend identity from a client-re
 ### Package update guidance
 
 Version answers identify the evidence layer: loaded package descriptor, backend compatibility response or directly observed host metadata. Missing descriptors remain unknown. Package guidance distinguishes MCP metadata refresh, imported-package replacement and local marketplace cache updates. A fresh conversation qualifies discovery rather than proving installation. No version check changes consent, credentials, tasks or installation state.
+
+### Notes foundation boundaries
+
+The local Notes engine exposes explicit accepted, duplicate, stale, quota and unknown-acceptance outcomes. Future editor controls must preserve the distinction and original command ID. Trash remains recoverable until explicit purge. No Notes page or new editor interaction is delivered by the storage foundation; existing task-note controls remain separate.

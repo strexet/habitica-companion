@@ -13,6 +13,15 @@ database.version(2).stores({
   workspaceEvents: "&[scope+workspaceId+id], [scope+workspaceId]",
 });
 
+database.version(3).stores({
+  kv: "&key, updatedAtUtc",
+  workspaces: "&[scope+id], scope, updatedAtUtc",
+  workspaceCommands: "&[scope+workspaceId+id], [scope+workspaceId]",
+  workspaceEvents: "&[scope+workspaceId+id], [scope+workspaceId]",
+  notes: "&scope",
+});
+const notes = database.table("notes");
+
 const kv = database.table("kv");
 const workspaces = database.table("workspaces");
 const commands = database.table("workspaceCommands");
@@ -189,3 +198,26 @@ export function releaseGearRecovery(lease) {
   const release = recoveryLeases.get(lease);
   if (release) { recoveryLeases.delete(lease); release(); }
 }
+
+function noteScope(scope) {
+  if (typeof scope !== "string" || !/^[a-f0-9]{64}$/.test(scope)) throw new Error("Invalid notes account scope.");
+}
+export async function getNotes(scope) { noteScope(scope); return (await notes.get(scope))?.json ?? null; }
+export async function commitNotes(scope, expectedRevision, json) {
+  noteScope(scope);
+  if (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0 || typeof json !== "string" || new TextEncoder().encode(json).length > 16*1024*1024) throw new Error("Invalid notes commit.");
+  const next=JSON.parse(json);
+  if(next.schemaVersion!==1 || next.ownerScope!==scope || !Number.isSafeInteger(next.revision) || next.revision<=expectedRevision
+    || expectedRevision>0&&next.revision!==expectedRevision+1 || !Array.isArray(next.receipts) || next.receipts.length!==next.revision || !Array.isArray(next.purged)) throw new Error("Invalid notes revision.");
+  return database.transaction("rw",notes,async()=>{
+    const row=await notes.get(scope);
+    if((row?.revision??0)!==expectedRevision)return false;
+    if(row){
+      const previous=JSON.parse(row.json);
+      if(previous.receipts.some((receipt,index)=>stableJson(receipt)!==stableJson(next.receipts[index]))
+        ||previous.purged.some((item,index)=>stableJson(item)!==stableJson(next.purged[index])))throw new Error("Notes receipts and purged identities are immutable.");
+    }
+    await notes.put({scope,revision:next.revision,json});return true;
+  });
+}
+export async function clearNotes() { await notes.clear(); }

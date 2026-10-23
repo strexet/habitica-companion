@@ -29,6 +29,8 @@ public sealed partial class AppSessionController : IAppSessionController
     private const decimal HealthPotionGoldCost = HealthPotionRecoveryEstimateFactory.HealthPotionGoldCost;
     private const decimal GemGoldCost = 20m;
     private static readonly TimeSpan SpellPreparationDelay = TimeSpan.FromSeconds(1);
+    private readonly IndexedDbNotesDatabase? _notesDatabase;
+    private readonly Habitica.Application.Notes.NotesDraftSession? _notesDrafts;
     private readonly IChatGptIntegrationClient? _integrationClient;
     private readonly IWorkspaceCloudClient? _workspaceClient;
     private readonly IndexedDbWorkspaceDatabase? _workspaceDatabase;
@@ -89,8 +91,12 @@ public sealed partial class AppSessionController : IAppSessionController
         IWorkspaceCloudClient? workspaceClient = null,
         IndexedDbWorkspaceDatabase? workspaceDatabase = null,
         ColorSchemeService? colorSchemeService = null,
-        SpellGearRecoveryStore? spellGearRecoveryStore = null)
+        SpellGearRecoveryStore? spellGearRecoveryStore = null,
+        IndexedDbNotesDatabase? notesDatabase = null,
+        Habitica.Application.Notes.NotesDraftSession? notesDrafts = null)
     {
+        _notesDatabase = notesDatabase;
+        _notesDrafts = notesDrafts;
         _spellGearRecoveryStore = spellGearRecoveryStore;
         _colorSchemeService = colorSchemeService;
         _integrationClient = integrationClient;
@@ -221,6 +227,7 @@ public sealed partial class AppSessionController : IAppSessionController
 
     public async Task SignInAsync(SignInRequest request, CancellationToken cancellationToken = default)
     {
+        if(State.UserId != request.UserId) _notesDrafts?.Clear();
         _activeSpellCastCancellation?.Cancel();
         if (_currentCredentials?.UserId != request.UserId) { _integrationClient?.ForgetSession(); _workspaceClient?.ForgetSession(); }
         await SignInCoreAsync(request, cancellationToken);
@@ -2722,6 +2729,7 @@ public sealed partial class AppSessionController : IAppSessionController
 
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
+        _notesDrafts?.Clear();
         _activeSpellCastCancellation?.Cancel();
         BeginRefreshView();
         _integrationClient?.ForgetSession();
@@ -2748,6 +2756,8 @@ public sealed partial class AppSessionController : IAppSessionController
 
     public async Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
     {
+        _notesDrafts?.Clear();
+        if(_notesDatabase is not null) await _notesDatabase.ClearAsync(cancellationToken);
         _integrationClient?.ForgetSession();
         _workspaceClient?.ForgetSession();
         ResetPrivateSyncSession();
