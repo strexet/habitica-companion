@@ -434,46 +434,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Move task analytics to a dedicated statistics page
-
-```yaml
-id: T-b92d23ba-8586-4869-a6b8-f8eb180f1b02
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-346056d8-c254-4a1e-b860-6850c6cb470d", "P-0529505a-68be-5308-a805-44a2f4ddd6a9", "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-b92d23ba-8586-4869-a6b8-f8eb180f1b02
-related_task_id: null
-relation: main
-depends_on: ["T-9f465413-725a-440e-a464-cb5c555cb87d", "T-54623cea-9c8f-4819-b33f-b6552c82df55", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Keep analytics off the first task screen and provide useful correctly sourced statistics.
-Current behavior:
-- TasksPage places cached Habitica aggregates and charts before task groups. Canonical completion/Habit history and goal progress engines provide distinct evidence.
-Desired behavior:
-- A dedicated Statistics page provides period/filter controls, existing charts and supported canonical activity/progress summaries with source and history limits.
-Touch:
-- Statistics page/read models, existing task-history renderers, canonical history/progress engines and tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Separate Habitica snapshot/history values, canonical accepted events and confirmed game effects. Do not invent reward totals, streaks, missing-history zeroes, complete historical denominators or reversed rewards. Preserve current week/month/year charts where supported and provide text summaries/empty/unavailable states. Use semantic theme colors plus labels rather than color-only meaning; bounded pagination/ranges cannot silently omit data from totals.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Synthetic known-history aggregate assertions, partial/missing-history, date-boundary, restore-cycle and projection-state cases; component chart/filter navigation and reusable UI checks.
-Acceptance:
-- A dedicated statistics surface retains supported charts and offers correctly sourced period-based task/Habit/project summaries.
-- Incomplete/unavailable history and canonical-versus-game differences are explicit; charts and text summaries remain readable and accessible.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Create dedicated Todo sync and task settings
 
 ```yaml

@@ -1,0 +1,72 @@
+{
+  "task_id": "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
+  "status": "pass",
+  "recordedAtUtc": "2026-10-23T14:05:38.323047+00:00",
+  "checks": {
+    "application": 8,
+    "focusedWeb": 21,
+    "release": "pass; no warnings/errors",
+    "renderedCases": 504,
+    "renderedErrors": 0,
+    "unsupportedSurfaces": 0,
+    "widths": [
+      360,
+      390,
+      430,
+      768,
+      1024,
+      1200
+    ],
+    "textPercent": [
+      100,
+      200
+    ],
+    "themes": [
+      "gryphy-light",
+      "gryphy-dark",
+      "toxic-swamp",
+      "boss-battle",
+      "generated-calm",
+      "generated-moderate"
+    ],
+    "negativeCases": 2,
+    "negativeDetectedKinds": [
+      "contrast",
+      "overflow",
+      "overlap"
+    ],
+    "keyboard": {
+      "clientWidth": 197,
+      "focusVisible": true,
+      "label": "Companion activity chart; scroll for all buckets",
+      "outline": "rgb(90, 169, 223) solid 3px",
+      "role": "region",
+      "scrollLeft": 34,
+      "scrollWidth": 797
+    }
+  },
+  "observations": [
+    "Seven rendered states cover statistics overview, filtered/empty/unavailable/independent-source error, long paged project progress and existing expanded task charts.",
+    "An initial legacy task-card matrix exposed a short new navigation target, enlarged metadata minimum widths and value-surface label contrast. Narrow corrections qualify the final cases.",
+    "Both sources retain independent availability and histories. Per-task value deltas, restore cycles, effect prefixes and uncertain conversion time rules have synthetic known-data controls."
+  ],
+  "limitations": [
+    "No hosted statistics interaction, live gameplay write, physical device or assistive technology qualification has run.",
+    "Statistics remains local until the selected Todo UI publication. Notes0.2.0 is already in production."
+  ],
+  "source_fingerprints": {
+    "skill-tree/documents/features.md": "94238e60cdd37b5c4becbeada44cd3cf52362239cb59178abfa7c1b92b68e561",
+    "skill-tree/documents/technical.md": "d2fc6adc1c9aa323a2da7f83177f73429bf9da99d0c29eb6b7d8452ae4f057bd",
+    "skill-tree/documents/testing.md": "26c8e384f2bb719a86a4d038a829dd917c052527d7ac4d1641deddc527de4811",
+    "skill-tree/documents/ux-ui-manifest.md": "ea69e4278398f78b1b9005f1888e8497ca78ae55163e09b2510735c135cb81f6",
+    "src/Habitica.Application/Tasks/TodoStatistics.cs": "e143ef15086ddce979df3944834a51f9236557e97268deb61d3c6abf541138e4",
+    "src/Habitica.WebApp/Components/TodoStatisticsChart.razor": "eb7e9f71b41122fae41f59011f459c70974e650f873d97f289c755dcba257d7d",
+    "src/Habitica.WebApp/Components/TodoStatisticsPanel.razor": "3147dbc9bf755d98edd37b6a881e1b1536b9e3f208099dab9999b4dadc544b60",
+    "src/Habitica.WebApp/Pages/TasksPage.razor": "edc03453d97e50ad64ccc15fe769e3844b0c3a2a8c0ce9446304a6e5387624a8",
+    "src/Habitica.WebApp/Pages/TodoStatisticsPage.razor": "efc989afbd74f4cd71e11363dd3d343541d18f59e464e873fedfe109982a592a",
+    "src/Habitica.WebApp/wwwroot/css/app.css": "81d76718305e8b3958856cd9231f02c220dece45205a61960d2eb1961b533f9f",
+    "tests/Habitica.Application.Tests/Tasks/TodoStatisticsTests.cs": "c0c0a030ff8e4ab468ee510cc7f1809cf5c49553143e7d289157c48b4def9fdb",
+    "tests/Habitica.WebApp.Tests/Pages/TasksPageTests.cs": "8c890096c6231d2441ce5a91b61d8875f835a418353a8f4cd7e42c8ebdc67fe7",
+    "tests/Habitica.WebApp.Tests/Workspace/TodoStatisticsPanelTests.cs": "b16c3325c803810b30bad659c3090cd0ba66de8d5b53ba12f1fc432dba0c34ce"
+  }
+}
