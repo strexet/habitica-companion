@@ -1,0 +1,96 @@
+@using Habitica.Application.Workspace
+@using Habitica.Domain.Workspace
+@inject TodoWorkspacePresentation Todo
+@inject WorkspaceDataController Workspace
+@inject IAppSessionController Session
+@implements IDisposable
+
+<section class="card-surface settings-card" aria-label="Todo command recovery" data-testid="todo-command-history">
+    <p class="section-label">Saved work</p>
+    <h2>Command history and original receipt</h2>
+    <p>Companion saves and confirmed Habitica effects are separate. Reading an original receipt never repeats a task or game action.</p>
+    @if (Todo.Selection is null)
+    {
+        <p role="status">Choose a workspace above to inspect its retained commands.</p>
+    }
+    else if (Todo.Snapshot is not { } snapshot)
+    {
+        <p role="status">Current command history is unavailable. Keep the original command ID and reload the selected workspace.</p>
+    }
+    else
+    {
+        var ordered = snapshot.Commands.OrderByDescending(row => row.AcceptedAtUtc).ThenBy(row => row.Command.Id).ToArray();
+        <p data-testid="todo-command-count">@ordered.Length retained commands in the selected @(Todo.Selection.Source == TodoWorkspaceSource.Cloud ? "cloud" : "browser") workspace. Pending: @ordered.Count(row => row.ProjectionState is ProjectionCommandState.Pending or ProjectionCommandState.Leased or ProjectionCommandState.Executing); blocked: @ordered.Count(row => row.ProjectionState == ProjectionCommandState.Blocked); unknown: @ordered.Count(row => row.ProjectionState == ProjectionCommandState.UnknownOutcome).</p>
+        <label class="field-row">Original command ID
+            <input class="app-input" value="@_commandId" @oninput="OnCommandIdChanged" data-testid="todo-command-id" />
+        </label>
+        <MudButton HtmlTag="button" Variant="Variant.Outlined" data-testid="todo-command-lookup" Disabled="@(_busy || !Guid.TryParse(_commandId, out _))" OnClick="LookupAsync">Check original receipt</MudButton>
+        @if (_message is not null) { <p role="status" data-testid="todo-command-message">@_message</p> }
+        @if (_receipt is { } receipt)
+        {
+            <div role="status" data-testid="todo-command-receipt">
+                <p>Original command @receipt.CommandId · @(receipt.SavedInCompanion ? "saved in Companion" : "Companion save unconfirmed") · Habitica: @receipt.HabiticaProjectionStatus.</p>
+                <p>Confirmed effects: @receipt.ConfirmedProjectionCount/@receipt.TotalProjectionCount. @(receipt.OutcomeUnknown ? "Outcome unknown; do not repeat the action." : "Only the original receipt confirms the effects shown.")</p>
+            </div>
+        }
+        <ul class="todo-command-list">
+            @foreach (var entry in ordered.Take(_visible))
+            {
+                <li class="todo-command-row" data-testid="todo-command-row">
+                    <div><strong>@entry.Command.Operation</strong> · <time datetime="@entry.AcceptedAtUtc.ToString("O")">@entry.AcceptedAtUtc.ToLocalTime().ToString("g")</time><br /><small>Command @entry.Command.Id · task @entry.Command.TaskId</small></div>
+                    <div><span>@entry.ProjectionState · @entry.ConfirmedEffects/@entry.Effects.Count confirmed</span>
+                        <MudButton HtmlTag="button" Variant="Variant.Text" Disabled="@_busy" OnClick="@(() => LookupAsync(entry.Command.Id))">Check receipt</MudButton></div>
+                </li>
+            }
+        </ul>
+        @if (ordered.Length > _visible)
+        { <MudButton HtmlTag="button" Variant="Variant.Outlined" OnClick="@(() => _visible += 20)" data-testid="todo-command-more">Show older commands</MudButton> }
+    }
+</section>
+
+@code {
+    private string _commandId = "";
+    private string? _message;
+    private WorkspaceMutationReceipt? _receipt;
+    private int _visible = 20;
+    private bool _busy, _disposed;
+    private int _generation;
+    private string? _account;
+    private TodoWorkspaceSelection? _selection;
+
+    protected override void OnInitialized()
+    {
+        _account = Session.State.UserId; _selection = Todo.Selection;
+        Session.Changed += OnContextChanged; Todo.Changed += OnContextChanged;
+    }
+    private void OnContextChanged()
+    {
+        if (_disposed) return;
+        if (_account != Session.State.UserId || _selection != Todo.Selection)
+        {
+            _generation++; _account = Session.State.UserId; _selection = Todo.Selection;
+            _commandId = ""; _message = null; _receipt = null; _visible = 20; _busy = false;
+        }
+        _ = InvokeAsync(StateHasChanged);
+    }
+    private void OnCommandIdChanged(ChangeEventArgs args)
+    { _commandId = args.Value?.ToString() ?? ""; _message = null; _receipt = null; }
+    private Task LookupAsync() => Guid.TryParse(_commandId, out var id) ? LookupAsync(id) : Task.CompletedTask;
+    private async Task LookupAsync(Guid id)
+    {
+        if (_busy || Todo.Selection is not { } selected || Todo.Snapshot is null) return;
+        _commandId = id.ToString("D"); _busy = true; _receipt = null; _message = null;
+        var account = Session.State.UserId; var generation = _generation;
+        try
+        {
+            var result = await Workspace.ReadTaskReceiptAsync(selected.Source == TodoWorkspaceSource.Cloud, selected.WorkspaceId, id);
+            if (_disposed || generation != _generation || account != Session.State.UserId || selected != Todo.Selection) return;
+            _receipt = result.Succeeded ? result.Value : null;
+            _message = result.Message;
+        }
+        catch { if (!_disposed && generation == _generation && account == Session.State.UserId && selected == Todo.Selection)
+            _message = "The original receipt is unavailable. Do not repeat the command because the outcome remains unverified."; }
+        finally { if (!_disposed && generation == _generation && account == Session.State.UserId && selected == Todo.Selection) _busy = false; }
+    }
+    public void Dispose() { _disposed = true; Session.Changed -= OnContextChanged; Todo.Changed -= OnContextChanged; }
+}

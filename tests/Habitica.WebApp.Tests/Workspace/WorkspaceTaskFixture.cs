@@ -90,6 +90,8 @@ internal sealed class WorkspaceTaskFixture
         public Func<CancellationToken, Task<WorkspaceJournalSnapshot?>>? LoadAction { get; set; }
         public List<Guid> PreparationIds { get; } = [];
         public List<Guid> AcceptedIds { get; } = [];
+        public List<Guid> ReceiptReads { get; } = [];
+        public Func<Guid, Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>>>? ReceiptReadAction { get; set; }
         public bool IsAvailable => true;
         public Guid? WorkspaceId => Connected ? State.Document.Id : null;
         public bool ConnectionStatusVerified { get; set; } = true;
@@ -121,6 +123,8 @@ internal sealed class WorkspaceTaskFixture
         }
         public Task<WorkspaceTaskResponse<WorkspaceMutationReceipt>> ReadCommandAsync(Guid id, CancellationToken token)
         {
+            ReceiptReads.Add(id);
+            if (ReceiptReadAction is not null) return ReceiptReadAction(id);
             var entry = State.Commands.SingleOrDefault(entry => entry.Command.Id == id);
             return Task.FromResult(new WorkspaceTaskResponse<WorkspaceMutationReceipt>(entry is not null, entry is null ? null : WorkspaceTaskController.Receipt(entry, id), "Synthetic receipt lookup"));
         }

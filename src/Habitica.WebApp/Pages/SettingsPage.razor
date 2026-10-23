@@ -18,7 +18,7 @@
         </p>
 
         <MudAlert Dense="true" Severity="Severity.Info" Variant="Variant.Outlined">
-            If the app keeps showing an old version, clear this site's browser data and refresh the page once.
+            If the app looks old, refresh first. Before clearing browser data, export any browser-only Notes from Notes and local workspaces from Todo Sync.
         </MudAlert>
 
         <div class="settings-grid settings-session-actions" data-testid="settings-session-actions">
@@ -138,7 +138,7 @@
             </div>
             @if (_integrationCleanup is not null)
             {
-                <p>@(_integrationCleanup.Value ? "Delete the integration profile and stored credentials?" : "Disconnect and remove the stored integration credentials?") Browser data and the Habitica account remain available.</p>
+                <p>@(_integrationCleanup.Value ? "Delete the integration profile, stored credentials, cloud Notes and retained Notes versions? Export any cloud Notes first." : "Disconnect and remove stored integration credentials? Cloud Notes become inaccessible until connection is restored; retained cloud content is not deleted.") Browser data and the Habitica account remain available.</p>
                 <MudButton data-testid="integration-confirm-cleanup" Disabled="@_integrationBusy" OnClick="ConfirmIntegrationCleanupAsync" Color="Color.Error" Variant="Variant.Filled">Confirm</MudButton>
                 <MudButton data-testid="integration-cancel-cleanup" OnClick="@(() => _integrationCleanup = null)" Variant="Variant.Outlined">Cancel</MudButton>
             }
@@ -154,15 +154,14 @@
         }
     </section>
 
-    <WorkspaceSettingsPanel />
-    <WorkspaceTagPanel />
+    <section class="card-surface settings-card"><p class="section-label">Todo connections</p><h2>Task source and sync</h2><p>Choose a workspace, review pending game effects, manage Habitica tags, and back up or transfer local tasks in <a href="/todo/sync" data-testid="settings-todo-sync">Todo Sync</a>. Cloud task consent and background execution have separate controls there.</p></section>
     <PartyPlanningSettingsPanel />
 
     <section class="card-surface settings-card">
         <p class="section-label">Portable app data</p>
         <h2>Backup, restore, and private sync</h2>
         <p class="panel-copy">
-            Backup files include saved Habitica data, party CRON history, app messages, gear information, and equipment presets. Habitica API tokens are not included.
+            Backup files include saved Habitica data, party CRON history, app messages, gear information, and equipment presets. Export personal Notes from Notes and workspaces from Todo Sync separately. Habitica API tokens are not included.
             <a href="/privacy">Privacy and data handling</a>
         </p>
 
@@ -211,15 +210,23 @@
 
             <MudPaper Class="card-surface action-card danger-card" Elevation="0">
                 <h2>Clear this browser</h2>
-                <p>Removes saved credentials, saved Habitica data, party history, app messages, and local app setup from this browser.</p>
+                <p>Removes saved credentials, saved Habitica data, party history, app messages, all browser Notes and local workspaces from this browser. Export Notes and workspaces separately first.</p>
                 <MudButton Color="Color.Error"
                            data-testid="clear-local-data"
-                           OnClick="HandleClearLocalDataAsync"
+                           OnClick="@(() => _clearLocalReview = true)"
                            Variant="Variant.Filled">
                     Clear Local Data
                 </MudButton>
             </MudPaper>
         </div>
+        @if (_clearLocalReview)
+        {
+            <div class="card-surface danger-card" role="group" aria-label="Review browser data removal" data-testid="clear-local-review">
+                <p>Clear this browser now? All browser Notes, including deleted versions, local workspaces, saved credentials and other local app data will be removed. The general app backup does not include Notes or workspace journals. Cloud Notes, cloud workspaces and Habitica records have separate controls.</p>
+                <MudButton Color="Color.Error" OnClick="HandleClearLocalDataAsync" data-testid="clear-local-confirm" Variant="Variant.Filled">Confirm browser removal</MudButton>
+                <MudButton OnClick="@(() => _clearLocalReview = false)" data-testid="clear-local-cancel" Variant="Variant.Outlined">Cancel</MudButton>
+            </div>
+        }
 
         @if (!string.IsNullOrWhiteSpace(_dataMessage))
         {
@@ -313,7 +320,7 @@
 </div>
 
 @code {
-    private bool _appearanceCollapsed = true;
+    private bool _appearanceCollapsed = true, _clearLocalReview;
     private bool _integrationConsent, _integrationBusy, _integrationDisconnected, _disposed;
     private bool? _integrationCleanup;
     private IntegrationLinkResult? _integrationResult;
@@ -336,7 +343,7 @@
         {
             _integrationOwner = owner;
             _integrationGeneration++;
-            _integrationConsent = _integrationBusy = _integrationDisconnected = false;
+            _integrationConsent = _integrationBusy = _integrationDisconnected = _clearLocalReview = false;
             _integrationCleanup = null; _integrationResult = null; _integrationStatus = null; _integrationManagementAction = null;
         }
         _ = InvokeAsync(StateHasChanged);
@@ -451,6 +458,8 @@
 
     private async Task HandleClearLocalDataAsync()
     {
+        if (!_clearLocalReview) return;
+        _clearLocalReview = false;
         await SessionController.ClearLocalDataAsync();
         NavigationManager.NavigateTo("/");
     }

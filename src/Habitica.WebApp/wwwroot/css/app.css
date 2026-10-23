@@ -4702,3 +4702,10 @@ code {
 .task-meta.expanded { grid-template-columns:repeat(auto-fit,minmax(min(100%,8rem),1fr)); }
 .task-expanded-content > .task-meta :is(dt,dd) { color:var(--task-readable-ink,var(--ink)); }
 .task-expanded-content > .task-detail-status .ui-pill { background:var(--bg); color:var(--text-accent,var(--ink)); }
+
+.todo-command-list { list-style:none; padding:0; margin:0; display:grid; gap:.25rem; min-width:0; }
+.todo-command-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:.75rem; align-items:center; border-bottom:1px solid var(--card-border); padding:.55rem 0; min-width:0; }
+.todo-command-row > * { min-width:0; overflow-wrap:anywhere; }
+.todo-command-row > div:last-child { display:flex; align-items:center; flex-wrap:wrap; gap:.5rem; justify-content:flex-end; }
+.todo-command-row :is(small,time) { color:var(--muted-text,var(--ink)); }
+@media (max-width: 600px) { .todo-command-row { grid-template-columns:minmax(0,1fr); } .todo-command-row > div:last-child { justify-content:flex-start; } }

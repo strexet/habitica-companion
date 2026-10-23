@@ -41,7 +41,8 @@ public sealed class WorkspaceTagPanelTests : BunitContext
     }
     private Client Setup()
     {
-        var f=new WorkspaceTaskFixture();var client=new Client {Connected=true};Services.AddMudServices();Services.AddSingleton<IJSRuntime>(f.Js);Services.AddSingleton<IAppSessionController>(f.Session);Services.AddSingleton<IWorkspaceCloudClient>(client);Services.AddSingleton(f.Database);Services.AddSingleton(new WorkspaceDataController(f.Session,client,f.Database));JSInterop.Mode=JSRuntimeMode.Loose;return client;
+        var f=new WorkspaceTaskFixture();var client=new Client {Connected=true};Services.AddMudServices();Services.AddSingleton<IJSRuntime>(f.Js);Services.AddSingleton<IAppSessionController>(f.Session);Services.AddSingleton<IWorkspaceCloudClient>(client);Services.AddSingleton(f.Database);Services.AddSingleton(new WorkspaceDataController(f.Session,client,f.Database));
+        Services.AddSingleton(new WorkspaceTaskController(f.Session,client,f.Database));Services.AddSingleton<TodoTaskDraftStore>();Services.AddSingleton<TodoWorkspacePresentation>();JSInterop.Mode=JSRuntimeMode.Loose;return client;
     }
     private static void Save(string name,string markup,string route="/todo/sync")=>PageLayoutEvidence.Save(name,markup,route,name,["form","confirmation","disabled-controls","navigation"],nameof(WorkspaceTagPanelTests));
     [Fact]

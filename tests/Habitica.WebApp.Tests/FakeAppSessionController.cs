@@ -169,8 +169,10 @@ internal sealed class FakeAppSessionController : IAppSessionController
 
     public Queue<InventoryActionResult> HatchPetResults { get; } = new();
 
+    public int ClearLocalDataCalls { get; private set; }
     public Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
     {
+        ClearLocalDataCalls++;
         return Task.CompletedTask;
     }
 

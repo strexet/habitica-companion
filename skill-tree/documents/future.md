@@ -434,46 +434,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Create dedicated Todo sync and task settings
-
-```yaml
-id: T-c0bf3f10-141f-464c-bc1e-53040d67e61c
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-6b10f9d7-280d-40d5-a212-8e0f44173f5d", "P-f3f3c195-8af3-4191-94cb-0d8ca93f6c11"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-c0bf3f10-141f-464c-bc1e-53040d67e61c
-related_task_id: null
-relation: main
-depends_on: ["T-a7dca938-7c13-4878-9363-04862fbfa04d", "T-9f465413-725a-440e-a464-cb5c555cb87d", "T-d007ac44-f38c-4069-9b70-e66adbc64bf0", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Move task source/command management away from the primary action list.
-Current behavior:
-- Manage Companion tasks exposes source/command controls inline above legacy lists; workspace/executor consent and operational status reside in global Settings.
-Desired behavior:
-- A dedicated Todo Sync/settings page owns task sources, relevant preferences, backups/transfers and operational recovery while reusing existing account/privacy controls.
-Touch:
-- Todo Sync page, extracted task management components, WorkspaceDataController/TaskController and existing WorkspaceSettingsPanel behavior.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Do not duplicate consent state or create a second executor policy. Separate server availability, account opt-in and tab access; show pending/blocked/unknown versus executor paused and preserve original receipt lookup. Transfer freezes/ownership and existing backup formats remain explicit; preference ownership follows the sync inventory. Copy/export diagnostics uses the supported redacted path. The primary task lists must not require opening the management page. No destructive cleanup, new connection or background execution occurs on navigation.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Component journeys cover current source, status refresh, unavailable access, separate consent, paused/unknown work, original recovery, local/cloud backup and cancelled transfer/cleanup; reusable UI checks.
-Acceptance:
-- Task source/sync/settings management has a dedicated working destination with accurate account/tab/executor status and relevant preferences.
-- Existing consent, backup/transfer ownership and original command recovery remain single-source and unchanged by navigation or failed reads.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Compose the always-open Todo navigation and task pages
 
 ```yaml

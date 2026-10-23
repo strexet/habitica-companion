@@ -98,7 +98,7 @@ public sealed class SettingsPageTests : BunitContext
         Services.AddSingleton<IKeyValueStorage>(new FakeKeyValueStorage()); Services.AddScoped<ColorSchemeService>();
         var session = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true });
         Services.AddSingleton<IAppSessionController>(session); Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new ExecutorCloud());
-        var cut = Render<SettingsPage>();
+        var cut = Render<Habitica.WebApp.Components.WorkspaceSettingsPanel>();
         Assert.True(cut.Find("[data-testid='workspace-renew']").HasAttribute("disabled")); Assert.Equal(0, session.WorkspaceConnectCalls);
         Habitica.WebApp.Tests.Workspace.WorkspaceLayoutEvidence.Save("workspace-renewal", cut.Markup);
         cut.Find("[data-testid='workspace-renew-consent']").Change(true); cut.Find("[data-testid='workspace-renew']").Click();
@@ -149,14 +149,32 @@ public sealed class SettingsPageTests : BunitContext
         var controller = new FakeAppSessionController(SessionViewModel.Empty with { IsAuthenticated = true });
         Services.AddSingleton<IAppSessionController>(controller);
         Services.AddSingleton<Habitica.Application.Workspace.IWorkspaceCloudClient>(new Habitica.WebApp.Integration.WorkspaceCloudClient(new HttpClient(), new Habitica.WebApp.Integration.ChatGptIntegrationClient(new HttpClient(), "https://auth.invalid/", false), "https://workspace.invalid/"));
-        var cut = Render<SettingsPage>();
+        var settings = Render<SettingsPage>();
+        Assert.NotNull(settings.Find("[data-testid='integration-unavailable']"));
+        Assert.Equal("/todo/sync", settings.Find("[data-testid='settings-todo-sync']").GetAttribute("href"));
+        var cut = Render<Habitica.WebApp.Components.WorkspaceSettingsPanel>();
         Assert.True(cut.Find("[data-testid='workspace-connect']").HasAttribute("disabled"));
-        Assert.NotNull(cut.Find("[data-testid='integration-unavailable']"));
         Assert.Equal(0, controller.WorkspaceConnectCalls);
         cut.Find("[data-testid='workspace-consent']").Change(true);
         cut.Find("[data-testid='workspace-connect']").Click();
         Assert.Equal(1, controller.WorkspaceConnectCalls); Assert.Equal(0, controller.ChatGptEnrollCalls);
         Assert.Contains("server can read", cut.Markup);
+    }
+
+    [Fact]
+    public void Clearing_browser_data_requires_a_cancelable_review_that_names_separate_Notes_and_workspace_backups()
+    {
+        var (session, cut) = ConnectionPage();
+        Assert.Contains("export any browser-only Notes", cut.Markup, StringComparison.OrdinalIgnoreCase);
+        cut.Find("[data-testid='clear-local-data']").Click();
+        Assert.Equal(0, session.ClearLocalDataCalls);
+        Assert.Contains("general app backup does not include Notes", cut.Find("[data-testid='clear-local-review']").TextContent);
+        cut.Find("[data-testid='clear-local-cancel']").Click();
+        Assert.Equal(0, session.ClearLocalDataCalls);
+        Assert.Empty(cut.FindAll("[data-testid='clear-local-review']"));
+        cut.Find("[data-testid='clear-local-data']").Click();
+        cut.Find("[data-testid='clear-local-confirm']").Click();
+        Assert.Equal(1, session.ClearLocalDataCalls);
     }
 
     [Fact]
