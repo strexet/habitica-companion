@@ -6,7 +6,7 @@ test('direct MCP has unknown installed package and coherent explicit backend ide
  const r=report();assert.equal(r.backend.state,'coherent');assert.equal(r.package.installation,'unknown');assert.equal(r.package.packageCompatibility,'unknown');assert.match(r.backend.workers.mcp.buildHash,/^[a-f0-9]{64}$/);
 });
 test('client reports never establish installation and incompatible versions stay explicit',()=>{
- for(const [v,expected] of [['0.0.9','incompatible'],['0.1.0','compatible'],['0.2.0','incompatible'],['2.0.0','incompatible']]){
+ for(const [v,expected] of [['0.0.9','incompatible'],['0.1.0','incompatible'],['0.2.0','compatible'],['0.3.0','incompatible'],['2.0.0','incompatible']]){
   const r=report({packageVersion:v,packageHash:'a'.repeat(64),toolSchemaVersion:'2.0.0'});assert.equal(r.package.packageCompatibility,expected);assert.equal(r.package.installation,'unknown');assert.equal(r.package.schemaCompatibility,'incompatible');
  }
 });
@@ -30,7 +30,7 @@ test('authenticated MCP discovery needs no workspace consent and never calls Hab
  const listed=(await c.listTools()).tools.find(tool=>tool.name==='get_connector_compatibility');assert.ok(listed);assert.equal(listed.annotations.readOnlyHint,true);
  const before=upstream;const result=await c.callTool({name:'get_connector_compatibility',arguments:{}});assert.notEqual(result.isError,true);
  assert.equal(result.structuredContent.backend.state,'coherent');assert.equal(result.structuredContent.package.installation,'unknown');
- const claimed=await c.callTool({name:'get_connector_compatibility',arguments:{packageVersion:'0.2.0',toolSchemaVersion:'2.0.0'}});assert.equal(claimed.structuredContent.package.packageCompatibility,'incompatible');
+ const claimed=await c.callTool({name:'get_connector_compatibility',arguments:{packageVersion:'0.1.0',toolSchemaVersion:'2.0.0'}});assert.equal(claimed.structuredContent.package.packageCompatibility,'incompatible');
  const invalid=await c.callTool({name:'get_connector_compatibility',arguments:{profileId:p.profileId}});assert.equal(invalid.isError,true);
  assert.equal(upstream,before);assert.equal((await f.workspaceDb.prepare('SELECT COUNT(*) AS n FROM workspace_commands').first()).n,0);
  assert.equal((await f.auth.fetch('http://localhost:8787/build-identity')).status,404);

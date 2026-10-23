@@ -18,7 +18,7 @@ The source package contains no registered connector ID, public listing, marketpl
 
 ## Package identity and update evidence
 
-The source manifest retains version 0.1.0. Local package preparation adds package-identity.json at package root and beside each bundled identity reference. The descriptor binds actual payload files and per-skill hashes; the declared source revision is operator-supplied provenance. An external .zip.identity.json receipt binds archive bytes, avoiding a self-referential archive hash. Hashes establish consistency against a reviewed receipt, rather than publisher authentication. Equal semantic versions with different content hashes identify different payloads and require release review before publication.
+The Notes release uses package version 0.2.0, backend release 0.2.0 and tool schema 1.1.0. The package requires backend 0.2.x; older 0.1.x packages need an updated import. Existing OAuth grants keep original scopes, so Notes also requires separate cloud consent and reauthorization with Notes permissions. Local package preparation adds package-identity.json at package root and beside each bundled identity reference. The descriptor binds actual payload files and per-skill hashes; the declared source revision is operator-supplied provenance. An external .zip.identity.json receipt binds archive bytes, avoiding a self-referential archive hash. Hashes establish consistency against a reviewed receipt, rather than publisher authentication. Equal semantic versions with different content hashes identify different payloads and require release review before publication.
 
 Build a fresh local artifact without installing or publishing:
 
