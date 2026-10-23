@@ -16,6 +16,11 @@ public sealed class WorkspaceOrganizationModelTests
         Assert.Equal(SubmissionDisposition.Invalid,WorkspaceCommandEngine.Accept(corrupted,new(Guid.NewGuid(),document.Id,document.Revision,WorkspaceOperation.PlanTask,task.Id,new(Planning:new(PlannedDate:new(2026,10,25)))),now).Disposition);
         state=WorkspaceCommandEngine.Accept(state,new(Guid.NewGuid(),document.Id,document.Revision,WorkspaceOperation.PlanTask,task.Id,new(Planning:new(PlannedDate:new(2026,10,25)))),now).Snapshot!;
         Assert.Equal(before,WorkspaceTaskApiJson.Serialize(state.Document.OrganizationHistory));Assert.True(WorkspaceJournalValidation.IsValid(state));Assert.Empty(state.Commands[0].Effects);
+        var originalCommands=WorkspaceTaskApiJson.Serialize(state.Commands);var originalEvents=WorkspaceTaskApiJson.Serialize(state.Events);var originalTasks=state.Document.Tasks;
+        var project=state.Document.Projects.First(row=>!row.IsArchived);
+        state=WorkspaceOrganizationEngine.Accept(state,new(Guid.NewGuid(),document.Id,state.Document.Revision,WorkspaceOrganizationKind.Project,WorkspaceOrganizationOperation.Update,project.Id,new(Alias:"Native-Project")),now).Snapshot!;
+        Assert.Same(originalTasks,state.Document.Tasks);Assert.Equal(originalCommands,WorkspaceTaskApiJson.Serialize(state.Commands));Assert.Equal(originalEvents,WorkspaceTaskApiJson.Serialize(state.Events));Assert.Equal("native-project",state.Document.Projects.Single(row=>row.Id==project.Id).Alias);
+        before=WorkspaceTaskApiJson.Serialize(state.Document.OrganizationHistory);
         var collision=new WorkspaceCommand(document.OrganizationHistory![0].Command.Id,document.Id,state.Document.Revision,WorkspaceOperation.UpdateTask,task.Id,new(Text:"Rejected"));Assert.Equal(SubmissionDisposition.IdempotencyConflict,WorkspaceCommandEngine.Accept(state,collision,now).Disposition);
         var goal=state.Document.Goals.Last();Assert.Equal(new GoalProgress(1,1),WorkspaceRules.Progress(goal,state.Document.Tasks));var completion=state.Document.Completions[0];
         state=WorkspaceCommandEngine.Accept(state,new(Guid.NewGuid(),document.Id,state.Document.Revision,WorkspaceOperation.RestoreTodo,completion.TaskId,new(RestoreTodo:new(completion.Id))),now).Snapshot!;

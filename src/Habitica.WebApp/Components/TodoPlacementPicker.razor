@@ -8,6 +8,8 @@
         @if (Value is { } selected && !_items.Any(row => row.Id == selected)) { <option value="@selected">@CurrentName(selected) (retained selection)</option> }
         @foreach (var row in _items) { <option value="@row.Id">@ChoiceName(row.Id,row.Name)</option> }
     </select></label>
+    @if (Kind=="Project" && Value is {} selectedId && Todo.Snapshot?.Document.Projects.FirstOrDefault(row=>row.Id==selectedId)?.Alias is {} selectedAlias)
+    { <p data-testid="selected-project-alias">Alias: @selectedAlias</p> }
     @if (_error is not null) { <p role="alert">@_error</p> }
     @if (_total > 20)
     {
@@ -61,12 +63,14 @@
     {
         var doc=Todo.Snapshot?.Document;
         IEnumerable<string> names=Kind switch { "Category"=>doc?.Categories.Where(row=>!row.IsArchived).Select(row=>row.Name)??[], "Section"=>doc?.Sections.Where(row=>!row.IsArchived&&row.ProjectId==ProjectId).Select(row=>row.Name)??[], "Label"=>doc?.Labels.Where(row=>!row.IsArchived).Select(row=>row.Name)??[], _=>doc?.Projects.Where(row=>!row.IsArchived).Select(row=>row.Name)??[] };
-        return names.Count(value=>value==name)>1?$"{name} · {id}":name;
+        return (names.Count(value=>value==name)>1?$"{name} · {id}":name)+AliasSuffix(id);
     }
+    private string AliasSuffix(Guid id)=>Kind=="Project"&&Todo.Snapshot?.Document.Projects.FirstOrDefault(row=>row.Id==id)?.Alias is {} alias?$" · alias: {alias}":"";
     private string CurrentName(Guid id)
     {
         var doc = Todo.Snapshot?.Document;
-        if (Kind == "Project" && doc?.Projects.FirstOrDefault(row => row.Id == id) is { IsRemoved: true } removed) return "Unassigned (removed project: " + removed.Name + ")";
+        if (Kind == "Project" && doc?.Projects.FirstOrDefault(row => row.Id == id) is { IsRemoved: true } removed) return "Unassigned (removed project: " + removed.Name + ")" + AliasSuffix(id);
+        if(Kind=="Project"&&doc?.Projects.FirstOrDefault(row=>row.Id==id) is {} project)return ChoiceName(id,project.Name);
         return Kind switch { "Category" => doc?.Categories.FirstOrDefault(row => row.Id == id)?.Name, "Section" => doc?.Sections.FirstOrDefault(row => row.Id == id)?.Name, "Label" => doc?.Labels.FirstOrDefault(row => row.Id == id)?.Name, _ => doc?.Projects.FirstOrDefault(row => row.Id == id)?.Name } ?? "Unavailable record";
     }
     private async Task Choose(ChangeEventArgs args)

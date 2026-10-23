@@ -19,6 +19,11 @@
         <section class="todo-command-review" aria-label="Review organization change" data-testid="organization-review">
             <h2 tabindex="-1" @ref="_reviewHeading">Review @preview.Command.Operation.ToString().ToLowerInvariant() · @preview.Command.Kind</h2>
             <p><strong>@preview.Snapshot.Name</strong> · @preview.Command.EntityId</p>
+            @if (preview.Command.Kind==WorkspaceOrganizationKind.Project)
+            {
+                <p data-testid="organization-alias-review">Alias: @(preview.Snapshot.Alias??"None")</p>
+                @if (preview.Command.Patch?.ClearAlias==true) { <p>Release the alias for reuse. The project name, identity and task assignments stay unchanged.</p> }
+            }
             @if (preview.Command.Kind==WorkspaceOrganizationKind.SavedTaskView && preview.Snapshot.Query is { } savedQuery) { <TodoSavedQuerySummary Query="savedQuery" /> }
             @if (preview.Command.Patch is { } patch)
             {
@@ -60,7 +65,11 @@
         <form @onsubmit="PrepareAsync" @onsubmit:preventDefault><fieldset disabled="@FreshDisabled">
             <h2 tabindex="-1" @ref="_editorHeading">@(_editing is null ? "Create" : "Edit") @_kind</h2>
             <label class="field-row">Name<input class="app-input" maxlength="256" @bind="_name" @bind:event="oninput" data-testid="organization-name" /></label>
-            @if (_kind == WorkspaceOrganizationKind.Project) { <TodoPlacementPicker Kind="Category" Caption="Optional category" Value="_category" ValueChanged="value => _category = value" Disabled="@FreshDisabled" /> }
+            @if (_kind == WorkspaceOrganizationKind.Project)
+            {
+                <TodoPlacementPicker Kind="Category" Caption="Optional category" Value="_category" ValueChanged="value => _category = value" Disabled="@FreshDisabled" />
+                @if (_editing is null) { <label class="field-row">Optional alias<input class="app-input" maxlength="256" placeholder="codev" @bind="_alias" @bind:event="oninput" data-testid="organization-alias" /></label><p>Alias uses 1–64 letters or digits with single internal hyphens. Surrounding spaces and letter case are normalized. The display name stays exact.</p> }
+            }
             @if (_kind == WorkspaceOrganizationKind.Section)
             {
                 <TodoPlacementPicker Kind="Project" Caption="Section project" Value="_sectionProject" ValueChanged="value => _sectionProject = value" Disabled="@(FreshDisabled || _editing is not null)" EmptyLabel="Choose project" />
@@ -77,11 +86,21 @@
             }
             <div class="action-row"><MudButton HtmlTag="button" data-layout-primary="true" ButtonType="ButtonType.Submit" Color="Color.Primary" Variant="Variant.Filled" data-testid="organization-prepare">Review @_kind.ToString().ToLowerInvariant()</MudButton><MudButton HtmlTag="button" data-layout-primary="true" OnClick="New" Variant="Variant.Text">New record</MudButton><MudButton HtmlTag="button" data-layout-primary="true" OnClick="ReloadEditor" Variant="Variant.Text">Reload editor context</MudButton></div>
         </fieldset></form>
+        @if (_kind==WorkspaceOrganizationKind.Project && _editing is { } aliasProject)
+        {
+            <form @onsubmit="PrepareAliasAsync" @onsubmit:preventDefault data-testid="organization-alias-form"><fieldset disabled="@FreshDisabled">
+                <h3>Project alias</h3><p>@MetadataName(WorkspaceOrganizationKind.Project,aliasProject)</p>
+                <label class="field-row">Alias<input class="app-input" maxlength="256" placeholder="codev" @bind="_alias" @bind:event="oninput" data-testid="organization-alias" /></label>
+                <p>Use an alias such as codev for this exact project. Leave blank to release an existing alias. Name changes use a separate review; save the alias before explicitly removing a temporary name marker.</p>
+                <MudButton HtmlTag="button" data-layout-primary="true" ButtonType="ButtonType.Submit" Variant="Variant.Outlined" data-testid="organization-alias-prepare">Review alias change</MudButton>
+            </fieldset></form>
+        }
         <section aria-label="Organization records">
             @if (_rows.Count == 0) { <p>No active @Plural(_kind).ToLowerInvariant().</p> }
             @foreach (var row in _rows)
             {
                 <article class="todo-direct-row"><div class="todo-row-content"><strong>@row.Name</strong>
+                    @if (row.Alias is {} alias) { <span data-testid="organization-alias-value">Alias: @alias</span> }
                     @if (row.ProjectId is { } ownerProject) { <span>Project: @MetadataName(WorkspaceOrganizationKind.Project,ownerProject) · order @row.Position</span> }
                     @if (_progress.TryGetValue(row.Id,out var progress)) { <span>@(progress.EligibleTodos == 0 ? "Progress unavailable: no eligible Todos." : $"{progress.CompletedTodos} of {progress.EligibleTodos} eligible Todos completed")</span> }
                     <details><summary>Reference</summary><p>@row.Id</p></details>
@@ -101,7 +120,7 @@
     private TodoWorkspaceSelection? _source, _draftSource;
     private long? _revision, _draftRevision;
     private Guid? _editing,_category,_sectionProject,_reviewId;
-    private string _name="",_position="0";
+    private string _name="",_position="0",_alias="";
     private string? _error;
     private List<Guid> _members=[];
     private IReadOnlyList<CompanionTask> _choices=[];
@@ -120,7 +139,7 @@
     protected override void OnInitialized(){_source=Todo.Selection;_revision=Todo.Revision;ResetEditor();Todo.Changed+=Changed;Read();}
     protected override async Task OnAfterRenderAsync(bool firstRender){try{if(_focusReview&&Organization.Preview is not null){_focusReview=false;await _reviewHeading.FocusAsync();}else if(_focusEditor){_focusEditor=false;await _editorHeading.FocusAsync();}}catch(JSException){}}
     private void Changed(){if(_source!=Todo.Selection){_source=Todo.Selection;_offset=0;ResetEditor();_reviewId=null;_reviewedPages.Clear();_referenceOffset=0;_error=null;}if(_revision!=Todo.Revision){_revision=Todo.Revision;_offset=_choiceOffset=0;}Read();_ = InvokeAsync(StateHasChanged);}
-    private void ResetEditor(){_editing=_category=_sectionProject=null;_name="";_position="0";_members=[];_draftSource=Todo.Selection;_draftRevision=Todo.Revision;_choiceOffset=0;}
+    private void ResetEditor(){_editing=_category=_sectionProject=null;_name="";_alias="";_position="0";_members=[];_draftSource=Todo.Selection;_draftRevision=Todo.Revision;_choiceOffset=0;}
     private void Read()
     {
         _rows=[];_total=0;_next=null;_choices=[];_progress=[];
@@ -154,7 +173,7 @@
     private void Edit(Guid id)
     {
         if(FreshDisabled||Todo.Snapshot is null)return;var row=WorkspaceOrganizationSnapshot.From(Todo.Snapshot.Document,_kind,id);if(row is null||row.IsArchived)return;
-        ResetEditor();_editing=id;_name=row.Name;_category=row.CategoryId;_sectionProject=row.ProjectId;_position=row.Position.ToString(CultureInfo.InvariantCulture);_members=row.TaskIds?.ToList()??[];_focusEditor=true;
+        ResetEditor();_editing=id;_name=row.Name;_alias=row.Alias??"";_category=row.CategoryId;_sectionProject=row.ProjectId;_position=row.Position.ToString(CultureInfo.InvariantCulture);_members=row.TaskIds?.ToList()??[];_focusEditor=true;
     }
     private void ReloadEditor(){if(_editing is {} id)Edit(id);else{_draftRevision=Todo.Revision;_draftSource=Todo.Selection;}_error=null;Read();}
     private void SetMember(Guid id,bool selected){if(selected&&!_members.Contains(id)){if(_members.Count>=100){_error="A goal supports at most 100 Todos.";return;}_members.Add(id);}else if(!selected)_members.Remove(id);}
@@ -167,10 +186,20 @@
         int? position=null;if(_kind==WorkspaceOrganizationKind.Section){if(!int.TryParse(_position,NumberStyles.None,CultureInfo.InvariantCulture,out var parsed)||parsed<0)throw new InvalidOperationException("Enter a nonnegative section order.");if(current is null||parsed!=current.Position)position=parsed;}
         if(_kind==WorkspaceOrganizationKind.Section&&current is null&&_sectionProject is null)throw new InvalidOperationException("Choose the project for this section.");
         var patch=new WorkspaceOrganizationPatch(Name:current?.Name==_name?null:_name,CategoryId:_kind==WorkspaceOrganizationKind.Project&&_category!=current?.CategoryId?_category:null,ClearCategory:_kind==WorkspaceOrganizationKind.Project&&current?.CategoryId is not null&&_category is null,
-            ProjectId:_kind==WorkspaceOrganizationKind.Section&&current is null?_sectionProject:null,Position:position,TaskIds:_kind==WorkspaceOrganizationKind.Goal&&(current?.TaskIds is null||!_members.SequenceEqual(current.TaskIds))?_members.ToArray():null);
+            ProjectId:_kind==WorkspaceOrganizationKind.Section&&current is null?_sectionProject:null,Position:position,TaskIds:_kind==WorkspaceOrganizationKind.Goal&&(current?.TaskIds is null||!_members.SequenceEqual(current.TaskIds))?_members.ToArray():null,
+            Alias:_kind==WorkspaceOrganizationKind.Project&&current is null&&!string.IsNullOrWhiteSpace(_alias)?ValidateAlias(_alias):null);
         if(patch==new WorkspaceOrganizationPatch())throw new InvalidOperationException("Change a field before reviewing.");return patch;
     }
     private async Task RunAsync(Func<Task> action){_error=null;try{await action();Read();}catch(InvalidOperationException error){_error=error.Message;}catch{_error="Organization state is unavailable. Keep the original request or command and check the original receipt.";}}
+    private static string ValidateAlias(string alias){if(!WorkspaceProjectAliases.IsValid(alias))throw new InvalidOperationException("Enter an alias with 1–64 ASCII letters or digits and single internal hyphens.");return alias;}
+    private Task PrepareAliasAsync()=>RunAsync(async()=>
+    {
+        RequireFresh();if(_kind!=WorkspaceOrganizationKind.Project||_editing is not {} id)throw new InvalidOperationException("Select the exact project before reviewing an alias.");
+        var current=WorkspaceOrganizationSnapshot.From(Todo.Snapshot!.Document,_kind,id)!;
+        var patch=string.IsNullOrWhiteSpace(_alias)?new WorkspaceOrganizationPatch(ClearAlias:true):new WorkspaceOrganizationPatch(Alias:ValidateAlias(_alias));
+        if(patch.ClearAlias&&current.Alias is null||patch.Alias is {} alias&&WorkspaceProjectAliases.Normalize(alias)==current.Alias)throw new InvalidOperationException("Change the alias before reviewing.");
+        await Todo.PrepareOrganizationAsync(new(_kind,WorkspaceOrganizationOperation.Update,id,patch));_focusReview=Organization.Preview is not null;
+    });
     private Task PrepareAsync()=>RunAsync(async()=>{RequireFresh();await Todo.PrepareOrganizationAsync(new(_kind,_editing is null?WorkspaceOrganizationOperation.Create:WorkspaceOrganizationOperation.Update,_editing,Patch()));_focusReview=Organization.Preview is not null;});
     private Task ArchiveAsync(Guid id)=>RunAsync(async()=>{if(FreshDisabled)throw new InvalidOperationException("Resolve the original change first.");await Todo.PrepareOrganizationAsync(new(_kind,WorkspaceOrganizationOperation.Archive,id));_focusReview=Organization.Preview is not null;});
     private Task RemoveAsync(Guid id)=>RunAsync(async()=>{if(FreshDisabled)throw new InvalidOperationException("Resolve the original change first.");var impact=Todo.ProjectRemoval(id,Todo.Revision);await Todo.PrepareOrganizationAsync(new(WorkspaceOrganizationKind.Project,WorkspaceOrganizationOperation.Remove,id,new(Removal:impact.Removal)));_focusReview=Organization.Preview is not null;});

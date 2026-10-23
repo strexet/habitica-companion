@@ -1,10 +1,15 @@
 import type { WorkspaceDocument } from './workspace-domain.ts';
 import { taskFilter } from './task-query.ts';
 import { WorkspaceError, workspaceObject, uuid } from './workspace-http.ts';
-import {projectRemovalFrom} from './workspace-organization.ts';
-export const organizationNames=['list_categories','list_projects','list_project_sections','list_labels','list_goals','get_project_removal_impact'] as const;
+import {projectRemovalFrom,normalizeProjectAlias} from './workspace-organization.ts';
+export const organizationNames=['resolve_project','list_categories','list_projects','list_project_sections','list_labels','list_goals','get_project_removal_impact'] as const;
 export type OrganizationTool=typeof organizationNames[number];
 export function organizationInput(name:OrganizationTool,input:unknown){
+ if(name==='resolve_project'){
+  const value=workspaceObject(input,['reference','expectedRevision']);
+  if(typeof value.reference!=='string'||!value.reference.trim()||value.reference.length>256)throw new WorkspaceError('invalid_filter',422);
+  return {...taskFilter(value.expectedRevision===undefined?{}:{expectedRevision:value.expectedRevision}),reference:value.reference};
+ }
  if(name==='get_project_removal_impact'){
   const value=workspaceObject(input,['projectId','expectedRevision']);return taskFilter({projectId:uuid(value.projectId),...(value.expectedRevision===undefined?{}:{expectedRevision:value.expectedRevision})});
  }
@@ -16,6 +21,12 @@ export function organizationInput(name:OrganizationTool,input:unknown){
 export function queryOrganization(document:WorkspaceDocument,name:OrganizationTool,input:unknown){
  const filter=organizationInput(name,input);
  if(filter.expectedRevision!==undefined&&filter.expectedRevision!==document.revision)throw new WorkspaceError('stale_revision',409);
+ if('reference' in filter){
+  const reference=filter.reference,alias=normalizeProjectAlias(reference),exact=/^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/.test(reference);
+  const matches=document.projects.filter(row=>exact?row.id===reference.toLowerCase():row.alias===alias||row.name===reference);
+  if(matches.length!==1)throw new WorkspaceError(matches.length?'ambiguous_project':'project_unavailable',matches.length?409:404);
+  return {provenance:'companion-canonical',workspaceId:document.id,revision:document.revision,project:matches[0]};
+ }
  if(name==='get_project_removal_impact'){
   const project=document.projects.find(row=>row.id===filter.projectId);if(!project)throw new WorkspaceError('project_unavailable',404);
   return {provenance:'companion-canonical',workspaceId:document.id,revision:document.revision,project,removal:projectRemovalFrom(document,project.id),canRemove:!project.isRemoved};

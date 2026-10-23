@@ -1,0 +1,179 @@
+{
+  "routes": {
+    "/": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/dashboard": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/diagnostics": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/inventory": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/live-tests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/party": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/pets-mounts": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/privacy": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/quests": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/settings": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/sign-in": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/signin": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/spells": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/convert": {
+      "fixtures": [
+        "conversion-project-alias"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/convert/{SourceTaskId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/history": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/inbox": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/lists": {
+      "fixtures": [
+        "todo-saved-editor"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/plan": {
+      "fixtures": [
+        "project-alias-planning"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/projects": {
+      "fixtures": [
+        "project-alias-create-review",
+        "project-alias-editor",
+        "project-alias-unknown",
+        "project-alias-retained-picker",
+        "todo-tree-project"
+      ],
+      "qualification": "captured synthetic states only"
+    },
+    "/todo/retire/{ConversionId:guid}": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/sync": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/tasks": {
+      "fixtures": [],
+      "qualification": "not captured"
+    },
+    "/todo/today": {
+      "fixtures": [],
+      "qualification": "not captured"
+    }
+  },
+  "surfaces": {
+    "form": [
+      "conversion-project-alias",
+      "project-alias-create-review",
+      "project-alias-editor",
+      "project-alias-planning",
+      "project-alias-retained-picker",
+      "project-alias-unknown",
+      "todo-saved-editor",
+      "todo-tree-project"
+    ],
+    "navigation": [
+      "conversion-project-alias",
+      "project-alias-create-review",
+      "project-alias-editor",
+      "project-alias-planning",
+      "project-alias-retained-picker",
+      "project-alias-unknown",
+      "todo-saved-editor",
+      "todo-tree-project"
+    ],
+    "confirmation": [
+      "conversion-project-alias",
+      "project-alias-create-review",
+      "project-alias-editor",
+      "project-alias-planning",
+      "project-alias-retained-picker",
+      "project-alias-unknown",
+      "todo-saved-editor",
+      "todo-tree-project"
+    ],
+    "tables": [],
+    "charts": [],
+    "logs": [],
+    "disabled-controls": [
+      "conversion-project-alias",
+      "project-alias-create-review",
+      "project-alias-editor",
+      "project-alias-planning",
+      "project-alias-retained-picker",
+      "project-alias-unknown",
+      "todo-saved-editor",
+      "todo-tree-project"
+    ],
+    "error": [
+      "conversion-project-alias",
+      "project-alias-create-review",
+      "project-alias-editor",
+      "project-alias-planning",
+      "project-alias-retained-picker",
+      "project-alias-unknown",
+      "todo-saved-editor",
+      "todo-tree-project"
+    ],
+    "loading": []
+  },
+  "omitted": [
+    "Modal overlay lifecycle is not represented by inline confirmation fixtures.",
+    "SVG graphics, decorative images and pseudo-elements require separate visual review.",
+    "CSS sampling covers supported solid, generated PNG and vertical linear backgrounds; unsupported paint is explicitly unqualified.",
+    "Physical devices, assistive technologies, hosted login and actual background execution remain unqualified."
+  ],
+  "primaryTargetRule": "44 pixels for marked primary actions, default-size filled controls and navigation links; auxiliary small controls remain separately reviewed."
+}

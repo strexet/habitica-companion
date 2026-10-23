@@ -1,0 +1,81 @@
+{
+  "taskId": "T-d46e457f-7139-416e-875a-840f9ff6ca89",
+  "recordedAtUtc": "2026-10-23T02:57:01.000932+00:00",
+  "status": "pass",
+  "checks": {
+    "goldenResolvedCases": 17,
+    "goldenClarificationExpectations": 10,
+    "finalDeadlineTests": 2,
+    "existingPluginAndTaskApiControls": 16,
+    "mcpDryBuild": "pass",
+    "skillValidator": "pass",
+    "changedProse": "pass",
+    "diffCheck": "pass",
+    "metadata": {
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "Latest recorded audit is stale; historical verdicts remain unchanged"
+      ]
+    }
+  },
+  "evidenceNotes": [
+    "Golden prompts describe intended host interpretation; no natural-language parser or host recognition run is claimed.",
+    "The combined attempt passed existing plugin/task API controls and calendar checks, then exposed a new OAuth fixture-label mismatch. The corrected deadline file passed separately.",
+    "After adding invalid-input controls, two consecutive executed controls returned the same quota refusal. Execution stopped for source inspection: normal MCP calls have a60/minute profile budget, while receipt recovery has a separate20-call budget. Removing recovery reads could not reduce normal admission.",
+    "A materially distinct control moved per-case state assertions to actual disposable D1 rows and retained public reads at the boundaries. Final tests pass without changing production quota policy, fixture auth or stored command expectations.",
+    "Original request/command recovery after later updates preserves the latest date and exactly one task. Invalid relative/numeric/leap wire strings refuse."
+  ],
+  "limits": [
+    "Actual fresh-chat ChatGPT/Codex recognition and automatic skill discovery remain unqualified.",
+    "No real account update, publication, notification or originating-chat delivery was exercised.",
+    "Calendar expectations use the existing deterministic civil helpers; the backend continues to accept ISO dates only."
+  ],
+  "operations": {
+    "perOperationDeadlineSeconds": "30-120",
+    "cleanupReserveSeconds": 5,
+    "controllerTimeSeconds": null,
+    "controllerTiming": "Not instrumented separately; bounded tool timings are retained.",
+    "toolTimings": {
+      "finalDeadline": {
+        "exitCode": 0,
+        "toolWallSeconds": 2.02,
+        "deadlineSeconds": 60,
+        "cleanupReserveSeconds": 5
+      },
+      "mcpBuild": {
+        "exitCode": 0,
+        "toolWallSeconds": 2.0,
+        "deadlineSeconds": 90,
+        "cleanupReserveSeconds": 5
+      }
+    },
+    "prerequisiteWaitingSeconds": 0,
+    "quotaFailures": [
+      {
+        "classification": "executed control",
+        "wallSeconds": 2.23,
+        "signature": "MCP429rate_limited"
+      },
+      {
+        "classification": "executed control",
+        "wallSeconds": 2.06,
+        "signature": "MCP429rate_limited"
+      }
+    ],
+    "circuitBreaker": "Stopped repeated control; inspected separate profile/recovery buckets before the materially distinct persisted-state control."
+  },
+  "sourceFingerprints": {
+    "plugin/skills/habitica-task-management/SKILL.md": "6dec36c5b360923f51872169fe265768d75ccff0b7909e08260e4e21d7611496",
+    "plugin/skills/habitica-task-management/references/deadline-dates.md": "40e5b77d4f4af99f13e15f83ff66f910661ebd7bc66d9f9e70e42fbaebaccbee",
+    "workers/chatgpt-mcp/src/task-tools.ts": "12fa2773709f380cc4cc4649f36ad3e25aeec639c84eb9a099df6a2c09c5558c",
+    "tests/fixtures/workspace/deadline-language-v1.json": "9d69892e45285b88d8e35001ebcd050e27c1b649931cbf24f5f356e0ed8d968d",
+    "workers/companion-workspace/test/deadline-language.test.mjs": "e844a1af2e901f929c4e85a6cabcf11e3ca6e61c4dbb26e63986cab851266e50",
+    "workers/shared/recurrence-calendar.ts": "d8532fef1c71efa8fe8da09af3a40ac4b5cb0edf65e0d9bde593c0fccc6a0c4f",
+    "skill-tree/documents/features.md": "8bc9ed4b7b60b4830a76b8f0c957abfb7119a1f214d80a2c50cdeb1c52e2c926",
+    "skill-tree/documents/technical.md": "8c2aac2580701bbd46bd11ee35b6a305a237d345f00ea3d84ec93c29089b6ea2",
+    "skill-tree/documents/habitica-api.md": "ee7b554d3c7013eb986db57f8a60a1b6c401baf3bfd945bbb5195b6d0d3e864e",
+    "skill-tree/documents/testing.md": "298d9055b8fd572650ecfe8a004d024a5cd062d84a2bc9f249f44efb890550e2",
+    "skill-tree/documents/ux-ui-manifest.md": "5aefe91bc02ff4538ccae4211e7b0e575a9f7151cf727ddaad64b41d2b6955d2"
+  }
+}

@@ -491,3 +491,20 @@ SpellsPage result fixtures cover partial, unknown, cleanup failure, refresh fail
 ### Spell recovery qualification
 
 Synthetic controller controls cover account isolation, later selections, explicit supersession, original-state verification, successful restore, lost equip acknowledgement, cancellation after the final cast, refused/unknown manual restore, stale review identity and cancelled manual restore. Browser storage controls exercise real IndexedDB revision exclusion, immutable originals, scope isolation, reload persistence and Web Locks exclusion/release across tabs. Three recovery fixtures cover long identifiers across six themes, six widths and both normal/enlarged text. Physical-device and live-account equipment behavior require separate qualification.
+
+
+## Project alias qualification
+
+project-alias-v1.json supplies shared C#/Worker raw-command hashes and a nine-step create/rename/archive/clear/reuse/remove/clear sequence. WorkspaceProjectAliasTests and project-alias.test.mjs cover normalization, malformed/empty/oversized values, duplicate imports, archived reservation, stale revisions, independent workspaces, unchanged journals, marker refusal and name/alias ambiguity. organization-api.test.mjs exercises actual MCP schemas, authenticated resolution, alias-bearing preparation/receipt recovery, competing previews, archived clear and export preservation with synthetic upstream responses. WorkspaceOrganizationClientTests binds normalized preview values and retained clear snapshots and rejects altered aliases. Existing organization hash fixtures retain legacy encoding checks. Publication, real-account effects and browser alias-editor presentation remain separate qualification.
+
+
+## Browser alias qualification
+
+TodoProjectAliasTests qualifies optional create, separate alias/name edits, clear, invalid/duplicate values, stale drafts, source changes, original preview/receipt recovery and exact GUID placement from duplicate-name alias labels. Maximum-length archived alias references remain selected across picker pages. TodoHierarchyPanelTests and TodoSavedListPanelTests include alias-bearing project navigation and saved filters. WorkspaceChecklistConversionPanelTests verifies exact alias-labelled destination selection without preparing a project copy. Synthetic Razor fixtures cover project forms, reviews, uncertain acceptance, retained selection, planning, saved lists and conversion destinations. MCP organization fixtures qualify shorthand resolution, name/alias ambiguity and exact reviewed placement with separate command receipts. Rendered qualification uses current published assets and deterministic themes; physical devices, assistive technology, actual host reasoning and live project cleanup remain unqualified.
+
+
+## Multilingual deadline contract qualification
+
+deadline-language-v1.json contains seventeen resolved and ten clarification expectations with Russian/English prompts, explicit timezone/current-date context, exact task/request identities and ISO mutation arguments. Calendar controls reuse the existing civil-date helpers for today, tomorrow, ten days, year omission, December/leap rollover and DST near midnight. Spring/fall controls demonstrate differing results from adding fixed twenty-four-hour intervals to an instant. Invalid relative/numeric/leap strings remain rejected by canonical command validation.
+
+The synthetic MCP fixture applies every resolved case to one existing Todo, verifies omitted text/notes/priority/plannedDate preservation, required correspondence flags and original receipts, then recovers an earlier accepted request after later edits without duplicating tasks or changing the latest deadline. Plugin/schema and ordinary task API regressions retain scope and transport checks. Clarification rows describe required host decisions, not an executed language parser. No fresh-chat ChatGPT/Codex recognition, notification delivery, live account or publication is qualified.

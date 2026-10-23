@@ -62,4 +62,14 @@ public sealed class WorkspaceChecklistConversionPanelTests:BunitContext
     [Fact]
     public async Task Disconnected_conversion_explains_cloud_prerequisite_without_writes()
     {var(api,_)=await Setup();api.Connected=false;var cut=Render<TodoConversionPage>();Assert.Contains("Connect the cloud workspace",cut.Markup);Assert.Empty(api.Requests);Save("conversion-unavailable",cut.Markup);}
+    [Fact]
+    public async Task Destination_alias_selects_exact_existing_project_without_preparing_a_copy()
+    {
+        var(api,c)=await Setup();var project=new WorkspaceProject(Guid.NewGuid(),1,"Exact <codev> destination",Alias:new string('d',64));
+        api.State=api.State with {Document=api.State.Document with {Projects=[project]}};await Services.GetRequiredService<TodoWorkspacePresentation>().LoadSelectedAsync();
+        var cut=Render<WorkspaceChecklistConversionPanel>(p=>p.Add(x=>x.SourceTaskId,api.Source.Id));
+        var option=cut.FindAll("[data-testid='plan-project'] option").Single(row=>row.TextContent.Contains("alias: "+project.Alias));cut.Find("[data-testid='plan-project']").Change(option.GetAttribute("value"));Assert.Equal(project.Id,c.ProjectId);Assert.Contains("&lt;codev&gt;",cut.Markup);
+        Save("conversion-project-alias",cut.Markup);Assert.Empty(api.Requests);Assert.Empty(api.Accepts);Assert.Equal(project.Name,api.State.Document.Projects.Single().Name);
+    }
+
 }

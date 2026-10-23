@@ -44,9 +44,12 @@ public static class WorkspaceRules
         void Name(string? name, Guid id) { if (string.IsNullOrWhiteSpace(name) || name.Length > 256) errors.Add(new("invalid_name", id)); }
         void Reference(Guid? id, bool exists, Guid owner) { if (id is not null && !exists) errors.Add(new("missing_reference", owner)); }
         foreach (var category in document.Categories) Name(category.Name, category.Id);
+        var projectAliases=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var project in document.Projects)
         {
             Name(project.Name, project.Id); Reference(project.CategoryId, project.CategoryId is { } id && categories.Contains(id), project.Id);
+            if(project.Alias is {} alias&&(!WorkspaceProjectAliases.IsCanonical(alias)||!projectAliases.Add(alias)))
+                errors.Add(new("invalid_project_alias",project.Id));
             if(project.IsRemoved&&(!project.IsArchived||document.OrganizationHistory?.Any(row=>row is { Command: { Operation: WorkspaceOrganizationOperation.Remove } command, Snapshot: { IsRemoved: true } }&&command.EntityId==project.Id)!=true))
                 errors.Add(new("invalid_project_removal",project.Id));
         }

@@ -1,5 +1,6 @@
 import {sourceRetirements,type SourceRetirement} from './source-retirements.ts';
 import {checklistConversions,type ChecklistConversion} from './checklist-conversion.ts';
+import {projectAlias} from './workspace-organization.ts';
 import {tagLedger,type TagLedger} from './tag-projection.ts';
 import {savedTaskViews,type SavedTaskView} from './saved-task-views.ts';
 import {executionStage,type TodoExecutionStage} from './todo-stage.ts';
@@ -8,7 +9,7 @@ import { habiticaDetails, type HabiticaTaskDetails } from "./task-details.ts";
 import { WorkspaceError, workspaceObject, uuid } from "./workspace-http.ts";
 export interface Entity { id: string; revision: number; isArchived: boolean }
 export interface Category extends Entity { name: string }
-export interface Project extends Category { categoryId: string | null; isRemoved?:boolean }
+export interface Project extends Category { categoryId: string | null; isRemoved?:boolean; alias?:string }
 export interface Section extends Category { projectId: string; position: number }
 export interface Goal extends Category { taskIds: string[] }
 export interface Recurrence { frequency: "daily" | "weekly" | "monthly"; interval: number; startDate: string; timeZoneId: string; weekdays: string[]; daysOfMonth: number[] }
@@ -71,7 +72,7 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   if (value.schemaVersion !== 1) return fail(); const revision = integer(value.revision); const id = uuid(value.id);
   const names = (key: string): Category[] => list(value[key]).map(item => { const row = workspaceObject(item, [...baseKeys, "name"]); return { ...entity(row, revision), name: named(row.name) }; });
   const categories = names("categories"); const labels = names("labels");
-  const projects:Project[] = list(value.projects).map(item => { const row = workspaceObject(item, [...baseKeys, "name", "categoryId", "isRemoved"]),base=entity(row,revision); if(row.isRemoved!==undefined&&typeof row.isRemoved!=="boolean"||row.isRemoved===true&&!base.isArchived)return fail(); return { ...base, name: named(row.name), categoryId: optionalId(row.categoryId),...(row.isRemoved===true?{isRemoved:true}:{}) }; });
+  const projects:Project[] = list(value.projects).map(item => { const row = workspaceObject(item, [...baseKeys, "name", "categoryId", "isRemoved", "alias"]),base=entity(row,revision); if(row.isRemoved!==undefined&&typeof row.isRemoved!=="boolean"||row.isRemoved===true&&!base.isArchived)return fail(); return { ...base, name: named(row.name), categoryId: optionalId(row.categoryId),...(row.isRemoved===true?{isRemoved:true}:{}),...(row.alias==null?{}:{alias:projectAlias(row.alias,true)}) }; });
   const sections = list(value.sections).map(item => { const row = workspaceObject(item, [...baseKeys, "name", "projectId", "position"]); return { ...entity(row, revision), name: named(row.name), projectId: uuid(row.projectId), position: integer(row.position ?? 0, 0, 2147483647) }; });
   const goals = list(value.goals).map(item => { const row = workspaceObject(item, [...baseKeys, "name", "taskIds"]); if (!Array.isArray(row.taskIds)) return fail(); return { ...entity(row, revision), name: named(row.name), taskIds: ids(row.taskIds) }; });
   const tasks:CompanionTask[]=list(value.tasks).map(item=>workspaceTask(item,revision));
@@ -85,6 +86,7 @@ export function workspaceDocument(input: unknown): WorkspaceDocument {
   if (all.length + (Array.isArray(value.organizationHistory)?value.organizationHistory.length:0) > 100000 || new Set([id, ...all.map(item => item.id)]).size !== all.length + 1) return fail();
   const categoryIds = new Set(categories.map(item => item.id)); const projectMap = new Map(projects.map(item => [item.id, item])); const sectionMap = new Map(sections.map(item => [item.id, item])); const taskMap = new Map(tasks.map(item => [item.id, item])); const labelIds = new Set(labels.map(item => item.id)); const occurrenceMap = new Map(occurrences.map(item => [item.id, item]));
   for(const view of views){const f=view.query.filter;if(f.categoryId&&!categoryIds.has(f.categoryId)||f.projectId&&!projectMap.has(f.projectId)||f.labelId&&!labelIds.has(f.labelId))return fail();}
+  const aliases=projects.flatMap(row=>row.alias===undefined?[]:[row.alias]);if(new Set(aliases).size!==aliases.length)return fail();
   for (const project of projects) if (project.categoryId && !categoryIds.has(project.categoryId)) return fail();
   for (const section of sections) if (!projectMap.has(section.projectId)) return fail();
   for (const goal of goals) if (goal.taskIds.some(id => !taskMap.has(id))) return fail();

@@ -1,0 +1,653 @@
+{
+  "initial": {
+    "document": {
+      "schemaVersion": 1,
+      "id": "10000000-0000-4000-8000-000000000001",
+      "revision": 1,
+      "categories": [],
+      "projects": [],
+      "sections": [],
+      "labels": [],
+      "goals": [],
+      "tasks": [],
+      "occurrences": [],
+      "completions": [],
+      "habitScores": [],
+      "projections": []
+    },
+    "storeVersion": 1,
+    "commands": [],
+    "events": []
+  },
+  "steps": [
+    {
+      "name": "normalize alias without changing display name",
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000004",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 1,
+        "kind": "project",
+        "operation": "create",
+        "entityId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "name": "<codev> Project",
+          "categoryId": null,
+          "clearCategory": false,
+          "projectId": null,
+          "position": null,
+          "taskIds": null,
+          "alias": "  CoDev  "
+        }
+      },
+      "payloadHash": "3a462c3bcb5f32512f2c09acbdfc965c70d290c58ea4a5d9fb23970d803e0d17",
+      "snapshot": {
+        "kind": "project",
+        "id": "10000000-0000-4000-8000-000000000002",
+        "revision": 2,
+        "name": "<codev> Project",
+        "isArchived": false,
+        "categoryId": null,
+        "projectId": null,
+        "position": 0,
+        "taskIds": null,
+        "alias": "codev"
+      }
+    },
+    {
+      "name": "ordinary rename preserves alias",
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000005",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 2,
+        "kind": "project",
+        "operation": "update",
+        "entityId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "name": "Renamed",
+          "categoryId": null,
+          "clearCategory": false,
+          "projectId": null,
+          "position": null,
+          "taskIds": null
+        }
+      },
+      "payloadHash": "069452a3f161c2471057652a1ccd099b78e6f15b0e8623ba28ced6a94ad00cf6",
+      "snapshot": {
+        "kind": "project",
+        "id": "10000000-0000-4000-8000-000000000002",
+        "revision": 3,
+        "name": "Renamed",
+        "isArchived": false,
+        "categoryId": null,
+        "projectId": null,
+        "position": 0,
+        "taskIds": null,
+        "alias": "codev"
+      }
+    },
+    {
+      "name": "alias rename",
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000006",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 3,
+        "kind": "project",
+        "operation": "update",
+        "entityId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "name": null,
+          "categoryId": null,
+          "clearCategory": false,
+          "projectId": null,
+          "position": null,
+          "taskIds": null,
+          "alias": " New-42 "
+        }
+      },
+      "payloadHash": "b05d4758d643f6abfa5c9e0100ca666fab4adfa04e5870d804aeae73a27d7188",
+      "snapshot": {
+        "kind": "project",
+        "id": "10000000-0000-4000-8000-000000000002",
+        "revision": 4,
+        "name": "Renamed",
+        "isArchived": false,
+        "categoryId": null,
+        "projectId": null,
+        "position": 0,
+        "taskIds": null,
+        "alias": "new-42"
+      }
+    },
+    {
+      "name": "archive retains alias",
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000007",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 4,
+        "kind": "project",
+        "operation": "archive",
+        "entityId": "10000000-0000-4000-8000-000000000002",
+        "patch": null
+      },
+      "payloadHash": "cecf5484defa255341dbda3c8223857dbce3363ddac13e64965b5bf41ad3912a",
+      "snapshot": {
+        "kind": "project",
+        "id": "10000000-0000-4000-8000-000000000002",
+        "revision": 5,
+        "name": "Renamed",
+        "isArchived": true,
+        "categoryId": null,
+        "projectId": null,
+        "position": 0,
+        "taskIds": null,
+        "alias": "new-42"
+      }
+    },
+    {
+      "name": "explicit clear on archive",
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000008",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 5,
+        "kind": "project",
+        "operation": "update",
+        "entityId": "10000000-0000-4000-8000-000000000002",
+        "patch": {
+          "name": null,
+          "categoryId": null,
+          "clearCategory": false,
+          "projectId": null,
+          "position": null,
+          "taskIds": null,
+          "clearAlias": true
+        }
+      },
+      "payloadHash": "4a20570204f310a5ff30a84872474d2cd4edd224423b0648aa753e20c644f2ca",
+      "snapshot": {
+        "kind": "project",
+        "id": "10000000-0000-4000-8000-000000000002",
+        "revision": 6,
+        "name": "Renamed",
+        "isArchived": true,
+        "categoryId": null,
+        "projectId": null,
+        "position": 0,
+        "taskIds": null
+      }
+    },
+    {
+      "name": "reuse released alias",
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000009",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 6,
+        "kind": "project",
+        "operation": "create",
+        "entityId": "10000000-0000-4000-8000-000000000003",
+        "patch": {
+          "name": "Independent",
+          "categoryId": null,
+          "clearCategory": false,
+          "projectId": null,
+          "position": null,
+          "taskIds": null,
+          "alias": "NEW-42"
+        }
+      },
+      "payloadHash": "4e7e6fc1f3484288fd132c65e85ed655f652b02439441585e3548cf8d7f1f906",
+      "snapshot": {
+        "kind": "project",
+        "id": "10000000-0000-4000-8000-000000000003",
+        "revision": 7,
+        "name": "Independent",
+        "isArchived": false,
+        "categoryId": null,
+        "projectId": null,
+        "position": 0,
+        "taskIds": null,
+        "alias": "new-42"
+      }
+    },
+    {
+      "name": "remove retains alias",
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000010",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 7,
+        "kind": "project",
+        "operation": "remove",
+        "entityId": "10000000-0000-4000-8000-000000000003",
+        "patch": {
+          "name": null,
+          "categoryId": null,
+          "clearCategory": false,
+          "projectId": null,
+          "position": null,
+          "taskIds": null,
+          "removal": {
+            "taskIds": [],
+            "sectionIds": []
+          }
+        }
+      },
+      "payloadHash": "46dc651c368ee60e3ddb085edd87d85e9488e9abf869724d21811a57ebcb389e",
+      "snapshot": {
+        "kind": "project",
+        "id": "10000000-0000-4000-8000-000000000003",
+        "revision": 8,
+        "name": "Independent",
+        "isArchived": true,
+        "categoryId": null,
+        "projectId": null,
+        "position": 0,
+        "taskIds": null,
+        "alias": "new-42",
+        "isRemoved": true
+      }
+    },
+    {
+      "name": "explicit clear on removed tombstone",
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000011",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 8,
+        "kind": "project",
+        "operation": "update",
+        "entityId": "10000000-0000-4000-8000-000000000003",
+        "patch": {
+          "name": null,
+          "categoryId": null,
+          "clearCategory": false,
+          "projectId": null,
+          "position": null,
+          "taskIds": null,
+          "clearAlias": true
+        }
+      },
+      "payloadHash": "2f5ad267ca49835cf943da1baa8171b2f5dee5d29154bbb4a8a02240c4e194cb",
+      "snapshot": {
+        "kind": "project",
+        "id": "10000000-0000-4000-8000-000000000003",
+        "revision": 9,
+        "name": "Independent",
+        "isArchived": true,
+        "categoryId": null,
+        "projectId": null,
+        "position": 0,
+        "taskIds": null,
+        "isRemoved": true
+      }
+    },
+    {
+      "name": "reuse after tombstone clear",
+      "command": {
+        "id": "10000000-0000-4000-8000-000000000013",
+        "workspaceId": "10000000-0000-4000-8000-000000000001",
+        "expectedRevision": 9,
+        "kind": "project",
+        "operation": "create",
+        "entityId": "10000000-0000-4000-8000-000000000012",
+        "patch": {
+          "name": "Third",
+          "categoryId": null,
+          "clearCategory": false,
+          "projectId": null,
+          "position": null,
+          "taskIds": null,
+          "alias": "new-42"
+        }
+      },
+      "payloadHash": "3b089ba52b4abc41db1ad87b604773f1ea7532ba3d52af35970cd916874afe19",
+      "snapshot": {
+        "kind": "project",
+        "id": "10000000-0000-4000-8000-000000000012",
+        "revision": 10,
+        "name": "Third",
+        "isArchived": false,
+        "categoryId": null,
+        "projectId": null,
+        "position": 0,
+        "taskIds": null,
+        "alias": "new-42"
+      }
+    }
+  ],
+  "final": {
+    "document": {
+      "schemaVersion": 1,
+      "id": "10000000-0000-4000-8000-000000000001",
+      "revision": 10,
+      "categories": [],
+      "projects": [
+        {
+          "id": "10000000-0000-4000-8000-000000000002",
+          "revision": 6,
+          "isArchived": true,
+          "name": "Renamed",
+          "categoryId": null
+        },
+        {
+          "id": "10000000-0000-4000-8000-000000000003",
+          "revision": 9,
+          "isArchived": true,
+          "name": "Independent",
+          "categoryId": null,
+          "isRemoved": true
+        },
+        {
+          "id": "10000000-0000-4000-8000-000000000012",
+          "revision": 10,
+          "isArchived": false,
+          "name": "Third",
+          "categoryId": null,
+          "alias": "new-42"
+        }
+      ],
+      "sections": [],
+      "labels": [],
+      "goals": [],
+      "tasks": [],
+      "occurrences": [],
+      "completions": [],
+      "habitScores": [],
+      "projections": [],
+      "organizationHistory": [
+        {
+          "command": {
+            "id": "10000000-0000-4000-8000-000000000004",
+            "workspaceId": "10000000-0000-4000-8000-000000000001",
+            "expectedRevision": 1,
+            "kind": "project",
+            "operation": "create",
+            "entityId": "10000000-0000-4000-8000-000000000002",
+            "patch": {
+              "name": "<codev> Project",
+              "categoryId": null,
+              "clearCategory": false,
+              "projectId": null,
+              "position": null,
+              "taskIds": null,
+              "alias": "  CoDev  "
+            }
+          },
+          "payloadHash": "3a462c3bcb5f32512f2c09acbdfc965c70d290c58ea4a5d9fb23970d803e0d17",
+          "acceptedAtUtc": "2026-10-23T10:00:00Z",
+          "snapshot": {
+            "kind": "project",
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 2,
+            "name": "<codev> Project",
+            "isArchived": false,
+            "categoryId": null,
+            "projectId": null,
+            "position": 0,
+            "taskIds": null,
+            "alias": "codev"
+          }
+        },
+        {
+          "command": {
+            "id": "10000000-0000-4000-8000-000000000005",
+            "workspaceId": "10000000-0000-4000-8000-000000000001",
+            "expectedRevision": 2,
+            "kind": "project",
+            "operation": "update",
+            "entityId": "10000000-0000-4000-8000-000000000002",
+            "patch": {
+              "name": "Renamed",
+              "categoryId": null,
+              "clearCategory": false,
+              "projectId": null,
+              "position": null,
+              "taskIds": null
+            }
+          },
+          "payloadHash": "069452a3f161c2471057652a1ccd099b78e6f15b0e8623ba28ced6a94ad00cf6",
+          "acceptedAtUtc": "2026-10-23T10:00:00Z",
+          "snapshot": {
+            "kind": "project",
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 3,
+            "name": "Renamed",
+            "isArchived": false,
+            "categoryId": null,
+            "projectId": null,
+            "position": 0,
+            "taskIds": null,
+            "alias": "codev"
+          }
+        },
+        {
+          "command": {
+            "id": "10000000-0000-4000-8000-000000000006",
+            "workspaceId": "10000000-0000-4000-8000-000000000001",
+            "expectedRevision": 3,
+            "kind": "project",
+            "operation": "update",
+            "entityId": "10000000-0000-4000-8000-000000000002",
+            "patch": {
+              "name": null,
+              "categoryId": null,
+              "clearCategory": false,
+              "projectId": null,
+              "position": null,
+              "taskIds": null,
+              "alias": " New-42 "
+            }
+          },
+          "payloadHash": "b05d4758d643f6abfa5c9e0100ca666fab4adfa04e5870d804aeae73a27d7188",
+          "acceptedAtUtc": "2026-10-23T10:00:00Z",
+          "snapshot": {
+            "kind": "project",
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 4,
+            "name": "Renamed",
+            "isArchived": false,
+            "categoryId": null,
+            "projectId": null,
+            "position": 0,
+            "taskIds": null,
+            "alias": "new-42"
+          }
+        },
+        {
+          "command": {
+            "id": "10000000-0000-4000-8000-000000000007",
+            "workspaceId": "10000000-0000-4000-8000-000000000001",
+            "expectedRevision": 4,
+            "kind": "project",
+            "operation": "archive",
+            "entityId": "10000000-0000-4000-8000-000000000002",
+            "patch": null
+          },
+          "payloadHash": "cecf5484defa255341dbda3c8223857dbce3363ddac13e64965b5bf41ad3912a",
+          "acceptedAtUtc": "2026-10-23T10:00:00Z",
+          "snapshot": {
+            "kind": "project",
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 5,
+            "name": "Renamed",
+            "isArchived": true,
+            "categoryId": null,
+            "projectId": null,
+            "position": 0,
+            "taskIds": null,
+            "alias": "new-42"
+          }
+        },
+        {
+          "command": {
+            "id": "10000000-0000-4000-8000-000000000008",
+            "workspaceId": "10000000-0000-4000-8000-000000000001",
+            "expectedRevision": 5,
+            "kind": "project",
+            "operation": "update",
+            "entityId": "10000000-0000-4000-8000-000000000002",
+            "patch": {
+              "name": null,
+              "categoryId": null,
+              "clearCategory": false,
+              "projectId": null,
+              "position": null,
+              "taskIds": null,
+              "clearAlias": true
+            }
+          },
+          "payloadHash": "4a20570204f310a5ff30a84872474d2cd4edd224423b0648aa753e20c644f2ca",
+          "acceptedAtUtc": "2026-10-23T10:00:00Z",
+          "snapshot": {
+            "kind": "project",
+            "id": "10000000-0000-4000-8000-000000000002",
+            "revision": 6,
+            "name": "Renamed",
+            "isArchived": true,
+            "categoryId": null,
+            "projectId": null,
+            "position": 0,
+            "taskIds": null
+          }
+        },
+        {
+          "command": {
+            "id": "10000000-0000-4000-8000-000000000009",
+            "workspaceId": "10000000-0000-4000-8000-000000000001",
+            "expectedRevision": 6,
+            "kind": "project",
+            "operation": "create",
+            "entityId": "10000000-0000-4000-8000-000000000003",
+            "patch": {
+              "name": "Independent",
+              "categoryId": null,
+              "clearCategory": false,
+              "projectId": null,
+              "position": null,
+              "taskIds": null,
+              "alias": "NEW-42"
+            }
+          },
+          "payloadHash": "4e7e6fc1f3484288fd132c65e85ed655f652b02439441585e3548cf8d7f1f906",
+          "acceptedAtUtc": "2026-10-23T10:00:00Z",
+          "snapshot": {
+            "kind": "project",
+            "id": "10000000-0000-4000-8000-000000000003",
+            "revision": 7,
+            "name": "Independent",
+            "isArchived": false,
+            "categoryId": null,
+            "projectId": null,
+            "position": 0,
+            "taskIds": null,
+            "alias": "new-42"
+          }
+        },
+        {
+          "command": {
+            "id": "10000000-0000-4000-8000-000000000010",
+            "workspaceId": "10000000-0000-4000-8000-000000000001",
+            "expectedRevision": 7,
+            "kind": "project",
+            "operation": "remove",
+            "entityId": "10000000-0000-4000-8000-000000000003",
+            "patch": {
+              "name": null,
+              "categoryId": null,
+              "clearCategory": false,
+              "projectId": null,
+              "position": null,
+              "taskIds": null,
+              "removal": {
+                "taskIds": [],
+                "sectionIds": []
+              }
+            }
+          },
+          "payloadHash": "46dc651c368ee60e3ddb085edd87d85e9488e9abf869724d21811a57ebcb389e",
+          "acceptedAtUtc": "2026-10-23T10:00:00Z",
+          "snapshot": {
+            "kind": "project",
+            "id": "10000000-0000-4000-8000-000000000003",
+            "revision": 8,
+            "name": "Independent",
+            "isArchived": true,
+            "categoryId": null,
+            "projectId": null,
+            "position": 0,
+            "taskIds": null,
+            "isRemoved": true,
+            "alias": "new-42"
+          }
+        },
+        {
+          "command": {
+            "id": "10000000-0000-4000-8000-000000000011",
+            "workspaceId": "10000000-0000-4000-8000-000000000001",
+            "expectedRevision": 8,
+            "kind": "project",
+            "operation": "update",
+            "entityId": "10000000-0000-4000-8000-000000000003",
+            "patch": {
+              "name": null,
+              "categoryId": null,
+              "clearCategory": false,
+              "projectId": null,
+              "position": null,
+              "taskIds": null,
+              "clearAlias": true
+            }
+          },
+          "payloadHash": "2f5ad267ca49835cf943da1baa8171b2f5dee5d29154bbb4a8a02240c4e194cb",
+          "acceptedAtUtc": "2026-10-23T10:00:00Z",
+          "snapshot": {
+            "kind": "project",
+            "id": "10000000-0000-4000-8000-000000000003",
+            "revision": 9,
+            "name": "Independent",
+            "isArchived": true,
+            "categoryId": null,
+            "projectId": null,
+            "position": 0,
+            "taskIds": null,
+            "isRemoved": true
+          }
+        },
+        {
+          "command": {
+            "id": "10000000-0000-4000-8000-000000000013",
+            "workspaceId": "10000000-0000-4000-8000-000000000001",
+            "expectedRevision": 9,
+            "kind": "project",
+            "operation": "create",
+            "entityId": "10000000-0000-4000-8000-000000000012",
+            "patch": {
+              "name": "Third",
+              "categoryId": null,
+              "clearCategory": false,
+              "projectId": null,
+              "position": null,
+              "taskIds": null,
+              "alias": "new-42"
+            }
+          },
+          "payloadHash": "3b089ba52b4abc41db1ad87b604773f1ea7532ba3d52af35970cd916874afe19",
+          "acceptedAtUtc": "2026-10-23T10:00:00Z",
+          "snapshot": {
+            "kind": "project",
+            "id": "10000000-0000-4000-8000-000000000012",
+            "revision": 10,
+            "name": "Third",
+            "isArchived": false,
+            "categoryId": null,
+            "projectId": null,
+            "position": 0,
+            "taskIds": null,
+            "alias": "new-42"
+          }
+        }
+      ]
+    },
+    "storeVersion": 10,
+    "commands": [],
+    "events": [],
+    "authority": null
+  }
+}

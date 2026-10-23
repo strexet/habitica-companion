@@ -1334,3 +1334,20 @@ SendForegroundMutationAsync reuses SendForDocumentAsync and the existing request
 Foreground spell auto-equipment captures a fresh original selection before journal creation. Web Locks serialize journal execution across same-origin tabs; unsupported locking refuses recovery. Each toggle persists an in-flight slot before dispatch and verifies selection through an authenticated read after acknowledgement. Unknown equipment outcomes retain saved recovery. The Spells recovery panel verifies the signed-in account before exposing saved slots and binds explicit restoration or supersession to the reviewed operation identity. Later differing selections remain untouched without explicit supersession. Native equipment lacks conditional mutation; external clients can still race a final read and toggle.
 
 Local synthetic qualification includes controller recovery scenarios, real IndexedDB/Web Locks and rendered recovery fixtures. Native conditional equipment updates remain unavailable; actual account effects, physical devices and assistive technologies remain separate qualification.
+
+
+## Canonical project alias identity
+
+Optional project/snapshot alias and patch alias/clearAlias fields extend schema 1 with omission of unused values. WorkspaceProjectAliases and mirrored Worker helpers validate canonical lowercase ASCII aliases and workspace-wide uniqueness, including retained lifecycle records. Organization engines normalize submitted alias intent into snapshots and preserve exact submitted patch bytes in receipts. Explicit clear-only updates can release archived/removed aliases without reopening metadata. Document serialization, journal imports and existing ownership handoff validate and retain aliases without a new table or migration.
+
+Alias-bearing commands use companion-organization-command-v4 with original fixed-order fields followed by raw alias and clear flag. Commands without alias intent retain v1/v2/v3 hashes. Snapshot equivalence and history transitions include alias identity. Native task command hashes remain unchanged. Cloud preparation requires expectedRevision for alias intent; the existing canonical D1 transaction and store-version guard enforce competing writes. Alias resolution operates only on the authenticated canonical snapshot under tasks:read. Resolved IDs remain required for subsequent writes; no account routing, credential policy, executor or upstream API changes occur. Used extensions require coordinated strict-reader updates.
+
+
+## Browser alias review ownership
+
+TodoOrganizationPanel maintains alias input within the existing source/revision-bound editor context. Project creation can include alias; existing-project alias set/clear uses a separate native organization command containing only alias intent. Preview identity, canonical snapshot equivalence and original receipt recovery remain in WorkspaceOrganizationController and WorkspaceCloudClient. Picker options carry GUID values with separate alias labels, preserving retained selection without name-based writes. Shared picker text inherits bounded wrapping independently of the embedding route. Plugin planning references resolve shorthand through the authenticated canonical read and require exact IDs for later commands. No new endpoint, store, permission or live operation is supplied by the browser milestone.
+
+
+## Agent deadline interpretation boundary
+
+Natural-language deadline interpretation belongs to the packaged task-management guidance. MCP deadline schema/prepare descriptions require an explicit all-day ISO label before command preparation. Existing canonical date validation, partial-update hashes, revision guards, normal task correspondence and durable receipts remain unchanged. No second date parser, new persistence field or scheduling service is added. Synthetic golden cases reuse recurrenceLocalDate and the existing civil recurrence evaluator for calendar expectations, then exercise the actual MCP/Workspace update path. Golden prompts do not establish model recognition or host activation.

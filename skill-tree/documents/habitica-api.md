@@ -1396,3 +1396,13 @@ Foreground cast and equipment operations require success true with object data. 
 ### Foreground equipment recovery
 
 Equipment recovery uses the existing paced own-account reads and equipped-gear endpoint. A fresh read verifies original gear before temporary equipment; every dispatch records an in-flight slot and every acknowledgement requires an observed expected selection. Missing acknowledgements remain unresolved. Explicit recovery reads again and preserves equipment differing from both recorded selections. Native equipment has no conditional-write token, so external-client changes can race the final read and toggle. Recovery supplies neither cast replay nor background execution.
+
+
+## Canonical project aliases
+
+resolve_project is an own-workspace canonical read under tasks:read, independent of Habitica task/tag correlation aliases. Input contains reference and optional expectedRevision only. Output identifies workspace/revision and one exact project, including retained lifecycle flags. Exact UUID selects canonical ID; normalized alias or exact-name collisions refuse ambiguity. list_projects exposes optional alias alongside unchanged name/ID. Organization preparation accepts alias/clearAlias only for projects and requires explicit expectedRevision. Archived/removed records permit only exact clearAlias updates. Alias identity grants no scope, enrollment or native mapping. No Habitica endpoint, request, score or tag identity is introduced.
+
+
+## Agent-resolved deadline dates
+
+prepare_task_command continues to accept patch.deadline as an exact ISO civil date on supported task kinds. Relative `dd`/`дд` expressions must resolve before calling the tool; ambiguous intent, numeric order, missing current-date/timezone context and invalid/leap dates require clarification. updateTask targets the exact existing canonical task and retains the ordinary required correspondence policy. The workflow changes no native endpoint, timezone interpretation or Habitica due-state formula. A saved deadline grants no reminder, review or originating-chat delivery guarantee; receipt recovery retains original arguments after acknowledgement loss.

@@ -823,3 +823,15 @@ Spells renders the last spell operation in a persistent status surface above the
 ### Spell recovery surface
 
 The Spells equipment recovery section exposes persisted work through an authenticated check. Exact original/temporary slots and unresolved status remain visible together. Restore original gear and Keep current gear have separate meanings; later selections require explicit supersession. Controls disable during active work. Recovery never offers a spell replay. Long equipment identifiers wrap within existing theme-aware card surfaces.
+
+
+## Canonical alias presentation boundary
+
+Projects shows optional alias input during creation. Existing-project alias authoring uses a separate form with the exact selected name/ID, a normalized preview and explicit blank-to-clear review. Name/category drafts never join an alias-only change. Name-marker cleanup requires a separate explicit name review after alias acceptance; a marker such as `<codev>` supplies no alias semantics.
+
+Project options show escaped names, alias labels and disambiguating IDs. Selected off-page or archived references retain visible alias and lifecycle context. Shared placement, project navigation, saved-view filters and conversion destinations keep exact GUID option values. Continuous alias text wraps inside the picker. Agent shorthand resolves to an exact canonical project before reviewed commands; ambiguity requires explicit selection. Clearing a retained alias changes no archive/removal lifecycle or task placement.
+
+
+## Agent deadline wording
+
+An agent deadline review states the exact ISO date and a readable local interpretation. Relative dates also state the observed local anchor date and timezone. Missing material date/zone context, ambiguous `dd`/`дд` usage, numeric order and uncertain leap dates remain explicit questions before preparation. Existing-task identity, ordinary preview approval and original receipt recovery remain visible. The stored deadline never implies a planned date, reminder or originating-chat notification. Browser date inputs remain exact-date controls; packaged guidance owns natural-language interpretation.

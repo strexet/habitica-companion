@@ -18,6 +18,19 @@ public sealed class WorkspaceOrganizationClientTests
     private static WorkspaceOrganizationCommand Intent(Guid id)=>new(Guid.NewGuid(),id,1,WorkspaceOrganizationKind.Category,WorkspaceOrganizationOperation.Create,Guid.NewGuid(),new(Name:"Reviewed area"));
     private static WorkspaceOrganizationPreview Preview(WorkspaceOrganizationCommand command)=>new(command.Id,Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(10),false,command,WorkspaceOrganizationCommands.Apply(command,null),false,false);
     private static WorkspaceOrganizationReceipt Receipt(WorkspaceOrganizationPreview p)=>new(p.Command.Id,p.CorrelationId,p.Command.WorkspaceId,p.Command.Kind,p.Command.Operation,p.Command.EntityId,new(p.Command,WorkspaceOrganizationCommands.Hash(p.Command),DateTimeOffset.UtcNow,p.Snapshot),true,false,0,0,true,false);
+    [Theory]
+    [InlineData(false)][InlineData(true)]
+    public async Task Alias_preview_binds_normalized_value_and_retained_clear(bool clear)
+    {
+        var id=Guid.NewGuid();var command=Intent(id) with {Kind=WorkspaceOrganizationKind.Project,Operation=clear?WorkspaceOrganizationOperation.Update:WorkspaceOrganizationOperation.Create,Patch=clear?new(ClearAlias:true):new(Name:"Exact <codev>",Alias:" CODEV ")};
+        var snapshot=clear?new WorkspaceOrganizationSnapshot(command.Kind,command.EntityId,command.ExpectedRevision+1,"Retained",true,IsRemoved:true):WorkspaceOrganizationCommands.Apply(command,null);
+        var preview=new WorkspaceOrganizationPreview(command.Id,Guid.NewGuid(),DateTimeOffset.UtcNow.AddMinutes(5),false,command,snapshot,false,false);var altered=false;
+        using var vault=Vault();using var http=new HttpClient(new Handler(request=>Task.FromResult(request.RequestUri!.AbsolutePath=="/connect"?Connection(id):Json(altered?preview with {Snapshot=snapshot with {Alias="wrong"}}:preview))));
+        var client=new WorkspaceCloudClient(http,new ChatGptIntegrationClient(vault,"https://auth.invalid/",false),"https://workspace.invalid/");await client.ConnectAsync(Credentials,default);
+        Assert.True((await client.PrepareOrganizationAsync(Guid.NewGuid(),command,default)).Succeeded);
+        altered=true;Assert.False((await client.PrepareOrganizationAsync(Guid.NewGuid(),command,default)).Succeeded);
+    }
+
     [Fact]
     public async Task Worker_shaped_saved_view_create_response_is_accepted()
     {

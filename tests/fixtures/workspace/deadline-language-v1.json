@@ -1,0 +1,565 @@
+{
+  "format": "deadline-language-v1",
+  "targetTaskId": "90000000-0000-4000-8000-000000000123",
+  "qualification": "Golden intent/date expectations and synthetic exact tool arguments; no host natural-language recognition claim.",
+  "cases": [
+    {
+      "name": "Russian today",
+      "prompt": "Поставь выбранной задаче дд сегодня",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 0
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2026-10-23",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000001",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2026-10-23"
+          }
+        }
+      }
+    },
+    {
+      "name": "English today across UTC boundary",
+      "prompt": "Set dd today on the selected task",
+      "context": {
+        "instantUtc": "2026-10-23T03:30:00Z",
+        "timeZoneId": "America/New_York",
+        "localDate": "2026-10-22"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 0
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2026-10-22",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000002",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2026-10-22"
+          }
+        }
+      }
+    },
+    {
+      "name": "Russian tomorrow",
+      "prompt": "дд завтра",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 1
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2026-10-24",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000003",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2026-10-24"
+          }
+        }
+      }
+    },
+    {
+      "name": "English tomorrow",
+      "prompt": "set dd tomorrow",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 1
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2026-10-24",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000004",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2026-10-24"
+          }
+        }
+      }
+    },
+    {
+      "name": "Russian ten days",
+      "prompt": "дд через 10 дней",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 10
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2026-11-02",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000005",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2026-11-02"
+          }
+        }
+      }
+    },
+    {
+      "name": "English ten days",
+      "prompt": "deadline in 10 days",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 10
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2026-11-02",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000006",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2026-11-02"
+          }
+        }
+      }
+    },
+    {
+      "name": "December rollover",
+      "prompt": "deadline tomorrow",
+      "context": {
+        "instantUtc": "2026-12-31T10:00:00Z",
+        "timeZoneId": "UTC",
+        "localDate": "2026-12-31"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 1
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2027-01-01",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000007",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2027-01-01"
+          }
+        }
+      }
+    },
+    {
+      "name": "Russian December rollover",
+      "prompt": "дд завтра",
+      "context": {
+        "instantUtc": "2026-12-30T18:00:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-12-31"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 1
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2027-01-01",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000008",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2027-01-01"
+          }
+        }
+      }
+    },
+    {
+      "name": "DST spring near midnight",
+      "prompt": "deadline tomorrow",
+      "context": {
+        "instantUtc": "2026-03-08T04:30:00Z",
+        "timeZoneId": "America/New_York",
+        "localDate": "2026-03-07"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 1,
+        "naiveInstantDate": "2026-03-09"
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2026-03-08",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000009",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2026-03-08"
+          }
+        }
+      }
+    },
+    {
+      "name": "DST fall near midnight",
+      "prompt": "дд завтра",
+      "context": {
+        "instantUtc": "2026-11-01T04:30:00Z",
+        "timeZoneId": "America/New_York",
+        "localDate": "2026-11-01"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 1,
+        "naiveInstantDate": "2026-11-01"
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2026-11-02",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000010",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2026-11-02"
+          }
+        }
+      }
+    },
+    {
+      "name": "Omitted year passed",
+      "prompt": "deadline 22 October",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "interpretation": {
+        "kind": "monthDay",
+        "month": 10,
+        "day": 22
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2027-10-22",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000011",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2027-10-22"
+          }
+        }
+      }
+    },
+    {
+      "name": "Omitted year includes today",
+      "prompt": "дд 23 октября",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "interpretation": {
+        "kind": "monthDay",
+        "month": 10,
+        "day": 23
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2026-10-23",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000012",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2026-10-23"
+          }
+        }
+      }
+    },
+    {
+      "name": "Omitted year crosses December",
+      "prompt": "deadline 5 January",
+      "context": {
+        "instantUtc": "2026-12-31T10:00:00Z",
+        "timeZoneId": "UTC",
+        "localDate": "2026-12-31"
+      },
+      "interpretation": {
+        "kind": "monthDay",
+        "month": 1,
+        "day": 5
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2027-01-05",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000013",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2027-01-05"
+          }
+        }
+      }
+    },
+    {
+      "name": "Explicit past date",
+      "prompt": "дд 2026-01-02",
+      "context": null,
+      "interpretation": {
+        "kind": "explicitIso"
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2026-01-02",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000014",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2026-01-02"
+          }
+        }
+      }
+    },
+    {
+      "name": "Explicit valid leap day",
+      "prompt": "deadline 2028-02-29",
+      "context": null,
+      "interpretation": {
+        "kind": "explicitIso"
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2028-02-29",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000015",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2028-02-29"
+          }
+        }
+      }
+    },
+    {
+      "name": "Relative leap day",
+      "prompt": "дд завтра",
+      "context": {
+        "instantUtc": "2028-02-28T12:00:00Z",
+        "timeZoneId": "UTC",
+        "localDate": "2028-02-28"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 1
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2028-02-29",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000016",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2028-02-29"
+          }
+        }
+      }
+    },
+    {
+      "name": "Ten days across leap February",
+      "prompt": "deadline in 10 days",
+      "context": {
+        "instantUtc": "2028-02-24T12:00:00Z",
+        "timeZoneId": "UTC",
+        "localDate": "2028-02-24"
+      },
+      "interpretation": {
+        "kind": "relativeDays",
+        "days": 10
+      },
+      "expected": {
+        "action": "prepare",
+        "deadline": "2028-03-05",
+        "arguments": {
+          "requestId": "80000000-0000-4000-8000-000000000017",
+          "operation": "updateTask",
+          "taskId": "90000000-0000-4000-8000-000000000123",
+          "patch": {
+            "deadline": "2028-03-05"
+          }
+        }
+      }
+    },
+    {
+      "name": "Missing timezone",
+      "prompt": "deadline tomorrow",
+      "context": {
+        "instantUtc": "2026-10-23T00:00:00Z",
+        "timeZoneId": null
+      },
+      "expected": {
+        "action": "clarify",
+        "reason": "missing-timezone",
+        "arguments": null
+      }
+    },
+    {
+      "name": "Missing current date",
+      "prompt": "дд завтра",
+      "context": {
+        "instantUtc": null,
+        "timeZoneId": "Asia/Novosibirsk"
+      },
+      "expected": {
+        "action": "clarify",
+        "reason": "missing-current-date",
+        "arguments": null
+      }
+    },
+    {
+      "name": "Ambiguous marker",
+      "prompt": "What does dd/MM mean?",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "expected": {
+        "action": "clarify",
+        "reason": "ambiguous-intent",
+        "arguments": null
+      }
+    },
+    {
+      "name": "Missing value",
+      "prompt": "дд",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "expected": {
+        "action": "clarify",
+        "reason": "missing-value",
+        "arguments": null
+      }
+    },
+    {
+      "name": "Ambiguous numeric order",
+      "prompt": "set dd 03/04",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "expected": {
+        "action": "clarify",
+        "reason": "ambiguous-date-order",
+        "arguments": null
+      }
+    },
+    {
+      "name": "Invalid civil date",
+      "prompt": "deadline 2026-02-30",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "expected": {
+        "action": "clarify",
+        "reason": "invalid-date",
+        "arguments": null
+      }
+    },
+    {
+      "name": "Invalid leap year",
+      "prompt": "дд 2027-02-29",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "expected": {
+        "action": "clarify",
+        "reason": "invalid-leap-date",
+        "arguments": null
+      }
+    },
+    {
+      "name": "Omitted leap year",
+      "prompt": "deadline 29 February",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "expected": {
+        "action": "clarify",
+        "reason": "leap-year-required",
+        "arguments": null
+      }
+    },
+    {
+      "name": "Ambiguous target",
+      "prompt": "set dd tomorrow on one of the duplicate tasks",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "expected": {
+        "action": "clarify",
+        "reason": "exact-task-required",
+        "arguments": null
+      }
+    },
+    {
+      "name": "Clock time is not an all-day deadline",
+      "prompt": "deadline tomorrow at noon or remind me then",
+      "context": {
+        "instantUtc": "2026-10-22T18:30:00Z",
+        "timeZoneId": "Asia/Novosibirsk",
+        "localDate": "2026-10-23"
+      },
+      "expected": {
+        "action": "clarify",
+        "reason": "deadline-versus-notification",
+        "arguments": null
+      }
+    }
+  ]
+}

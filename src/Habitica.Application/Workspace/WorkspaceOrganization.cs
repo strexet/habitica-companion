@@ -8,6 +8,15 @@ public sealed record WorkspaceGoalSummary(WorkspaceGoal Goal, int CompletedTodos
 
 public static class WorkspaceOrganization
 {
+    public static WorkspaceProject ResolveProject(WorkspaceDocument document,string reference,long? expectedRevision=null)
+    {
+        if(string.IsNullOrWhiteSpace(reference)||reference.Length>256||expectedRevision is <1 or >WorkspaceDocument.MaxRevision)throw new ArgumentException("invalid_filter");
+        if(expectedRevision is {} revision&&revision!=document.Revision)throw new InvalidOperationException("stale_revision");
+        if(Guid.TryParseExact(reference,"D",out var id))return document.Projects.SingleOrDefault(row=>row.Id==id)??throw new InvalidOperationException("project_unavailable");
+        var alias=WorkspaceProjectAliases.Normalize(reference);
+        var matches=document.Projects.Where(row=>string.Equals(row.Alias,alias,StringComparison.Ordinal)||string.Equals(row.Name,reference,StringComparison.Ordinal)).ToArray();
+        return matches.Length switch { 1=>matches[0],0=>throw new InvalidOperationException("project_unavailable"),_=>throw new InvalidOperationException("ambiguous_project") };
+    }
     public static WorkspaceReadPage<WorkspaceCategory> Categories(WorkspaceDocument document, WorkspaceReadFilter filter) => Page(document, filter, document.Categories.Where(value => !value.IsArchived));
     public static WorkspaceReadPage<WorkspaceLabel> Labels(WorkspaceDocument document, WorkspaceReadFilter filter) => Page(document, filter, document.Labels.Where(value => !value.IsArchived));
     public static WorkspaceReadPage<WorkspaceProject> Projects(WorkspaceDocument document, WorkspaceReadFilter filter, Guid? categoryId = null)

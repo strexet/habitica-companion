@@ -27,7 +27,8 @@ public sealed record HabiticaTaskDetails(double? Difficulty = null, HabiticaTask
 public abstract record WorkspaceEntity(Guid Id, long Revision, bool IsArchived);
 public sealed record WorkspaceCategory(Guid Id, long Revision, string Name, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record WorkspaceProject(Guid Id, long Revision, string Name, Guid? CategoryId = null, bool IsArchived = false,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool IsRemoved = false) : WorkspaceEntity(Id, Revision, IsArchived);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool IsRemoved = false,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Alias = null) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record WorkspaceSection(Guid Id, long Revision, string Name, Guid ProjectId, int Position = 0, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record WorkspaceLabel(Guid Id, long Revision, string Name, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);
 public sealed record WorkspaceGoal(Guid Id, long Revision, string Name, IReadOnlyList<Guid> TaskIds, bool IsArchived = false) : WorkspaceEntity(Id, Revision, IsArchived);

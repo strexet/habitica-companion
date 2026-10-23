@@ -40,3 +40,10 @@ After uncertainty preserve requestId/arguments or recover get_checklist_conversi
 
 
 Browser handoff: Projects and checklist Todo actions open /todo/convert (or /todo/convert/<source Todo ID>). The form retains the original review across navigation and exposes every target/mapping gap after acceptance. A source changed after accepted conversion cannot be amended by redirecting bindings; inspect current and retained originals and report the refusal. Missing historical links and stored tag/mapping gaps remain unresolved. Source retirement is a separate reviewed operation. Do not create a replacement conversion to work around a refusal.
+
+
+## Project alias authoring
+
+Project alias is optional and separate from name and immutable ID. Use resolve_project for exact ID, normalized alias or exact display-name resolution; duplicate names and name/alias collisions refuse ambiguity. list_projects includes alias but excludes archived/removed projects. Resolve retained records only for review, never new placement. Alias strings grant no access.
+
+Use typed alias or clearAlias under an explicit expectedRevision. Input normalizes trimmed ASCII letters/digits and single internal hyphens to lowercase, with a 1-64 character bound. Empty aliases refuse; clearAlias explicitly releases the reservation. Uniqueness includes archived and removed records. An archived/removed project allows only a clearAlias patch, preserving every other field. Preserve omitted aliases. Review normalized alias, exact name/ID, lifecycle and any disclosed tag work before acceptance; retain the original metadata receipt. See the [project-planning workflow](project-planning.md#exact-project-aliases) for shorthand planning and separately requested name cleanup.

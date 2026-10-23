@@ -3327,3 +3327,26 @@ Temporary gear state tracks only acknowledged slot changes. Cleanup attempts the
 ### Persisted spell equipment recovery
 
 Spell auto-equipment records account-scoped original and temporary slots before mutation. Failed or unknown cleanup retains exact recovery work across page reloads. Spells provides Check saved recovery, Restore original gear and Keep current gear. Authenticated verification precedes disclosure; explicit actions bind to the reviewed operation. Later equipment selections remain untouched unless explicitly superseded. Cleanup has an independent twenty-second deadline and never repeats casts.
+
+
+## Stable canonical project aliases
+
+Status: implemented locally in Domain/Application organization commands and optional Worker/MCP reads. WorkspaceProject.Alias is optional and independent of exact Name and immutable Id. Alias input trims surrounding whitespace and lowercases ASCII letters; canonical values contain 1-64 letters/digits with single internal hyphens. Empty, malformed and duplicate aliases refuse. Display-name markers never create aliases. Workspace-wide uniqueness includes archived projects and removed tombstones.
+
+Project create/update accepts typed alias or clearAlias. Cloud alias changes require explicit expectedRevision; canonical acceptance retains revision compare-and-swap. Omitted alias remains unchanged. Archived/removed projects admit only an exact clearAlias update, preserving lifecycle and every other field. Released aliases can be assigned to another project. Native receipts retain original command bytes and normalized snapshots; ordinary task assignments, activity, game mappings and accepted task commands remain unchanged.
+
+WorkspaceOrganization.ResolveProject and authenticated resolve_project return one exact project with workspace revision and lifecycle flags. Exact UUID selects canonical identity. Other input matches normalized alias or exact display name; multiple candidates refuse ambiguous_project. Missing identities refuse project_unavailable. Alias resolution grants no permission and issues no Habitica request. list_projects includes optional aliases while retaining active-list filtering. Local reads and edits work offline; cloud paths require existing workspace consent and independent read/organization grants. Alias metadata contains no credentials. Browser alias editors, project pickers and planning guidance expose the canonical identity policy; local synthetic qualification supplies no publication or live-host claim.
+
+
+## Browser project alias workflow
+
+TodoOrganizationPanel creates optional aliases with exact project names. Existing projects expose a separate alias form with the selected canonical ID, normalized review and explicit blank-to-clear intent. Alias-only changes never submit a pending name/category draft. Name changes retain a separate original metadata command and require explicit review; temporary display-name markers are never inferred or removed automatically. Current revision/source guards, original preparation recovery and unknown acceptance remain owned by WorkspaceOrganizationController. Local and cloud source behavior uses the existing ownership boundaries.
+
+TodoPlacementPicker displays alias separately from exact name/ID and retains selected off-page, archived or removed references. Native option values remain canonical GUIDs; aliases never become task assignment strings. Shared project navigation, planning, saved filters and conversion destination pickers use the same presentation. Long alias text wraps within the picker. The task-management planning/organization references use resolve_project before shorthand planning, reject ambiguity and keep alias acceptance separate from any requested name cleanup. No live project name, alias, placement or Habitica state is changed by local qualification.
+
+
+## Agent deadline shorthand
+
+The task-management package routes explicit deadline requests to references/deadline-dates.md. Unambiguous Russian/English `dd`/`дд`, relative days and omitted-year dates resolve to exact ISO all-day labels from a known civil-date/timezone context. Missing values, ambiguous date order/intent/targets and invalid or uncertain leap dates require clarification. Explicit valid past dates remain unchanged. Deadlines remain distinct from planned dates, recurrence, reviews, reminders and chat delivery.
+
+The workflow updates the exact existing task through the ordinary reviewed updateTask command, preserving omitted metadata and original request/command receipts. Canonical tools accept ISO dates only; no natural-language parser, additional endpoint or implicit task creation is supplied. Normal task correspondence, independent consent and executor boundaries remain applicable. Synthetic multilingual fixtures verify expected calendar arithmetic and actual tool arguments; fresh-chat recognition, automatic skill activation and real-account updates remain separate qualification.
