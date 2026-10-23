@@ -839,3 +839,7 @@ An agent deadline review states the exact ISO date and a readable local interpre
 ### Connector version reporting
 
 Agent-facing compatibility results distinguish backend identity from a client-reported package. Unknown installation remains explicit. Mixed or unavailable Workers request operator review without reconnecting, changing consent or replaying account actions. This local preparation adds no browser page or production publication.
+
+### Package update guidance
+
+Version answers identify the evidence layer: loaded package descriptor, backend compatibility response or directly observed host metadata. Missing descriptors remain unknown. Package guidance distinguishes MCP metadata refresh, imported-package replacement and local marketplace cache updates. A fresh conversation qualifies discovery rather than proving installation. No version check changes consent, credentials, tasks or installation state.

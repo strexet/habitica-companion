@@ -115,45 +115,6 @@ Documentation updates:
 Risks:
 - Broad name passthrough could expose arbitrary user text. Restrict registration to the fixed operation set and preserve fallback behavior.
 
-### Package traceable skill releases and truthful host update guidance
-
-```yaml
-id: T-6706aad6-b870-484b-80c3-e56c29431556
-priority: 100
-status: Ready
-parent_pending_ids: ["P-c151f29d-1662-4e34-9316-b849c085681f"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-6706aad6-b870-484b-80c3-e56c29431556
-related_task_id: null
-relation: main
-depends_on: ["T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9"]
-```
-
-Goal:
-- Make later plugin releases traceable and let packaged agents distinguish known package identity from backend compatibility.
-Current behavior:
-- Source skills, the publication ZIP, cached local packages and a custom MCP connection can contain different revisions; updating the backend does not update imported skills.
-Desired behavior:
-- A released package identifies the package source and compatibility requirements; agents provide evidence-qualified update advice without claiming unseen host installation state.
-Touch:
-- plugin/plugin.json, generated package identity reference and bundled skills, deploy packaging verification, plugin README/client qualification matrix and schema/SDK fixture suite.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Publication in the current production round, unrequested plugin installation/removal, secret changes or unsupported host introspection.
-Implementation constraints:
-- Use semantic release versions with immutable artifact/skill hashes and separate backend build identity; no automatic current-prod version bump. Package instructions may report only the descriptor actually loaded, labelled as package evidence, or trusted host metadata when available. A custom MCP connection without skills has installedPackage unknown. Document metadata refresh/new conversation versus imported-ZIP or local-marketplace cache update/restart using official OpenAI guidance. Never infer installation from the server handshake or expose local paths/secrets through generic MCP. Record actual fresh-chat host observation separately.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Test reproducible archives, descriptor/content mismatch, unchanged version with changed hash, stale cached skills, direct MCP unknown identity and backend-ahead/package-ahead compatibility messages. Validate current portable schemas and actual advertised tool names.
-Acceptance:
-- A released package identifies the package source and compatibility requirements; agents provide evidence-qualified update advice without claiming unseen host installation state.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Add independent account-bound Markdown note records and local storage
 
 ```yaml

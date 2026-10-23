@@ -3354,3 +3354,7 @@ The workflow updates the exact existing task through the ordinary reviewed updat
 ### Unpublished connector compatibility discovery
 
 Authenticated get_connector_compatibility reads explicit Auth, Workspace and MCP build identities without Habitica access or cloud workspace consent. Backend release, deterministic build hash, tool/schema version and supported package bounds remain separate fields. Missing peers return unavailable; differing identities return mixed. Installed package identity remains unknown. Optional version/hash arguments are labelled client reports and never authorize access. Production package versions remain unchanged.
+
+### Traceable plugin package preparation
+
+Local package preparation preserves the source semantic version and adds exact file/skill hashes, a labelled operator-supplied source revision and compatibility requirements. Generated identity copies accompany every skill. Deterministic archives have separate SHA-256 receipts; source files, installed packages and production deployments remain untouched. A loaded descriptor supplies package evidence without proving host installation or model adherence.

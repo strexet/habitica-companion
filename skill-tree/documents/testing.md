@@ -512,3 +512,7 @@ The synthetic MCP fixture applies every resolved case to one existing Todo, veri
 ### Connector identity controls
 
 Identity controls cover coherent/mixed/missing Worker metadata, reported package ranges, unknown installation identity, schema incompatibility, invalid selectors and response-field stripping. OAuth/MCP fixture coverage verifies profile-only discovery without cloud workspace consent, no Habitica request, no task command creation and unauthorized public refusal. Deterministic generator controls reject stale source metadata and unexpected reviewed input fields. Actual installed ChatGPT/Codex package discovery remains unqualified.
+
+### Package release controls
+
+Seven Python controls exercise deterministic archives, changed content under an unchanged semantic version, stale payload/descriptors, archive-byte tampering, symlink/credential refusal and explicit release requirements. Deployment preparation includes package/receipt checks. Portable plugin/MCP schemas validate staged artifacts; SDK fixtures check actual advertised tools and direct-MCP unknown installation. Skill validators cover all five entrypoints. Fresh-chat descriptor loading, stale host-cache replacement and imported-package installation remain unqualified host observations.

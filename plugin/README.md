@@ -14,11 +14,27 @@ The committed MCP endpoint uses `.invalid` and cannot connect. Default Worker te
 
 The source package contains no registered connector ID, public listing, marketplace installation, hooks or custom UI. A real host registration must use the assigned registration identity; never invent a `.app.json` mapping.
 
-## Current package refresh
+## Package identity and update evidence
 
-The production MCP server is updated from source db79a3d. The matching five-skill package is staged in deploy/.production/plugin and archived as output/habitica-companion-plugin-db79a3d.zip. The portable manifest still declares 0.1.0; no tool currently proves the version of an installed client copy. Installed package/version compatibility discovery remains Pending for a later release.
+The source manifest retains version 0.1.0. Local package preparation adds package-identity.json at package root and beside each bundled identity reference. The descriptor binds actual payload files and per-skill hashes; the declared source revision is operator-supplied provenance. An external .zip.identity.json receipt binds archive bytes, avoiding a self-referential archive hash. Hashes establish consistency against a reviewed receipt, rather than publisher authentication. Equal semantic versions with different content hashes identify different payloads and require release review before publication.
 
-For a direct ChatGPT custom MCP connection, refresh advertised metadata and start a new conversation after changed tools or schemas. Updating imported skills requires replacing the package through the actual supported host source. A local marketplace installation loads a cached copy; update the selected source and restart the desktop host according to the official packaging flow. No package refresh changes server credentials or grants new OAuth scopes. User approval remains required when the host presents broader access. The client matrix retains the recorded qualification limits; current server availability does not establish updated host discovery or skill activation.
+Build a fresh local artifact without installing or publishing:
+
+```sh
+python3 deploy/package-plugin.py build --source plugin --target /tmp/companion-package-review --source-revision <reviewed-40-character-git-commit> --requirements deploy/plugin-requirements.json
+python3 deploy/package-plugin.py verify /tmp/companion-package-review
+python3 deploy/package-plugin.py verify-archive /tmp/companion-package-review.zip
+```
+
+Replace the revision placeholder with the reviewed output of git rev-parse HEAD. Review uncommitted package changes separately; the content hash binds the actual files regardless of the declared revision. The source endpoint remains intentionally nonconnecting. An approved endpoint can be selected with --endpoint https://approved-host.example/mcp. Deployment preparation stages the reviewed endpoint, descriptor, archive and receipt together; no remote operation occurs.
+
+For a version question, report only a descriptor actually loaded or trusted host metadata actually observed. Label descriptor evidence separately from verified installation. get_connector_compatibility describes backend identity and compares client reports; the tool never proves installed skills. A direct MCP connection with no loaded descriptor has package identity unknown. A missing discovery tool can indicate older advertised metadata and does not authorize reinstallation or account changes.
+
+For direct ChatGPT custom MCP, use the app details refresh control to retrieve changed tools, descriptions and server instructions. Start a fresh conversation to qualify discovery. This refresh does not replace separately imported skills. See [official custom MCP guidance](https://developers.openai.com/api/docs/guides/custom-mcp-server).
+
+For a local marketplace package, update the directory selected by the marketplace entry and restart the desktop app. Local installations use a cached copy. Marketplace refresh and imported workspace packages have distinct administration paths; use the actual supported installation source to replace imported packages. Test the loaded descriptor in a fresh chat after updating. See [official plugin packaging guidance](https://developers.openai.com/plugins/build/plugins).
+
+Fresh-chat package loading, imported-ZIP replacement and cache refresh remain unobserved in both owner clients. Repository fixtures test archives, descriptors, schemas and advertised tool compatibility. An absent update UI remains an explicit host limitation rather than an invented command. No instruction changes OAuth consent or proves a successful update from a backend handshake.
 
 ## Client qualification matrix
 

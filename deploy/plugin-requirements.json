@@ -1,0 +1,4 @@
+{
+  "backendRelease": {"minimum": "0.1.0", "maximumExclusive": "0.2.0"},
+  "toolSchemaVersion": "1.0.0"
+}

@@ -64,3 +64,13 @@ test('packaged task references share the all-kind required-default contract',asy
   const source=await readFile(new URL('plugin/skills/habitica-task-management/'+path,root),'utf8');assert.match(source,/task-required-v1/);assert.match(source,/original.*receipt|receipts/s);assert.match(source,/consent/);
  }
 });
+
+test('staged release validates portable schemas and reports descriptor evidence separately from installation',async t=>{
+ const {mkdtemp,rm}=await import('node:fs/promises');const {tmpdir}=await import('node:os');const {join}=await import('node:path');const {execFileSync}=await import('node:child_process');const {fileURLToPath}=await import('node:url');
+ const dir=await mkdtemp(join(tmpdir(),'companion-package-schema-'));t.after(()=>rm(dir,{recursive:true,force:true}));const staged=join(dir,'plugin');
+ execFileSync('python3',['deploy/package-plugin.py','build','--source','plugin','--target',staged,'--source-revision','a'.repeat(40),'--requirements','deploy/plugin-requirements.json'],{cwd:fileURLToPath(root),timeout:15000});
+ const ajv=new Ajv2020();for(const name of ['plugin','mcp']){const validate=ajv.compile(await json(`tests/fixtures/plugin/${name}.schema.json`));assert.equal(validate(JSON.parse(await readFile(join(staged,name+'.json'),'utf8'))),true,JSON.stringify(validate.errors));}
+ const identity=JSON.parse(await readFile(join(staged,'package-identity.json'),'utf8'));assert.equal(identity.packageVersion,(await json('plugin/plugin.json')).version);assert.match(identity.contentHash,/^[a-f0-9]{64}$/);assert.equal(Object.keys(identity.skills).length,5);
+ for(const folder of Object.keys(identity.skills)){const claim=JSON.parse(await readFile(join(staged,'skills',folder,'references','package-identity.json'),'utf8'));assert.deepEqual(claim,identity);const guidance=await readFile(join(staged,'skills',folder,'references','package-version.md'),'utf8');assert.match(guidance,/host installation unverified/);}
+ execFileSync('python3',['deploy/package-plugin.py','verify-archive',staged+'.zip'],{cwd:fileURLToPath(root),timeout:15000});
+});
