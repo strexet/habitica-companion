@@ -1,3 +1,4 @@
+import {buildIdentity,clientBuildReport,compatibilityDiscovery} from '../../shared/build-identity';
 import {retirementTools} from './retirement-tools';
 import {retirementToolScopes,retirementInput} from '../../shared/retirement-tools';
 import {conversionTools} from './conversion-tools';
@@ -39,7 +40,8 @@ const descriptions: Record<ReadTool, string> = {
 };
 const bootstrapTools = (Object.keys(readScopes) as ReadTool[]).map(name => ({ name, description: descriptions[name], inputSchema: schemas[name].input, outputSchema: schemas[name].output, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false }, securitySchemes: [{ type: "oauth2", scopes: [...new Set(["profile:read", readScopes[name]])] }], _meta: { securitySchemes: [{ type: "oauth2", scopes: [...new Set(["profile:read", readScopes[name]])] }], ...(name === "get_profile" ? { "openai/profile": true } : {}) } })) as Tool[];
 
-export const toolDefinitions=[...bootstrapTools,...retirementTools,...conversionTools,...groupTagTools,...canonicalTaskTools,...organizationWriteTools,...partyTools,...spellTools,...cronTools];
+const compatibilityTool={name:'get_connector_compatibility',description:'Read actual backend release/build and tool compatibility. An optional package version/hash is a client report, never proof of installed skills. No Habitica requests or account changes.',inputSchema:{type:'object',additionalProperties:false,properties:{packageVersion:{type:'string',pattern:'^[0-9]{1,6}\\.[0-9]{1,6}\\.[0-9]{1,6}$'},packageHash:{type:'string',pattern:'^[a-f0-9]{64}$'},toolSchemaVersion:{type:'string',pattern:'^[0-9]{1,6}\\.[0-9]{1,6}\\.[0-9]{1,6}$'}}},annotations:{readOnlyHint:true,destructiveHint:false,idempotentHint:true,openWorldHint:false},securitySchemes:[{type:'oauth2',scopes:['profile:read']}] ,_meta:{securitySchemes:[{type:'oauth2',scopes:['profile:read']}]}} as Tool;
+export const toolDefinitions=[compatibilityTool,...bootstrapTools,...retirementTools,...conversionTools,...groupTagTools,...canonicalTaskTools,...organizationWriteTools,...partyTools,...spellTools,...cronTools];
 const canonicalReadNames=new Set([...canonicalTaskTools,...organizationWriteTools,...groupTagTools,...conversionTools].filter(tool=>tool.annotations?.readOnlyHint===true).map(tool=>tool.name));
 function canonicalReadFailure(result?:Record<string,unknown>){
   return {isError:true,content:[{type:'text' as const,text:'Companion read is unavailable. Check the connection and respect any returned retry delay. No new action was requested.'}],
@@ -47,10 +49,17 @@ function canonicalReadFailure(result?:Record<string,unknown>){
 }
 
 export async function handleMcp(request: Request, env: McpEnv, parsedBody: unknown): Promise<Response> {
-  const server = new Server({ name: "habitica-companion-read-bootstrap", version: "0.1.0" }, { capabilities: { tools: {} } });
+  const server = new Server({ name: "habitica-companion-read-bootstrap", version: buildIdentity.backendRelease }, { capabilities: { tools: {} } });
   server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: toolDefinitions }));
   server.setRequestHandler(CallToolRequestSchema, async call => {
     const name = call.params.name;
+    if(name==='get_connector_compatibility'){
+      let report;try{report=clientBuildReport(call.params.arguments??{});}catch{return {isError:true,content:[{type:'text',text:'Invalid compatibility report. Use only documented version/hash fields.'}]};}
+      const readIdentity=async(binding:Fetcher,url:string)=>{try{const response=await binding.fetch(url,{signal:AbortSignal.timeout(5000)});if(!response.ok)return null;return await response.json();}catch{return null;}};
+      const [auth,workspace]=await Promise.all([readIdentity(env.AUTH_SERVER,'https://auth.internal/build-identity'),readIdentity(env.WORKSPACE_SERVER,'https://workspace.internal/build-identity')]);
+      const result=compatibilityDiscovery(report,auth,workspace);
+      return {content:[{type:'text',text:JSON.stringify(result)}],structuredContent:result};
+    }
     if(Object.hasOwn(cronToolScopes,name))return handleCronTool(request,env,name as CronTool,call.params.arguments??{});
     if(Object.hasOwn(spellToolScopes,name))return handleSpellTool(request,env,name as SpellTool,call.params.arguments??{});
     if(Object.hasOwn(retirementToolScopes,name)||Object.hasOwn(conversionToolScopes,name)||Object.hasOwn(groupTagScopes,name)||Object.hasOwn(organizationToolScopes,name)||Object.hasOwn(taskToolScopes,name)||Object.hasOwn(partyToolScopes,name)){

@@ -1,3 +1,4 @@
+import {identityEnvelope} from '../../shared/build-identity';
 import {sourceRetirementApi} from './source-retirement-api';
 import {retirementToolScopes,type RetirementTool} from '../../shared/retirement-tools';
 import {conversionApi} from './conversion-api';
@@ -248,6 +249,7 @@ async function handle(request: Request, env: WorkspaceEnv): Promise<Response> {
 }
 export class WorkspaceCommandService extends WorkerEntrypoint<WorkspaceEnv> {
  async fetch(request:Request):Promise<Response>{
+  if(new URL(request.url).pathname === "/build-identity" && request.method === "GET") return json(identityEnvelope("workspace"));
   try{
    if(!this.env.WORKSPACE_ENABLED||request.method!=="POST")throw new WorkspaceError("workspace_unavailable",503);
    const body=workspaceObject(await workspaceJson(request,1024*1024),["tool","arguments"]);

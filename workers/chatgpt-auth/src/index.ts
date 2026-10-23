@@ -1,3 +1,4 @@
+import {identityEnvelope} from '../../shared/build-identity';
 import {tagOperation} from './tag-gateway';
 import {tagConsentRoute,clearTagContext} from './tag-consent';
 import {purgePacing} from './upstream-pacing';
@@ -22,6 +23,7 @@ const headers = { "cache-control": "no-store", "x-content-type-options": "nosnif
 export class AuthService extends WorkerEntrypoint<AuthEnv> {
   async fetch(request: Request): Promise<Response> {
     const path = new URL(request.url).pathname;
+    if(path === "/build-identity" && request.method === "GET") return Response.json(identityEnvelope("auth"), {headers});
     if(path === "/traffic") return trafficOperation(request,this.env);
     if (path === "/health" && request.method === "GET") {
       return Response.json({ service: "auth", authorization: "unavailable" }, { headers });

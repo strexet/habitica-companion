@@ -1406,3 +1406,7 @@ resolve_project is an own-workspace canonical read under tasks:read, independent
 ## Agent-resolved deadline dates
 
 prepare_task_command continues to accept patch.deadline as an exact ISO civil date on supported task kinds. Relative `dd`/`дд` expressions must resolve before calling the tool; ambiguous intent, numeric order, missing current-date/timezone context and invalid/leap dates require clarification. updateTask targets the exact existing canonical task and retains the ordinary required correspondence policy. The workflow changes no native endpoint, timezone interpretation or Habitica due-state formula. A saved deadline grants no reminder, review or originating-chat delivery guarantee; receipt recovery retains original arguments after acknowledgement loss.
+
+### Connector compatibility read boundary
+
+get_connector_compatibility requires existing authenticated profile:read access and accepts only optional packageVersion, packageHash and toolSchemaVersion fields. The compatibility tool calls private build-identity endpoints and performs no Habitica read, credential lookup, Workspace consent activation or command submission. The MCP initialization version follows the explicit backend release. This value describes the backend rather than installed host skills.

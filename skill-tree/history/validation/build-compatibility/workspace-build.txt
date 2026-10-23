@@ -1,0 +1,102 @@
+
+> habitica-companion-workspace@0.1.0 prebuild
+> python3 ../scripts/generate-build-identity.py --check
+
+
+> habitica-companion-workspace@0.1.0 build
+> npm run check && wrangler deploy --dry-run --env "" --outdir dist
+
+
+> habitica-companion-workspace@0.1.0 check
+> npm run types && tsc --noEmit
+
+
+> habitica-companion-workspace@0.1.0 types
+> wrangler types --include-runtime false --env-interface WorkspaceEnv
+
+
+ ⛅️ wrangler 4.151.0 (update available 4.152.0)
+───────────────────────────────────────────────
+Generating project types...
+
+interface __BaseEnv_WorkspaceEnv {
+	WORKSPACE_DB: D1Database;
+	ENVIRONMENT: "preview" | "production" | "local";
+	WORKSPACE_ENABLED: false;
+	EXECUTOR_ENABLED: false;
+	PARTY_ENABLED: false;
+	SPELLS_ENABLED: false;
+	CRON_ENABLED: false;
+	AUTH_IDENTITY: Service /* entrypoint WorkspaceIdentityService from habitica-chatgpt-auth-preview */ | Service /* entrypoint WorkspaceIdentityService from habitica-chatgpt-auth-production */ | Service /* entrypoint WorkspaceIdentityService from habitica-chatgpt-auth-local */;
+	AUTH_PROJECTION: Service /* entrypoint ProjectionService from habitica-chatgpt-auth-preview */ | Service /* entrypoint ProjectionService from habitica-chatgpt-auth-production */ | Service /* entrypoint ProjectionService from habitica-chatgpt-auth-local */;
+	AUTH_PARTY: Service /* entrypoint PartyService from habitica-chatgpt-auth-preview */ | Service /* entrypoint PartyService from habitica-chatgpt-auth-production */ | Service /* entrypoint PartyService from habitica-chatgpt-auth-local */;
+	AUTH_SPELL: Service /* entrypoint SpellService from habitica-chatgpt-auth-preview */ | Service /* entrypoint SpellService from habitica-chatgpt-auth-production */ | Service /* entrypoint SpellService from habitica-chatgpt-auth-local */;
+	AUTH_CRON: Service /* entrypoint CronService from habitica-chatgpt-auth-preview */ | Service /* entrypoint CronService from habitica-chatgpt-auth-production */ | Service /* entrypoint CronService from habitica-chatgpt-auth-local */;
+}
+declare namespace Cloudflare {
+	interface GlobalProps {
+		mainModule: typeof import("./src/index");
+	}
+	interface PreviewEnv {
+		WORKSPACE_DB: D1Database;
+		ENVIRONMENT: "preview";
+		WORKSPACE_ENABLED: false;
+		EXECUTOR_ENABLED: false;
+		PARTY_ENABLED: false;
+		SPELLS_ENABLED: false;
+		CRON_ENABLED: false;
+		AUTH_IDENTITY: Service /* entrypoint WorkspaceIdentityService from habitica-chatgpt-auth-preview */;
+		AUTH_PROJECTION: Service /* entrypoint ProjectionService from habitica-chatgpt-auth-preview */;
+		AUTH_PARTY: Service /* entrypoint PartyService from habitica-chatgpt-auth-preview */;
+		AUTH_SPELL: Service /* entrypoint SpellService from habitica-chatgpt-auth-preview */;
+		AUTH_CRON: Service /* entrypoint CronService from habitica-chatgpt-auth-preview */;
+	}
+	interface ProductionEnv {
+		WORKSPACE_DB: D1Database;
+		ENVIRONMENT: "production";
+		WORKSPACE_ENABLED: false;
+		EXECUTOR_ENABLED: false;
+		PARTY_ENABLED: false;
+		SPELLS_ENABLED: false;
+		CRON_ENABLED: false;
+		AUTH_IDENTITY: Service /* entrypoint WorkspaceIdentityService from habitica-chatgpt-auth-production */;
+		AUTH_PROJECTION: Service /* entrypoint ProjectionService from habitica-chatgpt-auth-production */;
+		AUTH_PARTY: Service /* entrypoint PartyService from habitica-chatgpt-auth-production */;
+		AUTH_SPELL: Service /* entrypoint SpellService from habitica-chatgpt-auth-production */;
+		AUTH_CRON: Service /* entrypoint CronService from habitica-chatgpt-auth-production */;
+	}
+	interface Env extends __BaseEnv_WorkspaceEnv {}
+}
+interface WorkspaceEnv extends __BaseEnv_WorkspaceEnv {}
+type StringifyValues<EnvType extends Record<string, unknown>> = {
+	[Binding in keyof EnvType]: EnvType[Binding] extends string ? EnvType[Binding] : string;
+};
+declare namespace NodeJS {
+	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "ENVIRONMENT" | "WORKSPACE_ENABLED" | "EXECUTOR_ENABLED" | "PARTY_ENABLED" | "SPELLS_ENABLED" | "CRON_ENABLED">> {}
+}
+
+
+✨ Types written to worker-configuration.d.ts
+
+📣 Remember to rerun 'wrangler types' after you change your wrangler.jsonc file.
+
+
+ ⛅️ wrangler 4.151.0 (update available 4.152.0)
+───────────────────────────────────────────────
+Total Upload: 423.63 KiB / gzip: 83.62 KiB
+Your Worker has access to the following bindings:
+Binding                                                                           Resource
+env.WORKSPACE_DB (companion-workspace-local)                                      D1 Database
+env.AUTH_IDENTITY (habitica-chatgpt-auth-local#WorkspaceIdentityService)          Worker
+env.AUTH_PROJECTION (habitica-chatgpt-auth-local#ProjectionService)               Worker
+env.AUTH_PARTY (habitica-chatgpt-auth-local#PartyService)                         Worker
+env.AUTH_SPELL (habitica-chatgpt-auth-local#SpellService)                         Worker
+env.AUTH_CRON (habitica-chatgpt-auth-local#CronService)                           Worker
+env.ENVIRONMENT ("local")                                                         Environment Variable
+env.WORKSPACE_ENABLED (false)                                                     Environment Variable
+env.EXECUTOR_ENABLED (false)                                                      Environment Variable
+env.PARTY_ENABLED (false)                                                         Environment Variable
+env.SPELLS_ENABLED (false)                                                        Environment Variable
+env.CRON_ENABLED (false)                                                          Environment Variable
+
+--dry-run: exiting now.

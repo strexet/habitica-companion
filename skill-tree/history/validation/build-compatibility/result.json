@@ -1,0 +1,48 @@
+{
+  "task_id": "T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9",
+  "recorded_at_utc": "2026-10-23T07:55:02.478525+00:00",
+  "status": "pass",
+  "checks": {
+    "workspace": 551,
+    "auth": 154,
+    "generator": 1,
+    "builds": [
+      "Auth dry run",
+      "Workspace dry run",
+      "MCP dry run"
+    ],
+    "metadata": "pass; inherited stale-audit warning",
+    "changed_line_prose": "pass",
+    "diff_check": "pass"
+  },
+  "source_fingerprints": {
+    "skill-tree/documents/features.md": "3b47b400e40a87fbfcd289d98c852c046b1a02d794c8a1655c81066868bd5c6a",
+    "skill-tree/documents/habitica-api.md": "060910fbb6f4d9dae6a22f4a061dce52485a470c786cf5de0faffdb9bad9dd4f",
+    "skill-tree/documents/technical.md": "2a3cf1d31780d62285b05d6ab554336561bc946870a5b15140fd3f2214a7d3c4",
+    "skill-tree/documents/testing.md": "437222af3cc0374bf541c5b5ced9043d11ece0776c9dbb322d3b9b9f23201bc1",
+    "skill-tree/documents/ux-ui-manifest.md": "c28796cffbc0857563d2de8ec228fcb7e9376a00af8eca2ac7aa581675df77d7",
+    "workers/chatgpt-auth/package.json": "3849223c9bfc2eea251c33963fd851346ce2c9091591aa8623d3d7085dd20dc8",
+    "workers/chatgpt-auth/src/index.ts": "a00d5647edca633f0a2af2a15631f7b91925f61de8abdfaf67ccc8e02ac4f83a",
+    "workers/chatgpt-mcp/package.json": "7f0da1db1c11b54eafeb16c3eca3d18751ccb47b001af9bdf5a40afeea5f889e",
+    "workers/chatgpt-mcp/src/tools.ts": "3a22bf4be67dba554d05edacf07e290ca9830855ef6fe774525010e1f7c2ada5",
+    "workers/companion-workspace/package.json": "cca3833df9960290cac83fb4212e7ddec625afd4bea0909d84dc7c7c7f2faca1",
+    "workers/companion-workspace/src/index.ts": "a1563cdbb321358dd946c571ee180ec6b3687928b8859d0bf1ac38cacf956a19",
+    "workers/companion-workspace/test/build-identity.test.mjs": "fdd4c9deb0086522852dbbe0357363742a0daba673279ee1b5d907d2906f459b",
+    "workers/release-inputs.json": "aaf878cfcd30ab7afe3489586a4d3942896f11588c3422b08d15bf02726fa994",
+    "workers/scripts/generate-build-identity.py": "46b8d606e995250eee89aeda029afd263da6a10d84bd0c95824556a8af548965",
+    "workers/scripts/test-build-identity.py": "56591aa5310ee8b659e7d8441858a62cb959bd863ae742d0c43c297960f4b901",
+    "workers/shared/build-identity.generated.ts": "729882b27b2d5dcd0d20a3f0ba8675f16d1a6885a53f87186e97f48c4fb6fc0c",
+    "workers/shared/build-identity.ts": "2fd1a08f3fe698145ace21d8784ffad0ab5599c0f5226ec463e543ba6c374209"
+  },
+  "limitations": [
+    "Local synthetic qualification only; no deployment or live account operation.",
+    "Installed host packages remain unknown; client claims cannot prove installation.",
+    "Coherent identity does not prove the fleet is the latest published release; compare explicit hashes/releases against a reviewed release.",
+    "No browser UI or package manifest version change."
+  ],
+  "notes": [
+    "Retained tool transcripts normalize trailing whitespace only.",
+    "MCP type check initially rejected custom securitySchemes on Tool; declaration follows the existing typed extension pattern.",
+    "Initial npm invocation used repository root; corrected invocation uses the exact Worker prefix."
+  ]
+}

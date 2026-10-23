@@ -115,45 +115,6 @@ Documentation updates:
 Risks:
 - Broad name passthrough could expose arbitrary user text. Restrict registration to the fixed operation set and preserve fallback behavior.
 
-### Expose backend build and tool compatibility discovery
-
-```yaml
-id: T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9
-priority: 100
-status: Ready
-parent_pending_ids: ["P-c151f29d-1662-4e34-9316-b849c085681f"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-c8e0c53c-c9f3-430a-ae54-76da27fdf9c9
-related_task_id: null
-relation: main
-depends_on: []
-```
-
-Goal:
-- Expose authenticated read-only backend identity and explicit tool/schema compatibility metadata for a later release.
-Current behavior:
-- The MCP handshake hardcodes server version 0.1.0; portable plugin.json also declares 0.1.0. Neither value proves which skill package a host installed.
-Desired behavior:
-- Agents can report actual backend identity and compatibility while unknown installed package versions remain explicitly unknown.
-Touch:
-- Build/deployment metadata generation, Auth/Workspace/MCP identity envelopes, MCP discovery tool/schema, diagnostics and compatibility fixtures.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Current production deployment, public-directory submission, inferred installed versions, host configuration inspection and unrelated OAuth changes.
-Implementation constraints:
-- Separate semantic backend release, immutable build hash, tool/schema contract version and supported package range. Generate identities from reviewed release inputs rather than secrets or arbitrary runtime inference. A supplied package version/hash is a labelled client report, never trusted host installation proof or authorization. Missing/mixed/incompatible worker versions and unknown package identity have explicit states. Read discovery causes no Habitica request or account mutation. Do not publish the feature or bump the current production package during the selected preparation task.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Test coherent/mixed backend builds, old/new/missing package claims, incompatible schema majors, stale metadata and direct MCP connections with no package. Assert no credential/content leak, upstream request or authorization change.
-Acceptance:
-- Agents can report actual backend identity and compatibility while unknown installed package versions remain explicitly unknown.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Package traceable skill releases and truthful host update guidance
 
 ```yaml

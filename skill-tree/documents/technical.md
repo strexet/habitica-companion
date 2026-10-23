@@ -1351,3 +1351,9 @@ TodoOrganizationPanel maintains alias input within the existing source/revision-
 ## Agent deadline interpretation boundary
 
 Natural-language deadline interpretation belongs to the packaged task-management guidance. MCP deadline schema/prepare descriptions require an explicit all-day ISO label before command preparation. Existing canonical date validation, partial-update hashes, revision guards, normal task correspondence and durable receipts remain unchanged. No second date parser, new persistence field or scheduling service is added. Synthetic golden cases reuse recurrenceLocalDate and the existing civil recurrence evaluator for calendar expectations, then exercise the actual MCP/Workspace update path. Golden prompts do not establish model recognition or host activation.
+
+### Reviewed Worker build identities
+
+workers/release-inputs.json owns backend release, tool/schema version and supported package bounds. workers/scripts/generate-build-identity.py derives a deterministic SHA-256 identity from those reviewed inputs, Worker source/configuration/package files and generator code. Regeneration follows source changes; npm build variants reject stale generated identity. Generated metadata contains no credentials, account selectors, task data or runtime environment dump.
+
+Private AuthService and WorkspaceCommandService endpoints expose compiled Worker identities only through existing service bindings. The authenticated MCP discovery tool compares validated peer envelopes with the compiled MCP identity. Discovery retains profile:read authorization and normal ingress quotas. Missing/malformed peers remain unavailable; differing builds remain mixed. Optional client package reports never prove installation. This preparation introduces no production package bump or deployment.

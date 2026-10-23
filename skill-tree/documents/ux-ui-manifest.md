@@ -835,3 +835,7 @@ Project options show escaped names, alias labels and disambiguating IDs. Selecte
 ## Agent deadline wording
 
 An agent deadline review states the exact ISO date and a readable local interpretation. Relative dates also state the observed local anchor date and timezone. Missing material date/zone context, ambiguous `dd`/`дд` usage, numeric order and uncertain leap dates remain explicit questions before preparation. Existing-task identity, ordinary preview approval and original receipt recovery remain visible. The stored deadline never implies a planned date, reminder or originating-chat notification. Browser date inputs remain exact-date controls; packaged guidance owns natural-language interpretation.
+
+### Connector version reporting
+
+Agent-facing compatibility results distinguish backend identity from a client-reported package. Unknown installation remains explicit. Mixed or unavailable Workers request operator review without reconnecting, changing consent or replaying account actions. This local preparation adds no browser page or production publication.
