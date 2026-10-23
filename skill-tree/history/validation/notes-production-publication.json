@@ -1,5 +1,5 @@
 {
-  "status": "prepared",
+  "status": "published",
   "release": "0.2.0",
   "toolSchemaVersion": "1.1.0",
   "recordedAtUtc": "2026-10-23T13:31:45.848684+00:00",
@@ -63,8 +63,44 @@
     "perAccountConsent": true
   },
   "limitations": [
-    "Direct unauthenticated HTTP inspection of the existing Pages appsettings returned403; remote artifact inspection requires a separate observed result.",
+    "Terminal public HTTP probes were unavailable due403/DNS; ordinary browser inspection confirmed production settings, live OAuth Notes scopes, MCP-to-Auth health and the rendered WebAssembly Notes route. Direct manifest navigation was blocked by the browser and remains unqualified.",
     "No hosted Notes enrollment, host-model exercise, live gameplay write, party mutation, new key or consent activation occurs in publication."
   ],
-  "buildIdentitySourceSha256": "c9a053ee6a892713ecd730c30d095c259869cf554cbf3fc5fa7b83b6aaf3b478"
+  "buildIdentitySourceSha256": "c9a053ee6a892713ecd730c30d095c259869cf554cbf3fc5fa7b83b6aaf3b478",
+  "sourceRevision": "ba5a96d073678e9908b2a32bfb665f61a7f46563",
+  "publishedAtUtc": "2026-10-23T13:36:55.770118+00:00",
+  "deployedWorkers": {
+    "auth": "01415777-f2a9-48b6-b9bf-c276106a6624",
+    "workspace": "732ba1a4-6a46-4697-8d7b-90436c42a311",
+    "mcp": "31f2b105-8268-49b1-a6ff-1563e9976467"
+  },
+  "pagesDeployment": "3699265e-b656-4f16-9836-35a8c2fbd942",
+  "package": {
+    "archiveSha256": "f68ca6ce3554ec91c67bc7d18778511834caaf299f8808bc987b1c5b25770ee7",
+    "contentHash": "9b96f3ba7913c253c0aec81743b0396aab62359a842ade97c058890ccb3b834d",
+    "packageVersion": "0.2.0",
+    "path": "output/habitica-companion-plugin-0.2.0.zip"
+  },
+  "browserSmoke": {
+    "mcpHealth": {
+      "service": "mcp",
+      "authService": "reachable",
+      "authorization": "unavailable"
+    },
+    "oauthNotesScopes": [
+      "notes.read",
+      "notes.write"
+    ],
+    "publicSettingsMatch": true,
+    "notesRoute": "Notes page rendered in WebAssembly; signed out; New note disabled",
+    "manifest": "Browser blocked direct navigation; not inspected",
+    "workspaceHealth": {
+      "service": "workspace",
+      "enabled": true
+    }
+  },
+  "migrationRemainder": {
+    "auth": "none",
+    "workspace": "none"
+  }
 }
