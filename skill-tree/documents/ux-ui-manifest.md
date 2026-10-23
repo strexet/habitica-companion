@@ -846,8 +846,15 @@ Version answers identify the evidence layer: loaded package descriptor, backend 
 
 ### Notes foundation boundaries
 
-The Notes engine exposes explicit accepted, duplicate, stale, quota and unknown-acceptance outcomes. Editor controls must preserve the distinction and original command ID. Trash remains recoverable until explicit purge. The Notes service supplies no Notes page; existing task-note controls remain separate. OAuth consent identifies personal Notes reads and writes separately from task access, with explicit server-readable content and retained-version disclosure. Cloud Notes connection requires separate notes-v1 consent; ordinary task consent grants no Notes access.
+The Notes engine exposes explicit accepted, duplicate, stale, quota and unknown-acceptance outcomes. Editor controls must preserve the distinction and original command ID. Trash remains recoverable until explicit purge. The dedicated Notes page now composes the service; existing task-note controls remain separate. OAuth consent identifies personal Notes reads and writes separately from task access, with explicit server-readable content and retained-version disclosure. Cloud Notes connection requires separate notes-v1 consent; ordinary task consent grants no Notes access.
 
 ### Agent Notes interactions
 
 Explicit unambiguous Notes capture/update intent permits acceptance of a matching server preview without another ordinary permission question. Ambiguous note selection, unresolved conflicting facts and unrequested permanent deletion require clarification. The response identifies actual saved content or changes after exact-version/hash verification. Receipt acceptance, later current content and unavailable retained versions remain distinct. Notes text never acts as authorization. No automatic chat memory capture, task creation or Habitica scoring follows a Notes read/save.
+
+
+### Notes page interaction
+
+Notes remains a top-level destination, separate from Todo descriptions. Source, New note, search and the title/Markdown editor are direct controls. On phones the library and editor stack; New note and selection focus the editor. Browser-only and cloud/agent-readable content are labelled explicitly. Cloud consent names server readability, encrypted credential storage, retained versions and separate deletion. No source switch uploads local data.
+
+Unsaved changes use an inline keep/export/discard choice. A conflicting stored revision keeps the private draft and pauses replacement until explicit reload. Safe preview uses shared surfaces and readable ink; tables and fenced code can scroll locally. Raw HTML stays text and remote images never load. Trash/restore reviews name the exact record; purge additionally acknowledges irreversible deletion of all retained versions. Original command uncertainty pauses fresh writes and exposes receipt lookup. Navigation away retains the scoped draft; account/session clearing removes the draft. Source and cleanup controls preserve account/notebook ownership. Synthetic rendered coverage and physical-device limits are recorded in testing.md.

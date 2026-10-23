@@ -2365,10 +2365,11 @@ public sealed partial class AppSessionControllerTests
         LocalUserDataPortabilityService? portability = null,
         TimeProvider? timeProvider = null,
         SpellGearRecoveryStore? spellGearRecoveryStore = null,
-        Habitica.Application.Notes.NotesDraftSession? notesDrafts = null)
+        Habitica.Application.Notes.NotesDraftSession? notesDrafts = null,
+        Habitica.Application.Notes.INotesCloudClient? notesCloud = null)
     {
         var syncClient = new FakeHabiticaSyncClient(CreateUserSnapshot(), CreateTaskSnapshot(), CreatePartySnapshot());
-        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting, colorSchemeService, portability, timeProvider, spellGearRecoveryStore, notesDrafts);
+        return CreateController(logStore, syncClient, remoteUserDataSyncProvider, remotePartyDataSyncProvider, keyValueStorage, integrationClient, ownerIsolatedTesting, colorSchemeService, portability, timeProvider, spellGearRecoveryStore, notesDrafts, notesCloud);
     }
 
     private static AppSessionController CreateController(
@@ -2383,7 +2384,8 @@ public sealed partial class AppSessionControllerTests
         LocalUserDataPortabilityService? portability = null,
         TimeProvider? timeProvider = null,
         SpellGearRecoveryStore? spellGearRecoveryStore = null,
-        Habitica.Application.Notes.NotesDraftSession? notesDrafts = null)
+        Habitica.Application.Notes.NotesDraftSession? notesDrafts = null,
+        Habitica.Application.Notes.INotesCloudClient? notesCloud = null)
     {
         var credentialStore = new FakeCredentialStore();
         var storage = keyValueStorage ?? new FakeKeyValueStorage();
@@ -2424,7 +2426,8 @@ public sealed partial class AppSessionControllerTests
             integrationClient: integrationClient,
             colorSchemeService: colorSchemeService,
             spellGearRecoveryStore: spellGearRecoveryStore,
-            notesDrafts: notesDrafts);
+            notesDrafts: notesDrafts,
+            notesCloud: notesCloud);
     }
 
     private static async Task WaitForConditionAsync(Func<bool> condition)

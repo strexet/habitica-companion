@@ -16,6 +16,8 @@ public interface IAppSessionController
     SessionViewModel State { get; }
 
     Task<WorkspaceActionResult> ConnectWorkspaceAsync(bool consentAcknowledged, CancellationToken cancellationToken = default);
+    Task<Habitica.Application.Notes.NotesCloudResult<bool>> ConnectNotesAsync(bool consentAcknowledged,CancellationToken cancellationToken=default)
+        =>Task.FromResult(new Habitica.Application.Notes.NotesCloudResult<bool>(false,false,"notes_unavailable"));
 
     bool IsChatGptIntegrationAvailable { get; }
     bool HasChatGptConnection { get; }

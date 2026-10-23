@@ -7,7 +7,7 @@
         <p class="section-label">Privacy</p>
         <h1>Data handling</h1>
         <p class="panel-copy">
-            By default, Habitica credentials stay in this browser and are sent only to Habitica. Optional ChatGPT linking or cloud workspace access requires separate consent to encrypted credential storage on the Companion integration server. Exports, private device sync, and shared party sync do not include your API token.
+            By default, Habitica credentials stay in this browser and are sent only to Habitica. Optional ChatGPT linking, cloud Notes or cloud workspace access requires separate consent to encrypted credential storage on the Companion integration server. Exports, private device sync, and shared party sync do not include your API token.
         </p>
 
         <div class="settings-grid">
@@ -15,6 +15,12 @@
                 <h2>Optional cloud workspace</h2>
                 <p>Cloud task storage requires its own explicit consent, independently of ChatGPT. The workspace server can read task names, notes, categories, projects, goals, saved views, completion history and commands. Enabling it also requires encrypted credential storage on the integration server. Private device sync retains its separate encrypted boundary.</p>
                 <p>Workspace task and command history remains until explicit workspace deletion. Disconnect revokes workspace sessions and pauses background execution while retaining that history. Delete cloud workspace removes cloud tasks and command history; it does not delete local browser copies, integration credentials, or Habitica records. Delete integration profile separately removes stored credentials. Background execution requires separate opt-in. Unaccepted command previews contain readable task fields, expire after ten minutes and are removed by bounded server cleanup. Accepted preview-to-command bindings remain with command history. Scheduler interruptions and hosting backups can delay physical removal. Local workspace backups are readable and contain no credentials.</p>
+            </MudPaper>
+            <MudPaper Class="card-surface action-card" Elevation="0">
+                <h2>Personal Notes</h2>
+                <p>Browser Notes stay on this device and are excluded from private device sync and ordinary task backups. Markdown exports contain readable private text. Cloud Notes requires separate consent to server-readable titles, Markdown, up to sixteen prior versions and encrypted Habitica credential storage. Connected agents need separate Notes permissions. No conversation text is saved automatically.</p>
+                <p>Cloud notes and trash remain until explicit permanent deletion. Purging a note removes its current text and retained versions from active service tables while keeping content-free identity and receipt hashes. Disconnecting Notes blocks Notes sessions and agent access while retaining content. Integration disconnect also blocks Notes; deleting the integration profile deletes cloud Notes. Provider backups have their own recovery lifecycle. Browser copies and downloaded files remain separate.</p>
+                <p>Unaccepted agent Notes previews expire after ten minutes; bounded scheduled cleanup removes their text. Acceptance scrubs the preview body and retains content-free receipt metadata. Sign-out forgets tab connection credentials. Browser drafts are volatile and clear on account switch or sign-out.</p>
             </MudPaper>
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>Optional authenticated party planning</h2>
@@ -29,7 +35,7 @@
             </MudPaper>
             <MudPaper Class="card-surface action-card" Elevation="0">
                 <h2>If the app looks out of date</h2>
-                <p>Clear this site's browser data and refresh once. This removes old browser files from earlier deployments.</p>
+                <p>Refresh to load the latest application version first. Before clearing site data, export any browser Notes and local workspaces you want to keep. Clearing site data also deletes their local copies.</p>
             </MudPaper>
 
             <MudPaper Class="card-surface action-card" Elevation="0">

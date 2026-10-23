@@ -19,6 +19,9 @@ internal sealed class FakeAppSessionController : IAppSessionController
         RecoveryCalls.Add((restore, keepCurrent, expectedOperationId));
         return Task.FromResult(RecoveryReview);
     }
+    public Func<Task<Habitica.Application.Notes.NotesCloudResult<bool>>>? NotesConnectAction { get; set; }
+    public Task<Habitica.Application.Notes.NotesCloudResult<bool>> ConnectNotesAsync(bool consentAcknowledged, CancellationToken cancellationToken = default) => consentAcknowledged && NotesConnectAction is not null ? NotesConnectAction() : Task.FromResult(new Habitica.Application.Notes.NotesCloudResult<bool>(false, false, "unavailable"));
+
     public int WorkspaceConnectCalls { get; private set; }
     public Func<Task<Habitica.Application.Workspace.WorkspaceActionResult>>? WorkspaceConnectAction { get; set; }
     public Task<Habitica.Application.Workspace.WorkspaceActionResult> ConnectWorkspaceAsync(bool consentAcknowledged, CancellationToken cancellationToken = default) { WorkspaceConnectCalls++; return WorkspaceConnectAction?.Invoke() ?? Task.FromResult(new Habitica.Application.Workspace.WorkspaceActionResult(false, "Unavailable")); }

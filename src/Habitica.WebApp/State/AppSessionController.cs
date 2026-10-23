@@ -31,6 +31,7 @@ public sealed partial class AppSessionController : IAppSessionController
     private static readonly TimeSpan SpellPreparationDelay = TimeSpan.FromSeconds(1);
     private readonly IndexedDbNotesDatabase? _notesDatabase;
     private readonly Habitica.Application.Notes.NotesDraftSession? _notesDrafts;
+    private readonly Habitica.Application.Notes.INotesCloudClient? _notesCloud;
     private readonly IChatGptIntegrationClient? _integrationClient;
     private readonly IWorkspaceCloudClient? _workspaceClient;
     private readonly IndexedDbWorkspaceDatabase? _workspaceDatabase;
@@ -93,8 +94,10 @@ public sealed partial class AppSessionController : IAppSessionController
         ColorSchemeService? colorSchemeService = null,
         SpellGearRecoveryStore? spellGearRecoveryStore = null,
         IndexedDbNotesDatabase? notesDatabase = null,
-        Habitica.Application.Notes.NotesDraftSession? notesDrafts = null)
+        Habitica.Application.Notes.NotesDraftSession? notesDrafts = null,
+        Habitica.Application.Notes.INotesCloudClient? notesCloud = null)
     {
+        _notesCloud=notesCloud;
         _notesDatabase = notesDatabase;
         _notesDrafts = notesDrafts;
         _spellGearRecoveryStore = spellGearRecoveryStore;
@@ -133,6 +136,12 @@ public sealed partial class AppSessionController : IAppSessionController
         if (credentials is null || !IsCurrentCloudAccount(credentials)) return new(false, "Sign in before connecting cloud data.");
         var result = await _workspaceClient.ConnectAsync(credentials, cancellationToken);
         return IsCurrentCloudAccount(credentials) ? result : new(false, "The account changed; the connection result was discarded.");
+    }
+    public async Task<Habitica.Application.Notes.NotesCloudResult<bool>> ConnectNotesAsync(bool consentAcknowledged,CancellationToken cancellationToken=default)
+    {
+        if(!consentAcknowledged||!State.IsAuthenticated||State.IsBusy||_notesCloud is null)return new(false,false,"notes_consent_required");
+        var credentials=await ResolveCredentialsAsync(cancellationToken);if(credentials is null||!IsCurrentCloudAccount(credentials))return new(false,false,"account_changed");
+        var result=await _notesCloud.ConnectAsync(credentials,cancellationToken);return IsCurrentCloudAccount(credentials)?result:new(false,false,"account_changed");
     }
 
     public bool IsChatGptIntegrationAvailable => _integrationClient?.IsAvailable == true;
@@ -182,6 +191,7 @@ public sealed partial class AppSessionController : IAppSessionController
     private async Task<IntegrationLinkResult> DisconnectChatGptCoreAsync(bool deleteProfile, CancellationToken cancellationToken = default)
     {
         if (_integrationClient is null || !State.IsAuthenticated) return new(false, "Sign in to manage the integration.");
+        _notesCloud?.ForgetSession();_notesDrafts?.Clear();
         var result = await _integrationClient.DisconnectAsync(deleteProfile, cancellationToken);
         Changed?.Invoke();
         return result;
@@ -229,7 +239,7 @@ public sealed partial class AppSessionController : IAppSessionController
     {
         if(State.UserId != request.UserId) _notesDrafts?.Clear();
         _activeSpellCastCancellation?.Cancel();
-        if (_currentCredentials?.UserId != request.UserId) { _integrationClient?.ForgetSession(); _workspaceClient?.ForgetSession(); }
+        if (_currentCredentials?.UserId != request.UserId) { _integrationClient?.ForgetSession(); _workspaceClient?.ForgetSession(); _notesCloud?.ForgetSession(); }
         await SignInCoreAsync(request, cancellationToken);
     }
 
@@ -2729,6 +2739,7 @@ public sealed partial class AppSessionController : IAppSessionController
 
     public Task LogoutAsync(CancellationToken cancellationToken = default)
     {
+        _notesCloud?.ForgetSession();
         _notesDrafts?.Clear();
         _activeSpellCastCancellation?.Cancel();
         BeginRefreshView();
@@ -2756,6 +2767,7 @@ public sealed partial class AppSessionController : IAppSessionController
 
     public async Task ClearLocalDataAsync(CancellationToken cancellationToken = default)
     {
+        _notesCloud?.ForgetSession();
         _notesDrafts?.Clear();
         if(_notesDatabase is not null) await _notesDatabase.ClearAsync(cancellationToken);
         _integrationClient?.ForgetSession();
@@ -4539,6 +4551,7 @@ public sealed partial class AppSessionController : IAppSessionController
             ResetPrivateSyncSession();
             if (!string.Equals(_currentCredentials?.UserId, credentials.UserId, StringComparison.Ordinal))
             {
+                _notesCloud?.ForgetSession();
                 _integrationClient?.ForgetSession();
                 _workspaceClient?.ForgetSession();
             }

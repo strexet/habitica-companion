@@ -8,7 +8,8 @@ public interface INotesStore
     Task<NotesNotebook?> LoadAsync(CancellationToken token);
     Task<bool> TryCommitAsync(long expectedRevision,NotesNotebook notebook,CancellationToken token);
 }
-public sealed class IndexedDbNotesDatabase(IJSRuntime runtime) : IAsyncDisposable
+public interface INotesStoreFactory {INotesStore ForScope(string scope);}
+public sealed class IndexedDbNotesDatabase(IJSRuntime runtime) : IAsyncDisposable,INotesStoreFactory
 {
     private readonly Lazy<Task<IJSObjectReference>> _module=new(()=>runtime.InvokeAsync<IJSObjectReference>("import","./js/storage/indexedDbStorage.js").AsTask());
     public INotesStore ForScope(string scope)=>NotesModel.ValidScope(scope)?new Store(this,scope):throw new ArgumentException("Invalid notes owner scope.");

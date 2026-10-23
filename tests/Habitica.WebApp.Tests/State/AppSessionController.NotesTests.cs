@@ -12,4 +12,14 @@ public sealed partial class AppSessionControllerTests
         await controller.SignInAsync(new(){UserId="synthetic-b",ApiToken="synthetic-secret",PersistLocally=false});Assert.Null(drafts.Markdown);Assert.Null(drafts.OwnerScope);
         drafts.Bind(NotesModel.Scope("synthetic-b"));drafts.Markdown="other private draft";await controller.LogoutAsync();Assert.Null(drafts.Markdown);Assert.Null(drafts.OwnerScope);
     }
+    [Fact]
+    public async Task Notes_cloud_tab_credentials_are_physically_forgotten_on_account_switch_signout_clear_and_integration_disconnect()
+    {
+        var notes=new Habitica.WebApp.Tests.Notes.NotesFixture.Cloud();var controller=CreateController(new FakeDiagnosticsLogStore([]),notesCloud:notes,integrationClient:new IntegrationFixture());
+        await controller.SignInAsync(new(){UserId="synthetic-a",ApiToken="synthetic-secret",PersistLocally=false});notes.Connected=true;var before=notes.Forgotten;
+        await controller.SignInAsync(new(){UserId="synthetic-b",ApiToken="synthetic-secret",PersistLocally=false});Assert.False(notes.Connected);Assert.True(notes.Forgotten>before);
+        notes.Connected=true;before=notes.Forgotten;await controller.DisconnectChatGptAsync(false);Assert.False(notes.Connected);Assert.True(notes.Forgotten>before);
+        notes.Connected=true;before=notes.Forgotten;await controller.ClearLocalDataAsync();Assert.False(notes.Connected);Assert.True(notes.Forgotten>before);
+        await controller.SignInAsync(new(){UserId="synthetic-b",ApiToken="synthetic-secret",PersistLocally=false});notes.Connected=true;before=notes.Forgotten;await controller.LogoutAsync();Assert.False(notes.Connected);Assert.True(notes.Forgotten>before);
+    }
 }

@@ -115,45 +115,6 @@ Documentation updates:
 Risks:
 - Broad name passthrough could expose arbitrary user text. Restrict registration to the fixed operation set and preserve fallback behavior.
 
-### Build the Notes section with safe Markdown editing and recovery
-
-```yaml
-id: T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3
-priority: 100
-status: Ready
-parent_pending_ids: ["P-314450c7-4cb3-4604-a872-27d0f2d189b9"]
-processing_run_id: PR-662bd939-3fbc-401b-ba37-204067e17989
-root_task_id: T-3ef1c9c0-dd43-487f-a8b5-22c1771ce1d3
-related_task_id: null
-relation: main
-depends_on: ["T-6b956777-ed98-4783-a353-5e490de79444", "T-385399c5-981c-4710-ae5e-4e0f4860dbdd"]
-```
-
-Goal:
-- Provide a dedicated personal Notes section with immediate capture, search, document editing and recoverable deletion.
-Current behavior:
-- Navigation has no Notes section. SafeMarkdownRenderer handles a bounded subset for existing summaries, not full independent document authoring.
-Desired behavior:
-- Users can find and manage independent notes with readable safe previews, preserved Markdown and explicit recovery/privacy states.
-Touch:
-- Notes route/navigation, scoped presentation/drafts and cloud/local adapters, shared safe Markdown rendering, source import/export and responsive component/browser fixtures.
-Discovery allowance:
-- Inspect adjacent serializers, permission checks, adapters and affected tests. Expand the selected scope only for required dependencies captured through the active controller.
-Out of scope:
-- Unrelated features, implicit account consent, publication and live account changes without the applicable owner scope.
-Implementation constraints:
-- Expose selected local/cloud source and Notes consent clearly. Keep create/search/edit reachable without nested disclosures; support title/body editing, raw Markdown and safe preview, .md import/export, revision conflict handling and trash/restore/permanent-purge controls. Preserve original source even when preview supports a subset. Encode raw HTML, forbid executable links and remote image loading, render headings/lists/code blocks/tables safely, and preserve code text. Purge uses concrete irreversible-impact review. Do not change unrelated task-note rendering or themes. No external document execution or silent upload from local drafts.
-Questions and required clarifications:
-- [Resolved - repository and owner evidence] The owner request and inspected implementation establish the requested behavior. Source evidence and remaining validation limits are recorded in skill-tree/history/validation/pending-processing-research.json.
-Validation:
-- Component/transport tests cover create/edit/search, full Markdown roundtrip, import/export, conflicts, cancellation, source/account changes, trash/restore/purge and unavailable service. Render long notes and code at shared phone/desktop widths, 200-percent text, keyboard focus and all standard themes; record device limits separately.
-Acceptance:
-- Users can find and manage independent notes with readable safe previews, preserved Markdown and explicit recovery/privacy states.
-Documentation updates:
-- Update the relevant feature, technical, API, testing and UX contracts for delivered behavior. Keep actual qualification separate from unrun host, device and live checks.
-Risks:
-- Stale identity, partial acceptance or ambiguous outcome can duplicate effects or misstate saved state. Preserve original command identity and explicit recovery.
-
 ### Default inventory equipment recommendations to Intelligence
 
 ```yaml
