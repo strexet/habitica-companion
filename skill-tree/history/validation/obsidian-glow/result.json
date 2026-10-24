@@ -1,0 +1,16 @@
+{
+  "taskId": "T-16e42ae4-a6b0-49fa-a482-2a260601a288",
+  "scope": "Existing Obsidian Glow palette and Todo readability",
+  "checks": {
+    "catalog": "29 focused color-scheme catalog tests passed; stable built-in ID and owner palette tokens checked",
+    "solution": "All Habitica.sln suites passed, including 735 WebApp tests",
+    "build": "Release WebApp publish succeeded",
+    "browser": "Nine Todo fixtures passed in two rendered matrix batches: 420 and 336 cases, six viewport widths, seven themes and 100/200-percent text; zero geometry, contrast, harness or unqualified-surface errors",
+    "visual": "Manual 360px comparison found overlapping category labels at 200-percent text before the flex-wrap repair. Reinspection after repair shows one row at normal text and readable two-row tabs at 200 percent in Gryphy Light and Obsidian Glow.",
+    "harness": "Two seeded cases reported overflow, overlap and contrast faults."
+  },
+  "limitations": [
+    "Synthetic Razor fixtures and a local release build do not qualify production data, physical devices, touch or assistive technology.",
+    "The rendered geometry harness did not detect text overlap inside adjacent controls; the required manual visual pass found and verified the repair."
+  ]
+}

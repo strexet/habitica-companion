@@ -27,6 +27,25 @@ public sealed class ColorSchemeCatalogTests
     }
 
     [Fact]
+    public void Obsidian_glow_retains_its_id_and_uses_the_owner_atmosphere_palette()
+    {
+        var scheme = ColorSchemeCatalog.Resolve("obsidian-glow", []);
+
+        Assert.Equal("Obsidian Glow", scheme.Name);
+        Assert.True(scheme.IsDark);
+        Assert.Equal("rgba(155, 190, 255, 0.22)", scheme.Tokens.CardBorder);
+        Assert.Equal("#6fcfb8", scheme.Tokens.Success);
+        Assert.Equal("#241722", scheme.Tokens.TaskNegative);
+        Assert.Equal("#13242d", scheme.Tokens.TaskPositive);
+        Assert.Equal("#e7ecf6", scheme.Tokens.SecondaryButtonText);
+        Assert.Equal(new GradientStops9("#0a1022", "#05060a", "#100b1d", "#060914", "#05060a", "#090c19", "#030409", "#060812", "#0b0714"), scheme.Tokens.BackgroundGradient);
+        Assert.Equal(new GradientStops4("#a7c1ff", "#7fa8ff", "#6f94ee", "#9d91f5"), scheme.Tokens.PrimaryButtonGradient);
+        Assert.Equal(new GradientStops2("#7fa8ff", "#b78cff"), scheme.Tokens.AccentChipGradient);
+        Assert.Equal("0 0 16px rgba(127, 168, 255, 0.34), 0 0 30px rgba(183, 140, 255, 0.16)", scheme.Tokens.HeadingTextShadow);
+        Assert.Empty(ColorSchemeCatalog.Validate(scheme));
+    }
+
+    [Fact]
     public void Gryphy_light_scheme_matches_restored_default_palette()
     {
         var alpha = ColorSchemeCatalog.Alpha;

@@ -31,7 +31,7 @@ internal static class PageLayoutEvidence
             var entries = File.Exists(path) ? JsonSerializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(path), options)! : new();
             entries[name] = new { file = filename, route, state, surfaces, interactionTest, runtime = "Synthetic Razor; physical devices and hosted access unqualified" };
             File.WriteAllText(path, JsonSerializer.Serialize(entries, options));
-            var schemes = ColorSchemeCatalog.BuiltInSchemes.Where(s => s.Id is "gryphy-light" or "gryphy-dark" or "toxic-swamp" or "boss-battle").ToDictionary(s => s.Id);
+            var schemes = ColorSchemeCatalog.BuiltInSchemes.Where(s => s.Id is "gryphy-light" or "gryphy-dark" or "obsidian-glow" or "toxic-swamp" or "boss-battle").ToDictionary(s => s.Id);
             schemes["generated-calm"] = ColorSchemeCatalog.GenerateRandomTheme(new Random(7103), 0) with { Id = "generated-calm" };
             schemes["generated-moderate"] = ColorSchemeCatalog.GenerateRandomTheme(new Random(7103), .5) with { Id = "generated-moderate" };
             File.WriteAllText(Path.Combine(directory, "schemes.json"), JsonSerializer.Serialize(schemes, options));
