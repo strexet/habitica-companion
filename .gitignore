@@ -91,3 +91,6 @@ Thumbs.db
 /deploy/.production/
 /deploy/.production-*/
 /deploy/production.local.json
+
+# Owner-provided credentials for bounded live tests (never commit)
+/test-login.json

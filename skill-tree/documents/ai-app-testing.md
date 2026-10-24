@@ -11,11 +11,11 @@ Do not start a local server, run build, or run tests unless the user explicitly 
 
 ## Credential Handling
 
-- Ask the user for a Habitica User ID and API token if they have not already provided them in the current task.
-- Never write the real User ID or API token into repo files, screenshots, final summaries, `skill-tree/documents/future.md`, or test notes.
+- For an owner-authorized live account test, use the owner-provided root [`test-login.json`](../../test-login.json) if it exists; otherwise ask the user for the Habitica User ID and API token. The file contains `userId` and `apiToken`, is ignored by Git and must stay readable only by the local owner. Synthetic tests do not need it.
+- Never write the real User ID or API token into tracked repo files, screenshots, final summaries, `skill-tree/documents/future.md`, or test notes. Never print the file or credentials in command output.
 - Use credentials only in the browser sign-in form.
 - Do not enable `Remember credentials on this device` unless the user explicitly asks for persistent browser sign-in.
-- Do not transmit credentials to any non-Habitica destination. Cloud sync and party sync must never receive the API token.
+- Use the local test credentials only for the explicitly authorized Habitica sign-in or test operation. Optional server credential storage has its own disclosure and consent; possession of the file does not authorize enabling it. Party actions remain outside this login recipe.
 - If browser snapshots display the password value, do not paste those snapshots into final output or repo docs.
 
 ## Login Flow
@@ -42,7 +42,7 @@ Expected success signals:
 
 ## Browser Automation Login Recipe
 
-Use placeholders in notes and code. Never write real credential values into files.
+Use placeholders in tracked notes and code. The ignored owner-provided `test-login.json` is the sole local file exception and must never be committed, uploaded, or copied into browser qualification fixtures.
 
 Preferred locator sequence:
 
@@ -258,12 +258,13 @@ Reset the viewport when finished unless the user asks to keep a size.
 
 ## Theme Checks
 
-Theme changes are local UI state. Use them for visual review when the user allows appearance testing.
+For every new or changed UI route, verify light and dark rendering at phone and desktop widths with normal and enlarged text. This is the repository rule in `AGENTS.md`, not a one-off task. Use local fixtures or an authorized app session; selecting a theme changes local appearance state.
 
 Minimum built-in schemes to check:
 
 - `Gryphy (Light)`
 - `Gryphy (Dark)`
+- `Obsidian Glow` (`obsidian-glow`)
 - one high-saturation dark scheme such as `Toxic Swamp`
 - one warm/danger scheme such as `Boss Battle`
 
@@ -276,6 +277,9 @@ Check:
 - inputs/selects
 - badges/chips/pills
 - custom scheme editor and swatches
+- visible primary actions, disabled and focus states, contrast and wrapping on each changed route
+
+Record which routes, widths, themes and text scales were checked. A route checked in only one theme is not visually qualified; keep untested devices and interaction paths explicit.
 
 Do not save a generated custom scheme unless the user explicitly asks. Prefer selecting built-in presets or temporary preview states for review.
 
