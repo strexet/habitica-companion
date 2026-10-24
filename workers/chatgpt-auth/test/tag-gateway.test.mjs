@@ -23,8 +23,8 @@ async function setup(t,options={}){
 }
 test('tag writes require separate owner consent; old organization scopes and public routes grant no private gateway',async t=>{
  const x=await setup(t);const denied=await x.invoke('inspectTags');assert.equal(denied.status,403);assert.equal((await denied.json()).code,'tag_consent_required');assert.equal(x.reads,0);
- const oldPage=await authPage(x.f,'profile:read workspace.organization.write');assert.doesNotMatch(await oldPage.response.text(),/Tag access is separate/);
- const newPage=await authPage(x.f,'profile:read habitica.tags.write');assert.match(await newPage.response.text(),/Tag access is separate/);
+ const oldPage=await authPage(x.f,'profile:read workspace.organization.write');assert.match(await oldPage.response.text(),/Can change owned Habitica tags/);
+ const newPage=await authPage(x.f,'profile:read habitica.tags.write');assert.match(await newPage.response.text(),/Can change owned Habitica tags/);
  assert.ok([401,404].includes((await x.f.auth.fetch(issuer+'/tags',{method:'POST',body:'{}'})).status));
  const oldToken=await(await exchange(x.f,await authorization(x.f,x.profile,'profile:read workspace.organization.write'))).json();
  const identity=await x.f.workspaceIdentity.fetch('https://identity.internal/mcp',{method:'POST',headers:{authorization:`Bearer ${oldToken.access_token}`}});assert.equal((await identity.json()).tagWriteAllowed,false);
@@ -148,7 +148,7 @@ test('reviewed membership recovery preserves original unrelated tags and sends n
 test('verified tag consent disclosure keeps selectable scope and safe callback policy',async t=>{
  const x=await setup(t),code=await ticket(x.f,x.profile),page=await authPage(x.f,'profile:read workspace.organization.write habitica.tags.write'),first=await page.response.text();
  const response=await form(x.f,page,{handle:handle(first),decision:'identify',code:code.code,scope:'profile:read workspace.organization.write habitica.tags.write'});assert.equal(response.status,200);const html=await response.text();
- assert.match(html,/Tag access is separate/);assert.match(html,/type="checkbox" checked name="scope" value="habitica.tags.write"/);assert.match(response.headers.get('content-security-policy'),/form-action 'self' http:\/\/localhost:9999/);
+ assert.match(html,/Tag access is separate/);assert.match(html,/name="scope" value="habitica.tags.write" checked/);assert.match(response.headers.get('content-security-policy'),/form-action 'self' http:\/\/localhost:9999/);
  if(process.env.HABITICA_AUTH_BROWSER_EVIDENCE){const {mkdir,writeFile}=await import('node:fs/promises');await mkdir(process.env.HABITICA_AUTH_BROWSER_EVIDENCE,{recursive:true});await writeFile(process.env.HABITICA_AUTH_BROWSER_EVIDENCE+'/tag-consent.html',html);await writeFile(process.env.HABITICA_AUTH_BROWSER_EVIDENCE+'/tag-identify.html',first);}
 });
 

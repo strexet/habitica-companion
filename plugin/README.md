@@ -16,6 +16,19 @@ The committed MCP endpoint uses `.invalid` and cannot connect. Default Worker te
 
 The source package contains no registered connector ID, public listing, marketplace installation, hooks or custom UI. A real host registration must use the assigned registration identity; never invent a `.app.json` mapping.
 
+## Authorization user story
+
+A Companion user connecting Codex or ChatGPT needs to see the requesting client, the linked Habitica account and every permission the integration can grant. Client-requested permissions should be marked and initially selected, while other permissions remain off. The permission review should explain game effects and private Notes before approval. The user enters a one-time code only on the Companion authorization page opened by the client, returns to the client after approval and receives a clear restart path when a code or browser session expires.
+
+The connection path is:
+
+1. Start **Authenticate** in Codex MCP settings or **Connect** in ChatGPT. Keep the opened Companion authorization page in the same browser session.
+2. Sign in to the Companion website separately, enable integration credential storage after reading the disclosure, then select **Generate new code** in Settings. Copy the code and paste the code into **One-time Companion code** on the opened authorization page. The code works once for ten minutes; the code never belongs in MCP settings or chat.
+3. Verify the code, check the client name, return host and Habitica account, then review the complete permission catalogue. The requested scopes start checked; optional scopes start off. Account identity is required for a usable connection. Approve only the chosen scopes or cancel.
+4. Return to Codex or ChatGPT. If the page reports a lost browser binding or expired/used code, restart Authenticate/Connect and generate a fresh code. A new grant is necessary when the previous grant lacks a newly needed permission.
+
+Companion stores the selected supported scopes on the OAuth grant. The MCP Worker independently checks scopes per tool. Additional Notes cloud consent, tag consent, Workspace access, and action previews remain separate requirements. Authorizing the connection alone performs no Habitica action. [Official OpenAI plugin authentication guidance](https://developers.openai.com/plugins/build/auth) describes client-initiated OAuth and PKCE.
+
 ## Package identity and update evidence
 
 The Notes release uses package version 0.2.0, backend release 0.2.0 and tool schema 1.1.0. The package requires backend 0.2.x; older 0.1.x packages need an updated import. Existing OAuth grants keep original scopes, so Notes also requires separate cloud consent and reauthorization with Notes permissions. Local package preparation adds package-identity.json at package root and beside each bundled identity reference. The descriptor binds actual payload files and per-skill hashes; the declared source revision is operator-supplied provenance. An external .zip.identity.json receipt binds archive bytes, avoiding a self-referential archive hash. Hashes establish consistency against a reviewed receipt, rather than publisher authentication. Equal semantic versions with different content hashes identify different payloads and require release review before publication.

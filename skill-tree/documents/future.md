@@ -72,6 +72,64 @@ No full implementation plan is required for Pending intake. Preserve supplied re
 
 Research/decomposition intake; no implementation selection. Equal numeric priorities follow document order.
 
+### Recover stale group-tag reviews after workspace revision changes
+
+```yaml
+id: P-172ac0de-69a2-4bc3-bcd6-1117848875d6
+priority: 104
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- An approved project-tag reconcile preview became unconfirmable while background task projections advanced the workspace revision. The original tag command remained prepared with no confirmed acceptance, while the browser displayed an uncertain result and prevented safe cancellation or a fresh preview. Preserve the original command identity and prevent duplicate native tag writes.
+
+Expected behavior:
+- The app distinguishes a definitely rejected stale preview from an unknown accepted command, recovers the original receipt, and permits a new review only after non-acceptance is proven. Unrelated task projection progress does not strand tag setup or require unsafe replay.
+
+Current context:
+- Tag consent is enabled; Codex MCP connection does not yet have habitica.tags.write. Browser acceptance remains uncertain; do not create a replacement tag command until original outcome is resolved.
+
+Source:
+- Live Companion Development <codev> migration on 2026-10-24; original tag command 5e625e2a-6f33-4515-a344-55ca2eb3a8bf returned prepared=true, savedInCompanion=null after two browser acceptance attempts; repo group-tag-reviews.ts binds acceptance to exact document revision.
+
+Priority rationale:
+- P0 migration blocker: prevents project-tag correspondence and safe source cleanup.
+
+### Resolve archived checklist-task counterparts before source retirement
+
+```yaml
+id: P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa
+priority: 103
+status: Pending
+parent_pending_ids: []
+processing_run_id: null
+root_task_id: null
+related_task_id: null
+relation: main
+depends_on: []
+```
+
+Description:
+- The Companion Development <codev> conversion reused ten canonical tasks, including two completed archived tasks that have no stored Habitica counterpart. The source-retirement gate requires every replacement to have verified native correspondence, but ensureProjection is limited to active work and must not fabricate historical completion or rewards.
+
+Expected behavior:
+- Each migrated active or archived Todo has a verified corresponding Habitica Todo, with true completion history preserved and no duplicate or invented game rewards. The workflow exposes safe reviewed adoption or another provenance-preserving resolution for archived work and only allows obsolete source retirement after every replacement and project tag membership is verified.
+
+Current context:
+- The two archived target IDs are 7e478750-8e70-455b-ad93-dbfbedfbe485 and f75f429b-a1de-46b1-bbe7-c9d1d08423e7. Keep source c3765653-711e-4532-be37-0ba41f0954b3 until exact native identity, historical state and retirement evidence are established. Research whether matching retained Habitica records exist before choosing a repair.
+
+Source:
+- User requirement that every Companion Todo entity correspond to Habitica and obsolete checklist sources be cleaned; live conversion 4b4c0a84-9e99-4e5c-9b87-4d6de6e0ac19 on 2026-10-24 shows two archived targets without stored correspondence.
+
+Priority rationale:
+- P0 migration blocker: project replacement is incomplete and safe source cleanup cannot proceed.
+
 ## Prioritized Next Changes
 
 Highest numeric priority first; unmet dependencies and blocking questions stop implementation. Imported source provenance and product decisions remain distinct from newly executed research.

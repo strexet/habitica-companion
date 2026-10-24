@@ -28,7 +28,8 @@
       "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02",
       "T-c0bf3f10-141f-464c-bc1e-53040d67e61c",
       "T-16e42ae4-a6b0-49fa-a482-2a260601a288",
-      "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b"
+      "T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b",
+      "T-94f00380-c668-4b87-8b6d-4a50f947d593"
     ],
     "completion_refs": {
       "T-07d27408-3019-423f-a5de-4cda1f9e2818": "O-4203a794-8216-43bc-84a8-eaddd14f1479",
@@ -47,6 +48,7 @@
       "T-7bb19b25-83e8-470d-9e94-94a91d744440": "O-f27cf34d-bbd4-45d1-ade2-7efbe92ff8f2",
       "T-7f1f3588-abf9-4b7a-ad6c-ab87be50f0c2": "O-ceb5e365-b76c-4dc8-930b-a7ed8b91411b",
       "T-80782d5c-2d9e-4897-ab4c-df3f72b59774": "O-85b9f430-72c7-4869-bad8-2b5d54cff66a",
+      "T-94f00380-c668-4b87-8b6d-4a50f947d593": "O-5c8edad6-c3fe-4dcf-8d3e-b18d58093c20",
       "T-a9dd2e5e-1e51-4537-a3e0-68e3ae730b94": "O-43c64132-e988-4884-8679-00bc9633f9f5",
       "T-b89fac23-3ac2-4c64-8560-be7a5d796a81": "O-c523ec9f-1bff-419d-896a-406c7cffce45",
       "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02": "O-9302773e-f7de-4ab8-a81f-760fa4efa0ad",
@@ -63,7 +65,8 @@
     "current_task_id": null,
     "cycle_signature": "00884828da61cbfe59d6c702bf50183dfd290c90cfecf1487d5cb7ed11f6d4c0",
     "deferred_ids": [
-      "T-56a7a511-0ebf-41f8-8e1f-65ae87399459"
+      "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
+      "T-94f00380-c668-4b87-8b6d-4a50f947d593"
     ],
     "history_refs": [
       "skill-tree/history/validation/conversion-retirement/result.json",
@@ -78,7 +81,7 @@
       "retry_used": 89
     },
     "mode": "all",
-    "next_action": "Review owner-requested live project migration; leave remaining frozen implementation roots untouched until owner selects further scope.",
+    "next_action": "Select required task or finish root",
     "partial_work": [
       "Root13 T-b89fac23-3ac2-4c64-8560-be7a5d796a81 completed and committedad27feb.13/50 initial roots complete. Required blocker T-1f306466-4618-4f88-b14b-589b295acbd2 completed with CSS/evidence commit68ec32c. Proofs skill-tree/history/validation/bulk-spell-outcomes/result.json and skill-tree/history/validation/spell-enlarged-controls/result.json.1082 .NET tests,432 final rendered cases and2seeded controls pass; Release0warnings/errors and matching local publication.",
       "Root12 source retirement completed and committed204897c. Proof skill-tree/history/validation/conversion-retirement/result.json. Its unchanged Worker sources retain537Workspace/154Auth passing checks. No push/deploy/remote migration/live account or party operations.",
@@ -107,9 +110,12 @@
     "pending_ids": [
       "P-129cb3e4-32db-4017-8afd-38df70a8f595",
       "P-5d911c98-53e9-4d31-8d9f-be1c7f0a93e3",
-      "P-b86975e7-8188-44e9-b50f-3e8179b0037d"
+      "P-b86975e7-8188-44e9-b50f-3e8179b0037d",
+      "P-172ac0de-69a2-4bc3-bcd6-1117848875d6",
+      "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa",
+      "P-52452102-f6d7-41ac-9355-1310f5095a67"
     ],
-    "phase": "owner-sequence-complete",
+    "phase": "resume-parent",
     "processing_results": [
       {
         "created_ids": [
@@ -166,6 +172,25 @@
         ],
         "task_keys": {
           "obsidian-todo-theme": "T-16e42ae4-a6b0-49fa-a482-2a260601a288"
+        }
+      },
+      {
+        "created_ids": [
+          "T-94f00380-c668-4b87-8b6d-4a50f947d593"
+        ],
+        "dispositions": {
+          "P-52452102-f6d7-41ac-9355-1310f5095a67": {
+            "reason": "Current Worker consent HTML lists only requested scopes and returns raw JSON on authorization failures; Settings presents a long code guide. The installed OAuth provider permits a reviewed grant containing any supported scope, including optional scopes outside the incoming request. Current security bindings and tests provide a direct implementation path.",
+            "status": "promoted"
+          }
+        },
+        "id": "PR-899c7c23-529f-4553-8bb2-f8b9afb34922",
+        "reused_ids": [],
+        "selected_ids": [
+          "P-52452102-f6d7-41ac-9355-1310f5095a67"
+        ],
+        "task_keys": {
+          "plugin-auth-journey": "T-94f00380-c668-4b87-8b6d-4a50f947d593"
         }
       }
     ],
@@ -254,12 +279,40 @@
     "stop_reason": null
   },
   "format": "skill-tree-future",
-  "source_hash": "d2f7dc84ac2943d34efe7b02dd7cb5ca79445769c5fed74d61fc253b5cbd8f03",
+  "source_hash": "b0e85f1937f96ac25e87f85d9beebc6ca8fc33e172136f76a1cee8e77b7f403c",
   "tasks": [
     {
       "depends_on": [],
+      "id": "P-172ac0de-69a2-4bc3-bcd6-1117848875d6",
+      "line": 75,
+      "parent_pending_ids": [],
+      "priority": 104,
+      "processing_run_id": null,
+      "queue": "Pending Queue",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": null,
+      "status": "Pending",
+      "title": "Recover stale group-tag reviews after workspace revision changes"
+    },
+    {
+      "depends_on": [],
+      "id": "P-713096ef-2e12-4ca5-ae87-e3aa5b61c0aa",
+      "line": 104,
+      "parent_pending_ids": [],
+      "priority": 103,
+      "processing_run_id": null,
+      "queue": "Pending Queue",
+      "related_task_id": null,
+      "relation": "main",
+      "root_task_id": null,
+      "status": "Pending",
+      "title": "Resolve archived checklist-task counterparts before source retirement"
+    },
+    {
+      "depends_on": [],
       "id": "T-56a7a511-0ebf-41f8-8e1f-65ae87399459",
-      "line": 79,
+      "line": 137,
       "parent_pending_ids": [
         "P-129cb3e4-32db-4017-8afd-38df70a8f595"
       ],
@@ -275,7 +328,7 @@
     {
       "depends_on": [],
       "id": "T-f362faf0-4d48-4ed3-b586-843c47345510",
-      "line": 118,
+      "line": 176,
       "parent_pending_ids": [
         "P-4b315ee2-e2b4-4fa0-82fb-1c43e7336a8e"
       ],
@@ -291,7 +344,7 @@
     {
       "depends_on": [],
       "id": "T-9dce9211-4c9d-478a-952c-12adba3e013f",
-      "line": 157,
+      "line": 215,
       "parent_pending_ids": [
         "P-4db3bb11-31fa-4cac-ab7b-7841cd79ae11"
       ],
@@ -311,7 +364,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-1f1eb5fd-febd-44fc-b475-69121e11400a",
-      "line": 197,
+      "line": 255,
       "parent_pending_ids": [
         "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"
       ],
@@ -330,7 +383,7 @@
         "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2"
       ],
       "id": "T-ce099b7b-f9cc-49b8-aadd-04b5623b1094",
-      "line": 237,
+      "line": 295,
       "parent_pending_ids": [
         "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"
       ],
@@ -348,7 +401,7 @@
         "T-51ce8719-0131-46d3-882a-4219d1bef929"
       ],
       "id": "T-0e166dfc-1eb0-42f7-ba4d-5949f476d31b",
-      "line": 277,
+      "line": 335,
       "parent_pending_ids": [
         "P-fcbb5693-fdf8-408d-8f3b-361f3cea5036"
       ],
@@ -364,7 +417,7 @@
     {
       "depends_on": [],
       "id": "T-6a8db6be-b721-4b88-b62b-c6566d759080",
-      "line": 317,
+      "line": 375,
       "parent_pending_ids": [
         "P-4dfb12ea-3f5d-4e8e-b178-a02a02571e63"
       ],
@@ -382,7 +435,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-51ce8719-0131-46d3-882a-4219d1bef929",
-      "line": 357,
+      "line": 415,
       "parent_pending_ids": [
         "P-02b78b3e-3fe9-4871-b019-c6baebafe810"
       ],
@@ -398,7 +451,7 @@
     {
       "depends_on": [],
       "id": "T-a7c06616-38a3-4cfb-8f2d-4ee41eab6b4c",
-      "line": 397,
+      "line": 455,
       "parent_pending_ids": [
         "P-203bd87e-c49c-447b-913d-b322d6bdf0b2"
       ],
@@ -426,7 +479,7 @@
         "T-65810da7-9524-45ce-b280-668d04c86441"
       ],
       "id": "T-d76d2a9a-1318-4e63-9bb4-73f620b108cc",
-      "line": 437,
+      "line": 495,
       "parent_pending_ids": [
         "P-29925105-1015-5ced-8844-d56fa47e33c9"
       ],
@@ -442,7 +495,7 @@
     {
       "depends_on": [],
       "id": "T-89b296c0-fb5e-4cf3-9b1b-7462acb2da25",
-      "line": 480,
+      "line": 538,
       "parent_pending_ids": [
         "P-b38ebae7-6756-4941-a3af-dad37e3c7666"
       ],
@@ -458,7 +511,7 @@
     {
       "depends_on": [],
       "id": "T-13c008e0-2062-4846-ab4b-0f331a280f0b",
-      "line": 520,
+      "line": 578,
       "parent_pending_ids": [
         "P-15da69d1-68cb-47d2-b8ae-2edca2436137"
       ],
@@ -477,7 +530,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-06336249-6901-4d10-8df1-229ca9bcad6b",
-      "line": 560,
+      "line": 618,
       "parent_pending_ids": [
         "P-c5795748-6f25-4c0a-a471-fe72c1a85862"
       ],
@@ -493,7 +546,7 @@
     {
       "depends_on": [],
       "id": "T-2355607b-ba77-46c0-9495-aae61e16a8f0",
-      "line": 601,
+      "line": 659,
       "parent_pending_ids": [
         "P-64d1995c-f862-498c-9437-e867117f2129"
       ],
@@ -511,7 +564,7 @@
         "T-2355607b-ba77-46c0-9495-aae61e16a8f0"
       ],
       "id": "T-0a2f12ac-6df6-498f-b090-f69c2a526b2a",
-      "line": 642,
+      "line": 700,
       "parent_pending_ids": [
         "P-64d1995c-f862-498c-9437-e867117f2129"
       ],
@@ -532,7 +585,7 @@
         "T-6122dded-900d-4d92-8739-bbc344e15ea0"
       ],
       "id": "T-8545fa1a-f9e1-4c2a-8501-30bfbae4c985",
-      "line": 683,
+      "line": 741,
       "parent_pending_ids": [
         "P-64d1995c-f862-498c-9437-e867117f2129",
         "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
@@ -549,7 +602,7 @@
     {
       "depends_on": [],
       "id": "T-aa82feee-97b1-4f14-8b5a-d642cca014e3",
-      "line": 724,
+      "line": 782,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -568,7 +621,7 @@
         "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02"
       ],
       "id": "T-3c84f362-0f7b-4f0c-9e23-75d9a1e0725f",
-      "line": 765,
+      "line": 823,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -588,7 +641,7 @@
         "T-07d27408-3019-423f-a5de-4cda1f9e2818"
       ],
       "id": "T-e77f6c7c-cf2f-487d-bb82-831e6f6167f9",
-      "line": 806,
+      "line": 864,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31",
         "P-3736aa26-c58b-402d-a736-ff6ce23907bd"
@@ -608,7 +661,7 @@
         "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
       ],
       "id": "T-70251ccf-7d6a-4e89-b4d4-98cd15c9d528",
-      "line": 847,
+      "line": 905,
       "parent_pending_ids": [
         "P-438c79fe-385d-4657-be24-85fad9a49c31"
       ],
@@ -627,7 +680,7 @@
         "T-ea3c2df0-7c13-4a77-a920-1451801b9946"
       ],
       "id": "T-f5079dc2-61e9-4889-bbb0-9c2edb43eadd",
-      "line": 888,
+      "line": 946,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -645,7 +698,7 @@
         "T-66aec83d-1d40-4c42-87ec-6566e1ac3769"
       ],
       "id": "T-916deee7-8be7-44aa-9cd2-b9d86e90e56d",
-      "line": 929,
+      "line": 987,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -665,7 +718,7 @@
         "T-c0bf3f10-141f-464c-bc1e-53040d67e61c"
       ],
       "id": "T-b05e848e-9bb0-461c-aee0-8c4293fcbeb2",
-      "line": 970,
+      "line": 1028,
       "parent_pending_ids": [
         "P-9dbdf081-4b8e-495c-a8fc-5c94c34d3a78"
       ],
@@ -689,7 +742,7 @@
         "T-4dd09108-6149-4ab2-9326-b6f53e05f811"
       ],
       "id": "T-96866c8f-9554-55d8-a638-6d8b5afaf21c",
-      "line": 1011,
+      "line": 1069,
       "parent_pending_ids": [
         "P-0ea957c0-5210-5931-b545-82b9f13197db"
       ],
@@ -705,7 +758,7 @@
     {
       "depends_on": [],
       "id": "T-16e1b491-18c3-498e-82da-81a97ff1294a",
-      "line": 1162,
+      "line": 1220,
       "parent_pending_ids": [
         "P-762549ef-d24d-4caa-ab3a-573a8e60eb21"
       ],
@@ -721,7 +774,7 @@
     {
       "depends_on": [],
       "id": "B-c8422883-6554-5a8a-a48f-12b1a6752515",
-      "line": 1205,
+      "line": 1263,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -735,7 +788,7 @@
     {
       "depends_on": [],
       "id": "B-4c8b1fe1-f37f-5b78-803c-419204fe0de1",
-      "line": 1242,
+      "line": 1300,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -749,7 +802,7 @@
     {
       "depends_on": [],
       "id": "B-e135d729-1688-53e4-95ed-913c41ef3495",
-      "line": 1279,
+      "line": 1337,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -763,7 +816,7 @@
     {
       "depends_on": [],
       "id": "B-5173c126-f1af-5dd6-a41b-c7542f135b2c",
-      "line": 1412,
+      "line": 1470,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -777,7 +830,7 @@
     {
       "depends_on": [],
       "id": "B-855ea05e-e6ce-549a-b7cd-26d4c6cbec81",
-      "line": 1450,
+      "line": 1508,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -791,7 +844,7 @@
     {
       "depends_on": [],
       "id": "B-6cd10c0f-7350-5677-a81d-1de0f696e421",
-      "line": 1484,
+      "line": 1542,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -805,7 +858,7 @@
     {
       "depends_on": [],
       "id": "B-e1e16021-1a1a-5af4-b97a-2ec2d43edfaf",
-      "line": 1519,
+      "line": 1577,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -819,7 +872,7 @@
     {
       "depends_on": [],
       "id": "B-57737f45-83d5-5e6d-866e-28e80c882602",
-      "line": 1553,
+      "line": 1611,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -833,7 +886,7 @@
     {
       "depends_on": [],
       "id": "B-105e6701-8fb7-5cd7-91ca-3be091b69533",
-      "line": 1591,
+      "line": 1649,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -847,7 +900,7 @@
     {
       "depends_on": [],
       "id": "B-14bc7f41-23f9-5ce0-b99f-d89c0c909d06",
-      "line": 1618,
+      "line": 1676,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -861,7 +914,7 @@
     {
       "depends_on": [],
       "id": "B-9465b12f-4e30-50f2-b5f8-697d397f8129",
-      "line": 1640,
+      "line": 1698,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,
@@ -875,7 +928,7 @@
     {
       "depends_on": [],
       "id": "B-5320ebab-2a0c-5b9d-9840-15d1f944e5f8",
-      "line": 1667,
+      "line": 1725,
       "parent_pending_ids": [],
       "priority": 25,
       "processing_run_id": null,

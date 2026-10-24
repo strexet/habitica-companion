@@ -197,6 +197,10 @@ public sealed class SettingsPageTests : BunitContext
         cut.Find("[data-testid='integration-enroll']").Click();
         Assert.Equal(1, controller.ChatGptEnrollCalls);
         Assert.Equal("0123456789AB", cut.Find("[data-testid='integration-link-code']").TextContent);
+        Assert.Contains("Authenticate", cut.Find("[data-testid='integration-linking-guide']").TextContent);
+        Assert.Contains("Connect", cut.Find("[data-testid='integration-linking-guide']").TextContent);
+        cut.Find("[data-testid='integration-copy-code']").Click();
+        Assert.Contains("Code copied", cut.Find("[data-testid='integration-code-card']").TextContent);
         cut.Find("[data-testid='integration-disconnect']").Click();
         Assert.Equal(0, controller.ChatGptDisconnectCalls);
         cut.Find("[data-testid='integration-cancel-cleanup']").Click();
