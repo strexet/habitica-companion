@@ -6,7 +6,7 @@
 
 <div class="todo-today" data-testid="todo-today">
     <section class="card-surface todo-today-header">
-        <div class="todo-day-title"><h1>Today</h1><MudButton Href="/tasks" data-layout-primary="true" Color="Color.Primary" Variant="Variant.Filled">Add task</MudButton></div>
+        <div class="todo-day-title"><h1>Today</h1><MudButton Href="/todo/tasks" data-layout-primary="true" Color="Color.Primary" Variant="Variant.Filled">Add task</MudButton></div>
         <div class="todo-day-controls">
             <label class="field-row">Day<input class="app-input" type="date" value="@_date" @onchange="ChangeDate" data-testid="today-date" @ref="_dayInput" /></label>
             <MudButton HtmlTag="button" data-layout-primary="true" OnClick="UseToday" Variant="Variant.Outlined" aria-label="Use today's device date">Today</MudButton>

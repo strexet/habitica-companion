@@ -4,16 +4,16 @@
 @inject TodoWorkspacePresentation Todo
 @implements IDisposable
 
+@if (ProjectMode)
+{
 <section class="card-surface todo-task-panel" data-testid="hierarchy-panel">
-    <div class="task-group-header">@if (CompactHeading) { <h2 tabindex="-1" @ref="_heading">Project tasks</h2> } else { <h1 tabindex="-1" @ref="_heading">@(ProjectMode ? "Projects" : "Tasks and subtasks")</h1> }<a href="/tasks" data-layout-primary="true">Add task</a></div>
-    @if (ProjectMode)
-    {
+    <div class="task-group-header">@if (CompactHeading) { <h2 tabindex="-1" @ref="_heading">Project tasks</h2> } else { <h1 tabindex="-1" @ref="_heading">Projects</h1> } <a href="/todo/tasks" data-layout-primary="true">Add task</a></div>
         <TodoPlacementPicker Kind="Project" Caption="Project" Value="_project" ValueChanged="SelectProject" Disabled="@Pending" EmptyLabel="Choose project" />
         <p class="panel-copy">Subtasks can belong to different projects. Opening a task shows the full branch, including tasks assigned elsewhere.</p>
-    }
-    else { <a href="/todo/projects" data-layout-primary="true">Browse project tasks</a> }
 </section>
-<TodoTaskPanel @ref="_review" Kind="CompanionTaskKind.Todo" ShowTaskList="false" ShowCapture="_editing" ReviewClosed="ReviewClosedAsync" />
+}
+else { <h1 class="sr-only" tabindex="-1" @ref="_heading">Tasks and subtasks</h1> }
+<TodoTaskPanel @ref="_review" Kind="CompanionTaskKind.Todo" ShowTaskList="false" ShowCapture="@(!ProjectMode || _editing)" CompactStatus="@(!ProjectMode)" ReviewClosed="ReviewClosedAsync" />
 @if (_error is not null) { <p role="alert" class="card-surface">@_error</p> }
 @if (_readError is not null) { <p role="alert" class="card-surface">@_readError</p> }
 @if (Todo.Snapshot is not null)
@@ -61,33 +61,34 @@
             <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="ClearDraft" Variant="Variant.Text">Cancel move</MudButton>
         </section>
     }
-    <section class="card-surface todo-task-panel todo-hierarchy-branches" aria-label="Todo branches">
+    <section class="card-surface todo-task-panel todo-hierarchy-branches" aria-label="Todo branches" data-testid="hierarchy-branches">
+        @if (_focus is not null)
+        {
         <div class="action-row">
-            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Pending || _focus is null)" OnClick="AllRoots" Variant="Variant.Text" data-testid="tree-roots">@(ProjectMode ? "Project tasks" : "All root tasks")</MudButton>
+            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="AllRoots" Variant="Variant.Text" data-testid="tree-roots">@(ProjectMode ? "Project tasks" : "All root tasks")</MudButton>
             @if (_context is { ParentTaskId: { } contextParent }) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="() => Open(contextParent)" Variant="Variant.Text" data-testid="tree-parent">Collapse to parent</MudButton> }
             @if (_focus is not null) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="ToggleSubtree" Variant="Variant.Text" data-testid="tree-subtree">@(_subtree ? "Collapse to direct children" : "Expand entire branch")</MudButton> }
         </div>
+        }
         @if (_context is { } context)
         {
             <article class="todo-direct-row" data-testid="tree-context"><div class="todo-row-content"><h2>@context.Text</h2><span>@context.State @(context.IsArchived ? "· archived; retained context" : "")</span><span>Parent: @(context.ParentTaskId is { } p ? Name(p) : "Root task")</span><span>Project: @ProjectName(context)</span>@if (context.SectionId is { } contextSection) { <span>Section: @SectionName(contextSection)</span> }<details><summary>References</summary><p>Task: @context.Id · Parent: @context.ParentTaskId</p></details></div>
                 <div class="todo-row-actions">@if(context.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{context.Id:D}")" data-layout-primary="true" Variant="Variant.Text">Convert checklist to project</MudButton>}<MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => ChildAsync(context.Id)" Variant="Variant.Filled" Color="Color.Primary">Add subtask</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || context.IsArchived)" OnClick="() => EditAsync(context.Id)" Variant="Variant.Text">Edit task</MudButton></div>
             </article>
         }
-        <p class="panel-copy">@(_focus is null ? ProjectMode ? "Tasks directly assigned to the selected project. Parent context remains available even outside this list." : "Root Todos. Expand a task to navigate one level at a time." : _subtree ? "All subtasks in order, shown in pages. Parent links stay available." : "Direct children. Each subtask has independent status, notes and dates.")</p>
         @if (_rows.Count == 0) { <p data-testid="tree-empty">@(ProjectMode && _project is null && _focus is null ? "Choose a project." : "No tasks in this branch.")</p> }
         @foreach (var row in _rows)
         {
             var task = row.Task;
             <article class="todo-direct-row" @key="task.Id" data-testid="@($"tree-row-{task.Id:D}")">
                 <div class="todo-row-content"><strong>@task.Text</strong><span>@task.State @(task.IsArchived ? "· archived" : "") @(row.Depth is { } depth ? $"· level {depth}" : "")</span>
-                    <span>Project: @ProjectName(task)</span>
                     @if (task.SectionId is { } taskSection) { <span>Section: @SectionName(taskSection)</span> }
                     @if (task.ParentTaskId is { } parent) { <span>Parent: @Name(parent) @(Todo.Snapshot.Document.Tasks.FirstOrDefault(task => task.Id == parent)?.IsArchived == true ? "(archived)" : "") · @ParentContext(row.Coverage)</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="() => Open(parent)" Variant="Variant.Text">Open parent</MudButton> }
-                    <details><summary>References</summary><p>Task: @task.Id · Parent: @task.ParentTaskId</p></details>
                     @if (task.Deadline is { } deadline) { <span>Deadline: @deadline.ToString("yyyy-MM-dd")</span> }
                     @if (task.Notes is { Length: > 0 }) { <details><summary>Notes</summary><p>@task.Notes</p></details> }
                 </div>
                 <div class="todo-row-actions">
+                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived || task.State is not (CompanionTaskState.Active or CompanionTaskState.Waiting or CompanionTaskState.Someday))" OnClick="() => CompleteAsync(task.Id)" Variant="Variant.Text">Complete</MudButton>
                     @if(task.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{task.Id:D}")" data-layout-primary="true" Variant="Variant.Text">Convert checklist to project</MudButton>}
                     <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Pending" OnClick="() => Open(task.Id)" Variant="Variant.Outlined" data-testid="@($"tree-expand-{task.Id:D}")">Expand subtasks</MudButton>
                     <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => ChildAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-add-{task.Id:D}")">Add subtask</MudButton>
@@ -96,10 +97,12 @@
                     <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => StartWorkflowAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-workflow-{task.Id:D}")">Organize</MudButton>
                     <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => StartMoveAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-move-{task.Id:D}")">Move</MudButton>
                     @if (task.ParentTaskId is not null) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived)" OnClick="() => DetachAsync(task.Id)" Variant="Variant.Text" data-testid="@($"tree-detach-{task.Id:D}")">Detach</MudButton> }
-                    <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.IsArchived || task.State is not (CompanionTaskState.Active or CompanionTaskState.Waiting or CompanionTaskState.Someday))" OnClick="() => CompleteAsync(task.Id)" Variant="Variant.Text">Complete</MudButton>
                 </div>
+                <div class="todo-row-context"><span>Project: @ProjectName(task)</span><details><summary>References</summary><p>Task: @task.Id · Parent: @task.ParentTaskId</p></details></div>
             </article>
         }
+        @if (!ProjectMode) { <a href="/todo/projects" data-layout-primary="true">Browse project tasks</a> }
+        <p class="panel-copy">@(_focus is null ? ProjectMode ? "Tasks directly assigned to the selected project. Parent context remains available even outside this list." : "Root Todos. Expand a task to navigate one level at a time." : _subtree ? "All subtasks in order, shown in pages. Parent links stay available." : "Direct children. Each subtask has independent status, notes and dates.")</p>
         <div class="action-row"><span>@_total tasks in selected view · revision @_revision</span><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Pending || _offset == 0)" OnClick="Previous" Variant="Variant.Text" data-testid="tree-previous">Previous branch rows</MudButton><MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(Pending || _next is null)" OnClick="Next" Variant="Variant.Text" data-testid="tree-next">Next branch rows</MudButton></div>
         <p class="panel-copy">Opening a branch never completes or moves descendants. Project membership and links to Habitica stay unchanged. Parent references stay available across pages; deep levels use labels instead of increasing indentation.</p>
     </section>

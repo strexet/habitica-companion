@@ -47,6 +47,8 @@ Responsive review targets:
 
 UI change completion checklist:
 
+The repository rule in `AGENTS.md` requires both a readable light scheme and the dark `obsidian-glow` scheme for every changed UI route, at phone and desktop widths with normal and enlarged text. Keep primary actions and focus/disabled states visibly distinguishable in both variants; record a skipped scheme as unqualified rather than inferring parity.
+
 Task pages must distinguish saved canonical data, stored Habitica identity and confirmed game effects. The shared task panel reports incomplete correspondence across the selected workspace, including completed and archived tasks. Missing group tags remain explicit. The coverage message performs no automatic repair or connection activation; the normal task flow still exposes the tracked integration defects.
 
 - Primary action remains visible or easy to reach.
@@ -865,3 +867,9 @@ Statistics moves aggregate charts off the initial task action screen. The dedica
 ### Todo Sync management
 
 Todo Sync presents source selection, retained command state and exact original receipt lookup before server settings. Pending, blocked and unknown command counts stay distinct from executor enabled, paused or unverified status. The source panel and history use the same scoped selection as task lists; browsing the route never opts into a cloud connection or sends a task effect. Long command IDs wrap, and history rows stack on narrow phones. General Settings links to Todo Sync while retaining private device sync and theme preferences. Browser-clear review names separate Notes and workspace exports; integration profile deletion names retained cloud Notes. Receipt lookup remains a read, and absence never claims an action failed.
+
+### Todo category flow
+
+Todo remains open in the drawer; no disclosure control hides Today, Habits, Dailies or Tasks. Direct category tabs show the current destination with `aria-current=page`. Habits, Dailies and Tasks present a title field and an immediate action before advanced details. Today places the selected date and exact due Daily actions beside a direct Add task link. Projects, Statistics, Sync, Inbox, Planning, Saved lists, History and the legacy Habitica task/Reward surface remain named destinations. Task source remains shared across routes; a compact correspondence status explains missing reward links without moving consent or executor controls onto the task form. Theme colors use the existing semantic ink, surface, primary and button-text tokens, and selected tabs retain the shared focus color.
+
+At 360px with normal text, four category tabs stay on one row; at enlarged text they wrap into readable rows without overlapping labels. The selected workspace is a short disclosure summary; Tasks keeps detailed correspondence status in a separate disclosure, with its incomplete stored-link count visible in the summary. More details and source controls remain available without taking space from the first task action. On the first phone screen at normal text, Habits exposes both score directions and Tasks exposes title capture plus the first Complete action. Secondary project and reference links follow the task controls. The native Habitica task link and original receipt remain accessible through Todo Sync.

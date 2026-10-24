@@ -9,7 +9,7 @@
     @if (ShowCapture)
     {
     <div class="task-group-header">
-        <div><p class="section-label">Companion workspace</p><h2>@KindLabel(_kind)</h2>@if (_kind == CompanionTaskKind.Todo) { <a href="/todo/tasks" data-layout-primary="true">Tasks and subtasks</a> <a href="/todo/lists" data-layout-primary="true">Saved lists</a> }</div>
+        <div><p class="section-label">Companion workspace</p><h2>@KindLabel(_kind)</h2>@if (_kind == CompanionTaskKind.Todo && !CompactStatus) { <a href="/todo/tasks" data-layout-primary="true">Tasks and subtasks</a> <a href="/todo/lists" data-layout-primary="true">Saved lists</a> }</div>
         @if (ShowKindSelector)
         {
             <label class="field-row compact">Task type<select class="app-input" value="@_kind" @onchange="ChangeKind" disabled="@(Busy || Todo.Commands.HasPendingIntent || Todo.Commands.LinkPreview is not null)" data-testid="todo-kind">
@@ -25,7 +25,7 @@
     }
     else
     {
-        <details class="todo-source-picker" open="@(ExpandSourcePicker || Todo.Selection is null || Todo.Availability == TodoWorkspaceAvailability.Unavailable)"><summary>Choose, change or reload workspace</summary><div class="todo-source-controls">
+        <details class="todo-source-picker" open="@(ExpandSourcePicker || Todo.Selection is null || Todo.Availability == TodoWorkspaceAvailability.Unavailable)"><summary>@(Todo.Selection is { } currentSource ? $"{(currentSource.Source == TodoWorkspaceSource.Cloud ? "Cloud" : "Browser")} workspace · {(Todo.Revision is { } revision ? $"rev {revision}" : "reload needed")}" : "Choose workspace")</summary><div class="todo-source-controls">
             <label class="field-row compact">Workspace<select class="app-input" value="@SourceValue(Todo.Selection)" @onchange="SelectSourceAsync" disabled="@(!Todo.CanSwitchSource || Busy)" data-testid="todo-source">
                 <option value="">Choose workspace</option>
                 @foreach (var source in AvailableSources) { <option value="@SourceValue(source)">@SourceLabel(source)</option> }
@@ -35,10 +35,6 @@
             @if (Todo.Selection is not null) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@Busy" OnClick="ReloadAsync" Variant="Variant.Text">Reload selected workspace</MudButton> }
         </div>
         </details>
-        @if (Todo.Selection is { } selected && (ShowCapture || Todo.Snapshot is null))
-        {
-            <p class="panel-copy">@(selected.Source == TodoWorkspaceSource.Cloud ? "Cloud workspace" : "Browser workspace") · @(Todo.Revision is { } revision ? $"revision {revision}" : "current data unavailable"). @(ShowCapture ? "Companion IDs and Habitica mappings remain separate." : "")</p>
-        }
         @if (Todo.BrowserSourcesAvailable == false) { <p role="status">Browser workspaces could not be listed. Cloud access remains separate.</p> }
         @if (Todo.Availability is TodoWorkspaceAvailability.NeedsSelection or TodoWorkspaceAvailability.Unavailable)
         { <p role="status">Select a workspace or reload available data before saving tasks. Creating a browser workspace makes no cloud connection.</p> }
@@ -48,16 +44,6 @@
         @if (_error is not null) { <p role="alert">@_error</p> }
         @if (Todo.OrganizationBlockReason is { } organizationReason) { <p role="status">@organizationReason <a href="/todo/projects">Open Projects</a></p> }
         @if (Todo.Message is not null) { <p role="status">@Todo.Message</p> }
-        @if (Todo.HabiticaCoverage is { HasCompleteStoredCoverage: false } coverage)
-        {
-            <p class="panel-copy" role="status" data-testid="todo-habitica-coverage">
-                Habitica task links: @coverage.StoredTaskLinks/@coverage.Tasks.Count.
-                Missing: @coverage.MissingTaskLinks · pending: @coverage.PendingTaskLinks · need review: @coverage.TaskLinksNeedingReview.
-                Counts include completed and archived tasks. Unlinked task completions earn no Habitica rewards.
-                @if (coverage.MissingGroupTagLinks > 0) { <span>Projects and groups awaiting Habitica tags: @coverage.MissingGroupTagLinks.</span> }
-                Saved links do not confirm pending game effects; check the original command receipt.
-            </p>
-        }
         @if (Todo.Commands.Preview is { } preview)
         {
             <section class="todo-command-review" aria-label="Review task command" data-testid="todo-review">
@@ -167,7 +153,6 @@
                     </details>
                 </fieldset>
             </form>
-            <p class="panel-copy" data-testid="todo-required-integration">Task creation, field edits and scoring require Habitica correspondence. @Todo.IntegrationReadiness <a href="/todo/sync">Open Todo Sync</a></p>
             }
             @if (ShowTaskList)
             {
@@ -184,10 +169,6 @@
                             <span>Habitica mapping: @Todo.Provenance(task.Id).MappingState</span>
                         </div>
                         <div class="todo-row-actions">
-                            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => OpenLink(task.Id)" Variant="Variant.Text" data-testid="@($"todo-link-{task.Id:D}")">Habitica link</MudButton>
-                            @if(task.Kind==CompanionTaskKind.Todo&&task.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{task.Id:D}")" data-layout-primary="true" Variant="Variant.Text">Convert checklist to project</MudButton>}
-                            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => Edit(task)" Variant="Variant.Text" data-testid="@($"todo-edit-{task.Id:D}")">Edit</MudButton>
-                            @if (task.Kind is CompanionTaskKind.Daily or CompanionTaskKind.Habit) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => OpenRecurring(task.Id)" Variant="Variant.Text" data-testid="@($"todo-recurring-{task.Id:D}")">@(task.Kind==CompanionTaskKind.Daily ? "Schedule / occurrences" : "Pause / resume")</MudButton> }
                             @if (task.Kind == CompanionTaskKind.Habit)
                             {
                                 <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.State != CompanionTaskState.Active || task.HabiticaDetails?.Up == false)" OnClick="() => ActAsync(task, WorkspaceOperation.ScoreHabit, HabitScoreDirection.Up)" Variant="Variant.Outlined" data-testid="@($"todo-up-{task.Id:D}")">Record +1</MudButton>
@@ -198,6 +179,10 @@
                                 @if (task.Kind == CompanionTaskKind.Daily) { <label class="field-row compact">Occurrence date<input class="app-input" type="date" value="@Drafts.OccurrenceDate(Todo.Selection!, task.Id)" @onchange="args => Drafts.OccurrenceDate(Todo.Selection!, task.Id, args.Value?.ToString() ?? string.Empty)" disabled="@ActionsDisabled" data-testid="@($"todo-occurrence-{task.Id:D}")" /></label> }
                                 <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || task.State is CompanionTaskState.Completed or CompanionTaskState.Cancelled or CompanionTaskState.Paused)" OnClick="() => ActAsync(task, WorkspaceOperation.CompleteTask)" Variant="Variant.Outlined" data-testid="@($"todo-complete-{task.Id:D}")">Complete</MudButton>
                             }
+                            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => OpenLink(task.Id)" Variant="Variant.Text" data-testid="@($"todo-link-{task.Id:D}")">Habitica link</MudButton>
+                            @if(task.Kind==CompanionTaskKind.Todo&&task.HabiticaDetails?.Checklist is {Count:>0}){<MudButton HtmlTag="a" Href="@($"/todo/convert/{task.Id:D}")" data-layout-primary="true" Variant="Variant.Text">Convert checklist to project</MudButton>}
+                            <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => Edit(task)" Variant="Variant.Text" data-testid="@($"todo-edit-{task.Id:D}")">Edit</MudButton>
+                            @if (task.Kind is CompanionTaskKind.Daily or CompanionTaskKind.Habit) { <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@ActionsDisabled" OnClick="() => OpenRecurring(task.Id)" Variant="Variant.Text" data-testid="@($"todo-recurring-{task.Id:D}")">@(task.Kind==CompanionTaskKind.Daily ? "Schedule / occurrences" : "Pause / resume")</MudButton> }
                         </div>
                     </article>
                 }
@@ -207,8 +192,28 @@
                 <MudButton HtmlTag="button" data-layout-primary="true" Disabled="@(ActionsDisabled || taskPage.NextOffset is null)" OnClick="Next" Variant="Variant.Text">Next</MudButton>
             </div>
             }
+            @if (CompactStatus)
+            {
+                <details class="todo-sync-details">
+                    <summary>@(Todo.HabiticaCoverage is { HasCompleteStoredCoverage: false } summary ? $"Habitica links: {summary.StoredTaskLinks}/{summary.Tasks.Count} stored · review" : "Habitica sync status")</summary>
+                    <p class="panel-copy" data-testid="todo-required-integration">Task creation, field edits and scoring require Habitica correspondence. @Todo.IntegrationReadiness <a href="/todo/sync">Open Todo Sync</a></p>
+                    @if (Todo.HabiticaCoverage is { HasCompleteStoredCoverage: false } compactCoverage)
+                    { <p class="panel-copy" role="status" data-testid="todo-habitica-coverage">Missing: @compactCoverage.MissingTaskLinks · pending: @compactCoverage.PendingTaskLinks · need review: @compactCoverage.TaskLinksNeedingReview. Unlinked task completions earn no Habitica rewards. Pending links are unconfirmed. @if (compactCoverage.MissingGroupTagLinks > 0) { <span>Projects and groups awaiting Habitica tags: @compactCoverage.MissingGroupTagLinks.</span> } <a href="/todo/sync">Review links and original receipts</a>.</p> }
+                </details>
+            }
+            else if (ShowCapture)
+            { <p class="panel-copy" data-testid="todo-required-integration">Task creation, field edits and scoring require Habitica correspondence. @Todo.IntegrationReadiness <a href="/todo/sync">Open Todo Sync</a></p> }
             @if (_linkTaskId is { } linkId) { <TodoTaskLinkEditor TaskId="linkId" Reviewed="LinkCreationReviewed" Closed="() => _linkTaskId=null" /> }
         @if (_recurringId is { } recurringId) { <TodoRecurringEditor TaskId="recurringId" Reviewed="ReviewRecurringAsync" Closed="() => _recurringId = null" /> }
+        }
+        @if ((!CompactStatus || Draft is null) && Todo.HabiticaCoverage is { HasCompleteStoredCoverage: false } coverage)
+        {
+            <p class="panel-copy" role="status" data-testid="todo-habitica-coverage">
+                Habitica task links: @coverage.StoredTaskLinks/@coverage.Tasks.Count · missing: @coverage.MissingTaskLinks · pending: @coverage.PendingTaskLinks · need review: @coverage.TaskLinksNeedingReview.
+                Unlinked task completions earn no Habitica rewards. Pending links are unconfirmed.
+                @if (coverage.MissingGroupTagLinks > 0) { <span>Projects and groups awaiting Habitica tags: @coverage.MissingGroupTagLinks.</span> }
+                <a href="/todo/sync">Review links and original receipts</a>.
+            </p>
         }
     }
 </section>
@@ -221,6 +226,7 @@
     [Parameter] public bool ShowKindSelector { get; set; }
     [Parameter] public bool ShowTaskList { get; set; } = true;
     [Parameter] public bool ShowCapture { get; set; } = true;
+    [Parameter] public bool CompactStatus { get; set; }
     [Parameter] public bool ExpandSourcePicker { get; set; }
     [Parameter] public bool ShowSyncLink { get; set; } = true;
     [Parameter] public EventCallback ReviewClosed { get; set; }

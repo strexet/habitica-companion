@@ -1,5 +1,9 @@
 # Testing
 
+## Local live-test credentials
+
+The owner may provide a root [`test-login.json`](../../test-login.json) with `userId` and `apiToken` for an explicitly authorized live test on the owner's Habitica account. The file is ignored by Git, should have owner-only file permissions, and must not be committed, deployed, included in fixtures, printed in logs, or copied into validation evidence. Its presence grants no permission for gameplay changes, party actions, cloud linking, or another live-test round; use the current user instruction and the [AI app testing guide](ai-app-testing.md) for the allowed scope. Synthetic tests use fixture identities instead.
+
 ## Browser query normalization regression
 
 Publish tests/Habitica.BrowserChecks/Habitica.BrowserChecks.csproj with the pinned local .NET SDK to an isolated output directory, serve the isolated wwwroot over loopback HTTP and open that origin in a browser. The page must report PASS for every shared task-query-v1.json case and unchanged input. The isolated app contains synthetic embedded data and makes no service requests. The isolated app exercises the actual browser-only NFKC interop branch, including composed accents, compatibility characters, U+0130 and Greek sigma. The isolated app remains outside production publication and ordinary desktop test discovery.
@@ -545,6 +549,13 @@ The matching-source solution passes1168 tests; final focused Notes controls pass
 ### Dedicated statistics controls
 
 TodoStatisticsTests verify restore/recomplete cycles, more than one hundred Habit events without page truncation, independent positive/negative counts, requested versus confirmed effect prefixes, current project/goal denominators, archive retention, uncertain conversion dates, per-task value deltas, missing segments, inclusive UTC ticks, leap/year boundaries and invalid sources/filters. Eight Application controls pass. Twenty-one focused Web controls cover the dedicated filters, source separation, unavailable/account-change states, paged long-name progress and existing Tasks interactions after aggregate removal. Rendered statistics and expanded legacy detail fixtures use the shared responsive/theme harness; evidence resides in skill-tree/history/validation/todo-statistics/result.json. Hosted use, physical devices and assistive technologies remain separate qualification.
+
 ## Todo Sync composition
 
 Synthetic component checks cover shared source selection, distinct Workspace consent and executor controls, no write on route entry, an exact original cloud receipt, late account replacement, and missing browser receipt without retry. Existing Workspace settings and tag checks continue to cover status refresh, unavailable access, separate consent, local/cloud backup, transfer cancellation and unknown original metadata. A cancelable browser-clear review names Notes and canonical workspace backups. Rendered route layout checks cover responsive and theme geometry; physical device, real OAuth grants and production account migration remain separate qualification.
+
+### Todo category navigation checks
+
+`AppNavMenuTests` verify the permanent nested menu, every working destination, selected-route state and signed-out absence. `TodoCategoryPageTests` render Habits, Dailies, Tasks and Today with one shared synthetic workspace; kind filters, immediate category capture, score/complete controls, hierarchy and the selected-day create link are present without preparation or acceptance. Existing Today and hierarchy interaction suites retain exact original-receipt and date behavior. Rendered fixtures cover the new menu and four category pages together with Projects, Statistics and Sync across supported viewport, theme and text settings. Browser fixtures are synthetic; hosted enrollment, physical-device touch and assistive-technology behavior remain separate checks.
+
+The final local solution run passed all suites, including 735 WebApp tests, and the Release WebApp publish succeeded. Two rendered Todo matrix batches covered nine fixtures in 756 cases: six viewport widths, seven themes including Gryphy Light and the updated Obsidian Glow, and normal/enlarged text. No geometry, contrast, harness or unqualified-surface errors remained. Manual 360px visual inspection found category labels overlapping at 200-percent text despite a clean initial geometry result; flex wrapping removed the overlap in both light and Obsidian Glow. Seeded controls still detect overflow, overlap and contrast faults. See `skill-tree/history/validation/obsidian-glow/result.json` and `skill-tree/history/validation/todo-navigation/result.json`. Physical devices, production sessions and assistive technologies were not exercised for this milestone.
