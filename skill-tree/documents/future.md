@@ -434,46 +434,6 @@ Documentation updates:
 Risks:
 - Stale account, identity, subscription or revision must not change unrelated tasks, deliver private information to another account or replay uncertain effects.
 
-### Compose the always-open Todo navigation and task pages
-
-```yaml
-id: T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b
-priority: 100
-status: Ready
-parent_pending_ids: ["P-26753fc0-29e0-46be-8677-36725314b31a", "P-0ddc8784-c740-5a23-819c-b17db8f6829f"]
-processing_run_id: PR-adf01381-8475-4309-abe9-2c6d4369a2ac
-root_task_id: T-3b76d03e-c380-4c4f-9e2b-a982c1c9850b
-related_task_id: null
-relation: main
-depends_on: ["T-ea3c2df0-7c13-4a77-a920-1451801b9946", "T-8e39f2a0-a0fe-4d1a-82af-b3472da5dcae", "T-fb41407b-58d3-4dca-b389-e80bbe517831", "T-54623cea-9c8f-4819-b33f-b6552c82df55", "T-fd2c633c-7b39-4776-a364-dacb83abaff7", "T-68cb7da7-62e9-4136-b5c5-07da20f97c30", "T-66aec83d-1d40-4c42-87ec-6566e1ac3769", "T-b92d23ba-8586-4869-a6b8-f8eb180f1b02", "T-c0bf3f10-141f-464c-bc1e-53040d67e61c", "T-6122dded-900d-4d92-8739-bbc344e15ea0"]
-```
-
-Goal:
-- Replace the single Tasks menu with the exact owner-requested Todo section.
-Current behavior:
-- AppNavMenu contains one Tasks link and TasksPage renders a long mixed dashboard. Independently implemented feature components require route composition.
-Desired behavior:
-- Always-expanded Todo contains Today, Habits, Dailies, Tasks and working Statistics, Sync/settings and Projects destinations; main category pages immediately show the selected category list and primary actions.
-Touch:
-- AppNavMenu, MainLayout, TasksPage extraction, new Todo routes and navigation/component/browser tests.
-Discovery allowance:
-- Inspect affected source/tests and documented contracts; capture required protocol changes before broadening scope.
-Out of scope:
-- Unrelated refactors, new upstream contracts, implicit consent, production publication and live account mutation.
-Implementation constraints:
-- Owner structure supersedes conflicting primary destinations in navigation-study.md. Use category-specific tabs plus persistent nested menu without a collapse toggle. Compose real working destinations, no placeholder links. Move statistics and management off the first list screen; keep source/freshness status concise. Retain reachable Reward controls and existing task links through safe routing compatibility. Integrate the reviewed capture, Today, planning/history, recurrence, project and saved-list components without duplicating account/workspace state. No task conversion or game effect follows from route migration.
-Questions and required clarifications:
-- [Resolved - owner direction and inspected source] Existing canonical contracts and the explicit owner request define the bounded local implementation. Per-account consent and broader human/device qualification remain separate.
-Validation:
-- Navigation tests cover all destinations, direct deep links, old /tasks compatibility, selected-tab/menu state, no repeated management disclosure and actual first-action visibility. Exercise synthetic journeys and the full changed-page UI/theme matrix.
-Acceptance:
-- The always-open Todo section and category tabs route to working task-first pages with immediate capture/complete/score access and no statistics/management barrier.
-- Statistics, Sync/settings, Projects and supported advanced features remain discoverable with preserved old links, Reward access and correct shared source/recovery state.
-Documentation updates:
-- Update features.md and affected technical/UX/testing contracts with actual behavior, source ownership and unrun qualification limits.
-Risks:
-- Stale identity, unclear unavailable state or incorrect success reporting.
-
 ### Qualify ChatGPT, Codex, multi-user and mobile release gates
 
 ```yaml
