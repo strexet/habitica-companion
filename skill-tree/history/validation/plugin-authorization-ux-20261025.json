@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-25",
+  "task_id": "T-3b645995-38ad-44e6-b98a-df63e8174dac",
+  "target": "https://habitica-companion-auth.strexet.workers.dev",
+  "backend_build_hash": "521d9409fb7564a9ed5c93c9bb6bc37b8aab379325aa522b8ef61317cf1482c8",
+  "worker_versions": {
+    "auth": "ab627780-0af5-4fa4-b96f-727b05ef7573",
+    "workspace": "4338cd63-10c1-46f0-98a9-6a4b4dcf43e0",
+    "mcp": "d0a90ca2-82cb-46fb-a0b7-414ecf2ee4f3"
+  },
+  "local_checks": {
+    "auth_worker_tests_passed": 155,
+    "auth_worker_tests_failed": 0,
+    "three_worker_builds": "pass",
+    "three_production_worker_dry_runs": "pass",
+    "future_document_validation": "pass",
+    "documentation_validation": "pass with stale historical audit warning",
+    "diff_check": "pass",
+    "code_form_order": "Verify code follows the code field and precedes the permission preview",
+    "permission_preview": "Twelve disabled preview checkboxes; no scope fields submitted before verification",
+    "permission_review": "Twelve editable scope controls with original requested/available badges",
+    "checked_state_visual": "In local browser fixture, clearing a requested tag permission changed its row background from rgb(29, 38, 61) to rgb(17, 21, 34)",
+    "phone_view": "390x844 local browser screenshots in dark and forced light styles; Verify code top position 716.7px, no horizontal overflow"
+  },
+  "public_read_only_checks": {
+    "auth_health": "authorization enabled",
+    "workspace_health": "enabled",
+    "mcp_health": "Auth service reachable",
+    "unauthenticated_authorize_error": "400 styled HTML with restart guidance"
+  },
+  "limitations": [
+    "No fresh real Codex or ChatGPT authorization was approved after publication.",
+    "Browser checks used synthetic OAuth fixtures; physical iPhone and assistive technology qualification remain open.",
+    "The light screenshot used the same generated page with the dark media override removed to inspect the light palette in the dark host browser."
+  ]
+}

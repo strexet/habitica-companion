@@ -120,14 +120,21 @@ test("token exchange requires exact resource and scope challenges request minimu
 test("consent shows the whole catalogue and issues only chosen supported scopes", async t => {
   const f = await fixture(t); const profile = await enrolled(f); const code = await ticket(f, profile);
   const page = await authPage(f, "profile:read tasks:read"); const first = await page.response.text();
-  for (const label of ["Identify the linked account","Read Companion tasks","Create, adopt and rename owned Habitica tags","Execute explicitly reviewed allowlisted spell plans","Search and read personal Markdown Notes","Save, edit, append, trash, restore and permanently purge personal Notes"]) assert.ok(first.includes(label));
+  for (const label of ["Identify the linked account","Read tasks","Manage Habitica tags","Cast spells","Read personal Notes","Change personal Notes"]) assert.ok(first.includes(label));
   assert.match(first, /One-time Companion code/);
   assert.ok(first.indexOf('<form method="post">') < first.indexOf('name="code"'));
-  assert.ok(first.indexOf('name="code"') < first.indexOf('</form>'));
+  assert.ok(first.indexOf('name="code"') < first.indexOf('>Verify code</button>'));
+  assert.ok(first.indexOf('>Verify code</button>') < first.indexOf('</form>'));
+  assert.ok(first.indexOf('</form>') < first.indexOf('id="permission-preview-title"'));
+  assert.equal((first.match(/type="checkbox"/g) ?? []).length, 12);
+  assert.equal((first.match(/disabled aria-label=/g) ?? []).length, 12);
+  assert.equal((first.match(/name="scope"/g) ?? []).length, 0);
   const identified = await form(f, page, { handle: handle(first), decision: "identify", code: code.code, scope: "profile:read tasks:read" });
   assert.equal(identified.status, 200); const html = await identified.text();
   assert.match(html, /name="scope" value="tasks:read" checked/);
   assert.match(html, /name="scope" value="habitica.tags.write"  /);
+  assert.ok(html.indexOf('id="permission-preview-title"') === -1);
+  assert.ok(html.indexOf('name="scope" value="habitica.tags.write"') < html.indexOf('>Allow selected access</button>'));
   const allowed = await form(f, page, { handle: handle(html), decision: "approve", scope: "profile:read habitica.tags.write" });
   assert.equal(allowed.status, 302);
   const callback = new URL(allowed.headers.get("location"));
