@@ -9,14 +9,15 @@
   },
   "frontend": {
     "url": "https://habitica-companion.pages.dev",
-    "deployment_id": "faf92ea3-e151-4bd2-9937-872bff4daa79",
-    "source_baseline": "117363f",
-    "source_dirty": true,
-    "method": "reviewed local release artifact, followed by matching main publication",
+    "deployment_id": "1222d704-660d-4d31-bbaa-d303e8518870",
+    "source_baseline": "02a5953dc768e8a534856300eb3631b3f7014d9b",
+    "source_dirty": false,
+    "method": "successful production GitHub push build",
     "browser_checks": {
       "settings": "rendered new installation and Push local-clear disclosure",
       "public_config": "production Auth and Workspace endpoints observed in ordinary browser"
-    }
+    },
+    "initial_manual_deployment_id": "faf92ea3-e151-4bd2-9937-872bff4daa79"
   },
   "migrations": {
     "auth": [
@@ -81,7 +82,7 @@
         "test"
       ],
       "exit_code": 0,
-      "seconds": 1.0
+      "seconds": 1
     },
     {
       "label": "checkpoint-tests",
@@ -195,5 +196,12 @@
     "unknown_outcome": 0,
     "tag_work_needs_review": 15
   },
-  "browser_results": "browser-results.json.gz"
+  "browser_results": "browser-results.json.gz",
+  "github": {
+    "commit": "02a5953dc768e8a534856300eb3631b3f7014d9b",
+    "tree": "c9c2b1e513048852827b9d5e667e47f7c98c3367",
+    "localCommit": "d03bc1baff3674519d1c27b9f40c608d1f034d3f",
+    "localTreeMatched": true,
+    "historyRewrite": false
+  }
 }

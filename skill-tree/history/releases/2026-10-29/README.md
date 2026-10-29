@@ -20,8 +20,10 @@ The owner requested all recent implemented features in production and authorized
 | MCP | 0c6fdccc-2886-44f3-be61-785921c6340d |
 | Shared backend build | 57c8b08d7c601719daf458fc242cd31b00d8dbb18504821420123c3b07b1ae77 |
 | Initial Pages artifact | faf92ea3-e151-4bd2-9937-872bff4daa79 |
+| Successful Git Pages deployment | 1222d704-660d-4d31-bbaa-d303e8518870 |
+| Published feature commit | 02a5953dc768e8a534856300eb3631b3f7014d9b |
 
-The Pages artifact was built from the reviewed dirty develop snapshot based on 117363f. Main publication contains the matching source plus release evidence; automatic Git builds use the checked-in public frontend override. Local develop history is retained; the connected GitHub account publishes the consolidated release tree without rewriting existing main history.
+The Pages artifact was built from the reviewed dirty develop snapshot based on 117363f. Main publication contains the matching source plus release evidence. The automatic Git build of 02a5953d completed successfully with the checked-in public frontend override. Local develop history is retained; the connected GitHub account publishes the consolidated release tree without rewriting existing main history.
 
 ## Migrations and configuration
 
